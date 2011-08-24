@@ -19,3 +19,6 @@ OSX/
 Windows/
 builds/
 
+
+*.csproj
+*.unityproj
