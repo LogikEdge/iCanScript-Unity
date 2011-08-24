@@ -57,7 +57,7 @@ public class AP_GuiUtilities {
             return;            
         }
         if(fieldType == typeof(GameObject)) {
-            GameObject newValue= EditorGUILayout.ObjectField(niceName, obj as GameObject, typeof(GameObject)) as GameObject;
+            GameObject newValue= EditorGUILayout.ObjectField(niceName, obj as GameObject, typeof(GameObject), true) as GameObject;
             fieldInfo.SetValue(parent, newValue);
             return;                        
         }            
@@ -117,7 +117,7 @@ public class AP_GuiUtilities {
             if(elementType == typeof(GameObject)) {
                 GameObject[] values= (GameObject[])obj;
                 for(int i= 0; i < values.Length; ++i) {
-                    values[i]= EditorGUILayout.ObjectField(niceName+"["+i+"]", values[i], typeof(GameObject)) as GameObject;
+                    values[i]= EditorGUILayout.ObjectField(niceName+"["+i+"]", values[i], typeof(GameObject), true) as GameObject;
                 }
                 return;                        
             }                        
@@ -178,7 +178,7 @@ public class AP_GuiUtilities {
         if(obj is List<GameObject>) {
             List<GameObject> values= (List<GameObject>)obj;
             for(int i= 0; i < values.Count; ++i) {
-                values[i]= EditorGUILayout.ObjectField(niceName+"["+i+"]", values[i], typeof(GameObject)) as GameObject;
+                values[i]= EditorGUILayout.ObjectField(niceName+"["+i+"]", values[i], typeof(GameObject), true) as GameObject;
             }
             return;                        
         }            
