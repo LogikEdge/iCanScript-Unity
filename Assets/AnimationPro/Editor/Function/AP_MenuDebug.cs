@@ -16,4 +16,30 @@ public class AP_Debug {
         return AP_MenuUtilities.ValidateAddNode(command);
     }
 
+    // ----------------------------------------------------------------------
+    [MenuItem("CONTEXT/AnimationPro/Edit/Module/Debug/LogError")]
+    public static void AddNodeDebugLogError(MenuCommand command) {
+        AP_MenuContext context= command.context as AP_MenuContext;
+        AP_Node parent= context.SelectedObject as AP_Node;
+        AP_LogError function= AP_LogError.CreateInstance("", parent);
+        function.SetInitialPosition(context.GraphPosition);
+    }
+    [MenuItem("CONTEXT/AnimationPro/Edit/Module/Debug/LogError", true)]
+    public static bool ValidateAddNodeDebugLogError(MenuCommand command) {
+        return AP_MenuUtilities.ValidateAddNode(command);
+    }
+
+    // ----------------------------------------------------------------------
+    [MenuItem("CONTEXT/AnimationPro/Edit/Module/Debug/LogWarning")]
+    public static void AddNodeDebugLogWarning(MenuCommand command) {
+        AP_MenuContext context= command.context as AP_MenuContext;
+        AP_Node parent= context.SelectedObject as AP_Node;
+        AP_LogWarning function= AP_LogWarning.CreateInstance("", parent);
+        function.SetInitialPosition(context.GraphPosition);
+    }
+    [MenuItem("CONTEXT/AnimationPro/Edit/Module/Debug/LogWarning", true)]
+    public static bool ValidateAddNodeDebugLogWarning(MenuCommand command) {
+        return AP_MenuUtilities.ValidateAddNode(command);
+    }
+
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class AP_Log : AP_Function {
+public class AP_LogError : AP_Function {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
@@ -12,15 +12,15 @@ public class AP_Log : AP_Function {
     // ----------------------------------------------------------------------
     protected override void doExecute() {
         if(message != null && message != "") {
-            Debug.Log(message);
+            Debug.LogError(message);            
         }
     }
 
     // ======================================================================
     // INITIALIZATION
     // ----------------------------------------------------------------------
-    public static AP_Log CreateInstance(string _name, AP_Node _parent) {
-        AP_Log logger= CreateInstance<AP_Log>();
+    public static AP_LogError CreateInstance(string _name, AP_Node _parent) {
+        AP_LogError logger= CreateInstance<AP_LogError>();
         logger.Init(_name, _parent);
         logger.message= "";
         return logger;
