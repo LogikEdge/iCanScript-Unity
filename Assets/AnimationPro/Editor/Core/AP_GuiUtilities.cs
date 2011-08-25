@@ -37,7 +37,7 @@ public class AP_GuiUtilities {
             return;
         }
         if(fieldType == typeof(string)) {
-            string newValue= EditorGUILayout.TextField(niceName, obj as string);
+            string newValue= EditorGUILayout.TextField(niceName, (string)obj);
             fieldInfo.SetValue(parent, newValue);
             return;
         }
