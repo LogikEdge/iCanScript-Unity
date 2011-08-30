@@ -128,11 +128,8 @@ public class AP_Graphics {
         else if(port.IsOutput) {
             DrawPort(AP_Graphics.PortShape.Circular, port.Position, color);                                        
         }
-        else if(port.IsControl) {
-            DrawPort(AP_Graphics.PortShape.Square, port.Position, color);                                                    
-        }        
         // Show name if requested.
-        if(port.IsNameVisible && !port.IsControl) {
+        if(port.IsNameVisible) {
             Vector2 labelSize= AP_EditorConfig.GetPortLabelSize(name);
             if(port.IsOnLeftEdge) {                
                 pos.x+= AP_EditorConfig.PortSize;

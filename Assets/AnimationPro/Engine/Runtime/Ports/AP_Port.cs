@@ -8,7 +8,7 @@ public class AP_Port : AP_Object {
     // Properties
     // ----------------------------------------------------------------------
     public enum EdgeEnum { Top, Bottom, Right, Left };
-    public enum DirectionEnum { In, Out, Control };
+    public enum DirectionEnum { In, Out };
 
     public           Vector2        LocalPosition  = Vector2.zero;
     public           bool           IsBeingDragged = false;
@@ -23,10 +23,8 @@ public class AP_Port : AP_Object {
     // ----------------------------------------------------------------------
     public bool IsInput                 { get { return myDirection == DirectionEnum.In; }}
     public bool IsOutput                { get { return myDirection == DirectionEnum.Out; }}
-    public bool IsControl               { get { return AsControl != null; }}
     public bool IsVirtual               { get { return AsVirtual != null; }}
     public AP_VirtualPort  AsVirtual    { get { return this as AP_VirtualPort; }}
-    public AP_ControlPort  AsControl    { get { return this as AP_ControlPort; }}
     // ----------------------------------------------------------------------
     // Returns the port value type.
     public System.Type ValueType {
@@ -85,7 +83,6 @@ public class AP_Port : AP_Object {
         switch(myDirection) {
             case DirectionEnum.In: Edge= EdgeEnum.Left; break;
             case DirectionEnum.Out: Edge= EdgeEnum.Right; break;
-            case DirectionEnum.Control: Edge= EdgeEnum.Top; break;
         }
 
         // Allow streams to also be used as non-stream ports.
