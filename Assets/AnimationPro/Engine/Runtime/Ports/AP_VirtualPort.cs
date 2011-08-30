@@ -15,4 +15,7 @@ public sealed class AP_VirtualPort : AP_Port {
         instance.Init(portName, parent, direction);
         return instance;
     }
+
+    public override void UpdateValue() {}
+
 }

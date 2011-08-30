@@ -204,8 +204,7 @@ public class AP_Port : AP_Object {
     }
     
     // ----------------------------------------------------------------------
-    public void UpdateValue() {
-        if(IsVirtual) return;
+    public virtual void UpdateValue() {
         AP_Port sourcePort= GetProducerPort();
         if(sourcePort == null || sourcePort == this) return;
         AP_Aggregate sourceNode= sourcePort.Parent;
