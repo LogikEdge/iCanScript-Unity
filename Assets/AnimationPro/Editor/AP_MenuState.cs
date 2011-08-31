@@ -89,7 +89,6 @@ public class AP_MenuState {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State state= context.SelectedObject as AP_State;
         AP_Transition instance= AP_Transition.CreateInstance("Transition", state);
-        instance.Guard= AP_TransitionTest.CreateInstance("Guard", instance);
         AP_Aggregate parent= state.Parent;
         parent.ForEachChild<AP_State>(
             (child)=> {
