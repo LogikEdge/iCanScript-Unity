@@ -115,7 +115,7 @@ public class AP_Inspector : Editor {
         // Show inputs.
         int inCount= 0;
         int outCount= 0;
-        _node.ForEachChild<AP_Port>(
+        _node.ForEachChild<AP_DataPort>(
             (port)=> {
                 if(port.IsInput) ++inCount;
                 if(port.IsOutput) ++outCount;
@@ -125,7 +125,7 @@ public class AP_Inspector : Editor {
             showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
             if(showInputs) {
                 EditorGUIUtility.LookLikeControls();
-                _node.ForEachChild<AP_Port>(
+                _node.ForEachChild<AP_DataPort>(
                     (port)=> {
                         if(port.IsInput) AP_GuiUtilities.OnInspectorGUI(port);
                     }
@@ -137,7 +137,7 @@ public class AP_Inspector : Editor {
         if(outCount > 0) {
             showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
             if(showOutputs) {
-                _node.ForEachChild<AP_Port>(
+                _node.ForEachChild<AP_DataPort>(
                     (port)=> {
                             if(port.IsOutput) AP_GuiUtilities.OnInspectorGUI(port);
                     }
@@ -148,8 +148,10 @@ public class AP_Inspector : Editor {
 
 	// ----------------------------------------------------------------------
     // Inspects the selected port.
-    void InspectPort(AP_Port _port) {
-        AP_GuiUtilities.OnInspectorGUI(_port);
+    void InspectPort(AP_Port port) {
+        if(port is AP_DataPort) {
+            AP_GuiUtilities.OnInspectorGUI(port as AP_DataPort);            
+        }
     }
 
 

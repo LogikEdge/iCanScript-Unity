@@ -115,27 +115,31 @@ public class AP_Graphics {
     //  PORT
     // ----------------------------------------------------------------------
     public void DrawPort(AP_Port port) {
+        // Only data ports are drawn.
+        if(!(port is AP_DataPort)) return;
+        AP_DataPort dataPort= port as AP_DataPort;
+
         // Don't draw port if port is not visible.
-        if(port.IsVisible == false) return;
+        if(dataPort.IsVisible == false) return;
         
-        Vector2 pos= port.Position;
-        string name= port.Name;
-        Color color= port.DisplayColor;
-        if(port.IsInput) {
+        Vector2 pos= dataPort.Position;
+        string name= dataPort.Name;
+        Color color= dataPort.DisplayColor;
+        if(dataPort.IsInput) {
             Color invColor= new Color(1.0f-color.r, 1.0f-color.g, 1.0f-color.b, 1.0f);
             DrawPort(AP_Graphics.PortShape.UpTriangle, pos, color, invColor);
         }
-        else if(port.IsOutput) {
+        else if(dataPort.IsOutput) {
             DrawPort(AP_Graphics.PortShape.Circular, port.Position, color);                                        
         }
         // Show name if requested.
-        if(port.IsNameVisible) {
+        if(dataPort.IsNameVisible) {
             Vector2 labelSize= AP_EditorConfig.GetPortLabelSize(name);
-            if(port.IsOnLeftEdge) {                
+            if(dataPort.IsOnLeftEdge) {                
                 pos.x+= AP_EditorConfig.PortSize;
                 pos.y-= 0.4f * labelSize.y;
             }
-            if(port.IsOnRightEdge) {
+            if(dataPort.IsOnRightEdge) {
                 pos.x-= labelSize.x + AP_EditorConfig.PortSize;
                 pos.y-= 0.4f * labelSize.y;        
             }
@@ -322,13 +326,17 @@ public class AP_Graphics {
     //  CONNECTION
     // ----------------------------------------------------------------------
     public void DrawConnection(AP_Port port) {
-        if(port.Parent.IsVisible) {
-            AP_Port source= port.Source;
+        // Only data connection are drawn.
+        if(!(port is AP_DataPort)) return;
+        AP_DataPort dataPort= port as AP_DataPort;
+        
+        if(dataPort.Parent.IsVisible) {
+            AP_DataPort source= dataPort.Source;
             if(source != null && source.Parent.IsVisible) {
                 Vector2 start= source.Position;
-                Vector2 end= port.Position;
+                Vector2 end= dataPort.Position;
                 Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;
-                Vector2 endDirection= port.IsOnHorizontalEdge ? UpDirection : LeftDirection;
+                Vector2 endDirection= dataPort.IsOnHorizontalEdge ? UpDirection : LeftDirection;
                 Vector2 diff= end-start;
                 if(Vector2.Dot(diff, startDirection) < 0) {
                     startDirection= -startDirection;
@@ -336,7 +344,7 @@ public class AP_Graphics {
                 if(Vector2.Dot(diff, endDirection) > 0) {
                     endDirection  = - endDirection;
                 }
-                Color color= port.DisplayColor;
+                Color color= dataPort.DisplayColor;
                 DrawBezierCurve(start, end, startDirection, endDirection, color);
             }                    
         }        

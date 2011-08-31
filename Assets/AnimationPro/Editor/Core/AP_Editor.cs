@@ -282,7 +282,9 @@ public class AP_Editor : EditorWindow {
             if(!VerifyNewConnection(port)) {
                 // Verify for disconnection.
                 if(!port.IsNearParent()) {
-                    port.Disconnect();
+                    if(port is AP_DataPort) {
+                        (port as AP_DataPort).Disconnect();                        
+                    }
                     port.LocalPosition= DragStartPosition;
                 }                    
                 else {
@@ -325,52 +327,56 @@ public class AP_Editor : EditorWindow {
         if(node != null) return node;
         return null;
     }
-
-
         
 	// ----------------------------------------------------------------------
     bool VerifyNewConnection(AP_Port port) {
         // No new connection if no overlapping port found.
-        AP_Port overlappingPort= port.GetOverlappingPort();
+        AP_Port overlappingPort= port.GetOverlappingPort() as AP_DataPort;
         if(overlappingPort == null) return false;
+
+        // Only connect data ports.
+        if(!(port is AP_DataPort)) return false;
+        if(!(overlappingPort is AP_DataPort)) return false;
+        AP_DataPort dataPort= port as AP_DataPort;
+        AP_DataPort overlappingDataPort= overlappingPort as AP_DataPort;
         
         // We have a new connection so lets determine direction.
-        port.LocalPosition= DragStartPosition;
-        if(port.IsInput) {
-            if(overlappingPort.IsOutput) {
-                port.Source= overlappingPort;
+        dataPort.LocalPosition= DragStartPosition;
+        if(dataPort.IsInput) {
+            if(overlappingDataPort.IsOutput) {
+                dataPort.Source= overlappingDataPort;
                 return true;
             }
-            if(port.IsVirtual == false && overlappingPort.IsVirtual == false) {
+            if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == false) {
                 return true;
             }
-            if(port.IsVirtual == true && overlappingPort.IsVirtual == false) {
-                overlappingPort.Source= port;
+            if(dataPort.IsVirtual == true && overlappingDataPort.IsVirtual == false) {
+                overlappingDataPort.Source= dataPort;
                 return true;
             }
-            if(port.IsVirtual == false && overlappingPort.IsVirtual == true) {
-                port.Source= overlappingPort;
+            if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == true) {
+                dataPort.Source= overlappingDataPort;
                 return true;
             }
-            port.Source= overlappingPort;
+            dataPort.Source= overlappingDataPort;
         }
         else {
-            if(overlappingPort.IsInput) {
-                overlappingPort.Source= port;
+            if(overlappingDataPort.IsInput) {
+                overlappingDataPort.Source= dataPort;
                 return true;
             }            
-            if(port.IsVirtual == false && overlappingPort.IsVirtual == false) {
+            if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == false) {
                 return true;
             }
-            if(port.IsVirtual == true && overlappingPort.IsVirtual == false) {
-                port.Source= overlappingPort;
+            if(dataPort.IsVirtual == true && overlappingDataPort.IsVirtual == false) {
+                dataPort.Source= overlappingDataPort;
                 return true;
             }
-            if(port.IsVirtual == false && overlappingPort.IsVirtual == true) {
-                overlappingPort.Source= port;
+            if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == true) {
+                overlappingDataPort.Source= dataPort;
                 return true;
             }
-            port.Source= overlappingPort;
+            dataPort.Source= overlappingDataPort;
         }
         return true;
     }

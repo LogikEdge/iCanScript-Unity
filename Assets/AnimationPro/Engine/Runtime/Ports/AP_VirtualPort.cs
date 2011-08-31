@@ -1,17 +1,17 @@
 using UnityEngine;
 using System.Collections;
 
-public sealed class AP_VirtualPort : AP_Port {
+public sealed class AP_VirtualDataPort : AP_DataPort {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public AP_Port ConcretePort= null;
+    public AP_DataPort ConcretePort= null;
 
     // ======================================================================
     // Lifetime Management
     // ----------------------------------------------------------------------
-    public new static AP_VirtualPort CreateInstance(string portName, AP_Node parent, DirectionEnum direction) {
-        AP_VirtualPort instance= CreateInstance<AP_VirtualPort>();
+    public new static AP_VirtualDataPort CreateInstance(string portName, AP_Node parent, DirectionEnum direction) {
+        AP_VirtualDataPort instance= CreateInstance<AP_VirtualDataPort>();
         instance.Init(portName, parent, direction);
         return instance;
     }

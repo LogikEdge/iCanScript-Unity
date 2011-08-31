@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class AP_GuiUtilities {
-    public static void OnInspectorGUI(AP_Port port) {
+    public static void OnInspectorGUI(AP_DataPort port) {
         string niceName= port.name == null || port.name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(port.name);
 
         if(port.IsVirtual) {

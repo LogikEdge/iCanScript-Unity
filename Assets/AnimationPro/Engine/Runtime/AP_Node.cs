@@ -11,10 +11,10 @@ public abstract class AP_Node : AP_Aggregate {
         
         // Create ports for each field taged with InPort or OutPort.
         foreach(var field in GetInputFields()) {
-            AP_Port.CreateInstance(field.Name, this, AP_Port.DirectionEnum.In);                                
+            AP_DataPort.CreateInstance(field.Name, this, AP_DataPort.DirectionEnum.In);                                
         }
         foreach(var field in GetOutputFields()) {
-            AP_Port.CreateInstance(field.Name, this, AP_Port.DirectionEnum.Out);            
+            AP_DataPort.CreateInstance(field.Name, this, AP_DataPort.DirectionEnum.Out);            
         }
         return this;
     }
