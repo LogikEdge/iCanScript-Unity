@@ -11,6 +11,12 @@ public abstract class AP_Port : AP_Object {
     public  Vector2     LocalPosition  = Vector2.zero;
     public  bool        IsBeingDragged = false;
 
+    // ======================================================================
+    // Execution
+    // ----------------------------------------------------------------------
+    public virtual bool     IsReady()           { return true; }
+    public virtual AP_Port  GetConnectedPort()  { return null; }
+    
 //#if UNITY_EDITOR
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // BEGIN EDITOR SECTION
@@ -22,9 +28,15 @@ public abstract class AP_Port : AP_Object {
     public override void DoLayout() {
         // Don't interfear with dragging.
         if(IsBeingDragged) return;
+
+        // Retreive parent layout information.
         AP_Node parentNode= Parent as AP_Node;
-        if(!parentNode) return;
+        if(!parentNode) {
+            Debug.LogWarning("Trying to layout a port whos parent is not a node.");
+            return;
+        }
         Rect parentPosition= parentNode.Position;
+
         // Make certain that the port is on an edge.
         switch(Edge) {
             case EdgeEnum.Top:
@@ -122,7 +134,6 @@ public abstract class AP_Port : AP_Object {
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearParent() {
-        if(Parent == null) return false;
         return GetDistanceFromParent() <= AP_EditorConfig.PortSize*2;
     }
 

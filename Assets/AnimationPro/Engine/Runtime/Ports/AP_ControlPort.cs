@@ -11,5 +11,8 @@ public class AP_ControlPort : AP_Port {
         instance.Init(name, parent);
         return instance;
     }
-
+    protected void Init(string name, AP_State parent) {
+        base.Init(name, parent);
+        Edge= EdgeEnum.Bottom;
+    }
 }

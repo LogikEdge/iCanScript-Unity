@@ -10,7 +10,7 @@ public sealed class AP_VirtualDataPort : AP_DataPort {
     // ======================================================================
     // Lifetime Management
     // ----------------------------------------------------------------------
-    public new static AP_VirtualDataPort CreateInstance(string portName, AP_Node parent, DirectionEnum direction) {
+    public static AP_VirtualDataPort CreateInstance(string portName, AP_Node parent, DirectionEnum direction) {
         AP_VirtualDataPort instance= CreateInstance<AP_VirtualDataPort>();
         instance.Init(portName, parent, direction);
         return instance;

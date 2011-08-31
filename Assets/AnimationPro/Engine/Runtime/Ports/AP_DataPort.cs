@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class AP_DataPort : AP_Port {
+public abstract class AP_DataPort : AP_Port {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -64,13 +64,22 @@ public class AP_DataPort : AP_Port {
         }
     }
 
+    // ======================================================================
+    // Execution
+    // ----------------------------------------------------------------------
+    public override bool IsReady() {
+        AP_DataPort sourcePort= GetProducerPort();
+        if(sourcePort == null || sourcePort == this) return true;
+        AP_Action sourceAction= sourcePort.Parent as AP_Action;
+        if(!sourceAction) return true;
+        return sourceAction.IsCurrent();        
+    }
+    public override AP_Port GetConnectedPort() {
+        return mySource;
+    }
 
     // ======================================================================
     // Lifetime Management
-    // ----------------------------------------------------------------------
-    public static AP_DataPort CreateInstance(string portName, AP_Node parent, DirectionEnum direction) {
-        return CreateInstance<AP_DataPort>().Init(portName, parent, direction);
-    }
     // ----------------------------------------------------------------------
     protected AP_DataPort Init(string thePortName, AP_Node theParent, DirectionEnum theDirection) {
         myDirection= theDirection;

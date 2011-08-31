@@ -50,7 +50,7 @@ public class AP_State : AP_Node {
     public AP_State VerifyTransitions() {
         foreach(var obj in this) {
             AP_StateLeavePort port= obj as AP_StateLeavePort;
-            if(port != null && port.Evaluate()) {
+            if(port != null && port.IsReady()) {
                 return port.TargetState;
             }
         }

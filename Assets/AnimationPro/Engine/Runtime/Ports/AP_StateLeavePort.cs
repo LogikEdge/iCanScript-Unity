@@ -27,10 +27,13 @@ public class AP_StateLeavePort : AP_Port {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    public bool Evaluate() {
+    public override bool IsReady() {
         if(!IsConditionPresent()) return false;
         if(myAction) myAction.Execute();
-        return true;
+        return true;        
+    }
+    public override AP_Port GetConnectedPort() {
+        return myTargetPort;
     }
     bool IsConditionPresent() {
         if(!myGuard) return false;
