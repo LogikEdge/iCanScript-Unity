@@ -49,9 +49,9 @@ public class AP_State : AP_Node {
     }
     public AP_State VerifyTransitions() {
         foreach(var obj in this) {
-            AP_Transition transition= obj as AP_Transition;
-            if(transition != null && transition.Execute()) {
-                return transition.EndState;
+            AP_StateLeavePort port= obj as AP_StateLeavePort;
+            if(port != null && port.Evaluate()) {
+                return port.TargetState;
             }
         }
         return null;
@@ -61,11 +61,14 @@ public class AP_State : AP_Node {
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
     public override void AddChild(AP_Object _object) {
-        _object.Case<AP_State, AP_Transition, AP_Module>(
+        _object.Case<AP_State, AP_StateEntryPort, AP_StateLeavePort, AP_Module>(
             (state)=> {
                 base.AddChild(_object);
             },
-            (transition)=> {
+            (entryPort)=> {
+                base.AddChild(_object);
+            },
+            (leavePort)=> {
                 base.AddChild(_object);
             },
             (module)=> {
@@ -91,12 +94,15 @@ public class AP_State : AP_Node {
         );
     }
     public override void RemoveChild(AP_Object _object) {
-        _object.Case<AP_State, AP_Transition, AP_Module>(
+        _object.Case<AP_State, AP_StateEntryPort, AP_StateLeavePort, AP_Module>(
             (state)=> {
                 if(state == myEntryState) myEntryState= null;
                 base.RemoveChild(_object);
             },
-            (transition)=> {
+            (entryPort)=> {
+                base.RemoveChild(_object);
+            },
+            (leavePort)=> {
                 base.RemoveChild(_object);
             },
             (module)=> {

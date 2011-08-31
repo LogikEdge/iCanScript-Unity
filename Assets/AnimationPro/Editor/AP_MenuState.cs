@@ -86,17 +86,17 @@ public class AP_MenuState {
     // ----------------------------------------------------------------------
     [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Transition")]
     public static void AddTransition(MenuCommand command) {
-        AP_MenuContext context= command.context as AP_MenuContext;
-        AP_State state= context.SelectedObject as AP_State;
-        AP_Transition instance= AP_Transition.CreateInstance("Transition", state);
-        AP_Aggregate parent= state.Parent;
-        parent.ForEachChild<AP_State>(
-            (child)=> {
-                if(child != state) {
-                    instance.myEndState= child;
-                }
-            }
-        );
+//        AP_MenuContext context= command.context as AP_MenuContext;
+//        AP_State state= context.SelectedObject as AP_State;
+//        AP_Transition instance= AP_Transition.CreateInstance("Transition", state);
+//        AP_Aggregate parent= state.Parent;
+//        parent.ForEachChild<AP_State>(
+//            (child)=> {
+//                if(child != state) {
+//                    instance.myEndState= child;
+//                }
+//            }
+//        );
     }
     [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Transition", true)]
     public static bool ValidateAddTransition(MenuCommand command) {

@@ -7,9 +7,9 @@ public abstract class AP_Port : AP_Object {
     // ----------------------------------------------------------------------
     public enum EdgeEnum { Top, Bottom, Right, Left };
 
-    public           Vector2        LocalPosition  = Vector2.zero;
-    public           bool           IsBeingDragged = false;
-    public           EdgeEnum       Edge           = EdgeEnum.Left;
+    public  EdgeEnum    Edge           = EdgeEnum.Left;
+    public  Vector2     LocalPosition  = Vector2.zero;
+    public  bool        IsBeingDragged = false;
 
 //#if UNITY_EDITOR
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
