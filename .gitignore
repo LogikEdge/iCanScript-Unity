@@ -24,3 +24,5 @@ builds/
 *.unityproj
 /Library/InspectorExpandedItems.asset
 /WarpDrive.tmproj
+*.pidb
+*.userprefs
