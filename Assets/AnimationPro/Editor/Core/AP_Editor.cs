@@ -215,7 +215,7 @@ public class AP_Editor : EditorWindow {
         AP_Object selectedObject= GetObjectAtScreenPosition(position);
         if(selectedObject == null) return;
         AP_MenuContext context= AP_MenuContext.CreateInstance(selectedObject, position, ScrollView.ScreenToGraph(position), myChildWindows);
-        string menuName= "CONTEXT/"+AP_EditorConfig.ProductName+"/Edit";
+        string menuName= "CONTEXT/"+AP_EditorConfig.ProductName;
         if(selectedObject is AP_RootNode) menuName+= "/RootNode";
         else if(selectedObject is AP_StateChart) menuName+= "/StateChart";
         else if(selectedObject is AP_State) menuName+= "/State";
@@ -331,9 +331,9 @@ public class AP_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     bool VerifyNewConnection(AP_Port port) {
         // No new connection if no overlapping port found.
-        AP_Port overlappingPort= port.GetOverlappingPort() as AP_DataPort;
+        AP_Port overlappingPort= port.GetOverlappingPort();
         if(overlappingPort == null) return false;
-
+        
         // Only connect data ports.
         if(!(port is AP_DataPort)) return false;
         if(!(overlappingPort is AP_DataPort)) return false;
@@ -343,11 +343,13 @@ public class AP_Editor : EditorWindow {
         // We have a new connection so lets determine direction.
         dataPort.LocalPosition= DragStartPosition;
         if(dataPort.IsInput) {
+            Debug.Log("5");
             if(overlappingDataPort.IsOutput) {
                 dataPort.Source= overlappingDataPort;
                 return true;
             }
             if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == false) {
+                Debug.Log("8");
                 return true;
             }
             if(dataPort.IsVirtual == true && overlappingDataPort.IsVirtual == false) {

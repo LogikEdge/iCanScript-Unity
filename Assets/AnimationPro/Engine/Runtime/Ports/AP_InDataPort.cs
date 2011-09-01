@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Reflection;
 
-public class AP_InDataPort : AP_DataPort {
+public sealed class AP_InDataPort : AP_DataPort {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
@@ -12,7 +12,7 @@ public class AP_InDataPort : AP_DataPort {
         return instance;
     }
     // ----------------------------------------------------------------------
-    protected AP_InDataPort Init(string thePortName, AP_Node theParent) {
+    AP_InDataPort Init(string thePortName, AP_Node theParent) {
         base.Init(thePortName, theParent, DirectionEnum.In);
         Edge= EdgeEnum.Left;
 

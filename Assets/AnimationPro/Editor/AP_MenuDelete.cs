@@ -5,7 +5,7 @@ using System.Collections;
 public class AP_MenuDelete {
 
     // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/Delete")]
+    [MenuItem("CONTEXT/AnimationPro/Delete")]
     public static void DeleteObject(MenuCommand command) {    
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Object selectedObject= context.SelectedObject as AP_Object;
@@ -23,7 +23,7 @@ public class AP_MenuDelete {
             (unknown)=> { Debug.Log("Unknown type"); }
         );
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/Delete",true)]
+    [MenuItem("CONTEXT/AnimationPro/Delete",true)]
     public static bool ValidateDeleteObject(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Object selectedObject= context.SelectedObject as AP_Object;

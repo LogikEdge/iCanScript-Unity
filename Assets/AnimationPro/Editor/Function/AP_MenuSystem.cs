@@ -5,14 +5,14 @@ using System.Collections;
 public class AP_MenuSystem {
 
     // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/Module/System/FrameTime")]
+    [MenuItem("CONTEXT/AnimationPro/Module/System/FrameTime")]
     public static void AddNodeGameTimeFrameTime(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_Time function= AP_Time.CreateInstance("", parent);
         function.SetInitialPosition(context.GraphPosition);
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/Module/System/FrameTime", true)]
+    [MenuItem("CONTEXT/AnimationPro/Module/System/FrameTime", true)]
     public static bool ValidateAddNodeTimeFrameTime(MenuCommand command) {
         return AP_MenuUtilities.ValidateAddNode(command);
     }

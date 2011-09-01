@@ -4,7 +4,7 @@ using System.Collections;
 
 public class AP_MenuRootNode {
     // ---------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add Update State Chart")]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add Update State Chart")]
     public static void AddUpdateStateChart(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -13,7 +13,7 @@ public class AP_MenuRootNode {
         top.Action= stateChart;
         rootNode.UpdateTop= top;
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add Update State Chart", true)]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add Update State Chart", true)]
     public static bool ValidateAddUpdateStateChart(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -21,7 +21,7 @@ public class AP_MenuRootNode {
         return true;
     }
     // ---------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add LateUpdate State Chart")]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add LateUpdate State Chart")]
     public static void AddLateUpdateStateChart(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -30,7 +30,7 @@ public class AP_MenuRootNode {
         top.Action= stateChart;
         rootNode.LateUpdateTop= top;
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add LateUpdate State Chart", true)]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add LateUpdate State Chart", true)]
     public static bool ValidateAddLateUpdateStateChart(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -38,7 +38,7 @@ public class AP_MenuRootNode {
         return true;
     }
     // ---------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add FixedUpdate State Chart")]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add FixedUpdate State Chart")]
     public static void AddFixedUpdateStateChart(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -47,7 +47,7 @@ public class AP_MenuRootNode {
         top.Action= stateChart;
         rootNode.FixedUpdateTop= top;
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add FixedUpdate State Chart", true)]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add FixedUpdate State Chart", true)]
     public static bool ValidateAddFixedUpdateStateChart(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -55,7 +55,7 @@ public class AP_MenuRootNode {
         return true;
     }
     // ---------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add Update Module")]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add Update Module")]
     public static void AddUpdateModule(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -64,7 +64,7 @@ public class AP_MenuRootNode {
         top.Action= module;
         rootNode.UpdateTop= top;
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add Update Module", true)]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add Update Module", true)]
     public static bool ValidateAddUpdatefunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -72,7 +72,7 @@ public class AP_MenuRootNode {
         return true;
     }
     // ---------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add LateUpdate Module")]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add LateUpdate Module")]
     public static void AddLateUpdateModule(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -81,7 +81,7 @@ public class AP_MenuRootNode {
         top.Action= module;
         rootNode.LateUpdateTop= top;
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add LateUpdate Module", true)]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add LateUpdate Module", true)]
     public static bool ValidateAddLateUpdateModule(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -89,7 +89,7 @@ public class AP_MenuRootNode {
         return true;
     }
     // ---------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add FixedUpdate Module")]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add FixedUpdate Module")]
     public static void AddFixedUpdateModule(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
@@ -98,7 +98,7 @@ public class AP_MenuRootNode {
         top.Action= module;
         rootNode.FixedUpdateTop= top;
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/RootNode/Add FixedUpdate Module", true)]
+    [MenuItem("CONTEXT/AnimationPro/RootNode/Add FixedUpdate Module", true)]
     public static bool ValidateAddFixedUpdateModule(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;

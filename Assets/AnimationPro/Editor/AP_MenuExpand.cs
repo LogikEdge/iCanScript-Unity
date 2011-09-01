@@ -5,7 +5,7 @@ using System.Collections;
 public class AP_MenuExpand {
 
     // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/Expand")]
+    [MenuItem("CONTEXT/AnimationPro/Expand")]
     public static void ExpandObject(MenuCommand command) {    
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Object selectedObject= context.SelectedObject as AP_Object;
@@ -15,7 +15,7 @@ public class AP_MenuExpand {
             }
         );
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/Expand",true)]
+    [MenuItem("CONTEXT/AnimationPro/Expand",true)]
     public static bool ValidateExpandObject(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Object selectedObject= context.SelectedObject as AP_Object;
@@ -34,7 +34,7 @@ public class AP_MenuExpand {
         return expansionAllowed;
     }
     // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/Fold")]
+    [MenuItem("CONTEXT/AnimationPro/Fold")]
     public static void FoldObject(MenuCommand command) {    
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Object selectedObject= context.SelectedObject as AP_Object;
@@ -46,7 +46,7 @@ public class AP_MenuExpand {
             }
         );
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/Fold",true)]
+    [MenuItem("CONTEXT/AnimationPro/Fold",true)]
     public static bool ValidateFoldObject(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Object selectedObject= context.SelectedObject as AP_Object;

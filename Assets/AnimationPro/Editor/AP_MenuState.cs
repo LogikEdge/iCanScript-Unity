@@ -4,7 +4,7 @@ using System.Collections;
 
 public class AP_MenuState {
     // ---------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Set As Entry State")]
+    [MenuItem("CONTEXT/AnimationPro/State/Set As Entry State")]
     public static void SetEntryState(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State state= context.SelectedObject as AP_State;
@@ -13,7 +13,7 @@ public class AP_MenuState {
         AP_StateChart stateChart= state.Parent as AP_StateChart;
         if(stateChart) { stateChart.EntryState= state; }
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Set As Entry State", true)]
+    [MenuItem("CONTEXT/AnimationPro/State/Set As Entry State", true)]
     public static bool ValidateSetEntryState(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State state= context.SelectedObject as AP_State;
@@ -25,27 +25,27 @@ public class AP_MenuState {
         return true;
     }
     // ---------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add State")]
+    [MenuItem("CONTEXT/AnimationPro/State/Add State")]
     public static void AddState(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State parent= context.SelectedObject as AP_State;
         AP_State instance= AP_State.CreateInstance("", parent);
         instance.SetInitialPosition(context.GraphPosition);        
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add State", true)]
+    [MenuItem("CONTEXT/AnimationPro/State/Add State", true)]
     public static bool ValidateAddState(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         return context.SelectedObject is AP_State;
     }
     // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Entry Function")]
+    [MenuItem("CONTEXT/AnimationPro/State/Add Entry Function")]
     public static void AddEntryFunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_Module instance= AP_Module.CreateInstance("OnEntry", parent);
         instance.SetInitialPosition(context.GraphPosition);        
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Entry Function", true)]
+    [MenuItem("CONTEXT/AnimationPro/State/Add Entry Function", true)]
     public static bool ValidateAddEntryFunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State parentState= context.SelectedObject as AP_State;
@@ -53,14 +53,14 @@ public class AP_MenuState {
         return parentState.OnEntryAction == null;
     }
     // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Exit Function")]
+    [MenuItem("CONTEXT/AnimationPro/State/Add Exit Function")]
     public static void AddExitFunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_Module instance= AP_Module.CreateInstance("OnExit", parent);
         instance.SetInitialPosition(context.GraphPosition);        
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Exit Function", true)]
+    [MenuItem("CONTEXT/AnimationPro/State/Add Exit Function", true)]
     public static bool ValidateAddExitFunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State parentState= context.SelectedObject as AP_State;
@@ -68,14 +68,14 @@ public class AP_MenuState {
         return parentState.OnExitAction == null;
     }
     // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Update Function")]
+    [MenuItem("CONTEXT/AnimationPro/State/Add Update Function")]
     public static void AddUpdateFunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State parent= context.SelectedObject as AP_State;
         AP_Module instance= AP_Module.CreateInstance("OnUpdate", parent);
         instance.SetInitialPosition(context.GraphPosition);        
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Update Function", true)]
+    [MenuItem("CONTEXT/AnimationPro/State/Add Update Function", true)]
     public static bool ValidateAddUpdateFunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State parentState= context.SelectedObject as AP_State;
@@ -84,7 +84,7 @@ public class AP_MenuState {
     }
     
     // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Transition")]
+    [MenuItem("CONTEXT/AnimationPro/State/Add Transition")]
     public static void AddTransition(MenuCommand command) {
 //        AP_MenuContext context= command.context as AP_MenuContext;
 //        AP_State state= context.SelectedObject as AP_State;
@@ -98,7 +98,7 @@ public class AP_MenuState {
 //            }
 //        );
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Add Transition", true)]
+    [MenuItem("CONTEXT/AnimationPro/State/Add Transition", true)]
     public static bool ValidateAddTransition(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State state= context.SelectedObject as AP_State;
@@ -110,7 +110,7 @@ public class AP_MenuState {
     // ======================================================================
     // COMMON AREA
     // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Delete")]
+    [MenuItem("CONTEXT/AnimationPro/State/Delete")]
     public static void Delete(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State state= context.SelectedObject as AP_State;
@@ -118,7 +118,7 @@ public class AP_MenuState {
             state.Dealloc();
         }                                
     }
-    [MenuItem("CONTEXT/AnimationPro/Edit/State/Delete", true)]
+    [MenuItem("CONTEXT/AnimationPro/State/Delete", true)]
     public static bool ValidateDelete(MenuCommand command) {
         return true;
     }

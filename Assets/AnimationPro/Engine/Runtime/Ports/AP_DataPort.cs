@@ -3,7 +3,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class AP_DataPort : AP_Port {
+public class AP_DataPort : AP_Port {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
