@@ -8,9 +8,6 @@ public sealed class AP_Graph : MonoBehaviour {
     // ----------------------------------------------------------------------
     [HideInInspector]   public AP_RootNode  RootNode= null;
                         public GUISkin      GuiSkin= null;
-                        public GUIStyle     GuiStateStyle= new GUIStyle();
-                        public GUIStyle     GuiModuleStyle= new GUIStyle();
-                        public GUIStyle     GuiFunctionStyle= new GUIStyle();
         
 
     // ======================================================================

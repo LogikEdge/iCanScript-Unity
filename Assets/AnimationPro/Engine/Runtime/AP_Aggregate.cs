@@ -32,8 +32,8 @@ public class AP_Aggregate : AP_Object {
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
     // Children add/remove.
-    public override void AddChild(AP_Object _object) {
-        Children.Add(_object);
+    public override void AddChild(AP_Object obj) {
+        Children.Add(obj);
     }
     public override void RemoveChild(AP_Object _object) {
         Children.Remove(_object);
