@@ -13,7 +13,7 @@ public sealed class AP_OutDataPort : AP_DataPort {
     }
     // ----------------------------------------------------------------------
     AP_OutDataPort Init(string thePortName, AP_Node theParent) {
-        base.Init(thePortName, theParent, DirectionEnum.In);
+        base.Init(thePortName, theParent, DirectionEnum.Out);
         Edge= EdgeEnum.Right;
 
         // Allow streams to also be used as non-stream ports.
