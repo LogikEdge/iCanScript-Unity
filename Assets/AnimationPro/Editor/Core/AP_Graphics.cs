@@ -87,11 +87,19 @@ public class AP_Graphics {
         // Draw node box.
         Rect position= _node.Position;
         string title= ObjectNames.NicifyVariableName(_node.NameOrTypeName);
-        GUIStyle guiStyle= null;
-/*        if(_node is AP_State) {
-            guiStyle= _node.Top.Graph.GuiStateStyle;
+        if(_node is AP_State || _node is AP_StateChart) {
+            GUI.backgroundColor= Color.blue;
         }
-        else */ 
+        else if(_node is AP_Module) {
+            GUI.backgroundColor= Color.yellow;            
+        }
+        else if(_node is AP_Function) {
+            GUI.backgroundColor= Color.green;
+        }
+        else {
+            GUI.backgroundColor= Color.grey;
+        }
+        GUIStyle guiStyle= null;
         if(_node.IsCompactNode()) {
             guiStyle= AP_EditorConfig.CompactNodeStyle;            
         }
@@ -99,6 +107,7 @@ public class AP_Graphics {
             guiStyle= AP_EditorConfig.NodeStyle;            
         }
         GUI.Box(position, title, guiStyle);            
+        GUI.backgroundColor= Color.grey;
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, AP_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
 
 //        // Draw back drop
