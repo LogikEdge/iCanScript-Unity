@@ -120,6 +120,16 @@ public class AP_Graphics {
     }
 
     
+    // ----------------------------------------------------------------------
+    // Returns the display color of the given node.
+    Color GetNodeColor(AP_Node node) {
+        if(!node) return new Color(0.75f, 0.75f, 0.75f);
+        if(node is AP_State || node is AP_StateChart) return node.Top.Graph.StateColor;
+        if(node is AP_Module) return node.Top.Graph.ModuleColor;
+        if(node is AP_Function) return node.Top.Graph.FunctionColor; 
+        return new Color(0.75f, 0.75f, 0.75f);
+    }
+    
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
@@ -133,14 +143,9 @@ public class AP_Graphics {
         
         Vector2 pos= dataPort.Position;
         string name= dataPort.Name;
-        Color color= dataPort.DisplayColor;
-        if(dataPort.IsInput) {
-            Color invColor= new Color(1.0f-color.r, 1.0f-color.g, 1.0f-color.b, 1.0f);
-            DrawPort(AP_Graphics.PortShape.UpTriangle, pos, color, invColor);
-        }
-        else if(dataPort.IsOutput) {
-            DrawPort(AP_Graphics.PortShape.Circular, port.Position, color);                                        
-        }
+        Color portColor= dataPort.DisplayColor;
+        Color nodeColor= GetNodeColor(port.Parent as AP_Node);
+        DrawPort(AP_Graphics.PortShape.Circular, port.Position, portColor, nodeColor);                                        
         // Show name if requested.
         if(dataPort.IsNameVisible) {
             Vector2 labelSize= AP_EditorConfig.GetPortLabelSize(name);
@@ -188,8 +193,10 @@ public class AP_Graphics {
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _borderColor) {
         Handles.DrawSolidDisc(_center, FacingNormal, AP_EditorConfig.PortRadius);
+        Handles.color= Color.black;
+        Handles.DrawWireDisc(_center, FacingNormal, AP_EditorConfig.PortRadius+1.0f);
         Handles.color= _borderColor;
-        Handles.DrawWireDisc(_center, FacingNormal, AP_EditorConfig.PortRadius);
+        Handles.DrawWireDisc(_center, FacingNormal, AP_EditorConfig.PortRadius+2.0f);
     }
 
 	// ----------------------------------------------------------------------
@@ -277,8 +284,15 @@ public class AP_Graphics {
             vectors[3]= vectors[0];            
             Handles.DrawPolyLine(vectors);
         }
+		Handles.color= Color.black;
+        delta= radius+1;
+        vectors[0]= new Vector3(_center.x, _center.y-delta, 0);
+        vectors[1]= new Vector3(_center.x+delta, _center.y+delta, 0);
+        vectors[2]= new Vector3(_center.x-delta, _center.y+delta, 0);
+        vectors[3]= vectors[0];
+        Handles.DrawPolyLine(vectors);        
 		Handles.color= _borderColor;
-        delta= radius;
+        delta= radius+2;
         vectors[0]= new Vector3(_center.x, _center.y-delta, 0);
         vectors[1]= new Vector3(_center.x+delta, _center.y+delta, 0);
         vectors[2]= new Vector3(_center.x-delta, _center.y+delta, 0);

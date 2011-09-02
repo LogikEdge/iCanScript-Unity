@@ -43,7 +43,7 @@ public class AP_EditorConfig {
     public static float ScrollBarWidth { get { return ButtonHeight; }}
 
     // ----------------------------------------------------------------------
-    public const  float PortRadius= 4.0f;
+    public const  float PortRadius= 3.0f;
     public const  float PortSize= 2.0f * PortRadius;
     public static float MinimumPortSeparation { get { return GetPortLabelHeight("A"); }}
 

@@ -11,7 +11,7 @@ public abstract class AP_Object : AP_ObjectUtil, IEnumerable<AP_Object> {
     [SerializeField]    private AP_Aggregate    myParent       = null;
     [SerializeField]    private bool            myIsVisible    = true;
                         private bool            myIsEditorDirty= true;
-
+                        
     // ----------------------------------------------------------------------
     // NAME & TYPE NAME
     // ----------------------------------------------------------------------
