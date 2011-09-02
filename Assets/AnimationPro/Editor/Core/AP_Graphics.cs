@@ -87,7 +87,7 @@ public class AP_Graphics {
         // Draw node box.
         Rect position= _node.Position;
         string title= ObjectNames.NicifyVariableName(_node.NameOrTypeName);
-        if(_node is AP_State || _node is AP_StateChart) {
+        if(_node is AP_State) {
             GUI.backgroundColor= Color.blue;
         }
         else if(_node is AP_Module) {
