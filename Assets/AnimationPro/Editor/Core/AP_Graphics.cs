@@ -124,9 +124,9 @@ public class AP_Graphics {
     // Returns the display color of the given node.
     Color GetNodeColor(AP_Node node) {
         if(!node) return new Color(0.75f, 0.75f, 0.75f);
-        if(node is AP_State || node is AP_StateChart) return node.Top.Graph.StateColor;
-        if(node is AP_Module) return node.Top.Graph.ModuleColor;
-        if(node is AP_Function) return node.Top.Graph.FunctionColor; 
+        if(node is AP_State || node is AP_StateChart) return node.Top.Graph.Preferences.NodeColors.StateColor;
+        if(node is AP_Module) return node.Top.Graph.Preferences.NodeColors.ModuleColor;
+        if(node is AP_Function) return node.Top.Graph.Preferences.NodeColors.FunctionColor; 
         return new Color(0.75f, 0.75f, 0.75f);
     }
     

@@ -8,11 +8,19 @@ public sealed class AP_Graph : MonoBehaviour {
     // ----------------------------------------------------------------------
     [HideInInspector]   public AP_RootNode  RootNode= null;
                         public GUISkin      GuiSkin= null;
-                        public Color        StateColor= Color.blue;
-                        public Color        ModuleColor= Color.yellow;
-                        public Color        FunctionColor= Color.green;
-                        public Color        SelectedColor= Color.white;
-        
+    
+    [System.Serializable]
+    public class UserPreferences {
+        [System.Serializable]
+        public class UserNodeColors {
+            public Color    StateColor= Color.blue;
+            public Color    ModuleColor= Color.yellow;
+            public Color    FunctionColor= Color.green;
+            public Color    SelectedColor= Color.white;            
+        }
+        public UserNodeColors   NodeColors= new UserNodeColors();
+    }
+    public UserPreferences Preferences= new UserPreferences();
 
     // ======================================================================
     // INITIALIZATION
