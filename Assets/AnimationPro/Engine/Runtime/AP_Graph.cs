@@ -7,7 +7,6 @@ public sealed class AP_Graph : MonoBehaviour {
     // PROPERTIES
     // ----------------------------------------------------------------------
     [HideInInspector]   public AP_RootNode  RootNode= null;
-                        public GUISkin      GuiSkin= null;
     
     [System.Serializable]
     public class UserPreferences {

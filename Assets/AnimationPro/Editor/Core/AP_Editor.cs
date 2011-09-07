@@ -114,7 +114,7 @@ public class AP_Editor : EditorWindow {
 		if( !ShouldRun() ) return;
        	
         // Load Editor Skin.
-        GUI.skin= RootNode.Graph.GuiSkin;
+        GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
         // Update scroll view.
         ScrollView.Update(position, DisplayRoot.Position);

@@ -21,7 +21,6 @@ public class AP_Inspector : Editor {
 	// ----------------------------------------------------------------------
     // Display state properties.
 	private bool    myFold= true;
-	private bool    myGuiSkinErrorSeen= false;
     private bool    showInputs= false;
     private bool    showOutputs= false;
     
@@ -36,20 +35,6 @@ public class AP_Inspector : Editor {
         // Get graph reference.
         Graph= target as AP_Graph;
         Graph.Init();
-        
-        // Configure node appearance;
-        if(Graph.GuiSkin == null) {
-            GUISkin inspectorSkin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
-            string skinPath= AP_EditorConfig.GuiAssetPath + "/AP_GUISkin.GUISkin";
-            Graph.GuiSkin= AssetDatabase.LoadAssetAtPath(skinPath, typeof(GUISkin)) as GUISkin;
-            if(Graph.GuiSkin != null) {
-                Graph.GuiSkin.font= inspectorSkin.font;                
-            }
-            else {
-                Graph.GuiSkin= inspectorSkin;
-                AP_Graphics.ResourceMissingError(skinPath, ref myGuiSkinErrorSeen);
-            }
-        }
         
 		// Create the graph editor.
         if(Editor == null) {
