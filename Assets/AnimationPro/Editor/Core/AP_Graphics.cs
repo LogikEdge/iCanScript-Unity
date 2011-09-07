@@ -14,7 +14,7 @@ public class AP_Graphics {
 	Texture2D   defaultNodeTexture;
 	Texture2D   nodeMaskTexture;
 	internal class NodeStyle {
-	    public GUIStyle    nodeStyle= null;
+	    public GUIStyle    guiStyle= null;
 	    public Color       nodeColor= new Color(0,0,0,0);
 	    public Texture2D   nodeTexture= null;
 	    public Texture2D   hoverTexture= null;
@@ -95,55 +95,55 @@ public class AP_Graphics {
     }
 
     // ----------------------------------------------------------------------
-    void GenerateNodeStyle(ref NodeStyle desc, Color nodeColor) {
+    void GenerateNodeStyle(ref NodeStyle nodeStyle, Color nodeColor) {
         // Build node style descriptor.
-        if(desc == null) {
-            desc= new NodeStyle();
+        if(nodeStyle == null) {
+            nodeStyle= new NodeStyle();
         }
-        if(desc.nodeStyle == null) {
-            desc.nodeStyle= new GUIStyle();
-            desc.nodeStyle.normal.textColor= Color.black;
-            desc.nodeStyle.hover.textColor= Color.black;
-            desc.nodeStyle.border= new RectOffset(11,16,20,13);
-            desc.nodeStyle.padding= new RectOffset(3,8,17,8);
-            desc.nodeStyle.contentOffset= new Vector2(-3, -17);
-            desc.nodeStyle.overflow= new RectOffset(0,6,0,6);
-            desc.nodeStyle.alignment= TextAnchor.UpperCenter;
-            desc.nodeStyle.fontStyle= FontStyle.Bold;
+        if(nodeStyle.guiStyle == null) {
+            nodeStyle.guiStyle= new GUIStyle();
+            nodeStyle.guiStyle.normal.textColor= Color.black;
+            nodeStyle.guiStyle.hover.textColor= Color.black;
+            nodeStyle.guiStyle.border= new RectOffset(11,16,20,13);
+            nodeStyle.guiStyle.padding= new RectOffset(3,8,17,8);
+            nodeStyle.guiStyle.contentOffset= new Vector2(-3, -17);
+            nodeStyle.guiStyle.overflow= new RectOffset(0,6,0,6);
+            nodeStyle.guiStyle.alignment= TextAnchor.UpperCenter;
+            nodeStyle.guiStyle.fontStyle= FontStyle.Bold;
         }
-        if(desc.nodeTexture == null) {
-            desc.nodeColor= new Color(0,0,0,0);            
-            desc.nodeTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
-            desc.hoverTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+        if(nodeStyle.nodeTexture == null) {
+            nodeStyle.nodeColor= new Color(0,0,0,0);            
+            nodeStyle.nodeTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+            nodeStyle.hoverTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
         }
         // Generate node normal texture.
-        if(nodeColor == desc.nodeColor) return;
+        if(nodeColor == nodeStyle.nodeColor) return;
         for(int x= 0; x < nodeMaskTexture.width; ++x) {
             for(int y= 0; y < nodeMaskTexture.height; ++y) {
                 if(nodeMaskTexture.GetPixel(x,y).a > 0.5f) {
-                    desc.nodeTexture.SetPixel(x,y, nodeColor);
+                    nodeStyle.nodeTexture.SetPixel(x,y, nodeColor);
                 }
                 else {
-                    desc.nodeTexture.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
+                    nodeStyle.nodeTexture.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
                 }
             }
         }
-        desc.nodeTexture.Apply(); 
-        desc.nodeColor= nodeColor;
-        desc.nodeStyle.normal.background= desc.nodeTexture;
+        nodeStyle.nodeTexture.Apply(); 
+        nodeStyle.nodeColor= nodeColor;
+        nodeStyle.guiStyle.normal.background= nodeStyle.nodeTexture;
         // Generate node hover texture.
         for(int x= 0; x < defaultNodeTexture.width; ++x) {
             for(int y= 0; y < defaultNodeTexture.height; ++y) {
                 if(defaultNodeTexture.GetPixel(x,y).a > 0.95f) {
-                    desc.hoverTexture.SetPixel(x,y, desc.nodeTexture.GetPixel(x,y));
+                    nodeStyle.hoverTexture.SetPixel(x,y, nodeStyle.nodeTexture.GetPixel(x,y));
                 }
                 else {
-                    desc.hoverTexture.SetPixel(x,y, new Color(1,1,1, defaultNodeTexture.GetPixel(x,y).a));
+                    nodeStyle.hoverTexture.SetPixel(x,y, new Color(1,1,1, defaultNodeTexture.GetPixel(x,y).a));
                 }
             }
         }
-        desc.hoverTexture.Apply(); 
-        desc.nodeStyle.hover.background= desc.hoverTexture;
+        nodeStyle.hoverTexture.Apply(); 
+        nodeStyle.guiStyle.hover.background= nodeStyle.hoverTexture;
     }
     
     // ======================================================================
@@ -169,7 +169,7 @@ public class AP_Graphics {
         
         // Draw node box.
         string title= ObjectNames.NicifyVariableName(_node.NameOrTypeName);
-        GUIStyle guiStyle= GetNodeStyle(_node, selectedObject);
+        GUIStyle guiStyle= GetNodeGUIStyle(_node, selectedObject);
         Rect position= _node.Position;
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
         float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
@@ -180,37 +180,37 @@ public class AP_Graphics {
         GUI.Box(position, title, guiStyle);            
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, AP_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
     }
-    GUIStyle GetNodeStyle(AP_Node node, AP_Object selectedObject) {
+    NodeStyle GetNodeStyle(AP_Node node, AP_Object selectedObject) {
         // Node background is dependant on node type.
         if(node == selectedObject) {
             GenerateNodeStyle(ref selectedStyle, node.Top.Graph.Preferences.NodeColors.SelectedColor);
-            return selectedStyle.nodeStyle;
+            return selectedStyle;
         }
         if(node is AP_State || node is AP_StateChart) {
             GenerateNodeStyle(ref stateStyle, node.Top.Graph.Preferences.NodeColors.StateColor);
-            return stateStyle.nodeStyle;
+            return stateStyle;
         }
         if(node is AP_Module) {
             GenerateNodeStyle(ref moduleStyle, node.Top.Graph.Preferences.NodeColors.ModuleColor);
-            return moduleStyle.nodeStyle;
+            return moduleStyle;
         }
         if(node is AP_Function) {
             GenerateNodeStyle(ref functionStyle, node.Top.Graph.Preferences.NodeColors.FunctionColor);
-            return functionStyle.nodeStyle;
+            return functionStyle;
         }
         GenerateNodeStyle(ref defaultStyle, Color.gray);
-        return defaultStyle.nodeStyle;
+        return defaultStyle;
     }
-
+    GUIStyle GetNodeGUIStyle(AP_Node node, AP_Object selectedObject) {
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject);
+        return nodeStyle.guiStyle;
+    }
     
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
-    Color GetNodeColor(AP_Node node) {
-        if(!node) return new Color(0.75f, 0.75f, 0.75f);
-        if(node is AP_State || node is AP_StateChart) return node.Top.Graph.Preferences.NodeColors.StateColor;
-        if(node is AP_Module) return node.Top.Graph.Preferences.NodeColors.ModuleColor;
-        if(node is AP_Function) return node.Top.Graph.Preferences.NodeColors.FunctionColor; 
-        return new Color(0.75f, 0.75f, 0.75f);
+    Color GetNodeColor(AP_Node node, AP_Object selectedObject) {
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject);
+        return nodeStyle.nodeColor;
     }
     
     // ======================================================================
@@ -227,7 +227,7 @@ public class AP_Graphics {
         Vector2 pos= dataPort.Position;
         string name= dataPort.Name;
         Color portColor= dataPort.DisplayColor;
-        Color nodeColor= GetNodeColor(port.Parent as AP_Node);
+        Color nodeColor= GetNodeColor(port.Parent as AP_Node, selectedObject);
         DrawPort(AP_Graphics.PortShape.Circular, port.Position, portColor, nodeColor);                                        
         // Show name if requested.
         if(dataPort.IsNameVisible) {
