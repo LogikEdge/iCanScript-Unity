@@ -24,14 +24,12 @@ public class AP_EditorConfig {
     // ----------------------------------------------------------------------
     public static GUIStyle NodeStyle        { get { return GUI.skin.button; }}
     public static GUIStyle PortLabelStyle   { get { return GUI.skin.label; }}
-    public static GUIStyle CompactNodeStyle { get { return GUI.skin.button; }}
     
     // ----------------------------------------------------------------------
     public const  float GutterSize= 15.0f;
     public static float ButtonHeight      { get { return GetButtonHeight("A"); }}
     public static float NodeTitleHeight   { get { return GetNodeHeight("A"); }}
-    public static float MinimumNodeHeight { get { return NodeTitleHeight; }}
-    public static float CompactNodeHeight { get { return GetCompactNodeHeight("A"); }}
+    public static float MinimumNodeHeight { get { return 2.0f*NodeTitleHeight; }}
 
     // ----------------------------------------------------------------------
     public const float EditorWindowGutterSize= GutterSize;
@@ -58,18 +56,6 @@ public class AP_EditorConfig {
     }
     public static float GetNodeHeight(string _label) {
         return GetNodeSize(_label).y;
-    }
-    
-    // ======================================================================
-    // Compact Node info.
-    public static Vector2 GetCompactNodeSize(string _label) {
-        return CompactNodeStyle.CalcSize(new GUIContent(_label));
-    }
-    public static float GetCompactNodeWidth(string _label) {
-        return GetCompactNodeSize(_label).x;
-    }
-    public static float GetCompactNodeHeight(string _label) {
-        return GetCompactNodeSize(_label).y;
     }
     
     // ======================================================================

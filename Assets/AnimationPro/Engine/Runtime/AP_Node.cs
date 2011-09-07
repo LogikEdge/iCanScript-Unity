@@ -85,14 +85,7 @@ public abstract class AP_Node : AP_Aggregate {
             List<AP_Port> leftPorts= GetLeftPorts();
             List<AP_Port> rightPorts= GetRightPorts();
             int nbOfPorts= leftPorts.Count > rightPorts.Count ? leftPorts.Count : rightPorts.Count;
-            bool isCompact= nbOfPorts > 1 ? false : true;
-            if(nbOfPorts == 1) {
-                if(leftPorts.Count == 1)  { if(leftPorts[0].IsNameVisible)  { isCompact= false; }}
-                if(rightPorts.Count == 1) { if(rightPorts[0].IsNameVisible) { isCompact= false; }}
-            }
-            float height= isCompact ? 
-                AP_EditorConfig.MinimumNodeHeight :
-                AP_EditorConfig.NodeTitleHeight+nbOfPorts*AP_EditorConfig.MinimumPortSeparation;                                
+            float height= Mathf.Max(AP_EditorConfig.NodeTitleHeight+nbOfPorts*AP_EditorConfig.MinimumPortSeparation, AP_EditorConfig.MinimumNodeHeight);                                
 
             // Apply new width and height.
             if(MathfExt.IsNotEqual(height, Position.height) || MathfExt.IsNotEqual(width, Position.width)) {
