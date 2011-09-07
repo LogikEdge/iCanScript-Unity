@@ -11,12 +11,19 @@ public class AP_Graphics {
     
     // ----------------------------------------------------------------------
 	Texture2D   lineTexture;
+	Texture2D   defaultNodeTexture;
+	Texture2D   nodeMaskTexture;
+	Texture2D   functionNodeTexture;
+	Texture2D   stateNodeTexture;
+	Texture2D   moduleNodeTexture;
 	Texture2D   nodeIcon;
     Vector2     drawOffset= Vector2.zero;
 
     // ----------------------------------------------------------------------
-    bool lineTextureErrorSeen= false;
-    bool nodeIconErrorSeen   = false;
+    bool lineTextureErrorSeen        = false;
+    bool defaultNodeTextureErrorSeen = false; 
+    bool nodeMaskTextureErrorSeen    = false;   
+    bool nodeIconErrorSeen           = false;
     
     // ======================================================================
 	// CONSTANTS
@@ -32,8 +39,10 @@ public class AP_Graphics {
     //  INITIALIZATION
 	// ----------------------------------------------------------------------
     ~AP_Graphics() {
-        lineTexture = null;
-        nodeIcon    = null;
+        lineTexture        = null;
+        defaultNodeTexture = null;
+        functionNodeTexture= null;
+        nodeIcon           = null;
     }
 
 	// ----------------------------------------------------------------------
@@ -43,6 +52,20 @@ public class AP_Graphics {
         lineTexture= AssetDatabase.LoadAssetAtPath(lineTexturePath, typeof(Texture2D)) as Texture2D;
         if(lineTexture == null) {
             ResourceMissingError(lineTexturePath, ref lineTextureErrorSeen);
+            IsInitialized= false;
+            return IsInitialized;
+        }
+        string nodeTexturePath= AP_EditorConfig.GuiAssetPath + "/AP_DefaultNodeTexture.psd";
+        defaultNodeTexture= AssetDatabase.LoadAssetAtPath(nodeTexturePath, typeof(Texture2D)) as Texture2D;
+        if(defaultNodeTexture == null) {
+            ResourceMissingError(nodeTexturePath, ref defaultNodeTextureErrorSeen);
+            IsInitialized= false;
+            return IsInitialized;
+        }
+        nodeTexturePath= AP_EditorConfig.GuiAssetPath + "/AP_NodeMaskTexture.psd";
+        nodeMaskTexture= AssetDatabase.LoadAssetAtPath(nodeTexturePath, typeof(Texture2D)) as Texture2D;
+        if(nodeMaskTexture == null) {
+            ResourceMissingError(nodeTexturePath, ref nodeMaskTextureErrorSeen);
             IsInitialized= false;
             return IsInitialized;
         }
@@ -62,6 +85,22 @@ public class AP_Graphics {
         return IsInitialized;
     }
 
+    // ----------------------------------------------------------------------
+    Texture2D GenerateNodeTexture(Color nodeColor) {
+        Texture2D nodeTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+        for(int x= 0; x < nodeMaskTexture.width; ++x) {
+            for(int y= 0; y < nodeMaskTexture.height; ++y) {
+                if(nodeMaskTexture.GetPixel(x,y).a > 0.5f) {
+                    nodeTexture.SetPixel(x,y, nodeColor);
+                }
+                else {
+                    nodeTexture.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
+                }
+            }
+        }
+        nodeTexture.Apply(); 
+        return nodeTexture;       
+    }
 
     // ======================================================================
     //  TOOL TIP
@@ -80,34 +119,50 @@ public class AP_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
+    GUIStyle GetNodeStyle(AP_Node node) {
+        GUIStyle style= new GUIStyle();
+        style.normal.textColor= Color.black;
+        style.border= new RectOffset(11,16,20,13);
+        style.padding= new RectOffset(3,8,17,8);
+        style.contentOffset= new Vector2(-3, -17);
+        style.overflow= new RectOffset(0,6,0,6);
+        style.alignment= TextAnchor.UpperCenter;
+        style.fontStyle= FontStyle.Bold;
+
+        // Node background is dependant on node type.
+        Color nodeColor;
+        if(node is AP_State || node is AP_StateChart) {
+            nodeColor= node.Top.Graph.Preferences.NodeColors.StateColor;
+        }
+        else if(node is AP_Module) {
+            nodeColor= node.Top.Graph.Preferences.NodeColors.ModuleColor;
+        }
+        else if(node is AP_Function) {
+            nodeColor= node.Top.Graph.Preferences.NodeColors.FunctionColor;
+        }
+        else {
+            nodeColor= Color.gray;
+        }
+        style.normal.background= GenerateNodeTexture(nodeColor);
+        
+        return style;
+    }
     public void DrawNode(AP_Node _node) {
         // Don't show hiden nodes.
         if(_node.IsVisible == false) return;
         
         // Draw node box.
-        Rect position= _node.Position;
         string title= ObjectNames.NicifyVariableName(_node.NameOrTypeName);
-        if(_node is AP_State) {
-            GUI.backgroundColor= Color.blue;
-        }
-        else if(_node is AP_Module) {
-            GUI.backgroundColor= Color.yellow;            
-        }
-        else if(_node is AP_Function) {
-            GUI.backgroundColor= Color.green;
-        }
-        else {
-            GUI.backgroundColor= Color.grey;
-        }
-        GUIStyle guiStyle= null;
-        if(_node.IsCompactNode()) {
-            guiStyle= AP_EditorConfig.CompactNodeStyle;            
-        }
-        else {
-            guiStyle= AP_EditorConfig.NodeStyle;            
-        }
+        GUIStyle guiStyle= GetNodeStyle(_node);
+        Rect position= _node.Position;
+        float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
+        float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
+        position.x-= leftOffset;
+        position.y-= guiStyle.overflow.top;
+        position.width+= leftOffset + rightOffset;
+        position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
         GUI.Box(position, title, guiStyle);            
-        GUI.backgroundColor= Color.grey;
+//        GUI.backgroundColor= Color.grey;
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, AP_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
 
 //        // Draw back drop
@@ -150,12 +205,12 @@ public class AP_Graphics {
         if(dataPort.IsNameVisible) {
             Vector2 labelSize= AP_EditorConfig.GetPortLabelSize(name);
             if(dataPort.IsOnLeftEdge) {                
-                pos.x+= AP_EditorConfig.PortSize;
-                pos.y-= 0.4f * labelSize.y;
+                pos.x+= 1 + AP_EditorConfig.PortSize;
+                pos.y-= 1 + 0.5f * labelSize.y;
             }
             if(dataPort.IsOnRightEdge) {
-                pos.x-= labelSize.x + AP_EditorConfig.PortSize;
-                pos.y-= 0.4f * labelSize.y;        
+                pos.x-= 1 + labelSize.x + AP_EditorConfig.PortSize;
+                pos.y-= 1 + 0.5f * labelSize.y;        
             }
             GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), name);
         }
@@ -177,7 +232,7 @@ public class AP_Graphics {
         
         // Draw specific shapes.
         switch(_shape) {
-            case PortShape.Circular:       DrawCircularPort(center, _borderColor); break;
+            case PortShape.Circular:       DrawCircularPort(center, _fillColor, _borderColor); break;
             case PortShape.Square:         DrawSquarePort(center, _borderColor); break;
             case PortShape.Diamond:        DrawDiamondPort(center, _borderColor); break;
             case PortShape.UpTriangle:     DrawUpTrianglePort(center, _borderColor); break;
@@ -191,10 +246,11 @@ public class AP_Graphics {
     }
 
 	// ----------------------------------------------------------------------
-    void DrawCircularPort(Vector3 _center, Color _borderColor) {
-        Handles.DrawSolidDisc(_center, FacingNormal, AP_EditorConfig.PortRadius);
+    void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor) {
         Handles.color= Color.black;
-        Handles.DrawWireDisc(_center, FacingNormal, AP_EditorConfig.PortRadius+1.0f);
+        Handles.DrawSolidDisc(_center, FacingNormal, AP_EditorConfig.PortRadius+2.0f);
+        Handles.color= _fillColor;
+        Handles.DrawSolidDisc(_center, FacingNormal, AP_EditorConfig.PortRadius);
         Handles.color= _borderColor;
         Handles.DrawWireDisc(_center, FacingNormal, AP_EditorConfig.PortRadius+2.0f);
     }
