@@ -39,6 +39,8 @@ public class AP_Editor : EditorWindow {
         set { Inspector.SelectedObject= mySelectedObject= value; }
     }
     AP_Object mySelectedObject= null;
+
+    AP_Graph Graph { get { return RootNode.Graph; }}
     
     // ======================================================================
     // INITIALIZATION
@@ -122,6 +124,9 @@ public class AP_Editor : EditorWindow {
         
         // Update scroll view.
         ScrollView.Update(position, DisplayRoot.Position);
+        
+        // Draw editor grid.
+        DrawGrid();
         
 		// Draw editor widgets.
 		DrawEditorWidgets();
@@ -391,7 +396,15 @@ public class AP_Editor : EditorWindow {
     // ======================================================================
     // NODE GRAPH DISPLAY
 	// ----------------------------------------------------------------------
-	public void DrawGraph () {
+    void DrawGrid() {
+        Graphics.DrawGrid(position,
+                          Graph.Preferences.Grid.BackgroundColor,
+                          Graph.Preferences.Grid.GridColor,
+                          Graph.Preferences.Grid.GridSpacing);
+    }
+    
+	// ----------------------------------------------------------------------
+	void DrawGraph () {
         // Perform layout of modified nodes.
         DisplayRoot.ForEachRecursiveDepthLast( (obj)=> { if(obj.IsEditorDirty) obj.Layout(); } );            
         

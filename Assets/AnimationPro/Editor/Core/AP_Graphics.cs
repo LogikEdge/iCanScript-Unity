@@ -159,6 +159,28 @@ public class AP_Graphics {
         }
     }
     
+    // ======================================================================
+    //  GRID
+    // ----------------------------------------------------------------------
+    public void DrawGrid(Rect position, Color backgroundColor, Color gridColor, float gridSpacing) {
+        // Draw background.
+        Vector3[] vect= { new Vector3(0,0,0), new Vector3(position.width,0,0), new Vector3(position.width,position.height,0), new Vector3(0,position.height,0)};
+        Handles.color= Color.white;
+        Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
+        // Draw grid lines.
+        if(gridSpacing < 2) gridSpacing= 2.0f;
+        Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.25f);
+        int steps;
+        float x,y;
+        for(x= 0, steps= 0; x < position.width; x+= gridSpacing, ++steps) {
+            Handles.color= (steps % 5) == 0 ? gridColor : gridColor2;
+            Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,position.height,0));            
+        }
+        for(y= 0, steps= 0; y < position.width; y+= gridSpacing, ++steps) {
+            Handles.color= (steps % 5) == 0 ? gridColor : gridColor2;
+            Handles.DrawLine(new Vector3(0,y,0), new Vector3(position.width,y,0));            
+        }
+    }
     
     // ======================================================================
     //  NODE
