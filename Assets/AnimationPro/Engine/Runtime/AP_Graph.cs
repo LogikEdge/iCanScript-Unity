@@ -12,7 +12,7 @@ public sealed class AP_Graph : MonoBehaviour {
     public class UserPreferences {
         [System.Serializable]
         public class UserNodeColors {
-            public Color    StateColor= Color.blue;
+            public Color    StateColor= Color.cyan;
             public Color    ModuleColor= Color.yellow;
             public Color    FunctionColor= Color.green;
             public Color    SelectedColor= Color.white;            
