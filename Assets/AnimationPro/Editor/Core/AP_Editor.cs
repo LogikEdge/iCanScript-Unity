@@ -20,7 +20,6 @@ public class AP_Editor : EditorWindow {
     public  AP_ScrollView      ScrollView      = null;
     
     // ----------------------------------------------------------------------
-    AP_Object   SelectedObject= null;
     bool        IsRootNodeSelected  { get { return SelectedObject is AP_RootNode; }}
     bool        IsNodeSelected      { get { return SelectedObject is AP_Node; }}
     bool        IsPortSelected      { get { return SelectedObject is AP_Port; }}
@@ -35,7 +34,12 @@ public class AP_Editor : EditorWindow {
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
-
+    AP_Object SelectedObject {
+        get { return mySelectedObject; }
+        set { Inspector.SelectedObject= mySelectedObject= value; }
+    }
+    AP_Object mySelectedObject= null;
+    
     // ======================================================================
     // INITIALIZATION
 	// ----------------------------------------------------------------------
@@ -176,7 +180,7 @@ public class AP_Editor : EditorWindow {
     List<EditorWindow> myChildWindows= new List<EditorWindow>();
     public void ProcessEvents() {
         // Update the inspector object.
-        Inspector.SelectedObject= DetermineSelectedObject();
+        DetermineSelectedObject();
 
         // Process an already active menu.
         if(myChildWindows.Count > 0) {
@@ -305,7 +309,7 @@ public class AP_Editor : EditorWindow {
     // Manages the object selection.
     AP_Object DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
-        if(!Mouse.IsLeftButtonDown) return SelectedObject;
+        if(!Mouse.IsLeftButtonDown && !Mouse.IsRightButtonDown) return SelectedObject;
         AP_Object newSelected= GetObjectAtMousePosition();
         SelectedObject= newSelected;
         return SelectedObject;
