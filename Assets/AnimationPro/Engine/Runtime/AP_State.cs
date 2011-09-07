@@ -16,7 +16,7 @@ public class AP_State : AP_Node {
     // ----------------------------------------------------------------------
     public AP_State  ParentState    { get { return Parent as AP_State; } }
     public AP_State  EntryState     { get { return myEntryState; }     set { myEntryState= value; }}
-    public AP_Action OnEntryAction  { get { return myOnExitAction; }   set { myOnExitAction= value; }}
+    public AP_Action OnEntryAction  { get { return myOnEntryAction; }  set { myOnEntryAction= value; }}
     public AP_Action OnUpdateAction { get { return myOnUpdateAction; } set { myOnUpdateAction= value; }}
     public AP_Action OnExitAction   { get { return myOnExitAction; }   set { myOnExitAction= value; }}
 

@@ -132,9 +132,9 @@ public class AP_Graphics {
         desc.nodeColor= nodeColor;
         desc.nodeStyle.normal.background= desc.nodeTexture;
         // Generate node normal texture.
-        desc.hoverColor= new Color(Mathf.Clamp(nodeColor.r+0.35f, 0, 1),
-                                   Mathf.Clamp(nodeColor.g+0.35f, 0, 1),
-                                   Mathf.Clamp(nodeColor.b+0.35f, 0, 1), 1.0f);
+        desc.hoverColor= new Color(Mathf.Clamp(nodeColor.r < 0.95f ? nodeColor.r+0.35f : nodeColor.r-0.35f, 0, 1),
+                                   Mathf.Clamp(nodeColor.g < 0.95f ? nodeColor.g+0.35f : nodeColor.g-0.35f, 0, 1),
+                                   Mathf.Clamp(nodeColor.b < 0.95f ? nodeColor.b+0.35f : nodeColor.b-0.35f, 0, 1), 1.0f);
         for(int x= 0; x < nodeMaskTexture.width; ++x) {
             for(int y= 0; y < nodeMaskTexture.height; ++y) {
                 if(nodeMaskTexture.GetPixel(x,y).a > 0.5f) {
