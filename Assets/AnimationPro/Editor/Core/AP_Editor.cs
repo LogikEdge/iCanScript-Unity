@@ -401,16 +401,16 @@ public class AP_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawNodes() {
         // Display node starting from the root node.
-        DisplayRoot.ForEachRecursiveDepthLast<AP_Node>( (node)=> { Graphics.DrawNode(node); } );
+        DisplayRoot.ForEachRecursiveDepthLast<AP_Node>( (node)=> { Graphics.DrawNode(node, SelectedObject); } );
     }	
 	
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        DisplayRoot.ForEachRecursive<AP_Port>( (port)=> { Graphics.DrawConnection(port); } );
+        DisplayRoot.ForEachRecursive<AP_Port>( (port)=> { Graphics.DrawConnection(port, SelectedObject); } );
 
         // Display ports.
-        DisplayRoot.ForEachRecursive<AP_Port>( (port)=> { Graphics.DrawPort(port); } );
+        DisplayRoot.ForEachRecursive<AP_Port>( (port)=> { Graphics.DrawPort(port, SelectedObject); } );
     }
 
 }

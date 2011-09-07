@@ -23,6 +23,7 @@ public class AP_Graphics {
 	NodeStyle   moduleStyle  = null;
 	NodeStyle   stateStyle   = null;
 	NodeStyle   defaultStyle = null;
+	NodeStyle   selectedStyle= null;
 
 	Texture2D   nodeIcon;
     Vector2     drawOffset= Vector2.zero;
@@ -130,7 +131,7 @@ public class AP_Graphics {
         desc.nodeTexture.Apply(); 
         desc.nodeColor= nodeColor;
         desc.nodeStyle.normal.background= desc.nodeTexture;
-        // Generate node normal texture.
+        // Generate node hover texture.
         for(int x= 0; x < defaultNodeTexture.width; ++x) {
             for(int y= 0; y < defaultNodeTexture.height; ++y) {
                 if(defaultNodeTexture.GetPixel(x,y).a > 0.95f) {
@@ -162,8 +163,29 @@ public class AP_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    GUIStyle GetNodeStyle(AP_Node node) {
+    public void DrawNode(AP_Node _node, AP_Object selectedObject) {
+        // Don't show hiden nodes.
+        if(_node.IsVisible == false) return;
+        
+        // Draw node box.
+        string title= ObjectNames.NicifyVariableName(_node.NameOrTypeName);
+        GUIStyle guiStyle= GetNodeStyle(_node, selectedObject);
+        Rect position= _node.Position;
+        float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
+        float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
+        position.x-= leftOffset;
+        position.y-= guiStyle.overflow.top;
+        position.width+= leftOffset + rightOffset;
+        position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
+        GUI.Box(position, title, guiStyle);            
+        EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, AP_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
+    }
+    GUIStyle GetNodeStyle(AP_Node node, AP_Object selectedObject) {
         // Node background is dependant on node type.
+        if(node == selectedObject) {
+            GenerateNodeStyle(ref selectedStyle, node.Top.Graph.Preferences.NodeColors.SelectedColor);
+            return selectedStyle.nodeStyle;
+        }
         if(node is AP_State || node is AP_StateChart) {
             GenerateNodeStyle(ref stateStyle, node.Top.Graph.Preferences.NodeColors.StateColor);
             return stateStyle.nodeStyle;
@@ -178,31 +200,6 @@ public class AP_Graphics {
         }
         GenerateNodeStyle(ref defaultStyle, Color.gray);
         return defaultStyle.nodeStyle;
-    }
-    public void DrawNode(AP_Node _node) {
-        // Don't show hiden nodes.
-        if(_node.IsVisible == false) return;
-        
-        // Draw node box.
-        string title= ObjectNames.NicifyVariableName(_node.NameOrTypeName);
-        GUIStyle guiStyle= GetNodeStyle(_node);
-        Rect position= _node.Position;
-        float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
-        float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
-        position.x-= leftOffset;
-        position.y-= guiStyle.overflow.top;
-        position.width+= leftOffset + rightOffset;
-        position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
-        GUI.Box(position, title, guiStyle);            
-        EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, AP_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
-
-//        // Draw back drop
-//        if(_node.Icon != null) {
-//            Rect bdRect= new Rect(position.x+2, position.y+12, position.width-4, position.height-14);
-//            GUIStyle backgroundStyle= new GUIStyle();
-//            backgroundStyle.normal.background= _node.Icon;
-//            GUI.Label(bdRect, "", backgroundStyle);            
-//        }
     }
 
     
@@ -219,7 +216,7 @@ public class AP_Graphics {
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
-    public void DrawPort(AP_Port port) {
+    public void DrawPort(AP_Port port, AP_Object selectedObject) {
         // Only data ports are drawn.
         if(!(port is AP_DataPort)) return;
         AP_DataPort dataPort= port as AP_DataPort;
@@ -435,7 +432,7 @@ public class AP_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(AP_Port port) {
+    public void DrawConnection(AP_Port port, AP_Object selectedObject) {
         // Only data connection are drawn.
         if(!(port is AP_DataPort)) return;
         AP_DataPort dataPort= port as AP_DataPort;
