@@ -17,7 +17,6 @@ public class AP_Graphics {
 	    public GUIStyle    nodeStyle= null;
 	    public Color       nodeColor= new Color(0,0,0,0);
 	    public Texture2D   nodeTexture= null;
-	    public Color       hoverColor= new Color(0,0,0,0);
 	    public Texture2D   hoverTexture= null;
 	}
 	NodeStyle   functionStyle= null;
@@ -132,16 +131,13 @@ public class AP_Graphics {
         desc.nodeColor= nodeColor;
         desc.nodeStyle.normal.background= desc.nodeTexture;
         // Generate node normal texture.
-        desc.hoverColor= new Color(Mathf.Clamp(nodeColor.r < 0.95f ? nodeColor.r+0.35f : nodeColor.r-0.35f, 0, 1),
-                                   Mathf.Clamp(nodeColor.g < 0.95f ? nodeColor.g+0.35f : nodeColor.g-0.35f, 0, 1),
-                                   Mathf.Clamp(nodeColor.b < 0.95f ? nodeColor.b+0.35f : nodeColor.b-0.35f, 0, 1), 1.0f);
-        for(int x= 0; x < nodeMaskTexture.width; ++x) {
-            for(int y= 0; y < nodeMaskTexture.height; ++y) {
-                if(nodeMaskTexture.GetPixel(x,y).a > 0.5f) {
-                    desc.hoverTexture.SetPixel(x,y, desc.hoverColor);
+        for(int x= 0; x < defaultNodeTexture.width; ++x) {
+            for(int y= 0; y < defaultNodeTexture.height; ++y) {
+                if(defaultNodeTexture.GetPixel(x,y).a > 0.95f) {
+                    desc.hoverTexture.SetPixel(x,y, desc.nodeTexture.GetPixel(x,y));
                 }
                 else {
-                    desc.hoverTexture.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
+                    desc.hoverTexture.SetPixel(x,y, new Color(1,1,1, defaultNodeTexture.GetPixel(x,y).a));
                 }
             }
         }
