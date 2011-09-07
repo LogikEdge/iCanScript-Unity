@@ -13,9 +13,16 @@ public class AP_Graphics {
 	Texture2D   lineTexture;
 	Texture2D   defaultNodeTexture;
 	Texture2D   nodeMaskTexture;
-	Texture2D   functionNodeTexture;
-	Texture2D   stateNodeTexture;
-	Texture2D   moduleNodeTexture;
+	internal class NodeStyle {
+	    public GUIStyle    nodeStyle= null;
+	    public Color       nodeColor= new Color(0,0,0,0);
+	    public Texture2D   nodeTexture= null;
+	}
+	NodeStyle   functionStyle= null;
+	NodeStyle   moduleStyle  = null;
+	NodeStyle   stateStyle   = null;
+	NodeStyle   defaultStyle = null;
+
 	Texture2D   nodeIcon;
     Vector2     drawOffset= Vector2.zero;
 
@@ -41,7 +48,7 @@ public class AP_Graphics {
     ~AP_Graphics() {
         lineTexture        = null;
         defaultNodeTexture = null;
-        functionNodeTexture= null;
+        nodeMaskTexture    = null;
         nodeIcon           = null;
     }
 
@@ -86,22 +93,42 @@ public class AP_Graphics {
     }
 
     // ----------------------------------------------------------------------
-    Texture2D GenerateNodeTexture(Color nodeColor) {
-        Texture2D nodeTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+    void GenerateNodeStyle(ref NodeStyle desc, Color nodeColor) {
+        // Build node style descriptor.
+        if(desc == null) {
+            desc= new NodeStyle();
+        }
+        if(desc.nodeStyle == null) {
+            desc.nodeStyle= new GUIStyle();
+            desc.nodeStyle.normal.textColor= Color.black;
+            desc.nodeStyle.border= new RectOffset(11,16,20,13);
+            desc.nodeStyle.padding= new RectOffset(3,8,17,8);
+            desc.nodeStyle.contentOffset= new Vector2(-3, -17);
+            desc.nodeStyle.overflow= new RectOffset(0,6,0,6);
+            desc.nodeStyle.alignment= TextAnchor.UpperCenter;
+            desc.nodeStyle.fontStyle= FontStyle.Bold;
+        }
+        if(desc.nodeTexture == null) {
+            desc.nodeTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+            desc.nodeColor= new Color(0,0,0,0);            
+        }
+        // Generate node texture.
+        if(nodeColor == desc.nodeColor) return;
         for(int x= 0; x < nodeMaskTexture.width; ++x) {
             for(int y= 0; y < nodeMaskTexture.height; ++y) {
                 if(nodeMaskTexture.GetPixel(x,y).a > 0.5f) {
-                    nodeTexture.SetPixel(x,y, nodeColor);
+                    desc.nodeTexture.SetPixel(x,y, nodeColor);
                 }
                 else {
-                    nodeTexture.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
+                    desc.nodeTexture.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
                 }
             }
         }
-        nodeTexture.Apply(); 
-        return nodeTexture;       
+        desc.nodeTexture.Apply(); 
+        desc.nodeColor= nodeColor;
+        desc.nodeStyle.normal.background= desc.nodeTexture;
     }
-
+    
     // ======================================================================
     //  TOOL TIP
     // ----------------------------------------------------------------------
@@ -120,32 +147,21 @@ public class AP_Graphics {
     //  NODE
     // ----------------------------------------------------------------------
     GUIStyle GetNodeStyle(AP_Node node) {
-        GUIStyle style= new GUIStyle();
-        style.normal.textColor= Color.black;
-        style.border= new RectOffset(11,16,20,13);
-        style.padding= new RectOffset(3,8,17,8);
-        style.contentOffset= new Vector2(-3, -17);
-        style.overflow= new RectOffset(0,6,0,6);
-        style.alignment= TextAnchor.UpperCenter;
-        style.fontStyle= FontStyle.Bold;
-
         // Node background is dependant on node type.
-        Color nodeColor;
         if(node is AP_State || node is AP_StateChart) {
-            nodeColor= node.Top.Graph.Preferences.NodeColors.StateColor;
+            GenerateNodeStyle(ref stateStyle, node.Top.Graph.Preferences.NodeColors.StateColor);
+            return stateStyle.nodeStyle;
         }
-        else if(node is AP_Module) {
-            nodeColor= node.Top.Graph.Preferences.NodeColors.ModuleColor;
+        if(node is AP_Module) {
+            GenerateNodeStyle(ref moduleStyle, node.Top.Graph.Preferences.NodeColors.ModuleColor);
+            return moduleStyle.nodeStyle;
         }
-        else if(node is AP_Function) {
-            nodeColor= node.Top.Graph.Preferences.NodeColors.FunctionColor;
+        if(node is AP_Function) {
+            GenerateNodeStyle(ref functionStyle, node.Top.Graph.Preferences.NodeColors.FunctionColor);
+            return functionStyle.nodeStyle;
         }
-        else {
-            nodeColor= Color.gray;
-        }
-        style.normal.background= GenerateNodeTexture(nodeColor);
-        
-        return style;
+        GenerateNodeStyle(ref defaultStyle, Color.gray);
+        return defaultStyle.nodeStyle;
     }
     public void DrawNode(AP_Node _node) {
         // Don't show hiden nodes.
@@ -162,7 +178,6 @@ public class AP_Graphics {
         position.width+= leftOffset + rightOffset;
         position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
         GUI.Box(position, title, guiStyle);            
-//        GUI.backgroundColor= Color.grey;
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, AP_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
 
 //        // Draw back drop
