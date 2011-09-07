@@ -17,6 +17,8 @@ public class AP_Graphics {
 	    public GUIStyle    nodeStyle= null;
 	    public Color       nodeColor= new Color(0,0,0,0);
 	    public Texture2D   nodeTexture= null;
+	    public Color       hoverColor= new Color(0,0,0,0);
+	    public Texture2D   hoverTexture= null;
 	}
 	NodeStyle   functionStyle= null;
 	NodeStyle   moduleStyle  = null;
@@ -101,6 +103,7 @@ public class AP_Graphics {
         if(desc.nodeStyle == null) {
             desc.nodeStyle= new GUIStyle();
             desc.nodeStyle.normal.textColor= Color.black;
+            desc.nodeStyle.hover.textColor= Color.black;
             desc.nodeStyle.border= new RectOffset(11,16,20,13);
             desc.nodeStyle.padding= new RectOffset(3,8,17,8);
             desc.nodeStyle.contentOffset= new Vector2(-3, -17);
@@ -109,10 +112,11 @@ public class AP_Graphics {
             desc.nodeStyle.fontStyle= FontStyle.Bold;
         }
         if(desc.nodeTexture == null) {
-            desc.nodeTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
             desc.nodeColor= new Color(0,0,0,0);            
+            desc.nodeTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+            desc.hoverTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
         }
-        // Generate node texture.
+        // Generate node normal texture.
         if(nodeColor == desc.nodeColor) return;
         for(int x= 0; x < nodeMaskTexture.width; ++x) {
             for(int y= 0; y < nodeMaskTexture.height; ++y) {
@@ -127,6 +131,22 @@ public class AP_Graphics {
         desc.nodeTexture.Apply(); 
         desc.nodeColor= nodeColor;
         desc.nodeStyle.normal.background= desc.nodeTexture;
+        // Generate node normal texture.
+        desc.hoverColor= new Color(Mathf.Clamp(nodeColor.r+0.35f, 0, 1),
+                                   Mathf.Clamp(nodeColor.g+0.35f, 0, 1),
+                                   Mathf.Clamp(nodeColor.b+0.35f, 0, 1), 1.0f);
+        for(int x= 0; x < nodeMaskTexture.width; ++x) {
+            for(int y= 0; y < nodeMaskTexture.height; ++y) {
+                if(nodeMaskTexture.GetPixel(x,y).a > 0.5f) {
+                    desc.hoverTexture.SetPixel(x,y, desc.hoverColor);
+                }
+                else {
+                    desc.hoverTexture.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
+                }
+            }
+        }
+        desc.hoverTexture.Apply(); 
+        desc.nodeStyle.hover.background= desc.hoverTexture;
     }
     
     // ======================================================================
