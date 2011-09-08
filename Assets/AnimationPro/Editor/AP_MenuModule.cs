@@ -9,9 +9,9 @@ public class AP_MenuModule {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Module module= context.SelectedObject as AP_Module;
         AP_StateChart stateChart= AP_StateChart.CreateInstance("", module);
+        stateChart.SetInitialPosition(context.GraphPosition);
         // Add initial state.
         AP_State state= AP_State.CreateInstance("", stateChart);
-        state.SetInitialPosition(context.GraphPosition);
         stateChart.EntryState= state;        
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Add State Chart", true)]

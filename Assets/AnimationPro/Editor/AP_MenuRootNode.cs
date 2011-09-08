@@ -9,12 +9,12 @@ public class AP_MenuRootNode {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
         AP_Top top= AP_Top.CreateInstance("Update", rootNode);
+        top.SetInitialPosition(context.GraphPosition);
         AP_StateChart stateChart= AP_StateChart.CreateInstance("Update", top);
         top.Action= stateChart;
         rootNode.UpdateTop= top;
         // Add initial state.
         AP_State state= AP_State.CreateInstance("", stateChart);
-        state.SetInitialPosition(context.GraphPosition);
         stateChart.EntryState= state;        
     }
     [MenuItem("CONTEXT/AnimationPro/RootNode/Add Update State Chart", true)]
@@ -30,12 +30,12 @@ public class AP_MenuRootNode {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
         AP_Top top= AP_Top.CreateInstance("LateUpdate", rootNode);
+        top.SetInitialPosition(context.GraphPosition);
         AP_StateChart stateChart= AP_StateChart.CreateInstance("LateUpdate", top);
         top.Action= stateChart;
         rootNode.LateUpdateTop= top;
         // Add initial state.
         AP_State state= AP_State.CreateInstance("", stateChart);
-        state.SetInitialPosition(context.GraphPosition);        
         stateChart.EntryState= state;        
     }
     [MenuItem("CONTEXT/AnimationPro/RootNode/Add LateUpdate State Chart", true)]
@@ -51,12 +51,12 @@ public class AP_MenuRootNode {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
         AP_Top top= AP_Top.CreateInstance("FixedUpdate", rootNode);
+        top.SetInitialPosition(context.GraphPosition);
         AP_StateChart stateChart= AP_StateChart.CreateInstance("FixedUpdate", top);
         top.Action= stateChart;
         rootNode.FixedUpdateTop= top;
         // Add initial state.
         AP_State state= AP_State.CreateInstance("", stateChart);
-        state.SetInitialPosition(context.GraphPosition);        
         stateChart.EntryState= state;        
     }
     [MenuItem("CONTEXT/AnimationPro/RootNode/Add FixedUpdate State Chart", true)]
@@ -72,6 +72,7 @@ public class AP_MenuRootNode {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
         AP_Top top= AP_Top.CreateInstance("Update", rootNode);
+        top.SetInitialPosition(context.GraphPosition);
         AP_Module module= AP_Module.CreateInstance("Update", top);
         top.Action= module;
         rootNode.UpdateTop= top;
@@ -89,6 +90,7 @@ public class AP_MenuRootNode {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
         AP_Top top= AP_Top.CreateInstance("LateUpdate", rootNode);
+        top.SetInitialPosition(context.GraphPosition);
         AP_Module module= AP_Module.CreateInstance("LateUpdate", top);
         top.Action= module;
         rootNode.LateUpdateTop= top;
@@ -106,6 +108,7 @@ public class AP_MenuRootNode {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_RootNode rootNode= context.SelectedObject as AP_RootNode;
         AP_Top top= AP_Top.CreateInstance("FixedUpdate", rootNode);
+        top.SetInitialPosition(context.GraphPosition);
         AP_Module module= AP_Module.CreateInstance("FixedUpdate", top);
         top.Action= module;
         rootNode.FixedUpdateTop= top;
