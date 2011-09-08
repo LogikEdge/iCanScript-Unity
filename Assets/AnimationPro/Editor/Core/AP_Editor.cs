@@ -176,18 +176,9 @@ public class AP_Editor : EditorWindow {
     public enum UserCommandStateEnum { Idle, Dragging, LeftButtonMenu, RightButtonMenu };
     public UserCommandStateEnum UserCommandState= UserCommandStateEnum.Idle;
     AP_Mouse.ButtonStateEnum   PreviousLeftButtonState= AP_Mouse.ButtonStateEnum.Idle;    
-    List<EditorWindow> myChildWindows= new List<EditorWindow>();
     public void ProcessEvents() {
         // Update the inspector object.
         DetermineSelectedObject();
-
-        // Process an already active menu.
-        if(myChildWindows.Count > 0) {
-            foreach(var window in myChildWindows) {
-                if(window != null) return;
-            }
-            myChildWindows.Clear();
-        }
 
         // Process left button state.
         switch(Mouse.LeftButtonState) {
@@ -217,7 +208,7 @@ public class AP_Editor : EditorWindow {
     void ProcessMainMenu(Vector2 position) {
         AP_Object selectedObject= GetObjectAtScreenPosition(position);
         if(selectedObject == null) return;
-        AP_MenuContext context= AP_MenuContext.CreateInstance(selectedObject, position, ScrollView.ScreenToGraph(position), myChildWindows);
+        AP_MenuContext context= AP_MenuContext.CreateInstance(selectedObject, position, ScrollView.ScreenToGraph(position));
         string menuName= "CONTEXT/"+AP_EditorConfig.ProductName;
         if(selectedObject is AP_RootNode) menuName+= "/RootNode";
         else if(selectedObject is AP_StateChart) menuName+= "/StateChart";
