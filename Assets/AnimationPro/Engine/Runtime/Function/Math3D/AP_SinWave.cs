@@ -14,15 +14,6 @@ public sealed class AP_SinWave : AP_Function {
     
 
     // ======================================================================
-    // LIFETIME MANAGEMENT
-    // ----------------------------------------------------------------------
-    public static AP_SinWave CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_SinWave instance= CreateInstance<AP_SinWave>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-    
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

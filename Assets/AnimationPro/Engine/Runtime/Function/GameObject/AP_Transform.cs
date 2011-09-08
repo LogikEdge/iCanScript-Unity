@@ -18,16 +18,6 @@ public sealed class AP_Transform : AP_Function {
     }
 
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_Transform CreateInstance(string _name, AP_Node _parent) {
-        AP_Transform transform= CreateInstance<AP_Transform>();
-        transform.Init(_name, _parent);
-        return transform;
-    }
-
-
-    // ======================================================================
     // CONNECTIONS
     // ----------------------------------------------------------------------
     protected override bool doIsValid() { return gameObject != null; }

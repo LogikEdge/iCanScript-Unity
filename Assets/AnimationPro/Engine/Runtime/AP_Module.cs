@@ -13,16 +13,6 @@ public sealed class AP_Module : AP_Function {
     
 
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_Module CreateInstance(string _name, AP_Aggregate _parent) {
-        AP_Module instance= CreateInstance<AP_Module>();
-        instance.Init(_name, _parent);
-        return instance;
-    }
-
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {}

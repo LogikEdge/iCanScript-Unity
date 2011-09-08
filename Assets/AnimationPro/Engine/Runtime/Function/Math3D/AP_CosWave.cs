@@ -14,16 +14,6 @@ public sealed class AP_CosWave : AP_Function {
         
 
     // ======================================================================
-    // LIFETIME MANAGEMENT
-    // ----------------------------------------------------------------------
-    public static AP_CosWave CreateInstance(string _name, AP_Node _parent) {
-        AP_CosWave instance= CreateInstance<AP_CosWave>();
-        instance.Init(_name, _parent);
-        return instance;
-    }
-
-    
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

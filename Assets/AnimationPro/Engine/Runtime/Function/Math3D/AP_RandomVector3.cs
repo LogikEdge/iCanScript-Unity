@@ -10,16 +10,6 @@ public sealed class AP_RandomVector3 : AP_Function {
 
 
     // ======================================================================
-    // LIFETIME MANAGEMENT
-    // ----------------------------------------------------------------------
-    public static AP_RandomVector3 CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_RandomVector3 instance= CreateInstance<AP_RandomVector3>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-    
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

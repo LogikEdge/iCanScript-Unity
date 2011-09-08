@@ -9,7 +9,7 @@ public class AP_MenuAnimation {
     public static void AddNodeAnimBlend(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
-        AP_AnimBlend function= AP_AnimBlend.CreateInstance("", parent);
+        AP_AnimBlend function= AP_AnimBlend.CreateInstance<AP_AnimBlend>("", parent);
         function.SetInitialPosition(context.GraphPosition);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Animation/Blend", true)]
@@ -22,7 +22,7 @@ public class AP_MenuAnimation {
     public static void AddNodeAnimSelect(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
-        AP_AnimSelect function= AP_AnimSelect.CreateInstance("", parent);
+        AP_AnimSelect function= AP_AnimSelect.CreateInstance<AP_AnimSelect>("", parent);
         function.SetInitialPosition(context.GraphPosition);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Animation/Select", true)]
@@ -35,7 +35,7 @@ public class AP_MenuAnimation {
     public static void AddNodeAnimState(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
-        AP_AnimState function= AP_AnimState.CreateInstance("", parent);
+        AP_AnimState function= AP_AnimState.CreateInstance<AP_AnimState>("", parent);
         function.SetInitialPosition(context.GraphPosition);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Animation/State", true)]
@@ -48,7 +48,7 @@ public class AP_MenuAnimation {
     public static void AddNodeAnimDiversity(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
-        AP_AnimDiversity function= AP_AnimDiversity.CreateInstance("", parent);
+        AP_AnimDiversity function= AP_AnimDiversity.CreateInstance<AP_AnimDiversity>("", parent);
         function.SetInitialPosition(context.GraphPosition);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Animation/Diversity", true)]

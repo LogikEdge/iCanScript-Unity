@@ -13,16 +13,6 @@ public sealed class AP_ToVector3 : AP_Function {
 
 
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_ToVector3 CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_ToVector3 instance= CreateInstance<AP_ToVector3>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-    
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

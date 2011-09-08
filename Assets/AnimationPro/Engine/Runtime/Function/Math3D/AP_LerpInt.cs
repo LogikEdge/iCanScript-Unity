@@ -12,15 +12,6 @@ public sealed class AP_LerpInt : AP_Function {
     
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_LerpInt CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_LerpInt instance= CreateInstance<AP_LerpInt>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-    
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

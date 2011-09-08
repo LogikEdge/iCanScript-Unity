@@ -9,7 +9,7 @@ public class AP_MenuStateChart {
     public static void AddState(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_StateChart parent= context.SelectedObject as AP_StateChart;
-        AP_State instance= AP_State.CreateInstance("", parent);
+        AP_State instance= AP_State.CreateInstance<AP_State>("", parent);
         instance.SetInitialPosition(context.GraphPosition);        
     }
     [MenuItem("CONTEXT/AnimationPro/StateChart/Add State", true)]

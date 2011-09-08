@@ -12,15 +12,6 @@ public sealed class AP_Scale2Vector4 : AP_Function {
     
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_Scale2Vector4 CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_Scale2Vector4 instance= CreateInstance<AP_Scale2Vector4>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

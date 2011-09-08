@@ -8,10 +8,10 @@ public class AP_MenuModule {
     public static void AddStateChart(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Module module= context.SelectedObject as AP_Module;
-        AP_StateChart stateChart= AP_StateChart.CreateInstance("", module);
+        AP_StateChart stateChart= AP_StateChart.CreateInstance<AP_StateChart>("", module);
         stateChart.SetInitialPosition(context.GraphPosition);
         // Add initial state.
-        AP_State state= AP_State.CreateInstance("", stateChart);
+        AP_State state= AP_State.CreateInstance<AP_State>("", stateChart);
         stateChart.EntryState= state;        
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Add State Chart", true)]

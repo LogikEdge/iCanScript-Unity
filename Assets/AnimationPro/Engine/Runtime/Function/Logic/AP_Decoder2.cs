@@ -12,15 +12,6 @@ public sealed class AP_Decoder2 : AP_Function {
     
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_Decoder2 CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_Decoder2 instance= CreateInstance<AP_Decoder2>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

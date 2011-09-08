@@ -29,7 +29,7 @@ public class AP_MenuState {
     public static void AddState(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State parent= context.SelectedObject as AP_State;
-        AP_State instance= AP_State.CreateInstance("", parent);
+        AP_State instance= AP_State.CreateInstance<AP_State>("", parent);
         instance.SetInitialPosition(context.GraphPosition);        
     }
     [MenuItem("CONTEXT/AnimationPro/State/Add State", true)]
@@ -42,7 +42,7 @@ public class AP_MenuState {
     public static void AddEntryFunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
-        AP_Module instance= AP_Module.CreateInstance("OnEntry", parent);
+        AP_Module instance= AP_Module.CreateInstance<AP_Module>("OnEntry", parent);
         instance.SetInitialPosition(context.GraphPosition);        
     }
     [MenuItem("CONTEXT/AnimationPro/State/Add Entry Function", true)]
@@ -57,7 +57,7 @@ public class AP_MenuState {
     public static void AddExitFunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
-        AP_Module instance= AP_Module.CreateInstance("OnExit", parent);
+        AP_Module instance= AP_Module.CreateInstance<AP_Module>("OnExit", parent);
         instance.SetInitialPosition(context.GraphPosition);        
     }
     [MenuItem("CONTEXT/AnimationPro/State/Add Exit Function", true)]
@@ -72,7 +72,7 @@ public class AP_MenuState {
     public static void AddUpdateFunction(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State parent= context.SelectedObject as AP_State;
-        AP_Module instance= AP_Module.CreateInstance("OnUpdate", parent);
+        AP_Module instance= AP_Module.CreateInstance<AP_Module>("OnUpdate", parent);
         instance.SetInitialPosition(context.GraphPosition);        
     }
     [MenuItem("CONTEXT/AnimationPro/State/Add Update Function", true)]

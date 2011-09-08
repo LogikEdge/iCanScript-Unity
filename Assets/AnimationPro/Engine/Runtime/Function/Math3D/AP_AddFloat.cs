@@ -11,15 +11,6 @@ public sealed class AP_AddFloat : AP_Function {
     
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_AddFloat CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_AddFloat instance= CreateInstance<AP_AddFloat>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

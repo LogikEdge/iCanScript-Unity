@@ -26,15 +26,9 @@ public class AP_StateChart : AP_Action {
     // ======================================================================
     // INITIALIZATION
     // ----------------------------------------------------------------------
-    public static AP_StateChart CreateInstance(string _name, AP_Aggregate _parent) {
-        AP_StateChart instance= CreateInstance<AP_StateChart>();
-        instance.Init(_name, _parent);
-        return instance;
-    }
-    protected new AP_StateChart Init(string _name, AP_Aggregate _parent) {
+    protected override void Init(string _name, AP_Aggregate _parent) {
         base.Init(_name, _parent);
         myEntryState= null;
-        return this;
     }
     
     // ======================================================================

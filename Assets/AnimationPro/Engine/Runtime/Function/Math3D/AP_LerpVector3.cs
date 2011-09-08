@@ -12,15 +12,6 @@ public sealed class AP_LerpVector3 : AP_Function {
     
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_LerpVector3 CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_LerpVector3 instance= CreateInstance<AP_LerpVector3>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-    
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

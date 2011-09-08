@@ -8,7 +8,7 @@ public class AP_Debug {
     public static void AddNodeDebugLog(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
-        AP_Log function= AP_Log.CreateInstance("", parent);
+        AP_Log function= AP_Log.CreateInstance<AP_Log>("", parent);
         function.SetInitialPosition(context.GraphPosition);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Debug/Log", true)]
@@ -21,7 +21,7 @@ public class AP_Debug {
     public static void AddNodeDebugLogError(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
-        AP_LogError function= AP_LogError.CreateInstance("", parent);
+        AP_LogError function= AP_LogError.CreateInstance<AP_LogError>("", parent);
         function.SetInitialPosition(context.GraphPosition);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Debug/LogError", true)]
@@ -34,7 +34,7 @@ public class AP_Debug {
     public static void AddNodeDebugLogWarning(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node parent= context.SelectedObject as AP_Node;
-        AP_LogWarning function= AP_LogWarning.CreateInstance("", parent);
+        AP_LogWarning function= AP_LogWarning.CreateInstance<AP_LogWarning>("", parent);
         function.SetInitialPosition(context.GraphPosition);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Debug/LogWarning", true)]

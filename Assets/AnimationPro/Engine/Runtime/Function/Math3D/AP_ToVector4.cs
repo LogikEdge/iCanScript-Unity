@@ -12,16 +12,6 @@ public sealed class AP_ToVector4 : AP_Function {
     [AP_OutPort] public Vector4[]    vs;
 
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_ToVector4 CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_ToVector4 instance= CreateInstance<AP_ToVector4>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-    
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

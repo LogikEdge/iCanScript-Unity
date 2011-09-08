@@ -12,16 +12,6 @@ public sealed class AP_ToVector2 : AP_Function {
         
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_ToVector2 CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_ToVector2 instance= CreateInstance<AP_ToVector2>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-    
-    
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

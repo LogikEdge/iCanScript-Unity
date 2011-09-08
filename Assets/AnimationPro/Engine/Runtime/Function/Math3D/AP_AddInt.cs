@@ -11,15 +11,6 @@ public sealed class AP_AddInt : AP_Function {
     
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_AddInt CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_AddInt instance= CreateInstance<AP_AddInt>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

@@ -11,10 +11,9 @@ public class AP_Aggregate : AP_Object {
     // ======================================================================
     // OBJECT LIFETIME MANAGEMENT
     // ----------------------------------------------------------------------
-    protected new AP_Aggregate Init(string _name, AP_Aggregate _parent) {
+    protected override void Init(string _name, AP_Aggregate _parent) {
         Children= new List<AP_Object>();
         base.Init(_name, _parent);
-        return this;
     }
     // ----------------------------------------------------------------------
     public override void Dealloc() {

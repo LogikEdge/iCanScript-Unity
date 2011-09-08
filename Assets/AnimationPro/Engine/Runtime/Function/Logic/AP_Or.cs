@@ -11,15 +11,6 @@ public sealed class AP_Or : AP_Function {
     
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_Or CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_Or instance= CreateInstance<AP_Or>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

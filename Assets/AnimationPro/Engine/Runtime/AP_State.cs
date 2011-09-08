@@ -21,15 +21,6 @@ public class AP_State : AP_Node {
     public AP_Action OnExitAction   { get { return myOnExitAction; }   set { myOnExitAction= value; }}
 
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_State CreateInstance(string _name, AP_Aggregate _parent) {
-        AP_State instance= CreateInstance<AP_State>();
-        instance.Init(_name, _parent);
-        return instance;
-    }
-
-    // ======================================================================
     // UPDATE
     // ----------------------------------------------------------------------
     public void OnEntry() {

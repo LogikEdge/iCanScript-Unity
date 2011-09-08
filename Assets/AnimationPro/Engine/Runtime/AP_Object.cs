@@ -12,6 +12,33 @@ public abstract class AP_Object : AP_ObjectUtil, IEnumerable<AP_Object> {
     [SerializeField]    private bool            myIsVisible    = true;
                         private bool            myIsEditorDirty= true;
                         
+    // ======================================================================
+    // CREATION UTILITIES
+    // ----------------------------------------------------------------------
+    public static DERIVED CreateInstance<DERIVED>(string _name, AP_Aggregate _parent) where DERIVED : AP_Object {
+        DERIVED instance= CreateInstance<DERIVED>();
+        instance.Init(_name, _parent);
+        return instance;
+    }
+    // ----------------------------------------------------------------------
+    protected virtual void Init(string _name, AP_Aggregate _parent) {
+        Name  = _name;
+        Parent= _parent;
+        IsEditorDirty= true;
+    }
+    // ----------------------------------------------------------------------
+    // Control removal of the object (as opposed to the automatic
+    // deallocation from a level shutdown).
+    public virtual void Dealloc() {
+        Parent= null;
+        IsEditorDirty= true;
+#if UNITY_EDITOR
+        DestroyImmediate(this);
+#else
+        Destroy(this);
+#endif
+    }
+
     // ----------------------------------------------------------------------
     // NAME & TYPE NAME
     // ----------------------------------------------------------------------
@@ -70,28 +97,6 @@ public abstract class AP_Object : AP_ObjectUtil, IEnumerable<AP_Object> {
         }
     }
 
-    // ======================================================================
-    // LIFECYCLE
-    // ----------------------------------------------------------------------
-    protected AP_Object Init(string _name, AP_Aggregate _parent) {
-        Name  = _name;
-        Parent= _parent;
-        IsEditorDirty= true;
-        return this;
-    }
-    // ----------------------------------------------------------------------
-    // Control removal of the object (as opposed to the automatic
-    // deallocation from a level shutdown).
-    public virtual void Dealloc() {
-        Parent= null;
-        IsEditorDirty= true;
-#if UNITY_EDITOR
-        DestroyImmediate(this);
-#else
-        Destroy(this);
-#endif
-    }
- 
     // ======================================================================
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------

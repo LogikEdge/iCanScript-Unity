@@ -6,7 +6,7 @@ public abstract class AP_Node : AP_Aggregate {
     // ======================================================================
     // OBJECT LIFETIME MANAGEMENT
     // ----------------------------------------------------------------------
-    protected new AP_Node Init(string _name, AP_Aggregate _parent) {
+    protected override void Init(string _name, AP_Aggregate _parent) {
         base.Init(_name, _parent);
         
         // Create ports for each field taged with InPort or OutPort.
@@ -16,7 +16,6 @@ public abstract class AP_Node : AP_Aggregate {
         foreach(var field in GetOutputFields()) {
             AP_OutDataPort.CreateInstance(field.Name, this);            
         }
-        return this;
     }
     
     // ======================================================================

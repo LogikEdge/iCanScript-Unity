@@ -11,15 +11,6 @@ public sealed class AP_Xor : AP_Function {
     
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_Xor CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_Xor instance= CreateInstance<AP_Xor>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

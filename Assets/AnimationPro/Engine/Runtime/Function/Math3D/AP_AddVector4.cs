@@ -11,15 +11,6 @@ public sealed class AP_AddVector4 : AP_Function {
     
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_AddVector4 CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_AddVector4 instance= CreateInstance<AP_AddVector4>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {

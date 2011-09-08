@@ -12,16 +12,6 @@ public class AP_FromVector3 : AP_Function {
 
 
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static AP_FromVector3 CreateInstance(string theFunctionName, AP_Node theParent) {
-        AP_FromVector3 instance= CreateInstance<AP_FromVector3>();
-        instance.Init(theFunctionName, theParent);
-        return instance;
-    }
-
-
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     protected override void Evaluate() {
