@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public sealed class AP_Time : AP_Function {
+public sealed class AP_Time : AP_Action {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
