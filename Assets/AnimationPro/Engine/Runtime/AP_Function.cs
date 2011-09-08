@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/// =========================================================================
+// A function is an action that has input data depednecies.  Therefore, a
+// function waits for the input data before executing.
 public abstract class AP_Function : AP_Action {
     // ======================================================================
     // EXECUTION
