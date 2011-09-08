@@ -162,22 +162,33 @@ public class AP_Graphics {
     // ======================================================================
     //  GRID
     // ----------------------------------------------------------------------
-    public void DrawGrid(Rect position, Color backgroundColor, Color gridColor, float gridSpacing) {
+    public void DrawGrid(Rect position, Color backgroundColor, Color gridColor, float gridSpacing, Vector2 offset) {
         // Draw background.
         Vector3[] vect= { new Vector3(0,0,0), new Vector3(position.width,0,0), new Vector3(position.width,position.height,0), new Vector3(0,position.height,0)};
         Handles.color= Color.white;
         Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
+
         // Draw grid lines.
         if(gridSpacing < 2) gridSpacing= 2.0f;
+
+        float x= offset.x/gridSpacing;    // Compute grid offset dependency on viewport.
+        x= gridSpacing-gridSpacing*(x-Mathf.Floor(x));
+        float y= offset.y/gridSpacing;
+        y= gridSpacing-gridSpacing*(y-Mathf.Floor(y));
+        
+        float gridSpacing5= 5.0f*gridSpacing;
+        float xStepOffset= offset.x/gridSpacing5; // Compute major grid line offset dependency on viewport.
+        int xSteps= Mathf.FloorToInt(5.0f*(xStepOffset-Mathf.Floor(xStepOffset)));
+        float yStepOffset= offset.y/gridSpacing5; // Compute major grid line offset dependency on viewport.
+        int ySteps= Mathf.FloorToInt(5.0f*(yStepOffset-Mathf.Floor(yStepOffset)));
+
         Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.25f);
-        int steps;
-        float x,y;
-        for(x= 0, steps= 0; x < position.width; x+= gridSpacing, ++steps) {
-            Handles.color= (steps % 5) == 0 ? gridColor : gridColor2;
+        for(; x < position.width; x+= gridSpacing, ++xSteps) {
+            Handles.color= (xSteps % 5) == 0 ? gridColor : gridColor2;
             Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,position.height,0));            
         }
-        for(y= 0, steps= 0; y < position.width; y+= gridSpacing, ++steps) {
-            Handles.color= (steps % 5) == 0 ? gridColor : gridColor2;
+        for(; y < position.width; y+= gridSpacing, ++ySteps) {
+            Handles.color= (ySteps % 5) == 0 ? gridColor : gridColor2;
             Handles.DrawLine(new Vector3(0,y,0), new Vector3(position.width,y,0));            
         }
     }

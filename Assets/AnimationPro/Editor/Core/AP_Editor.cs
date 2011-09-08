@@ -400,7 +400,8 @@ public class AP_Editor : EditorWindow {
         Graphics.DrawGrid(position,
                           Graph.Preferences.Grid.BackgroundColor,
                           Graph.Preferences.Grid.GridColor,
-                          Graph.Preferences.Grid.GridSpacing);
+                          Graph.Preferences.Grid.GridSpacing,
+                          ScrollView.ScreenToGraph(Vector2.zero));
     }
     
 	// ----------------------------------------------------------------------
