@@ -45,12 +45,6 @@ public class AP_Editor : EditorWindow {
     // ======================================================================
     // INITIALIZATION
 	// ----------------------------------------------------------------------
-    // Returns the AP_Graph editor window.
-    public static AP_Editor GetWindow() {
-        return EditorWindow.GetWindow<AP_Editor>();
-    }
-
-	// ----------------------------------------------------------------------
     // Prepares the editor for editing a graph.  Not that the graph to edit
     // is not configured at this point.  We must wait for an activate from
     // the graph inspector to know which graph to edit. 

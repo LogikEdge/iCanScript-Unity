@@ -27,7 +27,7 @@ public class AP_Menu {
 	// AnimationPro Window.
 	[MenuItem("Window/AnimationPro Editor")]
 	public static void ShowAnimationProEditor() {
-        AP_Editor editor= AP_Editor.GetWindow();
+        AP_Editor editor= EditorWindow.GetWindow<AP_Editor>();
         editor.hideFlags= HideFlags.DontSave;
 	}
 	[MenuItem("Window/AnimationPro Editor", true)]
