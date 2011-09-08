@@ -3,6 +3,24 @@ using UnityEditor;
 using System.Collections;
 
 public class AP_MenuModule {
+    // ---------------------------------------------------------------------
+    [MenuItem("CONTEXT/AnimationPro/Module/Add State Chart")]
+    public static void AddStateChart(MenuCommand command) {
+        AP_MenuContext context= command.context as AP_MenuContext;
+        AP_Module module= context.SelectedObject as AP_Module;
+        AP_StateChart stateChart= AP_StateChart.CreateInstance("", module);
+        // Add initial state.
+        AP_State state= AP_State.CreateInstance("", stateChart);
+        state.SetInitialPosition(context.GraphPosition);
+        stateChart.EntryState= state;        
+    }
+    [MenuItem("CONTEXT/AnimationPro/Module/Add State Chart", true)]
+    public static bool ValidateAddStateChart(MenuCommand command) {
+        AP_MenuContext context= command.context as AP_MenuContext;
+        AP_Module module= context.SelectedObject as AP_Module;
+        if(module == null) return false;
+        return true;
+    }
     // ----------------------------------------------------------------------
     [MenuItem("CONTEXT/AnimationPro/Module/Delete")]
     public static void DeleteObject(MenuCommand command) {    
