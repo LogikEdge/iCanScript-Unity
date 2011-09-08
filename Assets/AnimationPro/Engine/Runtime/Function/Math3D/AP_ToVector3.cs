@@ -25,7 +25,7 @@ public sealed class AP_ToVector3 : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         vs= Prelude.zipWith_(vs, (x,y,z)=> new Vector3(x,y,z), xs, ys, zs);
     }
 }

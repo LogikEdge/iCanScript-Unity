@@ -20,5 +20,5 @@ public class AP_Constant<TYPE,DERIVED> : AP_Function where DERIVED : AP_Constant
     // ======================================================================
     // UPDATE
     // ----------------------------------------------------------------------
-    protected override void doExecute() {}
+    protected override void Evaluate() {}
 }

@@ -5,11 +5,10 @@ public abstract class AP_Function : AP_Action {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected abstract void doExecute();
     public override void Execute() {
         // All verification have passed so let's execute !!!
         ForEachChild<AP_DataPort>( (port)=> { if(port.IsInput) port.UpdateValue(); });
-        doExecute();            
+        Evaluate();            
         MarkAsCurrent();
     }
     

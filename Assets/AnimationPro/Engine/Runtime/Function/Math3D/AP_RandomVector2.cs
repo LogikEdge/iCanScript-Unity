@@ -22,7 +22,7 @@ public sealed class AP_RandomVector2 : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         value= scale*Random.insideUnitCircle;
     }
 }

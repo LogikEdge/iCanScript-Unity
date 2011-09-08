@@ -23,7 +23,7 @@ public sealed class AP_Scale2Vector2 : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         os= Prelude.zipWith_(os, (x,s1,s2)=> s1*s2*x, xs, scales1, scales2);
     }
 }

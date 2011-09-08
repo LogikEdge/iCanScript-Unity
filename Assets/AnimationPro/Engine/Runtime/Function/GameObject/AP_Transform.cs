@@ -12,7 +12,7 @@ public sealed class AP_Transform : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         if(!IsValid) return;
         gameObject.transform.Translate(translation);
     }

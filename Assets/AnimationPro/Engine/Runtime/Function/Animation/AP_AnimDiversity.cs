@@ -19,6 +19,6 @@ public class AP_AnimDiversity : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
     }
 }

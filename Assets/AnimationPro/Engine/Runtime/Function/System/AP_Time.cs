@@ -22,7 +22,7 @@ public sealed class AP_Time : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         dt   =  Time.deltaTime;
         invDt=  1.0f/dt;
     }

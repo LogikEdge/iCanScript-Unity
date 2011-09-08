@@ -40,7 +40,7 @@ public class AP_StateChart : AP_Action {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    public override void Execute() {
+    protected override void Evaluate() {
         // Process any active transition.
         ProcessTransition();
         // Make certain that at least one actibe state exists.

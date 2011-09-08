@@ -10,7 +10,7 @@ public class AP_Log : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         if(message != null && message != "") {
             Debug.Log(message);
         }

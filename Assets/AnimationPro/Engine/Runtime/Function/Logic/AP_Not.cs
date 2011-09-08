@@ -21,7 +21,7 @@ public sealed class AP_Not : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         os= Prelude.map_(os, (x)=> !x, xs);
     }
 }

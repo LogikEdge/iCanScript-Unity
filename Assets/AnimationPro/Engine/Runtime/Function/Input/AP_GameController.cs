@@ -12,7 +12,7 @@ public sealed class AP_GameController : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         rawAnalog1= new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         analog1= Time.deltaTime*speed*rawAnalog1;
     }

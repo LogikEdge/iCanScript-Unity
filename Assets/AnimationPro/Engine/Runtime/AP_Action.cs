@@ -11,7 +11,8 @@ public abstract class AP_Action : AP_Node {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    public abstract void Execute();
+    protected abstract void Evaluate();
+    public    virtual  void Execute()      { Evaluate(); MarkAsCurrent(); }
     
     // ----------------------------------------------------------------------
     public bool IsCurrent()     { return myFrameId == Top.FrameId; }

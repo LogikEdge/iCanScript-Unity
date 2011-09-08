@@ -25,7 +25,7 @@ public class AP_FromVector4 : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         xs= Prelude.map_(xs, (v)=> v.x, vs);
         ys= Prelude.map_(xs, (v)=> v.y, vs);
         zs= Prelude.map_(xs, (v)=> v.z, vs);

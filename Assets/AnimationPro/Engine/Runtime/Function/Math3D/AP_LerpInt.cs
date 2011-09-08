@@ -23,7 +23,7 @@ public sealed class AP_LerpInt : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         os= Prelude.zipWith_(os, (x,y,ratio)=> (int)(x+(y-x)*ratio), xs, ys, ratios);
     }
 }

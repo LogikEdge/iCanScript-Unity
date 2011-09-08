@@ -19,6 +19,6 @@ public class AP_AnimBlend : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
     }
 }

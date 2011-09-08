@@ -22,7 +22,7 @@ public sealed class AP_Random : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         value= scale*Random.value;
     }
 }

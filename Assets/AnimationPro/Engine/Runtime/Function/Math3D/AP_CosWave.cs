@@ -26,7 +26,7 @@ public sealed class AP_CosWave : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         elapseTime+= Time.deltaTime;
         wave= amplitude * Mathf.Cos(twoPI * freq * elapseTime);
     }

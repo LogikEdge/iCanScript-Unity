@@ -23,7 +23,7 @@ public sealed class AP_Decoder2 : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         int len= xs.Length;
         for(int i= 0; i < len; ++i) {
             oxs[i]= xs[i] >> 1;

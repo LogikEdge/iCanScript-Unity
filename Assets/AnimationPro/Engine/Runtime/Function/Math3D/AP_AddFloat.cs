@@ -22,7 +22,7 @@ public sealed class AP_AddFloat : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         os= Prelude.zipWith_(os, (x,y)=> x+y, xs, ys);
     }
 }

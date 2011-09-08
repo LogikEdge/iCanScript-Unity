@@ -32,7 +32,7 @@ public sealed class AP_Top : AP_Action {
 
     // ----------------------------------------------------------------------
     // Updates the frame number and executes all enabled children.
-    public override void Execute() {
+    protected override void Evaluate() {
         ++myFrameId;
         if(Action) {
             Action.Execute();

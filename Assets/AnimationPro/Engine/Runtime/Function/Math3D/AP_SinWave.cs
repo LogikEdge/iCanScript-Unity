@@ -25,7 +25,7 @@ public sealed class AP_SinWave : AP_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void doExecute() {
+    protected override void Evaluate() {
         elapseTime+= Time.deltaTime;
         wave= amplitude * Mathf.Sin(twoPI * freq * elapseTime);
     }
