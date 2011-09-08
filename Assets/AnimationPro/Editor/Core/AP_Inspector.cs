@@ -38,7 +38,7 @@ public class AP_Inspector : Editor {
         
 		// Create the graph editor.
         if(Editor == null) {
-            Editor= AP_Editor.GetWindow();
+            Editor= EditorWindow.GetWindow<AP_Editor>();
             DontDestroyOnLoad(Editor);
             Editor.hideFlags= HideFlags.DontSave;            
         }

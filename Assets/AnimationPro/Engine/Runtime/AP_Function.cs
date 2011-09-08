@@ -9,29 +9,26 @@ public abstract class AP_Function : AP_Action {
     // EXECUTION
     // ----------------------------------------------------------------------
     public override void Execute() {
+        if(!IsReady()) return;
         // All verification have passed so let's execute !!!
         ForEachChild<AP_DataPort>( (port)=> { if(port.IsInput) port.UpdateValue(); });
-        Evaluate();            
-        MarkAsCurrent();
+        base.Execute();
     }
     
     // ----------------------------------------------------------------------
-//    public bool IsReady { get { return doIsReady(); }}
-//    public virtual bool doIsReady() {
-//        bool isReady= true;
-//        ForEachChild<AP_Port>(
-//            (port)=> {
-//                if(port.IsInput) {
-//                    AP_Port producerPort= port.GetProducerPort();
-//                    if(producerPort != port) {
-//                        AP_Function producer= producerPort.Parent as AP_Function;
-//                        if(!producer.IsCurrent()) {
-//                            isReady= false;
-//                        }
-//                    }                            
-//                }
-//            }
-//        );
-//        return isReady;
-//    }
+    protected virtual bool IsReady() {
+        bool isReady= true;
+        ForEachChild<AP_InDataPort>(
+            (port)=> {
+                AP_Port producerPort= port.GetProducerPort();
+                if(producerPort != port) {
+                    AP_Action producer= producerPort.Parent as AP_Action;
+                    if(!producer.IsCurrent()) {
+                        isReady= false;
+                    }
+                }                            
+            }
+        );
+        return isReady;
+    }
 }
