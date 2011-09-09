@@ -10,6 +10,7 @@ public class AP_MenuPort {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node selectedObject= context.SelectedObject as AP_Node;
         AP_VirtualDataPort.CreateInstance("", selectedObject, AP_DataPort.DirectionEnum.In);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Port/Add Input",true)]
     public static bool ValidateAddInputPort(MenuCommand command) {
@@ -22,6 +23,7 @@ public class AP_MenuPort {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_Node selectedObject= context.SelectedObject as AP_Node;
         AP_VirtualDataPort.CreateInstance("", selectedObject, AP_DataPort.DirectionEnum.Out);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Port/Add Output",true)]
     public static bool ValidateAddOutputPort(MenuCommand command) {

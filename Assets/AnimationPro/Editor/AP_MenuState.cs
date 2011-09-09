@@ -8,10 +8,11 @@ public class AP_MenuState {
     public static void SetEntryState(MenuCommand command) {
         AP_MenuContext context= command.context as AP_MenuContext;
         AP_State state= context.SelectedObject as AP_State;
-        AP_State parentState= state.Parent as AP_State;
-        if(parentState) { parentState.EntryState= state; return; }
-        AP_StateChart stateChart= state.Parent as AP_StateChart;
-        if(stateChart) { stateChart.EntryState= state; }
+        state.Parent.Case<AP_State, AP_StateChart>(
+            (parentState)      => { parentState.EntryState= state; },
+            (parentStateChart) => { parentStateChart.EntryState= state; }
+        );
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/State/Set As Entry State", true)]
     public static bool ValidateSetEntryState(MenuCommand command) {
@@ -31,6 +32,7 @@ public class AP_MenuState {
         AP_State parent= context.SelectedObject as AP_State;
         AP_State instance= AP_State.CreateInstance<AP_State>("", parent);
         instance.SetInitialPosition(context.GraphPosition);        
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/State/Add State", true)]
     public static bool ValidateAddState(MenuCommand command) {
@@ -44,6 +46,7 @@ public class AP_MenuState {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_Module instance= AP_Module.CreateInstance<AP_Module>("OnEntry", parent);
         instance.SetInitialPosition(context.GraphPosition);        
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/State/Add Entry Function", true)]
     public static bool ValidateAddEntryFunction(MenuCommand command) {
@@ -59,6 +62,7 @@ public class AP_MenuState {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_Module instance= AP_Module.CreateInstance<AP_Module>("OnExit", parent);
         instance.SetInitialPosition(context.GraphPosition);        
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/State/Add Exit Function", true)]
     public static bool ValidateAddExitFunction(MenuCommand command) {
@@ -74,6 +78,7 @@ public class AP_MenuState {
         AP_State parent= context.SelectedObject as AP_State;
         AP_Module instance= AP_Module.CreateInstance<AP_Module>("OnUpdate", parent);
         instance.SetInitialPosition(context.GraphPosition);        
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/State/Add Update Function", true)]
     public static bool ValidateAddUpdateFunction(MenuCommand command) {
@@ -97,6 +102,7 @@ public class AP_MenuState {
 //                }
 //            }
 //        );
+//        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/State/Add Transition", true)]
     public static bool ValidateAddTransition(MenuCommand command) {
@@ -117,6 +123,7 @@ public class AP_MenuState {
         if(EditorUtility.DisplayDialog("Deleting State", "Are you sure you want to delete state: "+state.NameOrTypeName+" and all of its children?", "Delete", "Cancel")) {
             state.Dealloc();
         }                                
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/State/Delete", true)]
     public static bool ValidateDelete(MenuCommand command) {

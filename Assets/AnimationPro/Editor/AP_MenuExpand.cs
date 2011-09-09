@@ -14,6 +14,7 @@ public class AP_MenuExpand {
                 node.ForEachChild<AP_Node>((child)=> { child.IsVisible= true; });
             }
         );
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Expand",true)]
     public static bool ValidateExpandObject(MenuCommand command) {
@@ -45,6 +46,7 @@ public class AP_MenuExpand {
                 node.ForEachChild<AP_Node>((child)=> { child.IsVisible= false; });
             }
         );
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Fold",true)]
     public static bool ValidateFoldObject(MenuCommand command) {

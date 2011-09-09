@@ -11,6 +11,7 @@ public class AP_MenuAnimation {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_AnimBlend function= AP_AnimBlend.CreateInstance<AP_AnimBlend>("", parent);
         function.SetInitialPosition(context.GraphPosition);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Animation/Blend", true)]
     public static bool ValidateAddNodeAnimBlend(MenuCommand command) {
@@ -24,6 +25,7 @@ public class AP_MenuAnimation {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_AnimSelect function= AP_AnimSelect.CreateInstance<AP_AnimSelect>("", parent);
         function.SetInitialPosition(context.GraphPosition);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Animation/Select", true)]
     public static bool ValidateAddNodeAnimSelect(MenuCommand command) {
@@ -37,6 +39,7 @@ public class AP_MenuAnimation {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_AnimState function= AP_AnimState.CreateInstance<AP_AnimState>("", parent);
         function.SetInitialPosition(context.GraphPosition);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Animation/State", true)]
     public static bool ValidateAddNodeAnimState(MenuCommand command) {
@@ -50,12 +53,11 @@ public class AP_MenuAnimation {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_AnimDiversity function= AP_AnimDiversity.CreateInstance<AP_AnimDiversity>("", parent);
         function.SetInitialPosition(context.GraphPosition);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Animation/Diversity", true)]
     public static bool ValidateAddNodeAnimDiversity(MenuCommand command) {
         return AP_MenuUtilities.ValidateAddNode(command);
     }
-
-
 
 }

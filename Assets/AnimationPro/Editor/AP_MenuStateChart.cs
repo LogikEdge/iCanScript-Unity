@@ -11,6 +11,7 @@ public class AP_MenuStateChart {
         AP_StateChart parent= context.SelectedObject as AP_StateChart;
         AP_State instance= AP_State.CreateInstance<AP_State>("", parent);
         instance.SetInitialPosition(context.GraphPosition);        
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/StateChart/Add State", true)]
     public static bool ValidateAddState(MenuCommand command) {
@@ -29,6 +30,7 @@ public class AP_MenuStateChart {
         if(EditorUtility.DisplayDialog("Deleting State Chart", "Are you sure you want to delete state chart: "+stateChart.NameOrTypeName+" and all of its children?", "Delete", "Cancel")) {
             stateChart.Dealloc();
         }                                
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/StateChart/Delete", true)]
     public static bool ValidateDelete(MenuCommand command) {

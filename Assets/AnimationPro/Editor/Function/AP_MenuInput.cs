@@ -11,6 +11,7 @@ public class AP_MenuInput {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_GameController function= AP_GameController.CreateInstance<AP_GameController>("", parent);
         function.SetInitialPosition(context.GraphPosition);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Input/GameController", true)]
     public static bool ValidateAddNodeInputGameController(MenuCommand command) {

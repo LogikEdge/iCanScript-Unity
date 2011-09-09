@@ -15,7 +15,8 @@ public class AP_MenuRootNode {
         rootNode.UpdateTop= top;
         // Add initial state.
         AP_State state= AP_State.CreateInstance<AP_State>("", stateChart);
-        stateChart.EntryState= state;        
+        stateChart.EntryState= state;
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/RootNode/Add Update State Chart", true)]
     public static bool ValidateAddUpdateStateChart(MenuCommand command) {
@@ -37,6 +38,7 @@ public class AP_MenuRootNode {
         // Add initial state.
         AP_State state= AP_State.CreateInstance<AP_State>("", stateChart);
         stateChart.EntryState= state;        
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/RootNode/Add LateUpdate State Chart", true)]
     public static bool ValidateAddLateUpdateStateChart(MenuCommand command) {
@@ -58,6 +60,7 @@ public class AP_MenuRootNode {
         // Add initial state.
         AP_State state= AP_State.CreateInstance<AP_State>("", stateChart);
         stateChart.EntryState= state;        
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/RootNode/Add FixedUpdate State Chart", true)]
     public static bool ValidateAddFixedUpdateStateChart(MenuCommand command) {
@@ -76,6 +79,7 @@ public class AP_MenuRootNode {
         AP_Module module= AP_Module.CreateInstance<AP_Module>("Update", top);
         top.Action= module;
         rootNode.UpdateTop= top;
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/RootNode/Add Update Module", true)]
     public static bool ValidateAddUpdatefunction(MenuCommand command) {
@@ -94,6 +98,7 @@ public class AP_MenuRootNode {
         AP_Module module= AP_Module.CreateInstance<AP_Module>("LateUpdate", top);
         top.Action= module;
         rootNode.LateUpdateTop= top;
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/RootNode/Add LateUpdate Module", true)]
     public static bool ValidateAddLateUpdateModule(MenuCommand command) {
@@ -112,6 +117,7 @@ public class AP_MenuRootNode {
         AP_Module module= AP_Module.CreateInstance<AP_Module>("FixedUpdate", top);
         top.Action= module;
         rootNode.FixedUpdateTop= top;
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/RootNode/Add FixedUpdate Module", true)]
     public static bool ValidateAddFixedUpdateModule(MenuCommand command) {

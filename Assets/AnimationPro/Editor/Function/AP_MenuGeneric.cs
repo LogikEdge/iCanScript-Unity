@@ -11,6 +11,7 @@ public class AP_MenuGeneric {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_Module function= AP_Module.CreateInstance<AP_Module>("", parent);
         function.SetInitialPosition(context.GraphPosition);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Generic/Module", true)]
     public static bool ValidateAddNodeModule(MenuCommand command) {

@@ -11,6 +11,7 @@ public class AP_MenuSystem {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_Time function= AP_Time.CreateInstance<AP_Time>("", parent);
         function.SetInitialPosition(context.GraphPosition);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/System/FrameTime", true)]
     public static bool ValidateAddNodeTimeFrameTime(MenuCommand command) {

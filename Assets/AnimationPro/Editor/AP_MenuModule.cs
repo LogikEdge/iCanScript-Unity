@@ -13,6 +13,7 @@ public class AP_MenuModule {
         // Add initial state.
         AP_State state= AP_State.CreateInstance<AP_State>("", stateChart);
         stateChart.EntryState= state;        
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Add State Chart", true)]
     public static bool ValidateAddStateChart(MenuCommand command) {
@@ -29,6 +30,7 @@ public class AP_MenuModule {
         if(EditorUtility.DisplayDialog("Deleting Module", "Are you sure you want to delete module: "+module.NameOrTypeName+"?", "Delete", "Cancel")) {
             module.Dealloc();
         }                
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/Delete",true)]
     public static bool ValidateDeleteObject(MenuCommand command) {

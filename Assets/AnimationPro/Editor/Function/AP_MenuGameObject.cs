@@ -11,6 +11,7 @@ public class AP_MenuGameObject {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_CGameObject function= AP_CGameObject.CreateInstance<AP_CGameObject>("", parent);
         function.SetInitialPosition(context.GraphPosition);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/GameObject/CGameObject", true)]
     public static bool ValidateAddNodeCGameObject(MenuCommand command) {
@@ -24,6 +25,7 @@ public class AP_MenuGameObject {
         AP_Node parent= context.SelectedObject as AP_Node;
         AP_Transform function= AP_Transform.CreateInstance<AP_Transform>("", parent);
         function.SetInitialPosition(context.GraphPosition);
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Module/GameObject/Transform", true)]
     public static bool ValidateAddNodeGameObjectTransform(MenuCommand command) {

@@ -22,6 +22,7 @@ public class AP_MenuDelete {
             },
             (unknown)=> { Debug.Log("Unknown type"); }
         );
+        AP_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/AnimationPro/Delete",true)]
     public static bool ValidateDeleteObject(MenuCommand command) {

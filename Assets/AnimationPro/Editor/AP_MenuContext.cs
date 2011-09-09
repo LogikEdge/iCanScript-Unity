@@ -1,7 +1,5 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
-using System.Collections.Generic;
 
 public class AP_MenuContext : ScriptableObject {
     // ======================================================================
@@ -27,4 +25,13 @@ public class AP_MenuContext : ScriptableObject {
         return this;
     }
 
+//    void OnEnable() {
+//        Debug.Log("MenuContext enabled");
+//    }
+//    void OnDisable() {
+//        Debug.Log("MenuContext disable");
+//    }
+//    void OnDestroy() {
+//        Debug.Log("MenuContext destroyed");
+//    }
 }
