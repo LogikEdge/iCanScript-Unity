@@ -14,9 +14,9 @@ public class AP_Graphics {
 	static Texture2D   defaultNodeTexture= null;
 	static Texture2D   nodeMaskTexture   = null;
 	internal class NodeStyle {
-	    public GUIStyle    guiStyle= null;
-	    public Color       nodeColor= new Color(0,0,0,0);
-	    public Texture2D   nodeTexture= null;
+	    public GUIStyle    guiStyle    = null;
+	    public Color       nodeColor   = new Color(0,0,0,0);
+	    public Texture2D   nodeTexture = null;
 	    public Texture2D   hoverTexture= null;
 	}
 	NodeStyle   functionStyle= null;

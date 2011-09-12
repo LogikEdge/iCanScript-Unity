@@ -20,9 +20,9 @@ public class AP_Editor : EditorWindow {
     public  AP_ScrollView      ScrollView      = null;
     
     // ----------------------------------------------------------------------
-    bool        IsRootNodeSelected  { get { return SelectedObject is AP_RootNode; }}
-    bool        IsNodeSelected      { get { return SelectedObject is AP_Node; }}
-    bool        IsPortSelected      { get { return SelectedObject is AP_Port; }}
+    bool    IsRootNodeSelected  { get { return SelectedObject is AP_RootNode; }}
+    bool    IsNodeSelected      { get { return SelectedObject is AP_Node; }}
+    bool    IsPortSelected      { get { return SelectedObject is AP_Port; }}
     
     // ----------------------------------------------------------------------
     AP_Object   DragObject          = null;
@@ -48,7 +48,8 @@ public class AP_Editor : EditorWindow {
     // Prepares the editor for editing a graph.  Not that the graph to edit
     // is not configured at this point.  We must wait for an activate from
     // the graph inspector to know which graph to edit. 
-	public void OnEnable() {        
+	void OnEnable() {        
+        Debug.Log("Editor.OnEnable()");
 		// Tell Unity we want to be informed of move drag events
 		wantsMouseMove= true;
 
@@ -60,13 +61,17 @@ public class AP_Editor : EditorWindow {
 
 	// ----------------------------------------------------------------------
     // Releases all resources used by the AP_Graph editor.
-    public void OnDisable() {
+    void OnDisable() {
+        Debug.Log("Editor.OnDisable()");
         // Release all worker objects.
         Mouse           = null;
         Graphics        = null;
         ScrollView      = null;
     }
-
+    void OnDestroy() {
+        Debug.Log("Editor.OnDestroy()");
+    }
+    
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.
 	public void Activate(AP_RootNode rootNode, AP_Inspector _inspector) {
