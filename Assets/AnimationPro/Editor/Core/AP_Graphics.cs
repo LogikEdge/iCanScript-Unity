@@ -10,9 +10,9 @@ public class AP_Graphics {
     public bool     IsInitialized= false;
     
     // ----------------------------------------------------------------------
-	Texture2D   lineTexture;
-	Texture2D   defaultNodeTexture;
-	Texture2D   nodeMaskTexture;
+	static Texture2D   lineTexture       = null;
+	static Texture2D   defaultNodeTexture= null;
+	static Texture2D   nodeMaskTexture   = null;
 	internal class NodeStyle {
 	    public GUIStyle    guiStyle= null;
 	    public Color       nodeColor= new Color(0,0,0,0);
@@ -25,14 +25,12 @@ public class AP_Graphics {
 	NodeStyle   defaultStyle = null;
 	NodeStyle   selectedStyle= null;
 
-	Texture2D   nodeIcon;
     Vector2     drawOffset= Vector2.zero;
 
     // ----------------------------------------------------------------------
-    bool lineTextureErrorSeen        = false;
-    bool defaultNodeTextureErrorSeen = false; 
-    bool nodeMaskTextureErrorSeen    = false;   
-    bool nodeIconErrorSeen           = false;
+    static bool lineTextureErrorSeen        = false;
+    static bool defaultNodeTextureErrorSeen = false; 
+    static bool nodeMaskTextureErrorSeen    = false;   
     
     // ======================================================================
 	// CONSTANTS
@@ -48,47 +46,41 @@ public class AP_Graphics {
     //  INITIALIZATION
 	// ----------------------------------------------------------------------
     ~AP_Graphics() {
-        lineTexture        = null;
-        defaultNodeTexture = null;
-        nodeMaskTexture    = null;
-        nodeIcon           = null;
     }
 
 	// ----------------------------------------------------------------------
     public bool Init() {
-        // Create an AA line standard texture.
-        string lineTexturePath= AP_EditorConfig.GuiAssetPath + "/AP_LineTexture.psd";
-        lineTexture= AssetDatabase.LoadAssetAtPath(lineTexturePath, typeof(Texture2D)) as Texture2D;
+        // Load AA line texture.
+        string texturePath;     
         if(lineTexture == null) {
-            ResourceMissingError(lineTexturePath, ref lineTextureErrorSeen);
-            IsInitialized= false;
-            return IsInitialized;
+            texturePath= AP_EditorConfig.GuiAssetPath + "/AP_LineTexture.psd";
+            lineTexture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
+            if(lineTexture == null) {
+                ResourceMissingError(texturePath, ref lineTextureErrorSeen);
+                IsInitialized= false;
+                return IsInitialized;
+            }            
         }
-        string nodeTexturePath= AP_EditorConfig.GuiAssetPath + "/AP_DefaultNodeTexture.psd";
-        defaultNodeTexture= AssetDatabase.LoadAssetAtPath(nodeTexturePath, typeof(Texture2D)) as Texture2D;
+        // Load node texture templates.
         if(defaultNodeTexture == null) {
-            ResourceMissingError(nodeTexturePath, ref defaultNodeTextureErrorSeen);
-            IsInitialized= false;
-            return IsInitialized;
+            texturePath= AP_EditorConfig.GuiAssetPath + "/AP_DefaultNodeTexture.psd";
+            defaultNodeTexture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
+            if(defaultNodeTexture == null) {
+                ResourceMissingError(texturePath, ref defaultNodeTextureErrorSeen);
+                IsInitialized= false;
+                return IsInitialized;
+            }            
         }
-        nodeTexturePath= AP_EditorConfig.GuiAssetPath + "/AP_NodeMaskTexture.psd";
-        nodeMaskTexture= AssetDatabase.LoadAssetAtPath(nodeTexturePath, typeof(Texture2D)) as Texture2D;
         if(nodeMaskTexture == null) {
-            ResourceMissingError(nodeTexturePath, ref nodeMaskTextureErrorSeen);
-            IsInitialized= false;
-            return IsInitialized;
+            texturePath= AP_EditorConfig.GuiAssetPath + "/AP_NodeMaskTexture.psd";
+            nodeMaskTexture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
+            if(nodeMaskTexture == null) {
+                ResourceMissingError(texturePath, ref nodeMaskTextureErrorSeen);
+                IsInitialized= false;
+                return IsInitialized;
+            }            
         }
-        
-        // A temporary node icon.
-        // TODO: Support for node icons.
-        string nodeBackgroundPath= AP_EditorConfig.GuiAssetPath + "/AP_NodeIcon.psd";
-        nodeIcon= AssetDatabase.LoadAssetAtPath(nodeBackgroundPath, typeof(Texture2D)) as Texture2D;
-        if(nodeIcon == null) {
-            ResourceMissingError(nodeBackgroundPath, ref nodeIconErrorSeen);
-            IsInitialized= false;
-            return IsInitialized;
-        }
-        
+                
         // Graphic resources properly initialized.
         IsInitialized= true;
         return IsInitialized;
