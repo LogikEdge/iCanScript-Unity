@@ -7,12 +7,16 @@ public class AP_Graphics {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public bool     IsInitialized= false;
-    
+    public bool  IsInitialized= false;    
+    Texture2D    lineTexture       = null;
+    Texture2D    defaultNodeTexture= null;
+    Texture2D    nodeMaskTexture   = null;
+    bool         lineTextureErrorSeen        = false;
+    bool         defaultNodeTextureErrorSeen = false; 
+    bool         nodeMaskTextureErrorSeen    = false;   
+	
+	
     // ----------------------------------------------------------------------
-	static Texture2D   lineTexture       = null;
-	static Texture2D   defaultNodeTexture= null;
-	static Texture2D   nodeMaskTexture   = null;
 	internal class NodeStyle {
 	    public GUIStyle    guiStyle    = null;
 	    public Color       nodeColor   = new Color(0,0,0,0);
@@ -30,12 +34,9 @@ public class AP_Graphics {
 	NodeStyle   defaultStyle = null;
 	NodeStyle   selectedStyle= null;
 
+    // ----------------------------------------------------------------------
     Vector2     drawOffset= Vector2.zero;
 
-    // ----------------------------------------------------------------------
-    static bool lineTextureErrorSeen        = false;
-    static bool defaultNodeTextureErrorSeen = false; 
-    static bool nodeMaskTextureErrorSeen    = false;   
     
     // ======================================================================
 	// CONSTANTS
@@ -51,6 +52,10 @@ public class AP_Graphics {
     //  INITIALIZATION
 	// ----------------------------------------------------------------------
     ~AP_Graphics() {
+        IsInitialized= false;
+        Texture2D.DestroyImmediate(lineTexture); lineTexture= null;
+        Texture2D.DestroyImmediate(defaultNodeTexture); defaultNodeTexture= null;
+        Texture2D.DestroyImmediate(nodeMaskTexture); nodeMaskTexture= null;
     }
 
 	// ----------------------------------------------------------------------
@@ -64,6 +69,9 @@ public class AP_Graphics {
                 ResourceMissingError(texturePath, ref lineTextureErrorSeen);
                 IsInitialized= false;
                 return IsInitialized;
+            }
+            else {
+                lineTexture.hideFlags= HideFlags.DontSave;
             }            
         }
         // Load node texture templates.
@@ -74,6 +82,9 @@ public class AP_Graphics {
                 ResourceMissingError(texturePath, ref defaultNodeTextureErrorSeen);
                 IsInitialized= false;
                 return IsInitialized;
+            }
+            else {
+                defaultNodeTexture.hideFlags= HideFlags.DontSave;
             }            
         }
         if(nodeMaskTexture == null) {
@@ -83,6 +94,9 @@ public class AP_Graphics {
                 ResourceMissingError(texturePath, ref nodeMaskTextureErrorSeen);
                 IsInitialized= false;
                 return IsInitialized;
+            }
+            else {
+                nodeMaskTexture.hideFlags= HideFlags.DontSave;
             }            
         }
                 
