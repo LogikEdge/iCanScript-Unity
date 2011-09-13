@@ -49,7 +49,6 @@ public class AP_Editor : EditorWindow {
     // is not configured at this point.  We must wait for an activate from
     // the graph inspector to know which graph to edit. 
 	void OnEnable() {        
-        Debug.Log("Editor.OnEnable()");
 		// Tell Unity we want to be informed of move drag events
 		wantsMouseMove= true;
 
@@ -62,14 +61,10 @@ public class AP_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     // Releases all resources used by the AP_Graph editor.
     void OnDisable() {
-        Debug.Log("Editor.OnDisable()");
         // Release all worker objects.
         Mouse           = null;
         Graphics        = null;
         ScrollView      = null;
-    }
-    void OnDestroy() {
-        Debug.Log("Editor.OnDestroy()");
     }
     
     // ----------------------------------------------------------------------

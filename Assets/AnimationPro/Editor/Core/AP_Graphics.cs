@@ -120,7 +120,8 @@ public class AP_Graphics {
                 }
             }
         }
-        nodeStyle.nodeTexture.Apply(); 
+        nodeStyle.nodeTexture.Apply();
+        nodeStyle.nodeTexture.hideFlags= HideFlags.DontSave; 
         nodeStyle.nodeColor= nodeColor;
         nodeStyle.guiStyle.normal.background= nodeStyle.nodeTexture;
         // Generate node hover texture.
@@ -134,7 +135,8 @@ public class AP_Graphics {
                 }
             }
         }
-        nodeStyle.hoverTexture.Apply(); 
+        nodeStyle.hoverTexture.Apply();
+        nodeStyle.hoverTexture.hideFlags= HideFlags.DontSave; 
         nodeStyle.guiStyle.hover.background= nodeStyle.hoverTexture;
     }
     
