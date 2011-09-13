@@ -90,8 +90,8 @@ public class AP_Editor : EditorWindow {
         if(DisplayRoot == null) return false;
         
 		// Don't run if graphic sub-system did not initialise.
-		if(Graphics.IsInitialized == false) {
-            Graphics.Init();
+		if(AP_Graphics.IsInitialized == false) {
+            AP_Graphics.Init();
 			return false;
 		}
 		

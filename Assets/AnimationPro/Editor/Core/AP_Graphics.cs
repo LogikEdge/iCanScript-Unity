@@ -7,13 +7,13 @@ public class AP_Graphics {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public bool  IsInitialized= false;    
-    Texture2D    lineTexture       = null;
-    Texture2D    defaultNodeTexture= null;
-    Texture2D    nodeMaskTexture   = null;
-    bool         lineTextureErrorSeen        = false;
-    bool         defaultNodeTextureErrorSeen = false; 
-    bool         nodeMaskTextureErrorSeen    = false;   
+    static public bool  IsInitialized= false;    
+    static Texture2D    lineTexture       = null;
+    static Texture2D    defaultNodeTexture= null;
+    static Texture2D    nodeMaskTexture   = null;
+    static bool         lineTextureErrorSeen        = false;
+    static bool         defaultNodeTextureErrorSeen = false; 
+    static bool         nodeMaskTextureErrorSeen    = false;   
 	
 	
     // ----------------------------------------------------------------------
@@ -28,11 +28,12 @@ public class AP_Graphics {
             }
 	    }
 	}
-	NodeStyle   functionStyle= null;
-	NodeStyle   moduleStyle  = null;
-	NodeStyle   stateStyle   = null;
-	NodeStyle   defaultStyle = null;
-	NodeStyle   selectedStyle= null;
+	NodeStyle   functionStyle   = null;
+	NodeStyle   moduleStyle     = null;
+	NodeStyle   stateStyle      = null;
+	NodeStyle   defaultStyle    = null;
+	NodeStyle   selectedStyle   = null;
+	NodeStyle   nodeInErrorStyle= null;
 
     // ----------------------------------------------------------------------
     Vector2     drawOffset= Vector2.zero;
@@ -51,15 +52,7 @@ public class AP_Graphics {
     // ======================================================================
     //  INITIALIZATION
 	// ----------------------------------------------------------------------
-    ~AP_Graphics() {
-        IsInitialized= false;
-        Texture2D.DestroyImmediate(lineTexture); lineTexture= null;
-        Texture2D.DestroyImmediate(defaultNodeTexture); defaultNodeTexture= null;
-        Texture2D.DestroyImmediate(nodeMaskTexture); nodeMaskTexture= null;
-    }
-
-	// ----------------------------------------------------------------------
-    public bool Init() {
+    static public bool Init() {
         // Load AA line texture.
         string texturePath;     
         if(lineTexture == null) {
@@ -228,6 +221,10 @@ public class AP_Graphics {
     }
     NodeStyle GetNodeStyle(AP_Node node, AP_Object selectedObject) {
         // Node background is dependant on node type.
+        if(!node.IsValid) {
+            GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
+            return nodeInErrorStyle;
+        }
         if(node == selectedObject) {
             GenerateNodeStyle(ref selectedStyle, node.Top.Graph.Preferences.NodeColors.SelectedColor);
             return selectedStyle;
