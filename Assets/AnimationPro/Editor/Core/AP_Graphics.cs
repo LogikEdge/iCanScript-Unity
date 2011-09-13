@@ -20,13 +20,13 @@ public class AP_Graphics {
 	internal class NodeStyle {
 	    public GUIStyle    guiStyle    = null;
 	    public Color       nodeColor   = new Color(0,0,0,0);
-	    ~NodeStyle() {
-            if(guiStyle != null) {
-    	        if(guiStyle.normal.background != null) Texture2D.DestroyImmediate(guiStyle.normal.background);
-                if(guiStyle.hover.background  != null) Texture2D.DestroyImmediate(guiStyle.hover.background);
-                guiStyle= null;
-            }
-	    }
+//	    ~NodeStyle() {
+//            if(guiStyle != null) {
+//    	        if(guiStyle.normal.background != null) Texture2D.DestroyImmediate(guiStyle.normal.background);
+//                if(guiStyle.hover.background  != null) Texture2D.DestroyImmediate(guiStyle.hover.background);
+//                guiStyle= null;
+//            }
+//	    }
 	}
 	NodeStyle   functionStyle   = null;
 	NodeStyle   moduleStyle     = null;
