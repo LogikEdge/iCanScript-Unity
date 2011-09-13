@@ -16,8 +16,13 @@ public class AP_Graphics {
 	internal class NodeStyle {
 	    public GUIStyle    guiStyle    = null;
 	    public Color       nodeColor   = new Color(0,0,0,0);
-	    public Texture2D   nodeTexture = null;
-	    public Texture2D   hoverTexture= null;
+	    ~NodeStyle() {
+            if(guiStyle != null) {
+    	        if(guiStyle.normal.background != null) Texture2D.DestroyImmediate(guiStyle.normal.background);
+                if(guiStyle.hover.background  != null) Texture2D.DestroyImmediate(guiStyle.hover.background);
+                guiStyle= null;
+            }
+	    }
 	}
 	NodeStyle   functionStyle= null;
 	NodeStyle   moduleStyle  = null;
@@ -103,41 +108,39 @@ public class AP_Graphics {
             nodeStyle.guiStyle.alignment= TextAnchor.UpperCenter;
             nodeStyle.guiStyle.fontStyle= FontStyle.Bold;
         }
-        if(nodeStyle.nodeTexture == null) {
+        if(nodeStyle.guiStyle.normal.background == null) {
             nodeStyle.nodeColor= new Color(0,0,0,0);            
-            nodeStyle.nodeTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
-            nodeStyle.hoverTexture= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+            nodeStyle.guiStyle.normal.background= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+            nodeStyle.guiStyle.hover.background= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
         }
         // Generate node normal texture.
         if(nodeColor == nodeStyle.nodeColor) return;
         for(int x= 0; x < nodeMaskTexture.width; ++x) {
             for(int y= 0; y < nodeMaskTexture.height; ++y) {
                 if(nodeMaskTexture.GetPixel(x,y).a > 0.5f) {
-                    nodeStyle.nodeTexture.SetPixel(x,y, nodeColor);
+                    nodeStyle.guiStyle.normal.background.SetPixel(x,y, nodeColor);
                 }
                 else {
-                    nodeStyle.nodeTexture.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
+                    nodeStyle.guiStyle.normal.background.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
                 }
             }
         }
-        nodeStyle.nodeTexture.Apply();
-        nodeStyle.nodeTexture.hideFlags= HideFlags.DontSave; 
+        nodeStyle.guiStyle.normal.background.Apply();
+        nodeStyle.guiStyle.normal.background.hideFlags= HideFlags.DontSave; 
         nodeStyle.nodeColor= nodeColor;
-        nodeStyle.guiStyle.normal.background= nodeStyle.nodeTexture;
         // Generate node hover texture.
         for(int x= 0; x < defaultNodeTexture.width; ++x) {
             for(int y= 0; y < defaultNodeTexture.height; ++y) {
                 if(defaultNodeTexture.GetPixel(x,y).a > 0.95f) {
-                    nodeStyle.hoverTexture.SetPixel(x,y, nodeStyle.nodeTexture.GetPixel(x,y));
+                    nodeStyle.guiStyle.hover.background.SetPixel(x,y, nodeStyle.guiStyle.normal.background.GetPixel(x,y));
                 }
                 else {
-                    nodeStyle.hoverTexture.SetPixel(x,y, new Color(1,1,1, defaultNodeTexture.GetPixel(x,y).a));
+                    nodeStyle.guiStyle.hover.background.SetPixel(x,y, new Color(1,1,1, defaultNodeTexture.GetPixel(x,y).a));
                 }
             }
         }
-        nodeStyle.hoverTexture.Apply();
-        nodeStyle.hoverTexture.hideFlags= HideFlags.DontSave; 
-        nodeStyle.guiStyle.hover.background= nodeStyle.hoverTexture;
+        nodeStyle.guiStyle.hover.background.Apply();
+        nodeStyle.guiStyle.hover.background.hideFlags= HideFlags.DontSave; 
     }
     
     // ======================================================================
