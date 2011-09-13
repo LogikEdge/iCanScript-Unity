@@ -125,7 +125,9 @@ public class AP_Graphics {
         if(nodeStyle.guiStyle.normal.background == null) {
             nodeStyle.nodeColor= new Color(0,0,0,0);            
             nodeStyle.guiStyle.normal.background= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
-            nodeStyle.guiStyle.hover.background= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+        }
+        if(nodeStyle.guiStyle.hover.background == null) {
+            nodeStyle.guiStyle.hover.background= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);            
         }
         // Generate node normal texture.
         if(nodeColor == nodeStyle.nodeColor) return;
