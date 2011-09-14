@@ -214,7 +214,7 @@ public class AP_Graphics {
     }
     NodeStyle GetNodeStyle(AP_Node node, AP_Object selectedObject) {
         // Node background is dependant on node type.
-        if(!node.IsValid) {
+        if(!node.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
             GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
             return nodeInErrorStyle;
         }
@@ -230,7 +230,7 @@ public class AP_Graphics {
             GenerateNodeStyle(ref moduleStyle, node.Top.Graph.Preferences.NodeColors.ModuleColor);
             return moduleStyle;
         }
-        if(node is AP_Function) {
+        if(node is AP_Function || node is AP_Action) {
             GenerateNodeStyle(ref functionStyle, node.Top.Graph.Preferences.NodeColors.FunctionColor);
             return functionStyle;
         }
