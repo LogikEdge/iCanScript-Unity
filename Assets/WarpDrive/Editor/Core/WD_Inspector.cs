@@ -4,13 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// This class is used to edit WD_Graph components.
-[CustomEditor (typeof (WD_Graph))]
+// This class is used to edit WD_Behaviour components.
+[CustomEditor (typeof (WD_Behaviour))]
 public class WD_Inspector : Editor {
     // ======================================================================
     // PROPERTIES
 	// ----------------------------------------------------------------------
-    private WD_Graph    Graph= null;
+    private WD_Behaviour    Graph= null;
 	private WD_Editor	Editor= null;
 	public  WD_Object   SelectedObject {
 	    get { return mySelectedObject; }
@@ -33,7 +33,7 @@ public class WD_Inspector : Editor {
         hideFlags= HideFlags.DontSave;
         
         // Get graph reference.
-        Graph= target as WD_Graph;
+        Graph= target as WD_Behaviour;
         Graph.Init();
         
 		// Create the graph editor.

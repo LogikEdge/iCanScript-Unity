@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class WD_Graph : MonoBehaviour {
+public sealed class WD_Behaviour : MonoBehaviour {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
@@ -13,7 +13,7 @@ public sealed class WD_Graph : MonoBehaviour {
     // ======================================================================
     // INITIALIZATION
     // ----------------------------------------------------------------------
-    public WD_Graph Init() {
+    public WD_Behaviour Init() {
         if(RootNode == null) RootNode= WD_RootNode.CreateInstance("RootNode", this);
         return this;       
     }

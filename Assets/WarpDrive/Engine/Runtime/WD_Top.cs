@@ -10,7 +10,7 @@ public sealed class WD_Top : WD_Action {
     public WD_RootNode  RootNode;
         
     public int          FrameId     { get { return myFrameId; }}
-    public WD_Graph     Graph       { get { return RootNode.Graph; }}
+    public WD_Behaviour     Graph       { get { return RootNode.Graph; }}
     
     // ======================================================================
     // INITIALIZATION

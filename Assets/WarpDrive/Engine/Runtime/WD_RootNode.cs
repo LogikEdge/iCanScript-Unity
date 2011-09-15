@@ -5,7 +5,7 @@ public class WD_RootNode : WD_Node {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public WD_Graph Graph;
+    public WD_Behaviour Graph;
     public WD_Top   UpdateTop= null;
     public WD_Top   LateUpdateTop= null;
     public WD_Top   FixedUpdateTop= null;
@@ -13,11 +13,11 @@ public class WD_RootNode : WD_Node {
     // ======================================================================
     // INITIALIZATION
     // ----------------------------------------------------------------------
-    public static WD_RootNode CreateInstance(string _name, WD_Graph graph) {
+    public static WD_RootNode CreateInstance(string _name, WD_Behaviour graph) {
         return CreateInstance<WD_RootNode>().Init(_name, graph);
     }
     // ----------------------------------------------------------------------
-    WD_RootNode Init(string _name, WD_Graph graph) {
+    WD_RootNode Init(string _name, WD_Behaviour graph) {
         // This is a special case.  We need to initialize our attributes
         // since the base class expects Top to always be configured.
         Top= null;

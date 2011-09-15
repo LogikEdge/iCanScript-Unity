@@ -9,15 +9,15 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create Behaviour")]
 	public static void CreateBehaviour() {
 		// Create State Chart component.
-		WD_Graph gapGraph = Selection.activeGameObject.GetComponent<WD_Graph>();
+		WD_Behaviour gapGraph = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 		if(gapGraph == null) {
-			Selection.activeGameObject.AddComponent<WD_Graph>();
+			Selection.activeGameObject.AddComponent<WD_Behaviour>();
 		}
 	}
 	[MenuItem("WarpDrive/Create Behaviour", true)]
 	public static bool ValidateCreateBehaviour() {
 		if(Selection.activeTransform != null) {
-			WD_Graph gapGraph = Selection.activeGameObject.GetComponent<WD_Graph>();
+			WD_Behaviour gapGraph = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 			return gapGraph == null;
 		}
 		return false;
@@ -28,15 +28,15 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create Module Library")]
 	public static void CreateModuleLibrary() {
 		// Create State Chart component.
-		WD_Graph gapGraph = Selection.activeGameObject.GetComponent<WD_Graph>();
+		WD_Behaviour gapGraph = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 		if(gapGraph == null) {
-			Selection.activeGameObject.AddComponent<WD_Graph>();
+			Selection.activeGameObject.AddComponent<WD_Behaviour>();
 		}
 	}
 	[MenuItem("WarpDrive/Create Module Library", true)]
 	public static bool ValidateCreateModuleLibrary() {
 		if(Selection.activeTransform != null) {
-			WD_Graph gapGraph = Selection.activeGameObject.GetComponent<WD_Graph>();
+			WD_Behaviour gapGraph = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 			return gapGraph == null;
 		}
 		return false;
@@ -47,15 +47,15 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create State Chart Library")]
 	public static void CreateStateChartLibrary() {
 		// Create State Chart component.
-		WD_Graph gapGraph = Selection.activeGameObject.GetComponent<WD_Graph>();
+		WD_Behaviour gapGraph = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 		if(gapGraph == null) {
-			Selection.activeGameObject.AddComponent<WD_Graph>();
+			Selection.activeGameObject.AddComponent<WD_Behaviour>();
 		}
 	}
 	[MenuItem("WarpDrive/Create State Chart Library", true)]
 	public static bool ValidateCreateStateChartLibrary() {
 		if(Selection.activeTransform != null) {
-			WD_Graph gapGraph = Selection.activeGameObject.GetComponent<WD_Graph>();
+			WD_Behaviour gapGraph = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 			return gapGraph == null;
 		}
 		return false;

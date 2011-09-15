@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-public class WD_Graphics {
+public class WD_Behaviourics {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
@@ -264,7 +264,7 @@ public class WD_Graphics {
         string name= dataPort.Name;
         Color portColor= dataPort.DisplayColor;
         Color nodeColor= GetNodeColor(port.Parent as WD_Node, selectedObject);
-        DrawPort(WD_Graphics.PortShape.Circular, port.Position, portColor, nodeColor);                                        
+        DrawPort(WD_Behaviourics.PortShape.Circular, port.Position, portColor, nodeColor);                                        
         // Show name if requested.
         if(dataPort.IsNameVisible) {
             Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);

@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// This non-persistante class is used to edit the WD_Graph.
+// This non-persistante class is used to edit the WD_Behaviour.
 public class WD_Editor : EditorWindow {
     // ======================================================================
     // PROPERTIES
@@ -16,7 +16,7 @@ public class WD_Editor : EditorWindow {
 
     // ----------------------------------------------------------------------
     public  WD_Mouse           Mouse           = null;
-    private WD_Graphics        Graphics        = null;
+    private WD_Behaviourics        Graphics        = null;
     public  WD_ScrollView      ScrollView      = null;
     
     // ----------------------------------------------------------------------
@@ -40,7 +40,7 @@ public class WD_Editor : EditorWindow {
     }
     WD_Object mySelectedObject= null;
 
-    WD_Graph Graph { get { return RootNode.Graph; }}
+    WD_Behaviour Graph { get { return RootNode.Graph; }}
     
     // ======================================================================
     // INITIALIZATION
@@ -54,12 +54,12 @@ public class WD_Editor : EditorWindow {
 
         // Create worker objects.
         Mouse           = new WD_Mouse(this);
-        Graphics        = new WD_Graphics();
+        Graphics        = new WD_Behaviourics();
         ScrollView      = new WD_ScrollView();
 	}
 
 	// ----------------------------------------------------------------------
-    // Releases all resources used by the WD_Graph editor.
+    // Releases all resources used by the WD_Behaviour editor.
     void OnDisable() {
         // Release all worker objects.
         Mouse           = null;
@@ -90,8 +90,8 @@ public class WD_Editor : EditorWindow {
         if(DisplayRoot == null) return false;
         
 		// Don't run if graphic sub-system did not initialise.
-		if(WD_Graphics.IsInitialized == false) {
-            WD_Graphics.Init();
+		if(WD_Behaviourics.IsInitialized == false) {
+            WD_Behaviourics.Init();
 			return false;
 		}
 		
