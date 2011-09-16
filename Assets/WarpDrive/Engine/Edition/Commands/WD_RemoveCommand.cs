@@ -3,8 +3,8 @@ using System.Collections;
 
 [System.Serializable]
 public class WD_RemoveCommand : WD_Command {
-    public WD_RemoveCommand(string theObjectId) {
+    public WD_RemoveCommand(int theInstanceId) {
         CommandType= WD_Command.CommandTypeEnum.Remove;
-        ObjectId= theObjectId;
+        InstanceId= theInstanceId;
     }
 }

@@ -5,5 +5,5 @@ using System.Collections;
 public class WD_Command {
     public enum CommandTypeEnum { NOP, Add, Remove, Replace };
     public CommandTypeEnum  CommandType= CommandTypeEnum.NOP;
-    public string           ObjectId= "";
+    public int              InstanceId= -1;
 }

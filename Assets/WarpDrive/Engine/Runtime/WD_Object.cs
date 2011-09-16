@@ -10,6 +10,7 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     // ----------------------------------------------------------------------
     [SerializeField]    private WD_Aggregate    myParent   = null;
     [SerializeField]    private bool            myIsVisible= true;
+                        public  int             InstanceId = -1;
                         public  WD_Top          Top        = null;
 
     private bool    myIsEditorDirty= true;
@@ -24,16 +25,16 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     }
     // ----------------------------------------------------------------------
     protected virtual void Init(string _name, WD_Aggregate _parent) {
-        Name  = _name;
+        Name= _name;
         Parent= _parent;
         IsEditorDirty= true;
         // Add to the save list.
         if(!(this is WD_RootNode)) {
             if(this is WD_Top) {
-                (this as WD_Top).RootNode.Graph.AddObject(this);
+                InstanceId= (this as WD_Top).RootNode.Graph.AddObject(this);
             }
             else {
-                Top.RootNode.Graph.AddObject(this);
+                InstanceId= Top.RootNode.Graph.AddObject(this);
             }
         }
     }

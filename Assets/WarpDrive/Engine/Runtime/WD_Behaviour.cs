@@ -56,14 +56,14 @@ public sealed class WD_Behaviour : MonoBehaviour {
     }
 
     // ======================================================================
-    // TEST
+    // COMMAND BUFFER
     // ----------------------------------------------------------------------
     public WD_CommandBuffer CommandBuffer= new WD_CommandBuffer();
-    public void AddObject(WD_Object obj) {
-        CommandBuffer.Push(new WD_AddCommand(obj.NameOrTypeName));
+    public int AddObject(WD_Object obj) {
+        return CommandBuffer.Push(new WD_AddCommand(/*obj.NameOrTypeName*/));
     }
     public void RemoveObject(WD_Object obj) {
-        CommandBuffer.Push(new WD_RemoveCommand(obj.NameOrTypeName));
+        CommandBuffer.Push(new WD_RemoveCommand(obj.InstanceId));
         CommandBuffer.Compress();        
     }
 }
