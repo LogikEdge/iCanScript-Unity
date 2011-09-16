@@ -60,15 +60,10 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // ----------------------------------------------------------------------
     public WD_CommandBuffer CommandBuffer= new WD_CommandBuffer();
     public void AddObject(WD_Object obj) {
-        WD_Command cmd= new WD_Command();
-        cmd.CommandType= WD_Command.CommandTypeEnum.Add;
-        cmd.ObjectId= obj.NameOrTypeName;
-        CommandBuffer.PushCommand(cmd);
+        CommandBuffer.Push(new WD_AddCommand(obj.NameOrTypeName));
     }
     public void RemoveObject(WD_Object obj) {
-        WD_Command cmd= new WD_Command();
-        cmd.CommandType= WD_Command.CommandTypeEnum.Remove;
-        cmd.ObjectId= obj.NameOrTypeName;
-        CommandBuffer.PushCommand(cmd);        
+        CommandBuffer.Push(new WD_RemoveCommand(obj.NameOrTypeName));
+        CommandBuffer.Compress();        
     }
 }
