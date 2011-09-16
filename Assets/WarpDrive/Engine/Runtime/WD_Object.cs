@@ -28,28 +28,28 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
         Parent= _parent;
         IsEditorDirty= true;
         // Add to the save list.
-//        if(!(this is WD_RootNode)) {
-//            if(this is WD_Top) {
-//                (this as WD_Top).RootNode.Graph.AddScriptableObject(this);
-//            }
-//            else {
-//                Top.RootNode.Graph.AddScriptableObject(this);
-//            }
-//        }
+        if(!(this is WD_RootNode)) {
+            if(this is WD_Top) {
+                (this as WD_Top).RootNode.Graph.AddObject(this);
+            }
+            else {
+                Top.RootNode.Graph.AddObject(this);
+            }
+        }
     }
     // ----------------------------------------------------------------------
     // Control removal of the object (as opposed to the automatic
     // deallocation from a level shutdown).
     public virtual void Dealloc() {
-//        // Remove from the save list
-//        if(!(this is WD_RootNode)) Top.RootNode.Graph.RemoveScriptableObject(this);
+        // Remove from the save list
+        if(!(this is WD_RootNode)) Top.RootNode.Graph.RemoveObject(this);
 
         Parent= null;
         IsEditorDirty= true;
 #if UNITY_EDITOR
-//        DestroyImmediate(this);
+        DestroyImmediate(this);
 #else
-//        Destroy(this);
+        Destroy(this);
 #endif
     }
 

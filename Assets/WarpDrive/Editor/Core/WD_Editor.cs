@@ -216,6 +216,7 @@ public class WD_Editor : EditorWindow {
         else if(selectedObject is WD_Module) menuName+= "/Module";
         else if(selectedObject is WD_Function) menuName+= "/Function";
         EditorUtility.DisplayPopupMenu (new Rect (position.x,position.y,0,0), menuName, new MenuCommand(context));
+        EditorUtility.SetDirty(Graph);
     }
     
 	// ----------------------------------------------------------------------
