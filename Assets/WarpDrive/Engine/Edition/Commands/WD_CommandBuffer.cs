@@ -36,6 +36,9 @@ public class WD_CommandBuffer {
         // Nothing to compress if we have 0 or 1 commands. 
         if(endOfRange <= 1) return;
 
+        // Clear the undo buffer.
+        Undos.Clear();
+        
         // Scan through range and combine commands on same object.
         int srinkCount= 0;
         for(int i= 0; i < endOfRange-1; ++i) {
