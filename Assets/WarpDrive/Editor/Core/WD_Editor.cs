@@ -135,7 +135,6 @@ public class WD_Editor : EditorWindow {
         ProcessEvents();
 	}
 
-
     // ======================================================================
     // EDITOR WINDOW MAIN LAYOUT
 	// ----------------------------------------------------------------------
@@ -201,7 +200,22 @@ public class WD_Editor : EditorWindow {
             case WD_Mouse.ButtonStateEnum.SingleClick:
                 ProcessMainMenu(Mouse.RightButtonDownPosition);
                 break;
-        }
+        }        
+    }
+    
+	// ----------------------------------------------------------------------
+    bool isUndo() {
+        Event e= Event.current;
+        return  e.command &&
+                e.command &&
+                e.character == 'z';
+    }
+	// ----------------------------------------------------------------------
+    bool isRedo() {
+        Event e= Event.current;
+        return  e.command &&
+                e.command &&
+                e.character == 'Z';
     }
     
 	// ----------------------------------------------------------------------
@@ -215,6 +229,7 @@ public class WD_Editor : EditorWindow {
         else if(selectedObject is WD_State) menuName+= "/State";
         else if(selectedObject is WD_Module) menuName+= "/Module";
         else if(selectedObject is WD_Function) menuName+= "/Function";
+        Undo.RegisterUndo(Graph, "WarpDrive");
         EditorUtility.DisplayPopupMenu (new Rect (position.x,position.y,0,0), menuName, new MenuCommand(context));
         EditorUtility.SetDirty(Graph);
     }
