@@ -4,12 +4,13 @@ using System.Collections.Generic;
 
 [System.Serializable]
 public class WD_CommandBuffer {
+    public bool             IsDirty       = false;
     public int              NextInstanceId= 0;
-    public List<WD_Command> Commands    = new List<WD_Command>();
+    public List<WD_Command> Commands      = new List<WD_Command>();
     
-    public int Count { get { return Commands.Count; }}
     
     public int Push(WD_Command cmd) {
+        IsDirty= true;
         if(cmd.CommandType == WD_Command.CommandTypeEnum.Add) {
             cmd.InstanceId= NextInstanceId;
             ++NextInstanceId;
@@ -65,6 +66,7 @@ public class WD_CommandBuffer {
         
         // Nothing to resize if no commands have been removed.
         if(srinkCount == 0) return;
+        IsDirty= true;
 
         // Resize the command buffer.
         for(int i= 0, cnt= 0; cnt < endOfRange; ++ cnt) {

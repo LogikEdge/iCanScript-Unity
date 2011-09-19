@@ -113,9 +113,6 @@ public class WD_Editor : EditorWindow {
 		// Don't do start editor if not properly initialized.
 		if( !ShouldRun() ) return;
        	
-        // Take a snapshot of the command buffer size.
-        int commandBufferSize= Graph.CommandBuffer.Count;
-        
         // Load Editor Skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
@@ -138,8 +135,8 @@ public class WD_Editor : EditorWindow {
         ProcessEvents();
         
         // Process new accumulated commands.
-        if(commandBufferSize != Graph.CommandBuffer.Count) {
-            Debug.Log("Registering Undo");
+        if(Graph.CommandBuffer.IsDirty) {
+            Graph.CommandBuffer.IsDirty= false;
             Graph.CommandBuffer.Compress();
             Undo.RegisterUndo(Graph, "WarpDrive");
             EditorUtility.SetDirty(Graph);
