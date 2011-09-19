@@ -33,7 +33,7 @@ public sealed class WD_Behaviour : MonoBehaviour {
     
     // ----------------------------------------------------------------------
     void OnEnable() {
-        Debug.Log("Rebuilding graph for command buffer");
+        Debug.Log("Rebuilding graph from command buffer");
         foreach(var cmd in CommandBuffer.Commands) {
             Debug.Log(cmd.CommandType+": InstanceId="+cmd.InstanceId+"; ParentId="+cmd.ParentId);
         }
