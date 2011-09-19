@@ -16,7 +16,7 @@ public class WD_Editor : EditorWindow {
 
     // ----------------------------------------------------------------------
     public  WD_Mouse           Mouse           = null;
-    private WD_Behaviourics        Graphics        = null;
+    private WD_Graphics        Graphics        = null;
     public  WD_ScrollView      ScrollView      = null;
     
     // ----------------------------------------------------------------------
@@ -54,7 +54,7 @@ public class WD_Editor : EditorWindow {
 
         // Create worker objects.
         Mouse           = new WD_Mouse(this);
-        Graphics        = new WD_Behaviourics();
+        Graphics        = new WD_Graphics();
         ScrollView      = new WD_ScrollView();
 	}
 
@@ -90,8 +90,8 @@ public class WD_Editor : EditorWindow {
         if(DisplayRoot == null) return false;
         
 		// Don't run if graphic sub-system did not initialise.
-		if(WD_Behaviourics.IsInitialized == false) {
-            WD_Behaviourics.Init();
+		if(WD_Graphics.IsInitialized == false) {
+            WD_Graphics.Init();
 			return false;
 		}
 		
