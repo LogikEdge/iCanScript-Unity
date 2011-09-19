@@ -33,7 +33,10 @@ public sealed class WD_Behaviour : MonoBehaviour {
     
     // ----------------------------------------------------------------------
     void OnEnable() {
-//        Debug.Log("OnEnable");
+        Debug.Log("Rebuilding graph for command buffer");
+        foreach(var cmd in CommandBuffer.Commands) {
+            Debug.Log(cmd.CommandType+": InstanceId="+cmd.InstanceId+"; ParentId="+cmd.ParentId);
+        }
     }
     // ----------------------------------------------------------------------
     void OnDisable() {
