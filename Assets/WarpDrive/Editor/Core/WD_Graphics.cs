@@ -101,7 +101,7 @@ public class WD_Graphics {
             nodeStyle.guiStyle= new GUIStyle();
             nodeStyle.guiStyle.normal.textColor= Color.black;
             nodeStyle.guiStyle.hover.textColor= Color.black;
-            nodeStyle.guiStyle.border= new RectOffset(11,16,20,13);
+            nodeStyle.guiStyle.border= new RectOffset(13,21,20,13);
             nodeStyle.guiStyle.padding= new RectOffset(3,8,17,8);
             nodeStyle.guiStyle.contentOffset= new Vector2(-3, -17);
             nodeStyle.guiStyle.overflow= new RectOffset(0,6,0,6);
