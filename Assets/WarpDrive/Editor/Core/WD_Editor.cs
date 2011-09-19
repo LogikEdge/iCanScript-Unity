@@ -139,6 +139,7 @@ public class WD_Editor : EditorWindow {
         
         // Process new accumulated commands.
         if(commandBufferSize != Graph.CommandBuffer.Count) {
+            Debug.Log("Registering Undo");
             Graph.CommandBuffer.Compress();
             Undo.RegisterUndo(Graph, "WarpDrive");
             EditorUtility.SetDirty(Graph);
@@ -211,21 +212,6 @@ public class WD_Editor : EditorWindow {
                 ProcessMainMenu(Mouse.RightButtonDownPosition);
                 break;
         }        
-    }
-    
-	// ----------------------------------------------------------------------
-    bool isUndo() {
-        Event e= Event.current;
-        return  e.command &&
-                e.command &&
-                e.character == 'z';
-    }
-	// ----------------------------------------------------------------------
-    bool isRedo() {
-        Event e= Event.current;
-        return  e.command &&
-                e.command &&
-                e.character == 'Z';
     }
     
 	// ----------------------------------------------------------------------
