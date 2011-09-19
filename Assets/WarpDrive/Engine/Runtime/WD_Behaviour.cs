@@ -27,12 +27,18 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // ----------------------------------------------------------------------
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
-    void Start() {}
+    void Start() {
+//        Debug.Log("Start");
+    }
     
     // ----------------------------------------------------------------------
-    void OnEnable() {}
+    void OnEnable() {
+//        Debug.Log("OnEnable");
+    }
     // ----------------------------------------------------------------------
-    void OnDisable() {}
+    void OnDisable() {
+//        Debug.Log("OnDisable");
+    }
     // ----------------------------------------------------------------------
     void OnDestroy() {
         RootNode.Dealloc();
@@ -60,10 +66,14 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // ----------------------------------------------------------------------
     public WD_CommandBuffer CommandBuffer= new WD_CommandBuffer();
     public int AddObject(WD_Object obj) {
-        return CommandBuffer.Push(new WD_AddCommand(/*obj.NameOrTypeName*/));
+        return CommandBuffer.Push(new WD_AddCommand(obj));
     }
     public void RemoveObject(WD_Object obj) {
-        CommandBuffer.Push(new WD_RemoveCommand(obj.InstanceId));
+        CommandBuffer.Push(new WD_RemoveCommand(obj));
+        CommandBuffer.Compress();        
+    }
+    public void ReplaceObject(WD_Object obj) {
+        CommandBuffer.Push(new WD_ReplaceCommand(obj));
         CommandBuffer.Compress();        
     }
 }

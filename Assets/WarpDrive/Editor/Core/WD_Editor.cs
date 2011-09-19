@@ -113,6 +113,9 @@ public class WD_Editor : EditorWindow {
 		// Don't do start editor if not properly initialized.
 		if( !ShouldRun() ) return;
        	
+        // Take a snapshot of the command buffer size.
+        int commandBufferSize= Graph.CommandBuffer.Count;
+        
         // Load Editor Skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
@@ -133,6 +136,13 @@ public class WD_Editor : EditorWindow {
 
         // Process user inputs
         ProcessEvents();
+        
+        // Process new accumulated commands.
+        if(commandBufferSize != Graph.CommandBuffer.Count) {
+            Graph.CommandBuffer.Compress();
+            Undo.RegisterUndo(Graph, "WarpDrive");
+            EditorUtility.SetDirty(Graph);
+        }
 	}
 
     // ======================================================================
@@ -229,9 +239,7 @@ public class WD_Editor : EditorWindow {
         else if(selectedObject is WD_State) menuName+= "/State";
         else if(selectedObject is WD_Module) menuName+= "/Module";
         else if(selectedObject is WD_Function) menuName+= "/Function";
-        Undo.RegisterUndo(Graph, "WarpDrive");
         EditorUtility.DisplayPopupMenu (new Rect (position.x,position.y,0,0), menuName, new MenuCommand(context));
-        EditorUtility.SetDirty(Graph);
     }
     
 	// ----------------------------------------------------------------------
