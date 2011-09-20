@@ -140,6 +140,7 @@ public class WD_Editor : EditorWindow {
             Graph.CommandBuffer.Compress();
             Undo.RegisterUndo(Graph, "WarpDrive");
             EditorUtility.SetDirty(Graph);
+//            AssetDatabase.CreateAsset(Graph.RootNode,"Assets/WarpDriveTest.asset");
         }
 	}
 
