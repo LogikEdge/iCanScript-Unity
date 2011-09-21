@@ -4,16 +4,23 @@ using System.Collections.Generic;
 
 public sealed class WD_Behaviour : MonoBehaviour {
     // ======================================================================
-    // PROPERTIES
+    // Properties
     // ----------------------------------------------------------------------
-    public WD_UserPreferences           Preferences= new WD_UserPreferences();
-    public WD_RootNode                  RootNode   = null;
-    public bool                         IsDirty= true;
-    public List<WD_EditorObject>        EditorObjects= new List<WD_EditorObject>();
+    public WD_UserPreferences           Preferences  = new WD_UserPreferences();
+    public WD_RootNode                  RootNode     = null;
+    public WD_EditorObjectMgr           EditorObjects= new WD_EditorObjectMgr();
     
     
     // ======================================================================
-    // INITIALIZATION
+    // Accessors
+    // ----------------------------------------------------------------------
+    public bool IsDirty {
+        get { return EditorObjects.IsDirty; }
+        set { EditorObjects.IsDirty= value; }
+    }
+    
+    // ======================================================================
+    // Initialization
     // ----------------------------------------------------------------------
     public WD_Behaviour Init() {
         if(RootNode == null) RootNode= WD_RootNode.CreateInstance("RootNode", this);
@@ -67,17 +74,12 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // COMMAND BUFFER
     // ----------------------------------------------------------------------
     public void AddObject(WD_Object obj) {
-        IsDirty= true;
-        WD_EditorObject so= new WD_EditorObject();
-        so.Serialize(obj, EditorObjects.Count);
-        EditorObjects.Add(so);
+        EditorObjects.AddObject(obj);
     }
     public void RemoveObject(WD_Object obj) {
-        IsDirty= true;
-        EditorObjects[obj.InstanceId].InstanceId= -1;
+        EditorObjects.RemoveObject(obj);
     }
     public void ReplaceObject(WD_Object obj) {
-        IsDirty= true;
-        EditorObjects[obj.InstanceId].Serialize(obj, obj.InstanceId);
+        EditorObjects.ReplaceObject(obj);
     }
 }

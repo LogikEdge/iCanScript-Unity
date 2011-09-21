@@ -4,6 +4,9 @@ using System.Collections;
 
 [System.Serializable]
 public class WD_EditorObject {
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
     public int              InstanceId = -1;
     public int              ParentId   = -1;
     public string           QualifiedType= "";
@@ -13,6 +16,9 @@ public class WD_EditorObject {
     public Rect             Position= new Rect(0,0,0,0);
     public int              PortSource= -1;
 
+    // ======================================================================
+    // Object Serialization
+    // ----------------------------------------------------------------------
     public void Serialize(WD_Object obj, int id) {
         InstanceId= obj.InstanceId= id;
         ParentId= obj.Parent != null ? obj.Parent.InstanceId : -1;
@@ -31,7 +37,9 @@ public class WD_EditorObject {
             }
         );
     }
+    // ----------------------------------------------------------------------
     public WD_Object Deserialize() {
         return null;
     }
+
 }

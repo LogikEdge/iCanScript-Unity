@@ -9,11 +9,8 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     // ATTRIBUTES
     // ----------------------------------------------------------------------
     [SerializeField]    private WD_Aggregate    myParent   = null;
-    [SerializeField]    private bool            myIsVisible= true;
                         public  int             InstanceId = -1;
                         public  WD_Top          Top        = null;
-
-    private bool    myIsEditorDirty= true;
                         
     // ======================================================================
     // CREATION UTILITIES
@@ -27,7 +24,6 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     protected virtual void Init(string _name, WD_Aggregate _parent) {
         Name= _name;
         Parent= _parent;
-        IsEditorDirty= true;
         // Add to the save list.
         Case<WD_RootNode, WD_Top, WD_Object>(
             (root) => { root.Graph.AddObject(this); },
@@ -47,7 +43,6 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
         );
 
         Parent= null;
-        IsEditorDirty= true;
 #if UNITY_EDITOR
         DestroyImmediate(this);
 #else
@@ -75,44 +70,7 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
             return (displayName == null) ? (":"+TypeName) : displayName;
         }
     }
-    // ----------------------------------------------------------------------
-    // EDITOR VISIBILITY
-    // ----------------------------------------------------------------------
-    public bool IsVisible {
-        get { return IsTop ? false : myIsVisible; }
-        set {
-            if(myIsVisible != value) IsEditorDirty= true;
-            myIsVisible= value;
-            if(IsTop) return;
-            ExecuteIf<WD_Node>(
-                (node)=> {
-                    node.ForEachChild<WD_Port>(
-                        (child)=> { child.IsVisible= value; }
-                    );
-                }
-            );
-            if(value) return;
-            ExecuteIf<WD_Node>(
-                (node)=> {
-                    node.ForEachChild<WD_Node>(
-                        (child)=> { child.IsVisible= value; }
-                    );
-                }
-            );
-        }
-    }
     
-    // ----------------------------------------------------------------------
-    // DIRTY FLAG
-    // ----------------------------------------------------------------------
-    public bool IsEditorDirty {
-        get { return myIsEditorDirty; }
-        set {
-            myIsEditorDirty= value;
-            if(value && Parent != null) Parent.IsEditorDirty= true;
-        }
-    }
-
     // ======================================================================
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
@@ -125,7 +83,6 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
             if(value != null) {
                 value.AddChild(this);
                 Top= value.Top;
-                IsVisible= value.IsTop ? true: value.IsVisible;
             }
             myParent= value;
         }
@@ -228,5 +185,44 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
             (top)  => { top.RootNode.Graph.ReplaceObject(this); },
             (obj)  => { obj.Top.RootNode.Graph.ReplaceObject(this); }
         );
+    }
+    
+    // ----------------------------------------------------------------------
+    public bool IsEditorDirty {
+        get {
+            bool value= true;
+            Case<WD_RootNode, WD_Top, WD_Object>(
+                (root) => { value= root.Graph.EditorObjects[InstanceId].IsDirty; },
+                (top)  => { value= top.RootNode.Graph.EditorObjects[InstanceId].IsDirty; },
+                (obj)  => { value= obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsDirty; }
+            );
+            return value;
+        }
+        set {
+            Case<WD_RootNode, WD_Top, WD_Object>(
+                (root) => { root.Graph.EditorObjects[InstanceId].IsDirty= value; },
+                (top)  => { top.RootNode.Graph.EditorObjects[InstanceId].IsDirty= value; },
+                (obj)  => { obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsDirty= value; }
+            );
+        }
+    }
+    // ----------------------------------------------------------------------
+    public bool IsVisible {
+        get {
+            bool value= true;
+            Case<WD_RootNode, WD_Top, WD_Object>(
+                (root) => { value= false; },
+                (top)  => { value= false; },
+                (obj)  => { value= obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsVisible; }
+            );
+            return value;
+        }
+        set {
+            Case<WD_RootNode, WD_Top, WD_Object>(
+                (root) => { root.Graph.EditorObjects[InstanceId].IsVisible= false; },
+                (top)  => { top.RootNode.Graph.EditorObjects[InstanceId].IsVisible= false; },
+                (obj)  => { obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsVisible= value; }
+            );
+        }
     }
 }
