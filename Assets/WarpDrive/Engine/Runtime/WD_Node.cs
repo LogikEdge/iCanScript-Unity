@@ -574,5 +574,4 @@ public abstract class WD_Node : WD_Aggregate {
                                         WD_EditorConfig.NodeInitialOffset,
                                         WD_EditorConfig.NodeInitialWidth,
                                         WD_EditorConfig.NodeInitialHeight);
-
 }

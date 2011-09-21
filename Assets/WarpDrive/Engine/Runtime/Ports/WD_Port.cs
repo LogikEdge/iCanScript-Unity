@@ -9,7 +9,6 @@ public abstract class WD_Port : WD_Object {
 
     public  EdgeEnum    Edge           = EdgeEnum.Left;
     public  Vector2     LocalPosition  = Vector2.zero;
-    public  bool        IsBeingDragged = false;
 
     // ======================================================================
     // Execution
@@ -160,6 +159,13 @@ public abstract class WD_Port : WD_Object {
             return new Vector2(parentNode.Position.x, parentNode.Position.y) + LocalPosition;
         }
     }
+    
+    // ----------------------------------------------------------------------
+    public bool IsBeingDragged {
+        get { return Top.RootNode.Graph.EditorObjects[InstanceId].IsBeingDragged; }
+        set { Top.RootNode.Graph.EditorObjects[InstanceId].IsBeingDragged= value; }
+    }
+    
 //#endif
 
 }

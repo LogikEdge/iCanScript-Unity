@@ -4,7 +4,7 @@ using System.Collections;
 public class WD_EditorConfig {
     // ----------------------------------------------------------------------
     public const string ProductName= "WarpDrive";
-    public const string ProductAcronym= "AP";
+    public const string ProductAcronym= "WD";
 	public const string EditorPath= "Assets/"+ProductName+"/Editor";
 	public const string GuiAssetPath= EditorPath + "/Resources";
 	public const string TypePrefix= ProductAcronym+"_";
