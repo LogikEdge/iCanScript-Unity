@@ -29,21 +29,22 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
         Parent= _parent;
         IsEditorDirty= true;
         // Add to the save list.
-        if(!(this is WD_RootNode)) {
-            if(this is WD_Top) {
-                InstanceId= (this as WD_Top).RootNode.Graph.AddObject(this);
-            }
-            else {
-                InstanceId= Top.RootNode.Graph.AddObject(this);
-            }
-        }
+        Case<WD_RootNode, WD_Top, WD_Object>(
+            (root) => { root.Graph.AddObject(this); },
+            (top)  => { top.RootNode.Graph.AddObject(this); },
+            (obj)  => { obj.Top.RootNode.Graph.AddObject(this); }
+        );
     }
     // ----------------------------------------------------------------------
     // Control removal of the object (as opposed to the automatic
     // deallocation from a level shutdown).
     public virtual void Dealloc() {
         // Remove from the save list
-        if(!(this is WD_RootNode)) Top.RootNode.Graph.RemoveObject(this);
+        Case<WD_RootNode, WD_Top, WD_Object>(
+            (root) => { root.Graph.RemoveObject(this); },
+            (top)  => { top.RootNode.Graph.RemoveObject(this); },
+            (obj)  => { obj.Top.RootNode.Graph.RemoveObject(this); }
+        );
 
         Parent= null;
         IsEditorDirty= true;
@@ -218,7 +219,14 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     // ======================================================================
     // GUI
     // ----------------------------------------------------------------------
-    public            void Layout()         { DoLayout(); IsEditorDirty= false; }
-    public    virtual void DoLayout()       {}
-
+    public  virtual void DoLayout()     {}
+    public          void Layout() {
+        DoLayout();
+        IsEditorDirty= false;
+        Case<WD_RootNode, WD_Top, WD_Object>(
+            (root) => { root.Graph.ReplaceObject(this); },
+            (top)  => { top.RootNode.Graph.ReplaceObject(this); },
+            (obj)  => { obj.Top.RootNode.Graph.ReplaceObject(this); }
+        );
+    }
 }

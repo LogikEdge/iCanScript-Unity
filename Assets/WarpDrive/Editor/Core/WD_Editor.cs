@@ -138,9 +138,8 @@ public class WD_Editor : EditorWindow {
         ProcessEvents();
         
         // Process new accumulated commands.
-        if(Graph.CommandBuffer.IsDirty) {
-            Graph.CommandBuffer.IsDirty= false;
-            Graph.CommandBuffer.Compress();
+        if(Graph.IsDirty) {
+            Graph.IsDirty= false;
             Undo.RegisterUndo(Graph, "WarpDrive");
             EditorUtility.SetDirty(Graph);
 //            AssetDatabase.CreateAsset(Graph.RootNode,"Assets/WarpDriveTest.asset");
@@ -266,6 +265,7 @@ public class WD_Editor : EditorWindow {
         port= DragObject as WD_Port;
         if(port != null) {
             port.LocalPosition= DragStartPosition+delta;
+            port.IsEditorDirty= true;
             if(!port.IsNearParent()) {
             /*
                 TODO : create a temporary port to show new connection.
@@ -274,7 +274,8 @@ public class WD_Editor : EditorWindow {
         }
         node= DragObject as WD_Node;
         if(node != null) {
-            node.MoveTo(DragStartPosition+delta);                        
+            node.MoveTo(DragStartPosition+delta);
+            node.IsEditorDirty= true;                        
         }
     }    
 
@@ -288,16 +289,17 @@ public class WD_Editor : EditorWindow {
                 // Verify for disconnection.
                 if(!port.IsNearParent()) {
                     if(port is WD_DataPort) {
-                        (port as WD_DataPort).Disconnect();                        
+                        (port as WD_DataPort).Disconnect();
                     }
                     port.LocalPosition= DragStartPosition;
                 }                    
                 else {
                     // Assume port relocation.
                     port.SnapToParent();
-                    port.Parent.Layout();                    
+                    port.Parent.Layout();
                 }
             }
+            port.IsEditorDirty= true;
         }
     
         // Reset dragging state.
@@ -348,7 +350,6 @@ public class WD_Editor : EditorWindow {
         // We have a new connection so lets determine direction.
         dataPort.LocalPosition= DragStartPosition;
         if(dataPort.IsInput) {
-            Debug.Log("5");
             if(overlappingDataPort.IsOutput) {
                 dataPort.Source= overlappingDataPort;
                 return true;

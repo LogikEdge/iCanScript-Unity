@@ -6,10 +6,12 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-                        public WD_UserPreferences   Preferences= new WD_UserPreferences();
-    [HideInInspector]   public WD_RootNode          RootNode   = null;
+    public WD_UserPreferences           Preferences= new WD_UserPreferences();
+    public WD_RootNode                  RootNode   = null;
+    public bool                         IsDirty= true;
+    public List<WD_EditorObject>        EditorObjects= new List<WD_EditorObject>();
     
-
+    
     // ======================================================================
     // INITIALIZATION
     // ----------------------------------------------------------------------
@@ -33,10 +35,7 @@ public sealed class WD_Behaviour : MonoBehaviour {
     
     // ----------------------------------------------------------------------
     void OnEnable() {
-        Debug.Log("Rebuilding graph from command buffer");
-        foreach(var cmd in CommandBuffer.Commands) {
-            Debug.Log(cmd.CommandType+": InstanceId="+cmd.InstanceId+"; ParentId="+cmd.ParentId);
-        }
+//        Debug.Log("OnEnable");
     }
     // ----------------------------------------------------------------------
     void OnDisable() {
@@ -67,16 +66,18 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // ======================================================================
     // COMMAND BUFFER
     // ----------------------------------------------------------------------
-    public WD_CommandBuffer CommandBuffer= new WD_CommandBuffer();
-    public int AddObject(WD_Object obj) {
-        return CommandBuffer.Push(new WD_AddCommand(obj));
+    public void AddObject(WD_Object obj) {
+        IsDirty= true;
+        WD_EditorObject so= new WD_EditorObject();
+        so.Serialize(obj, EditorObjects.Count);
+        EditorObjects.Add(so);
     }
     public void RemoveObject(WD_Object obj) {
-        CommandBuffer.Push(new WD_RemoveCommand(obj));
-        CommandBuffer.Compress();        
+        IsDirty= true;
+        EditorObjects[obj.InstanceId].InstanceId= -1;
     }
     public void ReplaceObject(WD_Object obj) {
-        CommandBuffer.Push(new WD_ReplaceCommand(obj));
-        CommandBuffer.Compress();        
+        IsDirty= true;
+        EditorObjects[obj.InstanceId].Serialize(obj, obj.InstanceId);
     }
 }

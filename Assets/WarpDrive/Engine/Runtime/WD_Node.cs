@@ -30,8 +30,8 @@ public abstract class WD_Node : WD_Aggregate {
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
     public void SetInitialPosition(Vector2 _initialPosition) {
-        myLocalPosition.x= _initialPosition.x - Position.x;
-        myLocalPosition.y= _initialPosition.y - Position.y;
+        LocalPosition.x= _initialPosition.x - Position.x;
+        LocalPosition.y= _initialPosition.y - Position.y;
         IsEditorDirty= true;
     }
 
@@ -54,8 +54,8 @@ public abstract class WD_Node : WD_Aggregate {
     // Moves the node without changing its size.
     void DeltaMoveInternal(Vector2 _delta) {
         if(MathfExt.IsNotZero(_delta)) {
-            myLocalPosition.x+= _delta.x;
-            myLocalPosition.y+= _delta.y;
+            LocalPosition.x+= _delta.x;
+            LocalPosition.y+= _delta.y;
             IsEditorDirty= true;
         }
     }
@@ -112,12 +112,12 @@ public abstract class WD_Node : WD_Aggregate {
             float portHeight= nbOfPorts*WD_EditorConfig.MinimumPortSeparation;                                
             float height= WD_EditorConfig.NodeTitleHeight+Mathf.Max(portHeight, childRect.height+2.0f*WD_EditorConfig.GutterSize);
 
-            float deltaWidth = width - myLocalPosition.width;
-            float deltaHeight= height - myLocalPosition.height;
+            float deltaWidth = width - LocalPosition.width;
+            float deltaHeight= height - LocalPosition.height;
             float xMin= Position.xMin-0.5f*deltaWidth;
             float yMin= Position.yMin-0.5f*deltaHeight;
             if(MathfExt.IsNotEqual(xMin, Position.xMin) || MathfExt.IsNotEqual(yMin, Position.yMin) ||
-               MathfExt.IsNotEqual(width, myLocalPosition.width) || MathfExt.IsNotEqual(height, myLocalPosition.height)) {
+               MathfExt.IsNotEqual(width, LocalPosition.width) || MathfExt.IsNotEqual(height, LocalPosition.height)) {
                 Rect newPos= new Rect(xMin, yMin, width, height);
                 SetPosition(newPos);
             }
@@ -135,19 +135,19 @@ public abstract class WD_Node : WD_Aggregate {
     // ----------------------------------------------------------------------
     void SetPosition(Rect _newPos) {
         // Adjust node size.
-        myLocalPosition.width = _newPos.width;
-        myLocalPosition.height= _newPos.height;
+        LocalPosition.width = _newPos.width;
+        LocalPosition.height= _newPos.height;
         // Reposition node.
         if(Parent == null) {
-            myLocalPosition.x= _newPos.x;
-            myLocalPosition.y= _newPos.y;            
+            LocalPosition.x= _newPos.x;
+            LocalPosition.y= _newPos.y;            
         }
         else {
             Rect deltaMove= new Rect(_newPos.xMin-Position.xMin, _newPos.yMin-Position.yMin, _newPos.width-Position.width, _newPos.height-Position.height);
-            myLocalPosition.x+= deltaMove.x;
-            myLocalPosition.y+= deltaMove.y;
-            myLocalPosition.width= _newPos.width;
-            myLocalPosition.height= _newPos.height;
+            LocalPosition.x+= deltaMove.x;
+            LocalPosition.y+= deltaMove.y;
+            LocalPosition.width= _newPos.width;
+            LocalPosition.height= _newPos.height;
             float separationX= Mathf.Abs(deltaMove.x) > Mathf.Abs(deltaMove.width) ? deltaMove.x : deltaMove.width;
             float separationY= Mathf.Abs(deltaMove.y) > Mathf.Abs(deltaMove.height) ? deltaMove.y : deltaMove.height;
             LayoutParent(new Vector2(separationX, separationY));
@@ -301,11 +301,11 @@ public abstract class WD_Node : WD_Aggregate {
     // Returns the space used by all children.
     Rect ComputeChildRect() {
         // Compute child space.
-        Rect childRect= new Rect(0.5f*myLocalPosition.width,0.5f*myLocalPosition.height,0,0);
+        Rect childRect= new Rect(0.5f*LocalPosition.width,0.5f*LocalPosition.height,0,0);
         ForEachChild<WD_Node>(
             (child)=> {
                 if(child.IsVisible) {
-                    childRect= Physics2D.Merge(childRect, child.myLocalPosition);
+                    childRect= Physics2D.Merge(childRect, child.LocalPosition);
                 }
             }
         );
@@ -562,18 +562,17 @@ public abstract class WD_Node : WD_Aggregate {
     public Rect Position {
         get {
             WD_Node parentNode= Parent as WD_Node;
-            if(parentNode == null) return myLocalPosition;
-            return new Rect(parentNode.Position.x+myLocalPosition.x,
-                            parentNode.Position.y+myLocalPosition.y,
-                            myLocalPosition.width,
-                            myLocalPosition.height);
+            if(parentNode == null) return LocalPosition;
+            return new Rect(parentNode.Position.x+LocalPosition.x,
+                            parentNode.Position.y+LocalPosition.y,
+                            LocalPosition.width,
+                            LocalPosition.height);
         }
         set { SetPosition(value); }
     }
-	[SerializeField]
-    Rect myLocalPosition= new Rect(WD_EditorConfig.NodeInitialOffset,
-                                   WD_EditorConfig.NodeInitialOffset,
-                                   WD_EditorConfig.NodeInitialWidth,
-                                   WD_EditorConfig.NodeInitialHeight);
+    public Rect LocalPosition= new Rect(WD_EditorConfig.NodeInitialOffset,
+                                        WD_EditorConfig.NodeInitialOffset,
+                                        WD_EditorConfig.NodeInitialWidth,
+                                        WD_EditorConfig.NodeInitialHeight);
 
 }
