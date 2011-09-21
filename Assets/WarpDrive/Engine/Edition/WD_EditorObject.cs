@@ -8,6 +8,8 @@ public class WD_EditorObject {
     public int              ParentId   = -1;
     public string           QualifiedType= "";
     public string           Name= "";
+    public bool             IsDirty= true;
+    public bool             IsVisible= true;
     public Rect             Position= new Rect(0,0,0,0);
     public int              PortSource= -1;
 
