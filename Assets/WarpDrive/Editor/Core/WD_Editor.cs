@@ -102,9 +102,12 @@ public class WD_Editor : EditorWindow {
     // ======================================================================
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
+    static int refreshCnt= 0;
 	void Update() {
 		// Force a repaint to allow for snappy controls.
-		Repaint();
+        if((++refreshCnt & 7) == 0) {
+    		Repaint();            
+        }
 	}
 	
 	// ----------------------------------------------------------------------
