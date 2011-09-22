@@ -116,7 +116,7 @@ public class WD_EditorObjectMgr {
     public void Layout(WD_EditorObject obj) {
         Case<WD_Node, WD_Port>(obj,
             (node) => { NodeLayout(node); },
-            (port) => { }
+            (port) => { PortLayout(port); }
         );
     }
     // ----------------------------------------------------------------------
@@ -241,6 +241,23 @@ public class WD_EditorObjectMgr {
             LayoutParent(node, new Vector2(separationX, separationY));
         }
     }    
+    // ----------------------------------------------------------------------
+    Vector2 GetTopLeftCorner(WD_EditorObject node)     {
+        Rect position= GetPosition(node);
+        return new Vector2(position.xMin, position.yMin);
+    }
+    Vector2 GetTopRightCorner(WD_EditorObject node)    {
+        Rect position= GetPosition(node);
+        return new Vector2(position.xMax, position.yMin);
+    }
+    Vector2 GetBottomLeftCorner(WD_EditorObject node)  {
+        Rect position= GetPosition(node);
+        return new Vector2(position.xMin, position.yMax);
+    }
+    Vector2 GetBottomRightCorner(WD_EditorObject node) {
+        Rect position= GetPosition(node);
+        return new Vector2(position.xMax, position.yMax);
+    }
     // ----------------------------------------------------------------------
     void LayoutParent(WD_EditorObject node, Vector2 _deltaMove) {
         if(!IsIdValid(node.ParentId)) return;
@@ -622,5 +639,142 @@ public class WD_EditorObjectMgr {
     bool IsInside(WD_EditorObject node, Vector2 _point) {
         return Physics2D.IsInside(_point, GetPosition(node));
     }
+
+    // ======================================================================
+    // Layout from WD_Port
+    // ----------------------------------------------------------------------
+    public void PortLayout(WD_EditorObject port) {
+        // Don't interfear with dragging.
+        if(port.IsBeingDragged) return;
+
+        // Retreive parent layout information.
+        if(IsIdValid(port.ParentId)) {
+            Debug.LogWarning("Trying to layout a port who does not have a parent!!!");
+            return;
+        }
+        WD_EditorObject parentNode= EditorObjects[port.ParentId];
+        Rect parentPosition= GetPosition(parentNode);
+
+        // Make certain that the port is on an edge.
+        switch(port.Edge) {
+            case WD_EditorObject.EdgeEnum.Top:
+                if(!MathfExt.IsZero(port.LocalPosition.y)) {
+                    port.LocalPosition.y= 0;
+                    port.IsDirty= true;
+                    parentNode.IsDirty= true;                    
+                }
+                if(port.LocalPosition.x > parentPosition.width) {
+                    port.LocalPosition.x= parentPosition.width-WD_EditorConfig.PortSize;
+                    port.IsDirty= true;
+                    parentNode.IsDirty= true;
+                }
+                break;
+            case WD_EditorObject.EdgeEnum.Bottom:
+                if(MathfExt.IsNotEqual(port.LocalPosition.y, parentPosition.height)) {
+                    port.LocalPosition.y= parentPosition.height;
+                    port.IsDirty= true;
+                    parentNode.IsDirty= true;                    
+                }
+                if(port.LocalPosition.x > parentPosition.width) {
+                    port.LocalPosition.x= parentPosition.width-WD_EditorConfig.PortSize;
+                    port.IsDirty= true;
+                    parentNode.IsDirty= true;
+                }
+                break;
+            case WD_EditorObject.EdgeEnum.Left:
+                if(!MathfExt.IsZero(port.LocalPosition.x)) {
+                    port.LocalPosition.x= 0;
+                    port.IsDirty= true;
+                    parentNode.IsDirty= true;                    
+                }
+                if(port.LocalPosition.y > parentPosition.height) {
+                    port.LocalPosition.y= parentPosition.height-WD_EditorConfig.PortSize;
+                    port.IsDirty= true;
+                    parentNode.IsDirty= true;
+                }
+                break;
+            case WD_EditorObject.EdgeEnum.Right:
+                if(MathfExt.IsNotEqual(port.LocalPosition.x, parentPosition.width)) {
+                    port.LocalPosition.x= parentPosition.width;
+                    port.IsDirty= true;
+                    parentNode.IsDirty= true;                    
+                }
+                if(port.LocalPosition.y > parentPosition.height) {
+                    port.LocalPosition.y= parentPosition.height-WD_EditorConfig.PortSize;
+                    port.IsDirty= true;
+                    parentNode.IsDirty= true;
+                }
+                break;            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public void SnapToParent(WD_EditorObject port) {
+        WD_EditorObject parentNode= EditorObjects[port.ParentId];
+        Rect parentPosition= GetPosition(parentNode);
+        float parentHeight= parentPosition.height;
+        float parentWidth= parentPosition.width;
+        float portRadius= WD_EditorConfig.PortRadius;
+        if(MathfExt.IsWithin(port.LocalPosition.y, -portRadius, portRadius)) {
+            port.Edge= WD_EditorObject.EdgeEnum.Top;
+        }        
+        if(MathfExt.IsWithin(port.LocalPosition.y, parentHeight-portRadius, parentHeight+portRadius)) {
+            port.Edge= WD_EditorObject.EdgeEnum.Bottom;
+        }
+        if(MathfExt.IsWithin(port.LocalPosition.x, -portRadius, portRadius)) {
+            port.Edge= WD_EditorObject.EdgeEnum.Left;
+        }
+        if(MathfExt.IsWithin(port.LocalPosition.x, parentWidth-portRadius, parentWidth+portRadius)) {
+            port.Edge= WD_EditorObject.EdgeEnum.Right;
+        }
+        port.IsDirty= true;
+        PortLayout(port);
+    }
+
+    // ----------------------------------------------------------------------
+    // Returns the minimal distance from the parent.
+    public float GetDistanceFromParent(WD_EditorObject port) {
+        WD_EditorObject parentNode= EditorObjects[port.ParentId];
+        Rect tmp= GetPosition(port);
+        Vector2 position= new Vector2(tmp.x, tmp.y);
+        if(IsInside(parentNode, position)) return 0;
+        Rect parentPosition= GetPosition(parentNode);
+        if(position.x > parentPosition.xMin && position.x < parentPosition.xMax) {
+            return Mathf.Min(Mathf.Abs(position.y-parentPosition.yMin),
+                             Mathf.Abs(position.y-parentPosition.yMax));
+        }
+        if(position.y > parentPosition.yMin && position.y < parentPosition.yMax) {
+            return Mathf.Min(Mathf.Abs(position.x-parentPosition.xMin),
+                             Mathf.Abs(position.x-parentPosition.xMax));
+        }
+        float distance= Vector2.Distance(position, GetTopLeftCorner(parentNode));
+        distance= Mathf.Min(distance, Vector2.Distance(position, GetTopRightCorner(parentNode)));
+        distance= Mathf.Min(distance, Vector2.Distance(position, GetBottomLeftCorner(parentNode)));
+        distance= Mathf.Min(distance, Vector2.Distance(position, GetBottomRightCorner(parentNode)));
+        return distance;
+    }
+
+    // ----------------------------------------------------------------------
+    // Returns true if the distance to parent is less then twice the port size.
+    public bool IsNearParent(WD_EditorObject port) {
+        return GetDistanceFromParent(port) <= WD_EditorConfig.PortSize*2;
+    }
+
+	// ----------------------------------------------------------------------
+    public WD_EditorObject GetOverlappingPort(WD_EditorObject port) {
+        WD_EditorObject foundPort= null;
+        Rect tmp= GetPosition(port);
+        Vector2 position= new Vector2(tmp.x, tmp.y);
+        foreach(var p in EditorObjects) {
+            if(p.IsRuntimeA<WD_Port>() && p != port) {
+                tmp= GetPosition(p);
+                Vector2 pPos= new Vector2(tmp.x, tmp.y);
+                float distance= Vector2.Distance(pPos, position);
+                if(distance <= 1.5*WD_EditorConfig.PortSize) {
+                    foundPort= port;
+                }
+            }
+        }
+        return foundPort;
+    }	
 
 }
