@@ -147,11 +147,12 @@ public class WD_Graphics {
     
     // ======================================================================
     //  TOOL TIP
-    // ----------------------------------------------------------------------
-    public void ShowToolTip(WD_Object _object) {
-        WD_Port port= _object as WD_Port;
-        if(port != null) {
-            Vector2 pos= port.Position;
+    // ---------------------------------------------------------------------
+    public void ShowToolTip(WD_EditorObject obj, WD_Behaviour graph) {
+        if(obj.IsRuntimeA<WD_Port>()) {
+            WD_EditorObject port= obj;
+            Rect tmp= graph.EditorObjects.GetPosition(port);
+            Vector2 pos= new Vector2(tmp.x, tmp.y);
             string name= port.Name + ":" + port.TypeName;
             Vector2 labelSize= WD_EditorConfig.GetLabelSize(name);
             GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), name);            
@@ -195,14 +196,14 @@ public class WD_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    public void DrawNode(WD_Node _node, WD_Object selectedObject) {
+    public void DrawNode(WD_EditorObject node, WD_EditorObject selectedObject, WD_Behaviour graph) {
         // Don't show hiden nodes.
-        if(_node.IsVisible == false) return;
+        if(node.IsVisible == false) return;
         
         // Draw node box.
-        string title= ObjectNames.NicifyVariableName(_node.NameOrTypeName);
-        GUIStyle guiStyle= GetNodeGUIStyle(_node, selectedObject);
-        Rect position= _node.Position;
+        string title= ObjectNames.NicifyVariableName(node.NameOrTypeName);
+        GUIStyle guiStyle= GetNodeGUIStyle(node, selectedObject, graph);
+        Rect position= graph.EditorObjects.GetPosition(node);
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
         float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
         position.x-= leftOffset;
@@ -212,72 +213,68 @@ public class WD_Graphics {
         GUI.Box(position, title, guiStyle);            
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, WD_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
     }
-    NodeStyle GetNodeStyle(WD_Node node, WD_Object selectedObject) {
+    NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Behaviour graph) {
         // Node background is dependant on node type.
-        if(!node.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
+        WD_Node runtimeNode= graph.EditorObjects.GetRuntimeObject(node, graph) as WD_Node;
+        if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
             GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
             return nodeInErrorStyle;
         }
         if(node == selectedObject) {
-            GenerateNodeStyle(ref selectedStyle, node.Top.Graph.Preferences.NodeColors.SelectedColor);
+            GenerateNodeStyle(ref selectedStyle, graph.Preferences.NodeColors.SelectedColor);
             return selectedStyle;
         }
-        if(node is WD_State || node is WD_StateChart) {
-            GenerateNodeStyle(ref stateStyle, node.Top.Graph.Preferences.NodeColors.StateColor);
+        if(runtimeNode is WD_State || runtimeNode is WD_StateChart) {
+            GenerateNodeStyle(ref stateStyle, graph.Preferences.NodeColors.StateColor);
             return stateStyle;
         }
-        if(node is WD_Module) {
-            GenerateNodeStyle(ref moduleStyle, node.Top.Graph.Preferences.NodeColors.ModuleColor);
+        if(runtimeNode is WD_Module) {
+            GenerateNodeStyle(ref moduleStyle, graph.Preferences.NodeColors.ModuleColor);
             return moduleStyle;
         }
-        if(node is WD_Function || node is WD_Action) {
-            GenerateNodeStyle(ref functionStyle, node.Top.Graph.Preferences.NodeColors.FunctionColor);
+        if(runtimeNode is WD_Function || runtimeNode is WD_Action) {
+            GenerateNodeStyle(ref functionStyle, graph.Preferences.NodeColors.FunctionColor);
             return functionStyle;
         }
         GenerateNodeStyle(ref defaultStyle, Color.gray);
         return defaultStyle;
     }
-    GUIStyle GetNodeGUIStyle(WD_Node node, WD_Object selectedObject) {
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject);
+    GUIStyle GetNodeGUIStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Behaviour graph) {
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, graph);
         return nodeStyle.guiStyle;
     }
     
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
-    Color GetNodeColor(WD_Node node, WD_Object selectedObject) {
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject);
+    Color GetNodeColor(WD_EditorObject node, WD_EditorObject selectedObject, WD_Behaviour graph) {
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, graph);
         return nodeStyle.nodeColor;
     }
     
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
-    public void DrawPort(WD_Port port, WD_Object selectedObject) {
-        // Only data ports are drawn.
-        if(!(port is WD_DataPort)) return;
-        WD_DataPort dataPort= port as WD_DataPort;
+    public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_Behaviour graph) {
+        // Only draw visible data ports.
+        if(port.IsVisible == false || port.IsRuntimeA<WD_DataPort>() == false) return;
 
-        // Don't draw port if port is not visible.
-        if(dataPort.IsVisible == false) return;
-        
-        Vector2 pos= dataPort.Position;
-        string name= dataPort.Name;
-        Color portColor= dataPort.DisplayColor;
-        Color nodeColor= GetNodeColor(port.Parent as WD_Node, selectedObject);
-        DrawPort(WD_Graphics.PortShape.Circular, port.Position, portColor, nodeColor);                                        
+        Rect tmp= graph.EditorObjects.GetPosition(port);
+        Vector2 pos= new Vector2(tmp.x, tmp.y);
+        string name= port.Name;
+        Color portColor= (graph.EditorObjects.GetRuntimeObject(port, graph) as WD_DataPort).DisplayColor;
+        Color nodeColor= GetNodeColor(graph.EditorObjects[port.ParentId], selectedObject, graph);
+        DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show name if requested.
-        if(dataPort.IsNameVisible) {
-            Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);
-            if(dataPort.IsOnLeftEdge) {                
-                pos.x+= 1 + WD_EditorConfig.PortSize;
-                pos.y-= 1 + 0.5f * labelSize.y;
-            }
-            if(dataPort.IsOnRightEdge) {
-                pos.x-= 1 + labelSize.x + WD_EditorConfig.PortSize;
-                pos.y-= 1 + 0.5f * labelSize.y;        
-            }
-            GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), name);
+        Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);
+        if(port.IsOnLeftEdge) {                
+            pos.x+= 1 + WD_EditorConfig.PortSize;
+            pos.y-= 1 + 0.5f * labelSize.y;
         }
+        if(port.IsOnRightEdge) {
+            pos.x-= 1 + labelSize.x + WD_EditorConfig.PortSize;
+            pos.y-= 1 + 0.5f * labelSize.y;        
+        }
+        GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), name);
     }
     public enum PortShape { Circular, Square, Diamond, UpTriangle, DownTriangle, LeftTriangle, RightTriangle };
     public void DrawPort(PortShape _shape, Vector3 _center, Color _fillColor, Color _borderColor) {
@@ -468,28 +465,31 @@ public class WD_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(WD_Port port, WD_Object selectedObject) {
+    public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_Behaviour graph) {
         // Only data connection are drawn.
-        if(!(port is WD_DataPort)) return;
-        WD_DataPort dataPort= port as WD_DataPort;
+        if(!(port.IsRuntimeA<WD_DataPort>())) return;
         
-        if(dataPort.Parent.IsVisible) {
-            WD_DataPort source= dataPort.Source;
-            if(source != null && source.Parent.IsVisible) {
-                Vector2 start= source.Position;
-                Vector2 end= dataPort.Position;
-                Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;
-                Vector2 endDirection= dataPort.IsOnHorizontalEdge ? UpDirection : LeftDirection;
-                Vector2 diff= end-start;
-                if(Vector2.Dot(diff, startDirection) < 0) {
-                    startDirection= -startDirection;
-                }
-                if(Vector2.Dot(diff, endDirection) > 0) {
-                    endDirection  = - endDirection;
-                }
-                Color color= dataPort.DisplayColor;
-                DrawBezierCurve(start, end, startDirection, endDirection, color);
-            }                    
+        if(graph.EditorObjects[port.ParentId].IsVisible) {
+            if(graph.EditorObjects.IsIdValid(port.Source)) {
+                WD_EditorObject source= graph.EditorObjects[port.Source];
+                if(graph.EditorObjects[source.ParentId].IsVisible) {
+                    Rect sourcePos= graph.EditorObjects.GetPosition(source);
+                    Rect portPos  = graph.EditorObjects.GetPosition(port);
+                    Vector2 start= new Vector2(sourcePos.x, sourcePos.y);
+                    Vector2 end= new Vector2(portPos.x, portPos.y);
+                    Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;
+                    Vector2 endDirection= port.IsOnHorizontalEdge ? UpDirection : LeftDirection;
+                    Vector2 diff= end-start;
+                    if(Vector2.Dot(diff, startDirection) < 0) {
+                        startDirection= -startDirection;
+                    }
+                    if(Vector2.Dot(diff, endDirection) > 0) {
+                        endDirection  = - endDirection;
+                    }
+                    Color color= (graph.EditorObjects.GetRuntimeObject(port, graph) as WD_DataPort).DisplayColor;
+                    DrawBezierCurve(start, end, startDirection, endDirection, color);
+                }                                    
+            }
         }        
     }
     // ----------------------------------------------------------------------

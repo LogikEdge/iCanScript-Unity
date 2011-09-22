@@ -10,9 +10,9 @@ public sealed class WD_VirtualDataPort : WD_DataPort {
     // ======================================================================
     // Lifetime Management
     // ----------------------------------------------------------------------
-    public static WD_VirtualDataPort CreateInstance(string portName, WD_Node parent, DirectionEnum direction) {
+    public static WD_VirtualDataPort CreateInstance(string portName, WD_Node parent) {
         WD_VirtualDataPort instance= CreateInstance<WD_VirtualDataPort>();
-        instance.Init(portName, parent, direction);
+        instance.Init(portName, parent);
         return instance;
     }
 

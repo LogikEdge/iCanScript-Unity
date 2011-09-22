@@ -11,8 +11,8 @@ public class WD_Inspector : Editor {
     // PROPERTIES
 	// ----------------------------------------------------------------------
     private WD_Behaviour    Graph= null;
-	private WD_Editor	Editor= null;
-	public  WD_Object   SelectedObject {
+	private WD_Editor	    Editor= null;
+	public  WD_Object       SelectedObject {
 	    get { return mySelectedObject; }
 	    set { mySelectedObject= value; Repaint(); }
 	}
@@ -44,7 +44,7 @@ public class WD_Inspector : Editor {
         }
 
         // Configure the editor with the selected graph.
-        Editor.Activate(Graph.RootNode, this);
+        Editor.Activate(Graph, this);
 	}
 	
 	// ----------------------------------------------------------------------

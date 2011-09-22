@@ -10,7 +10,7 @@ public sealed class WD_Top : WD_Action {
     public WD_RootNode  RootNode;
         
     public int          FrameId     { get { return myFrameId; }}
-    public WD_Behaviour     Graph       { get { return RootNode.Graph; }}
+    public WD_Behaviour Graph       { get { return RootNode.Graph; }}
     
     // ======================================================================
     // INITIALIZATION
@@ -37,20 +37,6 @@ public sealed class WD_Top : WD_Action {
         }
     }
         
-    // ======================================================================
-    // OBJECT PICKING
-    // ----------------------------------------------------------------------
-    // Returns the node at the given position
-    public WD_Node GetNodeAt(Vector2 _position) {
-        return RootNode.GetNodeAt(_position);
-    }
-    
-    // ----------------------------------------------------------------------
-    // Returns the connection at the given position.
-    public WD_Port GetPortAt(Vector2 _position) {
-        return RootNode.GetPortAt(_position);
-    }
-
     // ======================================================================
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------

@@ -18,7 +18,7 @@ public class WD_EditorObject {
     // Port specific attributes ---------------------------------------------
     public enum EdgeEnum { None, Top, Bottom, Right, Left };
     public EdgeEnum         Edge      = EdgeEnum.None;
-    public int              PortSource= -1;
+    public int              Source= -1;
 
     // Non-persistant properties --------------------------------------------
     [System.NonSerialized] public bool IsBeingDragged= false;
@@ -33,20 +33,21 @@ public class WD_EditorObject {
         Type t= obj.GetType();
         QualifiedType= t.AssemblyQualifiedName;
         Name= obj.name;
-        obj.Case<WD_Node, WD_Port>(
-            (node) => { LocalPosition= node.LocalPosition; },
+        obj.Case<WD_RootNode, WD_Top, WD_Node, WD_Port>(
+            (root) => { IsVisible= false; },
+            (top)  => { IsVisible= false; },
+            (node) => { },
             (port) => {
-                LocalPosition.x= port.LocalPosition.x;
-                LocalPosition.y= port.LocalPosition.y;
                 port.ExecuteIf<WD_DataPort>(
-                    (dataPort) => { if(dataPort.Source != null) PortSource= dataPort.Source.InstanceId; }
+                    (dataPort) => {
+                        if(dataPort.Source != null) Source= dataPort.Source.InstanceId;
+                        dataPort.Case<WD_InDataPort, WD_OutDataPort, WD_EnablePort>(
+                            (inPort)     => { Edge= EdgeEnum.Left; },
+                            (outPort)    => { Edge= EdgeEnum.Right; },
+                            (enablePort) => { Edge= EdgeEnum.Top; }
+                        );
+                    }
                 );
-                switch(port.Edge) {
-                    case WD_Port.EdgeEnum.Top   : Edge= EdgeEnum.Top; break;
-                    case WD_Port.EdgeEnum.Bottom: Edge= EdgeEnum.Bottom; break;
-                    case WD_Port.EdgeEnum.Right : Edge= EdgeEnum.Right; break;
-                    case WD_Port.EdgeEnum.Left  : Edge= EdgeEnum.Left; break;                    
-                }
             }
         );
     }
@@ -83,8 +84,10 @@ public class WD_EditorObject {
     public string NameOrTypeName {
         get { return (Name == null || Name == "") ? TypeName : Name; }
     }
-    public bool IsOnTopEdge     { get { return Edge == EdgeEnum.Top; }}
-    public bool IsOnBottomEdge  { get { return Edge == EdgeEnum.Bottom; }}
-    public bool IsOnRightEdge   { get { return Edge == EdgeEnum.Right; }}
-    public bool IsOnLeftEdge    { get { return Edge == EdgeEnum.Left; }}
+    public bool IsOnTopEdge         { get { return Edge == EdgeEnum.Top; }}
+    public bool IsOnBottomEdge      { get { return Edge == EdgeEnum.Bottom; }}
+    public bool IsOnRightEdge       { get { return Edge == EdgeEnum.Right; }}
+    public bool IsOnLeftEdge        { get { return Edge == EdgeEnum.Left; }}
+    public bool IsOnHorizontalEdge  { get { return IsOnTopEdge   || IsOnBottomEdge; }}
+    public bool IsOnVerticalEdge    { get { return IsOnRightEdge || IsOnLeftEdge; }}
 }

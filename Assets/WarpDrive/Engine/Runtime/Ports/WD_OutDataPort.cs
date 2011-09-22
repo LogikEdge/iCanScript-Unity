@@ -12,9 +12,8 @@ public sealed class WD_OutDataPort : WD_DataPort {
         return instance;
     }
     // ----------------------------------------------------------------------
-    WD_OutDataPort Init(string thePortName, WD_Node theParent) {
-        base.Init(thePortName, theParent, DirectionEnum.Out);
-        Edge= EdgeEnum.Right;
+    new WD_OutDataPort Init(string thePortName, WD_Node theParent) {
+        base.Init(thePortName, theParent);
 
         // Allow streams to also be used as non-stream ports.
         if(IsStream) {

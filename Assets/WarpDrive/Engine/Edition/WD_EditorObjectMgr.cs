@@ -18,14 +18,14 @@ public class WD_EditorObjectMgr {
         get { return EditorObjects[i]; }
     }
     // ----------------------------------------------------------------------
-    public bool IsIdValid(int id) { return id >= 0 && id < EditorObjects.Count; }
+    public bool IsIdValid(int id)   { return id >= 0 && id < EditorObjects.Count; }
+    public bool IsIdInvalid(int id) { return !IsIdValid(id); }
     // ----------------------------------------------------------------------
     public void AddObject(WD_Object obj) {
         // Attempt to use an empty slot.
         for(int i= 0; i < EditorObjects.Count; ++i) {
             if(EditorObjects[i].InstanceId == -1) {
                 EditorObjects[i].Serialize(obj, i);
-                IsDirty= true;
                 return;
             }
         }
@@ -33,7 +33,6 @@ public class WD_EditorObjectMgr {
         WD_EditorObject so= new WD_EditorObject();
         so.Serialize(obj, EditorObjects.Count);
         EditorObjects.Add(so);
-        IsDirty= true;
     }
     // ----------------------------------------------------------------------
     public void ReplaceObject(WD_Object obj) {
@@ -42,7 +41,7 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     public void RemoveObject(int id) {
-        if(!IsIdValid(id)) return;
+        if(IsIdInvalid(id)) return;
         EditorObjects[id].InstanceId= -1;
         IsDirty= true;        
     }
@@ -52,7 +51,31 @@ public class WD_EditorObjectMgr {
     public void RemoveObject(WD_Object obj) {
         RemoveObject(obj.InstanceId);
     }
-
+    // ----------------------------------------------------------------------
+    public bool IsChildOf(WD_EditorObject obj, WD_EditorObject parent) {
+        if(IsIdInvalid(obj.ParentId)) return false;
+        if(obj.ParentId == parent.InstanceId) return true;
+        return IsChildOf(EditorObjects[obj.ParentId], parent);
+    }
+    // ----------------------------------------------------------------------
+    public WD_Object GetRuntimeObject(int id, WD_Behaviour graph) {
+        return GetRuntimeObject(graph.RootNode, id);
+    }
+    public WD_Object GetRuntimeObject(WD_EditorObject eObj, WD_Behaviour graph) {
+        return GetRuntimeObject(eObj.InstanceId, graph);
+    }
+    WD_Object GetRuntimeObject(WD_Aggregate node, int id) {
+        if(node.InstanceId == id) return node;
+        foreach(var child in node.Children) {
+            if(child.InstanceId == id) return child;
+            if(child is WD_Aggregate) {
+                WD_Object ret= GetRuntimeObject(child as WD_Aggregate, id);
+                if(ret != null) return ret;
+            }
+        }
+        return null;
+    }
+    
     // ======================================================================
     // Editor Object Iteration Utilities
     // ----------------------------------------------------------------------
@@ -76,7 +99,7 @@ public class WD_EditorObjectMgr {
                                     Action<WD_EditorObject> fnc2,
                                     Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
                                                                               where T2 : WD_Object {
-        if(!IsIdValid(id)) return;
+        if(IsIdInvalid(id)) return;
         Case<T1,T2>(EditorObjects[id], fnc1, fnc2, defaultFnc);
     }
     public void Case<T1,T2,T3>(WD_EditorObject obj, Action<WD_EditorObject> fnc1,
@@ -96,7 +119,7 @@ public class WD_EditorObjectMgr {
                                        Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
                                                                                  where T2 : WD_Object
                                                                                  where T3 : WD_Object {
-        if(!IsIdValid(id)) return;
+        if(IsIdInvalid(id)) return;
         Case<T1,T2,T3>(EditorObjects[id], fnc1, fnc2, fnc3, defaultFnc);
     }
     public void ForEachChild(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
@@ -109,11 +132,90 @@ public class WD_EditorObjectMgr {
     public void ForEachChild<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
         ForEachChild(parent, (child) => { ExecuteIf<T>(child, fnc); });
     }
+    public void ForEach(Action<WD_EditorObject> fnc) {
+        foreach(var obj in EditorObjects) {
+            fnc(obj);
+        }
+    }
+    public void ForEach<T>(Action<WD_EditorObject> fnc) where T : WD_Object {
+        foreach(var obj in EditorObjects) {
+            ExecuteIf<T>(obj, fnc);
+        }
+    }
+    public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        foreach(var obj in EditorObjects) {
+            if(IsChildOf(obj, parent)) {
+                fnc(obj);
+            }
+        }
+    }
+    public void ForEachRecursive<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
+        ForEachRecursive(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
+    }
     
+    // ======================================================================
+    // OBJECT PICKING
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetRootNode() {
+        foreach(var obj in EditorObjects) {
+            if(obj.ParentId == -1) return obj;
+        }
+        Debug.LogError("No RootNode found!!!");
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the node at the given position
+    public WD_EditorObject GetNodeAt(Vector2 pick) {
+        WD_EditorObject foundNode= null;
+        foreach(var node in EditorObjects) {
+            if(node.IsVisible && IsInside(node, pick) && node.IsRuntimeA<WD_Node>()) {
+                if(foundNode == null || node.LocalPosition.width < foundNode.LocalPosition.width) {
+                    foundNode= node;
+                }
+            }
+        }
+        return foundNode ?? GetRootNode();
+    }
+    
+    // ----------------------------------------------------------------------
+    // Returns the connection at the given position.
+    public WD_EditorObject GetPortAt(Vector2 pick) {
+        WD_EditorObject bestPort= null;
+        float bestDistance= 100000;     // Simply a big value
+        foreach(var port in EditorObjects) {
+            if(port.IsVisible && port.IsRuntimeA<WD_Port>()) {
+                Rect tmp= GetPosition(port);
+                Vector2 position= new Vector2(tmp.x, tmp.y);
+                float distance= Vector2.Distance(position, pick);
+                if(distance < 1.5f * WD_EditorConfig.PortRadius && distance < bestDistance) {
+                    bestDistance= distance;
+                    bestPort= port;
+                }                
+            }
+        }
+        return bestPort;
+    }
+
     // ======================================================================
     // Editor Graph Layout Functions
     // ----------------------------------------------------------------------
+    // Moves the node without changing its size.
+    public void SetInitialPosition(WD_EditorObject obj, Vector2 initialPosition) {
+        if(IsIdValid(obj.ParentId)) {
+            Rect position= GetPosition(EditorObjects[obj.ParentId]);
+            obj.LocalPosition.x= initialPosition.x - position.x;
+            obj.LocalPosition.y= initialPosition.y - position.y;            
+        }
+        else {
+            obj.LocalPosition.x= initialPosition.x;
+            obj.LocalPosition.y= initialPosition.y;                        
+        }
+        IsDirty= true;
+    }
+
+    // ----------------------------------------------------------------------
     public void Layout(WD_EditorObject obj) {
+        obj.IsDirty= false;
         Case<WD_Node, WD_Port>(obj,
             (node) => { NodeLayout(node); },
             (port) => { PortLayout(port); }
@@ -648,7 +750,7 @@ public class WD_EditorObjectMgr {
         if(port.IsBeingDragged) return;
 
         // Retreive parent layout information.
-        if(IsIdValid(port.ParentId)) {
+        if(!IsIdValid(port.ParentId)) {
             Debug.LogWarning("Trying to layout a port who does not have a parent!!!");
             return;
         }
@@ -770,7 +872,7 @@ public class WD_EditorObjectMgr {
                 Vector2 pPos= new Vector2(tmp.x, tmp.y);
                 float distance= Vector2.Distance(pPos, position);
                 if(distance <= 1.5*WD_EditorConfig.PortSize) {
-                    foundPort= port;
+                    foundPort= p;
                 }
             }
         }

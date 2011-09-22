@@ -17,7 +17,6 @@ public class WD_EnablePort : WD_Port {
     }
     protected WD_EnablePort Init(string name, WD_State parent) {
         base.Init(name, parent);
-        Edge= EdgeEnum.Top;
         return this;
     }
     

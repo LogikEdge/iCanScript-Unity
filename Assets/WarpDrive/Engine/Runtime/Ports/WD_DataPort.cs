@@ -7,17 +7,14 @@ public class WD_DataPort : WD_Port {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public enum DirectionEnum { In, Out };
-
-    [SerializeField] DirectionEnum  myDirection;    
 	[SerializeField] WD_DataPort    mySource= null;
     
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool IsInput                     { get { return myDirection == DirectionEnum.In; }}
-    public bool IsOutput                    { get { return myDirection == DirectionEnum.Out; }}
+    public bool IsInput                     { get { return this is WD_InDataPort; }}
+    public bool IsOutput                    { get { return this is WD_OutDataPort; }}
     public bool IsVirtual                   { get { return AsVirtual != null; }}
     public WD_VirtualDataPort  AsVirtual    { get { return this as WD_VirtualDataPort; }}
     // ----------------------------------------------------------------------
@@ -81,14 +78,8 @@ public class WD_DataPort : WD_Port {
     // ======================================================================
     // Lifetime Management
     // ----------------------------------------------------------------------
-    protected WD_DataPort Init(string thePortName, WD_Node theParent, DirectionEnum theDirection) {
-        myDirection= theDirection;
+    protected WD_DataPort Init(string thePortName, WD_Node theParent) {
         base.Init(thePortName, theParent);
-        switch(myDirection) {
-            case DirectionEnum.In : Edge= EdgeEnum.Left; break;
-            case DirectionEnum.Out: Edge= EdgeEnum.Right; break;
-        }
-
         // Allow streams to also be used as non-stream ports.
         if(IsStream) {
             FieldInfo fieldInfo= Parent.GetType().GetField(Name);

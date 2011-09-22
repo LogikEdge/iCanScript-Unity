@@ -30,8 +30,9 @@ public class WD_MenuState {
     public static void AddState(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_State parent= context.SelectedObject as WD_State;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         WD_State instance= WD_State.CreateInstance<WD_State>("", parent);
-        instance.SetInitialPosition(context.GraphPosition);        
+        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/State/Add State", true)]
@@ -44,8 +45,9 @@ public class WD_MenuState {
     public static void AddEntryFunction(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         WD_Module instance= WD_Module.CreateInstance<WD_Module>("OnEntry", parent);
-        instance.SetInitialPosition(context.GraphPosition);        
+        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/State/Add Entry Function", true)]
@@ -60,8 +62,9 @@ public class WD_MenuState {
     public static void AddExitFunction(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         WD_Module instance= WD_Module.CreateInstance<WD_Module>("OnExit", parent);
-        instance.SetInitialPosition(context.GraphPosition);        
+        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/State/Add Exit Function", true)]
@@ -76,8 +79,9 @@ public class WD_MenuState {
     public static void AddUpdateFunction(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_State parent= context.SelectedObject as WD_State;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         WD_Module instance= WD_Module.CreateInstance<WD_Module>("OnUpdate", parent);
-        instance.SetInitialPosition(context.GraphPosition);        
+        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/State/Add Update Function", true)]

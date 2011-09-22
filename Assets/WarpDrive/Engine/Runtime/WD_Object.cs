@@ -176,9 +176,17 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     // ======================================================================
     // GUI
     // ----------------------------------------------------------------------
-    public  virtual void DoLayout()     {}
     public          void Layout() {
-        DoLayout();
+        Case<WD_Node, WD_Port>(
+            (node) => {
+                node.Case<WD_RootNode, WD_Top, WD_Node>(
+                    (root) => {},
+                    (top)  => {},
+                    (nd)   => { nd.Top.RootNode.Graph.EditorObjects.Layout(nd.Top.RootNode.Graph.EditorObjects[nd.InstanceId]); }
+                );
+            },
+            (port) => { port.Top.RootNode.Graph.EditorObjects.Layout(port.Top.RootNode.Graph.EditorObjects[port.InstanceId]); }
+        );
         IsEditorDirty= false;
         Case<WD_RootNode, WD_Top, WD_Object>(
             (root) => { root.Graph.ReplaceObject(this); },

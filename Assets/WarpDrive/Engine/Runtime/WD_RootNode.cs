@@ -102,43 +102,4 @@ public class WD_RootNode : WD_Node {
         }
     }
 
-    // ======================================================================
-    // OBJECT PICKING
-    // ----------------------------------------------------------------------
-    // Returns the node at the given position
-    public WD_Node GetNodeAt(Vector2 _position) {
-        WD_Node foundNode= this;
-        ForEachRecursiveDepthLast<WD_Node>(
-            (node)=> {
-                if(node.IsInside(_position)) {
-                    if(foundNode == null) {
-                        foundNode= node;
-                    }
-                        else {
-                        if(foundNode.IsParentOf(node)) {
-                            foundNode= node;
-                        }
-                    }
-                }                
-            }
-        );
-        return foundNode;
-    }
-    
-    // ----------------------------------------------------------------------
-    // Returns the connection at the given position.
-    public WD_Port GetPortAt(Vector2 _position) {
-        WD_Port bestPort= null;
-        float bestDistance= 100000;     // Simply a big value
-        ForEachRecursive<WD_Port>(
-            (port)=> {
-                float distance= Vector2.Distance(port.Position, _position);
-                if(distance < 1.5f * WD_EditorConfig.PortRadius && distance < bestDistance) {
-                    bestDistance= distance;
-                    bestPort= port;
-                }
-            }
-        );
-        return bestPort;
-    }
 }

@@ -8,8 +8,9 @@ public class WD_MenuModule {
     public static void AddStateChart(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Module module= context.SelectedObject as WD_Module;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         WD_StateChart stateChart= WD_StateChart.CreateInstance<WD_StateChart>("", module);
-        stateChart.SetInitialPosition(context.GraphPosition);
+        editorObjects.SetInitialPosition(editorObjects[stateChart.InstanceId], context.GraphPosition);
         // Add initial state.
         WD_State state= WD_State.CreateInstance<WD_State>("", stateChart);
         stateChart.EntryState= state;        

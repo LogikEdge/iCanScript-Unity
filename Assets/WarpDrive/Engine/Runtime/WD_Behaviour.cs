@@ -82,4 +82,5 @@ public sealed class WD_Behaviour : MonoBehaviour {
     public void ReplaceObject(WD_Object obj) {
         EditorObjects.ReplaceObject(obj);
     }
+
 }

@@ -10,9 +10,11 @@ public class WD_Editor : EditorWindow {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    WD_RootNode     RootNode   = null;
-	WD_Inspector    Inspector  = null;
-    WD_Node         DisplayRoot= null;
+    WD_Behaviour        Graph        = null;
+    WD_EditorObjectMgr  EditorObjects= null;
+    WD_EditorObject     RootNode     = null;
+	WD_Inspector        Inspector    = null;
+    WD_EditorObject     DisplayRoot  = null;
 
     // ----------------------------------------------------------------------
     public  WD_Mouse           Mouse           = null;
@@ -20,28 +22,26 @@ public class WD_Editor : EditorWindow {
     public  WD_ScrollView      ScrollView      = null;
     
     // ----------------------------------------------------------------------
-    bool    IsRootNodeSelected  { get { return SelectedObject is WD_RootNode; }}
-    bool    IsNodeSelected      { get { return SelectedObject is WD_Node; }}
-    bool    IsPortSelected      { get { return SelectedObject is WD_Port; }}
+    bool    IsRootNodeSelected  { get { return SelectedObject.IsRuntimeA<WD_RootNode>(); }}
+    bool    IsNodeSelected      { get { return SelectedObject.IsRuntimeA<WD_Node>(); }}
+    bool    IsPortSelected      { get { return SelectedObject.IsRuntimeA<WD_Port>(); }}
     
     // ----------------------------------------------------------------------
-    WD_Object   DragObject          = null;
-    Vector2     DragStartPosition   = Vector2.zero;
-    bool        IsDragEnabled       = true;
-    bool        IsDragging          { get { return DragObject != null; }}
+    WD_EditorObject DragObject          = null;
+    Vector2         DragStartPosition   = Vector2.zero;
+    bool            IsDragEnabled       = true;
+    bool            IsDragging          { get { return DragObject != null; }}
 
 
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
-    WD_Object SelectedObject {
+    WD_EditorObject SelectedObject {
         get { return mySelectedObject; }
-        set { Inspector.SelectedObject= mySelectedObject= value; }
+        set { Inspector.SelectedObject= EditorObjects.GetRuntimeObject(mySelectedObject= value, Graph); }
     }
-    WD_Object mySelectedObject= null;
+    WD_EditorObject mySelectedObject= null;
 
-    WD_Behaviour Graph { get { return RootNode.Graph; }}
-    
     // ======================================================================
     // INITIALIZATION
 	// ----------------------------------------------------------------------
@@ -69,9 +69,11 @@ public class WD_Editor : EditorWindow {
     
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.
-	public void Activate(WD_RootNode rootNode, WD_Inspector _inspector) {
-        RootNode= rootNode;
-        DisplayRoot= rootNode;
+	public void Activate(WD_Behaviour graph, WD_Inspector _inspector) {
+        Graph= graph;
+        EditorObjects= graph.EditorObjects;
+        RootNode= EditorObjects.GetRootNode();
+        DisplayRoot= RootNode;
         Inspector= _inspector;
     }
     
@@ -120,7 +122,7 @@ public class WD_Editor : EditorWindow {
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
         // Update scroll view.
-        ScrollView.Update(position, DisplayRoot.Position);
+        ScrollView.Update(position, Graph.EditorObjects.GetPosition(DisplayRoot));
         
         // Draw editor grid.
         DrawGrid();
@@ -216,15 +218,16 @@ public class WD_Editor : EditorWindow {
     
 	// ----------------------------------------------------------------------
     void ProcessMainMenu(Vector2 position) {
-        WD_Object selectedObject= GetObjectAtScreenPosition(position);
+        WD_EditorObject selectedObject= GetObjectAtScreenPosition(position);
         if(selectedObject == null) return;
-        WD_MenuContext context= WD_MenuContext.CreateInstance(selectedObject, position, ScrollView.ScreenToGraph(position));
+        WD_Object runtimeObj= EditorObjects.GetRuntimeObject(selectedObject, Graph);
+        WD_MenuContext context= WD_MenuContext.CreateInstance(runtimeObj, position, ScrollView.ScreenToGraph(position), Graph);
         string menuName= "CONTEXT/"+WD_EditorConfig.ProductName;
-        if(selectedObject is WD_RootNode) menuName+= "/RootNode";
-        else if(selectedObject is WD_StateChart) menuName+= "/StateChart";
-        else if(selectedObject is WD_State) menuName+= "/State";
-        else if(selectedObject is WD_Module) menuName+= "/Module";
-        else if(selectedObject is WD_Function) menuName+= "/Function";
+        if(runtimeObj is WD_RootNode) menuName+= "/RootNode";
+        else if(runtimeObj is WD_StateChart) menuName+= "/StateChart";
+        else if(runtimeObj is WD_State) menuName+= "/State";
+        else if(runtimeObj is WD_Module) menuName+= "/Module";
+        else if(runtimeObj is WD_Function) menuName+= "/Function";
         EditorUtility.DisplayPopupMenu (new Rect (position.x,position.y,0,0), menuName, new MenuCommand(context));
     }
     
@@ -234,22 +237,23 @@ public class WD_Editor : EditorWindow {
         if(!IsDragEnabled) return;
 
         // Process dragging start.
-        WD_Port port;
-        WD_Node node;
+        WD_EditorObject port;
+        WD_EditorObject node;
         Vector2 MousePosition= ScrollView.ScreenToGraph(Mouse.Position);
         if(DragObject == null) {
             Vector2 pos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
-            port= RootNode.GetPortAt(pos);
+            port= EditorObjects.GetPortAt(pos);
             if(port != null) {
                 DragObject= port;
                 DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
                 port.IsBeingDragged= true;
             }
             else {
-                node= RootNode.GetNodeAt(pos);                
+                node= EditorObjects.GetNodeAt(pos);                
                 if(node != null) {
                     DragObject= node;
-                    DragStartPosition= new Vector2(node.Position.x, node.Position.y);                                                    
+                    Rect position= EditorObjects.GetPosition(node);
+                    DragStartPosition= new Vector2(position.x, position.y);                                                    
                 }
                 else {
                     // Disable dragging since mouse is not over Node or Port.
@@ -262,44 +266,47 @@ public class WD_Editor : EditorWindow {
 
         // Compute new object position.
         Vector2 delta= MousePosition - ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
-        port= DragObject as WD_Port;
-        if(port != null) {
-            port.LocalPosition= DragStartPosition+delta;
-            port.IsEditorDirty= true;
-            if(!port.IsNearParent()) {
+        if(DragObject.IsRuntimeA<WD_Port>()) {
+            port= DragObject;
+            Vector2 newLocalPos= DragStartPosition+delta;
+            port.LocalPosition.x= newLocalPos.x;
+            port.LocalPosition.y= newLocalPos.y;
+            port.IsDirty= true;
+            if(!EditorObjects.IsNearParent(port)) {
             /*
                 TODO : create a temporary port to show new connection.
             */    
             }
         }
-        node= DragObject as WD_Node;
-        if(node != null) {
-            node.MoveTo(DragStartPosition+delta);
-            node.IsEditorDirty= true;                        
+        if(DragObject.IsRuntimeA<WD_Node>()) {
+            node= DragObject;
+            EditorObjects.MoveTo(node, DragStartPosition+delta);
+            node.IsDirty= true;                        
         }
     }    
 
 	// ----------------------------------------------------------------------
     void EndDragging() {
-        WD_Port port= DragObject as WD_Port;
-        if(port != null) {
+        if(DragObject.IsRuntimeA<WD_Port>()) {
+            WD_EditorObject port= DragObject;
             port.IsBeingDragged= false;
             // Verify for a new connection.
             if(!VerifyNewConnection(port)) {
                 // Verify for disconnection.
-                if(!port.IsNearParent()) {
-                    if(port is WD_DataPort) {
-                        (port as WD_DataPort).Disconnect();
+                if(!EditorObjects.IsNearParent(port)) {
+                    if(port.IsRuntimeA<WD_DataPort>()) {
+                        (EditorObjects.GetRuntimeObject(port, Graph) as WD_DataPort).Disconnect();
                     }
-                    port.LocalPosition= DragStartPosition;
+                    port.LocalPosition.x= DragStartPosition.x;
+                    port.LocalPosition.y= DragStartPosition.y;
                 }                    
                 else {
                     // Assume port relocation.
-                    port.SnapToParent();
-                    port.Parent.Layout();
+                    EditorObjects.SnapToParent(port);
+                    EditorObjects.Layout(EditorObjects[port.ParentId]);
                 }
             }
-            port.IsEditorDirty= true;
+            port.IsDirty= true;
         }
     
         // Reset dragging state.
@@ -310,67 +317,72 @@ public class WD_Editor : EditorWindow {
     
 	// ----------------------------------------------------------------------
     // Manages the object selection.
-    WD_Object DetermineSelectedObject() {
+    WD_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         if(!Mouse.IsLeftButtonDown && !Mouse.IsRightButtonDown) return SelectedObject;
-        WD_Object newSelected= GetObjectAtMousePosition();
+        WD_EditorObject newSelected= GetObjectAtMousePosition();
         SelectedObject= newSelected;
         return SelectedObject;
     }
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
-    public WD_Object GetObjectAtMousePosition() {
+    public WD_EditorObject GetObjectAtMousePosition() {
         return GetObjectAtScreenPosition(Mouse.Position);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
-    public WD_Object GetObjectAtScreenPosition(Vector2 _screenPos) {
+    public WD_EditorObject GetObjectAtScreenPosition(Vector2 _screenPos) {
         Vector2 graphPosition= ScrollView.ScreenToGraph(_screenPos);
-        WD_Port port= RootNode.GetPortAt(graphPosition);
+        WD_EditorObject port= EditorObjects.GetPortAt(graphPosition);
         if(port != null) return port;
-        WD_Node node= RootNode.GetNodeAt(graphPosition);                
+        WD_EditorObject node= EditorObjects.GetNodeAt(graphPosition);                
         if(node != null) return node;
         return null;
     }
         
 	// ----------------------------------------------------------------------
-    bool VerifyNewConnection(WD_Port port) {
+    bool VerifyNewConnection(WD_EditorObject port) {
         // No new connection if no overlapping port found.
-        WD_Port overlappingPort= port.GetOverlappingPort();
+        WD_EditorObject overlappingPort= EditorObjects.GetOverlappingPort(port);
         if(overlappingPort == null) return false;
         
         // Only connect data ports.
-        if(!(port is WD_DataPort)) return false;
-        if(!(overlappingPort is WD_DataPort)) return false;
-        WD_DataPort dataPort= port as WD_DataPort;
-        WD_DataPort overlappingDataPort= overlappingPort as WD_DataPort;
+        if(!(port.IsRuntimeA<WD_DataPort>())) return false;
+        if(!(overlappingPort.IsRuntimeA<WD_DataPort>())) return false;
+        WD_DataPort dataPort= EditorObjects.GetRuntimeObject(port, Graph) as WD_DataPort;
+        WD_DataPort overlappingDataPort= EditorObjects.GetRuntimeObject(overlappingPort, Graph) as WD_DataPort;
         
         // We have a new connection so lets determine direction.
-        dataPort.LocalPosition= DragStartPosition;
+        port.LocalPosition.x= DragStartPosition.x;
+        port.LocalPosition.y= DragStartPosition.y;
         if(dataPort.IsInput) {
             if(overlappingDataPort.IsOutput) {
                 dataPort.Source= overlappingDataPort;
+                port.Source= overlappingPort.InstanceId;
                 return true;
             }
             if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == false) {
-                Debug.Log("8");
                 return true;
             }
             if(dataPort.IsVirtual == true && overlappingDataPort.IsVirtual == false) {
                 overlappingDataPort.Source= dataPort;
+                overlappingPort.Source= port.InstanceId;
                 return true;
             }
             if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == true) {
                 dataPort.Source= overlappingDataPort;
+                port.Source= overlappingPort.InstanceId;
                 return true;
             }
             dataPort.Source= overlappingDataPort;
+            port.Source= overlappingPort.InstanceId;
         }
         else {
             if(overlappingDataPort.IsInput) {
                 overlappingDataPort.Source= dataPort;
+                overlappingPort.Source= port.InstanceId;
                 return true;
             }            
             if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == false) {
@@ -378,13 +390,16 @@ public class WD_Editor : EditorWindow {
             }
             if(dataPort.IsVirtual == true && overlappingDataPort.IsVirtual == false) {
                 dataPort.Source= overlappingDataPort;
+                port.Source= overlappingPort.InstanceId;
                 return true;
             }
             if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == true) {
                 overlappingDataPort.Source= dataPort;
+                overlappingPort.Source= port.InstanceId;
                 return true;
             }
             dataPort.Source= overlappingDataPort;
+            port.Source= overlappingPort.InstanceId;
         }
         return true;
     }
@@ -404,7 +419,13 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
         // Perform layout of modified nodes.
-        DisplayRoot.ForEachRecursiveDepthLast( (obj)=> { if(obj.IsEditorDirty) obj.Layout(); } );            
+        WD_Node RuntimeDisplayRoot= EditorObjects.GetRuntimeObject(DisplayRoot, Graph) as WD_Node;
+        RuntimeDisplayRoot.ForEachRecursiveDepthLast(
+            (obj)=> {
+                WD_EditorObject eObj= EditorObjects[obj.InstanceId];
+                if(eObj.IsDirty) EditorObjects.Layout(eObj);
+            }
+        );            
         
         // Draw editor window.
         ScrollView.Begin();
@@ -416,16 +437,21 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawNodes() {
         // Display node starting from the root node.
-        DisplayRoot.ForEachRecursiveDepthLast<WD_Node>( (node)=> { Graphics.DrawNode(node, SelectedObject); } );
+        WD_Node RuntimeDisplayRoot= EditorObjects.GetRuntimeObject(DisplayRoot, Graph) as WD_Node;
+        RuntimeDisplayRoot.ForEachRecursiveDepthLast<WD_Node>(
+            (node)=> {
+                Graphics.DrawNode(EditorObjects[node.InstanceId], SelectedObject, Graph);
+            }
+        );
     }	
 	
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        DisplayRoot.ForEachRecursive<WD_Port>( (port)=> { Graphics.DrawConnection(port, SelectedObject); } );
+        EditorObjects.ForEachRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawConnection(port, SelectedObject, Graph); } );
 
         // Display ports.
-        DisplayRoot.ForEachRecursive<WD_Port>( (port)=> { Graphics.DrawPort(port, SelectedObject); } );
+        EditorObjects.ForEachRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawPort(port, SelectedObject, Graph); } );
     }
 
     // ======================================================================

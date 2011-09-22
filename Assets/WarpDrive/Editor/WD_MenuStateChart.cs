@@ -9,8 +9,9 @@ public class WD_MenuStateChart {
     public static void AddState(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_StateChart parent= context.SelectedObject as WD_StateChart;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         WD_State instance= WD_State.CreateInstance<WD_State>("", parent);
-        instance.SetInitialPosition(context.GraphPosition);        
+        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/StateChart/Add State", true)]
