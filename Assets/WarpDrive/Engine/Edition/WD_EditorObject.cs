@@ -28,6 +28,7 @@ public class WD_EditorObject {
     // Object Serialization
     // ----------------------------------------------------------------------
     public void Serialize(WD_Object obj, int id) {
+        IsDirty= true;
         InstanceId= obj.InstanceId= id;
         ParentId= obj.Parent != null ? obj.Parent.InstanceId : -1;
         Type t= obj.GetType();

@@ -26,7 +26,6 @@ public class WD_RootNode : WD_Node {
         base.Init(_name, null);
         // Override the base class initialization since we don't want the RootNode
         // to show in the graph.
-        IsVisible= false;
         return this;
     }
 

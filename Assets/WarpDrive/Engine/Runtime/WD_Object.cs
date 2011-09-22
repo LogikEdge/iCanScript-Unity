@@ -214,23 +214,23 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
             );
         }
     }
-    // ----------------------------------------------------------------------
-    public bool IsVisible {
-        get {
-            bool value= true;
-            Case<WD_RootNode, WD_Top, WD_Object>(
-                (root) => { value= false; },
-                (top)  => { value= false; },
-                (obj)  => { value= obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsVisible; }
-            );
-            return value;
-        }
-        set {
-            Case<WD_RootNode, WD_Top, WD_Object>(
-                (root) => { root.Graph.EditorObjects[InstanceId].IsVisible= false; },
-                (top)  => { top.RootNode.Graph.EditorObjects[InstanceId].IsVisible= false; },
-                (obj)  => { obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsVisible= value; }
-            );
-        }
-    }
+//    // ----------------------------------------------------------------------
+//    public bool IsVisible {
+//        get {
+//            bool value= true;
+//            Case<WD_RootNode, WD_Top, WD_Object>(
+//                (root) => { value= false; },
+//                (top)  => { value= false; },
+//                (obj)  => { value= obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsVisible; }
+//            );
+//            return value;
+//        }
+//        set {
+//            Case<WD_RootNode, WD_Top, WD_Object>(
+//                (root) => { root.Graph.EditorObjects[InstanceId].IsVisible= false; },
+//                (top)  => { top.RootNode.Graph.EditorObjects[InstanceId].IsVisible= false; },
+//                (obj)  => { obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsVisible= value; }
+//            );
+//        }
+//    }
 }

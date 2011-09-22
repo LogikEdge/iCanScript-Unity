@@ -36,18 +36,12 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // ----------------------------------------------------------------------
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
-    void Start() {
-//        Debug.Log("Start");
-    }
+    void Start() {}
     
     // ----------------------------------------------------------------------
-    void OnEnable() {
-//        Debug.Log("OnEnable");
-    }
+    void OnEnable() {}
     // ----------------------------------------------------------------------
-    void OnDisable() {
-//        Debug.Log("OnDisable");
-    }
+    void OnDisable() {}
     // ----------------------------------------------------------------------
     void OnDestroy() {
         RootNode.Dealloc();

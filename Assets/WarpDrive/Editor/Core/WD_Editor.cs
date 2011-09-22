@@ -454,19 +454,4 @@ public class WD_Editor : EditorWindow {
         EditorObjects.ForEachRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawPort(port, SelectedObject, Graph); } );
     }
 
-    // ======================================================================
-    // Editor Object Management
-	// ----------------------------------------------------------------------
-    public bool IsDirty(WD_Object obj) {
-        return Graph.EditorObjects[obj.InstanceId].IsDirty;
-    }
-    public void SetDirty(WD_Object obj, bool dirty= true) {
-        Graph.EditorObjects[obj.InstanceId].IsDirty= dirty;
-    }
-    public bool IsVisible(WD_Object obj) {
-        return Graph.EditorObjects[obj.InstanceId].IsVisible;        
-    }
-    public void SetVisibility(WD_Object obj, bool visibility= true) {
-        Graph.EditorObjects[obj.InstanceId].IsVisible= visibility;        
-    }
 }
