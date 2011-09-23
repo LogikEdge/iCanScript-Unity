@@ -92,31 +92,6 @@ public class WD_MenuState {
         return parentState. OnUpdateAction == null;
     }
     
-    // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/WarpDrive/State/Add Transition")]
-    public static void AddTransition(MenuCommand command) {
-//        WD_MenuContext context= command.context as WD_MenuContext;
-//        WD_State state= context.SelectedObject as WD_State;
-//        WD_Transition instance= WD_Transition.CreateInstance("Transition", state);
-//        WD_Aggregate parent= state.Parent;
-//        parent.ForEachChild<WD_State>(
-//            (child)=> {
-//                if(child != state) {
-//                    instance.myEndState= child;
-//                }
-//            }
-//        );
-//        WD_MenuContext.DestroyImmediate(context);
-    }
-    [MenuItem("CONTEXT/WarpDrive/State/Add Transition", true)]
-    public static bool ValidateAddTransition(MenuCommand command) {
-        WD_MenuContext context= command.context as WD_MenuContext;
-        WD_State state= context.SelectedObject as WD_State;
-        if(state == null) return false;
-        WD_Aggregate parent= state.Parent;
-        return parent.ChildCount<WD_State>() == 2;
-    }
-
     // ======================================================================
     // COMMON AREA
     // ----------------------------------------------------------------------

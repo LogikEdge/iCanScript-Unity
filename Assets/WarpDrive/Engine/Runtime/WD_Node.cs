@@ -18,15 +18,4 @@ public abstract class WD_Node : WD_Aggregate {
             WD_OutDataPort.CreateInstance(field.Name, this);            
         }
     }
-    
-    // ======================================================================
-    // LAYOUT FUNCTIONS
-    // ----------------------------------------------------------------------
-//    // Moves the node without changing its size.
-//    public void SetInitialPosition(Vector2 _initialPosition) {
-//        LocalPosition.x= _initialPosition.x - Position.x;
-//        LocalPosition.y= _initialPosition.y - Position.y;
-//        IsEditorDirty= true;
-//    }
-//
 }

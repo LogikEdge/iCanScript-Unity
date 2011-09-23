@@ -53,7 +53,6 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     // ----------------------------------------------------------------------
     // NAME & TYPE NAME
     // ----------------------------------------------------------------------
-    public bool IsNameVisible { get { return name != null && name.Length != 0 && name[0] != WD_EditorConfig.PrivateStringPrefix; }}
     public string Name {
         get {
             if(name == null || name == "") return null;
@@ -142,30 +141,6 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     public void ForEachRecursive<T>(System.Action<T> fnc) where T : WD_Object {
         ForEachRecursiveDepthFirst<T>(fnc);
     }
-    // ----------------------------------------------------------------------
-    public int ChildCount() {
-        int count= 0;
-        ForEachChild( (child)=> { ++count; });
-        return count;
-    }
-    // ----------------------------------------------------------------------
-    public int ChildCount<T>() where T : WD_Object {
-        int count= 0;
-        ForEachChild<T>( (child)=> { ++count; });
-        return count;
-    }
-    // ----------------------------------------------------------------------
-    public int ChildCountRecursive() {
-        int count= 0;
-        ForEachRecursive( (child)=> { ++count; });
-        return count;
-    }
-    // ----------------------------------------------------------------------
-    public int ChildCountRecursive<T>() where T : WD_Object {
-        int count= 0;
-        ForEachRecursive<T>( (child)=> { ++count; });
-        return count;
-    }
     
     // ======================================================================
     // UPDATE    
@@ -176,7 +151,7 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     // ======================================================================
     // GUI
     // ----------------------------------------------------------------------
-    public          void Layout() {
+    public void Layout() {
         Case<WD_Node, WD_Port>(
             (node) => {
                 node.Case<WD_RootNode, WD_Top, WD_Node>(
@@ -214,23 +189,4 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
             );
         }
     }
-//    // ----------------------------------------------------------------------
-//    public bool IsVisible {
-//        get {
-//            bool value= true;
-//            Case<WD_RootNode, WD_Top, WD_Object>(
-//                (root) => { value= false; },
-//                (top)  => { value= false; },
-//                (obj)  => { value= obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsVisible; }
-//            );
-//            return value;
-//        }
-//        set {
-//            Case<WD_RootNode, WD_Top, WD_Object>(
-//                (root) => { root.Graph.EditorObjects[InstanceId].IsVisible= false; },
-//                (top)  => { top.RootNode.Graph.EditorObjects[InstanceId].IsVisible= false; },
-//                (obj)  => { obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsVisible= value; }
-//            );
-//        }
-//    }
 }

@@ -6,9 +6,9 @@ public class WD_RootNode : WD_Node {
     // PROPERTIES
     // ----------------------------------------------------------------------
     public WD_Behaviour Graph;
-    public WD_Top   UpdateTop= null;
-    public WD_Top   LateUpdateTop= null;
-    public WD_Top   FixedUpdateTop= null;
+    public WD_Top       UpdateTop= null;
+    public WD_Top       LateUpdateTop= null;
+    public WD_Top       FixedUpdateTop= null;
     
     // ======================================================================
     // INITIALIZATION
