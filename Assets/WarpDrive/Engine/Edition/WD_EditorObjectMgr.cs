@@ -10,7 +10,7 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public bool                     IsDirty      = true;
     public List<WD_EditorObject>    EditorObjects= new List<WD_EditorObject>();
-    public WD_TreeCach              TreeCach     = new WD_TreeCach();
+    public WD_TreeCache              TreeCache     = new WD_TreeCache();
 
     // ======================================================================
     // Editor Object Container Management
@@ -28,7 +28,7 @@ public class WD_EditorObjectMgr {
         for(int i= 0; i < EditorObjects.Count; ++i) {
             if(EditorObjects[i].InstanceId == -1) {
                 EditorObjects[i].Serialize(obj, i);
-                TreeCach.Set(i, EditorObjects[i].ParentId, obj);
+                TreeCache.Set(i, EditorObjects[i].ParentId, obj);
                 return;
             }
         }
@@ -36,19 +36,19 @@ public class WD_EditorObjectMgr {
         WD_EditorObject so= new WD_EditorObject();
         so.Serialize(obj, EditorObjects.Count);
         EditorObjects.Add(so);
-        TreeCach.Set(so.InstanceId, so.ParentId, obj);
+        TreeCache.Set(so.InstanceId, so.ParentId, obj);
     }
     // ----------------------------------------------------------------------
     public void ReplaceObject(WD_Object obj) {
         EditorObjects[obj.InstanceId].Serialize(obj, obj.InstanceId);
-        TreeCach.Set(EditorObjects[obj.InstanceId].InstanceId, EditorObjects[obj.InstanceId].ParentId, obj);
+        TreeCache.Set(EditorObjects[obj.InstanceId].InstanceId, EditorObjects[obj.InstanceId].ParentId, obj);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------
     public void RemoveObject(int id) {
         if(IsIdInvalid(id)) return;
         EditorObjects[id].InstanceId= -1;
-        TreeCach.Remove(id);
+        TreeCache.Remove(id);
         IsDirty= true;        
     }
     public void RemoveObject(WD_EditorObject obj) {
@@ -65,7 +65,7 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     public WD_Object GetRuntimeObject(int id) {
-        return TreeCach[id].RuntimeObject;
+        return TreeCache[id].RuntimeObject;
     }
     public WD_Object GetRuntimeObject(WD_EditorObject eObj) {
         return GetRuntimeObject(eObj.InstanceId);
