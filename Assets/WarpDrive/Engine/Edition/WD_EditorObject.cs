@@ -25,6 +25,32 @@ public class WD_EditorObject {
 
     
     // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
+    public WD_EditorObject() {}
+    public WD_EditorObject(int id, string name, Type type, int parentId, Rect localPosition) {
+        Init(id, name, type, parentId, localPosition);
+    }
+    // ----------------------------------------------------------------------
+    void Init(int id, string name, Type type, int parentId, Rect localPosition) {
+        InstanceId= id;
+        ParentId= parentId;
+        Name= name;
+        QualifiedType= type.AssemblyQualifiedName;
+        LocalPosition= localPosition;
+        if(type == typeof(WD_RootNode)) {
+            IsVisible= false;
+        }
+        else if(type == typeof(WD_Top)) {
+            IsVisible= false;
+        }
+    }
+    // ----------------------------------------------------------------------
+    public WD_Object CreateRuntimeObject() {
+        return null;
+    }
+    
+    // ======================================================================
     // Object Serialization
     // ----------------------------------------------------------------------
     public void Serialize(WD_Object obj, int id) {

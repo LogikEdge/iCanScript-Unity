@@ -22,6 +22,9 @@ public class WD_EditorObjectMgr {
     public bool IsIdValid(int id)   { return id >= 0 && id < EditorObjects.Count; }
     public bool IsIdInvalid(int id) { return !IsIdValid(id); }
     // ----------------------------------------------------------------------
+    public void CreateInstance<T>(string name, int parentId, Rect initialPos) {
+    }
+    // ----------------------------------------------------------------------
     public void AddObject(WD_Object obj) {
         IsDirty= true;
         // Attempt to use an empty slot.
