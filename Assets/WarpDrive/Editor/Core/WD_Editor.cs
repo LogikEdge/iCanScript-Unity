@@ -421,12 +421,10 @@ public class WD_Editor : EditorWindow {
         bool redrawNeeded= false;
         
         // Perform layout of modified nodes.
-        WD_Node RuntimeDisplayRoot= EditorObjects.GetRuntimeObject(DisplayRoot) as WD_Node;
-        RuntimeDisplayRoot.ForEachRecursiveDepthLast(
+        EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
             (obj)=> {
-                WD_EditorObject eObj= EditorObjects[obj.InstanceId];
-                if(eObj.IsDirty) {
-                    EditorObjects.Layout(eObj);
+                if(obj.IsDirty) {
+                    EditorObjects.Layout(obj);
                     redrawNeeded= true;
                 }
             }
@@ -448,10 +446,9 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawNodes() {
         // Display node starting from the root node.
-        WD_Node RuntimeDisplayRoot= EditorObjects.GetRuntimeObject(DisplayRoot) as WD_Node;
-        RuntimeDisplayRoot.ForEachRecursiveDepthLast<WD_Node>(
+        EditorObjects.ForEachRecursiveDepthLast<WD_Node>(DisplayRoot,
             (node)=> {
-                Graphics.DrawNode(EditorObjects[node.InstanceId], SelectedObject, Graph);
+                Graphics.DrawNode(node, SelectedObject, Graph);
             }
         );
     }	
@@ -459,10 +456,10 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        EditorObjects.ForEachRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawConnection(port, SelectedObject, Graph); } );
+        EditorObjects.ForEachChildRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawConnection(port, SelectedObject, Graph); } );
 
         // Display ports.
-        EditorObjects.ForEachRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawPort(port, SelectedObject, Graph); } );
+        EditorObjects.ForEachChildRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawPort(port, SelectedObject, Graph); } );
     }
 
 }
