@@ -215,7 +215,7 @@ public class WD_Graphics {
     }
     NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Behaviour graph) {
         // Node background is dependant on node type.
-        WD_Node runtimeNode= graph.EditorObjects.GetRuntimeObject(node, graph) as WD_Node;
+        WD_Node runtimeNode= graph.EditorObjects.GetRuntimeObject(node) as WD_Node;
         if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
             GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
             return nodeInErrorStyle;
@@ -261,7 +261,7 @@ public class WD_Graphics {
         Rect tmp= graph.EditorObjects.GetPosition(port);
         Vector2 pos= new Vector2(tmp.x, tmp.y);
         string name= port.Name;
-        Color portColor= (graph.EditorObjects.GetRuntimeObject(port, graph) as WD_DataPort).DisplayColor;
+        Color portColor= (graph.EditorObjects.GetRuntimeObject(port) as WD_DataPort).DisplayColor;
         Color nodeColor= GetNodeColor(graph.EditorObjects[port.ParentId], selectedObject, graph);
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show name if requested.
@@ -486,7 +486,7 @@ public class WD_Graphics {
                     if(Vector2.Dot(diff, endDirection) > 0) {
                         endDirection  = - endDirection;
                     }
-                    Color color= (graph.EditorObjects.GetRuntimeObject(port, graph) as WD_DataPort).DisplayColor;
+                    Color color= (graph.EditorObjects.GetRuntimeObject(port) as WD_DataPort).DisplayColor;
                     DrawBezierCurve(start, end, startDirection, endDirection, color);
                 }                                    
             }

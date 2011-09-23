@@ -38,7 +38,7 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     WD_EditorObject SelectedObject {
         get { return mySelectedObject; }
-        set { Inspector.SelectedObject= EditorObjects.GetRuntimeObject(mySelectedObject= value, Graph); }
+        set { Inspector.SelectedObject= EditorObjects.GetRuntimeObject(mySelectedObject= value); }
     }
     WD_EditorObject mySelectedObject= null;
 
@@ -125,7 +125,7 @@ public class WD_Editor : EditorWindow {
         ScrollView.Update(position, Graph.EditorObjects.GetPosition(DisplayRoot));
         
         // Draw editor grid.
-        DrawGrid();
+//        DrawGrid();
         
 		// Draw editor widgets.
 		DrawEditorWidgets();
@@ -220,7 +220,7 @@ public class WD_Editor : EditorWindow {
     void ProcessMainMenu(Vector2 position) {
         WD_EditorObject selectedObject= GetObjectAtScreenPosition(position);
         if(selectedObject == null) return;
-        WD_Object runtimeObj= EditorObjects.GetRuntimeObject(selectedObject, Graph);
+        WD_Object runtimeObj= EditorObjects.GetRuntimeObject(selectedObject);
         WD_MenuContext context= WD_MenuContext.CreateInstance(runtimeObj, position, ScrollView.ScreenToGraph(position), Graph);
         string menuName= "CONTEXT/"+WD_EditorConfig.ProductName;
         if(runtimeObj is WD_RootNode) menuName+= "/RootNode";
@@ -295,7 +295,7 @@ public class WD_Editor : EditorWindow {
                 // Verify for disconnection.
                 if(!EditorObjects.IsNearParent(port)) {
                     if(port.IsRuntimeA<WD_DataPort>()) {
-                        (EditorObjects.GetRuntimeObject(port, Graph) as WD_DataPort).Disconnect();
+                        (EditorObjects.GetRuntimeObject(port) as WD_DataPort).Disconnect();
                     }
                     port.LocalPosition.x= DragStartPosition.x;
                     port.LocalPosition.y= DragStartPosition.y;
@@ -351,8 +351,8 @@ public class WD_Editor : EditorWindow {
         // Only connect data ports.
         if(!(port.IsRuntimeA<WD_DataPort>())) return false;
         if(!(overlappingPort.IsRuntimeA<WD_DataPort>())) return false;
-        WD_DataPort dataPort= EditorObjects.GetRuntimeObject(port, Graph) as WD_DataPort;
-        WD_DataPort overlappingDataPort= EditorObjects.GetRuntimeObject(overlappingPort, Graph) as WD_DataPort;
+        WD_DataPort dataPort= EditorObjects.GetRuntimeObject(port) as WD_DataPort;
+        WD_DataPort overlappingDataPort= EditorObjects.GetRuntimeObject(overlappingPort) as WD_DataPort;
         
         // We have a new connection so lets determine direction.
         port.LocalPosition.x= DragStartPosition.x;
@@ -418,14 +418,25 @@ public class WD_Editor : EditorWindow {
     
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
+        bool redrawNeeded= false;
+        
         // Perform layout of modified nodes.
-        WD_Node RuntimeDisplayRoot= EditorObjects.GetRuntimeObject(DisplayRoot, Graph) as WD_Node;
+        WD_Node RuntimeDisplayRoot= EditorObjects.GetRuntimeObject(DisplayRoot) as WD_Node;
         RuntimeDisplayRoot.ForEachRecursiveDepthLast(
             (obj)=> {
                 WD_EditorObject eObj= EditorObjects[obj.InstanceId];
-                if(eObj.IsDirty) EditorObjects.Layout(eObj);
+                if(eObj.IsDirty) {
+                    EditorObjects.Layout(eObj);
+                    redrawNeeded= true;
+                }
             }
         );            
+        
+        // Don't redraw if no change seen.
+        //if(redrawNeeded == false) return;
+        
+        // Draw editor grid.
+        DrawGrid();
         
         // Draw editor window.
         ScrollView.Begin();
@@ -437,7 +448,7 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawNodes() {
         // Display node starting from the root node.
-        WD_Node RuntimeDisplayRoot= EditorObjects.GetRuntimeObject(DisplayRoot, Graph) as WD_Node;
+        WD_Node RuntimeDisplayRoot= EditorObjects.GetRuntimeObject(DisplayRoot) as WD_Node;
         RuntimeDisplayRoot.ForEachRecursiveDepthLast<WD_Node>(
             (node)=> {
                 Graphics.DrawNode(EditorObjects[node.InstanceId], SelectedObject, Graph);

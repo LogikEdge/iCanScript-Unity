@@ -1,0 +1,106 @@
+using UnityEngine;
+using System.Collections;
+using System.Collections.Generic;
+
+[System.Serializable]
+public class WD_TreeCach {
+    // ======================================================================
+    // Child Classes
+    // ----------------------------------------------------------------------
+    [System.Serializable]
+    public class TreeNode {
+        public WD_Object   RuntimeObject= null;
+        public int         ParentId= -1;
+        public List<int>   Children= new List<int>();
+
+        public TreeNode()  {}
+        public TreeNode(int parentId, WD_Object rtObj) {
+            RuntimeObject= rtObj;
+            ParentId= parentId;
+        }
+        public void Init() {
+            ParentId= -1;
+            RuntimeObject= null;
+            Children.Clear();
+        }
+        public void Init(int parentId, WD_Object rtObj) {
+            ParentId= parentId;
+            RuntimeObject= rtObj;
+            Children.Clear();
+        }
+        public void AddChild(int id) {
+            foreach(var child in Children) {
+                if(child == id) return;
+            }
+            Children.Add(id);
+        }
+        public void RemoveChild(int id) {
+            for(int i= 0; i < Children.Count; ++i) {
+                if(Children[i] == id) {
+                    Children.RemoveAt(i);
+                    return;
+                }
+            }
+        }
+    }
+    
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+    public List<TreeNode>   TreeCach= new List<TreeNode>();
+
+    // ======================================================================
+    // Tree Cach Containement Functionality
+    // ----------------------------------------------------------------------
+    public TreeNode this[int i] {
+        get { return TreeCach[i]; }
+    }
+    // ----------------------------------------------------------------------
+    bool IsIdValid(int id)      { return id >= 0 && id < TreeCach.Count; }
+    bool IsIdInvalid(int id)    { return !IsIdValid(id); }
+    // ----------------------------------------------------------------------
+    public void Set(int id, int parentId, WD_Object rtObj) {
+        // Protect against misuse.
+        if(id < 0) return;
+        
+        // This is an update.
+        TreeNode tNd= null;
+        if(TreeCach.Count > id && TreeCach[id] != null) {
+            tNd= TreeCach[id];
+            tNd.RuntimeObject= rtObj;
+            if(tNd.ParentId == parentId) return;
+            if(IsIdValid(tNd.ParentId)) {
+                TreeCach[tNd.ParentId].RemoveChild(id);
+            }
+        }
+        // This is addition to the tree.
+        else {
+            while(TreeCach.Count <= id) TreeCach.Add(null);
+            tNd= new TreeNode(parentId, rtObj);
+            TreeCach[id]= tNd;            
+        }
+
+        // Update the parent if it is present.
+        if(IsIdValid(parentId)) {
+            TreeCach[parentId].AddChild(id);
+        }
+        // Scan for already configured children.
+        for(int i= 0; i < TreeCach.Count; ++i) {
+            if(TreeCach[i].ParentId == id) {
+                tNd.AddChild(i);
+            }
+        }
+    }
+    // ----------------------------------------------------------------------
+    public void Remove(int id) {
+        if(IsIdInvalid(id)) return;
+        
+        // Remove from parent.
+        TreeNode nd= TreeCach[id];
+        if(IsIdValid(nd.ParentId)) {
+            TreeCach[nd.ParentId].RemoveChild(id);
+        }
+        nd.Init();
+    }
+
+}

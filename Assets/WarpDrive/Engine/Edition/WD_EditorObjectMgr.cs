@@ -8,8 +8,9 @@ public class WD_EditorObjectMgr {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public bool                     IsDirty= true;
+    public bool                     IsDirty      = true;
     public List<WD_EditorObject>    EditorObjects= new List<WD_EditorObject>();
+    public WD_TreeCach              TreeCach     = new WD_TreeCach();
 
     // ======================================================================
     // Editor Object Container Management
@@ -27,6 +28,7 @@ public class WD_EditorObjectMgr {
         for(int i= 0; i < EditorObjects.Count; ++i) {
             if(EditorObjects[i].InstanceId == -1) {
                 EditorObjects[i].Serialize(obj, i);
+                TreeCach.Set(i, EditorObjects[i].ParentId, obj);
                 return;
             }
         }
@@ -34,16 +36,19 @@ public class WD_EditorObjectMgr {
         WD_EditorObject so= new WD_EditorObject();
         so.Serialize(obj, EditorObjects.Count);
         EditorObjects.Add(so);
+        TreeCach.Set(so.InstanceId, so.ParentId, obj);
     }
     // ----------------------------------------------------------------------
     public void ReplaceObject(WD_Object obj) {
         EditorObjects[obj.InstanceId].Serialize(obj, obj.InstanceId);
+        TreeCach.Set(EditorObjects[obj.InstanceId].InstanceId, EditorObjects[obj.InstanceId].ParentId, obj);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------
     public void RemoveObject(int id) {
         if(IsIdInvalid(id)) return;
         EditorObjects[id].InstanceId= -1;
+        TreeCach.Remove(id);
         IsDirty= true;        
     }
     public void RemoveObject(WD_EditorObject obj) {
@@ -59,22 +64,11 @@ public class WD_EditorObjectMgr {
         return IsChildOf(EditorObjects[obj.ParentId], parent);
     }
     // ----------------------------------------------------------------------
-    public WD_Object GetRuntimeObject(int id, WD_Behaviour graph) {
-        return GetRuntimeObject(graph.RootNode, id);
+    public WD_Object GetRuntimeObject(int id) {
+        return TreeCach[id].RuntimeObject;
     }
-    public WD_Object GetRuntimeObject(WD_EditorObject eObj, WD_Behaviour graph) {
-        return GetRuntimeObject(eObj.InstanceId, graph);
-    }
-    WD_Object GetRuntimeObject(WD_Aggregate node, int id) {
-        if(node.InstanceId == id) return node;
-        foreach(var child in node.Children) {
-            if(child.InstanceId == id) return child;
-            if(child is WD_Aggregate) {
-                WD_Object ret= GetRuntimeObject(child as WD_Aggregate, id);
-                if(ret != null) return ret;
-            }
-        }
-        return null;
+    public WD_Object GetRuntimeObject(WD_EditorObject eObj) {
+        return GetRuntimeObject(eObj.InstanceId);
     }
     
     // ======================================================================
