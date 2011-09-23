@@ -9,14 +9,18 @@ public class WD_MenuRootNode {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_RootNode rootNode= context.SelectedObject as WD_RootNode;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Top top= WD_Top.CreateInstance("Update", rootNode);
-        editorObjects.SetInitialPosition(editorObjects[top.InstanceId], context.GraphPosition);
-        WD_StateChart stateChart= WD_StateChart.CreateInstance<WD_StateChart>("Update", top);
-        top.Action= stateChart;
-        rootNode.UpdateTop= top;
+
+        WD_EditorObject top= editorObjects.CreateInstance<WD_Top>("Update", rootNode.InstanceId, context.GraphPosition);
+        WD_EditorObject stateChart= editorObjects.CreateInstance<WD_StateChart>("Update", top.InstanceId, context.GraphPosition);
+        WD_Top rtTop= editorObjects.GetRuntimeObject(top) as WD_Top;
+        WD_StateChart rtStateChart= editorObjects.GetRuntimeObject(stateChart) as WD_StateChart;
+        rtTop.Action= rtStateChart;
+        rootNode.UpdateTop= rtTop;
         // Add initial state.
-        WD_State state= WD_State.CreateInstance<WD_State>("", stateChart);
-        stateChart.EntryState= state;
+        WD_EditorObject state= editorObjects.CreateInstance<WD_State>("", stateChart.InstanceId, context.GraphPosition);
+        WD_State rtState= editorObjects.GetRuntimeObject(state) as WD_State;
+        rtStateChart.EntryState= rtState;
+
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/RootNode/Add Update State Chart", true)]
@@ -32,14 +36,18 @@ public class WD_MenuRootNode {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_RootNode rootNode= context.SelectedObject as WD_RootNode;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Top top= WD_Top.CreateInstance("LateUpdate", rootNode);
-        editorObjects.SetInitialPosition(editorObjects[top.InstanceId], context.GraphPosition);
-        WD_StateChart stateChart= WD_StateChart.CreateInstance<WD_StateChart>("LateUpdate", top);
-        top.Action= stateChart;
-        rootNode.LateUpdateTop= top;
+
+        WD_EditorObject top= editorObjects.CreateInstance<WD_Top>("LateUpdate", rootNode.InstanceId, context.GraphPosition);
+        WD_EditorObject stateChart= editorObjects.CreateInstance<WD_StateChart>("LateUpdate", top.InstanceId, context.GraphPosition);
+        WD_Top rtTop= editorObjects.GetRuntimeObject(top) as WD_Top;
+        WD_StateChart rtStateChart= editorObjects.GetRuntimeObject(stateChart) as WD_StateChart;
+        rtTop.Action= rtStateChart;
+        rootNode.LateUpdateTop= rtTop;
         // Add initial state.
-        WD_State state= WD_State.CreateInstance<WD_State>("", stateChart);
-        stateChart.EntryState= state;        
+        WD_EditorObject state= editorObjects.CreateInstance<WD_State>("", stateChart.InstanceId, context.GraphPosition);
+        WD_State rtState= editorObjects.GetRuntimeObject(state) as WD_State;
+        rtStateChart.EntryState= rtState;
+
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/RootNode/Add LateUpdate State Chart", true)]
@@ -55,14 +63,18 @@ public class WD_MenuRootNode {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_RootNode rootNode= context.SelectedObject as WD_RootNode;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Top top= WD_Top.CreateInstance("FixedUpdate", rootNode);
-        editorObjects.SetInitialPosition(editorObjects[top.InstanceId], context.GraphPosition);
-        WD_StateChart stateChart= WD_StateChart.CreateInstance<WD_StateChart>("FixedUpdate", top);
-        top.Action= stateChart;
-        rootNode.FixedUpdateTop= top;
+
+        WD_EditorObject top= editorObjects.CreateInstance<WD_Top>("FixedUpdate", rootNode.InstanceId, context.GraphPosition);
+        WD_EditorObject stateChart= editorObjects.CreateInstance<WD_StateChart>("FixedUpdate", top.InstanceId, context.GraphPosition);
+        WD_Top rtTop= editorObjects.GetRuntimeObject(top) as WD_Top;
+        WD_StateChart rtStateChart= editorObjects.GetRuntimeObject(stateChart) as WD_StateChart;
+        rtTop.Action= rtStateChart;
+        rootNode.FixedUpdateTop= rtTop;
         // Add initial state.
-        WD_State state= WD_State.CreateInstance<WD_State>("", stateChart);
-        stateChart.EntryState= state;        
+        WD_EditorObject state= editorObjects.CreateInstance<WD_State>("", stateChart.InstanceId, context.GraphPosition);
+        WD_State rtState= editorObjects.GetRuntimeObject(state) as WD_State;
+        rtStateChart.EntryState= rtState;
+
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/RootNode/Add FixedUpdate State Chart", true)]
@@ -78,17 +90,14 @@ public class WD_MenuRootNode {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_RootNode rootNode= context.SelectedObject as WD_RootNode;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
+
         WD_EditorObject top= editorObjects.CreateInstance<WD_Top>("Update", rootNode.InstanceId, context.GraphPosition);
         WD_EditorObject module= editorObjects.CreateInstance<WD_Module>("Update", top.InstanceId, context.GraphPosition);
         WD_Top rtTop= editorObjects.GetRuntimeObject(top) as WD_Top;
         WD_Module rtModule= editorObjects.GetRuntimeObject(module) as WD_Module;
         rtTop.Action= rtModule;
         rootNode.UpdateTop= rtTop;
-//        WD_Top top= WD_Top.CreateInstance("Update", rootNode);
-//        editorObjects.SetInitialPosition(editorObjects[top.InstanceId], context.GraphPosition);
-//        WD_Module module= WD_Module.CreateInstance<WD_Module>("Update", top);
-//        top.Action= module;
-//        rootNode.UpdateTop= top;
+
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/RootNode/Add Update Module", true)]
@@ -104,11 +113,14 @@ public class WD_MenuRootNode {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_RootNode rootNode= context.SelectedObject as WD_RootNode;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Top top= WD_Top.CreateInstance("LateUpdate", rootNode);
-        editorObjects.SetInitialPosition(editorObjects[top.InstanceId], context.GraphPosition);
-        WD_Module module= WD_Module.CreateInstance<WD_Module>("LateUpdate", top);
-        top.Action= module;
-        rootNode.LateUpdateTop= top;
+
+        WD_EditorObject top= editorObjects.CreateInstance<WD_Top>("LateUpdate", rootNode.InstanceId, context.GraphPosition);
+        WD_EditorObject module= editorObjects.CreateInstance<WD_Module>("LateUpdate", top.InstanceId, context.GraphPosition);
+        WD_Top rtTop= editorObjects.GetRuntimeObject(top) as WD_Top;
+        WD_Module rtModule= editorObjects.GetRuntimeObject(module) as WD_Module;
+        rtTop.Action= rtModule;
+        rootNode.LateUpdateTop= rtTop;
+
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/RootNode/Add LateUpdate Module", true)]
@@ -124,11 +136,14 @@ public class WD_MenuRootNode {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_RootNode rootNode= context.SelectedObject as WD_RootNode;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Top top= WD_Top.CreateInstance("FixedUpdate", rootNode);
-        editorObjects.SetInitialPosition(editorObjects[top.InstanceId], context.GraphPosition);
-        WD_Module module= WD_Module.CreateInstance<WD_Module>("FixedUpdate", top);
-        top.Action= module;
-        rootNode.FixedUpdateTop= top;
+
+        WD_EditorObject top= editorObjects.CreateInstance<WD_Top>("LateUpdate", rootNode.InstanceId, context.GraphPosition);
+        WD_EditorObject module= editorObjects.CreateInstance<WD_Module>("LateUpdate", top.InstanceId, context.GraphPosition);
+        WD_Top rtTop= editorObjects.GetRuntimeObject(top) as WD_Top;
+        WD_Module rtModule= editorObjects.GetRuntimeObject(module) as WD_Module;
+        rtTop.Action= rtModule;
+        rootNode.FixedUpdateTop= rtTop;
+
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/RootNode/Add FixedUpdate Module", true)]
