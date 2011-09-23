@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -103,4 +104,72 @@ public class WD_TreeCache {
         nd.Init();
     }
 
+    // ======================================================================
+    // Tree Iterations
+    // ----------------------------------------------------------------------
+    void ForEachChild(int id, Action<int> fnc) {
+        if(IsIdInvalid(id)) return;
+        TreeNode nd= TreeCache[id];
+        foreach(var child in nd.Children) {
+            fnc(child);
+        }
+    }
+    void ForEachRecursiveDepthFirst(int id, Action<int> fnc) {
+        // Nothing to do if the id is invalid.
+        if(IsIdInvalid(id)) return;
+
+        // Don't use the id it is has been removed.
+        TreeNode nd= TreeCache[id];
+        if(id != 0 && nd.ParentId == -1) return;
+        
+        // First iterate through all children ...
+        foreach(var child in nd.Children) {
+            ForEachRecursiveDepthFirst(child, fnc);
+        }
+        
+        // ... then this node.
+        fnc(id);
+    }
+    void ForEachRecursiveDepthLast(int id, Action<int> fnc) {
+        // Nothing to do if the id is invalid
+        if(IsIdInvalid(id)) return;
+
+        // Don't use the id it is has been removed.
+        TreeNode nd= TreeCache[id];
+        if(id != 0 && nd.ParentId == -1) return;
+
+        // First this node ...
+        fnc(id);
+        
+        // ... then iterate through all children.
+        foreach(var child in nd.Children) {
+            ForEachRecursiveDepthLast(child, fnc);
+        }
+    }
+    void ForEachChildRecursiveDepthFirst(int id, Action<int> fnc) {
+        // Nothing to do if the id is invalid.
+        if(IsIdInvalid(id)) return;
+
+        // Don't use the id it is has been removed.
+        TreeNode nd= TreeCache[id];
+        if(id != 0 && nd.ParentId == -1) return;
+        
+        // Iterate through all children ...
+        foreach(var child in nd.Children) {
+            ForEachRecursiveDepthFirst(child, fnc);
+        }
+    }
+    void ForEachChildRecursiveDepthLast(int id, Action<int> fnc) {
+        // Nothing to do if the id is invalid
+        if(IsIdInvalid(id)) return;
+
+        // Don't use the id it is has been removed.
+        TreeNode nd= TreeCache[id];
+        if(id != 0 && nd.ParentId == -1) return;
+        
+        // Iterate through all children.
+        foreach(var child in nd.Children) {
+            ForEachRecursiveDepthLast(child, fnc);
+        }
+    }
 }
