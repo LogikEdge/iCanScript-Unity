@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 
 [System.Serializable]
 public class WD_EditorObjectMgr {
@@ -10,7 +11,55 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public bool                     IsDirty      = true;
     public List<WD_EditorObject>    EditorObjects= new List<WD_EditorObject>();
-    public WD_TreeCache              TreeCache     = new WD_TreeCache();
+    public WD_TreeCache             TreeCache    = new WD_TreeCache();
+
+    // ======================================================================
+    // Object Creation
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateInstance<T>(string name, int parentId, Vector2 initialPos) where T : WD_Object {
+        Rect parentPos= IsIdValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
+        WD_EditorObject obj= new WD_EditorObject(EditorObjects.Count, name, typeof(T), parentId, new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0));
+        EditorObjects.Add(obj);
+        T rtObj= obj.CreateRuntimeObject() as T;
+        rtObj.Init(name, IsIdValid(parentId) ? TreeCache[parentId].RuntimeObject as WD_Aggregate: null);            
+        TreeCache.Set(obj.InstanceId, parentId, rtObj);
+        
+        // Create ports for each field tagged with InPort or OutPort.
+        foreach(var field in GetInputFields(typeof(T))) {
+            CreateInstance<WD_InDataPort>(field.Name, obj.InstanceId, initialPos);
+        }
+        foreach(var field in GetOutputFields(typeof(T))) {
+            CreateInstance<WD_OutDataPort>(field.Name, obj.InstanceId, initialPos);
+        }
+
+        return obj;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the list of defined input fields.
+    public static List<FieldInfo> GetInputFields(Type objType) {
+        List<FieldInfo> list= new List<FieldInfo>();
+        foreach(var field in objType.GetFields()) {
+            foreach(var attribute in field.GetCustomAttributes(true)) {
+                if((attribute is WD_InPortAttribute) || (attribute is WD_InOutPortAttribute)) {
+                    list.Add(field);
+                }
+            }
+        }        
+        return list;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the list of defined output fields.
+    public static List<FieldInfo> GetOutputFields(Type objType) {
+        List<FieldInfo> list= new List<FieldInfo>();
+        foreach(var field in objType.GetFields()) {
+            foreach(var attribute in field.GetCustomAttributes(true)) {
+                if((attribute is WD_OutPortAttribute) || (attribute is WD_InOutPortAttribute)) {
+                    list.Add(field);
+                }
+            }
+        }        
+        return list;
+    }
 
     // ======================================================================
     // Editor Object Container Management
@@ -21,9 +70,6 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public bool IsIdValid(int id)   { return id >= 0 && id < EditorObjects.Count; }
     public bool IsIdInvalid(int id) { return !IsIdValid(id); }
-    // ----------------------------------------------------------------------
-    public void CreateInstance<T>(string name, int parentId, Rect initialPos) {
-    }
     // ----------------------------------------------------------------------
     public void AddObject(WD_Object obj) {
         IsDirty= true;
@@ -89,9 +135,7 @@ public class WD_EditorObjectMgr {
                                                  Action<WD_EditorObject> fnc2,
                                                  Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
                                                                                            where T2 : WD_Object {
-        if(obj.IsRuntimeA<T1>())         { fnc1(obj); }
-        else if(obj.IsRuntimeA<T2>())    { fnc2(obj); }
-        else if(defaultFnc != null)      { defaultFnc(obj); }                                    
+        obj.Case<T1,T2>(fnc1,fnc2,defaultFnc);
     }
     public void Case<T1,T2>(int id, Action<WD_EditorObject> fnc1,
                                     Action<WD_EditorObject> fnc2,
@@ -106,10 +150,7 @@ public class WD_EditorObjectMgr {
                                                     Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
                                                                                               where T2 : WD_Object
                                                                                               where T3 : WD_Object {
-        if(obj.IsRuntimeA<T1>())         { fnc1(obj); }
-        else if(obj.IsRuntimeA<T2>())    { fnc2(obj); }
-        else if(obj.IsRuntimeA<T3>())    { fnc3(obj); }
-        else if(defaultFnc != null)      { defaultFnc(obj); }                                    
+        obj.Case<T1,T2,T3>(fnc1, fnc2, fnc3, defaultFnc);
     }
     public void Case<T1,T2,T3>(int id, Action<WD_EditorObject> fnc1,
                                        Action<WD_EditorObject> fnc2,
@@ -348,6 +389,9 @@ public class WD_EditorObjectMgr {
                         position.y+node.LocalPosition.y,
                         node.LocalPosition.width,
                         node.LocalPosition.height);
+    }
+    public Rect GetPosition(int id) {
+        return GetPosition(EditorObjects[id]);
     }
     // ----------------------------------------------------------------------
     void SetPosition(WD_EditorObject node, Rect _newPos) {

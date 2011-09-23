@@ -21,26 +21,26 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
         return instance;
     }
     // ----------------------------------------------------------------------
-    protected virtual void Init(string _name, WD_Aggregate _parent) {
+    public virtual void Init(string _name, WD_Aggregate _parent) {
         Name= _name;
         Parent= _parent;
         // Add to the save list.
-        Case<WD_RootNode, WD_Top, WD_Object>(
-            (root) => { root.Graph.AddObject(this); },
-            (top)  => { top.RootNode.Graph.AddObject(this); },
-            (obj)  => { obj.Top.RootNode.Graph.AddObject(this); }
-        );
+//        Case<WD_RootNode, WD_Top, WD_Object>(
+//            (root) => { root.Graph.AddObject(this); },
+//            (top)  => { top.RootNode.Graph.AddObject(this); },
+//            (obj)  => { obj.Top.RootNode.Graph.AddObject(this); }
+//        );
     }
     // ----------------------------------------------------------------------
     // Control removal of the object (as opposed to the automatic
     // deallocation from a level shutdown).
     public virtual void Dealloc() {
         // Remove from the save list
-        Case<WD_RootNode, WD_Top, WD_Object>(
-            (root) => { root.Graph.RemoveObject(this); },
-            (top)  => { top.RootNode.Graph.RemoveObject(this); },
-            (obj)  => { obj.Top.RootNode.Graph.RemoveObject(this); }
-        );
+//        Case<WD_RootNode, WD_Top, WD_Object>(
+//            (root) => { root.Graph.RemoveObject(this); },
+//            (top)  => { top.RootNode.Graph.RemoveObject(this); },
+//            (obj)  => { obj.Top.RootNode.Graph.RemoveObject(this); }
+//        );
 
         Parent= null;
 #if UNITY_EDITOR

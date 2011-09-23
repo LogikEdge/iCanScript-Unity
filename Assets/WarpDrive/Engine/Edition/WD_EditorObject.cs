@@ -38,16 +38,38 @@ public class WD_EditorObject {
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
         LocalPosition= localPosition;
-        if(type == typeof(WD_RootNode)) {
-            IsVisible= false;
-        }
-        else if(type == typeof(WD_Top)) {
-            IsVisible= false;
-        }
+        Case<WD_RootNode, WD_Top, WD_Node, WD_Port>(
+            (root) => { IsVisible= false; },
+            (top)  => { IsVisible= false; },
+            (node) => {},
+            (port) => {
+                port.ExecuteIf<WD_DataPort>(
+                    (dataPort) => {
+                        dataPort.Case<WD_InDataPort, WD_OutDataPort, WD_EnablePort>(
+                            (inPort)     => { Edge= EdgeEnum.Left; },
+                            (outPort)    => { Edge= EdgeEnum.Right; },
+                            (enablePort) => { Edge= EdgeEnum.Top; }
+                        );
+                    }
+                );                
+            }
+        );
     }
     // ----------------------------------------------------------------------
     public WD_Object CreateRuntimeObject() {
-        return null;
+        WD_Object rtObject;
+        if(IsRuntimeA<ScriptableObject>()) {
+            rtObject= ScriptableObject.CreateInstance(RuntimeType) as WD_Object;
+        }
+        else {
+            rtObject= Activator.CreateInstance(RuntimeType) as WD_Object;            
+        }
+        if(rtObject == null) {
+            Debug.LogError("Unable to create an instance of : "+QualifiedType);
+        }
+        rtObject.Name= Name;
+        rtObject.InstanceId= InstanceId;
+        return rtObject;
     }
     
     // ======================================================================
@@ -90,7 +112,7 @@ public class WD_EditorObject {
         }
         return false;
     }
-    public bool IsRuntimeA<T>() where T : WD_Object {
+    public bool IsRuntimeA<T>() where T : class {
         return IsRuntimeA(typeof(T));
     }
     
@@ -117,4 +139,46 @@ public class WD_EditorObject {
     public bool IsOnLeftEdge        { get { return Edge == EdgeEnum.Left; }}
     public bool IsOnHorizontalEdge  { get { return IsOnTopEdge   || IsOnBottomEdge; }}
     public bool IsOnVerticalEdge    { get { return IsOnRightEdge || IsOnLeftEdge; }}
+
+    // ======================================================================
+    // Editor Object Iteration Utilities
+    // ----------------------------------------------------------------------
+    // Executes the given action if the given object matches the T type.
+    public void ExecuteIf<T>(Action<WD_EditorObject> fnc) where T : WD_Object {
+        if(IsRuntimeA<T>()) fnc(this);
+    }
+    public void Case<T1,T2>(Action<WD_EditorObject> fnc1,
+                            Action<WD_EditorObject> fnc2,
+                            Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
+                                                                      where T2 : WD_Object {
+        if(IsRuntimeA<T1>())         { fnc1(this); }
+        else if(IsRuntimeA<T2>())    { fnc2(this); }
+        else if(defaultFnc != null)  { defaultFnc(this); }                                    
+    }
+    public void Case<T1,T2,T3>(Action<WD_EditorObject> fnc1,
+                               Action<WD_EditorObject> fnc2,
+                               Action<WD_EditorObject> fnc3,
+                               Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
+                                                                         where T2 : WD_Object
+                                                                         where T3 : WD_Object {
+        if(IsRuntimeA<T1>())         { fnc1(this); }
+        else if(IsRuntimeA<T2>())    { fnc2(this); }
+        else if(IsRuntimeA<T3>())    { fnc3(this); }
+        else if(defaultFnc != null)  { defaultFnc(this); }                                    
+    }
+    public void Case<T1,T2,T3,T4>(Action<WD_EditorObject> fnc1,
+                                  Action<WD_EditorObject> fnc2,
+                                  Action<WD_EditorObject> fnc3,
+                                  Action<WD_EditorObject> fnc4,
+                                  Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
+                                                                            where T2 : WD_Object
+                                                                            where T3 : WD_Object
+                                                                            where T4 : WD_Object {
+        if(IsRuntimeA<T1>())         { fnc1(this); }
+        else if(IsRuntimeA<T2>())    { fnc2(this); }
+        else if(IsRuntimeA<T3>())    { fnc3(this); }
+        else if(IsRuntimeA<T4>())    { fnc4(this); }
+        else if(defaultFnc != null)  { defaultFnc(this); }                                    
+    }
+
 }

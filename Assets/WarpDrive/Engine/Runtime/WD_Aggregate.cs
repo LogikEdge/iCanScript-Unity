@@ -12,7 +12,7 @@ public class WD_Aggregate : WD_Object {
     // ======================================================================
     // OBJECT LIFETIME MANAGEMENT
     // ----------------------------------------------------------------------
-    protected override void Init(string _name, WD_Aggregate _parent) {
+    public override void Init(string _name, WD_Aggregate _parent) {
         Children= new List<WD_Object>();
         base.Init(_name, _parent);
     }

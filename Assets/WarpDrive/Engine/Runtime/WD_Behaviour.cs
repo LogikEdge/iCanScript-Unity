@@ -23,7 +23,11 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // Initialization
     // ----------------------------------------------------------------------
     public WD_Behaviour Init() {
-        if(RootNode == null) RootNode= WD_RootNode.CreateInstance("RootNode", this);
+        if(RootNode == null) {
+            WD_EditorObject rootNode= EditorObjects.CreateInstance<WD_RootNode>("RootNode", -1, Vector2.zero);
+            RootNode= EditorObjects.GetRuntimeObject(rootNode) as WD_RootNode;
+//            RootNode= WD_RootNode.CreateInstance("RootNode", this);
+        }
         return this;       
     }
     

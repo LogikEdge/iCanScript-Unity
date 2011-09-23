@@ -78,11 +78,17 @@ public class WD_MenuRootNode {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_RootNode rootNode= context.SelectedObject as WD_RootNode;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Top top= WD_Top.CreateInstance("Update", rootNode);
-        editorObjects.SetInitialPosition(editorObjects[top.InstanceId], context.GraphPosition);
-        WD_Module module= WD_Module.CreateInstance<WD_Module>("Update", top);
-        top.Action= module;
-        rootNode.UpdateTop= top;
+        WD_EditorObject top= editorObjects.CreateInstance<WD_Top>("Update", rootNode.InstanceId, context.GraphPosition);
+        WD_EditorObject module= editorObjects.CreateInstance<WD_Module>("Update", top.InstanceId, context.GraphPosition);
+        WD_Top rtTop= editorObjects.GetRuntimeObject(top) as WD_Top;
+        WD_Module rtModule= editorObjects.GetRuntimeObject(module) as WD_Module;
+        rtTop.Action= rtModule;
+        rootNode.UpdateTop= rtTop;
+//        WD_Top top= WD_Top.CreateInstance("Update", rootNode);
+//        editorObjects.SetInitialPosition(editorObjects[top.InstanceId], context.GraphPosition);
+//        WD_Module module= WD_Module.CreateInstance<WD_Module>("Update", top);
+//        top.Action= module;
+//        rootNode.UpdateTop= top;
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/RootNode/Add Update Module", true)]

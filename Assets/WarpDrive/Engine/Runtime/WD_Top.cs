@@ -16,15 +16,16 @@ public sealed class WD_Top : WD_Action {
     // INITIALIZATION
     // ----------------------------------------------------------------------
     public static WD_Top CreateInstance(string _name, WD_RootNode parent) {
-        return CreateInstance<WD_Top>().Init(_name, parent);
+        WD_Top instance= CreateInstance<WD_Top>();
+        instance.Init(_name, parent);
+        return instance;
     }
     // ----------------------------------------------------------------------
-    WD_Top Init(string _name, WD_RootNode parent) {
-        RootNode= parent;
+    public override void Init(string _name, WD_Aggregate parent) {
+        RootNode= parent as WD_RootNode;
         base.Init(_name, parent);
         Top= this;
         Action= null;
-        return this;
     }
 
 

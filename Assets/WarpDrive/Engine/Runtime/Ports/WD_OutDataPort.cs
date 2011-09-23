@@ -12,7 +12,7 @@ public sealed class WD_OutDataPort : WD_DataPort {
         return instance;
     }
     // ----------------------------------------------------------------------
-    new WD_OutDataPort Init(string thePortName, WD_Node theParent) {
+    public override void Init(string thePortName, WD_Aggregate theParent) {
         base.Init(thePortName, theParent);
 
         // Allow streams to also be used as non-stream ports.
@@ -22,7 +22,6 @@ public sealed class WD_OutDataPort : WD_DataPort {
             System.Array array= fieldInfo.GetValue(Parent) as System.Array;
             if(array == null || array.Length == 0) fieldInfo.SetValue(Parent, System.Array.CreateInstance(fieldType.GetElementType(), 1));
         }
-        return this;
     }
 
 }

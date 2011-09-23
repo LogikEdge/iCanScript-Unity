@@ -27,7 +27,7 @@ public sealed class WD_StateChart : WD_Action {
     // ======================================================================
     // INITIALIZATION
     // ----------------------------------------------------------------------
-    protected override void Init(string _name, WD_Aggregate _parent) {
+    public override void Init(string _name, WD_Aggregate _parent) {
         base.Init(_name, _parent);
         myEntryState= null;
     }
