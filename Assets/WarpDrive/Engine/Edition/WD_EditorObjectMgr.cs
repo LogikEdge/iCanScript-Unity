@@ -184,13 +184,15 @@ public class WD_EditorObjectMgr {
     // Returns the node at the given position
     public WD_EditorObject GetNodeAt(Vector2 pick) {
         WD_EditorObject foundNode= null;
-        foreach(var node in EditorObjects) {
-            if(node.IsVisible && IsInside(node, pick) && node.IsRuntimeA<WD_Node>()) {
-                if(foundNode == null || node.LocalPosition.width < foundNode.LocalPosition.width) {
-                    foundNode= node;
-                }
+        ForEach<WD_Node>(
+            (node) => {
+                if(node.IsVisible && IsInside(node, pick)) {
+                    if(foundNode == null || node.LocalPosition.width < foundNode.LocalPosition.width) {
+                        foundNode= node;
+                    }
+                }                
             }
-        }
+        );
         return foundNode ?? GetRootNode();
     }
     
@@ -199,17 +201,19 @@ public class WD_EditorObjectMgr {
     public WD_EditorObject GetPortAt(Vector2 pick) {
         WD_EditorObject bestPort= null;
         float bestDistance= 100000;     // Simply a big value
-        foreach(var port in EditorObjects) {
-            if(port.IsVisible && port.IsRuntimeA<WD_Port>()) {
-                Rect tmp= GetPosition(port);
-                Vector2 position= new Vector2(tmp.x, tmp.y);
-                float distance= Vector2.Distance(position, pick);
-                if(distance < 1.5f * WD_EditorConfig.PortRadius && distance < bestDistance) {
-                    bestDistance= distance;
-                    bestPort= port;
+        ForEach<WD_Port>(
+            (port) => {
+                if(port.IsVisible) {
+                    Rect tmp= GetPosition(port);
+                    Vector2 position= new Vector2(tmp.x, tmp.y);
+                    float distance= Vector2.Distance(position, pick);
+                    if(distance < 1.5f * WD_EditorConfig.PortRadius && distance < bestDistance) {
+                        bestDistance= distance;
+                        bestPort= port;
+                    }                
                 }                
             }
-        }
+        );
         return bestPort;
     }
 
