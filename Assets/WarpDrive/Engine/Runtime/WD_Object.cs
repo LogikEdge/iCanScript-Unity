@@ -136,45 +136,4 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     public bool             IsValid     { get { return doIsValid(); }}
     protected virtual bool  doIsValid() { return true; }
     
-    // ======================================================================
-    // GUI
-    // ----------------------------------------------------------------------
-    public void Layout() {
-        Case<WD_Node, WD_Port>(
-            (node) => {
-                node.Case<WD_RootNode, WD_Top, WD_Node>(
-                    (root) => {},
-                    (top)  => {},
-                    (nd)   => { nd.Top.RootNode.Graph.EditorObjects.Layout(nd.Top.RootNode.Graph.EditorObjects[nd.InstanceId]); }
-                );
-            },
-            (port) => { port.Top.RootNode.Graph.EditorObjects.Layout(port.Top.RootNode.Graph.EditorObjects[port.InstanceId]); }
-        );
-        IsEditorDirty= false;
-        Case<WD_RootNode, WD_Top, WD_Object>(
-            (root) => { root.Graph.ReplaceObject(this); },
-            (top)  => { top.RootNode.Graph.ReplaceObject(this); },
-            (obj)  => { obj.Top.RootNode.Graph.ReplaceObject(this); }
-        );
-    }
-    
-    // ----------------------------------------------------------------------
-    public bool IsEditorDirty {
-        get {
-            bool value= true;
-            Case<WD_RootNode, WD_Top, WD_Object>(
-                (root) => { value= root.Graph.EditorObjects[InstanceId].IsDirty; },
-                (top)  => { value= top.RootNode.Graph.EditorObjects[InstanceId].IsDirty; },
-                (obj)  => { value= obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsDirty; }
-            );
-            return value;
-        }
-        set {
-            Case<WD_RootNode, WD_Top, WD_Object>(
-                (root) => { root.Graph.EditorObjects[InstanceId].IsDirty= value; },
-                (top)  => { top.RootNode.Graph.EditorObjects[InstanceId].IsDirty= value; },
-                (obj)  => { obj.Top.RootNode.Graph.EditorObjects[InstanceId].IsDirty= value; }
-            );
-        }
-    }
 }

@@ -38,7 +38,7 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     WD_EditorObject SelectedObject {
         get { return mySelectedObject; }
-        set { Inspector.SelectedObject= EditorObjects.GetRuntimeObject(mySelectedObject= value); }
+        set { Inspector.SelectedObject= mySelectedObject= value; }
     }
     WD_EditorObject mySelectedObject= null;
 
