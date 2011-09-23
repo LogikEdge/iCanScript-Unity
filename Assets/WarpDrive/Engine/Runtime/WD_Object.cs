@@ -108,10 +108,6 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     // ======================================================================
     // ITERATION UTILITIES
     // ----------------------------------------------------------------------
-    public void ForEachChild(System.Action<WD_Object> fnc) {
-        foreach(var child in this) { fnc(child); }
-    }
-    // ----------------------------------------------------------------------
     public void ForEachChild<T>(System.Action<T> fnc) where T : WD_Object {
         foreach(var child in this) { child.ExecuteIf<T>( (obj)=> { fnc(obj);} ); }
     }
@@ -124,14 +120,6 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     public void ForEachRecursiveDepthFirst(System.Action<WD_Object> fnc) {
         foreach(var child in this) { child.ForEachRecursiveDepthFirst(fnc); }
         fnc(this);
-    }
-    // ----------------------------------------------------------------------
-    public void ForEachRecursive(System.Action<WD_Object> fnc) {
-        ForEachRecursiveDepthFirst(fnc);
-    }
-    // ----------------------------------------------------------------------
-    public void ForEachRecursiveDepthLast<T>(System.Action<T> fnc) where T : WD_Object {
-        ForEachRecursiveDepthLast( (obj)=> { obj.ExecuteIf<T>( (t)=> { fnc(t); } ); } );
     }
     // ----------------------------------------------------------------------
     public void ForEachRecursiveDepthFirst<T>(System.Action<T> fnc) where T : WD_Object {
