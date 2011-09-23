@@ -24,10 +24,6 @@ public class WD_Aggregate : WD_Object {
         base.Dealloc();
     }
 
-    // ----------------------------------------------------------------------
-    // Returns "true" if this node is a parent of the given node.
-    public bool IsParentOf(WD_Object obj) { return obj.IsChildOf(this); }
-    
     // ======================================================================
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------

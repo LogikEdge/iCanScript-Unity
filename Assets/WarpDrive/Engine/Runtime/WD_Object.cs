@@ -86,12 +86,6 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
             myParent= value;
         }
     }
-    // ----------------------------------------------------------------------
-    // Returns "true" if this node is a child of the given node.
-    public bool IsChildOf(WD_Aggregate _parent) {
-        if(Parent == _parent) return true;
-        return Parent == null ? false : Parent.IsChildOf(_parent);
-    }
     public virtual void AddChild(WD_Object _object)     {}
     public virtual void RemoveChild(WD_Object _object)  {}
     private class Enumerator : IEnumerator<WD_Object> {
