@@ -118,11 +118,7 @@ public class WD_EditorObjectMgr {
         Case<T1,T2,T3>(EditorObjects[id], fnc1, fnc2, fnc3, defaultFnc);
     }
     public void ForEachChild(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
-        foreach(var child in EditorObjects) {
-            if(child.ParentId == parent.InstanceId) {
-                fnc(child);
-            }
-        }
+        TreeCache.ForEachChild(parent.InstanceId, (id) => { fnc(EditorObjects[id]); } );
     }
     public void ForEachChild<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
         ForEachChild(parent, (child) => { ExecuteIf<T>(child, fnc); });
@@ -138,16 +134,42 @@ public class WD_EditorObjectMgr {
         }
     }
     public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
-        foreach(var obj in EditorObjects) {
-            if(IsChildOf(obj, parent)) {
-                fnc(obj);
-            }
-        }
+        ForEachRecursiveDepthLast(parent, fnc);
     }
     public void ForEachRecursive<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
         ForEachRecursive(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
     }
-    
+    public void ForEachRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        TreeCache.ForEachRecursiveDepthLast(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });        
+    }
+    public void ForEachRecursiveDepthLast<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
+        ForEachRecursiveDepthLast(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
+    }
+    public void ForEachRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        TreeCache.ForEachRecursiveDepthFirst(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });        
+    }
+    public void ForEachRecursiveDepthFirst<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
+        ForEachRecursiveDepthFirst(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
+    }
+    public void ForEachChildRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        ForEachChildRecursiveDepthLast(parent, fnc);
+    }
+    public void ForEachChildRecursive<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
+        ForEachChildRecursive(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
+    }
+    public void ForEachChildRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        TreeCache.ForEachChildRecursiveDepthLast(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });        
+    }
+    public void ForEachChildRecursiveDepthLast<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
+        ForEachChildRecursiveDepthLast(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
+    }
+    public void ForEachChildRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        TreeCache.ForEachChildRecursiveDepthFirst(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });        
+    }
+    public void ForEachChildRecursiveDepthFirst<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
+        ForEachChildRecursiveDepthFirst(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
+    }
+
     // ======================================================================
     // OBJECT PICKING
     // ----------------------------------------------------------------------
