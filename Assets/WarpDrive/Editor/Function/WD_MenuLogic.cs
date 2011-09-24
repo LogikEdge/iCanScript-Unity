@@ -10,8 +10,7 @@ public class WD_MenuBoolean {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_CBoolean function= WD_CBoolean.CreateInstance<WD_CBoolean>("", parent);
-        editorObjects.SetInitialPosition(editorObjects[function.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_CBoolean>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Logic/CBoolean", true)]
@@ -25,8 +24,7 @@ public class WD_MenuBoolean {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Not function= WD_Not.CreateInstance<WD_Not>("", parent);
-        editorObjects.SetInitialPosition(editorObjects[function.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_Not>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Logic/Not", true)]
@@ -40,6 +38,7 @@ public class WD_MenuBoolean {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
+        editorObjects.CreateInstance<WD_And>("", parent.InstanceId, context.GraphPosition);
         WD_And function= WD_And.CreateInstance<WD_And>("", parent);
         editorObjects.SetInitialPosition(editorObjects[function.InstanceId], context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
@@ -55,8 +54,7 @@ public class WD_MenuBoolean {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Or function= WD_Or.CreateInstance<WD_Or>("", parent);
-        editorObjects.SetInitialPosition(editorObjects[function.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_Or>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Logic/Or", true)]
@@ -70,8 +68,7 @@ public class WD_MenuBoolean {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Xor function= WD_Xor.CreateInstance<WD_Xor>("", parent);
-        editorObjects.SetInitialPosition(editorObjects[function.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_Xor>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Logic/Xor", true)]
@@ -85,8 +82,7 @@ public class WD_MenuBoolean {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Decoder2 function= WD_Decoder2.CreateInstance<WD_Decoder2>("", parent);
-        editorObjects.SetInitialPosition(editorObjects[function.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_Decoder2>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Logic/Decoder2", true)]
@@ -100,8 +96,7 @@ public class WD_MenuBoolean {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Decoder4 function= WD_Decoder4.CreateInstance<WD_Decoder4>("", parent);
-        editorObjects.SetInitialPosition(editorObjects[function.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_Decoder4>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Logic/Decoder4", true)]
