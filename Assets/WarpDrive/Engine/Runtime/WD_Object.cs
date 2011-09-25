@@ -77,10 +77,8 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
         get { return myParent; }
         set {
             if(myParent != null && myParent != value) {
-                myParent.RemoveChild(this);
             }
             if(value != null) {
-                value.AddChild(this);
                 Top= value.Top;
             }
             myParent= value;

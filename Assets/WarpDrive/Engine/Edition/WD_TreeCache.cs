@@ -29,15 +29,17 @@ public class WD_TreeCache {
             RuntimeObject= rtObj;
             Children.Clear();
         }
-        public void AddChild(int id) {
+        public void AddChild(int id, TreeNode toAdd) {
             foreach(var child in Children) {
                 if(child == id) return;
             }
             Children.Add(id);
+            RuntimeObject.AddChild(toAdd.RuntimeObject);
         }
-        public void RemoveChild(int id) {
+        public void RemoveChild(int id, TreeNode toDelete) {
             for(int i= 0; i < Children.Count; ++i) {
                 if(Children[i] == id) {
+                    RuntimeObject.RemoveChild(toDelete.RuntimeObject);
                     Children.RemoveAt(i);
                     return;
                 }
@@ -66,12 +68,12 @@ public class WD_TreeCache {
         
         // This is an update.
         TreeNode tNd= null;
-        if(TreeCache.Count > id && TreeCache[id] != null) {
+        if(id < TreeCache.Count && TreeCache[id] != null) {
             tNd= TreeCache[id];
             tNd.RuntimeObject= rtObj;
             if(tNd.ParentId == parentId) return;
             if(IsIdValid(tNd.ParentId)) {
-                TreeCache[tNd.ParentId].RemoveChild(id);
+                TreeCache[tNd.ParentId].RemoveChild(id, tNd);
             }
         }
         // This is addition to the tree.
@@ -82,13 +84,13 @@ public class WD_TreeCache {
         }
 
         // Update the parent if it is present.
-        if(IsIdValid(parentId)) {
-            TreeCache[parentId].AddChild(id);
+        if(IsIdValid(parentId) && TreeCache[parentId] != null) {
+            TreeCache[parentId].AddChild(id, tNd);
         }
         // Scan for already configured children.
         for(int i= 0; i < TreeCache.Count; ++i) {
             if(TreeCache[i].ParentId == id) {
-                tNd.AddChild(i);
+                tNd.AddChild(i, TreeCache[i]);
             }
         }
     }
@@ -99,7 +101,7 @@ public class WD_TreeCache {
         // Remove from parent.
         TreeNode nd= TreeCache[id];
         if(IsIdValid(nd.ParentId)) {
-            TreeCache[nd.ParentId].RemoveChild(id);
+            TreeCache[nd.ParentId].RemoveChild(id, nd);
         }
         nd.Init();
     }
