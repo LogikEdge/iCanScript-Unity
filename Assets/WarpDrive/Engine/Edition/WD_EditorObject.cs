@@ -29,10 +29,6 @@ public class WD_EditorObject {
     // ----------------------------------------------------------------------
     public WD_EditorObject() {}
     public WD_EditorObject(int id, string name, Type type, int parentId, Rect localPosition) {
-        Init(id, name, type, parentId, localPosition);
-    }
-    // ----------------------------------------------------------------------
-    void Init(int id, string name, Type type, int parentId, Rect localPosition) {
         InstanceId= id;
         ParentId= parentId;
         Name= name;
@@ -72,38 +68,38 @@ public class WD_EditorObject {
         return rtObject;
     }
     
-    // ======================================================================
-    // Object Serialization
-    // ----------------------------------------------------------------------
-    public void Serialize(WD_Object obj, int id) {
-        IsDirty= true;
-        InstanceId= obj.InstanceId= id;
-        ParentId= obj.Parent != null ? obj.Parent.InstanceId : -1;
-        Type t= obj.GetType();
-        QualifiedType= t.AssemblyQualifiedName;
-        Name= obj.name;
-        obj.Case<WD_RootNode, WD_Top, WD_Node, WD_Port>(
-            (root) => { IsVisible= false; },
-            (top)  => { IsVisible= false; },
-            (node) => { },
-            (port) => {
-                port.ExecuteIf<WD_DataPort>(
-                    (dataPort) => {
-                        if(dataPort.Source != null) Source= dataPort.Source.InstanceId;
-                        dataPort.Case<WD_InDataPort, WD_OutDataPort, WD_EnablePort>(
-                            (inPort)     => { Edge= EdgeEnum.Left; },
-                            (outPort)    => { Edge= EdgeEnum.Right; },
-                            (enablePort) => { Edge= EdgeEnum.Top; }
-                        );
-                    }
-                );
-            }
-        );
-    }
-    // ----------------------------------------------------------------------
-    public WD_Object Deserialize() {
-        return null;
-    }
+//    // ======================================================================
+//    // Object Serialization
+//    // ----------------------------------------------------------------------
+//    public void Serialize(WD_Object obj, int id) {
+//        IsDirty= true;
+//        InstanceId= obj.InstanceId= id;
+//        ParentId= obj.Parent != null ? obj.Parent.InstanceId : -1;
+//        Type t= obj.GetType();
+//        QualifiedType= t.AssemblyQualifiedName;
+//        Name= obj.name;
+//        obj.Case<WD_RootNode, WD_Top, WD_Node, WD_Port>(
+//            (root) => { IsVisible= false; },
+//            (top)  => { IsVisible= false; },
+//            (node) => { },
+//            (port) => {
+//                port.ExecuteIf<WD_DataPort>(
+//                    (dataPort) => {
+//                        if(dataPort.Source != null) Source= dataPort.Source.InstanceId;
+//                        dataPort.Case<WD_InDataPort, WD_OutDataPort, WD_EnablePort>(
+//                            (inPort)     => { Edge= EdgeEnum.Left; },
+//                            (outPort)    => { Edge= EdgeEnum.Right; },
+//                            (enablePort) => { Edge= EdgeEnum.Top; }
+//                        );
+//                    }
+//                );
+//            }
+//        );
+//    }
+//    // ----------------------------------------------------------------------
+//    public WD_Object Deserialize() {
+//        return null;
+//    }
 
     // ----------------------------------------------------------------------
     public bool IsRuntimeA(Type t) {
@@ -119,6 +115,7 @@ public class WD_EditorObject {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
+    public bool IsValid { get { return QualifiedType != null && QualifiedType != ""; }}
     public Type RuntimeType { get { return Type.GetType(QualifiedType); }}
     public string TypeName {
         get {

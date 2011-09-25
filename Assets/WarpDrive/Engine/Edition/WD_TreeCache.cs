@@ -62,7 +62,10 @@ public class WD_TreeCache {
     bool IsIdValid(int id)      { return id >= 0 && id < TreeCache.Count; }
     bool IsIdInvalid(int id)    { return !IsIdValid(id); }
     // ----------------------------------------------------------------------
-    public void Set(int id, int parentId, WD_Object rtObj) {
+    public void CreateInstance(int id, int parentId, WD_Object rtObj) {
+        UpdateInstance(id, parentId, rtObj);
+    }
+    public void UpdateInstance(int id, int parentId, WD_Object rtObj) {
         // Protect against misuse.
         if(id < 0) return;
         
@@ -95,14 +98,15 @@ public class WD_TreeCache {
         }
     }
     // ----------------------------------------------------------------------
-    public void Remove(int id) {
+    public void RemoveInstance(int id) {
         if(IsIdInvalid(id)) return;
         
         // Remove from parent.
         TreeNode nd= TreeCache[id];
-        if(IsIdValid(nd.ParentId)) {
+        if(IsIdValid(nd.ParentId) && TreeCache[nd.ParentId] != null) {
             TreeCache[nd.ParentId].RemoveChild(id, nd);
         }
+        RuntimeObject.Dealloc();
         nd.Init();
     }
 

@@ -17,12 +17,13 @@ public class WD_EditorObjectMgr {
     // Object Creation
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateInstance<T>(string name, int parentId, Vector2 initialPos) where T : WD_Object {
+        //Buggy...
         Rect parentPos= IsIdValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
         WD_EditorObject obj= new WD_EditorObject(EditorObjects.Count, name, typeof(T), parentId, new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0));
         EditorObjects.Add(obj);
         T rtObj= obj.CreateRuntimeObject() as T;
         rtObj.Init(name, IsIdValid(parentId) ? TreeCache[parentId].RuntimeObject as WD_Aggregate: null);            
-        TreeCache.Set(obj.InstanceId, parentId, rtObj);
+        TreeCache.CreateInstance(obj.InstanceId, parentId, rtObj);
         
         // Create ports for each field tagged with InPort or OutPort.
         foreach(var field in GetInputFields(typeof(T))) {
@@ -33,6 +34,19 @@ public class WD_EditorObjectMgr {
         }
 
         return obj;
+    }
+    // ----------------------------------------------------------------------
+    public void DeleteInstance(int id) {
+        //Buggy...
+        if(IsIdInvalid(id)) {
+            Debug.LogError("Trying the delete a non-existing EditorObject with id= "+id);
+        }
+        ForEachRecursiveDepthFirst(EditorObjects[id],
+            (eObj) => {
+                TreeCache.RemoveInstance(eObj.InstanceId);
+                EditorObjects[id]= null;
+            }
+        );
     }
     // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
@@ -68,7 +82,7 @@ public class WD_EditorObjectMgr {
         get { return EditorObjects[i]; }
     }
     // ----------------------------------------------------------------------
-    public bool IsIdValid(int id)   { return id >= 0 && id < EditorObjects.Count; }
+    public bool IsIdValid(int id)   { return id >= 0 && id < EditorObjects.Count && EditorObjects[id].IsValid; }
     public bool IsIdInvalid(int id) { return !IsIdValid(id); }
     // ----------------------------------------------------------------------
     public void AddObject(WD_Object obj) {
