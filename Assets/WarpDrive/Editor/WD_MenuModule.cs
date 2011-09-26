@@ -9,11 +9,12 @@ public class WD_MenuModule {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Module module= context.SelectedObject as WD_Module;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_StateChart stateChart= WD_StateChart.CreateInstance<WD_StateChart>("", module);
-        editorObjects.SetInitialPosition(editorObjects[stateChart.InstanceId], context.GraphPosition);
+        WD_EditorObject stateChart= editorObjects.CreateInstance<WD_StateChart>("", module.InstanceId, context.GraphPosition);
         // Add initial state.
-        WD_State state= WD_State.CreateInstance<WD_State>("", stateChart);
-        stateChart.EntryState= state;        
+        WD_EditorObject state= editorObjects.CreateInstance<WD_State>("", stateChart.InstanceId, context.GraphPosition);
+        WD_StateChart rtStateChart= editorObjects.GetRuntimeObject(stateChart) as WD_StateChart;
+        WD_State rtState= editorObjects.GetRuntimeObject(state) as WD_State;
+        rtStateChart.EntryState= rtState;        
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Add State Chart", true)]
@@ -28,8 +29,9 @@ public class WD_MenuModule {
     public static void DeleteObject(MenuCommand command) {    
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Module module= context.SelectedObject as WD_Module;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         if(EditorUtility.DisplayDialog("Deleting Module", "Are you sure you want to delete module: "+module.NameOrTypeName+"?", "Delete", "Cancel")) {
-            module.Dealloc();
+            editorObjects.DestroyInstance(module.InstanceId);
         }                
         WD_MenuContext.DestroyImmediate(context);
     }

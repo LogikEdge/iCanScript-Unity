@@ -15,20 +15,6 @@ public class WD_TreeCache {
         public List<int>   Children= new List<int>();
 
         public TreeNode()  {}
-        public TreeNode(int parentId, WD_Object rtObj) {
-            RuntimeObject= rtObj;
-            ParentId= parentId;
-        }
-        public void Init() {
-            ParentId= -1;
-            RuntimeObject= null;
-            Children.Clear();
-        }
-        public void Init(int parentId, WD_Object rtObj) {
-            ParentId= parentId;
-            RuntimeObject= rtObj;
-            Children.Clear();
-        }
         public void AddChild(int id, TreeNode toAdd) {
             foreach(var child in Children) {
                 if(child == id) return;
@@ -59,55 +45,58 @@ public class WD_TreeCache {
         get { return TreeCache[i]; }
     }
     // ----------------------------------------------------------------------
-    bool IsIdValid(int id)      { return id >= 0 && id < TreeCache.Count; }
+    bool IsIdValid(int id)      { return id >= 0 && id < TreeCache.Count && TreeCache[id] != null; }
     bool IsIdInvalid(int id)    { return !IsIdValid(id); }
     // ----------------------------------------------------------------------
     public void CreateInstance(int id, int parentId, WD_Object rtObj) {
+        // Validate given inputs.
+        if(id < 0) {
+            Debug.LogError("Connot create a treeNode with id: "+id);            
+        }
+        if(id < TreeCache.Count && TreeCache[id] != null) {
+            Debug.LogError("Trying to create a TreeNode with the same id has an existing TreeNode. (id)=>"+id);
+        }
+        // Create slots in the tree cache to hold the new instance.
+        while(TreeCache.Count <= id) TreeCache.Add(null);
+        TreeCache[id]= new TreeNode();
         UpdateInstance(id, parentId, rtObj);
     }
     public void UpdateInstance(int id, int parentId, WD_Object rtObj) {
         // Protect against misuse.
-        if(id < 0) return;
+        if(IsIdInvalid(id)) {
+            Debug.LogError("Trying to update an invalid TreeNode with id:"+id);
+        }
         
-        // This is an update.
-        TreeNode tNd= null;
-        if(id < TreeCache.Count && TreeCache[id] != null) {
-            tNd= TreeCache[id];
-            tNd.RuntimeObject= rtObj;
-            if(tNd.ParentId == parentId) return;
-            if(IsIdValid(tNd.ParentId)) {
-                TreeCache[tNd.ParentId].RemoveChild(id, tNd);
-            }
+        // Remove link to parent if parent has changed.
+        TreeNode node= TreeCache[id];
+        node.RuntimeObject= rtObj;
+        if(node.ParentId != parentId && IsIdValid(node.ParentId)) {
+            TreeCache[node.ParentId].RemoveChild(id, node);
         }
-        // This is addition to the tree.
-        else {
-            while(TreeCache.Count <= id) TreeCache.Add(null);
-            tNd= new TreeNode(parentId, rtObj);
-            TreeCache[id]= tNd;            
-        }
+        node.ParentId= parentId;
 
         // Update the parent if it is present.
-        if(IsIdValid(parentId) && TreeCache[parentId] != null) {
-            TreeCache[parentId].AddChild(id, tNd);
+        if(IsIdValid(parentId)) {
+            TreeCache[parentId].AddChild(id, node);
         }
         // Scan for already configured children.
         for(int i= 0; i < TreeCache.Count; ++i) {
             if(TreeCache[i].ParentId == id) {
-                tNd.AddChild(i, TreeCache[i]);
+                node.AddChild(i, TreeCache[i]);
             }
         }
     }
     // ----------------------------------------------------------------------
-    public void RemoveInstance(int id) {
+    public void DestroyInstance(int id) {
         if(IsIdInvalid(id)) return;
         
         // Remove from parent.
         TreeNode nd= TreeCache[id];
-        if(IsIdValid(nd.ParentId) && TreeCache[nd.ParentId] != null) {
+        if(IsIdValid(nd.ParentId)) {
             TreeCache[nd.ParentId].RemoveChild(id, nd);
         }
-        RuntimeObject.Dealloc();
-        nd.Init();
+        nd.RuntimeObject.Dealloc();
+        TreeCache[id]= null;
     }
 
     // ======================================================================

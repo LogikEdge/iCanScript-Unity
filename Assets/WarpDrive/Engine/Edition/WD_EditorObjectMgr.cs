@@ -17,10 +17,19 @@ public class WD_EditorObjectMgr {
     // Object Creation
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateInstance<T>(string name, int parentId, Vector2 initialPos) where T : WD_Object {
-        //Buggy...
+        // Find the next available id.
+        int id= 0;
+        while(id < EditorObjects.Count && EditorObjects[id] != null) { ++id; }
+        if(id >= EditorObjects.Count) {
+            id= EditorObjects.Count;
+            EditorObjects.Add(null);
+        }
+        // Calcute the desired screen position of the new object.
         Rect parentPos= IsIdValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
-        WD_EditorObject obj= new WD_EditorObject(EditorObjects.Count, name, typeof(T), parentId, new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0));
-        EditorObjects.Add(obj);
+
+        // Create new EditorObject
+        WD_EditorObject obj= new WD_EditorObject(id, name, typeof(T), parentId, new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0));
+        EditorObjects[id]= obj;
         T rtObj= obj.CreateRuntimeObject() as T;
         rtObj.Init(name, IsIdValid(parentId) ? TreeCache[parentId].RuntimeObject as WD_Aggregate: null);            
         TreeCache.CreateInstance(obj.InstanceId, parentId, rtObj);
@@ -36,17 +45,17 @@ public class WD_EditorObjectMgr {
         return obj;
     }
     // ----------------------------------------------------------------------
-    public void DeleteInstance(int id) {
-        //Buggy...
+    public void DestroyInstance(int id) {
         if(IsIdInvalid(id)) {
             Debug.LogError("Trying the delete a non-existing EditorObject with id= "+id);
         }
-        ForEachRecursiveDepthFirst(EditorObjects[id],
-            (eObj) => {
-                TreeCache.RemoveInstance(eObj.InstanceId);
-                EditorObjects[id]= null;
-            }
-        );
+        // Remove all children first
+        while(TreeCache[id].Children.Count != 0) {
+            DestroyInstance(TreeCache[id].Children[0]);
+        }
+        // Remove all related objects.
+        TreeCache.DestroyInstance(id);
+        EditorObjects[id]= null;
     }
     // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
@@ -84,42 +93,6 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public bool IsIdValid(int id)   { return id >= 0 && id < EditorObjects.Count && EditorObjects[id].IsValid; }
     public bool IsIdInvalid(int id) { return !IsIdValid(id); }
-    // ----------------------------------------------------------------------
-    public void AddObject(WD_Object obj) {
-        IsDirty= true;
-        // Attempt to use an empty slot.
-        for(int i= 0; i < EditorObjects.Count; ++i) {
-            if(EditorObjects[i].InstanceId == -1) {
-                EditorObjects[i].Serialize(obj, i);
-                TreeCache.Set(i, EditorObjects[i].ParentId, obj);
-                return;
-            }
-        }
-        // Serialize the given object.
-        WD_EditorObject so= new WD_EditorObject();
-        so.Serialize(obj, EditorObjects.Count);
-        EditorObjects.Add(so);
-        TreeCache.Set(so.InstanceId, so.ParentId, obj);
-    }
-    // ----------------------------------------------------------------------
-    public void ReplaceObject(WD_Object obj) {
-        EditorObjects[obj.InstanceId].Serialize(obj, obj.InstanceId);
-        TreeCache.Set(EditorObjects[obj.InstanceId].InstanceId, EditorObjects[obj.InstanceId].ParentId, obj);
-        IsDirty= true;
-    }
-    // ----------------------------------------------------------------------
-    public void RemoveObject(int id) {
-        if(IsIdInvalid(id)) return;
-        EditorObjects[id].InstanceId= -1;
-        TreeCache.Remove(id);
-        IsDirty= true;        
-    }
-    public void RemoveObject(WD_EditorObject obj) {
-        RemoveObject(obj.InstanceId);
-    }
-    public void RemoveObject(WD_Object obj) {
-        RemoveObject(obj.InstanceId);
-    }
     // ----------------------------------------------------------------------
     public bool IsChildOf(WD_EditorObject obj, WD_EditorObject parent) {
         if(IsIdInvalid(obj.ParentId)) return false;

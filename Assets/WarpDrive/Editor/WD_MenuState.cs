@@ -8,6 +8,8 @@ public class WD_MenuState {
     public static void SetEntryState(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_State state= context.SelectedObject as WD_State;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
+        
         state.Parent.Case<WD_State, WD_StateChart>(
             (parentState)      => { parentState.EntryState= state; },
             (parentStateChart) => { parentStateChart.EntryState= state; }
@@ -31,8 +33,7 @@ public class WD_MenuState {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_State parent= context.SelectedObject as WD_State;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_State instance= WD_State.CreateInstance<WD_State>("", parent);
-        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_State>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/State/Add State", true)]
@@ -46,8 +47,7 @@ public class WD_MenuState {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Module instance= WD_Module.CreateInstance<WD_Module>("OnEntry", parent);
-        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_Module>("OnEntry", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/State/Add Entry Function", true)]
@@ -63,8 +63,7 @@ public class WD_MenuState {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_Node parent= context.SelectedObject as WD_Node;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Module instance= WD_Module.CreateInstance<WD_Module>("OnExit", parent);
-        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_Module>("OnExit", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/State/Add Exit Function", true)]
@@ -80,8 +79,7 @@ public class WD_MenuState {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_State parent= context.SelectedObject as WD_State;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_Module instance= WD_Module.CreateInstance<WD_Module>("OnUpdate", parent);
-        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_Module>("OnUpdate", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/State/Add Update Function", true)]
@@ -99,8 +97,9 @@ public class WD_MenuState {
     public static void Delete(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_State state= context.SelectedObject as WD_State;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         if(EditorUtility.DisplayDialog("Deleting State", "Are you sure you want to delete state: "+state.NameOrTypeName+" and all of its children?", "Delete", "Cancel")) {
-            state.Dealloc();
+            editorObjects.DestroyInstance(state.InstanceId);
         }                                
         WD_MenuContext.DestroyImmediate(context);
     }

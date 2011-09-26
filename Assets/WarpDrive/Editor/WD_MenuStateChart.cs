@@ -10,8 +10,7 @@ public class WD_MenuStateChart {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_StateChart parent= context.SelectedObject as WD_StateChart;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        WD_State instance= WD_State.CreateInstance<WD_State>("", parent);
-        editorObjects.SetInitialPosition(editorObjects[instance.InstanceId], context.GraphPosition);
+        editorObjects.CreateInstance<WD_State>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/StateChart/Add State", true)]
@@ -28,8 +27,9 @@ public class WD_MenuStateChart {
     public static void Delete(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_StateChart stateChart= context.SelectedObject as WD_StateChart;
+        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         if(EditorUtility.DisplayDialog("Deleting State Chart", "Are you sure you want to delete state chart: "+stateChart.NameOrTypeName+" and all of its children?", "Delete", "Cancel")) {
-            stateChart.Dealloc();
+            editorObjects.DestroyInstance(stateChart.InstanceId);
         }                                
         WD_MenuContext.DestroyImmediate(context);
     }

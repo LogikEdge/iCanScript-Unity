@@ -68,17 +68,4 @@ public sealed class WD_Behaviour : MonoBehaviour {
         RootNode.FixedUpdate();
     }
 
-    // ======================================================================
-    // COMMAND BUFFER
-    // ----------------------------------------------------------------------
-    public void AddObject(WD_Object obj) {
-        EditorObjects.AddObject(obj);
-    }
-    public void RemoveObject(WD_Object obj) {
-        EditorObjects.RemoveObject(obj);
-    }
-    public void ReplaceObject(WD_Object obj) {
-        EditorObjects.ReplaceObject(obj);
-    }
-
 }

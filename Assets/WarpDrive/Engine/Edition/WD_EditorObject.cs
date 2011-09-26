@@ -68,38 +68,38 @@ public class WD_EditorObject {
         return rtObject;
     }
     
-//    // ======================================================================
-//    // Object Serialization
-//    // ----------------------------------------------------------------------
-//    public void Serialize(WD_Object obj, int id) {
-//        IsDirty= true;
-//        InstanceId= obj.InstanceId= id;
-//        ParentId= obj.Parent != null ? obj.Parent.InstanceId : -1;
-//        Type t= obj.GetType();
-//        QualifiedType= t.AssemblyQualifiedName;
-//        Name= obj.name;
-//        obj.Case<WD_RootNode, WD_Top, WD_Node, WD_Port>(
-//            (root) => { IsVisible= false; },
-//            (top)  => { IsVisible= false; },
-//            (node) => { },
-//            (port) => {
-//                port.ExecuteIf<WD_DataPort>(
-//                    (dataPort) => {
-//                        if(dataPort.Source != null) Source= dataPort.Source.InstanceId;
-//                        dataPort.Case<WD_InDataPort, WD_OutDataPort, WD_EnablePort>(
-//                            (inPort)     => { Edge= EdgeEnum.Left; },
-//                            (outPort)    => { Edge= EdgeEnum.Right; },
-//                            (enablePort) => { Edge= EdgeEnum.Top; }
-//                        );
-//                    }
-//                );
-//            }
-//        );
-//    }
-//    // ----------------------------------------------------------------------
-//    public WD_Object Deserialize() {
-//        return null;
-//    }
+    // ======================================================================
+    // Object Serialization
+    // ----------------------------------------------------------------------
+    public void Serialize(WD_Object obj, int id) {
+        IsDirty= true;
+        InstanceId= obj.InstanceId= id;
+        ParentId= obj.Parent != null ? obj.Parent.InstanceId : -1;
+        Type t= obj.GetType();
+        QualifiedType= t.AssemblyQualifiedName;
+        Name= obj.name;
+        obj.Case<WD_RootNode, WD_Top, WD_Node, WD_Port>(
+            (root) => { IsVisible= false; },
+            (top)  => { IsVisible= false; },
+            (node) => { },
+            (port) => {
+                port.ExecuteIf<WD_DataPort>(
+                    (dataPort) => {
+                        if(dataPort.Source != null) Source= dataPort.Source.InstanceId;
+                        dataPort.Case<WD_InDataPort, WD_OutDataPort, WD_EnablePort>(
+                            (inPort)     => { Edge= EdgeEnum.Left; },
+                            (outPort)    => { Edge= EdgeEnum.Right; },
+                            (enablePort) => { Edge= EdgeEnum.Top; }
+                        );
+                    }
+                );
+            }
+        );
+    }
+    // ----------------------------------------------------------------------
+    public WD_Object Deserialize() {
+        return null;
+    }
 
     // ----------------------------------------------------------------------
     public bool IsRuntimeA(Type t) {
