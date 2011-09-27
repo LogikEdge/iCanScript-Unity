@@ -7,7 +7,7 @@ public class WD_Debug {
     [MenuItem("CONTEXT/WarpDrive/Module/Debug/Log")]
     public static void AddNodeDebugLog(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
-        WD_Node parent= context.SelectedObject as WD_Node;
+        WD_EditorObject parent= context.SelectedObject;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         editorObjects.CreateInstance<WD_Log>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
@@ -21,7 +21,7 @@ public class WD_Debug {
     [MenuItem("CONTEXT/WarpDrive/Module/Debug/LogError")]
     public static void AddNodeDebugLogError(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
-        WD_Node parent= context.SelectedObject as WD_Node;
+        WD_EditorObject parent= context.SelectedObject;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         editorObjects.CreateInstance<WD_LogError>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
@@ -35,7 +35,7 @@ public class WD_Debug {
     [MenuItem("CONTEXT/WarpDrive/Module/Debug/LogWarning")]
     public static void AddNodeDebugLogWarning(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
-        WD_Node parent= context.SelectedObject as WD_Node;
+        WD_EditorObject parent= context.SelectedObject;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         editorObjects.CreateInstance<WD_LogWarning>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);

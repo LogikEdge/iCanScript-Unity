@@ -71,6 +71,10 @@ public class WD_EditorObjectMgr {
         EditorObjects[id].Reset();
     }
     // ----------------------------------------------------------------------
+    public void DestroyInstance(WD_EditorObject eObj) {
+        DestroyInstance(eObj.InstanceId);
+    }
+    // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
     public static List<FieldInfo> GetInputFields(Type objType) {
         List<FieldInfo> list= new List<FieldInfo>();

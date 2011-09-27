@@ -220,14 +220,13 @@ public class WD_Editor : EditorWindow {
     void ProcessMainMenu(Vector2 position) {
         WD_EditorObject selectedObject= GetObjectAtScreenPosition(position);
         if(selectedObject == null) return;
-        WD_Object runtimeObj= EditorObjects.GetRuntimeObject(selectedObject);
-        WD_MenuContext context= WD_MenuContext.CreateInstance(runtimeObj, position, ScrollView.ScreenToGraph(position), Graph);
+        WD_MenuContext context= WD_MenuContext.CreateInstance(selectedObject, position, ScrollView.ScreenToGraph(position), Graph);
         string menuName= "CONTEXT/"+WD_EditorConfig.ProductName;
-        if(runtimeObj is WD_RootNode) menuName+= "/RootNode";
-        else if(runtimeObj is WD_StateChart) menuName+= "/StateChart";
-        else if(runtimeObj is WD_State) menuName+= "/State";
-        else if(runtimeObj is WD_Module) menuName+= "/Module";
-        else if(runtimeObj is WD_Function) menuName+= "/Function";
+        if(selectedObject.IsRuntimeA<WD_RootNode>()) menuName+= "/RootNode";
+        else if(selectedObject.IsRuntimeA<WD_StateChart>()) menuName+= "/StateChart";
+        else if(selectedObject.IsRuntimeA<WD_State>()) menuName+= "/State";
+        else if(selectedObject.IsRuntimeA<WD_Module>()) menuName+= "/Module";
+        else if(selectedObject.IsRuntimeA<WD_Function>()) menuName+= "/Function";
         EditorUtility.DisplayPopupMenu (new Rect (position.x,position.y,0,0), menuName, new MenuCommand(context));
     }
     
@@ -418,20 +417,14 @@ public class WD_Editor : EditorWindow {
     
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
-        bool redrawNeeded= false;
-        
         // Perform layout of modified nodes.
         EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
             (obj)=> {
                 if(obj.IsDirty) {
                     EditorObjects.Layout(obj);
-                    redrawNeeded= true;
                 }
             }
         );            
-        
-        // Don't redraw if no change seen.
-        //if(redrawNeeded == false) return;
         
         // Draw editor grid.
         DrawGrid();

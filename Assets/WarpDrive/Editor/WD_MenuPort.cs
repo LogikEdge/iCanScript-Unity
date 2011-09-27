@@ -30,23 +30,4 @@ public class WD_MenuPort {
 //        return WD_MenuUtilities.ValidateAddPort(command);
 //    }
 
-    // ----------------------------------------------------------------------
-    [MenuItem("CONTEXT/WarpDrive/Port/Create Property/Float")]
-    public static void PortCreatePropertyFloat(MenuCommand command) {    
-//        WD_MenuContext context= command.context as WD_MenuContext;
-//        WD_Port selectedObject= context.SelectedObject as WD_Port;
-        /*
-            TODO To Be Completed...
-        */
-    }
-    [MenuItem("CONTEXT/WarpDrive/Port/Create Property/Float",true)]
-    public static bool ValidatePortCreatePropertyFloat(MenuCommand command) {
-        WD_MenuContext context= command.context as WD_MenuContext;
-        WD_DataPort selectedObject= context.SelectedObject as WD_DataPort;
-        if(selectedObject != null && selectedObject.Source == null) {
-            return true;
-        }
-        return false;
-    }
-
 }

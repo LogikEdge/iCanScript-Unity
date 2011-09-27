@@ -8,7 +8,7 @@ public class WD_MenuGeneric {
     [MenuItem("CONTEXT/WarpDrive/Module/Generic/Module")]
     public static void AddNodeModule(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
-        WD_Node parent= context.SelectedObject as WD_Node;
+        WD_EditorObject parent= context.SelectedObject;
         WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         editorObjects.CreateInstance<WD_Module>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
