@@ -76,8 +76,6 @@ public abstract class WD_Object : WD_ObjectUtil, IEnumerable<WD_Object> {
     public WD_Aggregate Parent {
         get { return myParent; }
         set {
-            if(myParent != null && myParent != value) {
-            }
             if(value != null) {
                 Top= value.Top;
             }

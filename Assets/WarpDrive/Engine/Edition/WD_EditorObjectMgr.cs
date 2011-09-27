@@ -53,6 +53,19 @@ public class WD_EditorObjectMgr {
         while(TreeCache[id].Children.Count != 0) {
             DestroyInstance(TreeCache[id].Children[0]);
         }
+        // Disconnect ports linking to this port.
+        ExecuteIf<WD_DataPort>(EditorObjects[id],
+            (instance) => {
+                ForEach<WD_DataPort>(
+                    (obj) => {
+                        if(obj.Source == id) {
+                            (GetRuntimeObject(obj) as WD_DataPort).Source= null;
+                            obj.Source= -1;
+                        }
+                    }
+                );                
+            }
+        );
         // Remove all related objects.
         TreeCache.DestroyInstance(id);
         EditorObjects[id].Reset();
@@ -112,7 +125,7 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     // Executes the given action if the given object matches the T type.
     public void ExecuteIf<T>(WD_EditorObject obj, Action<WD_EditorObject> fnc) where T : WD_Object {
-        if(obj.IsRuntimeA<T>()) fnc(obj);
+        if(obj.IsValid && obj.IsRuntimeA<T>()) fnc(obj);
     }
     public void ExecuteIf<T>(int id, Action<WD_EditorObject> fnc) where T : WD_Object {
         if(!IsValid(id)) return;
@@ -156,13 +169,11 @@ public class WD_EditorObjectMgr {
     }
     public void ForEach(Action<WD_EditorObject> fnc) {
         foreach(var obj in EditorObjects) {
-            fnc(obj);
+            if(obj.IsValid) fnc(obj);
         }
     }
     public void ForEach<T>(Action<WD_EditorObject> fnc) where T : WD_Object {
-        foreach(var obj in EditorObjects) {
-            ExecuteIf<T>(obj, fnc);
-        }
+        ForEach((obj) => { ExecuteIf<T>(obj, fnc); });
     }
     public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         ForEachRecursiveDepthLast(parent, fnc);
@@ -925,16 +936,18 @@ public class WD_EditorObjectMgr {
         WD_EditorObject foundPort= null;
         Rect tmp= GetPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
-        foreach(var p in EditorObjects) {
-            if(p.IsRuntimeA<WD_Port>() && p != port) {
-                tmp= GetPosition(p);
-                Vector2 pPos= new Vector2(tmp.x, tmp.y);
-                float distance= Vector2.Distance(pPos, position);
-                if(distance <= 1.5*WD_EditorConfig.PortSize) {
-                    foundPort= p;
-                }
+        ForEach<WD_Port>(
+            (p) => {
+                if(p != port) {
+                    tmp= GetPosition(p);
+                    Vector2 pPos= new Vector2(tmp.x, tmp.y);
+                    float distance= Vector2.Distance(pPos, position);
+                    if(distance <= 1.5*WD_EditorConfig.PortSize) {
+                        foundPort= p;
+                    }
+                }                
             }
-        }
+        );
         return foundPort;
     }	
 
