@@ -470,7 +470,7 @@ public class WD_Graphics {
         if(!(port.IsRuntimeA<WD_DataPort>())) return;
         
         if(graph.EditorObjects[port.ParentId].IsVisible) {
-            if(graph.EditorObjects.IsIdValid(port.Source)) {
+            if(graph.EditorObjects.IsValid(port.Source)) {
                 WD_EditorObject source= graph.EditorObjects[port.Source];
                 if(graph.EditorObjects[source.ParentId].IsVisible) {
                     Rect sourcePos= graph.EditorObjects.GetPosition(source);

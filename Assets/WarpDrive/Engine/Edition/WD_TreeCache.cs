@@ -14,8 +14,8 @@ public class WD_TreeCache {
         public int         ParentId= -1;
         public List<int>   Children= new List<int>();
 
-        public TreeNode()  {}
-        public void Init() {
+        public TreeNode()  { Reset(); }
+        public void Reset() {
             RuntimeObject= null;
             ParentId= -1;
             Children.Clear();
@@ -51,8 +51,8 @@ public class WD_TreeCache {
         get { return TreeCache[i]; }
     }
     // ----------------------------------------------------------------------
-    bool IsIdValid(int id)      { return id >= 0 && id < TreeCache.Count && TreeCache[id].RuntimeObject != null; }
-    bool IsIdInvalid(int id)    { return !IsIdValid(id); }
+    bool IsValid(int id)      { return id >= 0 && id < TreeCache.Count && TreeCache[id].RuntimeObject != null; }
+    bool IsInvalid(int id)    { return !IsValid(id); }
     // ----------------------------------------------------------------------
     public void CreateInstance(int id, int parentId, WD_Object rtObj) {
         // Validate given inputs.
@@ -75,13 +75,13 @@ public class WD_TreeCache {
         // Remove link to parent if parent has changed.
         TreeNode node= TreeCache[id];
         node.RuntimeObject= rtObj;
-        if(node.ParentId != parentId && IsIdValid(node.ParentId)) {
+        if(node.ParentId != parentId && IsValid(node.ParentId)) {
             TreeCache[node.ParentId].RemoveChild(id, node);
         }
         node.ParentId= parentId;
 
         // Update the parent if it is present.
-        if(IsIdValid(parentId)) {
+        if(IsValid(parentId)) {
             TreeCache[parentId].AddChild(id, node);
         }
         // Scan for already configured children.
@@ -93,22 +93,22 @@ public class WD_TreeCache {
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(int id) {
-        if(IsIdInvalid(id)) return;
+        if(IsInvalid(id)) return;
         
         // Remove from parent.
         TreeNode nd= TreeCache[id];
-        if(IsIdValid(nd.ParentId)) {
+        if(IsValid(nd.ParentId)) {
             TreeCache[nd.ParentId].RemoveChild(id, nd);
         }
         nd.RuntimeObject.Dealloc();
-        TreeCache[id].Init();
+        TreeCache[id].Reset();
     }
 
     // ======================================================================
     // Tree Iterations
     // ----------------------------------------------------------------------
     public void ForEachChild(int id, Action<int> fnc) {
-        if(IsIdInvalid(id)) return;
+        if(IsInvalid(id)) return;
         TreeNode nd= TreeCache[id];
         foreach(var child in nd.Children) {
             if(TreeCache[id].IsValid) fnc(child);
@@ -116,7 +116,7 @@ public class WD_TreeCache {
     }
     public void ForEachRecursiveDepthFirst(int id, Action<int> fnc) {
         // Nothing to do if the id is invalid.
-        if(IsIdInvalid(id)) return;
+        if(IsInvalid(id)) return;
 
         // Don't use the id it is has been removed.
         TreeNode nd= TreeCache[id];
@@ -132,7 +132,7 @@ public class WD_TreeCache {
     }
     public void ForEachRecursiveDepthLast(int id, Action<int> fnc) {
         // Nothing to do if the id is invalid
-        if(IsIdInvalid(id)) return;
+        if(IsInvalid(id)) return;
 
         // Don't use the id it is has been removed.
         TreeNode nd= TreeCache[id];
@@ -148,7 +148,7 @@ public class WD_TreeCache {
     }
     public void ForEachChildRecursiveDepthFirst(int id, Action<int> fnc) {
         // Nothing to do if the id is invalid.
-        if(IsIdInvalid(id)) return;
+        if(IsInvalid(id)) return;
 
         // Don't use the id it is has been removed.
         TreeNode nd= TreeCache[id];
@@ -161,7 +161,7 @@ public class WD_TreeCache {
     }
     public void ForEachChildRecursiveDepthLast(int id, Action<int> fnc) {
         // Nothing to do if the id is invalid
-        if(IsIdInvalid(id)) return;
+        if(IsInvalid(id)) return;
 
         // Don't use the id it is has been removed.
         TreeNode nd= TreeCache[id];

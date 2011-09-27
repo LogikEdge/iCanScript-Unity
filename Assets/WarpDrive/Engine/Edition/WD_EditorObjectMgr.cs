@@ -25,13 +25,13 @@ public class WD_EditorObjectMgr {
             EditorObjects.Add(null);
         }
         // Calcute the desired screen position of the new object.
-        Rect parentPos= IsIdValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
+        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
 
         // Create new EditorObject
         WD_EditorObject obj= new WD_EditorObject(id, name, typeof(T), parentId, new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0));
         EditorObjects[id]= obj;
         T rtObj= obj.CreateRuntimeObject() as T;
-        rtObj.Init(name, IsIdValid(parentId) ? TreeCache[parentId].RuntimeObject as WD_Aggregate: null);            
+        rtObj.Init(name, IsValid(parentId) ? TreeCache[parentId].RuntimeObject as WD_Aggregate: null);            
         TreeCache.CreateInstance(obj.InstanceId, parentId, rtObj);
         
         // Create ports for each field tagged with InPort or OutPort.
@@ -46,7 +46,7 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(int id) {
-        if(IsIdInvalid(id)) {
+        if(IsInvalid(id)) {
             Debug.LogError("Trying the delete a non-existing EditorObject with id= "+id);
         }
         // Remove all children first
@@ -55,7 +55,7 @@ public class WD_EditorObjectMgr {
         }
         // Remove all related objects.
         TreeCache.DestroyInstance(id);
-        EditorObjects[id].Init();
+        EditorObjects[id].Reset();
     }
     // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
@@ -91,17 +91,17 @@ public class WD_EditorObjectMgr {
         get { return EditorObjects[i]; }
     }
     // ----------------------------------------------------------------------
-    public bool IsIdValid(int id)   { return id >= 0 && id < EditorObjects.Count && EditorObjects[id].IsValid; }
-    public bool IsIdInvalid(int id) { return !IsIdValid(id); }
+    public bool IsValid(int id)   { return id >= 0 && id < EditorObjects.Count && EditorObjects[id].IsValid; }
+    public bool IsInvalid(int id) { return !IsValid(id); }
     // ----------------------------------------------------------------------
     public bool IsChildOf(WD_EditorObject obj, WD_EditorObject parent) {
-        if(IsIdInvalid(obj.ParentId)) return false;
+        if(IsInvalid(obj.ParentId)) return false;
         if(obj.ParentId == parent.InstanceId) return true;
         return IsChildOf(EditorObjects[obj.ParentId], parent);
     }
     // ----------------------------------------------------------------------
     public WD_Object GetRuntimeObject(int id) {
-        return IsIdValid(id) ? TreeCache[id].RuntimeObject : null;
+        return IsValid(id) ? TreeCache[id].RuntimeObject : null;
     }
     public WD_Object GetRuntimeObject(WD_EditorObject eObj) {
         return GetRuntimeObject(eObj.InstanceId);
@@ -115,7 +115,7 @@ public class WD_EditorObjectMgr {
         if(obj.IsRuntimeA<T>()) fnc(obj);
     }
     public void ExecuteIf<T>(int id, Action<WD_EditorObject> fnc) where T : WD_Object {
-        if(!IsIdValid(id)) return;
+        if(!IsValid(id)) return;
         ExecuteIf<T>(EditorObjects[id], fnc);
     }
     public void Case<T1,T2>(WD_EditorObject obj, Action<WD_EditorObject> fnc1,
@@ -128,7 +128,7 @@ public class WD_EditorObjectMgr {
                                     Action<WD_EditorObject> fnc2,
                                     Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
                                                                               where T2 : WD_Object {
-        if(IsIdInvalid(id)) return;
+        if(IsInvalid(id)) return;
         Case<T1,T2>(EditorObjects[id], fnc1, fnc2, defaultFnc);
     }
     public void Case<T1,T2,T3>(WD_EditorObject obj, Action<WD_EditorObject> fnc1,
@@ -145,7 +145,7 @@ public class WD_EditorObjectMgr {
                                        Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
                                                                                  where T2 : WD_Object
                                                                                  where T3 : WD_Object {
-        if(IsIdInvalid(id)) return;
+        if(IsInvalid(id)) return;
         Case<T1,T2,T3>(EditorObjects[id], fnc1, fnc2, fnc3, defaultFnc);
     }
     public void ForEachChild(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
@@ -253,7 +253,7 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
     public void SetInitialPosition(WD_EditorObject obj, Vector2 initialPosition) {
-        if(IsIdValid(obj.ParentId)) {
+        if(IsValid(obj.ParentId)) {
             Rect position= GetPosition(EditorObjects[obj.ParentId]);
             obj.LocalPosition.x= initialPosition.x - position.x;
             obj.LocalPosition.y= initialPosition.y - position.y;            
@@ -274,7 +274,7 @@ public class WD_EditorObjectMgr {
         );
     }
     public void Layout(int id) {
-        if(IsIdInvalid(id)) return;
+        if(IsInvalid(id)) return;
         Layout(EditorObjects[id]);
     }
     // ----------------------------------------------------------------------
@@ -370,7 +370,7 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     // Returns the absolute position of the node.
     public Rect GetPosition(WD_EditorObject node) {
-        if(!IsIdValid(node.ParentId)) return node.LocalPosition;
+        if(!IsValid(node.ParentId)) return node.LocalPosition;
         Rect position= GetPosition(EditorObjects[node.ParentId]);
         return new Rect(position.x+node.LocalPosition.x,
                         position.y+node.LocalPosition.y,
@@ -386,7 +386,7 @@ public class WD_EditorObjectMgr {
         node.LocalPosition.width = _newPos.width;
         node.LocalPosition.height= _newPos.height;
         // Reposition node.
-        if(!IsIdValid(node.ParentId)) {
+        if(!IsValid(node.ParentId)) {
             node.LocalPosition.x= _newPos.x;
             node.LocalPosition.y= _newPos.y;            
         }
@@ -421,7 +421,7 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     void LayoutParent(WD_EditorObject node, Vector2 _deltaMove) {
-        if(!IsIdValid(node.ParentId)) return;
+        if(!IsValid(node.ParentId)) return;
         WD_EditorObject parentNode= EditorObjects[node.ParentId];
         ResolveCollision(parentNode, _deltaMove);
         Layout(parentNode);
@@ -686,7 +686,7 @@ public class WD_EditorObjectMgr {
     // Resolve collision on parents.
     void ResolveCollision(WD_EditorObject node, Vector2 _delta) {
         ResolveCollisionOnChildren(node, _delta);
-        if(!IsIdValid(node.ParentId)) return;
+        if(!IsValid(node.ParentId)) return;
         ResolveCollision(EditorObjects[node.ParentId], _delta);
     }
 
@@ -809,7 +809,7 @@ public class WD_EditorObjectMgr {
         if(port.IsBeingDragged) return;
 
         // Retreive parent layout information.
-        if(!IsIdValid(port.ParentId)) {
+        if(!IsValid(port.ParentId)) {
             Debug.LogWarning("Trying to layout a port who does not have a parent!!!");
             return;
         }

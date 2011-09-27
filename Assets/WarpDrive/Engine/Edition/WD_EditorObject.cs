@@ -27,9 +27,9 @@ public class WD_EditorObject {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public WD_EditorObject() { Init(); }
+    public WD_EditorObject() { Reset(); }
     public WD_EditorObject(int id, string name, Type type, int parentId, Rect localPosition) {
-        Init();
+        Reset();
         InstanceId= id;
         ParentId= parentId;
         Name= name;
@@ -55,7 +55,7 @@ public class WD_EditorObject {
         );
     }
     // ----------------------------------------------------------------------
-    public void Init() {
+    public void Reset() {
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
