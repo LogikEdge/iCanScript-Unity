@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -258,11 +259,14 @@ public class WD_Graphics {
         // Only draw visible data ports.
         if(port.IsVisible == false || port.IsRuntimeA<WD_FunctionPort>() == false) return;
 
+        // Build visible port name
+        WD_EditorObject portParent= graph.EditorObjects[port.ParentId];
+        Type portValueType= WD_Reflection.GetPortFieldType(port, portParent);
+        string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
+         
         Rect tmp= graph.EditorObjects.GetPosition(port);
         Vector2 pos= new Vector2(tmp.x, tmp.y);
-        string name= port.Name;
-        WD_EditorObject portParent= graph.EditorObjects[port.ParentId];
-        Color portColor= WD_TypeSystem.GetDisplayColor(WD_Reflection.GetPortFieldType(port, portParent));
+        Color portColor= WD_TypeSystem.GetDisplayColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, graph);
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show name if requested.

@@ -119,6 +119,7 @@ public class WD_TypeSystem {
     // Returns the display color to use to the given type.  White is returned
     // if type is not in database.
     public static Color GetDisplayColor(string typeName) {
+//        Debug.Log("GetColor type name: "+typeName);
         WD_TypeInfo typeInfo= TryGetTypeInfo(typeName);
         return typeInfo != null ? typeInfo.DisplayColor : Color.white;
     }
