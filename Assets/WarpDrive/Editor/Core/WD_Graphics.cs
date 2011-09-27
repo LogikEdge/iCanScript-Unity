@@ -261,8 +261,9 @@ public class WD_Graphics {
         Rect tmp= graph.EditorObjects.GetPosition(port);
         Vector2 pos= new Vector2(tmp.x, tmp.y);
         string name= port.Name;
-        Color portColor= (graph.EditorObjects.GetRuntimeObject(port) as WD_FunctionPort).DisplayColor;
-        Color nodeColor= GetNodeColor(graph.EditorObjects[port.ParentId], selectedObject, graph);
+        WD_EditorObject portParent= graph.EditorObjects[port.ParentId];
+        Color portColor= WD_TypeSystem.GetDisplayColor(WD_Reflection.GetPortFieldType(port, portParent));
+        Color nodeColor= GetNodeColor(portParent, selectedObject, graph);
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show name if requested.
         Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);
@@ -472,7 +473,8 @@ public class WD_Graphics {
         if(graph.EditorObjects[port.ParentId].IsVisible) {
             if(graph.EditorObjects.IsValid(port.Source)) {
                 WD_EditorObject source= graph.EditorObjects[port.Source];
-                if(graph.EditorObjects[source.ParentId].IsVisible) {
+                WD_EditorObject sourceParent= graph.EditorObjects[source.ParentId];
+                if(sourceParent.IsVisible) {
                     Rect sourcePos= graph.EditorObjects.GetPosition(source);
                     Rect portPos  = graph.EditorObjects.GetPosition(port);
                     Vector2 start= new Vector2(sourcePos.x, sourcePos.y);
@@ -486,7 +488,7 @@ public class WD_Graphics {
                     if(Vector2.Dot(diff, endDirection) > 0) {
                         endDirection  = - endDirection;
                     }
-                    Color color= (graph.EditorObjects.GetRuntimeObject(port) as WD_FunctionPort).DisplayColor;
+                    Color color= WD_TypeSystem.GetDisplayColor(WD_Reflection.GetPortFieldType(source, sourceParent));
                     DrawBezierCurve(start, end, startDirection, endDirection, color);
                 }                                    
             }
