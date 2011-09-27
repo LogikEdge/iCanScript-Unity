@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -124,9 +125,6 @@ public class WD_Editor : EditorWindow {
         // Update scroll view.
         ScrollView.Update(position, Graph.EditorObjects.GetPosition(DisplayRoot));
         
-        // Draw editor grid.
-//        DrawGrid();
-        
 		// Draw editor widgets.
 		DrawEditorWidgets();
 		
@@ -144,7 +142,6 @@ public class WD_Editor : EditorWindow {
             Graph.IsDirty= false;
             Undo.RegisterUndo(Graph, "WarpDrive");
             EditorUtility.SetDirty(Graph);
-//            AssetDatabase.CreateAsset(Graph.RootNode,"Assets/WarpDriveTest.asset");
         }
 	}
 
@@ -293,8 +290,8 @@ public class WD_Editor : EditorWindow {
             if(!VerifyNewConnection(port)) {
                 // Verify for disconnection.
                 if(!EditorObjects.IsNearParent(port)) {
-                    if(port.IsRuntimeA<WD_DataPort>()) {
-                        (EditorObjects.GetRuntimeObject(port) as WD_DataPort).Disconnect();
+                    if(port.IsRuntimeA<WD_FunctionPort>()) {
+                        (EditorObjects.GetRuntimeObject(port) as WD_FunctionPort).Disconnect();
                     }
                     port.LocalPosition.x= DragStartPosition.x;
                     port.LocalPosition.y= DragStartPosition.y;
@@ -347,59 +344,28 @@ public class WD_Editor : EditorWindow {
         WD_EditorObject overlappingPort= EditorObjects.GetOverlappingPort(port);
         if(overlappingPort == null) return false;
         
-        // Only connect data ports.
-        if(!(port.IsRuntimeA<WD_DataPort>())) return false;
-        if(!(overlappingPort.IsRuntimeA<WD_DataPort>())) return false;
-        WD_DataPort dataPort= EditorObjects.GetRuntimeObject(port) as WD_DataPort;
-        WD_DataPort overlappingDataPort= EditorObjects.GetRuntimeObject(overlappingPort) as WD_DataPort;
+        // Connect function & modules ports together.
+        if(port.IsDataPort && overlappingPort.IsDataPort) {            
+           Type portValueType= WD_Reflection.GetPortFieldType(port, EditorObjects[port.ParentId]);
+           Type overlappingPortValueType= WD_Reflection.GetPortFieldType(overlappingPort, EditorObjects[overlappingPort.ParentId]);
+           Type connectionType= WD_TypeSystem.GetBestUpConversionType(portValueType, overlappingPortValueType);
+           if(connectionType != null) {
+               if(port.IsInputPort && overlappingPort.IsOutputPort) {
+                   EditorObjects.SetSource(port, overlappingPort);
+               }
+               else if(overlappingPort.IsInputPort) {
+                   EditorObjects.SetSource(overlappingPort, port);
+               }                           
+           }
+           return true;               
+        }
+
+        // Connect transition port together.
+        if(port.IsTransitionPort && overlappingPort.IsTransitionPort) {
+            return true;
+        }
         
-        // We have a new connection so lets determine direction.
-        port.LocalPosition.x= DragStartPosition.x;
-        port.LocalPosition.y= DragStartPosition.y;
-        if(dataPort.IsInput) {
-            if(overlappingDataPort.IsOutput) {
-                dataPort.Source= overlappingDataPort;
-                port.Source= overlappingPort.InstanceId;
-                return true;
-            }
-            if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == false) {
-                return true;
-            }
-            if(dataPort.IsVirtual == true && overlappingDataPort.IsVirtual == false) {
-                overlappingDataPort.Source= dataPort;
-                overlappingPort.Source= port.InstanceId;
-                return true;
-            }
-            if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == true) {
-                dataPort.Source= overlappingDataPort;
-                port.Source= overlappingPort.InstanceId;
-                return true;
-            }
-            dataPort.Source= overlappingDataPort;
-            port.Source= overlappingPort.InstanceId;
-        }
-        else {
-            if(overlappingDataPort.IsInput) {
-                overlappingDataPort.Source= dataPort;
-                overlappingPort.Source= port.InstanceId;
-                return true;
-            }            
-            if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == false) {
-                return true;
-            }
-            if(dataPort.IsVirtual == true && overlappingDataPort.IsVirtual == false) {
-                dataPort.Source= overlappingDataPort;
-                port.Source= overlappingPort.InstanceId;
-                return true;
-            }
-            if(dataPort.IsVirtual == false && overlappingDataPort.IsVirtual == true) {
-                overlappingDataPort.Source= dataPort;
-                overlappingPort.Source= port.InstanceId;
-                return true;
-            }
-            dataPort.Source= overlappingDataPort;
-            port.Source= overlappingPort.InstanceId;
-        }
+        Debug.LogWarning("Trying to connect incompatible port types: "+port.TypeName+"<=>"+overlappingPort.TypeName);
         return true;
     }
     

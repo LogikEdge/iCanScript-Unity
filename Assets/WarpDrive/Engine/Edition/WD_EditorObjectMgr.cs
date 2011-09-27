@@ -35,11 +35,11 @@ public class WD_EditorObjectMgr {
         TreeCache.CreateInstance(obj.InstanceId, parentId, rtObj);
         
         // Create ports for each field tagged with InPort or OutPort.
-        foreach(var field in GetInputFields(typeof(T))) {
-            CreateInstance<WD_InDataPort>(field.Name, obj.InstanceId, initialPos);
+        foreach(var field in WD_Reflection.GetInPortFields(typeof(T))) {
+            CreateInstance<WD_InFunctionPort>(field.Name, obj.InstanceId, initialPos);
         }
-        foreach(var field in GetOutputFields(typeof(T))) {
-            CreateInstance<WD_OutDataPort>(field.Name, obj.InstanceId, initialPos);
+        foreach(var field in WD_Reflection.GetOutPortFields(typeof(T))) {
+            CreateInstance<WD_OutFunctionPort>(field.Name, obj.InstanceId, initialPos);
         }
 
         return obj;
@@ -54,12 +54,12 @@ public class WD_EditorObjectMgr {
             DestroyInstance(TreeCache[id].Children[0]);
         }
         // Disconnect ports linking to this port.
-        ExecuteIf<WD_DataPort>(EditorObjects[id],
+        ExecuteIf<WD_FunctionPort>(EditorObjects[id],
             (instance) => {
-                ForEach<WD_DataPort>(
+                ForEach<WD_FunctionPort>(
                     (obj) => {
                         if(obj.Source == id) {
-                            (GetRuntimeObject(obj) as WD_DataPort).Source= null;
+                            (GetRuntimeObject(obj) as WD_FunctionPort).Source= null;
                             obj.Source= -1;
                         }
                     }
@@ -73,32 +73,6 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public void DestroyInstance(WD_EditorObject eObj) {
         DestroyInstance(eObj.InstanceId);
-    }
-    // ----------------------------------------------------------------------
-    // Returns the list of defined input fields.
-    public static List<FieldInfo> GetInputFields(Type objType) {
-        List<FieldInfo> list= new List<FieldInfo>();
-        foreach(var field in objType.GetFields()) {
-            foreach(var attribute in field.GetCustomAttributes(true)) {
-                if((attribute is WD_InPortAttribute) || (attribute is WD_InOutPortAttribute)) {
-                    list.Add(field);
-                }
-            }
-        }        
-        return list;
-    }
-    // ----------------------------------------------------------------------
-    // Returns the list of defined output fields.
-    public static List<FieldInfo> GetOutputFields(Type objType) {
-        List<FieldInfo> list= new List<FieldInfo>();
-        foreach(var field in objType.GetFields()) {
-            foreach(var attribute in field.GetCustomAttributes(true)) {
-                if((attribute is WD_OutPortAttribute) || (attribute is WD_InOutPortAttribute)) {
-                    list.Add(field);
-                }
-            }
-        }        
-        return list;
     }
 
     // ======================================================================
@@ -122,6 +96,16 @@ public class WD_EditorObjectMgr {
     }
     public WD_Object GetRuntimeObject(WD_EditorObject eObj) {
         return GetRuntimeObject(eObj.InstanceId);
+    }
+    // ----------------------------------------------------------------------
+    public void SetSource(WD_EditorObject obj, WD_EditorObject src) {
+        Debug.Log("Setting port source of "+obj.Name+" to "+src.Name);
+        obj.Source= src.InstanceId;
+        obj.ExecuteIf<WD_FunctionPort>(
+            (port) => {
+                (GetRuntimeObject(port.InstanceId) as WD_FunctionPort).Source= GetRuntimeObject(src.InstanceId) as WD_FunctionPort;
+            }
+        );
     }
     
     // ======================================================================

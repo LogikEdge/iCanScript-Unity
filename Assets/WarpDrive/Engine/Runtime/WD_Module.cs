@@ -7,10 +7,9 @@ public sealed class WD_Module : WD_Function {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    private List<WD_Action>   myExecuteQueue= new List<WD_Action>();
-    private int                 myQueueIdx= 0;
-    private int                 myNbOfTries= 0;
-    private bool                myDirtyFlag= true;
+    private List<WD_Action> myExecuteQueue= new List<WD_Action>();
+    private int             myQueueIdx= 0;
+    private int             myNbOfTries= 0;
     
 
     // ======================================================================
@@ -18,12 +17,6 @@ public sealed class WD_Module : WD_Function {
     // ----------------------------------------------------------------------
     protected override void Evaluate() {}
     public override void Execute() {
-        // Rebuild queue if functions where added/removed.
-        if(myDirtyFlag) {
-            myExecuteQueue.Clear();
-            ForEachChild<WD_Node>( (node)=> { if(IsExecutable(node)) myExecuteQueue.Add(node as WD_Action); } );            
-            myDirtyFlag= false;
-        }
         // Attempt to execute child functions.
         int maxTries= myExecuteQueue.Count; maxTries= 1+(maxTries*maxTries+maxTries)/2;
         for(; myQueueIdx < myExecuteQueue.Count && myNbOfTries < maxTries; ++myNbOfTries) {
@@ -57,12 +50,16 @@ public sealed class WD_Module : WD_Function {
     // ======================================================================
     // CONNECTOR MANAGEMENT
     // ----------------------------------------------------------------------
-    public override void AddChild(WD_Object _object) {
-        if(IsExecutable(_object)) myDirtyFlag= true;
-        base.AddChild(_object);
+    public override void AddChild(WD_Object obj) {
+        if(IsExecutable(obj)) {
+            myExecuteQueue.Add(obj as WD_Action);
+        }
+        base.AddChild(obj);
     }
-    public override void RemoveChild(WD_Object _object) {
-        if(IsExecutable(_object)) myDirtyFlag= true;
-        base.RemoveChild(_object);
+    public override void RemoveChild(WD_Object obj) {
+        if(IsExecutable(obj)) {
+            myExecuteQueue.Remove(obj as WD_Action);
+        }
+        base.RemoveChild(obj);
     }
 }

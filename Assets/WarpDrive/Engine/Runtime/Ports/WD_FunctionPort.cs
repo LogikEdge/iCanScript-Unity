@@ -3,18 +3,18 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class WD_DataPort : WD_Port {
+public class WD_FunctionPort : WD_Port {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-	[SerializeField] WD_DataPort    mySource= null;
+	[SerializeField] WD_FunctionPort    mySource= null;
     
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool IsInput                     { get { return this is WD_InDataPort; }}
-    public bool IsOutput                    { get { return this is WD_OutDataPort; }}
+    public bool IsInput                     { get { return this is WD_InFunctionPort; }}
+    public bool IsOutput                    { get { return this is WD_OutFunctionPort; }}
     public bool IsVirtual                   { get { return AsVirtual != null; }}
     public WD_VirtualDataPort  AsVirtual    { get { return this as WD_VirtualDataPort; }}
     // ----------------------------------------------------------------------
@@ -65,7 +65,7 @@ public class WD_DataPort : WD_Port {
     // Execution
     // ----------------------------------------------------------------------
     public override bool IsReady() {
-        WD_DataPort sourcePort= GetProducerPort();
+        WD_FunctionPort sourcePort= GetProducerPort();
         if(sourcePort == null || sourcePort == this) return true;
         WD_Action sourceAction= sourcePort.Parent as WD_Action;
         if(sourceAction == null) return true;
@@ -96,17 +96,17 @@ public class WD_DataPort : WD_Port {
     }
     
     // ----------------------------------------------------------------------
-    public WD_DataPort Source {
+    public WD_FunctionPort Source {
         get { return mySource; }
         set {
             // Nothing to do if we are already connected to source.
             if(value == mySource) return;
 
             // Compute new type.
-            WD_DataPort thePrevSource= mySource;
+            WD_FunctionPort thePrevSource= mySource;
             mySource= value;
-            List<WD_DataPort> connectedPorts= GetConnectedPorts();
-            WD_DataPort bestUpConversionPort= GetBestUpConversionPort(connectedPorts);
+            List<WD_FunctionPort> connectedPorts= GetConnectedPorts();
+            WD_FunctionPort bestUpConversionPort= GetBestUpConversionPort(connectedPorts);
 
             // Reject request if type mismatch.
             if(bestUpConversionPort == null) {
@@ -123,7 +123,7 @@ public class WD_DataPort : WD_Port {
         }
     }
     // ----------------------------------------------------------------------
-    public bool TrySetSource(WD_DataPort theNewSource) {
+    public bool TrySetSource(WD_FunctionPort theNewSource) {
         Source= theNewSource;
         return Source == theNewSource;
     }
@@ -131,7 +131,7 @@ public class WD_DataPort : WD_Port {
     // ----------------------------------------------------------------------
     public void ReconfigurePortChain() {
         // Cleanup virtual ports that are not the last port in chain.
-        List<WD_DataPort> connectedPorts= GetConnectedPorts();
+        List<WD_FunctionPort> connectedPorts= GetConnectedPorts();
         if(connectedPorts.Count == 1) {
             if(connectedPorts[0].IsVirtual) {
                 connectedPorts[0].AsVirtual.ConcretePort= null;
@@ -145,12 +145,12 @@ public class WD_DataPort : WD_Port {
             }
         }
         // The chain is properly configured if the last port is concrete.
-        WD_DataPort lastPort= GetLastSourcePort();
+        WD_FunctionPort lastPort= GetLastSourcePort();
         if(!lastPort.IsVirtual) return;
         
         // Assign the virtual port to the best up conversion port if it is not initialized.
         WD_VirtualDataPort virtualPort= lastPort.AsVirtual;
-        WD_DataPort bestUpConversionPort= GetBestUpConversionPort(connectedPorts);
+        WD_FunctionPort bestUpConversionPort= GetBestUpConversionPort(connectedPorts);
         if(virtualPort.ConcretePort == null || bestUpConversionPort == null) {
             virtualPort.ConcretePort= bestUpConversionPort;
             return;
@@ -170,36 +170,36 @@ public class WD_DataPort : WD_Port {
     }
     
     // ----------------------------------------------------------------------
-    public WD_DataPort GetLastSourcePort() {
-        WD_DataPort port= this;
+    public WD_FunctionPort GetLastSourcePort() {
+        WD_FunctionPort port= this;
         for(; port.mySource != null; port= port.mySource);
         return port;
     }
 
     // ----------------------------------------------------------------------
-    public WD_DataPort GetProducerPort() {
-        WD_DataPort lastPort= GetLastSourcePort();
+    public WD_FunctionPort GetProducerPort() {
+        WD_FunctionPort lastPort= GetLastSourcePort();
         WD_VirtualDataPort virtualPort= lastPort.AsVirtual;
         return virtualPort != null ? virtualPort.ConcretePort : lastPort;
     }
     
     // ----------------------------------------------------------------------
     public System.Type GetProducerValueType() {
-        WD_DataPort producerPort= GetProducerPort();
+        WD_FunctionPort producerPort= GetProducerPort();
         if(producerPort == null) return null;
         return producerPort.ValueType;
     }
     
     // ----------------------------------------------------------------------
     public System.Type GetProducerElementType() {
-        WD_DataPort producerPort= GetProducerPort();
+        WD_FunctionPort producerPort= GetProducerPort();
         if(producerPort == null) return null;
         return producerPort.ElementType;
     }
     
     // ----------------------------------------------------------------------
     public virtual void UpdateValue() {
-        WD_DataPort sourcePort= GetProducerPort();
+        WD_FunctionPort sourcePort= GetProducerPort();
         if(sourcePort == null || sourcePort == this) return;
         WD_Aggregate sourceNode= sourcePort.Parent;
         System.Type sourceNodeType= sourceNode.GetType();
@@ -310,10 +310,10 @@ public class WD_DataPort : WD_Port {
 
     // ----------------------------------------------------------------------
     // Returns a list of all ports connected together.
-    public List<WD_DataPort> GetConnectedPorts() {
+    public List<WD_FunctionPort> GetConnectedPorts() {
         // Filled the result with the connected ports.
-        List<WD_DataPort> theConnectedPorts= new List<WD_DataPort>();
-        for(WD_DataPort linkedPort= this; linkedPort != null; linkedPort= linkedPort.Source) {
+        List<WD_FunctionPort> theConnectedPorts= new List<WD_FunctionPort>();
+        for(WD_FunctionPort linkedPort= this; linkedPort != null; linkedPort= linkedPort.Source) {
             theConnectedPorts.Add(linkedPort);            
         }
         DoGetConnectedPorts(theConnectedPorts);
@@ -322,10 +322,10 @@ public class WD_DataPort : WD_Port {
     
     // ----------------------------------------------------------------------
     // Core function to add ports to the connection port list.
-    public virtual void DoGetConnectedPorts(List<WD_DataPort> theConnectedPorts) {
-        Top.ForEachRecursive<WD_DataPort>(
+    public virtual void DoGetConnectedPorts(List<WD_FunctionPort> theConnectedPorts) {
+        Top.ForEachRecursive<WD_FunctionPort>(
             (port)=> {
-                WD_DataPort source= port.Source;
+                WD_FunctionPort source= port.Source;
                 if(source != null) {
                     foreach(var foundPort in theConnectedPorts) {
                         if(foundPort == source) {
@@ -342,8 +342,8 @@ public class WD_DataPort : WD_Port {
 
     // ----------------------------------------------------------------------
     // Adds a port into the port list if it does not already exists.
-    protected static bool AddPortUniqu(List<WD_DataPort> thePortList, WD_DataPort theNewPort) {
-        foreach(WD_DataPort thePortIter in thePortList) {
+    protected static bool AddPortUniqu(List<WD_FunctionPort> thePortList, WD_FunctionPort theNewPort) {
+        foreach(WD_FunctionPort thePortIter in thePortList) {
             if(thePortIter == theNewPort) return false;
         }
         thePortList.Add(theNewPort);
@@ -351,9 +351,9 @@ public class WD_DataPort : WD_Port {
     }
     
     // ----------------------------------------------------------------------
-    public static WD_DataPort GetBestUpConversionPort(List<WD_DataPort> portList) {
+    public static WD_FunctionPort GetBestUpConversionPort(List<WD_FunctionPort> portList) {
         if(portList.Count < 1) return null;
-        WD_DataPort bestPort= null;
+        WD_FunctionPort bestPort= null;
         int i= 0;
         for(; i < portList.Count; ++i) {
             if(!portList[i].IsVirtual) {
@@ -385,7 +385,7 @@ public class WD_DataPort : WD_Port {
         Source= null;
         
         // Disconnect all other port being sourced by the given port.
-        Top.ForEachRecursive<WD_DataPort>(
+        Top.ForEachRecursive<WD_FunctionPort>(
             (port)=> {
                 if(port.Source == this)
                     port.Source= null;

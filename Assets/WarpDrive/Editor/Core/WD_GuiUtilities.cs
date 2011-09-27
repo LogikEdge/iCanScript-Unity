@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class WD_GuiUtilities {
-    public static void OnInspectorGUI(WD_DataPort port) {
+    public static void OnInspectorGUI(WD_FunctionPort port) {
         string niceName= port.name == null || port.name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(port.name);
 
         if(port.IsVirtual) {

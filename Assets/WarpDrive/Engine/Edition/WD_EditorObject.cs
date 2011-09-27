@@ -42,9 +42,9 @@ public class WD_EditorObject {
             (top)  => { IsVisible= false; },
             (node) => {},
             (port) => {
-                port.ExecuteIf<WD_DataPort>(
+                port.ExecuteIf<WD_FunctionPort>(
                     (dataPort) => {
-                        dataPort.Case<WD_InDataPort, WD_OutDataPort, WD_EnablePort>(
+                        dataPort.Case<WD_InFunctionPort, WD_OutFunctionPort, WD_EnablePort>(
                             (inPort)     => { Edge= EdgeEnum.Left; },
                             (outPort)    => { Edge= EdgeEnum.Right; },
                             (enablePort) => { Edge= EdgeEnum.Top; }
@@ -94,6 +94,15 @@ public class WD_EditorObject {
     public bool IsRuntimeA<T>() where T : class {
         return IsRuntimeA(typeof(T));
     }
+    // ----------------------------------------------------------------------
+    public bool IsPort           { get { return IsRuntimeA<WD_Port>(); }}
+    public bool IsFunctionPort   { get { return IsRuntimeA<WD_InFunctionPort>() || IsRuntimeA<WD_OutFunctionPort>(); }}
+    public bool IsModulePort     { get { return IsRuntimeA<WD_InModulePort>() || IsRuntimeA<WD_OutModulePort>(); }}
+    public bool IsTransitionPort { get { return IsRuntimeA<WD_InTransitionPort>() || IsRuntimeA<WD_OutTransitionPort>(); }}
+    public bool IsEnablePort     { get { return IsRuntimeA<WD_EnablePort>(); }}
+    public bool IsDataPort       { get { return IsFunctionPort || IsModulePort || IsEnablePort; }}
+    public bool IsInputPort      { get { return IsRuntimeA<WD_InFunctionPort>() || IsRuntimeA<WD_InModulePort>() || IsRuntimeA<WD_InTransitionPort>() || IsRuntimeA<WD_EnablePort>(); }}
+    public bool IsOutputPort     { get { return !IsInputPort; }}
     
     // ======================================================================
     // Accessors

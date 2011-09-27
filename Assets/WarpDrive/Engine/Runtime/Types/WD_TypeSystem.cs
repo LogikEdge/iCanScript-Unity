@@ -39,12 +39,12 @@ public class WD_TypeSystem {
         myDictionary.Add(theTypeInfo.ValueTypeName, theTypeInfo);
     }
 
-    // ----------------------------------------------------------------------
-    // Returns the name used to identify the given type.
-    public static WD_Type GetType(System.Type theType) {
-        return new WD_Type(theType);
-    }
-    
+//    // ----------------------------------------------------------------------
+//    // Returns the name used to identify the given type.
+//    public static WD_Type GetType(System.Type theType) {
+//        return new WD_Type(theType);
+//    }
+//    
     // ----------------------------------------------------------------------
     // Returns the name used to identify the given type.
     public static string GetTypeName(System.Type theType) {

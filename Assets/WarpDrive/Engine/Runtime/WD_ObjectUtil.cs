@@ -28,7 +28,7 @@ public class WD_ObjectUtil : ScriptableObject {
         System.Type objType= GetType();
         foreach(var field in objType.GetFields()) {
             foreach(var attribute in field.GetCustomAttributes(true)) {
-                if((attribute is WD_InPortAttribute) || (attribute is WD_InOutPortAttribute)) {
+                if((attribute is WD_InPortAttribute)) {
                     list.Add(field);
                 }
             }
@@ -42,7 +42,7 @@ public class WD_ObjectUtil : ScriptableObject {
         System.Type objType= GetType();
         foreach(var field in objType.GetFields()) {
             foreach(var attribute in field.GetCustomAttributes(true)) {
-                if((attribute is WD_OutPortAttribute) || (attribute is WD_InOutPortAttribute)) {
+                if((attribute is WD_OutPortAttribute)) {
                     list.Add(field);
                 }
             }
@@ -55,7 +55,7 @@ public class WD_ObjectUtil : ScriptableObject {
         System.Type objType= GetType();
         foreach(var field in objType.GetFields()) {
             foreach(var attribute in field.GetCustomAttributes(true)) {
-                if((attribute is WD_InPortAttribute) || (attribute is WD_InOutPortAttribute)) {
+                if((attribute is WD_InPortAttribute)) {
                     if(field.Name == name) {
                         return field;
                     }
@@ -70,7 +70,7 @@ public class WD_ObjectUtil : ScriptableObject {
         System.Type objType= GetType();
         foreach(var field in objType.GetFields()) {
             foreach(var attribute in field.GetCustomAttributes(true)) {
-                if((attribute is WD_OutPortAttribute) || (attribute is WD_InOutPortAttribute)) {
+                if((attribute is WD_OutPortAttribute)) {
                     if(field.Name == name) {
                         return field;
                     }
@@ -87,7 +87,7 @@ public class WD_ObjectUtil : ScriptableObject {
         System.Type objType= GetType();
         foreach(var property in objType.GetProperties()) {
             foreach(var attribute in property.GetCustomAttributes(true)) {
-                if((attribute is WD_InPropertyAttribute) || (attribute is WD_InOutPropertyAttribute)) {
+                if((attribute is WD_InPropertyAttribute)) {
                     list.Add(property);
                 }
             }
@@ -101,7 +101,7 @@ public class WD_ObjectUtil : ScriptableObject {
         System.Type objType= GetType();
         foreach(var property in objType.GetProperties()) {
             foreach(var attribute in property.GetCustomAttributes(true)) {
-                if((attribute is WD_OutPropertyAttribute) || (attribute is WD_InOutPropertyAttribute)) {
+                if((attribute is WD_OutPropertyAttribute)) {
                     list.Add(property);
                 }
             }
@@ -114,7 +114,7 @@ public class WD_ObjectUtil : ScriptableObject {
         System.Type objType= GetType();
         foreach(var property in objType.GetProperties()) {
             foreach(var attribute in property.GetCustomAttributes(true)) {
-                if((attribute is WD_InPropertyAttribute) || (attribute is WD_InOutPropertyAttribute)) {
+                if((attribute is WD_InPropertyAttribute)) {
                     if(property.Name == name) {
                         return property;
                     }
@@ -129,7 +129,7 @@ public class WD_ObjectUtil : ScriptableObject {
         System.Type objType= GetType();
         foreach(var property in objType.GetProperties()) {
             foreach(var attribute in property.GetCustomAttributes(true)) {
-                if((attribute is WD_OutPropertyAttribute) || (attribute is WD_InOutPropertyAttribute)) {
+                if((attribute is WD_OutPropertyAttribute)) {
                     if(property.Name == name) {
                         return property;
                     }

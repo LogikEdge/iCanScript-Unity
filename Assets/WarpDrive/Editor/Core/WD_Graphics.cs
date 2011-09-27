@@ -256,12 +256,12 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_Behaviour graph) {
         // Only draw visible data ports.
-        if(port.IsVisible == false || port.IsRuntimeA<WD_DataPort>() == false) return;
+        if(port.IsVisible == false || port.IsRuntimeA<WD_FunctionPort>() == false) return;
 
         Rect tmp= graph.EditorObjects.GetPosition(port);
         Vector2 pos= new Vector2(tmp.x, tmp.y);
         string name= port.Name;
-        Color portColor= (graph.EditorObjects.GetRuntimeObject(port) as WD_DataPort).DisplayColor;
+        Color portColor= (graph.EditorObjects.GetRuntimeObject(port) as WD_FunctionPort).DisplayColor;
         Color nodeColor= GetNodeColor(graph.EditorObjects[port.ParentId], selectedObject, graph);
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show name if requested.
@@ -467,7 +467,7 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_Behaviour graph) {
         // Only data connection are drawn.
-        if(!(port.IsRuntimeA<WD_DataPort>())) return;
+        if(!(port.IsRuntimeA<WD_FunctionPort>())) return;
         
         if(graph.EditorObjects[port.ParentId].IsVisible) {
             if(graph.EditorObjects.IsValid(port.Source)) {
@@ -486,7 +486,7 @@ public class WD_Graphics {
                     if(Vector2.Dot(diff, endDirection) > 0) {
                         endDirection  = - endDirection;
                     }
-                    Color color= (graph.EditorObjects.GetRuntimeObject(port) as WD_DataPort).DisplayColor;
+                    Color color= (graph.EditorObjects.GetRuntimeObject(port) as WD_FunctionPort).DisplayColor;
                     DrawBezierCurve(start, end, startDirection, endDirection, color);
                 }                                    
             }

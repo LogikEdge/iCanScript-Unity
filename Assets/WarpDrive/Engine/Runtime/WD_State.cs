@@ -41,7 +41,7 @@ public sealed class WD_State : WD_Node {
     }
     public WD_State VerifyTransitions() {
         foreach(var obj in this) {
-            WD_StateLeavePort port= obj as WD_StateLeavePort;
+            WD_OutTransitionPort port= obj as WD_OutTransitionPort;
             if(port != null && port.IsReady()) {
                 return port.TargetState;
             }
@@ -53,7 +53,7 @@ public sealed class WD_State : WD_Node {
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
     public override void AddChild(WD_Object _object) {
-        _object.Case<WD_State, WD_StateEntryPort, WD_StateLeavePort, WD_Module>(
+        _object.Case<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(
             (state)=> {
                 base.AddChild(_object);
             },
@@ -86,7 +86,7 @@ public sealed class WD_State : WD_Node {
         );
     }
     public override void RemoveChild(WD_Object _object) {
-        _object.Case<WD_State, WD_StateEntryPort, WD_StateLeavePort, WD_Module>(
+        _object.Case<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(
             (state)=> {
                 if(state == myEntryState) myEntryState= null;
                 base.RemoveChild(_object);

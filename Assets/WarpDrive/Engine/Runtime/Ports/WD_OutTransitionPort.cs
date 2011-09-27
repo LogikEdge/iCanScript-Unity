@@ -2,11 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Reflection;
 
-public class WD_StateLeavePort : WD_Port {
+public class WD_OutTransitionPort : WD_Port {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public WD_StateEntryPort    myTargetPort= null;
+    public WD_InTransitionPort  myTargetPort= null;
     public WD_Function          myGuard= null;
     public WD_Action            myAction= null;
     
@@ -15,15 +15,6 @@ public class WD_StateLeavePort : WD_Port {
     // ----------------------------------------------------------------------
     public WD_State TargetState { get { return myTargetPort.Parent as WD_State; } }
 
-    // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public static WD_StateLeavePort CreateInstance(string name, WD_State parent) {
-        WD_StateLeavePort instance= CreateInstance<WD_StateLeavePort>();
-        instance.Init(name, parent);
-        return instance;
-    }
-    
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
