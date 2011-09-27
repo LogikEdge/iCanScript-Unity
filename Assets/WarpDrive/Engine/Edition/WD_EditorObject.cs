@@ -11,8 +11,8 @@ public class WD_EditorObject {
     public int              ParentId     = -1;
     public string           QualifiedType= "";
     public string           Name         = "";
-    public bool             IsDirty      = true;
-    public bool             IsVisible    = true;
+    public bool             IsDirty      = false;
+    public bool             IsVisible    = false;
     public Rect             LocalPosition= new Rect(0,0,0,0);
 
     // Port specific attributes ---------------------------------------------
@@ -27,12 +27,15 @@ public class WD_EditorObject {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public WD_EditorObject() {}
+    public WD_EditorObject() { Init(); }
     public WD_EditorObject(int id, string name, Type type, int parentId, Rect localPosition) {
+        Init();
         InstanceId= id;
         ParentId= parentId;
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
+        IsDirty= true;
+        IsVisible= true;
         LocalPosition= localPosition;
         Case<WD_RootNode, WD_Top, WD_Node, WD_Port>(
             (root) => { IsVisible= false; },
@@ -50,6 +53,19 @@ public class WD_EditorObject {
                 );                
             }
         );
+    }
+    // ----------------------------------------------------------------------
+    public void Init() {
+        InstanceId= -1;
+        ParentId= -1;
+        QualifiedType= "";
+        Name= "";
+        IsDirty= false;
+        IsVisible= false;
+        LocalPosition= new Rect(0,0,0,0);
+        Edge= EdgeEnum.None;
+        Source= -1;
+        IsBeingDragged= false;
     }
     // ----------------------------------------------------------------------
     public WD_Object CreateRuntimeObject() {
@@ -115,7 +131,7 @@ public class WD_EditorObject {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool IsValid { get { return QualifiedType != null && QualifiedType != ""; }}
+    public bool IsValid { get { return InstanceId != -1; }}
     public Type RuntimeType { get { return Type.GetType(QualifiedType); }}
     public string TypeName {
         get {

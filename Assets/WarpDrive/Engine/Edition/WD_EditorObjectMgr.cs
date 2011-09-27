@@ -19,7 +19,7 @@ public class WD_EditorObjectMgr {
     public WD_EditorObject CreateInstance<T>(string name, int parentId, Vector2 initialPos) where T : WD_Object {
         // Find the next available id.
         int id= 0;
-        while(id < EditorObjects.Count && EditorObjects[id] != null) { ++id; }
+        while(id < EditorObjects.Count && EditorObjects[id].IsValid) { ++id; }
         if(id >= EditorObjects.Count) {
             id= EditorObjects.Count;
             EditorObjects.Add(null);
@@ -55,7 +55,7 @@ public class WD_EditorObjectMgr {
         }
         // Remove all related objects.
         TreeCache.DestroyInstance(id);
-        EditorObjects[id]= null;
+        EditorObjects[id].Init();
     }
     // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
@@ -101,7 +101,7 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     public WD_Object GetRuntimeObject(int id) {
-        return TreeCache[id].RuntimeObject;
+        return IsIdValid(id) ? TreeCache[id].RuntimeObject : null;
     }
     public WD_Object GetRuntimeObject(WD_EditorObject eObj) {
         return GetRuntimeObject(eObj.InstanceId);

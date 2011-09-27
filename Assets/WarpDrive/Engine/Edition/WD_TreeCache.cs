@@ -15,6 +15,12 @@ public class WD_TreeCache {
         public List<int>   Children= new List<int>();
 
         public TreeNode()  {}
+        public void Init() {
+            RuntimeObject= null;
+            ParentId= -1;
+            Children.Clear();
+        }
+        public bool IsValid { get { return RuntimeObject != null;  }}
         public void AddChild(int id, TreeNode toAdd) {
             foreach(var child in Children) {
                 if(child == id) return;
@@ -45,7 +51,7 @@ public class WD_TreeCache {
         get { return TreeCache[i]; }
     }
     // ----------------------------------------------------------------------
-    bool IsIdValid(int id)      { return id >= 0 && id < TreeCache.Count && TreeCache[id] != null; }
+    bool IsIdValid(int id)      { return id >= 0 && id < TreeCache.Count && TreeCache[id].RuntimeObject != null; }
     bool IsIdInvalid(int id)    { return !IsIdValid(id); }
     // ----------------------------------------------------------------------
     public void CreateInstance(int id, int parentId, WD_Object rtObj) {
@@ -53,17 +59,16 @@ public class WD_TreeCache {
         if(id < 0) {
             Debug.LogError("Connot create a treeNode with id: "+id);            
         }
-        if(id < TreeCache.Count && TreeCache[id] != null) {
+        if(id < TreeCache.Count && TreeCache[id].IsValid) {
             Debug.LogError("Trying to create a TreeNode with the same id has an existing TreeNode. (id)=>"+id);
         }
         // Create slots in the tree cache to hold the new instance.
-        while(TreeCache.Count <= id) TreeCache.Add(null);
-        TreeCache[id]= new TreeNode();
+        while(TreeCache.Count <= id) TreeCache.Add(new TreeNode());
         UpdateInstance(id, parentId, rtObj);
     }
     public void UpdateInstance(int id, int parentId, WD_Object rtObj) {
         // Protect against misuse.
-        if(IsIdInvalid(id)) {
+        if(id < 0 || id >= TreeCache.Count) {
             Debug.LogError("Trying to update an invalid TreeNode with id:"+id);
         }
         
@@ -96,7 +101,7 @@ public class WD_TreeCache {
             TreeCache[nd.ParentId].RemoveChild(id, nd);
         }
         nd.RuntimeObject.Dealloc();
-        TreeCache[id]= null;
+        TreeCache[id].Init();
     }
 
     // ======================================================================
@@ -106,7 +111,7 @@ public class WD_TreeCache {
         if(IsIdInvalid(id)) return;
         TreeNode nd= TreeCache[id];
         foreach(var child in nd.Children) {
-            fnc(child);
+            if(TreeCache[id].IsValid) fnc(child);
         }
     }
     public void ForEachRecursiveDepthFirst(int id, Action<int> fnc) {
