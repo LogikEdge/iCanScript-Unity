@@ -29,6 +29,9 @@ public class WD_Inspector : Editor {
     // Bring up the graph editor window when the inspector is activated.
 	public void OnEnable ()
 	{
+        // Inspect the assemblies for WarpDrive components.
+        WD_Reflection.ParseAppDomain();
+        
         // The state of the inspector is non-persistant.
         hideFlags= HideFlags.DontSave;
         

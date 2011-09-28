@@ -1,4 +1,6 @@
+using System;
 
-public class WD_InPropertyAttribute : System.Attribute {
+[AttributeUsage(AttributeTargets.Property)]
+public class WD_InPropertyAttribute : Attribute {
     public override string ToString() { return "WD_InProperty"; }
 }

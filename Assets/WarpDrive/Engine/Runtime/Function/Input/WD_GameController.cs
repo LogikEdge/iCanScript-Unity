@@ -16,5 +16,4 @@ public sealed class WD_GameController : WD_Function {
         rawAnalog1= new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         analog1= Time.deltaTime*speed*rawAnalog1;
     }
-
 }
