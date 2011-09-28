@@ -45,21 +45,6 @@ public class WD_FunctionPort : WD_Port {
             return valueType.IsArray;
         }
     }
-    // ----------------------------------------------------------------------
-    // Returns the display color of the port.
-    public Color DisplayColor {
-        get {
-            if(IsVirtual) {
-                var virtualPort= AsVirtual;
-                if(mySource != null) return WD_TypeSystem.GetDisplayColor(mySource.ElementType);
-                if(virtualPort.ConcretePort != null) return WD_TypeSystem.GetDisplayColor(virtualPort.ConcretePort.ElementType);
-                return Color.white;
-            }
-            else {
-                return WD_TypeSystem.GetDisplayColor(ElementType);
-            }
-        }
-    }
 
     // ======================================================================
     // Execution
