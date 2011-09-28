@@ -15,9 +15,7 @@ public class WD_TypeSystem {
     public static readonly WD_StringType       StringType     = new WD_StringType();
     public static readonly WD_GameObjectType   GameObjectType = new WD_GameObjectType();
     
-
-    private static Inf.Dictionary<string, WD_TypeInfo>    myDictionary= new Inf.Dictionary<string, WD_TypeInfo>();
-
+    private static List<WD_TypeInfo>    myTypeInfos= new List<WD_TypeInfo>();
 
     // ----------------------------------------------------------------------
     // Fills the database with the built-in types.
@@ -36,38 +34,16 @@ public class WD_TypeSystem {
     // ----------------------------------------------------------------------
     // Adds a new type descriptor in the type database.
     public static void Add(WD_TypeInfo theTypeInfo) {
-        myDictionary.Add(theTypeInfo.ValueTypeName, theTypeInfo);
+        myTypeInfos.Add(theTypeInfo);
     }
 
-    // ----------------------------------------------------------------------
-    // Returns the name used to identify the given type.
-    public static string GetTypeName(System.Type theType) {
-        return theType != null ? theType.FullName : null;
-    }
-    
-    // ----------------------------------------------------------------------
-    // Retreives the TypeDesc associated with the given name.  Null is
-    // returned if the TypeInfo is not found.
-    public static WD_TypeInfo TryGetTypeInfo(string theFullName) {
-        WD_TypeInfo theTypeInfo;
-        return myDictionary.TryGetValue(theFullName, out theTypeInfo) ? theTypeInfo : null;
-    }
-
-    // ----------------------------------------------------------------------
-    // Retreives the TypeDesc associated with the value type name.
-    public static WD_TypeInfo GetTypeInfo(string theValueTypeName) {
-        WD_TypeInfo theTypeInfo= TryGetTypeInfo(theValueTypeName);
-        if(theTypeInfo == null) {
-            Debug.LogWarning("Unable to retreive TypeInfo for type "+theValueTypeName);
-            throw new System.ArgumentException();
-        }
-        return theTypeInfo;
-    }
-    
     // ----------------------------------------------------------------------
     // Retreives the TypeDesc associated with the value type.
     public static WD_TypeInfo GetTypeInfo(System.Type theValueType) {
-        return GetTypeInfo(GetTypeName(theValueType));
+        foreach(var t in myTypeInfos) {
+            if(t.ValueType == theValueType) return t;
+        }
+        return null;
     }
     
     // ----------------------------------------------------------------------
@@ -106,15 +82,10 @@ public class WD_TypeSystem {
     // Returns the display color to use to the given type.  White is returned
     // if type is not in database.
     public static Color GetDisplayColor(System.Type type) {
-        return type != null ? GetDisplayColor(GetTypeName(type)) : Color.white;
-    }
-    
-    // ----------------------------------------------------------------------
-    // Returns the display color to use to the given type.  White is returned
-    // if type is not in database.
-    public static Color GetDisplayColor(string typeName) {
-        WD_TypeInfo typeInfo= TryGetTypeInfo(typeName);
+        if(type.IsArray) type= type.GetElementType();
+        if(type == null) return Color.white;
+        WD_TypeInfo typeInfo= GetTypeInfo(type);
         return typeInfo != null ? typeInfo.DisplayColor : Color.white;
     }
-
+    
 }
