@@ -99,7 +99,6 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject obj, WD_EditorObject src) {
-        Debug.Log("Setting port source of "+obj.Name+" to "+src.Name);
         obj.Source= src.InstanceId;
         obj.ExecuteIf<WD_FunctionPort>(
             (port) => {

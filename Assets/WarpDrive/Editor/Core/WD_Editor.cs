@@ -346,18 +346,24 @@ public class WD_Editor : EditorWindow {
         
         // Connect function & modules ports together.
         if(port.IsDataPort && overlappingPort.IsDataPort) {            
-           Type portValueType= WD_Reflection.GetPortFieldType(port, EditorObjects[port.ParentId]);
-           Type overlappingPortValueType= WD_Reflection.GetPortFieldType(overlappingPort, EditorObjects[overlappingPort.ParentId]);
-           Type connectionType= WD_TypeSystem.GetBestUpConversionType(portValueType, overlappingPortValueType);
-           if(connectionType != null) {
-               if(port.IsInputPort && overlappingPort.IsOutputPort) {
-                   EditorObjects.SetSource(port, overlappingPort);
-               }
-               else if(overlappingPort.IsInputPort) {
-                   EditorObjects.SetSource(overlappingPort, port);
-               }                           
-           }
-           return true;               
+            WD_EditorObject inPort = port.IsInputPort             ? port : overlappingPort;
+            WD_EditorObject outPort= overlappingPort.IsOutputPort ? overlappingPort : port;
+            if(inPort != outPort) {
+                Type inPortType = WD_Reflection.GetPortFieldType(inPort, EditorObjects[inPort.ParentId]);
+                Type outPortType= WD_Reflection.GetPortFieldType(outPort, EditorObjects[outPort.ParentId]);
+                Type connectionType= WD_TypeSystem.GetBestUpConversionType(inPortType, outPortType);
+                if(connectionType != null) {
+                    // No conversion needed.
+                    if(inPortType == outPortType) {
+                        EditorObjects.SetSource(inPort, outPort);                       
+                    }
+                    // A conversion is required.
+                    else {
+                        Debug.Log("A conversion node is required.");
+                    }
+                }
+            }
+            return true;
         }
 
         // Connect transition port together.
