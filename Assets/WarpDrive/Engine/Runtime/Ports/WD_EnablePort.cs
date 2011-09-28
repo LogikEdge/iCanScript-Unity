@@ -8,7 +8,7 @@ public class WD_EnablePort : WD_Port {
 	[SerializeField] WD_Port mySource= null;
 
     // ======================================================================
-    // INITIALIZATION
+    // Initialization
     // ----------------------------------------------------------------------
     public static WD_EnablePort CreateInstance(string name, WD_State parent) {
         WD_EnablePort instance= CreateInstance<WD_EnablePort>();

@@ -6,14 +6,14 @@ public class WD_TypeSystem {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public static readonly WD_BoolType         BoolType       = new WD_BoolType();
-    public static readonly WD_IntType          IntType        = new WD_IntType();
-    public static readonly WD_FloatType        FloatType      = new WD_FloatType();
-    public static readonly WD_Vector2Type      Vector2Type    = new WD_Vector2Type();
-    public static readonly WD_Vector3Type      Vector3Type    = new WD_Vector3Type();
-    public static readonly WD_Vector4Type      Vector4Type    = new WD_Vector4Type();
-    public static readonly WD_StringType       StringType     = new WD_StringType();
-    public static readonly WD_GameObjectType   GameObjectType = new WD_GameObjectType();
+    public static readonly WD_TypeInfo   BoolType       = new WD_TypeInfo(typeof(bool),       typeof(int),     Color.red);
+    public static readonly WD_TypeInfo   IntType        = new WD_TypeInfo(typeof(int),        typeof(float),   Color.magenta);
+    public static readonly WD_TypeInfo   FloatType      = new WD_TypeInfo(typeof(float),      typeof(Vector2), Color.cyan);
+    public static readonly WD_TypeInfo   Vector2Type    = new WD_TypeInfo(typeof(Vector2),    typeof(Vector3), Color.yellow);
+    public static readonly WD_TypeInfo   Vector3Type    = new WD_TypeInfo(typeof(Vector3),    typeof(Vector4), Color.green);
+    public static readonly WD_TypeInfo   Vector4Type    = new WD_TypeInfo(typeof(Vector4),    null,            Color.blue);
+    public static readonly WD_TypeInfo   StringType     = new WD_TypeInfo(typeof(string),     null,            Color.red);
+    public static readonly WD_TypeInfo   GameObjectType = new WD_TypeInfo(typeof(GameObject), null,            Color.blue);
     
     private static List<WD_TypeInfo>    myTypeInfos= new List<WD_TypeInfo>();
 
