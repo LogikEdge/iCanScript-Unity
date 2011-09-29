@@ -45,12 +45,16 @@ public class WD_Reflection {
     // ----------------------------------------------------------------------
     // Scan all assemblies.
     public static void ParseAppDomain() {
+        // Remove all previously registered functions.
+        WD_FunctionDataBase.Clear();
+        // Scan the application for functions/methods/conversions to register.
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var type in assembly.GetTypes()) {
                 foreach(var attribute in type.GetCustomAttributes(true)) {
+                    // Only register classes that have been tagged for WarpDrive.
                     if((attribute is WD_ClassAttribute)) {
-                        Debug.Log("Type found: "+type.Name);
                         foreach(var method in type.GetMethods()) {
+                            // Register execution functions/methods.
                             if(method.Name == "Evaluate") {
                                 if(method.IsStatic) {
                                     Debug.Log("Found an evaluation function...");                                    
@@ -58,6 +62,7 @@ public class WD_Reflection {
                                     Debug.Log("Found an evaluation method...");                                                                        
                                 }
                             }
+                            // Also register any conversion functions.
                             else if(method.Name == "Conversion") {
                                 if(!method.IsStatic) {
                                     Debug.LogWarning("Found a non-static conversion method. Please declare the conversion function in "+type.Name+" as static.");
@@ -69,7 +74,7 @@ public class WD_Reflection {
                                     continue;
                                 }
                                 Type fromType= parameters[0].ParameterType;
-                                Debug.Log("Can now convert from "+fromType+" to "+toType);
+                                WD_FunctionDataBase.AddConversion(method, fromType, toType);                                
                             }
                         }                       
                     }
