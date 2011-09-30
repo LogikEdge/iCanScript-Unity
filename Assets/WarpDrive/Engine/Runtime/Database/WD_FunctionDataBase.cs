@@ -66,13 +66,19 @@ public class WD_FunctionDataBase {
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
-    public static void AddExecutionFunction(string methodName, MethodInfo methodInfo) {
+    public static void AddExecutionFunction(string methodName,                                      // Function info
+                                            string[] paramName, Type[] paramType, bool[] paramInOut,// Parameters info
+                                            string retName, Type retType,                           // Return value info
+                                            MethodInfo methodInfo) {
         Debug.Log("Adding function: "+methodName);
         Functions.Add(new FunctionDesc(methodName, methodInfo));
     }
     // ----------------------------------------------------------------------
     // Adds an execution method which requires a context (class properties).
-    public static void AddExecutionMethod(string methodName, Type classType, MethodInfo methodInfo) {
+    public static void AddExecutionMethod(string methodName, Type classType,                        // Method info
+                                          string[] paramName, Type[] paramType, bool[] paramInOut,  // Parameters info
+                                          string retName, Type retType,                             // Return value info
+                                          MethodInfo methodInfo) {
         Debug.Log("Adding method: "+methodName+" from type: "+classType);
         Methods.Add(new MethodDesc(methodName, classType, methodInfo));
     }

@@ -57,8 +57,9 @@ public class WD_Reflection {
                             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
                                 if(methodAttribute is WD_FunctionAttribute) {
                                     // Register execution functions/methods.
-                                    string methodName= (methodAttribute as WD_FunctionAttribute).Name ?? method.Name;
-                                    ParseFunction(methodName, type, method);
+                                    string methodName= (methodAttribute as WD_FunctionAttribute).Name   ?? method.Name;
+                                    string retName   = (methodAttribute as WD_FunctionAttribute).Return ?? "out";
+                                    ParseFunction(methodName, type, retName, method);
                                     break;
                                 }
                                 else if(methodAttribute is WD_ConversionAttribute) {
@@ -86,11 +87,28 @@ public class WD_Reflection {
         Type fromType= parameters[0].ParameterType;
         WD_FunctionDataBase.AddConversion(method, fromType, toType);                                        
     }
-    static void ParseFunction(string methodName, Type classType, MethodInfo method) {
+    static void ParseFunction(string methodName, Type classType, string retName, MethodInfo method) {
+        // Parse return type.
+        Type retType= method.ReturnType;
+        if(retType == typeof(void)) {
+            retType= null;
+            retName= null;
+        }
+        // Parse parameters.
+        ParameterInfo[] parameters= method.GetParameters();
+        bool[]   paramInOut= new bool[parameters.Length];
+        string[] paramNames= new string[parameters.Length];
+        Type[]   paramTypes= new Type[parameters.Length];
+        for(int i= 0; i < parameters.Length; ++i) {
+            paramInOut[i]= parameters[i].IsOut;
+            paramNames[i]= parameters[i].Name;
+            paramTypes[i]= parameters[i].ParameterType;
+        }
+
         if(method.IsStatic) {
-            WD_FunctionDataBase.AddExecutionFunction(methodName, method);
+            WD_FunctionDataBase.AddExecutionFunction(methodName, paramNames, paramTypes, paramInOut, retName, retType, method);
         } else {
-            WD_FunctionDataBase.AddExecutionMethod(methodName, classType, method);
+            WD_FunctionDataBase.AddExecutionMethod(methodName, classType, paramNames, paramTypes, paramInOut, retName, retType, method);
         }        
     }
 }
