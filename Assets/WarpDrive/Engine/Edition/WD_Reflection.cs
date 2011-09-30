@@ -52,34 +52,45 @@ public class WD_Reflection {
             foreach(var type in assembly.GetTypes()) {
                 foreach(var attribute in type.GetCustomAttributes(true)) {
                     // Only register classes that have been tagged for WarpDrive.
-                    if((attribute is WD_ClassAttribute)) {
+                    if(attribute is WD_ClassAttribute) {
                         foreach(var method in type.GetMethods()) {
-                            // Register execution functions/methods.
-                            if(method.Name == "Evaluate") {
-                                if(method.IsStatic) {
-                                    Debug.Log("Found an evaluation function...");                                    
-                                } else {
-                                    Debug.Log("Found an evaluation method...");                                                                        
+                            foreach(var methodAttribute in method.GetCustomAttributes(true)) {
+                                if(methodAttribute is WD_FunctionAttribute) {
+                                    // Register execution functions/methods.
+                                    string methodName= (methodAttribute as WD_FunctionAttribute).Name ?? method.Name;
+                                    ParseFunction(methodName, type, method);
+                                    break;
                                 }
-                            }
-                            // Also register any conversion functions.
-                            else if(method.Name == "Conversion") {
-                                if(!method.IsStatic) {
-                                    Debug.LogWarning("Found a non-static conversion method. Please declare the conversion function in "+type.Name+" as static.");
+                                else if(methodAttribute is WD_ConversionAttribute) {
+                                    // Register conversion functions.
+                                    ParseConversion(type, method);
                                 }
-                                Type toType= method.ReturnType;
-                                ParameterInfo[] parameters= method.GetParameters();
-                                if(parameters.Length != 1 || toType == null) {
-                                    Debug.LogWarning("Conversion function must have one return type and one parameter. Ignoring conversion function in "+type.Name);
-                                    continue;
-                                }
-                                Type fromType= parameters[0].ParameterType;
-                                WD_FunctionDataBase.AddConversion(method, fromType, toType);                                
                             }
                         }                       
                     }
                 }
             }
         }
+    }
+    static void ParseConversion(Type classType, MethodInfo method) {
+        if(!method.IsStatic) {
+            Debug.LogWarning("Found a non-static conversion method. Please declare the conversion function in "+classType.Name+" as static.");
+            return;
+        }
+        Type toType= method.ReturnType;
+        ParameterInfo[] parameters= method.GetParameters();
+        if(parameters.Length != 1 || toType == null) {
+            Debug.LogWarning("Conversion function must have one return type and one parameter. Ignoring conversion function in "+classType.Name);
+            return;
+        }
+        Type fromType= parameters[0].ParameterType;
+        WD_FunctionDataBase.AddConversion(method, fromType, toType);                                        
+    }
+    static void ParseFunction(string methodName, Type classType, MethodInfo method) {
+        if(method.IsStatic) {
+            WD_FunctionDataBase.AddExecutionFunction(methodName, method);
+        } else {
+            WD_FunctionDataBase.AddExecutionMethod(methodName, classType, method);
+        }        
     }
 }

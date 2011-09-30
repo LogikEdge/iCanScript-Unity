@@ -19,14 +19,20 @@ public class WD_FunctionDataBase {
         }
     }
     public class FunctionDesc {
-        public MethodInfo Method;
-        public FunctionDesc(MethodInfo methodInfo) {
+        public string       MethodName;
+        public MethodInfo   Method;
+        public FunctionDesc(string methodName, MethodInfo methodInfo) {
+            MethodName= methodName;
             Method= methodInfo;
         }
     }
     public class MethodDesc {
-        public MethodInfo Method;
-        public MethodDesc(MethodInfo methodInfo) {
+        public string       MethodName;
+        public Type         ClassType;
+        public MethodInfo   Method;
+        public MethodDesc(string methodName, Type classType, MethodInfo methodInfo) {
+            MethodName= methodName;
+            ClassType= classType;
             Method= methodInfo;
         }
     }
@@ -50,16 +56,24 @@ public class WD_FunctionDataBase {
     // ----------------------------------------------------------------------
     // Adds a conversion function
     public static void AddConversion(MethodInfo methodInfo, Type fromType, Type toType) {
-        Debug.Log("Add a conversion from "+fromType+" to "+toType);
+        foreach(var desc in Conversions) {
+            if(desc.FromType == fromType && desc.ToType == toType) {
+                Debug.LogWarning("Duplicate conversion function from "+fromType+" to "+toType+" exists in classes "+desc.Method.DeclaringType+" and "+methodInfo.DeclaringType);
+                return;
+            }
+        }
+        Conversions.Add(new ConversionDesc(methodInfo, fromType, toType));
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
-    public static void AddExecutionFunction(MethodInfo methodInfo) {
-        Debug.Log("Adding an evaluation function");
+    public static void AddExecutionFunction(string methodName, MethodInfo methodInfo) {
+        Debug.Log("Adding function: "+methodName);
+        Functions.Add(new FunctionDesc(methodName, methodInfo));
     }
     // ----------------------------------------------------------------------
     // Adds an execution method which requires a context (class properties).
-    public static void AddExecutionMethod(MethodInfo methodInfo) {
-        Debug.Log("Adding an evaluation method");
+    public static void AddExecutionMethod(string methodName, Type classType, MethodInfo methodInfo) {
+        Debug.Log("Adding method: "+methodName+" from type: "+classType);
+        Methods.Add(new MethodDesc(methodName, classType, methodInfo));
     }
 }
