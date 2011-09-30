@@ -19,21 +19,27 @@ public class WD_FunctionDataBase {
         }
     }
     public class FunctionDesc {
+        public Type         ClassType;
         public string       MethodName;
+        public string       ToolTip;
         public MethodInfo   Method;
-        public FunctionDesc(Type classType, string methodName, MethodInfo methodInfo) {
+        public FunctionDesc(Type classType, string methodName, string toolTip, MethodInfo methodInfo) {
+            ClassType = classType;
             MethodName= methodName;
-            Method= methodInfo;
+            ToolTip   = toolTip;
+            Method    = methodInfo;
         }
     }
     public class MethodDesc {
-        public string       MethodName;
         public Type         ClassType;
+        public string       MethodName;
+        public string       ToolTip;
         public MethodInfo   Method;
-        public MethodDesc(Type classType, string methodName, MethodInfo methodInfo) {
+        public MethodDesc(Type classType, string methodName, string toolTip, MethodInfo methodInfo) {
+            ClassType = classType;
             MethodName= methodName;
-            ClassType= classType;
-            Method= methodInfo;
+            ToolTip   = toolTip;
+            Method    = methodInfo;
         }
     }
 
@@ -66,20 +72,20 @@ public class WD_FunctionDataBase {
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
-    public static void AddExecutionFunction(Type classType, string methodName,                                      // Function info
+    public static void AddExecutionFunction(Type classType, string methodName,                      // Function info
                                             string[] paramName, Type[] paramType, bool[] paramInOut,// Parameters info
                                             string retName, Type retType,                           // Return value info
-                                            MethodInfo methodInfo) {
+                                            string toolTip, MethodInfo methodInfo) {
         Debug.Log("Adding function: "+methodName+" from type: "+classType);
-        Functions.Add(new FunctionDesc(classType, methodName, methodInfo));
+        Functions.Add(new FunctionDesc(classType, methodName, toolTip, methodInfo));
     }
     // ----------------------------------------------------------------------
     // Adds an execution method which requires a context (class properties).
     public static void AddExecutionMethod(Type classType, string methodName,                        // Method info
                                           string[] paramName, Type[] paramType, bool[] paramInOut,  // Parameters info
                                           string retName, Type retType,                             // Return value info
-                                          MethodInfo methodInfo) {
+                                          string toolTip, MethodInfo methodInfo) {
         Debug.Log("Adding method: "+methodName+" from type: "+classType);
-        Methods.Add(new MethodDesc(classType, methodName, methodInfo));
+        Methods.Add(new MethodDesc(classType, methodName, toolTip, methodInfo));
     }
 }

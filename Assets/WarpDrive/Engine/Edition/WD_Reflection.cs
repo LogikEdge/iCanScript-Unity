@@ -85,9 +85,10 @@ public class WD_Reflection {
                                         continue;                                        
                                     }
                                     // Register execution functions/methods.
-                                    string methodName= (methodAttribute as WD_FunctionAttribute).Name   ?? method.Name;
-                                    string retName   = (methodAttribute as WD_FunctionAttribute).Return ?? "out";
-                                    ParseFunction(classType, methodName, retName, method);
+                                    string methodName= (methodAttribute as WD_FunctionAttribute).Name    ?? method.Name;
+                                    string retName   = (methodAttribute as WD_FunctionAttribute).Return  ?? "out";
+                                    string toolTip   = (methodAttribute as WD_FunctionAttribute).ToolTip ?? "No ToolTip";
+                                    ParseFunction(classType, methodName, retName, toolTip, method);
                                     break;
                                 }
                                 else if(methodAttribute is WD_ConversionAttribute) {
@@ -119,7 +120,7 @@ public class WD_Reflection {
         }
         WD_FunctionDataBase.AddConversion(method, fromType, toType);                                        
     }
-    static void ParseFunction(Type classType, string methodName, string retName, MethodInfo method) {
+    static void ParseFunction(Type classType, string methodName, string retName, string toolTip, MethodInfo method) {
         // Parse return type.
         Type retType= method.ReturnType;
         if(retType == typeof(void)) {
@@ -138,9 +139,9 @@ public class WD_Reflection {
         }
 
         if(method.IsStatic) {
-            WD_FunctionDataBase.AddExecutionFunction(classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, method);
+            WD_FunctionDataBase.AddExecutionFunction(classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
         } else {
-            WD_FunctionDataBase.AddExecutionMethod(classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, method);
+            WD_FunctionDataBase.AddExecutionMethod(classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
         }        
     }
 }
