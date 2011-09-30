@@ -70,7 +70,7 @@ public class WD_FunctionDataBase {
                                             string[] paramName, Type[] paramType, bool[] paramInOut,// Parameters info
                                             string retName, Type retType,                           // Return value info
                                             MethodInfo methodInfo) {
-        Debug.Log("Adding function: "+methodName);
+        Debug.Log("Adding function: "+methodName+" from type: "+classType);
         Functions.Add(new FunctionDesc(classType, methodName, methodInfo));
     }
     // ----------------------------------------------------------------------

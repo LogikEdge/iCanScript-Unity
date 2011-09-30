@@ -7,7 +7,7 @@ public sealed class WD_Test {
     // EXECUTION
     // ----------------------------------------------------------------------
     [WD_Function(Name="MySuperName")]
-    static Prelude.Tuple<Vector2, Vector2> Evaluate(float speed= 1.0f) {
+    public static Prelude.Tuple<Vector2, Vector2> Evaluate(float speed= 1.0f) {
         Vector2 rawAnalog1= new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 analog1= Time.deltaTime*speed*rawAnalog1;
         return new Prelude.Tuple<Vector2, Vector2>(rawAnalog1, analog1);
@@ -24,6 +24,8 @@ public sealed class WD_Test {
 
 [WD_Class]
 public sealed class WD_Test2 {
+    [WD_InPort]     public float x;
+    [WD_OutPort]    public float z;
 
     public bool IsValid {
         [WD_Function] get { return true; }

@@ -62,7 +62,7 @@ public class WD_Reflection {
                         List<string> fieldNames= new List<string>();
                         List<Type>   fieldTypes= new List<Type>();
                         List<bool>   fieldInOut= new List<bool>();
-                        foreach(var field in classType.GetFields()) {
+                        foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
                             foreach(var fieldAttr in field.GetCustomAttributes(true)) {
                                 if(fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
                                     if(field.IsPublic == false) {
@@ -72,11 +72,12 @@ public class WD_Reflection {
                                     fieldNames.Add(field.Name);
                                     fieldTypes.Add(field.FieldType);
                                     fieldInOut.Add(fieldAttr is WD_OutPortAttribute);
+                                    Debug.Log("Field "+field.Name+" is found.");
                                 }
                             }
                         }
                         // Parse functions and methods.
-                        foreach(var method in classType.GetMethods()) {
+                        foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
                             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
                                 if(methodAttribute is WD_FunctionAttribute) {
                                     if(method.IsPublic == false) {
@@ -90,14 +91,6 @@ public class WD_Reflection {
                                     break;
                                 }
                                 else if(methodAttribute is WD_ConversionAttribute) {
-                                    if(method.IsPublic == false) {
-                                        Debug.LogWarning("Conversion "+method.Name+" of class "+classType.Name+" is not public and tagged for WarpDrive. Ignoring conversion !!!");
-                                        continue;                                        
-                                    }
-                                    if(method.IsStatic == false) {
-                                        Debug.LogWarning("Conversion "+method.Name+" of class "+classType.Name+" is not static and tagged for WarpDrive. Ignoring conversion !!!");
-                                        continue;                                        
-                                    }
                                     // Register conversion functions.
                                     ParseConversion(classType, method);
                                 }
@@ -116,6 +109,14 @@ public class WD_Reflection {
             return;
         }
         Type fromType= parameters[0].ParameterType;
+        if(method.IsPublic == false) {
+            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not public and tagged for WarpDrive. Ignoring conversion !!!");
+            return;                                        
+        }
+        if(method.IsStatic == false) {
+            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not static and tagged for WarpDrive. Ignoring conversion !!!");
+            return;                                        
+        }
         WD_FunctionDataBase.AddConversion(method, fromType, toType);                                        
     }
     static void ParseFunction(Type classType, string methodName, string retName, MethodInfo method) {
