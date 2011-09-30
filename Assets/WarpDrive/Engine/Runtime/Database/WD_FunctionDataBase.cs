@@ -21,7 +21,7 @@ public class WD_FunctionDataBase {
     public class FunctionDesc {
         public string       MethodName;
         public MethodInfo   Method;
-        public FunctionDesc(string methodName, MethodInfo methodInfo) {
+        public FunctionDesc(Type classType, string methodName, MethodInfo methodInfo) {
             MethodName= methodName;
             Method= methodInfo;
         }
@@ -30,7 +30,7 @@ public class WD_FunctionDataBase {
         public string       MethodName;
         public Type         ClassType;
         public MethodInfo   Method;
-        public MethodDesc(string methodName, Type classType, MethodInfo methodInfo) {
+        public MethodDesc(Type classType, string methodName, MethodInfo methodInfo) {
             MethodName= methodName;
             ClassType= classType;
             Method= methodInfo;
@@ -66,20 +66,20 @@ public class WD_FunctionDataBase {
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
-    public static void AddExecutionFunction(string methodName,                                      // Function info
+    public static void AddExecutionFunction(Type classType, string methodName,                                      // Function info
                                             string[] paramName, Type[] paramType, bool[] paramInOut,// Parameters info
                                             string retName, Type retType,                           // Return value info
                                             MethodInfo methodInfo) {
         Debug.Log("Adding function: "+methodName);
-        Functions.Add(new FunctionDesc(methodName, methodInfo));
+        Functions.Add(new FunctionDesc(classType, methodName, methodInfo));
     }
     // ----------------------------------------------------------------------
     // Adds an execution method which requires a context (class properties).
-    public static void AddExecutionMethod(string methodName, Type classType,                        // Method info
+    public static void AddExecutionMethod(Type classType, string methodName,                        // Method info
                                           string[] paramName, Type[] paramType, bool[] paramInOut,  // Parameters info
                                           string retName, Type retType,                             // Return value info
                                           MethodInfo methodInfo) {
         Debug.Log("Adding method: "+methodName+" from type: "+classType);
-        Methods.Add(new MethodDesc(methodName, classType, methodInfo));
+        Methods.Add(new MethodDesc(classType, methodName, methodInfo));
     }
 }

@@ -43,28 +43,63 @@ public class WD_Reflection {
     }
 
     // ----------------------------------------------------------------------
-    // Scan all assemblies.
+    // Scan the application for WarpDrive attributes.
     public static void ParseAppDomain() {
         // Remove all previously registered functions.
         WD_FunctionDataBase.Clear();
         // Scan the application for functions/methods/conversions to register.
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
-            foreach(var type in assembly.GetTypes()) {
-                foreach(var attribute in type.GetCustomAttributes(true)) {
+            foreach(var classType in assembly.GetTypes()) {
+                foreach(var attribute in classType.GetCustomAttributes(true)) {
                     // Only register classes that have been tagged for WarpDrive.
                     if(attribute is WD_ClassAttribute) {
-                        foreach(var method in type.GetMethods()) {
+                        // Validate that the class is public.
+                        if(classType.IsPublic == false) {
+                            Debug.LogWarning("Class "+classType+" is not public and tagged for WarpDrive.  Ignoring class !!!");
+                            continue;
+                        }
+                        // Gather field information.
+                        List<string> fieldNames= new List<string>();
+                        List<Type>   fieldTypes= new List<Type>();
+                        List<bool>   fieldInOut= new List<bool>();
+                        foreach(var field in classType.GetFields()) {
+                            foreach(var fieldAttr in field.GetCustomAttributes(true)) {
+                                if(fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
+                                    if(field.IsPublic == false) {
+                                        Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for WarpDrive. Ignoring field !!!");
+                                        continue;
+                                    }
+                                    fieldNames.Add(field.Name);
+                                    fieldTypes.Add(field.FieldType);
+                                    fieldInOut.Add(fieldAttr is WD_OutPortAttribute);
+                                }
+                            }
+                        }
+                        // Parse functions and methods.
+                        foreach(var method in classType.GetMethods()) {
                             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
                                 if(methodAttribute is WD_FunctionAttribute) {
+                                    if(method.IsPublic == false) {
+                                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for WarpDrive. Ignoring function !!!");
+                                        continue;                                        
+                                    }
                                     // Register execution functions/methods.
                                     string methodName= (methodAttribute as WD_FunctionAttribute).Name   ?? method.Name;
                                     string retName   = (methodAttribute as WD_FunctionAttribute).Return ?? "out";
-                                    ParseFunction(methodName, type, retName, method);
+                                    ParseFunction(classType, methodName, retName, method);
                                     break;
                                 }
                                 else if(methodAttribute is WD_ConversionAttribute) {
+                                    if(method.IsPublic == false) {
+                                        Debug.LogWarning("Conversion "+method.Name+" of class "+classType.Name+" is not public and tagged for WarpDrive. Ignoring conversion !!!");
+                                        continue;                                        
+                                    }
+                                    if(method.IsStatic == false) {
+                                        Debug.LogWarning("Conversion "+method.Name+" of class "+classType.Name+" is not static and tagged for WarpDrive. Ignoring conversion !!!");
+                                        continue;                                        
+                                    }
                                     // Register conversion functions.
-                                    ParseConversion(type, method);
+                                    ParseConversion(classType, method);
                                 }
                             }
                         }                       
@@ -74,10 +109,6 @@ public class WD_Reflection {
         }
     }
     static void ParseConversion(Type classType, MethodInfo method) {
-        if(!method.IsStatic) {
-            Debug.LogWarning("Found a non-static conversion method. Please declare the conversion function in "+classType.Name+" as static.");
-            return;
-        }
         Type toType= method.ReturnType;
         ParameterInfo[] parameters= method.GetParameters();
         if(parameters.Length != 1 || toType == null) {
@@ -87,7 +118,7 @@ public class WD_Reflection {
         Type fromType= parameters[0].ParameterType;
         WD_FunctionDataBase.AddConversion(method, fromType, toType);                                        
     }
-    static void ParseFunction(string methodName, Type classType, string retName, MethodInfo method) {
+    static void ParseFunction(Type classType, string methodName, string retName, MethodInfo method) {
         // Parse return type.
         Type retType= method.ReturnType;
         if(retType == typeof(void)) {
@@ -106,9 +137,9 @@ public class WD_Reflection {
         }
 
         if(method.IsStatic) {
-            WD_FunctionDataBase.AddExecutionFunction(methodName, paramNames, paramTypes, paramInOut, retName, retType, method);
+            WD_FunctionDataBase.AddExecutionFunction(classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, method);
         } else {
-            WD_FunctionDataBase.AddExecutionMethod(methodName, classType, paramNames, paramTypes, paramInOut, retName, retType, method);
+            WD_FunctionDataBase.AddExecutionMethod(classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, method);
         }        
     }
 }
