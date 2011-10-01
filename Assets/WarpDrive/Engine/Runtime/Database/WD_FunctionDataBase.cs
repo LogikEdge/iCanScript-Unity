@@ -68,11 +68,12 @@ public class WD_FunctionDataBase {
                 return;
             }
         }
+        Debug.Log("Adding conversion from "+fromType+" to "+toType);
         Conversions.Add(new ConversionDesc(methodInfo, fromType, toType));
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
-    public static void AddExecutionFunction(Type classType, string methodName,                      // Function info
+    public static void AddFunction(Type classType, string methodName,                      // Function info
                                             string[] paramName, Type[] paramType, bool[] paramInOut,// Parameters info
                                             string retName, Type retType,                           // Return value info
                                             string toolTip, MethodInfo methodInfo) {
@@ -81,7 +82,7 @@ public class WD_FunctionDataBase {
     }
     // ----------------------------------------------------------------------
     // Adds an execution method which requires a context (class properties).
-    public static void AddExecutionMethod(Type classType, string methodName,                        // Method info
+    public static void AddMethod(Type classType, string methodName,                        // Method info
                                           string[] paramName, Type[] paramType, bool[] paramInOut,  // Parameters info
                                           string retName, Type retType,                             // Return value info
                                           string toolTip, MethodInfo methodInfo) {
