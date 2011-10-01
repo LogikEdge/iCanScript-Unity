@@ -124,7 +124,15 @@ public class WD_Reflection {
                 methodIndexes.Add(i);
             }
         }
-        // Determine if class needs to be registered.
+        // Class does not need to be registered if it does not have any methods to execute.
+        if(methodIndexes.Count == 0) return;
+        // Register class either has single method or multi-methods.
+        if(methodIndexes.Count == 1) {  // Single method class
+            
+        }
+        else {                          // multi-method class
+            
+        }
     }
     // ----------------------------------------------------------------------
     static void ParseConversion(Type classType, MethodInfo method) {
