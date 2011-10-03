@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class WD_FunctionDataBase {
+public class WD_DataBase {
     // ======================================================================
     // Storage types.
     // ----------------------------------------------------------------------
@@ -130,5 +130,9 @@ public class WD_FunctionDataBase {
                                   propertyNames, propertyTypes, propertyInOuts,
                                   methodNames, returnNames, returnTypes, toolTips,
                                   parameterNames, parameterTypes, parameterInOuts));    
+
+        foreach(var p in propertyNames) {
+            Debug.Log("Property name: "+p);
+        }
     }
 }

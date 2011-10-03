@@ -46,7 +46,7 @@ public class WD_Reflection {
     // Scan the application for WarpDrive attributes.
     public static void ParseAppDomain() {
         // Remove all previously registered functions.
-        WD_FunctionDataBase.Clear();
+        WD_DataBase.Clear();
         // Scan the application for functions/methods/conversions to register.
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var classType in assembly.GetTypes()) {
@@ -122,23 +122,52 @@ public class WD_Reflection {
             fieldTypes[i]= fieldInfos[i].FieldType;
         }
         // Separate functions (static methods) from methods.
-        List<int> methodIndexes= new List<int>();
+        List<int> _methodIndexes= new List<int>();
+        List<int> _propertyIndexes= new List<int>();
+        List<Type> _propertyTypes= new List<Type>();
+        List<bool> _propertyInOuts= new List<bool>();
         for(int i= 0; i < methodInfos.Length; ++i) {
-            if(methodInfos[i].IsStatic) {
+            if(methodInfos[i].ReturnType == typeof(void) && methodInfos[i].GetParameters().Length == 1) {
+                _propertyIndexes.Add(i);
+                _propertyTypes.Add((methodInfos[i].GetParameters())[0].ParameterType);
+                _propertyInOuts.Add(false);
+            }
+            else if(methodInfos[i].ReturnType != typeof(void) && methodInfos[i].GetParameters().Length == 0) {
+                _propertyIndexes.Add(i);
+                _propertyInOuts.Add(true);
+            }
+            else if(methodInfos[i].IsStatic) {
                 ParseFunction(company, package, classType, methodNames[i], returnNames[i], toolTips[i], methodInfos[i]);
             }
             else {
-                methodIndexes.Add(i);
+                _methodIndexes.Add(i);
             }
         }
         // Class does not need to be registered if it does not have any methods to execute.
-        if(methodIndexes.Count == 0) return;
+        if(_methodIndexes.Count == 0 && _propertyIndexes.Count == 0) return;
+        // Build property information.
+        Type[] propertyTypes= _propertyTypes.ToArray();
+        bool[] propertyInOuts= _propertyInOuts.ToArray();
+        string[] propertyNames= new string[_propertyIndexes.Count];
+        for(int i= 0; i < _propertyIndexes.Count; ++i) {
+            string name= methodInfos[_propertyIndexes[i]].Name;
+            string tmp= name.ToUpper();
+            if((_propertyInOuts[i] == false && tmp.StartsWith("GET")) || (_propertyInOuts[i] == true && tmp.StartsWith("SET"))) {
+                if(name[3] == '_') {
+                    name= name.Substring(4);
+                }
+                else if(Char.IsLower(name[2]) && Char.IsUpper(name[3])) {
+                    name= name.Substring(3);                    
+                }
+            }
+            propertyNames[i]= name;
+        }
         // Rebuild the method info from the method indexes.
         List<MethodInfo> _methodInfos= new List<MethodInfo>();
         List<string> _methodNames= new List<string>();
         List<string> _returnNames= new List<string>();
         List<string> _toolTips= new List<string>();
-        foreach(var i in methodIndexes) {
+        foreach(var i in _methodIndexes) {
             _methodInfos.Add(methodInfos[i]);
             _methodNames.Add(methodNames[i]);
             _returnNames.Add(returnNames[i]);
@@ -166,9 +195,9 @@ public class WD_Reflection {
             paramInOuts[i]= ParseParameterInOuts(methodInfos[i]);
         }        
         // Add to database.
-        WD_FunctionDataBase.AddClass(company, package, classType,
+        WD_DataBase.AddClass(company, package, classType,
                                      fieldNames, fieldTypes, fieldInOuts,
-                                     null, null, null,
+                                     propertyNames, propertyTypes, propertyInOuts,
                                      methodNames, returnNames, returnType, toolTips,
                                      paramNames, paramTypes, paramInOuts);
     }
@@ -190,7 +219,7 @@ public class WD_Reflection {
             Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not static and tagged for WarpDrive. Ignoring conversion !!!");
             return;                                        
         }
-        WD_FunctionDataBase.AddConversion(company, package, method, fromType, toType);                                        
+        WD_DataBase.AddConversion(company, package, method, fromType, toType);                                        
     }
     // ----------------------------------------------------------------------
     static void ParseFunction(string company, string package, Type classType, string methodName, string retName, string toolTip, MethodInfo method) {
@@ -205,7 +234,7 @@ public class WD_Reflection {
         Type[]   paramTypes= ParseParameterTypes(method);
         bool[]   paramInOut= ParseParameterInOuts(method);
 
-        WD_FunctionDataBase.AddFunction(company, package, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
+        WD_DataBase.AddFunction(company, package, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
     }
     // ----------------------------------------------------------------------
     static string[] ParseParameterNames(MethodInfo method) {
