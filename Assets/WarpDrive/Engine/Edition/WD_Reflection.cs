@@ -112,13 +112,20 @@ public class WD_Reflection {
     }
     // ----------------------------------------------------------------------
     static void ParseClass(string company, string package, Type classType,
-                           MethodInfo[] methodInfos, string[] methodNames, string[] methodReturnNames, string[] methodToolTips,
+                           MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, string[] toolTips,
                            FieldInfo[] fieldInfos, bool[] fieldInOuts) {
+        // Extract field names & types.
+        string[] fieldNames= new string[fieldInfos.Length];
+        Type[]   fieldTypes= new Type[fieldInfos.Length];
+        for(int i= 0; i < fieldInfos.Length; ++i) {
+            fieldNames[i]= fieldInfos[i].Name;
+            fieldTypes[i]= fieldInfos[i].FieldType;
+        }
         // Separate functions (static methods) from methods.
         List<int> methodIndexes= new List<int>();
         for(int i= 0; i < methodInfos.Length; ++i) {
             if(methodInfos[i].IsStatic) {
-                ParseFunction(company, package, classType, methodNames[i], methodReturnNames[i], methodToolTips[i], methodInfos[i]);
+                ParseFunction(company, package, classType, methodNames[i], returnNames[i], toolTips[i], methodInfos[i]);
             }
             else {
                 methodIndexes.Add(i);
@@ -126,9 +133,46 @@ public class WD_Reflection {
         }
         // Class does not need to be registered if it does not have any methods to execute.
         if(methodIndexes.Count == 0) return;
-        // Parse the parameters of each method.
-        
+        // Rebuild the method info from the method indexes.
+        List<MethodInfo> _methodInfos= new List<MethodInfo>();
+        List<string> _methodNames= new List<string>();
+        List<string> _returnNames= new List<string>();
+        List<string> _toolTips= new List<string>();
+        foreach(var i in methodIndexes) {
+            _methodInfos.Add(methodInfos[i]);
+            _methodNames.Add(methodNames[i]);
+            _returnNames.Add(returnNames[i]);
+            _toolTips.Add(toolTips[i]);
+        }
+        methodInfos= _methodInfos.ToArray();
+        methodNames= _methodNames.ToArray();
+        returnNames= _returnNames.ToArray();
+        toolTips   = _toolTips.ToArray();
+        // Parse each method.
+        Type[] returnType= new Type[methodInfos.Length];
+        string[][] paramNames= new string[methodInfos.Length][];
+        Type[][] paramTypes= new Type[methodInfos.Length][];
+        bool[][] paramInOuts= new bool[methodInfos.Length][];
+        for(int i= 0; i < methodInfos.Length; ++i) {
+            // Return types.
+            returnType[i]= methodInfos[i].ReturnType;
+            if(returnType[i] == typeof(void)) {
+                returnType[i] = null;
+                returnNames[i]= null;
+            }
+            // Parameters.
+            paramNames[i] = ParseParameterNames(methodInfos[i]);
+            paramTypes[i] = ParseParameterTypes(methodInfos[i]);
+            paramInOuts[i]= ParseParameterInOuts(methodInfos[i]);
+        }        
+        // Add to database.
+        WD_FunctionDataBase.AddClass(company, package, classType,
+                                     fieldNames, fieldTypes, fieldInOuts,
+                                     null, null, null,
+                                     methodNames, returnNames, returnType, toolTips,
+                                     paramNames, paramTypes, paramInOuts);
     }
+
     // ----------------------------------------------------------------------
     static void ParseConversion(string company, string package, Type classType, MethodInfo method) {
         Type toType= method.ReturnType;
@@ -157,20 +201,37 @@ public class WD_Reflection {
             retName= null;
         }
         // Parse parameters.
+        string[] paramNames= ParseParameterNames(method);
+        Type[]   paramTypes= ParseParameterTypes(method);
+        bool[]   paramInOut= ParseParameterInOuts(method);
+
+        WD_FunctionDataBase.AddFunction(company, package, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
+    }
+    // ----------------------------------------------------------------------
+    static string[] ParseParameterNames(MethodInfo method) {
         ParameterInfo[] parameters= method.GetParameters();
-        bool[]   paramInOut= new bool[parameters.Length];
         string[] paramNames= new string[parameters.Length];
+        for(int i= 0; i < parameters.Length; ++i) {
+            paramNames[i]= parameters[i].Name;
+        }
+        return paramNames;
+    }
+    // ----------------------------------------------------------------------
+    static Type[] ParseParameterTypes(MethodInfo method) {
+        ParameterInfo[] parameters= method.GetParameters();
         Type[]   paramTypes= new Type[parameters.Length];
         for(int i= 0; i < parameters.Length; ++i) {
-            paramInOut[i]= parameters[i].IsOut;
-            paramNames[i]= parameters[i].Name;
             paramTypes[i]= parameters[i].ParameterType;
-        }
-
-        if(method.IsStatic) {
-            WD_FunctionDataBase.AddFunction(company, package, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
-        } else {
-            WD_FunctionDataBase.AddMethod(company, package, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
         }        
+        return paramTypes;
+    }
+    // ----------------------------------------------------------------------
+    static bool[] ParseParameterInOuts(MethodInfo method) {
+        ParameterInfo[] parameters= method.GetParameters();
+        bool[]   paramInOuts= new bool[parameters.Length];
+        for(int i= 0; i < parameters.Length; ++i) {
+            paramInOuts[i]= parameters[i].IsOut;
+        }
+        return paramInOuts;
     }
 }

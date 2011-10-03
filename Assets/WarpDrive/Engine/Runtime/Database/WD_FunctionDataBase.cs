@@ -38,22 +38,6 @@ public class WD_FunctionDataBase {
             Method    = methodInfo;
         }
     }
-    public class MethodDesc {
-        public string       Company;
-        public string       Package;
-        public Type         ClassType;
-        public string       MethodName;
-        public string       ToolTip;
-        public MethodInfo   Method;
-        public MethodDesc(string company, string package, Type classType, string methodName, string toolTip, MethodInfo methodInfo) {
-            Company= company;
-            Package= package;
-            ClassType = classType;
-            MethodName= methodName;
-            ToolTip   = toolTip;
-            Method    = methodInfo;
-        }
-    }
     public class ClassDesc {
         public string       Company;
         public string       Package;
@@ -67,13 +51,14 @@ public class WD_FunctionDataBase {
         public string[]     MethodNames;
         public string[]     ReturnNames;
         public Type[]       ReturnTypes;
+        public string[]     ToolTips;
         public string[][]   ParameterNames;
         public Type[][]     ParameterTypes;
         public bool[][]     ParameterInOuts;
         public ClassDesc(string company, string package, Type classType,
                          string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,
                          string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,
-                         string[] methodNames, string[] returnNames, Type[] returnTypes,
+                         string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,
                          string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {
             Company= company;
             Package= package;
@@ -87,6 +72,7 @@ public class WD_FunctionDataBase {
             MethodNames= methodNames;
             ReturnNames= returnNames;
             ReturnTypes= returnTypes;
+            ToolTips= toolTips;
             ParameterNames= parameterNames;
             ParameterTypes= parameterTypes;
             ParameterInOuts= parameterInOuts;
@@ -98,7 +84,6 @@ public class WD_FunctionDataBase {
     // ----------------------------------------------------------------------
     public static List<ConversionDesc>  Conversions= new List<ConversionDesc>();
     public static List<FunctionDesc>    Functions  = new List<FunctionDesc>();
-    public static List<MethodDesc>      Methods    = new List<MethodDesc>(); 
     public static List<ClassDesc>       Classes    = new List<ClassDesc>();
     
     // ======================================================================
@@ -108,7 +93,6 @@ public class WD_FunctionDataBase {
     public static void Clear() {
         Conversions.Clear();
         Functions.Clear();
-        Methods.Clear();
         Classes.Clear();
     }
     // ----------------------------------------------------------------------
@@ -134,27 +118,17 @@ public class WD_FunctionDataBase {
         Functions.Add(new FunctionDesc(company, package, classType, methodName, toolTip, methodInfo));
     }
     // ----------------------------------------------------------------------
-    // Adds an execution method which requires a context (class properties).
-    public static void AddMethod(string company, string package, Type classType,           // Class info
-                                 string methodName,                                        // Method info
-                                 string[] paramName, Type[] paramType, bool[] paramInOut,  // Parameters info
-                                 string retName, Type retType,                             // Return value info
-                                 string toolTip, MethodInfo methodInfo) {
-        Debug.Log("Adding method: "+methodName+" from type: "+classType);
-        Methods.Add(new MethodDesc(company, package, classType, methodName, toolTip, methodInfo));
-    }
-    // ----------------------------------------------------------------------
     // Adds a class.
-    public static void AddClass(string company, string package, Type classType,                                 // Class info
-                                string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,                     // Field info
-                                string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,            // Property info
-                                string[] methodNames, string[] returnNames, Type[] returnTypes,                 // Method info
-                                string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) { // Method parameter info
+    public static void AddClass(string company, string package, Type classType,                                     // Class info
+                                string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,                         // Field info
+                                string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,                // Property info
+                                string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,  // Method info
+                                string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {     // Method parameter info
         Debug.Log("Adding class: "+classType.Name);       
         Classes.Add(new ClassDesc(company, package, classType,
                                   fieldNames, fieldTypes, fieldInOuts,
                                   propertyNames, propertyTypes, propertyInOuts,
-                                  methodNames, returnNames, returnTypes,
+                                  methodNames, returnNames, returnTypes, toolTips,
                                   parameterNames, parameterTypes, parameterInOuts));    
     }
 }
