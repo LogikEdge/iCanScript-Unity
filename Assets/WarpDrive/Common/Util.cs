@@ -10,32 +10,39 @@ public class Inf {
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // ----------------------------------------------------------------------
     // Executes the Debug.Log if condition is true.
-    public static bool DebugLog(System.Func<bool> cond, object _object) {
-        if(cond()) {
-            Debug.Log(_object);
+    public static bool DebugLog(bool cond, object obj) {
+        if(cond) {
+            Debug.Log(obj);
             return true;
         }
         return false;
+    }
+    public static bool DebugLog(System.Func<bool> cond, object obj) {
+        return DebugLog(cond(), obj);
     }
 
     // ----------------------------------------------------------------------
     // Executes the Debug.LogWarning if condition is true.
-    public static bool DebugWarning(System.Func<bool> cond, object _object) {
-        if(cond()) {
-            Debug.LogWarning(_object);
+    public static bool DebugWarning(bool cond, object obj) {
+        if(cond) {
+            Debug.LogWarning(obj);
             return true;
         }
         return false;
     }
+    public static bool DebugWarning(System.Func<bool> cond, object obj) {
+        return DebugWarning(cond(), obj);
+    }
 
     // ----------------------------------------------------------------------
     // Executes the Debug.LogError if condition is true.
-    public static bool DebugError(System.Func<bool> cond, object _object) {
-        if(cond()) {
-            Debug.LogError(_object);
-            return true;
+    public static void DebugError(bool cond, object obj) {
+        if(cond) {
+            Debug.LogError(obj);
         }
-        return false;
+    }
+    public static void DebugError(System.Func<bool> cond, object obj) {
+        DebugError(cond(), obj);
     }
 #endif
 

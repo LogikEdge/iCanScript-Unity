@@ -85,7 +85,7 @@ public class WD_Reflection {
                         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
                             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
                                 if(methodAttribute is WD_ConversionAttribute) {
-                                    ParseConversion(classType, method);
+                                    ParseConversion(classCompany, classPackage, classType, method);
                                 }
                                 else if(methodAttribute is WD_FunctionAttribute) {                                    
                                     if(method.IsPublic == false) {
@@ -101,7 +101,7 @@ public class WD_Reflection {
                                 }
                             }
                         }                       
-                        ParseClass(classType, classCompany, classPackage,
+                        ParseClass(classCompany, classPackage, classType,
                                    methodInfos.ToArray(), methodNames.ToArray(), methodReturnNames.ToArray(), methodToolTips.ToArray(),
                                    fieldInfos.ToArray(), fieldInOuts.ToArray());
                     }
@@ -111,14 +111,14 @@ public class WD_Reflection {
         }
     }
     // ----------------------------------------------------------------------
-    static void ParseClass(Type classType, string classCompany, string classPackage,
+    static void ParseClass(string company, string package, Type classType,
                            MethodInfo[] methodInfos, string[] methodNames, string[] methodReturnNames, string[] methodToolTips,
                            FieldInfo[] fieldInfos, bool[] fieldInOuts) {
         // Separate functions (static methods) from methods.
         List<int> methodIndexes= new List<int>();
         for(int i= 0; i < methodInfos.Length; ++i) {
             if(methodInfos[i].IsStatic) {
-                ParseFunction(classType, methodNames[i], methodReturnNames[i], methodToolTips[i], methodInfos[i]);
+                ParseFunction(company, package, classType, methodNames[i], methodReturnNames[i], methodToolTips[i], methodInfos[i]);
             }
             else {
                 methodIndexes.Add(i);
@@ -126,16 +126,11 @@ public class WD_Reflection {
         }
         // Class does not need to be registered if it does not have any methods to execute.
         if(methodIndexes.Count == 0) return;
-        // Register class either has single method or multi-methods.
-        if(methodIndexes.Count == 1) {  // Single method class
-            
-        }
-        else {                          // multi-method class
-            
-        }
+        // Parse the parameters of each method.
+        
     }
     // ----------------------------------------------------------------------
-    static void ParseConversion(Type classType, MethodInfo method) {
+    static void ParseConversion(string company, string package, Type classType, MethodInfo method) {
         Type toType= method.ReturnType;
         ParameterInfo[] parameters= method.GetParameters();
         if(parameters.Length != 1 || toType == null) {
@@ -151,10 +146,10 @@ public class WD_Reflection {
             Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not static and tagged for WarpDrive. Ignoring conversion !!!");
             return;                                        
         }
-        WD_FunctionDataBase.AddConversion(method, fromType, toType);                                        
+        WD_FunctionDataBase.AddConversion(company, package, method, fromType, toType);                                        
     }
     // ----------------------------------------------------------------------
-    static void ParseFunction(Type classType, string methodName, string retName, string toolTip, MethodInfo method) {
+    static void ParseFunction(string company, string package, Type classType, string methodName, string retName, string toolTip, MethodInfo method) {
         // Parse return type.
         Type retType= method.ReturnType;
         if(retType == typeof(void)) {
@@ -173,9 +168,9 @@ public class WD_Reflection {
         }
 
         if(method.IsStatic) {
-            WD_FunctionDataBase.AddFunction(classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
+            WD_FunctionDataBase.AddFunction(company, package, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
         } else {
-            WD_FunctionDataBase.AddMethod(classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
+            WD_FunctionDataBase.AddMethod(company, package, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
         }        
     }
 }

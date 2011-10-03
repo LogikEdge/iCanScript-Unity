@@ -80,17 +80,25 @@ public class WD_Editor : EditorWindow {
     
     // ----------------------------------------------------------------------
     public void Deactivate() {
-        Inspector  = null;
-		DisplayRoot= null;
-		RootNode   = null;
+        Inspector    = null;
+		DisplayRoot  = null;
+		RootNode     = null;
+		EditorObjects= null;
+		Graph        = null;
     }
 
 	// ----------------------------------------------------------------------
     // Assures proper initialization and returns true if editor is ready
     // to execute.
-	bool ShouldRun() {
+	public bool IsInitialized() {
         // Nothing to do if we don't have a Graph to edit...
-        if(DisplayRoot == null) return false;
+		if(Graph == null ||
+		   EditorObjects == null ||
+		   RootNode == null ||
+		   Inspector == null ||
+           DisplayRoot == null) {
+               return false;
+        }
         
 		// Don't run if graphic sub-system did not initialise.
 		if(WD_Graphics.IsInitialized == false) {
@@ -117,12 +125,14 @@ public class WD_Editor : EditorWindow {
 	// User GUI function.
 	void OnGUI() {
 		// Don't do start editor if not properly initialized.
-		if( !ShouldRun() ) return;
+		if( !IsInitialized() ) return;
        	
         // Load Editor Skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
         // Update scroll view.
+        Inf.DebugWarning(ScrollView == null, "ScrollView not set");
+        Inf.DebugWarning(Graph == null, "Graph is not set");
         ScrollView.Update(position, Graph.EditorObjects.GetPosition(DisplayRoot));
         
 		// Draw editor widgets.
