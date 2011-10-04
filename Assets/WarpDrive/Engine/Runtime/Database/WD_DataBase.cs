@@ -137,7 +137,7 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Create an instance of a conversion function.
-    public object CreateInstance(ConversionDesc classDesc) {
+    public object CreateInstance(ConversionDesc convDesc) {
         return null;
     }
     // ----------------------------------------------------------------------
