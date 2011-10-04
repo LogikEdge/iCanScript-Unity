@@ -10,7 +10,7 @@ public abstract class WD_Function : WD_Action {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public List<WD_FunctionPort>   InPorts= new List<WD_FunctionPort>();
+    public List<WD_FieldPort>   InPorts= new List<WD_FieldPort>();
     
     // ======================================================================
     // EXECUTION
@@ -39,10 +39,10 @@ public abstract class WD_Function : WD_Action {
 
     // ----------------------------------------------------------------------
     public override void AddChild(WD_Object obj)     {
-        obj.ExecuteIf<WD_InFunctionPort>((port) => { InPorts.Add(port); });
+        obj.ExecuteIf<WD_InFieldPort>((port) => { InPorts.Add(port); });
     }
     public override void RemoveChild(WD_Object obj)  {
-        obj.ExecuteIf<WD_InFunctionPort>((port) => { InPorts.Remove(port); });
+        obj.ExecuteIf<WD_InFieldPort>((port) => { InPorts.Remove(port); });
     }
 
 }

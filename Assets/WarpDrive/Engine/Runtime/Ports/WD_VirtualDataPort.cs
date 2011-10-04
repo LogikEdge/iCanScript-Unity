@@ -1,11 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public sealed class WD_VirtualDataPort : WD_FunctionPort {
+public sealed class WD_VirtualDataPort : WD_FieldPort {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public WD_FunctionPort ConcretePort= null;
+    public WD_FieldPort ConcretePort= null;
 
     // ======================================================================
     // Lifetime Management

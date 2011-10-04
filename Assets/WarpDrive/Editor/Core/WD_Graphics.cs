@@ -262,7 +262,7 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_Behaviour graph) {
         // Only draw visible data ports.
-        if(port.IsVisible == false || port.IsRuntimeA<WD_FunctionPort>() == false) return;
+        if(port.IsVisible == false || port.IsRuntimeA<WD_FieldPort>() == false) return;
 
         // Build visible port name
         WD_EditorObject portParent= graph.EditorObjects[port.ParentId];
@@ -477,7 +477,7 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_Behaviour graph) {
         // Only data connection are drawn.
-        if(!(port.IsRuntimeA<WD_FunctionPort>())) return;
+        if(!(port.IsRuntimeA<WD_FieldPort>())) return;
         
         if(graph.EditorObjects[port.ParentId].IsVisible) {
             if(graph.EditorObjects.IsValid(port.Source)) {

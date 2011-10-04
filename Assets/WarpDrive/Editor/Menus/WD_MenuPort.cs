@@ -9,7 +9,7 @@ public class WD_MenuPort {
 //    public static void AddInputPort(MenuCommand command) {    
 //        WD_MenuContext context= command.context as WD_MenuContext;
 //        WD_Node selectedObject= context.SelectedObject as WD_Node;
-//        WD_VirtualDataPort.CreateInstance("", selectedObject, WD_FunctionPort.DirectionEnum.In);
+//        WD_VirtualDataPort.CreateInstance("", selectedObject, WD_FieldPort.DirectionEnum.In);
 //        WD_MenuContext.DestroyImmediate(context);
 //    }
 //    [MenuItem("CONTEXT/WarpDrive/Port/Add Input",true)]
@@ -22,7 +22,7 @@ public class WD_MenuPort {
 //    public static void AddOutputPort(MenuCommand command) {    
 //        WD_MenuContext context= command.context as WD_MenuContext;
 //        WD_Node selectedObject= context.SelectedObject as WD_Node;
-//        WD_VirtualDataPort.CreateInstance("", selectedObject, WD_FunctionPort.DirectionEnum.Out);
+//        WD_VirtualDataPort.CreateInstance("", selectedObject, WD_FieldPort.DirectionEnum.Out);
 //        WD_MenuContext.DestroyImmediate(context);
 //    }
 //    [MenuItem("CONTEXT/WarpDrive/Port/Add Output",true)]

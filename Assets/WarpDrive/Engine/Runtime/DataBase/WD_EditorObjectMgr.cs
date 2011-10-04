@@ -36,10 +36,10 @@ public class WD_EditorObjectMgr {
         
         // Create ports for each field tagged with InPort or OutPort.
         foreach(var field in WD_Reflection.GetInPortFields(typeof(T))) {
-            CreateInstance<WD_InFunctionPort>(field.Name, obj.InstanceId, initialPos);
+            CreateInstance<WD_InFieldPort>(field.Name, obj.InstanceId, initialPos);
         }
         foreach(var field in WD_Reflection.GetOutPortFields(typeof(T))) {
-            CreateInstance<WD_OutFunctionPort>(field.Name, obj.InstanceId, initialPos);
+            CreateInstance<WD_OutFieldPort>(field.Name, obj.InstanceId, initialPos);
         }
 
         return obj;
@@ -54,12 +54,12 @@ public class WD_EditorObjectMgr {
             DestroyInstance(TreeCache[id].Children[0]);
         }
         // Disconnect ports linking to this port.
-        ExecuteIf<WD_FunctionPort>(EditorObjects[id],
+        ExecuteIf<WD_FieldPort>(EditorObjects[id],
             (instance) => {
-                ForEach<WD_FunctionPort>(
+                ForEach<WD_FieldPort>(
                     (obj) => {
                         if(obj.Source == id) {
-                            (GetRuntimeObject(obj) as WD_FunctionPort).Source= null;
+                            (GetRuntimeObject(obj) as WD_FieldPort).Source= null;
                             obj.Source= -1;
                         }
                     }
@@ -100,9 +100,9 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject obj, WD_EditorObject src) {
         obj.Source= src.InstanceId;
-        obj.ExecuteIf<WD_FunctionPort>(
+        obj.ExecuteIf<WD_FieldPort>(
             (port) => {
-                (GetRuntimeObject(port.InstanceId) as WD_FunctionPort).Source= GetRuntimeObject(src.InstanceId) as WD_FunctionPort;
+                (GetRuntimeObject(port.InstanceId) as WD_FieldPort).Source= GetRuntimeObject(src.InstanceId) as WD_FieldPort;
             }
         );
     }

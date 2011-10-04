@@ -2,12 +2,12 @@ using UnityEngine;
 using System.Collections;
 using System.Reflection;
 
-public sealed class WD_InFunctionPort : WD_FunctionPort {
+public sealed class WD_OutFieldPort : WD_FieldPort {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public static WD_InFunctionPort CreateInstance(string portName, WD_Node parent) {
-        WD_InFunctionPort instance= CreateInstance<WD_InFunctionPort>();
+    public static WD_OutFieldPort CreateInstance(string portName, WD_Node parent) {
+        WD_OutFieldPort instance=  CreateInstance<WD_OutFieldPort>();
         instance.Init(portName, parent);
         return instance;
     }
@@ -23,4 +23,5 @@ public sealed class WD_InFunctionPort : WD_FunctionPort {
             if(array == null || array.Length == 0) fieldInfo.SetValue(Parent, System.Array.CreateInstance(fieldType.GetElementType(), 1));
         }
     }
+
 }

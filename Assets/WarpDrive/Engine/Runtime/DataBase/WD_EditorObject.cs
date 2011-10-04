@@ -7,12 +7,13 @@ public class WD_EditorObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+    public enum DisplayTypeEnum { Port, Function, HiddenConversion, Class, Module, State, StateChart, Unknown }
+    public DisplayTypeEnum  DisplayType  = DisplayTypeEnum.Unknown;
     public int              InstanceId   = -1;
     public int              ParentId     = -1;
     public string           QualifiedType= "";
     public string           Name         = "";
     public bool             IsDirty      = false;
-    public bool             IsVisible    = false;
     public Rect             LocalPosition= new Rect(0,0,0,0);
 
     // Port specific attributes ---------------------------------------------
@@ -23,6 +24,12 @@ public class WD_EditorObject {
     // Non-persistant properties --------------------------------------------
     [System.NonSerialized] public bool IsBeingDragged= false;
 
+
+    // ======================================================================
+    // Accessors
+    // ----------------------------------------------------------------------
+    public bool IsVisible { get { return DisplayType != DisplayTypeEnum.Unknown; }}
+    
     
     // ======================================================================
     // Initialization
@@ -35,16 +42,18 @@ public class WD_EditorObject {
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
         IsDirty= true;
-        IsVisible= true;
         LocalPosition= localPosition;
-        Case<WD_RootNode, WD_Top, WD_Node, WD_Port>(
-            (root) => { IsVisible= false; },
-            (top)  => { IsVisible= false; },
-            (node) => {},
-            (port) => {
-                port.ExecuteIf<WD_FunctionPort>(
+        Case<WD_RootNode, WD_Top, WD_State, WD_Function, WD_Node, WD_Port>(
+            (root) =>  { },
+            (top)  =>  { },
+            (state) => { DisplayType= DisplayTypeEnum.State; },
+            (func)  => { DisplayType= DisplayTypeEnum.Function; },
+            (node) =>  { DisplayType= DisplayTypeEnum.Class; },
+            (port) =>  {
+                DisplayType= DisplayTypeEnum.Port;
+                port.ExecuteIf<WD_FieldPort>(
                     (dataPort) => {
-                        dataPort.Case<WD_InFunctionPort, WD_OutFunctionPort, WD_EnablePort>(
+                        dataPort.Case<WD_InFieldPort, WD_OutFieldPort, WD_EnablePort>(
                             (inPort)     => { Edge= EdgeEnum.Left; },
                             (outPort)    => { Edge= EdgeEnum.Right; },
                             (enablePort) => { Edge= EdgeEnum.Top; }
@@ -56,12 +65,12 @@ public class WD_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void Reset() {
+        DisplayType= DisplayTypeEnum.Unknown;
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
         Name= "";
         IsDirty= false;
-        IsVisible= false;
         LocalPosition= new Rect(0,0,0,0);
         Edge= EdgeEnum.None;
         Source= -1;
@@ -93,12 +102,12 @@ public class WD_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsPort           { get { return IsRuntimeA<WD_Port>(); }}
-    public bool IsFunctionPort   { get { return IsRuntimeA<WD_InFunctionPort>() || IsRuntimeA<WD_OutFunctionPort>(); }}
+    public bool IsFunctionPort   { get { return IsRuntimeA<WD_InFieldPort>() || IsRuntimeA<WD_OutFieldPort>(); }}
     public bool IsModulePort     { get { return IsRuntimeA<WD_InModulePort>() || IsRuntimeA<WD_OutModulePort>(); }}
     public bool IsTransitionPort { get { return IsRuntimeA<WD_InTransitionPort>() || IsRuntimeA<WD_OutTransitionPort>(); }}
     public bool IsEnablePort     { get { return IsRuntimeA<WD_EnablePort>(); }}
     public bool IsDataPort       { get { return IsFunctionPort || IsModulePort || IsEnablePort; }}
-    public bool IsInputPort      { get { return IsRuntimeA<WD_InFunctionPort>() || IsRuntimeA<WD_InModulePort>() || IsRuntimeA<WD_InTransitionPort>() || IsRuntimeA<WD_EnablePort>(); }}
+    public bool IsInputPort      { get { return IsRuntimeA<WD_InFieldPort>() || IsRuntimeA<WD_InModulePort>() || IsRuntimeA<WD_InTransitionPort>() || IsRuntimeA<WD_EnablePort>(); }}
     public bool IsOutputPort     { get { return !IsInputPort; }}
     
     // ======================================================================
@@ -164,6 +173,43 @@ public class WD_EditorObject {
         else if(IsRuntimeA<T2>())    { fnc2(this); }
         else if(IsRuntimeA<T3>())    { fnc3(this); }
         else if(IsRuntimeA<T4>())    { fnc4(this); }
+        else if(defaultFnc != null)  { defaultFnc(this); }                                    
+    }
+    public void Case<T1,T2,T3,T4,T5>(Action<WD_EditorObject> fnc1,
+                                     Action<WD_EditorObject> fnc2,
+                                     Action<WD_EditorObject> fnc3,
+                                     Action<WD_EditorObject> fnc4,
+                                     Action<WD_EditorObject> fnc5,
+                                     Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
+                                                                               where T2 : WD_Object
+                                                                               where T3 : WD_Object
+                                                                               where T4 : WD_Object
+                                                                               where T5 : WD_Object {
+        if(IsRuntimeA<T1>())         { fnc1(this); }
+        else if(IsRuntimeA<T2>())    { fnc2(this); }
+        else if(IsRuntimeA<T3>())    { fnc3(this); }
+        else if(IsRuntimeA<T4>())    { fnc4(this); }
+        else if(IsRuntimeA<T5>())    { fnc5(this); }
+        else if(defaultFnc != null)  { defaultFnc(this); }                                    
+    }
+    public void Case<T1,T2,T3,T4,T5,T6>(Action<WD_EditorObject> fnc1,
+                                        Action<WD_EditorObject> fnc2,
+                                        Action<WD_EditorObject> fnc3,
+                                        Action<WD_EditorObject> fnc4,
+                                        Action<WD_EditorObject> fnc5,
+                                        Action<WD_EditorObject> fnc6,
+                                        Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
+                                                                                  where T2 : WD_Object
+                                                                                  where T3 : WD_Object
+                                                                                  where T4 : WD_Object
+                                                                                  where T5 : WD_Object
+                                                                                  where T6 : WD_Object {
+        if(IsRuntimeA<T1>())         { fnc1(this); }
+        else if(IsRuntimeA<T2>())    { fnc2(this); }
+        else if(IsRuntimeA<T3>())    { fnc3(this); }
+        else if(IsRuntimeA<T4>())    { fnc4(this); }
+        else if(IsRuntimeA<T5>())    { fnc5(this); }
+        else if(IsRuntimeA<T6>())    { fnc6(this); }
         else if(defaultFnc != null)  { defaultFnc(this); }                                    
     }
 

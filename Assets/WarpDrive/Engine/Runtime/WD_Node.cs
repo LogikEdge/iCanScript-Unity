@@ -12,10 +12,10 @@ public abstract class WD_Node : WD_Aggregate {
         
 //        // Create ports for each field taged with InPort or OutPort.
 //        foreach(var field in GetInputFields()) {
-//            WD_InFunctionPort.CreateInstance(field.Name, this);                                
+//            WD_InFieldPort.CreateInstance(field.Name, this);                                
 //        }
 //        foreach(var field in GetOutputFields()) {
-//            WD_OutFunctionPort.CreateInstance(field.Name, this);            
+//            WD_OutFieldPort.CreateInstance(field.Name, this);            
 //        }
     }
 }

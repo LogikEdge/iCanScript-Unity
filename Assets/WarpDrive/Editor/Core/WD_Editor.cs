@@ -300,8 +300,8 @@ public class WD_Editor : EditorWindow {
             if(!VerifyNewConnection(port)) {
                 // Verify for disconnection.
                 if(!EditorObjects.IsNearParent(port)) {
-                    if(port.IsRuntimeA<WD_FunctionPort>()) {
-                        (EditorObjects.GetRuntimeObject(port) as WD_FunctionPort).Disconnect();
+                    if(port.IsRuntimeA<WD_FieldPort>()) {
+                        (EditorObjects.GetRuntimeObject(port) as WD_FieldPort).Disconnect();
                     }
                     port.LocalPosition.x= DragStartPosition.x;
                     port.LocalPosition.y= DragStartPosition.y;

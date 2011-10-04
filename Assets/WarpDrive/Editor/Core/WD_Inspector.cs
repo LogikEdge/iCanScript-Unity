@@ -107,7 +107,7 @@ public class WD_Inspector : Editor {
         // Show inputs.
         int inCount= 0;
         int outCount= 0;
-        _node.ForEachChild<WD_FunctionPort>(
+        _node.ForEachChild<WD_FieldPort>(
             (port)=> {
                 if(port.IsInput) ++inCount;
                 if(port.IsOutput) ++outCount;
@@ -117,7 +117,7 @@ public class WD_Inspector : Editor {
             showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
             if(showInputs) {
                 EditorGUIUtility.LookLikeControls();
-                _node.ForEachChild<WD_FunctionPort>(
+                _node.ForEachChild<WD_FieldPort>(
                     (port)=> {
                         if(port.IsInput) WD_GuiUtilities.OnInspectorGUI(port);
                     }
@@ -129,7 +129,7 @@ public class WD_Inspector : Editor {
         if(outCount > 0) {
             showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
             if(showOutputs) {
-                _node.ForEachChild<WD_FunctionPort>(
+                _node.ForEachChild<WD_FieldPort>(
                     (port)=> {
                             if(port.IsOutput) WD_GuiUtilities.OnInspectorGUI(port);
                     }
@@ -141,8 +141,8 @@ public class WD_Inspector : Editor {
 	// ----------------------------------------------------------------------
     // Inspects the selected port.
     void InspectPort(WD_Port port) {
-        if(port is WD_FunctionPort) {
-            WD_GuiUtilities.OnInspectorGUI(port as WD_FunctionPort);            
+        if(port is WD_FieldPort) {
+            WD_GuiUtilities.OnInspectorGUI(port as WD_FieldPort);            
         }
     }
 

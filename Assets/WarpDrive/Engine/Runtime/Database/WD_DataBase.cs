@@ -30,7 +30,6 @@ public class WD_DataBase {
                 return;
             }
         }
-//        Debug.Log("Adding conversion from "+fromType+" to "+toType);
         Conversions.Add(new WD_ConversionDesc(company, package, methodInfo, fromType, toType));
     }
     // ----------------------------------------------------------------------
@@ -40,7 +39,6 @@ public class WD_DataBase {
                                    string[] paramNames, Type[] paramTypes, bool[] paramInOuts,// Parameters info
                                    string retName, Type retType,                              // Return value info
                                    string toolTip, MethodInfo methodInfo) {
-//        Debug.Log("Adding function: "+methodName+" from type: "+classType);
         WD_FunctionDesc fd= new WD_FunctionDesc(company, package, classType,
                                                 methodName, toolTip,
                                                 paramNames, paramTypes, paramInOuts,
@@ -63,7 +61,6 @@ public class WD_DataBase {
                                 string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,                                            // Property info
                                 MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,    // Method info
                                 string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {                                 // Method parameter info
-//        Debug.Log("Adding class: "+classType.Name);       
         Classes.Add(new WD_ClassDesc(company, package, classType,
                                      fieldNames, fieldTypes, fieldInOuts,
                                      propertyNames, propertyTypes, propertyInOuts,

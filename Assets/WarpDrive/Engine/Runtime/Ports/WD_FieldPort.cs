@@ -3,18 +3,18 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class WD_FunctionPort : WD_Port {
+public class WD_FieldPort : WD_Port {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-	public WD_FunctionPort    Source= null;
+	public WD_FieldPort    Source= null;
     
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool IsInput                     { get { return this is WD_InFunctionPort; }}
-    public bool IsOutput                    { get { return this is WD_OutFunctionPort; }}
+    public bool IsInput                     { get { return this is WD_InFieldPort; }}
+    public bool IsOutput                    { get { return this is WD_OutFieldPort; }}
     public bool IsVirtual                   { get { return AsVirtual != null; }}
     public WD_VirtualDataPort  AsVirtual    { get { return this as WD_VirtualDataPort; }}
     // ----------------------------------------------------------------------
@@ -50,7 +50,7 @@ public class WD_FunctionPort : WD_Port {
     // Execution
     // ----------------------------------------------------------------------
     public override bool IsReady() {
-        WD_FunctionPort sourcePort= GetProducerPort();
+        WD_FieldPort sourcePort= GetProducerPort();
         if(sourcePort == null || sourcePort == this) return true;
         WD_Action sourceAction= sourcePort.Parent as WD_Action;
         if(sourceAction == null) return true;
@@ -81,36 +81,36 @@ public class WD_FunctionPort : WD_Port {
     }
     
     // ----------------------------------------------------------------------
-    public WD_FunctionPort GetLastSourcePort() {
-        WD_FunctionPort port= this;
+    public WD_FieldPort GetLastSourcePort() {
+        WD_FieldPort port= this;
         for(; port.Source != null; port= port.Source);
         return port;
     }
 
     // ----------------------------------------------------------------------
-    public WD_FunctionPort GetProducerPort() {
-        WD_FunctionPort lastPort= GetLastSourcePort();
+    public WD_FieldPort GetProducerPort() {
+        WD_FieldPort lastPort= GetLastSourcePort();
         WD_VirtualDataPort virtualPort= lastPort.AsVirtual;
         return virtualPort != null ? virtualPort.ConcretePort : lastPort;
     }
     
     // ----------------------------------------------------------------------
     public System.Type GetProducerValueType() {
-        WD_FunctionPort producerPort= GetProducerPort();
+        WD_FieldPort producerPort= GetProducerPort();
         if(producerPort == null) return null;
         return producerPort.ValueType;
     }
     
     // ----------------------------------------------------------------------
     public System.Type GetProducerElementType() {
-        WD_FunctionPort producerPort= GetProducerPort();
+        WD_FieldPort producerPort= GetProducerPort();
         if(producerPort == null) return null;
         return producerPort.ElementType;
     }
     
     // ----------------------------------------------------------------------
     public virtual void UpdateValue() {
-        WD_FunctionPort sourcePort= GetProducerPort();
+        WD_FieldPort sourcePort= GetProducerPort();
         if(sourcePort == null || sourcePort == this) return;
         WD_Aggregate sourceNode= sourcePort.Parent;
         System.Type sourceNodeType= sourceNode.GetType();
@@ -226,7 +226,7 @@ public class WD_FunctionPort : WD_Port {
         Source= null;
         
         // Disconnect all other port being sourced by the given port.
-        Top.ForEachRecursive<WD_FunctionPort>(
+        Top.ForEachRecursive<WD_FieldPort>(
             (port)=> {
                 if(port.Source == this)
                     port.Source= null;
