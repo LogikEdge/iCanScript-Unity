@@ -13,8 +13,9 @@ public class WD_UserPreferences {
 
     [System.Serializable]
     public class UserNodeColors {
-        public Color    StateColor= Color.cyan;
-        public Color    ModuleColor= Color.yellow;
+        public Color    StateColor   = Color.cyan;
+        public Color    ModuleColor  = Color.yellow;
+        public Color    ClassColor   = new Color(1.0f,0.5f,0.0f,1.0f);
         public Color    FunctionColor= Color.green;
         public Color    SelectedColor= Color.white;            
     }

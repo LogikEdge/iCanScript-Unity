@@ -152,7 +152,7 @@ public class WD_Reflection {
         for(int i= 0; i < _propertyIndexes.Count; ++i) {
             string name= methodInfos[_propertyIndexes[i]].Name;
             string tmp= name.ToUpper();
-            if((_propertyInOuts[i] == false && tmp.StartsWith("GET")) || (_propertyInOuts[i] == true && tmp.StartsWith("SET"))) {
+            if((_propertyInOuts[i] == true && tmp.StartsWith("GET")) || (_propertyInOuts[i] == false && tmp.StartsWith("SET"))) {
                 if(name[3] == '_') {
                     name= name.Substring(4);
                 }
