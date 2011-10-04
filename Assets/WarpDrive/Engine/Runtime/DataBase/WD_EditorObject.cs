@@ -86,10 +86,7 @@ public class WD_EditorObject {
     
     // ----------------------------------------------------------------------
     public bool IsRuntimeA(Type t) {
-        for(Type rt= RuntimeType; rt != null; rt= rt.BaseType) {
-            if(t == rt) return true;
-        }
-        return false;
+        return Inf.IsA(RuntimeType, t);
     }
     public bool IsRuntimeA<T>() where T : class {
         return IsRuntimeA(typeof(T));

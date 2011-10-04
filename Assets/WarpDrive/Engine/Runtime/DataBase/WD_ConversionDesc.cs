@@ -16,4 +16,7 @@ public class WD_ConversionDesc {
         FromType= fromType;
         ToType= toType;
     }
+    public WD_RuntimeMethod CreateRuntime() {
+        return WD_RuntimeMethod.CreateFunction(Method.Invoke, 1);
+    }
 }

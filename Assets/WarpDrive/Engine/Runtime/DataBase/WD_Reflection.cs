@@ -196,10 +196,10 @@ public class WD_Reflection {
         }        
         // Add to database.
         WD_DataBase.AddClass(company, package, classType,
-                                     fieldNames, fieldTypes, fieldInOuts,
-                                     propertyNames, propertyTypes, propertyInOuts,
-                                     methodNames, returnNames, returnType, toolTips,
-                                     paramNames, paramTypes, paramInOuts);
+                             fieldNames, fieldTypes, fieldInOuts,
+                             propertyNames, propertyTypes, propertyInOuts,
+                             methodInfos, methodNames, returnNames, returnType, toolTips,
+                             paramNames, paramTypes, paramInOuts);
     }
 
     // ----------------------------------------------------------------------

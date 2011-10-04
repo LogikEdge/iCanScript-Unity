@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -54,7 +55,13 @@ public class Inf {
     public class Reference<T> where T : class {
         public T Value= default(T);
     }
-    
+    // ----------------------------------------------------------------------
+    public static bool IsA(Type topType, Type baseType) {
+        for(; topType != null; topType= topType.BaseType) {
+            if(topType == baseType) return true;
+        }
+        return false;        
+    } 
     
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // Basic Utilities
@@ -193,52 +200,4 @@ public class Inf {
         List<KeyValuePair<TKey, TValue>>  myDictionary= new List<KeyValuePair<TKey, TValue>>();
     }
 
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// Dictionary
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-    [System.Serializable]
-    public class Type {
-        // ======================================================================
-        // PROPERTIES
-        // ----------------------------------------------------------------------
-        [SerializeField] string         myAssemblyName = null;
-        [SerializeField] string         myTypeName     = null;
-                         System.Type    mySystemType   = null;
-
-        // ----------------------------------------------------------------------
-        public string Name {
-            get { return myTypeName; }
-        }
-        // ----------------------------------------------------------------------
-        public System.Type SystemType {
-            get {
-                if(mySystemType != null) return mySystemType;
-                if(myTypeName == null || myTypeName == "") {
-                    return null;
-                }
-                mySystemType= System.Type.GetType(myTypeName);
-                if(mySystemType == null) {
-                    // Try to be more specific using the assembly name.
-                    mySystemType= System.Type.GetType(myTypeName+", "+myAssemblyName);
-                    if(mySystemType == null) {
-                        // Try to ignore the assembly attributes.                       
-                        Debug.LogWarning("Inf.Type: Unable to find SystemType for "+myTypeName);
-                        Debug.LogWarning("Current assembly is: "+Assembly.GetAssembly(typeof(Type)).FullName);                      
-                    }
-                }
-                return mySystemType;
-            }
-            set {
-                mySystemType= value;
-                if(value != null) {
-                    myAssemblyName= mySystemType.Assembly.FullName;
-                    myTypeName= value.FullName;
-                }
-                else {
-                    myAssemblyName= null;
-                    myTypeName= null;
-                }
-            }
-        }
-    } 
 }

@@ -13,7 +13,7 @@ public sealed class WD_Test {
         return new Prelude.Tuple<Vector2, Vector2>(rawAnalog1, analog1);
     }
     [WD_Function]
-    public float Inc(float f, out float ret) { return (ret= f+1.0f); }
+    public static float Inc(float f, out float ret) { return (ret= f+1.0f); }
     [WD_Function]
     public void remove(float f) {}
     
