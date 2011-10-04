@@ -22,9 +22,10 @@ public class WD_Graphics {
 	    public GUIStyle    guiStyle    = null;
 	    public Color       nodeColor   = new Color(0,0,0,0);
 	}
-	NodeStyle   functionStyle   = null;
-	NodeStyle   moduleStyle     = null;
 	NodeStyle   stateStyle      = null;
+	NodeStyle   moduleStyle     = null;
+    NodeStyle   classStyle      = null;
+	NodeStyle   functionStyle   = null;
 	NodeStyle   defaultStyle    = null;
 	NodeStyle   selectedStyle   = null;
 	NodeStyle   nodeInErrorStyle= null;
@@ -233,6 +234,10 @@ public class WD_Graphics {
             GenerateNodeStyle(ref moduleStyle, graph.Preferences.NodeColors.ModuleColor);
             return moduleStyle;
         }
+//        if(runtimeNode is WD_Class) {
+//            GenerateNodeStyle(ref classStyle, graph.Preferences.NodeColors.ClassColor);
+//            return functionStyle;
+//        }
         if(runtimeNode is WD_Function || runtimeNode is WD_Action) {
             GenerateNodeStyle(ref functionStyle, graph.Preferences.NodeColors.FunctionColor);
             return functionStyle;

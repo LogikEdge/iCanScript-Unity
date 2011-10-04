@@ -114,7 +114,7 @@ public class WD_DataBase {
                                    string[] paramName, Type[] paramType, bool[] paramInOut,// Parameters info
                                    string retName, Type retType,                           // Return value info
                                    string toolTip, MethodInfo methodInfo) {
-        Debug.Log("Adding function: "+methodName+" from type: "+classType);
+//        Debug.Log("Adding function: "+methodName+" from type: "+classType);
         Functions.Add(new FunctionDesc(company, package, classType, methodName, toolTip, methodInfo));
     }
     // ----------------------------------------------------------------------
@@ -124,15 +124,30 @@ public class WD_DataBase {
                                 string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,                // Property info
                                 string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,  // Method info
                                 string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {     // Method parameter info
-        Debug.Log("Adding class: "+classType.Name);       
+//        Debug.Log("Adding class: "+classType.Name);       
         Classes.Add(new ClassDesc(company, package, classType,
                                   fieldNames, fieldTypes, fieldInOuts,
                                   propertyNames, propertyTypes, propertyInOuts,
                                   methodNames, returnNames, returnTypes, toolTips,
                                   parameterNames, parameterTypes, parameterInOuts));    
 
-        foreach(var p in propertyNames) {
-            Debug.Log("Property name: "+p);
-        }
+//        foreach(var p in propertyNames) {
+//            Debug.Log("Property name: "+p);
+//        }
+    }
+    // ----------------------------------------------------------------------
+    // Create an instance of a conversion function.
+    public object CreateInstance(ConversionDesc classDesc) {
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    // Create an instance of a function (no context).
+    public object CreateInstance(FunctionDesc funcDesc) {
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    // Create an instance of a class.
+    public object CreateInstance(ClassDesc classDesc) {
+        return null;
     }
 }
