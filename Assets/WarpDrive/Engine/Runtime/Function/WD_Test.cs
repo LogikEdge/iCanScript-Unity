@@ -33,3 +33,10 @@ public sealed class WD_Test2 {
     }
 
 }
+
+[WD_Class(Company="Infaunier",Package="Animation")]
+public sealed class Blend {
+    public bool IsReady {
+        [WD_Function] get { return true; }
+    }
+}

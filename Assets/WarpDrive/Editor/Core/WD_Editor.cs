@@ -223,7 +223,21 @@ public class WD_Editor : EditorWindow {
                 ProcessMainMenu(Mouse.RightButtonDownPosition);
                 break;
         }        
+
+        // Temporary Database display
+        string[] companies= WD_DataBase.GetCompanies();
+        float width= 0;
+        float height= 0;
+        foreach(var company in companies) {
+            Vector2 size= GUI.skin.button.CalcSize(new GUIContent(company));
+            if(size.x > width) width= size.x;
+            if(size.y > height) height= size.y;
+        }
+        selection= -1;
+        selection= GUI.SelectionGrid(new Rect(0,0,width,height*companies.Length), selection, companies, 1);
+        if(selection != -1) Debug.Log("Selection was changed to "+selection);
     }
+    int selection= -1;
     
 	// ----------------------------------------------------------------------
     void ProcessMainMenu(Vector2 position) {
