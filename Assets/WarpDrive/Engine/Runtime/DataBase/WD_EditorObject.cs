@@ -7,7 +7,7 @@ public class WD_EditorObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public enum DisplayTypeEnum { Port, Function, HiddenConversion, Class, Module, State, StateChart, Unknown }
+    public enum DisplayTypeEnum { Port, Function, HiddenConversion, Class, Module, State, Unknown }
     public DisplayTypeEnum  DisplayType  = DisplayTypeEnum.Unknown;
     public int              InstanceId   = -1;
     public int              ParentId     = -1;
@@ -43,13 +43,15 @@ public class WD_EditorObject {
         QualifiedType= type.AssemblyQualifiedName;
         IsDirty= true;
         LocalPosition= localPosition;
-        Case<WD_RootNode, WD_Top, WD_State, WD_Function, WD_Node, WD_Port>(
-            (root) =>  { },
-            (top)  =>  { },
+        Case<WD_RootNode, WD_Top, WD_StateChart, WD_State, WD_Module, WD_Function, WD_Node, WD_Port>(
+            (root)  => { },
+            (top)   => { },
+            (chart) => { DisplayType= DisplayTypeEnum.State; },
             (state) => { DisplayType= DisplayTypeEnum.State; },
+            (mod)   => { DisplayType= DisplayTypeEnum.Module; },
             (func)  => { DisplayType= DisplayTypeEnum.Function; },
-            (node) =>  { DisplayType= DisplayTypeEnum.Class; },
-            (port) =>  {
+            (node)  => { DisplayType= DisplayTypeEnum.Class; },
+            (port)  => {
                 DisplayType= DisplayTypeEnum.Port;
                 port.ExecuteIf<WD_FieldPort>(
                     (dataPort) => {
@@ -210,6 +212,55 @@ public class WD_EditorObject {
         else if(IsRuntimeA<T4>())    { fnc4(this); }
         else if(IsRuntimeA<T5>())    { fnc5(this); }
         else if(IsRuntimeA<T6>())    { fnc6(this); }
+        else if(defaultFnc != null)  { defaultFnc(this); }                                    
+    }
+    public void Case<T1,T2,T3,T4,T5,T6,T7>(Action<WD_EditorObject> fnc1,
+                                           Action<WD_EditorObject> fnc2,
+                                           Action<WD_EditorObject> fnc3,
+                                           Action<WD_EditorObject> fnc4,
+                                           Action<WD_EditorObject> fnc5,
+                                           Action<WD_EditorObject> fnc6,
+                                           Action<WD_EditorObject> fnc7,
+                                           Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
+                                                                                     where T2 : WD_Object
+                                                                                     where T3 : WD_Object
+                                                                                     where T4 : WD_Object
+                                                                                     where T5 : WD_Object
+                                                                                     where T6 : WD_Object
+                                                                                     where T7 : WD_Object {
+        if(IsRuntimeA<T1>())         { fnc1(this); }
+        else if(IsRuntimeA<T2>())    { fnc2(this); }
+        else if(IsRuntimeA<T3>())    { fnc3(this); }
+        else if(IsRuntimeA<T4>())    { fnc4(this); }
+        else if(IsRuntimeA<T5>())    { fnc5(this); }
+        else if(IsRuntimeA<T6>())    { fnc6(this); }
+        else if(IsRuntimeA<T7>())    { fnc7(this); }
+        else if(defaultFnc != null)  { defaultFnc(this); }                                    
+    }
+    public void Case<T1,T2,T3,T4,T5,T6,T7,T8>(Action<WD_EditorObject> fnc1,
+                                              Action<WD_EditorObject> fnc2,
+                                              Action<WD_EditorObject> fnc3,
+                                              Action<WD_EditorObject> fnc4,
+                                              Action<WD_EditorObject> fnc5,
+                                              Action<WD_EditorObject> fnc6,
+                                              Action<WD_EditorObject> fnc7,
+                                              Action<WD_EditorObject> fnc8,
+                                              Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
+                                                                                        where T2 : WD_Object
+                                                                                        where T3 : WD_Object
+                                                                                        where T4 : WD_Object
+                                                                                        where T5 : WD_Object
+                                                                                        where T6 : WD_Object
+                                                                                        where T7 : WD_Object
+                                                                                        where T8 : WD_Object {
+        if(IsRuntimeA<T1>())         { fnc1(this); }
+        else if(IsRuntimeA<T2>())    { fnc2(this); }
+        else if(IsRuntimeA<T3>())    { fnc3(this); }
+        else if(IsRuntimeA<T4>())    { fnc4(this); }
+        else if(IsRuntimeA<T5>())    { fnc5(this); }
+        else if(IsRuntimeA<T6>())    { fnc6(this); }
+        else if(IsRuntimeA<T7>())    { fnc7(this); }
+        else if(IsRuntimeA<T8>())    { fnc8(this); }
         else if(defaultFnc != null)  { defaultFnc(this); }                                    
     }
 

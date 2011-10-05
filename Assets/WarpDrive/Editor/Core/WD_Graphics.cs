@@ -226,19 +226,19 @@ public class WD_Graphics {
             GenerateNodeStyle(ref selectedStyle, graph.Preferences.NodeColors.SelectedColor);
             return selectedStyle;
         }
-        if(runtimeNode is WD_State || runtimeNode is WD_StateChart) {
+        if(node.DisplayType == WD_EditorObject.DisplayTypeEnum.State) {
             GenerateNodeStyle(ref stateStyle, graph.Preferences.NodeColors.StateColor);
             return stateStyle;
         }
-        if(runtimeNode is WD_Module) {
+        if(node.DisplayType == WD_EditorObject.DisplayTypeEnum.Module) {
             GenerateNodeStyle(ref moduleStyle, graph.Preferences.NodeColors.ModuleColor);
             return moduleStyle;
         }
-//        if(runtimeNode is WD_Class) {
-//            GenerateNodeStyle(ref classStyle, graph.Preferences.NodeColors.ClassColor);
-//            return functionStyle;
-//        }
-        if(runtimeNode is WD_Function || runtimeNode is WD_Action) {
+        if(node.DisplayType == WD_EditorObject.DisplayTypeEnum.Class) {
+            GenerateNodeStyle(ref classStyle, graph.Preferences.NodeColors.ClassColor);
+            return classStyle;
+        }
+        if(node.DisplayType == WD_EditorObject.DisplayTypeEnum.Function) {
             GenerateNodeStyle(ref functionStyle, graph.Preferences.NodeColors.FunctionColor);
             return functionStyle;
         }

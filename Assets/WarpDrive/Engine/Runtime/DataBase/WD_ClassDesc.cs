@@ -4,6 +4,9 @@ using System.Collections;
 using System.Reflection;
 
 public class WD_ClassDesc {
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
     public string       Company;
     public string       Package;
     public Type         ClassType;
@@ -21,6 +24,10 @@ public class WD_ClassDesc {
     public string[][]   ParameterNames;
     public Type[][]     ParameterTypes;
     public bool[][]     ParameterInOuts;
+
+    // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
     public WD_ClassDesc(string company, string package, Type classType,
                         string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,
                         string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,
@@ -44,4 +51,15 @@ public class WD_ClassDesc {
         ParameterTypes= parameterTypes;
         ParameterInOuts= parameterInOuts;
     }
+    // ----------------------------------------------------------------------
+    public object CreateRuntimeClass() {
+        return Inf.IsA(ClassType, typeof(ScriptableObject)) ?
+            ScriptableObject.CreateInstance(ClassType) :
+            Activator.CreateInstance(ClassType);            
+    }
+    // ----------------------------------------------------------------------
+    public object CreateEditorObjects(string name, WD_EditorObject parent, object rtObj) {
+        return null;
+    }
+    
 }
