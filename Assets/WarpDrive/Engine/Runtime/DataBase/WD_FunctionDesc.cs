@@ -3,9 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class WD_FunctionDesc {
-    public string       Company;
-    public string       Package;
+public class WD_FunctionDesc : WD_BaseDesc {
     public Type         ClassType;
     public string       MethodName;
     public string       ToolTip;
@@ -16,9 +14,7 @@ public class WD_FunctionDesc {
     public WD_FunctionDesc(string company, string package, Type classType,
                            string methodName, string toolTip,
                            string[] paramNames, Type[] paramTypes, bool[] paramInOuts,
-                           MethodInfo methodInfo) {
-        Company= company;
-        Package= package;
+                           MethodInfo methodInfo) : base(company, package) {
         ClassType = classType;
         MethodName= methodName;
         ToolTip   = toolTip;

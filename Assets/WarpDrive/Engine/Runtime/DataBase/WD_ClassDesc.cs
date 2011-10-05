@@ -3,12 +3,10 @@ using System;
 using System.Collections;
 using System.Reflection;
 
-public class WD_ClassDesc {
+public class WD_ClassDesc : WD_BaseDesc {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public string       Company;
-    public string       Package;
     public Type         ClassType;
     public string[]     FieldNames;
     public Type[]       FieldTypes;
@@ -32,9 +30,7 @@ public class WD_ClassDesc {
                         string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,
                         string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,
                         MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,
-                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {
-        Company= company;
-        Package= package;
+                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) : base (company, package) {
         ClassType= classType;
         FieldNames= fieldNames;
         FieldTypes= fieldTypes;

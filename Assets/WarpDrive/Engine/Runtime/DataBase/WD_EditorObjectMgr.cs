@@ -44,6 +44,35 @@ public class WD_EditorObjectMgr {
 
         return obj;
     }
+//    // ----------------------------------------------------------------------
+//    public WD_EditorObject CreateInstance(string name, int parentId, Vector2 initialPos) {
+//        // Find the next available id.
+//        int id= 0;
+//        while(id < EditorObjects.Count && EditorObjects[id].IsValid) { ++id; }
+//        if(id >= EditorObjects.Count) {
+//            id= EditorObjects.Count;
+//            EditorObjects.Add(null);
+//        }
+//        // Calcute the desired screen position of the new object.
+//        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
+//
+//        // Create new EditorObject
+//        WD_EditorObject obj= new WD_EditorObject(id, name, typeof(T), parentId, new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0));
+//        EditorObjects[id]= obj;
+//        T rtObj= obj.CreateRuntimeObject() as T;
+//        rtObj.Init(name, IsValid(parentId) ? TreeCache[parentId].RuntimeObject as WD_Aggregate: null);            
+//        TreeCache.CreateInstance(obj.InstanceId, parentId, rtObj);
+//        
+//        // Create ports for each field tagged with InPort or OutPort.
+//        foreach(var field in WD_Reflection.GetInPortFields(typeof(T))) {
+//            CreateInstance<WD_InFieldPort>(field.Name, obj.InstanceId, initialPos);
+//        }
+//        foreach(var field in WD_Reflection.GetOutPortFields(typeof(T))) {
+//            CreateInstance<WD_OutFieldPort>(field.Name, obj.InstanceId, initialPos);
+//        }
+//
+//        return obj;
+//    }
     // ----------------------------------------------------------------------
     public void DestroyInstance(int id) {
         if(IsInvalid(id)) {
