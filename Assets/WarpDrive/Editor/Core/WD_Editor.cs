@@ -377,7 +377,7 @@ public class WD_Editor : EditorWindow {
         }
 
         // Connect transition port together.
-        if(port.IsTransitionPort && overlappingPort.IsTransitionPort) {
+        if(port.IsStatePort && overlappingPort.IsStatePort) {
             return true;
         }
         

@@ -151,7 +151,7 @@ public class WD_Graphics {
     //  TOOL TIP
     // ---------------------------------------------------------------------
     public void ShowToolTip(WD_EditorObject obj, WD_Behaviour graph) {
-        if(obj.IsRuntimeA<WD_Port>()) {
+        if(obj.IsPort) {
             WD_EditorObject port= obj;
             Rect tmp= graph.EditorObjects.GetPosition(port);
             Vector2 pos= new Vector2(tmp.x, tmp.y);
