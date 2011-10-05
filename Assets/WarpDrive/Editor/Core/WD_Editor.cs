@@ -17,6 +17,7 @@ public class WD_Editor : EditorWindow {
     WD_EditorObject     RootNode       = null;
 	WD_Inspector        Inspector      = null;
     WD_EditorObject     DisplayRoot    = null;
+    WD_DynamicMenu      DynamicMenu    = null;
 
     // ----------------------------------------------------------------------
     public  WD_Mouse           Mouse           = null;
@@ -58,15 +59,17 @@ public class WD_Editor : EditorWindow {
         Mouse           = new WD_Mouse(this);
         Graphics        = new WD_Graphics();
         ScrollView      = new WD_ScrollView();
+        DynamicMenu     = new WD_DynamicMenu();
 	}
 
 	// ----------------------------------------------------------------------
     // Releases all resources used by the WD_Behaviour editor.
     void OnDisable() {
         // Release all worker objects.
-        Mouse           = null;
-        Graphics        = null;
-        ScrollView      = null;
+        Mouse       = null;
+        Graphics    = null;
+        ScrollView  = null;
+        DynamicMenu = null;
     }
     
     // ----------------------------------------------------------------------
@@ -220,24 +223,14 @@ public class WD_Editor : EditorWindow {
         // Process right button state.
         switch(Mouse.RightButtonState) {
             case WD_Mouse.ButtonStateEnum.SingleClick:
-                ProcessMainMenu(Mouse.RightButtonDownPosition);
+//                ProcessMainMenu(Mouse.RightButtonDownPosition);
+                DynamicMenu.Activate(Mouse.RightButtonDownPosition);
                 break;
         }        
 
-        // Temporary Database display
-        string[] companies= WD_DataBase.GetCompanies();
-        float width= 0;
-        float height= 0;
-        foreach(var company in companies) {
-            Vector2 size= GUI.skin.button.CalcSize(new GUIContent(company));
-            if(size.x > width) width= size.x;
-            if(size.y > height) height= size.y;
-        }
-        selection= -1;
-        selection= GUI.SelectionGrid(new Rect(0,0,width,height*companies.Length), selection, companies, 1);
-        if(selection != -1) Debug.Log("Selection was changed to "+selection);
+        // Display dynamic menu.
+        DynamicMenu.Update(Mouse.RightButtonDownPosition);
     }
-    int selection= -1;
     
 	// ----------------------------------------------------------------------
     void ProcessMainMenu(Vector2 position) {
