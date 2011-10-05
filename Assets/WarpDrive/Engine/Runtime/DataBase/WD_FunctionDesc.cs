@@ -5,7 +5,6 @@ using System.Collections;
 
 public class WD_FunctionDesc : WD_BaseDesc {
     public Type         ClassType;
-    public string       MethodName;
     public string       ToolTip;
     public string[]     ParameterNames;
     public Type[]       ParameterTypes;
@@ -14,9 +13,8 @@ public class WD_FunctionDesc : WD_BaseDesc {
     public WD_FunctionDesc(string company, string package, Type classType,
                            string methodName, string toolTip,
                            string[] paramNames, Type[] paramTypes, bool[] paramInOuts,
-                           MethodInfo methodInfo) : base(company, package) {
+                           MethodInfo methodInfo) : base(company, package, methodName) {
         ClassType = classType;
-        MethodName= methodName;
         ToolTip   = toolTip;
         ParameterNames = paramNames;
         ParameterTypes = paramTypes;

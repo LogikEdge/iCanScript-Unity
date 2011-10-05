@@ -30,7 +30,7 @@ public class WD_ClassDesc : WD_BaseDesc {
                         string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,
                         string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,
                         MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,
-                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) : base (company, package) {
+                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) : base (company, package, classType.Name) {
         ClassType= classType;
         FieldNames= fieldNames;
         FieldTypes= fieldTypes;

@@ -13,6 +13,78 @@ public class WD_DataBase {
     public static List<WD_ClassDesc>       Classes    = new List<WD_ClassDesc>();
     
     // ======================================================================
+    // DataBase functionality
+    // ----------------------------------------------------------------------
+    // Returns all the company names for which a WarpDrive component exists.
+    public static string[] GetCompanies() {
+        List<string> companies= new List<string>();
+        foreach(var conv in Conversions) {
+            WarpDrive.AddUniqu<string>(conv.Company, companies);
+        }
+        foreach(var func in Functions) {
+            WarpDrive.AddUniqu<string>(func.Company, companies);
+        }
+        foreach(var cls in Classes) {
+            WarpDrive.AddUniqu<string>(cls.Company, companies);
+        }
+        return companies.ToArray();
+    }
+    // ----------------------------------------------------------------------
+    // Returns all available packages of the given company.
+    public static string[] GetPackages(string company) {
+        List<string> packages= new List<string>();
+        foreach(var conv in Conversions) {
+            if(conv.Company == company) {
+                WarpDrive.AddUniqu<string>(conv.Package, packages);                
+            }
+        }
+        foreach(var func in Functions) {
+            if(func.Company == company) {
+                WarpDrive.AddUniqu<string>(func.Package, packages);                
+            }
+        }
+        foreach(var cls in Classes) {
+            if(cls.Company == company) {
+                WarpDrive.AddUniqu<string>(cls.Package, packages);                
+            }
+        }
+        return packages.ToArray();
+    }
+    // ----------------------------------------------------------------------
+    // Returns all available conversions of the given company/package.
+    public static string[] GetConversions(string company, string package) {
+        List<string> conversions= new List<string>();
+        foreach(var conv in Conversions) {
+            if(conv.Company == company && conv.Package == package) {
+                WarpDrive.AddUniqu<string>(conv.Name, conversions);                
+            }
+        }
+        return conversions.ToArray();        
+    }
+    // ----------------------------------------------------------------------
+    // Returns all available functions of the given company/package.
+    public static string[] GetFunctions(string company, string package) {
+        List<string> functions= new List<string>();
+        foreach(var func in Functions) {
+            if(func.Company == company && func.Package == package) {
+                WarpDrive.AddUniqu<string>(func.Name, functions);                
+            }
+        }
+        return functions.ToArray();
+    }
+    // ----------------------------------------------------------------------
+    // Returns all available classes of the given company/package.
+    public static string[] GetClasses(string company, string package) {
+        List<string> classes= new List<string>();
+        foreach(var cls in Classes) {
+            if(cls.Company == company && cls.Package == package) {
+                WarpDrive.AddUniqu<string>(cls.Name, classes);                
+            }
+        }
+        return classes.ToArray();
+    }
+    
+    // ======================================================================
     // Container management functions
     // ----------------------------------------------------------------------
     // Removes all previously recorded functions.
@@ -67,19 +139,6 @@ public class WD_DataBase {
                                      methodInfos, methodNames, returnNames, returnTypes, toolTips,
                                      parameterNames, parameterTypes, parameterInOuts));    
     }
-    // ----------------------------------------------------------------------
-    // Create an instance of a conversion function.
-    public object CreateInstance(WD_ConversionDesc convDesc) {
-        return null;
-    }
-    // ----------------------------------------------------------------------
-    // Create an instance of a function (no context).
-    public object CreateInstance(WD_FunctionDesc funcDesc) {
-        return null;
-    }
-    // ----------------------------------------------------------------------
-    // Create an instance of a class.
-    public object CreateInstance(WD_ClassDesc classDesc) {
-        return null;
-    }
+
+
 }

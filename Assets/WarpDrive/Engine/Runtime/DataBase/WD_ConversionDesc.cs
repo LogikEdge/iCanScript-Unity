@@ -7,7 +7,7 @@ public class WD_ConversionDesc : WD_BaseDesc {
     public MethodInfo  Method;
     public Type        FromType;
     public Type        ToType;
-    public WD_ConversionDesc(string company, string package, MethodInfo methodInfo, Type fromType, Type toType) : base(company, package) {
+    public WD_ConversionDesc(string company, string package, MethodInfo methodInfo, Type fromType, Type toType) : base(company, package, fromType.Name+"->"+toType.Name) {
         Method= methodInfo;
         FromType= fromType;
         ToType= toType;
