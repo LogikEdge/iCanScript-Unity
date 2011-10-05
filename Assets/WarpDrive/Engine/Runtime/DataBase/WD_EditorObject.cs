@@ -103,14 +103,19 @@ public class WD_EditorObject {
         return IsRuntimeA(typeof(T));
     }
     // ----------------------------------------------------------------------
-    public bool IsPort           { get { return IsRuntimeA<WD_Port>(); }}
-    public bool IsFunctionPort   { get { return IsRuntimeA<WD_InFieldPort>() || IsRuntimeA<WD_OutFieldPort>(); }}
-    public bool IsModulePort     { get { return IsRuntimeA<WD_InModulePort>() || IsRuntimeA<WD_OutModulePort>(); }}
-    public bool IsTransitionPort { get { return IsRuntimeA<WD_InTransitionPort>() || IsRuntimeA<WD_OutTransitionPort>(); }}
-    public bool IsEnablePort     { get { return IsRuntimeA<WD_EnablePort>(); }}
-    public bool IsDataPort       { get { return IsFunctionPort || IsModulePort || IsEnablePort; }}
-    public bool IsInputPort      { get { return IsRuntimeA<WD_InFieldPort>() || IsRuntimeA<WD_InModulePort>() || IsRuntimeA<WD_InTransitionPort>() || IsRuntimeA<WD_EnablePort>(); }}
-    public bool IsOutputPort     { get { return !IsInputPort; }}
+    public bool IsState            { get { return DisplayType == DisplayTypeEnum.State; }}
+    public bool IsModule           { get { return DisplayType == DisplayTypeEnum.Module; }}
+    public bool IsClass            { get { return DisplayType == DisplayTypeEnum.Class; }}
+    public bool IsFunction         { get { return DisplayType == DisplayTypeEnum.Function; }}
+    public bool IsHiddenConversion { get { return DisplayType == DisplayTypeEnum.HiddenConversion; }}
+    public bool IsPort             { get { return DisplayType == DisplayTypeEnum.Port; }}
+    public bool IsFunctionPort     { get { return IsRuntimeA<WD_InFieldPort>() || IsRuntimeA<WD_OutFieldPort>(); }}
+    public bool IsModulePort       { get { return IsRuntimeA<WD_InModulePort>() || IsRuntimeA<WD_OutModulePort>(); }}
+    public bool IsTransitionPort   { get { return IsRuntimeA<WD_InTransitionPort>() || IsRuntimeA<WD_OutTransitionPort>(); }}
+    public bool IsEnablePort       { get { return IsRuntimeA<WD_EnablePort>(); }}
+    public bool IsDataPort         { get { return IsFunctionPort || IsModulePort || IsEnablePort; }}
+    public bool IsInputPort        { get { return IsRuntimeA<WD_InFieldPort>() || IsRuntimeA<WD_InModulePort>() || IsRuntimeA<WD_InTransitionPort>() || IsRuntimeA<WD_EnablePort>(); }}
+    public bool IsOutputPort       { get { return !IsInputPort; }}
     
     // ======================================================================
     // Accessors
