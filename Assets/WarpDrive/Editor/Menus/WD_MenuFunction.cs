@@ -8,9 +8,8 @@ public class WD_MenuFunction {
     public static void DeleteObject(MenuCommand command) {    
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject function= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         if(EditorUtility.DisplayDialog("Deleting Function", "Are you sure you want to delete function: "+function.NameOrTypeName+"?", "Delete", "Cancel")) {
-            editorObjects.DestroyInstance(function);
+            context.EditorObjects.DestroyInstance(function);
         }                
         WD_MenuContext.DestroyImmediate(context);
     }

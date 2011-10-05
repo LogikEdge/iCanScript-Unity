@@ -9,8 +9,7 @@ public class WD_MenuGameObject {
     public static void AddNodeCGameObject(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_LogWarning>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_LogWarning>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/GameObject/CGameObject", true)]
@@ -23,8 +22,7 @@ public class WD_MenuGameObject {
     public static void AddNodeGameObjectTransform(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_Transform>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_Transform>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/GameObject/Transform", true)]

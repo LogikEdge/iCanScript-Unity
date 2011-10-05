@@ -47,7 +47,7 @@ public class WD_Inspector : Editor {
         }
 
         // Configure the editor with the selected graph.
-        Editor.Activate(Graph, this);
+        Editor.Activate(Graph, Graph.Preferences, Graph.EditorObjects, this);
 	}
 	
 	// ----------------------------------------------------------------------

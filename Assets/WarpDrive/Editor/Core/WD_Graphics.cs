@@ -198,14 +198,14 @@ public class WD_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    public void DrawNode(WD_EditorObject node, WD_EditorObject selectedObject, WD_Behaviour graph) {
+    public void DrawNode(WD_EditorObject node, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
         // Don't show hiden nodes.
         if(node.IsVisible == false) return;
         
         // Draw node box.
         string title= ObjectNames.NicifyVariableName(node.NameOrTypeName);
-        GUIStyle guiStyle= GetNodeGUIStyle(node, selectedObject, graph);
-        Rect position= graph.EditorObjects.GetPosition(node);
+        GUIStyle guiStyle= GetNodeGUIStyle(node, selectedObject, userPreferences, editorObjects);
+        Rect position= editorObjects.GetPosition(node);
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
         float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
         position.x-= leftOffset;
@@ -215,64 +215,64 @@ public class WD_Graphics {
         GUI.Box(position, title, guiStyle);            
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, WD_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
     }
-    NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Behaviour graph) {
+    NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
         // Node background is dependant on node type.
-        WD_Node runtimeNode= graph.EditorObjects.GetRuntimeObject(node) as WD_Node;
+        WD_Node runtimeNode= editorObjects.GetRuntimeObject(node) as WD_Node;
         if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
             GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
             return nodeInErrorStyle;
         }
         if(node == selectedObject) {
-            GenerateNodeStyle(ref selectedStyle, graph.Preferences.NodeColors.SelectedColor);
+            GenerateNodeStyle(ref selectedStyle, userPreferences.NodeColors.SelectedColor);
             return selectedStyle;
         }
         if(node.IsState) {
-            GenerateNodeStyle(ref stateStyle, graph.Preferences.NodeColors.StateColor);
+            GenerateNodeStyle(ref stateStyle, userPreferences.NodeColors.StateColor);
             return stateStyle;
         }
         if(node.IsModule) {
-            GenerateNodeStyle(ref moduleStyle, graph.Preferences.NodeColors.ModuleColor);
+            GenerateNodeStyle(ref moduleStyle, userPreferences.NodeColors.ModuleColor);
             return moduleStyle;
         }
         if(node.IsClass) {
-            GenerateNodeStyle(ref classStyle, graph.Preferences.NodeColors.ClassColor);
+            GenerateNodeStyle(ref classStyle, userPreferences.NodeColors.ClassColor);
             return classStyle;
         }
         if(node.IsFunction) {
-            GenerateNodeStyle(ref functionStyle, graph.Preferences.NodeColors.FunctionColor);
+            GenerateNodeStyle(ref functionStyle, userPreferences.NodeColors.FunctionColor);
             return functionStyle;
         }
         GenerateNodeStyle(ref defaultStyle, Color.gray);
         return defaultStyle;
     }
-    GUIStyle GetNodeGUIStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Behaviour graph) {
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, graph);
+    GUIStyle GetNodeGUIStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, userPreferences, editorObjects);
         return nodeStyle.guiStyle;
     }
     
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
-    Color GetNodeColor(WD_EditorObject node, WD_EditorObject selectedObject, WD_Behaviour graph) {
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, graph);
+    Color GetNodeColor(WD_EditorObject node, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, userPreferences, editorObjects);
         return nodeStyle.nodeColor;
     }
     
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
-    public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_Behaviour graph) {
+    public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
         // Only draw visible data ports.
         if(port.IsVisible == false || port.IsRuntimeA<WD_FieldPort>() == false) return;
 
         // Build visible port name
-        WD_EditorObject portParent= graph.EditorObjects[port.ParentId];
+        WD_EditorObject portParent= editorObjects[port.ParentId];
         Type portValueType= WD_Reflection.GetPortFieldType(port, portParent);
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
          
-        Rect tmp= graph.EditorObjects.GetPosition(port);
+        Rect tmp= editorObjects.GetPosition(port);
         Vector2 pos= new Vector2(tmp.x, tmp.y);
         Color portColor= WD_TypeSystem.GetDisplayColor(portValueType);
-        Color nodeColor= GetNodeColor(portParent, selectedObject, graph);
+        Color nodeColor= GetNodeColor(portParent, selectedObject, userPreferences, editorObjects);
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show name if requested.
         Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);
@@ -475,17 +475,17 @@ public class WD_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_Behaviour graph) {
+    public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
         // Only data connection are drawn.
         if(!(port.IsRuntimeA<WD_FieldPort>())) return;
         
-        if(graph.EditorObjects[port.ParentId].IsVisible) {
-            if(graph.EditorObjects.IsValid(port.Source)) {
-                WD_EditorObject source= graph.EditorObjects[port.Source];
-                WD_EditorObject sourceParent= graph.EditorObjects[source.ParentId];
+        if(editorObjects[port.ParentId].IsVisible) {
+            if(editorObjects.IsValid(port.Source)) {
+                WD_EditorObject source= editorObjects[port.Source];
+                WD_EditorObject sourceParent= editorObjects[source.ParentId];
                 if(sourceParent.IsVisible) {
-                    Rect sourcePos= graph.EditorObjects.GetPosition(source);
-                    Rect portPos  = graph.EditorObjects.GetPosition(port);
+                    Rect sourcePos= editorObjects.GetPosition(source);
+                    Rect portPos  = editorObjects.GetPosition(port);
                     Vector2 start= new Vector2(sourcePos.x, sourcePos.y);
                     Vector2 end= new Vector2(portPos.x, portPos.y);
                     Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;

@@ -9,8 +9,7 @@ public class WD_MenuSystem {
     public static void AddNodeGameTimeFrameTime(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_Time>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_Time>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/System/FrameTime", true)]

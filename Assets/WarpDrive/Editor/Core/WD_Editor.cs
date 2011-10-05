@@ -11,11 +11,12 @@ public class WD_Editor : EditorWindow {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    WD_Behaviour        Graph        = null;
-    WD_EditorObjectMgr  EditorObjects= null;
-    WD_EditorObject     RootNode     = null;
-	WD_Inspector        Inspector    = null;
-    WD_EditorObject     DisplayRoot  = null;
+    UnityEngine.Object  Storage        = null;
+    WD_UserPreferences  UserPreferences= null;
+    WD_EditorObjectMgr  EditorObjects  = null;
+    WD_EditorObject     RootNode       = null;
+	WD_Inspector        Inspector      = null;
+    WD_EditorObject     DisplayRoot    = null;
 
     // ----------------------------------------------------------------------
     public  WD_Mouse           Mouse           = null;
@@ -70,21 +71,23 @@ public class WD_Editor : EditorWindow {
     
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.
-	public void Activate(WD_Behaviour graph, WD_Inspector _inspector) {
-        Graph= graph;
-        EditorObjects= graph.EditorObjects;
+	public void Activate(UnityEngine.Object storage, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects, WD_Inspector inspector) {
+        Storage= storage;
+        UserPreferences= userPreferences;
+        EditorObjects= editorObjects;
         RootNode= EditorObjects.GetRootNode();
         DisplayRoot= RootNode;
-        Inspector= _inspector;
+        Inspector= inspector;
     }
     
     // ----------------------------------------------------------------------
     public void Deactivate() {
-        Inspector    = null;
-		DisplayRoot  = null;
-		RootNode     = null;
-		EditorObjects= null;
-		Graph        = null;
+        Inspector      = null;
+		DisplayRoot    = null;
+		RootNode       = null;
+		EditorObjects  = null;
+        UserPreferences= null;
+		Storage        = null;
     }
 
 	// ----------------------------------------------------------------------
@@ -92,7 +95,8 @@ public class WD_Editor : EditorWindow {
     // to execute.
 	public bool IsInitialized() {
         // Nothing to do if we don't have a Graph to edit...
-		if(Graph == null ||
+		if(Storage == null ||
+           UserPreferences == null ||
 		   EditorObjects == null ||
 		   RootNode == null ||
 		   Inspector == null ||
@@ -131,9 +135,7 @@ public class WD_Editor : EditorWindow {
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
         // Update scroll view.
-        Inf.DebugWarning(ScrollView == null, "ScrollView not set");
-        Inf.DebugWarning(Graph == null, "Graph is not set");
-        ScrollView.Update(position, Graph.EditorObjects.GetPosition(DisplayRoot));
+        ScrollView.Update(position, EditorObjects.GetPosition(DisplayRoot));
         
 		// Draw editor widgets.
 		DrawEditorWidgets();
@@ -148,10 +150,10 @@ public class WD_Editor : EditorWindow {
         ProcessEvents();
         
         // Process new accumulated commands.
-        if(Graph.IsDirty) {
-            Graph.IsDirty= false;
-            Undo.RegisterUndo(Graph, "WarpDrive");
-            EditorUtility.SetDirty(Graph);
+        if(EditorObjects.IsDirty) {
+            EditorObjects.IsDirty= false;
+            Undo.RegisterUndo(Storage, "WarpDrive");
+            EditorUtility.SetDirty(Storage);
         }
 	}
 
@@ -227,7 +229,7 @@ public class WD_Editor : EditorWindow {
     void ProcessMainMenu(Vector2 position) {
         WD_EditorObject selectedObject= GetObjectAtScreenPosition(position);
         if(selectedObject == null) return;
-        WD_MenuContext context= WD_MenuContext.CreateInstance(selectedObject, position, ScrollView.ScreenToGraph(position), Graph);
+        WD_MenuContext context= WD_MenuContext.CreateInstance(selectedObject, position, ScrollView.ScreenToGraph(position), EditorObjects);
         string menuName= "CONTEXT/"+WD_EditorConfig.ProductName;
         if(selectedObject.IsRuntimeA<WD_RootNode>()) menuName+= "/RootNode";
         else if(selectedObject.IsRuntimeA<WD_StateChart>()) menuName+= "/StateChart";
@@ -391,9 +393,9 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawGrid() {
         Graphics.DrawGrid(position,
-                          Graph.Preferences.Grid.BackgroundColor,
-                          Graph.Preferences.Grid.GridColor,
-                          Graph.Preferences.Grid.GridSpacing,
+                          UserPreferences.Grid.BackgroundColor,
+                          UserPreferences.Grid.GridColor,
+                          UserPreferences.Grid.GridSpacing,
                           ScrollView.ScreenToGraph(Vector2.zero));
     }
     
@@ -423,7 +425,7 @@ public class WD_Editor : EditorWindow {
         // Display node starting from the root node.
         EditorObjects.ForEachRecursiveDepthLast<WD_Node>(DisplayRoot,
             (node)=> {
-                Graphics.DrawNode(node, SelectedObject, Graph);
+                Graphics.DrawNode(node, SelectedObject, UserPreferences, EditorObjects);
             }
         );
     }	
@@ -431,10 +433,10 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        EditorObjects.ForEachChildRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawConnection(port, SelectedObject, Graph); } );
+        EditorObjects.ForEachChildRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawConnection(port, SelectedObject, UserPreferences, EditorObjects); } );
 
         // Display ports.
-        EditorObjects.ForEachChildRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawPort(port, SelectedObject, Graph); } );
+        EditorObjects.ForEachChildRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawPort(port, SelectedObject, UserPreferences, EditorObjects); } );
     }
 
 }

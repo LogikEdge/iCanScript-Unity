@@ -9,8 +9,7 @@ public class WD_MenuAnimation {
     public static void AddNodeAnimBlend(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_AnimBlend>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_AnimBlend>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Animation/Blend", true)]
@@ -23,8 +22,7 @@ public class WD_MenuAnimation {
     public static void AddNodeAnimSelect(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_AnimSelect>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_AnimSelect>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Animation/Select", true)]
@@ -37,8 +35,7 @@ public class WD_MenuAnimation {
     public static void AddNodeAnimState(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_AnimState>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_AnimState>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Animation/State", true)]
@@ -51,8 +48,7 @@ public class WD_MenuAnimation {
     public static void AddNodeAnimDiversity(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_AnimDiversity>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_AnimDiversity>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Animation/Diversity", true)]

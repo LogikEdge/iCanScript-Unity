@@ -8,8 +8,7 @@ public class WD_MenuMath3D {
     public static void AddNodeCInt(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_ConstInt>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_ConstInt>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/Const Int", true)]
@@ -22,8 +21,7 @@ public class WD_MenuMath3D {
     public static void AddNodeCFloat(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_ConstFloat>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_ConstFloat>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/Const Float", true)]
@@ -36,8 +34,7 @@ public class WD_MenuMath3D {
     public static void AddNodeScaleVector2(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_ScaleVector2>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_ScaleVector2>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/ScaleVector2", true)]
@@ -50,8 +47,7 @@ public class WD_MenuMath3D {
     public static void AddNodeScaleVector3(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_ScaleVector3>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_ScaleVector3>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/ScaleVector3", true)]
@@ -64,8 +60,7 @@ public class WD_MenuMath3D {
     public static void AddNodeScaleVector4(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_ScaleVector4>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_ScaleVector4>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/ScaleVector4", true)]
@@ -78,8 +73,7 @@ public class WD_MenuMath3D {
     public static void AddNodeScale2Vector2(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_Scale2Vector2>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_Scale2Vector2>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/Scale2Vector2", true)]
@@ -92,8 +86,7 @@ public class WD_MenuMath3D {
     public static void AddNodeScale2Vector3(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_Scale2Vector3>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_Scale2Vector3>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/Scale2Vector3", true)]
@@ -106,8 +99,7 @@ public class WD_MenuMath3D {
     public static void AddNodeScale2Vector4(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_Scale2Vector4>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_Scale2Vector4>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/Scale2Vector4", true)]
@@ -120,8 +112,7 @@ public class WD_MenuMath3D {
     public static void AddNodeAddInt(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_AddInt>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_AddInt>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/AddInt", true)]
@@ -134,8 +125,7 @@ public class WD_MenuMath3D {
     public static void AddNodeAddFloat(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_AddFloat>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_AddFloat>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/AddFloat", true)]
@@ -148,8 +138,7 @@ public class WD_MenuMath3D {
     public static void AddNodeAddVector2(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_AddVector2>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_AddVector2>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/AddVector2", true)]
@@ -162,8 +151,7 @@ public class WD_MenuMath3D {
     public static void AddNodeAddVector3(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_AddVector3>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_AddVector3>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/AddVector3", true)]
@@ -176,8 +164,7 @@ public class WD_MenuMath3D {
     public static void AddNodeAddVector4(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_AddVector4>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_AddVector4>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/AddVector4", true)]
@@ -190,8 +177,7 @@ public class WD_MenuMath3D {
     public static void AddNodeCosWave(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_CosWave>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_CosWave>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/CosWave", true)]
@@ -204,8 +190,7 @@ public class WD_MenuMath3D {
     public static void AddNodeSinWave(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_SinWave>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_SinWave>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/SinWave", true)]
@@ -218,8 +203,7 @@ public class WD_MenuMath3D {
     public static void AddNodeToVector2(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_ToVector2>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_ToVector2>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/ToVector2", true)]
@@ -232,8 +216,7 @@ public class WD_MenuMath3D {
     public static void AddNodeToVector3(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_ToVector3>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_ToVector3>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/ToVector3", true)]
@@ -246,8 +229,7 @@ public class WD_MenuMath3D {
     public static void AddNodeToVector4(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_ToVector4>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_ToVector4>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/ToVector4", true)]
@@ -260,8 +242,7 @@ public class WD_MenuMath3D {
     public static void AddNodeFromVector2(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_FromVector2>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_FromVector2>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/FromVector2", true)]
@@ -274,8 +255,7 @@ public class WD_MenuMath3D {
     public static void AddNodeFromVector3(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_FromVector3>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_FromVector3>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/FromVector3", true)]
@@ -288,8 +268,7 @@ public class WD_MenuMath3D {
     public static void AddNodeFromVector4(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_FromVector4>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_FromVector4>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/FromVector4", true)]
@@ -302,8 +281,7 @@ public class WD_MenuMath3D {
     public static void AddNodeLerpInt(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_LerpInt>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_LerpInt>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/LerpInt", true)]
@@ -316,8 +294,7 @@ public class WD_MenuMath3D {
     public static void AddNodeLerpFloat(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_LerpFloat>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_LerpFloat>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/LerpFloat", true)]
@@ -330,8 +307,7 @@ public class WD_MenuMath3D {
     public static void AddNodeLerpVector2(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_LerpVector2>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_LerpVector2>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/LerpVector2", true)]
@@ -344,8 +320,7 @@ public class WD_MenuMath3D {
     public static void AddNodeLerpVector3(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_LerpVector3>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_LerpVector3>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/LerpVector3", true)]
@@ -358,8 +333,7 @@ public class WD_MenuMath3D {
     public static void AddNodeLerpVector4(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_LerpVector4>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_LerpVector4>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/LerpVector4", true)]
@@ -372,8 +346,7 @@ public class WD_MenuMath3D {
     public static void AddNodeRandom(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_Random>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_Random>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/Random", true)]
@@ -386,8 +359,7 @@ public class WD_MenuMath3D {
     public static void AddNodeRandomVector2(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_RandomVector2>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_RandomVector2>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/RandomVector2", true)]
@@ -400,8 +372,7 @@ public class WD_MenuMath3D {
     public static void AddNodeRandomVector3(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject parent= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
-        editorObjects.CreateInstance<WD_RandomVector3>("", parent.InstanceId, context.GraphPosition);
+        context.EditorObjects.CreateInstance<WD_RandomVector3>("", parent.InstanceId, context.GraphPosition);
         WD_MenuContext.DestroyImmediate(context);
     }
     [MenuItem("CONTEXT/WarpDrive/Module/Math3D/RandomVector3", true)]

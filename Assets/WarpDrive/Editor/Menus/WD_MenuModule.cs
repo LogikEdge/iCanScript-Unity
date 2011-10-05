@@ -8,7 +8,7 @@ public class WD_MenuModule {
     public static void AddStateChart(MenuCommand command) {
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject module= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
+        WD_EditorObjectMgr editorObjects= context.EditorObjects;
         WD_EditorObject stateChart= editorObjects.CreateInstance<WD_StateChart>("", module.InstanceId, context.GraphPosition);
         // Add initial state.
         WD_EditorObject state= editorObjects.CreateInstance<WD_State>("", stateChart.InstanceId, context.GraphPosition);
@@ -27,9 +27,8 @@ public class WD_MenuModule {
     public static void DeleteObject(MenuCommand command) {    
         WD_MenuContext context= command.context as WD_MenuContext;
         WD_EditorObject module= context.SelectedObject;
-        WD_EditorObjectMgr editorObjects= context.Graph.EditorObjects;
         if(EditorUtility.DisplayDialog("Deleting Module", "Are you sure you want to delete module: "+module.NameOrTypeName+"?", "Delete", "Cancel")) {
-            editorObjects.DestroyInstance(module);
+            context.EditorObjects.DestroyInstance(module);
         }                
         WD_MenuContext.DestroyImmediate(context);
     }
