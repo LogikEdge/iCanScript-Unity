@@ -107,12 +107,21 @@ public class WD_TreeCache {
     // ======================================================================
     // Tree Iterations
     // ----------------------------------------------------------------------
+    public void ForEachChild(Action<int> fnc) {
+        for(int id= 0; id < TreeCache.Count; ++id) {
+            if(IsValid(id) && TreeCache[id].ParentId == -1) fnc(id);
+        }
+    }
     public void ForEachChild(int id, Action<int> fnc) {
         if(IsInvalid(id)) return;
         TreeNode nd= TreeCache[id];
         foreach(var child in nd.Children) {
             if(TreeCache[id].IsValid) fnc(child);
         }
+    }
+    // ----------------------------------------------------------------------
+    public void ForEachRecursiveDepthFirst(Action<int> fnc) {
+        ForEachChild((child) => { ForEachRecursiveDepthFirst(child, fnc); });
     }
     public void ForEachRecursiveDepthFirst(int id, Action<int> fnc) {
         // Nothing to do if the id is invalid.
@@ -130,6 +139,9 @@ public class WD_TreeCache {
         // ... then this node.
         fnc(id);
     }
+    public void ForEachRecursiveDepthLast(Action<int> fnc) {
+        ForEachChild((child) => { ForEachRecursiveDepthLast(child, fnc); });
+    }
     public void ForEachRecursiveDepthLast(int id, Action<int> fnc) {
         // Nothing to do if the id is invalid
         if(IsInvalid(id)) return;
@@ -146,6 +158,7 @@ public class WD_TreeCache {
             ForEachRecursiveDepthLast(child, fnc);
         }
     }
+    // ----------------------------------------------------------------------
     public void ForEachChildRecursiveDepthFirst(int id, Action<int> fnc) {
         // Nothing to do if the id is invalid.
         if(IsInvalid(id)) return;

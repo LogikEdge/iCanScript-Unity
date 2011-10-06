@@ -14,7 +14,6 @@ public class WD_Editor : EditorWindow {
     UnityEngine.Object  Storage        = null;
     WD_UserPreferences  UserPreferences= null;
     WD_EditorObjectMgr  EditorObjects  = null;
-    WD_EditorObject     RootNode       = null;
 	WD_Inspector        Inspector      = null;
     WD_EditorObject     DisplayRoot    = null;
     WD_DynamicMenu      DynamicMenu    = null;
@@ -78,8 +77,7 @@ public class WD_Editor : EditorWindow {
         Storage= storage;
         UserPreferences= userPreferences;
         EditorObjects= editorObjects;
-        RootNode= EditorObjects.GetRootNode();
-        DisplayRoot= RootNode;
+        DisplayRoot= null;
         Inspector= inspector;
     }
     
@@ -87,7 +85,6 @@ public class WD_Editor : EditorWindow {
     public void Deactivate() {
         Inspector      = null;
 		DisplayRoot    = null;
-		RootNode       = null;
 		EditorObjects  = null;
         UserPreferences= null;
 		Storage        = null;
@@ -101,9 +98,7 @@ public class WD_Editor : EditorWindow {
 		if(Storage == null ||
            UserPreferences == null ||
 		   EditorObjects == null ||
-		   RootNode == null ||
-		   Inspector == null ||
-           DisplayRoot == null) {
+		   Inspector == null) {
                return false;
         }
         
@@ -138,7 +133,8 @@ public class WD_Editor : EditorWindow {
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
         // Update scroll view.
-        ScrollView.Update(position, EditorObjects.GetPosition(DisplayRoot));
+        Rect scrollViewPosition= DisplayRoot != null ? EditorObjects.GetPosition(DisplayRoot) : new Rect(0,0,500,500);
+        ScrollView.Update(position, scrollViewPosition);
         
 		// Draw editor widgets.
 		DrawEditorWidgets();
@@ -281,7 +277,7 @@ public class WD_Editor : EditorWindow {
 
         // Compute new object position.
         Vector2 delta= MousePosition - ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
-        if(DragObject.IsRuntimeA<WD_Port>()) {
+        if(DragObject.IsPort) {
             port= DragObject;
             Vector2 newLocalPos= DragStartPosition+delta;
             port.LocalPosition.x= newLocalPos.x;
@@ -293,7 +289,7 @@ public class WD_Editor : EditorWindow {
             */    
             }
         }
-        if(DragObject.IsRuntimeA<WD_Node>()) {
+        if(DragObject.IsNode) {
             node= DragObject;
             EditorObjects.MoveTo(node, DragStartPosition+delta);
             node.IsDirty= true;                        
@@ -302,7 +298,7 @@ public class WD_Editor : EditorWindow {
 
 	// ----------------------------------------------------------------------
     void EndDragging() {
-        if(DragObject.IsRuntimeA<WD_Port>()) {
+        if(DragObject.IsPort) {
             WD_EditorObject port= DragObject;
             port.IsBeingDragged= false;
             // Verify for a new connection.

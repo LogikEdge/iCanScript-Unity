@@ -101,6 +101,7 @@ public class WD_EditorObject {
         return IsRuntimeA(typeof(T));
     }
     // ----------------------------------------------------------------------
+    public bool IsNode             { get { return IsState || IsModule || IsClass || IsFunction; }}
     public bool IsState            { get { return DisplayType == WD_DisplayTypeEnum.State; }}
     public bool IsModule           { get { return DisplayType == WD_DisplayTypeEnum.Module; }}
     public bool IsClass            { get { return DisplayType == WD_DisplayTypeEnum.Class; }}
