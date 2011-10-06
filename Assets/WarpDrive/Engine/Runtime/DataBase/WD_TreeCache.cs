@@ -3,6 +3,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+// --------------------------------------------------------------------------
+// An instance of this class is dynamically created from the EditorObjects.
 [System.Serializable]
 public class WD_TreeCache {
     // ======================================================================

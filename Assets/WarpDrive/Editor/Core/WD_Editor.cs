@@ -24,11 +24,6 @@ public class WD_Editor : EditorWindow {
     public  WD_ScrollView      ScrollView      = null;
     
     // ----------------------------------------------------------------------
-    bool    IsRootNodeSelected  { get { return SelectedObject.IsRuntimeA<WD_RootNode>(); }}
-    bool    IsNodeSelected      { get { return SelectedObject.IsRuntimeA<WD_Node>(); }}
-    bool    IsPortSelected      { get { return SelectedObject.IsRuntimeA<WD_Port>(); }}
-    
-    // ----------------------------------------------------------------------
     WD_EditorObject DragObject          = null;
     Vector2         DragStartPosition   = Vector2.zero;
     bool            IsDragEnabled       = true;
@@ -166,16 +161,6 @@ public class WD_Editor : EditorWindow {
 
 	// ----------------------------------------------------------------------
 	void DrawEditorToolbar() {
-//    	GUILayout.BeginHorizontal(EditorStyles.toolbar);
-//    	
-//        // Display root node selection.
-//        string selected= SelectedObject != null ? SelectedObject.Name : "(No Object Selected)";
-//        EditorGUILayout.TextField("Selected Node= ", selected);
-//        
-//		// Show display depth configuration.
-//    	EditorGUILayout.Separator();
-//		
-//		GUILayout.EndHorizontal();
 	}
     
 	// ----------------------------------------------------------------------
