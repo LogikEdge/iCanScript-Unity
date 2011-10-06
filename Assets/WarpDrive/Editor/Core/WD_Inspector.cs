@@ -77,7 +77,7 @@ public class WD_Inspector : Editor {
 		DrawDefaultInspector();
 		
         // Draw selected object.
-        WD_Object rtSelectedObject= SelectedObject != null ? editorObjects.GetRuntimeObject(SelectedObject) : null;
+        WD_Object rtSelectedObject= SelectedObject != null ? editorObjects.GetRuntimeObject(SelectedObject) as WD_Object: null;
 		myFold= EditorGUILayout.InspectorTitlebar(myFold, rtSelectedObject);
 		if(myFold && rtSelectedObject != null) {
             string name= rtSelectedObject.name;

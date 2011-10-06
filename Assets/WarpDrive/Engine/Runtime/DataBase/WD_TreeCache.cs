@@ -12,9 +12,9 @@ public class WD_TreeCache {
     // ----------------------------------------------------------------------
     [System.Serializable]
     public class TreeNode {
-        public WD_Object   RuntimeObject= null;
-        public int         ParentId= -1;
-        public List<int>   Children= new List<int>();
+        public object       RuntimeObject= null;
+        public int          ParentId= -1;
+        public List<int>    Children= new List<int>();
 
         public TreeNode()  { Reset(); }
         public void Reset() {
@@ -28,12 +28,12 @@ public class WD_TreeCache {
                 if(child == id) return;
             }
             Children.Add(id);
-            RuntimeObject.AddChild(toAdd.RuntimeObject);
+            WD_Reflection.InvokeAddChildIfExists(RuntimeObject, toAdd.RuntimeObject);
         }
         public void RemoveChild(int id, TreeNode toDelete) {
             for(int i= 0; i < Children.Count; ++i) {
                 if(Children[i] == id) {
-                    RuntimeObject.RemoveChild(toDelete.RuntimeObject);
+                    WD_Reflection.InvokeRemoveChildIfExists(RuntimeObject, toDelete.RuntimeObject);
                     Children.RemoveAt(i);
                     return;
                 }
@@ -102,7 +102,6 @@ public class WD_TreeCache {
         if(IsValid(nd.ParentId)) {
             TreeCache[nd.ParentId].RemoveChild(id, nd);
         }
-        nd.RuntimeObject.Dealloc();
         TreeCache[id].Reset();
     }
 

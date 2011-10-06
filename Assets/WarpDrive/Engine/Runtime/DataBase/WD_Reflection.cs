@@ -6,6 +6,55 @@ using System.Collections.Generic;
 
 public class WD_Reflection {
     // ----------------------------------------------------------------------
+    // Returns the MethodInfo associated with the AddChild method.
+    public static MethodInfo GetAddChildMethodInfo(object obj) {
+        Type objType= obj.GetType();
+        MethodInfo methodInfo= objType.GetMethod("AddChild",BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        if(methodInfo == null) return null;
+        ParameterInfo[] parameters= methodInfo.GetParameters();
+        if(parameters.Length != 1) return null;
+        return methodInfo;
+    }
+    public static void InvokeAddChildIfExists(object parent, object child) {
+        MethodInfo method= GetAddChildMethodInfo(parent);
+        if(method == null) return;
+        method.Invoke(parent, new object[1]{child});
+    }
+    
+    // ----------------------------------------------------------------------
+    // Returns the MethodInfo associated with the RemoveChild method.
+    public static MethodInfo GetRemoveChildMethodInfo(object obj) {
+        Type objType= obj.GetType();
+        MethodInfo methodInfo= objType.GetMethod("RemoveChild",BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        if(methodInfo == null) return null;
+        ParameterInfo[] parameters= methodInfo.GetParameters();
+        if(parameters.Length != 1) return null;
+        return methodInfo;
+    }
+    public static void InvokeRemoveChildIfExists(object parent, object child) {
+        MethodInfo method= GetRemoveChildMethodInfo(parent);
+        if(method == null) return;
+        method.Invoke(parent, new object[1]{child});
+    }
+    
+    // ----------------------------------------------------------------------
+    // Returns the MethodInfo associated with the IsValid method.
+    public static MethodInfo GetIsValidMethodInfo(object obj) {
+        Type objType= obj.GetType();
+        MethodInfo methodInfo= objType.GetMethod("get_IsValid",BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        if(methodInfo == null) return null;
+        ParameterInfo[] parameters= methodInfo.GetParameters();
+        if(parameters.Length != 0) return null;
+        if(methodInfo.ReturnType != typeof(bool)) return null;
+        return methodInfo;
+    }
+    public static bool InvokeIsValid(object obj) {
+        MethodInfo method= GetIsValidMethodInfo(obj);
+        if(method == null) return true;
+        return (bool)method.Invoke(obj, null);
+    }
+    
+    // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
     public static List<FieldInfo> GetInPortFields(Type objType) {
         List<FieldInfo> list= new List<FieldInfo>();
@@ -41,6 +90,7 @@ public class WD_Reflection {
         }
         return fieldInfo.FieldType;
     }
+
 
     // ----------------------------------------------------------------------
     // Scan the application for WarpDrive attributes.

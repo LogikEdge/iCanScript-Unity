@@ -91,10 +91,10 @@ public class WD_EditorObjectMgr {
         return IsChildOf(EditorObjects[obj.ParentId], parent);
     }
     // ----------------------------------------------------------------------
-    public WD_Object GetRuntimeObject(int id) {
+    public object GetRuntimeObject(int id) {
         return IsValid(id) ? TreeCache[id].RuntimeObject : null;
     }
-    public WD_Object GetRuntimeObject(WD_EditorObject eObj) {
+    public object GetRuntimeObject(WD_EditorObject eObj) {
         return GetRuntimeObject(eObj.InstanceId);
     }
     // ----------------------------------------------------------------------
