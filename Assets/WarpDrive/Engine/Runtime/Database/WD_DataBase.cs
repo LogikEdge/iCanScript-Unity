@@ -83,6 +83,26 @@ public class WD_DataBase {
         }
         return classes.ToArray();
     }
+    // ----------------------------------------------------------------------
+    // Returns the descriptor associated with the given company/package/function.
+    public static WD_BaseDesc GetDescriptor(string company, string package, string function) {
+        foreach(var desc in Conversions) {
+            if(desc.Company == company &&
+               desc.Package == package &&
+               desc.Name    == function) return desc;
+        }
+        foreach(var desc in Functions) {
+            if(desc.Company == company &&
+               desc.Package == package &&
+               desc.Name    == function) return desc;
+        }
+        foreach(var desc in Classes) {
+            if(desc.Company == company &&
+               desc.Package == package &&
+               desc.Name    == function) return desc;            
+        }
+        return null;
+    }
     
     // ======================================================================
     // Container management functions

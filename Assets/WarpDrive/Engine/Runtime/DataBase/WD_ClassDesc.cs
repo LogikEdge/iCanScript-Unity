@@ -48,14 +48,13 @@ public class WD_ClassDesc : WD_BaseDesc {
         ParameterInOuts= parameterInOuts;
     }
     // ----------------------------------------------------------------------
+    public override WD_EditorObject CreateInstance(WD_EditorObjectMgr editorObjects, int parentId, Vector2 initialPos) {
+        return null;
+    }
+    // ----------------------------------------------------------------------
     public object CreateRuntimeClass() {
         return Inf.IsA(ClassType, typeof(ScriptableObject)) ?
             ScriptableObject.CreateInstance(ClassType) :
             Activator.CreateInstance(ClassType);            
     }
-    // ----------------------------------------------------------------------
-    public object CreateEditorObjects(string name, WD_EditorObject parent, object rtObj) {
-        return null;
-    }
-    
 }

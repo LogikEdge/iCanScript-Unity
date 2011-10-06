@@ -16,14 +16,32 @@ public class WD_EditorObjectMgr {
     // ======================================================================
     // Object Creation
     // ----------------------------------------------------------------------
+    public WD_EditorObject CreateInstance(WD_BaseDesc baseDesc, int parentId, Vector2 initialPos) {
+        // Create conversions
+        if(baseDesc is WD_FunctionDesc) {
+            WD_FunctionDesc funcDesc= baseDesc as WD_FunctionDesc;
+            // Create the function node.
+            int funcId= GetNextAvailableId();
+            // Calcute the desired screen position of the new object.
+            Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
+            Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+            // Create new EditorObject
+            EditorObjects[funcId]= new WD_EditorObject(funcId, funcDesc.Name, funcDesc.ClassType, parentId, WD_DisplayTypeEnum.Function, localPos);
+            TreeCache.CreateInstance(funcId, parentId, null);
+            // Create the function ports.
+            for(int i= 0; i < funcDesc.ParameterNames.Length; ++i) {
+                int portId= GetNextAvailableId();
+                WD_DisplayTypeEnum portType= funcDesc.ParameterInOuts[i] ? WD_DisplayTypeEnum.OutFunctionPort : WD_DisplayTypeEnum.InFunctionPort;
+                EditorObjects[portId]= new WD_EditorObject(portId, funcDesc.ParameterNames[i], funcDesc.ParameterTypes[i], funcId, portType, new Rect(0,0,0,0));
+                TreeCache.CreateInstance(portId, funcId, null);
+            }
+        }
+        return null;
+    }
+    // ----------------------------------------------------------------------
     public WD_EditorObject CreateInstance<T>(string name, int parentId, Vector2 initialPos) where T : WD_Object {
         // Find the next available id.
-        int id= 0;
-        while(id < EditorObjects.Count && EditorObjects[id].IsValid) { ++id; }
-        if(id >= EditorObjects.Count) {
-            id= EditorObjects.Count;
-            EditorObjects.Add(null);
-        }
+        int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
         Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
 
@@ -43,6 +61,16 @@ public class WD_EditorObjectMgr {
         }
 
         return obj;
+    }
+    public int GetNextAvailableId() {
+        // Find the next available id.
+        int id= 0;
+        while(id < EditorObjects.Count && EditorObjects[id].IsValid) { ++id; }
+        if(id >= EditorObjects.Count) {
+            id= EditorObjects.Count;
+            EditorObjects.Add(null);
+        }
+        return id;
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(int id) {
@@ -80,6 +108,7 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public WD_EditorObject this[int i] {
         get { return EditorObjects[i]; }
+        set { EditorObjects[i]= value; }
     }
     // ----------------------------------------------------------------------
     public bool IsValid(int id)   { return id >= 0 && id < EditorObjects.Count && EditorObjects[id].IsValid; }

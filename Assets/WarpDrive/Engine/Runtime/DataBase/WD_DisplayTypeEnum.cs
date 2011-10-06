@@ -3,7 +3,7 @@ using System.Collections;
 
 [System.Serializable]
 public enum WD_DisplayTypeEnum {
-    State, Module, Class, Function, HiddenConversion,
+    State, Module, Class, Function, Conversion,
     InFieldPort,    OutFieldPort,
     InPropertyPort, OutPropertyPort,
     InFunctionPort, OutFunctionPort,

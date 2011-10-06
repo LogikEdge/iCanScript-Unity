@@ -210,7 +210,7 @@ public class WD_Editor : EditorWindow {
         }        
 
         // Display dynamic menu.
-        DynamicMenu.Update(Mouse.RightButtonDownPosition);
+        DynamicMenu.Update(SelectedObject, EditorObjects, Mouse.RightButtonDownPosition);
     }
     
 	// ----------------------------------------------------------------------

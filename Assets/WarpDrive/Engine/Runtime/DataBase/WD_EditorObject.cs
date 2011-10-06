@@ -34,6 +34,19 @@ public class WD_EditorObject {
     // Initialization
     // ----------------------------------------------------------------------
     public WD_EditorObject() { Reset(); }
+    public WD_EditorObject(int id, string name, Type type, int parentId, WD_DisplayTypeEnum displayType, Rect localPosition) {
+        Reset();
+        InstanceId= id;
+        ParentId= parentId;
+        Name= name;
+        QualifiedType= type.AssemblyQualifiedName;
+        IsDirty= true;
+        LocalPosition= localPosition;
+        DisplayType= displayType;
+        if(IsDataPort) {
+            Edge= IsInputPort ? (IsEnablePort ? EdgeEnum.Top : EdgeEnum.Left) : EdgeEnum.Right;
+        }
+    }
     public WD_EditorObject(int id, string name, Type type, int parentId, Rect localPosition) {
         Reset();
         InstanceId= id;
@@ -101,12 +114,12 @@ public class WD_EditorObject {
         return IsRuntimeA(typeof(T));
     }
     // ----------------------------------------------------------------------
-    public bool IsNode             { get { return IsState || IsModule || IsClass || IsFunction; }}
+    public bool IsNode             { get { return IsState || IsModule || IsClass || IsFunction || IsConversion; }}
     public bool IsState            { get { return DisplayType == WD_DisplayTypeEnum.State; }}
     public bool IsModule           { get { return DisplayType == WD_DisplayTypeEnum.Module; }}
     public bool IsClass            { get { return DisplayType == WD_DisplayTypeEnum.Class; }}
     public bool IsFunction         { get { return DisplayType == WD_DisplayTypeEnum.Function; }}
-    public bool IsHiddenConversion { get { return DisplayType == WD_DisplayTypeEnum.HiddenConversion; }}
+    public bool IsConversion       { get { return DisplayType == WD_DisplayTypeEnum.Conversion; }}
     public bool IsPort             { get { return IsFieldPort || IsFunctionPort || IsModulePort || IsPropertyPort || IsEnablePort || IsStatePort; }}
     public bool IsDataPort         { get { return IsFieldPort || IsFunctionPort || IsModulePort || IsPropertyPort || IsEnablePort; }}
     public bool IsFieldPort        { get { return IsInFieldPort || IsOutFieldPort; }}
