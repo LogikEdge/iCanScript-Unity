@@ -26,7 +26,7 @@ public class WD_FunctionDesc : WD_BaseDesc {
     }
 
     // -----------------------------------------------------------------------
-    public override WD_EditorObject CreateInstance(WD_EditorObjectMgr editorObjects, int parentId, Vector2 initialPos) {
+    public override int CreateInstance(WD_EditorObjectMgr editorObjects, int parentId, Vector2 initialPos) {
         // Create the function node.
         int funcId= editorObjects.GetNextAvailableId();
         // Calcute the desired screen position of the new object.
@@ -40,6 +40,6 @@ public class WD_FunctionDesc : WD_BaseDesc {
             WD_DisplayTypeEnum portType= ParameterInOuts[i] ? WD_DisplayTypeEnum.OutFunctionPort : WD_DisplayTypeEnum.InFunctionPort;
             editorObjects[portId]= new WD_EditorObject(portId, ParameterNames[i], ParameterTypes[i], funcId, portType, new Rect(0,0,0,0));
         }        
-        return editorObjects[funcId];
+        return funcId;
     }
 }

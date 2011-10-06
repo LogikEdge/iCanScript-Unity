@@ -8,9 +8,7 @@ public class WD_DataBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public static List<WD_ConversionDesc>  Conversions= new List<WD_ConversionDesc>();
-    public static List<WD_FunctionDesc>    Functions  = new List<WD_FunctionDesc>();
-    public static List<WD_ClassDesc>       Classes    = new List<WD_ClassDesc>();
+    public static List<WD_BaseDesc>    Functions  = new List<WD_BaseDesc>();
     
     // ======================================================================
     // DataBase functionality
@@ -18,14 +16,8 @@ public class WD_DataBase {
     // Returns all the company names for which a WarpDrive component exists.
     public static string[] GetCompanies() {
         List<string> companies= new List<string>();
-        foreach(var conv in Conversions) {
-            WarpDrive.AddUniqu<string>(conv.Company, companies);
-        }
         foreach(var func in Functions) {
             WarpDrive.AddUniqu<string>(func.Company, companies);
-        }
-        foreach(var cls in Classes) {
-            WarpDrive.AddUniqu<string>(cls.Company, companies);
         }
         return companies.ToArray();
     }
@@ -33,33 +25,12 @@ public class WD_DataBase {
     // Returns all available packages of the given company.
     public static string[] GetPackages(string company) {
         List<string> packages= new List<string>();
-        foreach(var conv in Conversions) {
-            if(conv.Company == company) {
-                WarpDrive.AddUniqu<string>(conv.Package, packages);                
-            }
-        }
         foreach(var func in Functions) {
             if(func.Company == company) {
                 WarpDrive.AddUniqu<string>(func.Package, packages);                
             }
         }
-        foreach(var cls in Classes) {
-            if(cls.Company == company) {
-                WarpDrive.AddUniqu<string>(cls.Package, packages);                
-            }
-        }
         return packages.ToArray();
-    }
-    // ----------------------------------------------------------------------
-    // Returns all available conversions of the given company/package.
-    public static string[] GetConversions(string company, string package) {
-        List<string> conversions= new List<string>();
-        foreach(var conv in Conversions) {
-            if(conv.Company == company && conv.Package == package) {
-                WarpDrive.AddUniqu<string>(conv.Name, conversions);                
-            }
-        }
-        return conversions.ToArray();        
     }
     // ----------------------------------------------------------------------
     // Returns all available functions of the given company/package.
@@ -73,33 +44,12 @@ public class WD_DataBase {
         return functions.ToArray();
     }
     // ----------------------------------------------------------------------
-    // Returns all available classes of the given company/package.
-    public static string[] GetClasses(string company, string package) {
-        List<string> classes= new List<string>();
-        foreach(var cls in Classes) {
-            if(cls.Company == company && cls.Package == package) {
-                WarpDrive.AddUniqu<string>(cls.Name, classes);                
-            }
-        }
-        return classes.ToArray();
-    }
-    // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
     public static WD_BaseDesc GetDescriptor(string company, string package, string function) {
-        foreach(var desc in Conversions) {
-            if(desc.Company == company &&
-               desc.Package == package &&
-               desc.Name    == function) return desc;
-        }
         foreach(var desc in Functions) {
             if(desc.Company == company &&
                desc.Package == package &&
                desc.Name    == function) return desc;
-        }
-        foreach(var desc in Classes) {
-            if(desc.Company == company &&
-               desc.Package == package &&
-               desc.Name    == function) return desc;            
         }
         return null;
     }
@@ -109,20 +59,21 @@ public class WD_DataBase {
     // ----------------------------------------------------------------------
     // Removes all previously recorded functions.
     public static void Clear() {
-        Conversions.Clear();
         Functions.Clear();
-        Classes.Clear();
     }
     // ----------------------------------------------------------------------
     // Adds a conversion function
     public static void AddConversion(string company, string package, MethodInfo methodInfo, Type fromType, Type toType) {
-        foreach(var desc in Conversions) {
-            if(desc.FromType == fromType && desc.ToType == toType) {
-                Debug.LogWarning("Duplicate conversion function from "+fromType+" to "+toType+" exists in classes "+desc.Method.DeclaringType+" and "+methodInfo.DeclaringType);
-                return;
+        foreach(var desc in Functions) {
+            if(desc is WD_ConversionDesc) {
+                WD_ConversionDesc conv= desc as WD_ConversionDesc;
+                if(conv.FromType == fromType && conv.ToType == toType) {
+                    Debug.LogWarning("Duplicate conversion function from "+fromType+" to "+toType+" exists in classes "+conv.Method.DeclaringType+" and "+methodInfo.DeclaringType);
+                    return;
+                }                
             }
         }
-        Conversions.Add(new WD_ConversionDesc(company, package, methodInfo, fromType, toType));
+        Functions.Add(new WD_ConversionDesc(company, package, methodInfo, fromType, toType));
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
@@ -153,7 +104,7 @@ public class WD_DataBase {
                                 string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,                                            // Property info
                                 MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,    // Method info
                                 string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {                                 // Method parameter info
-        Classes.Add(new WD_ClassDesc(company, package, classType,
+        Functions.Add(new WD_ClassDesc(company, package, classType,
                                      fieldNames, fieldTypes, fieldInOuts,
                                      propertyNames, propertyTypes, propertyInOuts,
                                      methodInfos, methodNames, returnNames, returnTypes, toolTips,

@@ -48,8 +48,8 @@ public class WD_ClassDesc : WD_BaseDesc {
         ParameterInOuts= parameterInOuts;
     }
     // ----------------------------------------------------------------------
-    public override WD_EditorObject CreateInstance(WD_EditorObjectMgr editorObjects, int parentId, Vector2 initialPos) {
-        return null;
+    public override int CreateInstance(WD_EditorObjectMgr editorObjects, int parentId, Vector2 initialPos) {
+        return -1;
     }
     // ----------------------------------------------------------------------
     public object CreateRuntimeClass() {
