@@ -29,10 +29,8 @@ public class WD_ConversionDesc : WD_BaseDesc {
         // Create new EditorObject
         editorObjects[funcId]= new WD_EditorObject(funcId, Name, Method.DeclaringType, parentId, WD_DisplayTypeEnum.Conversion, localPos);
         // Create the function ports.
-        int portId= editorObjects.GetNextAvailableId();
-        editorObjects[portId]= new WD_EditorObject(portId, FromType.Name, FromType, funcId, WD_DisplayTypeEnum.InFunctionPort, new Rect(0,0,0,0));
-        portId= editorObjects.GetNextAvailableId();
-        editorObjects[portId]= new WD_EditorObject(portId, ToType.Name, ToType, funcId, WD_DisplayTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
+        CreatePort(editorObjects, FromType.Name, funcId, FromType, WD_DisplayTypeEnum.InFunctionPort);
+        CreatePort(editorObjects, ToType.Name, funcId, ToType, WD_DisplayTypeEnum.OutFunctionPort);
 
         return editorObjects[funcId];
     }
