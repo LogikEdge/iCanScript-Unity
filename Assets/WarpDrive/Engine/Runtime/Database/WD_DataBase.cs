@@ -87,15 +87,6 @@ public class WD_DataBase {
                                                 paramNames, paramTypes, paramInOuts,
                                                 methodInfo);
         Functions.Add(fd);
-        
-        if(methodName.CompareTo("Inc") == 0) {
-            WD_RuntimeMethod m= fd.CreateRuntime();
-            m.Args[0]= 1.5f;  // in parameter
-            m.Args[1]= null;  // out parameter
-            float r1= (float)m.Invoke();
-            float p2= (float)m.Args[1]; // Extract out parameter
-            Debug.Log("r1= "+r1+" p2= "+p2);
-        }
     }
     // ----------------------------------------------------------------------
     // Adds a class.
