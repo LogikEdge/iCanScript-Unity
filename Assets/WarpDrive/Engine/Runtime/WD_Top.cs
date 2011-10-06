@@ -31,7 +31,7 @@ public sealed class WD_Top : WD_Action {
 
     // ----------------------------------------------------------------------
     // Updates the frame number and executes all enabled children.
-    protected override void Evaluate() {
+    public override void Evaluate() {
         ++myFrameId;
         if(Action) {
             Action.Execute();

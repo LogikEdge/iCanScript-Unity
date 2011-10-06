@@ -15,7 +15,7 @@ public sealed class WD_Module : WD_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {}
+    public override void Evaluate() {}
     public override void Execute() {
         // Attempt to execute child functions.
         int maxTries= myExecuteQueue.Count; maxTries= 1+(maxTries*maxTries+maxTries)/2;

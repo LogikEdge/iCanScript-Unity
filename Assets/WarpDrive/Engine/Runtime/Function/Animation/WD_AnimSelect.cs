@@ -1,7 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-public class WD_AnimSelect : WD_Function {
+[WD_Class(Company="Infaunier", Package="Animation")]
+public sealed class WD_AnimSelect : WD_Function {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
@@ -10,6 +11,7 @@ public class WD_AnimSelect : WD_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {
+    [WD_Function]
+    public override void Evaluate() {
     }
 }

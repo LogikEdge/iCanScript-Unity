@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[WD_Class(Company="Infaunier", Package="Logic")]
 public sealed class WD_Decoder4 : WD_Function {
     // ======================================================================
     // PROPERTIES
@@ -16,7 +17,8 @@ public sealed class WD_Decoder4 : WD_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {
+    [WD_Function]
+    public override void Evaluate() {
         int len= xs.Length;
         for(int i= 0; i < len; ++i) {
             oxs[i]= xs[i] >> 2;

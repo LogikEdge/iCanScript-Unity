@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[WD_Class(Company="Infaunier", Package="Math3D")]
 public sealed class WD_RandomVector2 : WD_Function {
     // ======================================================================
     // PROPERTIES
@@ -12,7 +13,8 @@ public sealed class WD_RandomVector2 : WD_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {
+    [WD_Function]
+    public override void Evaluate() {
         value= scale*Random.insideUnitCircle;
     }
 }

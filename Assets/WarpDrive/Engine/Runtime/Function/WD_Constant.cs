@@ -10,5 +10,5 @@ public class WD_Constant<TYPE,DERIVED> : WD_Action where DERIVED : WD_Constant<T
     // ======================================================================
     // UPDATE
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {}
+    public override void Evaluate() {}
 }

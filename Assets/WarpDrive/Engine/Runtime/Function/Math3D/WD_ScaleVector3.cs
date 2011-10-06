@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[WD_Class(Company="Infaunier", Package="Math3D")]
 public sealed class WD_ScaleVector3 : WD_Function {
     // ======================================================================
     // PROPERTIES
@@ -13,7 +14,8 @@ public sealed class WD_ScaleVector3 : WD_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {
+    [WD_Function]
+    public override void Evaluate() {
         os= Prelude.zipWith_(os, (x,scale)=> scale*x, xs, scales);
     }
 }

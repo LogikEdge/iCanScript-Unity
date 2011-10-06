@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+[WD_Class(Company="Infaunier", Package="Math3D")]
 public sealed class WD_ToVector2 : WD_Function {
     // ======================================================================
     // PROPERTIES
@@ -14,7 +15,8 @@ public sealed class WD_ToVector2 : WD_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {
+    [WD_Function]
+    public override void Evaluate() {
         vs= Prelude.zipWith_(vs, (x,y)=> new Vector2(x,y), xs, ys);
     }
 }

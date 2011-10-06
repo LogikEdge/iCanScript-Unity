@@ -35,7 +35,7 @@ public sealed class WD_StateChart : WD_Action {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {
+    public override void Evaluate() {
         // Process any active transition.
         ProcessTransition();
         // Make certain that at least one actibe state exists.

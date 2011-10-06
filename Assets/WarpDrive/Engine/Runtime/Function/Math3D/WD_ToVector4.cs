@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[WD_Class(Company="Infaunier", Package="Math3D")]
 public sealed class WD_ToVector4 : WD_Function {
     // ======================================================================
     // PROPERTIES
@@ -14,7 +15,8 @@ public sealed class WD_ToVector4 : WD_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {
+    [WD_Function]
+    public override void Evaluate() {
         vs= Prelude.zipWith_(vs, (x,y,z,w)=> new Vector4(x,y,z,w), xs, ys, zs, ws);
     }
 }

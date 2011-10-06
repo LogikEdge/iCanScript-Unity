@@ -16,8 +16,8 @@ public abstract class WD_Action : WD_Node {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected abstract void Evaluate();
-    public    virtual  void Execute()      { Evaluate(); MarkAsCurrent(); }
+    public  abstract void Evaluate();
+    public  virtual  void Execute()      { Evaluate(); MarkAsCurrent(); }
     
     // ----------------------------------------------------------------------
     public bool IsCurrent()     { return myFrameId == Top.FrameId; }

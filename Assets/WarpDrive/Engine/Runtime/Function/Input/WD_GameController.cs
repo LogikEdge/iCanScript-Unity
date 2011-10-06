@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[WD_Class(Company="Infaunier", Package="GameObject")]
 public sealed class WD_GameController : WD_Function {
     // ======================================================================
     // PROPERTIES
@@ -12,7 +13,8 @@ public sealed class WD_GameController : WD_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {
+    [WD_Function]
+    public override void Evaluate() {
         rawAnalog1= new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         analog1= Time.deltaTime*speed*rawAnalog1;
     }

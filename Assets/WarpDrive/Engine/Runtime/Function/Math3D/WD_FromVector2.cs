@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+[WD_Class(Company="Infaunier", Package="Math3D")]
 public class WD_FromVector2 : WD_Function {
     // ======================================================================
     // PROPERTIES
@@ -13,7 +14,8 @@ public class WD_FromVector2 : WD_Function {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    protected override void Evaluate() {
+    [WD_Function]
+    public override void Evaluate() {
         xs= Prelude.map_(xs, (vec)=> vec.x, vs);
         ys= Prelude.map_(ys, (vec)=> vec.y, vs);
     }
