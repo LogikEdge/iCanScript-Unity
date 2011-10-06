@@ -7,9 +7,12 @@ public class WD_DynamicMenu {
     // ======================================================================
     // Field
     // ----------------------------------------------------------------------
+    MenuStateEnum   CurrentState= MenuStateEnum.Idle;
+    string          SelectedCompany= null;
+    string          SelectedPackage= null;
+    string          SelectedFunction= null;
     Vector2         MenuPosition= Vector2.zero;
     int             Selection   = -1;
-    MenuStateEnum   CurrentState= MenuStateEnum.Idle;
     
     // ======================================================================
     // Properties
@@ -19,21 +22,48 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     void Reset() {
         CurrentState= MenuStateEnum.Idle;
+        SelectedCompany= null;
+        SelectedPackage= null;
+        SelectedFunction= null;
         MenuPosition= Vector2.zero;
         Selection= -1;
     }
     
 	// ----------------------------------------------------------------------
+    // Activate the dynamic menu if it is not already active.
     public void Activate(Vector2 mouseDownPosition) {
-        CurrentState= MenuStateEnum.Company;
+        if(!IsActive) CurrentState= MenuStateEnum.Company;
     }
     
 	// ----------------------------------------------------------------------
     public void Update(Vector2 mouseDownPosition) {
-        // Nothing to show if menu is inactive.
-        if(!IsActive) { Reset(); return; }
+        // Update mouse position if not already done.
+        if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
 
-        // 
+        // Nothing to show if menu is inactive.
+        if(MenuPosition != mouseDownPosition || !IsActive) {
+            Reset();
+            return;
+        }
+
+        // Process the menu state.
+        switch(CurrentState) {
+            case MenuStateEnum.Idle:
+                break;
+            case MenuStateEnum.Company:
+                UpdateCompany();
+                break;
+            case MenuStateEnum.Package:
+                UpdatePackage();
+                break;
+            case MenuStateEnum.Function:
+                UpdateFunction();
+                break;
+        }
+    }
+
+	// ----------------------------------------------------------------------
+    void UpdateCompany() {
         string[] companies= WD_DataBase.GetCompanies();
         float width= 0;
         float height= 0;
@@ -42,11 +72,32 @@ public class WD_DynamicMenu {
             if(size.x > width) width= size.x;
             if(size.y > height) height= size.y;
         }
-        if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
         Selection= GUI.SelectionGrid(new Rect(MenuPosition.x,MenuPosition.y,width,height*companies.Length), Selection, companies, 1);
-        if(Selection != -1 || MenuPosition != mouseDownPosition) {
-            if(Selection != -1) Debug.Log("Selection was changed to "+companies[Selection]);        
-            Reset();
+        if(Selection != -1) {
+            SelectedCompany= companies[Selection];
+            CurrentState= MenuStateEnum.Package;
+            Selection= -1;
+        }        
+    }
+	// ----------------------------------------------------------------------
+    void UpdatePackage() {
+        string[] packages= WD_DataBase.GetPackages(SelectedCompany);
+        float width= 0;
+        float height= 0;
+        foreach(var package in packages) {
+            Vector2 size= GUI.skin.button.CalcSize(new GUIContent(package));
+            if(size.x > width) width= size.x;
+            if(size.y > height) height= size.y;
         }
+        Selection= GUI.SelectionGrid(new Rect(MenuPosition.x,MenuPosition.y,width,height*packages.Length), Selection, packages, 1);
+        if(Selection != -1) {
+            SelectedPackage= packages[Selection];
+            CurrentState= MenuStateEnum.Idle;
+            Selection= -1;
+        }                
+    }
+	// ----------------------------------------------------------------------
+    void UpdateFunction() {
+        
     }
 }
