@@ -92,12 +92,35 @@ public class WD_DynamicMenu {
         Selection= GUI.SelectionGrid(new Rect(MenuPosition.x,MenuPosition.y,width,height*packages.Length), Selection, packages, 1);
         if(Selection != -1) {
             SelectedPackage= packages[Selection];
-            CurrentState= MenuStateEnum.Idle;
+            CurrentState= MenuStateEnum.Function;
             Selection= -1;
         }                
     }
 	// ----------------------------------------------------------------------
     void UpdateFunction() {
-        
+        // Gather all functions.
+        string[] conversions= WD_DataBase.GetConversions(SelectedCompany, SelectedPackage);
+        string[] functions  = WD_DataBase.GetFunctions(SelectedCompany, SelectedPackage);
+        string[] classes    = WD_DataBase.GetClasses(SelectedCompany, SelectedPackage);
+        string[] all= new string[conversions.Length+functions.Length+classes.Length];
+        conversions.CopyTo(all,0);
+        functions.CopyTo  (all, conversions.Length);
+        classes.CopyTo    (all, conversions.Length+functions.Length);
+
+        float width= 0;
+        float height= 0;
+        foreach(var func in all) {
+            Vector2 size= GUI.skin.button.CalcSize(new GUIContent(func));
+            if(size.x > width) width= size.x;
+            if(size.y > height) height= size.y;
+        }
+        Selection= GUI.SelectionGrid(new Rect(MenuPosition.x,MenuPosition.y,width,height*all.Length), Selection, all, 1);
+        if(Selection != -1) {
+            SelectedFunction= all[Selection];
+            CurrentState= MenuStateEnum.Idle;
+            Selection= -1;
+            Debug.Log("Selected: "+SelectedCompany+":"+SelectedPackage+":"+SelectedFunction);
+        }                
+
     }
 }

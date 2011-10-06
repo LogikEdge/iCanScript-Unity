@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[WD_Class]
+[WD_Class(Company="NewCompany", Package="Test")]
 public sealed class WD_Test {
     // ======================================================================
     // EXECUTION
@@ -22,7 +22,7 @@ public sealed class WD_Test {
     [WD_Conversion] public static Vector3 Conversion(Vector2 v) { return new Vector3(v.x,v.y,0); }
 }
 
-[WD_Class]
+[WD_Class(Company="NewCompany", Package="Test")]
 public sealed class WD_Test2 {
     [WD_InPort]     public float x;
     [WD_OutPort]    public float z;
@@ -34,9 +34,3 @@ public sealed class WD_Test2 {
 
 }
 
-[WD_Class(Company="Infaunier",Package="Animation")]
-public sealed class Blend {
-    public bool IsReady {
-        [WD_Function] get { return true; }
-    }
-}
