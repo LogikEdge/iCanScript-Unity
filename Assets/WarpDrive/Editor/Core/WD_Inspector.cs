@@ -10,8 +10,8 @@ public class WD_Inspector : Editor {
     // ======================================================================
     // PROPERTIES
 	// ----------------------------------------------------------------------
-    private WD_Behaviour    Graph= null;
-	private WD_Editor	    Editor= null;
+    private WD_Storage      Storage= null;
+	private WD_Editor	    Editor = null;
 	public  WD_EditorObject SelectedObject {
 	    get { return mySelectedObject; }
 	    set { mySelectedObject= value; Repaint(); }
@@ -36,8 +36,7 @@ public class WD_Inspector : Editor {
         hideFlags= HideFlags.DontSave;
         
         // Get graph reference.
-        Graph= target as WD_Behaviour;
-        Graph.Init();
+        Storage= target as WD_Storage;
         
 		// Create the graph editor.
         if(Editor == null) {
@@ -47,7 +46,7 @@ public class WD_Inspector : Editor {
         }
 
         // Configure the editor with the selected graph.
-        Editor.Activate(Graph, Graph.Preferences, Graph.EditorObjects, this);
+        Editor.Activate(Storage, this);
 	}
 	
 	// ----------------------------------------------------------------------
@@ -67,8 +66,8 @@ public class WD_Inspector : Editor {
     // Paint to inspector for the selected object (see editor).
 	public override void OnInspectorGUI ()
 	{
-        if(Graph == null) return;
-        WD_EditorObjectMgr editorObjects= Graph.EditorObjects;
+        if(Storage == null) return;
+        WD_EditorObjectMgr editorObjects= Storage.EditorObjects;
         
         // Restore inspector skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;

@@ -36,7 +36,7 @@ public class WD_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    public void Update(WD_EditorObject selectedObject, WD_EditorObjectMgr editorObjects, Vector2 mouseDownPosition) {
+    public void Update(WD_EditorObject selectedObject, WD_Storage storage, Vector2 mouseDownPosition) {
         // Update mouse position if not already done.
         if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
 
@@ -57,7 +57,7 @@ public class WD_DynamicMenu {
                 UpdatePackage();
                 break;
             case MenuStateEnum.Function:
-                UpdateFunction(selectedObject, editorObjects);
+                UpdateFunction(selectedObject, storage);
                 break;
         }
     }
@@ -97,7 +97,7 @@ public class WD_DynamicMenu {
         }                
     }
 	// ----------------------------------------------------------------------
-    void UpdateFunction(WD_EditorObject selectedObject, WD_EditorObjectMgr editorObjects) {
+    void UpdateFunction(WD_EditorObject selectedObject, WD_Storage storage) {
         // Gather all functions.
         string[] functions  = WD_DataBase.GetFunctions(SelectedCompany, SelectedPackage);
 
@@ -118,7 +118,7 @@ public class WD_DynamicMenu {
             if(desc == null) {
                 Debug.LogError("Unable to find: "+SelectedCompany+":"+SelectedPackage+":"+SelectedFunction+" in Database !!!");
             };
-            desc.CreateInstance(editorObjects, (selectedObject != null ? selectedObject.InstanceId : -1), MenuPosition);
+            desc.CreateInstance(storage.EditorObjects, (selectedObject != null ? selectedObject.InstanceId : -1), MenuPosition);
         }                
 
     }

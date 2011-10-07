@@ -198,14 +198,14 @@ public class WD_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    public void DrawNode(WD_EditorObject node, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
+    public void DrawNode(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
         // Don't show hiden nodes.
         if(node.IsVisible == false) return;
         
         // Draw node box.
         string title= ObjectNames.NicifyVariableName(node.NameOrTypeName);
-        GUIStyle guiStyle= GetNodeGUIStyle(node, selectedObject, userPreferences, editorObjects);
-        Rect position= editorObjects.GetPosition(node);
+        GUIStyle guiStyle= GetNodeGUIStyle(node, selectedObject, storage);
+        Rect position= storage.EditorObjects.GetPosition(node);
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
         float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
         position.x-= leftOffset;
@@ -215,64 +215,64 @@ public class WD_Graphics {
         GUI.Box(position, title, guiStyle);            
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, WD_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
     }
-    NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
+    NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
         // Node background is dependant on node type.
-        WD_Node runtimeNode= editorObjects.GetRuntimeObject(node) as WD_Node;
+        WD_Node runtimeNode= storage.EditorObjects.GetRuntimeObject(node) as WD_Node;
         if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
             GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
             return nodeInErrorStyle;
         }
         if(node == selectedObject) {
-            GenerateNodeStyle(ref selectedStyle, userPreferences.NodeColors.SelectedColor);
+            GenerateNodeStyle(ref selectedStyle, storage.Preferences.NodeColors.SelectedColor);
             return selectedStyle;
         }
         if(node.IsState) {
-            GenerateNodeStyle(ref stateStyle, userPreferences.NodeColors.StateColor);
+            GenerateNodeStyle(ref stateStyle, storage.Preferences.NodeColors.StateColor);
             return stateStyle;
         }
         if(node.IsModule) {
-            GenerateNodeStyle(ref moduleStyle, userPreferences.NodeColors.ModuleColor);
+            GenerateNodeStyle(ref moduleStyle, storage.Preferences.NodeColors.ModuleColor);
             return moduleStyle;
         }
         if(node.IsClass) {
-            GenerateNodeStyle(ref classStyle, userPreferences.NodeColors.ClassColor);
+            GenerateNodeStyle(ref classStyle, storage.Preferences.NodeColors.ClassColor);
             return classStyle;
         }
         if(node.IsFunction) {
-            GenerateNodeStyle(ref functionStyle, userPreferences.NodeColors.FunctionColor);
+            GenerateNodeStyle(ref functionStyle, storage.Preferences.NodeColors.FunctionColor);
             return functionStyle;
         }
         GenerateNodeStyle(ref defaultStyle, Color.gray);
         return defaultStyle;
     }
-    GUIStyle GetNodeGUIStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, userPreferences, editorObjects);
+    GUIStyle GetNodeGUIStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         return nodeStyle.guiStyle;
     }
     
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
-    Color GetNodeColor(WD_EditorObject node, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, userPreferences, editorObjects);
+    Color GetNodeColor(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         return nodeStyle.nodeColor;
     }
     
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
-    public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
+    public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_Storage storage) {
         // Only draw visible data ports.
         if(port.IsVisible == false || port.IsRuntimeA<WD_FieldPort>() == false) return;
 
         // Build visible port name
-        WD_EditorObject portParent= editorObjects[port.ParentId];
+        WD_EditorObject portParent= storage.EditorObjects[port.ParentId];
         Type portValueType= WD_Reflection.GetPortFieldType(port, portParent);
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
          
-        Rect tmp= editorObjects.GetPosition(port);
+        Rect tmp= storage.EditorObjects.GetPosition(port);
         Vector2 pos= new Vector2(tmp.x, tmp.y);
         Color portColor= WD_TypeSystem.GetDisplayColor(portValueType);
-        Color nodeColor= GetNodeColor(portParent, selectedObject, userPreferences, editorObjects);
+        Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show name if requested.
         Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);
@@ -475,17 +475,17 @@ public class WD_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_UserPreferences userPreferences, WD_EditorObjectMgr editorObjects) {
+    public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_Storage storage) {
         // Only data connection are drawn.
         if(!(port.IsRuntimeA<WD_FieldPort>())) return;
         
-        if(editorObjects[port.ParentId].IsVisible) {
-            if(editorObjects.IsValid(port.Source)) {
-                WD_EditorObject source= editorObjects[port.Source];
-                WD_EditorObject sourceParent= editorObjects[source.ParentId];
+        if(storage.EditorObjects[port.ParentId].IsVisible) {
+            if(storage.EditorObjects.IsValid(port.Source)) {
+                WD_EditorObject source= storage.EditorObjects[port.Source];
+                WD_EditorObject sourceParent= storage.EditorObjects[source.ParentId];
                 if(sourceParent.IsVisible) {
-                    Rect sourcePos= editorObjects.GetPosition(source);
-                    Rect portPos  = editorObjects.GetPosition(port);
+                    Rect sourcePos= storage.EditorObjects.GetPosition(source);
+                    Rect portPos  = storage.EditorObjects.GetPosition(port);
                     Vector2 start= new Vector2(sourcePos.x, sourcePos.y);
                     Vector2 end= new Vector2(portPos.x, portPos.y);
                     Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;
