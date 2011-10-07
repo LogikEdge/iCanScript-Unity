@@ -7,27 +7,22 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // Properties
     // ----------------------------------------------------------------------
     public WD_UserPreferences           Preferences  = new WD_UserPreferences();
-    public WD_RootNode                  RootNode     = null;
     public WD_EditorObjectMgr           EditorObjects= new WD_EditorObjectMgr();
+    public WD_RootNode                  RootNode     = null;
     
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool IsDirty {
-        get { return EditorObjects.IsDirty; }
-        set { EditorObjects.IsDirty= value; }
-    }
     
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
     public WD_Behaviour Init() {
-        if(RootNode == null) {
-            WD_EditorObject rootNode= EditorObjects.CreateInstance<WD_RootNode>("RootNode", -1, Vector2.zero);
-            RootNode= EditorObjects.GetRuntimeObject(rootNode) as WD_RootNode;
-//            RootNode= WD_RootNode.CreateInstance("RootNode", this);
-        }
+//        if(RootNode == null) {
+//            WD_EditorObject rootNode= EditorObjects.CreateInstance<WD_RootNode>("RootNode", -1, Vector2.zero);
+//            RootNode= EditorObjects.GetRuntimeObject(rootNode) as WD_RootNode;
+//        }
         return this;       
     }
     

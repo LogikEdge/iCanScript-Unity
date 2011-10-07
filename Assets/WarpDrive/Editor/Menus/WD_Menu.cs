@@ -11,7 +11,9 @@ public class WD_Menu {
 		// Create State Chart component.
 		WD_Behaviour gapGraph = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 		if(gapGraph == null) {
-			Selection.activeGameObject.AddComponent<WD_Behaviour>();
+			gapGraph= Selection.activeGameObject.AddComponent<WD_Behaviour>();
+            int id= gapGraph.EditorObjects.GetNextAvailableId();
+            gapGraph.EditorObjects[id]= new WD_EditorObject(id, "Behaviour", typeof(WD_Behaviour), -1, WD_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
 		}
 	}
 	[MenuItem("WarpDrive/Create Behaviour", true)]
@@ -30,7 +32,10 @@ public class WD_Menu {
 		// Create State Chart component.
 		WD_Behaviour gapGraph = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 		if(gapGraph == null) {
-			Selection.activeGameObject.AddComponent<WD_Behaviour>();
+			gapGraph= Selection.activeGameObject.AddComponent<WD_Behaviour>();
+            gapGraph.enabled= false;
+            int id= gapGraph.EditorObjects.GetNextAvailableId();
+            gapGraph.EditorObjects[id]= new WD_EditorObject(id, "Module Library", typeof(WD_Behaviour), -1, WD_ObjectTypeEnum.Module, new Rect(0,0,0,0));
 		}
 	}
 	[MenuItem("WarpDrive/Create Module Library", true)]
@@ -49,7 +54,10 @@ public class WD_Menu {
 		// Create State Chart component.
 		WD_Behaviour gapGraph = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 		if(gapGraph == null) {
-			Selection.activeGameObject.AddComponent<WD_Behaviour>();
+			gapGraph= Selection.activeGameObject.AddComponent<WD_Behaviour>();
+            gapGraph.enabled= false;
+            int id= gapGraph.EditorObjects.GetNextAvailableId();
+            gapGraph.EditorObjects[id]= new WD_EditorObject(id, "StateChart Library", typeof(WD_Behaviour), -1, WD_ObjectTypeEnum.StateChart, new Rect(0,0,0,0));
 		}
 	}
 	[MenuItem("WarpDrive/Create State Chart Library", true)]

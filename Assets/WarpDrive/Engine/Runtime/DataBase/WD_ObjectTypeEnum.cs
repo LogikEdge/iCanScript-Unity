@@ -3,7 +3,7 @@ using System.Collections;
 
 [System.Serializable]
 public enum WD_ObjectTypeEnum {
-    Behaviour, Module, State,
+    Behaviour, Module, StateChart, State,
     Class, Function, Conversion,
     InFieldPort,    OutFieldPort,
     InPropertyPort, OutPropertyPort,
