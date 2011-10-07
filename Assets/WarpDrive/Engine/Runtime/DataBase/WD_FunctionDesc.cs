@@ -33,11 +33,11 @@ public class WD_FunctionDesc : WD_BaseDesc {
         Rect parentPos= editorObjects.IsValid(parentId) ? editorObjects.GetPosition(parentId) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        editorObjects[funcId]= new WD_EditorObject(funcId, Name, ClassType, parentId, WD_DisplayTypeEnum.Function, localPos);
+        editorObjects[funcId]= new WD_EditorObject(funcId, Name, ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
         // Create the function ports.
         for(int i= 0; i < ParameterNames.Length; ++i) {
             int portId= editorObjects.GetNextAvailableId();
-            WD_DisplayTypeEnum portType= ParameterInOuts[i] ? WD_DisplayTypeEnum.OutFunctionPort : WD_DisplayTypeEnum.InFunctionPort;
+            WD_ObjectTypeEnum portType= ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
             editorObjects[portId]= new WD_EditorObject(portId, ParameterNames[i], ParameterTypes[i], funcId, portType, new Rect(0,0,0,0));
         }        
         return funcId;

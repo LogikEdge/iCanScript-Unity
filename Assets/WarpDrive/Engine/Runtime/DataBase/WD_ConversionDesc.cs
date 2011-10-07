@@ -27,10 +27,10 @@ public class WD_ConversionDesc : WD_BaseDesc {
         Rect parentPos= editorObjects.IsValid(parentId) ? editorObjects.GetPosition(parentId) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        editorObjects[funcId]= new WD_EditorObject(funcId, Name, Method.DeclaringType, parentId, WD_DisplayTypeEnum.Conversion, localPos);
+        editorObjects[funcId]= new WD_EditorObject(funcId, Name, Method.DeclaringType, parentId, WD_ObjectTypeEnum.Conversion, localPos);
         // Create the function ports.
-        CreatePort(editorObjects, FromType.Name, funcId, FromType, WD_DisplayTypeEnum.InFunctionPort);
-        CreatePort(editorObjects, ToType.Name, funcId, ToType, WD_DisplayTypeEnum.OutFunctionPort);
+        CreatePort(editorObjects, FromType.Name, funcId, FromType, WD_ObjectTypeEnum.InFunctionPort);
+        CreatePort(editorObjects, ToType.Name, funcId, ToType, WD_ObjectTypeEnum.OutFunctionPort);
 
         return funcId;
     }

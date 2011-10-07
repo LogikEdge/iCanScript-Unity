@@ -7,7 +7,7 @@ public class WD_EditorObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public WD_DisplayTypeEnum   DisplayType  = WD_DisplayTypeEnum.Unknown;
+    public WD_ObjectTypeEnum    ObjectType  = WD_ObjectTypeEnum.Unknown;
     public int                  InstanceId   = -1;
     public int                  ParentId     = -1;
     public string               QualifiedType= "";
@@ -27,14 +27,14 @@ public class WD_EditorObject {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool IsVisible { get { return DisplayType != WD_DisplayTypeEnum.Unknown; }}
+    public bool IsVisible { get { return ObjectType != WD_ObjectTypeEnum.Unknown; }}
     
     
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
     public WD_EditorObject() { Reset(); }
-    public WD_EditorObject(int id, string name, Type type, int parentId, WD_DisplayTypeEnum displayType, Rect localPosition) {
+    public WD_EditorObject(int id, string name, Type type, int parentId, WD_ObjectTypeEnum objectType, Rect localPosition) {
         Reset();
         InstanceId= id;
         ParentId= parentId;
@@ -42,7 +42,7 @@ public class WD_EditorObject {
         QualifiedType= type.AssemblyQualifiedName;
         IsDirty= true;
         LocalPosition= localPosition;
-        DisplayType= displayType;
+        ObjectType= objectType;
         if(IsDataPort) {
             Edge= IsInputPort ? (IsEnablePort ? EdgeEnum.Top : EdgeEnum.Left) : EdgeEnum.Right;
         }
@@ -58,18 +58,18 @@ public class WD_EditorObject {
         Case<WD_RootNode, WD_Top, WD_StateChart, WD_State, WD_Module, WD_Function, WD_Node, WD_Port>(
             (root)  => { },
             (top)   => { },
-            (chart) => { DisplayType= WD_DisplayTypeEnum.State; },
-            (state) => { DisplayType= WD_DisplayTypeEnum.State; },
-            (mod)   => { DisplayType= WD_DisplayTypeEnum.Module; },
-            (func)  => { DisplayType= WD_DisplayTypeEnum.Function; },
-            (node)  => { DisplayType= WD_DisplayTypeEnum.Class; },
+            (chart) => { ObjectType= WD_ObjectTypeEnum.State; },
+            (state) => { ObjectType= WD_ObjectTypeEnum.State; },
+            (mod)   => { ObjectType= WD_ObjectTypeEnum.Module; },
+            (func)  => { ObjectType= WD_ObjectTypeEnum.Function; },
+            (node)  => { ObjectType= WD_ObjectTypeEnum.Class; },
             (port)  => {
                 port.ExecuteIf<WD_FieldPort>(
                     (dataPort) => {
                         dataPort.Case<WD_InFieldPort, WD_OutFieldPort, WD_EnablePort>(
-                            (inPort)     => { Edge= EdgeEnum.Left;  DisplayType= WD_DisplayTypeEnum.InFieldPort; },
-                            (outPort)    => { Edge= EdgeEnum.Right; DisplayType= WD_DisplayTypeEnum.OutFieldPort; },
-                            (enablePort) => { Edge= EdgeEnum.Top;   DisplayType= WD_DisplayTypeEnum.EnablePort; }
+                            (inPort)     => { Edge= EdgeEnum.Left;  ObjectType= WD_ObjectTypeEnum.InFieldPort; },
+                            (outPort)    => { Edge= EdgeEnum.Right; ObjectType= WD_ObjectTypeEnum.OutFieldPort; },
+                            (enablePort) => { Edge= EdgeEnum.Top;   ObjectType= WD_ObjectTypeEnum.EnablePort; }
                         );
                     }
                 );                
@@ -78,7 +78,7 @@ public class WD_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void Reset() {
-        DisplayType= WD_DisplayTypeEnum.Unknown;
+        ObjectType= WD_ObjectTypeEnum.Unknown;
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
@@ -115,11 +115,11 @@ public class WD_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsNode             { get { return IsState || IsModule || IsClass || IsFunction || IsConversion; }}
-    public bool IsState            { get { return DisplayType == WD_DisplayTypeEnum.State; }}
-    public bool IsModule           { get { return DisplayType == WD_DisplayTypeEnum.Module; }}
-    public bool IsClass            { get { return DisplayType == WD_DisplayTypeEnum.Class; }}
-    public bool IsFunction         { get { return DisplayType == WD_DisplayTypeEnum.Function; }}
-    public bool IsConversion       { get { return DisplayType == WD_DisplayTypeEnum.Conversion; }}
+    public bool IsState            { get { return ObjectType == WD_ObjectTypeEnum.State; }}
+    public bool IsModule           { get { return ObjectType == WD_ObjectTypeEnum.Module; }}
+    public bool IsClass            { get { return ObjectType == WD_ObjectTypeEnum.Class; }}
+    public bool IsFunction         { get { return ObjectType == WD_ObjectTypeEnum.Function; }}
+    public bool IsConversion       { get { return ObjectType == WD_ObjectTypeEnum.Conversion; }}
     public bool IsPort             { get { return IsFieldPort || IsFunctionPort || IsModulePort || IsPropertyPort || IsEnablePort || IsStatePort; }}
     public bool IsDataPort         { get { return IsFieldPort || IsFunctionPort || IsModulePort || IsPropertyPort || IsEnablePort; }}
     public bool IsFieldPort        { get { return IsInFieldPort || IsOutFieldPort; }}
@@ -127,19 +127,19 @@ public class WD_EditorObject {
     public bool IsFunctionPort     { get { return IsInFunctionPort || IsOutFunctionPort; }}
     public bool IsModulePort       { get { return IsInModulePort || IsOutModulePort; }}
     public bool IsStatePort        { get { return IsInStatePort || IsOutStatePort; }}
-    public bool IsEnablePort       { get { return DisplayType == WD_DisplayTypeEnum.EnablePort; }}
+    public bool IsEnablePort       { get { return ObjectType == WD_ObjectTypeEnum.EnablePort; }}
     public bool IsOutputPort       { get { return !IsInputPort; }}
     public bool IsInputPort        { get { return IsInFieldPort || IsInPropertyPort || IsInFunctionPort || IsInModulePort || IsInStatePort || IsEnablePort; }}
-    public bool IsInFieldPort      { get { return DisplayType == WD_DisplayTypeEnum.InFieldPort; }}
-    public bool IsOutFieldPort     { get { return DisplayType == WD_DisplayTypeEnum.OutFieldPort; }}
-    public bool IsInPropertyPort   { get { return DisplayType == WD_DisplayTypeEnum.InPropertyPort; }}
-    public bool IsOutPropertyPort  { get { return DisplayType == WD_DisplayTypeEnum.OutPropertyPort; }}
-    public bool IsInFunctionPort   { get { return DisplayType == WD_DisplayTypeEnum.InFunctionPort; }}
-    public bool IsOutFunctionPort  { get { return DisplayType == WD_DisplayTypeEnum.OutFunctionPort; }}
-    public bool IsInModulePort     { get { return DisplayType == WD_DisplayTypeEnum.InModulePort; }}
-    public bool IsOutModulePort    { get { return DisplayType == WD_DisplayTypeEnum.OutModulePort; }}
-    public bool IsInStatePort      { get { return DisplayType == WD_DisplayTypeEnum.InStatePort; }}
-    public bool IsOutStatePort     { get { return DisplayType == WD_DisplayTypeEnum.OutStatePort; }}
+    public bool IsInFieldPort      { get { return ObjectType == WD_ObjectTypeEnum.InFieldPort; }}
+    public bool IsOutFieldPort     { get { return ObjectType == WD_ObjectTypeEnum.OutFieldPort; }}
+    public bool IsInPropertyPort   { get { return ObjectType == WD_ObjectTypeEnum.InPropertyPort; }}
+    public bool IsOutPropertyPort  { get { return ObjectType == WD_ObjectTypeEnum.OutPropertyPort; }}
+    public bool IsInFunctionPort   { get { return ObjectType == WD_ObjectTypeEnum.InFunctionPort; }}
+    public bool IsOutFunctionPort  { get { return ObjectType == WD_ObjectTypeEnum.OutFunctionPort; }}
+    public bool IsInModulePort     { get { return ObjectType == WD_ObjectTypeEnum.InModulePort; }}
+    public bool IsOutModulePort    { get { return ObjectType == WD_ObjectTypeEnum.OutModulePort; }}
+    public bool IsInStatePort      { get { return ObjectType == WD_ObjectTypeEnum.InStatePort; }}
+    public bool IsOutStatePort     { get { return ObjectType == WD_ObjectTypeEnum.OutStatePort; }}
     
     // ======================================================================
     // Accessors

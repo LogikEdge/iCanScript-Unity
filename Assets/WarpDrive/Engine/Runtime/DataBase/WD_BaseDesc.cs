@@ -14,7 +14,7 @@ public abstract class WD_BaseDesc {
 
     public abstract int CreateInstance(WD_EditorObjectMgr editorObjects, int parentId, Vector2 initialPos);
 
-    protected int CreatePort(WD_EditorObjectMgr editorObjects, string name, int parentId, Type type, WD_DisplayTypeEnum displayType) {
+    protected int CreatePort(WD_EditorObjectMgr editorObjects, string name, int parentId, Type type, WD_ObjectTypeEnum displayType) {
         int portId= editorObjects.GetNextAvailableId();
         editorObjects[portId]= new WD_EditorObject(portId, name, type, parentId, displayType, new Rect(0,0,0,0));        
         return portId;

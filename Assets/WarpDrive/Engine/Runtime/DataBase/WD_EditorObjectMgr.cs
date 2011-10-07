@@ -26,12 +26,12 @@ public class WD_EditorObjectMgr {
             Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
             Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
             // Create new EditorObject
-            EditorObjects[funcId]= new WD_EditorObject(funcId, funcDesc.Name, funcDesc.ClassType, parentId, WD_DisplayTypeEnum.Function, localPos);
+            EditorObjects[funcId]= new WD_EditorObject(funcId, funcDesc.Name, funcDesc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
             TreeCache.CreateInstance(funcId, parentId, null);
             // Create the function ports.
             for(int i= 0; i < funcDesc.ParameterNames.Length; ++i) {
                 int portId= GetNextAvailableId();
-                WD_DisplayTypeEnum portType= funcDesc.ParameterInOuts[i] ? WD_DisplayTypeEnum.OutFunctionPort : WD_DisplayTypeEnum.InFunctionPort;
+                WD_ObjectTypeEnum portType= funcDesc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
                 EditorObjects[portId]= new WD_EditorObject(portId, funcDesc.ParameterNames[i], funcDesc.ParameterTypes[i], funcId, portType, new Rect(0,0,0,0));
                 TreeCache.CreateInstance(portId, funcId, null);
             }
