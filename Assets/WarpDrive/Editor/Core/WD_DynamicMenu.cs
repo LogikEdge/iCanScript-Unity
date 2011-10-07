@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class WD_DynamicMenu {
-    enum MenuStateEnum { Idle, Company, Package, Function }
+    enum MenuStateEnum { Idle, Behaviour, Module, StateChart, State, Function, Company, Package }
     
     // ======================================================================
     // Field
@@ -31,8 +31,16 @@ public class WD_DynamicMenu {
     
 	// ----------------------------------------------------------------------
     // Activate the dynamic menu if it is not already active.
-    public void Activate(Vector2 mouseDownPosition) {
-        if(!IsActive) CurrentState= MenuStateEnum.Company;
+    public void Activate(WD_EditorObject selectedObject) {
+        if(!IsActive && selectedObject != null) {
+            switch(selectedObject.ObjectType) {
+                case WD_ObjectTypeEnum.Behaviour:  CurrentState= MenuStateEnum.Behaviour; break;
+                case WD_ObjectTypeEnum.StateChart: CurrentState= MenuStateEnum.StateChart; break;
+                case WD_ObjectTypeEnum.State:      CurrentState= MenuStateEnum.State; break;
+                case WD_ObjectTypeEnum.Module:     CurrentState= MenuStateEnum.Module; break;
+                case WD_ObjectTypeEnum.Function:   CurrentState= MenuStateEnum.Function; break;
+            }
+        }
     }
     
 	// ----------------------------------------------------------------------
@@ -50,6 +58,18 @@ public class WD_DynamicMenu {
         switch(CurrentState) {
             case MenuStateEnum.Idle:
                 break;
+            case MenuStateEnum.Behaviour:
+                UpdateBehaviour();
+                break;
+            case MenuStateEnum.Module:
+                UpdateBehaviour();
+                break;
+            case MenuStateEnum.StateChart:
+                UpdateBehaviour();
+                break;
+            case MenuStateEnum.State:
+                UpdateBehaviour();
+                break;
             case MenuStateEnum.Company:
                 UpdateCompany();
                 break;
@@ -63,17 +83,19 @@ public class WD_DynamicMenu {
     }
 
 	// ----------------------------------------------------------------------
+    void UpdateBehaviour() {
+        string[] menu= new string[]
+            { "Add Update ...", 
+              "Add Late Update ...",
+              "Add Fixed Update ..."
+            };
+        if(ShowMenu(menu) != -1) {
+        }
+    }
+	// ----------------------------------------------------------------------
     void UpdateCompany() {
         string[] companies= WD_DataBase.GetCompanies();
-        float width= 0;
-        float height= 0;
-        foreach(var company in companies) {
-            Vector2 size= GUI.skin.button.CalcSize(new GUIContent(company));
-            if(size.x > width) width= size.x;
-            if(size.y > height) height= size.y;
-        }
-        Selection= GUI.SelectionGrid(new Rect(MenuPosition.x,MenuPosition.y,width,height*companies.Length), Selection, companies, 1);
-        if(Selection != -1) {
+        if(ShowMenu(companies) != -1) {
             SelectedCompany= companies[Selection];
             CurrentState= MenuStateEnum.Package;
             Selection= -1;
@@ -82,15 +104,7 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     void UpdatePackage() {
         string[] packages= WD_DataBase.GetPackages(SelectedCompany);
-        float width= 0;
-        float height= 0;
-        foreach(var package in packages) {
-            Vector2 size= GUI.skin.button.CalcSize(new GUIContent(package));
-            if(size.x > width) width= size.x;
-            if(size.y > height) height= size.y;
-        }
-        Selection= GUI.SelectionGrid(new Rect(MenuPosition.x,MenuPosition.y,width,height*packages.Length), Selection, packages, 1);
-        if(Selection != -1) {
+        if(ShowMenu(packages) != -1) {
             SelectedPackage= packages[Selection];
             CurrentState= MenuStateEnum.Function;
             Selection= -1;
@@ -100,16 +114,7 @@ public class WD_DynamicMenu {
     void UpdateFunction(WD_EditorObject selectedObject, WD_Storage storage) {
         // Gather all functions.
         string[] functions  = WD_DataBase.GetFunctions(SelectedCompany, SelectedPackage);
-
-        float width= 0;
-        float height= 0;
-        foreach(var func in functions) {
-            Vector2 size= GUI.skin.button.CalcSize(new GUIContent(func));
-            if(size.x > width) width= size.x;
-            if(size.y > height) height= size.y;
-        }
-        Selection= GUI.SelectionGrid(new Rect(MenuPosition.x,MenuPosition.y,width,height*functions.Length), Selection, functions, 1);
-        if(Selection != -1) {
+        if(ShowMenu(functions) != -1) {
             SelectedFunction= functions[Selection];
             CurrentState= MenuStateEnum.Idle;
             Selection= -1;
@@ -121,5 +126,24 @@ public class WD_DynamicMenu {
             desc.CreateInstance(storage.EditorObjects, (selectedObject != null ? selectedObject.InstanceId : -1), MenuPosition);
         }                
 
+    }
+
+    // ======================================================================
+    // Utilities
+	// ----------------------------------------------------------------------
+    Vector2 GetMaxSize(string[] menuItems) {
+        Vector2 maxSize= Vector2.zero;
+        foreach(var item in menuItems) {
+            Vector2 size= GUI.skin.button.CalcSize(new GUIContent(item));
+            if(size.x > maxSize.x) maxSize.x= size.x;
+            if(size.y > maxSize.y) maxSize.y= size.y;
+        }        
+        return maxSize;
+    }
+	// ----------------------------------------------------------------------
+    int ShowMenu(string[] menu, int width= -1) {
+        Vector2 itemSize= GetMaxSize(menu);
+        Selection= GUI.SelectionGrid(new Rect(MenuPosition.x,MenuPosition.y,itemSize.x,itemSize.y*menu.Length), Selection, menu, 1);        
+        return Selection;
     }
 }

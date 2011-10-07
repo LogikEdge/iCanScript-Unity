@@ -196,7 +196,7 @@ public class WD_Editor : EditorWindow {
         switch(Mouse.RightButtonState) {
             case WD_Mouse.ButtonStateEnum.SingleClick:
 //                ProcessMainMenu(Mouse.RightButtonDownPosition);
-                DynamicMenu.Activate(Mouse.RightButtonDownPosition);
+                DynamicMenu.Activate(SelectedObject);
                 break;
         }        
 
