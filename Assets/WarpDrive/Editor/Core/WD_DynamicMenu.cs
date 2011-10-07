@@ -15,6 +15,26 @@ public class WD_DynamicMenu {
     int             Selection   = -1;
     
     // ======================================================================
+    // Menu Items
+	// ----------------------------------------------------------------------
+    const string DeleteStr= "Delete";
+    const string ModuleStr= "Module";
+    const string StateChartStr= "State Chart";
+    const string StateStr= "State";
+    const string EntryStateStr= "Entry State";
+    const string SubStateStr= "SubState";
+    const string UpdateStr= "Update";
+    const string LateUpdateStr= "LateUpdate";
+    const string FixedUpdateStr= "FixedUpdate";
+    const string OnGUIStr= "OnGUI";
+    const string OnDrawGizmosStr= "OnDrawGizmos";
+    const string OnEntryStr= "OnEntry";
+    const string OnUpdateStr= "OnUpdate";
+    const string OnExitStr= "OnExit";
+    const string PublishStr= "Publish to Parent";
+    const string MoreStr= "More ...";
+
+    // ======================================================================
     // Properties
 	// ----------------------------------------------------------------------
     public bool IsActive { get { return CurrentState != MenuStateEnum.Idle; }}
@@ -89,30 +109,36 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     void BehaviourMenu() {
         string[] menu= new string[]
-            { "Add Update ...",             // 0
-              "Add Late Update ...",        // 1
-              "Add Fixed Update ...",       // 2
-              "OnGUI ...",                  // 3
-              "OnDrawGizmos ..."            // 4
+            { UpdateStr,             
+              LateUpdateStr,        
+              FixedUpdateStr,       
+              OnGUIStr,              
+              OnDrawGizmosStr,
+              MoreStr        
             };
         if(ShowMenu(menu) != -1) {
-            switch(Selection) {
-                case 0: break;
-                case 1: break;
-                case 2: break;
-                case 3: break;
-                case 4: break;
+            switch(menu[Selection]) {
+                case UpdateStr: break;
+                case LateUpdateStr: break;
+                case FixedUpdateStr: break;
+                case OnGUIStr: break;
+                case OnDrawGizmosStr: break;
+                case MoreStr: break;
                 default: Reset(); break;
             }
         }
     }
 	// ----------------------------------------------------------------------
+    void BehaviourAdditionalMenu() {
+        
+    }
+	// ----------------------------------------------------------------------
     void ModuleMenu() {
         string[] menu= new string[]
         {
-            "Add Module",
-            "Add StateChart",
-            "Delete"
+            ModuleStr,
+            StateChartStr,
+            DeleteStr
         };
         if(ShowMenu(menu) != -1) {
             Reset();
@@ -122,9 +148,9 @@ public class WD_DynamicMenu {
     void StateChartMenu() {
         string[] menu= new string[]
         {
-            "Add State",
-            "Add Entry State",
-            "Delete"
+            StateStr,
+            EntryStateStr,
+            DeleteStr
         };
         if(ShowMenu(menu) != -1) {
             Reset();
@@ -134,11 +160,11 @@ public class WD_DynamicMenu {
     void StateMenu() {
         string[] menu= new string[]
         {
-            "Add OnEntry Module",
-            "Add OnUpdate Module",
-            "Add OnExit Module",
-            "Add SubState",
-            "Delete"
+            OnEntryStr,
+            OnUpdateStr,
+            OnExitStr,
+            SubStateStr,
+            DeleteStr
         };
         if(ShowMenu(menu) != -1) {
             Reset();
@@ -148,7 +174,7 @@ public class WD_DynamicMenu {
     void FunctionMenu() {
         string[] menu= new string[]
         {
-            "Delete"
+            DeleteStr
         };
         if(ShowMenu(menu) != -1) {
             Reset();
@@ -158,8 +184,8 @@ public class WD_DynamicMenu {
     void PortMenu() {
         string[] menu= new string[]
         {
-            "Publish to Module",
-            "Delete"
+            PublishStr,
+            DeleteStr
         };
         if(ShowMenu(menu) != -1) {
             Reset();
