@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class WD_DynamicMenu {
-    enum MenuStateEnum { Idle, Behaviour, Module, StateChart, State, Function, Company, Package }
+    enum MenuStateEnum { Idle, Behaviour, Module, StateChart, State, Function, Port, Company, Package }
     
     // ======================================================================
     // Field
@@ -39,6 +39,7 @@ public class WD_DynamicMenu {
                 case WD_ObjectTypeEnum.State:      CurrentState= MenuStateEnum.State; break;
                 case WD_ObjectTypeEnum.Module:     CurrentState= MenuStateEnum.Module; break;
                 case WD_ObjectTypeEnum.Function:   CurrentState= MenuStateEnum.Function; break;
+                default: if(selectedObject.IsPort) CurrentState= MenuStateEnum.Port; break;
             }
         }
     }
@@ -70,14 +71,17 @@ public class WD_DynamicMenu {
             case MenuStateEnum.State:
                 StateMenu();
                 break;
+            case MenuStateEnum.Function:
+                FunctionMenu(selectedObject, storage);
+                break;
+            case MenuStateEnum.Port:
+                PortMenu();
+                break;
             case MenuStateEnum.Company:
                 CompanyMenu();
                 break;
             case MenuStateEnum.Package:
                 PackageMenu();
-                break;
-            case MenuStateEnum.Function:
-                FunctionMenu(selectedObject, storage);
                 break;
         }
     }
@@ -98,21 +102,68 @@ public class WD_DynamicMenu {
                 case 2: break;
                 case 3: break;
                 case 4: break;
-                default: CurrentState= MenuStateEnum.Idle; break;
+                default: Reset(); break;
             }
         }
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu() {
-        
+        string[] menu= new string[]
+        {
+            "Add Module",
+            "Add StateChart",
+            "Delete"
+        };
+        if(ShowMenu(menu) != -1) {
+            Reset();
+        }
     }
 	// ----------------------------------------------------------------------
     void StateChartMenu() {
-        
+        string[] menu= new string[]
+        {
+            "Add State",
+            "Add Entry State",
+            "Delete"
+        };
+        if(ShowMenu(menu) != -1) {
+            Reset();
+        }
     }
 	// ----------------------------------------------------------------------
     void StateMenu() {
-        
+        string[] menu= new string[]
+        {
+            "Add OnEntry Module",
+            "Add OnUpdate Module",
+            "Add OnExit Module",
+            "Add SubState",
+            "Delete"
+        };
+        if(ShowMenu(menu) != -1) {
+            Reset();
+        }
+    }
+	// ----------------------------------------------------------------------
+    void FunctionMenu() {
+        string[] menu= new string[]
+        {
+            "Delete"
+        };
+        if(ShowMenu(menu) != -1) {
+            Reset();
+        }        
+    }
+	// ----------------------------------------------------------------------
+    void PortMenu() {
+        string[] menu= new string[]
+        {
+            "Publish to Module",
+            "Delete"
+        };
+        if(ShowMenu(menu) != -1) {
+            Reset();
+        }                
     }
 	// ----------------------------------------------------------------------
     void CompanyMenu() {
