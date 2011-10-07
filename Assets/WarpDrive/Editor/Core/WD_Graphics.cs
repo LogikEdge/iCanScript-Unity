@@ -217,11 +217,11 @@ public class WD_Graphics {
     }
     NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
         // Node background is dependant on node type.
-        WD_Node runtimeNode= storage.EditorObjects.GetRuntimeObject(node) as WD_Node;
-        if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
-            GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
-            return nodeInErrorStyle;
-        }
+//        WD_Node runtimeNode= storage.EditorObjects.GetRuntimeObject(node) as WD_Node;
+//        if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
+//            GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
+//            return nodeInErrorStyle;
+//        }
         if(node == selectedObject) {
             GenerateNodeStyle(ref selectedStyle, storage.Preferences.NodeColors.SelectedColor);
             return selectedStyle;

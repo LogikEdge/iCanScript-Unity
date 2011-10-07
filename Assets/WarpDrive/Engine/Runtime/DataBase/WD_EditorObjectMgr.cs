@@ -27,41 +27,18 @@ public class WD_EditorObjectMgr {
             Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
             // Create new EditorObject
             EditorObjects[funcId]= new WD_EditorObject(funcId, funcDesc.Name, funcDesc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
-            TreeCache.CreateInstance(funcId, parentId, null);
+            TreeCache.CreateInstance(funcId, parentId);
             // Create the function ports.
             for(int i= 0; i < funcDesc.ParameterNames.Length; ++i) {
                 int portId= GetNextAvailableId();
                 WD_ObjectTypeEnum portType= funcDesc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
                 EditorObjects[portId]= new WD_EditorObject(portId, funcDesc.ParameterNames[i], funcDesc.ParameterTypes[i], funcId, portType, new Rect(0,0,0,0));
-                TreeCache.CreateInstance(portId, funcId, null);
+                TreeCache.CreateInstance(portId, funcId);
             }
         }
         return null;
     }
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateInstance<T>(string name, int parentId, Vector2 initialPos) where T : WD_Object {
-        // Find the next available id.
-        int id= GetNextAvailableId();
-        // Calcute the desired screen position of the new object.
-        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
-
-        // Create new EditorObject
-        WD_EditorObject obj= new WD_EditorObject(id, name, typeof(T), parentId, new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0));
-        EditorObjects[id]= obj;
-        T rtObj= obj.CreateRuntimeObject() as T;
-        rtObj.Init(name, IsValid(parentId) ? TreeCache[parentId].RuntimeObject as WD_Aggregate: null);            
-        TreeCache.CreateInstance(obj.InstanceId, parentId, rtObj);
-        
-        // Create ports for each field tagged with InPort or OutPort.
-        foreach(var field in WD_Reflection.GetInPortFields(typeof(T))) {
-            CreateInstance<WD_InFieldPort>(field.Name, obj.InstanceId, initialPos);
-        }
-        foreach(var field in WD_Reflection.GetOutPortFields(typeof(T))) {
-            CreateInstance<WD_OutFieldPort>(field.Name, obj.InstanceId, initialPos);
-        }
-
-        return obj;
-    }
     public int GetNextAvailableId() {
         // Find the next available id.
         int id= 0;
@@ -87,7 +64,7 @@ public class WD_EditorObjectMgr {
                 ForEach<WD_FieldPort>(
                     (obj) => {
                         if(obj.Source == id) {
-                            (GetRuntimeObject(obj) as WD_FieldPort).Source= null;
+//                            (GetRuntimeObject(obj) as WD_FieldPort).Source= null;
                             obj.Source= -1;
                         }
                     }
@@ -97,6 +74,10 @@ public class WD_EditorObjectMgr {
         // Remove all related objects.
         TreeCache.DestroyInstance(id);
         EditorObjects[id].Reset();
+    }
+    // ----------------------------------------------------------------------
+    public void RegenerateDynamicData() {
+        
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(WD_EditorObject eObj) {
@@ -120,18 +101,11 @@ public class WD_EditorObjectMgr {
         return IsChildOf(EditorObjects[obj.ParentId], parent);
     }
     // ----------------------------------------------------------------------
-    public object GetRuntimeObject(int id) {
-        return IsValid(id) ? TreeCache[id].RuntimeObject : null;
-    }
-    public object GetRuntimeObject(WD_EditorObject eObj) {
-        return GetRuntimeObject(eObj.InstanceId);
-    }
-    // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject obj, WD_EditorObject src) {
         obj.Source= src.InstanceId;
         obj.ExecuteIf<WD_FieldPort>(
             (port) => {
-                (GetRuntimeObject(port.InstanceId) as WD_FieldPort).Source= GetRuntimeObject(src.InstanceId) as WD_FieldPort;
+//                (GetRuntimeObject(port.InstanceId) as WD_FieldPort).Source= GetRuntimeObject(src.InstanceId) as WD_FieldPort;
             }
         );
     }

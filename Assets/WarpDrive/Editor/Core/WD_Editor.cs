@@ -68,8 +68,10 @@ public class WD_Editor : EditorWindow {
     // Activates the editor and initializes all Graph shared variables.
 	public void Activate(WD_Storage storage, WD_Inspector inspector) {
         Storage= storage;
-        DisplayRoot= null;
         Inspector= inspector;
+        DisplayRoot= null;
+        // Assure that the editor data has been properly generated.
+        Storage.GenerateEditorData();
     }
     
     // ----------------------------------------------------------------------
@@ -280,7 +282,7 @@ public class WD_Editor : EditorWindow {
                 // Verify for disconnection.
                 if(!Storage.EditorObjects.IsNearParent(port)) {
                     if(port.IsRuntimeA<WD_FieldPort>()) {
-                        (Storage.EditorObjects.GetRuntimeObject(port) as WD_FieldPort).Disconnect();
+//                        (Storage.EditorObjects.GetRuntimeObject(port) as WD_FieldPort).Disconnect();
                     }
                     port.LocalPosition.x= DragStartPosition.x;
                     port.LocalPosition.y= DragStartPosition.y;

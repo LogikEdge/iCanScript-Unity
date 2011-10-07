@@ -8,8 +8,8 @@ public class WD_Storage : MonoBehaviour {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public WD_UserPreferences           Preferences  = new WD_UserPreferences();
-    public WD_EditorObjectMgr           EditorObjects= new WD_EditorObjectMgr();
+    public WD_UserPreferences   Preferences  = new WD_UserPreferences();
+    public WD_EditorObjectMgr   EditorObjects= new WD_EditorObjectMgr();
 
     // ----------------------------------------------------------------------
 	// We do not want this behaviour to run.
@@ -17,7 +17,7 @@ public class WD_Storage : MonoBehaviour {
 	
     // ======================================================================
     // Object generation functionality.
-    public void GenerateEditorData() {}
+    public void GenerateEditorData() { EditorObjects.RegenerateDynamicData(); }
     public void GenerateRuntimeData() {}
     public void CompileRuntimeToScript() {}
 }

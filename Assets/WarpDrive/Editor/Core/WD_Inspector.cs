@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is used to edit WD_Behaviour components.
-[CustomEditor (typeof (WD_Behaviour))]
+[CustomEditor (typeof (WD_Storage))]
 public class WD_Inspector : Editor {
     // ======================================================================
     // PROPERTIES
@@ -76,28 +76,28 @@ public class WD_Inspector : Editor {
 		DrawDefaultInspector();
 		
         // Draw selected object.
-        WD_Object rtSelectedObject= SelectedObject != null ? editorObjects.GetRuntimeObject(SelectedObject) as WD_Object: null;
-		myFold= EditorGUILayout.InspectorTitlebar(myFold, rtSelectedObject);
-		if(myFold && rtSelectedObject != null) {
-            string name= rtSelectedObject.name;
-            if(name == null || name == "") name= "(empty)";
-            name= EditorGUILayout.TextField("Name", name);
-            if(name != "(empty)" && rtSelectedObject.name != name) {
-                rtSelectedObject.name= SelectedObject.Name= name;
-                rtSelectedObject.Case<WD_Node, WD_Port>(
-                    (node)   => { editorObjects.Layout(SelectedObject); },
-                    (port)   => { editorObjects.Layout(SelectedObject.ParentId); },
-                    (unknown)=> { Debug.Log("Unknown type"); }
-                );
-            }
-            EditorGUILayout.LabelField("Type", rtSelectedObject.GetType().Name.Substring(WD_EditorConfig.TypePrefix.Length));
-            EditorGUILayout.Toggle("Is Valid", rtSelectedObject.IsValid);
-            rtSelectedObject.Case<WD_Node, WD_Port>(
-                (node)   => { InspectNode(node); },
-                (port)   => { InspectPort(port); },
-                (unknown)=> { Debug.Log("Unknown type"); }
-            );
-		}
+//        WD_Object rtSelectedObject= SelectedObject != null ? editorObjects.GetRuntimeObject(SelectedObject) as WD_Object: null;
+//		myFold= EditorGUILayout.InspectorTitlebar(myFold, rtSelectedObject);
+//		if(myFold && rtSelectedObject != null) {
+//            string name= rtSelectedObject.name;
+//            if(name == null || name == "") name= "(empty)";
+//            name= EditorGUILayout.TextField("Name", name);
+//            if(name != "(empty)" && rtSelectedObject.name != name) {
+//                rtSelectedObject.name= SelectedObject.Name= name;
+//                rtSelectedObject.Case<WD_Node, WD_Port>(
+//                    (node)   => { editorObjects.Layout(SelectedObject); },
+//                    (port)   => { editorObjects.Layout(SelectedObject.ParentId); },
+//                    (unknown)=> { Debug.Log("Unknown type"); }
+//                );
+//            }
+//            EditorGUILayout.LabelField("Type", rtSelectedObject.GetType().Name.Substring(WD_EditorConfig.TypePrefix.Length));
+//            EditorGUILayout.Toggle("Is Valid", rtSelectedObject.IsValid);
+//            rtSelectedObject.Case<WD_Node, WD_Port>(
+//                (node)   => { InspectNode(node); },
+//                (port)   => { InspectPort(port); },
+//                (unknown)=> { Debug.Log("Unknown type"); }
+//            );
+//		}
 	}
 
 	// ----------------------------------------------------------------------
