@@ -52,8 +52,8 @@ public class WD_TreeCache {
         get { return TreeCache[i]; }
     }
     // ----------------------------------------------------------------------
-    bool IsValid(int id)      { return id >= 0 && id < TreeCache.Count && TreeCache[id].IsValid; }
-    bool IsInvalid(int id)    { return !IsValid(id); }
+    public bool IsValid(int id)      { return id >= 0 && id < TreeCache.Count && TreeCache[id].IsValid; }
+    public bool IsInvalid(int id)    { return !IsValid(id); }
     // ----------------------------------------------------------------------
     public void CreateInstance(int id, int parentId) {
         // Validate given inputs.

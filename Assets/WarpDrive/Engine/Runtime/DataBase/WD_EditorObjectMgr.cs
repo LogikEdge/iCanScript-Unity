@@ -89,7 +89,12 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public WD_EditorObject this[int i] {
         get { return EditorObjects[i]; }
-        set { EditorObjects[i]= value; }
+        set {
+            if(value.InstanceId != i) Debug.LogError("Trying to add EditorObject at wrong index.");
+            EditorObjects[i]= value;
+            if(TreeCache.IsValid(i)) TreeCache.UpdateInstance(i, value.ParentId);
+            else                     TreeCache.CreateInstance(i, value.ParentId);
+        }
     }
     // ----------------------------------------------------------------------
     public bool IsValid(int id)   { return id >= 0 && id < EditorObjects.Count && EditorObjects[id].IsValid; }
