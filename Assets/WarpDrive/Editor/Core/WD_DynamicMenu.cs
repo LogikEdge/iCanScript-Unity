@@ -59,41 +59,63 @@ public class WD_DynamicMenu {
             case MenuStateEnum.Idle:
                 break;
             case MenuStateEnum.Behaviour:
-                UpdateBehaviour();
+                BehaviourMenu();
                 break;
             case MenuStateEnum.Module:
-                UpdateBehaviour();
+                ModuleMenu();
                 break;
             case MenuStateEnum.StateChart:
-                UpdateBehaviour();
+                StateChartMenu();
                 break;
             case MenuStateEnum.State:
-                UpdateBehaviour();
+                StateMenu();
                 break;
             case MenuStateEnum.Company:
-                UpdateCompany();
+                CompanyMenu();
                 break;
             case MenuStateEnum.Package:
-                UpdatePackage();
+                PackageMenu();
                 break;
             case MenuStateEnum.Function:
-                UpdateFunction(selectedObject, storage);
+                FunctionMenu(selectedObject, storage);
                 break;
         }
     }
 
 	// ----------------------------------------------------------------------
-    void UpdateBehaviour() {
+    void BehaviourMenu() {
         string[] menu= new string[]
-            { "Add Update ...", 
-              "Add Late Update ...",
-              "Add Fixed Update ..."
+            { "Add Update ...",             // 0
+              "Add Late Update ...",        // 1
+              "Add Fixed Update ...",       // 2
+              "OnGUI ...",                  // 3
+              "OnDrawGizmos ..."            // 4
             };
         if(ShowMenu(menu) != -1) {
+            switch(Selection) {
+                case 0: break;
+                case 1: break;
+                case 2: break;
+                case 3: break;
+                case 4: break;
+                default: CurrentState= MenuStateEnum.Idle; break;
+            }
         }
     }
 	// ----------------------------------------------------------------------
-    void UpdateCompany() {
+    void ModuleMenu() {
+        
+    }
+	// ----------------------------------------------------------------------
+    void StateChartMenu() {
+        
+    }
+	// ----------------------------------------------------------------------
+    void StateMenu() {
+        
+    }
+	// ----------------------------------------------------------------------
+    void CompanyMenu() {
         string[] companies= WD_DataBase.GetCompanies();
         if(ShowMenu(companies) != -1) {
             SelectedCompany= companies[Selection];
@@ -102,7 +124,7 @@ public class WD_DynamicMenu {
         }        
     }
 	// ----------------------------------------------------------------------
-    void UpdatePackage() {
+    void PackageMenu() {
         string[] packages= WD_DataBase.GetPackages(SelectedCompany);
         if(ShowMenu(packages) != -1) {
             SelectedPackage= packages[Selection];
@@ -111,7 +133,7 @@ public class WD_DynamicMenu {
         }                
     }
 	// ----------------------------------------------------------------------
-    void UpdateFunction(WD_EditorObject selectedObject, WD_Storage storage) {
+    void FunctionMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         // Gather all functions.
         string[] functions  = WD_DataBase.GetFunctions(SelectedCompany, SelectedPackage);
         if(ShowMenu(functions) != -1) {
