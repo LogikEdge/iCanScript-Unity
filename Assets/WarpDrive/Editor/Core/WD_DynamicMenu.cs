@@ -241,8 +241,16 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     int ShowMenu(string[] menu, int width= -1) {
+        return ShowMenu(menu, MenuPosition, width);
+    }
+	// ----------------------------------------------------------------------
+    int ShowMenu(string[] menu, Vector2 pos, int width= -1) {
+        return ShowMenu(menu, pos, ref Selection, width);
+    }
+	// ----------------------------------------------------------------------
+    int ShowMenu(string[] menu, Vector2 pos, ref int selection, int width= -1) {
         Vector2 itemSize= GetMaxSize(menu);
-        Selection= GUI.SelectionGrid(new Rect(MenuPosition.x,MenuPosition.y,itemSize.x,itemSize.y*menu.Length), Selection, menu, 1);        
-        return Selection;
+        selection= GUI.SelectionGrid(new Rect(pos.x, pos.y, itemSize.x, itemSize.y*menu.Length), selection, menu, 1);        
+        return selection;
     }
 }
