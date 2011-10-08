@@ -164,9 +164,6 @@ public class WD_EditorObjectMgr {
             TreeCache.ForEachChild(parent.InstanceId, (id) => { fnc(EditorObjects[id]); } );            
         }
     }
-    public void ForEachChild<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
-        ForEachChild(parent, (child) => { ExecuteIf<T>(child, fnc); });
-    }
     public void ForEach(Action<WD_EditorObject> fnc) {
         foreach(var obj in EditorObjects) {
             if(obj.IsValid) fnc(obj);
@@ -178,18 +175,12 @@ public class WD_EditorObjectMgr {
     public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         ForEachRecursiveDepthLast(parent, fnc);
     }
-    public void ForEachRecursive<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
-        ForEachRecursive(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
-    }
     public void ForEachRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
             TreeCache.ForEachRecursiveDepthLast((id) => { fnc(EditorObjects[id]); });                                
         } else {
             TreeCache.ForEachRecursiveDepthLast(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });                    
         }
-    }
-    public void ForEachRecursiveDepthLast<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
-        ForEachRecursiveDepthLast(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
     }
     public void ForEachRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
@@ -198,14 +189,8 @@ public class WD_EditorObjectMgr {
             TreeCache.ForEachRecursiveDepthFirst(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });                    
         }
     }
-    public void ForEachRecursiveDepthFirst<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
-        ForEachRecursiveDepthFirst(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
-    }
     public void ForEachChildRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         ForEachChildRecursiveDepthLast(parent, fnc);
-    }
-    public void ForEachChildRecursive<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
-        ForEachChildRecursive(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
     }
     public void ForEachChildRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
@@ -214,18 +199,12 @@ public class WD_EditorObjectMgr {
             TreeCache.ForEachChildRecursiveDepthLast(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });                    
         }
     }
-    public void ForEachChildRecursiveDepthLast<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
-        ForEachChildRecursiveDepthLast(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
-    }
     public void ForEachChildRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
             TreeCache.ForEachRecursiveDepthFirst((id) => { fnc(EditorObjects[id]); });                    
         } else {
             TreeCache.ForEachChildRecursiveDepthFirst(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });        
         }
-    }
-    public void ForEachChildRecursiveDepthFirst<T>(WD_EditorObject parent, Action<WD_EditorObject> fnc) where T : WD_Object {
-        ForEachChildRecursiveDepthFirst(parent, (obj) => { ExecuteIf<T>(obj, fnc); });
     }
 
     // ======================================================================
@@ -455,16 +434,16 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     void AdjustChildLocalPosition(WD_EditorObject node, Vector2 _delta) {
-        ForEachChild<WD_Node>(node, (child)=> { DeltaMoveInternal(child, _delta); } );
+        ForEachChild(node, (child)=> { if(child.IsNode) DeltaMoveInternal(child, _delta); } );
     }
     // ----------------------------------------------------------------------
     // Returns the space used by all children.
     Rect ComputeChildRect(WD_EditorObject node) {
         // Compute child space.
         Rect childRect= new Rect(0.5f*node.LocalPosition.width,0.5f*node.LocalPosition.height,0,0);
-        ForEachChild<WD_Node>(node,
+        ForEachChild(node,
             (child)=> {
-                if(child.IsVisible) {
+                if(child.IsNode && child.IsVisible) {
                     childRect= Physics2D.Merge(childRect, child.LocalPosition);
                 }
             }
@@ -519,12 +498,14 @@ public class WD_EditorObjectMgr {
         List<WD_EditorObject> bottomPorts= new List<WD_EditorObject>();
         List<WD_EditorObject> leftPorts  = new List<WD_EditorObject>();
         List<WD_EditorObject> rightPorts = new List<WD_EditorObject>();
-        ForEachChild<WD_Port>(node,
+        ForEachChild(node,
             (port)=> {
-                if(port.IsOnTopEdge)         { topPorts.Add(port); }
-                else if(port.IsOnBottomEdge) { bottomPorts.Add(port); }
-                else if(port.IsOnLeftEdge)   { leftPorts.Add(port); }
-                else if(port.IsOnRightEdge)  { rightPorts.Add(port); }
+                if(port.IsPort) {
+                    if(port.IsOnTopEdge)         { topPorts.Add(port); }
+                    else if(port.IsOnBottomEdge) { bottomPorts.Add(port); }
+                    else if(port.IsOnLeftEdge)   { leftPorts.Add(port); }
+                    else if(port.IsOnRightEdge)  { rightPorts.Add(port); }                    
+                }
             }
         );
         
@@ -664,9 +645,9 @@ public class WD_EditorObjectMgr {
 
     // ----------------------------------------------------------------------
     public void ForEachTopPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild<WD_Port>(node,
+        ForEachChild(node,
             (port)=> {
-                if(port.IsOnTopEdge) {
+                if(port.IsPort && port.IsOnTopEdge) {
                     fnc(port);
                 }
             }
@@ -675,9 +656,9 @@ public class WD_EditorObjectMgr {
     
     // ----------------------------------------------------------------------
     public void ForEachBottomPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild<WD_Port>(node,
+        ForEachChild(node,
             (port)=> {
-                if(port.IsOnBottomEdge) {
+                if(port.IsPort && port.IsOnBottomEdge) {
                     fnc(port);
                 }
             }
@@ -686,9 +667,9 @@ public class WD_EditorObjectMgr {
     
     // ----------------------------------------------------------------------
     public void ForEachLeftPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild<WD_Port>(node,
+        ForEachChild(node,
             (port)=> {
-                if(port.IsOnLeftEdge) {
+                if(port.IsPort && port.IsOnLeftEdge) {
                     fnc(port);
                 }
             }
@@ -697,9 +678,9 @@ public class WD_EditorObjectMgr {
     
     // ----------------------------------------------------------------------
     public void ForEachRightPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild<WD_Port>(node,
+        ForEachChild(node,
             (port)=> {
-                if(port.IsOnRightEdge) {
+                if(port.IsPort && port.IsOnRightEdge) {
                     fnc(port);
                 }
             }

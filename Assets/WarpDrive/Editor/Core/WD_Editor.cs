@@ -402,9 +402,9 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawNodes() {
         // Display node starting from the root node.
-        Storage.EditorObjects.ForEachRecursiveDepthLast<WD_Node>(DisplayRoot,
+        Storage.EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
             (node)=> {
-                Graphics.DrawNode(node, SelectedObject, Storage);
+                if(node.IsNode) Graphics.DrawNode(node, SelectedObject, Storage);
             }
         );
     }	
@@ -412,10 +412,10 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        Storage.EditorObjects.ForEachChildRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawConnection(port, SelectedObject, Storage); } );
+        Storage.EditorObjects.ForEachChildRecursive(DisplayRoot, (port)=> { if(port.IsPort) Graphics.DrawConnection(port, SelectedObject, Storage); } );
 
         // Display ports.
-        Storage.EditorObjects.ForEachChildRecursive<WD_Port>(DisplayRoot, (port)=> { Graphics.DrawPort(port, SelectedObject, Storage); } );
+        Storage.EditorObjects.ForEachChildRecursive(DisplayRoot, (port)=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); } );
     }
 
 }
