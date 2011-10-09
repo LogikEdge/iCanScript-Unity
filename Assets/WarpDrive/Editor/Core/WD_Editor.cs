@@ -27,7 +27,9 @@ public class WD_Editor : EditorWindow {
     bool            IsDragEnabled       = true;
     bool            IsDragging          { get { return DragObject != null; }}
 
-
+    // ----------------------------------------------------------------------
+    Vector2 MenuMousePosition= Vector2.zero;
+    
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
@@ -184,7 +186,8 @@ public class WD_Editor : EditorWindow {
             case WD_Mouse.ButtonStateEnum.SingleClick:
                 break;
             case WD_Mouse.ButtonStateEnum.DoubleClick:
-                ProcessMainMenu(Mouse.LeftButtonDownPosition);
+                MenuMousePosition= Mouse.LeftButtonDownPosition;
+                DynamicMenu.Activate(SelectedObject);
                 break;
             case WD_Mouse.ButtonStateEnum.Dragging:
                 ProcessDragging();
@@ -195,27 +198,13 @@ public class WD_Editor : EditorWindow {
         // Process right button state.
         switch(Mouse.RightButtonState) {
             case WD_Mouse.ButtonStateEnum.SingleClick:
-//                ProcessMainMenu(Mouse.RightButtonDownPosition);
+                MenuMousePosition= Mouse.RightButtonDownPosition;
                 DynamicMenu.Activate(SelectedObject);
                 break;
         }        
 
         // Display dynamic menu.
-        DynamicMenu.Update(SelectedObject, Storage, Mouse.RightButtonDownPosition);
-    }
-    
-	// ----------------------------------------------------------------------
-    void ProcessMainMenu(Vector2 position) {
-        WD_EditorObject selectedObject= GetObjectAtScreenPosition(position);
-        if(selectedObject == null) return;
-        WD_MenuContext context= WD_MenuContext.CreateInstance(selectedObject, position, ScrollView.ScreenToGraph(position), Storage.EditorObjects);
-        string menuName= "CONTEXT/"+WD_EditorConfig.ProductName;
-        if(selectedObject.IsRuntimeA<WD_RootNode>()) menuName+= "/RootNode";
-        else if(selectedObject.IsRuntimeA<WD_StateChart>()) menuName+= "/StateChart";
-        else if(selectedObject.IsRuntimeA<WD_State>()) menuName+= "/State";
-        else if(selectedObject.IsRuntimeA<WD_Module>()) menuName+= "/Module";
-        else if(selectedObject.IsRuntimeA<WD_Function>()) menuName+= "/Function";
-        EditorUtility.DisplayPopupMenu (new Rect (position.x,position.y,0,0), menuName, new MenuCommand(context));
+        DynamicMenu.Update(SelectedObject, Storage, MenuMousePosition);
     }
     
 	// ----------------------------------------------------------------------
