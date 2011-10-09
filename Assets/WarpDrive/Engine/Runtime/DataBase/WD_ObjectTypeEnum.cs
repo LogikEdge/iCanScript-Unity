@@ -33,7 +33,7 @@ public partial class WD {
     public static bool IsOutModulePort    (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.OutModulePort; }
     public static bool IsInStatePort      (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.InStatePort; }
     public static bool IsOutStatePort     (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.OutStatePort; }
-    public static bool IsNode             (WD_EditorObject obj) { return IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsClass(obj) || IsFunction(obj) || IsConversion(obj); }
+    public static bool IsNode             (WD_EditorObject obj) { return IsBehaviour(obj) || IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsClass(obj) || IsFunction(obj) || IsConversion(obj); }
     public static bool IsDataPort         (WD_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj); }
     public static bool IsFieldPort        (WD_EditorObject obj) { return IsInFieldPort(obj) || IsOutFieldPort(obj); }
     public static bool IsPropertyPort     (WD_EditorObject obj) { return IsInPropertyPort(obj) || IsOutPropertyPort(obj); }
