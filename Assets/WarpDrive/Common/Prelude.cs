@@ -331,7 +331,10 @@ public static class Prelude {
         return result;
     }
     
+    // ======================================================================
+    // zip & zipWith
     // ----------------------------------------------------------------------
+    // zipWith :: (f a->b->r)->[a]->[b]->[r]
     public static R[] zipWith_<A,B,R>(R[] result, System.Func<A,B,R> fnc, A[] l1, B[] l2) {
         int len= Inf.Min(length(l1), length(l2));
         if(length(result) != len) result= new R[len];
@@ -360,12 +363,16 @@ public static class Prelude {
     public static List<R> zipWith<A,B,R>(System.Func<A,B,R> fnc, List<A> l1, List<B> l2) {
         return zipWith_(new List<R>(), fnc, l1, l2);
     }
+    // ----------------------------------------------------------------------
+    // zip :: [a]->[b]->[(a,b)]
     public static Tuple<A,B>[] zip<A,B>(A[] l1, B[] l2) {
         return zipWith<A,B,Tuple<A,B>>((a,b)=> new Tuple<A,B>(a,b), l1, l2);
     }
     public static List<Tuple<A,B>> zip<A,B>(List<A> l1, List<B> l2) {
         return zipWith<A,B,Tuple<A,B>>((a,b)=> new Tuple<A,B>(a,b), l1, l2);
     }
+    // ----------------------------------------------------------------------
+    // zipWith :: (f a->b->c->r)->[a]->[b]->[c]->[r]
     public static R[] zipWith_<A,B,C,R>(R[] result, System.Func<A,B,C,R> fnc, A[] l1, B[] l2, C[] l3) {
         int len= Inf.Min(length(l1), length(l2), length(l3));
         if(length(result) != len) result= new R[len];
@@ -394,12 +401,16 @@ public static class Prelude {
     public static List<R> zipWith<A,B,C,R>( System.Func<A,B,C,R> fnc, List<A> l1, List<B> l2, List<C> l3) {
         return zipWith_(new List<R>(), fnc, l1, l2, l3);
     }
+    // ----------------------------------------------------------------------
+    // zip :: [a]->[b]->[c]->[(a,b,c)]
     public static Tuple<A,B,C>[] zip<A,B,C>(A[] l1, B[] l2, C[] l3) {
         return zipWith<A,B,C,Tuple<A,B,C>>((a,b,c)=> new Tuple<A,B,C>(a,b,c), l1, l2, l3);
     }
     public static List<Tuple<A,B,C>> zip<A,B,C>(List<A> l1, List<B> l2, List<C> l3) {
         return zipWith<A,B,C,Tuple<A,B,C>>((a,b,c)=> new Tuple<A,B,C>(a,b,c), l1, l2, l3);
     }
+    // ----------------------------------------------------------------------
+    // zipWith :: (f a->b->c->d->r)->[a]->[b]->[c]->[d]->[r]
     public static R[] zipWith_<A,B,C,D,R>(R[] result, System.Func<A,B,C,D,R> fnc, A[] l1, B[] l2, C[] l3, D[] l4) {
         int len= Inf.Min(length(l1), length(l2), length(l3), length(l4));
         if(length(result) != len) result= new R[len];
@@ -433,6 +444,8 @@ public static class Prelude {
         }
         return result;
     }
+    // ----------------------------------------------------------------------
+    // zip :: [a]->[b]->[c]->[d]->[(a,b,c,d)]
     public static Tuple<A,B,C,D>[] zip<A,B,C,D>(A[] l1, B[] l2, C[] l3, D[] l4) {
         return zipWith<A,B,C,D,Tuple<A,B,C,D>>((a,b,c,d)=> new Tuple<A,B,C,D>(a,b,c,d), l1, l2, l3, l4);
     }
@@ -440,7 +453,10 @@ public static class Prelude {
         return zipWith<A,B,C,D,Tuple<A,B,C,D>>((a,b,c,d)=> new Tuple<A,B,C,D>(a,b,c,d), l1, l2, l3, l4);
     }
     
+    // ======================================================================
+    // map
     // ----------------------------------------------------------------------
+    // map :: (f a->b->c)->[a]->[b]->[c]
     public static B[] map_<A,B>(B[] result, System.Func<A,B> fnc, A[] l1) {
         int len= length(l1);
         if(len != length(result)) result= new B[len];
@@ -467,6 +483,8 @@ public static class Prelude {
         return map_(new List<B>(), fnc, l1);
     }
     
+    // ======================================================================
+    // fold
     // ----------------------------------------------------------------------
     public static B fold<A,B>(System.Func<A,B,B> fnc, B initialValue, A[] l1) {
         B result= initialValue;
@@ -481,7 +499,12 @@ public static class Prelude {
         return result;
     }
 
+    // ======================================================================
+    // curry & uncurry
     // ----------------------------------------------------------------------
+    // curry :: (f (a,b)->r)->a->b->r
+    // curry :: (f (a,b,c)->r)->a->b->c->r
+    // curry :: (f (a,b,c,d)->r)->a->a->c->d->r
     public static R curry<A,B,R>(System.Func<Tuple<A,B>,R> fnc, A a, B b) {
         return fnc(new Tuple<A,B>(a,b));
     }
@@ -493,6 +516,9 @@ public static class Prelude {
     }
     
     // ----------------------------------------------------------------------
+    // uncurry :: (f a->b->r))->(a,b)->r
+    // uncurry :: (f a->b->c->r)->(a,b,c)->r
+    // uncurry :: (f a->b->c->d->r)->(a,b,c,d)->r
     public static R uncurry<A,B,R>(System.Func<A,B,R> fnc, Tuple<A,B> tuple) {
         return fnc(tuple.Item1, tuple.Item2);
     }
@@ -503,17 +529,24 @@ public static class Prelude {
         return fnc(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4);
     }
 
+    // ======================================================================
+    // boolean logic
     // ----------------------------------------------------------------------
+    // and :: bool->bool->bool
+    // and :: [bool]->bool
     public static bool and(bool a, bool b) { return a & b; }
     public static bool and(bool[] lst)     { return fold(and, true, lst); }
     public static bool and(List<bool> lst) { return fold(and, true, lst); }
 
     // ----------------------------------------------------------------------
+    // or :: bool->bool->bool
+    // or :: [bool]->bool
     public static bool or(bool a, bool b)   { return a | b; }
     public static bool or(bool[] lst)       { return fold(or, false, lst); }
     public static bool or(List<bool> lst)   { return fold(or, false, lst); }
 
     // ----------------------------------------------------------------------
+    // all :: (f a->bool)->[a]->bool
     public static bool all<A>(System.Func<A,bool> cond, A[] lst) {
         foreach(var obj in lst) {
             if(!cond(obj)) {
@@ -532,6 +565,7 @@ public static class Prelude {
     }
 
     // ----------------------------------------------------------------------
+    // any :: (f a->bool)->[a]->bool
     public static bool any<A>(System.Func<A,bool> cond, A[] lst) {
         foreach(var obj in lst) {
             if(cond(obj)) {
@@ -549,4 +583,36 @@ public static class Prelude {
         return false;
     }
 
+    // ======================================================================
+    // Type utilities
+    // ----------------------------------------------------------------------
+    public static bool equal<T1,T2>() {
+        return typeof(T1) == typeof(T2);
+    }
+    public static void executeIf<T1,T2>(Action fnc) {
+        if(equal<T1,T2>()) fnc();
+    }
+    public static Maybe<R> executeIf<T1,T2,R>(Func<R> fnc) {
+        return equal<T1,T2>() ? new Maybe<R>(new Just<R>(fnc())) : new Maybe<R>(new Nothing());
+    }
+    public static void choice<S,T1,T2>(Action f1, Action f2) {
+        if(equal<S,T1>()) f1();
+        else if(equal<S,T2>()) f2();
+    }
+    public static Maybe<R> choice<S,T1,T2,R>(Func<R> f1, Func<R> f2) {
+        if(equal<S,T1>())       return new Maybe<R>(new Just<R>(f1()));
+        else if(equal<S,T2>())  return new Maybe<R>(new Just<R>(f2()));
+        return new Maybe<R>(new Nothing());
+    }
+    public static void choice<S,T1,T2,T3>(Action f1, Action f2, Action f3) {
+        if(equal<S,T1>()) f1();
+        else if(equal<S,T2>()) f2();
+        else if(equal<S,T3>()) f3();
+    }
+    public static Maybe<R> choice<S,T1,T2,T3,R>(Func<R> f1, Func<R> f2, Func<R> f3) {
+        if(equal<S,T1>())       return new Maybe<R>(new Just<R>(f1()));
+        else if(equal<S,T2>())  return new Maybe<R>(new Just<R>(f2()));
+        else if(equal<S,T3>())  return new Maybe<R>(new Just<R>(f3()));
+        return new Maybe<R>(new Nothing());
+    }
 }

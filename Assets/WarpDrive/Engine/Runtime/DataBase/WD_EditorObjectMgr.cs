@@ -48,11 +48,11 @@ public class WD_EditorObjectMgr {
             DestroyInstance(TreeCache[id].Children[0]);
         }
         // Disconnect ports linking to this port.
-        ExecuteIf<WD_FieldPort>(EditorObjects[id],
-            (instance) => {
-                ForEach<WD_FieldPort>(
+        ExecuteIf(EditorObjects[id],
+            WD.IsFieldPort, (instance) => {
+                ForEach(
                     (obj) => {
-                        if(obj.Source == id) {
+                        if(obj. IsFieldPort && obj.Source == id) {
 //                            (GetRuntimeObject(obj) as WD_FieldPort).Source= null;
                             obj.Source= -1;
                         }
@@ -108,42 +108,132 @@ public class WD_EditorObjectMgr {
     // Editor Object Iteration Utilities
     // ----------------------------------------------------------------------
     // Executes the given action if the given object matches the T type.
-    public void ExecuteIf<T>(WD_EditorObject obj, Action<WD_EditorObject> fnc) where T : WD_Object {
-        if(obj.IsValid && obj.IsRuntimeA<T>()) fnc(obj);
+    public void ExecuteIf(WD_EditorObject obj, Func<WD_EditorObject,bool> cmp, Action<WD_EditorObject> f) {
+        if(cmp(obj)) f(obj);
     }
-    public void ExecuteIf<T>(int id, Action<WD_EditorObject> fnc) where T : WD_Object {
+    public void ExecuteIf(int id, Func<WD_EditorObject,bool> cmp, Action<WD_EditorObject> f) {
         if(!IsValid(id)) return;
-        ExecuteIf<T>(EditorObjects[id], fnc);
+        ExecuteIf(EditorObjects[id], cmp, f);
     }
-    public void Case<T1,T2>(WD_EditorObject obj, Action<WD_EditorObject> fnc1,
-                                                 Action<WD_EditorObject> fnc2,
-                                                 Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                                           where T2 : WD_Object {
-        obj.Case<T1,T2>(fnc1,fnc2,defaultFnc);
+    public void Case(WD_EditorObject obj,
+                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
+                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
+                                                    Action<WD_EditorObject> defaultFnc= null) {
+        if(c1(obj)) f1(obj);
+        else if(c2(obj)) f2(obj);
+        else if(defaultFnc != null) defaultFnc(obj);
     }
-    public void Case<T1,T2>(int id, Action<WD_EditorObject> fnc1,
-                                    Action<WD_EditorObject> fnc2,
-                                    Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                              where T2 : WD_Object {
-        if(IsInvalid(id)) return;
-        Case<T1,T2>(EditorObjects[id], fnc1, fnc2, defaultFnc);
+    public void Case(WD_EditorObject obj, 
+                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
+                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
+                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
+                                                    Action<WD_EditorObject> defaultFnc= null) {
+        if(c1(obj)) f1(obj);
+        else if(c2(obj)) f2(obj);
+        else if(c3(obj)) f3(obj);
+        else if(defaultFnc != null) defaultFnc(obj);
     }
-    public void Case<T1,T2,T3>(WD_EditorObject obj, Action<WD_EditorObject> fnc1,
-                                                    Action<WD_EditorObject> fnc2,
-                                                    Action<WD_EditorObject> fnc3,
-                                                    Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                                              where T2 : WD_Object
-                                                                                              where T3 : WD_Object {
-        obj.Case<T1,T2,T3>(fnc1, fnc2, fnc3, defaultFnc);
+    public void Case(WD_EditorObject obj, 
+                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
+                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
+                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
+                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
+                                                    Action<WD_EditorObject> defaultFnc= null) {
+        if(c1(obj)) f1(obj);
+        else if(c2(obj)) f2(obj);
+        else if(c3(obj)) f3(obj);
+        else if(c4(obj)) f4(obj);
+        else if(defaultFnc != null) defaultFnc(obj);
     }
-    public void Case<T1,T2,T3>(int id, Action<WD_EditorObject> fnc1,
-                                       Action<WD_EditorObject> fnc2,
-                                       Action<WD_EditorObject> fnc3,
-                                       Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                                 where T2 : WD_Object
-                                                                                 where T3 : WD_Object {
-        if(IsInvalid(id)) return;
-        Case<T1,T2,T3>(EditorObjects[id], fnc1, fnc2, fnc3, defaultFnc);
+    public void Case(WD_EditorObject obj, 
+                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
+                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
+                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
+                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
+                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
+                                                    Action<WD_EditorObject> defaultFnc= null) {
+        if(c1(obj)) f1(obj);
+        else if(c2(obj)) f2(obj);
+        else if(c3(obj)) f3(obj);
+        else if(c4(obj)) f4(obj);
+        else if(c5(obj)) f5(obj);
+        else if(defaultFnc != null) defaultFnc(obj);
+    }
+    public void Case(WD_EditorObject obj, 
+                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
+                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
+                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
+                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
+                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
+                     Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
+                                                    Action<WD_EditorObject> defaultFnc= null) {
+        if(c1(obj)) f1(obj);
+        else if(c2(obj)) f2(obj);
+        else if(c3(obj)) f3(obj);
+        else if(c4(obj)) f4(obj);
+        else if(c5(obj)) f5(obj);
+        else if(c6(obj)) f6(obj);
+        else if(defaultFnc != null) defaultFnc(obj);
+    }
+    public void Case(WD_EditorObject obj,
+                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
+                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
+                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
+                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
+                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
+                     Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
+                     Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
+                                                    Action<WD_EditorObject> defaultFnc= null) {
+        if(c1(obj)) f1(obj);
+        else if(c2(obj)) f2(obj);
+        else if(c3(obj)) f3(obj);
+        else if(c4(obj)) f4(obj);
+        else if(c5(obj)) f5(obj);
+        else if(c6(obj)) f6(obj);
+        else if(c7(obj)) f7(obj);
+        else if(defaultFnc != null) defaultFnc(obj);
+    }
+    public void Case(WD_EditorObject obj,
+                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
+                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
+                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
+                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
+                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
+                     Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
+                     Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
+                     Func<WD_EditorObject,bool> c8, Action<WD_EditorObject> f8,
+                                                    Action<WD_EditorObject> defaultFnc= null) {
+        if(c1(obj)) f1(obj);
+        else if(c2(obj)) f2(obj);
+        else if(c3(obj)) f3(obj);
+        else if(c4(obj)) f4(obj);
+        else if(c5(obj)) f5(obj);
+        else if(c6(obj)) f6(obj);
+        else if(c7(obj)) f7(obj);
+        else if(c8(obj)) f8(obj);
+        else if(defaultFnc != null) defaultFnc(obj);
+    }
+    public void Case(WD_EditorObject obj, 
+                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
+                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
+                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
+                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
+                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
+                     Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
+                     Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
+                     Func<WD_EditorObject,bool> c8, Action<WD_EditorObject> f8,
+                     Func<WD_EditorObject,bool> c9, Action<WD_EditorObject> f9,
+                                                    Action<WD_EditorObject> defaultFnc= null) {
+        if(c1(obj)) f1(obj);
+        else if(c2(obj)) f2(obj);
+        else if(c3(obj)) f3(obj);
+        else if(c4(obj)) f4(obj);
+        else if(c5(obj)) f5(obj);
+        else if(c6(obj)) f6(obj);
+        else if(c7(obj)) f7(obj);
+        else if(c8(obj)) f8(obj);
+        else if(c8(obj)) f9(obj);
+        else if(defaultFnc != null) defaultFnc(obj);
     }
     public void ForEachChild(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
@@ -157,9 +247,6 @@ public class WD_EditorObjectMgr {
         foreach(var obj in EditorObjects) {
             if(obj.IsValid) fnc(obj);
         }
-    }
-    public void ForEach<T>(Action<WD_EditorObject> fnc) where T : WD_Object {
-        ForEach((obj) => { ExecuteIf<T>(obj, fnc); });
     }
     public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         ForEachRecursiveDepthLast(parent, fnc);
@@ -210,9 +297,9 @@ public class WD_EditorObjectMgr {
     // Returns the node at the given position
     public WD_EditorObject GetNodeAt(Vector2 pick) {
         WD_EditorObject foundNode= null;
-        ForEach<WD_Node>(
+        ForEach(
             (node) => {
-                if(node.IsVisible && IsInside(node, pick)) {
+                if(node.IsNode && node.IsVisible && IsInside(node, pick)) {
                     if(foundNode == null || node.LocalPosition.width < foundNode.LocalPosition.width) {
                         foundNode= node;
                     }
@@ -227,9 +314,9 @@ public class WD_EditorObjectMgr {
     public WD_EditorObject GetPortAt(Vector2 pick) {
         WD_EditorObject bestPort= null;
         float bestDistance= 100000;     // Simply a big value
-        ForEach<WD_Port>(
+        ForEach(
             (port) => {
-                if(port.IsVisible) {
+                if(port.IsPort && port.IsVisible) {
                     Rect tmp= GetPosition(port);
                     Vector2 position= new Vector2(tmp.x, tmp.y);
                     float distance= Vector2.Distance(position, pick);
@@ -263,9 +350,9 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public void Layout(WD_EditorObject obj) {
         obj.IsDirty= false;
-        Case<WD_Node, WD_Port>(obj,
-            (node) => { NodeLayout(node); },
-            (port) => { PortLayout(port); }
+        Case(obj,
+            WD.IsNode, (node) => { NodeLayout(node); },
+            WD.IsPort, (port) => { PortLayout(port); }
         );
     }
     public void Layout(int id) {
@@ -922,9 +1009,9 @@ public class WD_EditorObjectMgr {
         WD_EditorObject foundPort= null;
         Rect tmp= GetPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
-        ForEach<WD_Port>(
+        ForEach(
             (p) => {
-                if(p != port) {
+                if(p.IsPort && p != port) {
                     tmp= GetPosition(p);
                     Vector2 pPos= new Vector2(tmp.x, tmp.y);
                     float distance= Vector2.Distance(pPos, position);
