@@ -15,8 +15,10 @@ public enum WD_ObjectTypeEnum {
 }
 
 public partial class WD {
-    public static bool IsState            (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.State; }
+    public static bool IsBehaviour        (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Behaviour; }
     public static bool IsModule           (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Module; }
+    public static bool IsStateChart       (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.StateChart; }
+    public static bool IsState            (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.State; }
     public static bool IsClass            (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Class; }
     public static bool IsFunction         (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Function; }
     public static bool IsConversion       (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Conversion; }
@@ -31,7 +33,7 @@ public partial class WD {
     public static bool IsOutModulePort    (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.OutModulePort; }
     public static bool IsInStatePort      (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.InStatePort; }
     public static bool IsOutStatePort     (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.OutStatePort; }
-    public static bool IsNode             (WD_EditorObject obj) { return IsState(obj) || IsModule(obj) || IsClass(obj) || IsFunction(obj) || IsConversion(obj); }
+    public static bool IsNode             (WD_EditorObject obj) { return IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsClass(obj) || IsFunction(obj) || IsConversion(obj); }
     public static bool IsDataPort         (WD_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj); }
     public static bool IsFieldPort        (WD_EditorObject obj) { return IsInFieldPort(obj) || IsOutFieldPort(obj); }
     public static bool IsPropertyPort     (WD_EditorObject obj) { return IsInPropertyPort(obj) || IsOutPropertyPort(obj); }

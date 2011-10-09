@@ -226,7 +226,7 @@ public class WD_Graphics {
             GenerateNodeStyle(ref selectedStyle, storage.Preferences.NodeColors.SelectedColor);
             return selectedStyle;
         }
-        if(node.IsState) {
+        if(node.IsState || node.IsStateChart) {
             GenerateNodeStyle(ref stateStyle, storage.Preferences.NodeColors.StateColor);
             return stateStyle;
         }

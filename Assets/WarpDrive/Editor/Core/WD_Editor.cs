@@ -373,6 +373,7 @@ public class WD_Editor : EditorWindow {
         Storage.EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
             (obj)=> {
                 if(obj.IsDirty) {
+//                    Debug.Log("Performing layout on: "+obj.Name);
                     Storage.EditorObjects.Layout(obj);
                 }
             }
