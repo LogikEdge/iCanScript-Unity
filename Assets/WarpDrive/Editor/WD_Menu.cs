@@ -12,8 +12,7 @@ public class WD_Menu {
 		WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
 		if(storage == null) {
 			storage= Selection.activeGameObject.AddComponent<WD_Storage>();
-            int id= storage.EditorObjects.GetNextAvailableId();
-            storage.EditorObjects[id]= new WD_EditorObject(id, "Behaviour", typeof(WD_Storage), -1, WD_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
+            storage.EditorObjects.CreateInstance("Behaviour", -1, WD_ObjectTypeEnum.Behaviour, Vector2.zero, typeof(WD_Storage));
 		}
 	}
 	[MenuItem("WarpDrive/Create Behaviour", true)]
@@ -34,8 +33,7 @@ public class WD_Menu {
 		if(storage == null) {
 			storage= Selection.activeGameObject.AddComponent<WD_Storage>();
             storage.enabled= false;
-            int id= storage.EditorObjects.GetNextAvailableId();
-            storage.EditorObjects[id]= new WD_EditorObject(id, "Module Library", typeof(WD_Storage), -1, WD_ObjectTypeEnum.Module, new Rect(0,0,0,0));
+            storage.EditorObjects.CreateInstance("Module Library", -1, WD_ObjectTypeEnum.Module, Vector2.zero, typeof(WD_Storage));
 		}
 	}
 	[MenuItem("WarpDrive/Create Module Library", true)]
@@ -56,8 +54,7 @@ public class WD_Menu {
 		if(storage == null) {
 			storage= Selection.activeGameObject.AddComponent<WD_Storage>();
             storage.enabled= false;
-            int id= storage.EditorObjects.GetNextAvailableId();
-            storage.EditorObjects[id]= new WD_EditorObject(id, "StateChart Library", typeof(WD_Storage), -1, WD_ObjectTypeEnum.StateChart, new Rect(0,0,0,0));
+            storage.EditorObjects.CreateInstance("StateChart Library", -1, WD_ObjectTypeEnum.StateChart, Vector2.zero, typeof(WD_Storage));
 		}
 	}
 	[MenuItem("WarpDrive/Create State Chart Library", true)]

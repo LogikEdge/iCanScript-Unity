@@ -16,27 +16,16 @@ public class WD_EditorObjectMgr {
     // ======================================================================
     // Object Creation
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateInstance(WD_BaseDesc baseDesc, int parentId, Vector2 initialPos) {
-        // Create conversions
-        if(baseDesc is WD_FunctionDesc) {
-            WD_FunctionDesc funcDesc= baseDesc as WD_FunctionDesc;
-            // Create the function node.
-            int funcId= GetNextAvailableId();
-            // Calcute the desired screen position of the new object.
-            Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
-            Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
-            // Create new EditorObject
-            EditorObjects[funcId]= new WD_EditorObject(funcId, funcDesc.Name, funcDesc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
-            TreeCache.CreateInstance(funcId, parentId);
-            // Create the function ports.
-            for(int i= 0; i < funcDesc.ParameterNames.Length; ++i) {
-                int portId= GetNextAvailableId();
-                WD_ObjectTypeEnum portType= funcDesc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
-                EditorObjects[portId]= new WD_EditorObject(portId, funcDesc.ParameterNames[i], funcDesc.ParameterTypes[i], funcId, portType, new Rect(0,0,0,0));
-                TreeCache.CreateInstance(portId, funcId);
-            }
-        }
-        return null;
+    public WD_EditorObject CreateInstance(string name, int parentId, WD_ObjectTypeEnum objType, Vector2 initialPos, Type rtType) {
+        // Create the function node.
+        int id= GetNextAvailableId();
+        // Calcute the desired screen position of the new object.
+        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        // Create new EditorObject
+        EditorObjects[id]= new WD_EditorObject(id, name, rtType, parentId, objType, localPos);
+        TreeCache.CreateInstance(id, parentId);
+        return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
     public int GetNextAvailableId() {
