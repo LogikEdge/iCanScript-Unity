@@ -306,7 +306,7 @@ public class WD_EditorObjectMgr {
                 }                
             }
         );
-        return foundNode ?? GetRootNode();
+        return foundNode;
     }
     
     // ----------------------------------------------------------------------

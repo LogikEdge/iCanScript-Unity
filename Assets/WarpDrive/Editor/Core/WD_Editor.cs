@@ -184,6 +184,7 @@ public class WD_Editor : EditorWindow {
                 if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDragging();
                 break;
             case WD_Mouse.ButtonStateEnum.SingleClick:
+                DynamicMenu.Deactivate();
                 break;
             case WD_Mouse.ButtonStateEnum.DoubleClick:
                 MenuMousePosition= Mouse.LeftButtonDownPosition;
@@ -373,7 +374,6 @@ public class WD_Editor : EditorWindow {
         Storage.EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
             (obj)=> {
                 if(obj.IsDirty) {
-//                    Debug.Log("Performing layout on: "+obj.Name);
                     Storage.EditorObjects.Layout(obj);
                 }
             }

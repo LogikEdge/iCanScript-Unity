@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using System.Collections;
 
 public class WD_DynamicMenu {
@@ -65,12 +66,17 @@ public class WD_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
+    public void Deactivate() {
+        Reset();
+    }
+    
+	// ----------------------------------------------------------------------
     public void Update(WD_EditorObject selectedObject, WD_Storage storage, Vector2 mouseDownPosition) {
         // Update mouse position if not already done.
         if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
 
         // Nothing to show if menu is inactive.
-        if(MenuPosition != mouseDownPosition || !IsActive) {
+        if(selectedObject == null || MenuPosition != mouseDownPosition || !IsActive) {
             Reset();
             return;
         }
@@ -80,16 +86,16 @@ public class WD_DynamicMenu {
             case MenuStateEnum.Idle:
                 break;
             case MenuStateEnum.Behaviour:
-                BehaviourMenu();
+                BehaviourMenu(selectedObject, storage);
                 break;
             case MenuStateEnum.Module:
-                ModuleMenu();
+                ModuleMenu(selectedObject, storage);
                 break;
             case MenuStateEnum.StateChart:
-                StateChartMenu();
+                StateChartMenu(selectedObject, storage);
                 break;
             case MenuStateEnum.State:
-                StateMenu();
+                StateMenu(selectedObject, storage);
                 break;
             case MenuStateEnum.Function:
                 FunctionMenu(selectedObject, storage);
@@ -107,7 +113,7 @@ public class WD_DynamicMenu {
     }
 
 	// ----------------------------------------------------------------------
-    void BehaviourMenu() {
+    void BehaviourMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[]
             { UpdateStr,             
               LateUpdateStr,        
@@ -133,19 +139,26 @@ public class WD_DynamicMenu {
         
     }
 	// ----------------------------------------------------------------------
-    void ModuleMenu() {
+    void ModuleMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[]
         {
             ModuleStr,
             StateChartStr,
             DeleteStr
         };
+        Debug.Log("Module menu");
         if(ShowMenu(menu) != -1) {
-            Reset();
+            Debug.Log(Selection);
+            switch(menu[Selection]) {
+                case ModuleStr: break;
+                case StateChartStr: break;
+                case DeleteStr: DestroySelectedObject(selectedObject, storage); break;
+                default: Reset(); break;
+            }
         }
     }
 	// ----------------------------------------------------------------------
-    void StateChartMenu() {
+    void StateChartMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[]
         {
             StateStr,
@@ -153,11 +166,16 @@ public class WD_DynamicMenu {
             DeleteStr
         };
         if(ShowMenu(menu) != -1) {
-            Reset();
+            switch(menu[Selection]) {
+                case StateStr: break;
+                case EntryStateStr: break;
+                case DeleteStr: DestroySelectedObject(selectedObject, storage); break;
+                default: Reset(); break;
+            }
         }
     }
 	// ----------------------------------------------------------------------
-    void StateMenu() {
+    void StateMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[]
         {
             OnEntryStr,
@@ -170,16 +188,19 @@ public class WD_DynamicMenu {
             Reset();
         }
     }
-	// ----------------------------------------------------------------------
-    void FunctionMenu() {
-        string[] menu= new string[]
-        {
-            DeleteStr
-        };
-        if(ShowMenu(menu) != -1) {
-            Reset();
-        }        
-    }
+//	// ----------------------------------------------------------------------
+//    void FunctionMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+//        string[] menu= new string[]
+//        {
+//            DeleteStr
+//        };
+//        if(ShowMenu(menu) != -1) {
+//            switch(menu[Selection]) {
+//                case DeleteStr: break;
+//                default: Reset(); break;                
+//            }
+//        }        
+//    }
 	// ----------------------------------------------------------------------
     void PortMenu() {
         string[] menu= new string[]
@@ -252,5 +273,15 @@ public class WD_DynamicMenu {
         Vector2 itemSize= GetMaxSize(menu);
         selection= GUI.SelectionGrid(new Rect(pos.x, pos.y, itemSize.x, itemSize.y*menu.Length), selection, menu, 1);        
         return selection;
+    }
+	// ----------------------------------------------------------------------
+    bool DestroySelectedObject(WD_EditorObject selectedObject, WD_Storage storage) {
+        bool isDestroyed= false;
+        if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
+            storage.EditorObjects.DestroyInstance(selectedObject.InstanceId);                        
+            isDestroyed= true;
+        }
+        Reset();
+        return isDestroyed;
     }
 }
