@@ -146,7 +146,6 @@ public class WD_DynamicMenu {
             StateChartStr,
             DeleteStr
         };
-        Debug.Log("Module menu");
         if(ShowMenu(menu) != -1) {
             Debug.Log(Selection);
             switch(menu[Selection]) {
@@ -271,7 +270,9 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     int ShowMenu(string[] menu, Vector2 pos, ref int selection, int width= -1) {
         Vector2 itemSize= GetMaxSize(menu);
-        selection= GUI.SelectionGrid(new Rect(pos.x, pos.y, itemSize.x, itemSize.y*menu.Length), selection, menu, 1);        
+        Rect menuPos= new Rect(pos.x, pos.y, itemSize.x, itemSize.y*menu.Length);
+        GUI.Box(new Rect(menuPos.x-5, menuPos.y-5, menuPos.width+10, menuPos.height+10), "");
+        selection= GUI.SelectionGrid(menuPos, selection, menu, 1);        
         return selection;
     }
 	// ----------------------------------------------------------------------

@@ -175,34 +175,36 @@ public class WD_Editor : EditorWindow {
     public UserCommandStateEnum UserCommandState= UserCommandStateEnum.Idle;
     WD_Mouse.ButtonStateEnum   PreviousLeftButtonState= WD_Mouse.ButtonStateEnum.Idle;    
     public void ProcessEvents() {
-        // Update the inspector object.
-        DetermineSelectedObject();
+        if(!DynamicMenu.IsActive) {
+            // Update the inspector object.
+            DetermineSelectedObject();
 
-        // Process left button state.
-        switch(Mouse.LeftButtonState) {
-            case WD_Mouse.ButtonStateEnum.Idle:
-                if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDragging();
-                break;
-            case WD_Mouse.ButtonStateEnum.SingleClick:
-                DynamicMenu.Deactivate();
-                break;
-            case WD_Mouse.ButtonStateEnum.DoubleClick:
-                MenuMousePosition= Mouse.LeftButtonDownPosition;
-                DynamicMenu.Activate(SelectedObject);
-                break;
-            case WD_Mouse.ButtonStateEnum.Dragging:
-                ProcessDragging();
-                break;
+            // Process left button state.
+            switch(Mouse.LeftButtonState) {
+                case WD_Mouse.ButtonStateEnum.Idle:
+                    if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDragging();
+                    break;
+                case WD_Mouse.ButtonStateEnum.SingleClick:
+                    DynamicMenu.Deactivate();
+                    break;
+                case WD_Mouse.ButtonStateEnum.DoubleClick:
+                    MenuMousePosition= Mouse.LeftButtonDownPosition;
+                    DynamicMenu.Activate(SelectedObject);
+                    break;
+                case WD_Mouse.ButtonStateEnum.Dragging:
+                    ProcessDragging();
+                    break;
+            }
+            PreviousLeftButtonState= Mouse.LeftButtonState;
+
+            // Process right button state.
+            switch(Mouse.RightButtonState) {
+                case WD_Mouse.ButtonStateEnum.SingleClick:
+                    MenuMousePosition= Mouse.RightButtonDownPosition;
+                    DynamicMenu.Activate(SelectedObject);
+                    break;
+            }                    
         }
-        PreviousLeftButtonState= Mouse.LeftButtonState;
-
-        // Process right button state.
-        switch(Mouse.RightButtonState) {
-            case WD_Mouse.ButtonStateEnum.SingleClick:
-                MenuMousePosition= Mouse.RightButtonDownPosition;
-                DynamicMenu.Activate(SelectedObject);
-                break;
-        }        
 
         // Display dynamic menu.
         DynamicMenu.Update(SelectedObject, Storage, MenuMousePosition);
