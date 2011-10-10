@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 
 public class WD_DynamicMenu {
@@ -147,10 +148,9 @@ public class WD_DynamicMenu {
             DeleteStr
         };
         if(ShowMenu(menu) != -1) {
-            Debug.Log(Selection);
             switch(menu[Selection]) {
-                case ModuleStr: break;
-                case StateChartStr: break;
+                case ModuleStr:     CreateInstance("", selectedObject, WD_ObjectTypeEnum.Module,     storage, typeof(WD_Module)); break;
+                case StateChartStr: CreateInstance("", selectedObject, WD_ObjectTypeEnum.StateChart, storage, typeof(WD_StateChart)); break;
                 case DeleteStr: DestroySelectedObject(selectedObject, storage); break;
                 default: Reset(); break;
             }
@@ -166,7 +166,7 @@ public class WD_DynamicMenu {
         };
         if(ShowMenu(menu) != -1) {
             switch(menu[Selection]) {
-                case StateStr: break;
+                case StateStr: CreateInstance("", selectedObject, WD_ObjectTypeEnum.State, storage, typeof(WD_State)); break;
                 case EntryStateStr: break;
                 case DeleteStr: DestroySelectedObject(selectedObject, storage); break;
                 default: Reset(); break;
@@ -184,7 +184,14 @@ public class WD_DynamicMenu {
             DeleteStr
         };
         if(ShowMenu(menu) != -1) {
-            Reset();
+            switch(menu[Selection]) {
+                case OnEntryStr:  CreateInstance(OnEntryStr,  selectedObject, WD_ObjectTypeEnum.Module, storage, typeof(WD_Module)); break;
+                case OnUpdateStr: CreateInstance(OnUpdateStr, selectedObject, WD_ObjectTypeEnum.Module, storage, typeof(WD_Module)); break;
+                case OnExitStr:   CreateInstance(OnExitStr,   selectedObject, WD_ObjectTypeEnum.Module, storage, typeof(WD_Module)); break;
+                case SubStateStr: CreateInstance("",          selectedObject, WD_ObjectTypeEnum.State,  storage, typeof(WD_State));  break;
+                case DeleteStr:   DestroySelectedObject(selectedObject, storage); break;
+                default: Reset(); break;                
+            }
         }
     }
 //	// ----------------------------------------------------------------------
@@ -273,7 +280,13 @@ public class WD_DynamicMenu {
         Rect menuPos= new Rect(pos.x, pos.y, itemSize.x, itemSize.y*menu.Length);
         GUI.Box(new Rect(menuPos.x-5, menuPos.y-5, menuPos.width+10, menuPos.height+10), "");
         selection= GUI.SelectionGrid(menuPos, selection, menu, 1);        
+//        selection= EditorGUI.Popup(menuPos, selection, menu);
         return selection;
+    }
+	// ----------------------------------------------------------------------
+    void CreateInstance(string name, WD_EditorObject parent, WD_ObjectTypeEnum type, WD_Storage storage, Type rtType) {
+        storage.EditorObjects.CreateInstance(name, parent.InstanceId, type, MenuPosition, rtType);
+        Reset();        
     }
 	// ----------------------------------------------------------------------
     bool DestroySelectedObject(WD_EditorObject selectedObject, WD_Storage storage) {
