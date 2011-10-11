@@ -139,10 +139,11 @@ public class WD_EditorObjectMgr {
             TreeCache.CreateInstance(EditorObjects[methodId]);
             for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
                 int classPortId= GetNextAvailableId();
-                WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
+                WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutModulePort : WD_ObjectTypeEnum.InModulePort;
                 EditorObjects[classPortId]= new WD_EditorObject(classPortId, desc.ParameterNames[i][p], desc.ParameterTypes[i][p], id, portType, new Rect(0,0,0,0));
                 TreeCache.CreateInstance(EditorObjects[classPortId]);                                                    
                 int funcPortId= GetNextAvailableId();
+                portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
                 EditorObjects[funcPortId]= new WD_EditorObject(funcPortId, desc.ParameterNames[i][p], desc.ParameterTypes[i][p], methodId, portType, new Rect(0,0,0,0));
                 TreeCache.CreateInstance(EditorObjects[funcPortId]);                                                    
                 if(portType == WD_ObjectTypeEnum.OutFunctionPort) {
@@ -154,7 +155,7 @@ public class WD_EditorObjectMgr {
             }
             if(desc.ReturnTypes[i] != null) {
                 int classPortId= GetNextAvailableId();
-                EditorObjects[classPortId]= new WD_EditorObject(classPortId, desc.ReturnNames[i], desc.ReturnTypes[i], id, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
+                EditorObjects[classPortId]= new WD_EditorObject(classPortId, desc.ReturnNames[i], desc.ReturnTypes[i], id, WD_ObjectTypeEnum.OutModulePort, new Rect(0,0,0,0));
                 TreeCache.CreateInstance(EditorObjects[classPortId]);                                                                    
                 int funcPortId= GetNextAvailableId();
                 EditorObjects[funcPortId]= new WD_EditorObject(funcPortId, desc.ReturnNames[i], desc.ReturnTypes[i], methodId, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));

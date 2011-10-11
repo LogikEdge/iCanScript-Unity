@@ -473,9 +473,6 @@ public class WD_Graphics {
     //  CONNECTION
     // ----------------------------------------------------------------------
     public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_Storage storage) {
-        // Only data connection are drawn.
-        if(!(port.IsRuntimeA<WD_FieldPort>())) return;
-        
         if(storage.EditorObjects[port.ParentId].IsVisible) {
             if(storage.EditorObjects.IsValid(port.Source)) {
                 WD_EditorObject source= storage.EditorObjects[port.Source];
@@ -494,7 +491,7 @@ public class WD_Graphics {
                     if(Vector2.Dot(diff, endDirection) > 0) {
                         endDirection  = - endDirection;
                     }
-                    Color color= WD_TypeSystem.GetDisplayColor(WD_Reflection.GetPortFieldType(source, sourceParent));
+                    Color color= WD_TypeSystem.GetDisplayColor(source.RuntimeType);
                     DrawBezierCurve(start, end, startDirection, endDirection, color);
                 }                                    
             }
