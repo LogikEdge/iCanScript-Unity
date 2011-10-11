@@ -28,6 +28,75 @@ public class WD_EditorObjectMgr {
         return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
+    public WD_EditorObject CreateBehaviour() {
+        // Create the function node.
+        int id= GetNextAvailableId();
+        // Validate that behaviour is at the root.
+        if(id != 0) {
+            Debug.LogError("Behaviour MUST be the root object !!!");
+        }
+        // Create new EditorObject
+        EditorObjects[id]= new WD_EditorObject(id, "Behaviour", typeof(WD_Behaviour), -1, WD_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
+        TreeCache.CreateInstance(id, -1);
+        return EditorObjects[id];
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateModuleLibrary() {
+        // Validate that a library can only be create at the root.
+        if(EditorObjects.Count != 0) {
+            Debug.LogError("Module Library MUST be the root object !!!");
+        }
+        return CreateModule(-1, Vector2.zero, "Module Library");
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateModule(int parentId, Vector2 initialPos, string name= "") {
+        // Create the function node.
+        int id= GetNextAvailableId();
+        // Calcute the desired screen position of the new object.
+        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        // Create new EditorObject
+        EditorObjects[id]= new WD_EditorObject(id, name, typeof(WD_Module), parentId, WD_ObjectTypeEnum.Module, localPos);
+        TreeCache.CreateInstance(id, parentId);
+        return EditorObjects[id];
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateStateChartLibrary() {
+        // Validate that a library can only be create at the root.
+        if(EditorObjects.Count != 0) {
+            Debug.LogError("Module Library MUST be the root object !!!");
+        }
+        return CreateStateChart(-1, Vector2.zero, "StateChart Library");
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateStateChart(int parentId, Vector2 initialPos, string name= "") {
+        // Create the function node.
+        int id= GetNextAvailableId();
+        // Calcute the desired screen position of the new object.
+        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        // Create new EditorObject
+        EditorObjects[id]= new WD_EditorObject(id, name, typeof(WD_StateChart), parentId, WD_ObjectTypeEnum.StateChart, localPos);
+        TreeCache.CreateInstance(id, parentId);
+        return EditorObjects[id];
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateState(int parentId, Vector2 initialPos, string name= "") {
+        // Validate that we have a good parent.
+        if(ObjectType(parentId) != WD_ObjectTypeEnum.StateChart || ObjectType(parentId) != WD_ObjectTypeEnum.State) {
+            Debug.LogError("State must be created as a child of StateChart or State.");
+        }
+        // Create the function node.
+        int id= GetNextAvailableId();
+        // Calcute the desired screen position of the new object.
+        Rect parentPos= GetPosition(parentId);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        // Create new EditorObject
+        EditorObjects[id]= new WD_EditorObject(id, name, typeof(WD_State), parentId, WD_ObjectTypeEnum.State, localPos);
+        TreeCache.CreateInstance(id, parentId);
+        return EditorObjects[id];
+    }
+    // ----------------------------------------------------------------------
     public int GetNextAvailableId() {
         // Find the next available id.
         int id= 0;
@@ -88,6 +157,8 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public bool IsValid(int id)   { return id >= 0 && id < EditorObjects.Count && EditorObjects[id].IsValid; }
     public bool IsInvalid(int id) { return !IsValid(id); }
+    // ----------------------------------------------------------------------
+    public WD_ObjectTypeEnum ObjectType(int id) { return IsValid(id) ? EditorObjects[id].ObjectType : WD_ObjectTypeEnum.Unknown; }
     // ----------------------------------------------------------------------
     public bool IsChildOf(WD_EditorObject obj, WD_EditorObject parent) {
         if(IsInvalid(obj.ParentId)) return false;

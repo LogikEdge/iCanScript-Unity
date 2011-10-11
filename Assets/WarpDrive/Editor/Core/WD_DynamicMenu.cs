@@ -149,9 +149,9 @@ public class WD_DynamicMenu {
         };
         if(ShowMenu(menu) != -1) {
             switch(menu[Selection]) {
-                case ModuleStr:     CreateInstance("", selectedObject, WD_ObjectTypeEnum.Module,     storage, typeof(WD_Module)); break;
-                case StateChartStr: CreateInstance("", selectedObject, WD_ObjectTypeEnum.StateChart, storage, typeof(WD_StateChart)); break;
-                case DeleteStr: DestroySelectedObject(selectedObject, storage); break;
+                case ModuleStr:     CreateModule(selectedObject, storage); break;
+                case StateChartStr: CreateStateChart(selectedObject, storage); break;
+                case DeleteStr:     DestroySelectedObject(selectedObject, storage); break;
                 default: Reset(); break;
             }
         }
@@ -166,7 +166,7 @@ public class WD_DynamicMenu {
         };
         if(ShowMenu(menu) != -1) {
             switch(menu[Selection]) {
-                case StateStr: CreateInstance("", selectedObject, WD_ObjectTypeEnum.State, storage, typeof(WD_State)); break;
+                case StateStr: CreateState(selectedObject, storage); break;
                 case EntryStateStr: break;
                 case DeleteStr: DestroySelectedObject(selectedObject, storage); break;
                 default: Reset(); break;
@@ -185,10 +185,10 @@ public class WD_DynamicMenu {
         };
         if(ShowMenu(menu) != -1) {
             switch(menu[Selection]) {
-                case OnEntryStr:  CreateInstance(OnEntryStr,  selectedObject, WD_ObjectTypeEnum.Module, storage, typeof(WD_Module)); break;
-                case OnUpdateStr: CreateInstance(OnUpdateStr, selectedObject, WD_ObjectTypeEnum.Module, storage, typeof(WD_Module)); break;
-                case OnExitStr:   CreateInstance(OnExitStr,   selectedObject, WD_ObjectTypeEnum.Module, storage, typeof(WD_Module)); break;
-                case SubStateStr: CreateInstance("",          selectedObject, WD_ObjectTypeEnum.State,  storage, typeof(WD_State));  break;
+                case OnEntryStr:  CreateModule(selectedObject, storage, OnEntryStr); break;
+                case OnUpdateStr: CreateModule(selectedObject, storage, OnUpdateStr); break;
+                case OnExitStr:   CreateModule(selectedObject, storage, OnExitStr); break;
+                case SubStateStr: CreateState (selectedObject, storage);  break;
                 case DeleteStr:   DestroySelectedObject(selectedObject, storage); break;
                 default: Reset(); break;                
             }
@@ -284,8 +284,18 @@ public class WD_DynamicMenu {
         return selection;
     }
 	// ----------------------------------------------------------------------
-    void CreateInstance(string name, WD_EditorObject parent, WD_ObjectTypeEnum type, WD_Storage storage, Type rtType) {
-        storage.EditorObjects.CreateInstance(name, parent.InstanceId, type, MenuPosition, rtType);
+    void CreateModule(WD_EditorObject parent, WD_Storage storage, string name= "") {
+        storage.EditorObjects.CreateModule(parent.InstanceId, MenuPosition, name);
+        Reset();        
+    }
+	// ----------------------------------------------------------------------
+    void CreateStateChart(WD_EditorObject parent, WD_Storage storage, string name= "") {
+        storage.EditorObjects.CreateStateChart(parent.InstanceId, MenuPosition, name);
+        Reset();        
+    }
+	// ----------------------------------------------------------------------
+    void CreateState(WD_EditorObject parent, WD_Storage storage, string name= "") {
+        storage.EditorObjects.CreateState(parent.InstanceId, MenuPosition, name);
         Reset();        
     }
 	// ----------------------------------------------------------------------
