@@ -2,19 +2,25 @@ using UnityEngine;
 using UnityEditor;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WD_DynamicMenu {
-    enum MenuStateEnum { Idle, Behaviour, Module, StateChart, State, Function, Port, Company, Package }
-    
+    enum MenuStateEnum { Idle, Behaviour, Module, StateChart, State, Function, Port }
+    internal class MenuContext {
+        public string          Command;
+        public WD_EditorObject SelectedObject;
+        public WD_Storage      Storage;
+        public MenuContext(string command, WD_EditorObject selected, WD_Storage storage) {
+            Command= command;
+            SelectedObject= selected;
+            Storage= storage;
+        }
+    }
     // ======================================================================
     // Field
     // ----------------------------------------------------------------------
     MenuStateEnum   CurrentState= MenuStateEnum.Idle;
-    string          SelectedCompany= null;
-    string          SelectedPackage= null;
-    string          SelectedFunction= null;
     Vector2         MenuPosition= Vector2.zero;
-    int             Selection   = -1;
     
     // ======================================================================
     // Menu Items
@@ -25,9 +31,12 @@ public class WD_DynamicMenu {
     const string StateStr= "State";
     const string EntryStateStr= "Entry State";
     const string SubStateStr= "SubState";
-    const string UpdateStr= "Update";
-    const string LateUpdateStr= "LateUpdate";
-    const string FixedUpdateStr= "FixedUpdate";
+    const string UpdateModuleStr= "Update/Module";
+    const string UpdateStateChartStr= "Update/StateChart";
+    const string LateUpdateModuleStr= "LateUpdate/Module";
+    const string LateUpdateStateChartStr= "LateUpdate/StateChart";
+    const string FixedUpdateModuleStr= "FixedUpdate/Module";
+    const string FixedUpdateStateChartStr= "FixedUpdate/StateChart";
     const string OnGUIStr= "OnGUI";
     const string OnDrawGizmosStr= "OnDrawGizmos";
     const string OnEntryStr= "OnEntry";
@@ -44,11 +53,7 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     void Reset() {
         CurrentState= MenuStateEnum.Idle;
-        SelectedCompany= null;
-        SelectedPackage= null;
-        SelectedFunction= null;
         MenuPosition= Vector2.zero;
-        Selection= -1;
     }
     
 	// ----------------------------------------------------------------------
@@ -102,13 +107,7 @@ public class WD_DynamicMenu {
                 FunctionMenu(selectedObject, storage);
                 break;
             case MenuStateEnum.Port:
-                PortMenu();
-                break;
-            case MenuStateEnum.Company:
-                CompanyMenu();
-                break;
-            case MenuStateEnum.Package:
-                PackageMenu();
+                PortMenu(selectedObject, storage);
                 break;
         }
     }
@@ -116,24 +115,16 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     void BehaviourMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[]
-            { UpdateStr,             
-              LateUpdateStr,        
-              FixedUpdateStr,       
+            { UpdateModuleStr,             
+              UpdateStateChartStr,
+              LateUpdateModuleStr,        
+              LateUpdateStateChartStr,        
+              FixedUpdateModuleStr,       
+              FixedUpdateStateChartStr,       
               OnGUIStr,              
-              OnDrawGizmosStr,
-              MoreStr        
+              OnDrawGizmosStr
             };
-        if(ShowMenu(menu) != -1) {
-            switch(menu[Selection]) {
-                case UpdateStr: break;
-                case LateUpdateStr: break;
-                case FixedUpdateStr: break;
-                case OnGUIStr: break;
-                case OnDrawGizmosStr: break;
-                case MoreStr: break;
-                default: Reset(); break;
-            }
-        }
+        ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void BehaviourAdditionalMenu() {
@@ -141,37 +132,25 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu(WD_EditorObject selectedObject, WD_Storage storage) {
-        string[] menu= new string[]
+        string[] moduleMenu= new string[]
         {
             ModuleStr,
             StateChartStr,
-            DeleteStr
         };
-        if(ShowMenu(menu) != -1) {
-            switch(menu[Selection]) {
-                case ModuleStr:     CreateModule(selectedObject, storage); break;
-                case StateChartStr: CreateStateChart(selectedObject, storage); break;
-                case DeleteStr:     DestroySelectedObject(selectedObject, storage); break;
-                default: Reset(); break;
-            }
-        }
+        string[] functionMenu= GetFunctionMenu();
+        string[] menu= new string[moduleMenu.Length+functionMenu.Length];
+        moduleMenu.CopyTo(menu, 0);
+        functionMenu.CopyTo(menu, moduleMenu.Length);
+        ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void StateChartMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[]
         {
             StateStr,
-            EntryStateStr,
-            DeleteStr
+            EntryStateStr
         };
-        if(ShowMenu(menu) != -1) {
-            switch(menu[Selection]) {
-                case StateStr: CreateState(selectedObject, storage); break;
-                case EntryStateStr: break;
-                case DeleteStr: DestroySelectedObject(selectedObject, storage); break;
-                default: Reset(); break;
-            }
-        }
+        ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void StateMenu(WD_EditorObject selectedObject, WD_Storage storage) {
@@ -180,109 +159,79 @@ public class WD_DynamicMenu {
             OnEntryStr,
             OnUpdateStr,
             OnExitStr,
-            SubStateStr,
-            DeleteStr
+            SubStateStr
         };
-        if(ShowMenu(menu) != -1) {
-            switch(menu[Selection]) {
-                case OnEntryStr:  CreateModule(selectedObject, storage, OnEntryStr); break;
-                case OnUpdateStr: CreateModule(selectedObject, storage, OnUpdateStr); break;
-                case OnExitStr:   CreateModule(selectedObject, storage, OnExitStr); break;
-                case SubStateStr: CreateState (selectedObject, storage);  break;
-                case DeleteStr:   DestroySelectedObject(selectedObject, storage); break;
-                default: Reset(); break;                
-            }
-        }
+        ShowMenu(menu, selectedObject, storage);
     }
-//	// ----------------------------------------------------------------------
-//    void FunctionMenu(WD_EditorObject selectedObject, WD_Storage storage) {
-//        string[] menu= new string[]
-//        {
-//            DeleteStr
-//        };
-//        if(ShowMenu(menu) != -1) {
-//            switch(menu[Selection]) {
-//                case DeleteStr: break;
-//                default: Reset(); break;                
-//            }
-//        }        
-//    }
+    
 	// ----------------------------------------------------------------------
-    void PortMenu() {
+    void FunctionMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+        ShowMenu(new string[0], selectedObject, storage);
+    }
+	// ----------------------------------------------------------------------
+    void PortMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[]
         {
             PublishStr,
-            DeleteStr
         };
-        if(ShowMenu(menu) != -1) {
-            Reset();
-        }                
-    }
-	// ----------------------------------------------------------------------
-    void CompanyMenu() {
-        string[] companies= WD_DataBase.GetCompanies();
-        if(ShowMenu(companies) != -1) {
-            SelectedCompany= companies[Selection];
-            CurrentState= MenuStateEnum.Package;
-            Selection= -1;
-        }        
-    }
-	// ----------------------------------------------------------------------
-    void PackageMenu() {
-        string[] packages= WD_DataBase.GetPackages(SelectedCompany);
-        if(ShowMenu(packages) != -1) {
-            SelectedPackage= packages[Selection];
-            CurrentState= MenuStateEnum.Function;
-            Selection= -1;
-        }                
-    }
-	// ----------------------------------------------------------------------
-    void FunctionMenu(WD_EditorObject selectedObject, WD_Storage storage) {
-        // Gather all functions.
-        string[] functions  = WD_DataBase.GetFunctions(SelectedCompany, SelectedPackage);
-        if(ShowMenu(functions) != -1) {
-            SelectedFunction= functions[Selection];
-            CurrentState= MenuStateEnum.Idle;
-            Selection= -1;
-            Debug.Log("Selected: "+SelectedCompany+":"+SelectedPackage+":"+SelectedFunction);
-            WD_BaseDesc desc= WD_DataBase.GetDescriptor(SelectedCompany, SelectedPackage, SelectedFunction);
-            if(desc == null) {
-                Debug.LogError("Unable to find: "+SelectedCompany+":"+SelectedPackage+":"+SelectedFunction+" in Database !!!");
-            };
-            desc.CreateInstance(storage.EditorObjects, (selectedObject != null ? selectedObject.InstanceId : -1), MenuPosition);
-        }                
-
+        ShowMenu(menu, selectedObject, storage);
     }
 
     // ======================================================================
-    // Utilities
+    // Menu Utilities
 	// ----------------------------------------------------------------------
-    Vector2 GetMaxSize(string[] menuItems) {
-        Vector2 maxSize= Vector2.zero;
-        foreach(var item in menuItems) {
-            Vector2 size= GUI.skin.button.CalcSize(new GUIContent(item));
-            if(size.x > maxSize.x) maxSize.x= size.x;
-            if(size.y > maxSize.y) maxSize.y= size.y;
-        }        
-        return maxSize;
+    void ShowMenu(string[] menu, WD_EditorObject selected, WD_Storage storage) {
+        ShowMenu(menu, MenuPosition, selected, storage);
     }
 	// ----------------------------------------------------------------------
-    int ShowMenu(string[] menu, int width= -1) {
-        return ShowMenu(menu, MenuPosition, width);
+    void ProcessMenu(object obj) {
+        MenuContext context= obj as MenuContext;
+        switch(context.Command) {
+            case UpdateModuleStr:           CreateModule(context.SelectedObject, context.Storage, "Update"); break;
+            case UpdateStateChartStr:       CreateStateChart(context.SelectedObject, context.Storage, "Update"); break;
+            case FixedUpdateModuleStr:      CreateModule(context.SelectedObject, context.Storage, "FixedUpdate"); break;
+            case FixedUpdateStateChartStr:  CreateStateChart(context.SelectedObject, context.Storage, "FixedUpdate"); break;
+            case LateUpdateModuleStr:       CreateModule(context.SelectedObject, context.Storage, "LateUpdate"); break;
+            case LateUpdateStateChartStr:   CreateStateChart(context.SelectedObject, context.Storage, "LateUpdate"); break;
+            case ModuleStr:                 CreateModule(context.SelectedObject, context.Storage); break;
+            case StateChartStr:             CreateStateChart(context.SelectedObject, context.Storage); break;
+            case StateStr:                  CreateState (context.SelectedObject, context.Storage);  break;
+            case OnEntryStr:                CreateModule(context.SelectedObject, context.Storage, OnEntryStr); break;
+            case OnUpdateStr:               CreateModule(context.SelectedObject, context.Storage, OnUpdateStr); break;
+            case OnExitStr:                 CreateModule(context.SelectedObject, context.Storage, OnExitStr); break;
+            case SubStateStr:               CreateState (context.SelectedObject, context.Storage);  break;
+            case DeleteStr:                 DestroySelectedObject(context.SelectedObject, context.Storage); break;
+            default: Reset(); break;
+        }
+    }
+    void ShowMenu(string[] menu, Vector2 pos, WD_EditorObject selected, WD_Storage storage) {
+        GenericMenu gMenu= new GenericMenu();
+        foreach(var item in menu) {
+            gMenu.AddItem(new GUIContent(item), false, ProcessMenu, new MenuContext(item, selected, storage));
+        }
+        gMenu.AddSeparator("");
+        gMenu.AddItem(new GUIContent(DeleteStr), false, ProcessMenu, new MenuContext(DeleteStr, selected, storage));
+        gMenu.ShowAsContext();
+        Reset();
     }
 	// ----------------------------------------------------------------------
-    int ShowMenu(string[] menu, Vector2 pos, int width= -1) {
-        return ShowMenu(menu, pos, ref Selection, width);
+    string[] GetFunctionMenu() {
+        List<string> result= new List<string>();
+        string[] companies= WD_DataBase.GetCompanies();
+        foreach(var company in companies) {
+            string[] packages= WD_DataBase.GetPackages(company);
+            foreach(var package in packages) {
+                string[] functions= WD_DataBase.GetFunctions(company, package);
+                foreach(var function in functions) {
+                    result.Add(company+"/"+package+"/"+function);
+                }
+            }
+        }
+        return result.ToArray();
     }
-	// ----------------------------------------------------------------------
-    int ShowMenu(string[] menu, Vector2 pos, ref int selection, int width= -1) {
-        Vector2 itemSize= GetMaxSize(menu);
-        Rect menuPos= new Rect(pos.x, pos.y, itemSize.x, itemSize.y*menu.Length);
-        GUI.Box(new Rect(menuPos.x-5, menuPos.y-5, menuPos.width+10, menuPos.height+10), "");
-        selection= GUI.SelectionGrid(menuPos, selection, menu, 1);        
-//        selection= EditorGUI.Popup(menuPos, selection, menu);
-        return selection;
-    }
+
+    // ======================================================================
+    // Creation Utilities
 	// ----------------------------------------------------------------------
     void CreateModule(WD_EditorObject parent, WD_Storage storage, string name= "") {
         storage.EditorObjects.CreateModule(parent.InstanceId, MenuPosition, name);

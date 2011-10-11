@@ -83,7 +83,7 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateState(int parentId, Vector2 initialPos, string name= "") {
         // Validate that we have a good parent.
-        if(ObjectType(parentId) != WD_ObjectTypeEnum.StateChart || ObjectType(parentId) != WD_ObjectTypeEnum.State) {
+        if(ObjectType(parentId) != WD_ObjectTypeEnum.StateChart && ObjectType(parentId) != WD_ObjectTypeEnum.State) {
             Debug.LogError("State must be created as a child of StateChart or State.");
         }
         // Create the function node.
