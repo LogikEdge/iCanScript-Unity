@@ -120,17 +120,13 @@ public class WD_EditorObjectMgr {
         TreeCache.CreateInstance(EditorObjects[id]);
         // Create field ports
         for(int i= 0; i < desc.FieldNames.Length; ++i) {
-            int portId= GetNextAvailableId();
             WD_ObjectTypeEnum portType= desc.FieldInOuts[i] ? WD_ObjectTypeEnum.OutFieldPort : WD_ObjectTypeEnum.InFieldPort;
-            EditorObjects[portId]= new WD_EditorObject(portId, desc.FieldNames[i], desc.FieldTypes[i], id, portType, new Rect(0,0,0,0));
-            TreeCache.CreateInstance(EditorObjects[portId]);                        
+            CreatePort(desc.FieldNames[i], id, desc.FieldTypes[i], portType);
         }
         // Create property ports
         for(int i= 0; i < desc.PropertyNames.Length; ++i) {
-            int portId= GetNextAvailableId();
             WD_ObjectTypeEnum portType= desc.PropertyInOuts[i] ? WD_ObjectTypeEnum.OutPropertyPort : WD_ObjectTypeEnum.InPropertyPort;
-            EditorObjects[portId]= new WD_EditorObject(portId, desc.PropertyNames[i], desc.PropertyTypes[i], id, portType, new Rect(0,0,0,0));
-            TreeCache.CreateInstance(EditorObjects[portId]);                                    
+            CreatePort(desc.PropertyNames[i], id, desc.PropertyTypes[i], portType);
         }
         // Create methods.
         for(int i= 0; i < desc.MethodNames.Length; ++i) {
@@ -138,29 +134,21 @@ public class WD_EditorObjectMgr {
             EditorObjects[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0));
             TreeCache.CreateInstance(EditorObjects[methodId]);
             for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
-                int classPortId= GetNextAvailableId();
                 WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutModulePort : WD_ObjectTypeEnum.InModulePort;
-                EditorObjects[classPortId]= new WD_EditorObject(classPortId, desc.ParameterNames[i][p], desc.ParameterTypes[i][p], id, portType, new Rect(0,0,0,0));
-                TreeCache.CreateInstance(EditorObjects[classPortId]);                                                    
-                int funcPortId= GetNextAvailableId();
+                WD_EditorObject classPort= CreatePort(desc.ParameterNames[i][p], id, desc.ParameterTypes[i][p], portType);
                 portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
-                EditorObjects[funcPortId]= new WD_EditorObject(funcPortId, desc.ParameterNames[i][p], desc.ParameterTypes[i][p], methodId, portType, new Rect(0,0,0,0));
-                TreeCache.CreateInstance(EditorObjects[funcPortId]);                                                    
+                WD_EditorObject funcPort= CreatePort(desc.ParameterNames[i][p], methodId, desc.ParameterTypes[i][p], portType);
                 if(portType == WD_ObjectTypeEnum.OutFunctionPort) {
-                    SetSource(EditorObjects[classPortId], EditorObjects[funcPortId]);
+                    SetSource(classPort, funcPort);
                 }
                 else {
-                    SetSource(EditorObjects[funcPortId], EditorObjects[classPortId]);
+                    SetSource(funcPort, classPort);
                 }
             }
             if(desc.ReturnTypes[i] != null) {
-                int classPortId= GetNextAvailableId();
-                EditorObjects[classPortId]= new WD_EditorObject(classPortId, desc.ReturnNames[i], desc.ReturnTypes[i], id, WD_ObjectTypeEnum.OutModulePort, new Rect(0,0,0,0));
-                TreeCache.CreateInstance(EditorObjects[classPortId]);                                                                    
-                int funcPortId= GetNextAvailableId();
-                EditorObjects[funcPortId]= new WD_EditorObject(funcPortId, desc.ReturnNames[i], desc.ReturnTypes[i], methodId, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
-                TreeCache.CreateInstance(EditorObjects[funcPortId]);                                                    
-                SetSource(EditorObjects[classPortId], EditorObjects[funcPortId]);
+                WD_EditorObject classPort= CreatePort(desc.ReturnNames[i], id, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutModulePort);
+                WD_EditorObject funcPort= CreatePort(desc.ReturnNames[i], methodId, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutFunctionPort);
+                SetSource(classPort, funcPort);
             }
         }
         return EditorObjects[id];
@@ -177,16 +165,11 @@ public class WD_EditorObjectMgr {
         TreeCache.CreateInstance(EditorObjects[id]);
         // Create input/output ports.
         for(int i= 0; i < desc.ParameterNames.Length; ++i) {
-            int portId= GetNextAvailableId();
             WD_ObjectTypeEnum portType= desc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
-            EditorObjects[portId]= new WD_EditorObject(portId, desc.ParameterNames[i], desc.ParameterTypes[i], id, portType, new Rect(0,0,0,0));
-            TreeCache.CreateInstance(EditorObjects[portId]);            
+            CreatePort(desc.ParameterNames[i], id, desc.ParameterTypes[i], portType);
         }
         if(desc.ReturnType != null) {
-            Debug.Log(desc.ReturnType.Name);
-            int portId= GetNextAvailableId();
-            EditorObjects[portId]= new WD_EditorObject(portId, desc.ReturnName, desc.ReturnType, id, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
-            TreeCache.CreateInstance(EditorObjects[portId]);            
+            CreatePort(desc.ReturnName, id, desc.ReturnType, WD_ObjectTypeEnum.OutFunctionPort);
         }
         return EditorObjects[id];
     }
@@ -201,13 +184,16 @@ public class WD_EditorObjectMgr {
         EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos);
         TreeCache.CreateInstance(EditorObjects[id]);
         // Create input/output ports.
-        int inPortId= GetNextAvailableId();
-        EditorObjects[inPortId]= new WD_EditorObject(inPortId, desc.FromType.Name, desc.FromType, id, WD_ObjectTypeEnum.InFunctionPort, new Rect(0,0,0,0));
-        TreeCache.CreateInstance(EditorObjects[inPortId]);
-        int outPortId= GetNextAvailableId();
-        EditorObjects[outPortId]= new WD_EditorObject(outPortId, desc.ToType.Name, desc.ToType, id, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
-        TreeCache.CreateInstance(EditorObjects[outPortId]);
+        CreatePort(desc.FromType.Name, id, desc.FromType, WD_ObjectTypeEnum.InFunctionPort);
+        CreatePort(desc.ToType.Name,   id, desc.ToType,   WD_ObjectTypeEnum.OutFunctionPort);
         return EditorObjects[id];
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreatePort(string name, int parentId, Type valueType, WD_ObjectTypeEnum portType) {
+        int id= GetNextAvailableId();
+        EditorObjects[id]= new WD_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
+        TreeCache.CreateInstance(EditorObjects[id]);
+        return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
     public int GetNextAvailableId() {
@@ -259,7 +245,7 @@ public class WD_EditorObjectMgr {
     // Editor Object Container Management
     // ----------------------------------------------------------------------
     public WD_EditorObject this[int i] {
-        get { return EditorObjects[i]; }
+        get { return IsValid(i) ? EditorObjects[i] : null; }
         set {
             if(value.InstanceId != i) Debug.LogError("Trying to add EditorObject at wrong index.");
             EditorObjects[i]= value;

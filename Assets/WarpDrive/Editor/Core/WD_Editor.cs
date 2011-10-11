@@ -257,7 +257,7 @@ public class WD_Editor : EditorWindow {
 
 	// ----------------------------------------------------------------------
     void EndDragging() {
-        if(DragObject.IsPort) {
+        if(DragObject != null && DragObject.IsPort) {
             WD_EditorObject port= DragObject;
             port.IsBeingDragged= false;
             // Verify for a new connection.
@@ -323,12 +323,10 @@ public class WD_Editor : EditorWindow {
             WD_EditorObject inPort = port.IsInputPort             ? port : overlappingPort;
             WD_EditorObject outPort= overlappingPort.IsOutputPort ? overlappingPort : port;
             if(inPort != outPort) {
-                Type inPortType = WD_Reflection.GetPortFieldType(inPort, Storage.EditorObjects[inPort.ParentId]);
-                Type outPortType= WD_Reflection.GetPortFieldType(outPort, Storage.EditorObjects[outPort.ParentId]);
-                Type connectionType= WD_TypeSystem.GetBestUpConversionType(inPortType, outPortType);
+                Type connectionType= WD_TypeSystem.GetBestUpConversionType(inPort.RuntimeType, outPort.RuntimeType);
                 if(connectionType != null) {
                     // No conversion needed.
-                    if(inPortType == outPortType) {
+                    if(inPort.RuntimeType == outPort.RuntimeType) {
                         Storage.EditorObjects.SetSource(inPort, outPort);                       
                     }
                     // A conversion is required.

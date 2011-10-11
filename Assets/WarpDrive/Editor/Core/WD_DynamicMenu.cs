@@ -41,7 +41,7 @@ public class WD_DynamicMenu {
     const string OnEntryStr= "OnEntry";
     const string OnUpdateStr= "OnUpdate";
     const string OnExitStr= "OnExit";
-    const string PublishPortStr= "Publish to Parent";
+    const string PublishPortStr= "Publish on Module";
 
     // ======================================================================
     // Menu state management
@@ -126,11 +126,11 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void PortMenu(WD_EditorObject selectedObject, WD_Storage storage) {
-        string[] menu= new string[]
-        {
-            PublishPortStr,
-        };
-        ShowMenu(menu, selectedObject, storage);
+        WD_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
+        WD_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
+        if(grandParent != null && grandParent.IsModule) {
+            ShowMenu(new string[]{PublishPortStr}, selectedObject, storage);
+        }
     }
 
     // ======================================================================
@@ -157,6 +157,19 @@ public class WD_DynamicMenu {
             case OnExitStr:                 CreateModule(context.SelectedObject, context.Storage, OnExitStr); break;
             case SubStateStr:               CreateState (context.SelectedObject, context.Storage);  break;
             case DeleteStr:                 DestroySelectedObject(context.SelectedObject, context.Storage); break;
+            case PublishPortStr:
+                WD_EditorObjectMgr editorObjects= context.Storage.EditorObjects;
+                WD_EditorObject selected= context.SelectedObject;
+                WD_EditorObject parent= editorObjects[selected.ParentId];
+                int grandParent= editorObjects[parent.ParentId].InstanceId;
+                if(selected.IsInputPort) {
+                    WD_EditorObject port= editorObjects.CreatePort(selected.Name, grandParent, selected.RuntimeType, WD_ObjectTypeEnum.InModulePort);
+                    editorObjects.SetSource(selected, port);
+                } else {
+                    WD_EditorObject port= editorObjects.CreatePort(selected.Name, grandParent, selected.RuntimeType, WD_ObjectTypeEnum.OutModulePort);
+                    editorObjects.SetSource(port, selected);
+                }
+                break;
             default:
                 string company= GetCompanyFromMenuItem(context.Command);
                 string package= GetPackageFromMenuItem(context.Command);
