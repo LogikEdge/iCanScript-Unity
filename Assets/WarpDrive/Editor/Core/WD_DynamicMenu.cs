@@ -5,7 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class WD_DynamicMenu {
-    enum MenuStateEnum { Idle, Behaviour, Module, StateChart, State, Function, Port }
     internal class MenuContext {
         public string          Command;
         public WD_EditorObject SelectedObject;
@@ -19,8 +18,8 @@ public class WD_DynamicMenu {
     // ======================================================================
     // Field
     // ----------------------------------------------------------------------
-    MenuStateEnum   CurrentState= MenuStateEnum.Idle;
-    Vector2         MenuPosition= Vector2.zero;
+    public bool IsActive= false;
+    Vector2     MenuPosition= Vector2.zero;
     
     // ======================================================================
     // Menu Items
@@ -46,28 +45,18 @@ public class WD_DynamicMenu {
     const string MoreStr= "More ...";
 
     // ======================================================================
-    // Properties
-	// ----------------------------------------------------------------------
-    public bool IsActive { get { return CurrentState != MenuStateEnum.Idle; }}
-
+    // Menu state management
 	// ----------------------------------------------------------------------
     void Reset() {
-        CurrentState= MenuStateEnum.Idle;
+        IsActive= false;
         MenuPosition= Vector2.zero;
     }
     
 	// ----------------------------------------------------------------------
     // Activate the dynamic menu if it is not already active.
     public void Activate(WD_EditorObject selectedObject) {
-        if(!IsActive && selectedObject != null) {
-            switch(selectedObject.ObjectType) {
-                case WD_ObjectTypeEnum.Behaviour:  CurrentState= MenuStateEnum.Behaviour; break;
-                case WD_ObjectTypeEnum.StateChart: CurrentState= MenuStateEnum.StateChart; break;
-                case WD_ObjectTypeEnum.State:      CurrentState= MenuStateEnum.State; break;
-                case WD_ObjectTypeEnum.Module:     CurrentState= MenuStateEnum.Module; break;
-                case WD_ObjectTypeEnum.Function:   CurrentState= MenuStateEnum.Function; break;
-                default: if(selectedObject.IsPort) CurrentState= MenuStateEnum.Port; break;
-            }
+        if(selectedObject != null) {
+            IsActive= true;
         }
     }
     
@@ -88,27 +77,13 @@ public class WD_DynamicMenu {
         }
 
         // Process the menu state.
-        switch(CurrentState) {
-            case MenuStateEnum.Idle:
-                break;
-            case MenuStateEnum.Behaviour:
-                BehaviourMenu(selectedObject, storage);
-                break;
-            case MenuStateEnum.Module:
-                ModuleMenu(selectedObject, storage);
-                break;
-            case MenuStateEnum.StateChart:
-                StateChartMenu(selectedObject, storage);
-                break;
-            case MenuStateEnum.State:
-                StateMenu(selectedObject, storage);
-                break;
-            case MenuStateEnum.Function:
-                FunctionMenu(selectedObject, storage);
-                break;
-            case MenuStateEnum.Port:
-                PortMenu(selectedObject, storage);
-                break;
+        switch(selectedObject.ObjectType) {
+            case WD_ObjectTypeEnum.Behaviour:  BehaviourMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.StateChart: StateChartMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.State:      StateMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.Module:     ModuleMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.Function:   FunctionMenu(selectedObject, storage); break;
+            default: if(selectedObject.IsPort) PortMenu(selectedObject, storage); break;
         }
     }
 
