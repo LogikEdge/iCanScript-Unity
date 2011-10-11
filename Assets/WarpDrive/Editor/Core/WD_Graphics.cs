@@ -312,9 +312,6 @@ public class WD_Graphics {
             case PortShape.RightTriangle:  DrawRightTrianglePort(center, _borderColor); break;
         }        
     }
-    public void DrawPort(PortShape _shape, Vector3 _center, Color _color) {
-        DrawPort(_shape, _center, _color, _color);
-    }
 
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor) {

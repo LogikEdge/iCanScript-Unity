@@ -82,7 +82,7 @@ public class WD_TypeSystem {
     // Returns the display color to use to the given type.  White is returned
     // if type is not in database.
     public static Color GetDisplayColor(System.Type type) {
-        if(type.IsArray) type= type.GetElementType();
+        if(type.HasElementType) type= type.GetElementType();
         if(type == null) return Color.white;
         WD_TypeInfo typeInfo= GetTypeInfo(type);
         return typeInfo != null ? typeInfo.DisplayColor : Color.white;
