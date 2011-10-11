@@ -55,19 +55,18 @@ public class WD_TreeCache {
     public bool IsValid(int id)      { return id >= 0 && id < TreeCache.Count && TreeCache[id].IsValid; }
     public bool IsInvalid(int id)    { return !IsValid(id); }
     // ----------------------------------------------------------------------
-    public void CreateInstance(int id, int parentId) {
-        // Validate given inputs.
-        if(id < 0) {
-            Debug.LogError("Connot create a treeNode with id: "+id);            
-        }
-        if(id < TreeCache.Count && TreeCache[id].IsValid) {
-            Debug.LogError("Trying to create a TreeNode with the same id has an existing TreeNode. (id)=>"+id);
+    public void CreateInstance(WD_EditorObject obj) {
+        if(obj.InstanceId < TreeCache.Count && TreeCache[obj.InstanceId].IsValid) {
+            Debug.LogError("Trying to create a TreeNode with the same id has an existing TreeNode. (id)=>"+obj.InstanceId);
         }
         // Create slots in the tree cache to hold the new instance.
-        while(TreeCache.Count <= id) TreeCache.Add(new TreeNode());
-        UpdateInstance(id, parentId);
+        while(TreeCache.Count <= obj.InstanceId) TreeCache.Add(new TreeNode());
+        UpdateInstance(obj);
     }
-    public void UpdateInstance(int id, int parentId) {
+    public void UpdateInstance(WD_EditorObject obj) {
+        int id      = obj.InstanceId;
+        int parentId= obj.ParentId;
+
         // Protect against misuse.
         if(id < 0 || id >= TreeCache.Count) {
             Debug.LogError("Trying to update an invalid TreeNode with id:"+id);

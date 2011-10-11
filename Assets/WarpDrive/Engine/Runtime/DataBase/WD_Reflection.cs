@@ -184,6 +184,7 @@ public class WD_Reflection {
             }
             else if(methodInfos[i].ReturnType != typeof(void) && methodInfos[i].GetParameters().Length == 0) {
                 _propertyIndexes.Add(i);
+                _propertyTypes.Add(methodInfos[i].ReturnType);
                 _propertyInOuts.Add(true);
             }
             else if(methodInfos[i].IsStatic) {

@@ -24,7 +24,7 @@ public class WD_EditorObjectMgr {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         EditorObjects[id]= new WD_EditorObject(id, name, rtType, parentId, objType, localPos);
-        TreeCache.CreateInstance(id, parentId);
+        TreeCache.CreateInstance(EditorObjects[id]);
         return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
@@ -37,7 +37,7 @@ public class WD_EditorObjectMgr {
         }
         // Create new EditorObject
         EditorObjects[id]= new WD_EditorObject(id, "Behaviour", typeof(WD_Behaviour), -1, WD_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
-        TreeCache.CreateInstance(id, -1);
+        TreeCache.CreateInstance(EditorObjects[id]);
         return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
@@ -57,7 +57,7 @@ public class WD_EditorObjectMgr {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         EditorObjects[id]= new WD_EditorObject(id, name, typeof(WD_Module), parentId, WD_ObjectTypeEnum.Module, localPos);
-        TreeCache.CreateInstance(id, parentId);
+        TreeCache.CreateInstance(EditorObjects[id]);
         return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
@@ -77,7 +77,7 @@ public class WD_EditorObjectMgr {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         EditorObjects[id]= new WD_EditorObject(id, name, typeof(WD_StateChart), parentId, WD_ObjectTypeEnum.StateChart, localPos);
-        TreeCache.CreateInstance(id, parentId);
+        TreeCache.CreateInstance(EditorObjects[id]);
         return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
@@ -93,7 +93,7 @@ public class WD_EditorObjectMgr {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         EditorObjects[id]= new WD_EditorObject(id, name, typeof(WD_State), parentId, WD_ObjectTypeEnum.State, localPos);
-        TreeCache.CreateInstance(id, parentId);
+        TreeCache.CreateInstance(EditorObjects[id]);
         return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
@@ -111,7 +111,58 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ClassDesc desc) {
-        return null;
+        // Create the class node.
+        int id= GetNextAvailableId();
+        // Calcute the desired screen position of the new object.
+        Rect parentPos= GetPosition(parentId);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos);
+        TreeCache.CreateInstance(EditorObjects[id]);
+        // Create field ports
+        for(int i= 0; i < desc.FieldNames.Length; ++i) {
+            int portId= GetNextAvailableId();
+            WD_ObjectTypeEnum portType= desc.FieldInOuts[i] ? WD_ObjectTypeEnum.OutFieldPort : WD_ObjectTypeEnum.InFieldPort;
+            EditorObjects[portId]= new WD_EditorObject(portId, desc.FieldNames[i], desc.FieldTypes[i], id, portType, new Rect(0,0,0,0));
+            TreeCache.CreateInstance(EditorObjects[portId]);                        
+        }
+        // Create property ports
+        for(int i= 0; i < desc.PropertyNames.Length; ++i) {
+            int portId= GetNextAvailableId();
+            WD_ObjectTypeEnum portType= desc.PropertyInOuts[i] ? WD_ObjectTypeEnum.OutPropertyPort : WD_ObjectTypeEnum.InPropertyPort;
+            EditorObjects[portId]= new WD_EditorObject(portId, desc.PropertyNames[i], desc.PropertyTypes[i], id, portType, new Rect(0,0,0,0));
+            TreeCache.CreateInstance(EditorObjects[portId]);                                    
+        }
+        // Create methods.
+        for(int i= 0; i < desc.MethodNames.Length; ++i) {
+            int methodId= GetNextAvailableId();
+            EditorObjects[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0));
+            TreeCache.CreateInstance(EditorObjects[methodId]);
+            for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
+                int classPortId= GetNextAvailableId();
+                WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
+                EditorObjects[classPortId]= new WD_EditorObject(classPortId, desc.ParameterNames[i][p], desc.ParameterTypes[i][p], id, portType, new Rect(0,0,0,0));
+                TreeCache.CreateInstance(EditorObjects[classPortId]);                                                    
+                int funcPortId= GetNextAvailableId();
+                EditorObjects[funcPortId]= new WD_EditorObject(funcPortId, desc.ParameterNames[i][p], desc.ParameterTypes[i][p], methodId, portType, new Rect(0,0,0,0));
+                TreeCache.CreateInstance(EditorObjects[funcPortId]);                                                    
+                if(portType == WD_ObjectTypeEnum.OutFunctionPort) {
+                    SetSource(EditorObjects[classPortId], EditorObjects[funcPortId]);
+                }
+                else {
+                    SetSource(EditorObjects[funcPortId], EditorObjects[classPortId]);
+                }
+            }
+            if(desc.ReturnTypes[i] != null) {
+                int classPortId= GetNextAvailableId();
+                EditorObjects[classPortId]= new WD_EditorObject(classPortId, desc.ReturnNames[i], desc.ReturnTypes[i], id, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
+                TreeCache.CreateInstance(EditorObjects[classPortId]);                                                                    
+                int funcPortId= GetNextAvailableId();
+                EditorObjects[funcPortId]= new WD_EditorObject(funcPortId, desc.ReturnNames[i], desc.ReturnTypes[i], methodId, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
+                TreeCache.CreateInstance(EditorObjects[funcPortId]);                                                    
+                SetSource(EditorObjects[classPortId], EditorObjects[funcPortId]);
+            }
+        }
+        return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_FunctionDesc desc) {
@@ -122,39 +173,39 @@ public class WD_EditorObjectMgr {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
-        TreeCache.CreateInstance(id, parentId);
+        TreeCache.CreateInstance(EditorObjects[id]);
         // Create input/output ports.
         for(int i= 0; i < desc.ParameterNames.Length; ++i) {
             int portId= GetNextAvailableId();
             WD_ObjectTypeEnum portType= desc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
             EditorObjects[portId]= new WD_EditorObject(portId, desc.ParameterNames[i], desc.ParameterTypes[i], id, portType, new Rect(0,0,0,0));
-            TreeCache.CreateInstance(portId, id);            
+            TreeCache.CreateInstance(EditorObjects[portId]);            
         }
         if(desc.ReturnType != null) {
             Debug.Log(desc.ReturnType.Name);
             int portId= GetNextAvailableId();
             EditorObjects[portId]= new WD_EditorObject(portId, desc.ReturnName, desc.ReturnType, id, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
-            TreeCache.CreateInstance(portId, id);            
+            TreeCache.CreateInstance(EditorObjects[portId]);            
         }
         return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ConversionDesc desc) {
-        // Create the conversion node.
+        // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos);
-        TreeCache.CreateInstance(id, parentId);
+        TreeCache.CreateInstance(EditorObjects[id]);
         // Create input/output ports.
         int inPortId= GetNextAvailableId();
         EditorObjects[inPortId]= new WD_EditorObject(inPortId, desc.FromType.Name, desc.FromType, id, WD_ObjectTypeEnum.InFunctionPort, new Rect(0,0,0,0));
-        TreeCache.CreateInstance(inPortId, id);
+        TreeCache.CreateInstance(EditorObjects[inPortId]);
         int outPortId= GetNextAvailableId();
         EditorObjects[outPortId]= new WD_EditorObject(outPortId, desc.ToType.Name, desc.ToType, id, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
-        TreeCache.CreateInstance(outPortId, id);
+        TreeCache.CreateInstance(EditorObjects[outPortId]);
         return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
@@ -211,8 +262,8 @@ public class WD_EditorObjectMgr {
         set {
             if(value.InstanceId != i) Debug.LogError("Trying to add EditorObject at wrong index.");
             EditorObjects[i]= value;
-            if(TreeCache.IsValid(i)) TreeCache.UpdateInstance(i, value.ParentId);
-            else                     TreeCache.CreateInstance(i, value.ParentId);
+            if(TreeCache.IsValid(i)) TreeCache.UpdateInstance(value);
+            else                     TreeCache.CreateInstance(value);
         }
     }
     // ----------------------------------------------------------------------

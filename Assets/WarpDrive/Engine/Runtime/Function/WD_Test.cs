@@ -32,5 +32,14 @@ public sealed class WD_Test2 {
         [WD_Function] set {}
     }
 
+    [WD_Function(Return="m1")]
+    public bool Method1(float x, Vector2 v) {
+        return true;
+    }
+
+    [WD_Function(Return="m2")]
+    public float Method2(Vector2 v2, Vector3 v3) {
+        return 1.0f;
+    }
 }
 
