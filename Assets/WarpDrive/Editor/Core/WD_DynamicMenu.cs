@@ -41,19 +41,13 @@ public class WD_DynamicMenu {
     const string OnEntryStr= "OnEntry";
     const string OnUpdateStr= "OnUpdate";
     const string OnExitStr= "OnExit";
-    const string PublishStr= "Publish to Parent";
-    const string MoreStr= "More ...";
+    const string PublishPortStr= "Publish to Parent";
 
     // ======================================================================
     // Menu state management
 	// ----------------------------------------------------------------------
     void Reset() {
         MenuPosition= Vector2.zero;
-    }
-    
-	// ----------------------------------------------------------------------
-    public void Deactivate() {
-        Reset();
     }
     
 	// ----------------------------------------------------------------------
@@ -91,10 +85,6 @@ public class WD_DynamicMenu {
               OnDrawGizmosStr
             };
         ShowMenu(menu, selectedObject, storage);
-    }
-	// ----------------------------------------------------------------------
-    void BehaviourAdditionalMenu() {
-        
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu(WD_EditorObject selectedObject, WD_Storage storage) {
@@ -138,7 +128,7 @@ public class WD_DynamicMenu {
     void PortMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[]
         {
-            PublishStr,
+            PublishPortStr,
         };
         ShowMenu(menu, selectedObject, storage);
     }
@@ -167,7 +157,17 @@ public class WD_DynamicMenu {
             case OnExitStr:                 CreateModule(context.SelectedObject, context.Storage, OnExitStr); break;
             case SubStateStr:               CreateState (context.SelectedObject, context.Storage);  break;
             case DeleteStr:                 DestroySelectedObject(context.SelectedObject, context.Storage); break;
-            default: Reset(); break;
+            default:
+                string company= GetCompanyFromMenuItem(context.Command);
+                string package= GetPackageFromMenuItem(context.Command);
+                string function= GetFunctionFromMenuItem(context.Command);
+                if(company != null && package != null && function != null) {
+                    WD_BaseDesc desc= WD_DataBase.GetDescriptor(company, package, function);
+                    if(desc != null) {
+                        Debug.Log("Creating function: "+function);                                           
+                    }
+                }
+                break;
         }
     }
     void ShowMenu(string[] menu, Vector2 pos, WD_EditorObject selected, WD_Storage storage) {
@@ -181,6 +181,7 @@ public class WD_DynamicMenu {
         Reset();
     }
 	// ----------------------------------------------------------------------
+    // Combines the company/package/function name into menu conforming strings.
     string[] GetFunctionMenu() {
         List<string> result= new List<string>();
         string[] companies= WD_DataBase.GetCompanies();
@@ -195,7 +196,32 @@ public class WD_DynamicMenu {
         }
         return result.ToArray();
     }
-
+    // Extracts the company name from the menu conforming string.
+    string GetCompanyFromMenuItem(string item) {
+        int end= item.IndexOf('/');
+        if(end < 0) return null;
+        return item.Substring(0, end);
+    }
+    // Extracts the package name from the menu conforming string.
+    string GetPackageFromMenuItem(string item) {
+        int start= item.IndexOf('/');
+        if(start < 0) return null;
+        ++start;
+        int end= item.IndexOf('/', start);
+        if(end < 0) return null;
+        return item.Substring(start, end-start);
+    }
+    // Extracts the function name from the menu conforming string.
+    string GetFunctionFromMenuItem(string item) {
+        int skip= item.IndexOf('/');
+        if(skip < 0) return null;
+        int start= item.IndexOf('/', skip+1);
+        if(start < 0) return null;
+        ++start;
+        int end= item.Length;
+        return item.Substring(start, end-start);
+    }
+    
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------

@@ -182,7 +182,6 @@ public class WD_Editor : EditorWindow {
                     if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDragging();
                     break;
                 case WD_Mouse.ButtonStateEnum.SingleClick:
-                    DynamicMenu.Deactivate();
                     break;
                 case WD_Mouse.ButtonStateEnum.DoubleClick:
                     DynamicMenu.Update(SelectedObject, Storage, Mouse.LeftButtonDownPosition);
