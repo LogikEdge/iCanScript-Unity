@@ -238,7 +238,7 @@ public class WD_Graphics {
             GenerateNodeStyle(ref classStyle, storage.Preferences.NodeColors.ClassColor);
             return classStyle;
         }
-        if(node.IsFunction) {
+        if(node.IsFunction || node.IsConversion) {
             GenerateNodeStyle(ref functionStyle, storage.Preferences.NodeColors.FunctionColor);
             return functionStyle;
         }
@@ -262,11 +262,11 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_Storage storage) {
         // Only draw visible data ports.
-        if(port.IsVisible == false || port.IsRuntimeA<WD_FieldPort>() == false) return;
-
+        if(port.IsVisible == false) return;
+        
         // Build visible port name
         WD_EditorObject portParent= storage.EditorObjects[port.ParentId];
-        Type portValueType= WD_Reflection.GetPortFieldType(port, portParent);
+        Type portValueType= port.RuntimeType;
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
          
         Rect tmp= storage.EditorObjects.GetPosition(port);

@@ -164,7 +164,7 @@ public class WD_DynamicMenu {
                 if(company != null && package != null && function != null) {
                     WD_BaseDesc desc= WD_DataBase.GetDescriptor(company, package, function);
                     if(desc != null) {
-                        Debug.Log("Creating function: "+function);                                           
+                        CreateFunction(context.SelectedObject, context.Storage, desc);                                           
                     }
                 }
                 break;
@@ -227,17 +227,18 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     void CreateModule(WD_EditorObject parent, WD_Storage storage, string name= "") {
         storage.EditorObjects.CreateModule(parent.InstanceId, MenuPosition, name);
-        Reset();        
     }
 	// ----------------------------------------------------------------------
     void CreateStateChart(WD_EditorObject parent, WD_Storage storage, string name= "") {
         storage.EditorObjects.CreateStateChart(parent.InstanceId, MenuPosition, name);
-        Reset();        
     }
 	// ----------------------------------------------------------------------
     void CreateState(WD_EditorObject parent, WD_Storage storage, string name= "") {
         storage.EditorObjects.CreateState(parent.InstanceId, MenuPosition, name);
-        Reset();        
+    }
+	// ----------------------------------------------------------------------
+    void CreateFunction(WD_EditorObject parent, WD_Storage storage, WD_BaseDesc desc) {
+        storage.EditorObjects.CreateFunction(parent.InstanceId, MenuPosition, desc);
     }
 	// ----------------------------------------------------------------------
     bool DestroySelectedObject(WD_EditorObject selectedObject, WD_Storage storage) {

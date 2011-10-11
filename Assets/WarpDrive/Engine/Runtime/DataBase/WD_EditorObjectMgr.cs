@@ -97,6 +97,67 @@ public class WD_EditorObjectMgr {
         return EditorObjects[id];
     }
     // ----------------------------------------------------------------------
+    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_BaseDesc desc) {
+        if(desc is WD_ClassDesc) {
+            return CreateFunction(parentId, initialPos, desc as WD_ClassDesc);
+        }
+        else if(desc is WD_FunctionDesc) {
+            return CreateFunction(parentId, initialPos, desc as WD_FunctionDesc);
+        }
+        else if(desc is WD_ConversionDesc) {
+            return CreateFunction(parentId, initialPos, desc as WD_ConversionDesc);
+        }
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ClassDesc desc) {
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_FunctionDesc desc) {
+        // Create the conversion node.
+        int id= GetNextAvailableId();
+        // Calcute the desired screen position of the new object.
+        Rect parentPos= GetPosition(parentId);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        // Create new EditorObject
+        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
+        TreeCache.CreateInstance(id, parentId);
+        // Create input/output ports.
+        for(int i= 0; i < desc.ParameterNames.Length; ++i) {
+            int portId= GetNextAvailableId();
+            WD_ObjectTypeEnum portType= desc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
+            EditorObjects[portId]= new WD_EditorObject(portId, desc.ParameterNames[i], desc.ParameterTypes[i], id, portType, new Rect(0,0,0,0));
+            TreeCache.CreateInstance(portId, id);            
+        }
+        if(desc.ReturnType != null) {
+            Debug.Log(desc.ReturnType.Name);
+            int portId= GetNextAvailableId();
+            EditorObjects[portId]= new WD_EditorObject(portId, desc.ReturnName, desc.ReturnType, id, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
+            TreeCache.CreateInstance(portId, id);            
+        }
+        return EditorObjects[id];
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ConversionDesc desc) {
+        // Create the conversion node.
+        int id= GetNextAvailableId();
+        // Calcute the desired screen position of the new object.
+        Rect parentPos= GetPosition(parentId);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        // Create new EditorObject
+        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos);
+        TreeCache.CreateInstance(id, parentId);
+        // Create input/output ports.
+        int inPortId= GetNextAvailableId();
+        EditorObjects[inPortId]= new WD_EditorObject(inPortId, desc.FromType.Name, desc.FromType, id, WD_ObjectTypeEnum.InFunctionPort, new Rect(0,0,0,0));
+        TreeCache.CreateInstance(inPortId, id);
+        int outPortId= GetNextAvailableId();
+        EditorObjects[outPortId]= new WD_EditorObject(outPortId, desc.ToType.Name, desc.ToType, id, WD_ObjectTypeEnum.OutFunctionPort, new Rect(0,0,0,0));
+        TreeCache.CreateInstance(outPortId, id);
+        return EditorObjects[id];
+    }
+    // ----------------------------------------------------------------------
     public int GetNextAvailableId() {
         // Find the next available id.
         int id= 0;
@@ -854,12 +915,12 @@ public class WD_EditorObjectMgr {
             WD_EditorObject child1= EditorObjects[i];
             if(child1.ParentId != node.InstanceId) continue;
             if(!child1.IsVisible) continue;
-            if(!child1.IsRuntimeA<WD_Node>()) continue;
+            if(!child1.IsNode) continue;
             for(int j= i+1; j < EditorObjects.Count; ++j) {
                 WD_EditorObject child2= EditorObjects[j];
                 if(child2.ParentId != node.InstanceId) continue;
                 if(!child2.IsVisible) continue;
-                if(!child2.IsRuntimeA<WD_Node>()) continue;
+                if(!child2.IsNode) continue;
                 didCollide |= ResolveCollisionBetweenTwoNodes(child1, child2, _delta);                            
             }
         }

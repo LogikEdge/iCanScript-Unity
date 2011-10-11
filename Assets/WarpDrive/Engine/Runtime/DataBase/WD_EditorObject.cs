@@ -115,7 +115,7 @@ public class WD_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsNode             { get { return WD.IsNode(this); }}
-    public bool IsBahaviour        { get { return WD.IsBehaviour(this); }}
+    public bool IsBehaviour        { get { return WD.IsBehaviour(this); }}
     public bool IsStateChart       { get { return WD.IsStateChart(this); }}
     public bool IsState            { get { return WD.IsState(this); }}
     public bool IsModule           { get { return WD.IsModule(this);; }}

@@ -7,7 +7,6 @@ public class WD_ClassDesc : WD_BaseDesc {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public Type         ClassType;
     public string[]     FieldNames;
     public Type[]       FieldTypes;
     public bool[]       FieldInOuts;
@@ -30,7 +29,7 @@ public class WD_ClassDesc : WD_BaseDesc {
                         string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,
                         string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,
                         MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,
-                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) : base (company, package, classType.Name) {
+                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) : base (company, package, classType.Name, classType) {
         ClassType= classType;
         FieldNames= fieldNames;
         FieldTypes= fieldTypes;
@@ -46,15 +45,5 @@ public class WD_ClassDesc : WD_BaseDesc {
         ParameterNames= parameterNames;
         ParameterTypes= parameterTypes;
         ParameterInOuts= parameterInOuts;
-    }
-    // ----------------------------------------------------------------------
-    public override int CreateInstance(WD_EditorObjectMgr editorObjects, int parentId, Vector2 initialPos) {
-        return -1;
-    }
-    // ----------------------------------------------------------------------
-    public object CreateRuntimeClass() {
-        return Inf.IsA(ClassType, typeof(ScriptableObject)) ?
-            ScriptableObject.CreateInstance(ClassType) :
-            Activator.CreateInstance(ClassType);            
     }
 }

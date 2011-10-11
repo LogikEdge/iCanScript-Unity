@@ -63,7 +63,7 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Adds a conversion function
-    public static void AddConversion(string company, string package, MethodInfo methodInfo, Type fromType, Type toType) {
+    public static void AddConversion(string company, string package, Type classType, MethodInfo methodInfo, Type fromType, Type toType) {
         foreach(var desc in Functions) {
             if(desc is WD_ConversionDesc) {
                 WD_ConversionDesc conv= desc as WD_ConversionDesc;
@@ -73,7 +73,7 @@ public class WD_DataBase {
                 }                
             }
         }
-        Functions.Add(new WD_ConversionDesc(company, package, methodInfo, fromType, toType));
+        Functions.Add(new WD_ConversionDesc(company, package, classType, methodInfo, fromType, toType));
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
@@ -83,7 +83,7 @@ public class WD_DataBase {
                                    string retName, Type retType,                              // Return value info
                                    string toolTip, MethodInfo methodInfo) {
         WD_FunctionDesc fd= new WD_FunctionDesc(company, package, classType,
-                                                methodName, toolTip,
+                                                methodName, retName, retType, toolTip,
                                                 paramNames, paramTypes, paramInOuts,
                                                 methodInfo);
         Functions.Add(fd);

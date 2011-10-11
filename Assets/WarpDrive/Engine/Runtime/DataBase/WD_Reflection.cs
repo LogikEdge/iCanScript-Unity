@@ -269,7 +269,7 @@ public class WD_Reflection {
             Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not static and tagged for WarpDrive. Ignoring conversion !!!");
             return;                                        
         }
-        WD_DataBase.AddConversion(company, package, method, fromType, toType);                                        
+        WD_DataBase.AddConversion(company, package, classType, method, fromType, toType);                                        
     }
     // ----------------------------------------------------------------------
     static void ParseFunction(string company, string package, Type classType, string methodName, string retName, string toolTip, MethodInfo method) {
