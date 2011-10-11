@@ -48,16 +48,7 @@ public class WD_DynamicMenu {
     // Menu state management
 	// ----------------------------------------------------------------------
     void Reset() {
-        IsActive= false;
         MenuPosition= Vector2.zero;
-    }
-    
-	// ----------------------------------------------------------------------
-    // Activate the dynamic menu if it is not already active.
-    public void Activate(WD_EditorObject selectedObject) {
-        if(selectedObject != null) {
-            IsActive= true;
-        }
     }
     
 	// ----------------------------------------------------------------------
@@ -71,7 +62,7 @@ public class WD_DynamicMenu {
         if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
 
         // Nothing to show if menu is inactive.
-        if(selectedObject == null || MenuPosition != mouseDownPosition || !IsActive) {
+        if(selectedObject == null || MenuPosition != mouseDownPosition) {
             Reset();
             return;
         }

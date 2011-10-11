@@ -27,9 +27,6 @@ public class WD_Editor : EditorWindow {
     bool            IsDragEnabled       = true;
     bool            IsDragging          { get { return DragObject != null; }}
 
-    // ----------------------------------------------------------------------
-    Vector2 MenuMousePosition= Vector2.zero;
-    
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
@@ -188,8 +185,7 @@ public class WD_Editor : EditorWindow {
                     DynamicMenu.Deactivate();
                     break;
                 case WD_Mouse.ButtonStateEnum.DoubleClick:
-                    MenuMousePosition= Mouse.LeftButtonDownPosition;
-                    DynamicMenu.Activate(SelectedObject);
+                    DynamicMenu.Update(SelectedObject, Storage, Mouse.LeftButtonDownPosition);
                     break;
                 case WD_Mouse.ButtonStateEnum.Dragging:
                     ProcessDragging();
@@ -200,14 +196,10 @@ public class WD_Editor : EditorWindow {
             // Process right button state.
             switch(Mouse.RightButtonState) {
                 case WD_Mouse.ButtonStateEnum.SingleClick:
-                    MenuMousePosition= Mouse.RightButtonDownPosition;
-                    DynamicMenu.Activate(SelectedObject);
+                    DynamicMenu.Update(SelectedObject, Storage, Mouse.RightButtonDownPosition);
                     break;
             }                    
         }
-
-        // Display dynamic menu.
-        DynamicMenu.Update(SelectedObject, Storage, MenuMousePosition);
     }
     
 	// ----------------------------------------------------------------------
