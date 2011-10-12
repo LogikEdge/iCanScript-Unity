@@ -135,7 +135,7 @@ public class WD_EditorObjectMgr {
         }
         for(int i= 0; i < desc.MethodNames.Length; ++i) {
             int methodId= -1;
-            if(nbOfMethodsToShow != 0) {
+            if(nbOfMethodsToShow > 1) {
                 methodId= GetNextAvailableId();
                 EditorObjects[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0));
                 TreeCache.CreateInstance(EditorObjects[methodId]);                
@@ -143,7 +143,7 @@ public class WD_EditorObjectMgr {
             for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
                 WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutModulePort : WD_ObjectTypeEnum.InModulePort;
                 WD_EditorObject classPort= CreatePort(desc.ParameterNames[i][p], id, desc.ParameterTypes[i][p], portType);
-                if(nbOfMethodsToShow != 0) {
+                if(nbOfMethodsToShow > 1) {
                     portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
                     WD_EditorObject funcPort= CreatePort(desc.ParameterNames[i][p], methodId, desc.ParameterTypes[i][p], portType);
                     if(portType == WD_ObjectTypeEnum.OutFunctionPort) {
@@ -156,8 +156,10 @@ public class WD_EditorObjectMgr {
             }
             if(desc.ReturnTypes[i] != null) {
                 WD_EditorObject classPort= CreatePort(desc.ReturnNames[i], id, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutModulePort);
-                WD_EditorObject funcPort= CreatePort(desc.ReturnNames[i], methodId, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutFunctionPort);
-                SetSource(classPort, funcPort);
+                if(nbOfMethodsToShow > 1) {
+                    WD_EditorObject funcPort= CreatePort(desc.ReturnNames[i], methodId, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutFunctionPort);
+                    SetSource(classPort, funcPort);                    
+                }
             }
         }
         return EditorObjects[id];
