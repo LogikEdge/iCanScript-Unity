@@ -163,14 +163,18 @@ public class WD_DynamicMenu {
                 WD_EditorObjectMgr editorObjects= context.Storage.EditorObjects;
                 WD_EditorObject selected= context.SelectedObject;
                 WD_EditorObject parent= editorObjects[selected.ParentId];
-                int grandParent= editorObjects[parent.ParentId].InstanceId;
+                int grandParentId= editorObjects[parent.ParentId].InstanceId;
+                WD_EditorObject grandParent= editorObjects[grandParentId];
                 if(selected.IsInputPort) {
-                    WD_EditorObject port= editorObjects.CreatePort(selected.Name, grandParent, selected.RuntimeType, WD_ObjectTypeEnum.InModulePort);
+                    WD_EditorObject port= editorObjects.CreatePort(selected.Name, grandParentId, selected.RuntimeType, WD_ObjectTypeEnum.InModulePort);
                     editorObjects.SetSource(selected, port);
+                    port.LocalPosition= new Rect(0, parent.LocalPosition.y+selected.LocalPosition.y, 0, 0);
                 } else {
-                    WD_EditorObject port= editorObjects.CreatePort(selected.Name, grandParent, selected.RuntimeType, WD_ObjectTypeEnum.OutModulePort);
+                    WD_EditorObject port= editorObjects.CreatePort(selected.Name, grandParentId, selected.RuntimeType, WD_ObjectTypeEnum.OutModulePort);
                     editorObjects.SetSource(port, selected);
+                    port.LocalPosition= new Rect(grandParent.LocalPosition.width, parent.LocalPosition.y+selected.LocalPosition.y, 0, 0);
                 }
+                grandParent.IsDirty= true;
                 break;
             default:
                 string company= GetCompanyFromMenuItem(context.Command);
@@ -186,15 +190,18 @@ public class WD_DynamicMenu {
         }
     }
     void ShowMenu(string[] menu, Vector2 pos, WD_EditorObject selected, WD_Storage storage) {
+        int sepCnt= 0;
         GenericMenu gMenu= new GenericMenu();
         foreach(var item in menu) {
             if(item == SeparatorStr) {
-                gMenu.AddSeparator("");
+                if(sepCnt != 0) gMenu.AddSeparator("");
+                sepCnt= 0;
             } else {
                 gMenu.AddItem(new GUIContent(item), false, ProcessMenu, new MenuContext(item, selected, storage));                
+                ++sepCnt;
             }
         }
-        gMenu.AddSeparator("");
+        if(sepCnt != 0) gMenu.AddSeparator("");
         gMenu.AddItem(new GUIContent(DeleteStr), false, ProcessMenu, new MenuContext(DeleteStr, selected, storage));
         gMenu.ShowAsContext();
         Reset();
