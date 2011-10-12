@@ -44,16 +44,17 @@ public class WD_UserPreferences {
         public UserTypeColor[]  CustomColors  = new UserTypeColor[0];
 
         public Color GetColor(Type t) {
-            if(t.Name == BoolType.TypeName)       return BoolType.TypeColor;
-            if(t.Name == IntType.TypeName)        return IntType.TypeColor;
-            if(t.Name == FloatType.TypeName)      return FloatType.TypeColor;
-            if(t.Name == Vector2Type.TypeName)    return Vector2Type.TypeColor;
-            if(t.Name == Vector3Type.TypeName)    return Vector3Type.TypeColor;
-            if(t.Name == Vector4Type.TypeName)    return Vector4Type.TypeColor;
-            if(t.Name == StringType.TypeName)     return StringType.TypeColor;
-            if(t.Name == GameObjectType.TypeName) return GameObjectType.TypeColor;
+            string typeName= t.HasElementType ? t.GetElementType().Name : t.Name;
+            if(typeName == BoolType.TypeName)       return BoolType.TypeColor;
+            if(typeName == IntType.TypeName)        return IntType.TypeColor;
+            if(typeName == FloatType.TypeName)      return FloatType.TypeColor;
+            if(typeName == Vector2Type.TypeName)    return Vector2Type.TypeColor;
+            if(typeName == Vector3Type.TypeName)    return Vector3Type.TypeColor;
+            if(typeName == Vector4Type.TypeName)    return Vector4Type.TypeColor;
+            if(typeName == StringType.TypeName)     return StringType.TypeColor;
+            if(typeName == GameObjectType.TypeName) return GameObjectType.TypeColor;
             foreach(var tc in CustomColors) {
-                if(t.Name == tc.TypeName) return tc.TypeColor;
+                if(typeName == tc.TypeName) return tc.TypeColor;
             }
             return Color.white;
         }

@@ -2,24 +2,19 @@ using UnityEngine;
 using System.Collections;
 
 [WD_Class(Company="Infaunier", Package="Math3D")]
-public sealed class WD_CosWave : WD_Function {
+public sealed class WD_CosWave {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    [WD_InPort]  public float freq     = 1.0f;
-    [WD_InPort]  public float amplitude= 1.0f;
-    [WD_OutPort] public float wave;
-    
     float          elapseTime;
     const float    twoPI= 2.0f*Mathf.PI;
         
-
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    [WD_Function]
-    public override void Evaluate() {
+    [WD_Function(Return="wave")]
+    public float CosWave(float freq, float amplitude) {
         elapseTime+= Time.deltaTime;
-        wave= amplitude * Mathf.Cos(twoPI * freq * elapseTime);
+        return amplitude * Mathf.Cos(twoPI * freq * elapseTime);
     }
 }
