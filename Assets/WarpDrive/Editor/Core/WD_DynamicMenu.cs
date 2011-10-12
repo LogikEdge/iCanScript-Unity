@@ -42,6 +42,7 @@ public class WD_DynamicMenu {
     const string OnUpdateStr= "OnUpdate";
     const string OnExitStr= "OnExit";
     const string PublishPortStr= "Publish on Module";
+    const string SeparatorStr= "";
 
     // ======================================================================
     // Menu state management
@@ -94,9 +95,10 @@ public class WD_DynamicMenu {
             StateChartStr,
         };
         string[] functionMenu= GetFunctionMenu();
-        string[] menu= new string[moduleMenu.Length+functionMenu.Length];
+        string[] menu= new string[moduleMenu.Length+functionMenu.Length+1];
         moduleMenu.CopyTo(menu, 0);
-        functionMenu.CopyTo(menu, moduleMenu.Length);
+        menu[moduleMenu.Length]= SeparatorStr;
+        functionMenu.CopyTo(menu, moduleMenu.Length+1);
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
@@ -186,7 +188,11 @@ public class WD_DynamicMenu {
     void ShowMenu(string[] menu, Vector2 pos, WD_EditorObject selected, WD_Storage storage) {
         GenericMenu gMenu= new GenericMenu();
         foreach(var item in menu) {
-            gMenu.AddItem(new GUIContent(item), false, ProcessMenu, new MenuContext(item, selected, storage));
+            if(item == SeparatorStr) {
+                gMenu.AddSeparator("");
+            } else {
+                gMenu.AddItem(new GUIContent(item), false, ProcessMenu, new MenuContext(item, selected, storage));                
+            }
         }
         gMenu.AddSeparator("");
         gMenu.AddItem(new GUIContent(DeleteStr), false, ProcessMenu, new MenuContext(DeleteStr, selected, storage));
