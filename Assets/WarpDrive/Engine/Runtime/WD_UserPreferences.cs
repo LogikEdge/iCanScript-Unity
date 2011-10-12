@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 [System.Serializable]
@@ -20,4 +21,42 @@ public class WD_UserPreferences {
         public Color    SelectedColor= Color.white;            
     }
     public UserNodeColors   NodeColors= new UserNodeColors();
+
+    [System.Serializable]
+    public class UserTypeColors {
+        [System.Serializable]
+        public class UserTypeColor {
+            public string  TypeName;
+            public Color   TypeColor;
+            public UserTypeColor(Type type, Color color) {
+                TypeName= type.Name;
+                TypeColor= color;
+            }
+        }
+        public UserTypeColor    BoolType      = new UserTypeColor(typeof(bool),       Color.red);
+        public UserTypeColor    IntType       = new UserTypeColor(typeof(int),        Color.magenta);
+        public UserTypeColor    FloatType     = new UserTypeColor(typeof(float),      Color.cyan);
+        public UserTypeColor    Vector2Type   = new UserTypeColor(typeof(Vector2),    Color.yellow);
+        public UserTypeColor    Vector3Type   = new UserTypeColor(typeof(Vector3),    Color.green);
+        public UserTypeColor    Vector4Type   = new UserTypeColor(typeof(Vector4),    Color.blue);
+        public UserTypeColor    StringType    = new UserTypeColor(typeof(string),     Color.red);
+        public UserTypeColor    GameObjectType= new UserTypeColor(typeof(GameObject), Color.blue);
+        public UserTypeColor[]  CustomColors  = new UserTypeColor[0];
+
+        public Color GetColor(Type t) {
+            if(t.Name == BoolType.TypeName)       return BoolType.TypeColor;
+            if(t.Name == IntType.TypeName)        return IntType.TypeColor;
+            if(t.Name == FloatType.TypeName)      return FloatType.TypeColor;
+            if(t.Name == Vector2Type.TypeName)    return Vector2Type.TypeColor;
+            if(t.Name == Vector3Type.TypeName)    return Vector3Type.TypeColor;
+            if(t.Name == Vector4Type.TypeName)    return Vector4Type.TypeColor;
+            if(t.Name == StringType.TypeName)     return StringType.TypeColor;
+            if(t.Name == GameObjectType.TypeName) return GameObjectType.TypeColor;
+            foreach(var tc in CustomColors) {
+                if(t.Name == tc.TypeName) return tc.TypeColor;
+            }
+            return Color.white;
+        }
+    }
+    public UserTypeColors   TypeColors= new UserTypeColors();
 }

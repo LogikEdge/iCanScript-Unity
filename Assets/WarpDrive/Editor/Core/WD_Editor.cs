@@ -323,20 +323,15 @@ public class WD_Editor : EditorWindow {
             WD_EditorObject inPort = port.IsInputPort             ? port : overlappingPort;
             WD_EditorObject outPort= overlappingPort.IsOutputPort ? overlappingPort : port;
             if(inPort != outPort) {
-                Type connectionType= WD_TypeSystem.GetBestUpConversionType(inPort.RuntimeType, outPort.RuntimeType);
-                if(connectionType != null) {
-                    // No conversion needed.
-                    if(inPort.RuntimeType == outPort.RuntimeType) {
-                        Storage.EditorObjects.SetSource(inPort, outPort);                       
-                    }
-                    // A conversion is required.
-                    else {
-                        WD_ConversionDesc conversion= WD_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
-                        if(conversion == null) {
-                            Debug.LogWarning("No direct conversion exists from "+outPort.RuntimeType.Name+" to "+inPort.RuntimeType.Name);
-                        } else {
-                            Storage.EditorObjects.SetSource(inPort, outPort, conversion);
-                        }
+                if(inPort.RuntimeType == outPort.RuntimeType) { // No conversion needed.
+                    Storage.EditorObjects.SetSource(inPort, outPort);                       
+                }
+                else {  // A conversion is required.
+                    WD_ConversionDesc conversion= WD_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
+                    if(conversion == null) {
+                        Debug.LogWarning("No direct conversion exists from "+outPort.RuntimeType.Name+" to "+inPort.RuntimeType.Name);
+                    } else {
+                        Storage.EditorObjects.SetSource(inPort, outPort, conversion);
                     }
                 }
             }

@@ -271,7 +271,7 @@ public class WD_Graphics {
          
         Rect tmp= storage.EditorObjects.GetPosition(port);
         Vector2 pos= new Vector2(tmp.x, tmp.y);
-        Color portColor= WD_TypeSystem.GetDisplayColor(portValueType);
+        Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show name if requested.
@@ -491,7 +491,7 @@ public class WD_Graphics {
                     if(Vector2.Dot(diff, endDirection) > 0) {
                         endDirection  = - endDirection;
                     }
-                    Color color= WD_TypeSystem.GetDisplayColor(source.RuntimeType);
+                    Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
                     DrawBezierCurve(start, end, startDirection, endDirection, color);
                 }                                    
             }
