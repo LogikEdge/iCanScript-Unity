@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[WD_Class(Company="Infaunier", Package="GameObject")]
+[WD_Class(Company="Infaunier", Package="Input")]
 public sealed class WD_GameController : WD_Function {
     // ======================================================================
     // PROPERTIES

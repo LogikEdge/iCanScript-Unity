@@ -53,6 +53,17 @@ public class WD_DataBase {
         }
         return null;
     }
+    // ----------------------------------------------------------------------
+    // Finds a conversion that matches the given from/to types.
+    public static WD_ConversionDesc FindConversion(Type from, Type to) {
+        foreach(var desc in Functions) {
+            if(desc is WD_ConversionDesc) {
+                WD_ConversionDesc conv= desc as WD_ConversionDesc;
+                if(conv.FromType == from && conv.ToType == to) return conv;
+            }
+        }
+        return null;
+    }
     
     // ======================================================================
     // Container management functions

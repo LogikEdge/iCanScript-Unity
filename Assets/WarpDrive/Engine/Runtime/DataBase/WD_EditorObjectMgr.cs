@@ -129,20 +129,29 @@ public class WD_EditorObjectMgr {
             CreatePort(desc.PropertyNames[i], id, desc.PropertyTypes[i], portType);
         }
         // Create methods.
+        int nbOfMethodsToShow= 0;
         for(int i= 0; i < desc.MethodNames.Length; ++i) {
-            int methodId= GetNextAvailableId();
-            EditorObjects[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0));
-            TreeCache.CreateInstance(EditorObjects[methodId]);
+            if(desc.ParameterNames[i].Length != 0) ++nbOfMethodsToShow;
+        }
+        for(int i= 0; i < desc.MethodNames.Length; ++i) {
+            int methodId= -1;
+            if(nbOfMethodsToShow != 0) {
+                methodId= GetNextAvailableId();
+                EditorObjects[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0));
+                TreeCache.CreateInstance(EditorObjects[methodId]);                
+            }
             for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
                 WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutModulePort : WD_ObjectTypeEnum.InModulePort;
                 WD_EditorObject classPort= CreatePort(desc.ParameterNames[i][p], id, desc.ParameterTypes[i][p], portType);
-                portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
-                WD_EditorObject funcPort= CreatePort(desc.ParameterNames[i][p], methodId, desc.ParameterTypes[i][p], portType);
-                if(portType == WD_ObjectTypeEnum.OutFunctionPort) {
-                    SetSource(classPort, funcPort);
-                }
-                else {
-                    SetSource(funcPort, classPort);
+                if(nbOfMethodsToShow != 0) {
+                    portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
+                    WD_EditorObject funcPort= CreatePort(desc.ParameterNames[i][p], methodId, desc.ParameterTypes[i][p], portType);
+                    if(portType == WD_ObjectTypeEnum.OutFunctionPort) {
+                        SetSource(classPort, funcPort);
+                    }
+                    else {
+                        SetSource(funcPort, classPort);
+                    }                    
                 }
             }
             if(desc.ReturnTypes[i] != null) {
@@ -270,6 +279,23 @@ public class WD_EditorObjectMgr {
         obj.ExecuteIf<WD_FieldPort>(
             (port) => {
 //                (GetRuntimeObject(port.InstanceId) as WD_FieldPort).Source= GetRuntimeObject(src.InstanceId) as WD_FieldPort;
+            }
+        );
+    }
+    // ----------------------------------------------------------------------
+    public void SetSource(WD_EditorObject inPort, WD_EditorObject outPort, WD_ConversionDesc convDesc) {
+        Rect inPos= GetPosition(inPort);
+        Rect outPos= GetPosition(outPort);
+        Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
+        int grandParentId= EditorObjects[inPort.ParentId].ParentId;
+        WD_EditorObject conv= CreateFunction(grandParentId, convPos, convDesc);
+        ForEachChild(conv,
+            (child) => {
+                if(child.IsInputPort) {
+                    SetSource(child, outPort);
+                } else if(child.IsOutputPort) {
+                    SetSource(inPort, child);
+                }
             }
         );
     }

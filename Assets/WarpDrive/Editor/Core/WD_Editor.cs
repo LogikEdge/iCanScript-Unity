@@ -331,7 +331,12 @@ public class WD_Editor : EditorWindow {
                     }
                     // A conversion is required.
                     else {
-                        Debug.Log("A conversion node is required.");
+                        WD_ConversionDesc conversion= WD_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
+                        if(conversion == null) {
+                            Debug.LogWarning("No direct conversion exists from "+outPort.RuntimeType.Name+" to "+inPort.RuntimeType.Name);
+                        } else {
+                            Storage.EditorObjects.SetSource(inPort, outPort, conversion);
+                        }
                     }
                 }
             }
