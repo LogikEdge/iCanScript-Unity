@@ -203,7 +203,7 @@ public class WD_Graphics {
         if(node.IsVisible == false) return;
         
         // Draw node box.
-        string title= ObjectNames.NicifyVariableName(node.NameOrTypeName);
+        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.NameOrTypeName));
         GUIStyle guiStyle= GetNodeGUIStyle(node, selectedObject, storage);
         Rect position= storage.EditorObjects.GetPosition(node);
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;

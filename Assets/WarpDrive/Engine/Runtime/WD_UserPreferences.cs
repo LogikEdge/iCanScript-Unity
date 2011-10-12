@@ -59,4 +59,22 @@ public class WD_UserPreferences {
         }
     }
     public UserTypeColors   TypeColors= new UserTypeColors();
+
+    [System.Serializable]
+    public class UserHiddenPrefixes {
+        public const string WarpDrivePrefix= WD_EditorConfig.TypePrefix;
+        public string[]     CustomPrefixes= new string[0]; 
+
+        public string GetTypeName(Type t)  { return GetName(t.Name); }
+        public string GetName(string name) {
+            int prefixLen= WarpDrivePrefix.Length;
+            if(name.Substring(0, prefixLen) == WarpDrivePrefix) return name.Substring(prefixLen, name.Length-prefixLen);
+            foreach(var prefix in CustomPrefixes) {
+                prefixLen= prefix.Length;
+                if(name.Substring(0, prefixLen) == prefix) return name.Substring(prefixLen, name.Length-prefixLen);                
+            }
+            return name;
+        }
+    }
+    public UserHiddenPrefixes   HiddenPrefixes= new UserHiddenPrefixes();
 }
