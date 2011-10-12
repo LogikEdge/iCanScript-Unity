@@ -47,35 +47,6 @@ public class WD_EditorObject {
             Edge= IsInputPort ? (IsEnablePort ? EdgeEnum.Top : EdgeEnum.Left) : EdgeEnum.Right;
         }
     }
-    public WD_EditorObject(int id, string name, Type type, int parentId, Rect localPosition) {
-        Reset();
-        InstanceId= id;
-        ParentId= parentId;
-        Name= name;
-        QualifiedType= type.AssemblyQualifiedName;
-        IsDirty= true;
-        LocalPosition= localPosition;
-        Case<WD_RootNode, WD_Top, WD_StateChart, WD_State, WD_Module, WD_Function, WD_Node, WD_Port>(
-            (root)  => { },
-            (top)   => { },
-            (chart) => { ObjectType= WD_ObjectTypeEnum.State; },
-            (state) => { ObjectType= WD_ObjectTypeEnum.State; },
-            (mod)   => { ObjectType= WD_ObjectTypeEnum.Module; },
-            (func)  => { ObjectType= WD_ObjectTypeEnum.Function; },
-            (node)  => { ObjectType= WD_ObjectTypeEnum.Class; },
-            (port)  => {
-                port.ExecuteIf<WD_FieldPort>(
-                    (dataPort) => {
-                        dataPort.Case<WD_InFieldPort, WD_OutFieldPort, WD_EnablePort>(
-                            (inPort)     => { Edge= EdgeEnum.Left;  ObjectType= WD_ObjectTypeEnum.InFieldPort; },
-                            (outPort)    => { Edge= EdgeEnum.Right; ObjectType= WD_ObjectTypeEnum.OutFieldPort; },
-                            (enablePort) => { Edge= EdgeEnum.Top;   ObjectType= WD_ObjectTypeEnum.EnablePort; }
-                        );
-                    }
-                );                
-            }
-        );
-    }
     // ----------------------------------------------------------------------
     public void Reset() {
         ObjectType= WD_ObjectTypeEnum.Unknown;
