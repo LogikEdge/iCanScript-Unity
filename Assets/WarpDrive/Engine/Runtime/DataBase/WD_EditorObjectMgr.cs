@@ -255,6 +255,7 @@ public class WD_EditorObjectMgr {
             }
         );
         // Remove all related objects.
+        if(IsValid(EditorObjects[id].ParentId)) EditorObjects[EditorObjects[id].ParentId].IsDirty= true;
         TreeCache.DestroyInstance(id);
         EditorObjects[id].Reset();
     }

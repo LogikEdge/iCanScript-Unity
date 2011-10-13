@@ -167,11 +167,16 @@ public class WD_DynamicMenu {
         // Allow to delete a port if its parent is a module.
         if(selectedObject.IsModulePort && parent.IsModule) {
             int i= menu.Length;
-            string[] tmp= new string[i+2];
-            menu.CopyTo(tmp, 0);
-            if(i != 0) tmp[i++]= SeparatorStr;
-            tmp[i]= DeleteStr;
-            menu= tmp;
+            if(i == 0) {
+                menu= new string[1];
+                menu[0]= DeleteStr;
+            } else {
+                string[] tmp= new string[i+2];
+                menu.CopyTo(tmp, 0);
+                tmp[i]= SeparatorStr;
+                tmp[i+1]= DeleteStr;
+                menu= tmp;                
+            }
         }
         // Display menu if not empty.
         if(menu.Length != 0) {
