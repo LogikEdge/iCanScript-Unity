@@ -77,29 +77,39 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     void BehaviourMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[]
-            { UpdateModuleStr,             
-              UpdateStateChartStr,
-              LateUpdateModuleStr,        
-              LateUpdateStateChartStr,        
-              FixedUpdateModuleStr,       
-              FixedUpdateStateChartStr,       
-              OnGUIStr,              
-              OnDrawGizmosStr
-            };
+        {
+            UpdateModuleStr,             
+            UpdateStateChartStr,
+            LateUpdateModuleStr,        
+            LateUpdateStateChartStr,        
+            FixedUpdateModuleStr,       
+            FixedUpdateStateChartStr,       
+            OnGUIStr,              
+            OnDrawGizmosStr,
+        };
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu(WD_EditorObject selectedObject, WD_Storage storage) {
-        string[] moduleMenu= new string[]
+        string[] menu= new string[]
         {
             ModuleStr,
             StateChartStr,
         };
         string[] functionMenu= GetFunctionMenu();
-        string[] menu= new string[moduleMenu.Length+functionMenu.Length+1];
-        moduleMenu.CopyTo(menu, 0);
-        menu[moduleMenu.Length]= SeparatorStr;
-        functionMenu.CopyTo(menu, moduleMenu.Length+1);
+        string[] tmp= new string[menu.Length+functionMenu.Length+1];
+        menu.CopyTo(tmp, 0);
+        tmp[menu.Length]= SeparatorStr;
+        functionMenu.CopyTo(tmp, menu.Length+1);
+        menu= tmp;
+        // Don't allow to delete the root node.
+        if(selectedObject.InstanceId != 0) {
+            tmp= new string[menu.Length+2];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            tmp[menu.Length+1]= DeleteStr;
+            menu= tmp;
+        }
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
@@ -107,8 +117,16 @@ public class WD_DynamicMenu {
         string[] menu= new string[]
         {
             StateStr,
-            EntryStateStr
+            EntryStateStr,
         };
+        // Don't allow to delete the root node.
+        if(selectedObject.InstanceId != 0) {
+            string[] tmp= new string[menu.Length+2];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            tmp[menu.Length+1]= DeleteStr;
+            menu= tmp;
+        }
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
@@ -118,25 +136,46 @@ public class WD_DynamicMenu {
             OnEntryStr,
             OnUpdateStr,
             OnExitStr,
-            SubStateStr
+            SubStateStr,
+            SeparatorStr,
+            DeleteStr
         };
         ShowMenu(menu, selectedObject, storage);
     }
     
 	// ----------------------------------------------------------------------
     void FunctionMenu(WD_EditorObject selectedObject, WD_Storage storage) {
-        ShowMenu(new string[0], selectedObject, storage);
+        if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
+            ShowMenu(new string[]{DeleteStr}, selectedObject, storage);            
+        }
     }
 	// ----------------------------------------------------------------------
     void ClassMenu(WD_EditorObject selectedObject, WD_Storage storage) {
-        ShowMenu(new string[0], selectedObject, storage);
+        if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
+            ShowMenu(new string[]{DeleteStr}, selectedObject, storage);            
+        }
     }
 	// ----------------------------------------------------------------------
     void PortMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+        string[] menu= new string[0];
+        // Allow to publish port if the grand-parent is a module.
         WD_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
         WD_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
         if(grandParent != null && grandParent.IsModule) {
-            ShowMenu(new string[]{PublishPortStr}, selectedObject, storage);
+            menu= new string[]{PublishPortStr};
+        }
+        // Allow to delete a port if its parent is a module.
+        if(selectedObject.IsModulePort && parent.IsModule) {
+            int i= menu.Length;
+            string[] tmp= new string[i+2];
+            menu.CopyTo(tmp, 0);
+            if(i != 0) tmp[i++]= SeparatorStr;
+            tmp[i]= DeleteStr;
+            menu= tmp;
+        }
+        // Display menu if not empty.
+        if(menu.Length != 0) {
+            ShowMenu(menu, selectedObject, storage);            
         }
     }
 
@@ -206,8 +245,6 @@ public class WD_DynamicMenu {
                 ++sepCnt;
             }
         }
-        if(sepCnt != 0) gMenu.AddSeparator("");
-        gMenu.AddItem(new GUIContent(DeleteStr), false, ProcessMenu, new MenuContext(DeleteStr, selected, storage));
         gMenu.ShowAsContext();
         Reset();
     }

@@ -219,21 +219,36 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(int id) {
+        DestroyInstanceInternal(id);
+        ForEach(
+            (port) => {
+                if(port.IsModulePort && EditorObjects[port.ParentId].IsModule && IsPortDisconnected(port)) {
+                    DestroyInstanceInternal(port.InstanceId);
+                }
+            }
+        );
+    }
+    // ----------------------------------------------------------------------
+    public void DestroyInstance(WD_EditorObject eObj) {
+        DestroyInstance(eObj.InstanceId);
+    }
+    // ----------------------------------------------------------------------
+    void DestroyInstanceInternal(int id) {
         if(IsInvalid(id)) {
             Debug.LogError("Trying the delete a non-existing EditorObject with id= "+id);
         }
         // Remove all children first
         while(TreeCache[id].Children.Count != 0) {
-            DestroyInstance(TreeCache[id].Children[0]);
+            DestroyInstanceInternal(TreeCache[id].Children[0]);
         }
         // Disconnect ports linking to this port.
         ExecuteIf(EditorObjects[id],
-            WD.IsFieldPort, (instance) => {
+            WD.IsPort, (instance) => {
                 ForEach(
-                    (obj) => {
-                        if(obj. IsFieldPort && obj.Source == id) {
+                    (port) => {
+                        if(port.IsPort && port.Source == id) {
 //                            (GetRuntimeObject(obj) as WD_FieldPort).Source= null;
-                            obj.Source= -1;
+                            port.Source= -1;                            
                         }
                     }
                 );                
@@ -244,12 +259,17 @@ public class WD_EditorObjectMgr {
         EditorObjects[id].Reset();
     }
     // ----------------------------------------------------------------------
+    bool IsPortConnected(WD_EditorObject port) {
+        if(port.Source != -1) return true;
+        foreach(var obj in EditorObjects) {
+            if(obj.IsValid && obj.IsPort && obj.Source == port.InstanceId) return true;
+        }
+        return false;
+    }
+    bool IsPortDisconnected(WD_EditorObject port) { return !IsPortConnected(port); }
+    // ----------------------------------------------------------------------
     public void RegenerateDynamicData() {
         
-    }
-    // ----------------------------------------------------------------------
-    public void DestroyInstance(WD_EditorObject eObj) {
-        DestroyInstance(eObj.InstanceId);
     }
 
     // ======================================================================
@@ -277,10 +297,10 @@ public class WD_EditorObjectMgr {
     }
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject obj, WD_EditorObject src) {
-        obj.Source= src.InstanceId;
+        obj.Source= src == null ? -1 : src.InstanceId;
         obj.ExecuteIf<WD_FieldPort>(
             (port) => {
-//                (GetRuntimeObject(port.InstanceId) as WD_FieldPort).Source= GetRuntimeObject(src.InstanceId) as WD_FieldPort;
+//                (GetRuntimeObject(por t.InstanceId) as WD_FieldPort).Source= GetRuntimeObject(src.InstanceId) as WD_FieldPort;
             }
         );
     }
