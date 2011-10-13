@@ -202,8 +202,19 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public WD_EditorObject CreatePort(string name, int parentId, Type valueType, WD_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
-        EditorObjects[id]= new WD_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
-        TreeCache.CreateInstance(EditorObjects[id]);
+        WD_EditorObject port= EditorObjects[id]= new WD_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
+        TreeCache.CreateInstance(port);
+        // Reajust data port position 
+        if(port.IsDataPort && !port.IsEnablePort) {
+            WD_EditorObject parent= EditorObjects[port.ParentId];
+            if(port.IsInputPort) {
+                int nbOfPorts= GetNbOfLeftPorts(parent);
+                port.LocalPosition= new Rect(0, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);
+            } else {
+                int nbOfPorts= GetNbOfRightPorts(parent);
+                port.LocalPosition= new Rect(parent.LocalPosition.width, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);                
+            }
+        }
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
