@@ -320,8 +320,38 @@ public class WD_Editor : EditorWindow {
         
         // Connect function & modules ports together.
         if(port.IsDataPort && overlappingPort.IsDataPort) {            
-            WD_EditorObject inPort = port.IsInputPort             ? port : overlappingPort;
-            WD_EditorObject outPort= overlappingPort.IsOutputPort ? overlappingPort : port;
+            WD_EditorObject inPort = null;
+            WD_EditorObject outPort= null;
+
+            WD_EditorObject portParent= Storage.EditorObjects[port.ParentId];
+            WD_EditorObject overlappingPortParent= Storage.EditorObjects[overlappingPort.ParentId];
+            bool portIsChildOfOverlapping= Storage.EditorObjects.IsChildOf(portParent, overlappingPortParent);
+            bool overlappingIsChildOfPort= Storage.EditorObjects.IsChildOf(overlappingPortParent, portParent);
+            if(portIsChildOfOverlapping || overlappingIsChildOfPort) {
+                if(port.IsInputPort && overlappingPort.IsInputPort) {
+                    if(portIsChildOfOverlapping) {
+                        inPort= port;
+                        outPort= overlappingPort;
+                    } else {
+                        inPort= overlappingPort;
+                        outPort= port;
+                    }
+                } else if(port.IsOutputPort && overlappingPort.IsOutputPort) {
+                    if(portIsChildOfOverlapping) {
+                        inPort= overlappingPort;
+                        outPort= port;
+                    } else {
+                        inPort= port;
+                        outPort= overlappingPort;
+                    }                    
+                } else {
+                    Debug.LogWarning("Cannot connect nested node ports from input to output !!!");
+                    return true;
+                }
+            } else {
+                inPort = port.IsInputPort             ? port : overlappingPort;
+                outPort= overlappingPort.IsOutputPort ? overlappingPort : port;
+            }
             if(inPort != outPort) {
                 if(inPort.RuntimeType == outPort.RuntimeType) { // No conversion needed.
                     Storage.EditorObjects.SetSource(inPort, outPort);                       
@@ -334,6 +364,8 @@ public class WD_Editor : EditorWindow {
                         Storage.EditorObjects.SetSource(inPort, outPort, conversion);
                     }
                 }
+            } else {
+                Debug.LogWarning("Ports are both either inputs or outputs !!!");
             }
             return true;
         }

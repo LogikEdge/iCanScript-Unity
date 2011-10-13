@@ -291,10 +291,10 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public WD_ObjectTypeEnum ObjectType(int id) { return IsValid(id) ? EditorObjects[id].ObjectType : WD_ObjectTypeEnum.Unknown; }
     // ----------------------------------------------------------------------
-    public bool IsChildOf(WD_EditorObject obj, WD_EditorObject parent) {
-        if(IsInvalid(obj.ParentId)) return false;
-        if(obj.ParentId == parent.InstanceId) return true;
-        return IsChildOf(EditorObjects[obj.ParentId], parent);
+    public bool IsChildOf(WD_EditorObject child, WD_EditorObject parent) {
+        if(IsInvalid(child.ParentId)) return false;
+        if(child.ParentId == parent.InstanceId) return true;
+        return IsChildOf(EditorObjects[child.ParentId], parent);
     }
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject obj, WD_EditorObject src) {
