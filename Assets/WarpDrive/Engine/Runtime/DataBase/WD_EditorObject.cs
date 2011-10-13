@@ -7,7 +7,8 @@ public class WD_EditorObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public WD_ObjectTypeEnum    ObjectType  = WD_ObjectTypeEnum.Unknown;
+    public WD_ObjectTypeEnum    ObjectType   = WD_ObjectTypeEnum.Unknown;
+    public WD_DisplayOptionEnum DisplayOption= WD_DisplayOptionEnum.Normal;
     public int                  InstanceId   = -1;
     public int                  ParentId     = -1;
     public string               QualifiedType= "";
@@ -23,22 +24,16 @@ public class WD_EditorObject {
     // Non-persistant properties --------------------------------------------
     [System.NonSerialized] public bool IsBeingDragged= false;
 
-
-    // ======================================================================
-    // Accessors
-    // ----------------------------------------------------------------------
-    public bool IsVisible { get { return ObjectType != WD_ObjectTypeEnum.Unknown; }}
-    
-    
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
     public WD_EditorObject() { Reset(); }
-    public WD_EditorObject(int id, string name, Type type, int parentId, WD_ObjectTypeEnum objectType, Rect localPosition) {
+    public WD_EditorObject(int id, string name, Type type, int parentId, WD_ObjectTypeEnum objectType, Rect localPosition, WD_DisplayOptionEnum displayOption= WD_DisplayOptionEnum.Normal) {
         Reset();
         InstanceId= id;
         ParentId= parentId;
         Name= name;
+        DisplayOption= displayOption;
         QualifiedType= type.AssemblyQualifiedName;
         IsDirty= true;
         LocalPosition= localPosition;
@@ -50,6 +45,7 @@ public class WD_EditorObject {
     // ----------------------------------------------------------------------
     public void Reset() {
         ObjectType= WD_ObjectTypeEnum.Unknown;
+        DisplayOption= WD_DisplayOptionEnum.Normal;
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
@@ -85,6 +81,14 @@ public class WD_EditorObject {
         return IsRuntimeA(typeof(T));
     }
     // ----------------------------------------------------------------------
+    // Display Option Accessor
+    public bool IsDisplayedNormaly  { get { return DisplayOption == WD_DisplayOptionEnum.Normal; }}
+    public bool IsVisible           { get { return !IsHidden; }}
+    public bool IsHidden            { get { return DisplayOption == WD_DisplayOptionEnum.Hidden; }}
+    public bool IsMinimized         { get { return DisplayOption == WD_DisplayOptionEnum.Minimized; }}
+    public bool IsFolded            { get { return DisplayOption == WD_DisplayOptionEnum.Folded; }}
+    // ----------------------------------------------------------------------
+    // Object Type Acessor
     public bool IsNode             { get { return WD.IsNode(this); }}
     public bool IsBehaviour        { get { return WD.IsBehaviour(this); }}
     public bool IsStateChart       { get { return WD.IsStateChart(this); }}
