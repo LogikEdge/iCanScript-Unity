@@ -482,20 +482,42 @@ public class WD_Graphics {
                     Rect portPos  = storage.EditorObjects.GetPosition(port);
                     Vector2 start= new Vector2(sourcePos.x, sourcePos.y);
                     Vector2 end= new Vector2(portPos.x, portPos.y);
-                    Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;
-                    Vector2 endDirection= port.IsOnHorizontalEdge ? UpDirection : LeftDirection;
-                    Vector2 diff= end-start;
-                    if(Vector2.Dot(diff, startDirection) < 0) {
-                        startDirection= -startDirection;
-                    }
-                    if(Vector2.Dot(diff, endDirection) > 0) {
-                        endDirection  = - endDirection;
-                    }
+                    Vector2 startDirection= ConnectionDirectionForTo(source, port, storage);
+                    Vector2 endDirection= ConnectionDirectionForTo(port, source, storage);
+//                    Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;
+//                    Vector2 endDirection= port.IsOnHorizontalEdge ? UpDirection : LeftDirection;
+//                    Vector2 diff= end-start;
+//                    if(Vector2.Dot(diff, startDirection) < 0) {
+//                        startDirection= -startDirection;
+//                    }
+//                    if(Vector2.Dot(diff, endDirection) > 0) {
+//                        endDirection  = - endDirection;
+//                    }
                     Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
                     DrawBezierCurve(start, end, startDirection, endDirection, color);
                 }                                    
             }
         }        
+    }
+    // ----------------------------------------------------------------------
+    Vector2 ConnectionDirectionForTo(WD_EditorObject port, WD_EditorObject to, WD_Storage storage) {
+        Vector2 direction;
+        if(port.IsOnLeftEdge) {
+            direction= LeftDirection;
+        } else if(port.IsOnRightEdge) {
+            direction= RightDirection;
+        } else if(port.IsOnTopEdge) {
+            direction= UpDirection;
+        } else {
+            direction= DownDirection;
+        }
+        // Inverse direction for connection between nested nodes.
+        WD_EditorObject portParent= storage.EditorObjects[port.ParentId];
+        WD_EditorObject toParent= storage.EditorObjects[to.ParentId];
+        if(storage.EditorObjects.IsChildOf(toParent, portParent)) {
+            direction= -direction;
+        }
+        return direction;
     }
     // ----------------------------------------------------------------------
     public void DrawBezierCurve(Vector3 _start, Vector3 _end, Vector3 _startDir, Vector3 _endDir, Color _color) {
