@@ -628,7 +628,7 @@ public class WD_EditorObjectMgr {
         Rect  childRect   = ComputeChildRect(node);
 
         // Compute needed width.
-        float titleWidth  = WD_EditorConfig.GetNodeWidth(node.NameOrTypeName);
+        float titleWidth  = WD_EditorConfig.GetNodeWidth(node.NameOrTypeName)+WD_EditorConfig.ExtraIconWidth;
         float leftMargin  = ComputeLeftMargin(node);
         float rightMargin = ComputeRightMargin(node);
         float width       = 2.0f*WD_EditorConfig.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childRect.width);
