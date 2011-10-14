@@ -232,7 +232,7 @@ public class WD_Graphics {
         position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
         GUI.Box(position, title, guiStyle);            
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, WD_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);
-        if(node.IsModule || node.IsState || node.IsStateChart || node.IsClass) {
+        if(ShouldDisplayFoldIcon(node, storage)) {
             if(node.IsFolded) {
                 GUI.DrawTexture(new Rect(position.x+8, position.y, foldedIcon.width, foldedIcon.height), foldedIcon);                           
             } else {
@@ -240,6 +240,29 @@ public class WD_Graphics {
             }            
         }
     }
+    // ----------------------------------------------------------------------
+    // Determines if the fold icon is at the given position.
+    public bool IsFoldIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_Storage storage) {
+        if(!ShouldDisplayFoldIcon(obj, storage)) return false;
+        Rect foldIconPos= GetFoldIconPosition(obj, storage);
+        return foldIconPos.Contains(mousePos);
+    }
+    bool ShouldDisplayFoldIcon(WD_EditorObject obj, WD_Storage storage) {
+        if(obj.IsModule || obj.IsStateChart || obj.IsState || obj.IsClass) {
+            if(obj.IsClass) {
+                bool needFoldIcon= false;
+                storage.EditorObjects.ForEachChild(obj, (child) => { if(child.IsNode) needFoldIcon= true; });
+                return needFoldIcon;
+            }
+            return true;
+        }
+        return false;
+    }
+    public Rect GetFoldIconPosition(WD_EditorObject obj, WD_Storage storage) {
+        Rect objPos= storage.EditorObjects.GetPosition(obj);
+        return new Rect(objPos.x+8, objPos.y, foldedIcon.width, foldedIcon.height);
+    }
+    // ----------------------------------------------------------------------
     NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
         // Node background is dependant on node type.
 //        WD_Node runtimeNode= storage.EditorObjects.GetRuntimeObject(node) as WD_Node;
