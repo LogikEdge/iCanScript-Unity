@@ -86,10 +86,10 @@ public class WD_EditorObject {
     public bool IsHidden            { get { return DisplayOption == WD_DisplayOptionEnum.Hidden; }}
     public bool IsMinimized         { get { return DisplayOption == WD_DisplayOptionEnum.Minimized; }}
     public bool IsFolded            { get { return DisplayOption == WD_DisplayOptionEnum.Folded; }}
-    public void Minimize()          { DisplayOption= WD_DisplayOptionEnum.Minimized; }
-    public void Maximize()          { DisplayOption= WD_DisplayOptionEnum.Normal; }
     public void Fold()              { DisplayOption= WD_DisplayOptionEnum.Folded; }
     public void Unfold()            { DisplayOption= WD_DisplayOptionEnum.Normal; }
+    public void Maximize()          { DisplayOption= WD_DisplayOptionEnum.Normal; }
+    public void Minimize()          { DisplayOption= WD_DisplayOptionEnum.Minimized; }
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode             { get { return WD.IsNode(this); }}

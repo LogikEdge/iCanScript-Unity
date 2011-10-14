@@ -182,11 +182,21 @@ public class WD_Editor : EditorWindow {
                     if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDragging();
                     break;
                 case WD_Mouse.ButtonStateEnum.SingleClick:
-                    if(SelectedObject != null  && Graphics.IsFoldIconPressed(SelectedObject, ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition), Storage)) {
-                        if(SelectedObject.IsFolded) {
-                            Storage.EditorObjects.Unfold(SelectedObject);
-                        } else {
-                            Storage.EditorObjects.Fold(SelectedObject);
+                    if(SelectedObject != null) {
+                        // Process fold/unfold click.
+                        Vector2 graphMousePos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
+                        if(Graphics.IsFoldIconPressed(SelectedObject, graphMousePos, Storage)) {
+                            if(SelectedObject.IsFolded) {
+                                Storage.EditorObjects.Unfold(SelectedObject);
+                            } else {
+                                Storage.EditorObjects.Fold(SelectedObject);
+                            }
+                        }
+                        // Process maximize/minimize click.
+                        if(Graphics.IsMinimizeIconPressed(SelectedObject, graphMousePos, Storage)) {
+                            Storage.EditorObjects.Minimize(SelectedObject);
+                        } else if(Graphics.IsMaximizeIconPressed(SelectedObject, graphMousePos, Storage)) {
+                            Storage.EditorObjects.Maximize(SelectedObject);
                         }
                     }
                     break;
@@ -313,7 +323,10 @@ public class WD_Editor : EditorWindow {
     public WD_EditorObject GetObjectAtScreenPosition(Vector2 _screenPos) {
         Vector2 graphPosition= ScrollView.ScreenToGraph(_screenPos);
         WD_EditorObject port= Storage.EditorObjects.GetPortAt(graphPosition);
-        if(port != null) return port;
+        if(port != null) {
+            if(port.IsMinimized) return Storage.EditorObjects[port.ParentId];
+            return port;
+        }
         WD_EditorObject node= Storage.EditorObjects.GetNodeAt(graphPosition);                
         if(node != null) return node;
         return null;

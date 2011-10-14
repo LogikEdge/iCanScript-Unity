@@ -14,11 +14,15 @@ public class WD_Graphics {
     static Texture2D    nodeMaskTexture   = null;
     static Texture2D    foldedIcon        = null;
     static Texture2D    unfoldedIcon      = null;
+    static Texture2D    minimizeIcon      = null;
+    static Texture2D    maximizeIcon      = null;
     static bool         lineTextureErrorSeen        = false;
     static bool         defaultNodeTextureErrorSeen = false; 
     static bool         nodeMaskTextureErrorSeen    = false;   
 	static bool         foldedIconErrorSeen         = false;
-	static bool         unfoldedIconErrorSeen           = false;
+	static bool         unfoldedIconErrorSeen       = false;
+	static bool         minimizeIconErrorSeen       = false;
+	static bool         maximizeIconErrorSeen       = false;
 	
     // ----------------------------------------------------------------------
 	internal class NodeStyle {
@@ -54,11 +58,7 @@ public class WD_Graphics {
         // Load AA line texture.
         string texturePath;     
         if(lineTexture == null) {
-            texturePath= WD_EditorConfig.GuiAssetPath + "/WD_LineTexture.psd";
-            lineTexture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
-            if(lineTexture == null) {
-                ResourceMissingError(texturePath, ref lineTextureErrorSeen);
-                IsInitialized= false;
+            if(!LoadTexture("WD_LineTexture.psd", ref lineTexture, ref lineTextureErrorSeen)) {
                 return IsInitialized;
             }
             else {
@@ -67,11 +67,7 @@ public class WD_Graphics {
         }
         // Load node texture templates.
         if(defaultNodeTexture == null) {
-            texturePath= WD_EditorConfig.GuiAssetPath + "/WD_DefaultNodeTexture.psd";
-            defaultNodeTexture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
-            if(defaultNodeTexture == null) {
-                ResourceMissingError(texturePath, ref defaultNodeTextureErrorSeen);
-                IsInitialized= false;
+            if(!LoadTexture("WD_DefaultNodeTexture.psd", ref defaultNodeTexture, ref defaultNodeTextureErrorSeen)) {
                 return IsInitialized;
             }
             else {
@@ -91,26 +87,36 @@ public class WD_Graphics {
             }            
         }
         // Load folded/unfolded icons.
-        texturePath= WD_EditorConfig.GuiAssetPath+"/WD_FoldedIcon.psd";
-        foldedIcon= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
-        if(foldedIcon == null) {
-            ResourceMissingError(texturePath, ref foldedIconErrorSeen);
-            IsInitialized= false;
+        if(!LoadTexture("WD_FoldedIcon.psd", ref foldedIcon, ref foldedIconErrorSeen)) {
             return IsInitialized;            
         }
-        texturePath= WD_EditorConfig.GuiAssetPath+"/WD_UnfoldedIcon.psd";
-        unfoldedIcon= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
-        if(unfoldedIcon == null) {
-            ResourceMissingError(texturePath, ref unfoldedIconErrorSeen);
-            IsInitialized= false;
+        if(!LoadTexture("WD_UnfoldedIcon.psd",ref unfoldedIcon, ref unfoldedIconErrorSeen)) {
             return IsInitialized;            
         }
-                
+        // Load maximize/minimize icon.
+        if(!LoadTexture("WD_MinimizeIcon.psd", ref minimizeIcon, ref minimizeIconErrorSeen)) {
+            return IsInitialized;
+        }
+        if(!LoadTexture("WD_MaximizeIcon.psd", ref maximizeIcon, ref maximizeIconErrorSeen)) {
+            return IsInitialized;
+        }
         // Graphic resources properly initialized.
         IsInitialized= true;
         return IsInitialized;
     }
 
+    // ----------------------------------------------------------------------
+    static bool LoadTexture(string fileName, ref Texture2D texture, ref bool errorSeen) {
+        string texturePath= WD_EditorConfig.GuiAssetPath+"/"+fileName;
+        texture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
+        if(texture == null) {
+            ResourceMissingError(texturePath, ref errorSeen);
+            IsInitialized= false;
+            return false;
+        }        
+        return true;            
+    }
+    
     // ----------------------------------------------------------------------
     void GenerateNodeStyle(ref NodeStyle nodeStyle, Color nodeColor) {
         // Build node style descriptor.
@@ -220,6 +226,13 @@ public class WD_Graphics {
         // Don't show hiden nodes.
         if(storage.EditorObjects.IsVisible(node) == false) return;
         
+        // Draw minimized node.
+        if(node.IsMinimized) {
+            Rect nodePos= storage.EditorObjects.GetPosition(node);
+            GUI.DrawTexture(new Rect(nodePos.x, nodePos.y, maximizeIcon.width, maximizeIcon.height), maximizeIcon);                           
+            return;
+        }
+        
         // Draw node box.
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.NameOrTypeName));
         GUIStyle guiStyle= GetNodeGUIStyle(node, selectedObject, storage);
@@ -232,6 +245,7 @@ public class WD_Graphics {
         position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
         GUI.Box(position, title, guiStyle);            
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, WD_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);
+        // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, storage)) {
             if(node.IsFolded) {
                 GUI.DrawTexture(new Rect(position.x+8, position.y, foldedIcon.width, foldedIcon.height), foldedIcon);                           
@@ -239,15 +253,21 @@ public class WD_Graphics {
                 GUI.DrawTexture(new Rect(position.x+8, position.y, unfoldedIcon.width, unfoldedIcon.height), unfoldedIcon);               
             }            
         }
+        // Minimize Icon
+        if(ShouldDisplayMinimizeIcon(node, storage)) {
+            GUI.DrawTexture(new Rect(position.xMax-4-minimizeIcon.width, position.y, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
+        }
     }
+    // ======================================================================
+    // Fold/Unfold icon functionality.
     // ----------------------------------------------------------------------
-    // Determines if the fold icon is at the given position.
     public bool IsFoldIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_Storage storage) {
         if(!ShouldDisplayFoldIcon(obj, storage)) return false;
         Rect foldIconPos= GetFoldIconPosition(obj, storage);
         return foldIconPos.Contains(mousePos);
     }
     bool ShouldDisplayFoldIcon(WD_EditorObject obj, WD_Storage storage) {
+        if(obj.IsMinimized) return false;
         if(obj.IsModule || obj.IsStateChart || obj.IsState || obj.IsClass) {
             if(obj.IsClass) {
                 bool needFoldIcon= false;
@@ -258,10 +278,41 @@ public class WD_Graphics {
         }
         return false;
     }
-    public Rect GetFoldIconPosition(WD_EditorObject obj, WD_Storage storage) {
+    Rect GetFoldIconPosition(WD_EditorObject obj, WD_Storage storage) {
         Rect objPos= storage.EditorObjects.GetPosition(obj);
         return new Rect(objPos.x+8, objPos.y, foldedIcon.width, foldedIcon.height);
     }
+    // ======================================================================
+    // Minimize icon functionality
+    // ----------------------------------------------------------------------
+    public bool IsMinimizeIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_Storage storage) {
+        if(!ShouldDisplayMinimizeIcon(obj, storage)) return false;
+        Rect minimizeIconPos= GetMinimizeIconPosition(obj, storage);
+        return minimizeIconPos.Contains(mousePos);
+    }
+    bool ShouldDisplayMinimizeIcon(WD_EditorObject obj, WD_Storage storage) {
+        return obj.InstanceId != 0 && obj.IsNode && !obj.IsMinimized;
+    }
+    Rect GetMinimizeIconPosition(WD_EditorObject obj, WD_Storage storage) {
+        Rect objPos= storage.EditorObjects.GetPosition(obj);
+        return new Rect(objPos.xMax-4-minimizeIcon.width, objPos.y, minimizeIcon.width, minimizeIcon.height);
+    }
+    // ======================================================================
+    // Maximize icon functionality
+    // ----------------------------------------------------------------------
+    public bool IsMaximizeIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_Storage storage) {
+        if(!ShouldDisplayMaximizeIcon(obj, storage)) return false;
+        Rect maximizeIconPos= GetMaximizeIconPosition(obj, storage);
+        return maximizeIconPos.Contains(mousePos);
+    }
+    bool ShouldDisplayMaximizeIcon(WD_EditorObject obj, WD_Storage storage) {
+        return obj.InstanceId != 0 && obj.IsNode && obj.IsMinimized;
+    }
+    Rect GetMaximizeIconPosition(WD_EditorObject obj, WD_Storage storage) {
+        return storage.EditorObjects.GetPosition(obj);
+    }
+    // ======================================================================
+    // Node style functionality
     // ----------------------------------------------------------------------
     NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
         // Node background is dependant on node type.
@@ -311,6 +362,8 @@ public class WD_Graphics {
     public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_Storage storage) {
         // Only draw visible data ports.
         if(storage.EditorObjects.IsVisible(port) == false) return;
+        // Don't draw ports on minimized node.
+        if(storage.EditorObjects.IsMinimized(port)) return;
         
         // Build visible port name
         WD_EditorObject portParent= storage.EditorObjects[port.ParentId];

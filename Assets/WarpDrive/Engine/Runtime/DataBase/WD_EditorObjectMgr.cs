@@ -340,8 +340,9 @@ public class WD_EditorObjectMgr {
     public bool IsVisible(WD_EditorObject eObj) {
         if(eObj.IsHidden) return false;
         if(IsInvalid(eObj.ParentId)) return true;
-        if(EditorObjects[eObj.ParentId].IsFolded && eObj.IsNode) return false;
-        return IsVisible(EditorObjects[eObj.ParentId]);
+        WD_EditorObject parent= EditorObjects[eObj.ParentId];
+        if(eObj.IsNode && (parent.IsFolded || parent.IsMinimized)) return false;
+        return IsVisible(parent);
     }
     public bool IsVisible(int id) { return IsInvalid(id) ? false : IsVisible(EditorObjects[id]); }
     // ----------------------------------------------------------------------
@@ -358,6 +359,27 @@ public class WD_EditorObjectMgr {
         eObj.IsDirty= true;
     }
     public void Unfold(int id) { if(IsValid(id)) Unfold(EditorObjects[id]); }
+    // ----------------------------------------------------------------------
+    public bool IsMinimized(WD_EditorObject eObj) {
+        return eObj.IsMinimized;
+    }
+    public void Minimize(WD_EditorObject eObj) {
+        if(!eObj.IsNode) return;
+        eObj.Minimize();
+        ForEachChild(eObj, (child) => { if(child.IsPort) child.Minimize(); });
+        eObj.IsDirty= true;
+        if(IsValid(eObj.ParentId)) EditorObjects[eObj.ParentId].IsDirty= true;
+    }
+    public void Minimize(int id) { if(IsValid(id)) Minimize(EditorObjects[id]); }
+    // ----------------------------------------------------------------------
+    public void Maximize(WD_EditorObject eObj) {
+        if(!eObj.IsNode) return;
+        eObj.Maximize();
+        ForEachChild(eObj, (child) => { if(child.IsPort) child.Maximize(); });
+        eObj.IsDirty= true;
+        if(IsValid(eObj.ParentId)) EditorObjects[eObj.ParentId].IsDirty= true;
+    }
+    public void Maximize(int id) { if(IsValid(id)) Maximize(EditorObjects[id]); }
     
     // ======================================================================
     // Editor Object Iteration Utilities
@@ -620,6 +642,27 @@ public class WD_EditorObjectMgr {
     public void NodeLayout(WD_EditorObject node) {
         // Don't layout node if it is not visible.
         if(!IsVisible(node)) return;
+        
+        // Minimized nodes are fully collapsed.
+        if(node.IsMinimized) {
+            if(node.LocalPosition.width != WD_EditorConfig.MinimizedNodeWidth ||
+               node.LocalPosition.height != WD_EditorConfig.MinimizedNodeHeight) {
+                   node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-WD_EditorConfig.MinimizedNodeWidth);
+                   node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-WD_EditorConfig.MinimizedNodeHeight);
+                   node.LocalPosition.width= WD_EditorConfig.MinimizedNodeWidth;
+                   node.LocalPosition.height= WD_EditorConfig.MinimizedNodeHeight;
+            }
+            Vector2 nodeCenter= new Vector2(0.5f*node.LocalPosition.width, 0.5f*node.LocalPosition.height);
+            ForEachChild(node,
+                (child) => {
+                    if(child.IsPort) {
+                        child.LocalPosition.x= nodeCenter.x;
+                        child.LocalPosition.y= nodeCenter.y;
+                    }
+                }
+            );
+            return;
+        }
         
         // Resolve collision on children.
         ResolveCollisionOnChildren(node, Vector2.zero);
