@@ -333,6 +333,17 @@ public class WD_EditorObjectMgr {
             }
         );
     }
+    // ----------------------------------------------------------------------
+    public bool IsVisible(WD_EditorObject eObj) {
+        if(eObj.IsHidden) return false;
+        if(IsInvalid(eObj.ParentId)) return true;
+        if(EditorObjects[eObj.ParentId].IsFolded && eObj.IsNode) return false;
+        return IsVisible(EditorObjects[eObj.ParentId]);
+    }
+    public bool IsVisible(int id) {
+        if(IsInvalid(id)) return false;
+        return IsVisible(EditorObjects[id]);
+    }
     
     // ======================================================================
     // Editor Object Iteration Utilities
@@ -529,7 +540,7 @@ public class WD_EditorObjectMgr {
         WD_EditorObject foundNode= null;
         ForEach(
             (node) => {
-                if(node.IsNode && node.IsVisible && IsInside(node, pick)) {
+                if(node.IsNode && IsVisible(node) && IsInside(node, pick)) {
                     if(foundNode == null || node.LocalPosition.width < foundNode.LocalPosition.width) {
                         foundNode= node;
                     }
@@ -546,7 +557,7 @@ public class WD_EditorObjectMgr {
         float bestDistance= 100000;     // Simply a big value
         ForEach(
             (port) => {
-                if(port.IsPort && port.IsVisible) {
+                if(port.IsPort && IsVisible(port)) {
                     Rect tmp= GetPosition(port);
                     Vector2 position= new Vector2(tmp.x, tmp.y);
                     float distance= Vector2.Distance(position, pick);
@@ -594,7 +605,7 @@ public class WD_EditorObjectMgr {
     // Returns "true" if the new layout is within the window area.
     public void NodeLayout(WD_EditorObject node) {
         // Don't layout node if it is not visible.
-        if(!node.IsVisible) return;
+        if(!IsVisible(node)) return;
         
         // Resolve collision on children.
         ResolveCollisionOnChildren(node, Vector2.zero);
@@ -749,7 +760,7 @@ public class WD_EditorObjectMgr {
         Rect childRect= new Rect(0.5f*node.LocalPosition.width,0.5f*node.LocalPosition.height,0,0);
         ForEachChild(node,
             (child)=> {
-                if(child.IsNode && child.IsVisible) {
+                if(child.IsNode && IsVisible(child)) {
                     childRect= Physics2D.Merge(childRect, child.LocalPosition);
                 }
             }
@@ -1012,12 +1023,12 @@ public class WD_EditorObjectMgr {
         for(int i= 0; i < EditorObjects.Count-1; ++i) {
             WD_EditorObject child1= EditorObjects[i];
             if(child1.ParentId != node.InstanceId) continue;
-            if(!child1.IsVisible) continue;
+            if(!IsVisible(child1)) continue;
             if(!child1.IsNode) continue;
             for(int j= i+1; j < EditorObjects.Count; ++j) {
                 WD_EditorObject child2= EditorObjects[j];
                 if(child2.ParentId != node.InstanceId) continue;
-                if(!child2.IsVisible) continue;
+                if(!IsVisible(child2)) continue;
                 if(!child2.IsNode) continue;
                 didCollide |= ResolveCollisionBetweenTwoNodes(child1, child2, _delta);                            
             }
