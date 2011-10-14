@@ -200,7 +200,7 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     public void DrawNode(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
         // Don't show hiden nodes.
-        if(node.IsVisible == false) return;
+        if(storage.EditorObjects.IsVisible(node) == false) return;
         
         // Draw node box.
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.NameOrTypeName));
@@ -262,7 +262,7 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_Storage storage) {
         // Only draw visible data ports.
-        if(port.IsVisible == false) return;
+        if(storage.EditorObjects.IsVisible(port) == false) return;
         
         // Build visible port name
         WD_EditorObject portParent= storage.EditorObjects[port.ParentId];
@@ -473,11 +473,11 @@ public class WD_Graphics {
     //  CONNECTION
     // ----------------------------------------------------------------------
     public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_Storage storage) {
-        if(storage.EditorObjects[port.ParentId].IsVisible) {
+        if(storage.EditorObjects.IsVisible(port.ParentId)) {
             if(storage.EditorObjects.IsValid(port.Source)) {
                 WD_EditorObject source= storage.EditorObjects[port.Source];
                 WD_EditorObject sourceParent= storage.EditorObjects[source.ParentId];
-                if(sourceParent.IsVisible) {
+                if(storage.EditorObjects.IsVisible(sourceParent)) {
                     Rect sourcePos= storage.EditorObjects.GetPosition(source);
                     Rect portPos  = storage.EditorObjects.GetPosition(port);
                     Vector2 start= new Vector2(sourcePos.x, sourcePos.y);

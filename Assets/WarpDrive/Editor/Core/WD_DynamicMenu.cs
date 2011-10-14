@@ -25,6 +25,8 @@ public class WD_DynamicMenu {
     // Menu Items
 	// ----------------------------------------------------------------------
     const string DeleteStr= "Delete";
+    const string FoldStr= "Fold";
+    const string UnfoldStr= "Unfold";
     const string ModuleStr= "Module";
     const string StateChartStr= "State Chart";
     const string StateStr= "State";
@@ -96,13 +98,25 @@ public class WD_DynamicMenu {
             ModuleStr,
             StateChartStr,
         };
+        // Fold/Expand menu items
+        string[] tmp= new string[menu.Length+3];
+        menu.CopyTo(tmp, 0);
+        tmp[menu.Length]= SeparatorStr;
+        if(selectedObject.IsFolded) {
+            tmp[menu.Length+1]= UnfoldStr;
+        } else {
+            tmp[menu.Length+1]= FoldStr;            
+        }
+        tmp[menu.Length+2]= SeparatorStr;
+        menu= tmp;
+        // Function menu items
         string[] functionMenu= GetFunctionMenu();
-        string[] tmp= new string[menu.Length+functionMenu.Length+1];
+        tmp= new string[menu.Length+functionMenu.Length+1];
         menu.CopyTo(tmp, 0);
         tmp[menu.Length]= SeparatorStr;
         functionMenu.CopyTo(tmp, menu.Length+1);
         menu= tmp;
-        // Don't allow to delete the root node.
+        // Delete menu item
         if(selectedObject.InstanceId != 0) {
             tmp= new string[menu.Length+2];
             menu.CopyTo(tmp, 0);
@@ -119,9 +133,20 @@ public class WD_DynamicMenu {
             StateStr,
             EntryStateStr,
         };
-        // Don't allow to delete the root node.
+        // Fold/Expand menu items
+        string[] tmp= new string[menu.Length+3];
+        menu.CopyTo(tmp, 0);
+        tmp[menu.Length]= SeparatorStr;
+        if(selectedObject.IsFolded) {
+            tmp[menu.Length+1]= UnfoldStr;
+        } else {
+            tmp[menu.Length+1]= FoldStr;            
+        }
+        tmp[menu.Length+2]= SeparatorStr;
+        menu= tmp;
+        // Delete menu item
         if(selectedObject.InstanceId != 0) {
-            string[] tmp= new string[menu.Length+2];
+            tmp= new string[menu.Length+2];
             menu.CopyTo(tmp, 0);
             tmp[menu.Length]= SeparatorStr;
             tmp[menu.Length+1]= DeleteStr;
@@ -137,9 +162,23 @@ public class WD_DynamicMenu {
             OnUpdateStr,
             OnExitStr,
             SubStateStr,
-            SeparatorStr,
-            DeleteStr
         };
+        // Fold/Expand menu items
+        string[] tmp= new string[menu.Length+3];
+        menu.CopyTo(tmp, 0);
+        tmp[menu.Length]= SeparatorStr;
+        if(selectedObject.IsFolded) {
+            tmp[menu.Length+1]= UnfoldStr;
+        } else {
+            tmp[menu.Length+1]= FoldStr;            
+        }
+        tmp[menu.Length+2]= SeparatorStr;
+        menu= tmp;
+        // Delete menu item.tmp= new string[menu.Length+2];
+        menu.CopyTo(tmp, 0);
+        tmp[menu.Length]= SeparatorStr;
+        tmp[menu.Length+1]= DeleteStr;
+        menu= tmp;
         ShowMenu(menu, selectedObject, storage);
     }
     
@@ -151,9 +190,27 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void ClassMenu(WD_EditorObject selectedObject, WD_Storage storage) {
-        if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
-            ShowMenu(new string[]{DeleteStr}, selectedObject, storage);            
+        string[] menu= new string[0];
+        // Fold/Expand menu items
+        string[] tmp= new string[menu.Length+3];
+        menu.CopyTo(tmp, 0);
+        tmp[menu.Length]= SeparatorStr;
+        if(selectedObject.IsFolded) {
+            tmp[menu.Length+1]= UnfoldStr;
+        } else {
+            tmp[menu.Length+1]= FoldStr;            
         }
+        tmp[menu.Length+2]= SeparatorStr;
+        menu= tmp;
+        // Delete menu item.
+        if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
+            tmp= new string[menu.Length+2];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            tmp[menu.Length+1]= DeleteStr;
+            menu= tmp;
+        }
+        ShowMenu(menu, selectedObject, storage);            
     }
 	// ----------------------------------------------------------------------
     void PortMenu(WD_EditorObject selectedObject, WD_Storage storage) {
@@ -193,35 +250,38 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     void ProcessMenu(object obj) {
         MenuContext context= obj as MenuContext;
+        WD_EditorObject selectedObject= context.SelectedObject;
+        WD_Storage storage= context.Storage;
+        WD_EditorObjectMgr editorObjects= storage.EditorObjects;
         switch(context.Command) {
-            case UpdateModuleStr:           CreateModule(context.SelectedObject, context.Storage, "Update"); break;
-            case UpdateStateChartStr:       CreateStateChart(context.SelectedObject, context.Storage, "Update"); break;
-            case FixedUpdateModuleStr:      CreateModule(context.SelectedObject, context.Storage, "FixedUpdate"); break;
-            case FixedUpdateStateChartStr:  CreateStateChart(context.SelectedObject, context.Storage, "FixedUpdate"); break;
-            case LateUpdateModuleStr:       CreateModule(context.SelectedObject, context.Storage, "LateUpdate"); break;
-            case LateUpdateStateChartStr:   CreateStateChart(context.SelectedObject, context.Storage, "LateUpdate"); break;
-            case ModuleStr:                 CreateModule(context.SelectedObject, context.Storage); break;
-            case StateChartStr:             CreateStateChart(context.SelectedObject, context.Storage); break;
-            case StateStr:                  CreateState (context.SelectedObject, context.Storage);  break;
-            case OnEntryStr:                CreateModule(context.SelectedObject, context.Storage, OnEntryStr); break;
-            case OnUpdateStr:               CreateModule(context.SelectedObject, context.Storage, OnUpdateStr); break;
-            case OnExitStr:                 CreateModule(context.SelectedObject, context.Storage, OnExitStr); break;
-            case SubStateStr:               CreateState (context.SelectedObject, context.Storage);  break;
-            case DeleteStr:                 DestroySelectedObject(context.SelectedObject, context.Storage); break;
+            case UpdateModuleStr:           CreateModule(selectedObject, storage, "Update"); break;
+            case UpdateStateChartStr:       CreateStateChart(selectedObject, storage, "Update"); break;
+            case FixedUpdateModuleStr:      CreateModule(selectedObject, storage, "FixedUpdate"); break;
+            case FixedUpdateStateChartStr:  CreateStateChart(selectedObject, storage, "FixedUpdate"); break;
+            case LateUpdateModuleStr:       CreateModule(selectedObject, storage, "LateUpdate"); break;
+            case LateUpdateStateChartStr:   CreateStateChart(selectedObject, storage, "LateUpdate"); break;
+            case ModuleStr:                 CreateModule(selectedObject, storage); break;
+            case StateChartStr:             CreateStateChart(selectedObject, storage); break;
+            case StateStr:                  CreateState (selectedObject, storage);  break;
+            case OnEntryStr:                CreateModule(selectedObject, storage, OnEntryStr); break;
+            case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr); break;
+            case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr); break;
+            case SubStateStr:               CreateState (selectedObject, storage);  break;
+            case FoldStr:                   editorObjects.Fold(selectedObject); break;
+            case UnfoldStr:                 editorObjects.Unfold(selectedObject); break;
+            case DeleteStr:                 DestroySelectedObject(selectedObject, storage); break;
             case PublishPortStr:
-                WD_EditorObjectMgr editorObjects= context.Storage.EditorObjects;
-                WD_EditorObject selected= context.SelectedObject;
-                WD_EditorObject parent= editorObjects[selected.ParentId];
+                WD_EditorObject parent= editorObjects[selectedObject.ParentId];
                 int grandParentId= editorObjects[parent.ParentId].InstanceId;
                 WD_EditorObject grandParent= editorObjects[grandParentId];
-                if(selected.IsInputPort) {
-                    WD_EditorObject port= editorObjects.CreatePort(selected.Name, grandParentId, selected.RuntimeType, WD_ObjectTypeEnum.InModulePort);
-                    editorObjects.SetSource(selected, port);
-                    port.LocalPosition= new Rect(0, parent.LocalPosition.y+selected.LocalPosition.y, 0, 0);
+                if(selectedObject.IsInputPort) {
+                    WD_EditorObject port= editorObjects.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.InModulePort);
+                    editorObjects.SetSource(selectedObject, port);
+                    port.LocalPosition= new Rect(0, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
                 } else {
-                    WD_EditorObject port= editorObjects.CreatePort(selected.Name, grandParentId, selected.RuntimeType, WD_ObjectTypeEnum.OutModulePort);
-                    editorObjects.SetSource(port, selected);
-                    port.LocalPosition= new Rect(grandParent.LocalPosition.width, parent.LocalPosition.y+selected.LocalPosition.y, 0, 0);
+                    WD_EditorObject port= editorObjects.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.OutModulePort);
+                    editorObjects.SetSource(port, selectedObject);
+                    port.LocalPosition= new Rect(grandParent.LocalPosition.width, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
                 }
                 grandParent.IsDirty= true;
                 break;

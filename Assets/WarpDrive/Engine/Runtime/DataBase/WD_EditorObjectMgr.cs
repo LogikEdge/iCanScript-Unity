@@ -333,6 +333,9 @@ public class WD_EditorObjectMgr {
             }
         );
     }
+
+    // ======================================================================
+    // Display Options
     // ----------------------------------------------------------------------
     public bool IsVisible(WD_EditorObject eObj) {
         if(eObj.IsHidden) return false;
@@ -340,10 +343,21 @@ public class WD_EditorObjectMgr {
         if(EditorObjects[eObj.ParentId].IsFolded && eObj.IsNode) return false;
         return IsVisible(EditorObjects[eObj.ParentId]);
     }
-    public bool IsVisible(int id) {
-        if(IsInvalid(id)) return false;
-        return IsVisible(EditorObjects[id]);
+    public bool IsVisible(int id) { return IsInvalid(id) ? false : IsVisible(EditorObjects[id]); }
+    // ----------------------------------------------------------------------
+    public void Fold(WD_EditorObject eObj) {
+        if(!eObj.IsNode) return;    // Only nodes can be folded.
+        eObj.Fold();
+        eObj.IsDirty= true;
     }
+    public void Fold(int id) { if(IsValid(id)) Fold(EditorObjects[id]); }
+    // ----------------------------------------------------------------------
+    public void Unfold(WD_EditorObject eObj) {
+        if(!eObj.IsNode) return;    // Only nodes can be folded.
+        eObj.Unfold();
+        eObj.IsDirty= true;
+    }
+    public void Unfold(int id) { if(IsValid(id)) Unfold(EditorObjects[id]); }
     
     // ======================================================================
     // Editor Object Iteration Utilities
