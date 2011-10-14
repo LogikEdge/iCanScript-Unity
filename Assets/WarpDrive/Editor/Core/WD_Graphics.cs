@@ -12,10 +12,13 @@ public class WD_Graphics {
     static Texture2D    lineTexture       = null;
     static Texture2D    defaultNodeTexture= null;
     static Texture2D    nodeMaskTexture   = null;
+    static Texture2D    foldedIcon        = null;
+    static Texture2D    unfoldedIcon      = null;
     static bool         lineTextureErrorSeen        = false;
     static bool         defaultNodeTextureErrorSeen = false; 
     static bool         nodeMaskTextureErrorSeen    = false;   
-	
+	static bool         foldedIconErrorSeen         = false;
+	static bool         unfoldedIconErrorSeen           = false;
 	
     // ----------------------------------------------------------------------
 	internal class NodeStyle {
@@ -86,6 +89,21 @@ public class WD_Graphics {
             else {
                 nodeMaskTexture.hideFlags= HideFlags.DontSave;
             }            
+        }
+        // Load folded/unfolded icons.
+        texturePath= WD_EditorConfig.GuiAssetPath+"/WD_FoldedIcon.psd";
+        foldedIcon= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
+        if(foldedIcon == null) {
+            ResourceMissingError(texturePath, ref foldedIconErrorSeen);
+            IsInitialized= false;
+            return IsInitialized;            
+        }
+        texturePath= WD_EditorConfig.GuiAssetPath+"/WD_UnfoldedIcon.psd";
+        unfoldedIcon= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
+        if(unfoldedIcon == null) {
+            ResourceMissingError(texturePath, ref unfoldedIconErrorSeen);
+            IsInitialized= false;
+            return IsInitialized;            
         }
                 
         // Graphic resources properly initialized.
@@ -213,7 +231,14 @@ public class WD_Graphics {
         position.width+= leftOffset + rightOffset;
         position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
         GUI.Box(position, title, guiStyle);            
-        EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, WD_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);   
+        EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, WD_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);
+        if(node.IsModule || node.IsState || node.IsStateChart || node.IsClass) {
+            if(node.IsFolded) {
+                GUI.DrawTexture(new Rect(position.x+8, position.y, foldedIcon.width, foldedIcon.height), foldedIcon);                           
+            } else {
+                GUI.DrawTexture(new Rect(position.x+8, position.y, unfoldedIcon.width, unfoldedIcon.height), unfoldedIcon);               
+            }            
+        }
     }
     NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
         // Node background is dependant on node type.
