@@ -71,6 +71,7 @@ public class WD_DynamicMenu {
             case WD_ObjectTypeEnum.State:      StateMenu(selectedObject, storage); break;
             case WD_ObjectTypeEnum.Module:     ModuleMenu(selectedObject, storage); break;
             case WD_ObjectTypeEnum.Function:   FunctionMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.Conversion: FunctionMenu(selectedObject, storage); break;
             case WD_ObjectTypeEnum.Class:      ClassMenu(selectedObject, storage); break;
             default: if(selectedObject.IsPort) PortMenu(selectedObject, storage); break;
         }
