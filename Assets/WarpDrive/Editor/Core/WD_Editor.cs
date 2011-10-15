@@ -230,7 +230,7 @@ public class WD_Editor : EditorWindow {
         if(DragObject == null) {
             Vector2 pos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
             port= Storage.EditorObjects.GetPortAt(pos);
-            if(port != null) {
+            if(port != null && !port.IsMinimized) {
                 DragObject= port;
                 DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
                 port.IsBeingDragged= true;
