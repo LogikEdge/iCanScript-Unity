@@ -253,22 +253,22 @@ public class WD_EditorObjectMgr {
             DestroyInstanceInternal(TreeCache[id].Children[0]);
         }
         // Disconnect ports linking to this port.
-        ExecuteIf(EditorObjects[id],
-            WD.IsPort, (instance) => {
-                ForEach(
-                    (port) => {
-                        if(port.IsPort && port.Source == id) {
-//                            (GetRuntimeObject(obj) as WD_FieldPort).Source= null;
-                            port.Source= -1;                            
-                        }
-                    }
-                );                
-            }
-        );
+        ExecuteIf(EditorObjects[id], WD.IsPort, (instance) => { DisconnectPort(EditorObjects[id]); });
         // Remove all related objects.
         if(IsValid(EditorObjects[id].ParentId)) EditorObjects[EditorObjects[id].ParentId].IsDirty= true;
         TreeCache.DestroyInstance(id);
         EditorObjects[id].Reset();
+    }
+    // ----------------------------------------------------------------------
+    public void DisconnectPort(WD_EditorObject port) {
+        SetSource(port, null);
+        ForEach(
+            (obj) => {
+                if(obj.IsPort && obj.Source == port.InstanceId) {
+                    SetSource(obj, null);                            
+                }
+            }
+        );                
     }
     // ----------------------------------------------------------------------
     bool IsPortConnected(WD_EditorObject port) {
@@ -310,11 +310,6 @@ public class WD_EditorObjectMgr {
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject obj, WD_EditorObject src) {
         obj.Source= src == null ? -1 : src.InstanceId;
-        obj.ExecuteIf<WD_FieldPort>(
-            (port) => {
-//                (GetRuntimeObject(por t.InstanceId) as WD_FieldPort).Source= GetRuntimeObject(src.InstanceId) as WD_FieldPort;
-            }
-        );
     }
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject inPort, WD_EditorObject outPort, WD_ConversionDesc convDesc) {
