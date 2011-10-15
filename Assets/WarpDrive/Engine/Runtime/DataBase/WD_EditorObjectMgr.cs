@@ -321,6 +321,7 @@ public class WD_EditorObjectMgr {
         Rect inPos= GetPosition(inPort);
         Rect outPos= GetPosition(outPort);
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
+        Debug.Log("InPort: "+inPos+" OutPort: "+outPos+" Conv: "+convPos);
         int grandParentId= EditorObjects[inPort.ParentId].ParentId;
         WD_EditorObject conv= CreateFunction(grandParentId, convPos, convDesc);
         ForEachChild(conv,
@@ -332,6 +333,7 @@ public class WD_EditorObjectMgr {
                 }
             }
         );
+        Minimize(conv);
     }
 
     // ======================================================================
