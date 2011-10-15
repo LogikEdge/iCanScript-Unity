@@ -281,9 +281,9 @@ public class WD_Editor : EditorWindow {
             if(!VerifyNewConnection(port)) {
                 // Verify for disconnection.
                 if(!Storage.EditorObjects.IsNearParent(port)) {
-                    Storage.EditorObjects.DisconnectPort(port);
                     port.LocalPosition.x= DragStartPosition.x;
                     port.LocalPosition.y= DragStartPosition.y;
+                    Storage.EditorObjects.DisconnectPort(port);
                 }                    
                 else {
                     // Assume port relocation.
@@ -335,6 +335,10 @@ public class WD_Editor : EditorWindow {
         // No new connection if no overlapping port found.
         WD_EditorObject overlappingPort= Storage.EditorObjects.GetOverlappingPort(port);
         if(overlappingPort == null) return false;
+        
+        // Reestablish port position.
+        port.LocalPosition.x= DragStartPosition.x;
+        port.LocalPosition.y= DragStartPosition.y;
         
         // Connect function & modules ports together.
         if(port.IsDataPort && overlappingPort.IsDataPort) {            
