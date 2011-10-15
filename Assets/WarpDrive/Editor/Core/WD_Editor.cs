@@ -437,7 +437,7 @@ public class WD_Editor : EditorWindow {
         // Display node starting from the root node.
         Storage.EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
             (node)=> {
-                if(node.IsNode) Graphics.DrawNode(node, SelectedObject, Storage);
+                if(node.IsNode && !node.IsMinimized) Graphics.DrawNode(node, SelectedObject, Storage);
             }
         );
     }	
@@ -449,6 +449,13 @@ public class WD_Editor : EditorWindow {
 
         // Display ports.
         Storage.EditorObjects.ForEachChildRecursive(DisplayRoot, (port)=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); } );
+
+        // Display minimized nodes.
+        Storage.EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
+            (node)=> {
+                if(node.IsNode && node.IsMinimized) Graphics.DrawNode(node, SelectedObject, Storage);
+            }
+        );
     }
 
 }
