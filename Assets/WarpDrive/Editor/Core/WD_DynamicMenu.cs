@@ -176,6 +176,7 @@ public class WD_DynamicMenu {
         tmp[menu.Length+2]= SeparatorStr;
         menu= tmp;
         // Delete menu item.tmp= new string[menu.Length+2];
+        tmp= new string[menu.Length+2];
         menu.CopyTo(tmp, 0);
         tmp[menu.Length]= SeparatorStr;
         tmp[menu.Length+1]= DeleteStr;

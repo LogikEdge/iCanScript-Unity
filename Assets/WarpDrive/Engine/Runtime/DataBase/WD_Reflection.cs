@@ -112,6 +112,8 @@ public class WD_Reflection {
                         WD_ClassAttribute classAttribute= classCustomAttribute as WD_ClassAttribute;
                         string classCompany= classAttribute.Company ?? "MyComnpany";
                         string classPackage= classAttribute.Package ?? "DefaultPackage";
+                        string className   = classAttribute.Name    ?? classType.Name;
+                        string classToolTip= classAttribute.ToolTip;
                         // Gather field information.
                         List<FieldInfo> fieldInfos = new List<FieldInfo>();
                         List<bool>      fieldInOuts= new List<bool>();
@@ -151,7 +153,7 @@ public class WD_Reflection {
                                 }
                             }
                         }                       
-                        ParseClass(classCompany, classPackage, classType,
+                        ParseClass(classCompany, classPackage, className, classToolTip, classType,
                                    methodInfos.ToArray(), methodNames.ToArray(), methodReturnNames.ToArray(), methodToolTips.ToArray(),
                                    fieldInfos.ToArray(), fieldInOuts.ToArray());
                     }
@@ -161,7 +163,7 @@ public class WD_Reflection {
         }
     }
     // ----------------------------------------------------------------------
-    static void ParseClass(string company, string package, Type classType,
+    static void ParseClass(string company, string package, string className, string classToolTip, Type classType,
                            MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, string[] toolTips,
                            FieldInfo[] fieldInfos, bool[] fieldInOuts) {
         // Extract field names & types.
@@ -188,7 +190,7 @@ public class WD_Reflection {
                 _propertyInOuts.Add(true);
             }
             else if(methodInfos[i].IsStatic) {
-                ParseFunction(company, package, classType, methodNames[i], returnNames[i], toolTips[i], methodInfos[i]);
+                ParseFunction(company, package, classToolTip, classType, methodNames[i], returnNames[i], toolTips[i], methodInfos[i]);
             }
             else {
                 _methodIndexes.Add(i);
@@ -246,7 +248,7 @@ public class WD_Reflection {
             paramInOuts[i]= ParseParameterInOuts(methodInfos[i]);
         }        
         // Add to database.
-        WD_DataBase.AddClass(company, package, classType,
+        WD_DataBase.AddClass(company, package, className, classToolTip, classType,
                              fieldNames, fieldTypes, fieldInOuts,
                              propertyNames, propertyTypes, propertyInOuts,
                              methodInfos, methodNames, returnNames, returnType, toolTips,
@@ -273,7 +275,7 @@ public class WD_Reflection {
         WD_DataBase.AddConversion(company, package, classType, method, fromType, toType);                                        
     }
     // ----------------------------------------------------------------------
-    static void ParseFunction(string company, string package, Type classType, string methodName, string retName, string toolTip, MethodInfo method) {
+    static void ParseFunction(string company, string package, string classToolTip, Type classType, string methodName, string retName, string toolTip, MethodInfo method) {
         // Parse return type.
         Type retType= method.ReturnType;
         if(retType == typeof(void)) {
@@ -285,7 +287,7 @@ public class WD_Reflection {
         Type[]   paramTypes= ParseParameterTypes(method);
         bool[]   paramInOut= ParseParameterInOuts(method);
 
-        WD_DataBase.AddFunction(company, package, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
+        WD_DataBase.AddFunction(company, package, classToolTip, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, method);
     }
     // ----------------------------------------------------------------------
     static string[] ParseParameterNames(MethodInfo method) {

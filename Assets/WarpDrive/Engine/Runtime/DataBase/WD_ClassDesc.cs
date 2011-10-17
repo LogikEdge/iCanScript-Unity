@@ -25,11 +25,11 @@ public class WD_ClassDesc : WD_BaseDesc {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public WD_ClassDesc(string company, string package, Type classType,
+    public WD_ClassDesc(string company, string package, string className, string toolTip, Type classType,
                         string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,
                         string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,
                         MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,
-                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) : base (company, package, classType.Name, classType) {
+                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) : base (company, package, className, toolTip, classType) {
         ClassType= classType;
         FieldNames= fieldNames;
         FieldTypes= fieldTypes;
