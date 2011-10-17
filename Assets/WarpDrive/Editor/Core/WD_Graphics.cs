@@ -28,6 +28,7 @@ public class WD_Graphics {
 	internal class NodeStyle {
 	    public GUIStyle    guiStyle    = null;
 	    public Color       nodeColor   = new Color(0,0,0,0);
+	    public Texture2D   maximizeIcon= null;
 	}
 	NodeStyle   stateStyle      = null;
 	NodeStyle   moduleStyle     = null;
@@ -168,7 +169,18 @@ public class WD_Graphics {
             }
         }
         nodeStyle.guiStyle.hover.background.Apply();
-        nodeStyle.guiStyle.hover.background.hideFlags= HideFlags.DontSave; 
+        nodeStyle.guiStyle.hover.background.hideFlags= HideFlags.DontSave;
+        // Generate minimized Icon.
+        if(nodeStyle.maximizeIcon == null) {
+            nodeStyle.maximizeIcon= new Texture2D(maximizeIcon.width, maximizeIcon.height);
+            for(int x= 0; x < maximizeIcon.width; ++x) {
+                for(int y= 0; y < maximizeIcon.height; ++y) {
+                    nodeStyle.maximizeIcon.SetPixel(x, y, nodeStyle.nodeColor * maximizeIcon.GetPixel(x,y));
+                }
+            }
+            nodeStyle.maximizeIcon.Apply();
+            nodeStyle.maximizeIcon.hideFlags= HideFlags.DontSave;
+        }
     }
     
     // ======================================================================
@@ -227,15 +239,16 @@ public class WD_Graphics {
         if(storage.EditorObjects.IsVisible(node) == false) return;
         
         // Draw minimized node.
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         if(node.IsMinimized) {
             Rect nodePos= storage.EditorObjects.GetPosition(node);
-            GUI.DrawTexture(new Rect(nodePos.x, nodePos.y, maximizeIcon.width, maximizeIcon.height), maximizeIcon);                           
+            GUI.DrawTexture(new Rect(nodePos.x, nodePos.y, maximizeIcon.width, maximizeIcon.height), nodeStyle.maximizeIcon);                           
             return;
         }
         
         // Draw node box.
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.NameOrTypeName));
-        GUIStyle guiStyle= GetNodeGUIStyle(node, selectedObject, storage);
+        GUIStyle guiStyle= nodeStyle.guiStyle;
         Rect position= storage.EditorObjects.GetPosition(node);
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
         float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
