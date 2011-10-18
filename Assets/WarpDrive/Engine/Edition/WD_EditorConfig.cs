@@ -21,8 +21,8 @@ public class WD_EditorConfig {
     public const float  NodeInitialWidth   = 30.0f;
     public const float  NodeInitialHeight  = 30.0f;
     public const float  ExtraIconWidth     = 12.0f;
-    public const float  MinimizedNodeWidth = 16.0f;
-    public const float  MinimizedNodeHeight= 16.0f;
+    public const float  MaximizeNodeWidth  = 32.0f;
+    public const float  MaximizeNodeHeight = 32.0f;
     
     // ----------------------------------------------------------------------
     public static GUIStyle NodeStyle        { get { return GUI.skin.button; }}

@@ -116,7 +116,7 @@ public class WD_EditorObjectMgr {
         // Calcute the desired screen position of the new object.
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
-        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos);
+        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos, desc.Icon);
         TreeCache.CreateInstance(EditorObjects[id]);
         // Create field ports
         for(int i= 0; i < desc.FieldNames.Length; ++i) {
@@ -137,7 +137,7 @@ public class WD_EditorObjectMgr {
             int methodId= -1;
             if(nbOfMethodsToShow > 1) {
                 methodId= GetNextAvailableId();
-                EditorObjects[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0));
+                EditorObjects[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0), desc.MethodIcons[i]);
                 TreeCache.CreateInstance(EditorObjects[methodId]);                
             }
             for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
@@ -172,7 +172,7 @@ public class WD_EditorObjectMgr {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
+        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos, desc.Icon);
         TreeCache.CreateInstance(EditorObjects[id]);
         // Create input/output ports.
         for(int i= 0; i < desc.ParameterNames.Length; ++i) {
@@ -192,7 +192,7 @@ public class WD_EditorObjectMgr {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos);
+        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos, desc.Icon);
         TreeCache.CreateInstance(EditorObjects[id]);
         // Create input/output ports.
         CreatePort(desc.FromType.Name, id, desc.FromType, WD_ObjectTypeEnum.InFunctionPort);
@@ -641,12 +641,21 @@ public class WD_EditorObjectMgr {
         
         // Minimized nodes are fully collapsed.
         if(node.IsMinimized) {
-            if(node.LocalPosition.width != WD_EditorConfig.MinimizedNodeWidth ||
-               node.LocalPosition.height != WD_EditorConfig.MinimizedNodeHeight) {
-                   node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-WD_EditorConfig.MinimizedNodeWidth);
-                   node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-WD_EditorConfig.MinimizedNodeHeight);
-                   node.LocalPosition.width= WD_EditorConfig.MinimizedNodeWidth;
-                   node.LocalPosition.height= WD_EditorConfig.MinimizedNodeHeight;
+            float iconWidth= WD_EditorConfig.MaximizeNodeWidth;
+            float iconHeight= WD_EditorConfig.MaximizeNodeHeight;
+//            if(node.Icon != null) {
+//                Texture icon= Asset
+//                AssetDatabase.GetCachedIcon(node.Icon);
+//                if(icon != null) {
+//                    iconWidth= icon.width;
+//                    iconHeight= icon.height;
+//                }
+//            }
+            if(node.LocalPosition.width != iconWidth || node.LocalPosition.height != iconHeight) {
+                   node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-iconWidth);
+                   node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-iconHeight);
+                   node.LocalPosition.width= iconWidth;
+                   node.LocalPosition.height= iconHeight;
             }
             Vector2 nodeCenter= new Vector2(0.5f*node.LocalPosition.width, 0.5f*node.LocalPosition.height);
             ForEachChild(node,

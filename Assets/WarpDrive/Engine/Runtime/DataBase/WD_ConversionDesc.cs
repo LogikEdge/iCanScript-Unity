@@ -14,8 +14,8 @@ public class WD_ConversionDesc : WD_BaseDesc {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public WD_ConversionDesc(string company, string package, Type classType, MethodInfo methodInfo, Type fromType, Type toType)
-    : base(company, package, fromType.Name+"->"+toType.Name, "Converts from "+fromType.Name+" to "+toType.Name, classType) {
+    public WD_ConversionDesc(string company, string package, Type classType, string icon, MethodInfo methodInfo, Type fromType, Type toType)
+    : base(company, package, fromType.Name+"->"+toType.Name, "Converts from "+fromType.Name+" to "+toType.Name, icon, classType) {
         Method= methodInfo;
         FromType= fromType;
         ToType= toType;

@@ -100,16 +100,18 @@ public class WD_DynamicMenu {
             StateChartStr,
         };
         // Fold/Expand menu items
-        string[] tmp= new string[menu.Length+3];
-        menu.CopyTo(tmp, 0);
-        tmp[menu.Length]= SeparatorStr;
-        if(selectedObject.IsFolded) {
-            tmp[menu.Length+1]= UnfoldStr;
-        } else {
-            tmp[menu.Length+1]= FoldStr;            
+        string[] tmp= null;
+        if(!selectedObject.IsMinimized) {
+            tmp= new string[menu.Length+2];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            if(selectedObject.IsFolded) {
+                tmp[menu.Length+1]= UnfoldStr;
+            } else {
+                tmp[menu.Length+1]= FoldStr;            
+            }
+            menu= tmp;            
         }
-        tmp[menu.Length+2]= SeparatorStr;
-        menu= tmp;
         // Function menu items
         string[] functionMenu= GetFunctionMenu();
         tmp= new string[menu.Length+functionMenu.Length+1];
@@ -135,16 +137,18 @@ public class WD_DynamicMenu {
             EntryStateStr,
         };
         // Fold/Expand menu items
-        string[] tmp= new string[menu.Length+3];
-        menu.CopyTo(tmp, 0);
-        tmp[menu.Length]= SeparatorStr;
-        if(selectedObject.IsFolded) {
-            tmp[menu.Length+1]= UnfoldStr;
-        } else {
-            tmp[menu.Length+1]= FoldStr;            
+        string[] tmp= null;
+        if(!selectedObject.IsMinimized) {
+            tmp= new string[menu.Length+2];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            if(selectedObject.IsFolded) {
+                tmp[menu.Length+1]= UnfoldStr;
+            } else {
+                tmp[menu.Length+1]= FoldStr;            
+            }
+            menu= tmp;            
         }
-        tmp[menu.Length+2]= SeparatorStr;
-        menu= tmp;
         // Delete menu item
         if(selectedObject.InstanceId != 0) {
             tmp= new string[menu.Length+2];
@@ -165,16 +169,18 @@ public class WD_DynamicMenu {
             SubStateStr,
         };
         // Fold/Expand menu items
-        string[] tmp= new string[menu.Length+3];
-        menu.CopyTo(tmp, 0);
-        tmp[menu.Length]= SeparatorStr;
-        if(selectedObject.IsFolded) {
-            tmp[menu.Length+1]= UnfoldStr;
-        } else {
-            tmp[menu.Length+1]= FoldStr;            
+        string[] tmp= null;
+        if(!selectedObject.IsMinimized) {
+            tmp= new string[menu.Length+2];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            if(selectedObject.IsFolded) {
+                tmp[menu.Length+1]= UnfoldStr;
+            } else {
+                tmp[menu.Length+1]= FoldStr;            
+            }
+            menu= tmp;            
         }
-        tmp[menu.Length+2]= SeparatorStr;
-        menu= tmp;
         // Delete menu item.tmp= new string[menu.Length+2];
         tmp= new string[menu.Length+2];
         menu.CopyTo(tmp, 0);
@@ -194,16 +200,18 @@ public class WD_DynamicMenu {
     void ClassMenu(WD_EditorObject selectedObject, WD_Storage storage) {
         string[] menu= new string[0];
         // Fold/Expand menu items
-        string[] tmp= new string[menu.Length+3];
-        menu.CopyTo(tmp, 0);
-        tmp[menu.Length]= SeparatorStr;
-        if(selectedObject.IsFolded) {
-            tmp[menu.Length+1]= UnfoldStr;
-        } else {
-            tmp[menu.Length+1]= FoldStr;            
+        string[] tmp= null;
+        if(!selectedObject.IsMinimized) {
+            tmp= new string[menu.Length+2];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            if(selectedObject.IsFolded) {
+                tmp[menu.Length+1]= UnfoldStr;
+            } else {
+                tmp[menu.Length+1]= FoldStr;            
+            }
+            menu= tmp;            
         }
-        tmp[menu.Length+2]= SeparatorStr;
-        menu= tmp;
         // Delete menu item.
         if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
             tmp= new string[menu.Length+2];

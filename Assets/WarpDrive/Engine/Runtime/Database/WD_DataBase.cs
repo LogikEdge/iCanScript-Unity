@@ -74,7 +74,7 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Adds a conversion function
-    public static void AddConversion(string company, string package, Type classType, MethodInfo methodInfo, Type fromType, Type toType) {
+    public static void AddConversion(string company, string package, Type classType, string icon, MethodInfo methodInfo, Type fromType, Type toType) {
         foreach(var desc in Functions) {
             if(desc is WD_ConversionDesc) {
                 WD_ConversionDesc conv= desc as WD_ConversionDesc;
@@ -84,7 +84,7 @@ public class WD_DataBase {
                 }                
             }
         }
-        Functions.Add(new WD_ConversionDesc(company, package, classType, methodInfo, fromType, toType));
+        Functions.Add(new WD_ConversionDesc(company, package, classType, icon, methodInfo, fromType, toType));
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
@@ -92,24 +92,24 @@ public class WD_DataBase {
                                    string methodName,                                                   // Function info
                                    string[] paramNames, Type[] paramTypes, bool[] paramInOuts,          // Parameters info
                                    string retName, Type retType,                                        // Return value info
-                                   string toolTip, MethodInfo methodInfo) {
+                                   string toolTip, string icon, MethodInfo methodInfo) {
         WD_FunctionDesc fd= new WD_FunctionDesc(company, package, classToolTip, classType,
-                                                methodName, retName, retType, toolTip,
+                                                methodName, retName, retType, toolTip, icon,
                                                 paramNames, paramTypes, paramInOuts,
                                                 methodInfo);
         Functions.Add(fd);
     }
     // ----------------------------------------------------------------------
     // Adds a class.
-    public static void AddClass(string company, string package, string className, string classToolTip, Type classType,                          // Class info
-                                string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,                                                     // Field info
-                                string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,                                            // Property info
-                                MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,    // Method info
-                                string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {                                 // Method parameter info
-        Functions.Add(new WD_ClassDesc(company, package, className, classToolTip, classType,
+    public static void AddClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,                        // Class info
+                                string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,                                                                     // Field info
+                                string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,                                                            // Property info
+                                MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips, string[] icons,    // Method info
+                                string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {                                                 // Method parameter info
+        Functions.Add(new WD_ClassDesc(company, package, className, classToolTip, classType, classIcon,
                                        fieldNames, fieldTypes, fieldInOuts,
                                        propertyNames, propertyTypes, propertyInOuts,
-                                       methodInfos, methodNames, returnNames, returnTypes, toolTips,
+                                       methodInfos, methodNames, returnNames, returnTypes, toolTips, icons,
                                        parameterNames, parameterTypes, parameterInOuts));    
     }
 

@@ -107,6 +107,11 @@ public class WD_Graphics {
     }
 
     // ----------------------------------------------------------------------
+    static Texture2D LoadTexture(string fileName) {
+        string texturePath= WD_EditorConfig.GuiAssetPath+"/"+fileName;
+        return AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
+    }
+    // ----------------------------------------------------------------------
     static bool LoadTexture(string fileName, ref Texture2D texture, ref bool errorSeen) {
         string texturePath= WD_EditorConfig.GuiAssetPath+"/"+fileName;
         texture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
@@ -242,7 +247,8 @@ public class WD_Graphics {
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         if(node.IsMinimized) {
             Rect nodePos= storage.EditorObjects.GetPosition(node);
-            GUI.DrawTexture(new Rect(nodePos.x, nodePos.y, maximizeIcon.width, maximizeIcon.height), nodeStyle.maximizeIcon);                           
+            Texture icon= GetMaximizeIcon(node, nodeStyle);
+            GUI.DrawTexture(new Rect(nodePos.x, nodePos.y, icon.width, icon.height), icon);                           
             return;
         }
         
@@ -312,6 +318,22 @@ public class WD_Graphics {
     }
     // ======================================================================
     // Maximize icon functionality
+    // ----------------------------------------------------------------------
+    static Texture2D GetMaximizeIcon(WD_EditorObject node, NodeStyle nodeStyle) {
+        Texture2D icon= null;
+        if(node.Icon != null && node.Icon != "") {
+            icon= AssetDatabase.LoadAssetAtPath(node.Icon, typeof(Texture2D)) as Texture2D;
+//            icon.Resize(24,24,TextureFormat.ARGB32,false);
+//            icon.Apply();    
+            if(icon == null) {
+                Debug.LogWarning("Unable to load Icon: "+node.Icon);
+            }            
+        }
+        if(icon == null) {
+            icon= nodeStyle.maximizeIcon;            
+        }
+        return icon;       
+    }
     // ----------------------------------------------------------------------
     public bool IsMaximizeIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_Storage storage) {
         if(!ShouldDisplayMaximizeIcon(obj, storage)) return false;

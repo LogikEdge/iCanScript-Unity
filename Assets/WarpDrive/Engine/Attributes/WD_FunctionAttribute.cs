@@ -23,6 +23,12 @@ public class WD_FunctionAttribute : Attribute {
     }
     private string myToolTip= null;
     
+    public string Icon {
+        get { return myIcon; }
+        set { myIcon= value; }
+    }
+    private string myIcon= null;
+    
     // ======================================================================
     public override string ToString() { return "WD_Function"; }
 }

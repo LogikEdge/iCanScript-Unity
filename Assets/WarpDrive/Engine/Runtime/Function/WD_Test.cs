@@ -23,7 +23,7 @@ public sealed class WD_Test {
     [WD_Conversion] public static Vector2 Conversion(Vector3 v) { return new Vector2(v.x,v.y); }
 }
 
-[WD_Class(Company="NewCompany", Package="Test")]
+[WD_Class(Company="NewCompany", Package="Test", Icon="Assets/WarpDrive/Editor/Resources/WD_CalculatorIcon.psd")]
 public sealed class WD_Test2 {
     [WD_InPort]     public float x;
     [WD_OutPort]    public float z;
@@ -33,12 +33,12 @@ public sealed class WD_Test2 {
         [WD_Function] set {}
     }
 
-    [WD_Function(Return="m1")]
+    [WD_Function(Return="m1", Icon="Assets/WarpDrive/Editor/Resources/WD_JoystickIcon.psd")]
     public bool Method1(float x, Vector2 v) {
         return true;
     }
 
-    [WD_Function(Return="m2")]
+    [WD_Function(Return="m2", Icon="Assets/WarpDrive/Editor/Resources/WD_JoystickIcon.psd")]
     public float Method2(Vector2 v2, Vector3 v3) {
         return 1.0f;
     }

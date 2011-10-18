@@ -9,6 +9,7 @@ public class WD_EditorObject {
     // ----------------------------------------------------------------------
     public WD_ObjectTypeEnum    ObjectType   = WD_ObjectTypeEnum.Unknown;
     public WD_DisplayOptionEnum DisplayOption= WD_DisplayOptionEnum.Normal;
+    public string               Icon         = null;
     public int                  InstanceId   = -1;
     public int                  ParentId     = -1;
     public string               QualifiedType= "";
@@ -28,16 +29,16 @@ public class WD_EditorObject {
     // Initialization
     // ----------------------------------------------------------------------
     public WD_EditorObject() { Reset(); }
-    public WD_EditorObject(int id, string name, Type type, int parentId, WD_ObjectTypeEnum objectType, Rect localPosition, WD_DisplayOptionEnum displayOption= WD_DisplayOptionEnum.Normal) {
+    public WD_EditorObject(int id, string name, Type type, int parentId, WD_ObjectTypeEnum objectType, Rect localPosition, string icon= null) {
         Reset();
+        ObjectType= objectType;
+        Icon= icon;
         InstanceId= id;
         ParentId= parentId;
         Name= name;
-        DisplayOption= displayOption;
         QualifiedType= type.AssemblyQualifiedName;
         IsDirty= true;
         LocalPosition= localPosition;
-        ObjectType= objectType;
         if(IsDataPort) {
             Edge= IsInputPort ? (IsEnablePort ? EdgeEnum.Top : EdgeEnum.Left) : EdgeEnum.Right;
         }
@@ -46,6 +47,7 @@ public class WD_EditorObject {
     public void Reset() {
         ObjectType= WD_ObjectTypeEnum.Unknown;
         DisplayOption= WD_DisplayOptionEnum.Normal;
+        Icon= null;
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";

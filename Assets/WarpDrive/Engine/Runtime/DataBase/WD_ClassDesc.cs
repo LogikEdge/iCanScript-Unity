@@ -18,6 +18,7 @@ public class WD_ClassDesc : WD_BaseDesc {
     public string[]     ReturnNames;
     public Type[]       ReturnTypes;
     public string[]     ToolTips;
+    public string[]     MethodIcons;
     public string[][]   ParameterNames;
     public Type[][]     ParameterTypes;
     public bool[][]     ParameterInOuts;
@@ -25,11 +26,11 @@ public class WD_ClassDesc : WD_BaseDesc {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public WD_ClassDesc(string company, string package, string className, string toolTip, Type classType,
+    public WD_ClassDesc(string company, string package, string className, string toolTip, Type classType, string classIcon,
                         string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,
                         string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,
-                        MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips,
-                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) : base (company, package, className, toolTip, classType) {
+                        MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips, string[] icons,
+                        string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) : base (company, package, className, toolTip, classIcon, classType) {
         ClassType= classType;
         FieldNames= fieldNames;
         FieldTypes= fieldTypes;
@@ -42,6 +43,7 @@ public class WD_ClassDesc : WD_BaseDesc {
         ReturnNames= returnNames;
         ReturnTypes= returnTypes;
         ToolTips= toolTips;
+        MethodIcons= icons;
         ParameterNames= parameterNames;
         ParameterTypes= parameterTypes;
         ParameterInOuts= parameterInOuts;
