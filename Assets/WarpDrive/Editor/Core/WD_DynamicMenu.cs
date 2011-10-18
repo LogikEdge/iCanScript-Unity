@@ -8,8 +8,8 @@ public class WD_DynamicMenu {
     internal class MenuContext {
         public string          Command;
         public WD_EditorObject SelectedObject;
-        public WD_Storage      Storage;
-        public MenuContext(string command, WD_EditorObject selected, WD_Storage storage) {
+        public WD_IStorage      Storage;
+        public MenuContext(string command, WD_EditorObject selected, WD_IStorage storage) {
             Command= command;
             SelectedObject= selected;
             Storage= storage;
@@ -54,7 +54,7 @@ public class WD_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    public void Update(WD_EditorObject selectedObject, WD_Storage storage, Vector2 mouseDownPosition) {
+    public void Update(WD_EditorObject selectedObject, WD_IStorage storage, Vector2 mouseDownPosition) {
         // Update mouse position if not already done.
         if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
 
@@ -78,7 +78,7 @@ public class WD_DynamicMenu {
     }
 
 	// ----------------------------------------------------------------------
-    void BehaviourMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+    void BehaviourMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         string[] menu= new string[]
         {
             UpdateModuleStr,             
@@ -93,7 +93,7 @@ public class WD_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
-    void ModuleMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+    void ModuleMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         string[] menu= new string[]
         {
             ModuleStr,
@@ -130,7 +130,7 @@ public class WD_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
-    void StateChartMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+    void StateChartMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         string[] menu= new string[]
         {
             StateStr,
@@ -160,7 +160,7 @@ public class WD_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
-    void StateMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+    void StateMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         string[] menu= new string[]
         {
             OnEntryStr,
@@ -191,13 +191,13 @@ public class WD_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    void FunctionMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+    void FunctionMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
             ShowMenu(new string[]{DeleteStr}, selectedObject, storage);            
         }
     }
 	// ----------------------------------------------------------------------
-    void ClassMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+    void ClassMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         string[] menu= new string[0];
         // Fold/Expand menu items
         string[] tmp= null;
@@ -223,7 +223,7 @@ public class WD_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);            
     }
 	// ----------------------------------------------------------------------
-    void PortMenu(WD_EditorObject selectedObject, WD_Storage storage) {
+    void PortMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         string[] menu= new string[0];
         // Allow to publish port if the grand-parent is a module.
         WD_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
@@ -254,15 +254,14 @@ public class WD_DynamicMenu {
     // ======================================================================
     // Menu Utilities
 	// ----------------------------------------------------------------------
-    void ShowMenu(string[] menu, WD_EditorObject selected, WD_Storage storage) {
+    void ShowMenu(string[] menu, WD_EditorObject selected, WD_IStorage storage) {
         ShowMenu(menu, MenuPosition, selected, storage);
     }
 	// ----------------------------------------------------------------------
     void ProcessMenu(object obj) {
         MenuContext context= obj as MenuContext;
         WD_EditorObject selectedObject= context.SelectedObject;
-        WD_Storage storage= context.Storage;
-        WD_EditorObjectMgr editorObjects= storage.EditorObjects;
+        WD_IStorage storage= context.Storage;
         switch(context.Command) {
             case UpdateModuleStr:           CreateModule(selectedObject, storage, "Update"); break;
             case UpdateStateChartStr:       CreateStateChart(selectedObject, storage, "Update"); break;
@@ -277,20 +276,20 @@ public class WD_DynamicMenu {
             case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr); break;
             case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr); break;
             case SubStateStr:               CreateState (selectedObject, storage);  break;
-            case FoldStr:                   editorObjects.Fold(selectedObject); break;
-            case UnfoldStr:                 editorObjects.Unfold(selectedObject); break;
+            case FoldStr:                   storage.Fold(selectedObject); break;
+            case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 DestroySelectedObject(selectedObject, storage); break;
             case PublishPortStr:
-                WD_EditorObject parent= editorObjects[selectedObject.ParentId];
-                int grandParentId= editorObjects[parent.ParentId].InstanceId;
-                WD_EditorObject grandParent= editorObjects[grandParentId];
+                WD_EditorObject parent= storage.GetParent(selectedObject);
+                WD_EditorObject grandParent= storage.GetParent(parent);
+                int grandParentId= grandParent.InstanceId;
                 if(selectedObject.IsInputPort) {
-                    WD_EditorObject port= editorObjects.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.InModulePort);
-                    editorObjects.SetSource(selectedObject, port);
+                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.InModulePort);
+                    storage.SetSource(selectedObject, port);
                     port.LocalPosition= new Rect(0, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
                 } else {
-                    WD_EditorObject port= editorObjects.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.OutModulePort);
-                    editorObjects.SetSource(port, selectedObject);
+                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.OutModulePort);
+                    storage.SetSource(port, selectedObject);
                     port.LocalPosition= new Rect(grandParent.LocalPosition.width, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
                 }
                 grandParent.IsDirty= true;
@@ -308,7 +307,7 @@ public class WD_DynamicMenu {
                 break;
         }
     }
-    void ShowMenu(string[] menu, Vector2 pos, WD_EditorObject selected, WD_Storage storage) {
+    void ShowMenu(string[] menu, Vector2 pos, WD_EditorObject selected, WD_IStorage storage) {
         int sepCnt= 0;
         GenericMenu gMenu= new GenericMenu();
         foreach(var item in menu) {
@@ -368,26 +367,26 @@ public class WD_DynamicMenu {
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------
-    void CreateModule(WD_EditorObject parent, WD_Storage storage, string name= "") {
-        storage.EditorObjects.CreateModule(parent.InstanceId, MenuPosition, name);
+    void CreateModule(WD_EditorObject parent, WD_IStorage storage, string name= "") {
+        storage.CreateModule(parent.InstanceId, MenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    void CreateStateChart(WD_EditorObject parent, WD_Storage storage, string name= "") {
-        storage.EditorObjects.CreateStateChart(parent.InstanceId, MenuPosition, name);
+    void CreateStateChart(WD_EditorObject parent, WD_IStorage storage, string name= "") {
+        storage.CreateStateChart(parent.InstanceId, MenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    void CreateState(WD_EditorObject parent, WD_Storage storage, string name= "") {
-        storage.EditorObjects.CreateState(parent.InstanceId, MenuPosition, name);
+    void CreateState(WD_EditorObject parent, WD_IStorage storage, string name= "") {
+        storage.CreateState(parent.InstanceId, MenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    void CreateFunction(WD_EditorObject parent, WD_Storage storage, WD_BaseDesc desc) {
-        storage.EditorObjects.CreateFunction(parent.InstanceId, MenuPosition, desc);
+    void CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_BaseDesc desc) {
+        storage.CreateFunction(parent.InstanceId, MenuPosition, desc);
     }
 	// ----------------------------------------------------------------------
-    bool DestroySelectedObject(WD_EditorObject selectedObject, WD_Storage storage) {
+    bool DestroySelectedObject(WD_EditorObject selectedObject, WD_IStorage storage) {
         bool isDestroyed= false;
         if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
-            storage.EditorObjects.DestroyInstance(selectedObject.InstanceId);                        
+            storage.DestroyInstance(selectedObject.InstanceId);                        
             isDestroyed= true;
         }
         Reset();

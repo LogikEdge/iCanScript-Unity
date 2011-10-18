@@ -12,7 +12,9 @@ public class WD_Menu {
 		WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
 		if(storage == null) {
 			storage= Selection.activeGameObject.AddComponent<WD_Storage>();
-            storage.EditorObjects.CreateBehaviour();
+            WD_IStorage iStorage= new WD_IStorage(storage);
+            iStorage.CreateBehaviour();
+            iStorage= null;
 		}
 	}
 	[MenuItem("WarpDrive/Create Behaviour", true)]
@@ -33,7 +35,9 @@ public class WD_Menu {
 		if(storage == null) {
 			storage= Selection.activeGameObject.AddComponent<WD_Storage>();
             storage.enabled= false;
-            storage.EditorObjects.CreateModuleLibrary();
+            WD_IStorage iStorage= new WD_IStorage(storage);
+            iStorage.CreateModuleLibrary();
+            iStorage= null;
 		}
 	}
 	[MenuItem("WarpDrive/Create Module Library", true)]
@@ -54,7 +58,9 @@ public class WD_Menu {
 		if(storage == null) {
 			storage= Selection.activeGameObject.AddComponent<WD_Storage>();
             storage.enabled= false;
-            storage.EditorObjects.CreateStateChartLibrary();
+            WD_IStorage iStorage= new WD_IStorage(storage);
+            iStorage.CreateStateChartLibrary();
+            iStorage= null;
 		}
 	}
 	[MenuItem("WarpDrive/Create State Chart Library", true)]

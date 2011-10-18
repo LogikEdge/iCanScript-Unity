@@ -55,7 +55,7 @@ public class WD_Graphics {
     // ======================================================================
     //  INITIALIZATION
 	// ----------------------------------------------------------------------
-    static public bool Init(WD_Storage storage) {
+    static public bool Init(WD_IStorage storage) {
         // Load AA line texture.
         string texturePath;     
         if(lineTexture == null) {
@@ -113,7 +113,7 @@ public class WD_Graphics {
     }
 
     // ----------------------------------------------------------------------
-    static bool LoadIcon(string fileName, ref Texture2D icon, ref bool errorSeen, WD_Storage storage) {
+    static bool LoadIcon(string fileName, ref Texture2D icon, ref bool errorSeen, WD_IStorage storage) {
         icon= LoadIcon(fileName, storage);
         if(icon == null) {
             ResourceMissingError(fileName, ref errorSeen);            
@@ -122,7 +122,7 @@ public class WD_Graphics {
         return true;
     }
     // ----------------------------------------------------------------------
-    static Texture2D LoadIcon(string fileName, WD_Storage storage) {
+    static Texture2D LoadIcon(string fileName, WD_IStorage storage) {
         string iconPath= WD_UserPreferences.UserIcons.WarpDriveIconPath+"/"+fileName;
         Texture2D icon= AssetDatabase.LoadAssetAtPath(iconPath, typeof(Texture2D)) as Texture2D;
         if(icon != null) return icon;
@@ -213,10 +213,10 @@ public class WD_Graphics {
     // ======================================================================
     //  TOOL TIP
     // ---------------------------------------------------------------------
-    public void ShowToolTip(WD_EditorObject obj, WD_Behaviour graph) {
+    public void ShowToolTip(WD_EditorObject obj, WD_IStorage storage) {
         if(obj.IsPort) {
             WD_EditorObject port= obj;
-            Rect tmp= graph.EditorObjects.GetPosition(port);
+            Rect tmp= storage.GetPosition(port);
             Vector2 pos= new Vector2(tmp.x, tmp.y);
             string name= port.Name + ":" + port.TypeName;
             Vector2 labelSize= WD_EditorConfig.GetLabelSize(name);
@@ -261,14 +261,14 @@ public class WD_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    public void DrawNode(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
+    public void DrawNode(WD_EditorObject node, WD_EditorObject selectedObject, WD_IStorage storage) {
         // Don't show hiden nodes.
-        if(storage.EditorObjects.IsVisible(node) == false) return;
+        if(storage.IsVisible(node) == false) return;
         
         // Draw minimized node.
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         if(node.IsMinimized) {
-            Rect nodePos= storage.EditorObjects.GetPosition(node);
+            Rect nodePos= storage.GetPosition(node);
             Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
             GUI.DrawTexture(new Rect(nodePos.x, nodePos.y, icon.width, icon.height), icon);                           
             return;
@@ -277,7 +277,7 @@ public class WD_Graphics {
         // Draw node box.
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.NameOrTypeName));
         GUIStyle guiStyle= nodeStyle.guiStyle;
-        Rect position= storage.EditorObjects.GetPosition(node);
+        Rect position= storage.GetPosition(node);
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
         float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
         position.x-= leftOffset;
@@ -302,46 +302,46 @@ public class WD_Graphics {
     // ======================================================================
     // Fold/Unfold icon functionality.
     // ----------------------------------------------------------------------
-    public bool IsFoldIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_Storage storage) {
+    public bool IsFoldIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_IStorage storage) {
         if(!ShouldDisplayFoldIcon(obj, storage)) return false;
         Rect foldIconPos= GetFoldIconPosition(obj, storage);
         return foldIconPos.Contains(mousePos);
     }
-    bool ShouldDisplayFoldIcon(WD_EditorObject obj, WD_Storage storage) {
+    bool ShouldDisplayFoldIcon(WD_EditorObject obj, WD_IStorage storage) {
         if(obj.IsMinimized) return false;
         if(obj.IsModule || obj.IsStateChart || obj.IsState || obj.IsClass) {
             if(obj.IsClass) {
                 bool needFoldIcon= false;
-                storage.EditorObjects.ForEachChild(obj, (child) => { if(child.IsNode) needFoldIcon= true; });
+                storage.ForEachChild(obj, (child) => { if(child.IsNode) needFoldIcon= true; });
                 return needFoldIcon;
             }
             return true;
         }
         return false;
     }
-    Rect GetFoldIconPosition(WD_EditorObject obj, WD_Storage storage) {
-        Rect objPos= storage.EditorObjects.GetPosition(obj);
+    Rect GetFoldIconPosition(WD_EditorObject obj, WD_IStorage storage) {
+        Rect objPos= storage.GetPosition(obj);
         return new Rect(objPos.x+8, objPos.y, foldedIcon.width, foldedIcon.height);
     }
     // ======================================================================
     // Minimize icon functionality
     // ----------------------------------------------------------------------
-    public bool IsMinimizeIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_Storage storage) {
+    public bool IsMinimizeIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_IStorage storage) {
         if(!ShouldDisplayMinimizeIcon(obj, storage)) return false;
         Rect minimizeIconPos= GetMinimizeIconPosition(obj, storage);
         return minimizeIconPos.Contains(mousePos);
     }
-    bool ShouldDisplayMinimizeIcon(WD_EditorObject obj, WD_Storage storage) {
+    bool ShouldDisplayMinimizeIcon(WD_EditorObject obj, WD_IStorage storage) {
         return obj.InstanceId != 0 && obj.IsNode && !obj.IsMinimized;
     }
-    Rect GetMinimizeIconPosition(WD_EditorObject obj, WD_Storage storage) {
-        Rect objPos= storage.EditorObjects.GetPosition(obj);
+    Rect GetMinimizeIconPosition(WD_EditorObject obj, WD_IStorage storage) {
+        Rect objPos= storage.GetPosition(obj);
         return new Rect(objPos.xMax-4-minimizeIcon.width, objPos.y, minimizeIcon.width, minimizeIcon.height);
     }
     // ======================================================================
     // Maximize icon functionality
     // ----------------------------------------------------------------------
-    static Texture2D GetMaximizeIcon(WD_EditorObject node, NodeStyle nodeStyle, WD_Storage storage) {
+    static Texture2D GetMaximizeIcon(WD_EditorObject node, NodeStyle nodeStyle, WD_IStorage storage) {
         Texture2D icon= null;
         if(storage.Preferences.Icons.EnableMinimizedIcons && node.Icon != null && node.Icon != "") {
             icon= LoadIcon(node.Icon, storage);
@@ -357,21 +357,21 @@ public class WD_Graphics {
         return icon;       
     }
     // ----------------------------------------------------------------------
-    public bool IsMaximizeIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_Storage storage) {
+    public bool IsMaximizeIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_IStorage storage) {
         if(!ShouldDisplayMaximizeIcon(obj, storage)) return false;
         Rect maximizeIconPos= GetMaximizeIconPosition(obj, storage);
         return maximizeIconPos.Contains(mousePos);
     }
-    bool ShouldDisplayMaximizeIcon(WD_EditorObject obj, WD_Storage storage) {
+    bool ShouldDisplayMaximizeIcon(WD_EditorObject obj, WD_IStorage storage) {
         return obj.InstanceId != 0 && obj.IsNode && obj.IsMinimized;
     }
-    Rect GetMaximizeIconPosition(WD_EditorObject obj, WD_Storage storage) {
-        return storage.EditorObjects.GetPosition(obj);
+    Rect GetMaximizeIconPosition(WD_EditorObject obj, WD_IStorage storage) {
+        return storage.GetPosition(obj);
     }
     // ======================================================================
     // Node style functionality
     // ----------------------------------------------------------------------
-    NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
+    NodeStyle GetNodeStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_IStorage storage) {
         // Node background is dependant on node type.
 //        WD_Node runtimeNode= storage.EditorObjects.GetRuntimeObject(node) as WD_Node;
 //        if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
@@ -401,14 +401,14 @@ public class WD_Graphics {
         GenerateNodeStyle(ref defaultStyle, Color.gray);
         return defaultStyle;
     }
-    GUIStyle GetNodeGUIStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
+    GUIStyle GetNodeGUIStyle(WD_EditorObject node, WD_EditorObject selectedObject, WD_IStorage storage) {
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         return nodeStyle.guiStyle;
     }
     
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
-    Color GetNodeColor(WD_EditorObject node, WD_EditorObject selectedObject, WD_Storage storage) {
+    Color GetNodeColor(WD_EditorObject node, WD_EditorObject selectedObject, WD_IStorage storage) {
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         return nodeStyle.nodeColor;
     }
@@ -416,18 +416,18 @@ public class WD_Graphics {
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
-    public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_Storage storage) {
+    public void DrawPort(WD_EditorObject port, WD_EditorObject selectedObject, WD_IStorage storage) {
         // Only draw visible data ports.
-        if(storage.EditorObjects.IsVisible(port) == false) return;
+        if(storage.IsVisible(port) == false) return;
         // Don't draw ports on minimized node.
-        if(storage.EditorObjects.IsMinimized(port)) return;
+        if(storage.IsMinimized(port)) return;
         
         // Build visible port name
-        WD_EditorObject portParent= storage.EditorObjects[port.ParentId];
+        WD_EditorObject portParent= storage.GetParent(port);
         Type portValueType= port.RuntimeType;
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
          
-        Rect tmp= storage.EditorObjects.GetPosition(port);
+        Rect tmp= storage.GetPosition(port);
         Vector2 pos= new Vector2(tmp.x, tmp.y);
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
@@ -630,14 +630,14 @@ public class WD_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_Storage storage) {
-        if(storage.EditorObjects.IsVisible(port.ParentId)) {
-            if(storage.EditorObjects.IsValid(port.Source)) {
-                WD_EditorObject source= storage.EditorObjects[port.Source];
-                WD_EditorObject sourceParent= storage.EditorObjects[source.ParentId];
-                if(storage.EditorObjects.IsVisible(sourceParent)) {
-                    Rect sourcePos= storage.EditorObjects.GetPosition(source);
-                    Rect portPos  = storage.EditorObjects.GetPosition(port);
+    public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_IStorage storage) {
+        if(storage.IsVisible(port.ParentId)) {
+            if(storage.IsValid(port.Source)) {
+                WD_EditorObject source= storage.GetSource(port);
+                WD_EditorObject sourceParent= storage.GetParent(source);
+                if(storage.IsVisible(sourceParent)) {
+                    Rect sourcePos= storage.GetPosition(source);
+                    Rect portPos  = storage.GetPosition(port);
                     Vector2 start= new Vector2(sourcePos.x, sourcePos.y);
                     Vector2 end= new Vector2(portPos.x, portPos.y);
                     Vector2 startDirection= ConnectionDirectionForTo(source, port, storage);
@@ -658,7 +658,7 @@ public class WD_Graphics {
         }        
     }
     // ----------------------------------------------------------------------
-    Vector2 ConnectionDirectionForTo(WD_EditorObject port, WD_EditorObject to, WD_Storage storage) {
+    Vector2 ConnectionDirectionForTo(WD_EditorObject port, WD_EditorObject to, WD_IStorage storage) {
         Vector2 direction;
         if(port.IsOnLeftEdge) {
             direction= LeftDirection;
@@ -670,9 +670,9 @@ public class WD_Graphics {
             direction= DownDirection;
         }
         // Inverse direction for connection between nested nodes.
-        WD_EditorObject portParent= storage.EditorObjects[port.ParentId];
-        WD_EditorObject toParent= storage.EditorObjects[to.ParentId];
-        if(storage.EditorObjects.IsChildOf(toParent, portParent)) {
+        WD_EditorObject portParent= storage.GetParent(port);
+        WD_EditorObject toParent= storage.GetParent(to);
+        if(storage.IsChildOf(toParent, portParent)) {
             direction= -direction;
         }
         return direction;

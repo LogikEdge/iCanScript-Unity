@@ -67,7 +67,7 @@ public class WD_Inspector : Editor {
 	public override void OnInspectorGUI ()
 	{
         if(Storage == null) return;
-        WD_EditorObjectMgr editorObjects= Storage.EditorObjects;
+        List<WD_EditorObject> editorObjects= Storage.EditorObjects;
         
         // Restore inspector skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;

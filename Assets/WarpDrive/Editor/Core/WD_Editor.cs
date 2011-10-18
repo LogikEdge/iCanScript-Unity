@@ -11,7 +11,7 @@ public class WD_Editor : EditorWindow {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    WD_Storage          Storage        = null;
+    WD_IStorage         Storage        = null;
 	WD_Inspector        Inspector      = null;
     WD_EditorObject     DisplayRoot    = null;
     WD_DynamicMenu      DynamicMenu    = null;
@@ -66,11 +66,9 @@ public class WD_Editor : EditorWindow {
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.
 	public void Activate(WD_Storage storage, WD_Inspector inspector) {
-        Storage= storage;
+        Storage= new WD_IStorage(storage);
         Inspector= inspector;
         DisplayRoot= null;
-        // Assure that the editor data has been properly generated.
-        Storage.GenerateEditorData();
     }
     
     // ----------------------------------------------------------------------
@@ -118,7 +116,7 @@ public class WD_Editor : EditorWindow {
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
         // Update scroll view.
-        Rect scrollViewPosition= DisplayRoot != null ? Storage.EditorObjects.GetPosition(DisplayRoot) : new Rect(0,0,500,500);
+        Rect scrollViewPosition= DisplayRoot != null ? Storage.GetPosition(DisplayRoot) : new Rect(0,0,500,500);
         ScrollView.Update(position, scrollViewPosition);
         
 		// Draw editor widgets.
@@ -133,12 +131,8 @@ public class WD_Editor : EditorWindow {
         // Process user inputs
         ProcessEvents();
         
-        // Process new accumulated commands.
-        if(Storage.EditorObjects.IsDirty) {
-            Storage.EditorObjects.IsDirty= false;
-            Undo.RegisterUndo(Storage, "WarpDrive");
-            EditorUtility.SetDirty(Storage);
-        }
+        // Allow storage to update itself
+        Storage.Update();
 	}
 
     // ======================================================================
@@ -187,16 +181,16 @@ public class WD_Editor : EditorWindow {
                         Vector2 graphMousePos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
                         if(Graphics.IsFoldIconPressed(SelectedObject, graphMousePos, Storage)) {
                             if(SelectedObject.IsFolded) {
-                                Storage.EditorObjects.Unfold(SelectedObject);
+                                Storage.Unfold(SelectedObject);
                             } else {
-                                Storage.EditorObjects.Fold(SelectedObject);
+                                Storage.Fold(SelectedObject);
                             }
                         }
                         // Process maximize/minimize click.
                         if(Graphics.IsMinimizeIconPressed(SelectedObject, graphMousePos, Storage)) {
-                            Storage.EditorObjects.Minimize(SelectedObject);
+                            Storage.Minimize(SelectedObject);
                         } else if(Graphics.IsMaximizeIconPressed(SelectedObject, graphMousePos, Storage)) {
-                            Storage.EditorObjects.Maximize(SelectedObject);
+                            Storage.Maximize(SelectedObject);
                         }
                     }
                     break;
@@ -229,17 +223,17 @@ public class WD_Editor : EditorWindow {
         Vector2 MousePosition= ScrollView.ScreenToGraph(Mouse.Position);
         if(DragObject == null) {
             Vector2 pos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
-            port= Storage.EditorObjects.GetPortAt(pos);
+            port= Storage.GetPortAt(pos);
             if(port != null && !port.IsMinimized) {
                 DragObject= port;
                 DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
                 port.IsBeingDragged= true;
             }
             else {
-                node= Storage.EditorObjects.GetNodeAt(pos);                
+                node= Storage.GetNodeAt(pos);                
                 if(node != null) {
                     DragObject= node;
-                    Rect position= Storage.EditorObjects.GetPosition(node);
+                    Rect position= Storage.GetPosition(node);
                     DragStartPosition= new Vector2(position.x, position.y);                                                    
                 }
                 else {
@@ -259,7 +253,7 @@ public class WD_Editor : EditorWindow {
             port.LocalPosition.x= newLocalPos.x;
             port.LocalPosition.y= newLocalPos.y;
             port.IsDirty= true;
-            if(!Storage.EditorObjects.IsNearParent(port)) {
+            if(!Storage.IsNearParent(port)) {
             /*
                 TODO : create a temporary port to show new connection.
             */    
@@ -267,7 +261,7 @@ public class WD_Editor : EditorWindow {
         }
         if(DragObject.IsNode) {
             node= DragObject;
-            Storage.EditorObjects.MoveTo(node, DragStartPosition+delta);
+            Storage.MoveTo(node, DragStartPosition+delta);
             node.IsDirty= true;                        
         }
     }    
@@ -280,15 +274,15 @@ public class WD_Editor : EditorWindow {
             // Verify for a new connection.
             if(!VerifyNewConnection(port)) {
                 // Verify for disconnection.
-                if(!Storage.EditorObjects.IsNearParent(port)) {
+                if(!Storage.IsNearParent(port)) {
                     port.LocalPosition.x= DragStartPosition.x;
                     port.LocalPosition.y= DragStartPosition.y;
-                    Storage.EditorObjects.DisconnectPort(port);
+                    Storage.DisconnectPort(port);
                 }                    
                 else {
                     // Assume port relocation.
-                    Storage.EditorObjects.SnapToParent(port);
-                    Storage.EditorObjects.Layout(Storage.EditorObjects[port.ParentId]);
+                    Storage.SnapToParent(port);
+                    Storage.Layout(Storage.EditorObjects[port.ParentId]);
                 }
             }
             port.IsDirty= true;
@@ -320,12 +314,12 @@ public class WD_Editor : EditorWindow {
     // Returns the object at the given mouse position.
     public WD_EditorObject GetObjectAtScreenPosition(Vector2 _screenPos) {
         Vector2 graphPosition= ScrollView.ScreenToGraph(_screenPos);
-        WD_EditorObject port= Storage.EditorObjects.GetPortAt(graphPosition);
+        WD_EditorObject port= Storage.GetPortAt(graphPosition);
         if(port != null) {
-            if(port.IsMinimized) return Storage.EditorObjects[port.ParentId];
+            if(port.IsMinimized) return Storage.GetParent(port);
             return port;
         }
-        WD_EditorObject node= Storage.EditorObjects.GetNodeAt(graphPosition);                
+        WD_EditorObject node= Storage.GetNodeAt(graphPosition);                
         if(node != null) return node;
         return null;
     }
@@ -333,7 +327,7 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     bool VerifyNewConnection(WD_EditorObject port) {
         // No new connection if no overlapping port found.
-        WD_EditorObject overlappingPort= Storage.EditorObjects.GetOverlappingPort(port);
+        WD_EditorObject overlappingPort= Storage.GetOverlappingPort(port);
         if(overlappingPort == null) return false;
         
         // Reestablish port position.
@@ -347,8 +341,8 @@ public class WD_Editor : EditorWindow {
 
             WD_EditorObject portParent= Storage.EditorObjects[port.ParentId];
             WD_EditorObject overlappingPortParent= Storage.EditorObjects[overlappingPort.ParentId];
-            bool portIsChildOfOverlapping= Storage.EditorObjects.IsChildOf(portParent, overlappingPortParent);
-            bool overlappingIsChildOfPort= Storage.EditorObjects.IsChildOf(overlappingPortParent, portParent);
+            bool portIsChildOfOverlapping= Storage.IsChildOf(portParent, overlappingPortParent);
+            bool overlappingIsChildOfPort= Storage.IsChildOf(overlappingPortParent, portParent);
             if(portIsChildOfOverlapping || overlappingIsChildOfPort) {
                 if(port.IsInputPort && overlappingPort.IsInputPort) {
                     if(portIsChildOfOverlapping) {
@@ -376,14 +370,14 @@ public class WD_Editor : EditorWindow {
             }
             if(inPort != outPort) {
                 if(inPort.RuntimeType == outPort.RuntimeType) { // No conversion needed.
-                    Storage.EditorObjects.SetSource(inPort, outPort);                       
+                    Storage.SetSource(inPort, outPort);                       
                 }
                 else {  // A conversion is required.
                     WD_ConversionDesc conversion= WD_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
                     if(conversion == null) {
                         Debug.LogWarning("No direct conversion exists from "+outPort.RuntimeType.Name+" to "+inPort.RuntimeType.Name);
                     } else {
-                        Storage.EditorObjects.SetSource(inPort, outPort, conversion);
+                        Storage.SetSource(inPort, outPort, conversion);
                     }
                 }
             } else {
@@ -416,10 +410,10 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
         // Perform layout of modified nodes.
-        Storage.EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
+        Storage.ForEachRecursiveDepthLast(DisplayRoot,
             (obj)=> {
                 if(obj.IsDirty) {
-                    Storage.EditorObjects.Layout(obj);
+                    Storage.Layout(obj);
                 }
             }
         );            
@@ -437,7 +431,7 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawNodes() {
         // Display node starting from the root node.
-        Storage.EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
+        Storage.ForEachRecursiveDepthLast(DisplayRoot,
             (node)=> {
                 if(node.IsNode && !node.IsMinimized) Graphics.DrawNode(node, SelectedObject, Storage);
             }
@@ -447,13 +441,13 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        Storage.EditorObjects.ForEachChildRecursive(DisplayRoot, (port)=> { if(port.IsPort) Graphics.DrawConnection(port, SelectedObject, Storage); } );
+        Storage.ForEachChildRecursive(DisplayRoot, (port)=> { if(port.IsPort) Graphics.DrawConnection(port, SelectedObject, Storage); } );
 
         // Display ports.
-        Storage.EditorObjects.ForEachChildRecursive(DisplayRoot, (port)=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); } );
+        Storage.ForEachChildRecursive(DisplayRoot, (port)=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); } );
 
         // Display minimized nodes.
-        Storage.EditorObjects.ForEachRecursiveDepthLast(DisplayRoot,
+        Storage.ForEachRecursiveDepthLast(DisplayRoot,
             (node)=> {
                 if(node.IsNode && node.IsMinimized) Graphics.DrawNode(node, SelectedObject, Storage);
             }

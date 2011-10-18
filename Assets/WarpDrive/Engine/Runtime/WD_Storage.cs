@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is the main storage of WarpDrive.  All object are derived
@@ -8,16 +9,11 @@ public class WD_Storage : MonoBehaviour {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public WD_UserPreferences   Preferences  = new WD_UserPreferences();
-    public WD_EditorObjectMgr   EditorObjects= new WD_EditorObjectMgr();
+    public WD_UserPreferences       Preferences  = new WD_UserPreferences();
+    public List<WD_EditorObject>    EditorObjects= new List<WD_EditorObject>();
 
     // ----------------------------------------------------------------------
 	// We do not want this behaviour to run.
 	void Start () { enabled= false; }
 	
-    // ======================================================================
-    // Object generation functionality.
-    public void GenerateEditorData() { EditorObjects.RegenerateDynamicData(); }
-    public void GenerateRuntimeData() {}
-    public void CompileRuntimeToScript() {}
 }
