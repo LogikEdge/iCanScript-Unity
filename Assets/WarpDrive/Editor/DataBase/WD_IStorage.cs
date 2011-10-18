@@ -335,6 +335,8 @@ public class WD_IStorage {
     }
     public bool IsVisible(int id) { return IsInvalid(id) ? false : IsVisible(EditorObjects[id]); }
     // ----------------------------------------------------------------------
+    public bool IsFolded(WD_EditorObject eObj) { return eObj.IsFolded; }
+    // ----------------------------------------------------------------------
     public void Fold(WD_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
         eObj.Fold();

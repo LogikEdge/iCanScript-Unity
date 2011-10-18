@@ -180,7 +180,7 @@ public class WD_Editor : EditorWindow {
                         // Process fold/unfold click.
                         Vector2 graphMousePos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
                         if(Graphics.IsFoldIconPressed(SelectedObject, graphMousePos, Storage)) {
-                            if(SelectedObject.IsFolded) {
+                            if(Storage.IsFolded(SelectedObject)) {
                                 Storage.Unfold(SelectedObject);
                             } else {
                                 Storage.Fold(SelectedObject);
@@ -224,7 +224,7 @@ public class WD_Editor : EditorWindow {
         if(DragObject == null) {
             Vector2 pos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
             port= Storage.GetPortAt(pos);
-            if(port != null && !port.IsMinimized) {
+            if(port != null && !Storage.IsMinimized(port)) {
                 DragObject= port;
                 DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
                 port.IsBeingDragged= true;
@@ -316,7 +316,7 @@ public class WD_Editor : EditorWindow {
         Vector2 graphPosition= ScrollView.ScreenToGraph(_screenPos);
         WD_EditorObject port= Storage.GetPortAt(graphPosition);
         if(port != null) {
-            if(port.IsMinimized) return Storage.GetParent(port);
+            if(Storage.IsMinimized(port)) return Storage.GetParent(port);
             return port;
         }
         WD_EditorObject node= Storage.GetNodeAt(graphPosition);                
@@ -433,7 +433,7 @@ public class WD_Editor : EditorWindow {
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             (node)=> {
-                if(node.IsNode && !node.IsMinimized) Graphics.DrawNode(node, SelectedObject, Storage);
+                if(node.IsNode && !Storage.IsMinimized(node)) Graphics.DrawNode(node, SelectedObject, Storage);
             }
         );
     }	
@@ -449,7 +449,7 @@ public class WD_Editor : EditorWindow {
         // Display minimized nodes.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             (node)=> {
-                if(node.IsNode && node.IsMinimized) Graphics.DrawNode(node, SelectedObject, Storage);
+                if(node.IsNode && Storage.IsMinimized(node)) Graphics.DrawNode(node, SelectedObject, Storage);
             }
         );
     }

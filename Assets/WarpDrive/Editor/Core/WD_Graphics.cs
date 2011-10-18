@@ -267,7 +267,7 @@ public class WD_Graphics {
         
         // Draw minimized node.
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
-        if(node.IsMinimized) {
+        if(storage.IsMinimized(node)) {
             Rect nodePos= storage.GetPosition(node);
             Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
             GUI.DrawTexture(new Rect(nodePos.x, nodePos.y, icon.width, icon.height), icon);                           
@@ -288,7 +288,7 @@ public class WD_Graphics {
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, WD_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, storage)) {
-            if(node.IsFolded) {
+            if(storage.IsFolded(node)) {
                 GUI.DrawTexture(new Rect(position.x+8, position.y, foldedIcon.width, foldedIcon.height), foldedIcon);                           
             } else {
                 GUI.DrawTexture(new Rect(position.x+8, position.y, unfoldedIcon.width, unfoldedIcon.height), unfoldedIcon);               
@@ -308,7 +308,7 @@ public class WD_Graphics {
         return foldIconPos.Contains(mousePos);
     }
     bool ShouldDisplayFoldIcon(WD_EditorObject obj, WD_IStorage storage) {
-        if(obj.IsMinimized) return false;
+        if(storage.IsMinimized(obj)) return false;
         if(obj.IsModule || obj.IsStateChart || obj.IsState || obj.IsClass) {
             if(obj.IsClass) {
                 bool needFoldIcon= false;
@@ -332,7 +332,7 @@ public class WD_Graphics {
         return minimizeIconPos.Contains(mousePos);
     }
     bool ShouldDisplayMinimizeIcon(WD_EditorObject obj, WD_IStorage storage) {
-        return obj.InstanceId != 0 && obj.IsNode && !obj.IsMinimized;
+        return obj.InstanceId != 0 && obj.IsNode && !storage.IsMinimized(obj);
     }
     Rect GetMinimizeIconPosition(WD_EditorObject obj, WD_IStorage storage) {
         Rect objPos= storage.GetPosition(obj);
@@ -363,7 +363,7 @@ public class WD_Graphics {
         return maximizeIconPos.Contains(mousePos);
     }
     bool ShouldDisplayMaximizeIcon(WD_EditorObject obj, WD_IStorage storage) {
-        return obj.InstanceId != 0 && obj.IsNode && obj.IsMinimized;
+        return obj.InstanceId != 0 && obj.IsNode && storage.IsMinimized(obj);
     }
     Rect GetMaximizeIconPosition(WD_EditorObject obj, WD_IStorage storage) {
         return storage.GetPosition(obj);

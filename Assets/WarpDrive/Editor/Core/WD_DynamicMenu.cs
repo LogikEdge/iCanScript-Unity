@@ -101,11 +101,11 @@ public class WD_DynamicMenu {
         };
         // Fold/Expand menu items
         string[] tmp= null;
-        if(!selectedObject.IsMinimized) {
+        if(!storage.IsMinimized(selectedObject)) {
             tmp= new string[menu.Length+2];
             menu.CopyTo(tmp, 0);
             tmp[menu.Length]= SeparatorStr;
-            if(selectedObject.IsFolded) {
+            if(storage.IsFolded(selectedObject)) {
                 tmp[menu.Length+1]= UnfoldStr;
             } else {
                 tmp[menu.Length+1]= FoldStr;            
@@ -138,11 +138,11 @@ public class WD_DynamicMenu {
         };
         // Fold/Expand menu items
         string[] tmp= null;
-        if(!selectedObject.IsMinimized) {
+        if(!storage.IsMinimized(selectedObject)) {
             tmp= new string[menu.Length+2];
             menu.CopyTo(tmp, 0);
             tmp[menu.Length]= SeparatorStr;
-            if(selectedObject.IsFolded) {
+            if(storage.IsFolded(selectedObject)) {
                 tmp[menu.Length+1]= UnfoldStr;
             } else {
                 tmp[menu.Length+1]= FoldStr;            
@@ -170,11 +170,11 @@ public class WD_DynamicMenu {
         };
         // Fold/Expand menu items
         string[] tmp= null;
-        if(!selectedObject.IsMinimized) {
+        if(!storage.IsMinimized(selectedObject)) {
             tmp= new string[menu.Length+2];
             menu.CopyTo(tmp, 0);
             tmp[menu.Length]= SeparatorStr;
-            if(selectedObject.IsFolded) {
+            if(storage.IsFolded(selectedObject)) {
                 tmp[menu.Length+1]= UnfoldStr;
             } else {
                 tmp[menu.Length+1]= FoldStr;            
@@ -201,11 +201,11 @@ public class WD_DynamicMenu {
         string[] menu= new string[0];
         // Fold/Expand menu items
         string[] tmp= null;
-        if(!selectedObject.IsMinimized) {
+        if(!storage.IsMinimized(selectedObject)) {
             tmp= new string[menu.Length+2];
             menu.CopyTo(tmp, 0);
             tmp[menu.Length]= SeparatorStr;
-            if(selectedObject.IsFolded) {
+            if(storage.IsFolded(selectedObject)) {
                 tmp[menu.Length+1]= UnfoldStr;
             } else {
                 tmp[menu.Length+1]= FoldStr;            
