@@ -83,14 +83,17 @@ public class WD_EditorObject {
 //    }
     // ----------------------------------------------------------------------
     // Display Option Accessor
-    public bool IsDisplayedNormaly  { get { return DisplayOption == WD_DisplayOptionEnum.Normal; }}
-    public bool IsHidden            { get { return DisplayOption == WD_DisplayOptionEnum.Hidden; }}
-    public bool IsMinimized         { get { return DisplayOption == WD_DisplayOptionEnum.Minimized; }}
-    public bool IsFolded            { get { return DisplayOption == WD_DisplayOptionEnum.Folded; }}
-    public void Fold()              { DisplayOption= WD_DisplayOptionEnum.Folded; }
-    public void Unfold()            { DisplayOption= WD_DisplayOptionEnum.Normal; }
-    public void Maximize()          { DisplayOption= WD_DisplayOptionEnum.Normal; }
-    public void Minimize()          { DisplayOption= WD_DisplayOptionEnum.Minimized; }
+    public bool IsDisplayedNormally { get { return WD.IsDisplayedNormally(this); }}
+    public bool IsHidden            { get { return WD.IsHidden(this); }}
+    public bool IsMinimized         { get { return WD.IsMinimized(this); }}
+    public bool IsFolded            { get { return WD.IsFolded(this); }}
+    public void DisplayNormally()   { WD.DisplayNormally(this); }
+    public void Fold()              { WD.Fold(this); }
+    public void Unfold()            { DisplayNormally(); }
+    public void Maximize()          { DisplayNormally(); }
+    public void Minimize()          { WD.Minimize(this); }
+    public void Hide()              { WD.Hide(this); }
+    public void Unhide()            { DisplayNormally(); }
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode             { get { return WD.IsNode(this); }}
