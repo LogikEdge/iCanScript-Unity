@@ -9,6 +9,14 @@ public class WD_EditorConfig {
 	public const string GuiAssetPath= EditorPath + "/Resources";
 	public const string TypePrefix= ProductAcronym+"_";
 	public const char   PrivateStringPrefix= '$';
+
+    // Icons
+	public const string FoldedIcon  ="WD_FoldedIcon.psd";
+	public const string UnfoldedIcon= "WD_UnfoldedIcon.psd";
+	public const string MinimizeIcon= "WD_MinimizeIcon.psd";
+	public const string MaximizeIcon= "WD_MaximizeIcon.psd";
+	public const string JoystickIcon= "WD_JotstickIcon.psd";
+	public const string ClockIcon   = "WD_ClockIcon.psd";
 	
 //#if UNITY_EDITOR
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

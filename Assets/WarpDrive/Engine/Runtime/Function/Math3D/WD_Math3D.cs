@@ -3,11 +3,11 @@ using System.Collections;
 
 [WD_Class(Company="Infaunier", Package="Math3D")]
 public class WD_Math3D {
-    [WD_Function(Icon="Assets/WarpDrive/Editor/Resources/WD_CalculatorIcon.psd")] public static int     AddInt(int a, int b)             { return a+b; }
-    [WD_Function(Icon="Assets/WarpDrive/Editor/Resources/WD_CalculatorIcon.psd")] public static float   AddFloat(float a, float b)       { return a+b; }
-    [WD_Function(Icon="Assets/WarpDrive/Editor/Resources/WD_CalculatorIcon.psd")] public static Vector2 AddVector2(Vector2 a, Vector2 b) { return a+b; }
-    [WD_Function(Icon="Assets/WarpDrive/Editor/Resources/WD_CalculatorIcon.psd")] public static Vector3 AddVector3(Vector3 a, Vector3 b) { return a+b; }
-    [WD_Function(Icon="Assets/WarpDrive/Editor/Resources/WD_CalculatorIcon.psd")] public static Vector4 AddVector4(Vector4 a, Vector4 b) { return a+b; }
+    [WD_Function(Icon="WD_CalculatorIcon.psd")] public static int     AddInt(int a, int b)             { return a+b; }
+    [WD_Function(Icon="WD_CalculatorIcon.psd")] public static float   AddFloat(float a, float b)       { return a+b; }
+    [WD_Function(Icon="WD_CalculatorIcon.psd")] public static Vector2 AddVector2(Vector2 a, Vector2 b) { return a+b; }
+    [WD_Function(Icon="WD_CalculatorIcon.psd")] public static Vector3 AddVector3(Vector3 a, Vector3 b) { return a+b; }
+    [WD_Function(Icon="WD_CalculatorIcon.psd")] public static Vector4 AddVector4(Vector4 a, Vector4 b) { return a+b; }
 
     [WD_Function] public static void    FromVector2(Vector2 v, out float x, out float y)                           { x= v.x; y= v.y; }
     [WD_Function] public static void    FromVector3(Vector3 v, out float x, out float y, out float z)              { x= v.x; y= v.y; z= v.z; }

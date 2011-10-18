@@ -89,7 +89,7 @@ public class WD_Editor : EditorWindow {
         
 		// Don't run if graphic sub-system did not initialise.
 		if(WD_Graphics.IsInitialized == false) {
-            WD_Graphics.Init();
+            WD_Graphics.Init(Storage);
 			return false;
 		}
 		
