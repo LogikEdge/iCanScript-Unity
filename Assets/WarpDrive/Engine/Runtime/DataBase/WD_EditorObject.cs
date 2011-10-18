@@ -28,7 +28,6 @@ public class WD_EditorObject {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public WD_EditorObject() { Reset(); }
     public WD_EditorObject(int id, string name, Type type, int parentId, WD_ObjectTypeEnum objectType, Rect localPosition, string icon= null) {
         Reset();
         ObjectType= objectType;
@@ -58,30 +57,30 @@ public class WD_EditorObject {
         Source= -1;
         IsBeingDragged= false;
     }
-    // ----------------------------------------------------------------------
-    public WD_Object CreateRuntimeObject() {
-        WD_Object rtObject;
-        if(IsRuntimeA<ScriptableObject>()) {
-            rtObject= ScriptableObject.CreateInstance(RuntimeType) as WD_Object;
-        }
-        else {
-            rtObject= Activator.CreateInstance(RuntimeType) as WD_Object;            
-        }
-        if(rtObject == null) {
-            Debug.LogError("Unable to create an instance of : "+QualifiedType);
-        }
-        rtObject.Name= Name;
-        rtObject.InstanceId= InstanceId;
-        return rtObject;
-    }
-    
-    // ----------------------------------------------------------------------
-    public bool IsRuntimeA(Type t) {
-        return Inf.IsA(RuntimeType, t);
-    }
-    public bool IsRuntimeA<T>() where T : class {
-        return IsRuntimeA(typeof(T));
-    }
+//    // ----------------------------------------------------------------------
+//    public WD_Object CreateRuntimeObject() {
+//        WD_Object rtObject;
+//        if(IsRuntimeA<ScriptableObject>()) {
+//            rtObject= ScriptableObject.CreateInstance(RuntimeType) as WD_Object;
+//        }
+//        else {
+//            rtObject= Activator.CreateInstance(RuntimeType) as WD_Object;            
+//        }
+//        if(rtObject == null) {
+//            Debug.LogError("Unable to create an instance of : "+QualifiedType);
+//        }
+//        rtObject.Name= Name;
+//        rtObject.InstanceId= InstanceId;
+//        return rtObject;
+//    }
+//    
+//    // ----------------------------------------------------------------------
+//    public bool IsRuntimeA(Type t) {
+//        return Inf.IsA(RuntimeType, t);
+//    }
+//    public bool IsRuntimeA<T>() where T : class {
+//        return IsRuntimeA(typeof(T));
+//    }
     // ----------------------------------------------------------------------
     // Display Option Accessor
     public bool IsDisplayedNormaly  { get { return DisplayOption == WD_DisplayOptionEnum.Normal; }}
@@ -147,132 +146,5 @@ public class WD_EditorObject {
     public bool IsOnLeftEdge        { get { return Edge == EdgeEnum.Left; }}
     public bool IsOnHorizontalEdge  { get { return IsOnTopEdge   || IsOnBottomEdge; }}
     public bool IsOnVerticalEdge    { get { return IsOnRightEdge || IsOnLeftEdge; }}
-
-    // ======================================================================
-    // Editor Object Iteration Utilities
-    // ----------------------------------------------------------------------
-    // Executes the given action if the given object matches the T type.
-    public void ExecuteIf<T>(Action<WD_EditorObject> fnc) where T : WD_Object {
-        if(IsRuntimeA<T>()) fnc(this);
-    }
-    public void Case<T1,T2>(Action<WD_EditorObject> fnc1,
-                            Action<WD_EditorObject> fnc2,
-                            Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                      where T2 : WD_Object {
-        if(IsRuntimeA<T1>())         { fnc1(this); }
-        else if(IsRuntimeA<T2>())    { fnc2(this); }
-        else if(defaultFnc != null)  { defaultFnc(this); }                                    
-    }
-    public void Case<T1,T2,T3>(Action<WD_EditorObject> fnc1,
-                               Action<WD_EditorObject> fnc2,
-                               Action<WD_EditorObject> fnc3,
-                               Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                         where T2 : WD_Object
-                                                                         where T3 : WD_Object {
-        if(IsRuntimeA<T1>())         { fnc1(this); }
-        else if(IsRuntimeA<T2>())    { fnc2(this); }
-        else if(IsRuntimeA<T3>())    { fnc3(this); }
-        else if(defaultFnc != null)  { defaultFnc(this); }                                    
-    }
-    public void Case<T1,T2,T3,T4>(Action<WD_EditorObject> fnc1,
-                                  Action<WD_EditorObject> fnc2,
-                                  Action<WD_EditorObject> fnc3,
-                                  Action<WD_EditorObject> fnc4,
-                                  Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                            where T2 : WD_Object
-                                                                            where T3 : WD_Object
-                                                                            where T4 : WD_Object {
-        if(IsRuntimeA<T1>())         { fnc1(this); }
-        else if(IsRuntimeA<T2>())    { fnc2(this); }
-        else if(IsRuntimeA<T3>())    { fnc3(this); }
-        else if(IsRuntimeA<T4>())    { fnc4(this); }
-        else if(defaultFnc != null)  { defaultFnc(this); }                                    
-    }
-    public void Case<T1,T2,T3,T4,T5>(Action<WD_EditorObject> fnc1,
-                                     Action<WD_EditorObject> fnc2,
-                                     Action<WD_EditorObject> fnc3,
-                                     Action<WD_EditorObject> fnc4,
-                                     Action<WD_EditorObject> fnc5,
-                                     Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                               where T2 : WD_Object
-                                                                               where T3 : WD_Object
-                                                                               where T4 : WD_Object
-                                                                               where T5 : WD_Object {
-        if(IsRuntimeA<T1>())         { fnc1(this); }
-        else if(IsRuntimeA<T2>())    { fnc2(this); }
-        else if(IsRuntimeA<T3>())    { fnc3(this); }
-        else if(IsRuntimeA<T4>())    { fnc4(this); }
-        else if(IsRuntimeA<T5>())    { fnc5(this); }
-        else if(defaultFnc != null)  { defaultFnc(this); }                                    
-    }
-    public void Case<T1,T2,T3,T4,T5,T6>(Action<WD_EditorObject> fnc1,
-                                        Action<WD_EditorObject> fnc2,
-                                        Action<WD_EditorObject> fnc3,
-                                        Action<WD_EditorObject> fnc4,
-                                        Action<WD_EditorObject> fnc5,
-                                        Action<WD_EditorObject> fnc6,
-                                        Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                                  where T2 : WD_Object
-                                                                                  where T3 : WD_Object
-                                                                                  where T4 : WD_Object
-                                                                                  where T5 : WD_Object
-                                                                                  where T6 : WD_Object {
-        if(IsRuntimeA<T1>())         { fnc1(this); }
-        else if(IsRuntimeA<T2>())    { fnc2(this); }
-        else if(IsRuntimeA<T3>())    { fnc3(this); }
-        else if(IsRuntimeA<T4>())    { fnc4(this); }
-        else if(IsRuntimeA<T5>())    { fnc5(this); }
-        else if(IsRuntimeA<T6>())    { fnc6(this); }
-        else if(defaultFnc != null)  { defaultFnc(this); }                                    
-    }
-    public void Case<T1,T2,T3,T4,T5,T6,T7>(Action<WD_EditorObject> fnc1,
-                                           Action<WD_EditorObject> fnc2,
-                                           Action<WD_EditorObject> fnc3,
-                                           Action<WD_EditorObject> fnc4,
-                                           Action<WD_EditorObject> fnc5,
-                                           Action<WD_EditorObject> fnc6,
-                                           Action<WD_EditorObject> fnc7,
-                                           Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                                     where T2 : WD_Object
-                                                                                     where T3 : WD_Object
-                                                                                     where T4 : WD_Object
-                                                                                     where T5 : WD_Object
-                                                                                     where T6 : WD_Object
-                                                                                     where T7 : WD_Object {
-        if(IsRuntimeA<T1>())         { fnc1(this); }
-        else if(IsRuntimeA<T2>())    { fnc2(this); }
-        else if(IsRuntimeA<T3>())    { fnc3(this); }
-        else if(IsRuntimeA<T4>())    { fnc4(this); }
-        else if(IsRuntimeA<T5>())    { fnc5(this); }
-        else if(IsRuntimeA<T6>())    { fnc6(this); }
-        else if(IsRuntimeA<T7>())    { fnc7(this); }
-        else if(defaultFnc != null)  { defaultFnc(this); }                                    
-    }
-    public void Case<T1,T2,T3,T4,T5,T6,T7,T8>(Action<WD_EditorObject> fnc1,
-                                              Action<WD_EditorObject> fnc2,
-                                              Action<WD_EditorObject> fnc3,
-                                              Action<WD_EditorObject> fnc4,
-                                              Action<WD_EditorObject> fnc5,
-                                              Action<WD_EditorObject> fnc6,
-                                              Action<WD_EditorObject> fnc7,
-                                              Action<WD_EditorObject> fnc8,
-                                              Action<WD_EditorObject> defaultFnc= null) where T1 : WD_Object
-                                                                                        where T2 : WD_Object
-                                                                                        where T3 : WD_Object
-                                                                                        where T4 : WD_Object
-                                                                                        where T5 : WD_Object
-                                                                                        where T6 : WD_Object
-                                                                                        where T7 : WD_Object
-                                                                                        where T8 : WD_Object {
-        if(IsRuntimeA<T1>())         { fnc1(this); }
-        else if(IsRuntimeA<T2>())    { fnc2(this); }
-        else if(IsRuntimeA<T3>())    { fnc3(this); }
-        else if(IsRuntimeA<T4>())    { fnc4(this); }
-        else if(IsRuntimeA<T5>())    { fnc5(this); }
-        else if(IsRuntimeA<T6>())    { fnc6(this); }
-        else if(IsRuntimeA<T7>())    { fnc7(this); }
-        else if(IsRuntimeA<T8>())    { fnc8(this); }
-        else if(defaultFnc != null)  { defaultFnc(this); }                                    
-    }
 
 }
