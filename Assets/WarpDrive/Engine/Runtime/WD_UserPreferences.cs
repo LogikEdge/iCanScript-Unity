@@ -80,9 +80,10 @@ public class WD_UserPreferences {
     public UserHiddenPrefixes   HiddenPrefixes= new UserHiddenPrefixes();
 
     [System.Serializable]
-    public class UserIconPaths {
+    public class UserIcons {
+        public bool         EnableMinimizedIcons= true;
         public const string WarpDriveIconPath= WD_EditorConfig.GuiAssetPath;
         public string[]     CustomIconPaths= new string[0];
     }
-    public UserIconPaths     IconPaths= new UserIconPaths();
+    public UserIcons     Icons= new UserIcons();
 }

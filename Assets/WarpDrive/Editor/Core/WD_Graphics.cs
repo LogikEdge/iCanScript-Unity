@@ -123,10 +123,10 @@ public class WD_Graphics {
     }
     // ----------------------------------------------------------------------
     static Texture2D LoadIcon(string fileName, WD_Storage storage) {
-        string iconPath= WD_UserPreferences.UserIconPaths.WarpDriveIconPath+"/"+fileName;
+        string iconPath= WD_UserPreferences.UserIcons.WarpDriveIconPath+"/"+fileName;
         Texture2D icon= AssetDatabase.LoadAssetAtPath(iconPath, typeof(Texture2D)) as Texture2D;
         if(icon != null) return icon;
-        foreach(var path in storage.Preferences.IconPaths.CustomIconPaths) {
+        foreach(var path in storage.Preferences.Icons.CustomIconPaths) {
             icon= AssetDatabase.LoadAssetAtPath(path+"/"+fileName, typeof(Texture2D)) as Texture2D;
             if(icon != null) return icon;
         }
@@ -343,7 +343,7 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     static Texture2D GetMaximizeIcon(WD_EditorObject node, NodeStyle nodeStyle, WD_Storage storage) {
         Texture2D icon= null;
-        if(node.Icon != null && node.Icon != "") {
+        if(storage.Preferences.Icons.EnableMinimizedIcons && node.Icon != null && node.Icon != "") {
             icon= LoadIcon(node.Icon, storage);
 //            icon.Resize(24,24,TextureFormat.ARGB32,false);
 //            icon.Apply();    

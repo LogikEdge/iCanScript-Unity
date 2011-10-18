@@ -6,7 +6,7 @@ public sealed class WD_Test {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    [WD_Function(Name="MySuperName")]
+    [WD_Function(Name="MySuperName", Icon="WD_MusicIcon.psd")]
     public static Prelude.Tuple<Vector2, Vector2> Evaluate(float speed= 1.0f) {
         Vector2 rawAnalog1= new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         Vector2 analog1= Time.deltaTime*speed*rawAnalog1;
@@ -38,7 +38,7 @@ public sealed class WD_Test2 {
         return true;
     }
 
-    [WD_Function(Return="m2", Icon="WD_JoystickIcon.psd")]
+    [WD_Function(Return="m2", Icon="WD_MovieIcon.psd")]
     public float Method2(Vector2 v2, Vector3 v3) {
         return 1.0f;
     }
