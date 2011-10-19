@@ -423,14 +423,6 @@ public class WD_IStorage {
     // ======================================================================
     // Object Picking
     // ----------------------------------------------------------------------
-    public WD_EditorObject GetRootNode() {
-        foreach(var obj in EditorObjects) {
-            if(obj.ParentId == -1) return obj;
-        }
-        Debug.LogError("No RootNode found!!!");
-        return null;
-    }
-    // ----------------------------------------------------------------------
     // Returns the node at the given position
     public WD_EditorObject GetNodeAt(Vector2 pick) {
         WD_EditorObject foundNode= null;
