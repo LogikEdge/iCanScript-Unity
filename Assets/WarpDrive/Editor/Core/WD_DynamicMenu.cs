@@ -38,6 +38,7 @@ public class WD_DynamicMenu {
     const string LateUpdateStateChartStr= "LateUpdate/StateChart";
     const string FixedUpdateModuleStr= "FixedUpdate/Module";
     const string FixedUpdateStateChartStr= "FixedUpdate/StateChart";
+    const string SetAsEntryStr="Set as Entry";
     const string OnGUIStr= "OnGUI";
     const string OnDrawGizmosStr= "OnDrawGizmos";
     const string OnEntryStr= "OnEntry";
@@ -134,7 +135,6 @@ public class WD_DynamicMenu {
         string[] menu= new string[]
         {
             StateStr,
-            EntryStateStr,
         };
         // Fold/Expand menu items
         string[] tmp= null;
@@ -167,6 +167,8 @@ public class WD_DynamicMenu {
             OnUpdateStr,
             OnExitStr,
             SubStateStr,
+            SeparatorStr,
+            SetAsEntryStr
         };
         // Fold/Expand menu items
         string[] tmp= null;

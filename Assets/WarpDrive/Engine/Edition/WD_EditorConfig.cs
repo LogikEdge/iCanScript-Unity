@@ -11,7 +11,7 @@ public class WD_EditorConfig {
 	public const char   PrivateStringPrefix= '$';
 
     // Icons
-	public const string FoldedIcon  ="WD_FoldedIcon.psd";
+	public const string FoldedIcon  = "WD_FoldedIcon.psd";
 	public const string UnfoldedIcon= "WD_UnfoldedIcon.psd";
 	public const string MinimizeIcon= "WD_MinimizeIcon.psd";
 	public const string MaximizeIcon= "WD_MaximizeIcon.psd";
