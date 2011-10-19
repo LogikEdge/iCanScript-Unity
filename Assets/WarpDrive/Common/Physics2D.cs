@@ -5,16 +5,6 @@ public class Physics2D {
 
     // ======================================================================
     // COLLISION FUNCTIONS
-    // ----------------------------------------------------------------------
-    // Returns true if the given point is inside the rectangle.
-    public static bool IsInside(Vector2 _point, Rect _rect) {
-        if(_point.x <= _rect.xMin || _point.y <= _rect.yMin)
-            return false;
-        if(_point.x >= _rect.xMax || _point.y >= _rect.yMax)
-            return false;
-        return true;
-    }
-
 	// ----------------------------------------------------------------------
     // Returns true if the given rectangles overlap.
     public static bool DoesCollide(Rect _rect1, Rect _rect2) {

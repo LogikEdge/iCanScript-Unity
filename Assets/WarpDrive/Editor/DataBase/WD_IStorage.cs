@@ -1036,8 +1036,8 @@ public class WD_IStorage {
 
     // ----------------------------------------------------------------------
     // Returns true if the given point is inside the node coordinates.
-    bool IsInside(WD_EditorObject node, Vector2 _point) {
-        return Physics2D.IsInside(_point, GetPosition(node));
+    bool IsInside(WD_EditorObject node, Vector2 point) {
+        return GetPosition(node).Contains(point);
     }
 
 
