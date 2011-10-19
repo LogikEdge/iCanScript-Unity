@@ -323,9 +323,19 @@ public class WD_Graphics {
         }
     }
     // ======================================================================
+    // Picking functionality
+    // ----------------------------------------------------------------------
+    public bool IsNodeTitleBarPicked(WD_EditorObject node, Vector2 pick, WD_IStorage storage) {
+        if(!node.IsNode || storage.IsMinimized(node)) return false;
+        Rect titleRect= storage.GetPosition(node);
+        GUIStyle style= GetNodeGUIStyle(node, null, storage);
+        titleRect.height= style.border.top;
+        return titleRect.Contains(pick);
+    }
+    // ======================================================================
     // Fold/Unfold icon functionality.
     // ----------------------------------------------------------------------
-    public bool IsFoldIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_IStorage storage) {
+    public bool IsFoldIconPicked(WD_EditorObject obj, Vector2 mousePos, WD_IStorage storage) {
         if(!ShouldDisplayFoldIcon(obj, storage)) return false;
         Rect foldIconPos= GetFoldIconPosition(obj, storage);
         return foldIconPos.Contains(mousePos);
@@ -349,7 +359,7 @@ public class WD_Graphics {
     // ======================================================================
     // Minimize icon functionality
     // ----------------------------------------------------------------------
-    public bool IsMinimizeIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_IStorage storage) {
+    public bool IsMinimizeIconPicked(WD_EditorObject obj, Vector2 mousePos, WD_IStorage storage) {
         if(!ShouldDisplayMinimizeIcon(obj, storage)) return false;
         Rect minimizeIconPos= GetMinimizeIconPosition(obj, storage);
         return minimizeIconPos.Contains(mousePos);
@@ -379,7 +389,7 @@ public class WD_Graphics {
         return icon;       
     }
     // ----------------------------------------------------------------------
-    public bool IsMaximizeIconPressed(WD_EditorObject obj, Vector2 mousePos, WD_IStorage storage) {
+    public bool IsMaximizeIconPicked(WD_EditorObject obj, Vector2 mousePos, WD_IStorage storage) {
         if(!ShouldDisplayMaximizeIcon(obj, storage)) return false;
         Rect maximizeIconPos= GetMaximizeIconPosition(obj, storage);
         return maximizeIconPos.Contains(mousePos);

@@ -179,7 +179,7 @@ public class WD_Editor : EditorWindow {
                     if(SelectedObject != null) {
                         // Process fold/unfold click.
                         Vector2 graphMousePos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
-                        if(Graphics.IsFoldIconPressed(SelectedObject, graphMousePos, Storage)) {
+                        if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
                             if(Storage.IsFolded(SelectedObject)) {
                                 Storage.Unfold(SelectedObject);
                             } else {
@@ -187,9 +187,9 @@ public class WD_Editor : EditorWindow {
                             }
                         }
                         // Process maximize/minimize click.
-                        if(Graphics.IsMinimizeIconPressed(SelectedObject, graphMousePos, Storage)) {
+                        if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
                             Storage.Minimize(SelectedObject);
-                        } else if(Graphics.IsMaximizeIconPressed(SelectedObject, graphMousePos, Storage)) {
+                        } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
                             Storage.Maximize(SelectedObject);
                         }
                     }
@@ -231,7 +231,7 @@ public class WD_Editor : EditorWindow {
             }
             else {
                 node= Storage.GetNodeAt(pos);                
-                if(node != null) {
+                if(node != null && (!node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
                     DragObject= node;
                     Rect position= Storage.GetPosition(node);
                     DragStartPosition= new Vector2(position.x, position.y);                                                    

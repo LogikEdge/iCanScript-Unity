@@ -437,7 +437,6 @@ public class WD_IStorage {
         );
         return foundNode;
     }
-    
     // ----------------------------------------------------------------------
     // Returns the connection at the given position.
     public WD_EditorObject GetPortAt(Vector2 pick) {
@@ -458,7 +457,12 @@ public class WD_IStorage {
         );
         return bestPort;
     }
-
+    // ----------------------------------------------------------------------
+    // Returns true if pick is in the titlebar of the node.
+    public bool IsInTitleBar(WD_EditorObject node, Vector2 pick) {
+        if(!node.IsNode) return false;
+        return true;
+    }
 
     // ======================================================================
     // Node Layout
