@@ -506,21 +506,12 @@ public class WD_IStorage {
 
         // Minimized nodes are fully collapsed.
         if(node.IsMinimized) {
-            float iconWidth= WD_EditorConfig.MaximizeNodeWidth;
-            float iconHeight= WD_EditorConfig.MaximizeNodeHeight;
-//            if(node.Icon != null) {
-//                Texture icon= Asset
-//                AssetDatabase.GetCachedIcon(node.Icon);
-//                if(icon != null) {
-//                    iconWidth= icon.width;
-//                    iconHeight= icon.height;
-//                }
-//            }
-            if(node.LocalPosition.width != iconWidth || node.LocalPosition.height != iconHeight) {
-                   node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-iconWidth);
-                   node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-iconHeight);
-                   node.LocalPosition.width= iconWidth;
-                   node.LocalPosition.height= iconHeight;
+            Texture2D icon= WD_Graphics.GetMaximizeIcon(node, null, this);
+            if(node.LocalPosition.width != icon.width || node.LocalPosition.height != icon.height) {
+                   node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-icon.width);
+                   node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-icon.height);
+                   node.LocalPosition.width= icon.width;
+                   node.LocalPosition.height= icon.height;
             }
             Vector2 nodeCenter= new Vector2(0.5f*node.LocalPosition.width, 0.5f*node.LocalPosition.height);
             ForEachChild(node,

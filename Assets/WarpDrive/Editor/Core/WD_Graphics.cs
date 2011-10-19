@@ -25,7 +25,10 @@ public class WD_Graphics {
 	static bool         maximizeIconErrorSeen       = false;
 	
     // ----------------------------------------------------------------------
-	internal class NodeStyle {
+    static Dictionary<string, Texture2D>   cachedTextures= new Dictionary<string, Texture2D>();
+    
+    // ----------------------------------------------------------------------
+	public class NodeStyle {
 	    public GUIStyle    guiStyle    = null;
 	    public Color       nodeColor   = new Color(0,0,0,0);
 	    public Texture2D   maximizeIcon= null;
@@ -59,7 +62,7 @@ public class WD_Graphics {
         // Load AA line texture.
         string texturePath;     
         if(lineTexture == null) {
-            if(!LoadTexture("WD_LineTexture.psd", ref lineTexture, ref lineTextureErrorSeen)) {
+            if(!GetCachedTexture("WD_LineTexture.psd", out lineTexture, ref lineTextureErrorSeen)) {
                 IsInitialized= false;
                 return IsInitialized;
             }
@@ -69,7 +72,7 @@ public class WD_Graphics {
         }
         // Load node texture templates.
         if(defaultNodeTexture == null) {
-            if(!LoadTexture("WD_DefaultNodeTexture.psd", ref defaultNodeTexture, ref defaultNodeTextureErrorSeen)) {
+            if(!GetCachedTexture("WD_DefaultNodeTexture.psd", out defaultNodeTexture, ref defaultNodeTextureErrorSeen)) {
                 IsInitialized= false;
                 return IsInitialized;
             }
@@ -90,20 +93,20 @@ public class WD_Graphics {
             }            
         }
         // Load folded/unfolded icons.
-        if(!LoadIcon(WD_EditorConfig.FoldedIcon, ref foldedIcon, ref foldedIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorConfig.FoldedIcon, out foldedIcon, ref foldedIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
-        if(!LoadIcon(WD_EditorConfig.UnfoldedIcon,ref unfoldedIcon, ref unfoldedIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorConfig.UnfoldedIcon, out unfoldedIcon, ref unfoldedIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
         // Load maximize/minimize icon.
-        if(!LoadIcon(WD_EditorConfig.MinimizeIcon, ref minimizeIcon, ref minimizeIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorConfig.MinimizeIcon, out minimizeIcon, ref minimizeIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }
-        if(!LoadIcon(WD_EditorConfig.MaximizeIcon, ref maximizeIcon, ref maximizeIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorConfig.MaximizeIcon, out maximizeIcon, ref maximizeIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }
@@ -113,36 +116,56 @@ public class WD_Graphics {
     }
 
     // ----------------------------------------------------------------------
-    static bool LoadIcon(string fileName, ref Texture2D icon, ref bool errorSeen, WD_IStorage storage) {
-        icon= LoadIcon(fileName, storage);
-        if(icon == null) {
-            ResourceMissingError(fileName, ref errorSeen);            
-            return false;
+    public static Texture2D GetCachedTexture(string fileName) {
+        Texture2D texture= null;
+        if(cachedTextures.ContainsKey(fileName)) {
+            cachedTextures.TryGetValue(fileName, out texture);
+            if(texture != null) return texture;
+            cachedTextures.Remove(fileName);
         }
-        return true;
+        texture= AssetDatabase.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
+        if(texture != null) {
+            cachedTextures.Add(fileName, texture);
+            texture.hideFlags= HideFlags.DontSave;
+        }
+        return texture;
     }
     // ----------------------------------------------------------------------
-    static Texture2D LoadIcon(string fileName, WD_IStorage storage) {
-        string iconPath= WD_UserPreferences.UserIcons.WarpDriveIconPath+"/"+fileName;
-        Texture2D icon= AssetDatabase.LoadAssetAtPath(iconPath, typeof(Texture2D)) as Texture2D;
-        if(icon != null) return icon;
-        foreach(var path in storage.Preferences.Icons.CustomIconPaths) {
-            icon= AssetDatabase.LoadAssetAtPath(path+"/"+fileName, typeof(Texture2D)) as Texture2D;
-            if(icon != null) return icon;
-        }
-        icon= AssetDatabase.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
-        if(icon == null) Debug.LogWarning("Unable to locate icon: "+fileName);
-        return icon;
-    }
-    // ----------------------------------------------------------------------
-    static bool LoadTexture(string fileName, ref Texture2D texture, ref bool errorSeen) {
+    static bool GetCachedTexture(string fileName, out Texture2D texture, ref bool errorSeen) {
         string texturePath= WD_EditorConfig.GuiAssetPath+"/"+fileName;
-        texture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
+        texture= GetCachedTexture(texturePath);
         if(texture == null) {
             ResourceMissingError(texturePath, ref errorSeen);
             return false;
         }        
         return true;            
+    }
+    // ----------------------------------------------------------------------
+    public static Texture2D GetCachedIcon(string fileName, WD_IStorage storage) {
+        // Try with the WarpDrice Icon prefix.
+        string iconPath= WD_UserPreferences.UserIcons.WarpDriveIconPath+"/"+fileName;
+        Texture2D icon= GetCachedTexture(iconPath);
+        if(icon == null) {
+            // Try with the user definable Icon prefixes.
+            foreach(var path in storage.Preferences.Icons.CustomIconPaths) {
+                icon= GetCachedTexture(path+"/"+fileName);
+                if(icon != null) break;
+            }
+            // Try without any prefix.
+            if(icon == null) {
+                icon= GetCachedTexture(fileName);                            
+            }
+        }
+        return icon;
+    }
+    // ----------------------------------------------------------------------
+    public static bool GetCachedIcon(string fileName, out Texture2D icon, ref bool errorSeen, WD_IStorage storage) {
+        icon= GetCachedIcon(fileName, storage);
+        if(icon == null) {
+            ResourceMissingError(fileName, ref errorSeen);            
+            return false;
+        }
+        return true;
     }
     
     // ----------------------------------------------------------------------
@@ -341,18 +364,17 @@ public class WD_Graphics {
     // ======================================================================
     // Maximize icon functionality
     // ----------------------------------------------------------------------
-    static Texture2D GetMaximizeIcon(WD_EditorObject node, NodeStyle nodeStyle, WD_IStorage storage) {
+    public static Texture2D GetMaximizeIcon(WD_EditorObject node, NodeStyle nodeStyle, WD_IStorage storage) {
         Texture2D icon= null;
         if(storage.Preferences.Icons.EnableMinimizedIcons && node.Icon != null && node.Icon != "") {
-            icon= LoadIcon(node.Icon, storage);
-//            icon.Resize(24,24,TextureFormat.ARGB32,false);
-//            icon.Apply();    
-            if(icon == null) {
-                Debug.LogWarning("Unable to load Icon: "+node.Icon);
-            }            
+            icon= GetCachedIcon(node.Icon, storage);
+            if(icon != null) return icon;
+            Debug.LogWarning("Unable to load Icon: "+node.Icon);
         }
-        if(icon == null) {
+        if(nodeStyle != null) {
             icon= nodeStyle.maximizeIcon;            
+        } else {
+            icon= maximizeIcon;
         }
         return icon;       
     }
