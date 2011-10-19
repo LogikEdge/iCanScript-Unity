@@ -166,50 +166,48 @@ public class WD_Editor : EditorWindow {
     public UserCommandStateEnum UserCommandState= UserCommandStateEnum.Idle;
     WD_Mouse.ButtonStateEnum   PreviousLeftButtonState= WD_Mouse.ButtonStateEnum.Idle;    
     public void ProcessEvents() {
-        if(!DynamicMenu.IsActive) {
-            // Update the inspector object.
-            DetermineSelectedObject();
+        // Update the inspector object.
+        DetermineSelectedObject();
 
-            // Process left button state.
-            switch(Mouse.LeftButtonState) {
-                case WD_Mouse.ButtonStateEnum.Idle:
-                    if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDragging();
-                    break;
-                case WD_Mouse.ButtonStateEnum.SingleClick:
-                    if(SelectedObject != null) {
-                        // Process fold/unfold click.
-                        Vector2 graphMousePos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
-                        if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
-                            if(Storage.IsFolded(SelectedObject)) {
-                                Storage.Unfold(SelectedObject);
-                            } else {
-                                Storage.Fold(SelectedObject);
-                            }
-                        }
-                        // Process maximize/minimize click.
-                        if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
-                            Storage.Minimize(SelectedObject);
-                        } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
-                            Storage.Maximize(SelectedObject);
+        // Process left button state.
+        switch(Mouse.LeftButtonState) {
+            case WD_Mouse.ButtonStateEnum.Idle:
+                if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDragging();
+                break;
+            case WD_Mouse.ButtonStateEnum.SingleClick:
+                if(SelectedObject != null) {
+                    // Process fold/unfold click.
+                    Vector2 graphMousePos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
+                    if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
+                        if(Storage.IsFolded(SelectedObject)) {
+                            Storage.Unfold(SelectedObject);
+                        } else {
+                            Storage.Fold(SelectedObject);
                         }
                     }
-                    break;
-                case WD_Mouse.ButtonStateEnum.DoubleClick:
-                    DynamicMenu.Update(SelectedObject, Storage, Mouse.LeftButtonDownPosition);
-                    break;
-                case WD_Mouse.ButtonStateEnum.Dragging:
-                    ProcessDragging();
-                    break;
-            }
-            PreviousLeftButtonState= Mouse.LeftButtonState;
-
-            // Process right button state.
-            switch(Mouse.RightButtonState) {
-                case WD_Mouse.ButtonStateEnum.SingleClick:
-                    DynamicMenu.Update(SelectedObject, Storage, Mouse.RightButtonDownPosition);
-                    break;
-            }                    
+                    // Process maximize/minimize click.
+                    if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
+                        Storage.Minimize(SelectedObject);
+                    } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
+                        Storage.Maximize(SelectedObject);
+                    }
+                }
+                break;
+            case WD_Mouse.ButtonStateEnum.DoubleClick:
+                DynamicMenu.Update(SelectedObject, Storage, Mouse.LeftButtonDownPosition);
+                break;
+            case WD_Mouse.ButtonStateEnum.Dragging:
+                ProcessDragging();
+                break;
         }
+        PreviousLeftButtonState= Mouse.LeftButtonState;
+
+        // Process right button state.
+        switch(Mouse.RightButtonState) {
+            case WD_Mouse.ButtonStateEnum.SingleClick:
+                DynamicMenu.Update(SelectedObject, Storage, Mouse.RightButtonDownPosition);
+                break;
+        }                    
     }
     
 	// ----------------------------------------------------------------------
@@ -221,9 +219,11 @@ public class WD_Editor : EditorWindow {
         WD_EditorObject port;
         WD_EditorObject node;
         Vector2 MousePosition= ScrollView.ScreenToGraph(Mouse.Position);
+        // Start a new drag.
         if(DragObject == null) {
             Vector2 pos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
             port= Storage.GetPortAt(pos);
+            // New port drag.
             if(port != null && !Storage.IsMinimized(port)) {
                 DragObject= port;
                 DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);

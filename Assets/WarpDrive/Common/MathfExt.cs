@@ -4,7 +4,7 @@ using System.Collections;
 public class MathfExt {
 
     // ======================================================================
-    // FLOAT TEST FUNCTIONS
+    // Float functionality using Epsilon.
     // ----------------------------------------------------------------------
     public static bool IsEqual(float a, float b) {
         return Mathf.Abs(a-b) < Mathf.Epsilon;
