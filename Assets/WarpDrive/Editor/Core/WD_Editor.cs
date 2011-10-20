@@ -313,12 +313,17 @@ public class WD_Editor : EditorWindow {
                             break;
                         }
                         if(port.IsStatePort) {
-                            if(Storage.IsValid(port.Source)) {
-                                Storage.DestroyInstance(port.Source);
+                            if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
+                                if(Storage.IsValid(port.Source)) {
+                                    Storage.DestroyInstance(port.Source);
+                                } else {
+                                    Prelude.forEach(p=> Storage.DestroyInstance(p), Storage.FindConnectedPorts(port));
+                                }
+                                Storage.DestroyInstance(port);
                             } else {
-                                Prelude.forEach(p=> Storage.DestroyInstance(p), Storage.FindConnectedPorts(port));
+                                port.LocalPosition.x= DragStartPosition.x;
+                                port.LocalPosition.y= DragStartPosition.y;                                
                             }
-                            Storage.DestroyInstance(port);
                             break;
                         }
                     }                    
