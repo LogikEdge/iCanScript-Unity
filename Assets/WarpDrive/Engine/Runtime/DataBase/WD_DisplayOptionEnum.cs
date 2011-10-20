@@ -4,7 +4,7 @@ using System.Collections;
 [System.Serializable]
 public enum WD_DisplayOptionEnum { Normal, Minimized, Folded, Hidden }
 
-public partial class WD {
+public static partial class WD {
     public static bool IsDisplayedNormally(WD_EditorObject obj) { return obj.DisplayOption == WD_DisplayOptionEnum.Normal; }
     public static bool IsMinimized        (WD_EditorObject obj) { return obj.DisplayOption == WD_DisplayOptionEnum.Minimized; }
     public static bool IsFolded           (WD_EditorObject obj) { return obj.DisplayOption == WD_DisplayOptionEnum.Folded; }

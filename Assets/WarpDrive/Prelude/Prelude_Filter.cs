@@ -5,16 +5,16 @@ using System.Collections.Generic;
 
 public static partial class Prelude {
     // ----------------------------------------------------------------------
-    // filterWith :: (f a->())->(g a->bool)->[a]->()
+    // filterWith :: (f a->bool)->(f a->())->[a]->()
     // filter     :: (f a->bool)->[a]->[a]
-    public static void filterWith<T>(System.Action<T> fnc, System.Func<T,bool> cond, T[] l) {
+    public static void filterWith<T>(System.Func<T,bool> cond, System.Action<T> fnc, T[] l) {
         foreach(var obj in l) {
             if(cond(obj)) {
                 fnc(obj);
             }
         }
     }
-    public static void filterWith<T>(System.Action<T> fnc, System.Func<T,bool> cond, List<T> l) {
+    public static void filterWith<T>(System.Func<T,bool> cond, System.Action<T> fnc, List<T> l) {
         foreach(var obj in l) {
             if(cond(obj)) {
                 fnc(obj);
@@ -23,12 +23,12 @@ public static partial class Prelude {
     }
     public static T[] filter<T>(System.Func<T,bool> cond, T[] l) {
         List<T> result= new List<T>();
-        filterWith<T>( (obj)=> { result.Add(obj); }, cond, l);
+        filterWith<T>(cond, (obj)=> { result.Add(obj); }, l);
         return result.ToArray();
     }
     public static List<T> filter<T>(List<T> l, System.Func<T,bool> cond) {
         List<T> result= new List<T>();
-        filterWith<T>( (obj)=> { result.Add(obj); }, cond, l);
+        filterWith<T>(cond, (obj)=> { result.Add(obj); }, l);
         return result;
     }
     

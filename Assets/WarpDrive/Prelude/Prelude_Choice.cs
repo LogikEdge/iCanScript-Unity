@@ -51,13 +51,11 @@ public static partial class Prelude {
     // ----------------------------------------------------------------------
     public static void choice<T1,T2>(object obj, Action<T1> f1,
                                                  Action<T2> f2,
-                                                 Action<object> defaultFnc) where T1 : class
-                                                                            where T2 : class {
-        T1 t1= obj as T1;
-        if(t1 != null) { f1(t1); return; }
-        T2 t2= obj as T2;
-        if(t2 != null) { f2(t2); return; }
-        defaultFnc(obj);
+                                                 Action<object> defaultFnc= null) where T1 : class
+                                                                                  where T2 : class {
+        if(executeIf<T1>(obj, f1)) return;
+        if(executeIf<T2>(obj, f2)) return;
+        if(defaultFnc != null) defaultFnc(obj);                                                 
     }
 
     // ----------------------------------------------------------------------
@@ -65,16 +63,13 @@ public static partial class Prelude {
     public static void choice<T1,T2,T3>(object obj, Action<T1> f1,
                                                     Action<T2> f2,
                                                     Action<T3> f3,
-                                                    Action<object> defaultFnc) where T1 : class
-                                                                               where T2 : class
-                                                                               where T3 : class {
-        T1 t1= obj as T1;
-        if(t1 != null) { f1(t1); return; }
-        T2 t2= obj as T2;
-        if(t2 != null) { f2(t2); return; }
-        T3 t3= obj as T3;
-        if(t3 != null) { f3(t3); return; }
-        defaultFnc(obj);
+                                                    Action<object> defaultFnc= null) where T1 : class
+                                                                                     where T2 : class
+                                                                                     where T3 : class {
+        choice<T1,T2>(obj, f1, f2, (_) => {
+            if(executeIf<T3>(obj, f3)) {}
+            else if(defaultFnc!= null) defaultFnc(obj);
+        });
     }
     
     // ----------------------------------------------------------------------
@@ -83,19 +78,14 @@ public static partial class Prelude {
                                                        Action<T2> f2,
                                                        Action<T3> f3,
                                                        Action<T4> f4,
-                                                       Action<object> defaultFnc) where T1 : class
-                                                                                  where T2 : class
-                                                                                  where T3 : class
-                                                                                  where T4 : class {
-        T1 t1= obj as T1;
-        if(t1 != null) { f1(t1); return; }
-        T2 t2= obj as T2;
-        if(t2 != null) { f2(t2); return; }
-        T3 t3= obj as T3;
-        if(t3 != null) { f3(t3); return; }
-        T4 t4= obj as T4;
-        if(t4 != null) { f4(t4); return; }
-        defaultFnc(obj);
+                                                       Action<object> defaultFnc= null) where T1 : class
+                                                                                        where T2 : class
+                                                                                        where T3 : class
+                                                                                        where T4 : class {
+        choice<T1,T2,T3>(obj, f1, f2, f3, (_) => {
+            if(executeIf<T4>(obj, f4)) {}
+            else if(defaultFnc!= null) defaultFnc(obj);
+        });
     }
     
     // ----------------------------------------------------------------------
@@ -105,26 +95,110 @@ public static partial class Prelude {
                                                           Action<T3> f3,
                                                           Action<T4> f4,
                                                           Action<T5> f5,
-                                                          Action<object> defaultFnc) where T1 : class
-                                                                                     where T2 : class
-                                                                                     where T3 : class
-                                                                                     where T4 : class
-                                                                                     where T5 : class {
-        T1 t1= obj as T1;
-        if(t1 != null) { f1(t1); return; }
-        T2 t2= obj as T2;
-        if(t2 != null) { f2(t2); return; }
-        T3 t3= obj as T3;
-        if(t3 != null) { f3(t3); return; }
-        T4 t4= obj as T4;
-        if(t4 != null) { f4(t4); return; }
-        T5 t5= obj as T5;
-        if(t5 != null) { f5(t5); return; }
-        defaultFnc(obj);
+                                                          Action<object> defaultFnc= null) where T1 : class
+                                                                                           where T2 : class
+                                                                                           where T3 : class
+                                                                                           where T4 : class
+                                                                                           where T5 : class {
+        choice<T1,T2,T3,T4>(obj, f1, f2, f3, f4, (_) => {
+            if(executeIf<T5>(obj, f5)) {}
+            else if(defaultFnc!= null) defaultFnc(obj);
+        });
     }
     
     // ======================================================================
     // Dynamic
     // ----------------------------------------------------------------------
+    public static void choice<A>(A obj, Func<A,bool> c1, Action<A> f1,
+                                        Func<A,bool> c2, Action<A> f2,
+                                                         Action<A> defaultFnc= null) {
+        if(c1(obj)) f1(obj);
+        else if(c2(obj)) f2(obj);
+        else if(defaultFnc != null) defaultFnc(obj);
+    }
+    public static void choice<A>(A obj, Func<A,bool> c1, Action<A> f1,
+                                        Func<A,bool> c2, Action<A> f2,
+                                        Func<A,bool> c3, Action<A> f3,
+                                                         Action<A> defaultFnc= null) {
+        choice<A>(obj, c1, f1, c2, f2, (_) => {
+            if(c3(obj)) f3(obj);
+            else if(defaultFnc != null) defaultFnc(obj);
+        });
+    }
+    public static void choice<A>(A obj, Func<A,bool> c1, Action<A> f1,
+                                        Func<A,bool> c2, Action<A> f2,
+                                        Func<A,bool> c3, Action<A> f3,
+                                        Func<A,bool> c4, Action<A> f4,
+                                                         Action<A> defaultFnc= null) {
+        choice<A>(obj, c1, f1, c2, f2, c3, f3, (_) => {
+            if(c4(obj)) f4(obj);
+            else if(defaultFnc != null) defaultFnc(obj);
+        });
+    }
+    public static void choice<A>(A obj, Func<A,bool> c1, Action<A> f1,
+                                        Func<A,bool> c2, Action<A> f2,
+                                        Func<A,bool> c3, Action<A> f3,
+                                        Func<A,bool> c4, Action<A> f4,
+                                        Func<A,bool> c5, Action<A> f5,
+                                                         Action<A> defaultFnc= null) {
+        choice<A>(obj, c1, f1, c2, f2, c3, f3, c4, f4, (_) => {
+            if(c5(obj)) f5(obj);
+            else if(defaultFnc != null) defaultFnc(obj);
+        });
+    }
+    public static void choice<A>(A obj, Func<A,bool> c1, Action<A> f1,
+                                        Func<A,bool> c2, Action<A> f2,
+                                        Func<A,bool> c3, Action<A> f3,
+                                        Func<A,bool> c4, Action<A> f4,
+                                        Func<A,bool> c5, Action<A> f5,
+                                        Func<A,bool> c6, Action<A> f6,
+                                                         Action<A> defaultFnc= null) {
+        choice<A>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, (_) => {
+            if(c6(obj)) f6(obj);
+            else if(defaultFnc != null) defaultFnc(obj);
+        });
+    }
+    public static void choice<A>(A obj, Func<A,bool> c1, Action<A> f1,
+                                        Func<A,bool> c2, Action<A> f2,
+                                        Func<A,bool> c3, Action<A> f3,
+                                        Func<A,bool> c4, Action<A> f4,
+                                        Func<A,bool> c5, Action<A> f5,
+                                        Func<A,bool> c6, Action<A> f6,
+                                        Func<A,bool> c7, Action<A> f7,
+                                                         Action<A> defaultFnc= null) {
+        choice<A>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, (_) => {
+            if(c7(obj)) f7(obj);
+            else if(defaultFnc != null) defaultFnc(obj);
+        });
+    }
+    public static void choice<A>(A obj, Func<A,bool> c1, Action<A> f1,
+                                        Func<A,bool> c2, Action<A> f2,
+                                        Func<A,bool> c3, Action<A> f3,
+                                        Func<A,bool> c4, Action<A> f4,
+                                        Func<A,bool> c5, Action<A> f5,
+                                        Func<A,bool> c6, Action<A> f6,
+                                        Func<A,bool> c7, Action<A> f7,
+                                        Func<A,bool> c8, Action<A> f8,
+                                                         Action<A> defaultFnc= null) {
+        choice<A>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, (_) => {
+            if(c8(obj)) f8(obj);
+            else if(defaultFnc != null) defaultFnc(obj);
+        });
+    }
+    public static void choice<A>(A obj, Func<A,bool> c1, Action<A> f1,
+                                        Func<A,bool> c2, Action<A> f2,
+                                        Func<A,bool> c3, Action<A> f3,
+                                        Func<A,bool> c4, Action<A> f4,
+                                        Func<A,bool> c5, Action<A> f5,
+                                        Func<A,bool> c6, Action<A> f6,
+                                        Func<A,bool> c7, Action<A> f7,
+                                        Func<A,bool> c8, Action<A> f8,
+                                        Func<A,bool> c9, Action<A> f9,
+                                                         Action<A> defaultFnc= null) {
+        choice<A>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, (_) => {
+            if(c9(obj)) f9(obj);
+            else if(defaultFnc != null) defaultFnc(obj);
+        });
+    }
 
 }

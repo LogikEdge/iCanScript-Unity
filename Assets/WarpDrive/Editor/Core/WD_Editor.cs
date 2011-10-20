@@ -25,7 +25,7 @@ public class WD_Editor : EditorWindow {
     WD_EditorObject DragObject          = null;
     Vector2         DragStartPosition   = Vector2.zero;
     bool            IsDragEnabled       = true;
-    bool            IsDragging          { get { return DragObject != null; }}
+    bool            IsDragStarted       { get { return DragObject != null; }}
 
     // ======================================================================
     // ACCESSORS
@@ -172,7 +172,7 @@ public class WD_Editor : EditorWindow {
         // Process left button state.
         switch(Mouse.LeftButtonState) {
             case WD_Mouse.ButtonStateEnum.Idle:
-                if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDragging();
+                if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDrag();
                 break;
             case WD_Mouse.ButtonStateEnum.SingleClick:
                 if(SelectedObject != null) {
@@ -197,7 +197,7 @@ public class WD_Editor : EditorWindow {
                 DynamicMenu.Update(SelectedObject, Storage, Mouse.LeftButtonDownPosition);
                 break;
             case WD_Mouse.ButtonStateEnum.Dragging:
-                ProcessDragging();
+                ProcessDrag();
                 break;
         }
         PreviousLeftButtonState= Mouse.LeftButtonState;
@@ -211,7 +211,7 @@ public class WD_Editor : EditorWindow {
     }
     
 	// ----------------------------------------------------------------------
-    void ProcessDragging() {
+    void ProcessDrag() {
         // Return if dragging is not enabled.
         if(!IsDragEnabled) return;
 
@@ -220,29 +220,8 @@ public class WD_Editor : EditorWindow {
         WD_EditorObject node;
         Vector2 MousePosition= ScrollView.ScreenToGraph(Mouse.Position);
         // Start a new drag.
-        if(DragObject == null) {
-            Vector2 pos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
-            port= Storage.GetPortAt(pos);
-            // New port drag.
-            if(port != null && !Storage.IsMinimized(port)) {
-                DragObject= port;
-                DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
-                port.IsBeingDragged= true;
-            }
-            else {
-                node= Storage.GetNodeAt(pos);                
-                if(node != null && (!node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
-                    DragObject= node;
-                    Rect position= Storage.GetPosition(node);
-                    DragStartPosition= new Vector2(position.x, position.y);                                                    
-                }
-                else {
-                    // Disable dragging since mouse is not over Node or Port.
-                    IsDragEnabled= false;
-                    DragObject= null;
-                    return;
-                }
-            }
+        if(!IsDragStarted) {
+            StartDrag();
         }
 
         // Compute new object position.
@@ -265,9 +244,43 @@ public class WD_Editor : EditorWindow {
             node.IsDirty= true;                        
         }
     }    
-
 	// ----------------------------------------------------------------------
-    void EndDragging() {
+    void StartDrag() {
+        // Don't select new drag type if drag already started.
+        if(IsDragStarted) return;
+        
+        // Use the Left mouse down position has drag start position.
+        Vector2 pos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
+
+        // Port drag.
+        WD_EditorObject port= Storage.GetPortAt(pos);
+        if(port != null && !Storage.IsMinimized(port)) {
+            DragObject= port;
+            DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
+            port.IsBeingDragged= true;
+            return;
+        }
+
+        // Node drag.
+        WD_EditorObject node= Storage.GetNodeAt(pos);                
+        if(node != null && (!node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
+            DragObject= node;
+            Rect position= Storage.GetPosition(node);
+            DragStartPosition= new Vector2(position.x, position.y);                                                    
+            return;
+        }
+        
+        // New state transition drag.
+        if(node != null && node.IsState) {
+            Debug.Log("State transition drag");
+        }
+        
+        // Disable dragging since mouse is not over Node or Port.
+        IsDragEnabled= false;
+        DragObject= null;
+    }
+	// ----------------------------------------------------------------------
+    void EndDrag() {
         if(DragObject != null && DragObject.IsPort) {
             WD_EditorObject port= DragObject;
             port.IsBeingDragged= false;

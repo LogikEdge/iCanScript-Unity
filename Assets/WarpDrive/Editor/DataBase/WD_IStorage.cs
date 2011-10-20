@@ -1165,16 +1165,14 @@ public class WD_IStorage {
         WD_EditorObject foundPort= null;
         Rect tmp= GetPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
-        ForEach(
+        FilterWith(p => p.IsPort && p != port,
             (p) => {
-                if(p.IsPort && p != port) {
-                    tmp= GetPosition(p);
-                    Vector2 pPos= new Vector2(tmp.x, tmp.y);
-                    float distance= Vector2.Distance(pPos, position);
-                    if(distance <= 1.5*WD_EditorConfig.PortSize) {
-                        foundPort= p;
-                    }
-                }                
+                tmp= GetPosition(p);
+                Vector2 pPos= new Vector2(tmp.x, tmp.y);
+                float distance= Vector2.Distance(pPos, position);
+                if(distance <= 1.5*WD_EditorConfig.PortSize) {
+                    foundPort= p;
+                }
             }
         );
         return foundPort;
@@ -1185,30 +1183,28 @@ public class WD_IStorage {
     // Editor Object Iteration Utilities
     // ----------------------------------------------------------------------
     // Executes the given action if the given object matches the T type.
-    public static void ExecuteIf(WD_EditorObject obj, Func<WD_EditorObject,bool> cmp, Action<WD_EditorObject> f) {
-        if(cmp(obj)) f(obj);
+    public static void ExecuteIf(WD_EditorObject obj, Func<WD_EditorObject,bool> cond, Action<WD_EditorObject> f) {
+        Prelude.executeIf<WD_EditorObject>(obj,cond,f);
     }
-    public void ExecuteIf(int id, Func<WD_EditorObject,bool> cmp, Action<WD_EditorObject> f) {
+    public void ExecuteIf(int id, Func<WD_EditorObject,bool> cond, Action<WD_EditorObject> f) {
         if(!IsValid(id)) return;
-        ExecuteIf(EditorObjects[id], cmp, f);
+        ExecuteIf(EditorObjects[id], cond, f);
+    }
+    public void FilterWith(Func<WD_EditorObject,bool> cond, Action<WD_EditorObject> action) {
+        Prelude.filterWith(cond, action, EditorObjects);
     }
     public static void Case(WD_EditorObject obj,
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
                      Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        if(c1(obj)) f1(obj);
-        else if(c2(obj)) f2(obj);
-        else if(defaultFnc != null) defaultFnc(obj);
+        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
                      Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
                      Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        if(c1(obj)) f1(obj);
-        else if(c2(obj)) f2(obj);
-        else if(c3(obj)) f3(obj);
-        else if(defaultFnc != null) defaultFnc(obj);
+        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1216,11 +1212,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
                      Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        if(c1(obj)) f1(obj);
-        else if(c2(obj)) f2(obj);
-        else if(c3(obj)) f3(obj);
-        else if(c4(obj)) f4(obj);
-        else if(defaultFnc != null) defaultFnc(obj);
+        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1229,12 +1221,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
                      Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        if(c1(obj)) f1(obj);
-        else if(c2(obj)) f2(obj);
-        else if(c3(obj)) f3(obj);
-        else if(c4(obj)) f4(obj);
-        else if(c5(obj)) f5(obj);
-        else if(defaultFnc != null) defaultFnc(obj);
+        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1244,13 +1231,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
                      Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        if(c1(obj)) f1(obj);
-        else if(c2(obj)) f2(obj);
-        else if(c3(obj)) f3(obj);
-        else if(c4(obj)) f4(obj);
-        else if(c5(obj)) f5(obj);
-        else if(c6(obj)) f6(obj);
-        else if(defaultFnc != null) defaultFnc(obj);
+        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, defaultFnc);
     }
     public static void Case(WD_EditorObject obj,
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1261,14 +1242,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
                      Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        if(c1(obj)) f1(obj);
-        else if(c2(obj)) f2(obj);
-        else if(c3(obj)) f3(obj);
-        else if(c4(obj)) f4(obj);
-        else if(c5(obj)) f5(obj);
-        else if(c6(obj)) f6(obj);
-        else if(c7(obj)) f7(obj);
-        else if(defaultFnc != null) defaultFnc(obj);
+        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, defaultFnc);
     }
     public static void Case(WD_EditorObject obj,
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1280,15 +1254,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
                      Func<WD_EditorObject,bool> c8, Action<WD_EditorObject> f8,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        if(c1(obj)) f1(obj);
-        else if(c2(obj)) f2(obj);
-        else if(c3(obj)) f3(obj);
-        else if(c4(obj)) f4(obj);
-        else if(c5(obj)) f5(obj);
-        else if(c6(obj)) f6(obj);
-        else if(c7(obj)) f7(obj);
-        else if(c8(obj)) f8(obj);
-        else if(defaultFnc != null) defaultFnc(obj);
+        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1301,16 +1267,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c8, Action<WD_EditorObject> f8,
                      Func<WD_EditorObject,bool> c9, Action<WD_EditorObject> f9,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        if(c1(obj)) f1(obj);
-        else if(c2(obj)) f2(obj);
-        else if(c3(obj)) f3(obj);
-        else if(c4(obj)) f4(obj);
-        else if(c5(obj)) f5(obj);
-        else if(c6(obj)) f6(obj);
-        else if(c7(obj)) f7(obj);
-        else if(c8(obj)) f8(obj);
-        else if(c8(obj)) f9(obj);
-        else if(defaultFnc != null) defaultFnc(obj);
+        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, c9, f9, defaultFnc);
     }
     public void ForEachChild(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
@@ -1321,9 +1278,7 @@ public class WD_IStorage {
         }
     }
     public void ForEach(Action<WD_EditorObject> fnc) {
-        foreach(var obj in EditorObjects) {
-            if(obj.IsValid) fnc(obj);
-        }
+        Prelude.filterWith<WD_EditorObject>(WD.IsValid, fnc, EditorObjects);
     }
     public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         ForEachRecursiveDepthLast(parent, fnc);

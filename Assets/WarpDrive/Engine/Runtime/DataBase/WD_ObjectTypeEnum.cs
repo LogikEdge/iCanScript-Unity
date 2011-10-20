@@ -15,7 +15,7 @@ public enum WD_ObjectTypeEnum {
     Unknown
 }
 
-public partial class WD {
+public static partial class WD {
     public static bool IsBehaviour        (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Behaviour; }
     public static bool IsModule           (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Module; }
     public static bool IsStateChart       (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.StateChart; }
