@@ -869,7 +869,7 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public void ForEachTopPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
         ForEachChild(node,
-            (port)=> {
+            port=> {
                 if(port.IsPort && port.IsOnTopEdge) {
                     fnc(port);
                 }
@@ -880,7 +880,7 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public void ForEachBottomPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
         ForEachChild(node,
-            (port)=> {
+            port=> {
                 if(port.IsPort && port.IsOnBottomEdge) {
                     fnc(port);
                 }
@@ -891,7 +891,7 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public void ForEachLeftPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
         ForEachChild(node,
-            (port)=> {
+            port=> {
                 if(port.IsPort && port.IsOnLeftEdge) {
                     fnc(port);
                 }
@@ -902,7 +902,7 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public void ForEachRightPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
         ForEachChild(node,
-            (port)=> {
+            port=> {
                 if(port.IsPort && port.IsOnRightEdge) {
                     fnc(port);
                 }
@@ -1157,8 +1157,9 @@ public class WD_IStorage {
         WD_EditorObject foundPort= null;
         Rect tmp= GetPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
-        FilterWith(p => p.IsPort && p != port,
-            (p) => {
+        FilterWith(
+            p=> p.IsPort && p != port,
+            p=> {
                 tmp= GetPosition(p);
                 Vector2 pPos= new Vector2(tmp.x, tmp.y);
                 float distance= Vector2.Distance(pPos, position);

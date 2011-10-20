@@ -304,11 +304,23 @@ public class WD_Editor : EditorWindow {
                 // Verify for a new connection.
                 if(!VerifyNewConnection(port)) {
                     // Verify for disconnection.
+                    port.IsDirty= true;
                     if(!Storage.IsNearParent(port)) {
-                        port.LocalPosition.x= DragStartPosition.x;
-                        port.LocalPosition.y= DragStartPosition.y;
-                        Storage.DisconnectPort(port);
-                        
+                        if(port.IsDataPort) {
+                            port.LocalPosition.x= DragStartPosition.x;
+                            port.LocalPosition.y= DragStartPosition.y;
+                            Storage.DisconnectPort(port);                            
+                            break;
+                        }
+                        if(port.IsStatePort) {
+                            if(Storage.IsValid(port.Source)) {
+                                Storage.DestroyInstance(port.Source);
+                            } else {
+                                Prelude.forEach(p=> Storage.DestroyInstance(p), Storage.FindConnectedPorts(port));
+                            }
+                            Storage.DestroyInstance(port);
+                            break;
+                        }
                     }                    
                     else {
                         // Assume port relocation.
@@ -316,7 +328,6 @@ public class WD_Editor : EditorWindow {
                         Storage.Layout(Storage.EditorObjects[port.ParentId]);
                     }
                 }
-                port.IsDirty= true;
                 break;
             case DragTypeEnum.TransitionCreation:
                 WD_EditorObject parent= GetNodeAtMousePosition();
@@ -325,11 +336,10 @@ public class WD_Editor : EditorWindow {
                     Rect portRect= Storage.GetPosition(DragObject);
                     Storage.SetInitialPosition(inStatePort, new Vector2(portRect.x, portRect.y));
                     Storage[DragObject.Source].Source= inStatePort.InstanceId;
-                    Storage.DestroyInstance(DragObject.InstanceId);
+                    Storage.DestroyInstance(DragObject);
                 } else {
-                    Debug.Log("Not a good parent");
                     Storage.DestroyInstance(DragObject.Source);
-                    Storage.DestroyInstance(DragObject.InstanceId);
+                    Storage.DestroyInstance(DragObject);
                 }
                 break;
         }
