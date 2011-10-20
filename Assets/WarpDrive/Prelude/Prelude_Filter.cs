@@ -26,7 +26,7 @@ public static partial class Prelude {
         filterWith<T>(cond, (obj)=> { result.Add(obj); }, l);
         return result.ToArray();
     }
-    public static List<T> filter<T>(List<T> l, System.Func<T,bool> cond) {
+    public static List<T> filter<T>(System.Func<T,bool> cond, List<T> l) {
         List<T> result= new List<T>();
         filterWith<T>(cond, (obj)=> { result.Add(obj); }, l);
         return result;

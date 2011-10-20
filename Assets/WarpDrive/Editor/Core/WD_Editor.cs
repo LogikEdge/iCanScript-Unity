@@ -308,6 +308,7 @@ public class WD_Editor : EditorWindow {
                         port.LocalPosition.x= DragStartPosition.x;
                         port.LocalPosition.y= DragStartPosition.y;
                         Storage.DisconnectPort(port);
+                        
                     }                    
                     else {
                         // Assume port relocation.
@@ -318,11 +319,12 @@ public class WD_Editor : EditorWindow {
                 port.IsDirty= true;
                 break;
             case DragTypeEnum.TransitionCreation:
-                WD_EditorObject parent= GetObjectAtMousePosition();
+                WD_EditorObject parent= GetNodeAtMousePosition();
                 if(parent != null && parent.IsState) {
-                    WD_EditorObject inState= Storage.CreatePort("inState", parent.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
-                    inState.LocalPosition= DragObject.LocalPosition;
-                    Storage[DragObject.Source].Source= inState.InstanceId;
+                    WD_EditorObject inStatePort= Storage.CreatePort("inState", parent.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
+                    Rect portRect= Storage.GetPosition(DragObject);
+                    Storage.SetInitialPosition(inStatePort, new Vector2(portRect.x, portRect.y));
+                    Storage[DragObject.Source].Source= inStatePort.InstanceId;
                     Storage.DestroyInstance(DragObject.InstanceId);
                 } else {
                     Debug.Log("Not a good parent");
@@ -353,6 +355,13 @@ public class WD_Editor : EditorWindow {
     // Returns the object at the given mouse position.
     public WD_EditorObject GetObjectAtMousePosition() {
         return GetObjectAtScreenPosition(Mouse.Position);
+    }
+
+	// ----------------------------------------------------------------------
+    // Returns the object at the given mouse position.
+    public WD_EditorObject GetNodeAtMousePosition() {
+        Vector2 graphPosition= ScrollView.ScreenToGraph(Mouse.Position);
+        return Storage.GetNodeAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------

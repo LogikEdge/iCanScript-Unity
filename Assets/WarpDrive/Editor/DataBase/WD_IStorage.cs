@@ -401,13 +401,11 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public void DisconnectPort(WD_EditorObject port) {
         SetSource(port, null);
-        ForEach(
-            (obj) => {
-                if(obj.IsPort && obj.Source == port.InstanceId) {
-                    SetSource(obj, null);                            
-                }
-            }
-        );                
+        Prelude.iterate(p=> SetSource(p, null), FindConnectedPorts(port));
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject[] FindConnectedPorts(WD_EditorObject port) {
+        return Prelude.filter(p=> p.IsPort && p.Source == port.InstanceId, EditorObjects).ToArray();
     }
     // ----------------------------------------------------------------------
     bool IsPortConnected(WD_EditorObject port) {
