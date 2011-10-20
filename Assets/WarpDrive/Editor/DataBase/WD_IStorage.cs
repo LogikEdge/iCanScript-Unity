@@ -401,11 +401,11 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public void DisconnectPort(WD_EditorObject port) {
         SetSource(port, null);
-        Prelude.iterate(p=> SetSource(p, null), FindConnectedPorts(port));
+        Prelude.forEach(p=> SetSource(p, null), FindConnectedPorts(port));
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject[] FindConnectedPorts(WD_EditorObject port) {
-        return Prelude.filter(p=> p.IsPort && p.Source == port.InstanceId, EditorObjects).ToArray();
+        return Filter(p=> p.IsPort && p.Source == port.InstanceId).ToArray();
     }
     // ----------------------------------------------------------------------
     bool IsPortConnected(WD_EditorObject port) {
@@ -424,14 +424,9 @@ public class WD_IStorage {
     // Returns the node at the given position
     public WD_EditorObject GetNodeAt(Vector2 pick) {
         WD_EditorObject foundNode= null;
-        ForEach(
-            (node) => {
-                if(node.IsNode && IsVisible(node) && IsInside(node, pick)) {
-                    if(foundNode == null || node.LocalPosition.width < foundNode.LocalPosition.width) {
-                        foundNode= node;
-                    }
-                }                
-            }
+        FilterWith(
+            n=> n.IsNode && IsVisible(n) && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width), 
+            n=> foundNode= n
         );
         return foundNode;
     }
@@ -440,18 +435,17 @@ public class WD_IStorage {
     public WD_EditorObject GetPortAt(Vector2 pick) {
         WD_EditorObject bestPort= null;
         float bestDistance= 100000;     // Simply a big value
-        ForEach(
-            (port) => {
-                if(port.IsPort && IsVisible(port)) {
-                    Rect tmp= GetPosition(port);
-                    Vector2 position= new Vector2(tmp.x, tmp.y);
-                    float distance= Vector2.Distance(position, pick);
-                    if(distance < 1.5f * WD_EditorConfig.PortRadius && distance < bestDistance) {
-                        bestDistance= distance;
-                        bestPort= port;
-                    }                
-                }                
-            }
+        FilterWith(
+            port=> port.IsPort && IsVisible(port),
+            port=> {
+                Rect tmp= GetPosition(port);
+                Vector2 position= new Vector2(tmp.x, tmp.y);
+                float distance= Vector2.Distance(position, pick);
+                if(distance < 1.5f * WD_EditorConfig.PortRadius && distance < bestDistance) {
+                    bestDistance= distance;
+                    bestPort= port;
+                }                                
+            } 
         );
         return bestPort;
     }
@@ -1190,6 +1184,9 @@ public class WD_IStorage {
     }
     public void FilterWith(Func<WD_EditorObject,bool> cond, Action<WD_EditorObject> action) {
         Prelude.filterWith(cond, action, EditorObjects);
+    }
+    public List<WD_EditorObject> Filter(Func<WD_EditorObject,bool> cond) {
+        return Prelude.filter(cond, EditorObjects);
     }
     public static void Case(WD_EditorObject obj,
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
