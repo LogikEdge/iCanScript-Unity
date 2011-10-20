@@ -33,9 +33,7 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
         TreeCache= new WD_TreeCache();
-        foreach(var obj in EditorObjects) {
-            TreeCache.CreateInstance(obj);
-        }
+        ForEach(obj=> TreeCache.CreateInstance(obj));
     }
     
     
