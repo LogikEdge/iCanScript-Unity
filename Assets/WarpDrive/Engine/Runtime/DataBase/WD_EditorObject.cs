@@ -112,7 +112,6 @@ public class WD_EditorObject {
     public bool IsModulePort       { get { return WD.IsModulePort(this); }}
     public bool IsStatePort        { get { return WD.IsStatePort(this); }}
     public bool IsEnablePort       { get { return WD.IsEnablePort(this); }}
-    public bool IsDragPort         { get { return WD.IsDragPort(this); }}
     public bool IsOutputPort       { get { return WD.IsOutputPort(this); }}
     public bool IsInputPort        { get { return WD.IsInputPort(this); }}
     public bool IsInFieldPort      { get { return WD.IsInFieldPort(this); }}
