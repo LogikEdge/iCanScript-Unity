@@ -520,9 +520,9 @@ public class WD_IStorage {
         Rect position= GetPosition(node);
         if(MathfExt.IsZero(childRect.width) || MathfExt.IsZero(childRect.height)) {
             // Compute needed height.
-            List<WD_EditorObject> leftPorts= GetLeftPorts(node);
-            List<WD_EditorObject> rightPorts= GetRightPorts(node);
-            int nbOfPorts= leftPorts.Count > rightPorts.Count ? leftPorts.Count : rightPorts.Count;
+            WD_EditorObject[] leftPorts= GetLeftPorts(node);
+            WD_EditorObject[] rightPorts= GetRightPorts(node);
+            int nbOfPorts= leftPorts.Length > rightPorts.Length ? leftPorts.Length : rightPorts.Length;
             float height= Mathf.Max(WD_EditorConfig.NodeTitleHeight+nbOfPorts*WD_EditorConfig.MinimumPortSeparation, WD_EditorConfig.MinimumNodeHeight);                                
 
             // Apply new width and height.
@@ -719,27 +719,17 @@ public class WD_IStorage {
         }
         
 		// Gather all ports.
-        List<WD_EditorObject> topPorts   = new List<WD_EditorObject>();
-        List<WD_EditorObject> bottomPorts= new List<WD_EditorObject>();
-        List<WD_EditorObject> leftPorts  = new List<WD_EditorObject>();
-        List<WD_EditorObject> rightPorts = new List<WD_EditorObject>();
-        ForEachChild(node,
-            (port)=> {
-                if(port.IsPort) {
-                    if(port.IsOnTopEdge)         { topPorts.Add(port); }
-                    else if(port.IsOnBottomEdge) { bottomPorts.Add(port); }
-                    else if(port.IsOnLeftEdge)   { leftPorts.Add(port); }
-                    else if(port.IsOnRightEdge)  { rightPorts.Add(port); }                    
-                }
-            }
-        );
+        WD_EditorObject[] topPorts   = GetTopPorts(node);
+        WD_EditorObject[] bottomPorts= GetBottomPorts(node);
+        WD_EditorObject[] leftPorts  = GetLeftPorts(node);
+        WD_EditorObject[] rightPorts = GetRightPorts(node);
         
         // Relayout top ports.
         Rect position= GetPosition(node);
-        if(topPorts.Count != 0) {
+        if(topPorts.Length != 0) {
             SortPorts(topPorts);
-            float xStep= position.width / topPorts.Count;
-            for(int i= 0; i < topPorts.Count; ++i) {
+            float xStep= position.width / topPorts.Length;
+            for(int i= 0; i < topPorts.Length; ++i) {
                 if(topPorts[i].IsBeingDragged == false) {
                     topPorts[i].LocalPosition.x= (i+0.5f) * xStep;
                     topPorts[i].LocalPosition.y= 0;                
@@ -748,10 +738,10 @@ public class WD_IStorage {
         }
 
         // Relayout bottom ports.
-        if(bottomPorts.Count != 0) {
+        if(bottomPorts.Length != 0) {
             SortPorts(bottomPorts);
-            float xStep= position.width / bottomPorts.Count;
-            for(int i= 0; i < bottomPorts.Count; ++i) {
+            float xStep= position.width / bottomPorts.Length;
+            for(int i= 0; i < bottomPorts.Length; ++i) {
                 if(bottomPorts[i].IsBeingDragged == false) {
                     bottomPorts[i].LocalPosition.x= (i+0.5f) * xStep;
                     bottomPorts[i].LocalPosition.y= position.height;                
@@ -760,11 +750,11 @@ public class WD_IStorage {
         }
 
         // Relayout left ports.
-        if(leftPorts.Count != 0) {
+        if(leftPorts.Length != 0) {
             SortPorts(leftPorts);
             float topOffset= WD_EditorConfig.NodeTitleHeight;
-            float yStep= (position.height-topOffset) / leftPorts.Count;
-            for(int i= 0; i < leftPorts.Count; ++i) {
+            float yStep= (position.height-topOffset) / leftPorts.Length;
+            for(int i= 0; i < leftPorts.Length; ++i) {
                 if(leftPorts[i].IsBeingDragged == false) {
                     leftPorts[i].LocalPosition.x= 0;
                     leftPorts[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
@@ -773,15 +763,14 @@ public class WD_IStorage {
         }
 
         // Relayout right ports.
-        if(rightPorts.Count != 0) {
+        if(rightPorts.Length != 0) {
             SortPorts(rightPorts);
             float topOffset= WD_EditorConfig.NodeTitleHeight;
-            float yStep= (position.height-topOffset) / rightPorts.Count;
-            for(int i= 0; i < rightPorts.Count; ++i) {
+            float yStep= (position.height-topOffset) / rightPorts.Length;
+            for(int i= 0; i < rightPorts.Length; ++i) {
                 if(rightPorts[i].IsBeingDragged == false) {
                     rightPorts[i].LocalPosition.x= position.width;
-                    rightPorts[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
-    
+                    rightPorts[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;
                 }
             }
         }        
@@ -789,11 +778,11 @@ public class WD_IStorage {
 
     // ----------------------------------------------------------------------
     // Sorts the given port according to their relative positions.
-    void SortPorts(List<WD_EditorObject> _ports) {
-        for(int i= 0; i < _ports.Count-1; ++i) {
+    void SortPorts(WD_EditorObject[] _ports) {
+        for(int i= 0; i < _ports.Length-1; ++i) {
             Vector2 localPos= new Vector2(_ports[i].LocalPosition.x, _ports[i].LocalPosition.y);
             float sqrMag= localPos.sqrMagnitude;
-            for(int j= i+1; j < _ports.Count; ++j) {
+            for(int j= i+1; j < _ports.Length; ++j) {
                 localPos= new Vector2(_ports[j].LocalPosition.x, _ports[j].LocalPosition.y);
 				float sqrMag2= localPos.sqrMagnitude;
 				if(sqrMag > sqrMag2) {
@@ -807,40 +796,40 @@ public class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     // Returns all ports position on the top edge.
-    public List<WD_EditorObject> GetTopPorts(WD_EditorObject node) {
+    public WD_EditorObject[] GetTopPorts(WD_EditorObject node) {
         List<WD_EditorObject> ports= new List<WD_EditorObject>();
-        ForEachTopPort(node, (port)=> { ports.Add(port); } );
-        return ports;
+        ForEachTopPort(node, port=> ports.Add(port));
+        return ports.ToArray();
     }
 
     // ----------------------------------------------------------------------
     // Returns all ports position on the bottom edge.
-    public List<WD_EditorObject> GetBottomPorts(WD_EditorObject node) {
+    public WD_EditorObject[] GetBottomPorts(WD_EditorObject node) {
         List<WD_EditorObject> ports= new List<WD_EditorObject>();
-        ForEachBottomPort(node, (port)=> { ports.Add(port); } );
-        return ports;
+        ForEachBottomPort(node, port=> ports.Add(port));
+        return ports.ToArray();
     }
 
     // ----------------------------------------------------------------------
     // Returns all ports position on the left edge.
-    public List<WD_EditorObject> GetLeftPorts(WD_EditorObject node) {
+    public WD_EditorObject[] GetLeftPorts(WD_EditorObject node) {
         List<WD_EditorObject> ports= new List<WD_EditorObject>();
-        ForEachLeftPort(node, (port)=> { ports.Add(port); } );
-        return ports;        
+        ForEachLeftPort(node, port=> ports.Add(port));
+        return ports.ToArray();        
     }
 
     // ----------------------------------------------------------------------
     // Returns all ports position on the right edge.
-    public List<WD_EditorObject> GetRightPorts(WD_EditorObject node) {
+    public WD_EditorObject[] GetRightPorts(WD_EditorObject node) {
         List<WD_EditorObject> ports= new List<WD_EditorObject>();
-        ForEachRightPort(node, (port)=> { ports.Add(port); } );
-        return ports;
+        ForEachRightPort(node, port=> ports.Add(port));
+        return ports.ToArray();
     }
     // ----------------------------------------------------------------------
     // Returns the number of ports on the top edge.
     public int GetNbOfTopPorts(WD_EditorObject node) {
         int nbOfPorts= 0;
-        ForEachTopPort(node, (port)=> { ++nbOfPorts; } );
+        ForEachTopPort(node, port=> ++nbOfPorts);
         return nbOfPorts;
     }
 
@@ -848,7 +837,7 @@ public class WD_IStorage {
     // Returns the number of ports on the bottom edge.
     public int GetNbOfBottomPorts(WD_EditorObject node) {
         int nbOfPorts= 0;
-        ForEachBottomPort(node, (port)=> { ++nbOfPorts; } );
+        ForEachBottomPort(node, port=> ++nbOfPorts);
         return nbOfPorts;
     }
 
@@ -856,7 +845,7 @@ public class WD_IStorage {
     // Returns the number of ports on the left edge.
     public int GetNbOfLeftPorts(WD_EditorObject node) {
         int nbOfPorts= 0;
-        ForEachLeftPort(node, (port)=> { ++nbOfPorts; } );
+        ForEachLeftPort(node, port=> ++nbOfPorts);
         return nbOfPorts;
     }
 
@@ -864,7 +853,7 @@ public class WD_IStorage {
     // Returns the number of ports on the right edge.
     public int GetNbOfRightPorts(WD_EditorObject node) {
         int nbOfPorts= 0;
-        ForEachRightPort(node, (port)=> { ++nbOfPorts; } );
+        ForEachRightPort(node, port=> ++nbOfPorts);
         return nbOfPorts;
     }
 
