@@ -663,31 +663,29 @@ public class WD_Graphics {
     //  CONNECTION
     // ----------------------------------------------------------------------
     public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_IStorage storage) {
-        if(storage.IsVisible(port.ParentId)) {
-            if(storage.IsValid(port.Source)) {
-                WD_EditorObject source= storage.GetSource(port);
-                WD_EditorObject sourceParent= storage.GetParent(source);
-                if(storage.IsVisible(sourceParent)) {
-                    Rect sourcePos= storage.GetPosition(source);
-                    Rect portPos  = storage.GetPosition(port);
-                    Vector2 start= new Vector2(sourcePos.x, sourcePos.y);
-                    Vector2 end= new Vector2(portPos.x, portPos.y);
-                    Vector2 startDirection= ConnectionDirectionForTo(source, port, storage);
-                    Vector2 endDirection= ConnectionDirectionForTo(port, source, storage);
-//                    Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;
-//                    Vector2 endDirection= port.IsOnHorizontalEdge ? UpDirection : LeftDirection;
-//                    Vector2 diff= end-start;
-//                    if(Vector2.Dot(diff, startDirection) < 0) {
-//                        startDirection= -startDirection;
-//                    }
-//                    if(Vector2.Dot(diff, endDirection) > 0) {
-//                        endDirection  = - endDirection;
-//                    }
-                    Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
-                    DrawBezierCurve(start, end, startDirection, endDirection, color);
-                }                                    
-            }
-        }        
+        if(storage.IsVisible(port.ParentId) && storage.IsValid(port.Source)) {
+            WD_EditorObject source= storage.GetSource(port);
+            WD_EditorObject sourceParent= storage.GetParent(source);
+            if(storage.IsVisible(sourceParent)) {
+                Rect sourcePos= storage.GetPosition(source);
+                Rect portPos  = storage.GetPosition(port);
+                Vector2 start= new Vector2(sourcePos.x, sourcePos.y);
+                Vector2 end= new Vector2(portPos.x, portPos.y);
+                Vector2 startDirection= ConnectionDirectionForTo(source, port, storage);
+                Vector2 endDirection= ConnectionDirectionForTo(port, source, storage);
+//                Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;
+//                Vector2 endDirection= port.IsOnHorizontalEdge ? UpDirection : LeftDirection;
+//                Vector2 diff= end-start;
+//                if(Vector2.Dot(diff, startDirection) < 0) {
+//                    startDirection= -startDirection;
+//                }
+//                if(Vector2.Dot(diff, endDirection) > 0) {
+//                    endDirection  = - endDirection;
+//                }
+                Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
+                DrawBezierCurve(start, end, startDirection, endDirection, color);
+            }                                    
+        }
     }
     // ----------------------------------------------------------------------
     Vector2 ConnectionDirectionForTo(WD_EditorObject port, WD_EditorObject to, WD_IStorage storage) {

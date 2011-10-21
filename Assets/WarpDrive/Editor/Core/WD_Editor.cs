@@ -304,12 +304,12 @@ public class WD_Editor : EditorWindow {
                 // Verify for a new connection.
                 if(!VerifyNewConnection(port)) {
                     // Verify for disconnection.
-                    port.IsDirty= true;
+                    Storage.SetDirty(port);
                     if(!Storage.IsNearParent(port)) {
                         if(port.IsDataPort) {
                             port.LocalPosition.x= DragStartPosition.x;
                             port.LocalPosition.y= DragStartPosition.y;
-                            Storage.DisconnectPort(port);                            
+                            Storage.DisconnectPort(port);                        
                             break;
                         }
                         if(port.IsStatePort) {
@@ -327,11 +327,6 @@ public class WD_Editor : EditorWindow {
                             break;
                         }
                     }                    
-                    else {
-                        // Assume port relocation.
-                        Storage.SnapToParent(port);
-                        Storage.Layout(Storage.EditorObjects[port.ParentId]);
-                    }
                 }
                 break;
             case DragTypeEnum.TransitionCreation:
@@ -340,8 +335,12 @@ public class WD_Editor : EditorWindow {
                     WD_EditorObject inStatePort= Storage.CreatePort("inState", parent.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
                     Rect portRect= Storage.GetPosition(DragObject);
                     Storage.SetInitialPosition(inStatePort, new Vector2(portRect.x, portRect.y));
-                    Storage[DragObject.Source].Source= inStatePort.InstanceId;
+                    WD_EditorObject outStatePort= Storage[DragObject.Source];
+                    outStatePort.Source= inStatePort.InstanceId;
                     Storage.DestroyInstance(DragObject);
+                    inStatePort.IsBeingDragged= false;
+                    outStatePort.IsBeingDragged= false;
+                    Storage.UpdatePortEdges(inStatePort, outStatePort);
                 } else {
                     Storage.DestroyInstance(DragObject.Source);
                     Storage.DestroyInstance(DragObject);

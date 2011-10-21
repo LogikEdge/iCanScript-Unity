@@ -58,7 +58,11 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public WD_EditorObject GetParent(WD_EditorObject obj) { return IsValid(obj.ParentId) ? EditorObjects[obj.ParentId] : null; }
     public WD_EditorObject GetSource(WD_EditorObject obj) { return IsValid(obj.Source) ? EditorObjects[obj.Source] : null; }
-
+    // ----------------------------------------------------------------------
+    public void SetDirty(WD_EditorObject obj) {
+        if(obj.IsPort) { GetParent(obj).IsDirty= true; }
+        obj.IsDirty= true;        
+    }
 
     // ======================================================================
     // Storage Update
@@ -315,7 +319,7 @@ public class WD_IStorage {
         // Disconnect ports linking to this port.
         ExecuteIf(EditorObjects[id], WD.IsPort, (instance) => { DisconnectPort(EditorObjects[id]); });
         // Remove all related objects.
-        if(IsValid(EditorObjects[id].ParentId)) EditorObjects[EditorObjects[id].ParentId].IsDirty= true;
+        if(IsValid(EditorObjects[id].ParentId)) SetDirty(GetParent(EditorObjects[id]));
         TreeCache.DestroyInstance(id);
         EditorObjects[id].Reset();
     }
@@ -473,11 +477,11 @@ public class WD_IStorage {
 
     // ----------------------------------------------------------------------
     public void Layout(WD_EditorObject obj) {
-        obj.IsDirty= false;
         Case(obj,
             WD.IsNode, (node) => { NodeLayout(node); },
             WD.IsPort, (port) => { PortLayout(port); }
         );
+        obj.IsDirty= false;
     }
     public void Layout(int id) {
         if(IsInvalid(id)) return;
@@ -494,20 +498,21 @@ public class WD_IStorage {
         if(node.IsMinimized) {
             Texture2D icon= WD_Graphics.GetMaximizeIcon(node, null, this);
             if(node.LocalPosition.width != icon.width || node.LocalPosition.height != icon.height) {
-                   node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-icon.width);
-                   node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-icon.height);
-                   node.LocalPosition.width= icon.width;
-                   node.LocalPosition.height= icon.height;
-            }
-            Vector2 nodeCenter= new Vector2(0.5f*node.LocalPosition.width, 0.5f*node.LocalPosition.height);
-            ForEachChild(node,
-                (child) => {
-                    if(child.IsPort) {
-                        child.LocalPosition.x= nodeCenter.x;
-                        child.LocalPosition.y= nodeCenter.y;
+                node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-icon.width);
+                node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-icon.height);
+                node.LocalPosition.width= icon.width;
+                node.LocalPosition.height= icon.height;
+                Vector2 nodeCenter= new Vector2(0.5f*node.LocalPosition.width, 0.5f*node.LocalPosition.height);
+                ForEachChild(node,
+                    (child) => {
+                        if(child.IsPort) {
+                            child.LocalPosition.x= nodeCenter.x;
+                            child.LocalPosition.y= nodeCenter.y;
+                        }
                     }
-                }
-            );
+                );
+                LayoutPorts(node);
+            }
             return;
         }
 
@@ -714,6 +719,9 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     // Recomputes the port position.
     public void LayoutPorts(WD_EditorObject node) {
+        // Update all port edges.
+        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort, port=> UpdatePortEdge(port)));
+        
 		// Gather all ports.
         List<WD_EditorObject> topPorts   = new List<WD_EditorObject>();
         List<WD_EditorObject> bottomPorts= new List<WD_EditorObject>();
@@ -866,46 +874,22 @@ public class WD_IStorage {
 
     // ----------------------------------------------------------------------
     public void ForEachTopPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild(node,
-            port=> {
-                if(port.IsPort && port.IsOnTopEdge) {
-                    fnc(port);
-                }
-            }
-        );        
+        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort && port.IsOnTopEdge, fnc));
     }
     
     // ----------------------------------------------------------------------
     public void ForEachBottomPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild(node,
-            port=> {
-                if(port.IsPort && port.IsOnBottomEdge) {
-                    fnc(port);
-                }
-            }
-        );        
+        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort && port.IsOnBottomEdge, fnc));
     }
     
     // ----------------------------------------------------------------------
     public void ForEachLeftPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild(node,
-            port=> {
-                if(port.IsPort && port.IsOnLeftEdge) {
-                    fnc(port);
-                }
-            }
-        );        
+        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort && port.IsOnLeftEdge, fnc));
     }
     
     // ----------------------------------------------------------------------
     public void ForEachRightPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild(node,
-            port=> {
-                if(port.IsPort && port.IsOnRightEdge) {
-                    fnc(port);
-                }
-            }
-        );        
+        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort && port.IsOnRightEdge, fnc));
     }
 
 
@@ -1043,7 +1027,7 @@ public class WD_IStorage {
             Debug.LogWarning("Trying to layout a port who does not have a parent!!!");
             return;
         }
-        WD_EditorObject parentNode= EditorObjects[port.ParentId];
+        WD_EditorObject parentNode= GetParent(port);
         Rect parentPosition= GetPosition(parentNode);
 
         // Make certain that the port is on an edge.
@@ -1051,76 +1035,144 @@ public class WD_IStorage {
             case WD_EditorObject.EdgeEnum.Top:
                 if(!MathfExt.IsZero(port.LocalPosition.y)) {
                     port.LocalPosition.y= 0;
-                    port.IsDirty= true;
-                    parentNode.IsDirty= true;                    
+                    SetDirty(port);
                 }
                 if(port.LocalPosition.x > parentPosition.width) {
                     port.LocalPosition.x= parentPosition.width-WD_EditorConfig.PortSize;
-                    port.IsDirty= true;
-                    parentNode.IsDirty= true;
+                    SetDirty(port);
                 }
                 break;
             case WD_EditorObject.EdgeEnum.Bottom:
                 if(MathfExt.IsNotEqual(port.LocalPosition.y, parentPosition.height)) {
                     port.LocalPosition.y= parentPosition.height;
-                    port.IsDirty= true;
-                    parentNode.IsDirty= true;                    
+                    SetDirty(port);
                 }
                 if(port.LocalPosition.x > parentPosition.width) {
                     port.LocalPosition.x= parentPosition.width-WD_EditorConfig.PortSize;
-                    port.IsDirty= true;
-                    parentNode.IsDirty= true;
+                    SetDirty(port);
                 }
                 break;
             case WD_EditorObject.EdgeEnum.Left:
                 if(!MathfExt.IsZero(port.LocalPosition.x)) {
                     port.LocalPosition.x= 0;
-                    port.IsDirty= true;
-                    parentNode.IsDirty= true;                    
+                    SetDirty(port);
                 }
                 if(port.LocalPosition.y > parentPosition.height) {
                     port.LocalPosition.y= parentPosition.height-WD_EditorConfig.PortSize;
-                    port.IsDirty= true;
-                    parentNode.IsDirty= true;
+                    SetDirty(port);
                 }
                 break;
             case WD_EditorObject.EdgeEnum.Right:
                 if(MathfExt.IsNotEqual(port.LocalPosition.x, parentPosition.width)) {
                     port.LocalPosition.x= parentPosition.width;
-                    port.IsDirty= true;
-                    parentNode.IsDirty= true;                    
+                    SetDirty(port);
                 }
                 if(port.LocalPosition.y > parentPosition.height) {
                     port.LocalPosition.y= parentPosition.height-WD_EditorConfig.PortSize;
-                    port.IsDirty= true;
-                    parentNode.IsDirty= true;
+                    SetDirty(port);
                 }
                 break;            
         }
     }
     // ----------------------------------------------------------------------
-    public void SnapToParent(WD_EditorObject port) {
-        WD_EditorObject parentNode= EditorObjects[port.ParentId];
-        Rect parentPosition= GetPosition(parentNode);
-        float parentHeight= parentPosition.height;
-        float parentWidth= parentPosition.width;
-        float portRadius= WD_EditorConfig.PortRadius;
-        if(MathfExt.IsWithin(port.LocalPosition.y, -portRadius, portRadius)) {
-            port.Edge= WD_EditorObject.EdgeEnum.Top;
-        }        
-        if(MathfExt.IsWithin(port.LocalPosition.y, parentHeight-portRadius, parentHeight+portRadius)) {
-            port.Edge= WD_EditorObject.EdgeEnum.Bottom;
-        }
-        if(MathfExt.IsWithin(port.LocalPosition.x, -portRadius, portRadius)) {
-            port.Edge= WD_EditorObject.EdgeEnum.Left;
-        }
-        if(MathfExt.IsWithin(port.LocalPosition.x, parentWidth-portRadius, parentWidth+portRadius)) {
-            port.Edge= WD_EditorObject.EdgeEnum.Right;
-        }
-        port.IsDirty= true;
-        PortLayout(port);
+    public void UpdatePortEdge(WD_EditorObject port) {
+        if(IsValid(port.Source)) UpdatePortEdges(port, EditorObjects[port.Source]);
+        Prelude.forEach(p=> UpdatePortEdges(port, p), FindConnectedPorts(port));
     }
-
+    // ----------------------------------------------------------------------
+    public void UpdatePortEdges(WD_EditorObject p1, WD_EditorObject p2) {
+        // Reset edge information.
+        p1.Edge= WD_EditorObject.EdgeEnum.None;
+        p2.Edge= WD_EditorObject.EdgeEnum.None;
+        SetDirty(p1);
+        SetDirty(p2);
+        UpdatePortEdgeHardConstraints(p1);
+        UpdatePortEdgeHardConstraints(p2);
+        if(p1.Edge != WD_EditorObject.EdgeEnum.None && p2.Edge != WD_EditorObject.EdgeEnum.None) return;
+        WD_EditorObject p1Parent= GetParent(p1);
+        WD_EditorObject p2Parent= GetParent(p2);
+        // Verify connection between nested nodes.
+        Rect parent1Rect= GetPosition(p1Parent);
+        Rect parent2Rect= GetPosition(p2Parent);
+        // Nested
+        if(IsChildOf(p1Parent, p2Parent) ||
+           IsChildOf(p2Parent, p1Parent)) {
+            Debug.LogError("Update of nested ports not implemented...");
+            return;
+        }
+        // Horizontal
+        if(parent1Rect.xMin <= parent2Rect.xMin && parent1Rect.xMax > parent2Rect.xMin ||
+           parent2Rect.xMin <= parent1Rect.xMin && parent2Rect.xMax > parent1Rect.xMin) {
+            if(parent1Rect.yMin < parent2Rect.yMin) {
+                p1.Edge= WD_EditorObject.EdgeEnum.Bottom;
+                p2.Edge= WD_EditorObject.EdgeEnum.Top;
+            } else {
+                p1.Edge= WD_EditorObject.EdgeEnum.Top;
+                p2.Edge= WD_EditorObject.EdgeEnum.Bottom;                
+            }
+            return;
+        }
+        // Vertical
+        if(parent1Rect.yMin <= parent2Rect.yMin && parent1Rect.yMax > parent2Rect.yMin ||
+           parent2Rect.yMin <= parent1Rect.yMin && parent2Rect.yMax > parent1Rect.yMin) {
+            if(parent1Rect.xMin < parent2Rect.xMin) {
+                p1.Edge= WD_EditorObject.EdgeEnum.Right;
+                p2.Edge= WD_EditorObject.EdgeEnum.Left;
+            } else {
+                p1.Edge= WD_EditorObject.EdgeEnum.Left;
+                p2.Edge= WD_EditorObject.EdgeEnum.Right;                
+            }
+            return;
+        }
+        // Diagonal
+        if(parent1Rect.xMin < parent2Rect.xMin) {
+            if(parent1Rect.yMin < parent2Rect.yMin) {
+                if(p1.Source == p2.InstanceId) {
+                    p1.Edge= WD_EditorObject.EdgeEnum.Bottom;
+                    p2.Edge= WD_EditorObject.EdgeEnum.Left;
+                } else {
+                    p1.Edge= WD_EditorObject.EdgeEnum.Right;
+                    p2.Edge= WD_EditorObject.EdgeEnum.Top;                    
+                }
+            } else {
+                if(p1.Source == p2.InstanceId) {
+                    p1.Edge= WD_EditorObject.EdgeEnum.Right;
+                    p2.Edge= WD_EditorObject.EdgeEnum.Bottom;
+                } else {
+                    p1.Edge= WD_EditorObject.EdgeEnum.Top;
+                    p2.Edge= WD_EditorObject.EdgeEnum.Left;                    
+                }                
+            }
+            return;
+        }
+        if(parent1Rect.yMin < parent2Rect.yMin) {
+            if(p1.Source == p2.InstanceId) {
+                p1.Edge= WD_EditorObject.EdgeEnum.Left;
+                p2.Edge= WD_EditorObject.EdgeEnum.Top;
+            } else {
+                p1.Edge= WD_EditorObject.EdgeEnum.Bottom;
+                p2.Edge= WD_EditorObject.EdgeEnum.Right;                    
+            }
+        } else {
+            if(p1.Source == p2.InstanceId) {
+                p1.Edge= WD_EditorObject.EdgeEnum.Top;
+                p2.Edge= WD_EditorObject.EdgeEnum.Right;
+            } else {
+                p1.Edge= WD_EditorObject.EdgeEnum.Left;
+                p2.Edge= WD_EditorObject.EdgeEnum.Bottom;                    
+            }            
+        }
+    }
+    void UpdatePortEdgeHardConstraints(WD_EditorObject port) {
+        if(port.IsEnablePort) {
+            port.Edge= WD_EditorObject.EdgeEnum.Top;
+            return;            
+        }
+        if(port.IsDataPort) {
+            port.Edge= port.IsInputPort ? WD_EditorObject.EdgeEnum.Left : WD_EditorObject.EdgeEnum.Right;
+            return;
+        }
+    }
     // ----------------------------------------------------------------------
     // Returns the minimal distance from the parent.
     public float GetDistanceFromParent(WD_EditorObject port) {
