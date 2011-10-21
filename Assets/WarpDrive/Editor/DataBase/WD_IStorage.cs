@@ -719,15 +719,14 @@ public class WD_IStorage {
         }
         
 		// Gather all ports.
-        WD_EditorObject[] topPorts   = GetTopPorts(node);
-        WD_EditorObject[] bottomPorts= GetBottomPorts(node);
-        WD_EditorObject[] leftPorts  = GetLeftPorts(node);
-        WD_EditorObject[] rightPorts = GetRightPorts(node);
+        WD_EditorObject[] topPorts   = SortTopPorts(node);
+        WD_EditorObject[] bottomPorts= SortBottomPorts(node);
+        WD_EditorObject[] leftPorts  = SortLeftPorts(node);
+        WD_EditorObject[] rightPorts = SortRightPorts(node);
         
         // Relayout top ports.
         Rect position= GetPosition(node);
         if(topPorts.Length != 0) {
-            SortPorts(topPorts);
             float xStep= position.width / topPorts.Length;
             for(int i= 0; i < topPorts.Length; ++i) {
                 if(topPorts[i].IsBeingDragged == false) {
@@ -739,7 +738,6 @@ public class WD_IStorage {
 
         // Relayout bottom ports.
         if(bottomPorts.Length != 0) {
-            SortPorts(bottomPorts);
             float xStep= position.width / bottomPorts.Length;
             for(int i= 0; i < bottomPorts.Length; ++i) {
                 if(bottomPorts[i].IsBeingDragged == false) {
@@ -751,7 +749,6 @@ public class WD_IStorage {
 
         // Relayout left ports.
         if(leftPorts.Length != 0) {
-            SortPorts(leftPorts);
             float topOffset= WD_EditorConfig.NodeTitleHeight;
             float yStep= (position.height-topOffset) / leftPorts.Length;
             for(int i= 0; i < leftPorts.Length; ++i) {
@@ -764,7 +761,6 @@ public class WD_IStorage {
 
         // Relayout right ports.
         if(rightPorts.Length != 0) {
-            SortPorts(rightPorts);
             float topOffset= WD_EditorConfig.NodeTitleHeight;
             float yStep= (position.height-topOffset) / rightPorts.Length;
             for(int i= 0; i < rightPorts.Length; ++i) {
@@ -777,22 +773,74 @@ public class WD_IStorage {
     }
 
     // ----------------------------------------------------------------------
+    WD_EditorObject[] SortTopPorts(WD_EditorObject node) {
+        WD_EditorObject[] ports= GetTopPorts(node);
+        float[] angles= Prelude.map(port=> GetAverageConnectionAngle(port, 270.0f), ports);
+        foreach(var v in angles) Debug.Log("Top Angles: "+v);
+        return Prelude.reverse(SortPorts(ports, angles));
+    }
+    // ----------------------------------------------------------------------
+    WD_EditorObject[] SortBottomPorts(WD_EditorObject node) {
+        WD_EditorObject[] ports= GetBottomPorts(node);
+        float[] angles= Prelude.map(port=> GetAverageConnectionAngle(port, 90.0f), ports);
+        foreach(var v in angles) Debug.Log("Bottom Angles: "+v);
+        return SortPorts(ports, angles);
+    }
+    // ----------------------------------------------------------------------
+    WD_EditorObject[] SortRightPorts(WD_EditorObject node) {
+        WD_EditorObject[] ports= GetRightPorts(node);
+        float[] angles= Prelude.map(port=> GetAverageConnectionAngle(port, 180.0f), ports);
+        foreach(var v in angles) Debug.Log("Right Angles: "+v);
+        return Prelude.reverse(SortPorts(ports, angles));
+    }
+    // ----------------------------------------------------------------------
+    WD_EditorObject[] SortLeftPorts(WD_EditorObject node) {
+        WD_EditorObject[] ports= GetLeftPorts(node);
+        float[] angles= Prelude.map(port=> GetAverageConnectionAngle(port, 0.0f), ports);
+        foreach(var v in angles) Debug.Log("Left Angles: "+v);
+        return SortPorts(ports, angles);
+    }
+    // ----------------------------------------------------------------------
+    float GetAverageConnectionAngle(WD_EditorObject port, float angleOffset) {
+        Rect portRect= GetPosition(port);
+        Vector2 portPos= new Vector2(portRect.x, portRect.y);
+        int nbOfAngles= 0;
+        float angleSum= 0.0f;
+        if(IsValid(port.Source)) {
+            Rect sourceRect= GetPosition(EditorObjects[port.Source]);
+            angleSum= GetAngleWithOffset(portPos, new Vector2(sourceRect.x, sourceRect.y), angleOffset);
+            nbOfAngles= 1;
+        }
+        angleSum= Prelude.fold<WD_EditorObject,float>(
+            (remotePort,sum)=> {
+                ++nbOfAngles;
+                Rect remoteRect= GetPosition(remotePort);
+                return sum+GetAngleWithOffset(portPos, new Vector2(remoteRect.x, remoteRect.y), angleOffset);
+            },
+            angleSum,
+            FindConnectedPorts(port) 
+        );
+        return nbOfAngles != 0 ? angleSum/nbOfAngles : 180.0f;        
+    }
+    // ----------------------------------------------------------------------
+    static float GetAngleWithOffset(Vector2 v1, Vector2 v2, float angleOffset) {
+        float angle= MathfExt.GetAngle(v1,v2) - angleOffset;
+        if(angle < 0.0f) angle+= 360.0f;
+        if(angle > 360.0) angle-= 360.0f;
+        return angle;
+    } 
+    // ----------------------------------------------------------------------
     // Sorts the given port according to their relative positions.
-    void SortPorts(WD_EditorObject[] _ports) {
-        for(int i= 0; i < _ports.Length-1; ++i) {
-            Vector2 localPos= new Vector2(_ports[i].LocalPosition.x, _ports[i].LocalPosition.y);
-            float sqrMag= localPos.sqrMagnitude;
-            for(int j= i+1; j < _ports.Length; ++j) {
-                localPos= new Vector2(_ports[j].LocalPosition.x, _ports[j].LocalPosition.y);
-				float sqrMag2= localPos.sqrMagnitude;
-				if(sqrMag > sqrMag2) {
-                    WD_EditorObject p= _ports[i];
-                    _ports[i]= _ports[j];
-                    _ports[j]= p;
-					sqrMag= sqrMag2;
+    WD_EditorObject[] SortPorts(WD_EditorObject[] ports, float[] angles) {
+        for(int i= 0; i < angles.Length-1; ++i) {
+            for(int j= i+1; j < angles.Length; ++j) {
+                if(angles[i] > angles[j]) {
+                    Prelude.exchange(ref angles[i], ref angles[j]);
+                    Prelude.exchange(ref ports[i], ref ports[j]);
                 }
             }
         }
+        return ports;
     }
     // ----------------------------------------------------------------------
     // Returns all ports position on the top edge.
