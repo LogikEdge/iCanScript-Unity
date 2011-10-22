@@ -17,10 +17,10 @@ public static partial class Prelude {
     // This function can fixes a problem with C# implementation of the
     // Prelude by allowing a partial function of type 'f(a)(b,c)' to be
     // converted to 'f(a)(b)(c)' as follows 'fix(f)(b,c)'
-    public static R fix<A,B,R>(System.Func<A,System.Func<B,R>> f, A a, B b) {
+    public static C fix<A,B,C>(Func<A,Func<B,C>> f, A a, B b) {
          return f(a)(b);
     }
-    public static System.Func<A,B,R>  fix<A,B,R>(System.Func<A,System.Func<B,R>> f) {
+    public static Func<A,B,C>  fix<A,B,C>(Func<A,Func<B,C>> f) {
         return delegate(A a, B b) { return fix(f,a,b); };
     }
 }
