@@ -24,4 +24,14 @@ public static partial class Prelude {
         return delegate(A a, B b) { return fix(f,a,b); };
     }
 
+    // ----------------------------------------------------------------------
+    public static Func<B,C> function<A,B,C>(Func<A,B,C> f, A a) {
+        return delegate(B b) { return f(a,b); };
+    }
+    public static Func<C,D> function<A,B,C,D>(Func<A,B,C,D> f, A a, B b) {
+        return delegate(C c) {  return f(a,b,c); };
+    }
+    public static Func<B,Func<C,D>> function<A,B,C,D>(Func<A,B,C,D> f, A a) {
+        return delegate(B b) { return function<A,B,C,D>(f,a,b); };
+    }
 }

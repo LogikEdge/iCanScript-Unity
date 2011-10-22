@@ -4,6 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static partial class Prelude {
+    // ----------------------------------------------------------------------
+    // reverse :: [a]->[a]
     public static A[] reverse<A>(A[] lst) {
         A[] result= new A[lst.Length];
         for(int i= 0, j= lst.Length-1; i < lst.Length; ++i, --j) {

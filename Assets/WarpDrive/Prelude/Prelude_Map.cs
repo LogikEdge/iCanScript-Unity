@@ -5,15 +5,15 @@ using System.Collections.Generic;
 
 public static partial class Prelude {
     // ----------------------------------------------------------------------
-    // map :: (f a->b->c)->[a]->[b]->[c]
-    public static B[] map_<A,B>(B[] result, System.Func<A,B> fnc, A[] l1) {
+    // map_ :: [b]->(a->b)->[a]->[b]
+    public static B[] map_<A,B>(B[] result, Func<A,B> fnc, A[] l1) {
         int len= length(l1);
         if(len != length(result)) result= new B[len];
         for(int i= 0; i < len; ++i)
             result[i]= fnc(l1[i]);
         return result;
     }
-    public static List<B> map_<A,B>(List<B> result, System.Func<A,B> fnc, List<A> l1) {
+    public static List<B> map_<A,B>(List<B> result, Func<A,B> fnc, List<A> l1) {
         int len= length(l1);
         result.Clear();
         if(result.Capacity < len) result.Capacity= len;        
@@ -21,15 +21,22 @@ public static partial class Prelude {
             result[i]= fnc(l1[i]);
         return result;
     }
-    public static B[] map<A,B>(System.Func<A,B> fnc, A[] l1) {
+
+    // ----------------------------------------------------------------------
+    // map :: (a->b)->[a]->[b]
+    public static B[] map<A,B>(Func<A,B> fnc, A[] l1) {
         int len= length(l1);
         B[] result= new B[len];
         for(int i= 0; i < len; ++i)
             result[i]= fnc(l1[i]);
         return result;
     }
-    public static List<B> map<A,B>(System.Func<A,B> fnc, List<A> l1) {
+    public static List<B> map<A,B>(Func<A,B> fnc, List<A> l1) {
         return map_(new List<B>(), fnc, l1);
     }
-    
+
+    // ----------------------------------------------------------------------
+    // Currying support.
+    public static Func<A[],B[]>         map<A,B>(Func<A,B> f) { return function<Func<A,B>,A[],B[]>(map,f); }
+    public static Func<List<A>,List<B>> map<A,B>(Func<A,B> f) { return function<Func<A,B>,List<A>,List<B>>(map,f); }
 }
