@@ -1224,14 +1224,14 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
                      Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, defaultFnc);
+        Prelude.choice(obj, c1, f1, c2, f2, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
                      Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
                      Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, defaultFnc);
+        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1239,7 +1239,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
                      Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, defaultFnc);
+        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1248,7 +1248,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
                      Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, defaultFnc);
+        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1258,7 +1258,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
                      Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, defaultFnc);
+        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, defaultFnc);
     }
     public static void Case(WD_EditorObject obj,
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1269,7 +1269,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
                      Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, defaultFnc);
+        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, defaultFnc);
     }
     public static void Case(WD_EditorObject obj,
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1281,7 +1281,7 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
                      Func<WD_EditorObject,bool> c8, Action<WD_EditorObject> f8,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, defaultFnc);
+        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, defaultFnc);
     }
     public static void Case(WD_EditorObject obj, 
                      Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
@@ -1294,34 +1294,34 @@ public class WD_IStorage {
                      Func<WD_EditorObject,bool> c8, Action<WD_EditorObject> f8,
                      Func<WD_EditorObject,bool> c9, Action<WD_EditorObject> f9,
                                                     Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice<WD_EditorObject>(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, c9, f9, defaultFnc);
+        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, c9, f9, defaultFnc);
     }
     public void ForEachChild(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
-            TreeCache.ForEachChild((id) => { fnc(EditorObjects[id]); } );            
+            TreeCache.ForEachChild(id=> fnc(EditorObjects[id]));            
         }
         else {
-            TreeCache.ForEachChild(parent.InstanceId, (id) => { fnc(EditorObjects[id]); } );            
+            TreeCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
         }
     }
     public void ForEach(Action<WD_EditorObject> fnc) {
-        Prelude.filterWith<WD_EditorObject>(WD.IsValid, fnc, EditorObjects);
+        Prelude.filterWith(WD.IsValid, fnc, EditorObjects);
     }
     public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         ForEachRecursiveDepthLast(parent, fnc);
     }
     public void ForEachRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
-            TreeCache.ForEachRecursiveDepthLast((id) => { fnc(EditorObjects[id]); });                                
+            TreeCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));                                
         } else {
-            TreeCache.ForEachRecursiveDepthLast(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });                    
+            TreeCache.ForEachRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
         }
     }
     public void ForEachRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
-            TreeCache.ForEachRecursiveDepthFirst((id) => { fnc(EditorObjects[id]); });        
+            TreeCache.ForEachRecursiveDepthFirst(id => fnc(EditorObjects[id]));        
         } else {
-            TreeCache.ForEachRecursiveDepthFirst(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });                    
+            TreeCache.ForEachRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
         }
     }
     public void ForEachChildRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
@@ -1329,16 +1329,16 @@ public class WD_IStorage {
     }
     public void ForEachChildRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
-            TreeCache.ForEachRecursiveDepthLast((id) => { fnc(EditorObjects[id]); });        
+            TreeCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));        
         } else {
-            TreeCache.ForEachChildRecursiveDepthLast(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });                    
+            TreeCache.ForEachChildRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
         }
     }
     public void ForEachChildRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         if(parent == null) {
-            TreeCache.ForEachRecursiveDepthFirst((id) => { fnc(EditorObjects[id]); });                    
+            TreeCache.ForEachRecursiveDepthFirst(id=> fnc(EditorObjects[id]));                    
         } else {
-            TreeCache.ForEachChildRecursiveDepthFirst(parent.InstanceId, (id) => { fnc(EditorObjects[id]); });        
+            TreeCache.ForEachChildRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));        
         }
     }
     // ----------------------------------------------------------------------
