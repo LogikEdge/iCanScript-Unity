@@ -296,7 +296,7 @@ public class WD_IStorage {
     public void DestroyInstance(int id) {
         DestroyInstanceInternal(id);
         ForEach(
-            (port) => {
+            port=> {
                 if(port.IsModulePort && EditorObjects[port.ParentId].IsModule && IsPortDisconnected(port)) {
                     DestroyInstanceInternal(port.InstanceId);
                 }
@@ -317,7 +317,7 @@ public class WD_IStorage {
             DestroyInstanceInternal(TreeCache[id].Children[0]);
         }
         // Disconnect ports linking to this port.
-        ExecuteIf(EditorObjects[id], WD.IsPort, (instance) => { DisconnectPort(EditorObjects[id]); });
+        ExecuteIf(EditorObjects[id], WD.IsPort, _=> DisconnectPort(EditorObjects[id]));
         // Remove all related objects.
         if(IsValid(EditorObjects[id].ParentId)) SetDirty(GetParent(EditorObjects[id]));
         TreeCache.DestroyInstance(id);
@@ -359,7 +359,7 @@ public class WD_IStorage {
     public void Minimize(WD_EditorObject eObj) {
         if(!eObj.IsNode) return;
         eObj.Minimize();
-        ForEachChild(eObj, (child) => { if(child.IsPort) child.Minimize(); });
+        ForEachChild(eObj, child=> { if(child.IsPort) child.Minimize(); });
         eObj.IsDirty= true;
         if(IsValid(eObj.ParentId)) EditorObjects[eObj.ParentId].IsDirty= true;
     }
@@ -368,7 +368,7 @@ public class WD_IStorage {
     public void Maximize(WD_EditorObject eObj) {
         if(!eObj.IsNode) return;
         eObj.Maximize();
-        ForEachChild(eObj, (child) => { if(child.IsPort) child.Maximize(); });
+        ForEachChild(eObj, child=> { if(child.IsPort) child.Maximize(); });
         eObj.IsDirty= true;
         if(IsValid(eObj.ParentId)) EditorObjects[eObj.ParentId].IsDirty= true;
     }
@@ -642,7 +642,7 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     void LayoutParent(WD_EditorObject node, Vector2 _deltaMove) {
         if(!IsValid(node.ParentId)) return;
-        WD_EditorObject parentNode= EditorObjects[node.ParentId];
+        WD_EditorObject parentNode= GetParent(node);
         ResolveCollision(parentNode, _deltaMove);
         Layout(parentNode);
     }
@@ -846,7 +846,7 @@ public class WD_IStorage {
     // Returns all ports position on the top edge.
     public WD_EditorObject[] GetTopPorts(WD_EditorObject node) {
         List<WD_EditorObject> ports= new List<WD_EditorObject>();
-        ForEachTopPort(node, port=> ports.Add(port));
+        ForEachTopPort(node, ports.Add);
         return ports.ToArray();
     }
 
@@ -854,7 +854,7 @@ public class WD_IStorage {
     // Returns all ports position on the bottom edge.
     public WD_EditorObject[] GetBottomPorts(WD_EditorObject node) {
         List<WD_EditorObject> ports= new List<WD_EditorObject>();
-        ForEachBottomPort(node, port=> ports.Add(port));
+        ForEachBottomPort(node, ports.Add);
         return ports.ToArray();
     }
 
@@ -862,7 +862,7 @@ public class WD_IStorage {
     // Returns all ports position on the left edge.
     public WD_EditorObject[] GetLeftPorts(WD_EditorObject node) {
         List<WD_EditorObject> ports= new List<WD_EditorObject>();
-        ForEachLeftPort(node, port=> ports.Add(port));
+        ForEachLeftPort(node, ports.Add);
         return ports.ToArray();        
     }
 
@@ -870,14 +870,14 @@ public class WD_IStorage {
     // Returns all ports position on the right edge.
     public WD_EditorObject[] GetRightPorts(WD_EditorObject node) {
         List<WD_EditorObject> ports= new List<WD_EditorObject>();
-        ForEachRightPort(node, port=> ports.Add(port));
+        ForEachRightPort(node, ports.Add);
         return ports.ToArray();
     }
     // ----------------------------------------------------------------------
     // Returns the number of ports on the top edge.
     public int GetNbOfTopPorts(WD_EditorObject node) {
         int nbOfPorts= 0;
-        ForEachTopPort(node, port=> ++nbOfPorts);
+        ForEachTopPort(node, _=> ++nbOfPorts);
         return nbOfPorts;
     }
 
@@ -885,7 +885,7 @@ public class WD_IStorage {
     // Returns the number of ports on the bottom edge.
     public int GetNbOfBottomPorts(WD_EditorObject node) {
         int nbOfPorts= 0;
-        ForEachBottomPort(node, port=> ++nbOfPorts);
+        ForEachBottomPort(node, _=> ++nbOfPorts);
         return nbOfPorts;
     }
 
@@ -893,7 +893,7 @@ public class WD_IStorage {
     // Returns the number of ports on the left edge.
     public int GetNbOfLeftPorts(WD_EditorObject node) {
         int nbOfPorts= 0;
-        ForEachLeftPort(node, port=> ++nbOfPorts);
+        ForEachLeftPort(node, _=> ++nbOfPorts);
         return nbOfPorts;
     }
 
@@ -901,7 +901,7 @@ public class WD_IStorage {
     // Returns the number of ports on the right edge.
     public int GetNbOfRightPorts(WD_EditorObject node) {
         int nbOfPorts= 0;
-        ForEachRightPort(node, port=> ++nbOfPorts);
+        ForEachRightPort(node, _=> ++nbOfPorts);
         return nbOfPorts;
     }
 
@@ -934,7 +934,7 @@ public class WD_IStorage {
     void ResolveCollision(WD_EditorObject node, Vector2 _delta) {
         ResolveCollisionOnChildren(node, _delta);
         if(!IsValid(node.ParentId)) return;
-        ResolveCollision(EditorObjects[node.ParentId], _delta);
+        ResolveCollision(GetParent(node), _delta);
     }
 
     // ----------------------------------------------------------------------

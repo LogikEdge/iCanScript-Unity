@@ -12,7 +12,7 @@ public static partial class Prelude {
     public static int length<T>(List<T> l)  { return l.Count; }
     
     // ======================================================================
-    //  C# Currying
+    //  C# Currying fix
     // ----------------------------------------------------------------------
     // This function can fixes a problem with C# implementation of the
     // Prelude by allowing a partial function of type 'f(a)(b,c)' to be
@@ -23,4 +23,5 @@ public static partial class Prelude {
     public static Func<A,B,C>  fix<A,B,C>(Func<A,Func<B,C>> f) {
         return delegate(A a, B b) { return fix(f,a,b); };
     }
+
 }
