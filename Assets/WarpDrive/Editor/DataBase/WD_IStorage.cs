@@ -906,23 +906,24 @@ public class WD_IStorage {
     }
 
     // ----------------------------------------------------------------------
-    public void ForEachTopPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort && port.IsOnTopEdge, fnc));
+    public void ForEachChildPort(WD_EditorObject node, Action<WD_EditorObject> action) {
+        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort, action));
     }
-    
+    // ----------------------------------------------------------------------
+    public void ForEachTopPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
+        ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnTopEdge, fnc));
+    }
     // ----------------------------------------------------------------------
     public void ForEachBottomPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort && port.IsOnBottomEdge, fnc));
+        ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnBottomEdge, fnc));
     }
-    
     // ----------------------------------------------------------------------
     public void ForEachLeftPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort && port.IsOnLeftEdge, fnc));
+        ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnLeftEdge, fnc));
     }
-    
     // ----------------------------------------------------------------------
     public void ForEachRightPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
-        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort && port.IsOnRightEdge, fnc));
+        ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnRightEdge, fnc));
     }
 
 
