@@ -719,14 +719,12 @@ public class WD_IStorage {
         }
         
 		// Gather all ports.
-        WD_EditorObject[] topPorts   = SortTopPorts(node);
-        WD_EditorObject[] bottomPorts= SortBottomPorts(node);
-        WD_EditorObject[] leftPorts  = SortLeftPorts(node);
-        WD_EditorObject[] rightPorts = SortRightPorts(node);
+        Rect position= GetPosition(node);
         
         // Relayout top ports.
-        Rect position= GetPosition(node);
+        WD_EditorObject[] topPorts   = SortTopPorts(node);
         if(topPorts.Length != 0) {
+            TreeCache[node.InstanceId].ReorderChildren(topPorts);
             float xStep= position.width / topPorts.Length;
             for(int i= 0; i < topPorts.Length; ++i) {
                 if(topPorts[i].IsBeingDragged == false) {
@@ -737,7 +735,9 @@ public class WD_IStorage {
         }
 
         // Relayout bottom ports.
+        WD_EditorObject[] bottomPorts= SortBottomPorts(node);
         if(bottomPorts.Length != 0) {
+            TreeCache[node.InstanceId].ReorderChildren(bottomPorts);
             float xStep= position.width / bottomPorts.Length;
             for(int i= 0; i < bottomPorts.Length; ++i) {
                 if(bottomPorts[i].IsBeingDragged == false) {
@@ -748,7 +748,9 @@ public class WD_IStorage {
         }
 
         // Relayout left ports.
+        WD_EditorObject[] leftPorts  = SortLeftPorts(node);
         if(leftPorts.Length != 0) {
+            TreeCache[node.InstanceId].ReorderChildren(leftPorts);
             float topOffset= WD_EditorConfig.NodeTitleHeight;
             float yStep= (position.height-topOffset) / leftPorts.Length;
             for(int i= 0; i < leftPorts.Length; ++i) {
@@ -760,7 +762,9 @@ public class WD_IStorage {
         }
 
         // Relayout right ports.
+        WD_EditorObject[] rightPorts = SortRightPorts(node);
         if(rightPorts.Length != 0) {
+            TreeCache[node.InstanceId].ReorderChildren(rightPorts);
             float topOffset= WD_EditorConfig.NodeTitleHeight;
             float yStep= (position.height-topOffset) / rightPorts.Length;
             for(int i= 0; i < rightPorts.Length; ++i) {
@@ -775,29 +779,29 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     WD_EditorObject[] SortTopPorts(WD_EditorObject node) {
         WD_EditorObject[] ports= GetTopPorts(node);
-        float[] angles= Prelude.map(port=> GetAverageConnectionAngle(port, 270.0f), ports);
-        foreach(var v in angles) Debug.Log("Top Angles: "+v);
-        return Prelude.reverse(SortPorts(ports, angles));
+        float[] angles= Prelude.map(port=> 360.0f-GetAverageConnectionAngle(port, 270.0f), ports);
+//        foreach(var v in angles) Debug.Log("Top Angles: "+(360.0f-v));
+        return SortPorts(ports, angles);
     }
     // ----------------------------------------------------------------------
     WD_EditorObject[] SortBottomPorts(WD_EditorObject node) {
         WD_EditorObject[] ports= GetBottomPorts(node);
         float[] angles= Prelude.map(port=> GetAverageConnectionAngle(port, 90.0f), ports);
-        foreach(var v in angles) Debug.Log("Bottom Angles: "+v);
+//        foreach(var v in angles) Debug.Log("Bottom Angles: "+v);
         return SortPorts(ports, angles);
     }
     // ----------------------------------------------------------------------
     WD_EditorObject[] SortRightPorts(WD_EditorObject node) {
         WD_EditorObject[] ports= GetRightPorts(node);
-        float[] angles= Prelude.map(port=> GetAverageConnectionAngle(port, 180.0f), ports);
-        foreach(var v in angles) Debug.Log("Right Angles: "+v);
-        return Prelude.reverse(SortPorts(ports, angles));
+        float[] angles= Prelude.map(port=> 360.0f-GetAverageConnectionAngle(port, 180.0f), ports);
+//        foreach(var v in angles) Debug.Log("Right Angles: "+(360.0f-v));
+        return SortPorts(ports, angles);
     }
     // ----------------------------------------------------------------------
     WD_EditorObject[] SortLeftPorts(WD_EditorObject node) {
         WD_EditorObject[] ports= GetLeftPorts(node);
         float[] angles= Prelude.map(port=> GetAverageConnectionAngle(port, 0.0f), ports);
-        foreach(var v in angles) Debug.Log("Left Angles: "+v);
+//        foreach(var v in angles) Debug.Log("Left Angles: "+v);
         return SortPorts(ports, angles);
     }
     // ----------------------------------------------------------------------
@@ -834,7 +838,7 @@ public class WD_IStorage {
     WD_EditorObject[] SortPorts(WD_EditorObject[] ports, float[] angles) {
         for(int i= 0; i < angles.Length-1; ++i) {
             for(int j= i+1; j < angles.Length; ++j) {
-                if(angles[i] > angles[j]) {
+                if(MathfExt.IsGreater(angles[i], angles[j])) {
                     Prelude.exchange(ref angles[i], ref angles[j]);
                     Prelude.exchange(ref ports[i], ref ports[j]);
                 }

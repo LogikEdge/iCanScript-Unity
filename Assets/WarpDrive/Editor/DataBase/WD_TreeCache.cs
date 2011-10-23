@@ -23,9 +23,7 @@ public class WD_TreeCache {
             Children.Clear();
         }
         public void AddChild(int id, TreeNode toAdd) {
-            foreach(var child in Children) {
-                if(child == id) return;
-            }
+            if(Prelude.elem(id, Children.ToArray())) return;
             Children.Add(id);
 //            WD_Reflection.InvokeAddChildIfExists(RuntimeObject, toAdd.RuntimeObject);
         }
@@ -37,6 +35,24 @@ public class WD_TreeCache {
                     return;
                 }
             }
+        }
+        // ----------------------------------------------------------------------
+        // Returns 'true' if a change was needed.
+        public bool ReorderChildren(WD_EditorObject[] orderedObjects) {
+            int[] orderedSet= Prelude.map(c=> c.InstanceId, orderedObjects);
+            // Determine if the children are already in the proper order.
+            int j= 0;
+            for(int i= 0; i < Children.Count; ++i) {
+                if(Children[i] == orderedSet[j]) {
+                    if(++j == orderedSet.Length) return false;
+                }
+            }
+            // We need to reorder the children.
+            j= 0;
+            int[] others= Prelude.filter(o=> Prelude.notElem(o, orderedSet), Children.ToArray());
+            Prelude.forEach(child=> Children[j++]= child, orderedSet);
+            Prelude.forEach(child=> Children[j++]= child, others);
+            return true;
         }
     }
     
