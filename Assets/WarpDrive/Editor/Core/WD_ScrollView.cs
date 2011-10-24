@@ -44,28 +44,28 @@ public class WD_ScrollView {
         }
         
         // Clip viewport if it is larger then graph & window.
-        if(!MathfExt.IsZero(ScrollPosition.x) && MathfExt.IsSmaller(ScrollViewport.x+ScrollPosition.x, graphRect.x)) {
+        if(!Math3D.IsZero(ScrollPosition.x) && Math3D.IsSmaller(ScrollViewport.x+ScrollPosition.x, graphRect.x)) {
             ScrollViewport.x+= ScrollPosition.x;
             ScrollViewport.width-= ScrollPosition.x;
             ScrollPosition.x= 0;
         }
-        if(!MathfExt.IsZero(ScrollPosition.y) && MathfExt.IsSmaller(ScrollViewport.y+ScrollPosition.y, graphRect.y)) {
+        if(!Math3D.IsZero(ScrollPosition.y) && Math3D.IsSmaller(ScrollViewport.y+ScrollPosition.y, graphRect.y)) {
             ScrollViewport.y+= ScrollPosition.y;
             ScrollViewport.height-= ScrollPosition.y;
             ScrollPosition.y= 0;
         }
-        if(MathfExt.IsGreater(ScrollViewport.xMax, graphRect.xMax)) {
+        if(Math3D.IsGreater(ScrollViewport.xMax, graphRect.xMax)) {
             ScrollViewport.width-= ScrollViewport.xMax-graphRect.xMax;
         }
-        if(MathfExt.IsGreater(ScrollViewport.yMax, graphRect.yMax)) {
+        if(Math3D.IsGreater(ScrollViewport.yMax, graphRect.yMax)) {
             ScrollViewport.height-= ScrollViewport.yMax-graphRect.yMax;
         }
         
         // Adjust viewport width/height.
-        if(MathfExt.IsSmaller(ScrollViewport.width, ScrollPosition.x+ScrollWindow.width)) {
+        if(Math3D.IsSmaller(ScrollViewport.width, ScrollPosition.x+ScrollWindow.width)) {
             ScrollViewport.width= ScrollPosition.x+ScrollWindow.width;            
         }
-        if(MathfExt.IsSmaller(ScrollViewport.height, ScrollPosition.y+ScrollWindow.height)) {
+        if(Math3D.IsSmaller(ScrollViewport.height, ScrollPosition.y+ScrollWindow.height)) {
             ScrollViewport.height= ScrollPosition.y+ScrollWindow.height;                    
         }
     }

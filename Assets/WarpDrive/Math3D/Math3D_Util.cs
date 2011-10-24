@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class MathfExt {
+public static partial class Math3D {
 
     // ======================================================================
     // Float functionality using Epsilon.
@@ -137,7 +137,7 @@ public class MathfExt {
     public static float GetAngle(Vector2 _from, Vector2 _to) {
         Vector2 vector= _to-_from;
         float angle= Vector2.Angle(Vector2.right, vector);
-        if(!MathfExt.IsZero(angle) && vector.y > 0) {
+        if(!Math3D.IsZero(angle) && vector.y > 0) {
             angle= 360 - angle;
         }
         return angle;        

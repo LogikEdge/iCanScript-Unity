@@ -518,7 +518,7 @@ public class WD_IStorage {
 
         // Process case without child nodes
         Rect position= GetPosition(node);
-        if(MathfExt.IsZero(childRect.width) || MathfExt.IsZero(childRect.height)) {
+        if(Math3D.IsZero(childRect.width) || Math3D.IsZero(childRect.height)) {
             // Compute needed height.
             WD_EditorObject[] leftPorts= GetLeftPorts(node);
             WD_EditorObject[] rightPorts= GetRightPorts(node);
@@ -526,7 +526,7 @@ public class WD_IStorage {
             float height= Mathf.Max(WD_EditorConfig.NodeTitleHeight+nbOfPorts*WD_EditorConfig.MinimumPortSeparation, WD_EditorConfig.MinimumNodeHeight);                                
 
             // Apply new width and height.
-            if(MathfExt.IsNotEqual(height, position.height) || MathfExt.IsNotEqual(width, position.width)) {
+            if(Math3D.IsNotEqual(height, position.height) || Math3D.IsNotEqual(width, position.width)) {
                 float deltaWidth = width - position.width;
                 float deltaHeight= height - position.height;
                 Rect newPos= new Rect(position.xMin-0.5f*deltaWidth, position.yMin-0.5f*deltaHeight, width, height);
@@ -538,8 +538,8 @@ public class WD_IStorage {
             // Adjust children local offset.
             float neededChildXOffset= WD_EditorConfig.GutterSize+leftMargin;
             float neededChildYOffset= WD_EditorConfig.GutterSize+WD_EditorConfig.NodeTitleHeight;
-            if(MathfExt.IsNotEqual(neededChildXOffset, childRect.x) ||
-               MathfExt.IsNotEqual(neededChildYOffset, childRect.y)) {
+            if(Math3D.IsNotEqual(neededChildXOffset, childRect.x) ||
+               Math3D.IsNotEqual(neededChildYOffset, childRect.y)) {
                    AdjustChildLocalPosition(node, new Vector2(neededChildXOffset-childRect.x, neededChildYOffset-childRect.y));
             }
 
@@ -554,8 +554,8 @@ public class WD_IStorage {
             float deltaHeight= height - node.LocalPosition.height;
             float xMin= position.xMin-0.5f*deltaWidth;
             float yMin= position.yMin-0.5f*deltaHeight;
-            if(MathfExt.IsNotEqual(xMin, position.xMin) || MathfExt.IsNotEqual(yMin, position.yMin) ||
-               MathfExt.IsNotEqual(width, node.LocalPosition.width) || MathfExt.IsNotEqual(height, node.LocalPosition.height)) {
+            if(Math3D.IsNotEqual(xMin, position.xMin) || Math3D.IsNotEqual(yMin, position.yMin) ||
+               Math3D.IsNotEqual(width, node.LocalPosition.width) || Math3D.IsNotEqual(height, node.LocalPosition.height)) {
                 Rect newPos= new Rect(xMin, yMin, width, height);
                 SetPosition(node, newPos);
             }
@@ -581,7 +581,7 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
     void DeltaMoveInternal(WD_EditorObject node, Vector2 _delta) {
-        if(MathfExt.IsNotZero(_delta)) {
+        if(Math3D.IsNotZero(_delta)) {
             node.LocalPosition.x+= _delta.x;
             node.LocalPosition.y+= _delta.y;
             SetDirty(node);
@@ -780,26 +780,26 @@ public class WD_IStorage {
     Vector2 GetAverageConnectionPosition(WD_EditorObject port) {
         WD_EditorObject[] connectedPorts= FindConnectedPorts(port);
         Vector2 posSum= Prelude.fold(
-            (remotePort,sum)=> sum+MathfExt.ToVector2(GetPosition(remotePort)),
+            (remotePort,sum)=> sum+Math3D.ToVector2(GetPosition(remotePort)),
             Vector2.zero,
             connectedPorts
         );
         int nbOfPorts= connectedPorts.Length;
         if(IsValid(port.Source)) {
-            posSum+= MathfExt.ToVector2(GetPosition(EditorObjects[port.Source]));
+            posSum+= Math3D.ToVector2(GetPosition(EditorObjects[port.Source]));
             ++nbOfPorts;
         }
-        return nbOfPorts != 0 ? (1.0f/nbOfPorts)*posSum : MathfExt.ToVector2(GetPosition(port));        
+        return nbOfPorts != 0 ? (1.0f/nbOfPorts)*posSum : Math3D.ToVector2(GetPosition(port));        
     }
     // ----------------------------------------------------------------------
     // Sorts the given port according to their relative positions.
     WD_EditorObject[] SortPorts(WD_EditorObject[] ports) {
         Vector2[] remotePos= Prelude.map(port=>GetAverageConnectionPosition(port), ports);
         for(int i= 0; i < ports.Length-1; ++i) {
-            Vector2 iPos= MathfExt.ToVector2(GetPosition(ports[i]));
+            Vector2 iPos= Math3D.ToVector2(GetPosition(ports[i]));
             for(int j= i+1; j < ports.Length; ++j) {
                 Vector2 intersection;
-                Vector2 jPos= MathfExt.ToVector2(GetPosition(ports[j]));
+                Vector2 jPos= Math3D.ToVector2(GetPosition(ports[j]));
                 if(Physics2D.LineSegmentIntersection(iPos,remotePos[i],jPos,remotePos[j],out intersection)) {
                     Prelude.exchange(ref ports[i].LocalPosition, ref ports[j].LocalPosition);
                     Prelude.exchange(ref remotePos[i], ref remotePos[j]);
@@ -936,7 +936,7 @@ public class WD_IStorage {
 		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) return false;
 
 		// Seperate using the known movement.
-        if( !MathfExt.IsZero(_delta) ) {
+        if( !Math3D.IsZero(_delta) ) {
     		if(Vector2.Dot(_delta, penetration) > 0) {
     		    DeltaMoveInternal(otherNode, penetration);
     		}

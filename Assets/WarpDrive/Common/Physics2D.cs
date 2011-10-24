@@ -32,8 +32,8 @@ public class Physics2D {
         float yMax= Mathf.Min(_rect1.yMax, _rect2.yMax);
         float width= xMax-xMin;
         float height= yMax-yMin;
-        if(MathfExt.IsSmallerOrEqual(width,0.0f)) width= 0.0f;
-        if(MathfExt.IsSmallerOrEqual(height, 0.0f)) height= 0.0f;
+        if(Math3D.IsSmallerOrEqual(width,0.0f)) width= 0.0f;
+        if(Math3D.IsSmallerOrEqual(height, 0.0f)) height= 0.0f;
         return new Rect(xMin, yMin, width, height);
     }
 
@@ -52,7 +52,7 @@ public class Physics2D {
         float y4= l2p2.y;
         // Parallel lines don't intersect.
         float divider= (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
-        if(MathfExt.IsZero(divider)) { intersection= Vector2.zero; return false; }
+        if(Math3D.IsZero(divider)) { intersection= Vector2.zero; return false; }
         // Compute interscetion
         float t1= x1*y2-y1*x2;
         float t2= x3*y4-y3*x4;
