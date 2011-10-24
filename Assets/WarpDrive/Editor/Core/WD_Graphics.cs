@@ -181,7 +181,7 @@ public class WD_Graphics {
             nodeStyle.guiStyle.border= new RectOffset(13,21,20,13);
             nodeStyle.guiStyle.padding= new RectOffset(3,8,17,8);
             nodeStyle.guiStyle.contentOffset= new Vector2(-3, -17);
-            nodeStyle.guiStyle.overflow= new RectOffset(0,6,0,6);
+            nodeStyle.guiStyle.overflow= new RectOffset(0,6,0,3);
             nodeStyle.guiStyle.alignment= TextAnchor.UpperCenter;
             nodeStyle.guiStyle.fontStyle= FontStyle.Bold;
         }
@@ -466,13 +466,23 @@ public class WD_Graphics {
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show name if requested.
         Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);
-        if(port.IsOnLeftEdge) {                
-            pos.x+= 1 + WD_EditorConfig.PortSize;
-            pos.y-= 1 + 0.5f * labelSize.y;
-        }
-        if(port.IsOnRightEdge) {
-            pos.x-= 1 + labelSize.x + WD_EditorConfig.PortSize;
-            pos.y-= 1 + 0.5f * labelSize.y;        
+        switch(port.Edge) {
+            case WD_EditorObject.EdgeEnum.Left:
+                pos.x+= 1 + WD_EditorConfig.PortSize;
+                pos.y-= 1 + 0.5f * labelSize.y;
+                break;
+            case WD_EditorObject.EdgeEnum.Right:
+                pos.x-= 1 + labelSize.x + WD_EditorConfig.PortSize;
+                pos.y-= 1 + 0.5f * labelSize.y;
+                break;
+            case WD_EditorObject.EdgeEnum.Top:            
+                pos.x-= 1 + 0.5f*labelSize.x;
+                pos.y-= 1 + WD_EditorConfig.PortSize+labelSize.y;
+                break;
+            case WD_EditorObject.EdgeEnum.Bottom:
+                pos.x-= 1 + 0.5f*labelSize.x;
+                pos.y+= 1 + WD_EditorConfig.PortSize;
+                break;
         }
         GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), name);
     }

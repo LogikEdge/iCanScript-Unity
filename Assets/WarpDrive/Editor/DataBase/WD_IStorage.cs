@@ -524,7 +524,7 @@ public class WD_IStorage {
             WD_EditorObject[] rightPorts= GetRightPorts(node);
             int nbOfPorts= leftPorts.Length > rightPorts.Length ? leftPorts.Length : rightPorts.Length;
             float height= Mathf.Max(WD_EditorConfig.NodeTitleHeight+nbOfPorts*WD_EditorConfig.MinimumPortSeparation, WD_EditorConfig.MinimumNodeHeight);                                
-
+            
             // Apply new width and height.
             if(Math3D.IsNotEqual(height, position.height) || Math3D.IsNotEqual(width, position.width)) {
                 float deltaWidth = width - position.width;
@@ -549,7 +549,7 @@ public class WD_IStorage {
             int nbOfPorts= nbOfLeftPorts > nbOfRightPorts ? nbOfLeftPorts : nbOfRightPorts;
             float portHeight= nbOfPorts*WD_EditorConfig.MinimumPortSeparation;                                
             float height= WD_EditorConfig.NodeTitleHeight+Mathf.Max(portHeight, childRect.height+2.0f*WD_EditorConfig.GutterSize);
-
+            
             float deltaWidth = width - node.LocalPosition.width;
             float deltaHeight= height - node.LocalPosition.height;
             float xMin= position.xMin-0.5f*deltaWidth;
@@ -689,16 +689,6 @@ public class WD_IStorage {
             }
         );
         return RightMargin;
-    }
-    // ----------------------------------------------------------------------
-    // Returns the inner top margin.
-    static float ComputeTopMargin(WD_EditorObject node) {
-        return WD_EditorConfig.GetNodeHeight(node.NameOrTypeName);
-    }
-    // ----------------------------------------------------------------------
-    // Returns the inner bottom margin.
-    static float ComputeBottomMargin(WD_EditorObject node) {
-        return 0;
     }
 
 
