@@ -500,8 +500,14 @@ public class WD_Editor : EditorWindow {
     void DrawNodes() {
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            (node)=> {
-                if(node.IsNode && !Storage.IsMinimized(node)) Graphics.DrawNode(node, SelectedObject, Storage);
+            node=> {
+                if(node.IsNode && !Storage.IsMinimized(node)) {
+                    Graphics.DrawNode(node, SelectedObject, Storage);
+                    Debug.Log("Node: "+node.LocalPosition);
+                    foreach(var p in Storage.GetBottomPorts(node)) {
+                        Debug.Log("Bottom ports: "+p.LocalPosition);
+                    }
+                }
             }
         );
     }	
@@ -509,16 +515,14 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        Storage.ForEachChildRecursive(DisplayRoot, (port)=> { if(port.IsPort) Graphics.DrawConnection(port, SelectedObject, Storage); } );
+        Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawConnection(port, SelectedObject, Storage); });
 
         // Display ports.
-        Storage.ForEachChildRecursive(DisplayRoot, (port)=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); } );
+        Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); });
 
         // Display minimized nodes.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            (node)=> {
-                if(node.IsNode && Storage.IsMinimized(node)) Graphics.DrawNode(node, SelectedObject, Storage);
-            }
+            node=> { if(node.IsNode && Storage.IsMinimized(node)) Graphics.DrawNode(node, SelectedObject, Storage); }
         );
     }
 
