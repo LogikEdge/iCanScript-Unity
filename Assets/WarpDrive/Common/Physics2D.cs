@@ -37,4 +37,19 @@ public class Physics2D {
         return new Rect(xMin, yMin, width, height);
     }
 
+    // ----------------------------------------------------------------------
+    // Line intersection
+    public static bool LineIntersection(Vector2 l1p1, Vector2 l1p2, Vector2 l2p1, Vector2 l2p2) {
+        float x1= l1p1.x;
+        float y1= l1p1.y;
+        float x2= l1p2.x;
+        float y2= l1p2.y;
+        float x3= l2p1.x;
+        float y3= l2p1.y;
+        float x4= l2p2.x;
+        float y4= l2p2.y;
+        float px= ((x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
+        float py= ((x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
+        return true;
+    }
 }
