@@ -36,24 +36,6 @@ public class WD_TreeCache {
                 }
             }
         }
-        // ----------------------------------------------------------------------
-        // Returns 'true' if a change was needed.
-        public bool ReorderChildren(WD_EditorObject[] orderedObjects) {
-            int[] orderedSet= Prelude.map(c=> c.InstanceId, orderedObjects);
-            // Determine if the children are already in the proper order.
-            int j= 0;
-            for(int i= 0; i < Children.Count; ++i) {
-                if(Children[i] == orderedSet[j]) {
-                    if(++j == orderedSet.Length) return false;
-                }
-            }
-            // We need to reorder the children.
-            j= 0;
-            int[] others= Prelude.filter(o=> Prelude.notElem(o, orderedSet), Children.ToArray());
-            Prelude.forEach(child=> Children[j++]= child, orderedSet);
-            Prelude.forEach(child=> Children[j++]= child, others);
-            return true;
-        }
     }
     
     // ======================================================================
