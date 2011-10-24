@@ -658,7 +658,7 @@ public class WD_IStorage {
         ForEachChild(node,
             (child)=> {
                 if(child.IsNode && IsVisible(child)) {
-                    childRect= Physics2D.Merge(childRect, child.LocalPosition);
+                    childRect= Math3D.Merge(childRect, child.LocalPosition);
                 }
             }
         );
@@ -800,7 +800,7 @@ public class WD_IStorage {
             for(int j= i+1; j < ports.Length; ++j) {
                 Vector2 intersection;
                 Vector2 jPos= Math3D.ToVector2(GetPosition(ports[j]));
-                if(Physics2D.LineSegmentIntersection(iPos,remotePos[i],jPos,remotePos[j],out intersection)) {
+                if(Math3D.LineSegmentIntersection(iPos,remotePos[i],jPos,remotePos[j],out intersection)) {
                     Prelude.exchange(ref ports[i].LocalPosition, ref ports[j].LocalPosition);
                     Prelude.exchange(ref remotePos[i], ref remotePos[j]);
                 }
@@ -956,13 +956,13 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     // Returns if the given rectangle collides with the node.
     public bool DoesCollide(WD_EditorObject node, WD_EditorObject otherNode) {
-        return Physics2D.DoesCollide(GetPosition(node), GetPosition(otherNode));
+        return Math3D.DoesCollide(GetPosition(node), GetPosition(otherNode));
     }
 
     // ----------------------------------------------------------------------
     // Returns if the given rectangle collides with the node.
     public bool DoesCollideWithGutter(WD_EditorObject node, WD_EditorObject otherNode) {
-        return Physics2D.DoesCollide(RectWithGutter(GetPosition(node)), GetPosition(otherNode));
+        return Math3D.DoesCollide(RectWithGutter(GetPosition(node)), GetPosition(otherNode));
     }
 
     // ----------------------------------------------------------------------

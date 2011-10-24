@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class Physics2D {
+public static partial class Math3D {
 
     // ======================================================================
     // COLLISION FUNCTIONS
