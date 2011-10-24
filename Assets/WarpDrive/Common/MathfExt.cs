@@ -142,4 +142,9 @@ public class MathfExt {
         }
         return angle;        
     }
+
+	// ----------------------------------------------------------------------
+    public static Vector2 ToVector2(Rect rect) {
+        return new Vector2(rect.x, rect.y);
+    }
 }

@@ -69,10 +69,10 @@ public class Physics2D {
         bool isParallel= !LineIntersection(l1p1, l1p2, l2p1, l2p2, out intersection);
         if(isParallel) return false;
         // Determine if intersection point is on the given line segment.
-        bool isValidX= ((intersection.x <= l1p1.x && intersection.x >= l1p1.x) ||
-                        (intersection.x >= l1p1.x && intersection.x <= l1p1.x));
-        bool isValidY= ((intersection.y <= l1p1.y && intersection.y >= l1p1.y) ||
-                        (intersection.y >= l1p1.y && intersection.y <= l1p1.y));
+        bool isValidX= ((intersection.x <= l1p1.x && intersection.x >= l1p2.x) ||
+                        (intersection.x >= l1p1.x && intersection.x <= l1p2.x));
+        bool isValidY= ((intersection.y <= l1p1.y && intersection.y >= l1p2.y) ||
+                        (intersection.y >= l1p1.y && intersection.y <= l1p2.y));
         return isValidX && isValidY;                
     }
 }
