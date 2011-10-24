@@ -38,8 +38,10 @@ public class Physics2D {
     }
 
     // ----------------------------------------------------------------------
-    // Line intersection
-    public static bool LineIntersection(Vector2 l1p1, Vector2 l1p2, Vector2 l2p1, Vector2 l2p2) {
+    // Determine the interscetion point of two infinit size lines if
+    // they are not parallel.  "true" is returned if an intersection
+    // point is found, otherwise 'false' is return for parallel lines.
+    public static bool LineIntersection(Vector2 l1p1, Vector2 l1p2, Vector2 l2p1, Vector2 l2p2, out Vector2 intersection) {
         float x1= l1p1.x;
         float y1= l1p1.y;
         float x2= l1p2.x;
@@ -48,8 +50,29 @@ public class Physics2D {
         float y3= l2p1.y;
         float x4= l2p2.x;
         float y4= l2p2.y;
-        float px= ((x1*y2-y1*x2)*(x3-x4) - (x1-x2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
-        float py= ((x1*y2-y1*x2)*(y3-y4) - (y1-y2)*(x3*y4-y3*x4))/((x1-x2)*(y3-y4) - (y1-y2)*(x3-x4));
+        // Parallel lines don't intersect.
+        float divider= (x1-x2)*(y3-y4) - (y1-y2)*(x3-x4);
+        if(MathfExt.IsZero(divider)) { intersection= Vector2.zero; return false; }
+        // Compute interscetion
+        float t1= x1*y2-y1*x2;
+        float t2= x3*y4-y3*x4;
+        float px= (t1*(x3-x4) - (x1-x2)*t2)/divider;
+        float py= (t1*(y3-y4) - (y1-y2)*t2)/divider;
+        intersection= new Vector2(px,py);
         return true;
+    }
+    // ----------------------------------------------------------------------
+    // Determine the interscetion point of two line segments if
+    // they are not parallel.  "true" is returned if an intersection
+    // point is found, otherwise 'false' is return for parallel lines.
+    public static bool LineSegmentIntersection(Vector2 l1p1, Vector2 l1p2, Vector2 l2p1, Vector2 l2p2, out Vector2 intersection) {
+        bool isParallel= !LineIntersection(l1p1, l1p2, l2p1, l2p2, out intersection);
+        if(isParallel) return false;
+        // Determine if intersection point is on the given line segment.
+        bool isValidX= ((intersection.x <= l1p1.x && intersection.x >= l1p1.x) ||
+                        (intersection.x >= l1p1.x && intersection.x <= l1p1.x));
+        bool isValidY= ((intersection.y <= l1p1.y && intersection.y >= l1p1.y) ||
+                        (intersection.y >= l1p1.y && intersection.y <= l1p1.y));
+        return isValidX && isValidY;                
     }
 }
