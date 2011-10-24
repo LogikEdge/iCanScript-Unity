@@ -500,15 +500,7 @@ public class WD_Editor : EditorWindow {
     void DrawNodes() {
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            node=> {
-                if(node.IsNode && !Storage.IsMinimized(node)) {
-                    Graphics.DrawNode(node, SelectedObject, Storage);
-                    Debug.Log("Node: "+node.LocalPosition);
-                    foreach(var p in Storage.GetBottomPorts(node)) {
-                        Debug.Log("Bottom ports: "+p.LocalPosition);
-                    }
-                }
-            }
+            node=> { if(node.IsNode && !Storage.IsMinimized(node)) Graphics.DrawNode(node, SelectedObject, Storage); }
         );
     }	
 	
