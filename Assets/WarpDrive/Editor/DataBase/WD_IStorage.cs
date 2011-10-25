@@ -46,11 +46,12 @@ public class WD_IStorage {
     public bool IsValid(int id)     { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)   { return !IsValid(id); }
     // ----------------------------------------------------------------------
-    public bool IsDirty { get { return myIsDirty || Storage.IsUndoRedoPerformed; }}
+    public bool IsDirty { get { ProcessUndoRedo(); return myIsDirty; }}
     // ----------------------------------------------------------------------
     public WD_EditorObject this[int id] {
         get { return EditorObjects[id]; }
         set {
+            ProcessUndoRedo();
             if(value.InstanceId != id) Debug.LogError("Trying to add EditorObject at wrong index.");
             EditorObjects[id]= value;
             if(TreeCache.IsValid(id)) TreeCache.UpdateInstance(value);
@@ -72,10 +73,7 @@ public class WD_IStorage {
     // Storage Update
     // ----------------------------------------------------------------------
     public void Update() {
-        // Regenerate internal structures if undo/redo was performed.
-        if(Storage.IsUndoRedoPerformed) {
-            SynchronizeAfterUndoRedo();
-        }
+        ProcessUndoRedo();
         if(!myIsDirty) return;
         myIsDirty= false;
 //        Debug.Log("Storage has something to update");
@@ -100,6 +98,13 @@ public class WD_IStorage {
         Storage.IsUndoRedoPerformed= false;        
     }
     // ----------------------------------------------------------------------
+    void ProcessUndoRedo() {
+        // Regenerate internal structures if undo/redo was performed.
+        if(Storage.IsUndoRedoPerformed) {
+            SynchronizeAfterUndoRedo();
+        }        
+    }
+    // ----------------------------------------------------------------------
     void SynchronizeAfterUndoRedo() {
 //        Debug.Log("Undo/Redo Was perfromed");
         GenerateEditorData();
@@ -117,7 +122,9 @@ public class WD_IStorage {
     // ======================================================================
     // Editor Object Creation/Destruction
     // ----------------------------------------------------------------------
-    public int GetNextAvailableId() {
+    int GetNextAvailableId() {
+        // Covers Undo?redo for all creation operation
+        ProcessUndoRedo();
         // Find the next available id.
         int id= 0;
         int len= EditorObjects.Count;
@@ -312,6 +319,7 @@ public class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(int id) {
+        ProcessUndoRedo();
         DestroyInstanceInternal(id);
         ForEach(
             port=> {
@@ -350,7 +358,7 @@ public class WD_IStorage {
     public bool IsVisible(WD_EditorObject eObj) {
         if(eObj.IsHidden) return false;
         if(IsInvalid(eObj.ParentId)) return true;
-        WD_EditorObject parent= EditorObjects[eObj.ParentId];
+        WD_EditorObject parent= GetParent(eObj);
         if(eObj.IsNode && (parent.IsFolded || parent.IsMinimized)) return false;
         return IsVisible(parent);
     }
@@ -1273,6 +1281,7 @@ public class WD_IStorage {
         Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, c9, f9, defaultFnc);
     }
     public void ForEachChild(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        ProcessUndoRedo();
         if(parent == null) {
             TreeCache.ForEachChild(id=> fnc(EditorObjects[id]));            
         }
@@ -1284,9 +1293,11 @@ public class WD_IStorage {
         Prelude.filterWith(WD.IsValid, fnc, EditorObjects);
     }
     public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        ProcessUndoRedo();
         ForEachRecursiveDepthLast(parent, fnc);
     }
     public void ForEachRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        ProcessUndoRedo();
         if(parent == null) {
             TreeCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));                                
         } else {
@@ -1294,6 +1305,7 @@ public class WD_IStorage {
         }
     }
     public void ForEachRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        ProcessUndoRedo();
         if(parent == null) {
             TreeCache.ForEachRecursiveDepthFirst(id => fnc(EditorObjects[id]));        
         } else {
@@ -1304,6 +1316,7 @@ public class WD_IStorage {
         ForEachChildRecursiveDepthLast(parent, fnc);
     }
     public void ForEachChildRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        ProcessUndoRedo();
         if(parent == null) {
             TreeCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));        
         } else {
@@ -1311,6 +1324,7 @@ public class WD_IStorage {
         }
     }
     public void ForEachChildRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
+        ProcessUndoRedo();
         if(parent == null) {
             TreeCache.ForEachRecursiveDepthFirst(id=> fnc(EditorObjects[id]));                    
         } else {
@@ -1321,7 +1335,7 @@ public class WD_IStorage {
     public bool IsChildOf(WD_EditorObject child, WD_EditorObject parent) {
         if(IsInvalid(child.ParentId)) return false;
         if(child.ParentId == parent.InstanceId) return true;
-        return IsChildOf(EditorObjects[child.ParentId], parent);
+        return IsChildOf(GetParent(child), parent);
     }
 
 }
