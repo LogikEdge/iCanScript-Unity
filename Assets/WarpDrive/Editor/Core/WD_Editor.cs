@@ -154,10 +154,7 @@ public class WD_Editor : EditorWindow {
         // Process left button state.
         switch(Mouse.LeftButtonState) {
             case WD_Mouse.ButtonStateEnum.Idle:
-                if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) {
-                    EndDrag();
-                    Storage.RegisterUndo("Drag");
-                }
+                if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDrag();
                 break;
             case WD_Mouse.ButtonStateEnum.SingleClick:
                 if(SelectedObject != null) {
@@ -165,25 +162,25 @@ public class WD_Editor : EditorWindow {
                     Vector2 graphMousePos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
                     if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
                         if(Storage.IsFolded(SelectedObject)) {
-                            Storage.Unfold(SelectedObject);
                             Storage.RegisterUndo("Unfold");
+                            Storage.Unfold(SelectedObject);
                         } else {
-                            Storage.Fold(SelectedObject);
                             Storage.RegisterUndo("Fold");
+                            Storage.Fold(SelectedObject);
                         }
                     }
                     // Process maximize/minimize click.
                     if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
-                        Storage.Minimize(SelectedObject);
                         Storage.RegisterUndo("Minimize");
+                        Storage.Minimize(SelectedObject);
                     } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
-                        Storage.Maximize(SelectedObject);
                         Storage.RegisterUndo("Maximize");
+                        Storage.Maximize(SelectedObject);
                     }
                 }
                 break;
             case WD_Mouse.ButtonStateEnum.DoubleClick:
-                DynamicMenuUpdate(Mouse.LeftButtonDownPosition);
+                DynamicMenu.Update(SelectedObject, Storage, Mouse.LeftButtonDownPosition);
                 break;
             case WD_Mouse.ButtonStateEnum.Dragging:
                 ProcessDrag();
@@ -194,17 +191,11 @@ public class WD_Editor : EditorWindow {
         // Process right button state.
         switch(Mouse.RightButtonState) {
             case WD_Mouse.ButtonStateEnum.SingleClick:
-                DynamicMenuUpdate(Mouse.RightButtonDownPosition);
+                DynamicMenu.Update(SelectedObject, Storage, Mouse.RightButtonDownPosition);
                 break;
         }                    
     }
     
-	// ----------------------------------------------------------------------
-    void DynamicMenuUpdate(Vector2 mousePosition) {
-        DynamicMenu.Update(SelectedObject, Storage, mousePosition);
-        Storage.RegisterUndo("Menu Command");
-    }
-
 	// ----------------------------------------------------------------------
     void ProcessDrag() {
         // Return if dragging is not enabled.
@@ -249,6 +240,7 @@ public class WD_Editor : EditorWindow {
         // Port drag.
         WD_EditorObject port= Storage.GetPortAt(pos);
         if(port != null && !Storage.IsMinimized(port)) {
+            Storage.RegisterUndo("Port Drag");
             DragType= DragTypeEnum.PortDrag;
             DragObject= port;
             DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
@@ -259,6 +251,7 @@ public class WD_Editor : EditorWindow {
         // Node drag.
         WD_EditorObject node= Storage.GetNodeAt(pos);                
         if(node != null && (!node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
+            Storage.RegisterUndo("Node Drag");
             DragType= DragTypeEnum.NodeDrag;
             DragObject= node;
             Rect position= Storage.GetPosition(node);
@@ -268,6 +261,7 @@ public class WD_Editor : EditorWindow {
         
         // New state transition drag.
         if(node != null && node.IsState) {
+            Storage.RegisterUndo("Transition Creation");
             DragType= DragTypeEnum.TransitionCreation;
             WD_EditorObject outTransition= Storage.CreatePort("outState", node.InstanceId, typeof(void), WD_ObjectTypeEnum.OutStatePort);
             WD_EditorObject inTransition= Storage.CreatePort("inState", node.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);

@@ -263,6 +263,7 @@ public class WD_DynamicMenu {
         MenuContext context= obj as MenuContext;
         WD_EditorObject selectedObject= context.SelectedObject;
         WD_IStorage storage= context.Storage;
+        storage.RegisterUndo(context.Command);
         switch(context.Command) {
             case UpdateModuleStr:           CreateModule(selectedObject, storage, "Update"); break;
             case UpdateStateChartStr:       CreateStateChart(selectedObject, storage, "Update"); break;
