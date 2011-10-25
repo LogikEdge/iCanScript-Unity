@@ -100,12 +100,8 @@ public class WD_Editor : EditorWindow {
     // ======================================================================
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
-    static int refreshCnt= 0;
 	void Update() {
-		// Force a repaint to allow for snappy controls.
-        if((++refreshCnt & 7) == 0) {
-    		Repaint();            
-        }
+        if(Storage.IsDirty) Repaint();            
 	}
 	
 	// ----------------------------------------------------------------------
@@ -121,9 +117,6 @@ public class WD_Editor : EditorWindow {
         Rect scrollViewPosition= DisplayRoot != null ? Storage.GetPosition(DisplayRoot) : new Rect(0,0,500,500);
         ScrollView.Update(position, scrollViewPosition);
         
-		// Draw editor widgets.
-		DrawEditorWidgets();
-		
         // Draw Graph.
         DrawGraph();
 
@@ -132,23 +125,10 @@ public class WD_Editor : EditorWindow {
 
         // Process user inputs
         ProcessEvents();
-        
-        // Allow storage to update itself
-        Storage.Update();
 	}
 
     // ======================================================================
     // EDITOR WINDOW MAIN LAYOUT
-	// ----------------------------------------------------------------------
-	// Draws all editor widgets
-	void DrawEditorWidgets() {
-        DrawEditorToolbar();
-	}
-
-	// ----------------------------------------------------------------------
-	void DrawEditorToolbar() {
-	}
-    
 	// ----------------------------------------------------------------------
     float UsableWindowWidth() {
         return position.width-2*WD_EditorConfig.EditorWindowGutterSize;
@@ -228,7 +208,7 @@ public class WD_Editor : EditorWindow {
             case DragTypeEnum.NodeDrag:
                 WD_EditorObject node= DragObject;
                 Storage.MoveTo(node, DragStartPosition+delta);
-                node.IsDirty= true;                        
+                Storage.SetDirty(node);                        
                 break;
             case DragTypeEnum.PortDrag:
             case DragTypeEnum.TransitionCreation:
@@ -236,7 +216,7 @@ public class WD_Editor : EditorWindow {
                 Vector2 newLocalPos= DragStartPosition+delta;
                 port.LocalPosition.x= newLocalPos.x;
                 port.LocalPosition.y= newLocalPos.y;
-                port.IsDirty= true;
+                Storage.SetDirty(port);
                 if(!Storage.IsNearParent(port)) {
                 /*
                     TODO : create a temporary port to show new connection.
@@ -477,14 +457,8 @@ public class WD_Editor : EditorWindow {
     
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
-        // Perform layout of modified nodes.
-        Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            (obj)=> {
-                if(obj.IsDirty) {
-                    Storage.Layout(obj);
-                }
-            }
-        );            
+        // Ask the storage to update itself.
+        Storage.Update();
         
         // Draw editor grid.
         DrawGrid();

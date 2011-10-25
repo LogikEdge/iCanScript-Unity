@@ -8,7 +8,7 @@ public class WD_IStorage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    bool            IsDirty  = true;
+    public bool     IsDirty  = true;
     WD_Storage      Storage  = null;
     WD_TreeCache    TreeCache= null;
     
@@ -53,6 +53,7 @@ public class WD_IStorage {
             EditorObjects[id]= value;
             if(TreeCache.IsValid(id)) TreeCache.UpdateInstance(value);
             else                      TreeCache.CreateInstance(value);            
+            SetDirty(EditorObjects[id]);
         }
     }
     // ----------------------------------------------------------------------
@@ -60,6 +61,7 @@ public class WD_IStorage {
     public WD_EditorObject GetSource(WD_EditorObject obj) { return IsValid(obj.Source) ? EditorObjects[obj.Source] : null; }
     // ----------------------------------------------------------------------
     public void SetDirty(WD_EditorObject obj) {
+        IsDirty= true;
         if(obj.IsPort) { GetParent(obj).IsDirty= true; }
         obj.IsDirty= true;        
     }
@@ -67,12 +69,25 @@ public class WD_IStorage {
     // ======================================================================
     // Storage Update
     // ----------------------------------------------------------------------
-    public void Update() {
-        if(IsDirty) {
-            IsDirty= false;
-            Undo.RegisterUndo(Storage, "WarpDrive");
-            EditorUtility.SetDirty(Storage);
-        }
+    public bool Update() {
+        if(!IsDirty) return false;
+        IsDirty= false;
+        Debug.Log("Storage has something to update");
+
+        // Perform layout of modified nodes.
+        ForEachRecursiveDepthLast(EditorObjects[0],
+            (obj)=> {
+                if(obj.IsDirty) {
+                    Layout(obj);
+                }
+            }
+        );            
+        
+        // Register the undo
+        Undo.RegisterUndo(Storage, "WarpDrive");
+        EditorUtility.SetDirty(Storage);
+
+        return true;
     }
 
     // ======================================================================
@@ -90,18 +105,6 @@ public class WD_IStorage {
         return id;
     }
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateInstance(string name, int parentId, WD_ObjectTypeEnum objType, Vector2 initialPos, Type rtType) {
-        // Create the function node.
-        int id= GetNextAvailableId();
-        // Calcute the desired screen position of the new object.
-        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
-        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
-        // Create new EditorObject
-        EditorObjects[id]= new WD_EditorObject(id, name, rtType, parentId, objType, localPos);
-        TreeCache.CreateInstance(EditorObjects[id]);
-        return EditorObjects[id];
-    }
-    // ----------------------------------------------------------------------
     public WD_EditorObject CreateBehaviour() {
         // Create the function node.
         int id= GetNextAvailableId();
@@ -110,9 +113,8 @@ public class WD_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        EditorObjects[id]= new WD_EditorObject(id, "Behaviour", typeof(WD_Behaviour), -1, WD_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
-        TreeCache.CreateInstance(EditorObjects[id]);
-        return EditorObjects[id];
+        this[id]= new WD_EditorObject(id, "Behaviour", typeof(WD_Behaviour), -1, WD_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
+        return this[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateModuleLibrary() {
@@ -130,9 +132,8 @@ public class WD_IStorage {
         Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        EditorObjects[id]= new WD_EditorObject(id, name, typeof(WD_Module), parentId, WD_ObjectTypeEnum.Module, localPos);
-        TreeCache.CreateInstance(EditorObjects[id]);
-        return EditorObjects[id];
+        this[id]= new WD_EditorObject(id, name, typeof(WD_Module), parentId, WD_ObjectTypeEnum.Module, localPos);
+        return this[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateStateChartLibrary() {
@@ -150,9 +151,8 @@ public class WD_IStorage {
         Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        EditorObjects[id]= new WD_EditorObject(id, name, typeof(WD_StateChart), parentId, WD_ObjectTypeEnum.StateChart, localPos);
-        TreeCache.CreateInstance(EditorObjects[id]);
-        return EditorObjects[id];
+        this[id]= new WD_EditorObject(id, name, typeof(WD_StateChart), parentId, WD_ObjectTypeEnum.StateChart, localPos);
+        return this[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateState(int parentId, Vector2 initialPos, string name= "") {
@@ -167,9 +167,8 @@ public class WD_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        EditorObjects[id]= new WD_EditorObject(id, name, typeof(WD_State), parentId, WD_ObjectTypeEnum.State, localPos);
-        TreeCache.CreateInstance(EditorObjects[id]);
-        return EditorObjects[id];
+        this[id]= new WD_EditorObject(id, name, typeof(WD_State), parentId, WD_ObjectTypeEnum.State, localPos);
+        return this[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_BaseDesc desc) {
@@ -191,8 +190,7 @@ public class WD_IStorage {
         // Calcute the desired screen position of the new object.
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
-        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos, desc.Icon);
-        TreeCache.CreateInstance(EditorObjects[id]);
+        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos, desc.Icon);
         // Create field ports
         for(int i= 0; i < desc.FieldNames.Length; ++i) {
             WD_ObjectTypeEnum portType= desc.FieldInOuts[i] ? WD_ObjectTypeEnum.OutFieldPort : WD_ObjectTypeEnum.InFieldPort;
@@ -212,8 +210,7 @@ public class WD_IStorage {
             int methodId= -1;
             if(nbOfMethodsToShow > 1) {
                 methodId= GetNextAvailableId();
-                EditorObjects[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0), desc.MethodIcons[i]);
-                TreeCache.CreateInstance(EditorObjects[methodId]);                
+                this[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0), desc.MethodIcons[i]);
             }
             for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
                 WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutModulePort : WD_ObjectTypeEnum.InModulePort;
@@ -237,7 +234,7 @@ public class WD_IStorage {
                 }
             }
         }
-        return EditorObjects[id];
+        return this[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_FunctionDesc desc) {
@@ -247,8 +244,7 @@ public class WD_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos, desc.Icon);
-        TreeCache.CreateInstance(EditorObjects[id]);
+        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos, desc.Icon);
         // Create input/output ports.
         for(int i= 0; i < desc.ParameterNames.Length; ++i) {
             WD_ObjectTypeEnum portType= desc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
@@ -257,7 +253,7 @@ public class WD_IStorage {
         if(desc.ReturnType != null) {
             CreatePort(desc.ReturnName, id, desc.ReturnType, WD_ObjectTypeEnum.OutFunctionPort);
         }
-        return EditorObjects[id];
+        return this[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ConversionDesc desc) {
@@ -267,18 +263,16 @@ public class WD_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        EditorObjects[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos, desc.Icon);
-        TreeCache.CreateInstance(EditorObjects[id]);
+        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos, desc.Icon);
         // Create input/output ports.
         CreatePort(desc.FromType.Name, id, desc.FromType, WD_ObjectTypeEnum.InFunctionPort);
         CreatePort(desc.ToType.Name,   id, desc.ToType,   WD_ObjectTypeEnum.OutFunctionPort);
-        return EditorObjects[id];
+        return this[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreatePort(string name, int parentId, Type valueType, WD_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
-        WD_EditorObject port= EditorObjects[id]= new WD_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
-        TreeCache.CreateInstance(port);
+        WD_EditorObject port= this[id]= new WD_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
         // Reajust data port position 
         if(port.IsDataPort && !port.IsEnablePort) {
             WD_EditorObject parent= EditorObjects[port.ParentId];
@@ -322,6 +316,7 @@ public class WD_IStorage {
         if(IsValid(EditorObjects[id].ParentId)) SetDirty(GetParent(EditorObjects[id]));
         TreeCache.DestroyInstance(id);
         EditorObjects[id].Reset();
+        IsDirty= true;
     }
 
 
@@ -342,14 +337,14 @@ public class WD_IStorage {
     public void Fold(WD_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
         eObj.Fold();
-        eObj.IsDirty= true;
+        SetDirty(eObj);
     }
     public void Fold(int id) { if(IsValid(id)) Fold(EditorObjects[id]); }
     // ----------------------------------------------------------------------
     public void Unfold(WD_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
         eObj.Unfold();
-        eObj.IsDirty= true;
+        SetDirty(eObj);
     }
     public void Unfold(int id) { if(IsValid(id)) Unfold(EditorObjects[id]); }
     // ----------------------------------------------------------------------
@@ -360,8 +355,8 @@ public class WD_IStorage {
         if(!eObj.IsNode) return;
         eObj.Minimize();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Minimize(); });
-        eObj.IsDirty= true;
-        if(IsValid(eObj.ParentId)) EditorObjects[eObj.ParentId].IsDirty= true;
+        SetDirty(eObj);
+        if(IsValid(eObj.ParentId)) SetDirty(GetParent(eObj));
     }
     public void Minimize(int id) { if(IsValid(id)) Minimize(EditorObjects[id]); }
     // ----------------------------------------------------------------------
@@ -369,8 +364,8 @@ public class WD_IStorage {
         if(!eObj.IsNode) return;
         eObj.Maximize();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Maximize(); });
-        eObj.IsDirty= true;
-        if(IsValid(eObj.ParentId)) EditorObjects[eObj.ParentId].IsDirty= true;
+        SetDirty(eObj);
+        if(IsValid(eObj.ParentId)) SetDirty(GetParent(eObj));
     }
     public void Maximize(int id) { if(IsValid(id)) Maximize(EditorObjects[id]); }
     
@@ -472,7 +467,7 @@ public class WD_IStorage {
             obj.LocalPosition.x= initialPosition.x;
             obj.LocalPosition.y= initialPosition.y;                        
         }
-        IsDirty= true;
+        SetDirty(obj);
     }
 
     // ----------------------------------------------------------------------
