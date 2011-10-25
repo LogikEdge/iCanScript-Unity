@@ -507,7 +507,7 @@ public class WD_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawConnection(port, SelectedObject, Storage); });
+        Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawConnection(port, Storage); });
 
         // Display ports.
         Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); });

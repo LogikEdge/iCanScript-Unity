@@ -690,95 +690,23 @@ public class WD_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(WD_EditorObject port, WD_EditorObject selectedObject, WD_IStorage storage) {
+    public void DrawConnection(WD_EditorObject port, WD_IStorage storage) {
         if(storage.IsVisible(port.ParentId) && storage.IsValid(port.Source)) {
             WD_EditorObject source= storage.GetSource(port);
             WD_EditorObject sourceParent= storage.GetParent(source);
             if(storage.IsVisible(sourceParent)) {
-                Rect sourcePos= storage.GetPosition(source);
-                Rect portPos  = storage.GetPosition(port);
-                Vector2 start= new Vector2(sourcePos.x, sourcePos.y);
-                Vector2 end= new Vector2(portPos.x, portPos.y);
-                Vector2 startDirection= ConnectionDirectionForTo(source, port, storage);
-                Vector2 endDirection= ConnectionDirectionForTo(port, source, storage);
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
-                Vector3 center= DrawBezierCurve(start, end, startDirection, endDirection, color);
+                color.a*= WD_EditorConfig.ConnectionTransparency;
+                WD_ConnectionParams cp= new WD_ConnectionParams(port, storage);
+        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);
                 // Show transition name in middle of connection.
                 if(port.IsOutStatePort) {
                     Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
-                    Vector2 pos= new Vector2(center.x-0.5f*labelSize.x, center.y-(0.5f+ConnectionLabelOffset(port,storage))*labelSize.y);
+                    Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-(0.5f+ConnectionLabelOffset(port,storage))*labelSize.y);
                     GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), port.Name);                    
                 }
             }                                    
         }
-    }
-    // ----------------------------------------------------------------------
-    Vector2 ConnectionDirectionForTo(WD_EditorObject port, WD_EditorObject to, WD_IStorage storage) {
-        Vector2 direction;
-        if(port.IsOnLeftEdge) {
-            direction= LeftDirection;
-        } else if(port.IsOnRightEdge) {
-            direction= RightDirection;
-        } else if(port.IsOnTopEdge) {
-            direction= UpDirection;
-        } else {
-            direction= DownDirection;
-        }
-        // Inverse direction for connection between nested nodes.
-        WD_EditorObject portParent= storage.GetParent(port);
-        WD_EditorObject toParent= storage.GetParent(to);
-        if(storage.IsChildOf(toParent, portParent)) {
-            direction= -direction;
-        }
-        return direction;
-    }
-    // ----------------------------------------------------------------------
-    public Vector3 DrawBezierCurve(Vector3 _start, Vector3 _end, Vector3 _startDir, Vector3 _endDir, Color _color) {
-        // Readjust to screen coordinates.
-        Vector3 start= new Vector3(_start.x-drawOffset.x, _start.y-drawOffset.y, _start.z);
-        Vector3 end  = new Vector3(_end.x-drawOffset.x  , _end.y-drawOffset.y  , _end.z);
-        
-		// Determine weight of the tangents.
-		Vector3 vertex= end-start;
-
-        // Compute Bezier tangents.
-        Vector3 startTangent= start + _startDir * 0.25f * (vertex.magnitude + Mathf.Abs(Vector3.Dot(_startDir, vertex)));
-        Vector3 endTangent  = end + _endDir * 0.25f * (vertex.magnitude + Mathf.Abs(Vector3.Dot(_endDir, vertex)));
-
-        // Use a Bezier for the connections.
-        Color color= new Color(_color.r, _color.g, _color.b, 0.5f*_color.a);
-		Handles.DrawBezier(start, end, startTangent, endTangent, color, lineTexture, 1.5f);
-        return BezierCenter(_start, _end, startTangent, endTangent);
-    }
-    // ----------------------------------------------------------------------
-    public Vector3 BezierCenter(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent) {
-        // A simple linear interpolation suffices for facing tangents.
-        Vector3 point= 0.5f*(start+end);
-        float distance= HandleUtility.DistancePointBezier(point, start, end, startTangent, endTangent);
-        if(distance < 1f) {
-            return point;
-        }
-        Vector3 px= point;
-        px.x+= distance;
-        Vector3 py= point;
-        py.y+= distance;
-        float dx= HandleUtility.DistancePointBezier(px, start, end, startTangent, endTangent);
-        float dy= HandleUtility.DistancePointBezier(py, start, end, startTangent, endTangent);
-        float xSign= 1f;
-        float ySign= 1f;
-        if(dx > distance) {
-            dx= 2f*distance-dx;
-            xSign= -1f;
-        }
-        if(dy > distance) {
-            dy= 2f*distance-dy;
-            ySign= -1f;
-        }
-        float fx= 1f-dx/distance;
-        float fy= 1f-dy/distance;
-        point.x+= xSign*fx*distance;
-        point.y+= ySign*fy*distance;
-        return point;
     }
 	// ----------------------------------------------------------------------
 //  static float[] portTopBottomRatio   = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
