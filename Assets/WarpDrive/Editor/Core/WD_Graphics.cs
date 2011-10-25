@@ -465,7 +465,8 @@ public class WD_Graphics {
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
-        // Show name if requested.
+        // Show port label.
+        if(port.IsInStatePort) return;     // State transition name is taken from the state output. 
         Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);
         switch(port.Edge) {
             case WD_EditorObject.EdgeEnum.Left:
@@ -750,8 +751,21 @@ public class WD_Graphics {
         // Use a Bezier for the connections.
         Color color= new Color(_color.r, _color.g, _color.b, 0.5f*_color.a);
 		Handles.DrawBezier(start, end, startTangent, endTangent, color, lineTexture, 1.5f);
+        Vector3 center= BezierCenter(_start, _end, _startDir, _endDir);
+        Handles.color= Color.red;
+		Handles.DrawSolidDisc(center, FacingNormal, 5);
     }
-
+    // ----------------------------------------------------------------------
+    public Vector3 BezierCenter(Vector3 start, Vector3 end, Vector3 startDir, Vector3 endDir) {
+        Vector3 point= 0.5f*(start+end);
+        float distance= HandleUtility.DistancePointBezier(point, start, end, startDir, endDir);
+        if(distance < 1f) {
+            Debug.Log("Distance is good");
+            return point;
+        }
+        Debug.Log("Distance is bad: "+distance);
+        return point;
+    }
 
     // ======================================================================
     //  ERROR MANAGEMENT
