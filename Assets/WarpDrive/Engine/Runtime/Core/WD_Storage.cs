@@ -9,8 +9,9 @@ public class WD_Storage : MonoBehaviour {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public WD_UserPreferences       Preferences  = new WD_UserPreferences();
-    public List<WD_EditorObject>    EditorObjects= new List<WD_EditorObject>();
+    public WD_UserPreferences       Preferences        = new WD_UserPreferences();
+    public List<WD_EditorObject>    EditorObjects      = new List<WD_EditorObject>();
+    public bool                     IsUndoRedoPerformed= false;
 
     // ----------------------------------------------------------------------
 	// We do not want this behaviour to run.

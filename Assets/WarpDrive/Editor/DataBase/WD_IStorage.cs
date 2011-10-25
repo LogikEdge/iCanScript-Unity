@@ -8,7 +8,7 @@ public class WD_IStorage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public bool     IsDirty  = true;
+    bool            myIsDirty  = true;
     WD_Storage      Storage  = null;
     WD_TreeCache    TreeCache= null;
     
@@ -20,13 +20,13 @@ public class WD_IStorage {
     }
     public void Init(WD_Storage storage) {
         if(Storage != storage) {
-            IsDirty= true;
+            myIsDirty= true;
             Storage= storage;
             GenerateEditorData();            
         }
     }
     public void Reset() {
-        IsDirty= true;
+        myIsDirty= true;
         Storage= null;
         TreeCache= null;
     }
@@ -46,6 +46,8 @@ public class WD_IStorage {
     public bool IsValid(int id)     { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)   { return !IsValid(id); }
     // ----------------------------------------------------------------------
+    public bool IsDirty { get { return myIsDirty || Storage.IsUndoRedoPerformed; }}
+    // ----------------------------------------------------------------------
     public WD_EditorObject this[int id] {
         get { return EditorObjects[id]; }
         set {
@@ -61,7 +63,7 @@ public class WD_IStorage {
     public WD_EditorObject GetSource(WD_EditorObject obj) { return IsValid(obj.Source) ? EditorObjects[obj.Source] : null; }
     // ----------------------------------------------------------------------
     public void SetDirty(WD_EditorObject obj) {
-        IsDirty= true;
+        myIsDirty= true;
         if(obj.IsPort) { GetParent(obj).IsDirty= true; }
         obj.IsDirty= true;        
     }
@@ -69,27 +71,49 @@ public class WD_IStorage {
     // ======================================================================
     // Storage Update
     // ----------------------------------------------------------------------
-    public bool Update() {
-        if(!IsDirty) return false;
-        IsDirty= false;
-        Debug.Log("Storage has something to update");
+    public void Update() {
+        // Regenerate internal structures if undo/redo was performed.
+        if(Storage.IsUndoRedoPerformed) {
+            SynchronizeAfterUndoRedo();
+        }
+        if(!myIsDirty) return;
+        myIsDirty= false;
+//        Debug.Log("Storage has something to update");
 
         // Perform layout of modified nodes.
         ForEachRecursiveDepthLast(EditorObjects[0],
-            (obj)=> {
+            obj=> {
                 if(obj.IsDirty) {
                     Layout(obj);
                 }
             }
         );            
-        
-        // Register the undo
-        Undo.RegisterUndo(Storage, "WarpDrive");
-        EditorUtility.SetDirty(Storage);
-
-        return true;
     }
 
+    // ======================================================================
+    // Undo/Redo support
+    // ----------------------------------------------------------------------
+    public void RegisterUndo(string message= "WarpDrive") {
+        Storage.IsUndoRedoPerformed= true;
+        EditorUtility.SetDirty(Storage);
+        Undo.RegisterUndo(Storage, message);
+        Storage.IsUndoRedoPerformed= false;        
+    }
+    // ----------------------------------------------------------------------
+    void SynchronizeAfterUndoRedo() {
+//        Debug.Log("Undo/Redo Was perfromed");
+        GenerateEditorData();
+        foreach(var obj in EditorObjects) {
+            if(IsValid(obj.InstanceId)) {
+                SetDirty(obj);
+            }
+            else {
+                obj.IsDirty= false;
+            }
+        }
+        Storage.IsUndoRedoPerformed= false;        
+    }
+    
     // ======================================================================
     // Editor Object Creation/Destruction
     // ----------------------------------------------------------------------
@@ -316,7 +340,7 @@ public class WD_IStorage {
         if(IsValid(EditorObjects[id].ParentId)) SetDirty(GetParent(EditorObjects[id]));
         TreeCache.DestroyInstance(id);
         EditorObjects[id].Reset();
-        IsDirty= true;
+        myIsDirty= true;
     }
 
 

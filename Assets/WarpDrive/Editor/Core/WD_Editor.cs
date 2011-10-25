@@ -101,7 +101,7 @@ public class WD_Editor : EditorWindow {
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
 	void Update() {
-        if(Storage.IsDirty) Repaint();            
+        if(Storage != null && Storage.IsDirty) Repaint();            
 	}
 	
 	// ----------------------------------------------------------------------
@@ -154,7 +154,10 @@ public class WD_Editor : EditorWindow {
         // Process left button state.
         switch(Mouse.LeftButtonState) {
             case WD_Mouse.ButtonStateEnum.Idle:
-                if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) EndDrag();
+                if(PreviousLeftButtonState == WD_Mouse.ButtonStateEnum.Dragging) {
+                    EndDrag();
+                    Storage.RegisterUndo("Drag");
+                }
                 break;
             case WD_Mouse.ButtonStateEnum.SingleClick:
                 if(SelectedObject != null) {
@@ -163,20 +166,24 @@ public class WD_Editor : EditorWindow {
                     if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
                         if(Storage.IsFolded(SelectedObject)) {
                             Storage.Unfold(SelectedObject);
+                            Storage.RegisterUndo("Unfold");
                         } else {
                             Storage.Fold(SelectedObject);
+                            Storage.RegisterUndo("Fold");
                         }
                     }
                     // Process maximize/minimize click.
                     if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
                         Storage.Minimize(SelectedObject);
+                        Storage.RegisterUndo("Minimize");
                     } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
                         Storage.Maximize(SelectedObject);
+                        Storage.RegisterUndo("Maximize");
                     }
                 }
                 break;
             case WD_Mouse.ButtonStateEnum.DoubleClick:
-                DynamicMenu.Update(SelectedObject, Storage, Mouse.LeftButtonDownPosition);
+                DynamicMenuUpdate(Mouse.LeftButtonDownPosition);
                 break;
             case WD_Mouse.ButtonStateEnum.Dragging:
                 ProcessDrag();
@@ -187,11 +194,17 @@ public class WD_Editor : EditorWindow {
         // Process right button state.
         switch(Mouse.RightButtonState) {
             case WD_Mouse.ButtonStateEnum.SingleClick:
-                DynamicMenu.Update(SelectedObject, Storage, Mouse.RightButtonDownPosition);
+                DynamicMenuUpdate(Mouse.RightButtonDownPosition);
                 break;
         }                    
     }
     
+	// ----------------------------------------------------------------------
+    void DynamicMenuUpdate(Vector2 mousePosition) {
+        DynamicMenu.Update(SelectedObject, Storage, mousePosition);
+        Storage.RegisterUndo("Menu Command");
+    }
+
 	// ----------------------------------------------------------------------
     void ProcessDrag() {
         // Return if dragging is not enabled.
