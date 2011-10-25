@@ -466,7 +466,7 @@ public class WD_Graphics {
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
         DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
         // Show port label.
-        if(port.IsInStatePort) return;     // State transition name is taken from the state output. 
+        if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
         Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);
         switch(port.Edge) {
             case WD_EditorObject.EdgeEnum.Left:
@@ -701,17 +701,14 @@ public class WD_Graphics {
                 Vector2 end= new Vector2(portPos.x, portPos.y);
                 Vector2 startDirection= ConnectionDirectionForTo(source, port, storage);
                 Vector2 endDirection= ConnectionDirectionForTo(port, source, storage);
-//                Vector2 startDirection= source.IsOnHorizontalEdge ? DownDirection : RightDirection;
-//                Vector2 endDirection= port.IsOnHorizontalEdge ? UpDirection : LeftDirection;
-//                Vector2 diff= end-start;
-//                if(Vector2.Dot(diff, startDirection) < 0) {
-//                    startDirection= -startDirection;
-//                }
-//                if(Vector2.Dot(diff, endDirection) > 0) {
-//                    endDirection  = - endDirection;
-//                }
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
-                DrawBezierCurve(start, end, startDirection, endDirection, color);
+                Vector3 center= DrawBezierCurve(start, end, startDirection, endDirection, color);
+                // Show transition name in middle of connection.
+                if(port.IsOutStatePort) {
+                    Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
+                    Vector2 pos= new Vector2(center.x-0.5f*labelSize.x, center.y-(0.5f+ConnectionLabelOffset(port,storage))*labelSize.y);
+                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), port.Name);                    
+                }
             }                                    
         }
     }
@@ -736,7 +733,7 @@ public class WD_Graphics {
         return direction;
     }
     // ----------------------------------------------------------------------
-    public void DrawBezierCurve(Vector3 _start, Vector3 _end, Vector3 _startDir, Vector3 _endDir, Color _color) {
+    public Vector3 DrawBezierCurve(Vector3 _start, Vector3 _end, Vector3 _startDir, Vector3 _endDir, Color _color) {
         // Readjust to screen coordinates.
         Vector3 start= new Vector3(_start.x-drawOffset.x, _start.y-drawOffset.y, _start.z);
         Vector3 end  = new Vector3(_end.x-drawOffset.x  , _end.y-drawOffset.y  , _end.z);
@@ -751,22 +748,55 @@ public class WD_Graphics {
         // Use a Bezier for the connections.
         Color color= new Color(_color.r, _color.g, _color.b, 0.5f*_color.a);
 		Handles.DrawBezier(start, end, startTangent, endTangent, color, lineTexture, 1.5f);
-        Vector3 center= BezierCenter(_start, _end, _startDir, _endDir);
-        Handles.color= Color.red;
-		Handles.DrawSolidDisc(center, FacingNormal, 5);
+        return BezierCenter(_start, _end, startTangent, endTangent);
     }
     // ----------------------------------------------------------------------
-    public Vector3 BezierCenter(Vector3 start, Vector3 end, Vector3 startDir, Vector3 endDir) {
+    public Vector3 BezierCenter(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent) {
+        // A simple linear interpolation suffices for facing tangents.
         Vector3 point= 0.5f*(start+end);
-        float distance= HandleUtility.DistancePointBezier(point, start, end, startDir, endDir);
+        float distance= HandleUtility.DistancePointBezier(point, start, end, startTangent, endTangent);
         if(distance < 1f) {
-            Debug.Log("Distance is good");
             return point;
         }
-        Debug.Log("Distance is bad: "+distance);
+        Vector3 px= point;
+        px.x+= distance;
+        Vector3 py= point;
+        py.y+= distance;
+        float dx= HandleUtility.DistancePointBezier(px, start, end, startTangent, endTangent);
+        float dy= HandleUtility.DistancePointBezier(py, start, end, startTangent, endTangent);
+        float xSign= 1f;
+        float ySign= 1f;
+        if(dx > distance) {
+            dx= 2f*distance-dx;
+            xSign= -1f;
+        }
+        if(dy > distance) {
+            dy= 2f*distance-dy;
+            ySign= -1f;
+        }
+        float fx= 1f-dx/distance;
+        float fy= 1f-dy/distance;
+        point.x+= xSign*fx*distance;
+        point.y+= ySign*fy*distance;
         return point;
     }
-
+	// ----------------------------------------------------------------------
+//  static float[] portTopBottomRatio   = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
+    static float[] connectionLabelOffset= new float[]{ -0.4f, -0.4f, 0.4f , 0.4f , 0.4f , -0.4f, 0.4f , -0.4f, 0.4f };
+    static float ConnectionLabelOffset(WD_EditorObject port, WD_IStorage storage) {
+        float ratio= port.LocalPosition.x/storage.GetPosition(storage.GetParent(port)).width;
+        float error= 100f;
+        float offset= 0f;
+        for(int i= 0; i < portTopBottomRatio.Length; ++i) {
+            float delta= Mathf.Abs(ratio-portTopBottomRatio[i]);
+            if(delta < error) {
+                error= delta;
+                offset= connectionLabelOffset[i];
+            }
+        }
+        return offset;
+    }
+    
     // ======================================================================
     //  ERROR MANAGEMENT
     // ----------------------------------------------------------------------
