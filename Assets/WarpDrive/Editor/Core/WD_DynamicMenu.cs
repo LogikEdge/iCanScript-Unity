@@ -244,8 +244,8 @@ public class WD_DynamicMenu {
                     menu= tmp;
                 }
             } else {
-                WD_EditorObject[] connected= storage.FindConnectedPorts(selectedObject);
-                if(connected.Length == 0) {
+                WD_EditorObject connected= storage.FindAConnectedPort(selectedObject);
+                if(connected != null) {
                     string[] tmp= new string[i+1];
                     tmp[i]= TransitionActionStr;
                     menu= tmp;
@@ -298,6 +298,8 @@ public class WD_DynamicMenu {
             case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr); break;
             case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr); break;
             case SubStateStr:               CreateState (selectedObject, storage);  break;
+            case TransitionGuardStr:        break;
+            case TransitionActionStr:       break;
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 DestroySelectedObject(selectedObject, storage); break;

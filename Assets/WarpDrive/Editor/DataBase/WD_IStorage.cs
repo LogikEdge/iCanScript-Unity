@@ -437,6 +437,11 @@ public class WD_IStorage {
         return Filter(p=> p.IsPort && p.Source == port.InstanceId).ToArray();
     }
     // ----------------------------------------------------------------------
+    public WD_EditorObject FindAConnectedPort(WD_EditorObject port) {
+        WD_EditorObject[] connectedPorts= FindConnectedPorts(port);
+        return connectedPorts.Length != 0 ? connectedPorts[0] : null;
+    }
+    // ----------------------------------------------------------------------
     bool IsPortConnected(WD_EditorObject port) {
         if(port.Source != -1) return true;
         foreach(var obj in EditorObjects) {
