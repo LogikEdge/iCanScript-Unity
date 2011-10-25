@@ -696,10 +696,12 @@ public class WD_IStorage {
     float ComputeLeftMargin(WD_EditorObject node) {
         float LeftMargin= 0;
         ForEachLeftPort(node,
-            (port)=> {
-                Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
-                float nameSize= labelSize.x+WD_EditorConfig.PortSize;
-                if(LeftMargin < nameSize) LeftMargin= nameSize;
+            port=> {
+                if(!port.IsStatePort) {
+                    Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
+                    float nameSize= labelSize.x+WD_EditorConfig.PortSize;
+                    if(LeftMargin < nameSize) LeftMargin= nameSize;
+                }
             }
         );
         return LeftMargin;
@@ -709,10 +711,12 @@ public class WD_IStorage {
     float ComputeRightMargin(WD_EditorObject node) {
         float RightMargin= 0;
         ForEachRightPort(node,
-            (port) => {
-                Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
-                float nameSize= labelSize.x+WD_EditorConfig.PortSize;
-                if(RightMargin < nameSize) RightMargin= nameSize;
+            port => {
+                if(!port.IsStatePort) {
+                    Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
+                    float nameSize= labelSize.x+WD_EditorConfig.PortSize;
+                    if(RightMargin < nameSize) RightMargin= nameSize;                    
+                }
             }
         );
         return RightMargin;
