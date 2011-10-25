@@ -8,9 +8,10 @@ public class WD_IStorage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    bool            myIsDirty  = true;
-    WD_Storage      Storage  = null;
-    WD_TreeCache    TreeCache= null;
+    bool            myIsDirty = true;
+    WD_Storage      Storage   = null;
+    WD_TreeCache    TreeCache = null;
+    int             UndoRedoId= 0;
     
     // ======================================================================
     // Initialization
@@ -92,21 +93,20 @@ public class WD_IStorage {
     // Undo/Redo support
     // ----------------------------------------------------------------------
     public void RegisterUndo(string message= "WarpDrive") {
-        Storage.IsUndoRedoPerformed= true;
-        EditorUtility.SetDirty(Storage);
         Undo.RegisterUndo(Storage, message);
-        Storage.IsUndoRedoPerformed= false;        
+        Storage.UndoRedoId= ++UndoRedoId;        
+        EditorUtility.SetDirty(Storage);
     }
     // ----------------------------------------------------------------------
     void ProcessUndoRedo() {
         // Regenerate internal structures if undo/redo was performed.
-        if(Storage.IsUndoRedoPerformed) {
+        if(Storage.UndoRedoId != UndoRedoId) {
             SynchronizeAfterUndoRedo();
         }        
     }
     // ----------------------------------------------------------------------
     void SynchronizeAfterUndoRedo() {
-//        Debug.Log("Undo/Redo Was perfromed");
+//        Debug.Log("Undo/Redo was performed");
         GenerateEditorData();
         foreach(var obj in EditorObjects) {
             if(IsValid(obj.InstanceId)) {
@@ -116,7 +116,7 @@ public class WD_IStorage {
                 obj.IsDirty= false;
             }
         }
-        Storage.IsUndoRedoPerformed= false;        
+        Storage.UndoRedoId= ++UndoRedoId;        
     }
     
     // ======================================================================

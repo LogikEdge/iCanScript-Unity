@@ -101,9 +101,17 @@ public class WD_Editor : EditorWindow {
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
 	void Update() {
-        if(Storage != null && Storage.IsDirty) Repaint();            
+        if(Storage != null && Storage.IsDirty) {
+//            Debug.Log("Repaint needed");
+            Repaint();
+        }
 	}
 	
+	// ----------------------------------------------------------------------
+    void OnSelectionChanged() {
+        Update();
+    }
+    
 	// ----------------------------------------------------------------------
 	// User GUI function.
 	void OnGUI() {
