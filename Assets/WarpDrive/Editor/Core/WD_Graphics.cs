@@ -700,7 +700,7 @@ public class WD_Graphics {
                 WD_ConnectionParams cp= new WD_ConnectionParams(port, storage);
         		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);
                 // Show transition name in middle of connection.
-                if(port.IsOutStatePort) {
+                if(port.IsInStatePort) {
                     Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
                     Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-(0.5f+ConnectionLabelOffset(port,storage))*labelSize.y);
                     GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), port.Name);                    

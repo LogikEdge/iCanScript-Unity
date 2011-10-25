@@ -331,7 +331,7 @@ public class WD_Editor : EditorWindow {
                     Rect portRect= Storage.GetPosition(DragObject);
                     Storage.SetInitialPosition(inStatePort, new Vector2(portRect.x, portRect.y));
                     WD_EditorObject outStatePort= Storage[DragObject.Source];
-                    outStatePort.Source= inStatePort.InstanceId;
+                    inStatePort.Source= outStatePort.InstanceId;
                     Storage.DestroyInstance(DragObject);
                     inStatePort.IsBeingDragged= false;
                     outStatePort.IsBeingDragged= false;

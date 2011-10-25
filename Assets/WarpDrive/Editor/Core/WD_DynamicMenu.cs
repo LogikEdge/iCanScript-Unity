@@ -44,6 +44,8 @@ public class WD_DynamicMenu {
     const string OnUpdateStr= "OnUpdate";
     const string OnExitStr= "OnExit";
     const string PublishPortStr= "Publish on Module";
+    const string TransitionGuardStr= "Transition Guard";
+    const string TransitionActionStr= "Transition Action";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -231,6 +233,24 @@ public class WD_DynamicMenu {
         WD_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
         if(grandParent != null && grandParent.IsModule) {
             menu= new string[]{PublishPortStr};
+        }
+        // State Port.
+        if(selectedObject.IsStatePort) {
+            int i= menu.Length;
+            if(selectedObject.IsOutStatePort) {
+                if(storage.IsInvalid(selectedObject.Source)) {
+                    string[] tmp= new string[i+1];
+                    tmp[i]= TransitionGuardStr;
+                    menu= tmp;
+                }
+            } else {
+                WD_EditorObject[] connected= storage.FindConnectedPorts(selectedObject);
+                if(connected.Length == 0) {
+                    string[] tmp= new string[i+1];
+                    tmp[i]= TransitionActionStr;
+                    menu= tmp;
+                }
+            }
         }
         // Allow to delete a port if its parent is a module.
         if(selectedObject.IsModulePort && parent.IsModule) {
