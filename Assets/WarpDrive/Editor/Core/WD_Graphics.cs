@@ -322,6 +322,7 @@ public class WD_Graphics {
             GUI.DrawTexture(new Rect(position.xMax-4-minimizeIcon.width, position.y, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
         }
     }
+
     // ======================================================================
     // Picking functionality
     // ----------------------------------------------------------------------
@@ -477,11 +478,11 @@ public class WD_Graphics {
                 break;
             case WD_EditorObject.EdgeEnum.Top:            
                 pos.x-= 1 + 0.5f*labelSize.x;
-                pos.y-= 1 + WD_EditorConfig.PortSize+labelSize.y;
+                pos.y-= WD_EditorConfig.PortSize+0.8f*labelSize.y*(1+TopBottomLabelOffset(port, storage));
                 break;
             case WD_EditorObject.EdgeEnum.Bottom:
                 pos.x-= 1 + 0.5f*labelSize.x;
-                pos.y+= 1 + WD_EditorConfig.PortSize;
+                pos.y+= WD_EditorConfig.PortSize+0.8f*labelSize.y*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y;
                 break;
         }
         GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), name);
@@ -668,7 +669,23 @@ public class WD_Graphics {
         Handles.DrawPolyLine(vectors);        
     }
 
-
+	// ----------------------------------------------------------------------
+    static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
+    static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
+    static float TopBottomLabelOffset(WD_EditorObject port, WD_IStorage storage) {
+        float ratio= port.LocalPosition.x/storage.GetPosition(storage.GetParent(port)).width;
+        float error= 100f;
+        float offset= 0f;
+        for(int i= 0; i < portTopBottomRatio.Length; ++i) {
+            float delta= Mathf.Abs(ratio-portTopBottomRatio[i]);
+            if(delta < error) {
+                error= delta;
+                offset= portLabelTopBottomOffset[i];
+            }
+        }
+        return offset;
+    }
+    
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
