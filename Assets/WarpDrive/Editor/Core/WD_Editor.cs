@@ -258,7 +258,7 @@ public class WD_Editor : EditorWindow {
 
         // Node drag.
         WD_EditorObject node= Storage.GetNodeAt(pos);                
-        if(node != null && (!node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
+        if(node != null && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
             Storage.RegisterUndo("Node Drag");
             DragType= DragTypeEnum.NodeDrag;
             DragObject= node;

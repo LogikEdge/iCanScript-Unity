@@ -546,32 +546,6 @@ public class WD_Graphics {
         }
         GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), name);
     }
-    public enum PortShape { Circular, Square, Diamond, UpTriangle, DownTriangle, LeftTriangle, RightTriangle };
-    public void DrawPort(PortShape _shape, Vector3 _center, Color _fillColor, Color _borderColor) {
-        // Readjust to screen coordinates.
-        Vector3 center= new Vector3(_center.x-drawOffset.x, _center.y-drawOffset.y, _center.z);
-
-        // Configure move cursor for port.
-        EditorGUIUtility.AddCursorRect (new Rect(center.x-WD_EditorConfig.PortRadius,
-                                                 center.y-WD_EditorConfig.PortRadius,
-                                                 WD_EditorConfig.PortSize,
-                                                 WD_EditorConfig.PortSize),
-                                        MouseCursor.MoveArrow);   
-
-        // Activate fill color.
-        Handles.color= _fillColor;
-        
-        // Draw specific shapes.
-        switch(_shape) {
-            case PortShape.Circular:       DrawCircularPort(center, _fillColor, _borderColor); break;
-            case PortShape.Square:         DrawSquarePort(center, _borderColor); break;
-            case PortShape.Diamond:        DrawDiamondPort(center, _borderColor); break;
-            case PortShape.UpTriangle:     DrawUpTrianglePort(center, _borderColor); break;
-            case PortShape.DownTriangle:   DrawDownTrianglePort(center, _borderColor); break;
-            case PortShape.LeftTriangle:   DrawLeftTrianglePort(center, _borderColor); break;
-            case PortShape.RightTriangle:  DrawRightTrianglePort(center, _borderColor); break;
-        }        
-    }
 
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor) {
@@ -760,29 +734,13 @@ public class WD_Graphics {
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
                     Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
-                    Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-(0.5f+ConnectionLabelOffset(port,storage))*labelSize.y);
+                    Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-0.5f*labelSize.y);
                     GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), port.Name);                    
                 }
             }                                    
         }
     }
-	// ----------------------------------------------------------------------
-//  static float[] portTopBottomRatio   = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
-    static float[] connectionLabelOffset= new float[]{ -0.4f, -0.4f, 0.4f , 0.4f , 0.4f , -0.4f, 0.4f , -0.4f, 0.4f };
-    static float ConnectionLabelOffset(WD_EditorObject port, WD_IStorage storage) {
-        float ratio= port.LocalPosition.x/storage.GetPosition(storage.GetParent(port)).width;
-        float error= 100f;
-        float offset= 0f;
-        for(int i= 0; i < portTopBottomRatio.Length; ++i) {
-            float delta= Mathf.Abs(ratio-portTopBottomRatio[i]);
-            if(delta < error) {
-                error= delta;
-                offset= connectionLabelOffset[i];
-            }
-        }
-        return offset;
-    }
-    
+
     // ======================================================================
     //  ERROR MANAGEMENT
     // ----------------------------------------------------------------------
