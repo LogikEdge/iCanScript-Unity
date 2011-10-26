@@ -301,6 +301,24 @@ public class WD_IStorage {
         return this[id];
     }
     // ----------------------------------------------------------------------
+    public WD_EditorObject CreateTransitionEntry(WD_EditorObject port) {
+        WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry");
+        WD_EditorObject mainOutPort= CreatePort("", mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutModulePort);
+        WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, "Trigger");
+        trigger.IsNameEditable= false;
+        WD_EditorObject triggerOutPort= CreatePort("trigger", trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutModulePort);
+        port.Source= mainOutPort.InstanceId;
+        mainOutPort.Source= triggerOutPort.InstanceId;
+        return mainModule;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateTransitionExit(WD_EditorObject port) {
+        WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Exit");
+        WD_EditorObject mainInPort= CreatePort("", mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InModulePort);
+        mainInPort.Source= port.InstanceId;
+        return mainModule;
+    }
+    // ----------------------------------------------------------------------
     public WD_EditorObject CreatePort(string name, int parentId, Type valueType, WD_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
         WD_EditorObject port= this[id]= new WD_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));

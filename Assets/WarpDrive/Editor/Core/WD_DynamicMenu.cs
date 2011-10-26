@@ -245,7 +245,7 @@ public class WD_DynamicMenu {
                 }
             } else {
                 WD_EditorObject connected= storage.FindAConnectedPort(selectedObject);
-                if(connected != null) {
+                if(connected == null) {
                     string[] tmp= new string[i+1];
                     tmp[i]= TransitionExitStr;
                     menu= tmp;
@@ -298,8 +298,8 @@ public class WD_DynamicMenu {
             case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr); break;
             case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr); break;
             case SubStateStr:               CreateState (selectedObject, storage);  break;
-            case TransitionEntryStr:        break;
-            case TransitionExitStr:         break;
+            case TransitionEntryStr:        CreateTransitionEntry(selectedObject, storage); break;
+            case TransitionExitStr:         CreateTransitionExit(selectedObject, storage); break;
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 DestroySelectedObject(selectedObject, storage); break;
@@ -391,20 +391,28 @@ public class WD_DynamicMenu {
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------
-    void CreateModule(WD_EditorObject parent, WD_IStorage storage, string name= "") {
-        storage.CreateModule(parent.InstanceId, MenuPosition, name);
+    WD_EditorObject CreateModule(WD_EditorObject parent, WD_IStorage storage, string name= "") {
+        return storage.CreateModule(parent.InstanceId, MenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    void CreateStateChart(WD_EditorObject parent, WD_IStorage storage, string name= "") {
-        storage.CreateStateChart(parent.InstanceId, MenuPosition, name);
+    WD_EditorObject CreateStateChart(WD_EditorObject parent, WD_IStorage storage, string name= "") {
+        return storage.CreateStateChart(parent.InstanceId, MenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    void CreateState(WD_EditorObject parent, WD_IStorage storage, string name= "") {
-        storage.CreateState(parent.InstanceId, MenuPosition, name);
+    WD_EditorObject CreateState(WD_EditorObject parent, WD_IStorage storage, string name= "") {
+        return storage.CreateState(parent.InstanceId, MenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    void CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_BaseDesc desc) {
-        storage.CreateFunction(parent.InstanceId, MenuPosition, desc);
+    WD_EditorObject CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_BaseDesc desc) {
+        return storage.CreateFunction(parent.InstanceId, MenuPosition, desc);
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject CreateTransitionEntry(WD_EditorObject port, WD_IStorage storage) {
+        return storage.CreateTransitionEntry(port);
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject CreateTransitionExit(WD_EditorObject port, WD_IStorage storage) {
+        return storage.CreateTransitionExit(port);
     }
 	// ----------------------------------------------------------------------
     bool DestroySelectedObject(WD_EditorObject selectedObject, WD_IStorage storage) {
