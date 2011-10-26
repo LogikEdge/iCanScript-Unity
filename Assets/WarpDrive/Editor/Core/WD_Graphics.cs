@@ -49,10 +49,6 @@ public class WD_Graphics {
 	NodeStyle   selectedStyle   = null;
 	NodeStyle   nodeInErrorStyle= null;
 
-    // ----------------------------------------------------------------------
-    Vector2     drawOffset= Vector2.zero;
-
-    
     // ======================================================================
 	// CONSTANTS
     // ----------------------------------------------------------------------

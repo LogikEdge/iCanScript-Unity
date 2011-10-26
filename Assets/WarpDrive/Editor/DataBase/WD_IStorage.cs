@@ -321,9 +321,10 @@ public class WD_IStorage {
     public void DestroyInstance(int id) {
         ProcessUndoRedo();
         DestroyInstanceInternal(id);
+        // Cleanup disconnected module and state ports.
         ForEach(
             port=> {
-                if(port.IsModulePort && EditorObjects[port.ParentId].IsModule && IsPortDisconnected(port)) {
+                if((port.IsStatePort || (port.IsModulePort && GetParent(port).IsModule)) && IsPortDisconnected(port)) {
                     DestroyInstanceInternal(port.InstanceId);
                 }
             }

@@ -44,8 +44,8 @@ public class WD_DynamicMenu {
     const string OnUpdateStr= "OnUpdate";
     const string OnExitStr= "OnExit";
     const string PublishPortStr= "Publish on Module";
-    const string TransitionGuardStr= "Transition Guard";
-    const string TransitionActionStr= "Transition Action";
+    const string TransitionEntryStr= "Transition Entry";
+    const string TransitionExitStr= "Transition Exit";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -240,20 +240,20 @@ public class WD_DynamicMenu {
             if(selectedObject.IsOutStatePort) {
                 if(storage.IsInvalid(selectedObject.Source)) {
                     string[] tmp= new string[i+1];
-                    tmp[i]= TransitionGuardStr;
+                    tmp[i]= TransitionEntryStr;
                     menu= tmp;
                 }
             } else {
                 WD_EditorObject connected= storage.FindAConnectedPort(selectedObject);
                 if(connected != null) {
                     string[] tmp= new string[i+1];
-                    tmp[i]= TransitionActionStr;
+                    tmp[i]= TransitionExitStr;
                     menu= tmp;
                 }
             }
         }
         // Allow to delete a port if its parent is a module.
-        if(selectedObject.IsModulePort && parent.IsModule) {
+        if(selectedObject.IsStatePort || (selectedObject.IsModulePort && parent.IsModule)) {
             int i= menu.Length;
             if(i == 0) {
                 menu= new string[1];
@@ -298,8 +298,8 @@ public class WD_DynamicMenu {
             case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr); break;
             case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr); break;
             case SubStateStr:               CreateState (selectedObject, storage);  break;
-            case TransitionGuardStr:        break;
-            case TransitionActionStr:       break;
+            case TransitionEntryStr:        break;
+            case TransitionExitStr:         break;
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 DestroySelectedObject(selectedObject, storage); break;

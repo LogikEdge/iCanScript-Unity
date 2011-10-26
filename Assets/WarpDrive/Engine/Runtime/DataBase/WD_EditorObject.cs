@@ -7,15 +7,16 @@ public class WD_EditorObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public WD_ObjectTypeEnum    ObjectType   = WD_ObjectTypeEnum.Unknown;
-    public WD_DisplayOptionEnum DisplayOption= WD_DisplayOptionEnum.Normal;
-    public string               Icon         = null;
-    public int                  InstanceId   = -1;
-    public int                  ParentId     = -1;
-    public string               QualifiedType= "";
-    public string               Name         = "";
-    public bool                 IsDirty      = false;
-    public Rect                 LocalPosition= new Rect(0,0,0,0);
+    public WD_ObjectTypeEnum    ObjectType    = WD_ObjectTypeEnum.Unknown;
+    public WD_DisplayOptionEnum DisplayOption = WD_DisplayOptionEnum.Normal;
+    public string               Icon          = null;
+    public int                  InstanceId    = -1;
+    public int                  ParentId      = -1;
+    public string               QualifiedType = "";
+    public string               Name          = "";
+    public bool                 IsNameEditable= true;
+    public bool                 IsDirty       = false;
+    public Rect                 LocalPosition = new Rect(0,0,0,0);
 
     // Port specific attributes ---------------------------------------------
     public enum EdgeEnum { None, Top, Bottom, Right, Left };
@@ -56,6 +57,7 @@ public class WD_EditorObject {
         Edge= EdgeEnum.None;
         Source= -1;
         IsBeingDragged= false;
+        IsNameEditable= true;
     }
 //    // ----------------------------------------------------------------------
 //    public WD_Object CreateRuntimeObject() {
