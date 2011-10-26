@@ -16,6 +16,10 @@ public class WD_Graphics {
     static Texture2D    unfoldedIcon      = null;
     static Texture2D    minimizeIcon      = null;
     static Texture2D    maximizeIcon      = null;
+    static Texture2D    upArrowHeadIcon   = null;
+    static Texture2D    downArrowHeadIcon = null;
+    static Texture2D    leftArrowHeadIcon = null;
+    static Texture2D    rightArrowHeadIcon= null;
     static bool         lineTextureErrorSeen        = false;
     static bool         defaultNodeTextureErrorSeen = false; 
     static bool         nodeMaskTextureErrorSeen    = false;   
@@ -23,6 +27,10 @@ public class WD_Graphics {
 	static bool         unfoldedIconErrorSeen       = false;
 	static bool         minimizeIconErrorSeen       = false;
 	static bool         maximizeIconErrorSeen       = false;
+	static bool         upArrowHeadIconErrorSeen    = false;
+	static bool         downArrowHeadIconErrorSeen  = false;
+	static bool         leftArrowHeadIconErrorSeen  = false;
+	static bool         rightArrowHeadIconErrorSeen = false;
 	
     // ----------------------------------------------------------------------
     static Dictionary<string, Texture2D>   cachedTextures= new Dictionary<string, Texture2D>();
@@ -110,6 +118,23 @@ public class WD_Graphics {
             IsInitialized= false;
             return IsInitialized;
         }
+        // Load line arrow heads.
+        if(!GetCachedIcon(WD_EditorConfig.UpArrowHeadIcon, out upArrowHeadIcon, ref upArrowHeadIconErrorSeen, storage)) {
+            IsInitialized= false;
+            return IsInitialized;
+        }        
+        if(!GetCachedIcon(WD_EditorConfig.DownArrowHeadIcon, out downArrowHeadIcon, ref downArrowHeadIconErrorSeen, storage)) {
+            IsInitialized= false;
+            return IsInitialized;
+        }        
+        if(!GetCachedIcon(WD_EditorConfig.LeftArrowHeadIcon, out leftArrowHeadIcon, ref leftArrowHeadIconErrorSeen, storage)) {
+            IsInitialized= false;
+            return IsInitialized;
+        }        
+        if(!GetCachedIcon(WD_EditorConfig.RightArrowHeadIcon, out rightArrowHeadIcon, ref rightArrowHeadIconErrorSeen, storage)) {
+            IsInitialized= false;
+            return IsInitialized;
+        }        
         // Graphic resources properly initialized.
         IsInitialized= true;
         return IsInitialized;
@@ -167,6 +192,11 @@ public class WD_Graphics {
         }
         return true;
     }
+    // ----------------------------------------------------------------------
+    public static void DrawIconCenteredAt(Vector2 point, Texture2D icon) {
+        if(icon == null) return;
+        GUI.DrawTexture(new Rect(point.x-0.5f*icon.width,point.y-0.5f*icon.height, icon.width, icon.height), icon);
+    }
     
     // ----------------------------------------------------------------------
     void GenerateNodeStyle(ref NodeStyle nodeStyle, Color nodeColor) {
@@ -181,7 +211,7 @@ public class WD_Graphics {
             nodeStyle.guiStyle.border= new RectOffset(13,21,20,13);
             nodeStyle.guiStyle.padding= new RectOffset(3,8,17,8);
             nodeStyle.guiStyle.contentOffset= new Vector2(-3, -17);
-            nodeStyle.guiStyle.overflow= new RectOffset(0,6,0,3);
+            nodeStyle.guiStyle.overflow= new RectOffset(0,5,0,3);
             nodeStyle.guiStyle.alignment= TextAnchor.UpperCenter;
             nodeStyle.guiStyle.fontStyle= FontStyle.Bold;
         }
@@ -455,38 +485,66 @@ public class WD_Graphics {
         // Don't draw ports on minimized node.
         if(storage.IsMinimized(port)) return;
         
-        // Build visible port name
-        WD_EditorObject portParent= storage.GetParent(port);
+        // Draw port
+        WD_EditorObject portParent= storage.GetParent(port);         
+        Vector2 center= Math3D.ToVector2(storage.GetPosition(port));
         Type portValueType= port.RuntimeType;
-        string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
-         
-        Rect tmp= storage.GetPosition(port);
-        Vector2 pos= new Vector2(tmp.x, tmp.y);
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
-        DrawPort(WD_Graphics.PortShape.Circular, pos, portColor, nodeColor);                                        
+        if(port.IsDataPort) {
+            DrawCircularPort(center, portColor, nodeColor);
+        } if(port.IsStatePort) {
+            if(port.IsInStatePort) {
+                switch(port.Edge) {
+                    case WD_EditorObject.EdgeEnum.Bottom:
+                        DrawIconCenteredAt(center, upArrowHeadIcon);
+                        break;
+                    case WD_EditorObject.EdgeEnum.Top:
+                        DrawIconCenteredAt(center, downArrowHeadIcon);
+                        break;
+                    case WD_EditorObject.EdgeEnum.Left:
+                        DrawIconCenteredAt(center, rightArrowHeadIcon);
+                        break;
+                    case WD_EditorObject.EdgeEnum.Right:
+                        DrawIconCenteredAt(center, leftArrowHeadIcon);
+                        break;
+                }                
+            } else {
+                Handles.color= Color.white;
+                Handles.DrawSolidDisc(center, FacingNormal, WD_EditorConfig.PortRadius);
+            }
+        } else {
+            DrawCircularPort(center, portColor, nodeColor);
+        }
+        // Configure move cursor for port.
+        EditorGUIUtility.AddCursorRect (new Rect(center.x-WD_EditorConfig.PortRadius,
+                                                 center.y-WD_EditorConfig.PortRadius,
+                                                 WD_EditorConfig.PortSize,
+                                                 WD_EditorConfig.PortSize),
+                                        MouseCursor.MoveArrow);   
         // Show port label.
         if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
+        string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
         Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(name);
         switch(port.Edge) {
             case WD_EditorObject.EdgeEnum.Left:
-                pos.x+= 1 + WD_EditorConfig.PortSize;
-                pos.y-= 1 + 0.5f * labelSize.y;
+                center.x+= 1 + WD_EditorConfig.PortSize;
+                center.y-= 1 + 0.5f * labelSize.y;
                 break;
             case WD_EditorObject.EdgeEnum.Right:
-                pos.x-= 1 + labelSize.x + WD_EditorConfig.PortSize;
-                pos.y-= 1 + 0.5f * labelSize.y;
+                center.x-= 1 + labelSize.x + WD_EditorConfig.PortSize;
+                center.y-= 1 + 0.5f * labelSize.y;
                 break;
             case WD_EditorObject.EdgeEnum.Top:            
-                pos.x-= 1 + 0.5f*labelSize.x;
-                pos.y-= WD_EditorConfig.PortSize+0.8f*labelSize.y*(1+TopBottomLabelOffset(port, storage));
+                center.x-= 1 + 0.5f*labelSize.x;
+                center.y-= WD_EditorConfig.PortSize+0.8f*labelSize.y*(1+TopBottomLabelOffset(port, storage));
                 break;
             case WD_EditorObject.EdgeEnum.Bottom:
-                pos.x-= 1 + 0.5f*labelSize.x;
-                pos.y+= WD_EditorConfig.PortSize+0.8f*labelSize.y*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y;
+                center.x-= 1 + 0.5f*labelSize.x;
+                center.y+= WD_EditorConfig.PortSize+0.8f*labelSize.y*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y;
                 break;
         }
-        GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), name);
+        GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), name);
     }
     public enum PortShape { Circular, Square, Diamond, UpTriangle, DownTriangle, LeftTriangle, RightTriangle };
     public void DrawPort(PortShape _shape, Vector3 _center, Color _fillColor, Color _borderColor) {
@@ -699,7 +757,7 @@ public class WD_Graphics {
                 color.a*= WD_EditorConfig.ConnectionTransparency;
                 WD_ConnectionParams cp= new WD_ConnectionParams(port, storage);
         		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);
-                // Show transition name in middle of connection.
+                // Show transition name for state connections.
                 if(port.IsInStatePort) {
                     Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
                     Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-(0.5f+ConnectionLabelOffset(port,storage))*labelSize.y);

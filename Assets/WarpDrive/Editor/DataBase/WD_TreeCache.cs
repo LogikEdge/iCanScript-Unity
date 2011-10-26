@@ -36,6 +36,22 @@ public class WD_TreeCache {
                 }
             }
         }
+        public bool IsChildrenInSameOrder(int[] orderedChildren) {
+            int i= 0;
+            for(int j= 0; j < Children.Count; ++j) {
+                if(Children[j] == orderedChildren[i]) {
+                    if(++i >= orderedChildren.Length) return true;
+                };
+            }
+            return false;
+        }
+        public void ReorderChildren(int[] orderedChildren) {
+            if(IsChildrenInSameOrder(orderedChildren)) return;
+            List<int> others= Prelude.filter(c=> Prelude.notElem(c,orderedChildren), Children);
+            int i= 0;
+            Prelude.forEach(c=> Children[i++]= c, orderedChildren);
+            Prelude.forEach(c=> Children[i++]= c, others);
+        }
     }
     
     // ======================================================================

@@ -748,60 +748,87 @@ public class WD_IStorage {
         Rect position= GetPosition(node);
         
         // Relayout top ports.
-        WD_EditorObject[] topPorts   = GetTopPorts(node);
-        if(topPorts.Length != 0) {
-            float xStep= position.width / topPorts.Length;
-            for(int i= 0; i < topPorts.Length; ++i) {
-                if(topPorts[i].IsBeingDragged == false) {
-                    topPorts[i].LocalPosition.x= (i+0.5f) * xStep;
-                    topPorts[i].LocalPosition.y= 0;                
+        WD_EditorObject[] ports= SortTopPorts(node);
+        if(ports.Length != 0) {
+            float xStep= position.width / ports.Length;
+            for(int i= 0; i < ports.Length; ++i) {
+                if(ports[i].IsBeingDragged == false) {
+                    ports[i].LocalPosition.x= (i+0.5f) * xStep;
+                    ports[i].LocalPosition.y= 0;                
                 }
+            }
+            if(!IsChildrenInSameOrder(node, ports)) {
+                ReorderChildren(node, ports);
+                SetAllConnectedPortsDirty(ports);
             }            
-            SortPorts(topPorts);
         }
 
         // Relayout bottom ports.
-        WD_EditorObject[] bottomPorts= GetBottomPorts(node);
-        if(bottomPorts.Length != 0) {
-            float xStep= position.width / bottomPorts.Length;
-            for(int i= 0; i < bottomPorts.Length; ++i) {
-                if(bottomPorts[i].IsBeingDragged == false) {
-                    bottomPorts[i].LocalPosition.x= (i+0.5f) * xStep;
-                    bottomPorts[i].LocalPosition.y= position.height;                
+        ports= SortBottomPorts(node);
+        if(ports.Length != 0) {
+            float xStep= position.width / ports.Length;
+            for(int i= 0; i < ports.Length; ++i) {
+                if(ports[i].IsBeingDragged == false) {
+                    ports[i].LocalPosition.x= (i+0.5f) * xStep;
+                    ports[i].LocalPosition.y= position.height;                
                 }
             }            
-            SortPorts(bottomPorts);
+            if(!IsChildrenInSameOrder(node, ports)) {
+                ReorderChildren(node, ports);
+                SetAllConnectedPortsDirty(ports);
+            }            
         }
 
         // Relayout left ports.
-        WD_EditorObject[] leftPorts  = GetLeftPorts(node);
-        if(leftPorts.Length != 0) {
+        ports= SortLeftPorts(node);
+        if(ports.Length != 0) {
             float topOffset= WD_EditorConfig.NodeTitleHeight;
-            float yStep= (position.height-topOffset) / leftPorts.Length;
-            for(int i= 0; i < leftPorts.Length; ++i) {
-                if(leftPorts[i].IsBeingDragged == false) {
-                    leftPorts[i].LocalPosition.x= 0;
-                    leftPorts[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
+            float yStep= (position.height-topOffset) / ports.Length;
+            for(int i= 0; i < ports.Length; ++i) {
+                if(ports[i].IsBeingDragged == false) {
+                    ports[i].LocalPosition.x= 0;
+                    ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
                 }
             }
-            SortPorts(leftPorts);            
+            if(!IsChildrenInSameOrder(node, ports)) {
+                ReorderChildren(node, ports);
+                SetAllConnectedPortsDirty(ports);
+            }            
         }
 
         // Relayout right ports.
-        WD_EditorObject[] rightPorts = GetRightPorts(node);
-        if(rightPorts.Length != 0) {
+        ports= SortRightPorts(node);
+        if(ports.Length != 0) {
             float topOffset= WD_EditorConfig.NodeTitleHeight;
-            float yStep= (position.height-topOffset) / rightPorts.Length;
-            for(int i= 0; i < rightPorts.Length; ++i) {
-                if(rightPorts[i].IsBeingDragged == false) {
-                    rightPorts[i].LocalPosition.x= position.width;
-                    rightPorts[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;
+            float yStep= (position.height-topOffset) / ports.Length;
+            for(int i= 0; i < ports.Length; ++i) {
+                if(ports[i].IsBeingDragged == false) {
+                    ports[i].LocalPosition.x= position.width;
+                    ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;
                 }
             }
-            SortPorts(rightPorts);
+            if(!IsChildrenInSameOrder(node, ports)) {
+                ReorderChildren(node, ports);
+                SetAllConnectedPortsDirty(ports);
+            }            
         }        
     }
 
+    // ----------------------------------------------------------------------
+    bool IsChildrenInSameOrder(WD_EditorObject node, WD_EditorObject[] orderedChildren) {
+        return TreeCache[node.InstanceId].IsChildrenInSameOrder(Prelude.map(c=> c.InstanceId, orderedChildren));
+    }
+    void ReorderChildren(WD_EditorObject node, WD_EditorObject[] orderedChildren) {
+        TreeCache[node.InstanceId].ReorderChildren(Prelude.map(c=> c.InstanceId, orderedChildren));
+    }
+    // ----------------------------------------------------------------------
+    void SetAllConnectedPortsDirty(WD_EditorObject[] ports) {
+        foreach(var p in ports) {
+            if(IsValid(p.Source)) SetDirty(p);
+            WD_EditorObject[] connectedPorts= FindConnectedPorts(p);
+            foreach(var cp in connectedPorts) SetDirty(cp);
+        }        
+    }
     // ----------------------------------------------------------------------
     Vector2 GetAverageConnectionPosition(WD_EditorObject port) {
         WD_EditorObject[] connectedPorts= FindConnectedPorts(port);
@@ -818,17 +845,56 @@ public class WD_IStorage {
         return nbOfPorts != 0 ? (1.0f/nbOfPorts)*posSum : Math3D.ToVector2(GetPosition(port));        
     }
     // ----------------------------------------------------------------------
+    WD_EditorObject[] SortTopPorts(WD_EditorObject node) {
+        WD_EditorObject[] ports= GetTopPorts(node);
+        Vector2[] portsPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
+        Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
+        float[] firstKeys = Prelude.map(p=> p.x, connectedPos); 
+        float[] secondKeys= Prelude.zipWith((p,cp)=> p.x < cp.x ? cp.y : -cp.y, portsPos, connectedPos);
+        return SortPorts(ports, firstKeys, secondKeys);
+    }
+    // ----------------------------------------------------------------------
+    WD_EditorObject[] SortBottomPorts(WD_EditorObject node) {
+        WD_EditorObject[] ports= GetBottomPorts(node);
+        Vector2[] portsPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
+        Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
+        float[] firstKeys = Prelude.map(p=> p.x, connectedPos); 
+        float[] secondKeys= Prelude.zipWith((p,cp)=> p.x < cp.x ? -cp.y : cp.y, portsPos, connectedPos);
+        return SortPorts(ports, firstKeys, secondKeys);
+    }
+    // ----------------------------------------------------------------------
+    WD_EditorObject[] SortLeftPorts(WD_EditorObject node) {
+        WD_EditorObject[] ports= GetLeftPorts(node);                             
+        Vector2[] portsPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
+        Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
+        float[] firstKeys = Prelude.map(p=> p.y, connectedPos); 
+        float[] secondKeys= Prelude.zipWith((p,cp)=> p.y < cp.y ? cp.x : -cp.x, portsPos, connectedPos);
+        return SortPorts(ports, firstKeys, secondKeys);
+    }
+    // ----------------------------------------------------------------------
+    WD_EditorObject[] SortRightPorts(WD_EditorObject node) {
+        WD_EditorObject[] ports= GetRightPorts(node);
+        Vector2[] portsPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
+        Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
+        float[] firstKeys = Prelude.map(p=> p.y, connectedPos); 
+        float[] secondKeys= Prelude.zipWith((p,cp)=> p.y < cp.y ? -cp.x : cp.x, portsPos, connectedPos);
+        return SortPorts(ports, firstKeys, secondKeys);
+    }
+    // ----------------------------------------------------------------------
     // Sorts the given port according to their relative positions.
-    WD_EditorObject[] SortPorts(WD_EditorObject[] ports) {
-        Vector2[] remotePos= Prelude.map(port=>GetAverageConnectionPosition(port), ports);
+    WD_EditorObject[] SortPorts(WD_EditorObject[] ports, float[] keys1, float[] keys2) {
         for(int i= 0; i < ports.Length-1; ++i) {
-            Vector2 iPos= Math3D.ToVector2(GetPosition(ports[i]));
             for(int j= i+1; j < ports.Length; ++j) {
-                Vector2 intersection;
-                Vector2 jPos= Math3D.ToVector2(GetPosition(ports[j]));
-                if(Math3D.LineSegmentIntersection(iPos,remotePos[i],jPos,remotePos[j],out intersection)) {
-                    Prelude.exchange(ref ports[i].LocalPosition, ref ports[j].LocalPosition);
-                    Prelude.exchange(ref remotePos[i], ref remotePos[j]);
+                if(Math3D.IsGreater(keys1[i], keys1[j])) {
+                    Prelude.exchange(ref ports[i], ref ports[j]);
+                    Prelude.exchange(ref keys1[i], ref keys1[j]);
+                    Prelude.exchange(ref keys2[i], ref keys2[j]);
+                } else if(Math3D.IsEqual(keys1[i], keys1[j])) {                
+                    if(keys2[i] > keys2[j]) {
+                        Prelude.exchange(ref ports[i], ref ports[j]);
+                        Prelude.exchange(ref keys1[i], ref keys1[j]);
+                        Prelude.exchange(ref keys2[i], ref keys2[j]);                    
+                    }
                 }
             }
         }

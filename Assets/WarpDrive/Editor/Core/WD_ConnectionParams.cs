@@ -67,13 +67,22 @@ public class WD_ConnectionParams {
         return direction;
     }
     // ----------------------------------------------------------------------
-    static Vector3 BezierCenter(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent) {
+    public static Vector3 BezierCenter(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent) {
         // A simple linear interpolation suffices for facing tangents.
         Vector3 point= 0.5f*(start+end);
+        return ClosestPointBezier(point, start, end, startTangent, endTangent);
+    }
+    // ----------------------------------------------------------------------
+    public static Vector3 ClosestPointBezier(Vector3 point, Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent, int iteration= 1) {
+        // Have we finished iterating ?
+        if(iteration == 0) return point;
+        
+        // Get distance from bezier curve.
         float distance= HandleUtility.DistancePointBezier(point, start, end, startTangent, endTangent);
-        if(distance < 1f) {
-            return point;
-        }
+
+        // Point is on Bezier so just return it.
+        if(Math3D.IsZero(distance)) return point;
+        
         Vector3 px= point;
         px.x+= distance;
         Vector3 py= point;
@@ -94,6 +103,7 @@ public class WD_ConnectionParams {
         float fy= 1f-dy/distance;
         point.x+= xSign*fx*distance;
         point.y+= ySign*fy*distance;
-        return point;
+        return ClosestPointBezier(point, start, end, startTangent, endTangent, iteration-1);        
     }
+
 }
