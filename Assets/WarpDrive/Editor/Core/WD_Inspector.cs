@@ -86,80 +86,61 @@ public class WD_Inspector : Editor {
                     name= EditorGUILayout.TextField("Name", name);
                     if(name != "(empty)" && name != SelectedObject.Name) {
                         SelectedObject.Name= name;
-                        // ML: TBD: Need to relayout object to show new name.
+                        Storage.SetDirty(SelectedObject);
                     }                    
                 } else {
                     EditorGUILayout.LabelField("Name", name);                    
                 }
             }            
+            // Show inspector specific for each type of component.
+            if(SelectedObject.IsNode)      InspectNode(SelectedObject);
+            else if(SelectedObject.IsPort) InspectPort(SelectedObject);
         }
-//        WD_Object rtSelectedObject= SelectedObject != null ? editorObjects.GetRuntimeObject(SelectedObject) as WD_Object: null;
-//		myFold= EditorGUILayout.InspectorTitlebar(myFold, rtSelectedObject);
-//		if(myFold && rtSelectedObject != null) {
-//            string name= rtSelectedObject.name;
-//            if(name == null || name == "") name= "(empty)";
-//            name= EditorGUILayout.TextField("Name", name);
-//            if(name != "(empty)" && rtSelectedObject.name != name) {
-//                rtSelectedObject.name= SelectedObject.Name= name;
-//                rtSelectedObject.Case<WD_Node, WD_Port>(
-//                    (node)   => { editorObjects.Layout(SelectedObject); },
-//                    (port)   => { editorObjects.Layout(SelectedObject.ParentId); },
-//                    (unknown)=> { Debug.Log("Unknown type"); }
-//                );
-//            }
-//            EditorGUILayout.LabelField("Type", rtSelectedObject.GetType().Name.Substring(WD_EditorConfig.TypePrefix.Length));
-//            EditorGUILayout.Toggle("Is Valid", rtSelectedObject.IsValid);
-//            rtSelectedObject.Case<WD_Node, WD_Port>(
-//                (node)   => { InspectNode(node); },
-//                (port)   => { InspectPort(port); },
-//                (unknown)=> { Debug.Log("Unknown type"); }
-//            );
-//		}
 	}
 
 	// ----------------------------------------------------------------------
     // Inspects the selected node.
-    void InspectNode(WD_Node _node) {
-        // Show inputs.
-        int inCount= 0;
-        int outCount= 0;
-        _node.ForEachChild<WD_FieldPort>(
-            (port)=> {
-                if(port.IsInput) ++inCount;
-                if(port.IsOutput) ++outCount;
-            }
-        );
-        if(inCount > 0) {
-            showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
-            if(showInputs) {
-                EditorGUIUtility.LookLikeControls();
-                _node.ForEachChild<WD_FieldPort>(
-                    (port)=> {
-                        if(port.IsInput) WD_GuiUtilities.OnInspectorGUI(port);
-                    }
-                );
-            }        
-        }
-
-        // Show outputs
-        if(outCount > 0) {
-            showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
-            if(showOutputs) {
-                _node.ForEachChild<WD_FieldPort>(
-                    (port)=> {
-                            if(port.IsOutput) WD_GuiUtilities.OnInspectorGUI(port);
-                    }
-                );
-            }            
-        }
+    void InspectNode(WD_EditorObject node) {
+//        // Show inputs.
+//        int inCount= 0;
+//        int outCount= 0;
+//        _node.ForEachChild<WD_FieldPort>(
+//            (port)=> {
+//                if(port.IsInput) ++inCount;
+//                if(port.IsOutput) ++outCount;
+//            }
+//        );
+//        if(inCount > 0) {
+//            showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
+//            if(showInputs) {
+//                EditorGUIUtility.LookLikeControls();
+//                _node.ForEachChild<WD_FieldPort>(
+//                    (port)=> {
+//                        if(port.IsInput) WD_GuiUtilities.OnInspectorGUI(port);
+//                    }
+//                );
+//            }        
+//        }
+//
+//        // Show outputs
+//        if(outCount > 0) {
+//            showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
+//            if(showOutputs) {
+//                _node.ForEachChild<WD_FieldPort>(
+//                    (port)=> {
+//                            if(port.IsOutput) WD_GuiUtilities.OnInspectorGUI(port);
+//                    }
+//                );
+//            }            
+//        }
     }
 
 	// ----------------------------------------------------------------------
     // Inspects the selected port.
-    void InspectPort(WD_Port port) {
-        if(port is WD_FieldPort) {
-            WD_GuiUtilities.OnInspectorGUI(port as WD_FieldPort);            
-        }
+    void InspectPort(WD_EditorObject port) {
+//        if(port is WD_FieldPort) {
+//            WD_GuiUtilities.OnInspectorGUI(port as WD_FieldPort);            
+//        }
     }
 
 
