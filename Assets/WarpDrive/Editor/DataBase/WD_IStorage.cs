@@ -303,11 +303,11 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateTransitionEntry(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry");
-        WD_EditorObject mainOutPort= CreatePort("", mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutModulePort);
+        WD_EditorObject mainOutPort= CreatePort("trigger", mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutModulePort);
         WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, "Trigger");
         trigger.IsNameEditable= false;
         WD_EditorObject triggerOutPort= CreatePort("trigger", trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutModulePort);
-        port.Source= mainOutPort.InstanceId;
+//        port.Source= mainOutPort.InstanceId;
         mainOutPort.Source= triggerOutPort.InstanceId;
         return mainModule;
     }
@@ -315,7 +315,7 @@ public class WD_IStorage {
     public WD_EditorObject CreateTransitionExit(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Exit");
         WD_EditorObject mainInPort= CreatePort("", mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InModulePort);
-        mainInPort.Source= port.InstanceId;
+//        mainInPort.Source= port.InstanceId;
         return mainModule;
     }
     // ----------------------------------------------------------------------
@@ -1155,8 +1155,61 @@ public class WD_IStorage {
         Rect parent2Rect= GetPosition(p2Parent);
         // Nested
         if(IsChildOf(p1Parent, p2Parent) ||
-           IsChildOf(p2Parent, p1Parent)) {
-            Debug.LogError("Update of nested ports not implemented...");
+           IsChildOf(p2Parent, p1Parent)) {               
+            WD_EditorObject parent= null;
+            WD_EditorObject child= null;
+            WD_EditorObject pPort= null;
+            WD_EditorObject cPort= null;
+            if(IsChildOf(p1Parent, p2Parent)) {
+                parent= p2Parent;
+                child= p1Parent;
+                pPort= p2;
+                cPort= p1;
+            } else {
+                parent= p1Parent;
+                child= p2Parent;
+                pPort= p1;
+                cPort= p2;
+            }
+            float dx= parent.LocalPosition.width-child.LocalPosition.xMax;
+            float dy= parent.LocalPosition.height-child.LocalPosition.yMax;
+            if(child.LocalPosition.x < child.LocalPosition.y) {
+                if(dx < dy) {
+                    if(child.LocalPosition.x < dx) {
+                        pPort.Edge= WD_EditorObject.EdgeEnum.Left;
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Right;
+                    } else {
+                        pPort.Edge= WD_EditorObject.EdgeEnum.Right;
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Left;                        
+                    }
+                } else {
+                    if(child.LocalPosition.x < dy) {
+                        pPort.Edge= WD_EditorObject.EdgeEnum.Left;
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Right;                        
+                    } else {
+                        pPort.Edge= WD_EditorObject.EdgeEnum.Bottom;
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Bottom;                        
+                    }
+                }
+            } else {
+                if(dx < dy) {
+                    if(child.LocalPosition.y < dx) {
+                        pPort.Edge= WD_EditorObject.EdgeEnum.Top;
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Top;
+                    } else {
+                        pPort.Edge= WD_EditorObject.EdgeEnum.Right;
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Left;                        
+                    }
+                } else {
+                    if(child.LocalPosition.y < dy) {
+                        pPort.Edge= WD_EditorObject.EdgeEnum.Top;
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Top;                        
+                    } else {
+                        pPort.Edge= WD_EditorObject.EdgeEnum.Bottom;
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Bottom;                        
+                    }
+                }                
+            }
             return;
         }
         // Horizontal
