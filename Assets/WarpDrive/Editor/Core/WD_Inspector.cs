@@ -67,7 +67,6 @@ public class WD_Inspector : Editor {
 	public override void OnInspectorGUI ()
 	{
         if(Storage == null) return;
-        List<WD_EditorObject> editorObjects= Storage.EditorObjects;
         
         // Restore inspector skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
@@ -76,9 +75,11 @@ public class WD_Inspector : Editor {
 		DrawDefaultInspector();
 		
         // Draw selected object.
+        EditorGUI.indentLevel= 0;
         if(SelectedObject != null) {
             selectedObjectFold= EditorGUILayout.Foldout(selectedObjectFold, "Selected Object");
             if(selectedObjectFold) {
+                EditorGUI.indentLevel= 1;
                 EditorGUILayout.LabelField("Type", SelectedObject.TypeName);
                 string name= SelectedObject.Name;
                 if(name == null || name == "") name= "(empty)";
@@ -91,48 +92,45 @@ public class WD_Inspector : Editor {
                 } else {
                     EditorGUILayout.LabelField("Name", name);                    
                 }
+                // Show inspector specific for each type of component.
+                if(SelectedObject.IsNode)      InspectNode(SelectedObject);
+                else if(SelectedObject.IsPort) InspectPort(SelectedObject);
             }            
-            // Show inspector specific for each type of component.
-            if(SelectedObject.IsNode)      InspectNode(SelectedObject);
-            else if(SelectedObject.IsPort) InspectPort(SelectedObject);
         }
 	}
 
 	// ----------------------------------------------------------------------
     // Inspects the selected node.
     void InspectNode(WD_EditorObject node) {
-//        // Show inputs.
-//        int inCount= 0;
-//        int outCount= 0;
-//        _node.ForEachChild<WD_FieldPort>(
-//            (port)=> {
-//                if(port.IsInput) ++inCount;
-//                if(port.IsOutput) ++outCount;
-//            }
-//        );
-//        if(inCount > 0) {
-//            showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
-//            if(showInputs) {
-//                EditorGUIUtility.LookLikeControls();
-//                _node.ForEachChild<WD_FieldPort>(
-//                    (port)=> {
-//                        if(port.IsInput) WD_GuiUtilities.OnInspectorGUI(port);
-//                    }
-//                );
-//            }        
-//        }
-//
-//        // Show outputs
-//        if(outCount > 0) {
-//            showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
-//            if(showOutputs) {
-//                _node.ForEachChild<WD_FieldPort>(
-//                    (port)=> {
-//                            if(port.IsOutput) WD_GuiUtilities.OnInspectorGUI(port);
-//                    }
-//                );
-//            }            
-//        }
+        List<WD_EditorObject> inPorts= new List<WD_EditorObject>();
+        List<WD_EditorObject> outPorts= new List<WD_EditorObject>();
+        Storage.ForEachChild(node,
+            child=> {
+                if(child.IsInDataPort)  inPorts.Add(child);
+                if(child.IsOutDataPort) outPorts.Add(child);
+            }
+        );
+
+        // Show inputs.
+        if(inPorts.Count > 0) {
+            EditorGUI.indentLevel= 1;
+            showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
+            if(showInputs) {
+                EditorGUIUtility.LookLikeControls();
+                EditorGUI.indentLevel= 2;
+                Prelude.forEach(port=> WD_GuiUtilities.OnInspectorGUI(port), inPorts);
+            }        
+        }
+
+        // Show outputs
+        if(outPorts.Count > 0) {
+            EditorGUI.indentLevel= 1;
+            showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
+            if(showOutputs) {
+                EditorGUI.indentLevel= 2;
+                Prelude.forEach(port=> WD_GuiUtilities.OnInspectorGUI(port), outPorts);
+            }            
+        }
     }
 
 	// ----------------------------------------------------------------------

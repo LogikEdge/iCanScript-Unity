@@ -132,6 +132,8 @@ public class WD_EditorObject {
     public bool IsOutStaticModulePort   { get { return WD.IsOutStaticModulePort(this); }}
     public bool IsInStatePort           { get { return WD.IsInStatePort(this); }}
     public bool IsOutStatePort          { get { return WD.IsOutStatePort(this); }}
+    public bool IsInDataPort            { get { return WD.IsInDataPort(this); }}
+    public bool IsOutDataPort           { get { return WD.IsOutDataPort(this); }}
     
     // ======================================================================
     // Accessors

@@ -37,10 +37,12 @@ public static partial class WD {
     public static bool IsOutStaticModulePort  (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.OutStaticModulePort; }
     public static bool IsInStatePort          (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.InStatePort; }
     public static bool IsOutStatePort         (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.OutStatePort; }
-    public static bool IsNode                 (WD_EditorObject obj) { return IsBehaviour(obj) || IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsClass(obj) || IsFunction(obj) || IsConversion(obj); }
-    public static bool IsDataPort             (WD_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj); }
+    public static bool IsInDataPort           (WD_EditorObject obj) { return IsInFieldPort(obj) || IsInFunctionPort(obj) || IsInModulePort(obj) || IsInPropertyPort(obj) || IsEnablePort(obj); }
+    public static bool IsOutDataPort          (WD_EditorObject obj) { return IsOutFieldPort(obj) || IsOutFunctionPort(obj) || IsOutModulePort(obj) || IsOutPropertyPort(obj); }
     public static bool IsInModulePort         (WD_EditorObject obj) { return IsInDynamicModulePort(obj) || IsInStaticModulePort(obj); }
     public static bool IsOutModulePort        (WD_EditorObject obj) { return IsOutDynamicModulePort(obj) || IsOutStaticModulePort(obj); }
+    public static bool IsNode                 (WD_EditorObject obj) { return IsBehaviour(obj) || IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsClass(obj) || IsFunction(obj) || IsConversion(obj); }
+    public static bool IsDataPort             (WD_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj); }
     public static bool IsDynamicModulePort    (WD_EditorObject obj) { return IsInDynamicModulePort(obj) || IsOutDynamicModulePort(obj); }
     public static bool IsStaticModulePort     (WD_EditorObject obj) { return IsInStaticModulePort(obj) || IsOutStaticModulePort(obj); }
     public static bool IsFieldPort            (WD_EditorObject obj) { return IsInFieldPort(obj) || IsOutFieldPort(obj); }
