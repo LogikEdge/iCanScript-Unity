@@ -98,34 +98,40 @@ public class WD_EditorObject {
     public void Unhide()            { DisplayNormally(); }
     // ----------------------------------------------------------------------
     // Object Type Acessor
-    public bool IsNode             { get { return WD.IsNode(this); }}
-    public bool IsBehaviour        { get { return WD.IsBehaviour(this); }}
-    public bool IsStateChart       { get { return WD.IsStateChart(this); }}
-    public bool IsState            { get { return WD.IsState(this); }}
-    public bool IsModule           { get { return WD.IsModule(this);; }}
-    public bool IsClass            { get { return WD.IsClass(this); }}
-    public bool IsFunction         { get { return WD.IsFunction(this); }}
-    public bool IsConversion       { get { return WD.IsConversion(this); }}
-    public bool IsPort             { get { return WD.IsPort(this); }}
-    public bool IsDataPort         { get { return WD.IsDataPort(this); }}
-    public bool IsFieldPort        { get { return WD.IsFieldPort(this); }}
-    public bool IsPropertyPort     { get { return WD.IsPropertyPort(this); }}
-    public bool IsFunctionPort     { get { return WD.IsFunctionPort(this); }}
-    public bool IsModulePort       { get { return WD.IsModulePort(this); }}
-    public bool IsStatePort        { get { return WD.IsStatePort(this); }}
-    public bool IsEnablePort       { get { return WD.IsEnablePort(this); }}
-    public bool IsOutputPort       { get { return WD.IsOutputPort(this); }}
-    public bool IsInputPort        { get { return WD.IsInputPort(this); }}
-    public bool IsInFieldPort      { get { return WD.IsInFieldPort(this); }}
-    public bool IsOutFieldPort     { get { return WD.IsOutFieldPort(this); }}
-    public bool IsInPropertyPort   { get { return WD.IsInPropertyPort(this); }}
-    public bool IsOutPropertyPort  { get { return WD.IsOutPropertyPort(this); }}
-    public bool IsInFunctionPort   { get { return WD.IsInFunctionPort(this); }}
-    public bool IsOutFunctionPort  { get { return WD.IsOutFunctionPort(this); }}
-    public bool IsInModulePort     { get { return WD.IsInModulePort(this); }}
-    public bool IsOutModulePort    { get { return WD.IsOutModulePort(this); }}
-    public bool IsInStatePort      { get { return WD.IsInStatePort(this); }}
-    public bool IsOutStatePort     { get { return WD.IsOutStatePort(this); }}
+    public bool IsNode                  { get { return WD.IsNode(this); }}
+    public bool IsBehaviour             { get { return WD.IsBehaviour(this); }}
+    public bool IsStateChart            { get { return WD.IsStateChart(this); }}
+    public bool IsState                 { get { return WD.IsState(this); }}
+    public bool IsModule                { get { return WD.IsModule(this);; }}
+    public bool IsClass                 { get { return WD.IsClass(this); }}
+    public bool IsFunction              { get { return WD.IsFunction(this); }}
+    public bool IsConversion            { get { return WD.IsConversion(this); }}
+    public bool IsPort                  { get { return WD.IsPort(this); }}
+    public bool IsDataPort              { get { return WD.IsDataPort(this); }}
+    public bool IsFieldPort             { get { return WD.IsFieldPort(this); }}
+    public bool IsPropertyPort          { get { return WD.IsPropertyPort(this); }}
+    public bool IsFunctionPort          { get { return WD.IsFunctionPort(this); }}
+    public bool IsModulePort            { get { return WD.IsModulePort(this); }}
+    public bool IsDynamicModulePort     { get { return WD.IsDynamicModulePort(this); }}
+    public bool IsStaticModulePort      { get { return WD.IsStaticModulePort(this); }}
+    public bool IsStatePort             { get { return WD.IsStatePort(this); }}
+    public bool IsEnablePort            { get { return WD.IsEnablePort(this); }}
+    public bool IsOutputPort            { get { return WD.IsOutputPort(this); }}
+    public bool IsInputPort             { get { return WD.IsInputPort(this); }}
+    public bool IsInFieldPort           { get { return WD.IsInFieldPort(this); }}
+    public bool IsOutFieldPort          { get { return WD.IsOutFieldPort(this); }}
+    public bool IsInPropertyPort        { get { return WD.IsInPropertyPort(this); }}
+    public bool IsOutPropertyPort       { get { return WD.IsOutPropertyPort(this); }}
+    public bool IsInFunctionPort        { get { return WD.IsInFunctionPort(this); }}
+    public bool IsOutFunctionPort       { get { return WD.IsOutFunctionPort(this); }}
+    public bool IsInModulePort          { get { return WD.IsInModulePort(this); }}
+    public bool IsOutModulePort         { get { return WD.IsOutModulePort(this); }}
+    public bool IsInDynamicModulePort   { get { return WD.IsInDynamicModulePort(this); }}
+    public bool IsOutDynamicModulePort  { get { return WD.IsOutDynamicModulePort(this); }}
+    public bool IsInStaticModulePort    { get { return WD.IsInStaticModulePort(this); }}
+    public bool IsOutStaticModulePort   { get { return WD.IsOutStaticModulePort(this); }}
+    public bool IsInStatePort           { get { return WD.IsInStatePort(this); }}
+    public bool IsOutStatePort          { get { return WD.IsOutStatePort(this); }}
     
     // ======================================================================
     // Accessors

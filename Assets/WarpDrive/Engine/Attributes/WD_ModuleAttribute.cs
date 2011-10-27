@@ -34,7 +34,13 @@ public class WD_ModuleAttribute : Attribute {
         set { myIcon= value; }
     }
     private string myIcon= null;
-
+    
+    public Type[] AllowedChildren {
+        get { return myAllowedChildren; }
+        set { myAllowedChildren= value; }
+    }
+    private Type[] myAllowedChildren;
+    
     // ======================================================================
     public override string ToString() { return "WD_Module"; }
 }

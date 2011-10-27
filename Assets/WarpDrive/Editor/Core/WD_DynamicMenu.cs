@@ -261,7 +261,7 @@ public class WD_DynamicMenu {
             }
         }
         // Allow to delete a port if its parent is a module.
-        if(selectedObject.IsStatePort || (selectedObject.IsModulePort && parent.IsModule)) {
+        if(selectedObject.IsStatePort || selectedObject.IsDynamicModulePort) {
             int i= menu.Length;
             if(i == 0) {
                 menu= new string[1];
@@ -316,11 +316,11 @@ public class WD_DynamicMenu {
                 WD_EditorObject grandParent= storage.GetParent(parent);
                 int grandParentId= grandParent.InstanceId;
                 if(selectedObject.IsInputPort) {
-                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.InModulePort);
+                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.InDynamicModulePort);
                     storage.SetSource(selectedObject, port);
                     port.LocalPosition= new Rect(0, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
                 } else {
-                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.OutModulePort);
+                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.OutDynamicModulePort);
                     storage.SetSource(port, selectedObject);
                     port.LocalPosition= new Rect(grandParent.LocalPosition.width, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
                 }

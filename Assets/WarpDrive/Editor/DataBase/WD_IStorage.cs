@@ -244,7 +244,7 @@ public class WD_IStorage {
                 this[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0), desc.MethodIcons[i]);
             }
             for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
-                WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutModulePort : WD_ObjectTypeEnum.InModulePort;
+                WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutStaticModulePort : WD_ObjectTypeEnum.InStaticModulePort;
                 WD_EditorObject classPort= CreatePort(desc.ParameterNames[i][p], id, desc.ParameterTypes[i][p], portType);
                 if(nbOfMethodsToShow > 1) {
                     portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
@@ -258,7 +258,7 @@ public class WD_IStorage {
                 }
             }
             if(desc.ReturnTypes[i] != null) {
-                WD_EditorObject classPort= CreatePort(desc.ReturnNames[i], id, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutModulePort);
+                WD_EditorObject classPort= CreatePort(desc.ReturnNames[i], id, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutStaticModulePort);
                 if(nbOfMethodsToShow > 1) {
                     WD_EditorObject funcPort= CreatePort(desc.ReturnNames[i], methodId, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutFunctionPort);
                     SetSource(classPort, funcPort);                    
@@ -303,10 +303,10 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateTransitionEntry(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry");
-        WD_EditorObject mainOutPort= CreatePort("trigger", mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutModulePort);
+        WD_EditorObject mainOutPort= CreatePort("trigger", mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
         WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, "Trigger");
         trigger.IsNameEditable= false;
-        WD_EditorObject triggerOutPort= CreatePort("trigger", trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutModulePort);
+        WD_EditorObject triggerOutPort= CreatePort("trigger", trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
 //        port.Source= mainOutPort.InstanceId;
         mainOutPort.Source= triggerOutPort.InstanceId;
         return mainModule;
@@ -314,7 +314,7 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateTransitionExit(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Exit");
-        WD_EditorObject mainInPort= CreatePort("", mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InModulePort);
+        WD_EditorObject mainInPort= CreatePort("", mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InStaticModulePort);
 //        mainInPort.Source= port.InstanceId;
         return mainModule;
     }
@@ -342,7 +342,7 @@ public class WD_IStorage {
         // Cleanup disconnected module and state ports.
         ForEach(
             port=> {
-                if((port.IsStatePort || (port.IsModulePort && GetParent(port).IsModule)) && IsPortDisconnected(port)) {
+                if((port.IsStatePort || port.IsDynamicModulePort) && IsPortDisconnected(port)) {
                     DestroyInstanceInternal(port.InstanceId);
                 }
             }
