@@ -81,6 +81,9 @@ public class WD_DynamicMenu {
 
 	// ----------------------------------------------------------------------
     void BehaviourMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
+        // Don't show any menu if behaviour not visible.
+        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) return;
+
         string[] menu= new string[]
         {
             UpdateModuleStr,             
@@ -96,11 +99,12 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
-        string[] menu= new string[]
-        {
-            ModuleStr,
-            StateChartStr,
-        };
+        string[] menu= new string[0];
+        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+            menu= new string[2];
+            menu[0]= ModuleStr;
+            menu[1]= StateChartStr; 
+        }
         // Fold/Expand menu items
         string[] tmp= null;
         if(!storage.IsMinimized(selectedObject)) {
@@ -115,12 +119,14 @@ public class WD_DynamicMenu {
             menu= tmp;            
         }
         // Function menu items
-        string[] functionMenu= GetFunctionMenu();
-        tmp= new string[menu.Length+functionMenu.Length+1];
-        menu.CopyTo(tmp, 0);
-        tmp[menu.Length]= SeparatorStr;
-        functionMenu.CopyTo(tmp, menu.Length+1);
-        menu= tmp;
+        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+            string[] functionMenu= GetFunctionMenu();
+            tmp= new string[menu.Length+functionMenu.Length+1];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            functionMenu.CopyTo(tmp, menu.Length+1);
+            menu= tmp;            
+        }
         // Delete menu item
         if(selectedObject.InstanceId != 0) {
             tmp= new string[menu.Length+2];
@@ -133,10 +139,11 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void StateChartMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
-        string[] menu= new string[]
-        {
-            StateStr,
-        };
+        string[] menu= new string[0];
+        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+            menu= new string[1];
+            menu[0]= StateStr; 
+        }
         // Fold/Expand menu items
         string[] tmp= null;
         if(!storage.IsMinimized(selectedObject)) {
@@ -162,15 +169,16 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void StateMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
-        string[] menu= new string[]
-        {
-            OnEntryStr,
-            OnUpdateStr,
-            OnExitStr,
-            SubStateStr,
-            SeparatorStr,
-            SetAsEntryStr
-        };
+        string[] menu= new string[0];
+        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+            menu= new string[6];
+            menu[0]= OnEntryStr;
+            menu[1]= OnUpdateStr;
+            menu[2]= OnExitStr;
+            menu[3]= SubStateStr;
+            menu[4]= SeparatorStr;
+            menu[5]= SetAsEntryStr;
+        }
         // Fold/Expand menu items
         string[] tmp= null;
         if(!storage.IsMinimized(selectedObject)) {
