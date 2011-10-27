@@ -1171,11 +1171,14 @@ public class WD_IStorage {
                 pPort= p1;
                 cPort= p2;
             }
-            float dx= parent.LocalPosition.width-child.LocalPosition.xMax;
-            float dy= parent.LocalPosition.height-child.LocalPosition.yMax;
-            if(child.LocalPosition.x < child.LocalPosition.y) {
+            Rect parentPos= GetPosition(parent);
+            Rect childPos = GetPosition(child);
+            Rect childLocalPos= new Rect(childPos.x-parentPos.x, childPos.y-parentPos.y, childPos.width, childPos.height);
+            float dx= parentPos.width-childLocalPos.xMax;
+            float dy= parentPos.height-childLocalPos.yMax;
+            if(childLocalPos.x < childLocalPos.y) {
                 if(dx < dy) {
-                    if(child.LocalPosition.x < dx) {
+                    if(childLocalPos.x < dx) {
                         pPort.Edge= WD_EditorObject.EdgeEnum.Left;
                         cPort.Edge= WD_EditorObject.EdgeEnum.Left;
                     } else {
@@ -1183,7 +1186,7 @@ public class WD_IStorage {
                         cPort.Edge= WD_EditorObject.EdgeEnum.Right;                        
                     }
                 } else {
-                    if(child.LocalPosition.x < dy) {
+                    if(childLocalPos.x < dy) {
                         pPort.Edge= WD_EditorObject.EdgeEnum.Left;
                         cPort.Edge= WD_EditorObject.EdgeEnum.Left;                        
                     } else {
@@ -1193,7 +1196,7 @@ public class WD_IStorage {
                 }
             } else {
                 if(dx < dy) {
-                    if(child.LocalPosition.y < dx) {
+                    if(childLocalPos.y < dx) {
                         pPort.Edge= WD_EditorObject.EdgeEnum.Top;
                         cPort.Edge= WD_EditorObject.EdgeEnum.Top;
                     } else {
@@ -1201,7 +1204,7 @@ public class WD_IStorage {
                         cPort.Edge= WD_EditorObject.EdgeEnum.Right;                        
                     }
                 } else {
-                    if(child.LocalPosition.y < dy) {
+                    if(childLocalPos.y < dy) {
                         pPort.Edge= WD_EditorObject.EdgeEnum.Top;
                         cPort.Edge= WD_EditorObject.EdgeEnum.Top;                        
                     } else {
