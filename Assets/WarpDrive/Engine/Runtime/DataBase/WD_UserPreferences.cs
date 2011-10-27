@@ -69,10 +69,11 @@ public class WD_UserPreferences {
         public string GetTypeName(Type t)  { return GetName(t.Name); }
         public string GetName(string name) {
             int prefixLen= WarpDrivePrefix.Length;
-            if(name.Substring(0, prefixLen) == WarpDrivePrefix) return name.Substring(prefixLen, name.Length-prefixLen);
+            int nameLen= name.Length;
+            if(nameLen > prefixLen && name.Substring(0, prefixLen) == WarpDrivePrefix) return name.Substring(prefixLen, nameLen-prefixLen);
             foreach(var prefix in CustomPrefixes) {
                 prefixLen= prefix.Length;
-                if(name.Substring(0, prefixLen) == prefix) return name.Substring(prefixLen, name.Length-prefixLen);                
+                if(nameLen > prefixLen && name.Substring(0, prefixLen) == prefix) return name.Substring(prefixLen, name.Length-prefixLen);                
             }
             return name;
         }
