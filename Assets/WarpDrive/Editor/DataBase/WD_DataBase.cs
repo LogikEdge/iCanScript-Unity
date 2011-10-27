@@ -55,11 +55,12 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Finds a conversion that matches the given from/to types.
-    public static WD_ConversionDesc FindConversion(Type from, Type to) {
+    public static WD_ConversionDesc FindConversion(Type fromType, Type toType) {
         foreach(var desc in Functions) {
             if(desc is WD_ConversionDesc) {
                 WD_ConversionDesc conv= desc as WD_ConversionDesc;
-                if(conv.FromType == from && conv.ToType == to) return conv;
+                if(WD_Types.CanBeConnectedWithoutConversion(fromType, conv.FromType) &&
+                   WD_Types.CanBeConnectedWithoutConversion(conv.ToType, toType)) return conv;
             }
         }
         return null;

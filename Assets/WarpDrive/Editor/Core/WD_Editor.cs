@@ -432,7 +432,7 @@ public class WD_Editor : EditorWindow {
                 outPort= overlappingPort.IsOutputPort ? overlappingPort : port;
             }
             if(inPort != outPort) {
-                if(inPort.RuntimeType == outPort.RuntimeType) { // No conversion needed.
+                if(WD_Types.CanBeConnectedWithoutConversion(outPort.RuntimeType, inPort.RuntimeType)) { // No conversion needed.
                     Storage.SetSource(inPort, outPort);                       
                 }
                 else {  // A conversion is required.
@@ -457,7 +457,6 @@ public class WD_Editor : EditorWindow {
         Debug.LogWarning("Trying to connect incompatible port types: "+port.TypeName+"<=>"+overlappingPort.TypeName);
         return true;
     }
-    
     
     // ======================================================================
     // NODE GRAPH DISPLAY
