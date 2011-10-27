@@ -67,8 +67,8 @@ public class WD_Editor : EditorWindow {
     
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.
-	public void Activate(WD_Storage storage, WD_Inspector inspector) {
-        Storage= new WD_IStorage(storage);
+	public void Activate(WD_IStorage storage, WD_Inspector inspector) {
+        Storage= storage;
         Inspector= inspector;
         DisplayRoot= null;
     }

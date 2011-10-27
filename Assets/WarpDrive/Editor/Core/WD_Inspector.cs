@@ -10,7 +10,7 @@ public class WD_Inspector : Editor {
     // ======================================================================
     // PROPERTIES
 	// ----------------------------------------------------------------------
-    private WD_Storage      Storage= null;
+    private WD_IStorage     Storage= null;
 	private WD_Editor	    Editor = null;
 	public  WD_EditorObject SelectedObject {
 	    get { return mySelectedObject; }
@@ -20,9 +20,9 @@ public class WD_Inspector : Editor {
 
 	// ----------------------------------------------------------------------
     // Display state properties.
-	private bool    myFold= true;
-    private bool    showInputs= false;
-    private bool    showOutputs= false;
+	private bool    selectedObjectFold= true;
+    private bool    showInputs        = false;
+    private bool    showOutputs       = false;
     
 
 	// ----------------------------------------------------------------------
@@ -36,7 +36,7 @@ public class WD_Inspector : Editor {
         hideFlags= HideFlags.DontSave;
         
         // Get graph reference.
-        Storage= target as WD_Storage;
+        Storage= new WD_IStorage(target as WD_Storage);
         
 		// Create the graph editor.
         if(Editor == null) {
@@ -76,6 +76,23 @@ public class WD_Inspector : Editor {
 		DrawDefaultInspector();
 		
         // Draw selected object.
+        if(SelectedObject != null) {
+            selectedObjectFold= EditorGUILayout.Foldout(selectedObjectFold, "Selected Object");
+            if(selectedObjectFold) {
+                EditorGUILayout.LabelField("Type", SelectedObject.TypeName);
+                string name= SelectedObject.Name;
+                if(name == null || name == "") name= "(empty)";
+                if(SelectedObject.IsNameEditable) {
+                    name= EditorGUILayout.TextField("Name", name);
+                    if(name != "(empty)" && name != SelectedObject.Name) {
+                        SelectedObject.Name= name;
+                        // ML: TBD: Need to relayout object to show new name.
+                    }                    
+                } else {
+                    EditorGUILayout.LabelField("Name", name);                    
+                }
+            }            
+        }
 //        WD_Object rtSelectedObject= SelectedObject != null ? editorObjects.GetRuntimeObject(SelectedObject) as WD_Object: null;
 //		myFold= EditorGUILayout.InspectorTitlebar(myFold, rtSelectedObject);
 //		if(myFold && rtSelectedObject != null) {

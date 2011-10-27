@@ -240,7 +240,9 @@ public class WD_DynamicMenu {
         WD_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
         WD_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
         if(grandParent != null && grandParent.IsModule) {
-            menu= new string[]{PublishPortStr};
+            if(!(selectedObject.IsInputPort && storage.IsValid(selectedObject.Source))) {
+                menu= new string[]{PublishPortStr};                
+            }
         }
         // State Port.
         if(selectedObject.IsStatePort) {
@@ -293,18 +295,18 @@ public class WD_DynamicMenu {
         WD_IStorage storage= context.Storage;
         storage.RegisterUndo(context.Command);
         switch(context.Command) {
-            case UpdateModuleStr:           CreateModule(selectedObject, storage, "Update"); break;
-            case UpdateStateChartStr:       CreateStateChart(selectedObject, storage, "Update"); break;
-            case FixedUpdateModuleStr:      CreateModule(selectedObject, storage, "FixedUpdate"); break;
-            case FixedUpdateStateChartStr:  CreateStateChart(selectedObject, storage, "FixedUpdate"); break;
-            case LateUpdateModuleStr:       CreateModule(selectedObject, storage, "LateUpdate"); break;
-            case LateUpdateStateChartStr:   CreateStateChart(selectedObject, storage, "LateUpdate"); break;
+            case UpdateModuleStr:           CreateModule(selectedObject, storage, "Update", false); break;
+            case UpdateStateChartStr:       CreateStateChart(selectedObject, storage, "Update", false); break;
+            case FixedUpdateModuleStr:      CreateModule(selectedObject, storage, "FixedUpdate", false); break;
+            case FixedUpdateStateChartStr:  CreateStateChart(selectedObject, storage, "FixedUpdate", false); break;
+            case LateUpdateModuleStr:       CreateModule(selectedObject, storage, "LateUpdate", false); break;
+            case LateUpdateStateChartStr:   CreateStateChart(selectedObject, storage, "LateUpdate", false); break;
             case ModuleStr:                 CreateModule(selectedObject, storage); break;
             case StateChartStr:             CreateStateChart(selectedObject, storage); break;
             case StateStr:                  CreateState (selectedObject, storage);  break;
-            case OnEntryStr:                CreateModule(selectedObject, storage, OnEntryStr); break;
-            case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr); break;
-            case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr); break;
+            case OnEntryStr:                CreateModule(selectedObject, storage, OnEntryStr, false); break;
+            case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr, false); break;
+            case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr, false); break;
             case SubStateStr:               CreateState (selectedObject, storage);  break;
             case TransitionEntryStr:        CreateTransitionEntry(selectedObject, storage); break;
             case TransitionExitStr:         CreateTransitionExit(selectedObject, storage); break;
@@ -399,12 +401,16 @@ public class WD_DynamicMenu {
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------
-    WD_EditorObject CreateModule(WD_EditorObject parent, WD_IStorage storage, string name= "") {
-        return storage.CreateModule(parent.InstanceId, MenuPosition, name);
+    WD_EditorObject CreateModule(WD_EditorObject parent, WD_IStorage storage, string name= "", bool nameEditable= true) {
+        WD_EditorObject module= storage.CreateModule(parent.InstanceId, MenuPosition, name);
+        module.IsNameEditable= nameEditable;
+        return module;
     }
 	// ----------------------------------------------------------------------
-    WD_EditorObject CreateStateChart(WD_EditorObject parent, WD_IStorage storage, string name= "") {
-        return storage.CreateStateChart(parent.InstanceId, MenuPosition, name);
+    WD_EditorObject CreateStateChart(WD_EditorObject parent, WD_IStorage storage, string name= "", bool nameEditable= true) {
+        WD_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, MenuPosition, name);
+        stateChart.IsNameEditable= nameEditable;
+        return stateChart;
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject CreateState(WD_EditorObject parent, WD_IStorage storage, string name= "") {
