@@ -1177,15 +1177,15 @@ public class WD_IStorage {
                 if(dx < dy) {
                     if(child.LocalPosition.x < dx) {
                         pPort.Edge= WD_EditorObject.EdgeEnum.Left;
-                        cPort.Edge= WD_EditorObject.EdgeEnum.Right;
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Left;
                     } else {
                         pPort.Edge= WD_EditorObject.EdgeEnum.Right;
-                        cPort.Edge= WD_EditorObject.EdgeEnum.Left;                        
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Right;                        
                     }
                 } else {
                     if(child.LocalPosition.x < dy) {
                         pPort.Edge= WD_EditorObject.EdgeEnum.Left;
-                        cPort.Edge= WD_EditorObject.EdgeEnum.Right;                        
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Left;                        
                     } else {
                         pPort.Edge= WD_EditorObject.EdgeEnum.Bottom;
                         cPort.Edge= WD_EditorObject.EdgeEnum.Bottom;                        
@@ -1198,7 +1198,7 @@ public class WD_IStorage {
                         cPort.Edge= WD_EditorObject.EdgeEnum.Top;
                     } else {
                         pPort.Edge= WD_EditorObject.EdgeEnum.Right;
-                        cPort.Edge= WD_EditorObject.EdgeEnum.Left;                        
+                        cPort.Edge= WD_EditorObject.EdgeEnum.Right;                        
                     }
                 } else {
                     if(child.LocalPosition.y < dy) {

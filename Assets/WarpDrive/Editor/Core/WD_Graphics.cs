@@ -489,23 +489,8 @@ public class WD_Graphics {
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
         if(port.IsDataPort) {
             DrawCircularPort(center, portColor, nodeColor);
-        } if(port.IsStatePort) {
-            if(port.IsInStatePort) {
-                switch(port.Edge) {
-                    case WD_EditorObject.EdgeEnum.Bottom:
-                        DrawIconCenteredAt(center, upArrowHeadIcon);
-                        break;
-                    case WD_EditorObject.EdgeEnum.Top:
-                        DrawIconCenteredAt(center, downArrowHeadIcon);
-                        break;
-                    case WD_EditorObject.EdgeEnum.Left:
-                        DrawIconCenteredAt(center, rightArrowHeadIcon);
-                        break;
-                    case WD_EditorObject.EdgeEnum.Right:
-                        DrawIconCenteredAt(center, leftArrowHeadIcon);
-                        break;
-                }                
-            } else {
+        } else if(port.IsStatePort) {
+            if(port.IsOutStatePort) {
                 Handles.color= Color.white;
                 Handles.DrawSolidDisc(center, FacingNormal, WD_EditorConfig.PortRadius);
             }
@@ -729,9 +714,26 @@ public class WD_Graphics {
         		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
+                    // Show transition name.
                     Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
                     Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-0.5f*labelSize.y);
-                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), port.Name);                    
+                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), port.Name);
+                    // Show transition input port.
+                    Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
+                    tangent.Normalize();
+                    if(Mathf.Abs(tangent.x) > Mathf.Abs(tangent.y)) {
+                        if(tangent.x > 0) {
+                            DrawIconCenteredAt(cp.End, leftArrowHeadIcon);                            
+                        } else {
+                            DrawIconCenteredAt(cp.End, rightArrowHeadIcon);
+                        }
+                    } else {
+                        if(tangent.y > 0) {
+                            DrawIconCenteredAt(cp.End, upArrowHeadIcon);
+                        } else {
+                            DrawIconCenteredAt(cp.End, downArrowHeadIcon);
+                        }
+                    }                 
                 }
             }                                    
         }
