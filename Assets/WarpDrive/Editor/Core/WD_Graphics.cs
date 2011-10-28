@@ -319,7 +319,9 @@ public class WD_Graphics {
         if(storage.IsMinimized(node)) {
             Rect nodePos= storage.GetPosition(node);
             Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
-            GUI.DrawTexture(new Rect(nodePos.x, nodePos.y, icon.width, icon.height), icon);                           
+            Rect texturePos= new Rect(nodePos.x, nodePos.y, icon.width, icon.height);
+            GUI.DrawTexture(texturePos, icon);                           
+            GUI.Label(texturePos, new GUIContent("", node.ToolTip));
             return;
         }
         
@@ -333,7 +335,7 @@ public class WD_Graphics {
         position.y-= guiStyle.overflow.top;
         position.width+= leftOffset + rightOffset;
         position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
-        GUI.Box(position, title, guiStyle);            
+        GUI.Box(position, new GUIContent(title,node.ToolTip), guiStyle);            
         EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, WD_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, storage)) {
@@ -498,11 +500,10 @@ public class WD_Graphics {
             DrawCircularPort(center, portColor, nodeColor);
         }
         // Configure move cursor for port.
-        EditorGUIUtility.AddCursorRect (new Rect(center.x-WD_EditorConfig.PortRadius,
-                                                 center.y-WD_EditorConfig.PortRadius,
-                                                 WD_EditorConfig.PortSize,
-                                                 WD_EditorConfig.PortSize),
-                                        MouseCursor.MoveArrow);   
+        Rect portPos= new Rect(center.x-WD_EditorConfig.PortRadius, center.y-WD_EditorConfig.PortRadius, WD_EditorConfig.PortSize, WD_EditorConfig.PortSize);
+        EditorGUIUtility.AddCursorRect (portPos, MouseCursor.MoveArrow);
+        GUI.Label(portPos, new GUIContent("", port.ToolTip));
+        
         // Show port label.
         if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
@@ -525,7 +526,7 @@ public class WD_Graphics {
                 center.y+= WD_EditorConfig.PortSize+0.8f*labelSize.y*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y;
                 break;
         }
-        GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), name);
+        GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip));
     }
 
 	// ----------------------------------------------------------------------
@@ -717,7 +718,7 @@ public class WD_Graphics {
                     // Show transition name.
                     Vector2 labelSize= WD_EditorConfig.GetPortLabelSize(port.Name);
                     Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-0.5f*labelSize.y);
-                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), port.Name);
+                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), new GUIContent(port.Name, port.ToolTip));
                     // Show transition input port.
                     Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
                     tangent.Normalize();

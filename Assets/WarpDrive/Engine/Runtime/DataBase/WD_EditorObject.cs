@@ -15,6 +15,7 @@ public class WD_EditorObject {
     public string               QualifiedType = "";
     public string               Name          = "";
     public bool                 IsNameEditable= true;
+    public string               ToolTip       = null;
     public bool                 IsDirty       = false;
     public Rect                 LocalPosition = new Rect(0,0,0,0);
 
@@ -58,6 +59,7 @@ public class WD_EditorObject {
         Source= -1;
         IsBeingDragged= false;
         IsNameEditable= true;
+        ToolTip = null;
     }
 //    // ----------------------------------------------------------------------
 //    public WD_Object CreateRuntimeObject() {

@@ -76,11 +76,13 @@ public class WD_Inspector : Editor {
 		
         // Draw selected object.
         EditorGUI.indentLevel= 0;
-        if(SelectedObject != null) {
+        if(SelectedObject != null && SelectedObject.IsValid) {
             selectedObjectFold= EditorGUILayout.Foldout(selectedObjectFold, "Selected Object");
             if(selectedObjectFold) {
+                // Display type information.
                 EditorGUI.indentLevel= 1;
                 EditorGUILayout.LabelField("Type", SelectedObject.TypeName);
+                // Display object name.
                 string name= SelectedObject.Name;
                 if(SelectedObject.IsOutStatePort) name= Storage.FindAConnectedPort(SelectedObject).Name;
                 if(name == null || name == "") name= "(empty)";
@@ -88,11 +90,26 @@ public class WD_Inspector : Editor {
                     name= EditorGUILayout.TextField("Name", name);
                     if(name != "(empty)" && name != SelectedObject.Name) {
                         SelectedObject.Name= name;
-                        if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).Name= name;
+                        if(SelectedObject.IsStatePort) {
+                            if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).Name= name;
+                            else Storage.GetSource(SelectedObject).Name= name;                            
+                        }
                         Storage.SetDirty(SelectedObject);
                     }                    
                 } else {
                     EditorGUILayout.LabelField("Name", name);                    
+                }
+                // Show object tooltip.
+                string toolTip= SelectedObject.ToolTip;
+                if(SelectedObject.IsOutStatePort) toolTip= Storage.FindAConnectedPort(SelectedObject).ToolTip;
+                if(toolTip == null || toolTip == "") toolTip= "(empty)";
+                toolTip= EditorGUILayout.TextField("Tool Tip", toolTip);
+                if(toolTip != "(empty)" && toolTip != SelectedObject.ToolTip) {
+                    SelectedObject.ToolTip= toolTip;
+                    if(SelectedObject.IsStatePort) {
+                        if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).ToolTip= toolTip;
+                        else Storage.GetSource(SelectedObject).ToolTip= toolTip;
+                    }
                 }
                 // Show inspector specific for each type of component.
                 if(SelectedObject.IsNode)      InspectNode(SelectedObject);
@@ -169,20 +186,8 @@ public class WD_Inspector : Editor {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in outPorts) {
                     WD_EditorObject inPort= Storage.FindAConnectedPort(port);
-                    string transitionName= inPort.Name;
-                    if(SelectedObject.IsNameEditable) {
-                        transitionName= EditorGUILayout.TextField("Name", transitionName);
-                        if(transitionName != inPort.Name) {
-                            inPort.Name= transitionName;
-                            port.Name= transitionName;
-                            Storage.SetDirty(inPort);
-                        }
-                    }
-                    else {
-                        EditorGUILayout.LabelField("Name", transitionName);                        
-                    }
-                    WD_EditorObject toState= Storage.GetParent(inPort);
-                    EditorGUILayout.LabelField("State", toState.NameOrTypeName);                    
+                    EditorGUILayout.LabelField("Name", inPort.Name);                        
+                    EditorGUILayout.LabelField("State", Storage.GetParent(inPort).NameOrTypeName);                    
                 }
             }
         }
@@ -193,25 +198,8 @@ public class WD_Inspector : Editor {
             if(showInputs) {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in inPorts) {
+                    EditorGUILayout.LabelField("Name", port.Name);                        
                     WD_EditorObject outPort= Storage.GetSource(port);
-                    string transitionName= port.Name;
-                    if(SelectedObject.IsNameEditable) {
-                        transitionName= EditorGUILayout.TextField("Name", transitionName);
-                        if(transitionName != port.Name) {
-                            port.Name= transitionName;
-                            outPort.Name= transitionName;
-                            Storage.SetDirty(port);
-                        }
-                    }
-                    else {
-                        EditorGUILayout.LabelField("Name", transitionName);                        
-                    }
-                    transitionName= EditorGUILayout.TextField("Name", transitionName);
-                    if(transitionName != port.Name) {
-                        port.Name= transitionName;
-                        outPort.Name= transitionName;
-                        Storage.SetDirty(port);
-                    }
                     EditorGUILayout.LabelField("State", Storage.GetParent(outPort).NameOrTypeName);                    
                 }
             }

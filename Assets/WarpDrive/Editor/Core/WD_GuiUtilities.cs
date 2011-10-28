@@ -12,42 +12,42 @@ public class WD_GuiUtilities {
 
         // Display primitives.
         if(dataType == typeof(bool)) {
-            bool newValue= EditorGUILayout.Toggle(niceName, default(bool));
+            /*bool newValue=*/ EditorGUILayout.Toggle(niceName, default(bool));
 //            fieldInfo.SetValue(parent, newValue);
             return;
         }
         if(dataType == typeof(int)) {
-            int newValue= EditorGUILayout.IntField(niceName, default(int));
+            /*int newValue=*/ EditorGUILayout.IntField(niceName, default(int));
 //            fieldInfo.SetValue(parent, newValue);
             return;
         }
         if(dataType == typeof(float)) {
-            float newValue= EditorGUILayout.FloatField(niceName, default(float));
+            /*float newValue=*/ EditorGUILayout.FloatField(niceName, default(float));
 //            fieldInfo.SetValue(parent, newValue);
             return;
         }
         if(dataType == typeof(string)) {
-            string newValue= EditorGUILayout.TextField(niceName, default(string));
+            /*string newValue=*/ EditorGUILayout.TextField(niceName, default(string));
 //            fieldInfo.SetValue(parent, newValue);
             return;
         }
         if(dataType == typeof(Vector2)) {
-            Vector2 newValue= EditorGUILayout.Vector2Field(niceName, default(Vector2));
+            /*Vector2 newValue=*/ EditorGUILayout.Vector2Field(niceName, default(Vector2));
 //            fieldInfo.SetValue(parent, newValue);
             return;            
         }
         if(dataType == typeof(Vector3)) {
-            Vector3 newValue= EditorGUILayout.Vector3Field(niceName, default(Vector3));
+            /*Vector3 newValue=*/ EditorGUILayout.Vector3Field(niceName, default(Vector3));
 //            fieldInfo.SetValue(parent, newValue);
             return;            
         }
         if(dataType == typeof(Vector4)) {
-            Vector4 newValue= EditorGUILayout.Vector4Field(niceName, default(Vector4));
+            /*Vector4 newValue=*/ EditorGUILayout.Vector4Field(niceName, default(Vector4));
 //            fieldInfo.SetValue(parent, newValue);
             return;            
         }
         if(dataType == typeof(GameObject)) {
-            GameObject newValue= EditorGUILayout.ObjectField(niceName, null, typeof(GameObject), true) as GameObject;
+            /*GameObject newValue=*/ EditorGUILayout.ObjectField(niceName, null, typeof(GameObject), true) /*as GameObject*/;
 //            fieldInfo.SetValue(parent, newValue);
             return;                        
         }            

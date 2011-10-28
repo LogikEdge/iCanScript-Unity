@@ -271,8 +271,8 @@ public class WD_Editor : EditorWindow {
         if(node != null && node.IsState) {
             Storage.RegisterUndo("Transition Creation");
             DragType= DragTypeEnum.TransitionCreation;
-            WD_EditorObject outTransition= Storage.CreatePort("outState", node.InstanceId, typeof(void), WD_ObjectTypeEnum.OutStatePort);
-            WD_EditorObject inTransition= Storage.CreatePort("inState", node.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
+            WD_EditorObject outTransition= Storage.CreatePort("[false]", node.InstanceId, typeof(void), WD_ObjectTypeEnum.OutStatePort);
+            WD_EditorObject inTransition= Storage.CreatePort("[false]", node.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
             Storage.SetInitialPosition(outTransition, pos);
             Storage.SetInitialPosition(inTransition, pos);
             inTransition.Source= outTransition.InstanceId;
@@ -309,11 +309,6 @@ public class WD_Editor : EditorWindow {
                         }
                         if(port.IsStatePort) {
                             if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
-                                if(Storage.IsValid(port.Source)) {
-                                    Storage.DestroyInstance(port.Source);
-                                } else {
-                                    Prelude.forEach(p=> Storage.DestroyInstance(p), Storage.FindConnectedPorts(port));
-                                }
                                 Storage.DestroyInstance(port);
                             } else {
                                 port.LocalPosition.x= DragStartPosition.x;
@@ -327,7 +322,7 @@ public class WD_Editor : EditorWindow {
             case DragTypeEnum.TransitionCreation:
                 WD_EditorObject parent= GetNodeAtMousePosition();
                 if(parent != null && parent.IsState) {
-                    WD_EditorObject inStatePort= Storage.CreatePort("inState", parent.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
+                    WD_EditorObject inStatePort= Storage.CreatePort("[false]", parent.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
                     Rect portRect= Storage.GetPosition(DragObject);
                     Storage.SetInitialPosition(inStatePort, new Vector2(portRect.x, portRect.y));
                     WD_EditorObject outStatePort= Storage[DragObject.Source];

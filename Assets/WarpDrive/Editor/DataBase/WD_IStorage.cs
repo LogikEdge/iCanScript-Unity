@@ -1291,7 +1291,7 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     // Returns the minimal distance from the parent.
     public float GetDistanceFromParent(WD_EditorObject port) {
-        WD_EditorObject parentNode= EditorObjects[port.ParentId];
+        WD_EditorObject parentNode= GetParent(port);
         Rect tmp= GetPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
         if(IsInside(parentNode, position)) return 0;
