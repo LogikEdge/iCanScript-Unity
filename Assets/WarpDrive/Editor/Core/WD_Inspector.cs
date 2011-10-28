@@ -8,6 +8,11 @@ using System.Collections.Generic;
 [CustomEditor (typeof (WD_Storage))]
 public class WD_Inspector : Editor {
     // ======================================================================
+    // Constants.
+	// ----------------------------------------------------------------------
+    const string EmptyStr= "(empty)";
+    
+    // ======================================================================
     // PROPERTIES
 	// ----------------------------------------------------------------------
     private WD_IStorage     Storage= null;
@@ -24,7 +29,7 @@ public class WD_Inspector : Editor {
     private bool    showInputs        = false;
     private bool    showOutputs       = false;
     
-
+    
 	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
 	public void OnEnable ()
@@ -85,10 +90,10 @@ public class WD_Inspector : Editor {
                 // Display object name.
                 string name= SelectedObject.RawName;
                 if(SelectedObject.IsOutStatePort) name= Storage.FindAConnectedPort(SelectedObject).RawName;
-                if(name == null || name == "") name= "(empty)";
+                if(name == null || name == "") name= EmptyStr;
                 if(SelectedObject.IsNameEditable) {
                     name= EditorGUILayout.TextField("Name", name);
-                    if(name != "(empty)" && name != SelectedObject.RawName) {
+                    if(name != EmptyStr && name != SelectedObject.RawName) {
                         SelectedObject.Name= name;
                         if(SelectedObject.IsStatePort) {
                             if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).Name= name;
@@ -102,9 +107,9 @@ public class WD_Inspector : Editor {
                 // Show object tooltip.
                 string toolTip= SelectedObject.RawToolTip;
                 if(SelectedObject.IsOutStatePort) toolTip= Storage.FindAConnectedPort(SelectedObject).RawToolTip;
-                if(toolTip == null || toolTip == "") toolTip= "(empty)";
+                if(toolTip == null || toolTip == "") toolTip= EmptyStr;
                 toolTip= EditorGUILayout.TextField("Tool Tip", toolTip);
-                if(toolTip != "(empty)" && toolTip != SelectedObject.RawToolTip) {
+                if(toolTip != EmptyStr && toolTip != SelectedObject.RawToolTip) {
                     SelectedObject.ToolTip= toolTip;
                     if(SelectedObject.IsStatePort) {
                         if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).ToolTip= toolTip;
@@ -120,6 +125,14 @@ public class WD_Inspector : Editor {
 
 	// ----------------------------------------------------------------------
     void InspectNode(WD_EditorObject node) {
+        // Show Iconic image configuration.
+        Texture2D iconicTexture= null;
+        if(node.Icon != null && node.Icon != "") iconicTexture= WD_Graphics.GetCachedIcon(node.Icon, Storage);
+        Object newTexture= EditorGUILayout.ObjectField("Iconic Texture", iconicTexture, typeof(Texture2D), false) as Texture2D;
+        if(newTexture != iconicTexture) {
+            node.Icon= newTexture != null ? AssetDatabase.GetAssetPath(newTexture) : null;
+        }
+        // Display specific node type information.
         switch(node.ObjectType) {
             case WD_ObjectTypeEnum.State:
                 InspectStateNode(node);

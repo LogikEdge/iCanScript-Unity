@@ -142,6 +142,7 @@ public class WD_EditorObject {
     public string TypeName {
         get {
             int end= QualifiedType.IndexOf(',');
+            if(end < 0) return "(Unknown Type)";
             if(QualifiedType.StartsWith(WD_EditorConfig.TypePrefix)) {
                 int prefixLen= WD_EditorConfig.TypePrefix.Length;
                 return QualifiedType.Substring(prefixLen, end-prefixLen);
