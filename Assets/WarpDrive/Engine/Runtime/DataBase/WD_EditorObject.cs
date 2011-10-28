@@ -13,9 +13,9 @@ public class WD_EditorObject {
     public int                  InstanceId    = -1;
     public int                  ParentId      = -1;
     public string               QualifiedType = "";
-    public string               Name          = "";
+    public string               RawName       = "";
     public bool                 IsNameEditable= true;
-    public string               ToolTip       = null;
+    public string               RawToolTip    = null;
     public bool                 IsDirty       = false;
     public Rect                 LocalPosition = new Rect(0,0,0,0);
 
@@ -77,14 +77,7 @@ public class WD_EditorObject {
 //        rtObject.InstanceId= InstanceId;
 //        return rtObject;
 //    }
-//    
-//    // ----------------------------------------------------------------------
-//    public bool IsRuntimeA(Type t) {
-//        return Inf.IsA(RuntimeType, t);
-//    }
-//    public bool IsRuntimeA<T>() where T : class {
-//        return IsRuntimeA(typeof(T));
-//    }
+    
     // ----------------------------------------------------------------------
     // Display Option Accessor
     public bool IsDisplayedNormally { get { return WD.IsDisplayedNormally(this); }}
@@ -143,6 +136,8 @@ public class WD_EditorObject {
     public bool IsValid         { get { return InstanceId != -1; }}
     public bool IsParentValid   { get { return ParentId != -1; }}
     public bool IsSourceValid   { get { return Source != -1; }}
+    public bool NameEmpty       { get { return RawName == null || RawName == ""; }}
+    public bool ToolTipEmpty    { get { return RawToolTip == null || RawToolTip == ""; }}
     public Type RuntimeType     { get { return Type.GetType(QualifiedType); }}
     public string TypeName {
         get {
@@ -154,8 +149,13 @@ public class WD_EditorObject {
             return QualifiedType.Substring(0, end);
         }
     }
-    public string NameOrTypeName {
-        get { return (Name == null || Name == "") ? TypeName : Name; }
+    public string Name {
+        get { return NameEmpty ? TypeName : RawName; }
+        set { RawName= value; }
+    }
+    public string ToolTip {
+        get { return ToolTipEmpty ? (NameEmpty ? TypeName : Name+" "+TypeName) : RawToolTip; }
+        set { RawToolTip= value; }
     }
     public bool IsOnTopEdge         { get { return Edge == EdgeEnum.Top; }}
     public bool IsOnBottomEdge      { get { return Edge == EdgeEnum.Bottom; }}

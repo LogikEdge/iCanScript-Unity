@@ -82,7 +82,7 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     void BehaviourMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         // Don't show any menu if behaviour not visible.
-        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) return;
+        if(storage.IsMinimized(selectedObject) || storage.IsFolded(selectedObject)) return;
 
         string[] menu= new string[]
         {

@@ -144,7 +144,7 @@ public class WD_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        this[id]= new WD_EditorObject(id, "Behaviour", typeof(WD_Behaviour), -1, WD_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
+        this[id]= new WD_EditorObject(id, null, typeof(WD_Behaviour), -1, WD_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -562,7 +562,7 @@ public class WD_IStorage {
         Rect  childRect   = ComputeChildRect(node);
 
         // Compute needed width.
-        float titleWidth  = WD_EditorConfig.GetNodeWidth(node.NameOrTypeName)+WD_EditorConfig.ExtraIconWidth;
+        float titleWidth  = WD_EditorConfig.GetNodeWidth(node.Name)+WD_EditorConfig.ExtraIconWidth;
         float leftMargin  = ComputeLeftMargin(node);
         float rightMargin = ComputeRightMargin(node);
         float width       = 2.0f*WD_EditorConfig.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childRect.width);
