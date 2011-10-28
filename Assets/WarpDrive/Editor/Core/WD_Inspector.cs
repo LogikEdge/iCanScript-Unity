@@ -126,11 +126,10 @@ public class WD_Inspector : Editor {
 	// ----------------------------------------------------------------------
     void InspectNode(WD_EditorObject node) {
         // Show Iconic image configuration.
-        Texture2D iconicTexture= null;
-        if(node.Icon != null && node.Icon != "") iconicTexture= WD_Graphics.GetCachedIcon(node.Icon, Storage);
+        Texture2D iconicTexture= WD_Graphics.GetCachedIconFromGUID(node.IconGUID);
         Object newTexture= EditorGUILayout.ObjectField("Iconic Texture", iconicTexture, typeof(Texture2D), false) as Texture2D;
         if(newTexture != iconicTexture) {
-            node.Icon= newTexture != null ? AssetDatabase.GetAssetPath(newTexture) : null;
+            node.IconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
         }
         // Display specific node type information.
         switch(node.ObjectType) {

@@ -137,6 +137,10 @@ public class WD_Graphics {
     }
 
     // ----------------------------------------------------------------------
+    public static Texture2D GetCachedTextureFromGUID(string guid) {
+        return guid != null ? GetCachedTexture(AssetDatabase.GUIDToAssetPath(guid)) : null;
+    }
+    // ----------------------------------------------------------------------
     public static Texture2D GetCachedTexture(string fileName) {
         Texture2D texture= null;
         if(cachedTextures.ContainsKey(fileName)) {
@@ -162,6 +166,10 @@ public class WD_Graphics {
         return true;            
     }
     // ----------------------------------------------------------------------
+    public static Texture2D GetCachedIconFromGUID(string guid) {
+        return GetCachedTextureFromGUID(guid);
+    }
+    // ----------------------------------------------------------------------
     public static Texture2D GetCachedIcon(string fileName, WD_IStorage storage) {
         // Try with the WarpDrice Icon prefix.
         string iconPath= WD_UserPreferences.UserIcons.WarpDriveIconPath+"/"+fileName;
@@ -178,6 +186,13 @@ public class WD_Graphics {
             }
         }
         return icon;
+    }
+    // ----------------------------------------------------------------------
+    public static string IconPathToGUID(string fileName, WD_IStorage storage) {
+        Texture2D icon= GetCachedIcon(fileName, storage);
+        if(icon == null) return null;
+        string path= AssetDatabase.GetAssetPath(icon);
+        return AssetDatabase.AssetPathToGUID(path);
     }
     // ----------------------------------------------------------------------
     public static bool GetCachedIcon(string fileName, out Texture2D icon, ref bool errorSeen, WD_IStorage storage) {
@@ -405,10 +420,9 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     public static Texture2D GetMaximizeIcon(WD_EditorObject node, NodeStyle nodeStyle, WD_IStorage storage) {
         Texture2D icon= null;
-        if(storage.Preferences.Icons.EnableMinimizedIcons && node.Icon != null && node.Icon != "") {
-            icon= GetCachedIcon(node.Icon, storage);
+        if(storage.Preferences.Icons.EnableMinimizedIcons && node.IconGUID != null) {
+            icon= GetCachedIconFromGUID(node.IconGUID);
             if(icon != null) return icon;
-            Debug.LogWarning("Unable to load Icon: "+node.Icon);
         }
         if(nodeStyle != null) {
             icon= nodeStyle.maximizeIcon;            

@@ -221,7 +221,8 @@ public class WD_IStorage {
         // Calcute the desired screen position of the new object.
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
-        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos, desc.Icon);
+        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos);
+        this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
         // Create field ports
         for(int i= 0; i < desc.FieldNames.Length; ++i) {
             WD_ObjectTypeEnum portType= desc.FieldInOuts[i] ? WD_ObjectTypeEnum.OutFieldPort : WD_ObjectTypeEnum.InFieldPort;
@@ -241,7 +242,8 @@ public class WD_IStorage {
             int methodId= -1;
             if(nbOfMethodsToShow > 1) {
                 methodId= GetNextAvailableId();
-                this[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0), desc.MethodIcons[i]);
+                this[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0));
+                this[methodId].IconGUID= WD_Graphics.IconPathToGUID(desc.MethodIcons[i], this);
             }
             for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
                 WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutStaticModulePort : WD_ObjectTypeEnum.InStaticModulePort;
@@ -275,7 +277,8 @@ public class WD_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos, desc.Icon);
+        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
+        this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
         // Create input/output ports.
         for(int i= 0; i < desc.ParameterNames.Length; ++i) {
             WD_ObjectTypeEnum portType= desc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
@@ -294,7 +297,8 @@ public class WD_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos, desc.Icon);
+        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos);
+        this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
         // Create input/output ports.
         CreatePort(desc.FromType.Name, id, desc.FromType, WD_ObjectTypeEnum.InFunctionPort);
         CreatePort(desc.ToType.Name,   id, desc.ToType,   WD_ObjectTypeEnum.OutFunctionPort);
