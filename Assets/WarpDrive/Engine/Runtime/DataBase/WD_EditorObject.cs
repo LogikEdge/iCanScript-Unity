@@ -138,8 +138,10 @@ public class WD_EditorObject {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool IsValid { get { return InstanceId != -1; }}
-    public Type RuntimeType { get { return Type.GetType(QualifiedType); }}
+    public bool IsValid         { get { return InstanceId != -1; }}
+    public bool IsParentValid   { get { return ParentId != -1; }}
+    public bool IsSourceValid   { get { return Source != -1; }}
+    public Type RuntimeType     { get { return Type.GetType(QualifiedType); }}
     public string TypeName {
         get {
             int end= QualifiedType.IndexOf(',');

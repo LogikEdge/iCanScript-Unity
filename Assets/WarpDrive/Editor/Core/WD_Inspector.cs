@@ -82,11 +82,13 @@ public class WD_Inspector : Editor {
                 EditorGUI.indentLevel= 1;
                 EditorGUILayout.LabelField("Type", SelectedObject.TypeName);
                 string name= SelectedObject.Name;
+                if(SelectedObject.IsOutStatePort) name= Storage.FindAConnectedPort(SelectedObject).Name;
                 if(name == null || name == "") name= "(empty)";
                 if(SelectedObject.IsNameEditable) {
                     name= EditorGUILayout.TextField("Name", name);
                     if(name != "(empty)" && name != SelectedObject.Name) {
                         SelectedObject.Name= name;
+                        if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).Name= name;
                         Storage.SetDirty(SelectedObject);
                     }                    
                 } else {
@@ -100,8 +102,21 @@ public class WD_Inspector : Editor {
 	}
 
 	// ----------------------------------------------------------------------
-    // Inspects the selected node.
     void InspectNode(WD_EditorObject node) {
+        switch(node.ObjectType) {
+            case WD_ObjectTypeEnum.State:
+                InspectStateNode(node);
+                break;
+            default:
+                InspectDataProcessingNode(node);
+                break;
+        }
+    }
+    
+	// ----------------------------------------------------------------------
+    // Inspects data processing node.
+    void InspectDataProcessingNode(WD_EditorObject node) {
+        // Collect data ports.
         List<WD_EditorObject> inPorts= new List<WD_EditorObject>();
         List<WD_EditorObject> outPorts= new List<WD_EditorObject>();
         Storage.ForEachChild(node,
@@ -133,6 +148,60 @@ public class WD_Inspector : Editor {
         }
     }
 
+	// ----------------------------------------------------------------------
+    // Inspect state node.
+    void InspectStateNode(WD_EditorObject node) {
+        // Collect transitions.
+        List<WD_EditorObject> inPorts= new List<WD_EditorObject>();
+        List<WD_EditorObject> outPorts= new List<WD_EditorObject>();
+        Storage.ForEachChild(node,
+            child=> {
+                if(child.IsInStatePort)  inPorts.Add(child);
+                if(child.IsOutStatePort) outPorts.Add(child);
+            }
+        );
+        
+        // Show outbound transitions.
+        if(outPorts.Count > 0) {
+            EditorGUI.indentLevel= 1;
+            showOutputs= EditorGUILayout.Foldout(showOutputs, "Outbound Transitions");
+            if(showOutputs) {
+                EditorGUI.indentLevel= 2;
+                foreach(var port in outPorts) {
+                    WD_EditorObject inPort= Storage.FindAConnectedPort(port);
+                    string transitionName= inPort.Name;
+                    transitionName= EditorGUILayout.TextField("Name", transitionName);
+                    if(transitionName != inPort.Name) {
+                        inPort.Name= transitionName;
+                        port.Name= transitionName;
+                        Storage.SetDirty(inPort);
+                    }
+                    WD_EditorObject toState= Storage.GetParent(inPort);
+                    EditorGUILayout.LabelField("State", toState.NameOrTypeName);                    
+                }
+            }
+        }
+        // Show inbound transitions.
+        if(inPorts.Count > 0) {
+            EditorGUI.indentLevel= 1;
+            showInputs= EditorGUILayout.Foldout(showInputs, "Inbound Transitions");
+            if(showInputs) {
+                EditorGUI.indentLevel= 2;
+                foreach(var port in inPorts) {
+                    WD_EditorObject outPort= Storage.GetSource(port);
+                    string transitionName= port.Name;
+                    transitionName= EditorGUILayout.TextField("Name", transitionName);
+                    if(transitionName != port.Name) {
+                        port.Name= transitionName;
+                        outPort.Name= transitionName;
+                        Storage.SetDirty(port);
+                    }
+                    EditorGUILayout.LabelField("State", Storage.GetParent(outPort).NameOrTypeName);                    
+                }
+            }
+        }
+    }
+    
 	// ----------------------------------------------------------------------
     // Inspects the selected port.
     void InspectPort(WD_EditorObject port) {
