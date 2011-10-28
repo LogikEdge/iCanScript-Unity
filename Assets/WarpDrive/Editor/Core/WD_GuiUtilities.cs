@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,61 +8,50 @@ using System.Collections.Generic;
 public class WD_GuiUtilities {
     public static void OnInspectorGUI(WD_EditorObject port) {
         string niceName= port.Name == null || port.Name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(port.Name);
+        Type dataType= WD_Types.GetDataType(port.RuntimeType);
 
-//        if(port.IsVirtual) {
-//            if(port.AsVirtual.GetProducerPort() == null) {
-//                EditorGUILayout.TextField(niceName, "(not connected)");
-//                return;
-//            }
-//            port= port.AsVirtual.GetProducerPort();
-//        }
-//        WD_Node parent= port.Parent as WD_Node;
-//        FieldInfo fieldInfo= parent.GetType().GetField(port.name);
-//        System.Type fieldType= fieldInfo.FieldType;
-//        System.Object obj= fieldInfo.GetValue(parent);            
-//        
-//        // Display primitives.
-//        if(fieldType == typeof(bool)) {
-//            bool newValue= EditorGUILayout.Toggle(niceName, (bool)obj);
+        // Display primitives.
+        if(dataType == typeof(bool)) {
+            bool newValue= EditorGUILayout.Toggle(niceName, default(bool));
 //            fieldInfo.SetValue(parent, newValue);
-//            return;
-//        }
-//        if(fieldType == typeof(int)) {
-//            int newValue= EditorGUILayout.IntField(niceName, (int)obj);
+            return;
+        }
+        if(dataType == typeof(int)) {
+            int newValue= EditorGUILayout.IntField(niceName, default(int));
 //            fieldInfo.SetValue(parent, newValue);
-//            return;
-//        }
-//        if(fieldType == typeof(float)) {
-//            float newValue= EditorGUILayout.FloatField(niceName, (float)obj);
+            return;
+        }
+        if(dataType == typeof(float)) {
+            float newValue= EditorGUILayout.FloatField(niceName, default(float));
 //            fieldInfo.SetValue(parent, newValue);
-//            return;
-//        }
-//        if(fieldType == typeof(string)) {
-//            string newValue= EditorGUILayout.TextField(niceName, (string)obj);
+            return;
+        }
+        if(dataType == typeof(string)) {
+            string newValue= EditorGUILayout.TextField(niceName, default(string));
 //            fieldInfo.SetValue(parent, newValue);
-//            return;
-//        }
-//        if(fieldType == typeof(Vector2)) {
-//            Vector2 newValue= EditorGUILayout.Vector2Field(niceName, (Vector2)obj);
+            return;
+        }
+        if(dataType == typeof(Vector2)) {
+            Vector2 newValue= EditorGUILayout.Vector2Field(niceName, default(Vector2));
 //            fieldInfo.SetValue(parent, newValue);
-//            return;            
-//        }
-//        if(fieldType == typeof(Vector3)) {
-//            Vector3 newValue= EditorGUILayout.Vector3Field(niceName, (Vector3)obj);
+            return;            
+        }
+        if(dataType == typeof(Vector3)) {
+            Vector3 newValue= EditorGUILayout.Vector3Field(niceName, default(Vector3));
 //            fieldInfo.SetValue(parent, newValue);
-//            return;            
-//        }
-//        if(fieldType == typeof(Vector4)) {
-//            Vector4 newValue= EditorGUILayout.Vector4Field(niceName, (Vector4)obj);
+            return;            
+        }
+        if(dataType == typeof(Vector4)) {
+            Vector4 newValue= EditorGUILayout.Vector4Field(niceName, default(Vector4));
 //            fieldInfo.SetValue(parent, newValue);
-//            return;            
-//        }
-//        if(fieldType == typeof(GameObject)) {
-//            GameObject newValue= EditorGUILayout.ObjectField(niceName, obj as GameObject, typeof(GameObject), true) as GameObject;
+            return;            
+        }
+        if(dataType == typeof(GameObject)) {
+            GameObject newValue= EditorGUILayout.ObjectField(niceName, null, typeof(GameObject), true) as GameObject;
 //            fieldInfo.SetValue(parent, newValue);
-//            return;                        
-//        }            
-//
+            return;                        
+        }            
+
 //        // Display array of primitives.
 //        if(fieldType.IsArray) {
 //            System.Type elementType= fieldType.GetElementType();
