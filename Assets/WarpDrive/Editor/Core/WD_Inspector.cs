@@ -170,11 +170,16 @@ public class WD_Inspector : Editor {
                 foreach(var port in outPorts) {
                     WD_EditorObject inPort= Storage.FindAConnectedPort(port);
                     string transitionName= inPort.Name;
-                    transitionName= EditorGUILayout.TextField("Name", transitionName);
-                    if(transitionName != inPort.Name) {
-                        inPort.Name= transitionName;
-                        port.Name= transitionName;
-                        Storage.SetDirty(inPort);
+                    if(SelectedObject.IsNameEditable) {
+                        transitionName= EditorGUILayout.TextField("Name", transitionName);
+                        if(transitionName != inPort.Name) {
+                            inPort.Name= transitionName;
+                            port.Name= transitionName;
+                            Storage.SetDirty(inPort);
+                        }
+                    }
+                    else {
+                        EditorGUILayout.LabelField("Name", transitionName);                        
                     }
                     WD_EditorObject toState= Storage.GetParent(inPort);
                     EditorGUILayout.LabelField("State", toState.NameOrTypeName);                    
@@ -190,6 +195,17 @@ public class WD_Inspector : Editor {
                 foreach(var port in inPorts) {
                     WD_EditorObject outPort= Storage.GetSource(port);
                     string transitionName= port.Name;
+                    if(SelectedObject.IsNameEditable) {
+                        transitionName= EditorGUILayout.TextField("Name", transitionName);
+                        if(transitionName != port.Name) {
+                            port.Name= transitionName;
+                            outPort.Name= transitionName;
+                            Storage.SetDirty(port);
+                        }
+                    }
+                    else {
+                        EditorGUILayout.LabelField("Name", transitionName);                        
+                    }
                     transitionName= EditorGUILayout.TextField("Name", transitionName);
                     if(transitionName != port.Name) {
                         port.Name= transitionName;
