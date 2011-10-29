@@ -311,7 +311,7 @@ public class WD_IStorage {
         WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, "Trigger");
         trigger.IsNameEditable= false;
         WD_EditorObject triggerOutPort= CreatePort("trigger", trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
-//        port.Source= mainOutPort.InstanceId;
+        port.Source= mainOutPort.InstanceId;
         mainOutPort.Source= triggerOutPort.InstanceId;
         return mainModule;
     }
@@ -319,7 +319,7 @@ public class WD_IStorage {
     public WD_EditorObject CreateTransitionExit(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Exit");
         WD_EditorObject mainInPort= CreatePort("", mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InStaticModulePort);
-//        mainInPort.Source= port.InstanceId;
+        mainInPort.Source= port.InstanceId;
         return mainModule;
     }
     // ----------------------------------------------------------------------
@@ -449,6 +449,10 @@ public class WD_IStorage {
             }
         );
         Minimize(conv);
+    }
+    // ----------------------------------------------------------------------
+    public bool IsBridgeConnection(WD_EditorObject p1, WD_EditorObject p2) {
+        return (p1.IsDataPort && p2.IsStatePort) || (p1.IsStatePort && p2.IsDataPort);
     }
     // ----------------------------------------------------------------------
     public void DisconnectPort(WD_EditorObject port) {
@@ -1139,6 +1143,9 @@ public class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public void UpdatePortEdges(WD_EditorObject p1, WD_EditorObject p2) {
+        // Don't update port edges for a transition bridge.  Leave the update
+        // to the corresponding data connection & transition connection.
+        if(IsBridgeConnection(p1,p2)) return;
         WD_EditorObject.EdgeEnum p1Edge= p1.Edge;
         WD_EditorObject.EdgeEnum p2Edge= p2.Edge;
         UpdatePortEdgesInternal(p1, p2);

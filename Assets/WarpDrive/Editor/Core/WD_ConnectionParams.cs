@@ -61,7 +61,7 @@ public class WD_ConnectionParams {
         // Inverse direction for connection between nested nodes.
         WD_EditorObject portParent= storage.GetParent(port);
         WD_EditorObject toParent= storage.GetParent(to);
-        if(!port.IsInStatePort && storage.IsChildOf(toParent, portParent)) {
+        if(storage.IsChildOf(toParent, portParent) && (!port.IsInStatePort || (port.IsInStatePort && storage.IsBridgeConnection(port, to)))) {
             direction= -direction;
         }
         return direction;
