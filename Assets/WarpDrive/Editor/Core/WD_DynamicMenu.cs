@@ -44,10 +44,11 @@ public class WD_DynamicMenu {
     const string OnUpdateStr= "OnUpdate";
     const string OnExitStr= "OnExit";
     const string PublishPortStr= "Publish on Module";
-    const string AddEnablePortStr= "Add Enable Port";
-    const string RemoveEnablePortStr= "Remove Enable Port";
+    const string EnablePortStr= "Enable Port";
     const string TransitionEntryStr= "Transition Entry";
     const string TransitionExitStr= "Transition Exit";
+    const string TransitionEntryActionStr= "Entry Action";
+    const string TransitionEntryDataTransportStr= "Data Transport";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -103,10 +104,22 @@ public class WD_DynamicMenu {
     void ModuleMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         string[] menu= new string[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            menu= new string[3];
+            bool hasEnablePort= storage.HasEnablePort(selectedObject);
+            menu= new string[2+(!hasEnablePort?1:0)];
             menu[0]= ModuleStr;
             menu[1]= StateChartStr; 
-            menu[2]= storage.HasEnablePort(selectedObject) ? RemoveEnablePortStr : AddEnablePortStr;
+            if(!hasEnablePort) menu[2]= EnablePortStr;
+        }
+        // Transition entry Sub-components.
+        if(storage.IsTransitionEntryModule(selectedObject)) {
+            WD_EditorObject entryAction= storage.GetActionModuleFromTransitionEntryModule(selectedObject);
+            WD_EditorObject dataCollector= storage.GetDataCollectorModuleFromTransitionEntryModule(selectedObject);
+            if(entryAction == null) {
+                
+            }
+            if(dataCollector == null) {
+                
+            }
         }
         // Fold/Expand menu items
         string[] tmp= null;
@@ -266,7 +279,7 @@ public class WD_DynamicMenu {
             }
         }
         // Allow to delete a port if its parent is a module.
-        if(selectedObject.IsStatePort || selectedObject.IsDynamicModulePort) {
+        if(selectedObject.IsStatePort || selectedObject.IsDynamicModulePort || selectedObject.IsEnablePort) {
             int i= menu.Length;
             if(i == 0) {
                 menu= new string[1];
@@ -316,14 +329,9 @@ public class WD_DynamicMenu {
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 DestroyObject(selectedObject, storage); break;
-            case AddEnablePortStr: {
+            case EnablePortStr: {
                 WD_EditorObject port= storage.CreatePort("enable", selectedObject.InstanceId, typeof(bool), WD_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
-                break;
-            }
-            case RemoveEnablePortStr: {
-                WD_EditorObject enablePort= storage.GetEnablePort(selectedObject);
-                if(enablePort != null) DestroyObject(enablePort, storage);
                 break;
             }
             case PublishPortStr:

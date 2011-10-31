@@ -1,7 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
-public partial class WD_IStorage {
+public partial class WD_IStorage {    
+    // ======================================================================
+    // Constants
+    // ----------------------------------------------------------------------
+    const string EnablePortStr= "enable";
+    
+    // ======================================================================
+    // Creation
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateEnablePort(int parentId) {
+        WD_EditorObject enablePort= CreatePort(EnablePortStr, parentId, typeof(bool), WD_ObjectTypeEnum.EnablePort);
+        enablePort.IsNameEditable= false;
+        return enablePort;
+    }
+    
     // ======================================================================
     // Module helpers
     // ----------------------------------------------------------------------

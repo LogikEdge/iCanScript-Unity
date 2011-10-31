@@ -5,17 +5,23 @@ public partial class WD_IStorage {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
-    const string TriggerStr= "trigger";
+    const string TransitionTriggerModuleStr= "Trigger";
+    const string TransitionEntryActionModuleStr= "Action";
+    const string TransitionDataCollectorModuleStr= "Data Collector";
+    const string TransitionTriggerPortStr= "trigger";
     
     // ======================================================================
     // Creation methods
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateTransitionEntry(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry");
-        WD_EditorObject mainOutPort= CreatePort(TriggerStr, mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
-        WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, TriggerStr);
+        WD_EditorObject mainOutPort= CreatePort(TransitionTriggerPortStr, mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
+        WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, TransitionTriggerModuleStr);
+        WD_EditorObject triggerOutPort= CreatePort(TransitionTriggerPortStr, trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
+        mainModule.IsNameEditable= false;
+        mainOutPort.IsNameEditable= false;
         trigger.IsNameEditable= false;
-        WD_EditorObject triggerOutPort= CreatePort(TriggerStr, trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
+        triggerOutPort.IsNameEditable= false;
         port.Source= mainOutPort.InstanceId;
         mainOutPort.Source= triggerOutPort.InstanceId;
         return mainModule;
@@ -23,11 +29,25 @@ public partial class WD_IStorage {
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateTransitionExit(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Exit");
-        WD_EditorObject mainInPort= CreatePort("", mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InStaticModulePort);
+        mainModule.IsNameEditable= false;
+        WD_EditorObject mainInPort= CreatePort("(unused)", mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InStaticModulePort);
+        mainInPort.IsNameEditable= false;
         mainInPort.Source= port.InstanceId;
         return mainModule;
     }
-
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateTransitionEntryAction(WD_EditorObject entryModule) {
+        if(!IsTransitionEntryModule(entryModule)) {
+            Debug.LogError("Transition Entry Action can only be added to a transition entry module");
+        }
+        WD_EditorObject entryAction= CreateModule(entryModule.InstanceId, Vector2.zero, TransitionEntryActionModuleStr);
+        entryAction.IsNameEditable= false;
+        WD_EditorObject enablePort= CreateEnablePort(entryAction.InstanceId);
+        WD_EditorObject triggerPort= GetTriggerPortFromTransitionEntryModule(entryAction);
+        enablePort.Source= triggerPort.Source;
+        return entryAction;
+    }
+    
     // ======================================================================
     // Transition helpers.
     // ----------------------------------------------------------------------
@@ -37,7 +57,7 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public bool IsTransitionTriggerModule(WD_EditorObject obj) {
-        if(obj == null || !obj.IsModule || obj.Name != TriggerStr) return false;
+        if(obj == null || !obj.IsModule || obj.Name != TransitionTriggerModuleStr) return false;
         return IsTransitionEntryModule(GetParent(obj));
     }
     // ----------------------------------------------------------------------
@@ -106,11 +126,31 @@ public partial class WD_IStorage {
         WD_EditorObject triggerPort= null;
         ForEachChildPort(entryModule,
             port=> {
-                if(port.IsOutStaticModulePort && port.RuntimeType == typeof(bool) && port.Name == TriggerStr) {                
+                if(port.IsOutStaticModulePort && port.RuntimeType == typeof(bool) && port.Name == TransitionTriggerPortStr) {                
                     triggerPort= port;
+                    return true;
                 }
+                return false;
             }
         );        
         return triggerPort;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetTriggerModuleFromTransitionEntryModule(WD_EditorObject entryModule) {
+        WD_EditorObject module= null;
+        ForEachChild(entryModule, m=> { if(m.IsModule && m.Name == TransitionTriggerModuleStr) { module= m; return true; } return false; });
+        return module;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetActionModuleFromTransitionEntryModule(WD_EditorObject entryModule) {
+        WD_EditorObject module= null;
+        ForEachChild(entryModule, m=> { if(m.IsModule && m.Name == TransitionEntryActionModuleStr) { module= m; return true; } return false; });
+        return module;        
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetDataCollectorModuleFromTransitionEntryModule(WD_EditorObject entryModule) {
+        WD_EditorObject module= null;
+        ForEachChild(entryModule, m=> { if(m.IsModule && m.Name == TransitionDataCollectorModuleStr) { module= m; return true; } return false; });
+        return module;
     }
 }
