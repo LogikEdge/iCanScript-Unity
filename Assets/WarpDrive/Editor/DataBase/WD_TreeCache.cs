@@ -125,12 +125,30 @@ public class WD_TreeCache {
             if(IsValid(id) && TreeCache[id].ParentId == -1) fnc(id);
         }
     }
+    public bool ForEachChild(Func<int,bool> fnc) {
+        for(int id= 0; id < TreeCache.Count; ++id) {
+            if(IsValid(id) && TreeCache[id].ParentId == -1) {
+                if(fnc(id)) return true;
+            }
+        }
+        return false;
+    }
     public void ForEachChild(int id, Action<int> fnc) {
         if(IsInvalid(id)) return;
         TreeNode nd= TreeCache[id];
         foreach(var child in nd.Children) {
             if(TreeCache[id].IsValid) fnc(child);
         }
+    }
+    public bool ForEachChild(int id, Func<int,bool> fnc) {
+        if(IsInvalid(id)) return false;
+        TreeNode nd= TreeCache[id];
+        foreach(var child in nd.Children) {
+            if(TreeCache[id].IsValid) {
+                if(fnc(child)) return true;
+            }
+        }
+        return false;
     }
     // ----------------------------------------------------------------------
     public void ForEachRecursiveDepthFirst(Action<int> fnc) {

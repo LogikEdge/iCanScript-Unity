@@ -290,58 +290,62 @@ public class WD_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     void EndDrag() {
-        switch(DragType) {
-            case DragTypeEnum.None: break;
-            case DragTypeEnum.NodeDrag: break;
-            case DragTypeEnum.PortDrag:
-                WD_EditorObject port= DragObject;
-                port.IsBeingDragged= false;
-                // Verify for a new connection.
-                if(!VerifyNewConnection(port)) {
-                    // Verify for disconnection.
-                    Storage.SetDirty(port);
-                    if(!Storage.IsNearParent(port)) {
-                        if(port.IsDataPort) {
-                            port.LocalPosition.x= DragStartPosition.x;
-                            port.LocalPosition.y= DragStartPosition.y;
-                            Storage.DisconnectPort(port);                        
-                            break;
-                        }
-                        if(port.IsStatePort) {
-                            if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
-                                Storage.DestroyInstance(port);
-                            } else {
+        try {
+            switch(DragType) {
+                case DragTypeEnum.None: break;
+                case DragTypeEnum.NodeDrag: break;
+                case DragTypeEnum.PortDrag:
+                    WD_EditorObject port= DragObject;
+                    port.IsBeingDragged= false;
+                    // Verify for a new connection.
+                    if(!VerifyNewConnection(port)) {
+                        // Verify for disconnection.
+                        Storage.SetDirty(port);
+                        if(!Storage.IsNearParent(port)) {
+                            if(port.IsDataPort) {
                                 port.LocalPosition.x= DragStartPosition.x;
-                                port.LocalPosition.y= DragStartPosition.y;                                
+                                port.LocalPosition.y= DragStartPosition.y;
+                                Storage.DisconnectPort(port);                        
+                                break;
                             }
-                            break;
-                        }
-                    }                    
-                }
-                break;
-            case DragTypeEnum.TransitionCreation:
-                WD_EditorObject parent= GetNodeAtMousePosition();
-                if(parent != null && parent.IsState) {
-                    WD_EditorObject inStatePort= Storage.CreatePort("[false]", parent.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
-                    Rect portRect= Storage.GetPosition(DragObject);
-                    Storage.SetInitialPosition(inStatePort, new Vector2(portRect.x, portRect.y));
-                    WD_EditorObject outStatePort= Storage[DragObject.Source];
-                    inStatePort.Source= outStatePort.InstanceId;
-                    Storage.DestroyInstance(DragObject);
-                    inStatePort.IsBeingDragged= false;
-                    outStatePort.IsBeingDragged= false;
-                    Storage.UpdatePortEdges(inStatePort, outStatePort);
-                } else {
-                    Storage.DestroyInstance(DragObject.Source);
-                    Storage.DestroyInstance(DragObject);
-                }
-                break;
+                            if(port.IsStatePort) {
+                                if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
+                                    Storage.DestroyInstance(port);
+                                } else {
+                                    port.LocalPosition.x= DragStartPosition.x;
+                                    port.LocalPosition.y= DragStartPosition.y;                                
+                                }
+                                break;
+                            }
+                        }                    
+                    }
+                    break;
+                case DragTypeEnum.TransitionCreation:
+                    WD_EditorObject parent= GetNodeAtMousePosition();
+                    if(parent != null && parent.IsState) {
+                        WD_EditorObject inStatePort= Storage.CreatePort("[false]", parent.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
+                        Rect portRect= Storage.GetPosition(DragObject);
+                        Storage.SetInitialPosition(inStatePort, new Vector2(portRect.x, portRect.y));
+                        WD_EditorObject outStatePort= Storage[DragObject.Source];
+                        inStatePort.Source= outStatePort.InstanceId;
+                        Storage.DestroyInstance(DragObject);
+                        inStatePort.IsBeingDragged= false;
+                        outStatePort.IsBeingDragged= false;
+                        Storage.UpdatePortEdges(inStatePort, outStatePort);
+                    } else {
+                        Storage.DestroyInstance(DragObject.Source);
+                        Storage.DestroyInstance(DragObject);
+                    }
+                    break;
+            }            
         }
     
-        // Reset dragging state.
-        DragType= DragTypeEnum.None;
-        DragObject= null;
-        IsDragEnabled= true;
+        finally {
+            // Reset dragging state.
+            DragType= DragTypeEnum.None;
+            DragObject= null;
+            IsDragEnabled= true;            
+        }
     }
 #endregion User Interaction
     

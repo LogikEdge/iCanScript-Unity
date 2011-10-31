@@ -14,6 +14,11 @@ public class WD_IStorage {
     int             UndoRedoId= 0;
     
     // ======================================================================
+    // Constants
+    // ----------------------------------------------------------------------
+    const string TriggerStr= "trigger";
+    
+    // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
     public WD_IStorage(WD_Storage storage) {
@@ -44,8 +49,11 @@ public class WD_IStorage {
     public List<WD_EditorObject> EditorObjects { get { return Storage.EditorObjects; }}
     public WD_UserPreferences    Preferences   { get { return Storage.Preferences; }}
     // ----------------------------------------------------------------------
-    public bool IsValid(int id)     { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
-    public bool IsInvalid(int id)   { return !IsValid(id); }
+    public bool IsValid(int id)                     { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
+    public bool IsInvalid(int id)                   { return !IsValid(id); }
+    public bool IsValid(WD_EditorObject obj)        { return IsValid(obj.InstanceId); }
+    public bool IsSourceValid(WD_EditorObject obj)  { return IsValid(obj.Source); }
+    public bool IsParentValid(WD_EditorObject obj)  { return IsValid(obj.ParentId); }
     // ----------------------------------------------------------------------
     public bool IsDirty { get { ProcessUndoRedo(); return myIsDirty; }}
     // ----------------------------------------------------------------------
@@ -307,10 +315,10 @@ public class WD_IStorage {
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateTransitionEntry(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry");
-        WD_EditorObject mainOutPort= CreatePort("trigger", mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
-        WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, "Trigger");
+        WD_EditorObject mainOutPort= CreatePort(TriggerStr, mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
+        WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, TriggerStr);
         trigger.IsNameEditable= false;
-        WD_EditorObject triggerOutPort= CreatePort("trigger", trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
+        WD_EditorObject triggerOutPort= CreatePort(TriggerStr, trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
         port.Source= mainOutPort.InstanceId;
         mainOutPort.Source= triggerOutPort.InstanceId;
         return mainModule;
@@ -354,6 +362,7 @@ public class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(WD_EditorObject eObj) {
+        if(eObj == null) return;
         DestroyInstance(eObj.InstanceId);
     }
     // ----------------------------------------------------------------------
@@ -361,19 +370,31 @@ public class WD_IStorage {
         if(IsInvalid(id)) {
             Debug.LogError("Trying the delete a non-existing EditorObject with id= "+id);
         }
-        // Remove all children first
+        // Also destroy transition exit/entry module when removing transitions.
+        WD_EditorObject toDestroy= EditorObjects[id];
+        if(toDestroy.IsStatePort) {
+            WD_EditorObject entryModule= GetTransitionEntryModule(toDestroy);
+            WD_EditorObject exitModule= GetTransitionExitModule(toDestroy);
+            DestroyInstanceInternal(entryModule);            
+            DestroyInstanceInternal(exitModule);
+        }
+        // Disconnect ports linking to this port.
+        ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPort(toDestroy));
+        // Remove all children first.
         while(TreeCache[id].Children.Count != 0) {
             DestroyInstanceInternal(TreeCache[id].Children[0]);
         }
-        // Disconnect ports linking to this port.
-        ExecuteIf(EditorObjects[id], WD.IsPort, _=> DisconnectPort(EditorObjects[id]));
-        // Remove all related objects.
-        if(IsValid(EditorObjects[id].ParentId)) SetDirty(GetParent(EditorObjects[id]));
         TreeCache.DestroyInstance(id);
-        EditorObjects[id].Reset();
+        // Set the parent dirty to force a relayout.
+        if(IsValid(toDestroy.ParentId)) SetDirty(GetParent(toDestroy));
+        toDestroy.Reset();
         myIsDirty= true;
     }
-
+    // ----------------------------------------------------------------------
+    void DestroyInstanceInternal(WD_EditorObject toDestroy) {
+        if(toDestroy == null || IsInvalid(toDestroy.InstanceId)) return;
+        DestroyInstanceInternal(toDestroy.InstanceId);
+    }
 
     // ======================================================================
     // Display Options
@@ -437,7 +458,7 @@ public class WD_IStorage {
         Rect inPos= GetPosition(inPort);
         Rect outPos= GetPosition(outPort);
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
-        int grandParentId= EditorObjects[inPort.ParentId].ParentId;
+        int grandParentId= GetParent(inPort).ParentId;
         WD_EditorObject conv= CreateFunction(grandParentId, convPos, convDesc);
         ForEachChild(conv,
             (child) => {
@@ -449,10 +470,6 @@ public class WD_IStorage {
             }
         );
         Minimize(conv);
-    }
-    // ----------------------------------------------------------------------
-    public bool IsBridgeConnection(WD_EditorObject p1, WD_EditorObject p2) {
-        return (p1.IsDataPort && p2.IsStatePort) || (p1.IsStatePort && p2.IsDataPort);
     }
     // ----------------------------------------------------------------------
     public void DisconnectPort(WD_EditorObject port) {
@@ -477,8 +494,116 @@ public class WD_IStorage {
         return false;
     }
     bool IsPortDisconnected(WD_EditorObject port) { return !IsPortConnected(port); }
+    // ----------------------------------------------------------------------
+    public bool IsBridgeConnection(WD_EditorObject p1, WD_EditorObject p2) {
+        return (p1.IsDataPort && p2.IsStatePort) || (p1.IsStatePort && p2.IsDataPort);
+    }
+    // ----------------------------------------------------------------------
+    public bool IsInBridgeConnection(WD_EditorObject port) {
+        WD_EditorObject otherPort= GetOtherBridgePort(port);
+        return otherPort != null;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetOtherBridgePort(WD_EditorObject port) {
+        if(IsSourceValid(port)) {
+            WD_EditorObject sourcePort= GetSource(port);
+            if(IsBridgeConnection(port, sourcePort)) {
+                return sourcePort;
+            }
+        }
+        WD_EditorObject remotePort= FindAConnectedPort(port);
+        if(remotePort == null) return null;
+        return IsBridgeConnection(port, remotePort) ? remotePort : null;
+    }
+    
 
-
+    // ======================================================================
+    // Transition module helpers.
+    // ----------------------------------------------------------------------
+    public bool IsTransitionEntryModule(WD_EditorObject obj) {
+        if(obj == null || !obj.IsModule) return false;
+        return GetOutStatePortFromTransitionEntryModule(obj) != null;
+    }
+    // ----------------------------------------------------------------------
+    public bool IsTransitionTriggerModule(WD_EditorObject obj) {
+        if(obj == null || !obj.IsModule || obj.Name != TriggerStr) return false;
+        return IsTransitionEntryModule(GetParent(obj));
+    }
+    // ----------------------------------------------------------------------
+    public bool IsTransitionExitModule(WD_EditorObject obj) {
+        if(obj == null || !obj.IsModule) return false;
+        return GetInStatePortFromTransitionExitModule(obj) != null;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetTransitionEntryModule(WD_EditorObject obj) {
+        if(obj == null) return null;
+        if(obj.IsModule) {
+            if(IsTransitionEntryModule(obj)) return obj;
+            if(IsTransitionExitModule(obj)) {
+                WD_EditorObject inStatePort= GetInStatePortFromTransitionExitModule(obj);
+                return GetTransitionEntryModule(inStatePort);
+            }
+            return GetTransitionEntryModule(GetParent(obj));
+        }
+        if(obj.IsInStatePort) return GetTransitionEntryModule(GetSource(obj));
+        if(obj.IsOutStatePort) {
+            WD_EditorObject triggerPort= GetSource(obj);
+            return triggerPort != null ? GetParent(triggerPort) : null;
+        }
+        return GetTransitionEntryModule(GetParent(obj));
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetTransitionExitModule(WD_EditorObject obj) {
+        if(obj == null) return null;
+        if(obj.IsModule) {
+            if(IsTransitionExitModule(obj)) return obj;
+            if(IsTransitionEntryModule(obj)) {
+                WD_EditorObject outStatePort= GetOutStatePortFromTransitionEntryModule(obj);
+                WD_EditorObject inStatePort= FindAConnectedPort(outStatePort);
+                WD_EditorObject exitModulePort= FindAConnectedPort(inStatePort);
+                return exitModulePort != null ? GetParent(exitModulePort) : null;
+            }
+            return GetTransitionExitModule(GetParent(obj));
+        }
+        if(obj.IsOutStatePort) return GetTransitionExitModule(FindAConnectedPort(obj));
+        if(obj.IsInStatePort) {
+            WD_EditorObject exitModulePort= FindAConnectedPort(obj);
+            return exitModulePort != null ? GetParent(exitModulePort) : null;
+        }
+        return GetTransitionExitModule(GetParent(obj));
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetInStatePortFromTransitionExitModule(WD_EditorObject exitModule) {
+        WD_EditorObject inStatePort= null;
+        ForEachChildPort(exitModule,
+            p=> {
+                if(p.IsInModulePort) {
+                    WD_EditorObject statePort= GetOtherBridgePort(p);
+                    if(statePort != null) inStatePort= statePort;
+                }
+            }
+        );
+        return inStatePort;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetOutStatePortFromTransitionEntryModule(WD_EditorObject entryModule) {
+        WD_EditorObject outStatePort= GetOtherBridgePort(GetTriggerPortFromTransitionEntryModule(entryModule));
+        return (outStatePort != null && outStatePort.IsOutStatePort) ? outStatePort : null;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetTriggerPortFromTransitionEntryModule(WD_EditorObject entryModule) {
+        WD_EditorObject triggerPort= null;
+        ForEachChildPort(entryModule,
+            port=> {
+                if(port.IsOutStaticModulePort && port.RuntimeType == typeof(bool) && port.Name == TriggerStr) {                
+                    triggerPort= port;
+                }
+            }
+        );        
+        return triggerPort;
+    }
+    
+    
     // ======================================================================
     // Object Picking
     // ----------------------------------------------------------------------
@@ -995,6 +1120,10 @@ public class WD_IStorage {
         ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort, action));
     }
     // ----------------------------------------------------------------------
+    public bool ForEachChildPort(WD_EditorObject node, Func<WD_EditorObject,bool> fnc) {
+        return ForEachChild(node, child=> child.IsPort ? fnc(child) : false);
+    }
+    // ----------------------------------------------------------------------
     public void ForEachTopPort(WD_EditorObject node, System.Action<WD_EditorObject> fnc) {
         ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnTopEdge, fnc));
     }
@@ -1448,6 +1577,15 @@ public class WD_IStorage {
         }
         else {
             TreeCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
+        }
+    }
+    public bool ForEachChild(WD_EditorObject parent, Func<WD_EditorObject,bool> fnc) {
+        ProcessUndoRedo();
+        if(parent == null) {
+            return TreeCache.ForEachChild(id=> fnc(EditorObjects[id]));            
+        }
+        else {
+            return TreeCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
         }
     }
     public void ForEach(Action<WD_EditorObject> fnc) {

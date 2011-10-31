@@ -38,5 +38,4 @@ public static partial class Prelude {
     // ----------------------------------------------------------------------
     // Currying support.
     public static Func<A[],B[]>         map<A,B>(Func<A,B> f) { return function<Func<A,B>,A[],B[]>(map,f); }
-    public static Func<List<A>,List<B>> map<A,B>(Func<A,B> f) { return function<Func<A,B>,List<A>,List<B>>(map,f); }
 }

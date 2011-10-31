@@ -33,7 +33,7 @@ public static partial class Prelude {
     public static Maybe<R> executeIfNot<T1,T2,R>(Func<R> fnc) {
         return notEqual<T1,T2>() ? new Maybe<R>(new Just<R>(fnc())) : new Maybe<R>(new Nothing());
     }
-    public static R executeIf<T1,T2,R>(System.Func<R> fnc, R defaultValue) {
+    public static R executeIfNot<T1,T2,R>(System.Func<R> fnc, R defaultValue) {
         return notEqual<T1,T2>() ? fnc() : defaultValue;
     }
 
