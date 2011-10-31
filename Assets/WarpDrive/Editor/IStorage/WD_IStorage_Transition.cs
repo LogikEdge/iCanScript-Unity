@@ -37,13 +37,19 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateTransitionEntryAction(WD_EditorObject entryModule) {
+        // Validate input parameters.
         if(!IsTransitionEntryModule(entryModule)) {
             Debug.LogError("Transition Entry Action can only be added to a transition entry module");
         }
-        WD_EditorObject entryAction= CreateModule(entryModule.InstanceId, Vector2.zero, TransitionEntryActionModuleStr);
+        // Position the action node just below the trigger node.
+        WD_EditorObject triggerModule= GetTriggerModuleFromTransitionEntryModule(entryModule);
+        Rect triggerPos= GetPosition(triggerModule);
+        Vector2 initialPos= Math3D.ToVector2(triggerPos)+new Vector2(triggerPos.width, triggerPos.height);
+        // Create the action node.
+        WD_EditorObject entryAction= CreateModule(entryModule.InstanceId, initialPos, TransitionEntryActionModuleStr);
         entryAction.IsNameEditable= false;
         WD_EditorObject enablePort= CreateEnablePort(entryAction.InstanceId);
-        WD_EditorObject triggerPort= GetTriggerPortFromTransitionEntryModule(entryAction);
+        WD_EditorObject triggerPort= GetTriggerPortFromTransitionEntryModule(entryModule);
         enablePort.Source= triggerPort.Source;
         return entryAction;
     }
@@ -118,7 +124,9 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject GetOutStatePortFromTransitionEntryModule(WD_EditorObject entryModule) {
-        WD_EditorObject outStatePort= GetOtherBridgePort(GetTriggerPortFromTransitionEntryModule(entryModule));
+        WD_EditorObject triggerPort= GetTriggerPortFromTransitionEntryModule(entryModule);
+        if(triggerPort == null) return null;
+        WD_EditorObject outStatePort= GetOtherBridgePort(triggerPort);
         return (outStatePort != null && outStatePort.IsOutStatePort) ? outStatePort : null;
     }
     // ----------------------------------------------------------------------

@@ -48,7 +48,7 @@ public class WD_DynamicMenu {
     const string TransitionEntryStr= "Transition Entry";
     const string TransitionExitStr= "Transition Exit";
     const string TransitionEntryActionStr= "Entry Action";
-    const string TransitionEntryDataTransportStr= "Data Transport";
+    const string TransitionEntryDataCollectorStr= "Data Collector";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -111,18 +111,24 @@ public class WD_DynamicMenu {
             if(!hasEnablePort) menu[2]= EnablePortStr;
         }
         // Transition entry Sub-components.
+        string[] tmp= null;
         if(storage.IsTransitionEntryModule(selectedObject)) {
             WD_EditorObject entryAction= storage.GetActionModuleFromTransitionEntryModule(selectedObject);
             WD_EditorObject dataCollector= storage.GetDataCollectorModuleFromTransitionEntryModule(selectedObject);
-            if(entryAction == null) {
-                
-            }
-            if(dataCollector == null) {
-                
+            if(entryAction == null || dataCollector == null) {
+                tmp= new string[menu.Length+(entryAction==null?1:0)+(dataCollector==null?1:0)];
+                menu.CopyTo(tmp, 0);
+                int idx= menu.Length;
+                if(entryAction == null) {
+                    tmp[idx++]= TransitionEntryActionStr;
+                }
+                if(dataCollector == null) {
+                    tmp[idx]= TransitionEntryDataCollectorStr;
+                }
+                menu= tmp;            
             }
         }
         // Fold/Expand menu items
-        string[] tmp= null;
         if(!storage.IsMinimized(selectedObject)) {
             tmp= new string[menu.Length+2];
             menu.CopyTo(tmp, 0);
@@ -334,7 +340,7 @@ public class WD_DynamicMenu {
                 port.IsNameEditable= false;
                 break;
             }
-            case PublishPortStr:
+            case PublishPortStr: {
                 WD_EditorObject parent= storage.GetParent(selectedObject);
                 WD_EditorObject grandParent= storage.GetParent(parent);
                 int grandParentId= grandParent.InstanceId;
@@ -348,8 +354,16 @@ public class WD_DynamicMenu {
                     port.LocalPosition= new Rect(grandParent.LocalPosition.width, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
                 }
                 grandParent.IsDirty= true;
+                break;                
+            }
+            case TransitionEntryActionStr: {
+                storage.CreateTransitionEntryAction(selectedObject);
                 break;
-            default:
+            }
+            case TransitionEntryDataCollectorStr: {
+                break;
+            }
+            default: {
                 string company= GetCompanyFromMenuItem(context.Command);
                 string package= GetPackageFromMenuItem(context.Command);
                 string function= GetFunctionFromMenuItem(context.Command);
@@ -359,7 +373,8 @@ public class WD_DynamicMenu {
                         CreateFunction(context.SelectedObject, context.Storage, desc);                                           
                     }
                 }
-                break;
+                break;                
+            }
         }
     }
     void ShowMenu(string[] menu, Vector2 pos, WD_EditorObject selected, WD_IStorage storage) {
