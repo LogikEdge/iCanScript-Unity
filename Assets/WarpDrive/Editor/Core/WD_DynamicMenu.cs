@@ -44,6 +44,7 @@ public class WD_DynamicMenu {
     const string OnUpdateStr= "OnUpdate";
     const string OnExitStr= "OnExit";
     const string PublishPortStr= "Publish on Module";
+    const string AddEnablePortStr= "Add Enable/Disbale Port";
     const string TransitionEntryStr= "Transition Entry";
     const string TransitionExitStr= "Transition Exit";
     const string SeparatorStr= "";
@@ -104,6 +105,7 @@ public class WD_DynamicMenu {
             menu= new string[2];
             menu[0]= ModuleStr;
             menu[1]= StateChartStr; 
+            
         }
         // Fold/Expand menu items
         string[] tmp= null;

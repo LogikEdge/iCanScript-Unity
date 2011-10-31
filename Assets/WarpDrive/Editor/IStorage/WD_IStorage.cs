@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class WD_IStorage {
+public partial class WD_IStorage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -12,11 +12,6 @@ public class WD_IStorage {
     WD_Storage      Storage   = null;
     WD_TreeCache    TreeCache = null;
     int             UndoRedoId= 0;
-    
-    // ======================================================================
-    // Constants
-    // ----------------------------------------------------------------------
-    const string TriggerStr= "trigger";
     
     // ======================================================================
     // Initialization
@@ -313,24 +308,6 @@ public class WD_IStorage {
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateTransitionEntry(WD_EditorObject port) {
-        WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry");
-        WD_EditorObject mainOutPort= CreatePort(TriggerStr, mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
-        WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, TriggerStr);
-        trigger.IsNameEditable= false;
-        WD_EditorObject triggerOutPort= CreatePort(TriggerStr, trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
-        port.Source= mainOutPort.InstanceId;
-        mainOutPort.Source= triggerOutPort.InstanceId;
-        return mainModule;
-    }
-    // ----------------------------------------------------------------------
-    public WD_EditorObject CreateTransitionExit(WD_EditorObject port) {
-        WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Exit");
-        WD_EditorObject mainInPort= CreatePort("", mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InStaticModulePort);
-        mainInPort.Source= port.InstanceId;
-        return mainModule;
-    }
-    // ----------------------------------------------------------------------
     public WD_EditorObject CreatePort(string name, int parentId, Type valueType, WD_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
         WD_EditorObject port= this[id]= new WD_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
@@ -517,93 +494,6 @@ public class WD_IStorage {
     }
     
 
-    // ======================================================================
-    // Transition module helpers.
-    // ----------------------------------------------------------------------
-    public bool IsTransitionEntryModule(WD_EditorObject obj) {
-        if(obj == null || !obj.IsModule) return false;
-        return GetOutStatePortFromTransitionEntryModule(obj) != null;
-    }
-    // ----------------------------------------------------------------------
-    public bool IsTransitionTriggerModule(WD_EditorObject obj) {
-        if(obj == null || !obj.IsModule || obj.Name != TriggerStr) return false;
-        return IsTransitionEntryModule(GetParent(obj));
-    }
-    // ----------------------------------------------------------------------
-    public bool IsTransitionExitModule(WD_EditorObject obj) {
-        if(obj == null || !obj.IsModule) return false;
-        return GetInStatePortFromTransitionExitModule(obj) != null;
-    }
-    // ----------------------------------------------------------------------
-    public WD_EditorObject GetTransitionEntryModule(WD_EditorObject obj) {
-        if(obj == null) return null;
-        if(obj.IsModule) {
-            if(IsTransitionEntryModule(obj)) return obj;
-            if(IsTransitionExitModule(obj)) {
-                WD_EditorObject inStatePort= GetInStatePortFromTransitionExitModule(obj);
-                return GetTransitionEntryModule(inStatePort);
-            }
-            return GetTransitionEntryModule(GetParent(obj));
-        }
-        if(obj.IsInStatePort) return GetTransitionEntryModule(GetSource(obj));
-        if(obj.IsOutStatePort) {
-            WD_EditorObject triggerPort= GetSource(obj);
-            return triggerPort != null ? GetParent(triggerPort) : null;
-        }
-        return GetTransitionEntryModule(GetParent(obj));
-    }
-    // ----------------------------------------------------------------------
-    public WD_EditorObject GetTransitionExitModule(WD_EditorObject obj) {
-        if(obj == null) return null;
-        if(obj.IsModule) {
-            if(IsTransitionExitModule(obj)) return obj;
-            if(IsTransitionEntryModule(obj)) {
-                WD_EditorObject outStatePort= GetOutStatePortFromTransitionEntryModule(obj);
-                WD_EditorObject inStatePort= FindAConnectedPort(outStatePort);
-                WD_EditorObject exitModulePort= FindAConnectedPort(inStatePort);
-                return exitModulePort != null ? GetParent(exitModulePort) : null;
-            }
-            return GetTransitionExitModule(GetParent(obj));
-        }
-        if(obj.IsOutStatePort) return GetTransitionExitModule(FindAConnectedPort(obj));
-        if(obj.IsInStatePort) {
-            WD_EditorObject exitModulePort= FindAConnectedPort(obj);
-            return exitModulePort != null ? GetParent(exitModulePort) : null;
-        }
-        return GetTransitionExitModule(GetParent(obj));
-    }
-    // ----------------------------------------------------------------------
-    public WD_EditorObject GetInStatePortFromTransitionExitModule(WD_EditorObject exitModule) {
-        WD_EditorObject inStatePort= null;
-        ForEachChildPort(exitModule,
-            p=> {
-                if(p.IsInModulePort) {
-                    WD_EditorObject statePort= GetOtherBridgePort(p);
-                    if(statePort != null) inStatePort= statePort;
-                }
-            }
-        );
-        return inStatePort;
-    }
-    // ----------------------------------------------------------------------
-    public WD_EditorObject GetOutStatePortFromTransitionEntryModule(WD_EditorObject entryModule) {
-        WD_EditorObject outStatePort= GetOtherBridgePort(GetTriggerPortFromTransitionEntryModule(entryModule));
-        return (outStatePort != null && outStatePort.IsOutStatePort) ? outStatePort : null;
-    }
-    // ----------------------------------------------------------------------
-    public WD_EditorObject GetTriggerPortFromTransitionEntryModule(WD_EditorObject entryModule) {
-        WD_EditorObject triggerPort= null;
-        ForEachChildPort(entryModule,
-            port=> {
-                if(port.IsOutStaticModulePort && port.RuntimeType == typeof(bool) && port.Name == TriggerStr) {                
-                    triggerPort= port;
-                }
-            }
-        );        
-        return triggerPort;
-    }
-    
-    
     // ======================================================================
     // Object Picking
     // ----------------------------------------------------------------------
@@ -1476,165 +1366,5 @@ public class WD_IStorage {
         return foundPort;
     }	
 
-
-    // ======================================================================
-    // Editor Object Iteration Utilities
-    // ----------------------------------------------------------------------
-    // Executes the given action if the given object matches the T type.
-    public static void ExecuteIf(WD_EditorObject obj, Func<WD_EditorObject,bool> cond, Action<WD_EditorObject> f) {
-        Prelude.executeIf<WD_EditorObject>(obj,cond,f);
-    }
-    public void ExecuteIf(int id, Func<WD_EditorObject,bool> cond, Action<WD_EditorObject> f) {
-        if(!IsValid(id)) return;
-        ExecuteIf(EditorObjects[id], cond, f);
-    }
-    public void FilterWith(Func<WD_EditorObject,bool> cond, Action<WD_EditorObject> action) {
-        Prelude.filterWith(cond, action, EditorObjects);
-    }
-    public List<WD_EditorObject> Filter(Func<WD_EditorObject,bool> cond) {
-        return Prelude.filter(cond, EditorObjects);
-    }
-    public static void Case(WD_EditorObject obj,
-                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
-                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
-                                                    Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice(obj, c1, f1, c2, f2, defaultFnc);
-    }
-    public static void Case(WD_EditorObject obj, 
-                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
-                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
-                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
-                                                    Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, defaultFnc);
-    }
-    public static void Case(WD_EditorObject obj, 
-                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
-                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
-                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
-                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
-                                                    Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, defaultFnc);
-    }
-    public static void Case(WD_EditorObject obj, 
-                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
-                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
-                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
-                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
-                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
-                                                    Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, defaultFnc);
-    }
-    public static void Case(WD_EditorObject obj, 
-                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
-                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
-                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
-                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
-                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
-                     Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
-                                                    Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, defaultFnc);
-    }
-    public static void Case(WD_EditorObject obj,
-                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
-                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
-                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
-                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
-                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
-                     Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
-                     Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
-                                                    Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, defaultFnc);
-    }
-    public static void Case(WD_EditorObject obj,
-                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
-                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
-                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
-                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
-                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
-                     Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
-                     Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
-                     Func<WD_EditorObject,bool> c8, Action<WD_EditorObject> f8,
-                                                    Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, defaultFnc);
-    }
-    public static void Case(WD_EditorObject obj, 
-                     Func<WD_EditorObject,bool> c1, Action<WD_EditorObject> f1,
-                     Func<WD_EditorObject,bool> c2, Action<WD_EditorObject> f2,
-                     Func<WD_EditorObject,bool> c3, Action<WD_EditorObject> f3,
-                     Func<WD_EditorObject,bool> c4, Action<WD_EditorObject> f4,
-                     Func<WD_EditorObject,bool> c5, Action<WD_EditorObject> f5,
-                     Func<WD_EditorObject,bool> c6, Action<WD_EditorObject> f6,
-                     Func<WD_EditorObject,bool> c7, Action<WD_EditorObject> f7,
-                     Func<WD_EditorObject,bool> c8, Action<WD_EditorObject> f8,
-                     Func<WD_EditorObject,bool> c9, Action<WD_EditorObject> f9,
-                                                    Action<WD_EditorObject> defaultFnc= null) {
-        Prelude.choice(obj, c1, f1, c2, f2, c3, f3, c4, f4, c5, f5, c6, f6, c7, f7, c8, f8, c9, f9, defaultFnc);
-    }
-    public void ForEachChild(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
-        ProcessUndoRedo();
-        if(parent == null) {
-            TreeCache.ForEachChild(id=> fnc(EditorObjects[id]));            
-        }
-        else {
-            TreeCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
-        }
-    }
-    public bool ForEachChild(WD_EditorObject parent, Func<WD_EditorObject,bool> fnc) {
-        ProcessUndoRedo();
-        if(parent == null) {
-            return TreeCache.ForEachChild(id=> fnc(EditorObjects[id]));            
-        }
-        else {
-            return TreeCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
-        }
-    }
-    public void ForEach(Action<WD_EditorObject> fnc) {
-        Prelude.filterWith(WD.IsValid, fnc, EditorObjects);
-    }
-    public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
-        ProcessUndoRedo();
-        ForEachRecursiveDepthLast(parent, fnc);
-    }
-    public void ForEachRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
-        ProcessUndoRedo();
-        if(parent == null) {
-            TreeCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));                                
-        } else {
-            TreeCache.ForEachRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
-        }
-    }
-    public void ForEachRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
-        ProcessUndoRedo();
-        if(parent == null) {
-            TreeCache.ForEachRecursiveDepthFirst(id => fnc(EditorObjects[id]));        
-        } else {
-            TreeCache.ForEachRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
-        }
-    }
-    public void ForEachChildRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
-        ForEachChildRecursiveDepthLast(parent, fnc);
-    }
-    public void ForEachChildRecursiveDepthLast(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
-        ProcessUndoRedo();
-        if(parent == null) {
-            TreeCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));        
-        } else {
-            TreeCache.ForEachChildRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
-        }
-    }
-    public void ForEachChildRecursiveDepthFirst(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
-        ProcessUndoRedo();
-        if(parent == null) {
-            TreeCache.ForEachRecursiveDepthFirst(id=> fnc(EditorObjects[id]));                    
-        } else {
-            TreeCache.ForEachChildRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));        
-        }
-    }
-    // ----------------------------------------------------------------------
-    public bool IsChildOf(WD_EditorObject child, WD_EditorObject parent) {
-        if(IsInvalid(child.ParentId)) return false;
-        if(child.ParentId == parent.InstanceId) return true;
-        return IsChildOf(GetParent(child), parent);
-    }
 
 }
