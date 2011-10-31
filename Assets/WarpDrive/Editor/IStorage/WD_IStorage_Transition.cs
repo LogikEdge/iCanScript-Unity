@@ -50,8 +50,7 @@ public partial class WD_IStorage {
         WD_EditorObject entryAction= CreateModule(entryModule.InstanceId, initialPos, TransitionEntryActionModuleStr);
         entryAction.IsNameEditable= false;
         WD_EditorObject enablePort= CreateEnablePort(entryAction.InstanceId);
-        WD_EditorObject triggerPort= GetTriggerPortFromTransitionEntryModule(entryModule);
-        enablePort.Source= triggerPort.Source;
+        enablePort.Source= GetTriggerPortFromTransitionTriggerModule(triggerModule).InstanceId;
         return entryAction;
     }
     // ----------------------------------------------------------------------
@@ -69,8 +68,7 @@ public partial class WD_IStorage {
         WD_EditorObject dataCollector= CreateModule(entryModule.InstanceId, initialPos, TransitionDataCollectorModuleStr);
         dataCollector.IsNameEditable= false;
         WD_EditorObject enablePort= CreateEnablePort(dataCollector.InstanceId);
-        WD_EditorObject triggerPort= GetTriggerPortFromTransitionEntryModule(entryModule);
-        enablePort.Source= triggerPort.Source;        
+        enablePort.Source= GetTriggerPortFromTransitionTriggerModule(triggerModule).InstanceId;        
         return dataCollector;
     }
     
@@ -180,5 +178,19 @@ public partial class WD_IStorage {
         WD_EditorObject module= null;
         ForEachChild(entryModule, m=> { if(m.IsModule && m.Name == TransitionDataCollectorModuleStr) { module= m; return true; } return false; });
         return module;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetTriggerPortFromTransitionTriggerModule(WD_EditorObject triggerModule) {
+        WD_EditorObject triggerPort= null;
+        ForEachChildPort(triggerModule,
+            port=> {
+                if(port.IsOutStaticModulePort && port.RuntimeType == typeof(bool) && port.Name == TransitionTriggerPortStr) {
+                    triggerPort= port;
+                    return true;
+                }
+                return false;
+            }
+        );
+        return triggerPort;
     }
 }

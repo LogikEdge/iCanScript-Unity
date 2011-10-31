@@ -1149,7 +1149,14 @@ public partial class WD_IStorage {
     // ----------------------------------------------------------------------
     // Returns true if the given point is inside the node coordinates.
     bool IsInside(WD_EditorObject node, Vector2 point) {
-        return GetPosition(node).Contains(point);
+        // Extend the node range to include the ports.
+        float portSize= WD_EditorConfig.PortSize;
+        Rect nodePos= GetPosition(node);
+        nodePos.x-= portSize;
+        nodePos.y-= portSize;
+        nodePos.width+= 2f*portSize;
+        nodePos.height+= 2f*portSize;
+        return nodePos.Contains(point);
     }
 
 
