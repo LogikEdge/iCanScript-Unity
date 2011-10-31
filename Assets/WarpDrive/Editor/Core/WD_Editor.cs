@@ -303,19 +303,21 @@ public class WD_Editor : EditorWindow {
                         Storage.SetDirty(port);
                         if(!Storage.IsNearParent(port)) {
                             if(port.IsDataPort) {
-                                if(port.IsOutputPort) {
-                                    WD_EditorObject newPortParent= GetNodeAtMousePosition();
-                                    if(newPortParent != null && newPortParent.IsModule) {
-                                        Rect portPos= Storage.GetPosition(port);
-                                        Rect modulePos= Storage.GetPosition(newPortParent);
-                                        float portSize2= 2f*WD_EditorConfig.PortSize;
-                                        if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
-                                            WD_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, WD_ObjectTypeEnum.InDynamicModulePort);
-                                            port.LocalPosition.x= DragStartPosition.x;
-                                            port.LocalPosition.y= DragStartPosition.y;
-                                            newPort.Source= port.InstanceId;                               
-                                            break;
-                                        }
+                                WD_EditorObject newPortParent= GetNodeAtMousePosition();
+                                if(newPortParent != null && newPortParent.IsModule) {
+                                    Rect portPos= Storage.GetPosition(port);
+                                    Rect modulePos= Storage.GetPosition(newPortParent);
+                                    float portSize2= 2f*WD_EditorConfig.PortSize;
+                                    if(port.IsOutputPort) {
+                                        if(!Storage.IsChildOf(newPortParent,Storage.GetParent(port))) {
+                                            if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
+                                                WD_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, WD_ObjectTypeEnum.InDynamicModulePort);
+                                                port.LocalPosition.x= DragStartPosition.x;
+                                                port.LocalPosition.y= DragStartPosition.y;
+                                                newPort.Source= port.InstanceId;                               
+                                                break;
+                                            }
+                                        }                                    
                                     }                                    
                                 }
                                 port.LocalPosition.x= DragStartPosition.x;
