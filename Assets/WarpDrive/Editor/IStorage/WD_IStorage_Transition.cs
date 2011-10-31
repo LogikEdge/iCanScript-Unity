@@ -44,7 +44,8 @@ public partial class WD_IStorage {
         // Position the action node just below the trigger node.
         WD_EditorObject triggerModule= GetTriggerModuleFromTransitionEntryModule(entryModule);
         Rect triggerPos= GetPosition(triggerModule);
-        Vector2 initialPos= Math3D.ToVector2(triggerPos)+new Vector2(triggerPos.width, triggerPos.height);
+        float gutter2= 2f*WD_EditorConfig.GutterSize;
+        Vector2 initialPos= Math3D.ToVector2(triggerPos)+new Vector2(triggerPos.width+gutter2, triggerPos.height+gutter2);
         // Create the action node.
         WD_EditorObject entryAction= CreateModule(entryModule.InstanceId, initialPos, TransitionEntryActionModuleStr);
         entryAction.IsNameEditable= false;
@@ -52,6 +53,25 @@ public partial class WD_IStorage {
         WD_EditorObject triggerPort= GetTriggerPortFromTransitionEntryModule(entryModule);
         enablePort.Source= triggerPort.Source;
         return entryAction;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateTransitionDataCollector(WD_EditorObject entryModule) {
+        // Validate input parameters.
+        if(!IsTransitionEntryModule(entryModule)) {
+            Debug.LogError("Transition Entry Action can only be added to a transition entry module");
+        }
+        // Position the action node just below the trigger node.
+        WD_EditorObject triggerModule= GetTriggerModuleFromTransitionEntryModule(entryModule);
+        Rect triggerPos= GetPosition(triggerModule);
+        float gutter2= 2f*WD_EditorConfig.GutterSize;
+        Vector2 initialPos= Math3D.ToVector2(triggerPos)+new Vector2(triggerPos.width+gutter2, 0);        
+        // Create the data collector.
+        WD_EditorObject dataCollector= CreateModule(entryModule.InstanceId, initialPos, TransitionDataCollectorModuleStr);
+        dataCollector.IsNameEditable= false;
+        WD_EditorObject enablePort= CreateEnablePort(dataCollector.InstanceId);
+        WD_EditorObject triggerPort= GetTriggerPortFromTransitionEntryModule(entryModule);
+        enablePort.Source= triggerPort.Source;        
+        return dataCollector;
     }
     
     // ======================================================================

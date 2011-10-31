@@ -102,30 +102,24 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
+        if(storage.IsTransitionEntryModule(selectedObject)) {
+            TransitionEntryModuleMenu(selectedObject, storage);
+            return;
+        }
+        string[] tmp= null;
         string[] menu= new string[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            bool hasEnablePort= storage.HasEnablePort(selectedObject);
-            menu= new string[2+(!hasEnablePort?1:0)];
+            // Base menu items
+            menu= new string[2];
             menu[0]= ModuleStr;
             menu[1]= StateChartStr; 
-            if(!hasEnablePort) menu[2]= EnablePortStr;
-        }
-        // Transition entry Sub-components.
-        string[] tmp= null;
-        if(storage.IsTransitionEntryModule(selectedObject)) {
-            WD_EditorObject entryAction= storage.GetActionModuleFromTransitionEntryModule(selectedObject);
-            WD_EditorObject dataCollector= storage.GetDataCollectorModuleFromTransitionEntryModule(selectedObject);
-            if(entryAction == null || dataCollector == null) {
-                tmp= new string[menu.Length+(entryAction==null?1:0)+(dataCollector==null?1:0)];
+            // Enable port
+            bool hasEnablePort= storage.HasEnablePort(selectedObject);
+            if(!hasEnablePort) {
+                tmp= new string[menu.Length+1];
                 menu.CopyTo(tmp, 0);
-                int idx= menu.Length;
-                if(entryAction == null) {
-                    tmp[idx++]= TransitionEntryActionStr;
-                }
-                if(dataCollector == null) {
-                    tmp[idx]= TransitionEntryDataCollectorStr;
-                }
-                menu= tmp;            
+                tmp[menu.Length]= EnablePortStr;
+                menu= tmp;
             }
         }
         // Fold/Expand menu items
@@ -158,6 +152,49 @@ public class WD_DynamicMenu {
             menu= tmp;
         }
         ShowMenu(menu, selectedObject, storage);
+    }
+	// ----------------------------------------------------------------------
+    void TransitionEntryModuleMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
+        string[] tmp= null;
+        string[] menu= new string[0];
+        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+            // Transition entry Sub-components.
+            WD_EditorObject entryAction= storage.GetActionModuleFromTransitionEntryModule(selectedObject);
+            WD_EditorObject dataCollector= storage.GetDataCollectorModuleFromTransitionEntryModule(selectedObject);
+            if(entryAction == null || dataCollector == null) {
+                tmp= new string[menu.Length+(entryAction==null?1:0)+(dataCollector==null?1:0)];
+                menu.CopyTo(tmp, 0);
+                int idx= menu.Length;
+                if(entryAction == null) {
+                    tmp[idx++]= TransitionEntryActionStr;
+                }
+                if(dataCollector == null) {
+                    tmp[idx]= TransitionEntryDataCollectorStr;
+                }
+                menu= tmp;            
+            }
+        }
+        // Fold/Expand menu items
+        if(!storage.IsMinimized(selectedObject)) {
+            tmp= new string[menu.Length+2];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            if(storage.IsFolded(selectedObject)) {
+                tmp[menu.Length+1]= UnfoldStr;
+            } else {
+                tmp[menu.Length+1]= FoldStr;            
+            }
+            menu= tmp;            
+        }
+        // Delete menu item
+        if(selectedObject.InstanceId != 0) {
+            tmp= new string[menu.Length+2];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            tmp[menu.Length+1]= DeleteStr;
+            menu= tmp;
+        }
+        ShowMenu(menu, selectedObject, storage);        
     }
 	// ----------------------------------------------------------------------
     void StateChartMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
@@ -361,6 +398,7 @@ public class WD_DynamicMenu {
                 break;
             }
             case TransitionEntryDataCollectorStr: {
+                storage.CreateTransitionDataCollector(selectedObject);
                 break;
             }
             default: {
