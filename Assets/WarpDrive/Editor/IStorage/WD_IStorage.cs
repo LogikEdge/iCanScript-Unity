@@ -1361,6 +1361,7 @@ public partial class WD_IStorage {
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearParent(WD_EditorObject port) {
+        if(GetNodeAt(Math3D.ToVector2(GetPosition(port))) != GetParent(port)) return false;
         return GetDistanceFromParent(port) <= WD_EditorConfig.PortSize*2;
     }
 

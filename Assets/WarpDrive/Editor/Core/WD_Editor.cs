@@ -310,8 +310,8 @@ public class WD_Editor : EditorWindow {
                                     Rect modulePos= Storage.GetPosition(newPortParent);
                                     float portSize2= 2f*WD_EditorConfig.PortSize;
                                     if(port.IsOutputPort) {
-                                        if(!Storage.IsChildOf(newPortParent, portParent)) {
-                                            if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
+                                        if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
+                                            if(!Storage.IsChildOf(newPortParent, portParent)) {
                                                 WD_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, WD_ObjectTypeEnum.InDynamicModulePort);
                                                 port.LocalPosition.x= DragStartPosition.x;
                                                 port.LocalPosition.y= DragStartPosition.y;
@@ -319,8 +319,8 @@ public class WD_Editor : EditorWindow {
                                                 break;
                                             }
                                         }
-                                        if(Storage.IsChildOf(portParent, newPortParent)) {
-                                            if(Math3D.IsWithinOrEqual(portPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
+                                        if(Math3D.IsWithinOrEqual(portPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
+                                            if(Storage.IsChildOf(portParent, newPortParent)) {
                                                 WD_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, WD_ObjectTypeEnum.OutDynamicModulePort);
                                                 port.LocalPosition.x= DragStartPosition.x;
                                                 port.LocalPosition.y= DragStartPosition.y;
@@ -330,8 +330,8 @@ public class WD_Editor : EditorWindow {
                                         }                                    
                                     }
                                     if(port.IsInputPort) {
-                                        if(!Storage.IsChildOf(portParent, newPortParent)) {
-                                            if(Math3D.IsWithinOrEqual(portPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
+                                        if(Math3D.IsWithinOrEqual(portPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
+                                            if(!Storage.IsChildOf(portParent, newPortParent)) {
                                                 WD_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, WD_ObjectTypeEnum.OutDynamicModulePort);
                                                 port.LocalPosition.x= DragStartPosition.x;
                                                 port.LocalPosition.y= DragStartPosition.y;
@@ -339,12 +339,16 @@ public class WD_Editor : EditorWindow {
                                                 break;                                                                                                    
                                             }
                                         }
-                                        if(Storage.IsChildOf(portParent, newPortParent)) {
-                                            if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
+                                        if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
+                                            if(Storage.IsChildOf(portParent, newPortParent) || Storage.IsChildOf(newPortParent, portParent)) {
                                                 WD_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, WD_ObjectTypeEnum.InDynamicModulePort);
                                                 port.LocalPosition.x= DragStartPosition.x;
                                                 port.LocalPosition.y= DragStartPosition.y;
-                                                Storage.SetSource(port, newPort);                               
+                                                if(Storage.IsChildOf(portParent, newPortParent)) {
+                                                    Storage.SetSource(port, newPort);
+                                                } else {
+                                                    Storage.SetSource(newPort, port);
+                                                }
                                                 break;
                                             }
                                         }
