@@ -329,13 +329,7 @@ public partial class WD_IStorage {
         ProcessUndoRedo();
         DestroyInstanceInternal(id);
         // Cleanup disconnected module and state ports.
-        ForEach(
-            port=> {
-                if((port.IsStatePort || port.IsDynamicModulePort) && IsPortDisconnected(port)) {
-                    DestroyInstanceInternal(port.InstanceId);
-                }
-            }
-        );
+        CleanupAfterDestroyOrDisconnect();
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(WD_EditorObject eObj) {
@@ -356,7 +350,7 @@ public partial class WD_IStorage {
             DestroyInstanceInternal(exitModule);
         }
         // Disconnect ports linking to this port.
-        ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPort(toDestroy));
+        ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPortInternal(toDestroy));
         // Remove all children first.
         while(TreeCache[id].Children.Count != 0) {
             DestroyInstanceInternal(TreeCache[id].Children[0]);
@@ -372,7 +366,17 @@ public partial class WD_IStorage {
         if(toDestroy == null || IsInvalid(toDestroy.InstanceId)) return;
         DestroyInstanceInternal(toDestroy.InstanceId);
     }
-
+    // ----------------------------------------------------------------------
+    void CleanupAfterDestroyOrDisconnect() {
+        ForEach(
+            port=> {
+                if((port.IsStatePort || port.IsDynamicModulePort) && IsPortDisconnected(port)) {
+                    DestroyInstanceInternal(port.InstanceId);
+                }
+            }
+        );        
+    }
+    
     // ======================================================================
     // Display Options
     // ----------------------------------------------------------------------
@@ -428,7 +432,9 @@ public partial class WD_IStorage {
     // Port Connectivity
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject obj, WD_EditorObject src) {
+        int prevSource= obj.Source;
         obj.Source= src == null ? -1 : src.InstanceId;
+        if(prevSource != obj.Source) CleanupAfterDestroyOrDisconnect();
     }
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject inPort, WD_EditorObject outPort, WD_ConversionDesc convDesc) {
@@ -450,8 +456,13 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public void DisconnectPort(WD_EditorObject port) {
+        DisconnectPortInternal(port);
+        CleanupAfterDestroyOrDisconnect();
+    }
+    // ----------------------------------------------------------------------
+    void DisconnectPortInternal(WD_EditorObject port) {
         SetSource(port, null);
-        Prelude.forEach(p=> SetSource(p, null), FindConnectedPorts(port));
+        Prelude.forEach(p=> SetSource(p, null), FindConnectedPorts(port));        
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject[] FindConnectedPorts(WD_EditorObject port) {
