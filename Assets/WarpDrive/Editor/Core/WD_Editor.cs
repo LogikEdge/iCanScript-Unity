@@ -188,7 +188,7 @@ public class WD_Editor : EditorWindow {
                 }
                 break;
             case WD_Mouse.ButtonStateEnum.DoubleClick:
-                DynamicMenu.Update(SelectedObject, Storage, Mouse.LeftButtonDownPosition);
+                DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition));
                 break;
             case WD_Mouse.ButtonStateEnum.Dragging:
                 ProcessDrag();
@@ -199,7 +199,7 @@ public class WD_Editor : EditorWindow {
         // Process right button state.
         switch(Mouse.RightButtonState) {
             case WD_Mouse.ButtonStateEnum.SingleClick:
-                DynamicMenu.Update(SelectedObject, Storage, Mouse.RightButtonDownPosition);
+                DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.RightButtonDownPosition));
                 break;
         }                    
     }

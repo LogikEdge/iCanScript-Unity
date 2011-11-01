@@ -34,4 +34,8 @@ public class WD_Math3D {
     [WD_Function] public static Vector2 Scale2Vector2(float s1, float s2, Vector2 v) { return s1*s2*v; }
     [WD_Function] public static Vector3 Scale2Vector3(float s1, float s2, Vector3 v) { return s1*s2*v; }
     [WD_Function] public static Vector4 Scale2Vector4(float s1, float s2, Vector4 v) { return s1*s2*v; }
+    
+    [WD_Function] public static float MagnitudeVector2(Vector2 v)   { return v.magnitude; }
+    [WD_Function] public static float MagnitudeVector3(Vector3 v)   { return v.magnitude; }
+    [WD_Function] public static float MagnitudeVector4(Vector4 v)   { return v.magnitude; }
 }

@@ -18,7 +18,8 @@ public class WD_DynamicMenu {
     // ======================================================================
     // Field
     // ----------------------------------------------------------------------
-    Vector2     MenuPosition= Vector2.zero;
+    Vector2 MenuPosition= Vector2.zero;
+    Vector2 ProcessMenuPosition= Vector2.zero;    
     
     // ======================================================================
     // Menu Items
@@ -68,7 +69,8 @@ public class WD_DynamicMenu {
             Reset();
             return;
         }
-
+        ProcessMenuPosition= MenuPosition;
+        
         // Process the menu state.
         switch(selectedObject.ObjectType) {
             case WD_ObjectTypeEnum.Behaviour:  BehaviourMenu(selectedObject, storage); break;
@@ -432,7 +434,7 @@ public class WD_DynamicMenu {
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 DestroyObject(selectedObject, storage); break;
             case EnablePortStr: {
-                WD_EditorObject port= storage.CreatePort("enable", selectedObject.InstanceId, typeof(bool), WD_ObjectTypeEnum.EnablePort);
+                WD_EditorObject port= storage.CreatePort(WD_EditorStrings.EnablePort, selectedObject.InstanceId, typeof(bool), WD_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
                 break;
             }
@@ -521,23 +523,24 @@ public class WD_DynamicMenu {
     // Creation Utilities
 	// ----------------------------------------------------------------------
     WD_EditorObject CreateModule(WD_EditorObject parent, WD_IStorage storage, string name= "", bool nameEditable= true) {
-        WD_EditorObject module= storage.CreateModule(parent.InstanceId, MenuPosition, name);
+        WD_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, name);
         module.IsNameEditable= nameEditable;
         return module;
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject CreateStateChart(WD_EditorObject parent, WD_IStorage storage, string name= "", bool nameEditable= true) {
-        WD_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, MenuPosition, name);
+        WD_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, ProcessMenuPosition, name);
         stateChart.IsNameEditable= nameEditable;
         return stateChart;
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject CreateState(WD_EditorObject parent, WD_IStorage storage, string name= "") {
-        return storage.CreateState(parent.InstanceId, MenuPosition, name);
+        return storage.CreateState(parent.InstanceId, ProcessMenuPosition, name);
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_BaseDesc desc) {
-        return storage.CreateFunction(parent.InstanceId, MenuPosition, desc);
+        WD_EditorObject function= storage.CreateFunction(parent.InstanceId, ProcessMenuPosition, desc);
+        return function;
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject CreateTransitionEntry(WD_EditorObject port, WD_IStorage storage) {

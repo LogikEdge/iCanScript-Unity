@@ -189,6 +189,7 @@ public class WD_Graphics {
     }
     // ----------------------------------------------------------------------
     public static string IconPathToGUID(string fileName, WD_IStorage storage) {
+        if(fileName == null) return null;
         Texture2D icon= GetCachedIcon(fileName, storage);
         if(icon == null) return null;
         string path= AssetDatabase.GetAssetPath(icon);
