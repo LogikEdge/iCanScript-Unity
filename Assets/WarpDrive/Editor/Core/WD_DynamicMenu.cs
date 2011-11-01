@@ -347,74 +347,6 @@ public class WD_DynamicMenu {
     void ShowMenu(string[] menu, WD_EditorObject selected, WD_IStorage storage) {
         ShowMenu(menu, MenuPosition, selected, storage);
     }
-	// ----------------------------------------------------------------------
-    void ProcessMenu(object obj) {
-        MenuContext context= obj as MenuContext;
-        WD_EditorObject selectedObject= context.SelectedObject;
-        WD_IStorage storage= context.Storage;
-        storage.RegisterUndo(context.Command);
-        switch(context.Command) {
-            case UpdateModuleStr:           CreateModule(selectedObject, storage, "Update", false); break;
-            case UpdateStateChartStr:       CreateStateChart(selectedObject, storage, "Update", false); break;
-            case FixedUpdateModuleStr:      CreateModule(selectedObject, storage, "FixedUpdate", false); break;
-            case FixedUpdateStateChartStr:  CreateStateChart(selectedObject, storage, "FixedUpdate", false); break;
-            case LateUpdateModuleStr:       CreateModule(selectedObject, storage, "LateUpdate", false); break;
-            case LateUpdateStateChartStr:   CreateStateChart(selectedObject, storage, "LateUpdate", false); break;
-            case ModuleStr:                 CreateModule(selectedObject, storage); break;
-            case StateChartStr:             CreateStateChart(selectedObject, storage); break;
-            case StateStr:                  CreateState (selectedObject, storage);  break;
-            case OnEntryStr:                CreateModule(selectedObject, storage, OnEntryStr, false); break;
-            case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr, false); break;
-            case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr, false); break;
-            case SubStateStr:               CreateState (selectedObject, storage);  break;
-            case TransitionEntryStr:        CreateTransitionEntry(selectedObject, storage); break;
-            case TransitionExitStr:         CreateTransitionExit(selectedObject, storage); break;
-            case FoldStr:                   storage.Fold(selectedObject); break;
-            case UnfoldStr:                 storage.Unfold(selectedObject); break;
-            case DeleteStr:                 DestroyObject(selectedObject, storage); break;
-            case EnablePortStr: {
-                WD_EditorObject port= storage.CreatePort("enable", selectedObject.InstanceId, typeof(bool), WD_ObjectTypeEnum.EnablePort);
-                port.IsNameEditable= false;
-                break;
-            }
-            case PublishPortStr: {
-                WD_EditorObject parent= storage.GetParent(selectedObject);
-                WD_EditorObject grandParent= storage.GetParent(parent);
-                int grandParentId= grandParent.InstanceId;
-                if(selectedObject.IsInputPort) {
-                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.InDynamicModulePort);
-                    storage.SetSource(selectedObject, port);
-                    port.LocalPosition= new Rect(0, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
-                } else {
-                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.OutDynamicModulePort);
-                    storage.SetSource(port, selectedObject);
-                    port.LocalPosition= new Rect(grandParent.LocalPosition.width, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
-                }
-                grandParent.IsDirty= true;
-                break;                
-            }
-            case TransitionEntryActionStr: {
-                storage.CreateTransitionEntryAction(selectedObject);
-                break;
-            }
-            case TransitionEntryDataCollectorStr: {
-                storage.CreateTransitionDataCollector(selectedObject);
-                break;
-            }
-            default: {
-                string company= GetCompanyFromMenuItem(context.Command);
-                string package= GetPackageFromMenuItem(context.Command);
-                string function= GetFunctionFromMenuItem(context.Command);
-                if(company != null && package != null && function != null) {
-                    WD_BaseDesc desc= WD_DataBase.GetDescriptor(company, package, function);
-                    if(desc != null) {
-                        CreateFunction(context.SelectedObject, context.Storage, desc);                                           
-                    }
-                }
-                break;                
-            }
-        }
-    }
     void ShowMenu(string[] menu, Vector2 pos, WD_EditorObject selected, WD_IStorage storage) {
         int sepCnt= 0;
         GenericMenu gMenu= new GenericMenu();
@@ -472,6 +404,119 @@ public class WD_DynamicMenu {
         return item.Substring(start, end-start);
     }
     
+    // ======================================================================
+    // Menu processing
+	// ----------------------------------------------------------------------
+    void ProcessMenu(object obj) {
+        MenuContext context= obj as MenuContext;
+        WD_EditorObject selectedObject= context.SelectedObject;
+        WD_IStorage storage= context.Storage;
+        storage.RegisterUndo(context.Command);
+        switch(context.Command) {
+            case UpdateModuleStr:           ProcessCreateUpdateModule(selectedObject, storage); break;
+            case UpdateStateChartStr:       ProcessCreateUpdateStateChart(selectedObject, storage); break;
+            case FixedUpdateModuleStr:      ProcessCreateFixedUpdateModule(selectedObject, storage); break;
+            case FixedUpdateStateChartStr:  ProcessCreateFixedUpdateStateChart(selectedObject, storage); break;
+            case LateUpdateModuleStr:       ProcessCreateLateUpdateModule(selectedObject, storage); break;
+            case LateUpdateStateChartStr:   ProcessCreateLateUpdateStateChart(selectedObject, storage); break;
+            case ModuleStr:                 CreateModule(selectedObject, storage); break;
+            case StateChartStr:             CreateStateChart(selectedObject, storage); break;
+            case StateStr:                  CreateState (selectedObject, storage);  break;
+            case OnEntryStr:                CreateModule(selectedObject, storage, OnEntryStr, false); break;
+            case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr, false); break;
+            case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr, false); break;
+            case SubStateStr:               CreateState (selectedObject, storage);  break;
+            case TransitionEntryStr:        CreateTransitionEntry(selectedObject, storage); break;
+            case TransitionExitStr:         CreateTransitionExit(selectedObject, storage); break;
+            case FoldStr:                   storage.Fold(selectedObject); break;
+            case UnfoldStr:                 storage.Unfold(selectedObject); break;
+            case DeleteStr:                 DestroyObject(selectedObject, storage); break;
+            case EnablePortStr: {
+                WD_EditorObject port= storage.CreatePort("enable", selectedObject.InstanceId, typeof(bool), WD_ObjectTypeEnum.EnablePort);
+                port.IsNameEditable= false;
+                break;
+            }
+            case PublishPortStr: {
+                WD_EditorObject parent= storage.GetParent(selectedObject);
+                WD_EditorObject grandParent= storage.GetParent(parent);
+                int grandParentId= grandParent.InstanceId;
+                if(selectedObject.IsInputPort) {
+                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.InDynamicModulePort);
+                    storage.SetSource(selectedObject, port);
+                    port.LocalPosition= new Rect(0, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
+                } else {
+                    WD_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, WD_ObjectTypeEnum.OutDynamicModulePort);
+                    storage.SetSource(port, selectedObject);
+                    port.LocalPosition= new Rect(grandParent.LocalPosition.width, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
+                }
+                grandParent.IsDirty= true;
+                break;                
+            }
+            case TransitionEntryActionStr: {
+                storage.CreateTransitionEntryAction(selectedObject);
+                break;
+            }
+            case TransitionEntryDataCollectorStr: {
+                storage.CreateTransitionDataCollector(selectedObject);
+                break;
+            }
+            default: {
+                string company= GetCompanyFromMenuItem(context.Command);
+                string package= GetPackageFromMenuItem(context.Command);
+                string function= GetFunctionFromMenuItem(context.Command);
+                if(company != null && package != null && function != null) {
+                    WD_BaseDesc desc= WD_DataBase.GetDescriptor(company, package, function);
+                    if(desc != null) {
+                        CreateFunction(context.SelectedObject, context.Storage, desc);                                           
+                    }
+                }
+                break;                
+            }
+        }
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateUpdateModule(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject module= CreateModule(parent, storage, WD_EditorStrings.UpdateNode, false);
+        module.IsNameEditable= false;
+        module.ToolTip= "Executes on every frame update.";
+        return module;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateUpdateStateChart(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject stateChart= CreateStateChart(parent, storage, WD_EditorStrings.UpdateNode, false);
+        stateChart.IsNameEditable= false;
+        stateChart.ToolTip= "Executes on every frame update.";
+        return stateChart;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateLateUpdateModule(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject module= CreateModule(parent, storage, WD_EditorStrings.LateUpdateNode, false);
+        module.IsNameEditable= false;
+        module.ToolTip= "Executes after every frame update.";
+        return module;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateLateUpdateStateChart(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject stateChart= CreateStateChart(parent, storage, WD_EditorStrings.LateUpdateNode, false);
+        stateChart.IsNameEditable= false;
+        stateChart.ToolTip= "Executes after every frame update.";
+        return stateChart;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateFixedUpdateModule(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject module= CreateModule(parent, storage, WD_EditorStrings.FixedUpdateNode, false);
+        module.IsNameEditable= false;
+        module.ToolTip= "Executes at a fix frame rate. Independent from the frame update.";
+        return module;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateFixedUpdateStateChart(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject stateChart= CreateStateChart(parent, storage, WD_EditorStrings.FixedUpdateNode, false);
+        stateChart.IsNameEditable= false;
+        stateChart.ToolTip= "Executes at a fix frame rate. Independent from the frame update.";
+        return stateChart;
+    }
+
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------

@@ -66,7 +66,7 @@ public class WD_Graphics {
         // Load AA line texture.
         string texturePath;     
         if(lineTexture == null) {
-            if(!GetCachedTexture("WD_LineTexture.psd", out lineTexture, ref lineTextureErrorSeen)) {
+            if(!GetCachedTexture(WD_EditorStrings.AALineTexture, out lineTexture, ref lineTextureErrorSeen)) {
                 IsInitialized= false;
                 return IsInitialized;
             }
@@ -76,7 +76,7 @@ public class WD_Graphics {
         }
         // Load node texture templates.
         if(defaultNodeTexture == null) {
-            if(!GetCachedTexture("WD_DefaultNodeTexture.psd", out defaultNodeTexture, ref defaultNodeTextureErrorSeen)) {
+            if(!GetCachedTexture(WD_EditorStrings.DefaultNodeTexture, out defaultNodeTexture, ref defaultNodeTextureErrorSeen)) {
                 IsInitialized= false;
                 return IsInitialized;
             }
@@ -85,7 +85,7 @@ public class WD_Graphics {
             }            
         }
         if(nodeMaskTexture == null) {
-            texturePath= WD_EditorConfig.GuiAssetPath + "/WD_NodeMaskTexture.psd";
+            texturePath= WD_EditorConfig.GuiAssetPath +"/"+WD_EditorStrings.NodeMaskTexture;
             nodeMaskTexture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
             if(nodeMaskTexture == null) {
                 ResourceMissingError(texturePath, ref nodeMaskTextureErrorSeen);
@@ -97,37 +97,37 @@ public class WD_Graphics {
             }            
         }
         // Load folded/unfolded icons.
-        if(!GetCachedIcon(WD_EditorConfig.FoldedIcon, out foldedIcon, ref foldedIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorStrings.FoldedIcon, out foldedIcon, ref foldedIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
-        if(!GetCachedIcon(WD_EditorConfig.UnfoldedIcon, out unfoldedIcon, ref unfoldedIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorStrings.UnfoldedIcon, out unfoldedIcon, ref unfoldedIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
         // Load maximize/minimize icon.
-        if(!GetCachedIcon(WD_EditorConfig.MinimizeIcon, out minimizeIcon, ref minimizeIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorStrings.MinimizeIcon, out minimizeIcon, ref minimizeIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }
-        if(!GetCachedIcon(WD_EditorConfig.MaximizeIcon, out maximizeIcon, ref maximizeIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorStrings.MaximizeIcon, out maximizeIcon, ref maximizeIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }
         // Load line arrow heads.
-        if(!GetCachedIcon(WD_EditorConfig.UpArrowHeadIcon, out upArrowHeadIcon, ref upArrowHeadIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon, ref upArrowHeadIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!GetCachedIcon(WD_EditorConfig.DownArrowHeadIcon, out downArrowHeadIcon, ref downArrowHeadIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon, ref downArrowHeadIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!GetCachedIcon(WD_EditorConfig.LeftArrowHeadIcon, out leftArrowHeadIcon, ref leftArrowHeadIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon, ref leftArrowHeadIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!GetCachedIcon(WD_EditorConfig.RightArrowHeadIcon, out rightArrowHeadIcon, ref rightArrowHeadIconErrorSeen, storage)) {
+        if(!GetCachedIcon(WD_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon, ref rightArrowHeadIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
