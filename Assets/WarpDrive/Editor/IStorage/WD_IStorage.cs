@@ -8,10 +8,11 @@ public partial class WD_IStorage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    bool            myIsDirty = true;
-    WD_Storage      Storage   = null;
-    WD_TreeCache    TreeCache = null;
-    int             UndoRedoId= 0;
+    bool            myIsDirty    = true;
+    WD_Storage      Storage      = null;
+    WD_TreeCache    TreeCache    = null;
+    int             UndoRedoId   = 0;
+    bool            CleanupNeeded= true;
     
     // ======================================================================
     // Initialization
@@ -78,7 +79,12 @@ public partial class WD_IStorage {
     // ----------------------------------------------------------------------
     public void Update() {
         ProcessUndoRedo();
-        if(!myIsDirty) return;
+        if(!myIsDirty) {
+            if(CleanupNeeded) CleanupAfterDestroyOrDisconnect();
+            CleanupNeeded= false;
+            return;
+        }
+        CleanupNeeded= true;
         myIsDirty= false;
 //        Debug.Log("Storage has something to update");
 
@@ -329,7 +335,6 @@ public partial class WD_IStorage {
         ProcessUndoRedo();
         DestroyInstanceInternal(id);
         // Cleanup disconnected module and state ports.
-        CleanupAfterDestroyOrDisconnect();
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(WD_EditorObject eObj) {
@@ -350,7 +355,7 @@ public partial class WD_IStorage {
             DestroyInstanceInternal(exitModule);
         }
         // Disconnect ports linking to this port.
-        ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPortInternal(toDestroy));
+        ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPort(toDestroy));
         // Remove all children first.
         while(TreeCache[id].Children.Count != 0) {
             DestroyInstanceInternal(TreeCache[id].Children[0]);
@@ -432,9 +437,8 @@ public partial class WD_IStorage {
     // Port Connectivity
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject obj, WD_EditorObject src) {
-        int prevSource= obj.Source;
         obj.Source= src == null ? -1 : src.InstanceId;
-        if(prevSource != obj.Source) CleanupAfterDestroyOrDisconnect();
+        SetDirty(obj);
     }
     // ----------------------------------------------------------------------
     public void SetSource(WD_EditorObject inPort, WD_EditorObject outPort, WD_ConversionDesc convDesc) {
@@ -456,11 +460,6 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public void DisconnectPort(WD_EditorObject port) {
-        DisconnectPortInternal(port);
-        CleanupAfterDestroyOrDisconnect();
-    }
-    // ----------------------------------------------------------------------
-    void DisconnectPortInternal(WD_EditorObject port) {
         SetSource(port, null);
         Prelude.forEach(p=> SetSource(p, null), FindConnectedPorts(port));        
     }
