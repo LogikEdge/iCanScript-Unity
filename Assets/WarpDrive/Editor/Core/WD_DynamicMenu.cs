@@ -421,7 +421,7 @@ public class WD_DynamicMenu {
             case FixedUpdateStateChartStr:  ProcessCreateFixedUpdateStateChart(selectedObject, storage); break;
             case LateUpdateModuleStr:       ProcessCreateLateUpdateModule(selectedObject, storage); break;
             case LateUpdateStateChartStr:   ProcessCreateLateUpdateStateChart(selectedObject, storage); break;
-            case ModuleStr:                 CreateModule(selectedObject, storage); break;
+            case ModuleStr:                 ProcessCreateModule(selectedObject, storage); break;
             case StateChartStr:             CreateStateChart(selectedObject, storage); break;
             case StateStr:                  CreateState (selectedObject, storage);  break;
             case OnEntryStr:                CreateModule(selectedObject, storage, OnEntryStr, false); break;
@@ -518,7 +518,12 @@ public class WD_DynamicMenu {
         stateChart.ToolTip= "Executes at a fix frame rate. Independent from the frame update.";
         return stateChart;
     }
-
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateModule(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject module= CreateModule(parent, storage);
+        return module;
+    }
+    
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------

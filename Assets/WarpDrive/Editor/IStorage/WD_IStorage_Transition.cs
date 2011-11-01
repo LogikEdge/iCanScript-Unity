@@ -18,6 +18,7 @@ public partial class WD_IStorage {
         WD_EditorObject mainOutPort= CreatePort(TransitionTriggerPortStr, mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
         WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Math3D.ToVector2(GetPosition(mainModule)), TransitionTriggerModuleStr);
         WD_EditorObject triggerOutPort= CreatePort(TransitionTriggerPortStr, trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
+        trigger.IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.TransitionTriggerIcon, this);
         mainModule.IsNameEditable= false;
         mainOutPort.IsNameEditable= false;
         trigger.IsNameEditable= false;

@@ -173,6 +173,7 @@ public partial class WD_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, name, typeof(WD_Module), parentId, WD_ObjectTypeEnum.Module, localPos);
+        this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.ModuleIcon, this);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -288,6 +289,7 @@ public partial class WD_IStorage {
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
+        if(this[id].IconGUID == null) this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.FunctionIcon, this);
         // Create input/output ports.
         for(int i= 0; i < desc.ParameterNames.Length; ++i) {
             WD_ObjectTypeEnum portType= desc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;

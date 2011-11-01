@@ -51,6 +51,11 @@ public class WD_GuiUtilities {
 //            fieldInfo.SetValue(parent, newValue);
             return;                        
         }            
+        if(dataType == typeof(AnimationClip)) {
+            /*GameObject newValue=*/ EditorGUILayout.ObjectField(niceName, null, typeof(AnimationClip), true) /*as GameObject*/;
+//            fieldInfo.SetValue(parent, newValue);
+            return;                        
+        }            
 
 //        // Display array of primitives.
 //        if(fieldType.IsArray) {
