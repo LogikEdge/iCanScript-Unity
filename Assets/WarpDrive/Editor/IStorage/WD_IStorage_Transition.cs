@@ -16,7 +16,7 @@ public partial class WD_IStorage {
     public WD_EditorObject CreateTransitionEntry(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry");
         WD_EditorObject mainOutPort= CreatePort(TransitionTriggerPortStr, mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
-        WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Vector2.zero, TransitionTriggerModuleStr);
+        WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Math3D.ToVector2(GetPosition(mainModule)), TransitionTriggerModuleStr);
         WD_EditorObject triggerOutPort= CreatePort(TransitionTriggerPortStr, trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
         mainModule.IsNameEditable= false;
         mainOutPort.IsNameEditable= false;
