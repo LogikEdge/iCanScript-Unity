@@ -422,12 +422,12 @@ public class WD_DynamicMenu {
             case LateUpdateModuleStr:       ProcessCreateLateUpdateModule(selectedObject, storage); break;
             case LateUpdateStateChartStr:   ProcessCreateLateUpdateStateChart(selectedObject, storage); break;
             case ModuleStr:                 ProcessCreateModule(selectedObject, storage); break;
-            case StateChartStr:             CreateStateChart(selectedObject, storage); break;
-            case StateStr:                  CreateState (selectedObject, storage);  break;
-            case OnEntryStr:                CreateModule(selectedObject, storage, OnEntryStr, false); break;
-            case OnUpdateStr:               CreateModule(selectedObject, storage, OnUpdateStr, false); break;
-            case OnExitStr:                 CreateModule(selectedObject, storage, OnExitStr, false); break;
-            case SubStateStr:               CreateState (selectedObject, storage);  break;
+            case StateChartStr:             ProcessCreateStateChart(selectedObject, storage); break;
+            case StateStr:                  ProcessCreateState(selectedObject, storage);  break;
+            case OnEntryStr:                ProcessCreateOnEntryModule(selectedObject, storage); break;
+            case OnUpdateStr:               ProcessCreateOnUpdateModule(selectedObject, storage); break;
+            case OnExitStr:                 ProcessCreateOnExitModule(selectedObject, storage); break;
+            case SubStateStr:               ProcessCreateState(selectedObject, storage);  break;
             case TransitionEntryStr:        CreateTransitionEntry(selectedObject, storage); break;
             case TransitionExitStr:         CreateTransitionExit(selectedObject, storage); break;
             case FoldStr:                   storage.Fold(selectedObject); break;
@@ -521,6 +521,37 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     WD_EditorObject ProcessCreateModule(WD_EditorObject parent, WD_IStorage storage) {
         WD_EditorObject module= CreateModule(parent, storage);
+        return module;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateStateChart(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject stateChart= CreateStateChart(parent, storage);
+        return stateChart;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateState(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject state= CreateState(parent, storage);
+        return state;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateOnEntryModule(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject module= CreateModule(parent, storage, OnEntryStr, false);
+        module.IsNameEditable= false;
+        module.ToolTip= "Executes on entry into this state.";
+        return module;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateOnUpdateModule(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject module= CreateModule(parent, storage, OnUpdateStr, false);
+        module.IsNameEditable= false;
+        module.ToolTip= "Executes on every frame this state is active.";
+        return module;
+    }
+	// ----------------------------------------------------------------------
+    WD_EditorObject ProcessCreateOnExitModule(WD_EditorObject parent, WD_IStorage storage) {
+        WD_EditorObject module= CreateModule(parent, storage, OnExitStr, false);
+        module.IsNameEditable= false;
+        module.ToolTip= "Executes on exit from this state.";
         return module;
     }
     
