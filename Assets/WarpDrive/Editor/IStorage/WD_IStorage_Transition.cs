@@ -70,6 +70,13 @@ public partial class WD_IStorage {
         dataCollector.IsNameEditable= false;
         WD_EditorObject enablePort= CreateEnablePort(dataCollector.InstanceId);
         enablePort.Source= GetTriggerPortFromTransitionTriggerModule(triggerModule).InstanceId;        
+        // A transition must always exist if a data collector is present.
+        WD_EditorObject exitModule= GetTransitionExitModule(entryModule);
+        if(exitModule == null) {
+            WD_EditorObject outStatePort= GetOutStatePortFromTransitionEntryModule(entryModule);
+            WD_EditorObject inStatePort= FindAConnectedPort(outStatePort);
+            CreateTransitionExit(inStatePort);
+        }
         return dataCollector;
     }
     
@@ -89,6 +96,11 @@ public partial class WD_IStorage {
     public bool IsTransitionExitModule(WD_EditorObject obj) {
         if(obj == null || !obj.IsModule) return false;
         return GetInStatePortFromTransitionExitModule(obj) != null;
+    }
+    // ----------------------------------------------------------------------
+    public bool IsTransitionDataCollector(WD_EditorObject obj) {
+        if(obj == null || !obj.IsModule || obj.Name != TransitionDataCollectorModuleStr) return false;
+        return IsTransitionEntryModule(GetParent(obj));
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject GetTransitionEntryModule(WD_EditorObject obj) {
