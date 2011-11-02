@@ -206,4 +206,48 @@ public partial class WD_IStorage {
         );
         return triggerPort;
     }
+    // ----------------------------------------------------------------------
+    public void SynchronizeDataCollectorPorts(WD_EditorObject dataCollector) {
+        if(!IsTransitionDataCollector(dataCollector)) {
+            Debug.LogWarning("Trying to synchronize a transition data collector with an object that is NOT a data collector !!!");
+            return;
+        }
+        WD_EditorObject exitModule= GetTransitionExitModule(dataCollector);
+        if(exitModule == null) {
+            Debug.LogWarning("Missing transition exit module");
+            return;
+        }
+        WD_EditorObject outStatePort= GetOutStatePortFromTransitionEntryModule(GetParent(dataCollector));
+        WD_EditorObject inStatePort= FindAConnectedPort(outStatePort);
+        while(SynchronizeDataCollectorPorts(dataCollector, exitModule, inStatePort));
+    }
+    bool SynchronizeDataCollectorPorts(WD_EditorObject dataCollector, WD_EditorObject exitModule, WD_EditorObject inStatePort) {
+        // Remove ports that only exists on exit module.
+        bool removalPerfromed= ForEachChildPort(exitModule,
+            p=> {
+                if(p.IsInDataPort && p.Source == inStatePort.InstanceId) {
+                    bool found= ForEachChildPort(dataCollector, dcPort=> (dcPort.Name == p.Name && dcPort.RuntimeType == p.RuntimeType));
+                    if(found) return false;
+                    DestroyInstance(p);
+                    return true;
+                }
+                return false;
+            }
+        );
+        if(removalPerfromed) return true;
+        // Add ports that only exist on the data collector module.
+        return !ForEachChildPort(dataCollector,
+            dcPort=> {
+                if(dcPort.IsInDataPort && !dcPort.IsEnablePort) {
+                    bool found= ForEachChildPort(exitModule, p=> (p.Name == dcPort.Name && p.RuntimeType == dcPort.RuntimeType && p.ObjectType == dcPort.ObjectType));
+                    if(found) return false;
+                    WD_EditorObject newPort= CreatePort(dcPort.Name, exitModule.InstanceId, dcPort.RuntimeType, dcPort.ObjectType);
+                    newPort.IsNameEditable= false;
+                    SetSource(newPort, inStatePort);
+                    return true;
+                }
+                return false;
+            }
+        );
+    }
 }
