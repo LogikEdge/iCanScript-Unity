@@ -7,9 +7,7 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // Properties
     // ----------------------------------------------------------------------
     public WD_UserPreferences           Preferences  = new WD_UserPreferences();
-    public List<WD_EditorObject>        EditorObjects= new List<WD_EditorObject>();
-    public WD_RootNode                  RootNode     = null;
-    
+    public List<WD_EditorObject>        EditorObjects= new List<WD_EditorObject>();    
     
     // ======================================================================
     // Accessors

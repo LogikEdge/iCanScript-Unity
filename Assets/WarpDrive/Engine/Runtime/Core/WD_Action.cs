@@ -5,8 +5,7 @@ using System.Collections;
 // An action is the base class of the execution.  It includes a frame
 // identifier that is used to indicate if the action has been run.  This
 // indicator is the bases for the execution synchronization.
-[System.Serializable]
-public abstract class WD_Action : WD_Node {
+public abstract class WD_Action {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------

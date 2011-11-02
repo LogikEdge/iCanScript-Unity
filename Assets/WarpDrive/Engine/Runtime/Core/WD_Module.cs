@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [System.Serializable]
-public sealed class WD_Module : WD_Function {
+public sealed class WD_Module : WD_Action {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
@@ -42,7 +42,7 @@ public sealed class WD_Module : WD_Function {
 
     // ----------------------------------------------------------------------
     // Returns true if the object is an executable that we support.
-    bool IsExecutable(WD_Object _object) {
+    bool IsExecutable(Object _object) {
         return _object is WD_Action;
     }
     
@@ -50,13 +50,13 @@ public sealed class WD_Module : WD_Function {
     // ======================================================================
     // CONNECTOR MANAGEMENT
     // ----------------------------------------------------------------------
-    public override void AddChild(WD_Object obj) {
+    public void AddChild(Object obj) {
         if(IsExecutable(obj)) {
             myExecuteQueue.Add(obj as WD_Action);
         }
         base.AddChild(obj);
     }
-    public override void RemoveChild(WD_Object obj) {
+    public void RemoveChild(Object obj) {
         if(IsExecutable(obj)) {
             myExecuteQueue.Remove(obj as WD_Action);
         }

@@ -2,8 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
-public sealed class WD_State : WD_Node {
+public sealed class WD_State {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
@@ -52,7 +51,7 @@ public sealed class WD_State : WD_Node {
     // ======================================================================
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
-    public override void AddChild(WD_Object _object) {
+    public void AddChild(Object _object) {
         _object.Case<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(
             (state)=> {
                 base.AddChild(_object);
@@ -85,7 +84,7 @@ public sealed class WD_State : WD_Node {
             }
         );
     }
-    public override void RemoveChild(WD_Object _object) {
+    public override void RemoveChild(Object _object) {
         _object.Case<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(
             (state)=> {
                 if(state == myEntryState) myEntryState= null;

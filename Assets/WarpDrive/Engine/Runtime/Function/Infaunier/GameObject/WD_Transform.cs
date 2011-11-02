@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 [WD_Class(Company="Infaunier", Package="GameObject", Name="Transform")]
-public sealed class WD_Transform : WD_Function {
+public sealed class WD_Transform {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
