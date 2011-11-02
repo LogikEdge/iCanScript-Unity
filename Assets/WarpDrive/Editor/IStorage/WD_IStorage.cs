@@ -913,38 +913,42 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     WD_EditorObject[] SortTopPorts(WD_EditorObject node) {
+        Rect nodePos= GetPosition(node);
+        float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
         WD_EditorObject[] ports= GetTopPorts(node);
-        Vector2[] portsPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
         Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
-        float[] firstKeys = Prelude.map(p=> p.x, connectedPos); 
-        float[] secondKeys= Prelude.zipWith((p,cp)=> p.x < cp.x ? cp.y : -cp.y, portsPos, connectedPos);
+        float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
+        float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? cp.y : -cp.y, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
     WD_EditorObject[] SortBottomPorts(WD_EditorObject node) {
+        Rect nodePos= GetPosition(node);
+        float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
         WD_EditorObject[] ports= GetBottomPorts(node);
-        Vector2[] portsPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
         Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
-        float[] firstKeys = Prelude.map(p=> p.x, connectedPos); 
-        float[] secondKeys= Prelude.zipWith((p,cp)=> p.x < cp.x ? -cp.y : cp.y, portsPos, connectedPos);
+        float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
+        float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? -cp.y : cp.y, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
     WD_EditorObject[] SortLeftPorts(WD_EditorObject node) {
+        Rect nodePos= GetPosition(node);
+        float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
         WD_EditorObject[] ports= GetLeftPorts(node);                             
-        Vector2[] portsPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
         Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
-        float[] firstKeys = Prelude.map(p=> p.y, connectedPos); 
-        float[] secondKeys= Prelude.zipWith((p,cp)=> p.y < cp.y ? cp.x : -cp.x, portsPos, connectedPos);
+        float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
+        float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? cp.x : -cp.x, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
     WD_EditorObject[] SortRightPorts(WD_EditorObject node) {
+        Rect nodePos= GetPosition(node);
+        float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
         WD_EditorObject[] ports= GetRightPorts(node);
-        Vector2[] portsPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
         Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
-        float[] firstKeys = Prelude.map(p=> p.y, connectedPos); 
-        float[] secondKeys= Prelude.zipWith((p,cp)=> p.y < cp.y ? -cp.x : cp.x, portsPos, connectedPos);
+        float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
+        float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? -cp.x : cp.x, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
@@ -957,7 +961,7 @@ public partial class WD_IStorage {
                     Prelude.exchange(ref keys1[i], ref keys1[j]);
                     Prelude.exchange(ref keys2[i], ref keys2[j]);
                 } else if(Math3D.IsEqual(keys1[i], keys1[j])) {                
-                    if(keys2[i] > keys2[j]) {
+                    if(Math3D.IsGreater(keys2[i], keys2[j])) {
                         Prelude.exchange(ref ports[i], ref ports[j]);
                         Prelude.exchange(ref keys1[i], ref keys1[j]);
                         Prelude.exchange(ref keys2[i], ref keys2[j]);                    
