@@ -107,8 +107,8 @@ public partial class WD_IStorage {
                     modified= true;
                 }
                 // Synchronize data collector ports.
-                if(IsTransitionDataCollector(obj)) {
-                    if(SynchronizeDataCollectorPorts(obj)) {
+                if(IsTransitionExitModule(obj)) {
+                    if(SynchronizeExitModulePorts(obj)) {
                         modified= true;
                     }                    
                 }
@@ -348,10 +348,6 @@ public partial class WD_IStorage {
                 int nbOfPorts= GetNbOfRightPorts(parent);
                 port.LocalPosition= new Rect(parent.LocalPosition.width, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);                
             }
-        }
-        // Synchronize data collectors.
-        if(!port.IsEnablePort && IsTransitionDataCollector(EditorObjects[parentId])) {
-            SynchronizeDataCollectorPorts(EditorObjects[parentId]);
         }
         return EditorObjects[id];        
     }

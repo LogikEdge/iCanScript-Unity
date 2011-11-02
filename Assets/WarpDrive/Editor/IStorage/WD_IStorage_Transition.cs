@@ -208,24 +208,21 @@ public partial class WD_IStorage {
         return triggerPort;
     }
     // ----------------------------------------------------------------------
-    public bool SynchronizeDataCollectorPorts(WD_EditorObject dataCollector) {
-        if(!IsTransitionDataCollector(dataCollector)) {
-            Debug.LogWarning("Trying to synchronize a transition data collector with an object that is NOT a data collector !!!");
+    public bool SynchronizeExitModulePorts(WD_EditorObject exitModule) {
+        if(!IsTransitionExitModule(exitModule)) {
+            Debug.LogWarning("Trying to synchronize a transition data collector with an object that is NOT an transition exit module !!!");
             return false;
         }
-        WD_EditorObject exitModule= GetTransitionExitModule(dataCollector);
-        if(exitModule == null) {
-            Debug.LogWarning("Missing transition exit module");
-            return false;
-        }
-        WD_EditorObject outStatePort= GetOutStatePortFromTransitionEntryModule(GetParent(dataCollector));
+        WD_EditorObject entryModule= GetTransitionEntryModule(exitModule);
+        WD_EditorObject dataCollector= GetDataCollectorModuleFromTransitionEntryModule(entryModule);
+        WD_EditorObject outStatePort= GetOutStatePortFromTransitionEntryModule(entryModule);
         WD_EditorObject inStatePort= FindAConnectedPort(outStatePort);
-        return SynchronizeDataCollectorPorts(dataCollector, exitModule, inStatePort);
+        return SynchronizeExitModulePorts(dataCollector, exitModule, inStatePort);
     }
-    bool SynchronizeDataCollectorPorts(WD_EditorObject dataCollector, WD_EditorObject exitModule, WD_EditorObject inStatePort) {
+    bool SynchronizeExitModulePorts(WD_EditorObject dataCollector, WD_EditorObject exitModule, WD_EditorObject inStatePort) {
         bool modified= false;
         // Special case for when data collector has no ports.  We need to create a dummy port.
-        if(!ForEachChildPort(dataCollector, p=> p.IsInDataPort && !p.IsEnablePort)) {
+        if(dataCollector == null || !ForEachChildPort(dataCollector, p=> p.IsInDataPort && !p.IsEnablePort)) {
             modified= ForEachChildPort(exitModule,
                 p=> {
                     if(p.IsInDataPort && p.Source == inStatePort.InstanceId) {
@@ -245,7 +242,7 @@ public partial class WD_IStorage {
             return modified;
         }
         // Add ports that only exist on the data collector module.
-        modified= !ForEachChildPort(dataCollector,
+        modified= ForEachChildPort(dataCollector,
             dcPort=> {
                 if(dcPort.IsInDataPort && !dcPort.IsEnablePort) {
                     bool found= ForEachChildPort(exitModule, p=> (p.Name == dcPort.Name && p.RuntimeType == dcPort.RuntimeType && p.ObjectType == dcPort.ObjectType));
@@ -258,9 +255,8 @@ public partial class WD_IStorage {
                 return false;
             }
         );
-        if(modified) return true;
         // Remove ports that only exists on exit module.
-        return ForEachChildPort(exitModule,
+        bool rModified= ForEachChildPort(exitModule,
             p=> {
                 if(p.IsInDataPort && p.Source == inStatePort.InstanceId) {
                     bool found= ForEachChildPort(dataCollector, dcPort=> (dcPort.Name == p.Name && dcPort.RuntimeType == p.RuntimeType));
@@ -271,5 +267,6 @@ public partial class WD_IStorage {
                 return false;
             }
         );
+        return modified || rModified;
     }
 }
