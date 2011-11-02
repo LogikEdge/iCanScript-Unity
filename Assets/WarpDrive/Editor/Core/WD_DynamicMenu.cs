@@ -432,7 +432,7 @@ public class WD_DynamicMenu {
             case TransitionExitStr:         CreateTransitionExit(selectedObject, storage); break;
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
-            case DeleteStr:                 DestroyObject(selectedObject, storage); break;
+            case DeleteStr:                 ProcessDestroyObject(selectedObject, storage); break;
             case EnablePortStr: {
                 WD_EditorObject port= storage.CreatePort(WD_EditorStrings.EnablePort, selectedObject.InstanceId, typeof(bool), WD_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
@@ -554,6 +554,10 @@ public class WD_DynamicMenu {
         module.ToolTip= "Executes on exit from this state.";
         return module;
     }
+	// ----------------------------------------------------------------------
+    void ProcessDestroyObject(WD_EditorObject obj, WD_IStorage storage) {
+        DestroyObject(obj, storage);    
+    }
     
     // ======================================================================
     // Creation Utilities
@@ -589,10 +593,25 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     bool DestroyObject(WD_EditorObject selectedObject, WD_IStorage storage) {
         bool isDestroyed= false;
+        if(storage.IsTransitionExitModule(selectedObject)) {
+            WD_EditorObject entryModule= storage.GetTransitionEntryModule(selectedObject);
+            WD_EditorObject dataCollector= storage.GetDataCollectorModuleFromTransitionEntryModule(entryModule);
+            if(dataCollector != null) {
+                if(EditorUtility.DisplayDialog("Deleting Transition Exit & Associated Data Collector",
+                                               "Transition Data Collector cannot exist without a transition exit module.  Are you sure you want to remove BOTH the DATA COLLECTOR and the Transition Exit.", "Delete DataCollector & Transition Exit", "Cancel")) {
+                    storage.DestroyInstance(dataCollector.InstanceId);
+                    storage.DestroyInstance(selectedObject.InstanceId);                        
+                    Reset();
+                    return true;
+                }            
+                Reset();
+                return false;
+            }
+        }
         if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
             storage.DestroyInstance(selectedObject.InstanceId);                        
             isDestroyed= true;
-        }
+        }            
         Reset();
         return isDestroyed;
     }
