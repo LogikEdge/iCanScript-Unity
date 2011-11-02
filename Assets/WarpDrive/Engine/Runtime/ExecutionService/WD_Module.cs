@@ -2,8 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-[System.Serializable]
-public sealed class WD_Module : WD_Action {
+public class WD_Module : WD_Action {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------

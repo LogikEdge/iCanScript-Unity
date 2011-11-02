@@ -6,10 +6,10 @@ public sealed class WD_State {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public WD_State             myEntryState    = null;
-    public WD_Action            myOnEntryAction = null;
-    public WD_Action            myOnUpdateAction= null;
-    public WD_Action            myOnExitAction  = null;
+    public WD_State     myEntryState    = null;
+    public WD_Action    myOnEntryAction = null;
+    public WD_Action    myOnUpdateAction= null;
+    public WD_Action    myOnExitAction  = null;
 
     // ======================================================================
     // ACCESSOR
@@ -52,31 +52,25 @@ public sealed class WD_State {
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
     public void AddChild(Object _object) {
-        Prelude.choice<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(_object,
+        Prelude.choice<WD_State, WD_TransitionEntry, WD_TransitionExit, WD_Module>(_object,
             (state)=> {
-                base.AddChild(_object);
             },
-            (entryPort)=> {
-                base.AddChild(_object);
+            (transitionEntry)=> {
             },
-            (leavePort)=> {
-                base.AddChild(_object);
+            (transitionExit)=> {
             },
             (module)=> {
-                if(module.Name == "OnEntry") {
+                if(module.Name == WD_EngineStrings.OnEntryModule) {
                     myOnEntryAction= module;
-                    base.AddChild(_object);
                 }
-                else if(module.Name == "OnUpdate") {
+                else if(module.Name == WD_EngineStrings.OnUpdateModule) {
                     myOnUpdateAction= module;
-                    base.AddChild(_object);
                 }
-                else if(module.Name == "OnExit") {
+                else if(module.Name == WD_EngineStrings.OnExitModule) {
                     myOnExitAction= module;
-                    base.AddChild(_object);
                 }
                 else {
-                    Debug.LogError("Only OnEntry, OnUpdate, and OnExit modules can be added to an WD_State");
+                    Debug.LogError("Only OnEntry, OnUpdate, and OnExit modules can be added to a WD_State");
                 }
             },
             (otherwise)=> {
@@ -84,33 +78,27 @@ public sealed class WD_State {
             }
         );
     }
-    public override void RemoveChild(Object _object) {
-        Prelude.choice<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(_object,
+    public void RemoveChild(Object _object) {
+        Prelude.choice<WD_State, WD_TransitionEntry, WD_TransitionExit, WD_Module>(_object,
             (state)=> {
                 if(state == myEntryState) myEntryState= null;
-                base.RemoveChild(_object);
             },
-            (entryPort)=> {
-                base.RemoveChild(_object);
+            (transitionEntry)=> {
             },
-            (leavePort)=> {
-                base.RemoveChild(_object);
+            (transitionExit)=> {
             },
             (module)=> {
                 if(module == myOnEntryAction) {
                     myOnEntryAction= null;
-                    base.RemoveChild(_object);
                 }
                 else if(module == myOnUpdateAction) {
                     myOnUpdateAction= null;
-                base.RemoveChild(_object);
                 }
                 else if(module == myOnExitAction) {
                     myOnExitAction= null;
-                    base.RemoveChild(_object);
                 }
                 else {
-                    Debug.LogError("Only OnEntry, OnUpdate, and OnExit modules can be removed from an WD_State");
+                    Debug.LogError("Only OnEntry, OnUpdate, and OnExit modules can be removed from a WD_State");
                 }
             },
             (otherwise)=> {
