@@ -9,6 +9,7 @@ public partial class WD_IStorage {
     const string TransitionEntryActionModuleStr= "Action";
     const string TransitionDataCollectorModuleStr= "Data Collector";
     const string TransitionTriggerPortStr= "trigger";
+    const string TransitionExitModuleDummyPortStr= "(unused)";
     
     // ======================================================================
     // Creation methods
@@ -31,7 +32,7 @@ public partial class WD_IStorage {
     public WD_EditorObject CreateTransitionExit(WD_EditorObject port) {
         WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Exit");
         mainModule.IsNameEditable= false;
-        WD_EditorObject mainInPort= CreatePort("(unused)", mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InStaticModulePort);
+        WD_EditorObject mainInPort= CreatePort(TransitionExitModuleDummyPortStr, mainModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InStaticModulePort);
         mainInPort.IsNameEditable= false;
         mainInPort.Source= port.InstanceId;
         return mainModule;
@@ -207,36 +208,44 @@ public partial class WD_IStorage {
         return triggerPort;
     }
     // ----------------------------------------------------------------------
-    public void SynchronizeDataCollectorPorts(WD_EditorObject dataCollector) {
+    public bool SynchronizeDataCollectorPorts(WD_EditorObject dataCollector) {
         if(!IsTransitionDataCollector(dataCollector)) {
             Debug.LogWarning("Trying to synchronize a transition data collector with an object that is NOT a data collector !!!");
-            return;
+            return false;
         }
         WD_EditorObject exitModule= GetTransitionExitModule(dataCollector);
         if(exitModule == null) {
             Debug.LogWarning("Missing transition exit module");
-            return;
+            return false;
         }
         WD_EditorObject outStatePort= GetOutStatePortFromTransitionEntryModule(GetParent(dataCollector));
         WD_EditorObject inStatePort= FindAConnectedPort(outStatePort);
-        while(SynchronizeDataCollectorPorts(dataCollector, exitModule, inStatePort));
+        return SynchronizeDataCollectorPorts(dataCollector, exitModule, inStatePort);
     }
     bool SynchronizeDataCollectorPorts(WD_EditorObject dataCollector, WD_EditorObject exitModule, WD_EditorObject inStatePort) {
-        // Remove ports that only exists on exit module.
-        bool removalPerfromed= ForEachChildPort(exitModule,
-            p=> {
-                if(p.IsInDataPort && p.Source == inStatePort.InstanceId) {
-                    bool found= ForEachChildPort(dataCollector, dcPort=> (dcPort.Name == p.Name && dcPort.RuntimeType == p.RuntimeType));
-                    if(found) return false;
-                    DestroyInstance(p);
-                    return true;
+        bool modified= false;
+        // Special case for when data collector has no ports.  We need to create a dummy port.
+        if(!ForEachChildPort(dataCollector, p=> p.IsInDataPort && !p.IsEnablePort)) {
+            modified= ForEachChildPort(exitModule,
+                p=> {
+                    if(p.IsInDataPort && p.Source == inStatePort.InstanceId) {
+                        if(!(p.Name == TransitionExitModuleDummyPortStr && p.RuntimeType == typeof(void) && p.IsInStaticModulePort)) {
+                            DestroyInstance(p);
+                            return true;
+                        }
+                    }
+                    return false;
                 }
-                return false;
+            );
+            if(!ForEachChildPort(exitModule, p=> p.Source == inStatePort.InstanceId)) {
+                WD_EditorObject dummyPort= CreatePort(TransitionExitModuleDummyPortStr, exitModule.InstanceId, typeof(void), WD_ObjectTypeEnum.InStaticModulePort);
+                SetSource(dummyPort, inStatePort);
+                modified= true;
             }
-        );
-        if(removalPerfromed) return true;
+            return modified;
+        }
         // Add ports that only exist on the data collector module.
-        return !ForEachChildPort(dataCollector,
+        modified= !ForEachChildPort(dataCollector,
             dcPort=> {
                 if(dcPort.IsInDataPort && !dcPort.IsEnablePort) {
                     bool found= ForEachChildPort(exitModule, p=> (p.Name == dcPort.Name && p.RuntimeType == dcPort.RuntimeType && p.ObjectType == dcPort.ObjectType));
@@ -244,6 +253,19 @@ public partial class WD_IStorage {
                     WD_EditorObject newPort= CreatePort(dcPort.Name, exitModule.InstanceId, dcPort.RuntimeType, dcPort.ObjectType);
                     newPort.IsNameEditable= false;
                     SetSource(newPort, inStatePort);
+                    return true;
+                }
+                return false;
+            }
+        );
+        if(modified) return true;
+        // Remove ports that only exists on exit module.
+        return ForEachChildPort(exitModule,
+            p=> {
+                if(p.IsInDataPort && p.Source == inStatePort.InstanceId) {
+                    bool found= ForEachChildPort(dataCollector, dcPort=> (dcPort.Name == p.Name && dcPort.RuntimeType == p.RuntimeType));
+                    if(found) return false;
+                    DestroyInstance(p);
                     return true;
                 }
                 return false;

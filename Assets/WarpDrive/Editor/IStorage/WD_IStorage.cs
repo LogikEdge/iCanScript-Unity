@@ -80,8 +80,7 @@ public partial class WD_IStorage {
     public void Update() {
         ProcessUndoRedo();
         if(!myIsDirty) {
-            if(CleanupNeeded) CleanupAfterDestroyOrDisconnect();
-            CleanupNeeded= false;
+            if(CleanupNeeded) CleanupNeeded= Cleanup();
             return;
         }
         CleanupNeeded= true;
@@ -97,7 +96,27 @@ public partial class WD_IStorage {
             }
         );            
     }
-
+    // ----------------------------------------------------------------------
+    public bool Cleanup() {
+        bool modified= false;
+        ForEach(
+            obj=> {
+                // Cleanup disconnected dynamic state or module ports.
+                if((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) {
+                    DestroyInstanceInternal(obj.InstanceId);
+                    modified= true;
+                }
+                // Synchronize data collector ports.
+                if(IsTransitionDataCollector(obj)) {
+                    if(SynchronizeDataCollectorPorts(obj)) {
+                        modified= true;
+                    }                    
+                }
+            }
+        );        
+        return modified;
+    }
+    
     // ======================================================================
     // Undo/Redo support
     // ----------------------------------------------------------------------
@@ -330,6 +349,10 @@ public partial class WD_IStorage {
                 port.LocalPosition= new Rect(parent.LocalPosition.width, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);                
             }
         }
+        // Synchronize data collectors.
+        if(!port.IsEnablePort && IsTransitionDataCollector(EditorObjects[parentId])) {
+            SynchronizeDataCollectorPorts(EditorObjects[parentId]);
+        }
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
@@ -372,16 +395,6 @@ public partial class WD_IStorage {
     void DestroyInstanceInternal(WD_EditorObject toDestroy) {
         if(toDestroy == null || IsInvalid(toDestroy.InstanceId)) return;
         DestroyInstanceInternal(toDestroy.InstanceId);
-    }
-    // ----------------------------------------------------------------------
-    void CleanupAfterDestroyOrDisconnect() {
-        ForEach(
-            port=> {
-                if((port.IsStatePort || port.IsDynamicModulePort) && IsPortDisconnected(port)) {
-                    DestroyInstanceInternal(port.InstanceId);
-                }
-            }
-        );        
     }
     
     // ======================================================================
