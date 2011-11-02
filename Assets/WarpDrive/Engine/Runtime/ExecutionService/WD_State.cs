@@ -52,7 +52,7 @@ public sealed class WD_State {
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
     public void AddChild(Object _object) {
-        _object.Case<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(
+        Prelude.choice<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(_object,
             (state)=> {
                 base.AddChild(_object);
             },
@@ -85,7 +85,7 @@ public sealed class WD_State {
         );
     }
     public override void RemoveChild(Object _object) {
-        _object.Case<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(
+        Prelude.choice<WD_State, WD_InTransitionPort, WD_OutTransitionPort, WD_Module>(_object,
             (state)=> {
                 if(state == myEntryState) myEntryState= null;
                 base.RemoveChild(_object);

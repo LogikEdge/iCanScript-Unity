@@ -14,7 +14,7 @@ public sealed class WD_Transform {
     // EXECUTION
     // ----------------------------------------------------------------------
     [WD_Function]
-    public override void Evaluate() {
+    public void Evaluate() {
         if(!IsValid) return;
         gameObject.transform.Translate(translation);
     }
@@ -22,7 +22,7 @@ public sealed class WD_Transform {
     // ======================================================================
     // CONNECTIONS
     // ----------------------------------------------------------------------
-    protected override bool doIsValid() { return gameObject != null; }
+    public bool IsValid() { return gameObject != null; }
 
 }
 

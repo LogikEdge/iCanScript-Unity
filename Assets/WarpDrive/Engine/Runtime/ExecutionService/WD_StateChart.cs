@@ -25,14 +25,6 @@ public sealed class WD_StateChart : WD_Action {
     }
     
     // ======================================================================
-    // INITIALIZATION
-    // ----------------------------------------------------------------------
-    public override void Init(string _name, WD_Aggregate _parent) {
-        base.Init(_name, _parent);
-        myEntryState= null;
-    }
-    
-    // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
     public override void Evaluate() {
@@ -107,7 +99,7 @@ public sealed class WD_StateChart : WD_Action {
     // ======================================================================
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
-    public override void AddChild(WD_Object _object) {
+    public void AddChild(Object _object) {
         WD_State state= _object as WD_State;
         if(state == null) {
             Debug.LogError("Trying to add an object that is not a state into FSM!");
@@ -115,7 +107,7 @@ public sealed class WD_StateChart : WD_Action {
         }
         base.AddChild(_object);
     }
-    public override void RemoveChild(WD_Object _object) {
+    public void RemoveChild(Object _object) {
         WD_State state= _object as WD_State;
         if(state == null) {
             Debug.LogError("Trying to remove an object that is not a state into FSM!");

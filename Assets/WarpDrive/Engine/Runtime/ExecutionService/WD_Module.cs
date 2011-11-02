@@ -54,12 +54,10 @@ public sealed class WD_Module : WD_Action {
         if(IsExecutable(obj)) {
             myExecuteQueue.Add(obj as WD_Action);
         }
-        base.AddChild(obj);
     }
     public void RemoveChild(Object obj) {
         if(IsExecutable(obj)) {
             myExecuteQueue.Remove(obj as WD_Action);
         }
-        base.RemoveChild(obj);
     }
 }
