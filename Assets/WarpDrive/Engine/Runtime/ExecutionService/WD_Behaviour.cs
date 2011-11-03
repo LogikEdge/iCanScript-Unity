@@ -41,7 +41,6 @@ public sealed class WD_Behaviour : MonoBehaviour {
     void OnDisable() {}
     // ----------------------------------------------------------------------
     void OnDestroy() {
-        RootNode.Dealloc();
     }
     
     
@@ -50,15 +49,12 @@ public sealed class WD_Behaviour : MonoBehaviour {
     // ----------------------------------------------------------------------
     // Called on every frame.
     void Update() {
-        RootNode.Update();
     }
     // Called on evry frame after all Update have been called.
     void LateUpdate() {
-        RootNode.LateUpdate();
     }
     // Fix-time update to be used instead of Update
     void FixedUpdate() {
-        RootNode.FixedUpdate();
     }
 
 }

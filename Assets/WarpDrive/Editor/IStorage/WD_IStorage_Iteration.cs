@@ -32,7 +32,7 @@ public partial class WD_IStorage {
         }
     }
     public void ForEach(Action<WD_EditorObject> fnc) {
-        Prelude.filterWith(WD.IsValid, fnc, EditorObjects);
+        Prelude.filterWith(IsValid, fnc, EditorObjects);
     }
     public void ForEachRecursive(WD_EditorObject parent, Action<WD_EditorObject> fnc) {
         ProcessUndoRedo();

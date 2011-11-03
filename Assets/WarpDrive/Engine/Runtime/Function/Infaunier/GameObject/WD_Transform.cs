@@ -15,7 +15,7 @@ public sealed class WD_Transform {
     // ----------------------------------------------------------------------
     [WD_Function]
     public void Evaluate() {
-        if(!IsValid) return;
+        if(!IsValid()) return;
         gameObject.transform.Translate(translation);
     }
 

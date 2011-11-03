@@ -3,7 +3,7 @@ using System.Collections;
 
 public class WD_EngineStrings {
     // Special node names.
-    public const string OnEnterModule        = "OnEnter";
+    public const string OnEntryModule        = "OnEntry";
     public const string OnUpdateModule       = "OnUpdate";
     public const string OnExitModule         = "OnExit";
     public const string TransitionEntryModule= "TransitionEntry";

@@ -14,14 +14,14 @@ public class WD_Module : WD_Action {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    public override void Evaluate() {}
-    public override void Execute() {
+    public override void Evaluate(int frameId) {}
+    public override void Execute(int frameId) {
         // Attempt to execute child functions.
         int maxTries= myExecuteQueue.Count; maxTries= 1+(maxTries*maxTries+maxTries)/2;
         for(; myQueueIdx < myExecuteQueue.Count && myNbOfTries < maxTries; ++myNbOfTries) {
             WD_Action action= myExecuteQueue[myQueueIdx];
-            action.Execute();            
-            if(!action.IsCurrent()) {
+            action.Execute(frameId);            
+            if(!action.IsCurrent(frameId)) {
                 // The function is not ready to execute so lets delay the execution.
                 myExecuteQueue.RemoveAt(myQueueIdx);
                 myExecuteQueue.Add(action);
@@ -31,17 +31,17 @@ public class WD_Module : WD_Action {
         }
         // Verify that the graph is not looping.
         if(myNbOfTries >= maxTries) {
-            Debug.LogError("Execution of graph is looping!!! "+myExecuteQueue[myQueueIdx].Name+":"+myExecuteQueue[myQueueIdx].TypeName+" is included in the loop. Please break the cycle and retry.");
+//            Debug.LogError("Execution of graph is looping!!! "+myExecuteQueue[myQueueIdx].name+":"+myExecuteQueue[myQueueIdx].TypeName+" is included in the loop. Please break the cycle and retry.");
         }
         // Reset iterators for next frame.
         myQueueIdx= 0;
         myNbOfTries= 0;
-        MarkAsCurrent();
+        MarkAsCurrent(frameId);
     }
 
     // ----------------------------------------------------------------------
     // Returns true if the object is an executable that we support.
-    bool IsExecutable(Object _object) {
+    bool IsExecutable(object _object) {
         return _object is WD_Action;
     }
     
@@ -49,12 +49,12 @@ public class WD_Module : WD_Action {
     // ======================================================================
     // CONNECTOR MANAGEMENT
     // ----------------------------------------------------------------------
-    public void AddChild(Object obj) {
+    public void AddChild(object obj) {
         if(IsExecutable(obj)) {
             myExecuteQueue.Add(obj as WD_Action);
         }
     }
-    public void RemoveChild(Object obj) {
+    public void RemoveChild(object obj) {
         if(IsExecutable(obj)) {
             myExecuteQueue.Remove(obj as WD_Action);
         }

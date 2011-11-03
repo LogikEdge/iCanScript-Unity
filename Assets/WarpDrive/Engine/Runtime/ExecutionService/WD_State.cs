@@ -2,19 +2,22 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class WD_State {
+public sealed class WD_State : WD_Object {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public WD_State     myEntryState    = null;
-    public WD_Action    myOnEntryAction = null;
-    public WD_Action    myOnUpdateAction= null;
-    public WD_Action    myOnExitAction  = null;
-
+    public WD_State             myEntryState    = null;
+    public WD_Action            myOnEntryAction = null;
+    public WD_Action            myOnUpdateAction= null;
+    public WD_Action            myOnExitAction  = null;
+    public WD_State             myParentState   = null;
+    public List<WD_State>       myChildren      = new List<WD_State>();
+    public List<WD_Transition>  myTransitions   = new List<WD_Transition>();
+    
     // ======================================================================
     // ACCESSOR
     // ----------------------------------------------------------------------
-    public WD_State  ParentState    { get { return Parent as WD_State; } }
+    public WD_State  ParentState    { get { return myParentState; } }
     public WD_State  EntryState     { get { return myEntryState; }     set { myEntryState= value; }}
     public WD_Action OnEntryAction  { get { return myOnEntryAction; }  set { myOnEntryAction= value; }}
     public WD_Action OnUpdateAction { get { return myOnUpdateAction; } set { myOnUpdateAction= value; }}
@@ -23,27 +26,23 @@ public sealed class WD_State {
     // ======================================================================
     // UPDATE
     // ----------------------------------------------------------------------
-    public void OnEntry() {
+    public void OnEntry(int frameId) {
         if(myOnEntryAction != null) {
-            myOnEntryAction.Execute();
+            myOnEntryAction.Execute(frameId);
         }
     }
-    public void OnUpdate() {
+    public void OnUpdate(int frameId) {
         if(myOnUpdateAction != null) {
-            myOnUpdateAction.Execute();
+            myOnUpdateAction.Execute(frameId);
         }
     }
-    public void OnExit() {
+    public void OnExit(int frameId) {
         if(myOnExitAction != null) {
-            myOnExitAction.Execute();
+            myOnExitAction.Execute(frameId);
         }
     }
-    public WD_State VerifyTransitions() {
-        foreach(var obj in this) {
-            WD_OutTransitionPort port= obj as WD_OutTransitionPort;
-            if(port != null && port.IsReady()) {
-                return port.TargetState;
-            }
+    public WD_State VerifyTransitions(int frameId) {
+        foreach(var transition in myTransitions) {
         }
         return null;
     }
@@ -51,13 +50,14 @@ public sealed class WD_State {
     // ======================================================================
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
-    public void AddChild(Object _object) {
-        Prelude.choice<WD_State, WD_TransitionEntry, WD_TransitionExit, WD_Module>(_object,
+    public void AddChild(WD_Object _object) {
+        Prelude.choice<WD_State, WD_Transition, WD_Module>(_object,
             (state)=> {
+                state.myParentState= this;
+                myChildren.Add(state);
             },
-            (transitionEntry)=> {
-            },
-            (transitionExit)=> {
+            (transition)=> {
+                myTransitions.Add(transition);
             },
             (module)=> {
                 if(module.Name == WD_EngineStrings.OnEntryModule) {
@@ -78,14 +78,14 @@ public sealed class WD_State {
             }
         );
     }
-    public void RemoveChild(Object _object) {
-        Prelude.choice<WD_State, WD_TransitionEntry, WD_TransitionExit, WD_Module>(_object,
+    public void RemoveChild(WD_Object _object) {
+        Prelude.choice<WD_State, WD_Transition, WD_Module>(_object,
             (state)=> {
                 if(state == myEntryState) myEntryState= null;
+                myChildren.Remove(state);
             },
-            (transitionEntry)=> {
-            },
-            (transitionExit)=> {
+            (transition)=> {
+                myTransitions.Remove(transition);
             },
             (module)=> {
                 if(module == myOnEntryAction) {

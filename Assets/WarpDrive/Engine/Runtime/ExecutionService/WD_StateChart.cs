@@ -6,8 +6,9 @@ public sealed class WD_StateChart : WD_Action {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    public  WD_State        myEntryState;
+    public  WD_State        myEntryState = null;
     private List<WD_State>  myActiveStack= new List<WD_State>();
+    public  List<WD_State>  myChildren   = new List<WD_State>();
     
     // ======================================================================
     // ACCESSORS
@@ -26,32 +27,32 @@ public sealed class WD_StateChart : WD_Action {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    public override void Evaluate() {
+    public override void Evaluate(int frameId) {
         // Process any active transition.
-        ProcessTransition();
+        ProcessTransition(frameId);
         // Make certain that at least one actibe state exists.
-        if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState);
+        if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState, frameId);
         // Execute state update functions.
         foreach(var state in myActiveStack) {
-            state.OnUpdate();
+            state.OnUpdate(frameId);
         }
     }
 
     // ----------------------------------------------------------------------
-    void ProcessTransition() {
+    void ProcessTransition(int frameId) {
         // Determine if a transition exists for one of the active states.
         WD_State newState= null;
         int end= myActiveStack.Count;
         for(int idx= 0; idx < end; ++idx) {
-            newState= myActiveStack[idx].VerifyTransitions();
+            newState= myActiveStack[idx].VerifyTransitions(frameId);
             if(newState != null) break;
         }
         if(newState != null && newState != ActiveState) {
-            MoveToState(newState);            
+            MoveToState(newState, frameId);            
         }
     }
     // ----------------------------------------------------------------------
-    void MoveToState(WD_State newState) {
+    void MoveToState(WD_State newState, int frameId) {
         int stackSize= myActiveStack.Count;
         // Determine transition parent node
         WD_State transitionParent= null;
@@ -76,7 +77,7 @@ public sealed class WD_StateChart : WD_Action {
         for(idx= stackSize-1; idx >= 0; --idx) {
             WD_State state= myActiveStack[idx];
             if(state == transitionParent) break;
-            state.OnExit();
+            state.OnExit(frameId);
         }
         int stableSize= idx+1;
         // Update active stack state.
@@ -91,28 +92,28 @@ public sealed class WD_StateChart : WD_Action {
         }
         // Execute entry functions.
         for(idx= stableSize; idx < newSize; ++idx) {
-            myActiveStack[idx].OnEntry();
+            myActiveStack[idx].OnEntry(frameId);
         }
     }
     
     // ======================================================================
     // CHILD MANAGEMENT
     // ----------------------------------------------------------------------
-    public void AddChild(Object _object) {
+    public void AddChild(WD_Object _object) {
         WD_State state= _object as WD_State;
         if(state == null) {
             Debug.LogError("Trying to add an object that is not a state into FSM!");
             return;
         }
-        base.AddChild(_object);
+        myChildren.Add(state);
     }
-    public void RemoveChild(Object _object) {
+    public void RemoveChild(WD_Object _object) {
         WD_State state= _object as WD_State;
         if(state == null) {
             Debug.LogError("Trying to remove an object that is not a state into FSM!");
             return;
         }
         if(state == myEntryState) myEntryState= null;
-        base.RemoveChild(_object);        
+        myChildren.Remove(state);
     }
 }
