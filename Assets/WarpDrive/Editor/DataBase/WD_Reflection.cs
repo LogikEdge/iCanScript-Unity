@@ -6,6 +6,12 @@ using System.Collections.Generic;
 
 public class WD_Reflection {
     // ----------------------------------------------------------------------
+    // Returns the default value of the given type.
+    public static object GetDefault(Type type) {
+       return type.IsValueType ? Activator.CreateInstance(type) : null;
+    }
+
+    // ----------------------------------------------------------------------
     // Returns the MethodInfo associated with the AddChild method.
     public static MethodInfo GetAddChildMethodInfo(object obj) {
         Type objType= obj.GetType();
