@@ -20,7 +20,7 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create Behaviour", true)]
 	public static bool ValidateCreateBehaviour() {
 		if(Selection.activeTransform != null) {
-			WD_Behaviour storage = Selection.activeGameObject.GetComponent<WD_Behaviour>();
+			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
 			return storage == null;
 		}
 		return false;
@@ -43,7 +43,7 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create Module Library", true)]
 	public static bool ValidateCreateModuleLibrary() {
 		if(Selection.activeTransform != null) {
-			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_ModuleLibrary>();
+			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
 			return storage == null;
 		}
 		return false;
@@ -66,12 +66,17 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create State Chart Library", true)]
 	public static bool ValidateCreateStateChartLibrary() {
 		if(Selection.activeTransform != null) {
-			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_StateChartLibrary>();
+			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
 			return storage == null;
 		}
 		return false;
 	}
-
+    
+    // ----------------------------------------------------------------------
+    bool IsStorageAlreadyPresent() {
+        return false;
+    }
+    
     // ======================================================================
 	// WarpDrive Window.
 	[MenuItem("Window/WarpDrive Editor")]
