@@ -4,14 +4,14 @@ using System.Collections.Generic;
 
 public sealed class WD_StateChart : WD_Action {
     // ======================================================================
-    // PROPERTIES
+    // Properties
     // ----------------------------------------------------------------------
     public  WD_State        myEntryState = null;
     private List<WD_State>  myActiveStack= new List<WD_State>();
     public  List<WD_State>  myChildren   = new List<WD_State>();
     
     // ======================================================================
-    // ACCESSORS
+    // Accessors
     // ----------------------------------------------------------------------
     public WD_State EntryState {
         get { return myEntryState; }
@@ -25,7 +25,12 @@ public sealed class WD_StateChart : WD_Action {
     }
     
     // ======================================================================
-    // EXECUTION
+    // Creation/Destruction
+    // ----------------------------------------------------------------------
+    public WD_StateChart(string name) : base(name) {}
+    
+    // ======================================================================
+    // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         // Process any active transition.
@@ -98,7 +103,7 @@ public sealed class WD_StateChart : WD_Action {
     }
     
     // ======================================================================
-    // CHILD MANAGEMENT
+    // Child Management
     // ----------------------------------------------------------------------
     public void AddChild(WD_Object _object) {
         WD_State state= _object as WD_State;

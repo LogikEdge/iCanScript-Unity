@@ -32,7 +32,7 @@ public class WD_Function : WD_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public WD_Function(MethodInfo methodInfo, WD_Connection[] connections, object obj= null) {
+    public WD_Function(string name, MethodInfo methodInfo, WD_Connection[] connections, object obj= null) : base(name) {
         myTargetObject= obj;
         myMethodInfo= methodInfo;
         myParameters= new object[methodInfo.GetParameters().Length];

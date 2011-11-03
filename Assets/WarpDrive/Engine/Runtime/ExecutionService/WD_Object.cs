@@ -8,4 +8,8 @@ public class WD_Object {
     public string Name     { get; set; }
     public string TypeName { get { return GetType().Name; }}
     
+    // ======================================================================
+    // Creation/Destruction
+    // ----------------------------------------------------------------------
+    public WD_Object(string name) { Name= name; }
 }

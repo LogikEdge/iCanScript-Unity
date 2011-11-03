@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is used to edit WD_Behaviour components.
-[CustomEditor (typeof (WD_Storage))]
 public class WD_Inspector : Editor {
     // ======================================================================
     // Constants.

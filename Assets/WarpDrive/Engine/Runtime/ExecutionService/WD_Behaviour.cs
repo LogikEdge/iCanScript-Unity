@@ -17,6 +17,15 @@ public sealed class WD_Behaviour : WD_Storage {
     // ----------------------------------------------------------------------
     
     // ----------------------------------------------------------------------
+    void Reset() {
+        myUpdateAction      = null;
+        myLateUpdateAction  = null;
+        myFixedUpdateAction = null;
+        myUpdateFrameId     = 0;
+        myFixedUpdateFrameId= 0;        
+    }
+    
+    // ----------------------------------------------------------------------
     // This function should be used to find references to other objects.
     // Awake is invoked after all the objects are initialized.  Awake replaces
     // the constructor.
@@ -66,6 +75,7 @@ public sealed class WD_Behaviour : WD_Storage {
     public void AddChild(object obj) {
         WD_Action action= obj as WD_Action;
         if(action == null) return;
+        Debug.Log("Adding: "+action.Name);
         switch(action.Name) {
             case WD_EngineStrings.UpdateAction: {
                 myUpdateAction= action;
@@ -85,6 +95,7 @@ public sealed class WD_Behaviour : WD_Storage {
             }
         }
     }
+    // ----------------------------------------------------------------------
     public void RemoveChild(object obj) {
         WD_Action action= obj as WD_Action;
         if(action == null) return;
@@ -106,5 +117,9 @@ public sealed class WD_Behaviour : WD_Storage {
                 break;
             }
         }        
+    }
+    // ----------------------------------------------------------------------
+    public void ClearGeneratedCode() {
+        Reset();
     }
 }

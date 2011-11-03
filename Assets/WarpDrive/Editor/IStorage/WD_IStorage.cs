@@ -24,13 +24,18 @@ public partial class WD_IStorage {
         if(Storage != storage) {
             myIsDirty= true;
             Storage= storage;
-            GenerateEditorData();            
+            GenerateInternalData();            
         }
     }
     public void Reset() {
         myIsDirty= true;
         Storage= null;
         TreeCache= null;
+    }
+    // ----------------------------------------------------------------------
+    void GenerateInternalData() {
+        GenerateEditorData();
+        GenerateDynamicCode();
     }
     // ----------------------------------------------------------------------
     void GenerateEditorData() {

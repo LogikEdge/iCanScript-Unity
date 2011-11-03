@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public sealed class WD_State : WD_Object {
     // ======================================================================
-    // PROPERTIES
+    // Properties
     // ----------------------------------------------------------------------
     public WD_State             myEntryState    = null;
     public WD_Action            myOnEntryAction = null;
@@ -15,7 +15,7 @@ public sealed class WD_State : WD_Object {
     public List<WD_Transition>  myTransitions   = new List<WD_Transition>();
     
     // ======================================================================
-    // ACCESSOR
+    // Accessors
     // ----------------------------------------------------------------------
     public WD_State  ParentState    { get { return myParentState; } }
     public WD_State  EntryState     { get { return myEntryState; }     set { myEntryState= value; }}
@@ -24,7 +24,12 @@ public sealed class WD_State : WD_Object {
     public WD_Action OnExitAction   { get { return myOnExitAction; }   set { myOnExitAction= value; }}
 
     // ======================================================================
-    // UPDATE
+    // Creation/Destruction
+    // ----------------------------------------------------------------------
+    public WD_State(string name) : base(name) {}
+    
+    // ======================================================================
+    // Update
     // ----------------------------------------------------------------------
     public void OnEntry(int frameId) {
         if(myOnEntryAction != null) {
@@ -48,7 +53,7 @@ public sealed class WD_State : WD_Object {
     }
 
     // ======================================================================
-    // CHILD MANAGEMENT
+    // Child Management
     // ----------------------------------------------------------------------
     public void AddChild(WD_Object _object) {
         Prelude.choice<WD_State, WD_Transition, WD_Module>(_object,

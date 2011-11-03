@@ -9,9 +9,9 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create Behaviour")]
 	public static void CreateBehaviour() {
 		// Create State Chart component.
-		WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
+		WD_Behaviour storage = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<WD_Storage>();
+			storage= Selection.activeGameObject.AddComponent<WD_Behaviour>();
             WD_IStorage iStorage= new WD_IStorage(storage);
             iStorage.CreateBehaviour();
             iStorage= null;
@@ -20,7 +20,7 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create Behaviour", true)]
 	public static bool ValidateCreateBehaviour() {
 		if(Selection.activeTransform != null) {
-			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
+			WD_Behaviour storage = Selection.activeGameObject.GetComponent<WD_Behaviour>();
 			return storage == null;
 		}
 		return false;

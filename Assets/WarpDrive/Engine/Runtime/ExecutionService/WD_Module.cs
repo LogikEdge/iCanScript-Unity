@@ -4,15 +4,19 @@ using System.Collections.Generic;
 
 public class WD_Module : WD_Action {
     // ======================================================================
-    // PROPERTIES
+    // Properties
     // ----------------------------------------------------------------------
     private List<WD_Action> myExecuteQueue= new List<WD_Action>();
     private int             myQueueIdx= 0;
     private int             myNbOfTries= 0;
     
-
     // ======================================================================
-    // EXECUTION
+    // Creation/Destruction
+    // ----------------------------------------------------------------------
+    public WD_Module(string name) : base(name) {}
+    
+    // ======================================================================
+    // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         // Attempt to execute child functions.
