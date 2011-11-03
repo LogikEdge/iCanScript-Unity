@@ -75,7 +75,6 @@ public sealed class WD_Behaviour : WD_Storage {
     public void AddChild(object obj) {
         WD_Action action= obj as WD_Action;
         if(action == null) return;
-        Debug.Log("Adding: "+action.Name);
         switch(action.Name) {
             case WD_EngineStrings.UpdateAction: {
                 myUpdateAction= action;

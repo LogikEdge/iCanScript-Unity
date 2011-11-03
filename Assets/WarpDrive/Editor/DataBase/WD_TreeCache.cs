@@ -15,12 +15,14 @@ public class WD_TreeCache {
         public bool         IsValid= false;
         public int          ParentId= -1;
         public List<int>    Children= new List<int>();
+        public object       RuntimeObject= null;
 
         public TreeNode()  { Reset(); }
         public void Reset() {
             IsValid= false;
             ParentId= -1;
             Children.Clear();
+            RuntimeObject= null;
         }
         public void AddChild(int id, TreeNode toAdd) {
             if(Prelude.elem(id, Children.ToArray())) return;

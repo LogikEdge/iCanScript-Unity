@@ -24,8 +24,9 @@ public class WD_EditorObject {
 
     // Port specific attributes ---------------------------------------------
     public enum EdgeEnum { None, Top, Bottom, Right, Left };
-    public EdgeEnum         Edge      = EdgeEnum.None;
-    public int              Source= -1;
+    public EdgeEnum     Edge     = EdgeEnum.None;
+    public int          Source   = -1;
+    public int          PortIndex= -1;
 
     // Non-persistant properties --------------------------------------------
     [System.NonSerialized] public bool IsBeingDragged= false;

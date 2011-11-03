@@ -38,7 +38,34 @@ public partial class WD_IStorage {
                         case WD_ObjectTypeEnum.Function: {
                             WD_FunctionDesc desc= WD_DataBase.GetDescriptor(edChild.DescCompany, edChild.DescPackage, edChild.DescName) as WD_FunctionDesc;
                             if(desc != null) {
-                                rtChild= new WD_Function(edChild.Name, desc.Method, new WD_Connection[0], null);
+                                object[] parameters= new object[desc.ParameterTypes.Length];
+                                WD_Connection[] connections= new WD_Connection[desc.ParameterTypes.Length];
+                                for(int i= 0; i < desc.ParameterTypes.Length; ++i) {
+                                    if(desc.ParameterInOuts[i]) {  // outputs
+                                        parameters[i]= null;
+                                        connections[i]= new WD_Connection(null, 0);                                                                                
+                                    } else {  // inputs
+                                        parameters[i]= WD_Reflection.GetDefault(desc.ParameterTypes[i]);
+                                        WD_Connection connection= new WD_Connection(null, -1);
+                                        ForEachChildPort(edChild,
+                                            p=> {
+                                                if(p.PortIndex == i) {
+                                                    WD_EditorObject sourcePort= GetSource(p);
+                                                    if(sourcePort != null) {
+                                                        WD_EditorObject sourceNode= GetParent(sourcePort);
+                                                        WD_Function rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as WD_Function;
+                                                        connection= new WD_Connection(rtSourceNode, sourcePort.PortIndex);
+                                                        Debug.Log("Making connection to: "+rtSourceNode.Name+":"+sourcePort.PortIndex);
+                                                    }
+                                                    return true;
+                                                }
+                                                return false;
+                                            }
+                                        );
+                                        connections[i]= connection;
+                                    }
+                                }
+                                rtChild= new WD_Function(edChild.Name, desc.Method, parameters, connections, null);
                             } else {
                                 Debug.LogWarning("Unable to locate reflection information for: "+edChild.DescCompany+":"+edChild.DescPackage+":"+edChild.DescName);
                             }
@@ -56,6 +83,7 @@ public partial class WD_IStorage {
                         }
                     }
                     if(rtChild != null) {
+                        TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                         WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                         GenerateDynamicNodeCode(edChild, rtChild);
                     }

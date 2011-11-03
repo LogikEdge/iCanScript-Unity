@@ -323,10 +323,12 @@ public partial class WD_IStorage {
         // Create input/output ports.
         for(int i= 0; i < desc.ParameterNames.Length; ++i) {
             WD_ObjectTypeEnum portType= desc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
-            CreatePort(desc.ParameterNames[i], id, desc.ParameterTypes[i], portType);
+            WD_EditorObject port= CreatePort(desc.ParameterNames[i], id, desc.ParameterTypes[i], portType);
+            port.PortIndex= i;
         }
         if(desc.ReturnType != null) {
-            CreatePort(desc.ReturnName, id, desc.ReturnType, WD_ObjectTypeEnum.OutFunctionPort);
+            WD_EditorObject port= CreatePort(desc.ReturnName, id, desc.ReturnType, WD_ObjectTypeEnum.OutFunctionPort);
+            port.PortIndex= desc.ParameterNames.Length;
         }
         return this[id];
     }
