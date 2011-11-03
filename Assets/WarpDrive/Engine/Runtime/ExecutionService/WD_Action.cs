@@ -7,16 +7,14 @@ using System.Collections;
 // indicator is the bases for the execution synchronization.
 public abstract class WD_Action : WD_Object {
     // ======================================================================
-    // PROPERTIES
+    // Properties
     // ----------------------------------------------------------------------
     protected int  myFrameId= 0;
-    
 
     // ======================================================================
-    // EXECUTION
+    // Execution
     // ----------------------------------------------------------------------
-    public  abstract void Evaluate(int frameId);
-    public  virtual  void Execute(int frameId)  { Evaluate(frameId); MarkAsCurrent(frameId); }
+    public abstract void Execute(int frameId);
     
     // ----------------------------------------------------------------------
     public bool IsCurrent(int frameId)     { return myFrameId == frameId; }

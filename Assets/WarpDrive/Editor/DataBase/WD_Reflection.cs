@@ -9,7 +9,7 @@ public class WD_Reflection {
     // Returns the MethodInfo associated with the AddChild method.
     public static MethodInfo GetAddChildMethodInfo(object obj) {
         Type objType= obj.GetType();
-        MethodInfo methodInfo= objType.GetMethod("AddChild",BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        MethodInfo methodInfo= objType.GetMethod(WD_EditorStrings.AddChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         if(methodInfo == null) return null;
         ParameterInfo[] parameters= methodInfo.GetParameters();
         if(parameters.Length != 1) return null;
@@ -25,7 +25,7 @@ public class WD_Reflection {
     // Returns the MethodInfo associated with the RemoveChild method.
     public static MethodInfo GetRemoveChildMethodInfo(object obj) {
         Type objType= obj.GetType();
-        MethodInfo methodInfo= objType.GetMethod("RemoveChild",BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        MethodInfo methodInfo= objType.GetMethod(WD_EditorStrings.RemoveChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         if(methodInfo == null) return null;
         ParameterInfo[] parameters= methodInfo.GetParameters();
         if(parameters.Length != 1) return null;

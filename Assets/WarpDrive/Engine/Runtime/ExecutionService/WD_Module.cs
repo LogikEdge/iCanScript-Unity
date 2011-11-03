@@ -14,7 +14,6 @@ public class WD_Module : WD_Action {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    public override void Evaluate(int frameId) {}
     public override void Execute(int frameId) {
         // Attempt to execute child functions.
         int maxTries= myExecuteQueue.Count; maxTries= 1+(maxTries*maxTries+maxTries)/2;

@@ -15,6 +15,6 @@ public class WD_Storage : MonoBehaviour {
 
     // ----------------------------------------------------------------------
 	// We do not want this behaviour to run.
-	void Start () { enabled= false; }
+	void Start () { /*enabled= false;*/ }
 	
 }

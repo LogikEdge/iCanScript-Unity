@@ -27,7 +27,7 @@ public sealed class WD_StateChart : WD_Action {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    public override void Evaluate(int frameId) {
+    public override void Execute(int frameId) {
         // Process any active transition.
         ProcessTransition(frameId);
         // Make certain that at least one actibe state exists.
@@ -36,6 +36,7 @@ public sealed class WD_StateChart : WD_Action {
         foreach(var state in myActiveStack) {
             state.OnUpdate(frameId);
         }
+        MarkAsCurrent(frameId);
     }
 
     // ----------------------------------------------------------------------
