@@ -31,9 +31,9 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create Module Library")]
 	public static void CreateModuleLibrary() {
 		// Create State Chart component.
-		WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
+		WD_Storage storage = Selection.activeGameObject.GetComponent<WD_ModuleLibrary>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<WD_Storage>();
+			storage= Selection.activeGameObject.AddComponent<WD_ModuleLibrary>();
             storage.enabled= false;
             WD_IStorage iStorage= new WD_IStorage(storage);
             iStorage.CreateModuleLibrary();
@@ -43,7 +43,7 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create Module Library", true)]
 	public static bool ValidateCreateModuleLibrary() {
 		if(Selection.activeTransform != null) {
-			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
+			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_ModuleLibrary>();
 			return storage == null;
 		}
 		return false;
@@ -54,9 +54,9 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create State Chart Library")]
 	public static void CreateStateChartLibrary() {
 		// Create State Chart component.
-		WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
+		WD_Storage storage = Selection.activeGameObject.GetComponent<WD_StateChartLibrary>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<WD_Storage>();
+			storage= Selection.activeGameObject.AddComponent<WD_StateChartLibrary>();
             storage.enabled= false;
             WD_IStorage iStorage= new WD_IStorage(storage);
             iStorage.CreateStateChartLibrary();
@@ -66,7 +66,7 @@ public class WD_Menu {
 	[MenuItem("WarpDrive/Create State Chart Library", true)]
 	public static bool ValidateCreateStateChartLibrary() {
 		if(Selection.activeTransform != null) {
-			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
+			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_StateChartLibrary>();
 			return storage == null;
 		}
 		return false;

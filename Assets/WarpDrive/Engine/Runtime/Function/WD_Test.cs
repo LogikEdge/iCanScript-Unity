@@ -22,6 +22,8 @@ public sealed class WD_Test {
     [WD_Conversion] public static Vector2 Conversion(float f)   { return new Vector2(f,0); }
     [WD_Conversion] public static Vector3 Conversion(Vector2 v) { return new Vector3(v.x,v.y,0); }
     [WD_Conversion] public static Vector2 Conversion(Vector3 v) { return new Vector2(v.x,v.y); }
+
+    [WD_Function] public static void PrintWorking() { Debug.Log("Working"); }
 }
 
 [WD_Class(Company="NewCompany", Package="Test", Icon="WD_CalculatorIcon.psd")]

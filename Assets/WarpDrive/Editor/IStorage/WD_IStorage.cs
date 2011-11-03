@@ -237,16 +237,22 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_BaseDesc desc) {
+        WD_EditorObject obj= null;
         if(desc is WD_ClassDesc) {
-            return CreateFunction(parentId, initialPos, desc as WD_ClassDesc);
+            obj= CreateFunction(parentId, initialPos, desc as WD_ClassDesc);
         }
         else if(desc is WD_FunctionDesc) {
-            return CreateFunction(parentId, initialPos, desc as WD_FunctionDesc);
+            obj= CreateFunction(parentId, initialPos, desc as WD_FunctionDesc);
         }
         else if(desc is WD_ConversionDesc) {
-            return CreateFunction(parentId, initialPos, desc as WD_ConversionDesc);
+            obj= CreateFunction(parentId, initialPos, desc as WD_ConversionDesc);
         }
-        return null;
+        if(obj != null) {
+            obj.DescCompany= desc.Company;
+            obj.DescPackage= desc.Package;
+            obj.DescName   = desc.Name;
+        }
+        return obj;
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ClassDesc desc) {

@@ -36,6 +36,12 @@ public partial class WD_IStorage {
                             break;
                         }
                         case WD_ObjectTypeEnum.Function: {
+                            WD_FunctionDesc desc= WD_DataBase.GetDescriptor(edChild.DescCompany, edChild.DescPackage, edChild.DescName) as WD_FunctionDesc;
+                            if(desc != null) {
+                                rtChild= new WD_Function(edChild.Name, desc.Method, new WD_Connection[0], null);
+                            } else {
+                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.DescCompany+":"+edChild.DescPackage+":"+edChild.DescName);
+                            }
                             break;
                         }
                         case WD_ObjectTypeEnum.Conversion: {

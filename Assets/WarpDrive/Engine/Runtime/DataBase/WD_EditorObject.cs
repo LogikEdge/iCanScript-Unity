@@ -8,11 +8,14 @@ public class WD_EditorObject {
     // Properties
     // ----------------------------------------------------------------------
     public WD_ObjectTypeEnum    ObjectType    = WD_ObjectTypeEnum.Unknown;
-    public WD_DisplayOptionEnum DisplayOption = WD_DisplayOptionEnum.Normal;
-    public string               IconGUID      = null;
     public int                  InstanceId    = -1;
     public int                  ParentId      = -1;
     public string               QualifiedType = "";
+    public string               DescCompany   = null;
+    public string               DescPackage   = null;
+    public string               DescName      = null;
+    public WD_DisplayOptionEnum DisplayOption = WD_DisplayOptionEnum.Normal;
+    public string               IconGUID      = null;
     public string               RawName       = "";
     public bool                 IsNameEditable= true;
     public string               RawToolTip    = null;
@@ -46,11 +49,14 @@ public class WD_EditorObject {
     // ----------------------------------------------------------------------
     public void Reset() {
         ObjectType= WD_ObjectTypeEnum.Unknown;
-        DisplayOption= WD_DisplayOptionEnum.Normal;
-        IconGUID= null;
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
+        DescCompany= null;
+        DescPackage= null;
+        DescName= null;
+        DisplayOption= WD_DisplayOptionEnum.Normal;
+        IconGUID= null;
         Name= "";
         IsDirty= false;
         LocalPosition= new Rect(0,0,0,0);
