@@ -65,6 +65,44 @@ public class WD_DataBase {
         }
         return null;
     }
+    // ----------------------------------------------------------------------
+    // Returns a string that uniquely describes the descriptor.
+    public static string ToString(WD_BaseDesc desc) {
+        string result= desc.Company+":"+desc.Package+":"+desc.Name+"<";
+        if(desc is WD_FunctionDesc) {
+            WD_FunctionDesc funcDesc= desc as WD_FunctionDesc;
+            foreach(var type in funcDesc.ParameterTypes) {
+                result+= type.ToString()+",";
+            }
+            result+= funcDesc.ReturnType != null ? funcDesc.ReturnType.ToString() : typeof(void).ToString();
+        } else if(desc is WD_ConversionDesc) {
+            WD_ConversionDesc convDesc= desc as WD_ConversionDesc;
+            result+= convDesc.FromType.ToString()+","+convDesc.ToType.ToString();
+        }
+        return result+">";
+    }
+    // ----------------------------------------------------------------------
+    // Returns the BaseDesc associated with the given string.
+    public static WD_BaseDesc FromString(string encoded) {
+        foreach(var desc in Functions) {
+            if(desc.ToString() == encoded) return desc;
+        }
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    // Decodes the string into its constituants.
+    void DecodeString(string encoded, out string company, out string package, out string name, out string[] parameters) {
+        int end= encoded.IndexOf(':');
+        company= encoded.Substring(0, end);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        end= encoded.IndexOf(':');
+        package= encoded.Substring(0, end);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        end= encoded.IndexOf('<');
+        name= encoded.Substring(0, end);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        parameters= new string[0];
+    }
     
     // ======================================================================
     // Container management functions

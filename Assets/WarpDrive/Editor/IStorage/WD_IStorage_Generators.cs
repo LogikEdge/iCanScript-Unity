@@ -26,14 +26,23 @@ public partial class WD_IStorage {
                     switch(edChild.ObjectType) {
                         case WD_ObjectTypeEnum.Module: {
                             rtChild= new WD_Module(edChild.Name);
+                            TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
+                            WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
+                            GenerateDynamicNodeCode(edChild, rtChild);
                             break;
                         }
                         case WD_ObjectTypeEnum.StateChart: {
                             rtChild= new WD_StateChart(edChild.Name);
+                            TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
+                            WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
+                            GenerateDynamicNodeCode(edChild, rtChild);
                             break;
                         }
                         case WD_ObjectTypeEnum.State: {
                             rtChild= new WD_State(edChild.Name);
+                            TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
+                            WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
+                            GenerateDynamicNodeCode(edChild, rtChild);
                             break;
                         }
                         case WD_ObjectTypeEnum.Function: {
@@ -67,6 +76,8 @@ public partial class WD_IStorage {
                                     }
                                 }
                                 rtChild= new WD_Function(edChild.Name, desc.Method, parameters, connections, null);
+                                TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
+                                WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                             } else {
                                 Debug.LogWarning("Unable to locate reflection information for: "+edChild.DescCompany+":"+edChild.DescPackage+":"+edChild.DescName);
                             }
@@ -94,6 +105,8 @@ public partial class WD_IStorage {
                                     }
                                 );
                                 rtChild= new WD_Function(edChild.Name, desc.Method, parameters, connections, null);
+                                TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
+                                WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                             } else {
                                 Debug.LogWarning("Unable to locate reflection information for: "+edChild.DescCompany+":"+edChild.DescPackage+":"+edChild.DescName);
                             }
@@ -106,11 +119,6 @@ public partial class WD_IStorage {
                             Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
                             break;
                         }
-                    }
-                    if(rtChild != null) {
-                        TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
-                        WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
-                        GenerateDynamicNodeCode(edChild, rtChild);
                     }
                 }
             }

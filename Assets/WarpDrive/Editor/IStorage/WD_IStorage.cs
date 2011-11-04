@@ -238,6 +238,7 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_BaseDesc desc) {
+        Debug.Log(WD_DataBase.ToString(desc));
         WD_EditorObject obj= null;
         if(desc is WD_ClassDesc) {
             obj= CreateFunction(parentId, initialPos, desc as WD_ClassDesc);
