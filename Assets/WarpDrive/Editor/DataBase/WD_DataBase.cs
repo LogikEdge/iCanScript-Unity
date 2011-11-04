@@ -72,12 +72,12 @@ public class WD_DataBase {
         if(desc is WD_FunctionDesc) {
             WD_FunctionDesc funcDesc= desc as WD_FunctionDesc;
             foreach(var type in funcDesc.ParameterTypes) {
-                result+= type.AssemblyQualifiedName+",";
+                result+= type.AssemblyQualifiedName+";";
             }
             result+= funcDesc.ReturnType != null ? funcDesc.ReturnType.AssemblyQualifiedName : typeof(void).ToString();
         } else if(desc is WD_ConversionDesc) {
             WD_ConversionDesc convDesc= desc as WD_ConversionDesc;
-            result+= convDesc.FromType.AssemblyQualifiedName+","+convDesc.ToType.AssemblyQualifiedName;
+            result+= convDesc.FromType.AssemblyQualifiedName+";"+convDesc.ToType.AssemblyQualifiedName;
         }
         return result+">{}";
     }
@@ -91,8 +91,9 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Decodes the string into its constituants.
-    void ParseDescriptorString(string encoded, out string company, out string package,
-                               out Type classType, out string name, out Type[] parameters, out string[] children) {
+    public static void ParseDescriptorString(string encoded, out string company, out string package,
+                                             out Type classType, out string name,
+                                             out Type[] parameters, out string[] children) {
         // company
         int end= encoded.IndexOf(':');
         company= encoded.Substring(0, end);
@@ -120,8 +121,23 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Extracts the type of the parameters from the given string.
-    Type[] ParseParameters(string paramStr) {
-        return new Type[0];
+    static Type[] ParseParameters(string paramStr) {
+        List<Type>  parameters= new List<Type>();
+        int end= 0;
+        do {
+            end= paramStr.IndexOf(';');
+            if(end < 0) end= paramStr.Length;
+            if(end > 0) {
+                parameters.Add(Type.GetType(paramStr.Substring(0, end)));
+                if(end != paramStr.Length) {
+                    paramStr= paramStr.Substring(end+1, paramStr.Length-end-1);                    
+                } else {
+                    paramStr= "";
+                }
+            }
+        }
+        while(end > 0);
+        return parameters.ToArray();
     }
     
     // ======================================================================

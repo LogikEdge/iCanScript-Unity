@@ -47,6 +47,7 @@ public partial class WD_IStorage {
                         }
                         case WD_ObjectTypeEnum.Function: {
                             WD_FunctionDesc desc= WD_DataBase.FromString(edChild.Descriptor) as WD_FunctionDesc;
+                            ParsingTest(edChild.Descriptor);
                             if(desc != null) {
                                 object[] parameters= new object[desc.ParameterTypes.Length];
                                 WD_Connection[] connections= new WD_Connection[desc.ParameterTypes.Length];
@@ -123,5 +124,21 @@ public partial class WD_IStorage {
                 }
             }
         );
+    }
+
+    void ParsingTest(string descStr) {
+        string company;
+        string package;
+        Type   classType;
+        string name;
+        Type[] parameters;
+        string[] children;
+        WD_DataBase.ParseDescriptorString(descStr,out company, out package, out classType, out name, out parameters, out children);
+        Debug.Log("Parsing: "+descStr);
+        Debug.Log("Parsing result:");
+        Debug.Log("Company= "+company+" Package= "+package+" ClassType= "+classType.ToString()+" Name= "+name);
+        string paramStr= "";
+        foreach(var t in parameters) paramStr+= t.ToString()+";";
+        Debug.Log("Parameters= "+paramStr);
     }
 }
