@@ -46,7 +46,7 @@ public partial class WD_IStorage {
                             break;
                         }
                         case WD_ObjectTypeEnum.Function: {
-                            WD_FunctionDesc desc= WD_DataBase.GetDescriptor(edChild.DescCompany, edChild.DescPackage, edChild.DescName) as WD_FunctionDesc;
+                            WD_FunctionDesc desc= WD_DataBase.FromString(edChild.Descriptor) as WD_FunctionDesc;
                             if(desc != null) {
                                 object[] parameters= new object[desc.ParameterTypes.Length];
                                 WD_Connection[] connections= new WD_Connection[desc.ParameterTypes.Length];
@@ -79,12 +79,12 @@ public partial class WD_IStorage {
                                 TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                                 WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                             } else {
-                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.DescCompany+":"+edChild.DescPackage+":"+edChild.DescName);
+                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.Descriptor);
                             }
                             break;
                         }
                         case WD_ObjectTypeEnum.Conversion: {
-                            WD_ConversionDesc desc= WD_DataBase.GetDescriptor(edChild.DescCompany, edChild.DescPackage, edChild.DescName) as WD_ConversionDesc;
+                            WD_ConversionDesc desc= WD_DataBase.FromString(edChild.Descriptor) as WD_ConversionDesc;
                             if(desc != null) {
                                 object[] parameters= new object[1];
                                 parameters[0]= WD_Reflection.GetDefault(desc.FromType);                                            
@@ -108,7 +108,7 @@ public partial class WD_IStorage {
                                 TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                                 WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                             } else {
-                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.DescCompany+":"+edChild.DescPackage+":"+edChild.DescName);
+                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.Descriptor);
                             }
                             break;
                         }

@@ -11,9 +11,7 @@ public class WD_EditorObject {
     public int                  InstanceId    = -1;
     public int                  ParentId      = -1;
     public string               QualifiedType = "";
-    public string               DescCompany   = null;
-    public string               DescPackage   = null;
-    public string               DescName      = null;
+    public string               Descriptor    = null;
     public WD_DisplayOptionEnum DisplayOption = WD_DisplayOptionEnum.Normal;
     public string               IconGUID      = null;
     public string               RawName       = "";
@@ -53,9 +51,7 @@ public class WD_EditorObject {
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
-        DescCompany= null;
-        DescPackage= null;
-        DescName= null;
+        Descriptor= null;
         DisplayOption= WD_DisplayOptionEnum.Normal;
         IconGUID= null;
         Name= "";

@@ -17,4 +17,7 @@ public abstract class WD_BaseDesc {
         ClassType= classType;
         IconPath = icon;
     }    
+    public override string ToString() {
+        return WD_DataBase.ToString(this);
+    }
 }

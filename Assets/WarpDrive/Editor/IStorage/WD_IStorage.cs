@@ -238,7 +238,6 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_BaseDesc desc) {
-        Debug.Log(WD_DataBase.ToString(desc));
         WD_EditorObject obj= null;
         if(desc is WD_ClassDesc) {
             obj= CreateFunction(parentId, initialPos, desc as WD_ClassDesc);
@@ -248,11 +247,6 @@ public partial class WD_IStorage {
         }
         else if(desc is WD_ConversionDesc) {
             obj= CreateFunction(parentId, initialPos, desc as WD_ConversionDesc);
-        }
-        if(obj != null) {
-            obj.DescCompany= desc.Company;
-            obj.DescPackage= desc.Package;
-            obj.DescName   = desc.Name;
         }
         return obj;
     }
@@ -265,6 +259,7 @@ public partial class WD_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
+        this[id].Descriptor= desc.ToString();
         // Create field ports
         for(int i= 0; i < desc.FieldNames.Length; ++i) {
             WD_ObjectTypeEnum portType= desc.FieldInOuts[i] ? WD_ObjectTypeEnum.OutFieldPort : WD_ObjectTypeEnum.InFieldPort;
@@ -320,8 +315,10 @@ public partial class WD_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
+        this[id].Descriptor= desc.ToString();
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null) this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.FunctionIcon, this);
+        
         // Create input/output ports.
         for(int i= 0; i < desc.ParameterNames.Length; ++i) {
             WD_ObjectTypeEnum portType= desc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
@@ -344,6 +341,7 @@ public partial class WD_IStorage {
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
+        this[id].Descriptor= desc.ToString();
         // Create input/output ports.
         CreatePort(desc.FromType.Name, id, desc.FromType, WD_ObjectTypeEnum.InFunctionPort);
         CreatePort(desc.ToType.Name,   id, desc.ToType,   WD_ObjectTypeEnum.OutFunctionPort);
