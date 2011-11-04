@@ -165,12 +165,13 @@ public class WD_DataBase {
     // Adds an execution function (no context).
     public static void AddFunction(string company, string package, string classToolTip, Type classType, // Class info
                                    string methodName,                                                   // Function info
-                                   string[] paramNames, Type[] paramTypes, bool[] paramInOuts,          // Parameters info
+                                   string[] paramNames, Type[] paramTypes,                              // Parameter info
+                                   bool[] paramInOuts, object[] paramDefaults,
                                    string retName, Type retType,                                        // Return value info
                                    string toolTip, string icon, MethodInfo methodInfo) {
         WD_FunctionDesc fd= new WD_FunctionDesc(company, package, classToolTip, classType,
                                                 methodName, retName, retType, toolTip, icon,
-                                                paramNames, paramTypes, paramInOuts,
+                                                paramNames, paramTypes, paramInOuts, paramDefaults,
                                                 methodInfo);
         Functions.Add(fd);
     }

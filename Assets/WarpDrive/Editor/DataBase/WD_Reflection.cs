@@ -297,11 +297,14 @@ public class WD_Reflection {
             retName= null;
         }
         // Parse parameters.
-        string[] paramNames= ParseParameterNames(method);
-        Type[]   paramTypes= ParseParameterTypes(method);
-        bool[]   paramInOut= ParseParameterInOuts(method);
+        string[] paramNames   = ParseParameterNames(method);
+        Type[]   paramTypes   = ParseParameterTypes(method);
+        bool[]   paramInOut   = ParseParameterInOuts(method);
+        object[] paramDefaults= ParseParameterDefaults(method);
 
-        WD_DataBase.AddFunction(company, package, classToolTip, classType, methodName, paramNames, paramTypes, paramInOut, retName, retType, toolTip, icon, method);
+        WD_DataBase.AddFunction(company, package, classToolTip, classType, methodName,
+                                paramNames, paramTypes, paramInOut, paramDefaults,
+                                retName, retType, toolTip, icon, method);
     }
     // ----------------------------------------------------------------------
     static string[] ParseParameterNames(MethodInfo method) {
@@ -329,5 +332,17 @@ public class WD_Reflection {
             paramInOuts[i]= parameters[i].IsOut;
         }
         return paramInOuts;
+    }
+    // ----------------------------------------------------------------------
+    static object[] ParseParameterDefaults(MethodInfo method) {
+        ParameterInfo[] parameters= method.GetParameters();
+        object[]   paramDefaults= new object[parameters.Length];
+        for(int i= 0; i < parameters.Length; ++i) {
+            paramDefaults[i]= parameters[i].DefaultValue;
+            if(paramDefaults[i] != null) {
+                Debug.Log("Default exists for "+parameters[i].Name);
+            }
+        }        
+        return paramDefaults;
     }
 }

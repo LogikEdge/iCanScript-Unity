@@ -47,7 +47,7 @@ public partial class WD_IStorage {
                         }
                         case WD_ObjectTypeEnum.Function: {
                             WD_FunctionDesc desc= WD_DataBase.FromString(edChild.Descriptor) as WD_FunctionDesc;
-                            ParsingTest(edChild.Descriptor);
+//                            ParsingTest(edChild.Descriptor);
                             if(desc != null) {
                                 object[] parameters= new object[desc.ParameterTypes.Length];
                                 WD_Connection[] connections= new WD_Connection[desc.ParameterTypes.Length];
@@ -57,7 +57,11 @@ public partial class WD_IStorage {
                                         connections[i]= new WD_Connection(null, 0);                                                                                
                                     } else {  // inputs
 //                                      parameters[i]= Convert.ChangeType("1", typeof(float));
-                                        parameters[i]= WD_Reflection.GetDefault(desc.ParameterTypes[i]);                                            
+                                        if(desc.ParameterDefaults[i] != null) {
+                                            parameters[i]= desc.ParameterDefaults[i];                                                                                        
+                                        } else {
+                                            parameters[i]= WD_Reflection.GetDefault(desc.ParameterTypes[i]);                                                                                        
+                                        }
                                         WD_Connection connection= new WD_Connection(null, -1);
                                         ForEachChildPort(edChild,
                                             p=> {
