@@ -68,18 +68,18 @@ public class WD_DataBase {
     // ----------------------------------------------------------------------
     // Returns a string that uniquely describes the descriptor.
     public static string ToString(WD_BaseDesc desc) {
-        string result= desc.Company+":"+desc.Package+":"+desc.Name+"<";
+        string result= desc.Company+":"+desc.Package+":"+desc.ClassType.AssemblyQualifiedName+":"+desc.Name+"<";
         if(desc is WD_FunctionDesc) {
             WD_FunctionDesc funcDesc= desc as WD_FunctionDesc;
             foreach(var type in funcDesc.ParameterTypes) {
-                result+= type.ToString()+",";
+                result+= type.AssemblyQualifiedName+",";
             }
-            result+= funcDesc.ReturnType != null ? funcDesc.ReturnType.ToString() : typeof(void).ToString();
+            result+= funcDesc.ReturnType != null ? funcDesc.ReturnType.AssemblyQualifiedName : typeof(void).ToString();
         } else if(desc is WD_ConversionDesc) {
             WD_ConversionDesc convDesc= desc as WD_ConversionDesc;
-            result+= convDesc.FromType.ToString()+","+convDesc.ToType.ToString();
+            result+= convDesc.FromType.AssemblyQualifiedName+","+convDesc.ToType.AssemblyQualifiedName;
         }
-        return result+">";
+        return result+">{}";
     }
     // ----------------------------------------------------------------------
     // Returns the BaseDesc associated with the given string.
@@ -91,17 +91,37 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Decodes the string into its constituants.
-    void DecodeString(string encoded, out string company, out string package, out string name, out string[] parameters) {
+    void ParseDescriptorString(string encoded, out string company, out string package,
+                               out Type classType, out string name, out Type[] parameters, out string[] children) {
+        // company
         int end= encoded.IndexOf(':');
         company= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // package
         end= encoded.IndexOf(':');
         package= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // class type
+        end= encoded.IndexOf(':');
+        string className= encoded.Substring(0, end);
+        classType= Type.GetType(className);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // name
         end= encoded.IndexOf('<');
         name= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        parameters= new string[0];
+        // parameters
+        end= encoded.IndexOf('>');
+        string parameterString= encoded.Substring(0, end);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        parameters= ParseParameters(parameterString);
+        // children
+        children= new string[0];
+    }
+    // ----------------------------------------------------------------------
+    // Extracts the type of the parameters from the given string.
+    Type[] ParseParameters(string paramStr) {
+        return new Type[0];
     }
     
     // ======================================================================
