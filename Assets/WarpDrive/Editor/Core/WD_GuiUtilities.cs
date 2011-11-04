@@ -6,9 +6,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class WD_GuiUtilities {
-    public static void OnInspectorGUI(WD_EditorObject port) {
+    public static void OnInspectorGUI(WD_EditorObject port, WD_IStorage storage) {
         string niceName= port.Name == null || port.Name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(port.Name);
         Type dataType= WD_Types.GetDataType(port.RuntimeType);
+        WD_EditorObject node= storage.GetParent(port);
+        WD_Function runtimeObject= storage.GetRuntimeObject(node) as WD_Function;
+        int portId= port.PortIndex;
+        object portValue= runtimeObject != null ? runtimeObject[portId] : null;
 
         // Display primitives.
         if(dataType == typeof(bool)) {
@@ -22,8 +26,9 @@ public class WD_GuiUtilities {
             return;
         }
         if(dataType == typeof(float)) {
-            /*float newValue=*/ EditorGUILayout.FloatField(niceName, default(float));
-//            fieldInfo.SetValue(parent, newValue);
+            float value= portValue != null ? (float)portValue : default(float);
+            float newValue= EditorGUILayout.FloatField(niceName, value);
+            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             return;
         }
         if(dataType == typeof(string)) {
@@ -47,8 +52,9 @@ public class WD_GuiUtilities {
             return;            
         }
         if(dataType == typeof(GameObject)) {
-            /*GameObject newValue=*/ EditorGUILayout.ObjectField(niceName, null, typeof(GameObject), true) /*as GameObject*/;
-//            fieldInfo.SetValue(parent, newValue);
+            GameObject value= portValue != null ? (GameObject)portValue : null;
+            GameObject newValue= EditorGUILayout.ObjectField(niceName, value, typeof(GameObject), true) as GameObject;
+            if(port.IsInputPort & runtimeObject != null) runtimeObject[portId]= newValue;
             return;                        
         }            
         if(dataType == typeof(AnimationClip)) {

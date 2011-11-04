@@ -70,8 +70,9 @@ public partial class WD_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public WD_EditorObject GetParent(WD_EditorObject obj) { return obj.IsParentValid ? EditorObjects[obj.ParentId] : null; }
-    public WD_EditorObject GetSource(WD_EditorObject obj) { return obj.IsSourceValid ? EditorObjects[obj.Source] : null; }
+    public WD_EditorObject GetParent(WD_EditorObject obj)        { return obj.IsParentValid ? EditorObjects[obj.ParentId] : null; }
+    public WD_EditorObject GetSource(WD_EditorObject obj)        { return obj.IsSourceValid ? EditorObjects[obj.Source] : null; }
+    public object          GetRuntimeObject(WD_EditorObject obj) { return IsValid(obj) ? TreeCache[obj.InstanceId].RuntimeObject : null; }
     // ----------------------------------------------------------------------
     public void SetDirty(WD_EditorObject obj) {
         myIsDirty= true;

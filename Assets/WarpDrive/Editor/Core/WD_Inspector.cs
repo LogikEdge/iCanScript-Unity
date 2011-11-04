@@ -161,7 +161,7 @@ public class WD_Inspector : Editor {
             if(showInputs) {
                 EditorGUIUtility.LookLikeControls();
                 EditorGUI.indentLevel= 2;
-                Prelude.forEach(port=> WD_GuiUtilities.OnInspectorGUI(port), inPorts);
+                Prelude.forEach(port=> WD_GuiUtilities.OnInspectorGUI(port, Storage), inPorts);
             }        
         }
 
@@ -171,7 +171,7 @@ public class WD_Inspector : Editor {
             showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
             if(showOutputs) {
                 EditorGUI.indentLevel= 2;
-                Prelude.forEach(port=> WD_GuiUtilities.OnInspectorGUI(port), outPorts);
+                Prelude.forEach(port=> WD_GuiUtilities.OnInspectorGUI(port, Storage), outPorts);
             }            
         }
     }
