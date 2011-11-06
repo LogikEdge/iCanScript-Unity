@@ -338,10 +338,8 @@ public class WD_Reflection {
         ParameterInfo[] parameters= method.GetParameters();
         object[]   paramDefaults= new object[parameters.Length];
         for(int i= 0; i < parameters.Length; ++i) {
-            paramDefaults[i]= parameters[i].DefaultValue;
-            if(paramDefaults[i] != null) {
-                Debug.Log("Default exists for "+parameters[i].Name);
-            }
+            object defaultValue= parameters[i].DefaultValue; 
+            paramDefaults[i]= (defaultValue == null || defaultValue.GetType() != parameters[i].ParameterType) ? null : defaultValue;
         }        
         return paramDefaults;
     }
