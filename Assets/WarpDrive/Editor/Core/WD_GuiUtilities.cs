@@ -7,28 +7,47 @@ using System.Collections.Generic;
 
 public class WD_GuiUtilities {
     public static void OnInspectorGUI(WD_EditorObject port, WD_IStorage storage) {
+        // Extract port information
         string niceName= port.Name == null || port.Name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(port.Name);
         Type dataType= WD_Types.GetDataType(port.RuntimeType);
         WD_EditorObject node= storage.GetParent(port);
-        WD_Function runtimeObject= storage.GetRuntimeObject(node) as WD_Function;
         int portId= port.PortIndex;
-        object portValue= runtimeObject != null ? runtimeObject[portId] : null;
+        // Extract parent node information.
+        WD_Descriptor desc= WD_DataBase.ParseDescriptorString(node.Descriptor);    
+        // Get runtime object if it exists.
+        WD_Function runtimeObject= storage.GetRuntimeObject(node) as WD_Function;
+        // Update port value from runtime object in priority or the descriptor string if no runtime.
+        object portValue= runtimeObject != null ? runtimeObject[portId] : desc.ParameterDefaultValues[portId];
 
         // Display primitives.
         if(dataType == typeof(bool)) {
-            /*bool newValue=*/ EditorGUILayout.Toggle(niceName, default(bool));
-//            fieldInfo.SetValue(parent, newValue);
+            bool value= portValue != null ? (bool)portValue : default(bool);
+            bool newValue= EditorGUILayout.Toggle(niceName, value);
+            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
+            if(value != newValue && storage.GetSource(port) == null) {
+                desc.ParameterDefaultValues[portId]= newValue;
+                node.Descriptor= WD_DataBase.ToString(desc);
+            }
             return;
         }
         if(dataType == typeof(int)) {
-            /*int newValue=*/ EditorGUILayout.IntField(niceName, default(int));
-//            fieldInfo.SetValue(parent, newValue);
+            int value= portValue != null ? (int)portValue : default(int);
+            int newValue= EditorGUILayout.IntField(niceName, value);
+            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
+            if(value != newValue && storage.GetSource(port) == null) {
+                desc.ParameterDefaultValues[portId]= newValue;
+                node.Descriptor= WD_DataBase.ToString(desc);
+            }
             return;
         }
         if(dataType == typeof(float)) {
             float value= portValue != null ? (float)portValue : default(float);
             float newValue= EditorGUILayout.FloatField(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
+            if(value != newValue && storage.GetSource(port) == null) {
+                desc.ParameterDefaultValues[portId]= newValue;
+                node.Descriptor= WD_DataBase.ToString(desc);
+            }
             return;
         }
         if(dataType == typeof(string)) {

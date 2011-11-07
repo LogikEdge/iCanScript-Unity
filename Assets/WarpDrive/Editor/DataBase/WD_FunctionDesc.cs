@@ -8,19 +8,19 @@ public class WD_FunctionDesc : WD_BaseDesc {
     public Type         ReturnType;
     public string[]     ParameterNames;
     public Type[]       ParameterTypes;
-    public bool[]       ParameterInOuts;
+    public bool[]       ParameterIsOuts;
     public object[]     ParameterDefaults;
     public MethodInfo   Method;
     public WD_FunctionDesc(string company, string package, string classToolTip, Type classType,
                            string methodName, string returnName, Type returnType, string toolTip, string icon,
-                           string[] paramNames, Type[] paramTypes, bool[] paramInOuts, object[] paramDefaults,
+                           string[] paramNames, Type[] paramTypes, bool[] paramIsOuts, object[] paramDefaults,
                            MethodInfo methodInfo) : base(company, package, methodName, toolTip ?? classToolTip, icon, classType) {
         ClassType        = classType;
         ReturnName       = returnName;
         ReturnType       = returnType;
         ParameterNames   = paramNames;
         ParameterTypes   = paramTypes;
-        ParameterInOuts  = paramInOuts;
+        ParameterIsOuts  = paramIsOuts;
         ParameterDefaults= paramDefaults;
         Method           = methodInfo;
     }

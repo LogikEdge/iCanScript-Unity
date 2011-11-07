@@ -321,7 +321,7 @@ public partial class WD_IStorage {
         
         // Create input/output ports.
         for(int i= 0; i < desc.ParameterNames.Length; ++i) {
-            WD_ObjectTypeEnum portType= desc.ParameterInOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
+            WD_ObjectTypeEnum portType= desc.ParameterIsOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
             WD_EditorObject port= CreatePort(desc.ParameterNames[i], id, desc.ParameterTypes[i], portType);
             port.PortIndex= i;
         }

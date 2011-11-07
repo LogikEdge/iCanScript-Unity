@@ -68,18 +68,56 @@ public class WD_DataBase {
     // ----------------------------------------------------------------------
     // Returns a string that uniquely describes the descriptor.
     public static string ToString(WD_BaseDesc desc) {
-        string result= desc.Company+":"+desc.Package+":"+desc.ClassType.AssemblyQualifiedName+":"+desc.Name+"<";
+        string result= desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType)+":"+desc.Name+"<";
         if(desc is WD_FunctionDesc) {
             WD_FunctionDesc funcDesc= desc as WD_FunctionDesc;
-            foreach(var type in funcDesc.ParameterTypes) {
-                result+= type.AssemblyQualifiedName+";";
+            for(int i= 0; i < funcDesc.ParameterTypes.Length; ++i) {
+                if(funcDesc.ParameterIsOuts[i]) result+= "out ";
+                result+= WD_Types.ToString(funcDesc.ParameterTypes[i]);
+                if(funcDesc.ParameterDefaults[i] != null) {
+                    result+= ":="+WD_Types.ToString(funcDesc.ParameterDefaults[i]);
+                }
+                result+= ";";
             }
-            result+= funcDesc.ReturnType != null ? funcDesc.ReturnType.AssemblyQualifiedName : typeof(void).ToString();
+            result+= "out "+(funcDesc.ReturnType != null ? WD_Types.ToString(funcDesc.ReturnType) : typeof(void).ToString());
         } else if(desc is WD_ConversionDesc) {
             WD_ConversionDesc convDesc= desc as WD_ConversionDesc;
-            result+= convDesc.FromType.AssemblyQualifiedName+";"+convDesc.ToType.AssemblyQualifiedName;
+            result+= WD_Types.ToString(convDesc.FromType)+";"+WD_Types.ToString(convDesc.ToType);
         }
         return result+">{}";
+    }
+    // ----------------------------------------------------------------------
+    // Returns a string that uniquely describes the descriptor.
+    public static string ToString(string company, string package, Type classType, string name,
+                                  Type[] parameterTypes, bool[] isOuts, object[] defaultValues, string[] children) {
+        string result= company+":"+package+":"+WD_Types.ToString(classType)+":"+name+"<";
+        for(int i= 0; i < parameterTypes.Length; ++i) {
+            if(isOuts[i]) result+= "out ";
+            result+= WD_Types.ToString(parameterTypes[i]);
+            if(defaultValues[i] != null) {
+                result+= ":="+WD_Types.ToString(defaultValues[i]);
+            }
+            if(i != parameterTypes.Length-1) result+= ";";
+        }
+        result+=">{";
+        foreach(var child in children) result+= child;
+        return result+"}";
+    }
+    // ----------------------------------------------------------------------
+    // Returns a string that uniquely describes the descriptor.
+    public static string ToString(WD_Descriptor desc) {
+        string result= desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType)+":"+desc.Name+"<";
+        for(int i= 0; i < desc.ParameterTypes.Length; ++i) {
+            if(desc.ParameterIsOuts[i]) result+= "out ";
+            result+= WD_Types.ToString(desc.ParameterTypes[i]);
+            if(desc.ParameterDefaultValues[i] != null) {
+                result+= ":="+WD_Types.ToString(desc.ParameterDefaultValues[i]);
+            }
+            if(i != desc.ParameterTypes.Length-1) result+= ";";
+        }
+        result+=">{";
+        foreach(var child in desc.Children) result+= child;
+        return result+"}";
     }
     // ----------------------------------------------------------------------
     // Returns the BaseDesc associated with the given string.
@@ -93,7 +131,7 @@ public class WD_DataBase {
     // Decodes the string into its constituants.
     public static void ParseDescriptorString(string encoded, out string company, out string package,
                                              out Type classType, out string name,
-                                             out Type[] parameters, out string[] children) {
+                                             out Type[] parameters, out bool[] paramIsOut, out object[] paramDefaults, out string[] children) {
         // company
         int end= encoded.IndexOf(':');
         company= encoded.Substring(0, end);
@@ -105,7 +143,7 @@ public class WD_DataBase {
         // class type
         end= encoded.IndexOf(':');
         string className= encoded.Substring(0, end);
-        classType= Type.GetType(className);
+        classType= WD_Types.FromString<Type>(className);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // name
         end= encoded.IndexOf('<');
@@ -115,20 +153,70 @@ public class WD_DataBase {
         end= encoded.IndexOf('>');
         string parameterString= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        parameters= ParseParameters(parameterString);
+        parameters= ParseParameters(parameterString, out paramIsOut, out paramDefaults);
         // children
         children= new string[0];
     }
     // ----------------------------------------------------------------------
+    // Decodes the string into its constituants.
+    public static WD_Descriptor ParseDescriptorString(string encoded) {
+        WD_Descriptor desc= new WD_Descriptor();
+        // company
+        int end= encoded.IndexOf(':');
+        desc.Company= encoded.Substring(0, end);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // package
+        end= encoded.IndexOf(':');
+        desc.Package= encoded.Substring(0, end);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // class type
+        end= encoded.IndexOf(':');
+        string className= encoded.Substring(0, end);
+        desc.ClassType= WD_Types.FromString<Type>(className);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // name
+        end= encoded.IndexOf('<');
+        desc.Name= encoded.Substring(0, end);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // parameters
+        end= encoded.IndexOf('>');
+        string parameterString= encoded.Substring(0, end);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        desc.ParameterTypes= ParseParameters(parameterString, out desc.ParameterIsOuts, out desc.ParameterDefaultValues);
+        // children
+        desc.Children= new string[0];
+        return desc;
+    }
+    // ----------------------------------------------------------------------
     // Extracts the type of the parameters from the given string.
-    static Type[] ParseParameters(string paramStr) {
-        List<Type>  parameters= new List<Type>();
+    static Type[] ParseParameters(string paramStr, out bool[] isOut, out object[] defaultValues) {
+        List<Type>      parameters= new List<Type>();
+        List<object>    paramDefaults= new List<object>();
+        List<bool>      paramIsOut= new List<bool>();
         int end= 0;
         do {
             end= paramStr.IndexOf(';');
             if(end < 0) end= paramStr.Length;
+            int defaultStart= paramStr.IndexOf(":=");
+            if(defaultStart >= end) defaultStart= -1;
+            int typeLen = defaultStart < 0 ? end : defaultStart;
+            defaultStart= defaultStart < 0 ? -1 : defaultStart+=2;
             if(end > 0) {
-                parameters.Add(Type.GetType(paramStr.Substring(0, end)));
+                int inOutStrLen= 0;
+                if(paramStr.StartsWith("out ")) {
+                    paramIsOut.Add(true);
+                    inOutStrLen= 4;
+                } else {
+                    paramIsOut.Add(false);
+                }
+                Type paramType= WD_Types.FromString<Type>(paramStr.Substring(inOutStrLen, typeLen-inOutStrLen));
+                parameters.Add(paramType);
+                if(defaultStart > 0) {
+                    paramDefaults.Add(WD_Types.FromString(paramStr.Substring(defaultStart, end-defaultStart), paramType));
+                }
+                else {
+                    paramDefaults.Add(null);
+                }
                 if(end != paramStr.Length) {
                     paramStr= paramStr.Substring(end+1, paramStr.Length-end-1);                    
                 } else {
@@ -137,6 +225,8 @@ public class WD_DataBase {
             }
         }
         while(end > 0);
+        defaultValues= paramDefaults.ToArray();
+        isOut= paramIsOut.ToArray();
         return parameters.ToArray();
     }
     

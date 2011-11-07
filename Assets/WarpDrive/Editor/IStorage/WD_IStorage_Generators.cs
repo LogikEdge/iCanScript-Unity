@@ -46,19 +46,19 @@ public partial class WD_IStorage {
                             break;
                         }
                         case WD_ObjectTypeEnum.Function: {
-                            WD_FunctionDesc desc= WD_DataBase.FromString(edChild.Descriptor) as WD_FunctionDesc;
-//                            ParsingTest(edChild.Descriptor);
+                            WD_Descriptor desc= WD_DataBase.ParseDescriptorString(edChild.Descriptor);
+//                ParsingTest(edChild.Descriptor);
                             if(desc != null) {
-                                object[] parameters= new object[desc.ParameterTypes.Length];
-                                WD_Connection[] connections= new WD_Connection[desc.ParameterTypes.Length];
-                                for(int i= 0; i < desc.ParameterTypes.Length; ++i) {
-                                    if(desc.ParameterInOuts[i]) {  // outputs
+                                int paramLen= desc.MethodParameterTypes.Length;
+                                object[] parameters= new object[paramLen];
+                                WD_Connection[] connections= new WD_Connection[paramLen];
+                                for(int i= 0; i < paramLen; ++i) {
+                                    if(desc.ParameterIsOuts[i]) {  // outputs
                                         parameters[i]= null;
                                         connections[i]= new WD_Connection(null, 0);                                                                                
                                     } else {  // inputs
-//                                      parameters[i]= Convert.ChangeType("1", typeof(float));
-                                        if(desc.ParameterDefaults[i] != null) {
-                                            parameters[i]= desc.ParameterDefaults[i];                                                                                        
+                                        if(desc.ParameterDefaultValues[i] != null) {
+                                            parameters[i]= desc.ParameterDefaultValues[i];                                                                                        
                                         } else {
                                             parameters[i]= WD_Reflection.GetDefault(desc.ParameterTypes[i]);                                                                                        
                                         }
@@ -136,13 +136,22 @@ public partial class WD_IStorage {
         Type   classType;
         string name;
         Type[] parameters;
+        bool[] isOut;
+        object[] defaultValues;
         string[] children;
-        WD_DataBase.ParseDescriptorString(descStr,out company, out package, out classType, out name, out parameters, out children);
+        WD_DataBase.ParseDescriptorString(descStr,out company, out package, out classType, out name, out parameters, out isOut, out defaultValues, out children);
         Debug.Log("Parsing: "+descStr);
         Debug.Log("Parsing result:");
         Debug.Log("Company= "+company+" Package= "+package+" ClassType= "+classType.ToString()+" Name= "+name);
         string paramStr= "";
-        foreach(var t in parameters) paramStr+= t.ToString()+";";
+        for(int i= 0; i < parameters.Length; ++i) {
+            if(isOut[i]) paramStr+= "out ";
+            paramStr+= parameters[i].ToString();
+            if(defaultValues[i] != null) {
+                paramStr+=":= "+defaultValues[i].ToString();
+            }
+            paramStr+= ";";
+        }
         Debug.Log("Parameters= "+paramStr);
     }
 }
