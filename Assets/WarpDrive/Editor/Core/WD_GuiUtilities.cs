@@ -51,23 +51,43 @@ public class WD_GuiUtilities {
             return;
         }
         if(dataType == typeof(string)) {
-            /*string newValue=*/ EditorGUILayout.TextField(niceName, default(string));
-//            fieldInfo.SetValue(parent, newValue);
+            string value= portValue != null ? (string)portValue : default(string);
+            string newValue= EditorGUILayout.TextField(niceName, value);
+            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
+            if(value != newValue && storage.GetSource(port) == null) {
+                desc.ParameterDefaultValues[portId]= newValue;
+                node.Descriptor= WD_DataBase.ToString(desc);
+            }
             return;
         }
         if(dataType == typeof(Vector2)) {
-            /*Vector2 newValue=*/ EditorGUILayout.Vector2Field(niceName, default(Vector2));
-//            fieldInfo.SetValue(parent, newValue);
+            Vector2 value= portValue != null ? (Vector2)portValue : default(Vector2);
+            Vector2 newValue= EditorGUILayout.Vector2Field(niceName, value);
+            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
+            if(value != newValue && storage.GetSource(port) == null) {
+                desc.ParameterDefaultValues[portId]= newValue;
+                node.Descriptor= WD_DataBase.ToString(desc);
+            }
             return;            
         }
         if(dataType == typeof(Vector3)) {
-            /*Vector3 newValue=*/ EditorGUILayout.Vector3Field(niceName, default(Vector3));
-//            fieldInfo.SetValue(parent, newValue);
+            Vector3 value= portValue != null ? (Vector3)portValue : default(Vector3);
+            Vector3 newValue= EditorGUILayout.Vector3Field(niceName, value);
+            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
+            if(value != newValue && storage.GetSource(port) == null) {
+                desc.ParameterDefaultValues[portId]= newValue;
+                node.Descriptor= WD_DataBase.ToString(desc);
+            }
             return;            
         }
         if(dataType == typeof(Vector4)) {
-            /*Vector4 newValue=*/ EditorGUILayout.Vector4Field(niceName, default(Vector4));
-//            fieldInfo.SetValue(parent, newValue);
+            Vector4 value= portValue != null ? (Vector4)portValue : default(Vector4);
+            Vector4 newValue= EditorGUILayout.Vector4Field(niceName, value);
+            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
+            if(value != newValue && storage.GetSource(port) == null) {
+                desc.ParameterDefaultValues[portId]= newValue;
+                node.Descriptor= WD_DataBase.ToString(desc);
+            }
             return;            
         }
         if(dataType == typeof(GameObject)) {
@@ -77,8 +97,9 @@ public class WD_GuiUtilities {
             return;                        
         }            
         if(dataType == typeof(AnimationClip)) {
-            /*GameObject newValue=*/ EditorGUILayout.ObjectField(niceName, null, typeof(AnimationClip), true) /*as GameObject*/;
-//            fieldInfo.SetValue(parent, newValue);
+            AnimationClip value= portValue != null ? (AnimationClip)portValue : null;
+            AnimationClip newValue= EditorGUILayout.ObjectField(niceName, value, typeof(AnimationClip), true) as AnimationClip;
+            if(port.IsInputPort & runtimeObject != null) runtimeObject[portId]= newValue;
             return;                        
         }            
 
