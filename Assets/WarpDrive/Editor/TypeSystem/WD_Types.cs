@@ -19,6 +19,11 @@ public static class WD_Types {
         return type.AssemblyQualifiedName;
     }
     public static string ToString(object obj) {
+        if(obj.GetType().IsEnum) {
+            int enumValue= (int)obj;
+            Debug.Log("encoding enum with value "+enumValue);
+            return enumValue.ToString()+"("+obj.ToString()+")";
+        }
         return obj.ToString();
     }
 	// ----------------------------------------------------------------------
@@ -29,6 +34,11 @@ public static class WD_Types {
     public static object FromString(string valueStr, Type type) {
         if(type == typeof(Type)) {
             return Type.GetType(valueStr);
+        }
+        if(type.IsEnum) {
+            int end= valueStr.IndexOf('(');
+            if(end < 0) end= valueStr.Length;
+            return FromString<int>(valueStr.Substring(0, end));
         }
         // Use System.Convert for all object that supports IConvertible.
         Type[] useConvert= type.FindInterfaces((t,s)=> t.ToString() == s.ToString(), "System.IConvertible");

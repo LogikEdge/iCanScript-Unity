@@ -71,6 +71,7 @@ public class WD_DataBase {
         string result= desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType)+":"+desc.Name+"<";
         if(desc is WD_FunctionDesc) {
             WD_FunctionDesc funcDesc= desc as WD_FunctionDesc;
+            result= WD_Types.ToString(WD_ObjectTypeEnum.Function)+":"+result;
             for(int i= 0; i < funcDesc.ParameterTypes.Length; ++i) {
                 if(funcDesc.ParameterIsOuts[i]) result+= "out ";
                 result+= funcDesc.ParameterNames[i];
@@ -82,15 +83,18 @@ public class WD_DataBase {
             }
             result+= "out "+funcDesc.ReturnName+":"+(funcDesc.ReturnType != null ? WD_Types.ToString(funcDesc.ReturnType) : typeof(void).ToString());
         } else if(desc is WD_ConversionDesc) {
+            result= WD_Types.ToString(WD_ObjectTypeEnum.Conversion)+":"+result;
             WD_ConversionDesc convDesc= desc as WD_ConversionDesc;
             result+= WD_Types.ToString(convDesc.FromType)+";"+WD_Types.ToString(convDesc.ToType);
         }
-        return result+">{}";
+        result+=">{}";
+        Debug.Log("ToString(BaseDesc): "+result);
+        return result;
     }
     // ----------------------------------------------------------------------
     // Returns a string that uniquely describes the descriptor.
     public static string ToString(WD_Descriptor desc) {
-        string result= desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType)+":"+desc.Name+"<";
+        string result= WD_Types.ToString(desc.ObjectType)+":"+desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType)+":"+desc.Name+"<";
         for(int i= 0; i < desc.ParamTypes.Length; ++i) {
             if(desc.ParamIsOuts[i]) result+= "out ";
             result+= desc.ParamNames[i];
@@ -102,7 +106,9 @@ public class WD_DataBase {
         }
         result+=">{";
         foreach(var child in desc.Children) result+= child;
-        return result+"}";
+        result+="}";
+        Debug.Log("ToString(Descriptor): "+result);
+        return result;
     }
     // ----------------------------------------------------------------------
     // Returns the BaseDesc associated with the given string.
@@ -116,8 +122,13 @@ public class WD_DataBase {
     // Decodes the string into its constituants.
     public static WD_Descriptor ParseDescriptorString(string encoded) {
         WD_Descriptor desc= new WD_Descriptor();
-        // company
+        // object type
         int end= encoded.IndexOf(':');
+        string objectTypeStr= encoded.Substring(0, end);
+        desc.ObjectType= WD_Types.FromString<WD_ObjectTypeEnum>(objectTypeStr);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // company
+        end= encoded.IndexOf(':');
         desc.Company= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // package

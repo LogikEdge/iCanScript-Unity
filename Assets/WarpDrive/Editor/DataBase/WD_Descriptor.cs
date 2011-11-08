@@ -5,15 +5,16 @@ using System.Collections;
 
 public class WD_Descriptor {
     // Identifiers
-    public string   Company;
-    public string   Package;
-    public Type     ClassType;
-    public string   Name;
-    public string[] ParamNames;
-    public Type[]   ParamTypes;
-    public bool[]   ParamIsOuts;
-    public object[] ParamDefaultValues;
-    public string[] Children;
+    public WD_ObjectTypeEnum    ObjectType;
+    public string               Company;
+    public string               Package;
+    public Type                 ClassType;
+    public string               Name;
+    public string[]             ParamNames;
+    public Type[]               ParamTypes;
+    public bool[]               ParamIsOuts;
+    public object[]             ParamDefaultValues;
+    public string[]             Children;
     
     public MethodInfo Method {
         get {
