@@ -93,7 +93,7 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns a string that uniquely describes the descriptor.
-    public static string ToString(WD_Descriptor desc) {
+    public static string ToString(WD_RuntimeDesc desc) {
         string result= WD_Types.ToString(desc.ObjectType)+":"+desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType)+":"+desc.Name+"<";
         for(int i= 0; i < desc.ParamTypes.Length; ++i) {
             if(desc.ParamIsOuts[i]) result+= "out ";
@@ -119,8 +119,8 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Decodes the string into its constituants.
-    public static WD_Descriptor ParseDescriptorString(string encoded) {
-        WD_Descriptor desc= new WD_Descriptor();
+    public static WD_RuntimeDesc ParseDescriptorString(string encoded) {
+        WD_RuntimeDesc desc= new WD_RuntimeDesc();
         // object type
         int end= encoded.IndexOf(':');
         string objectTypeStr= encoded.Substring(0, end);

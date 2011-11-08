@@ -47,7 +47,7 @@ public partial class WD_IStorage {
                         }
                         case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.Function: {
-                            WD_Descriptor desc= WD_DataBase.ParseDescriptorString(edChild.Descriptor);
+                            WD_RuntimeDesc desc= WD_DataBase.ParseDescriptorString(edChild.Descriptor);
                 ParsingTest(edChild.Descriptor);
                             if(desc != null) {
                                 int paramLen= desc.MethodParamTypes.Length;
@@ -103,7 +103,7 @@ public partial class WD_IStorage {
     }
 
     void ParsingTest(string descStr) {
-        WD_Descriptor desc= WD_DataBase.ParseDescriptorString(descStr);
+        WD_RuntimeDesc desc= WD_DataBase.ParseDescriptorString(descStr);
         Debug.Log("Parsing: "+descStr);
         Debug.Log("Parsing result:");
         Debug.Log("Company= "+desc.Company+" Package= "+desc.Package+" ClassType= "+desc.ClassType.ToString()+" Name= "+desc.Name);

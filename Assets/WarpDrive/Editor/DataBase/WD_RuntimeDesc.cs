@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class WD_Descriptor {
+public class WD_RuntimeDesc {
     // Identifiers
     public WD_ObjectTypeEnum    ObjectType;
     public string               Company;

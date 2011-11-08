@@ -13,7 +13,7 @@ public class WD_GuiUtilities {
         WD_EditorObject node= storage.GetParent(port);
         int portId= port.PortIndex;
         // Extract parent node information.
-        WD_Descriptor desc= WD_DataBase.ParseDescriptorString(node.Descriptor);    
+        WD_RuntimeDesc desc= WD_DataBase.ParseDescriptorString(node.Descriptor);    
         // Get runtime object if it exists.
         WD_Function runtimeObject= storage.GetRuntimeObject(node) as WD_Function;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
