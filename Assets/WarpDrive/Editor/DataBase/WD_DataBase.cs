@@ -70,8 +70,8 @@ public class WD_DataBase {
     // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>{[children]}
     public static string ToString(WD_ReflectionBaseDesc desc) {
         string result= desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType);
-        if(desc is WD_FunctionDesc) {
-            WD_FunctionDesc funcDesc= desc as WD_FunctionDesc;
+        if(desc is WD_ReflectionFuncDesc) {
+            WD_ReflectionFuncDesc funcDesc= desc as WD_ReflectionFuncDesc;
             result= WD_Types.ToString(WD_ObjectTypeEnum.Function)+":"+result+":"+desc.Name+"<";
             for(int i= 0; i < funcDesc.ParameterTypes.Length; ++i) {
                 if(funcDesc.ParameterIsOuts[i]) result+= "out ";
@@ -129,7 +129,7 @@ public class WD_DataBase {
                                    bool[] paramInOuts, object[] paramDefaults,
                                    string retName, Type retType,                                        // Return value info
                                    string toolTip, string icon, MethodInfo methodInfo) {
-        WD_FunctionDesc fd= new WD_FunctionDesc(company, package, classToolTip, classType,
+        WD_ReflectionFuncDesc fd= new WD_ReflectionFuncDesc(company, package, classToolTip, classType,
                                                 methodName, retName, retType, toolTip, icon,
                                                 paramNames, paramTypes, paramInOuts, paramDefaults,
                                                 methodInfo);

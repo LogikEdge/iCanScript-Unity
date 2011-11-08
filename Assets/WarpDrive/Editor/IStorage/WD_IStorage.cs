@@ -242,8 +242,8 @@ public partial class WD_IStorage {
         if(desc is WD_ClassDesc) {
             obj= CreateFunction(parentId, initialPos, desc as WD_ClassDesc);
         }
-        else if(desc is WD_FunctionDesc) {
-            obj= CreateFunction(parentId, initialPos, desc as WD_FunctionDesc);
+        else if(desc is WD_ReflectionFuncDesc) {
+            obj= CreateFunction(parentId, initialPos, desc as WD_ReflectionFuncDesc);
         }
         else if(desc is WD_ConversionDesc) {
             obj= CreateFunction(parentId, initialPos, desc as WD_ConversionDesc);
@@ -307,7 +307,7 @@ public partial class WD_IStorage {
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_FunctionDesc desc) {
+    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ReflectionFuncDesc desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
