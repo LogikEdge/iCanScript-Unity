@@ -13,7 +13,7 @@ public class WD_GuiUtilities {
         WD_EditorObject node= storage.GetParent(port);
         int portId= port.PortIndex;
         // Extract parent node information.
-        WD_RuntimeDesc desc= new WD_RuntimeDesc(node.Descriptor);    
+        WD_RuntimeDesc desc= new WD_RuntimeDesc(node.DescriptorArchive);    
         // Get runtime object if it exists.
         WD_Function runtimeObject= storage.GetRuntimeObject(node) as WD_Function;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
@@ -26,7 +26,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.Descriptor= desc.ToString();
+                node.DescriptorArchive= desc.Encode();
             }
             return;
         }
@@ -36,7 +36,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.Descriptor= desc.ToString();
+                node.DescriptorArchive= desc.Encode();
             }
             return;
         }
@@ -46,7 +46,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.Descriptor= desc.ToString();
+                node.DescriptorArchive= desc.Encode();
             }
             return;
         }
@@ -56,7 +56,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.Descriptor= desc.ToString();
+                node.DescriptorArchive= desc.Encode();
             }
             return;
         }
@@ -66,7 +66,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.Descriptor= desc.ToString();
+                node.DescriptorArchive= desc.Encode();
             }
             return;            
         }
@@ -76,7 +76,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.Descriptor= desc.ToString();
+                node.DescriptorArchive= desc.Encode();
             }
             return;            
         }
@@ -86,7 +86,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.Descriptor= desc.ToString();
+                node.DescriptorArchive= desc.Encode();
             }
             return;            
         }

@@ -47,8 +47,8 @@ public partial class WD_IStorage {
                         }
                         case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.Function: {
-                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.Descriptor);
-                ParsingTest(edChild.Descriptor);
+                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.DescriptorArchive);
+                ParsingTest(edChild.DescriptorArchive);
                             if(desc != null) {
                                 int paramLen= desc.MethodParamTypes.Length;
                                 object[] parameters= new object[paramLen];
@@ -85,7 +85,7 @@ public partial class WD_IStorage {
                                 TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                                 WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                             } else {
-                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.Descriptor);
+                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.DescriptorArchive);
                             }
                             break;
                         }

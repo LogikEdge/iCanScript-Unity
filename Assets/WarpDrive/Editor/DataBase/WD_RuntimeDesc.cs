@@ -23,19 +23,22 @@ public class WD_RuntimeDesc {
     // ----------------------------------------------------------------------
     public MethodInfo Method {
         get {
-            return ClassType.GetMethod(MethodName, MethodParamTypes);            
+            return MethodName != null ? ClassType.GetMethod(MethodName, MethodParamTypes) : null;            
         }
     }
     public Type[] MethodParamTypes {
         get {
-            Type[] methodParameters= new Type[ParamTypes.Length-1];
+            int len= ParamTypes.Length;
+            if(len <= 1) return new Type[0];
+            Type[] methodParameters= new Type[len-1];
             Array.Copy(ParamTypes, methodParameters, methodParameters.Length);
             return methodParameters;            
         }
     }
     public Type ReturnType {
         get {
-            return ParamTypes[ParamTypes.Length-1];            
+            int len= ParamTypes.Length;
+            return len >= 1 ? ParamTypes[len-1] : null;            
         }
     }
 
@@ -46,6 +49,31 @@ public class WD_RuntimeDesc {
     // ----------------------------------------------------------------------
     // Decodes the string into its constituants.
     public WD_RuntimeDesc(string encoded) {
+        Decode(encoded);
+    }
+
+
+    // ======================================================================
+    // Conversion functions
+    // ----------------------------------------------------------------------
+    // Encode the runtime descriptor into a string.
+    public string Encode() {
+        string result= WD_Types.ToString(ObjectType)+":"+Company+":"+Package+":"+WD_Types.ToString(ClassType)+":"+MethodName+"<";
+        for(int i= 0; i < ParamTypes.Length; ++i) {
+            if(ParamIsOuts[i]) result+= "out ";
+            result+= ParamNames[i];
+            if(ParamDefaultValues[i] != null) {
+                result+= ":="+WD_Types.ToString(ParamDefaultValues[i]);
+            }
+            result+= ":"+WD_Types.ToString(ParamTypes[i]);
+            if(i != ParamTypes.Length-1) result+= ";";
+        }
+        result+=">{}";
+        return result;
+    }
+    // ----------------------------------------------------------------------
+    // Fills the runtime descriptor from an encoded string.
+    public WD_RuntimeDesc Decode(string encoded) {
         // object type
         int end= encoded.IndexOf(':');
         string objectTypeStr= encoded.Substring(0, end);
@@ -73,26 +101,7 @@ public class WD_RuntimeDesc {
         string parameterString= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         ParseParameters(parameterString, out ParamIsOuts, out ParamTypes, out ParamNames, out ParamDefaultValues);
-    }
-
-
-    // ======================================================================
-    // Conversion functions
-    // ----------------------------------------------------------------------
-    // Returns a string that uniquely describes the descriptor.
-    public override string ToString() {
-        string result= WD_Types.ToString(ObjectType)+":"+Company+":"+Package+":"+WD_Types.ToString(ClassType)+":"+MethodName+"<";
-        for(int i= 0; i < ParamTypes.Length; ++i) {
-            if(ParamIsOuts[i]) result+= "out ";
-            result+= ParamNames[i];
-            if(ParamDefaultValues[i] != null) {
-                result+= ":="+WD_Types.ToString(ParamDefaultValues[i]);
-            }
-            result+= ":"+WD_Types.ToString(ParamTypes[i]);
-            if(i != ParamTypes.Length-1) result+= ";";
-        }
-        result+=">{}";
-        return result;
+        return this;
     }
     // ----------------------------------------------------------------------
     // Extracts the type of the parameters from the given string.
