@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class WD_FunctionDesc : WD_BaseDesc {
+public class WD_FunctionDesc : WD_ReflectionBaseDesc {
     public string       ReturnName;
     public Type         ReturnType;
     public string[]     ParameterNames;

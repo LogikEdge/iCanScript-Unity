@@ -467,7 +467,7 @@ public class WD_DynamicMenu {
                 string package= GetPackageFromMenuItem(context.Command);
                 string function= GetFunctionFromMenuItem(context.Command);
                 if(company != null && package != null && function != null) {
-                    WD_BaseDesc desc= WD_DataBase.GetDescriptor(company, package, function);
+                    WD_ReflectionBaseDesc desc= WD_DataBase.GetDescriptor(company, package, function);
                     if(desc != null) {
                         CreateFunction(context.SelectedObject, context.Storage, desc);                                           
                     }
@@ -578,7 +578,7 @@ public class WD_DynamicMenu {
         return storage.CreateState(parent.InstanceId, ProcessMenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    WD_EditorObject CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_BaseDesc desc) {
+    WD_EditorObject CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_ReflectionBaseDesc desc) {
         WD_EditorObject function= storage.CreateFunction(parent.InstanceId, ProcessMenuPosition, desc);
         return function;
     }

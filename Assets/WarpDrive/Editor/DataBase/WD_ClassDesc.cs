@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Reflection;
 
-public class WD_ClassDesc : WD_BaseDesc {
+public class WD_ClassDesc : WD_ReflectionBaseDesc {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------

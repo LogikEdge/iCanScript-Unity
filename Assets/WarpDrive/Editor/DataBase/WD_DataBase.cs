@@ -8,7 +8,7 @@ public class WD_DataBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public static List<WD_BaseDesc>    Functions  = new List<WD_BaseDesc>();
+    public static List<WD_ReflectionBaseDesc>   Functions  = new List<WD_ReflectionBaseDesc>();
     
     // ======================================================================
     // DataBase functionality
@@ -45,7 +45,7 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
-    public static WD_BaseDesc GetDescriptor(string company, string package, string function) {
+    public static WD_ReflectionBaseDesc GetDescriptor(string company, string package, string function) {
         foreach(var desc in Functions) {
             if(desc.Company == company &&
                desc.Package == package &&
@@ -68,7 +68,7 @@ public class WD_DataBase {
     // ----------------------------------------------------------------------
     // Returns a string that uniquely describes the descriptor.
     // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>{[children]}
-    public static string ToString(WD_BaseDesc desc) {
+    public static string ToString(WD_ReflectionBaseDesc desc) {
         string result= desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType);
         if(desc is WD_FunctionDesc) {
             WD_FunctionDesc funcDesc= desc as WD_FunctionDesc;
@@ -93,7 +93,7 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns the BaseDesc associated with the given string.
-    public static WD_BaseDesc FromString(string encoded) {
+    public static WD_ReflectionBaseDesc FromString(string encoded) {
         foreach(var desc in Functions) {
             if(desc.ToString() == encoded) return desc;
         }

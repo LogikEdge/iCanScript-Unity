@@ -237,7 +237,7 @@ public partial class WD_IStorage {
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_BaseDesc desc) {
+    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ReflectionBaseDesc desc) {
         WD_EditorObject obj= null;
         if(desc is WD_ClassDesc) {
             obj= CreateFunction(parentId, initialPos, desc as WD_ClassDesc);

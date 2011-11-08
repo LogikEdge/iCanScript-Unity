@@ -2,14 +2,14 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public abstract class WD_BaseDesc {
+public abstract class WD_ReflectionBaseDesc {
     public string   Company;
     public string   Package;
     public Type     ClassType;
     public string   Name;
     public string   ToolTip;
     public string   IconPath;
-    public WD_BaseDesc(string company, string package, string name, string toolTip, string icon, Type classType) {
+    public WD_ReflectionBaseDesc(string company, string package, string name, string toolTip, string icon, Type classType) {
         Company  = company;
         Package  = package;
         Name     = name;
