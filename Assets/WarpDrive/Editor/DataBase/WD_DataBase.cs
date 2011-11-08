@@ -67,11 +67,12 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns a string that uniquely describes the descriptor.
+    // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>{[children]}
     public static string ToString(WD_BaseDesc desc) {
-        string result= desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType)+":"+desc.Name+"<";
+        string result= desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType);
         if(desc is WD_FunctionDesc) {
             WD_FunctionDesc funcDesc= desc as WD_FunctionDesc;
-            result= WD_Types.ToString(WD_ObjectTypeEnum.Function)+":"+result;
+            result= WD_Types.ToString(WD_ObjectTypeEnum.Function)+":"+result+":"+desc.Name+"<";
             for(int i= 0; i < funcDesc.ParameterTypes.Length; ++i) {
                 if(funcDesc.ParameterIsOuts[i]) result+= "out ";
                 result+= funcDesc.ParameterNames[i];
@@ -83,12 +84,11 @@ public class WD_DataBase {
             }
             result+= "out "+funcDesc.ReturnName+":"+(funcDesc.ReturnType != null ? WD_Types.ToString(funcDesc.ReturnType) : typeof(void).ToString());
         } else if(desc is WD_ConversionDesc) {
-            result= WD_Types.ToString(WD_ObjectTypeEnum.Conversion)+":"+result;
             WD_ConversionDesc convDesc= desc as WD_ConversionDesc;
-            result+= WD_Types.ToString(convDesc.FromType)+";"+WD_Types.ToString(convDesc.ToType);
+            result= WD_Types.ToString(WD_ObjectTypeEnum.Conversion)+":"+result+":"+convDesc.Method.Name+"<";
+            result+= convDesc.FromType.ToString()+":"+WD_Types.ToString(convDesc.FromType)+";out "+convDesc.ToType.ToString()+":"+WD_Types.ToString(convDesc.ToType);
         }
         result+=">{}";
-        Debug.Log("ToString(BaseDesc): "+result);
         return result;
     }
     // ----------------------------------------------------------------------
@@ -107,7 +107,6 @@ public class WD_DataBase {
         result+=">{";
         foreach(var child in desc.Children) result+= child;
         result+="}";
-        Debug.Log("ToString(Descriptor): "+result);
         return result;
     }
     // ----------------------------------------------------------------------

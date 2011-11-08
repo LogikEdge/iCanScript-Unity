@@ -343,8 +343,10 @@ public partial class WD_IStorage {
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
         this[id].Descriptor= desc.ToString();
         // Create input/output ports.
-        CreatePort(desc.FromType.Name, id, desc.FromType, WD_ObjectTypeEnum.InFunctionPort);
-        CreatePort(desc.ToType.Name,   id, desc.ToType,   WD_ObjectTypeEnum.OutFunctionPort);
+        WD_EditorObject inPort= CreatePort(desc.FromType.Name, id, desc.FromType, WD_ObjectTypeEnum.InFunctionPort);
+        inPort.PortIndex= 0;
+        WD_EditorObject outPort= CreatePort(desc.ToType.Name,   id, desc.ToType,   WD_ObjectTypeEnum.OutFunctionPort);
+        outPort.PortIndex= 1;
         return this[id];
     }
     // ----------------------------------------------------------------------

@@ -45,9 +45,10 @@ public partial class WD_IStorage {
                             GenerateDynamicNodeCode(edChild, rtChild);
                             break;
                         }
+                        case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.Function: {
                             WD_Descriptor desc= WD_DataBase.ParseDescriptorString(edChild.Descriptor);
-//                ParsingTest(edChild.Descriptor);
+                ParsingTest(edChild.Descriptor);
                             if(desc != null) {
                                 int paramLen= desc.MethodParamTypes.Length;
                                 object[] parameters= new object[paramLen];
@@ -80,35 +81,6 @@ public partial class WD_IStorage {
                                         connections[i]= connection;
                                     }
                                 }
-                                rtChild= new WD_Function(edChild.Name, desc.Method, parameters, connections, null);
-                                TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
-                                WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
-                            } else {
-                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.Descriptor);
-                            }
-                            break;
-                        }
-                        case WD_ObjectTypeEnum.Conversion: {
-                            WD_ConversionDesc desc= WD_DataBase.FromString(edChild.Descriptor) as WD_ConversionDesc;
-                            if(desc != null) {
-                                object[] parameters= new object[1];
-                                parameters[0]= WD_Reflection.GetDefault(desc.FromType);                                            
-                                WD_Connection[] connections= new WD_Connection[1];
-                                connections[0]= new WD_Connection(null, -1);
-                                ForEachChildPort(edChild,
-                                    p=> {
-                                        if(p.PortIndex == 0) {
-                                            WD_EditorObject sourcePort= GetSource(p);
-                                            if(sourcePort != null) {
-                                                WD_EditorObject sourceNode= GetParent(sourcePort);
-                                                WD_Function rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as WD_Function;
-                                                connections[0]= new WD_Connection(rtSourceNode, sourcePort.PortIndex);
-                                            }
-                                            return true;
-                                        }
-                                        return false;
-                                    }
-                                );
                                 rtChild= new WD_Function(edChild.Name, desc.Method, parameters, connections, null);
                                 TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                                 WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);

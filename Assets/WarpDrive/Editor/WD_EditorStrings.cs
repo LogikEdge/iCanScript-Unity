@@ -33,4 +33,12 @@ public class WD_EditorStrings {
     // Reflection methods
     public const string AddChildMethod   = "AddChild";
     public const string RemoveChildMethod= "RemoveChild";
+
+    // Parsing identifiers (unused for now)
+    public const string BeginBlock = "{";
+    public const string EndBlock   = "}";
+    public const string Seperator  = ":";
+    public const string Assignment = ":=";
+    public const string BeginParam = "<";
+    public const string EndParam   = ">";
 }
