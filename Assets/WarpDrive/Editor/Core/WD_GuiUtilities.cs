@@ -17,7 +17,7 @@ public class WD_GuiUtilities {
         // Get runtime object if it exists.
         WD_Function runtimeObject= storage.GetRuntimeObject(node) as WD_Function;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
-        object portValue= runtimeObject != null ? runtimeObject[portId] : desc.ParameterDefaultValues[portId];
+        object portValue= runtimeObject != null ? runtimeObject[portId] : desc.ParamDefaultValues[portId];
 
         // Display primitives.
         if(dataType == typeof(bool)) {
@@ -25,7 +25,7 @@ public class WD_GuiUtilities {
             bool newValue= EditorGUILayout.Toggle(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParameterDefaultValues[portId]= newValue;
+                desc.ParamDefaultValues[portId]= newValue;
                 node.Descriptor= WD_DataBase.ToString(desc);
             }
             return;
@@ -35,7 +35,7 @@ public class WD_GuiUtilities {
             int newValue= EditorGUILayout.IntField(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParameterDefaultValues[portId]= newValue;
+                desc.ParamDefaultValues[portId]= newValue;
                 node.Descriptor= WD_DataBase.ToString(desc);
             }
             return;
@@ -45,7 +45,7 @@ public class WD_GuiUtilities {
             float newValue= EditorGUILayout.FloatField(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParameterDefaultValues[portId]= newValue;
+                desc.ParamDefaultValues[portId]= newValue;
                 node.Descriptor= WD_DataBase.ToString(desc);
             }
             return;
@@ -55,7 +55,7 @@ public class WD_GuiUtilities {
             string newValue= EditorGUILayout.TextField(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParameterDefaultValues[portId]= newValue;
+                desc.ParamDefaultValues[portId]= newValue;
                 node.Descriptor= WD_DataBase.ToString(desc);
             }
             return;
@@ -65,7 +65,7 @@ public class WD_GuiUtilities {
             Vector2 newValue= EditorGUILayout.Vector2Field(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParameterDefaultValues[portId]= newValue;
+                desc.ParamDefaultValues[portId]= newValue;
                 node.Descriptor= WD_DataBase.ToString(desc);
             }
             return;            
@@ -75,7 +75,7 @@ public class WD_GuiUtilities {
             Vector3 newValue= EditorGUILayout.Vector3Field(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParameterDefaultValues[portId]= newValue;
+                desc.ParamDefaultValues[portId]= newValue;
                 node.Descriptor= WD_DataBase.ToString(desc);
             }
             return;            
@@ -85,7 +85,7 @@ public class WD_GuiUtilities {
             Vector4 newValue= EditorGUILayout.Vector4Field(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParameterDefaultValues[portId]= newValue;
+                desc.ParamDefaultValues[portId]= newValue;
                 node.Descriptor= WD_DataBase.ToString(desc);
             }
             return;            

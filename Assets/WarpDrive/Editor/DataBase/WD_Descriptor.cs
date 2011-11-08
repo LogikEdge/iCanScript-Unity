@@ -9,30 +9,31 @@ public class WD_Descriptor {
     public string   Package;
     public Type     ClassType;
     public string   Name;
-    public Type[]   ParameterTypes;
-    public bool[]   ParameterIsOuts;
-    public object[] ParameterDefaultValues;
+    public string[] ParamNames;
+    public Type[]   ParamTypes;
+    public bool[]   ParamIsOuts;
+    public object[] ParamDefaultValues;
     public string[] Children;
     
     public MethodInfo Method {
         get {
-            return ClassType.GetMethod(Name, MethodParameterTypes);            
+            return ClassType.GetMethod(Name, MethodParamTypes);            
         }
     }
-    public Type[] MethodParameterTypes {
+    public Type[] MethodParamTypes {
         get {
-            Type[] methodParameters= new Type[ParameterTypes.Length-1];
-            Array.Copy(ParameterTypes, methodParameters, methodParameters.Length);
+            Type[] methodParameters= new Type[ParamTypes.Length-1];
+            Array.Copy(ParamTypes, methodParameters, methodParameters.Length);
             return methodParameters;            
         }
     }
     public Type ReturnType {
         get {
-            return ParameterTypes[ParameterTypes.Length-1];            
+            return ParamTypes[ParamTypes.Length-1];            
         }
     }
 
-    public string ToString() {
+    public override string ToString() {
         return WD_DataBase.ToString(this);
     }
 }

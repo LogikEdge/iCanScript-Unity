@@ -49,18 +49,18 @@ public partial class WD_IStorage {
                             WD_Descriptor desc= WD_DataBase.ParseDescriptorString(edChild.Descriptor);
 //                ParsingTest(edChild.Descriptor);
                             if(desc != null) {
-                                int paramLen= desc.MethodParameterTypes.Length;
+                                int paramLen= desc.MethodParamTypes.Length;
                                 object[] parameters= new object[paramLen];
                                 WD_Connection[] connections= new WD_Connection[paramLen];
                                 for(int i= 0; i < paramLen; ++i) {
-                                    if(desc.ParameterIsOuts[i]) {  // outputs
+                                    if(desc.ParamIsOuts[i]) {  // outputs
                                         parameters[i]= null;
                                         connections[i]= new WD_Connection(null, 0);                                                                                
                                     } else {  // inputs
-                                        if(desc.ParameterDefaultValues[i] != null) {
-                                            parameters[i]= desc.ParameterDefaultValues[i];                                                                                        
+                                        if(desc.ParamDefaultValues[i] != null) {
+                                            parameters[i]= desc.ParamDefaultValues[i];                                                                                        
                                         } else {
-                                            parameters[i]= WD_Reflection.GetDefault(desc.ParameterTypes[i]);                                                                                        
+                                            parameters[i]= WD_Reflection.GetDefault(desc.ParamTypes[i]);                                                                                        
                                         }
                                         WD_Connection connection= new WD_Connection(null, -1);
                                         ForEachChildPort(edChild,
@@ -131,24 +131,16 @@ public partial class WD_IStorage {
     }
 
     void ParsingTest(string descStr) {
-        string company;
-        string package;
-        Type   classType;
-        string name;
-        Type[] parameters;
-        bool[] isOut;
-        object[] defaultValues;
-        string[] children;
-        WD_DataBase.ParseDescriptorString(descStr,out company, out package, out classType, out name, out parameters, out isOut, out defaultValues, out children);
+        WD_Descriptor desc= WD_DataBase.ParseDescriptorString(descStr);
         Debug.Log("Parsing: "+descStr);
         Debug.Log("Parsing result:");
-        Debug.Log("Company= "+company+" Package= "+package+" ClassType= "+classType.ToString()+" Name= "+name);
+        Debug.Log("Company= "+desc.Company+" Package= "+desc.Package+" ClassType= "+desc.ClassType.ToString()+" Name= "+desc.Name);
         string paramStr= "";
-        for(int i= 0; i < parameters.Length; ++i) {
-            if(isOut[i]) paramStr+= "out ";
-            paramStr+= parameters[i].ToString();
-            if(defaultValues[i] != null) {
-                paramStr+=":= "+defaultValues[i].ToString();
+        for(int i= 0; i < desc.ParamTypes.Length; ++i) {
+            if(desc.ParamIsOuts[i]) paramStr+= "out ";
+            paramStr+= desc.ParamTypes[i].ToString();
+            if(desc.ParamDefaultValues[i] != null) {
+                paramStr+=":= "+desc.ParamDefaultValues[i].ToString();
             }
             paramStr+= ";";
         }
