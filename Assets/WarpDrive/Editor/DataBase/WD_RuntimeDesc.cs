@@ -12,7 +12,7 @@ public class WD_RuntimeDesc {
     public string               Company;
     public string               Package;
     public Type                 ClassType;
-    public string               Name;
+    public string               MethodName;
     public string[]             ParamNames;
     public Type[]               ParamTypes;
     public bool[]               ParamIsOuts;
@@ -23,7 +23,7 @@ public class WD_RuntimeDesc {
     // ----------------------------------------------------------------------
     public MethodInfo Method {
         get {
-            return ClassType.GetMethod(Name, MethodParamTypes);            
+            return ClassType.GetMethod(MethodName, MethodParamTypes);            
         }
     }
     public Type[] MethodParamTypes {
@@ -66,7 +66,7 @@ public class WD_RuntimeDesc {
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // name
         end= encoded.IndexOf('<');
-        Name= encoded.Substring(0, end);
+        MethodName= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // parameters
         end= encoded.IndexOf('>');
@@ -81,7 +81,7 @@ public class WD_RuntimeDesc {
     // ----------------------------------------------------------------------
     // Returns a string that uniquely describes the descriptor.
     public override string ToString() {
-        string result= WD_Types.ToString(ObjectType)+":"+Company+":"+Package+":"+WD_Types.ToString(ClassType)+":"+Name+"<";
+        string result= WD_Types.ToString(ObjectType)+":"+Company+":"+Package+":"+WD_Types.ToString(ClassType)+":"+MethodName+"<";
         for(int i= 0; i < ParamTypes.Length; ++i) {
             if(ParamIsOuts[i]) result+= "out ";
             result+= ParamNames[i];

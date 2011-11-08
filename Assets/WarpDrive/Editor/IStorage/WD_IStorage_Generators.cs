@@ -106,7 +106,7 @@ public partial class WD_IStorage {
         WD_RuntimeDesc desc= new WD_RuntimeDesc(descStr);
         Debug.Log("Parsing: "+descStr);
         Debug.Log("Parsing result:");
-        Debug.Log("Company= "+desc.Company+" Package= "+desc.Package+" ClassType= "+desc.ClassType.ToString()+" Name= "+desc.Name);
+        Debug.Log("Company= "+desc.Company+" Package= "+desc.Package+" ClassType= "+desc.ClassType.ToString()+" Name= "+desc.MethodName);
         string paramStr= "";
         for(int i= 0; i < desc.ParamTypes.Length; ++i) {
             if(desc.ParamIsOuts[i]) paramStr+= "out ";
