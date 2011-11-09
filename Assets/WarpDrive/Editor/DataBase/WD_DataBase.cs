@@ -93,11 +93,11 @@ public class WD_DataBase {
                 }                
             }
         }
-        WD_ReflectionBaseDesc ret= Add(company, package, fromType.Name+"->"+toType.Name,
-                                       "Converts from "+fromType.Name+" to "+toType.Name, iconPath,
-                                       WD_ObjectTypeEnum.Conversion, classType, methodInfo,
-                                       new bool[1]{false}, new string[1]{fromType.Name}, new Type[1]{fromType}, new object[1]{null},
-                                       toType.Name, toType);
+        Add(company, package, fromType.Name+"->"+toType.Name,
+            "Converts from "+fromType.Name+" to "+toType.Name, iconPath,
+            WD_ObjectTypeEnum.Conversion, classType, methodInfo,
+            new bool[1]{false}, new string[1]{fromType.Name}, new Type[1]{fromType}, new object[1]{null},
+            toType.Name, toType);
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).

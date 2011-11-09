@@ -32,23 +32,31 @@ public class WD_Function : WD_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public WD_Function(string name, MethodInfo methodInfo, object[] parameters, WD_Connection[] connections, object obj= null) : base(name) {
-        myTargetObject= obj;
+    public WD_Function(string name, MethodInfo methodInfo, object[] parameters) : base(name) {
         myMethodInfo= methodInfo;
         myParameters= parameters;
-        myConnections= connections;
+        myConnections= new WD_Connection[0];
     }
+    public void SetConnections(WD_Connection[] connections, object targetObject= null) {
+        Connections= connections;
+        TargetObject= targetObject;
+    }
+    public WD_Connection[]  Connections  { get { return myConnections; }  set { myConnections= value; }}
+    public object           TargetObject { get { return myTargetObject; } set { myTargetObject= value; }}
     
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
+        // Verify that we are ready to run.
         foreach(var c in myConnections) {
             if(c.IsConnected && !c.IsReady(frameId)) return;
         }
+        // Fetch all the inputs.
         for(int i= 0; i < myConnections.Length; ++i) {
             if(myConnections[i].IsConnected) myParameters[i]= myConnections[i].Value; 
         }
+        // Execute function
         myReturn= myMethodInfo.Invoke(myTargetObject, myParameters);
         MarkAsCurrent(frameId);
     }
