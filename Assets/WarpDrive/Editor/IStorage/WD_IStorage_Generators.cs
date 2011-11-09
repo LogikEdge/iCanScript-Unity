@@ -48,9 +48,9 @@ public partial class WD_IStorage {
                         case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.Function: {
                             WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.DescriptorArchive);
-                ParsingTest(edChild.DescriptorArchive);
+//                ParsingTest(edChild.DescriptorArchive);
                             if(desc != null) {
-                                int paramLen= desc.MethodParamTypes.Length;
+                                int paramLen= desc.ParamTypes.Length;
                                 object[] parameters= new object[paramLen];
                                 WD_Connection[] connections= new WD_Connection[paramLen];
                                 for(int i= 0; i < paramLen; ++i) {

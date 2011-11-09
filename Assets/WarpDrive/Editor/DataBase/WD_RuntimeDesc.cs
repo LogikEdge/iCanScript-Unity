@@ -11,34 +11,22 @@ public class WD_RuntimeDesc {
     public WD_ObjectTypeEnum    ObjectType;
     public string               Company;
     public string               Package;
+    public string               Name;
     public Type                 ClassType;
     public string               MethodName;
     public string[]             ParamNames;
     public Type[]               ParamTypes;
     public bool[]               ParamIsOuts;
     public object[]             ParamDefaultValues;
+    public string               ReturnName;
+    public Type                 ReturnType;
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
     public MethodInfo Method {
         get {
-            return MethodName != null ? ClassType.GetMethod(MethodName, MethodParamTypes) : null;            
-        }
-    }
-    public Type[] MethodParamTypes {
-        get {
-            int len= ParamTypes.Length;
-            if(len <= 1) return new Type[0];
-            Type[] methodParameters= new Type[len-1];
-            Array.Copy(ParamTypes, methodParameters, methodParameters.Length);
-            return methodParameters;            
-        }
-    }
-    public Type ReturnType {
-        get {
-            int len= ParamTypes.Length;
-            return len >= 1 ? ParamTypes[len-1] : null;            
+            return MethodName != null ? ClassType.GetMethod(MethodName, ParamTypes) : null;            
         }
     }
 
@@ -54,19 +42,22 @@ public class WD_RuntimeDesc {
 
 
     // ======================================================================
-    // Conversion functions
+    // Archiving
     // ----------------------------------------------------------------------
     // Encode the runtime descriptor into a string.
     public string Encode() {
-        string result= WD_Types.ToString(ObjectType)+":"+Company+":"+Package+":"+WD_Types.ToString(ClassType)+":"+MethodName+"<";
+        string result= WD_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+Name+":"+WD_Archive.Encode(ClassType)+":"+MethodName+"<";
         for(int i= 0; i < ParamTypes.Length; ++i) {
             if(ParamIsOuts[i]) result+= "out ";
             result+= ParamNames[i];
             if(ParamDefaultValues[i] != null) {
-                result+= ":="+WD_Types.ToString(ParamDefaultValues[i]);
+                result+= ":="+WD_Archive.Encode(ParamDefaultValues[i]);
             }
-            result+= ":"+WD_Types.ToString(ParamTypes[i]);
+            result+= ":"+WD_Archive.Encode(ParamTypes[i]);
             if(i != ParamTypes.Length-1) result+= ";";
+        }
+        if(ReturnType != null) {
+            result+= ";ret "+(ReturnName != null ? ReturnName : "out")+":"+WD_Archive.Encode(ReturnType);
         }
         result+=">{}";
         return result;
@@ -77,7 +68,7 @@ public class WD_RuntimeDesc {
         // object type
         int end= encoded.IndexOf(':');
         string objectTypeStr= encoded.Substring(0, end);
-        ObjectType= WD_Types.FromString<WD_ObjectTypeEnum>(objectTypeStr);
+        ObjectType= WD_Archive.Decode<WD_ObjectTypeEnum>(objectTypeStr);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // company
         end= encoded.IndexOf(':');
@@ -87,10 +78,14 @@ public class WD_RuntimeDesc {
         end= encoded.IndexOf(':');
         Package= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // name
+        end= encoded.IndexOf(':');
+        Name= encoded.Substring(0, end);
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // class type
         end= encoded.IndexOf(':');
         string className= encoded.Substring(0, end);
-        ClassType= WD_Types.FromString<Type>(className);
+        ClassType= WD_Archive.Decode<Type>(className);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // name
         end= encoded.IndexOf('<');
@@ -100,17 +95,29 @@ public class WD_RuntimeDesc {
         end= encoded.IndexOf('>');
         string parameterString= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        ParseParameters(parameterString, out ParamIsOuts, out ParamTypes, out ParamNames, out ParamDefaultValues);
+        ParseParameters(parameterString);
         return this;
     }
     // ----------------------------------------------------------------------
     // Extracts the type of the parameters from the given string.
-    static void ParseParameters(string paramStr, out bool[] isOut, out Type[] types, out string[] names, out object[] defaultValues) {
+    void ParseParameters(string paramStr) {
+        ReturnType= null;
         List<bool>      paramIsOut   = new List<bool>();
         List<Type>      paramTypes   = new List<Type>();
         List<string>    paramNames   = new List<string>();
         List<object>    paramDefaults= new List<object>();
         while(paramStr.Length > 0) {
+            // Return type
+            int end= -1;
+            if(paramStr.StartsWith("ret ")) {
+                end= paramStr.IndexOf(':');
+                ReturnName= paramStr.Substring(4, end-4);
+                paramStr= paramStr.Substring(end+1, paramStr.Length-end-1);
+                end= paramStr.IndexOf(';');
+                ReturnType= WD_Archive.Decode<Type>(paramStr.Substring(0, end > 0 ? end : paramStr.Length));
+                paramStr= end > 0 ? paramStr.Substring(end+1, paramStr.Length-end-1) : "";
+                continue;
+            }
             // in/out parameter type
             if(paramStr.StartsWith("out ")) {
                 paramIsOut.Add(true);
@@ -119,7 +126,7 @@ public class WD_RuntimeDesc {
                 paramIsOut.Add(false);
             }                
             // parameter name
-            int end= paramStr.IndexOf(':');
+            end= paramStr.IndexOf(':');
             paramNames.Add(paramStr.Substring(0, end));
             paramStr= paramStr.Substring(end+1, paramStr.Length-end-1);
             // parameter default value (part 1)
@@ -131,19 +138,20 @@ public class WD_RuntimeDesc {
             }
             // parameter type.
             end= paramStr.IndexOf(';');
-            Type paramType= WD_Types.FromString<Type>(paramStr.Substring(0, end > 0 ? end : paramStr.Length));
+            Type paramType= WD_Archive.Decode<Type>(paramStr.Substring(0, end > 0 ? end : paramStr.Length));
             paramTypes.Add(paramType);
             paramStr= end > 0 ? paramStr.Substring(end+1, paramStr.Length-end-1) : "";
             // parameter default value (part 2)
             if(defaultValueStr != null) {
-                paramDefaults.Add(WD_Types.FromString(defaultValueStr, paramType));
+                paramDefaults.Add(WD_Archive.Decode(defaultValueStr, paramType));
             } else {
                 paramDefaults.Add(null);                
             }
         }
-        isOut= paramIsOut.ToArray();
-        types= paramTypes.ToArray();
-        names= paramNames.ToArray();
-        defaultValues= paramDefaults.ToArray();
+        ParamIsOuts= paramIsOut.ToArray();
+        ParamTypes = paramTypes.ToArray();
+        ParamNames = paramNames.ToArray();
+        ParamDefaultValues= paramDefaults.ToArray();
     }
+
 }

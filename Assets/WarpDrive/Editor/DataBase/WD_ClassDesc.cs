@@ -48,4 +48,9 @@ public class WD_ClassDesc : WD_ReflectionBaseDesc {
         ParameterTypes= parameterTypes;
         ParameterInOuts= parameterInOuts;
     }
+
+    // ======================================================================
+    // Archiving
+    // ----------------------------------------------------------------------
+    public override string Encode() { return Company+":"+Package+":"+ClassType.Name; }
 }

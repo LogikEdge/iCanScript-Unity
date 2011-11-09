@@ -20,4 +20,9 @@ public class WD_ConversionDesc : WD_ReflectionBaseDesc {
         FromType= fromType;
         ToType= toType;
     }
+
+    // ======================================================================
+    // Archiving
+    // ----------------------------------------------------------------------
+    public override string Encode() { return Company+":"+Package+":"+ClassType.Name; }
 }

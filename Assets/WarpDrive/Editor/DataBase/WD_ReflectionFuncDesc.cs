@@ -4,24 +4,46 @@ using System.Reflection;
 using System.Collections;
 
 public class WD_ReflectionFuncDesc : WD_ReflectionBaseDesc {
-    public string       ReturnName;
-    public Type         ReturnType;
-    public string[]     ParameterNames;
-    public Type[]       ParameterTypes;
-    public bool[]       ParameterIsOuts;
-    public object[]     ParameterDefaults;
-    public MethodInfo   Method;
-    public WD_ReflectionFuncDesc(string company, string package, string classToolTip, Type classType,
-                           string methodName, string returnName, Type returnType, string toolTip, string icon,
-                           string[] paramNames, Type[] paramTypes, bool[] paramIsOuts, object[] paramDefaults,
-                           MethodInfo methodInfo) : base(company, package, methodName, toolTip ?? classToolTip, icon, classType) {
-        ClassType        = classType;
-        ReturnName       = returnName;
-        ReturnType       = returnType;
-        ParameterNames   = paramNames;
-        ParameterTypes   = paramTypes;
-        ParameterIsOuts  = paramIsOuts;
-        ParameterDefaults= paramDefaults;
-        Method           = methodInfo;
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    public string[]         ParamNames;
+    public string           ReturnName;
+    public WD_RuntimeDesc   RuntimeDesc;
+
+    // ======================================================================
+    // Creation/Destruction
+    // ----------------------------------------------------------------------
+    public WD_ReflectionFuncDesc(string company, string package, string name,
+                                 string toolTip, string iconPath,
+                                 WD_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
+                                 bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
+                                 string returnName, Type returnType) : base(company, package, name, toolTip, iconPath, classType) {
+        // Fill-in editor names
+        ParamNames= paramNames;
+        ReturnName= returnName;
+ 
+        // Fill-in runtime details.
+        RuntimeDesc= new WD_RuntimeDesc();
+        RuntimeDesc.ObjectType= objType;
+        RuntimeDesc.ClassType= classType;
+        RuntimeDesc.MethodName= methodInfo != null ? methodInfo.Name : null;
+        RuntimeDesc.ParamIsOuts= paramIsOuts;
+        RuntimeDesc.ParamTypes= paramTypes;
+        RuntimeDesc.ParamDefaultValues= paramDefaultValues;
+        RuntimeDesc.ReturnType= returnType;
+        
+        // To be obsoleted
+        RuntimeDesc.Company   = company;
+        RuntimeDesc.Package   = package;
+        RuntimeDesc.ParamNames= paramNames;
+        RuntimeDesc.ReturnName= returnName;
+    }
+
+    // ======================================================================
+    // Archiving
+    // ----------------------------------------------------------------------
+    public override string Encode() {
+        return RuntimeDesc.Encode();
     }
 }

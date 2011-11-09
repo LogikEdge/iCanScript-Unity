@@ -68,34 +68,18 @@ public class WD_DataBase {
     // ----------------------------------------------------------------------
     // Returns a string that uniquely describes the descriptor.
     // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>{[children]}
-    public static string ToString(WD_ReflectionBaseDesc desc) {
-        string result= desc.Company+":"+desc.Package+":"+WD_Types.ToString(desc.ClassType);
+    public static string Encode(WD_ReflectionBaseDesc desc) {
         if(desc is WD_ReflectionFuncDesc) {
             WD_ReflectionFuncDesc funcDesc= desc as WD_ReflectionFuncDesc;
-            result= WD_Types.ToString(WD_ObjectTypeEnum.Function)+":"+result+":"+desc.Name+"<";
-            for(int i= 0; i < funcDesc.ParameterTypes.Length; ++i) {
-                if(funcDesc.ParameterIsOuts[i]) result+= "out ";
-                result+= funcDesc.ParameterNames[i];
-                if(funcDesc.ParameterDefaults[i] != null) {
-                    result+= ":="+WD_Types.ToString(funcDesc.ParameterDefaults[i]);
-                }
-                result+= ":"+WD_Types.ToString(funcDesc.ParameterTypes[i]);
-                result+= ";";
-            }
-            result+= "out "+funcDesc.ReturnName+":"+(funcDesc.ReturnType != null ? WD_Types.ToString(funcDesc.ReturnType) : typeof(void).ToString());
-        } else if(desc is WD_ConversionDesc) {
-            WD_ConversionDesc convDesc= desc as WD_ConversionDesc;
-            result= WD_Types.ToString(WD_ObjectTypeEnum.Conversion)+":"+result+":"+convDesc.Method.Name+"<";
-            result+= convDesc.FromType.ToString()+":"+WD_Types.ToString(convDesc.FromType)+";out "+convDesc.ToType.ToString()+":"+WD_Types.ToString(convDesc.ToType);
+            return funcDesc.RuntimeDesc.Encode();
         }
-        result+=">{}";
-        return result;
+        return null;
     }
     // ----------------------------------------------------------------------
     // Returns the BaseDesc associated with the given string.
-    public static WD_ReflectionBaseDesc FromString(string encoded) {
+    public static WD_ReflectionBaseDesc Decode(string encoded) {
         foreach(var desc in Functions) {
-            if(desc.ToString() == encoded) return desc;
+            if(desc.Encode() == encoded) return desc;
         }
         return null;
     }
@@ -126,13 +110,14 @@ public class WD_DataBase {
     public static void AddFunction(string company, string package, string classToolTip, Type classType, // Class info
                                    string methodName,                                                   // Function info
                                    string[] paramNames, Type[] paramTypes,                              // Parameter info
-                                   bool[] paramInOuts, object[] paramDefaults,
+                                   bool[] paramIsOuts, object[] paramDefaults,
                                    string retName, Type retType,                                        // Return value info
                                    string toolTip, string icon, MethodInfo methodInfo) {
-        WD_ReflectionFuncDesc fd= new WD_ReflectionFuncDesc(company, package, classToolTip, classType,
-                                                methodName, retName, retType, toolTip, icon,
-                                                paramNames, paramTypes, paramInOuts, paramDefaults,
-                                                methodInfo);
+        WD_ReflectionFuncDesc fd= new WD_ReflectionFuncDesc(company, package, methodName,
+                                                toolTip ?? classToolTip, icon,
+                                                WD_ObjectTypeEnum.Function, classType, methodInfo,
+                                                paramIsOuts, paramNames, paramTypes, paramDefaults,
+                                                retName, retType);
         Functions.Add(fd);
     }
     // ----------------------------------------------------------------------

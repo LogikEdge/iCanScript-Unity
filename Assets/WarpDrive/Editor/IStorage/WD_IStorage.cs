@@ -315,19 +315,20 @@ public partial class WD_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
-        this[id].DescriptorArchive= desc.ToString();
+        this[id].DescriptorArchive= desc.Encode();
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null) this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.FunctionIcon, this);
         
         // Create input/output ports.
-        for(int i= 0; i < desc.ParameterNames.Length; ++i) {
-            WD_ObjectTypeEnum portType= desc.ParameterIsOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
-            WD_EditorObject port= CreatePort(desc.ParameterNames[i], id, desc.ParameterTypes[i], portType);
+        WD_RuntimeDesc  rtDesc= desc.RuntimeDesc;
+        for(int i= 0; i < desc.ParamNames.Length; ++i) {
+            WD_ObjectTypeEnum portType= rtDesc.ParamIsOuts[i] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
+            WD_EditorObject port= CreatePort(desc.ParamNames[i], id, rtDesc.ParamTypes[i], portType);
             port.PortIndex= i;
         }
-        if(desc.ReturnType != null) {
-            WD_EditorObject port= CreatePort(desc.ReturnName, id, desc.ReturnType, WD_ObjectTypeEnum.OutFunctionPort);
-            port.PortIndex= desc.ParameterNames.Length;
+        if(desc.ReturnName != null) {
+            WD_EditorObject port= CreatePort(desc.ReturnName, id, rtDesc.ReturnType, WD_ObjectTypeEnum.OutFunctionPort);
+            port.PortIndex= desc.ParamNames.Length;
         }
         return this[id];
     }
@@ -341,7 +342,7 @@ public partial class WD_IStorage {
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
-        this[id].DescriptorArchive= desc.ToString();
+        this[id].DescriptorArchive= desc.Encode();
         // Create input/output ports.
         WD_EditorObject inPort= CreatePort(desc.FromType.Name, id, desc.FromType, WD_ObjectTypeEnum.InFunctionPort);
         inPort.PortIndex= 0;
