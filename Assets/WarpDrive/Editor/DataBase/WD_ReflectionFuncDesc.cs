@@ -12,6 +12,12 @@ public class WD_ReflectionFuncDesc : WD_ReflectionBaseDesc {
     public WD_RuntimeDesc   RuntimeDesc;
 
     // ======================================================================
+    // Accessors
+    // ----------------------------------------------------------------------
+    public WD_ObjectTypeEnum ObjectType { get { return RuntimeDesc.ObjectType; } set { RuntimeDesc.ObjectType= value; }}
+    public Type              ReturnType { get { return RuntimeDesc.ReturnType; } set { RuntimeDesc.ReturnType= value; }}
+    
+    // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public WD_ReflectionFuncDesc(string company, string package, string name,
@@ -43,7 +49,7 @@ public class WD_ReflectionFuncDesc : WD_ReflectionBaseDesc {
     // ======================================================================
     // Archiving
     // ----------------------------------------------------------------------
-    public override string Encode() {
-        return RuntimeDesc.Encode();
+    public override string Encode(int id) {
+        return RuntimeDesc.Encode(id);
     }
 }

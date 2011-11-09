@@ -245,9 +245,6 @@ public partial class WD_IStorage {
         else if(desc is WD_ReflectionFuncDesc) {
             obj= CreateFunction(parentId, initialPos, desc as WD_ReflectionFuncDesc);
         }
-        else if(desc is WD_ConversionDesc) {
-            obj= CreateFunction(parentId, initialPos, desc as WD_ConversionDesc);
-        }
         return obj;
     }
     // ----------------------------------------------------------------------
@@ -315,9 +312,11 @@ public partial class WD_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
-        this[id].DescriptorArchive= desc.Encode();
+        this[id].DescriptorArchive= desc.Encode(id);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
-        if(this[id].IconGUID == null) this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.FunctionIcon, this);
+        if(this[id].IconGUID == null && desc.ObjectType == WD_ObjectTypeEnum.Function) {
+            this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.FunctionIcon, this);
+        }
         
         // Create input/output ports.
         WD_RuntimeDesc  rtDesc= desc.RuntimeDesc;
@@ -330,24 +329,6 @@ public partial class WD_IStorage {
             WD_EditorObject port= CreatePort(desc.ReturnName, id, rtDesc.ReturnType, WD_ObjectTypeEnum.OutFunctionPort);
             port.PortIndex= desc.ParamNames.Length;
         }
-        return this[id];
-    }
-    // ----------------------------------------------------------------------
-    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ConversionDesc desc) {
-        // Create the function node.
-        int id= GetNextAvailableId();
-        // Calcute the desired screen position of the new object.
-        Rect parentPos= GetPosition(parentId);
-        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
-        // Create new EditorObject
-        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Conversion, localPos);
-        this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
-        this[id].DescriptorArchive= desc.Encode();
-        // Create input/output ports.
-        WD_EditorObject inPort= CreatePort(desc.FromType.Name, id, desc.FromType, WD_ObjectTypeEnum.InFunctionPort);
-        inPort.PortIndex= 0;
-        WD_EditorObject outPort= CreatePort(desc.ToType.Name,   id, desc.ToType,   WD_ObjectTypeEnum.OutFunctionPort);
-        outPort.PortIndex= 1;
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -468,7 +449,7 @@ public partial class WD_IStorage {
         SetDirty(obj);
     }
     // ----------------------------------------------------------------------
-    public void SetSource(WD_EditorObject inPort, WD_EditorObject outPort, WD_ConversionDesc convDesc) {
+    public void SetSource(WD_EditorObject inPort, WD_EditorObject outPort, WD_ReflectionFuncDesc convDesc) {
         Rect inPos= GetPosition(inPort);
         Rect outPos= GetPosition(outPort);
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));

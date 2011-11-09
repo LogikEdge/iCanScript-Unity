@@ -28,5 +28,5 @@ public abstract class WD_ReflectionBaseDesc {
     // ======================================================================
     // Archiving
     // ----------------------------------------------------------------------
-    public abstract string Encode();
+    public abstract string Encode(int id);
 }

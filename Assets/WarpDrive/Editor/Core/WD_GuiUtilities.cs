@@ -26,7 +26,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.DescriptorArchive= desc.Encode();
+                node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;
         }
@@ -36,7 +36,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.DescriptorArchive= desc.Encode();
+                node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;
         }
@@ -46,7 +46,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.DescriptorArchive= desc.Encode();
+                node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;
         }
@@ -56,7 +56,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.DescriptorArchive= desc.Encode();
+                node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;
         }
@@ -66,7 +66,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.DescriptorArchive= desc.Encode();
+                node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;            
         }
@@ -76,7 +76,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.DescriptorArchive= desc.Encode();
+                node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;            
         }
@@ -86,7 +86,7 @@ public class WD_GuiUtilities {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
                 desc.ParamDefaultValues[portId]= newValue;
-                node.DescriptorArchive= desc.Encode();
+                node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;            
         }

@@ -55,33 +55,22 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Finds a conversion that matches the given from/to types.
-    public static WD_ConversionDesc FindConversion(Type fromType, Type toType) {
+    public static WD_ReflectionFuncDesc FindConversion(Type fromType, Type toType) {
         foreach(var desc in Functions) {
-            if(desc is WD_ConversionDesc) {
-                WD_ConversionDesc conv= desc as WD_ConversionDesc;
-                if(WD_Types.CanBeConnectedWithoutConversion(fromType, conv.FromType) &&
-                   WD_Types.CanBeConnectedWithoutConversion(conv.ToType, toType)) return conv;
+            if(IsConversion(desc)) {
+                WD_ReflectionFuncDesc funcDesc= desc as WD_ReflectionFuncDesc;
+                WD_RuntimeDesc conv= funcDesc.RuntimeDesc;
+                if(WD_Types.CanBeConnectedWithoutConversion(fromType, conv.ParamTypes[0]) &&
+                   WD_Types.CanBeConnectedWithoutConversion(conv.ReturnType, toType)) return funcDesc;
             }
         }
         return null;
     }
     // ----------------------------------------------------------------------
-    // Returns a string that uniquely describes the descriptor.
-    // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>{[children]}
-    public static string Encode(WD_ReflectionBaseDesc desc) {
-        if(desc is WD_ReflectionFuncDesc) {
-            WD_ReflectionFuncDesc funcDesc= desc as WD_ReflectionFuncDesc;
-            return funcDesc.RuntimeDesc.Encode();
-        }
-        return null;
-    }
-    // ----------------------------------------------------------------------
-    // Returns the BaseDesc associated with the given string.
-    public static WD_ReflectionBaseDesc Decode(string encoded) {
-        foreach(var desc in Functions) {
-            if(desc.Encode() == encoded) return desc;
-        }
-        return null;
+    // Returns true if the given desc is a conversion function.
+    public static bool IsConversion(WD_ReflectionBaseDesc desc) {
+        WD_ReflectionFuncDesc funcDesc= desc as WD_ReflectionFuncDesc;
+        return funcDesc != null && funcDesc.RuntimeDesc.ObjectType == WD_ObjectTypeEnum.Conversion;
     }
     
     // ======================================================================
@@ -93,33 +82,53 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Adds a conversion function
-    public static void AddConversion(string company, string package, Type classType, string icon, MethodInfo methodInfo, Type fromType, Type toType) {
+    public static void AddConversion(string company, string package, Type classType, string iconPath, MethodInfo methodInfo, Type fromType, Type toType) {
+        // Don't accept automatic conversion if it already exist.
         foreach(var desc in Functions) {
-            if(desc is WD_ConversionDesc) {
-                WD_ConversionDesc conv= desc as WD_ConversionDesc;
-                if(conv.FromType == fromType && conv.ToType == toType) {
+            if(IsConversion(desc)) {
+                WD_RuntimeDesc conv= (desc as WD_ReflectionFuncDesc).RuntimeDesc;
+                if(conv.ParamTypes[0] == fromType && conv.ReturnType == toType) {
                     Debug.LogWarning("Duplicate conversion function from "+fromType+" to "+toType+" exists in classes "+conv.Method.DeclaringType+" and "+methodInfo.DeclaringType);
                     return;
                 }                
             }
         }
-        Functions.Add(new WD_ConversionDesc(company, package, classType, icon, methodInfo, fromType, toType));
+        WD_ReflectionBaseDesc ret= Add(company, package, fromType.Name+"->"+toType.Name,
+                                       "Converts from "+fromType.Name+" to "+toType.Name, iconPath,
+                                       WD_ObjectTypeEnum.Conversion, classType, methodInfo,
+                                       new bool[1]{false}, new string[1]{fromType.Name}, new Type[1]{fromType}, new object[1]{null},
+                                       toType.Name, toType);
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
     public static void AddFunction(string company, string package, string classToolTip, Type classType, // Class info
-                                   string methodName,                                                   // Function info
+                                   string name,                                                   // Function info
                                    string[] paramNames, Type[] paramTypes,                              // Parameter info
                                    bool[] paramIsOuts, object[] paramDefaults,
                                    string retName, Type retType,                                        // Return value info
-                                   string toolTip, string icon, MethodInfo methodInfo) {
-        WD_ReflectionFuncDesc fd= new WD_ReflectionFuncDesc(company, package, methodName,
-                                                toolTip ?? classToolTip, icon,
-                                                WD_ObjectTypeEnum.Function, classType, methodInfo,
-                                                paramIsOuts, paramNames, paramTypes, paramDefaults,
-                                                retName, retType);
-        Functions.Add(fd);
+                                   string toolTip, string iconPath, MethodInfo methodInfo) {
+        Add(company, package, name,
+            toolTip ?? classToolTip, iconPath,
+            WD_ObjectTypeEnum.Function, classType, methodInfo,
+            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            retName, retType);
     }
+    // ----------------------------------------------------------------------
+    // Adds a new database record.
+    public static WD_ReflectionBaseDesc Add(string company, string package, string name,
+                                            string toolTip, string iconPath,
+                                            WD_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
+                                            bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                            string retName, Type retType) {
+        WD_ReflectionFuncDesc fd= new WD_ReflectionFuncDesc(company, package, name,
+                                                            toolTip, iconPath,
+                                                            objType, classType, methodInfo,
+                                                            paramIsOuts, paramNames, paramTypes, paramDefaults,
+                                                            retName, retType);
+        Functions.Add(fd);
+        return fd;
+    }
+    
     // ----------------------------------------------------------------------
     // Adds a class.
     public static void AddClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,                        // Class info

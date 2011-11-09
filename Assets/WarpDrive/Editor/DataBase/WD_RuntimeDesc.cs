@@ -8,6 +8,7 @@ public class WD_RuntimeDesc {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+    public int                  Id;
     public WD_ObjectTypeEnum    ObjectType;
     public string               Company;
     public string               Package;
@@ -45,8 +46,9 @@ public class WD_RuntimeDesc {
     // Archiving
     // ----------------------------------------------------------------------
     // Encode the runtime descriptor into a string.
-    public string Encode() {
-        string result= WD_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+Name+":"+WD_Archive.Encode(ClassType)+":"+MethodName+"<";
+    // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>
+    public string Encode(int id) {
+        string result= WD_Archive.Encode(id)+":"+WD_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+Name+":"+WD_Archive.Encode(ClassType)+":"+MethodName+"<";
         for(int i= 0; i < ParamTypes.Length; ++i) {
             if(ParamIsOuts[i]) result+= "out ";
             result+= ParamNames[i];
@@ -65,8 +67,12 @@ public class WD_RuntimeDesc {
     // ----------------------------------------------------------------------
     // Fills the runtime descriptor from an encoded string.
     public WD_RuntimeDesc Decode(string encoded) {
-        // object type
+        // object id
         int end= encoded.IndexOf(':');
+        Id= WD_Archive.Decode<int>(encoded.Substring(0, end));
+        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        // object type
+        end= encoded.IndexOf(':');
         string objectTypeStr= encoded.Substring(0, end);
         ObjectType= WD_Archive.Decode<WD_ObjectTypeEnum>(objectTypeStr);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);

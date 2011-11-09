@@ -52,5 +52,5 @@ public class WD_ClassDesc : WD_ReflectionBaseDesc {
     // ======================================================================
     // Archiving
     // ----------------------------------------------------------------------
-    public override string Encode() { return Company+":"+Package+":"+ClassType.Name; }
+    public override string Encode(int id) { return WD_Archive.Encode(id)+":"+Company+":"+Package+":"+ClassType.Name; }
 }
