@@ -17,7 +17,7 @@ public class WD_GuiUtilities {
         // Get runtime object if it exists.
         WD_Function runtimeObject= storage.GetRuntimeObject(node) as WD_Function;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
-        object portValue= runtimeObject != null ? runtimeObject[portId] : desc.ParamDefaultValues[portId];
+        object portValue= runtimeObject != null ? runtimeObject[portId] : (desc.ParamIsOuts[portId] ? WD_Types.DefaultValue(dataType) : desc.ParamDefaultValues[portId]);
 
         // Display primitives.
         if(dataType == typeof(bool)) {
@@ -90,19 +90,14 @@ public class WD_GuiUtilities {
             }
             return;            
         }
-
-        if(dataType == typeof(GameObject)) {
-            GameObject value= portValue != null ? (GameObject)portValue : null;
-            GameObject newValue= EditorGUILayout.ObjectField(niceName, value, typeof(GameObject), true) as GameObject;
+        // Support all UnityEngine objects.
+        if(WD_Types.IsA<UnityEngine.Object>(dataType)) {
+            UnityEngine.Object value= portValue != null ? portValue as UnityEngine.Object: null;
+            UnityEngine.Object newValue= EditorGUILayout.ObjectField(niceName, value, dataType, true);
             if(port.IsInputPort & runtimeObject != null) runtimeObject[portId]= newValue;
             return;                        
-        }            
-        if(dataType == typeof(AnimationClip)) {
-            AnimationClip value= portValue != null ? (AnimationClip)portValue : null;
-            AnimationClip newValue= EditorGUILayout.ObjectField(niceName, value, typeof(AnimationClip), true) as AnimationClip;
-            if(port.IsInputPort & runtimeObject != null) runtimeObject[portId]= newValue;
-            return;                        
-        }            
+            
+        }
 
 //        // Display array of primitives.
 //        if(fieldType.IsArray) {
