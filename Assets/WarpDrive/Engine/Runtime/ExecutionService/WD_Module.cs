@@ -6,9 +6,13 @@ public class WD_Module : WD_Action {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    private List<WD_Action> myExecuteQueue= new List<WD_Action>();
-    private int             myQueueIdx= 0;
-    private int             myNbOfTries= 0;
+    List<WD_Action> myExecuteQueue= new List<WD_Action>();
+    int             myQueueIdx= 0;
+    int             myNbOfTries= 0;
+    bool[]          myParamIsOuts = null;
+    object[]        myParameters  = null;
+    WD_Connection[] myConnections = null;
+    
     
     // ======================================================================
     // Creation/Destruction
@@ -50,7 +54,7 @@ public class WD_Module : WD_Action {
     
 
     // ======================================================================
-    // CONNECTOR MANAGEMENT
+    // Connector Management
     // ----------------------------------------------------------------------
     public void AddChild(object obj) {
         if(IsExecutable(obj)) {

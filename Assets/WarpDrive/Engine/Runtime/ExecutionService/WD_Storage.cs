@@ -11,7 +11,7 @@ public class WD_Storage : MonoBehaviour {
     // ----------------------------------------------------------------------
                       public WD_UserPreferences       Preferences  = new WD_UserPreferences();
     [HideInInspector] public List<WD_EditorObject>    EditorObjects= new List<WD_EditorObject>();
-                      public List<Object>             UnityObjects = new List<Object>();
+    [HideInInspector] public List<Object>             UnityObjects = new List<Object>();
     [HideInInspector] public int                      UndoRedoId   = 0;
 
     // ----------------------------------------------------------------------
