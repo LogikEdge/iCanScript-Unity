@@ -47,8 +47,9 @@ public partial class WD_IStorage {
     // ======================================================================
     // Basic Accessors
     // ----------------------------------------------------------------------
-    public List<WD_EditorObject> EditorObjects { get { return Storage.EditorObjects; }}
-    public WD_UserPreferences    Preferences   { get { return Storage.Preferences; }}
+    public List<WD_EditorObject>    EditorObjects { get { return Storage.EditorObjects; }}
+    public WD_UserPreferences       Preferences   { get { return Storage.Preferences; }}
+    public List<UnityEngine.Object> UnityObjects  { get { return Storage.UnityObjects; }}
     // ----------------------------------------------------------------------
     public bool IsValid(int id)                     { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)                   { return !IsValid(id); }

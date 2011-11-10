@@ -30,7 +30,13 @@ public class WD_RuntimeDesc {
             return MethodName != null ? ClassType.GetMethod(MethodName, ParamTypes) : null;            
         }
     }
-
+    public object GetDefaultValue(int idx, WD_IStorage storage) {
+        return storage.GetDefaultValue(this, idx);
+    }
+    public void SetDefaultValue(int idx, object obj, WD_IStorage storage) {
+        storage.SetDefaultValue(this, idx, obj);
+    }
+    
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
@@ -53,7 +59,11 @@ public class WD_RuntimeDesc {
             if(ParamIsOuts[i]) result+= "out ";
             result+= ParamNames[i];
             if(ParamDefaultValues[i] != null) {
-                result+= ":="+WD_Archive.Encode(ParamDefaultValues[i]);
+                if(WD_Types.IsA<UnityEngine.Object>(ParamTypes[i])) {
+                    result+= ":="+WD_Archive.Encode((int)ParamDefaultValues[i]);
+                } else {
+                    result+= ":="+WD_Archive.Encode(ParamDefaultValues[i]);                    
+                }
             }
             result+= ":"+WD_Archive.Encode(ParamTypes[i]);
             if(i != ParamTypes.Length-1) result+= ";";
@@ -149,7 +159,11 @@ public class WD_RuntimeDesc {
             paramStr= end > 0 ? paramStr.Substring(end+1, paramStr.Length-end-1) : "";
             // parameter default value (part 2)
             if(defaultValueStr != null) {
-                paramDefaults.Add(WD_Archive.Decode(defaultValueStr, paramType));
+                if(WD_Types.IsA<UnityEngine.Object>(paramType)) {
+                    paramDefaults.Add(WD_Archive.Decode(defaultValueStr, typeof(int)));
+                } else {
+                    paramDefaults.Add(WD_Archive.Decode(defaultValueStr, paramType));                    
+                }
             } else {
                 paramDefaults.Add(null);                
             }

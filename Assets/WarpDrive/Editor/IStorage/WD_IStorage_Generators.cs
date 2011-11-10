@@ -63,7 +63,7 @@ public partial class WD_IStorage {
                                 if(desc.ParamIsOuts[i]) {  // outputs
                                     parameters[i]= null;
                                 } else {                   // inputs
-                                    parameters[i]= desc.ParamDefaultValues[i] ?? WD_Types.DefaultValue(desc.ParamTypes[i]);
+                                    parameters[i]= GetDefaultValue(desc, i) ?? WD_Types.DefaultValue(desc.ParamTypes[i]);
                                 }
                             }
                             rtChild= new WD_Function(edChild.Name, desc.Method, parameters);

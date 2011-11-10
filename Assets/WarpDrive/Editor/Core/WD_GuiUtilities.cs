@@ -17,7 +17,7 @@ public class WD_GuiUtilities {
         // Get runtime object if it exists.
         WD_Function runtimeObject= storage.GetRuntimeObject(node) as WD_Function;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
-        object portValue= runtimeObject != null ? runtimeObject[portId] : (desc.ParamIsOuts[portId] ? WD_Types.DefaultValue(dataType) : desc.ParamDefaultValues[portId]);
+        object portValue= runtimeObject != null ? runtimeObject[portId] : (desc.ParamIsOuts[portId] ? WD_Types.DefaultValue(dataType) : storage.GetDefaultValue(desc, portId));
 
         // Display primitives.
         if(dataType == typeof(bool)) {
@@ -25,7 +25,7 @@ public class WD_GuiUtilities {
             bool newValue= EditorGUILayout.Toggle(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParamDefaultValues[portId]= newValue;
+                storage.SetDefaultValue(desc, portId, newValue);
                 node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;
@@ -35,7 +35,7 @@ public class WD_GuiUtilities {
             int newValue= EditorGUILayout.IntField(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParamDefaultValues[portId]= newValue;
+                storage.SetDefaultValue(desc, portId, newValue);
                 node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;
@@ -45,7 +45,7 @@ public class WD_GuiUtilities {
             float newValue= EditorGUILayout.FloatField(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParamDefaultValues[portId]= newValue;
+                storage.SetDefaultValue(desc, portId, newValue);
                 node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;
@@ -55,7 +55,7 @@ public class WD_GuiUtilities {
             string newValue= EditorGUILayout.TextField(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParamDefaultValues[portId]= newValue;
+                storage.SetDefaultValue(desc, portId, newValue);
                 node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;
@@ -65,7 +65,7 @@ public class WD_GuiUtilities {
             Vector2 newValue= EditorGUILayout.Vector2Field(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParamDefaultValues[portId]= newValue;
+                storage.SetDefaultValue(desc, portId, newValue);
                 node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;            
@@ -75,7 +75,7 @@ public class WD_GuiUtilities {
             Vector3 newValue= EditorGUILayout.Vector3Field(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParamDefaultValues[portId]= newValue;
+                storage.SetDefaultValue(desc, portId, newValue);
                 node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;            
@@ -85,7 +85,7 @@ public class WD_GuiUtilities {
             Vector4 newValue= EditorGUILayout.Vector4Field(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {
-                desc.ParamDefaultValues[portId]= newValue;
+                storage.SetDefaultValue(desc, portId, newValue);
                 node.DescriptorArchive= desc.Encode(desc.Id);
             }
             return;            
@@ -95,8 +95,11 @@ public class WD_GuiUtilities {
             UnityEngine.Object value= portValue != null ? portValue as UnityEngine.Object: null;
             UnityEngine.Object newValue= EditorGUILayout.ObjectField(niceName, value, dataType, true);
             if(port.IsInputPort & runtimeObject != null) runtimeObject[portId]= newValue;
-            return;                        
-            
+            if(value != newValue && storage.GetSource(port) == null) {
+                storage.SetDefaultValue(desc, portId, newValue);
+                node.DescriptorArchive= desc.Encode(desc.Id);
+            }
+            return;                                    
         }
 
 //        // Display array of primitives.
