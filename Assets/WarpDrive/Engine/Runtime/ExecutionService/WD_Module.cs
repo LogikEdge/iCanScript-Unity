@@ -34,7 +34,7 @@ public class WD_Module : WD_Action {
         }
         // Verify that the graph is not looping.
         if(myNbOfTries >= maxTries) {
-//            Debug.LogError("Execution of graph is looping!!! "+myExecuteQueue[myQueueIdx].name+":"+myExecuteQueue[myQueueIdx].TypeName+" is included in the loop. Please break the cycle and retry.");
+            Debug.LogError("Execution of graph is looping!!! "+myExecuteQueue[myQueueIdx].Name+":"+myExecuteQueue[myQueueIdx].GetType().Name+" is included in the loop. Please break the cycle and retry.");
         }
         // Reset iterators for next frame.
         myQueueIdx= 0;

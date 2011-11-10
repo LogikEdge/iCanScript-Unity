@@ -77,6 +77,11 @@ public class WD_Inspector : Editor {
         
         // Draw inspector window
 		DrawDefaultInspector();
+		if(Storage.Storage is WD_Behaviour) {
+		    WD_Behaviour behaviour= Storage.Storage as WD_Behaviour;
+		    EditorGUILayout.LabelField("UpdateFrameId", behaviour.UpdateFrameId.ToString());
+		    EditorGUILayout.LabelField("FixedUpdateFrameId", behaviour.FixedUpdateFrameId.ToString());
+		}
 		
         // Draw selected object.
         EditorGUI.indentLevel= 0;
@@ -124,6 +129,11 @@ public class WD_Inspector : Editor {
 
 	// ----------------------------------------------------------------------
     void InspectNode(WD_EditorObject node) {
+        // Show runtime frame id.
+        WD_Function runtimeObject= Storage.GetRuntimeObject(node) as WD_Function;
+        if(runtimeObject != null) {
+            EditorGUILayout.LabelField("FrameId", runtimeObject.FrameId.ToString());
+        }
         // Show Iconic image configuration.
         Texture2D iconicTexture= WD_Graphics.GetCachedIconFromGUID(node.IconGUID);
         Object newTexture= EditorGUILayout.ObjectField("Iconic Texture", iconicTexture, typeof(Texture2D), false) as Texture2D;

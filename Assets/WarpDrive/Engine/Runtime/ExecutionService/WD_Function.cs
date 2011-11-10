@@ -54,7 +54,9 @@ public class WD_Function : WD_Action {
         }
         // Fetch all the inputs.
         for(int i= 0; i < myConnections.Length; ++i) {
-            if(myConnections[i].IsConnected) myParameters[i]= myConnections[i].Value; 
+            if(myConnections[i].IsConnected) {
+                myParameters[i]= myConnections[i].Value;
+            }
         }
         // Execute function
         myReturn= myMethodInfo.Invoke(myTargetObject, myParameters);

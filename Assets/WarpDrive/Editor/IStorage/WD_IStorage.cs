@@ -8,11 +8,11 @@ public partial class WD_IStorage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    bool            myIsDirty    = true;
-    WD_Storage      Storage      = null;
-    WD_TreeCache    TreeCache    = null;
-    int             UndoRedoId   = 0;
-    bool            CleanupNeeded= true;
+            bool            myIsDirty    = true;
+    public  WD_Storage      Storage      = null;
+            WD_TreeCache    TreeCache    = null;
+            int             UndoRedoId   = 0;
+            bool            CleanupNeeded= true;
     
     // ======================================================================
     // Initialization
