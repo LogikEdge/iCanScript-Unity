@@ -90,6 +90,7 @@ public class WD_GuiUtilities {
             }
             return;            
         }
+
         if(dataType == typeof(GameObject)) {
             GameObject value= portValue != null ? (GameObject)portValue : null;
             GameObject newValue= EditorGUILayout.ObjectField(niceName, value, typeof(GameObject), true) as GameObject;

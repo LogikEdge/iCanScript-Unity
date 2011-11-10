@@ -6,6 +6,17 @@ using System.Collections.Generic;
 
 public class WD_Reflection {
     // ----------------------------------------------------------------------
+    // Returns true if type can be converted to another type
+    public static bool IsA(Type baseType, Type derivedType) {
+        if(baseType == derivedType) return true;
+        if(derivedType == typeof(object)) return false;
+        return IsA(baseType, derivedType.BaseType);
+    }
+    public static bool IsA<BASE>(Type derivedType) {
+        return IsA(typeof(BASE), derivedType);
+    }
+    
+    // ----------------------------------------------------------------------
     // Returns the default value of the given type.
     public static object GetDefault(Type type) {
        return type.IsValueType ? Activator.CreateInstance(type) : null;
