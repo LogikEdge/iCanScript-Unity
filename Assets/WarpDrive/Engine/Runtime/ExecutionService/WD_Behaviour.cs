@@ -54,26 +54,26 @@ public sealed class WD_Behaviour : WD_Storage {
     void Update() {
         ++myUpdateFrameId;
         if(myUpdateAction != null) {
-            while(!myUpdateAction.IsCurrent(myUpdateFrameId)) {
-                myUpdateAction.Execute(myUpdateFrameId);
-            }
+            do {
+                myUpdateAction.Execute(myUpdateFrameId);                
+            } while(!myUpdateAction.IsCurrent(myUpdateFrameId));
         }
     }
     // Called on evry frame after all Update have been called.
     void LateUpdate() {
         if(myLateUpdateAction != null) {
-            while(!myLateUpdateAction.IsCurrent(myUpdateFrameId)) {
-                myLateUpdateAction.Execute(myUpdateFrameId);                            
-            }
+            do {
+                myLateUpdateAction.Execute(myUpdateFrameId);                                            
+            } while(!myLateUpdateAction.IsCurrent(myUpdateFrameId));
         }
     }
     // Fix-time update to be used instead of Update
     void FixedUpdate() {
         ++myFixedUpdateFrameId;
         if(myFixedUpdateAction != null) {
-            while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId)) {
-                myFixedUpdateAction.Execute(myFixedUpdateFrameId);                
-            }
+            do {
+                myFixedUpdateAction.Execute(myFixedUpdateFrameId);                                
+            } while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId));
         }
     }
 
