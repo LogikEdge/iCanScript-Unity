@@ -7,10 +7,11 @@ public class WD_Module : WD_Action {
     // Properties
     // ----------------------------------------------------------------------
     List<WD_Action> myExecuteQueue= new List<WD_Action>();
-    int             myQueueIdx= 0;
+    int             myQueueIdx = 0;
     int             myNbOfTries= 0;
-    object[]        myInParams      = new object[0];
-    object[]        myOutParams     = new object[0];
+    int[]           myParamsIdx;
+    object[]        myInParams;
+    object[]        myOutParams;
     WD_Connection[] myInConnections = new WD_Connection[0];
     WD_Connection[] myOutConnections= new WD_Connection[0];
     
@@ -19,6 +20,7 @@ public class WD_Module : WD_Action {
     // ----------------------------------------------------------------------
     public object this[int idx] {
         get {
+            idx= myParamsIdx[idx];
             int inLen= myInParams.Length;
             if(idx < inLen) return myInParams[idx];
             idx-= inLen;
@@ -27,6 +29,7 @@ public class WD_Module : WD_Action {
             return null;
         }
         set {
+            idx= myParamsIdx[idx];
             int inLen= myInParams.Length;
             if(idx < inLen) { myInParams[idx]= value; return; }
             idx-= inLen;
@@ -38,11 +41,20 @@ public class WD_Module : WD_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public WD_Module(string name) : base(name) {}
-    public void SetConnections(object[] inParams, WD_Connection[] inConnections, object[] outParams, WD_Connection[] outConnections) {
-        myInParams      = inParams;
+    public WD_Module(string name/*, object[] inParams, int[] inParamsIdx, object[] outParams, int[] outParamsIdx*/) : base(name) {
+//        // Build parameter translation table
+//        myParamsIdx= new int[inParamsIdx.Length+outParamsIdx.Length];
+//        for(int i= 0; i < inParamsIdx.Length; ++i) {
+//            myParamsIdx[inParamsIdx[i]]= i;
+//        }
+//        for(int i= 0; i < outParamsIdx.Length; ++i) {
+//            myParamsIdx[outParamsIdx[i]]= i+inParamsIdx.Length;
+//        }
+//        myInParams= inParams;
+//        myOutParams= outParams;
+    }
+    public void SetConnections(WD_Connection[] inConnections, WD_Connection[] outConnections) {
         myInConnections = inConnections;
-        myOutParams     = outParams;
         myOutConnections= outConnections;
     }
     

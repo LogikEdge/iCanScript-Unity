@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public partial class WD_IStorage {
     // ======================================================================
@@ -30,7 +31,28 @@ public partial class WD_IStorage {
                     object rtChild= null;
                     switch(edChild.ObjectType) {
                         case WD_ObjectTypeEnum.Module: {
-                            rtChild= new WD_Module(edChild.Name);
+//                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.DescriptorArchive);
+//                            if(desc == null) {
+//                                Debug.LogWarning("Unable to locate runtime information for: "+edChild.DescriptorArchive);
+//                                break;
+//                            }
+//                            // Create module parameters.
+//                            int paramLen= desc.ParamTypes.Length;
+//                            List<object> inParams= new List<object>();
+//                            List<int>    inParamsIdx= new List<int>();
+//                            List<object> outParams= new List<object>();
+//                            List<int>    outParamsIdx= new List<int>();
+//                            for(int i= 0; i < paramLen; ++i) {
+//                                if(desc.ParamIsOuts[i]) {  // outputs
+//                                    outParams.Add(WD_Types.DefaultValue(desc.ParamTypes[i]));
+//                                    outParamsIdx.Add(i);
+//                                } else {                   // inputs
+//                                    inParams.Add(GetDefaultValue(desc, i) ?? WD_Types.DefaultValue(desc.ParamTypes[i]));
+//                                    inParamsIdx.Add(i);
+//                                }
+//                            }
+//                            // Create module.
+                            rtChild= new WD_Module(edChild.Name/*, inParams.ToArray(), inParamsIdx.ToArray(), outParams.ToArray(), outParamsIdx.ToArray()*/);
                             TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                             WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                             GenerateRuntimeNodes(edChild, rtChild);
@@ -54,9 +76,10 @@ public partial class WD_IStorage {
                         case WD_ObjectTypeEnum.Function: {
                             WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.DescriptorArchive);
                             if(desc == null) {
-                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.DescriptorArchive);
+                                Debug.LogWarning("Unable to locate runtime information for: "+edChild.DescriptorArchive);
                                 break;
                             }
+                            // Create function parameters.
                             int paramLen= desc.ParamTypes.Length;
                             object[] parameters= new object[paramLen];
                             for(int i= 0; i < paramLen; ++i) {
@@ -66,7 +89,8 @@ public partial class WD_IStorage {
                                     parameters[i]= GetDefaultValue(desc, i) ?? WD_Types.DefaultValue(desc.ParamTypes[i]);
                                 }
                             }
-                            rtChild= new WD_Function(edChild.Name, desc.Method, parameters);
+                            // Create function.
+                            rtChild= new WD_Function(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);
                             TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                             WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                             break;
@@ -91,6 +115,34 @@ public partial class WD_IStorage {
                     object rtChild= null;
                     switch(edChild.ObjectType) {
                         case WD_ObjectTypeEnum.Module: {
+//                            // Generate module connection information.
+//                            List<WD_Connection> inConnections = new List<WD_Connection>();
+//                            List<WD_Connection> outConnections= new List<WD_Connection>();
+//                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.DescriptorArchive);
+//                            int paramLen= desc.ParamTypes.Length;
+//                            for(int i= 0; i < paramLen; ++i) {
+//                                ForEachChildPort(edChild,
+//                                    p=> {
+//                                        if(p.PortIndex == i) {
+//                                            WD_Connection connection= null;
+//                                            WD_EditorObject sourcePort= GetSource(p);
+//                                            if(sourcePort != null) {
+//                                                WD_EditorObject sourceNode= GetParent(sourcePort);
+//                                                WD_Function rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject;
+//                                                connection= new WD_Connection(rtSourceNode, sourcePort.PortIndex);
+//                                            } else {
+//                                                connection= new WD_Connection(null, -1);
+//                                            }
+//                                            (desc.ParamIsOuts[i] ? outConnections : inConnections).Add(connection);
+//                                            return true;
+//                                        }
+//                                        return false;
+//                                    }
+//                                );
+//                            }
+//                            // Configure module with the connections.
+//                            (TreeCache[edChild.InstanceId].RuntimeObject as WD_Module).SetConnections(inConnections, outConnections);
+                            // Ask the children to generate their connections.
                             ConnectRuntimeNodes(edChild, rtChild);
                             break;
                         }
