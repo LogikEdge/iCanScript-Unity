@@ -54,26 +54,41 @@ public sealed class WD_Behaviour : WD_Storage {
     void Update() {
         ++myUpdateFrameId;
         if(myUpdateAction != null) {
+            int retry= 0;
             do {
+                ++retry;
                 myUpdateAction.Execute(myUpdateFrameId);                
-            } while(!myUpdateAction.IsCurrent(myUpdateFrameId));
+            } while(!myUpdateAction.IsCurrent(myUpdateFrameId) && retry < 10000);
+            if(retry >= 10000) {
+                Debug.LogWarning("Upadte graph seems to be looping.");
+            }
         }
     }
     // Called on evry frame after all Update have been called.
     void LateUpdate() {
         if(myLateUpdateAction != null) {
+            int retry= 0;
             do {
+                ++retry;
                 myLateUpdateAction.Execute(myUpdateFrameId);                                            
-            } while(!myLateUpdateAction.IsCurrent(myUpdateFrameId));
+            } while(!myLateUpdateAction.IsCurrent(myUpdateFrameId) && retry < 10000);
+            if(retry >= 10000) {
+                Debug.LogWarning("Late Upadte graph seems to be looping.");
+            }
         }
     }
     // Fix-time update to be used instead of Update
     void FixedUpdate() {
         ++myFixedUpdateFrameId;
         if(myFixedUpdateAction != null) {
+            int retry= 0;
             do {
+                ++retry;
                 myFixedUpdateAction.Execute(myFixedUpdateFrameId);                                
-            } while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId));
+            } while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId) && retry < 10000);
+            if(retry >= 10000) {
+                Debug.LogWarning("Fixed Upadte graph seems to be looping.");
+            }
         }
     }
 
