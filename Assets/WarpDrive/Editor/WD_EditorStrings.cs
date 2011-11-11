@@ -41,4 +41,8 @@ public class WD_EditorStrings {
     public const string Assignment = ":=";
     public const string BeginParam = "<";
     public const string EndParam   = ">";
+
+    // Product identifiers
+    public const string Company       = "Infaunier";
+    public const string DefaultPackage= "DefaultPackage";
 }

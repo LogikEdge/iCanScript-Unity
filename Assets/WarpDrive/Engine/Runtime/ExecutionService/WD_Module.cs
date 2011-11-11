@@ -2,76 +2,23 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class WD_Module : WD_Action {
+public class WD_Module : WD_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     List<WD_Action> myExecuteQueue= new List<WD_Action>();
     int             myQueueIdx = 0;
     int             myNbOfTries= 0;
-    int[]           myParamsIdx;
-    object[]        myInParams;
-    object[]        myOutParams;
-    WD_Connection[] myInConnections = new WD_Connection[0];
-    WD_Connection[] myOutConnections= new WD_Connection[0];
     
-    // ======================================================================
-    // Accessors
-    // ----------------------------------------------------------------------
-    public object this[int idx] {
-        get {
-            idx= myParamsIdx[idx];
-            int inLen= myInParams.Length;
-            if(idx < inLen) return myInParams[idx];
-            idx-= inLen;
-            if(idx < myOutParams.Length) return myOutParams[idx];
-            Debug.LogError("Invalid parameter index given");
-            return null;
-        }
-        set {
-            idx= myParamsIdx[idx];
-            int inLen= myInParams.Length;
-            if(idx < inLen) { myInParams[idx]= value; return; }
-            idx-= inLen;
-            if(idx < myOutParams.Length) { myOutParams[idx]= value; return; }
-            Debug.LogError("Invalid parameter index given");            
-        }
-    }
-        
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public WD_Module(string name/*, object[] inParams, int[] inParamsIdx, object[] outParams, int[] outParamsIdx*/) : base(name) {
-//        // Build parameter translation table
-//        myParamsIdx= new int[inParamsIdx.Length+outParamsIdx.Length];
-//        for(int i= 0; i < inParamsIdx.Length; ++i) {
-//            myParamsIdx[inParamsIdx[i]]= i;
-//        }
-//        for(int i= 0; i < outParamsIdx.Length; ++i) {
-//            myParamsIdx[outParamsIdx[i]]= i+inParamsIdx.Length;
-//        }
-//        myInParams= inParams;
-//        myOutParams= outParams;
-    }
-    public void SetConnections(WD_Connection[] inConnections, WD_Connection[] outConnections) {
-        myInConnections = inConnections;
-        myOutConnections= outConnections;
-    }
+    public WD_Module(string name, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {}
     
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    public override void Execute(int frameId) {
-        // Verify that we are ready to run.
-        foreach(var c in myInConnections) {
-            if(c.IsConnected && !c.IsReady(frameId)) return;
-        }
-        // Fetch all the inputs.
-        for(int i= 0; i < myInConnections.Length; ++i) {
-            if(myInConnections[i].IsConnected) {
-                myInParams[i]= myInConnections[i].Value;
-            }
-        }
+    protected override void DoExecute(int frameId) {
         // Attempt to execute child functions.
         int maxTries= myExecuteQueue.Count; maxTries= 1+(maxTries*maxTries+maxTries)/2;
         for(; myQueueIdx < myExecuteQueue.Count && myNbOfTries < maxTries; ++myNbOfTries) {
@@ -90,9 +37,9 @@ public class WD_Module : WD_Action {
             Debug.LogError("Execution of graph is looping!!! "+myExecuteQueue[myQueueIdx].Name+":"+myExecuteQueue[myQueueIdx].GetType().Name+" is included in the loop. Please break the cycle and retry.");
         }
         // Update all outputs.
-        for(int i= 0; i < myOutConnections.Length; ++i) {
-            if(myOutConnections[i].IsConnected) {
-                myOutParams[i]= myOutConnections[i].Value;
+        foreach(var id in myOutIndexes) {
+            if(myConnections[id].IsConnected) {
+                myParameters[id]= myConnections[id].Value;
             }
         }        
         // Reset iterators for next frame.
@@ -101,12 +48,6 @@ public class WD_Module : WD_Action {
         MarkAsCurrent(frameId);
     }
 
-    // ----------------------------------------------------------------------
-    // Returns true if the object is an executable that we support.
-    bool IsExecutable(object _object) {
-        return _object is WD_Action;
-    }
-    
 
     // ======================================================================
     // Connector Management
@@ -121,4 +62,10 @@ public class WD_Module : WD_Action {
             myExecuteQueue.Remove(obj as WD_Action);
         }
     }
+    // ----------------------------------------------------------------------
+    // Returns true if the object is an executable that we support.
+    bool IsExecutable(object _object) {
+        return _object is WD_Action;
+    }
+    
 }

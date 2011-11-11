@@ -200,6 +200,13 @@ public partial class WD_IStorage {
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, name, typeof(WD_Module), parentId, WD_ObjectTypeEnum.Module, localPos);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.ModuleIcon, this);
+        WD_RuntimeDesc rtDesc= new WD_RuntimeDesc();
+        rtDesc.ObjectType= WD_ObjectTypeEnum.Module;
+        rtDesc.Company= WD_EditorStrings.Company;
+        rtDesc.Package= WD_EditorStrings.DefaultPackage;
+        rtDesc.Name= name;
+        rtDesc.ClassType= typeof(WD_Module);
+        this[id].DescriptorArchive= rtDesc.Encode(id);
         return this[id];
     }
     // ----------------------------------------------------------------------

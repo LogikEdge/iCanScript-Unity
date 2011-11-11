@@ -16,7 +16,7 @@ public class WD_Connection {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public WD_Connection(WD_Function function, int parameterIndex) {
+    public WD_Connection(WD_FunctionBase function, int parameterIndex) {
         myConnection= new Prelude.Tuple<WD_FunctionBase,int>(function, parameterIndex);
     }
 

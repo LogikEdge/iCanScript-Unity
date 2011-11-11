@@ -59,8 +59,7 @@ public abstract class WD_FunctionBase : WD_Action {
             if(myConnections[id].IsConnected && !myConnections[id].IsReady(frameId)) return;
         }
         // Fetch all the inputs.
-        for(int i= 0; i < myInIndexes.Length; ++i) {
-            int id= myInIndexes[i];
+        foreach(var id in myInIndexes) {
             if(myConnections[id].IsConnected) {
                 myParameters[id]= myConnections[id].Value;
             }

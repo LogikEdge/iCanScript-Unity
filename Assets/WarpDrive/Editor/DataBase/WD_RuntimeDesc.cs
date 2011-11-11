@@ -8,19 +8,19 @@ public class WD_RuntimeDesc {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public int                  Id;
-    public WD_ObjectTypeEnum    ObjectType;
-    public string               Company;
-    public string               Package;
-    public string               Name;
-    public Type                 ClassType;
-    public string               MethodName;
-    public string[]             ParamNames;
-    public Type[]               ParamTypes;
-    public bool[]               ParamIsOuts;
-    public object[]             ParamDefaultValues;
-    public string               ReturnName;
-    public Type                 ReturnType;
+    public int                  Id                  = -1;
+    public WD_ObjectTypeEnum    ObjectType          = WD_ObjectTypeEnum.Unknown;
+    public string               Company             = "(no company)";
+    public string               Package             = "DefaultPackage";
+    public string               Name                = null;
+    public Type                 ClassType           = null;
+    public string               MethodName          = null;
+    public string[]             ParamNames          = new string[0];
+    public Type[]               ParamTypes          = new Type[0];
+    public bool[]               ParamIsOuts         = new bool[0];
+    public object[]             ParamDefaultValues  = new object[0];
+    public string               ReturnName          = null;
+    public Type                 ReturnType          = null;
     
     // ======================================================================
     // Accessors
