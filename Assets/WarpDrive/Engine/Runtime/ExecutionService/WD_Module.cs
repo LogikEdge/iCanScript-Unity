@@ -9,10 +9,10 @@ public class WD_Module : WD_Action {
     List<WD_Action> myExecuteQueue= new List<WD_Action>();
     int             myQueueIdx= 0;
     int             myNbOfTries= 0;
-    object[]        myInParams      = null;
-    object[]        myOutParams     = null;
-    WD_Connection[] myInConnections = null;
-    WD_Connection[] myOutConnections= null;
+    object[]        myInParams      = new object[0];
+    object[]        myOutParams     = new object[0];
+    WD_Connection[] myInConnections = new WD_Connection[0];
+    WD_Connection[] myOutConnections= new WD_Connection[0];
     
     // ======================================================================
     // Accessors
