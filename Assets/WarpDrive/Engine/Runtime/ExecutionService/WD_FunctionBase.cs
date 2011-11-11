@@ -9,9 +9,10 @@ public abstract class WD_FunctionBase : WD_Action {
     // Properties
     // ----------------------------------------------------------------------
     protected object[]        myParameters;
-    protected WD_Connection[] myConnections;
     protected int[]           myInIndexes;
     protected int[]           myOutIndexes;
+    protected int[]           myParameterFrameIds;
+    protected WD_Connection[] myConnections;
     protected object          myReturn;
     
     // ======================================================================
@@ -30,12 +31,26 @@ public abstract class WD_FunctionBase : WD_Action {
             Debug.LogError("Invalid parameter index given");            
         }
     }
+    public int GetParameterFrameId(int idx) {
+        return idx < myParameters.Length ? myParameterFrameIds[idx] : FrameId;
+    }
+    public bool IsParameterReady(int idx, int frameId) {
+        return GetParameterFrameId(idx) == frameId;
+    }
+    public void SetParameterFrameId(int idx, int frameId) {
+        if(idx < myParameters.Length)  myParameterFrameIds[idx]= frameId;        
+    }
+    public new void MarkAsCurrent(int frameId) {
+        foreach(var id in myOutIndexes) myParameterFrameIds[id]= frameId;
+        base.MarkAsCurrent(frameId);
+    }
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public WD_FunctionBase(string name, object[] parameters, bool[] paramIsOuts) : base(name) {
         myParameters= parameters;
+        myParameterFrameIds= new int[parameters.Length];
         myConnections= new WD_Connection[0];
         List<int> inIdx= new List<int>();
         List<int> outIdx= new List<int>();
@@ -63,6 +78,7 @@ public abstract class WD_FunctionBase : WD_Action {
             if(myConnections[id].IsConnected) {
                 myParameters[id]= myConnections[id].Value;
             }
+            myParameterFrameIds[id]= frameId;
         }
         // Execute function
         DoExecute(frameId);

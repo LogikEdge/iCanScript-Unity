@@ -7,18 +7,18 @@ public class WD_EditorObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public WD_ObjectTypeEnum    ObjectType       = WD_ObjectTypeEnum.Unknown;
-    public int                  InstanceId       = -1;
-    public int                  ParentId         = -1;
-    public string               QualifiedType    = "";
-    public string               DescriptorArchive= null;
-    public WD_DisplayOptionEnum DisplayOption    = WD_DisplayOptionEnum.Normal;
-    public string               IconGUID         = null;
-    public string               RawName          = "";
-    public bool                 IsNameEditable   = true;
-    public string               RawToolTip       = null;
-    public bool                 IsDirty          = false;
-    public Rect                 LocalPosition    = new Rect(0,0,0,0);
+    public WD_ObjectTypeEnum    ObjectType    = WD_ObjectTypeEnum.Unknown;
+    public int                  InstanceId    = -1;
+    public int                  ParentId      = -1;
+    public string               QualifiedType = "";
+    public string               RuntimeArchive= null;
+    public WD_DisplayOptionEnum DisplayOption = WD_DisplayOptionEnum.Normal;
+    public string               IconGUID      = null;
+    public string               RawName       = "";
+    public bool                 IsNameEditable= true;
+    public string               RawToolTip    = null;
+    public bool                 IsDirty       = false;
+    public Rect                 LocalPosition = new Rect(0,0,0,0);
 
     // Port specific attributes ---------------------------------------------
     public enum EdgeEnum { None, Top, Bottom, Right, Left };
@@ -51,7 +51,7 @@ public class WD_EditorObject {
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
-        DescriptorArchive= null;
+        RuntimeArchive= null;
         DisplayOption= WD_DisplayOptionEnum.Normal;
         IconGUID= null;
         Name= "";

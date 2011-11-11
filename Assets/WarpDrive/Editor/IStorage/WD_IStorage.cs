@@ -35,7 +35,7 @@ public partial class WD_IStorage {
     // ----------------------------------------------------------------------
     void GenerateInternalData() {
         GenerateEditorData();
-        GenerateDynamicCode();
+        GenerateRuntimeCode();
     }
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
@@ -206,7 +206,7 @@ public partial class WD_IStorage {
         rtDesc.Package= WD_EditorStrings.DefaultPackage;
         rtDesc.Name= name;
         rtDesc.ClassType= typeof(WD_Module);
-        this[id].DescriptorArchive= rtDesc.Encode(id);
+        this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -264,7 +264,7 @@ public partial class WD_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
-        this[id].DescriptorArchive= desc.ToString();
+        this[id].RuntimeArchive= desc.ToString();
         // Create field ports
         for(int i= 0; i < desc.FieldNames.Length; ++i) {
             WD_ObjectTypeEnum portType= desc.FieldInOuts[i] ? WD_ObjectTypeEnum.OutFieldPort : WD_ObjectTypeEnum.InFieldPort;
@@ -320,7 +320,7 @@ public partial class WD_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
-        this[id].DescriptorArchive= desc.Encode(id);
+        this[id].RuntimeArchive= desc.Encode(id);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == WD_ObjectTypeEnum.Function) {
             this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.FunctionIcon, this);
@@ -354,6 +354,7 @@ public partial class WD_IStorage {
                 port.LocalPosition= new Rect(parent.LocalPosition.width, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);                
             }
         }
+        if(GetParent(port).IsModule) { AddPortToModule(port); }
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
@@ -382,6 +383,8 @@ public partial class WD_IStorage {
         }
         // Disconnect ports linking to this port.
         ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPort(toDestroy));
+        // Update modules runtime data when removing a module port.
+        if(toDestroy.IsModulePort && GetParent(toDestroy).IsModule) RemovePortFromModule(toDestroy);
         // Remove all children first.
         while(TreeCache[id].Children.Count != 0) {
             DestroyInstanceInternal(TreeCache[id].Children[0]);

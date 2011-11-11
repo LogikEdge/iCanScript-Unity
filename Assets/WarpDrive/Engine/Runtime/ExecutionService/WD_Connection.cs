@@ -25,5 +25,5 @@ public class WD_Connection {
         get { return myConnection.Item1[myConnection.Item2]; }
         set { myConnection.Item1[myConnection.Item2]= value; }
     }
-    public bool IsReady(int frameId)    { return myConnection.Item1.IsCurrent(frameId); }
+    public bool IsReady(int frameId)    { return myConnection.Item1.IsParameterReady(myConnection.Item2, frameId); }
 }

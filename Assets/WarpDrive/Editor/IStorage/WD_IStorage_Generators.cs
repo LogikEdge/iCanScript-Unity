@@ -7,7 +7,7 @@ public partial class WD_IStorage {
     // ======================================================================
     // Runtime code generation
     // ----------------------------------------------------------------------
-    public void GenerateDynamicCode() {
+    public void GenerateRuntimeCode() {
         // Only generate runtime code for behaviours.
         WD_Behaviour rtBehaviour= Storage as WD_Behaviour;
         if(rtBehaviour == null || EditorObjects.Count == 0) return;
@@ -19,12 +19,12 @@ public partial class WD_IStorage {
         // Remove any previous runtime object creation.
         rtBehaviour.ClearGeneratedCode();
         // Create all the runtime nodes.
-        GenerateRuntimeNodes(edBehaviour, rtBehaviour);
+        GenerateRuntimeChildNodes(edBehaviour, rtBehaviour);
         // Connect the runtime nodes.
-        ConnectRuntimeNodes(edBehaviour, rtBehaviour);
+        ConnectRuntimeChildNodes(edBehaviour);
     }
     // ----------------------------------------------------------------------
-    void GenerateRuntimeNodes(WD_EditorObject edNode, object rtNode) {
+    void GenerateRuntimeChildNodes(WD_EditorObject edNode, object rtNode) {
         ForEachChild(edNode,
             edChild=>{
                 if(edChild.IsNode) {
@@ -34,22 +34,22 @@ public partial class WD_IStorage {
                             rtChild= new WD_StateChart(edChild.Name);
                             TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                             WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
-                            GenerateRuntimeNodes(edChild, rtChild);
+                            GenerateRuntimeChildNodes(edChild, rtChild);
                             break;
                         }
                         case WD_ObjectTypeEnum.State: {
                             rtChild= new WD_State(edChild.Name);
                             TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                             WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
-                            GenerateRuntimeNodes(edChild, rtChild);
+                            GenerateRuntimeChildNodes(edChild, rtChild);
                             break;
                         }
                         case WD_ObjectTypeEnum.Module:
                         case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.Function: {
-                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.DescriptorArchive);
+                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.RuntimeArchive);
                             if(desc == null) {
-                                Debug.LogWarning("Unable to locate runtime information for: "+edChild.DescriptorArchive);
+                                Debug.LogWarning("Unable to locate runtime information for: "+edChild.RuntimeArchive);
                                 break;
                             }
                             // Create function parameters.
@@ -71,7 +71,7 @@ public partial class WD_IStorage {
                             TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                             WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                             // Ask the children to do the same.
-                            if(edChild.ObjectType == WD_ObjectTypeEnum.Module) { GenerateRuntimeNodes(edChild, rtChild); }
+                            if(edChild.ObjectType == WD_ObjectTypeEnum.Module) { GenerateRuntimeChildNodes(edChild, rtChild); }
                             break;
                         }
                         case WD_ObjectTypeEnum.Class: {
@@ -87,55 +87,50 @@ public partial class WD_IStorage {
         );
     }
     // ----------------------------------------------------------------------
-    void ConnectRuntimeNodes(WD_EditorObject edNode, object rtNode) {
+    void ConnectRuntimeChildNodes(WD_EditorObject edNode) {
         ForEachChild(edNode,
             edChild=>{
                 if(edChild.IsNode) {
-                    object rtChild= null;
                     switch(edChild.ObjectType) {
                         case WD_ObjectTypeEnum.StateChart: {
-                            ConnectRuntimeNodes(edChild, rtChild);
+                            ConnectRuntimeChildNodes(edChild);
                             break;
                         }
                         case WD_ObjectTypeEnum.State: {
-                            ConnectRuntimeNodes(edChild, rtChild);
+                            ConnectRuntimeChildNodes(edChild);
                             break;
                         }
                         case WD_ObjectTypeEnum.Module:
                         case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.Function: {
-                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.DescriptorArchive);
+                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.RuntimeArchive);
                             if(desc == null) {
-                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.DescriptorArchive);
+                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.RuntimeArchive);
                                 break;
                             }
                             int paramLen= desc.ParamTypes.Length;
                             WD_Connection[] connections= new WD_Connection[paramLen];
                             for(int i= 0; i < paramLen; ++i) {
-                                if(desc.ParamIsOuts[i]) {  // outputs
-                                    connections[i]= new WD_Connection(null, 0);                                                                                
-                                } else {  // inputs
-                                    WD_Connection connection= new WD_Connection(null, -1);
-                                    ForEachChildPort(edChild,
-                                        p=> {
-                                            if(p.PortIndex == i) {
-                                                WD_EditorObject sourcePort= GetSource(p);
-                                                if(sourcePort != null) {
-                                                    WD_EditorObject sourceNode= GetParent(sourcePort);
-                                                    WD_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as WD_FunctionBase;
-                                                    connection= new WD_Connection(rtSourceNode, sourcePort.PortIndex);
-                                                }
-                                                return true;
+                                WD_Connection connection= new WD_Connection(null, -1);
+                                ForEachChildPort(edChild,
+                                    p=> {
+                                        if(p.PortIndex == i) {
+                                            WD_EditorObject sourcePort= GetSource(p);
+                                            if(sourcePort != null) {
+                                                WD_EditorObject sourceNode= GetParent(sourcePort);
+                                                WD_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as WD_FunctionBase;
+                                                connection= new WD_Connection(rtSourceNode, sourcePort.PortIndex);
                                             }
-                                            return false;
+                                            return true;
                                         }
-                                    );
-                                    connections[i]= connection;
-                                }
+                                        return false;
+                                    }
+                                );
+                                connections[i]= connection;
                             }
                             (TreeCache[edChild.InstanceId].RuntimeObject as WD_FunctionBase).SetConnections(connections);
                             // Ask the children to generate their connections.
-                            if(edChild.ObjectType == WD_ObjectTypeEnum.Module) ConnectRuntimeNodes(edChild, rtChild);
+                            if(edChild.ObjectType == WD_ObjectTypeEnum.Module) ConnectRuntimeChildNodes(edChild);
                             break;
                         }
                         case WD_ObjectTypeEnum.Class: {
@@ -152,9 +147,9 @@ public partial class WD_IStorage {
     }
     
     // ----------------------------------------------------------------------
-    void ParsingTest(string descStr) {
-        WD_RuntimeDesc desc= new WD_RuntimeDesc(descStr);
-        Debug.Log("Parsing: "+descStr);
+    void DisplayRuntimeDesc(WD_EditorObject obj) {
+        WD_RuntimeDesc desc= new WD_RuntimeDesc(obj.RuntimeArchive);
+        Debug.Log("Parsing: "+obj.RuntimeArchive);
         Debug.Log("Parsing result:");
         Debug.Log("Company= "+desc.Company+" Package= "+desc.Package+" ClassType= "+desc.ClassType.ToString()+" Name= "+desc.MethodName);
         string paramStr= "";
