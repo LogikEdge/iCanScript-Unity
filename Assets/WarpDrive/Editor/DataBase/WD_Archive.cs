@@ -15,8 +15,21 @@ public class WD_Archive {
             int enumValue= (int)obj;
             return enumValue.ToString()+"("+obj.ToString()+")";
         }
+        if(obj.GetType() == typeof(Vector2)) {
+            Vector2 v= (Vector2)obj;
+            return "("+v.x+","+v.y+")";
+        }
+        if(obj.GetType() == typeof(Vector3)) {
+            Vector3 v= (Vector3)obj;
+            return "("+v.x+","+v.y+","+v.z+")";
+        }
+        if(obj.GetType() == typeof(Vector4)) {
+            Vector4 v= (Vector4)obj;
+            return "("+v.x+","+v.y+","+v.z+","+v.w+")";
+        }
         return obj.ToString();
     }
+    
 	// ----------------------------------------------------------------------
     public static T Decode<T>(string valueStr) {
         return (T)Decode(valueStr, typeof(T));
