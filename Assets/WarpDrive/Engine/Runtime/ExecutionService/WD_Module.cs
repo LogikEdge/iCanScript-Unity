@@ -9,20 +9,57 @@ public class WD_Module : WD_Action {
     List<WD_Action> myExecuteQueue= new List<WD_Action>();
     int             myQueueIdx= 0;
     int             myNbOfTries= 0;
-    bool[]          myParamIsOuts = null;
-    object[]        myParameters  = null;
-    WD_Connection[] myConnections = null;
+    object[]        myInParams      = null;
+    object[]        myOutParams     = null;
+    WD_Connection[] myInConnections = null;
+    WD_Connection[] myOutConnections= null;
     
-    
+    // ======================================================================
+    // Accessors
+    // ----------------------------------------------------------------------
+    public object this[int idx] {
+        get {
+            int inLen= myInParams.Length;
+            if(idx < inLen) return myInParams[idx];
+            idx-= inLen;
+            if(idx < myOutParams.Length) return myOutParams[idx];
+            Debug.LogError("Invalid parameter index given");
+            return null;
+        }
+        set {
+            int inLen= myInParams.Length;
+            if(idx < inLen) { myInParams[idx]= value; return; }
+            idx-= inLen;
+            if(idx < myOutParams.Length) { myOutParams[idx]= value; return; }
+            Debug.LogError("Invalid parameter index given");            
+        }
+    }
+        
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public WD_Module(string name) : base(name) {}
+    public void SetConnections(object[] inParams, WD_Connection[] inConnections, object[] outParams, WD_Connection[] outConnections) {
+        myInParams      = inParams;
+        myInConnections = inConnections;
+        myOutParams     = outParams;
+        myOutConnections= outConnections;
+    }
     
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
+        // Verify that we are ready to run.
+        foreach(var c in myInConnections) {
+            if(c.IsConnected && !c.IsReady(frameId)) return;
+        }
+        // Fetch all the inputs.
+        for(int i= 0; i < myInConnections.Length; ++i) {
+            if(myInConnections[i].IsConnected) {
+                myInParams[i]= myInConnections[i].Value;
+            }
+        }
         // Attempt to execute child functions.
         int maxTries= myExecuteQueue.Count; maxTries= 1+(maxTries*maxTries+maxTries)/2;
         for(; myQueueIdx < myExecuteQueue.Count && myNbOfTries < maxTries; ++myNbOfTries) {
@@ -40,6 +77,12 @@ public class WD_Module : WD_Action {
         if(myNbOfTries >= maxTries) {
             Debug.LogError("Execution of graph is looping!!! "+myExecuteQueue[myQueueIdx].Name+":"+myExecuteQueue[myQueueIdx].GetType().Name+" is included in the loop. Please break the cycle and retry.");
         }
+        // Update all outputs.
+        for(int i= 0; i < myOutConnections.Length; ++i) {
+            if(myOutConnections[i].IsConnected) {
+                myOutParams[i]= myOutConnections[i].Value;
+            }
+        }        
         // Reset iterators for next frame.
         myQueueIdx= 0;
         myNbOfTries= 0;

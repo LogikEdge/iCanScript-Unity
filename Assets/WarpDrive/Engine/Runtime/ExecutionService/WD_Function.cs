@@ -18,13 +18,14 @@ public class WD_Function : WD_Action {
     // ----------------------------------------------------------------------
     public object this[int idx] {
         get {
-            if(idx < myParameters.Length) return myParameters[idx];
+            if(idx < myParameters.Length)  return myParameters[idx];
             if(idx == myParameters.Length) return myReturn;
             Debug.LogError("Invalid parameter index given");
             return null;
         }
         set {
-            if(idx < myParameters.Length) { myParameters[idx]= value; return; }
+            if(idx < myParameters.Length)  { myParameters[idx]= value; return; }
+            if(idx == myParameters.Length) { myReturn= value; return; }
             Debug.LogError("Invalid parameter index given");            
         }
     }
@@ -38,11 +39,9 @@ public class WD_Function : WD_Action {
         myConnections= new WD_Connection[0];
     }
     public void SetConnections(WD_Connection[] connections, object targetObject= null) {
-        Connections= connections;
-        TargetObject= targetObject;
+        myConnections= connections;
+        myTargetObject= targetObject;
     }
-    public WD_Connection[]  Connections  { get { return myConnections; }  set { myConnections= value; }}
-    public object           TargetObject { get { return myTargetObject; } set { myTargetObject= value; }}
     
     // ======================================================================
     // Execution

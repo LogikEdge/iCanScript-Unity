@@ -133,7 +133,7 @@ public partial class WD_IStorage {
                                     connections[i]= connection;
                                 }
                             }
-                            (TreeCache[edChild.InstanceId].RuntimeObject as WD_Function).Connections= connections;
+                            (TreeCache[edChild.InstanceId].RuntimeObject as WD_Function).SetConnections(connections);
                             break;
                         }
                         case WD_ObjectTypeEnum.Class: {
