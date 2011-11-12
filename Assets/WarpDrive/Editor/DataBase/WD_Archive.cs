@@ -39,6 +39,57 @@ public class WD_Archive {
         if(type == typeof(Type)) {
             return Type.GetType(valueStr);
         }
+        if(type == typeof(Vector2)) {
+            Vector2 v;
+            int end= valueStr.IndexOf("(");
+            if(end != 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector2.zero; }
+            end= valueStr.IndexOf(",");
+            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector2.zero; }
+            v.x= Decode<float>(valueStr.Substring(1,end-2));
+            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
+            end= valueStr.IndexOf(")");
+            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector2.zero; }
+            v.y= Decode<float>(valueStr.Substring(0, valueStr.Length-end-1));
+            return v;
+        }
+        if(type == typeof(Vector3)) {
+            Vector3 v;
+            int end= valueStr.IndexOf("(");
+            if(end != 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector3.zero; }
+            end= valueStr.IndexOf(",");
+            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector3.zero; }
+            v.x= Decode<float>(valueStr.Substring(1,end-2));
+            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
+            end= valueStr.IndexOf(",");
+            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector3.zero; }
+            v.y= Decode<float>(valueStr.Substring(0,end-1));
+            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
+            end= valueStr.IndexOf(")");
+            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector3.zero; }
+            v.z= Decode<float>(valueStr.Substring(0, valueStr.Length-end-1));
+            return v;            
+        }
+        if(type == typeof(Vector4)) {
+            Vector4 v;
+            int end= valueStr.IndexOf("(");
+            if(end != 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
+            end= valueStr.IndexOf(",");
+            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
+            v.x= Decode<float>(valueStr.Substring(1,end-2));
+            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
+            end= valueStr.IndexOf(",");
+            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
+            v.y= Decode<float>(valueStr.Substring(0,end-1));
+            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
+            end= valueStr.IndexOf(",");
+            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
+            v.z= Decode<float>(valueStr.Substring(0,end-1));
+            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
+            end= valueStr.IndexOf(")");
+            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
+            v.w= Decode<float>(valueStr.Substring(0, valueStr.Length-end-1));
+            return v;                        
+        }
         if(type.IsEnum) {
             int end= valueStr.IndexOf('(');
             if(end < 0) end= valueStr.Length;
