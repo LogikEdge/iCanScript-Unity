@@ -15,6 +15,18 @@ public class WD_Archive {
             int enumValue= (int)obj;
             return enumValue.ToString()+"("+obj.ToString()+")";
         }
+        if(obj.GetType() == typeof(string)) {
+            string value= obj as string;
+            string encoded= "\"";
+            int end= value.IndexOf('"');
+            while(end > 0) {
+                encoded+= value.Substring(0, end-1);
+                encoded+= '\\';
+                encoded+= '"';
+                value= value.Substring(end+1, value.Length-end-1);
+            }
+            return encoded+value+"\"";
+        }
         if(obj.GetType() == typeof(Vector2)) {
             Vector2 v= (Vector2)obj;
             return "("+v.x+","+v.y+")";
@@ -38,6 +50,28 @@ public class WD_Archive {
     public static object Decode(string valueStr, Type type) {
         if(type == typeof(Type)) {
             return Type.GetType(valueStr);
+        }
+        if(type == typeof(string)) {
+            string value= "";
+            int end= valueStr.IndexOf('"');
+            if(end != 0) { Debug.LogWarning("Decode: Invalid string format !!!"); return ""; }
+            valueStr= valueStr.Substring(1, valueStr.Length-1);
+            int escape= valueStr.IndexOf('\\');
+            while(escape > 0 && escape < valueStr.Length-1) {
+                switch(valueStr[escape+1]) {
+                    case '\\':
+                        value+= valueStr.Substring(0, escape);
+                        valueStr= valueStr.Substring(escape+2, valueStr.Length-escape-2);
+                        break;
+                    case '"':
+                        value+= valueStr.Substring(0, escape-1)+'"';
+                        valueStr= valueStr.Substring(escape+2, valueStr.Length-escape-2);
+                        break;
+                }
+            }
+            string tmp;
+            DecodeWithSeperator(ref valueStr, '"', out tmp);
+            return value+tmp;
         }
         if(type == typeof(Vector2)) {
             Vector2 v;
