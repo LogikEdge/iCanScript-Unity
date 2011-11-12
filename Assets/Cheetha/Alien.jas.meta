@@ -21,6 +21,169 @@ ModelImporter:
     animationCompression: 1
     animationWrapMode: 2
     splitAnimations: 1
+  nodeInfo:
+    //RootNode:
+    - 100000
+    - 400000
+    - 11100000
+    Right Foot:
+    - 100002
+    - 400002
+    Right Toe Tip:
+    - 100004
+    - 400004
+    Floor:
+    - 100006
+    - 400006
+    - 3300000
+    - 2300000
+    Right Thigh:
+    - 100008
+    - 400008
+    Right Toe:
+    - 100010
+    - 400010
+    Left Toe:
+    - 100012
+    - 400012
+    Right Shin:
+    - 100014
+    - 400014
+    Left Shin:
+    - 100016
+    - 400016
+    Left Toe Tip:
+    - 100018
+    - 400018
+    Antenna Tip:
+    - 100020
+    - 400020
+    Left Foot:
+    - 100022
+    - 400022
+    Mid Antenna:
+    - 100024
+    - 400024
+    Left Thigh:
+    - 100026
+    - 400026
+    Head:
+    - 100028
+    - 400028
+    eye:
+    - 100030
+    - 400030
+    - 3300002
+    - 2300002
+    Mid Spine:
+    - 100032
+    - 400032
+    Alien:
+    - 100034
+    - 400034
+    body:
+    - 100036
+    - 400036
+    Top Antenna:
+    - 100038
+    - 400038
+    Joint.41:
+    - 100040
+    - 400040
+    Base Antenna:
+    - 100042
+    - 400042
+    Left Middle Finger:
+    - 100044
+    - 400044
+    Left Third Finger:
+    - 100046
+    - 400046
+    Joint.37:
+    - 100048
+    - 400048
+    Joint.40:
+    - 100050
+    - 400050
+    Joint.35:
+    - 100052
+    - 400052
+    Joint.38:
+    - 100054
+    - 400054
+    Left Thumb:
+    - 100056
+    - 400056
+    Left First FInger:
+    - 100058
+    - 400058
+    Left Bicep:
+    - 100060
+    - 400060
+    Joint.34:
+    - 100062
+    - 400062
+    Joint.32:
+    - 100064
+    - 400064
+    Left Hand:
+    - 100066
+    - 400066
+    Right Third Finger:
+    - 100068
+    - 400068
+    Left Shoulder:
+    - 100070
+    - 400070
+    Joint.28:
+    - 100072
+    - 400072
+    Joint.31:
+    - 100074
+    - 400074
+    Joint.26:
+    - 100076
+    - 400076
+    Joint.29:
+    - 100078
+    - 400078
+    Right First Finger:
+    - 100080
+    - 400080
+    Right Middle Finger:
+    - 100082
+    - 400082
+    Joint.22:
+    - 100084
+    - 400084
+    Joint.25:
+    - 100086
+    - 400086
+    Right Hand:
+    - 100088
+    - 400088
+    Joint.23:
+    - 100090
+    - 400090
+    Shoulders:
+    - 100092
+    - 400092
+    Right Thumb:
+    - 100094
+    - 400094
+    Top Spine:
+    - 100096
+    - 400096
+    Right Bicep:
+    - 100098
+    - 400098
+    Pelvis:
+    - 100100
+    - 400100
+    - 13700000
+    Right Shoulder:
+    - 100102
+    - 400102
 AssetImporter:
   importerVersion: 1
   fileIDToRecycleName:

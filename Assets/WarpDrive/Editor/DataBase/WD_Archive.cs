@@ -43,57 +43,33 @@ public class WD_Archive {
             Vector2 v;
             int end= valueStr.IndexOf("(");
             if(end != 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector2.zero; }
-            end= valueStr.IndexOf(",");
-            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector2.zero; }
-            v.x= Decode<float>(valueStr.Substring(1,end-2));
-            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
-            end= valueStr.IndexOf(")");
-            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector2.zero; }
-            v.y= Decode<float>(valueStr.Substring(0, valueStr.Length-end-1));
-            return v;
+            if(!DecodeWithSeperator(ref valueStr, ',', out v.x)) return Vector4.zero;
+            if(!DecodeWithSeperator(ref valueStr, ')', out v.y)) return Vector4.zero;
+            return v;                        
         }
         if(type == typeof(Vector3)) {
             Vector3 v;
             int end= valueStr.IndexOf("(");
-            if(end != 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector3.zero; }
-            end= valueStr.IndexOf(",");
-            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector3.zero; }
-            v.x= Decode<float>(valueStr.Substring(1,end-2));
-            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
-            end= valueStr.IndexOf(",");
-            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector3.zero; }
-            v.y= Decode<float>(valueStr.Substring(0,end-1));
-            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
-            end= valueStr.IndexOf(")");
-            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector3.zero; }
-            v.z= Decode<float>(valueStr.Substring(0, valueStr.Length-end-1));
-            return v;            
+            if(end != 0) { Debug.LogWarning("Decode: Invalid Vector3 format !!!"); return Vector3.zero; }
+            if(!DecodeWithSeperator(ref valueStr, ',', out v.x)) return Vector4.zero;
+            if(!DecodeWithSeperator(ref valueStr, ',', out v.y)) return Vector4.zero;
+            if(!DecodeWithSeperator(ref valueStr, ')', out v.z)) return Vector4.zero;
+            return v;                        
         }
         if(type == typeof(Vector4)) {
             Vector4 v;
             int end= valueStr.IndexOf("(");
-            if(end != 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
-            end= valueStr.IndexOf(",");
-            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
-            v.x= Decode<float>(valueStr.Substring(1,end-2));
-            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
-            end= valueStr.IndexOf(",");
-            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
-            v.y= Decode<float>(valueStr.Substring(0,end-1));
-            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
-            end= valueStr.IndexOf(",");
-            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
-            v.z= Decode<float>(valueStr.Substring(0,end-1));
-            valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
-            end= valueStr.IndexOf(")");
-            if(end < 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector4.zero; }
-            v.w= Decode<float>(valueStr.Substring(0, valueStr.Length-end-1));
+            if(end != 0) { Debug.LogWarning("Decode: Invalid Vector4 format !!!"); return Vector4.zero; }
+            if(!DecodeWithSeperator(ref valueStr, ',', out v.x)) return Vector4.zero;
+            if(!DecodeWithSeperator(ref valueStr, ',', out v.y)) return Vector4.zero;
+            if(!DecodeWithSeperator(ref valueStr, ',', out v.z)) return Vector4.zero;
+            if(!DecodeWithSeperator(ref valueStr, ')', out v.w)) return Vector4.zero;
             return v;                        
         }
         if(type.IsEnum) {
-            int end= valueStr.IndexOf('(');
-            if(end < 0) end= valueStr.Length;
-            return Decode<int>(valueStr.Substring(0, end));
+            int value;
+            DecodeWithSeperator(ref valueStr, '(', out value);
+            return value;
         }
         // Use System.Convert for all object that supports IConvertible.
         Type[] useConvert= type.FindInterfaces((t,s)=> t.ToString() == s.ToString(), "System.IConvertible");
@@ -104,5 +80,12 @@ public class WD_Archive {
         Debug.LogWarning("FromString for type: "+type.Name+" is undefined.");
         return null;
     }
-
+	// ----------------------------------------------------------------------
+    static bool DecodeWithSeperator<T>(ref string valueStr, char seperator, out T value) {
+        int end= valueStr.IndexOf(seperator);
+        if(end < 0) { Debug.LogWarning("Decode: Invalid "+typeof(T).Name+" format !!!"); value= default(T); return false; }
+        value= Decode<T>(valueStr.Substring(0, end-1));
+        valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
+        return true;
+    }
 }
