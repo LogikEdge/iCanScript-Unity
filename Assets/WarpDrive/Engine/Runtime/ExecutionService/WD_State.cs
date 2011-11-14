@@ -48,6 +48,8 @@ public sealed class WD_State : WD_Object {
     }
     public WD_State VerifyTransitions(int frameId) {
         foreach(var transition in myTransitions) {
+            WD_State newState= transition.Update(frameId);
+            if(newState != null) return newState;
         }
         return null;
     }
