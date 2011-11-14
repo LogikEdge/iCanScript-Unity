@@ -54,7 +54,7 @@ public class WD_RuntimeDesc {
     // Encode the runtime descriptor into a string.
     // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>
     public string Encode(int id) {
-        string result= WD_Archive.Encode(id)+":"+WD_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+Name+":"+WD_Archive.Encode(ClassType)+":"+MethodName+"<";
+        string result= WD_Archive.Encode(id)+":"+WD_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+WD_Archive.Encode(Name ?? "")+":"+WD_Archive.Encode(ClassType)+":"+MethodName+"<";
         for(int i= 0; i < ParamTypes.Length; ++i) {
             if(ParamIsOuts[i]) result+= "out ";
             result+= ParamNames[i];
@@ -72,42 +72,51 @@ public class WD_RuntimeDesc {
             result+= ";ret "+(ReturnName != null ? ReturnName : "out")+":"+WD_Archive.Encode(ReturnType);
         }
         result+=">{}";
+        Debug.Log("Encoding=> "+result);
         return result;
     }
     // ----------------------------------------------------------------------
     // Fills the runtime descriptor from an encoded string.
     public WD_RuntimeDesc Decode(string encoded) {
         // object id
+//        Debug.Log("Decoding object id=> "+encoded);
         int end= encoded.IndexOf(':');
         Id= WD_Archive.Decode<int>(encoded.Substring(0, end));
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // object type
+//        Debug.Log("Decoding object type=> "+encoded);
         end= encoded.IndexOf(':');
         string objectTypeStr= encoded.Substring(0, end);
         ObjectType= WD_Archive.Decode<WD_ObjectTypeEnum>(objectTypeStr);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // company
+//        Debug.Log("Decoding company=> "+encoded);
         end= encoded.IndexOf(':');
         Company= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // package
+//        Debug.Log("Decoding package=> "+encoded);
         end= encoded.IndexOf(':');
         Package= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // name
+//        Debug.Log("Decoding name=> "+encoded);
         end= encoded.IndexOf(':');
-        Name= encoded.Substring(0, end);
+        Name= WD_Archive.Decode<string>(encoded.Substring(0, end));
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // class type
+//        Debug.Log("Decoding class type=> "+encoded);
         end= encoded.IndexOf(':');
         string className= encoded.Substring(0, end);
         ClassType= WD_Archive.Decode<Type>(className);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        // name
+        // method name
+//        Debug.Log("Decoding method name=> "+encoded);
         end= encoded.IndexOf('<');
         MethodName= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // parameters
+//        Debug.Log("Decoding parameters=> "+encoded);
         end= encoded.IndexOf('>');
         string parameterString= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);

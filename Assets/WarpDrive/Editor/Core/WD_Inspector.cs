@@ -99,6 +99,11 @@ public class WD_Inspector : Editor {
                     name= EditorGUILayout.TextField("Name", name);
                     if(name != EmptyStr && name != SelectedObject.RawName) {
                         SelectedObject.Name= name;
+                        if(SelectedObject.IsNode) {
+                            WD_RuntimeDesc rtDesc= new WD_RuntimeDesc(SelectedObject.RuntimeArchive);
+                            rtDesc.Name= name;
+                            SelectedObject.RuntimeArchive= rtDesc.Encode(SelectedObject.InstanceId);
+                        }
                         if(SelectedObject.IsStatePort) {
                             if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).Name= name;
                             else Storage.GetSource(SelectedObject).Name= name;                            

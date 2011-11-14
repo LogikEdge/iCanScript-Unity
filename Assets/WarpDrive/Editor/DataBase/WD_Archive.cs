@@ -18,14 +18,23 @@ public class WD_Archive {
         if(obj.GetType() == typeof(string)) {
             string value= obj as string;
             string encoded= "\"";
-            int end= value.IndexOf('"');
-            while(end > 0) {
-                encoded+= value.Substring(0, end-1);
-                encoded+= '\\';
-                encoded+= '"';
-                value= value.Substring(end+1, value.Length-end-1);
+            for(int i= 0; i < value.Length; ++i) {
+                switch(value[i]) {
+                    case '\\': {
+                        encoded+= "\\\\";
+                        break;
+                    }
+                    case '"': {
+                        encoded+= "\\\"";
+                        break;
+                    }
+                    default: {
+                        encoded+= value[i];
+                        break;
+                    }
+                }
             }
-            return encoded+value+"\"";
+            return encoded+"\"";
         }
         if(obj.GetType() == typeof(Vector2)) {
             Vector2 v= (Vector2)obj;
@@ -39,7 +48,7 @@ public class WD_Archive {
             Vector4 v= (Vector4)obj;
             return "("+v.x+","+v.y+","+v.z+","+v.w+")";
         }
-        return obj.ToString();
+        return (string)Convert.ChangeType(obj, typeof(string));
     }
     
 	// ----------------------------------------------------------------------
@@ -69,9 +78,8 @@ public class WD_Archive {
                         break;
                 }
             }
-            string tmp;
-            DecodeWithSeperator(ref valueStr, '"', out tmp);
-            return value+tmp;
+            end= valueStr.IndexOf('"');
+            return value+valueStr.Substring(0, end);
         }
         if(type == typeof(Vector2)) {
             Vector2 v;
@@ -118,7 +126,7 @@ public class WD_Archive {
     static bool DecodeWithSeperator<T>(ref string valueStr, char seperator, out T value) {
         int end= valueStr.IndexOf(seperator);
         if(end < 0) { Debug.LogWarning("Decode: Invalid "+typeof(T).Name+" format !!!"); value= default(T); return false; }
-        value= Decode<T>(valueStr.Substring(0, end-1));
+        value= Decode<T>(valueStr.Substring(0, end));
         valueStr= valueStr.Substring(end+1, valueStr.Length-end-1);
         return true;
     }
