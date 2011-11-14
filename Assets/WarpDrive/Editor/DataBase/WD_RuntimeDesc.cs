@@ -72,7 +72,6 @@ public class WD_RuntimeDesc {
             result+= ";ret "+(ReturnName != null ? ReturnName : "out")+":"+WD_Archive.Encode(ReturnType);
         }
         result+=">{}";
-        Debug.Log("Encoding=> "+result);
         return result;
     }
     // ----------------------------------------------------------------------
