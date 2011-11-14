@@ -44,7 +44,29 @@ public partial class WD_IStorage {
                             GenerateRuntimeChildNodes(edChild, rtChild);
                             break;
                         }
-                        case WD_ObjectTypeEnum.Module:
+                        case WD_ObjectTypeEnum.Module: {
+                            if(IsTransitionEntryModule(edChild)) {
+                                WD_EditorObject triggerModule= GetTriggerModuleFromTransitionEntryModule(edChild);
+                                if(triggerModule != null) {
+                                    rtChild= new WD_Module(triggerModule.Name, new object[0], new bool[0]);
+                                    TreeCache[triggerModule.InstanceId].RuntimeObject= rtChild;
+                                    GenerateRuntimeChildNodes(triggerModule, rtChild);
+                                    WD_EditorObject entryAction= GetActionModuleFromTransitionEntryModule(edChild);
+                                    if(entryAction != null) {
+                                        rtChild= new WD_Module(entryAction.Name, new object[0], new bool[0]);
+                                        TreeCache[entryAction.InstanceId].RuntimeObject= rtChild;
+                                        GenerateRuntimeChildNodes(entryAction, null);
+                                    }
+                                }
+                                break;
+                            } else if(IsTransitionExitModule(edChild)) {
+                                rtChild= new WD_Module(edChild.Name, new object[0], new bool[0]);
+                                TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
+                                GenerateRuntimeChildNodes(edChild, rtChild);
+                                break;
+                            }
+                            goto WD_ObjectTypeEnum.Function;
+                        }
                         case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.Function: {
                             WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.RuntimeArchive);
