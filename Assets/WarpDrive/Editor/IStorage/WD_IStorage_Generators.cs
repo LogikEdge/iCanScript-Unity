@@ -97,6 +97,23 @@ public partial class WD_IStorage {
                             break;
                         }
                         case WD_ObjectTypeEnum.State: {
+                            ForEachChildPort(edChild,
+                                p=> {
+                                    if(p.IsOutStatePort) {
+                                        WD_EditorObject transitionEntry= GetTransitionEntryModule(p);
+                                        if(transitionEntry != null) {
+                                            WD_EditorObject triggerAction= GetTriggerModuleFromTransitionEntryModule(transitionEntry);
+                                            WD_EditorObject entryAction= GetActionModuleFromTransitionEntryModule(transitionEntry);
+                                            WD_EditorObject exitAction= GetTransitionExitModule(transitionEntry);
+                                            WD_Transition transition= new WD_Transition(p.Name, GetRuntimeObject(triggerAction) as WD_FunctionBase);
+                                            if(entryAction != null) { transition.AddChild(GetRuntimeObject(entryAction) as WD_Action); }
+                                            if(exitAction != null)  { transition.AddChild(GetRuntimeObject(exitAction) as WD_Action); }
+                                            WD_State state= GetRuntimeObject(edChild) as WD_State;
+                                            state.AddChild(transition);
+                                        }
+                                    }
+                                }
+                            );
                             ConnectRuntimeChildNodes(edChild);
                             break;
                         }
