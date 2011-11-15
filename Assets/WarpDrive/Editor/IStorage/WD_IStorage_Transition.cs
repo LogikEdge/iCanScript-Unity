@@ -227,6 +227,7 @@ public partial class WD_IStorage {
         WD_EditorObject inStatePort= FindAConnectedPort(outStatePort);
         return SynchronizeExitModulePorts(dataCollector, exitModule, inStatePort);
     }
+    // ----------------------------------------------------------------------
     bool SynchronizeExitModulePorts(WD_EditorObject dataCollector, WD_EditorObject exitModule, WD_EditorObject inStatePort) {
         bool modified= false;
         // Special case for when data collector has no ports.  We need to create a dummy port.
