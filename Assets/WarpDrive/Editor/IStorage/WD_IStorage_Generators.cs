@@ -44,13 +44,11 @@ public partial class WD_IStorage {
                             GenerateRuntimeChildNodes(edChild, rtChild);
                             break;
                         }
+                        case WD_ObjectTypeEnum.Holder: {
+                            GenerateRuntimeChildNodes(edChild, null);
+                            break;
+                        }
                         case WD_ObjectTypeEnum.Module: {
-                            // Special case: don't generate transition entry module.
-                            if(IsTransitionEntryModule(edChild)) {
-                                GenerateRuntimeChildNodes(edChild, null);
-                                break;
-                            }
-                            // Standard modules
                             WD_RuntimeDesc desc;
                             object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
                             if(desc == null) break;
@@ -116,13 +114,11 @@ public partial class WD_IStorage {
                             ConnectRuntimeChildNodes(edChild);
                             break;
                         }
+                        case WD_ObjectTypeEnum.Holder: {
+                            ConnectRuntimeChildNodes(edChild);
+                            break;
+                        }
                         case WD_ObjectTypeEnum.Module: {
-                            // Special case: don't generate transition entry module.
-                            if(IsTransitionEntryModule(edChild)) {
-                                ConnectRuntimeChildNodes(edChild);
-                                break;
-                            }
-                            // Standard modules.
                             WD_Connection[] connections= BuildRuntimeConnectionArray(edChild);
                             (TreeCache[edChild.InstanceId].RuntimeObject as WD_FunctionBase).SetConnections(connections);
                             ConnectRuntimeChildNodes(edChild);

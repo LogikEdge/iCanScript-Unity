@@ -210,6 +210,25 @@ public partial class WD_IStorage {
         return this[id];
     }
     // ----------------------------------------------------------------------
+    public WD_EditorObject CreateHolder(int parentId, Vector2 initialPos, string name= "") {
+        // Create the function node.
+        int id= GetNextAvailableId();
+        // Calcute the desired screen position of the new object.
+        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        // Create new EditorObject
+        this[id]= new WD_EditorObject(id, name, typeof(WD_Holder), parentId, WD_ObjectTypeEnum.Holder, localPos);
+        this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.HolderIcon, this);
+        WD_RuntimeDesc rtDesc= new WD_RuntimeDesc();
+        rtDesc.ObjectType= WD_ObjectTypeEnum.Holder;
+        rtDesc.Company= WD_EditorStrings.Company;
+        rtDesc.Package= WD_EditorStrings.DefaultPackage;
+        rtDesc.Name= name;
+        rtDesc.ClassType= typeof(WD_Holder);
+        this[id].RuntimeArchive= rtDesc.Encode(id);
+        return this[id];
+    }
+    // ----------------------------------------------------------------------
     public WD_EditorObject CreateStateChartLibrary() {
         // Validate that a library can only be create at the root.
         if(EditorObjects.Count != 0) {

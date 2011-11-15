@@ -15,7 +15,7 @@ public partial class WD_IStorage {
     // Creation methods
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateTransitionEntry(WD_EditorObject port) {
-        WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry");
+        WD_EditorObject mainModule= CreateHolder(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry");
         WD_EditorObject mainOutPort= CreatePort(TransitionTriggerPortStr, mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
         WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Math3D.ToVector2(GetPosition(mainModule)), TransitionTriggerModuleStr);
         WD_EditorObject triggerOutPort= CreatePort(TransitionTriggerPortStr, trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
@@ -85,7 +85,7 @@ public partial class WD_IStorage {
     // Transition helpers.
     // ----------------------------------------------------------------------
     public bool IsTransitionEntryModule(WD_EditorObject obj) {
-        if(obj == null || !obj.IsModule) return false;
+        if(obj == null || !obj.IsHolder) return false;
         return GetOutStatePortFromTransitionEntryModule(obj) != null;
     }
     // ----------------------------------------------------------------------
@@ -106,8 +106,8 @@ public partial class WD_IStorage {
     // ----------------------------------------------------------------------
     public WD_EditorObject GetTransitionEntryModule(WD_EditorObject obj) {
         if(obj == null) return null;
+        if(IsTransitionEntryModule(obj)) return obj;
         if(obj.IsModule) {
-            if(IsTransitionEntryModule(obj)) return obj;
             if(IsTransitionExitModule(obj)) {
                 WD_EditorObject inStatePort= GetInStatePortFromTransitionExitModule(obj);
                 return GetTransitionEntryModule(inStatePort);
@@ -124,13 +124,13 @@ public partial class WD_IStorage {
     // ----------------------------------------------------------------------
     public WD_EditorObject GetTransitionExitModule(WD_EditorObject obj) {
         if(obj == null) return null;
+        if(IsTransitionExitModule(obj)) return obj;
+        if(IsTransitionEntryModule(obj)) {
+            WD_EditorObject inStatePort= GetInStatePortFromTransitionEntryModule(obj);
+            WD_EditorObject exitModulePort= FindAConnectedPort(inStatePort);
+            return exitModulePort != null ? GetParent(exitModulePort) : null;
+        }
         if(obj.IsModule) {
-            if(IsTransitionExitModule(obj)) return obj;
-            if(IsTransitionEntryModule(obj)) {
-                WD_EditorObject inStatePort= GetInStatePortFromTransitionEntryModule(obj);
-                WD_EditorObject exitModulePort= FindAConnectedPort(inStatePort);
-                return exitModulePort != null ? GetParent(exitModulePort) : null;
-            }
             return GetTransitionExitModule(GetParent(obj));
         }
         if(obj.IsOutStatePort) return GetTransitionExitModule(FindAConnectedPort(obj));

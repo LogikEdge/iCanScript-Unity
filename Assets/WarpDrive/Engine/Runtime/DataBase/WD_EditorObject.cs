@@ -100,6 +100,7 @@ public class WD_EditorObject {
     public bool IsStateChart            { get { return WD.IsStateChart(this); }}
     public bool IsState                 { get { return WD.IsState(this); }}
     public bool IsModule                { get { return WD.IsModule(this);; }}
+    public bool IsHolder                { get { return WD.IsHolder(this);; }}
     public bool IsClass                 { get { return WD.IsClass(this); }}
     public bool IsFunction              { get { return WD.IsFunction(this); }}
     public bool IsConversion            { get { return WD.IsConversion(this); }}
