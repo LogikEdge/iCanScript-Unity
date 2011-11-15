@@ -44,17 +44,24 @@ public partial class WD_IStorage {
                             GenerateRuntimeChildNodes(edChild, rtChild);
                             break;
                         }
-                        case WD_ObjectTypeEnum.Holder: {
+                        case WD_ObjectTypeEnum.TransitionEntry: {
                             GenerateRuntimeChildNodes(edChild, null);
                             break;
+                        }
+                        case WD_ObjectTypeEnum.TransitionExit: {
+                            WD_Module module= new WD_Module(edChild.Name, new object[0], new bool[0]);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= module;
+                            if(rtNode != null) WD_Reflection.InvokeAddChildIfExists(rtNode, module);
+                            GenerateRuntimeChildNodes(edChild, rtChild);
+                            break;                            
                         }
                         case WD_ObjectTypeEnum.Module: {
                             WD_RuntimeDesc desc;
                             object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
                             if(desc == null) break;
-                            rtChild= new WD_Module(edChild.Name, parameters, desc.ParamIsOuts);                                
-                            TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
-                            if(rtNode != null) WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
+                            WD_Module module= new WD_Module(edChild.Name, parameters, desc.ParamIsOuts);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= module;
+                            if(rtNode != null) WD_Reflection.InvokeAddChildIfExists(rtNode, module);
                             GenerateRuntimeChildNodes(edChild, rtChild);
                             break;
                         }
@@ -114,8 +121,11 @@ public partial class WD_IStorage {
                             ConnectRuntimeChildNodes(edChild);
                             break;
                         }
-                        case WD_ObjectTypeEnum.Holder: {
+                        case WD_ObjectTypeEnum.TransitionEntry: {
                             ConnectRuntimeChildNodes(edChild);
+                            break;
+                        }
+                        case WD_ObjectTypeEnum.TransitionExit: {
                             break;
                         }
                         case WD_ObjectTypeEnum.Module: {

@@ -191,14 +191,14 @@ public partial class WD_IStorage {
         return CreateModule(-1, Vector2.zero, "Module Library");
     }
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateModule(int parentId, Vector2 initialPos, string name= "") {
+    public WD_EditorObject CreateModule(int parentId, Vector2 initialPos, string name= "", WD_ObjectTypeEnum objectType= WD_ObjectTypeEnum.Module) {
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
         Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new WD_EditorObject(id, name, typeof(WD_Module), parentId, WD_ObjectTypeEnum.Module, localPos);
+        this[id]= new WD_EditorObject(id, name, typeof(WD_Module), parentId, objectType, localPos);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.ModuleIcon, this);
         WD_RuntimeDesc rtDesc= new WD_RuntimeDesc();
         rtDesc.ObjectType= WD_ObjectTypeEnum.Module;
@@ -206,25 +206,6 @@ public partial class WD_IStorage {
         rtDesc.Package= WD_EditorStrings.DefaultPackage;
         rtDesc.Name= name;
         rtDesc.ClassType= typeof(WD_Module);
-        this[id].RuntimeArchive= rtDesc.Encode(id);
-        return this[id];
-    }
-    // ----------------------------------------------------------------------
-    public WD_EditorObject CreateHolder(int parentId, Vector2 initialPos, string name= "") {
-        // Create the function node.
-        int id= GetNextAvailableId();
-        // Calcute the desired screen position of the new object.
-        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
-        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
-        // Create new EditorObject
-        this[id]= new WD_EditorObject(id, name, typeof(WD_Holder), parentId, WD_ObjectTypeEnum.Holder, localPos);
-        this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.HolderIcon, this);
-        WD_RuntimeDesc rtDesc= new WD_RuntimeDesc();
-        rtDesc.ObjectType= WD_ObjectTypeEnum.Holder;
-        rtDesc.Company= WD_EditorStrings.Company;
-        rtDesc.Package= WD_EditorStrings.DefaultPackage;
-        rtDesc.Name= name;
-        rtDesc.ClassType= typeof(WD_Holder);
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
     }
@@ -469,6 +450,7 @@ public partial class WD_IStorage {
     }
     public void Minimize(WD_EditorObject eObj) {
         if(!eObj.IsNode) return;
+        if(ShouldHideOnMinimize(eObj)) { Hide(eObj); return; }
         eObj.Minimize();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Minimize(); });
         SetDirty(eObj);
@@ -484,6 +466,18 @@ public partial class WD_IStorage {
         if(IsValid(eObj.ParentId)) SetDirty(GetParent(eObj));
     }
     public void Maximize(int id) { if(IsValid(id)) Maximize(EditorObjects[id]); }
+    // ----------------------------------------------------------------------
+    public bool IsHidden(WD_EditorObject eObj) {
+        return eObj.IsHidden;
+    }
+    public void Hide(WD_EditorObject eObj) {
+        if(!eObj.IsNode) return;
+        eObj.Hide();
+        ForEachChild(eObj, child=> { if(child.IsPort) child.Hide(); });
+        SetDirty(eObj);
+        if(IsValid(eObj.ParentId)) SetDirty(GetParent(eObj));
+    }
+    public void Hide(int id) { if(IsValid(id)) Hide(EditorObjects[id]); }
     
 
 

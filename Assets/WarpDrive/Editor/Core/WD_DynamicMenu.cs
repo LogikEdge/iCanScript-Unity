@@ -50,6 +50,8 @@ public class WD_DynamicMenu {
     const string TransitionExitStr= "Transition Exit";
     const string TransitionEntryActionStr= "Entry Action";
     const string TransitionEntryDataCollectorStr= "Data Collector";
+    const string UnhideTransitionEntryStr= "Show Transition Entry";
+    const string UnhideTransitionExitStr= "Show Transition Exit";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -309,10 +311,18 @@ public class WD_DynamicMenu {
         if(selectedObject.IsStatePort) {
             int i= menu.Length;
             if(selectedObject.IsOutStatePort) {
-                if(storage.IsInvalid(selectedObject.Source)) {
+                WD_EditorObject sourcePort= storage.GetSource(selectedObject);
+                if(sourcePort == null) {
                     string[] tmp= new string[i+1];
                     tmp[i]= TransitionEntryStr;
                     menu= tmp;
+                } else {
+                    WD_EditorObject entryModule= storage.GetParent(sourcePort);
+                    if(entryModule.IsHidden) {
+                        string[] tmp= new string[i+1];
+                        tmp[i]= UnhideTransitionEntryStr;
+                        menu= tmp;                        
+                    }
                 }
             } else {
                 WD_EditorObject connected= storage.FindAConnectedPort(selectedObject);
@@ -320,6 +330,13 @@ public class WD_DynamicMenu {
                     string[] tmp= new string[i+1];
                     tmp[i]= TransitionExitStr;
                     menu= tmp;
+                } else {
+                    WD_EditorObject exitModule= storage.GetParent(connected);
+                    if(exitModule.IsHidden) {
+                        string[] tmp= new string[i+1];
+                        tmp[i]= UnhideTransitionExitStr;
+                        menu= tmp;                                                
+                    }
                 }
             }
         }
@@ -433,6 +450,8 @@ public class WD_DynamicMenu {
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 ProcessDestroyObject(selectedObject, storage); break;
+            case UnhideTransitionEntryStr:  ProcessUnhideTransitionEntry(selectedObject, storage); break;
+            case UnhideTransitionExitStr:   ProcessUnhideTransitionExit(selectedObject, storage); break;
             case EnablePortStr: {
                 WD_EditorObject port= storage.CreatePort(WD_EditorStrings.EnablePort, selectedObject.InstanceId, typeof(bool), WD_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
@@ -558,7 +577,19 @@ public class WD_DynamicMenu {
     void ProcessDestroyObject(WD_EditorObject obj, WD_IStorage storage) {
         DestroyObject(obj, storage);    
     }
-    
+	// ----------------------------------------------------------------------
+    void ProcessUnhideTransitionEntry(WD_EditorObject outStatePort, WD_IStorage storage) {
+        WD_EditorObject sourcePort= storage.GetSource(outStatePort);
+        WD_EditorObject entryModule= storage.GetParent(sourcePort);
+        storage.Maximize(entryModule);
+    }
+	// ----------------------------------------------------------------------
+    void ProcessUnhideTransitionExit(WD_EditorObject inStatePort, WD_IStorage storage) {
+        WD_EditorObject connected= storage.FindAConnectedPort(inStatePort);
+        WD_EditorObject exitModule= storage.GetParent(connected);
+        storage.Maximize(exitModule);
+    }
+
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------

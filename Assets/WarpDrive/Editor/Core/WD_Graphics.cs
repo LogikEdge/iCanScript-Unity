@@ -46,7 +46,6 @@ public class WD_Graphics {
     NodeStyle   classStyle      = null;
 	NodeStyle   functionStyle   = null;
 	NodeStyle   defaultStyle    = null;
-	NodeStyle   holderStyle     = null;
 	NodeStyle   selectedStyle   = null;
 //	NodeStyle   nodeInErrorStyle= null;
 
@@ -462,10 +461,6 @@ public class WD_Graphics {
         if(node.IsState || node.IsStateChart) {
             GenerateNodeStyle(ref stateStyle, storage.Preferences.NodeColors.StateColor);
             return stateStyle;
-        }
-        if(node.IsHolder) {
-            GenerateNodeStyle(ref holderStyle, storage.Preferences.NodeColors.HolderColor);
-            return holderStyle;
         }
         if(node.IsModule) {
             GenerateNodeStyle(ref moduleStyle, storage.Preferences.NodeColors.ModuleColor);

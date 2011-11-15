@@ -18,7 +18,6 @@ public class WD_UserPreferences {
         public Color    ModuleColor  = Color.yellow;
         public Color    ClassColor   = new Color(1.0f,0.5f,0.0f,1.0f);
         public Color    FunctionColor= Color.green;
-        public Color    HolderColor  = Color.magenta;
         public Color    SelectedColor= Color.white;            
     }
     public UserNodeColors   NodeColors= new UserNodeColors();

@@ -29,7 +29,7 @@ public partial class WD_IStorage {
         Array.Resize(ref rtDesc.ParamIsOuts, len+1);
         rtDesc.ParamIsOuts[len]= port.IsOutputPort;
         Array.Resize(ref rtDesc.ParamDefaultValues, len+1);
-        rtDesc.ParamDefaultValues[len]= rtDesc.ParamIsOuts[len] ? null : WD_Types.DefaultValue(port.RuntimeType);
+        rtDesc.ParamDefaultValues[len]= rtDesc.ParamIsOuts[len] || port.RuntimeType == typeof(void) ? null : WD_Types.DefaultValue(port.RuntimeType);
         module.RuntimeArchive= rtDesc.Encode(module.InstanceId);
     }
     // ----------------------------------------------------------------------
