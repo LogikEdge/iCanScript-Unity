@@ -463,12 +463,12 @@ public class WD_Graphics {
             GenerateNodeStyle(ref stateStyle, storage.Preferences.NodeColors.StateColor);
             return stateStyle;
         }
-        if(node.IsModule) {
-            GenerateNodeStyle(ref moduleStyle, storage.Preferences.NodeColors.ModuleColor);
-            return moduleStyle;
-        }
         if(node.IsHolder) {
             GenerateNodeStyle(ref holderStyle, storage.Preferences.NodeColors.HolderColor);
+            return holderStyle;
+        }
+        if(node.IsModule) {
+            GenerateNodeStyle(ref moduleStyle, storage.Preferences.NodeColors.ModuleColor);
             return moduleStyle;
         }
         if(node.IsClass) {
