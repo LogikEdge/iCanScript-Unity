@@ -48,7 +48,7 @@ public class WD_Graphics {
 	NodeStyle   defaultStyle    = null;
 	NodeStyle   holderStyle     = null;
 	NodeStyle   selectedStyle   = null;
-	NodeStyle   nodeInErrorStyle= null;
+//	NodeStyle   nodeInErrorStyle= null;
 
     // ======================================================================
 	// CONSTANTS
