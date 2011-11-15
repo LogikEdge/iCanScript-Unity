@@ -51,7 +51,7 @@ public class WD_GuiUtilities {
             return;
         }
         if(dataType == typeof(string)) {
-            string value= portValue != null ? (string)portValue : default(string);
+            string value= ((string)portValue) ?? "";
             string newValue= EditorGUILayout.TextField(niceName, value);
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(value != newValue && storage.GetSource(port) == null) {

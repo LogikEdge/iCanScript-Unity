@@ -102,7 +102,7 @@ public class WD_Inspector : Editor {
                         if(SelectedObject.IsNode) {
                             WD_RuntimeDesc rtDesc= new WD_RuntimeDesc(SelectedObject.RuntimeArchive);
                             rtDesc.Name= name;
-                            SelectedObject.RuntimeArchive= rtDesc.Encode(SelectedObject.InstanceId);
+                            SelectedObject.RuntimeArchive= rtDesc.Encode(rtDesc.Id);
                         }
                         if(SelectedObject.IsStatePort) {
                             if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).Name= name;

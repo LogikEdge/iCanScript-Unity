@@ -108,15 +108,16 @@ public sealed class WD_StateChart : WD_Action {
     public void AddChild(WD_Object _object) {
         WD_State state= _object as WD_State;
         if(state == null) {
-            Debug.LogError("Trying to add an object that is not a state into FSM!");
+            Debug.LogError("Trying to add an object that is not a state into State Chart!");
             return;
         }
+        if(myChildren.Count == 0) myEntryState= state;
         myChildren.Add(state);
     }
     public void RemoveChild(WD_Object _object) {
         WD_State state= _object as WD_State;
         if(state == null) {
-            Debug.LogError("Trying to remove an object that is not a state into FSM!");
+            Debug.LogError("Trying to remove an object that is not a state from a State Chart!");
             return;
         }
         if(state == myEntryState) myEntryState= null;

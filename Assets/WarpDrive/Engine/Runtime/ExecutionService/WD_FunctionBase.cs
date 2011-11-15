@@ -36,6 +36,8 @@ public abstract class WD_FunctionBase : WD_Action {
         if(!myConnections[idx].IsConnected) return true;
         return myConnections[idx].IsReady(frameId);
     }
+    public int[] InIndexes  { get { return myInIndexes; }}
+    public int[] OutIndexes { get { return myOutIndexes; }}
     
     // ======================================================================
     // Creation/Destruction
