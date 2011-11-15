@@ -145,6 +145,58 @@ public partial class WD_IStorage {
             }
         );        
     }
+    // ----------------------------------------------------------------------
+    // Builds the runtime parameter array information for the given
+    // editor object.
+    object[] BuildParameterArray(WD_EditorObject edObj) {
+        WD_RuntimeDesc desc= new WD_RuntimeDesc(edObj.RuntimeArchive);
+        if(desc == null) {
+            Debug.LogWarning("Unable to locate runtime information for: "+edObj.RuntimeArchive);
+            return new object[0];
+        }
+        // Create function parameters.
+        int paramLen= desc.ParamTypes.Length;
+        object[] parameters= new object[paramLen];
+        for(int i= 0; i < paramLen; ++i) {
+            if(desc.ParamIsOuts[i]) {  // outputs
+                parameters[i]= null;
+            } else {                   // inputs
+                parameters[i]= GetDefaultValue(desc, i) ?? WD_Types.DefaultValue(desc.ParamTypes[i]);
+            }
+        }        
+        return parameters;
+    }
+    // ----------------------------------------------------------------------
+    // Builds the runtime connection array information for the given
+    // editor object.
+    WD_Connection[] BuildConnectionArray(WD_EditorObject edObj) {
+        WD_RuntimeDesc desc= new WD_RuntimeDesc(edObj.RuntimeArchive);
+        if(desc == null) {
+            Debug.LogWarning("Unable to locate reflection information for: "+edObj.RuntimeArchive);
+            return new WD_Connection[0];
+        }
+        int paramLen= desc.ParamTypes.Length;
+        WD_Connection[] connections= new WD_Connection[paramLen];
+        for(int i= 0; i < paramLen; ++i) {
+            WD_Connection connection= new WD_Connection(null, -1);
+            ForEachChildPort(edObj,
+                p=> {
+                    if(p.PortIndex == i) {
+                        WD_EditorObject sourcePort= GetSource(p);
+                        if(sourcePort != null) {
+                            WD_EditorObject sourceNode= GetParent(sourcePort);
+                            WD_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as WD_FunctionBase;
+                            connection= new WD_Connection(rtSourceNode, sourcePort.PortIndex);
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            );
+            connections[i]= connection;
+        }
+        return connections;
+    }
     
     // ----------------------------------------------------------------------
     void DisplayRuntimeDesc(WD_EditorObject obj) {
