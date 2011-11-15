@@ -14,9 +14,10 @@ public class WD_Transition : WD_Object {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public WD_Transition(string name, WD_FunctionBase trigger) : base(name) {
+    public WD_Transition(string name, WD_FunctionBase trigger, WD_State endState) : base(name) {
         myTriggerFunction= trigger;
         myTriggerReturnIdx= trigger.OutIndexes[0];
+        myEndState= endState;
     }
     
     // ======================================================================
@@ -24,11 +25,21 @@ public class WD_Transition : WD_Object {
     // ----------------------------------------------------------------------
     public WD_State Update(int frameId) {
         if(myTriggerFunction == null) return null;
-        myTriggerFunction.Execute(frameId);
+        do {
+            myTriggerFunction.Execute(frameId);            
+        } while(!myTriggerFunction.IsCurrent(frameId));
         bool trigger= (bool)myTriggerFunction[myTriggerReturnIdx];
         if(!trigger) return null;
-        myTransitionEntryAction.Execute(frameId);
-        myTransitionExitAction.Execute(frameId);
+        if(myTransitionExitAction != null) {
+            do {
+                myTransitionEntryAction.Execute(frameId);                
+            } while(!myTransitionEntryAction.IsCurrent(frameId));
+        }
+        if(myTransitionExitAction != null) {
+            do {
+                myTransitionExitAction.Execute(frameId);                
+            } while(!myTransitionExitAction.IsCurrent(frameId));
+        }
         return myEndState;
     }
 

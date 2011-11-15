@@ -45,55 +45,30 @@ public partial class WD_IStorage {
                             break;
                         }
                         case WD_ObjectTypeEnum.Module: {
+                            // Special case: don't generate transition entry module.
                             if(IsTransitionEntryModule(edChild)) {
-                                WD_EditorObject triggerModule= GetTriggerModuleFromTransitionEntryModule(edChild);
-                                if(triggerModule != null) {
-                                    rtChild= new WD_Module(triggerModule.Name, new object[0], new bool[0]);
-                                    TreeCache[triggerModule.InstanceId].RuntimeObject= rtChild;
-                                    GenerateRuntimeChildNodes(triggerModule, rtChild);
-                                    WD_EditorObject entryAction= GetActionModuleFromTransitionEntryModule(edChild);
-                                    if(entryAction != null) {
-                                        rtChild= new WD_Module(entryAction.Name, new object[0], new bool[0]);
-                                        TreeCache[entryAction.InstanceId].RuntimeObject= rtChild;
-                                        GenerateRuntimeChildNodes(entryAction, null);
-                                    }
-                                }
-                                break;
-                            } else if(IsTransitionExitModule(edChild)) {
-                                rtChild= new WD_Module(edChild.Name, new object[0], new bool[0]);
-                                TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
-                                GenerateRuntimeChildNodes(edChild, rtChild);
+                                GenerateRuntimeChildNodes(edChild, null);
                                 break;
                             }
-                            goto WD_ObjectTypeEnum.Function;
+                            // Standard modules
+                            WD_RuntimeDesc desc;
+                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
+                            if(desc == null) break;
+                            rtChild= new WD_Module(edChild.Name, parameters, desc.ParamIsOuts);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
+                            if(rtNode != null) WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
+                            GenerateRuntimeChildNodes(edChild, rtChild);
+                            break;
                         }
                         case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.Function: {
-                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.RuntimeArchive);
-                            if(desc == null) {
-                                Debug.LogWarning("Unable to locate runtime information for: "+edChild.RuntimeArchive);
-                                break;
-                            }
-                            // Create function parameters.
-                            int paramLen= desc.ParamTypes.Length;
-                            object[] parameters= new object[paramLen];
-                            for(int i= 0; i < paramLen; ++i) {
-                                if(desc.ParamIsOuts[i]) {  // outputs
-                                    parameters[i]= null;
-                                } else {                   // inputs
-                                    parameters[i]= GetDefaultValue(desc, i) ?? WD_Types.DefaultValue(desc.ParamTypes[i]);
-                                }
-                            }
                             // Create function.
-                            if(edChild.ObjectType == WD_ObjectTypeEnum.Module) {
-                                rtChild= new WD_Module(edChild.Name, parameters, desc.ParamIsOuts);                                
-                            } else {
-                                rtChild= new WD_Function(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);                                
-                            }
+                            WD_RuntimeDesc desc;
+                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
+                            if(desc == null) break;
+                            rtChild= new WD_Function(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
                             WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
-                            // Ask the children to do the same.
-                            if(edChild.ObjectType == WD_ObjectTypeEnum.Module) { GenerateRuntimeChildNodes(edChild, rtChild); }
                             break;
                         }
                         case WD_ObjectTypeEnum.Class: {
@@ -122,12 +97,14 @@ public partial class WD_IStorage {
                             ForEachChildPort(edChild,
                                 p=> {
                                     if(p.IsOutStatePort) {
-                                        WD_EditorObject transitionEntry= GetTransitionEntryModule(p);
-                                        if(transitionEntry != null) {
-                                            WD_EditorObject triggerAction= GetTriggerModuleFromTransitionEntryModule(transitionEntry);
-                                            WD_EditorObject entryAction= GetActionModuleFromTransitionEntryModule(transitionEntry);
-                                            WD_EditorObject exitAction= GetTransitionExitModule(transitionEntry);
-                                            WD_Transition transition= new WD_Transition(p.Name, GetRuntimeObject(triggerAction) as WD_FunctionBase);
+                                        WD_EditorObject entryModule= GetTransitionEntryModule(p);
+                                        if(entryModule != null) {
+                                            WD_EditorObject triggerAction= GetTriggerModuleFromTransitionEntryModule(entryModule);
+                                            WD_EditorObject entryAction= GetActionModuleFromTransitionEntryModule(entryModule);
+                                            WD_EditorObject exitAction= GetTransitionExitModule(entryModule);
+                                            WD_Transition transition= new WD_Transition(p.Name,
+                                                                                        GetRuntimeObject(triggerAction) as WD_FunctionBase,
+                                                                                        GetRuntimeObject(GetEndStateFromTransitionEntryModule(entryModule)) as WD_State);
                                             if(entryAction != null) { transition.AddChild(GetRuntimeObject(entryAction) as WD_Action); }
                                             if(exitAction != null)  { transition.AddChild(GetRuntimeObject(exitAction) as WD_Action); }
                                             WD_State state= GetRuntimeObject(edChild) as WD_State;
@@ -139,37 +116,22 @@ public partial class WD_IStorage {
                             ConnectRuntimeChildNodes(edChild);
                             break;
                         }
-                        case WD_ObjectTypeEnum.Module:
-                        case WD_ObjectTypeEnum.Conversion:
-                        case WD_ObjectTypeEnum.Function: {
-                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.RuntimeArchive);
-                            if(desc == null) {
-                                Debug.LogWarning("Unable to locate reflection information for: "+edChild.RuntimeArchive);
+                        case WD_ObjectTypeEnum.Module: {
+                            // Special case: don't generate transition entry module.
+                            if(IsTransitionEntryModule(edChild)) {
+                                ConnectRuntimeChildNodes(edChild);
                                 break;
                             }
-                            int paramLen= desc.ParamTypes.Length;
-                            WD_Connection[] connections= new WD_Connection[paramLen];
-                            for(int i= 0; i < paramLen; ++i) {
-                                WD_Connection connection= new WD_Connection(null, -1);
-                                ForEachChildPort(edChild,
-                                    p=> {
-                                        if(p.PortIndex == i) {
-                                            WD_EditorObject sourcePort= GetSource(p);
-                                            if(sourcePort != null) {
-                                                WD_EditorObject sourceNode= GetParent(sourcePort);
-                                                WD_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as WD_FunctionBase;
-                                                connection= new WD_Connection(rtSourceNode, sourcePort.PortIndex);
-                                            }
-                                            return true;
-                                        }
-                                        return false;
-                                    }
-                                );
-                                connections[i]= connection;
-                            }
+                            // Standard modules.
+                            WD_Connection[] connections= BuildRuntimeConnectionArray(edChild);
                             (TreeCache[edChild.InstanceId].RuntimeObject as WD_FunctionBase).SetConnections(connections);
-                            // Ask the children to generate their connections.
-                            if(edChild.ObjectType == WD_ObjectTypeEnum.Module) ConnectRuntimeChildNodes(edChild);
+                            ConnectRuntimeChildNodes(edChild);
+                            break;                            
+                        }
+                        case WD_ObjectTypeEnum.Conversion:
+                        case WD_ObjectTypeEnum.Function: {
+                            WD_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as WD_FunctionBase).SetConnections(connections);
                             break;
                         }
                         case WD_ObjectTypeEnum.Class: {
@@ -187,8 +149,8 @@ public partial class WD_IStorage {
     // ----------------------------------------------------------------------
     // Builds the runtime parameter array information for the given
     // editor object.
-    object[] BuildParameterArray(WD_EditorObject edObj) {
-        WD_RuntimeDesc desc= new WD_RuntimeDesc(edObj.RuntimeArchive);
+    object[] BuildRuntimeParameterArray(WD_EditorObject edObj, out WD_RuntimeDesc desc) {
+        desc= new WD_RuntimeDesc(edObj.RuntimeArchive);
         if(desc == null) {
             Debug.LogWarning("Unable to locate runtime information for: "+edObj.RuntimeArchive);
             return new object[0];
@@ -208,7 +170,7 @@ public partial class WD_IStorage {
     // ----------------------------------------------------------------------
     // Builds the runtime connection array information for the given
     // editor object.
-    WD_Connection[] BuildConnectionArray(WD_EditorObject edObj) {
+    WD_Connection[] BuildRuntimeConnectionArray(WD_EditorObject edObj) {
         WD_RuntimeDesc desc= new WD_RuntimeDesc(edObj.RuntimeArchive);
         if(desc == null) {
             Debug.LogWarning("Unable to locate reflection information for: "+edObj.RuntimeArchive);

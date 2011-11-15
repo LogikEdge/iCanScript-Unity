@@ -226,6 +226,14 @@ public partial class WD_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, name, typeof(WD_StateChart), parentId, WD_ObjectTypeEnum.StateChart, localPos);
+        // Create runtime descriptor.
+        WD_RuntimeDesc rtDesc= new WD_RuntimeDesc();
+        rtDesc.ObjectType= WD_ObjectTypeEnum.StateChart;
+        rtDesc.Company= WD_EditorStrings.Company;
+        rtDesc.Package= WD_EditorStrings.DefaultPackage;
+        rtDesc.Name= name;
+        rtDesc.ClassType= typeof(WD_StateChart);
+        this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -242,6 +250,14 @@ public partial class WD_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new WD_EditorObject(id, name, typeof(WD_State), parentId, WD_ObjectTypeEnum.State, localPos);
+        // Create runtime descriptor.
+        WD_RuntimeDesc rtDesc= new WD_RuntimeDesc();
+        rtDesc.ObjectType= WD_ObjectTypeEnum.State;
+        rtDesc.Company= WD_EditorStrings.Company;
+        rtDesc.Package= WD_EditorStrings.DefaultPackage;
+        rtDesc.Name= name;
+        rtDesc.ClassType= typeof(WD_State);
+        this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
     }
     // ----------------------------------------------------------------------

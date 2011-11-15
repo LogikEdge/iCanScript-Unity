@@ -127,8 +127,7 @@ public partial class WD_IStorage {
         if(obj.IsModule) {
             if(IsTransitionExitModule(obj)) return obj;
             if(IsTransitionEntryModule(obj)) {
-                WD_EditorObject outStatePort= GetOutStatePortFromTransitionEntryModule(obj);
-                WD_EditorObject inStatePort= FindAConnectedPort(outStatePort);
+                WD_EditorObject inStatePort= GetInStatePortFromTransitionEntryModule(obj);
                 WD_EditorObject exitModulePort= FindAConnectedPort(inStatePort);
                 return exitModulePort != null ? GetParent(exitModulePort) : null;
             }
@@ -160,6 +159,15 @@ public partial class WD_IStorage {
         if(triggerPort == null) return null;
         WD_EditorObject outStatePort= GetOtherBridgePort(triggerPort);
         return (outStatePort != null && outStatePort.IsOutStatePort) ? outStatePort : null;
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetInStatePortFromTransitionEntryModule(WD_EditorObject entryModule) {
+        WD_EditorObject outStatePort= GetOutStatePortFromTransitionEntryModule(entryModule);
+        return FindAConnectedPort(outStatePort);    
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject GetEndStateFromTransitionEntryModule(WD_EditorObject entryModule) {
+        return GetParent(GetInStatePortFromTransitionEntryModule(entryModule));
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject GetTriggerPortFromTransitionEntryModule(WD_EditorObject entryModule) {
