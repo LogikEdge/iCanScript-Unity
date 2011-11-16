@@ -143,7 +143,9 @@ public class WD_DynamicMenu {
             tmp= new string[menu.Length+functionMenu.Length+1];
             menu.CopyTo(tmp, 0);
             tmp[menu.Length]= SeparatorStr;
-            functionMenu.CopyTo(tmp, menu.Length+1);
+            for(int i= 0; i < functionMenu.Length; ++i) {
+                tmp[i+menu.Length+1]= "+ "+functionMenu[i];
+            }
             menu= tmp;            
         }
         // Delete menu item
@@ -392,6 +394,7 @@ public class WD_DynamicMenu {
     }
     // Extracts the company name from the menu conforming string.
     string GetCompanyFromMenuItem(string item) {
+        item= WD_TextUtil.StripBeforeIdent(item);
         int end= item.IndexOf('/');
         if(end < 0) return null;
         return item.Substring(0, end);
