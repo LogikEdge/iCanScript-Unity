@@ -46,7 +46,6 @@ public class WD_DynamicMenu {
     const string OnExitStr= "+ "+WD_EditorStrings.OnExitNode;
     const string PublishPortStr= "Publish on Module";
     const string EnablePortStr= "+ Enable Port";
-    const string TransitionEntryStr= "+ Transition Entry";
     const string TransitionExitStr= "+ Transition Exit";
     const string TransitionEntryActionStr= "+ Entry Action";
     const string TransitionEntryDataCollectorStr= "+ Data Collector";
@@ -312,17 +311,11 @@ public class WD_DynamicMenu {
             int i= menu.Length;
             if(selectedObject.IsOutStatePort) {
                 WD_EditorObject sourcePort= storage.GetSource(selectedObject);
-                if(sourcePort == null) {
+                WD_EditorObject entryModule= storage.GetParent(sourcePort);
+                if(entryModule.IsHidden) {
                     string[] tmp= new string[i+1];
-                    tmp[i]= TransitionEntryStr;
-                    menu= tmp;
-                } else {
-                    WD_EditorObject entryModule= storage.GetParent(sourcePort);
-                    if(entryModule.IsHidden) {
-                        string[] tmp= new string[i+1];
-                        tmp[i]= UnhideTransitionEntryStr;
-                        menu= tmp;                        
-                    }
+                    tmp[i]= UnhideTransitionEntryStr;
+                    menu= tmp;                        
                 }
             } else {
                 WD_EditorObject connected= storage.FindAConnectedPort(selectedObject);
@@ -445,7 +438,6 @@ public class WD_DynamicMenu {
             case OnUpdateStr:               ProcessCreateOnUpdateModule(selectedObject, storage); break;
             case OnExitStr:                 ProcessCreateOnExitModule(selectedObject, storage); break;
             case SubStateStr:               ProcessCreateState(selectedObject, storage);  break;
-            case TransitionEntryStr:        CreateTransitionEntry(selectedObject, storage); break;
             case TransitionExitStr:         CreateTransitionExit(selectedObject, storage); break;
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
@@ -612,10 +604,6 @@ public class WD_DynamicMenu {
     WD_EditorObject CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_ReflectionBaseDesc desc) {
         WD_EditorObject function= storage.CreateFunction(parent.InstanceId, ProcessMenuPosition, desc);
         return function;
-    }
-	// ----------------------------------------------------------------------
-    WD_EditorObject CreateTransitionEntry(WD_EditorObject outStatePort, WD_IStorage storage) {
-        return storage.CreateTransitionEntry(outStatePort);
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject CreateTransitionExit(WD_EditorObject inStatePort, WD_IStorage storage) {
