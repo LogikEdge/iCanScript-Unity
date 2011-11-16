@@ -27,6 +27,9 @@ public class WD_EditorStrings {
     public const string UpdateNode     = "Update";
     public const string LateUpdateNode = "LateUpdate";
     public const string FixedUpdateNode= "FixedUpdate";
+    public const string OnEntryNode    = "OnEntry";
+    public const string OnExitNode     = "OnExit";
+    public const string OnUpdateNode   = "OnUpdate";
 
     // Special port names.
     public const string EnablePort= "enable";

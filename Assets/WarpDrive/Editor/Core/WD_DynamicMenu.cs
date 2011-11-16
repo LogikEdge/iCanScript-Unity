@@ -24,32 +24,32 @@ public class WD_DynamicMenu {
     // ======================================================================
     // Menu Items
 	// ----------------------------------------------------------------------
-    const string DeleteStr= "Delete";
+    const string DeleteStr= "- Delete";
     const string FoldStr= "Fold";
     const string UnfoldStr= "Unfold";
-    const string ModuleStr= "Module";
-    const string StateChartStr= "State Chart";
-    const string StateStr= "State";
-    const string EntryStateStr= "Entry State";
-    const string SubStateStr= "SubState";
-    const string UpdateModuleStr= "Update/Module";
-    const string UpdateStateChartStr= "Update/StateChart";
-    const string LateUpdateModuleStr= "LateUpdate/Module";
-    const string LateUpdateStateChartStr= "LateUpdate/StateChart";
-    const string FixedUpdateModuleStr= "FixedUpdate/Module";
-    const string FixedUpdateStateChartStr= "FixedUpdate/StateChart";
+    const string ModuleStr= "+ Module";
+    const string StateChartStr= "+ State Chart";
+    const string StateStr= "+ State";
+    const string EntryStateStr= "+ Entry State";
+    const string SubStateStr= "+ SubState";
+    const string UpdateModuleStr= "+ Update/Module";
+    const string UpdateStateChartStr= "+ Update/StateChart";
+    const string LateUpdateModuleStr= "+ LateUpdate/Module";
+    const string LateUpdateStateChartStr= "+ LateUpdate/StateChart";
+    const string FixedUpdateModuleStr= "+ FixedUpdate/Module";
+    const string FixedUpdateStateChartStr= "+ FixedUpdate/StateChart";
     const string SetAsEntryStr="Set as Entry";
-    const string OnGUIStr= "OnGUI";
-    const string OnDrawGizmosStr= "OnDrawGizmos";
-    const string OnEntryStr= "OnEntry";
-    const string OnUpdateStr= "OnUpdate";
-    const string OnExitStr= "OnExit";
+    const string OnGUIStr= "+ OnGUI";
+    const string OnDrawGizmosStr= "+ OnDrawGizmos";
+    const string OnEntryStr= "+ "+WD_EditorStrings.OnEntryNode;
+    const string OnUpdateStr= "+ "+WD_EditorStrings.OnUpdateNode;
+    const string OnExitStr= "+ "+WD_EditorStrings.OnExitNode;
     const string PublishPortStr= "Publish on Module";
-    const string EnablePortStr= "Enable Port";
-    const string TransitionEntryStr= "Transition Entry";
-    const string TransitionExitStr= "Transition Exit";
-    const string TransitionEntryActionStr= "Entry Action";
-    const string TransitionEntryDataCollectorStr= "Data Collector";
+    const string EnablePortStr= "+ Enable Port";
+    const string TransitionEntryStr= "+ Transition Entry";
+    const string TransitionExitStr= "+ Transition Exit";
+    const string TransitionEntryActionStr= "+ Entry Action";
+    const string TransitionEntryDataCollectorStr= "+ Data Collector";
     const string UnhideTransitionEntryStr= "Show Transition Entry";
     const string UnhideTransitionExitStr= "Show Transition Exit";
     const string SeparatorStr= "";
@@ -554,21 +554,21 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject ProcessCreateOnEntryModule(WD_EditorObject parent, WD_IStorage storage) {
-        WD_EditorObject module= CreateModule(parent, storage, OnEntryStr, false);
+        WD_EditorObject module= CreateModule(parent, storage, WD_EditorStrings.OnEntryNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on entry into this state.";
         return module;
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject ProcessCreateOnUpdateModule(WD_EditorObject parent, WD_IStorage storage) {
-        WD_EditorObject module= CreateModule(parent, storage, OnUpdateStr, false);
+        WD_EditorObject module= CreateModule(parent, storage, WD_EditorStrings.OnUpdateNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on every frame this state is active.";
         return module;
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject ProcessCreateOnExitModule(WD_EditorObject parent, WD_IStorage storage) {
-        WD_EditorObject module= CreateModule(parent, storage, OnExitStr, false);
+        WD_EditorObject module= CreateModule(parent, storage, WD_EditorStrings.OnExitNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on exit from this state.";
         return module;
