@@ -31,7 +31,6 @@ public class WD_DynamicMenu {
     const string StateChartStr= "+ State Chart";
     const string StateStr= "+ State";
     const string EntryStateStr= "+ Entry State";
-    const string SubStateStr= "+ SubState";
     const string UpdateModuleStr= "+ Update/Module";
     const string UpdateStateChartStr= "+ Update/StateChart";
     const string LateUpdateModuleStr= "+ LateUpdate/Module";
@@ -237,7 +236,7 @@ public class WD_DynamicMenu {
             menu[0]= OnEntryStr;
             menu[1]= OnUpdateStr;
             menu[2]= OnExitStr;
-            menu[3]= SubStateStr;
+            menu[3]= StateStr;
             menu[4]= SeparatorStr;
             menu[5]= SetAsEntryStr;
         }
@@ -438,7 +437,6 @@ public class WD_DynamicMenu {
             case OnEntryStr:                ProcessCreateOnEntryModule(selectedObject, storage); break;
             case OnUpdateStr:               ProcessCreateOnUpdateModule(selectedObject, storage); break;
             case OnExitStr:                 ProcessCreateOnExitModule(selectedObject, storage); break;
-            case SubStateStr:               ProcessCreateState(selectedObject, storage);  break;
             case TransitionExitStr:         CreateTransitionExit(selectedObject, storage); break;
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
