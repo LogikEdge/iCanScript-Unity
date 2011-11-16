@@ -14,8 +14,18 @@ public partial class WD_IStorage {
     // ======================================================================
     // Creation methods
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateTransitionEntry(WD_EditorObject port) {
-        WD_EditorObject mainModule= CreateModule(port.ParentId, Math3D.ToVector2(GetPosition(port)), "Transition Entry", WD_ObjectTypeEnum.TransitionEntry);
+    public void CreateTransition(WD_EditorObject outStatePort, WD_EditorObject destState) {
+        WD_EditorObject inStatePort= CreatePort("[false]", destState.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
+        Rect portRect= GetPosition(destState);
+        SetInitialPosition(inStatePort, new Vector2(portRect.x, portRect.y));
+        SetSource(inStatePort, outStatePort);
+        UpdatePortEdges(inStatePort, outStatePort);        
+        WD_EditorObject entryModule= CreateTransitionEntry(outStatePort);
+        Hide(entryModule);
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateTransitionEntry(WD_EditorObject outStatePort) {
+        WD_EditorObject mainModule= CreateModule(outStatePort.ParentId, Math3D.ToVector2(GetPosition(outStatePort)), "Transition Entry", WD_ObjectTypeEnum.TransitionEntry);
         WD_EditorObject mainOutPort= CreatePort(TransitionTriggerPortStr, mainModule.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
         WD_EditorObject trigger= CreateModule(mainModule.InstanceId, Math3D.ToVector2(GetPosition(mainModule)), TransitionTriggerModuleStr);
         WD_EditorObject triggerOutPort= CreatePort(TransitionTriggerPortStr, trigger.InstanceId, typeof(bool), WD_ObjectTypeEnum.OutStaticModulePort);
@@ -24,7 +34,7 @@ public partial class WD_IStorage {
         mainOutPort.IsNameEditable= false;
         trigger.IsNameEditable= false;
         triggerOutPort.IsNameEditable= false;
-        port.Source= mainOutPort.InstanceId;
+        outStatePort.Source= mainOutPort.InstanceId;
         mainOutPort.Source= triggerOutPort.InstanceId;
         return mainModule;
     }

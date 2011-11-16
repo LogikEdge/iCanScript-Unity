@@ -614,12 +614,12 @@ public class WD_DynamicMenu {
         return function;
     }
 	// ----------------------------------------------------------------------
-    WD_EditorObject CreateTransitionEntry(WD_EditorObject port, WD_IStorage storage) {
-        return storage.CreateTransitionEntry(port);
+    WD_EditorObject CreateTransitionEntry(WD_EditorObject outStatePort, WD_IStorage storage) {
+        return storage.CreateTransitionEntry(outStatePort);
     }
 	// ----------------------------------------------------------------------
-    WD_EditorObject CreateTransitionExit(WD_EditorObject port, WD_IStorage storage) {
-        return storage.CreateTransitionExit(port);
+    WD_EditorObject CreateTransitionExit(WD_EditorObject inStatePort, WD_IStorage storage) {
+        return storage.CreateTransitionExit(inStatePort);
     }
 	// ----------------------------------------------------------------------
     bool DestroyObject(WD_EditorObject selectedObject, WD_IStorage storage) {

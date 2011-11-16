@@ -372,17 +372,13 @@ public class WD_Editor : EditorWindow {
                     }
                     break;
                 case DragTypeEnum.TransitionCreation:
-                    WD_EditorObject parent= GetNodeAtMousePosition();
-                    if(parent != null && parent.IsState) {
-                        WD_EditorObject inStatePort= Storage.CreatePort("[false]", parent.InstanceId, typeof(void), WD_ObjectTypeEnum.InStatePort);
-                        Rect portRect= Storage.GetPosition(DragObject);
-                        Storage.SetInitialPosition(inStatePort, new Vector2(portRect.x, portRect.y));
+                    WD_EditorObject destState= GetNodeAtMousePosition();
+                    if(destState != null && destState.IsState) {
                         WD_EditorObject outStatePort= Storage[DragObject.Source];
-                        Storage.SetSource(inStatePort, outStatePort);
-                        Storage.DestroyInstance(DragObject);
-                        inStatePort.IsBeingDragged= false;
                         outStatePort.IsBeingDragged= false;
-                        Storage.UpdatePortEdges(inStatePort, outStatePort);
+                        Storage.CreateTransition(outStatePort, destState);
+                        DragObject.Source= -1;
+                        Storage.DestroyInstance(DragObject);
                     } else {
                         Storage.DestroyInstance(DragObject.Source);
                         Storage.DestroyInstance(DragObject);
