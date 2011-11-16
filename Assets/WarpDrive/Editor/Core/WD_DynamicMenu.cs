@@ -389,31 +389,14 @@ public class WD_DynamicMenu {
         }
         return result.ToArray();
     }
-    // Extracts the company name from the menu conforming string.
-    string GetCompanyFromMenuItem(string item) {
-        item= WD_TextUtil.StripBeforeIdent(item);
-        int end= item.IndexOf('/');
-        if(end < 0) return null;
-        return item.Substring(0, end);
-    }
-    // Extracts the package name from the menu conforming string.
-    string GetPackageFromMenuItem(string item) {
-        int start= item.IndexOf('/');
-        if(start < 0) return null;
-        ++start;
-        int end= item.IndexOf('/', start);
-        if(end < 0) return null;
-        return item.Substring(start, end-start);
-    }
-    // Extracts the function name from the menu conforming string.
-    string GetFunctionFromMenuItem(string item) {
-        int skip= item.IndexOf('/');
-        if(skip < 0) return null;
-        int start= item.IndexOf('/', skip+1);
-        if(start < 0) return null;
-        ++start;
-        int end= item.Length;
-        return item.Substring(start, end-start);
+    WD_ReflectionBaseDesc GetReflectionDescFromMenuCommand(string menuCommand) {
+        menuCommand= WD_TextUtil.StripBeforeIdent(menuCommand);
+        string[] idents= menuCommand.Split(new char[1]{'/'});
+        if(idents.Length < 3) return null;
+        string company= idents[0];
+        string package= idents[1];
+        string function= idents[2];
+        return WD_DataBase.GetDescriptor(company, package, function);
     }
     
     // ======================================================================
@@ -473,14 +456,9 @@ public class WD_DynamicMenu {
                 break;
             }
             default: {
-                string company= GetCompanyFromMenuItem(context.Command);
-                string package= GetPackageFromMenuItem(context.Command);
-                string function= GetFunctionFromMenuItem(context.Command);
-                if(company != null && package != null && function != null) {
-                    WD_ReflectionBaseDesc desc= WD_DataBase.GetDescriptor(company, package, function);
-                    if(desc != null) {
-                        CreateFunction(context.SelectedObject, context.Storage, desc);                                           
-                    }
+                WD_ReflectionBaseDesc desc= GetReflectionDescFromMenuCommand(context.Command);
+                if(desc != null) {
+                    CreateFunction(context.SelectedObject, context.Storage, desc);                                           
                 }
                 break;                
             }
