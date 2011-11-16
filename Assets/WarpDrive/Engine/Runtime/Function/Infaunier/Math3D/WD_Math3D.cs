@@ -23,9 +23,9 @@ public class WD_Math3D {
     [WD_Function] public static Vector3 Lerp(Vector3 v1, Vector3 v2, float ratio)    { return v1+(v2-v1)*ratio; }
     [WD_Function] public static Vector4 Lerp(Vector4 v1, Vector4 v2, float ratio)    { return v1+(v2-v1)*ratio; }
     
-    [WD_Function] public static float   Random(float scale)         { return scale*UnityEngine.Random.value; }
-    [WD_Function] public static Vector2 RandomVector2(float scale)  { return scale*UnityEngine.Random.insideUnitCircle; }
-    [WD_Function] public static Vector3 RandomVector3(float scale)  { return scale*UnityEngine.Random.insideUnitSphere; }
+    [WD_Function(Icon="WD_RandomIcon.png")] public static float   Random(float scale)         { return scale*UnityEngine.Random.value; }
+    [WD_Function(Icon="WD_RandomIcon.png")] public static Vector2 RandomVector2(float scale)  { return scale*UnityEngine.Random.insideUnitCircle; }
+    [WD_Function(Icon="WD_RandomIcon.png")] public static Vector3 RandomVector3(float scale)  { return scale*UnityEngine.Random.insideUnitSphere; }
     
     [WD_Function] public static Vector2 ScaleVector(float scale, Vector2 v) { return scale*v; }
     [WD_Function] public static Vector3 ScaleVector(float scale, Vector3 v) { return scale*v; }

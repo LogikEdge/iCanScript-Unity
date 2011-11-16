@@ -16,7 +16,7 @@ public class WD_EditorStrings {
 	public const string ModuleIcon           = "WD_ModuleIcon.png";
 	public const string FunctionIcon         = "WD_FunctionIcon.png";
 	public const string TransitionTriggerIcon= "WD_TransitionTriggerIcon.png";
-	public const string HolderIcon           = "WD_ModuleIcon.png";
+	public const string RandomIcon           = "WD_RandomIcon.png";
 	
     // Textures
     public const string AALineTexture     = "WD_LineTexture.psd";
