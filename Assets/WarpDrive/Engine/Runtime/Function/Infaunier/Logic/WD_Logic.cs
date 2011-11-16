@@ -20,14 +20,14 @@ public class WD_Logic {
     [WD_Function] public static bool IsSmallerOrEqual(float a, float b) { return Math3D.IsSmallerOrEqual(a,b); }
 
     // Decoders.
-    [WD_Function] public static void Decoder2(int In, out bool a, out bool b) {
-        a= (In & 1) == 0;
-        b= (In & 1) == 1;
+    [WD_Function] public static void Selector(int selector, out bool a, out bool b) {
+        a= (selector & 1) == 0;
+        b= (selector & 1) == 1;
     }
-    [WD_Function] public static void Decoder4(int In, out bool a, out bool b, out bool c, out bool d) {
-        a= (In & 3) == 0;
-        b= (In & 3) == 1;
-        c= (In & 3) == 2;
-        d= (In & 3) == 3;
+    [WD_Function] public static void Selector(int selector, out bool a, out bool b, out bool c, out bool d) {
+        a= (selector & 3) == 0;
+        b= (selector & 3) == 1;
+        c= (selector & 3) == 2;
+        d= (selector & 3) == 3;
     }
 }
