@@ -383,7 +383,18 @@ public class WD_DynamicMenu {
             foreach(var package in packages) {
                 string[] functions= WD_DataBase.GetFunctions(company, package);
                 foreach(var function in functions) {
-                    result.Add(company+"/"+package+"/"+function);
+                    string[] signatures= WD_DataBase.GetFunctionSignatures(company, package, function);
+                    if(signatures.Length <= 1) {
+                        result.Add(company+"/"+package+"/"+function);                        
+                    } else {
+                        foreach(var signature in signatures) {
+                            if(signature == null) {
+                                result.Add(company+"/"+package+"/"+function);
+                            } else {
+                                result.Add(company+"/"+package+"/"+function+"/"+signature);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -396,7 +407,9 @@ public class WD_DynamicMenu {
         string company= idents[0];
         string package= idents[1];
         string function= idents[2];
-        return WD_DataBase.GetDescriptor(company, package, function);
+        string signature= null;
+        if(idents.Length >= 4) signature= idents[3];
+        return WD_DataBase.GetDescriptor(company, package, function, signature);
     }
     
     // ======================================================================

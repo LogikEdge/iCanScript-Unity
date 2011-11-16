@@ -44,12 +44,43 @@ public class WD_DataBase {
         return functions.ToArray();
     }
     // ----------------------------------------------------------------------
+    // Returns all available functions parameters for the given
+    // company/package/function.
+    public static string[] GetFunctionSignatures(string company, string package, string functionName) {
+        List<string> parameters= new List<string>();
+        foreach(var func in Functions) {
+            if(func.Company == company && func.Package == package && func.Name == functionName) {
+                if(func is WD_ReflectionFuncDesc) {
+                    parameters.Add(GetFunctionSignature(func as WD_ReflectionFuncDesc));
+                } else {
+                    parameters.Add(null);
+                }
+            }
+        }
+        return parameters.ToArray();
+    }
+
+    // ----------------------------------------------------------------------
+    public static string GetFunctionSignature(WD_ReflectionFuncDesc desc) {
+        string signature= desc.ReturnType != null ? desc.ReturnType.Name : "void";
+        signature+= " "+desc.Name+"(";
+        for(int i= 0; i < desc.ParamNames.Length; ++i) {
+            signature+= desc.RuntimeDesc.ParamTypes[i].Name+" "+desc.ParamNames[i];
+            if(i != desc.ParamNames.Length-1) signature+=", ";
+        }
+        return signature+")";
+    }
+    
+    // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
-    public static WD_ReflectionBaseDesc GetDescriptor(string company, string package, string function) {
+    public static WD_ReflectionBaseDesc GetDescriptor(string company, string package, string functionName, string signature) {
         foreach(var desc in Functions) {
             if(desc.Company == company &&
                desc.Package == package &&
-               desc.Name    == function) return desc;
+               desc.Name    == functionName) {
+                   if(signature == null || !(desc is WD_ReflectionFuncDesc)) return desc;
+                   if(signature == GetFunctionSignature(desc as WD_ReflectionFuncDesc)) return desc;
+               }
         }
         return null;
     }
