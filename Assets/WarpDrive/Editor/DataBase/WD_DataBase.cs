@@ -62,15 +62,20 @@ public class WD_DataBase {
 
     // ----------------------------------------------------------------------
     public static string GetFunctionSignature(WD_ReflectionFuncDesc desc) {
-        string signature= desc.ReturnType != null ? desc.ReturnType.Name : "void";
+        string signature= TypeName(desc.ReturnType);
         signature+= " "+desc.Name+"(";
         for(int i= 0; i < desc.ParamNames.Length; ++i) {
-            signature+= desc.RuntimeDesc.ParamTypes[i].Name+" "+desc.ParamNames[i];
+            signature+= TypeName(desc.RuntimeDesc.ParamTypes[i])+" "+desc.ParamNames[i];
             if(i != desc.ParamNames.Length-1) signature+=", ";
         }
         return signature+")";
     }
-    
+    // ----------------------------------------------------------------------
+    static string TypeName(Type type) {
+        if(type == null) return "void";
+        if(type == typeof(float)) return "float";
+        return type.Name;
+    }
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
     public static WD_ReflectionBaseDesc GetDescriptor(string company, string package, string functionName, string signature) {
