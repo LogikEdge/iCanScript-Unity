@@ -74,14 +74,15 @@ public class WD_DynamicMenu {
         
         // Process the menu state.
         switch(selectedObject.ObjectType) {
-            case WD_ObjectTypeEnum.Behaviour:  BehaviourMenu(selectedObject, storage); break;
-            case WD_ObjectTypeEnum.StateChart: StateChartMenu(selectedObject, storage); break;
-            case WD_ObjectTypeEnum.State:      StateMenu(selectedObject, storage); break;
-            case WD_ObjectTypeEnum.Module:     ModuleMenu(selectedObject, storage); break;
-            case WD_ObjectTypeEnum.Function:   FunctionMenu(selectedObject, storage); break;
-            case WD_ObjectTypeEnum.Conversion: FunctionMenu(selectedObject, storage); break;
-            case WD_ObjectTypeEnum.Class:      ClassMenu(selectedObject, storage); break;
-            default: if(selectedObject.IsPort) PortMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.Behaviour:       BehaviourMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.StateChart:      StateChartMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.State:           StateMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.Module:          ModuleMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.TransitionEntry: TransitionEntryModuleMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.Function:        FunctionMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.Conversion:      FunctionMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.Class:           ClassMenu(selectedObject, storage); break;
+            default: if(selectedObject.IsPort)      PortMenu(selectedObject, storage); break;
         }
     }
 
@@ -105,10 +106,6 @@ public class WD_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
-        if(storage.IsTransitionEntryModule(selectedObject)) {
-            TransitionEntryModuleMenu(selectedObject, storage);
-            return;
-        }
         string[] tmp= null;
         string[] menu= new string[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
@@ -615,12 +612,24 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     bool DestroyObject(WD_EditorObject selectedObject, WD_IStorage storage) {
         bool isDestroyed= false;
+        // A transition cannot exist without a transition entry module.
+        if(storage.IsTransitionEntryModule(selectedObject)) {
+            WD_EditorObject outStatePort= storage.GetOutStatePortFromTransitionEntryModule(selectedObject);
+            if(EditorUtility.DisplayDialog("Deleting Transition",
+                                           "A transition cannot exist without a trigger module.  Are you sure you want to remove the transition: "+outStatePort.Name, "Delete Transition", "Cancel")) {
+                storage.DestroyInstance(selectedObject);
+                storage.DestroyInstance(outStatePort);                        
+                Reset();
+                return true;
+            }                        
+        }
+        // A transition data collector cannot exist without a transition exit module.
         if(storage.IsTransitionExitModule(selectedObject)) {
             WD_EditorObject entryModule= storage.GetTransitionEntryModule(selectedObject);
             WD_EditorObject dataCollector= storage.GetDataCollectorModuleFromTransitionEntryModule(entryModule);
             if(dataCollector != null) {
                 if(EditorUtility.DisplayDialog("Deleting Transition Exit & Associated Data Collector",
-                                               "Transition Data Collector cannot exist without a transition exit module.  Are you sure you want to remove BOTH the DATA COLLECTOR and the Transition Exit.", "Delete DataCollector & Transition Exit", "Cancel")) {
+                                               "Transition Data Collector cannot exist without a transition exit module.  Are you sure you want to remove BOTH the DATA COLLECTOR and the TRANSITION EXIT MODULE.", "Delete DataCollector & Transition Exit", "Cancel")) {
                     storage.DestroyInstance(dataCollector.InstanceId);
                     storage.DestroyInstance(selectedObject.InstanceId);                        
                     Reset();
