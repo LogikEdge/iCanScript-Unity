@@ -111,7 +111,7 @@ public class WD_Reflection {
                         // Extract class information.
                         WD_ClassAttribute classAttribute= classCustomAttribute as WD_ClassAttribute;
                         string classCompany= classAttribute.Company ?? "MyComnpany";
-                        string classPackage= classAttribute.Package ?? "DefaultPackage";
+                        string classPackage= classAttribute.Package ?? classType.Name;
                         string className   = classAttribute.Name    ?? classType.Name;
                         string classToolTip= classAttribute.ToolTip;
                         string classIcon   = classAttribute.Icon;
