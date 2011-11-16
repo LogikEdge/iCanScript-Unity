@@ -276,20 +276,6 @@ public class WD_Graphics {
     }
     
     // ======================================================================
-    //  TOOL TIP
-    // ---------------------------------------------------------------------
-    public void ShowToolTip(WD_EditorObject obj, WD_IStorage storage) {
-        if(obj.IsPort) {
-            WD_EditorObject port= obj;
-            Rect tmp= storage.GetPosition(port);
-            Vector2 pos= new Vector2(tmp.x, tmp.y);
-            string name= port.Name + ":" + port.TypeName;
-            Vector2 labelSize= WD_EditorConfig.GetLabelSize(name);
-            GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), name);            
-        }
-    }
-    
-    // ======================================================================
     //  GRID
     // ----------------------------------------------------------------------
     public void DrawGrid(Rect position, Color backgroundColor, Color gridColor, float gridSpacing, Vector2 offset) {

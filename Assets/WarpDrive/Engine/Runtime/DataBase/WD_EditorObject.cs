@@ -63,22 +63,6 @@ public class WD_EditorObject {
         IsNameEditable= true;
         ToolTip = null;
     }
-//    // ----------------------------------------------------------------------
-//    public WD_Object CreateRuntimeObject() {
-//        WD_Object rtObject;
-//        if(IsRuntimeA<ScriptableObject>()) {
-//            rtObject= ScriptableObject.CreateInstance(RuntimeType) as WD_Object;
-//        }
-//        else {
-//            rtObject= Activator.CreateInstance(RuntimeType) as WD_Object;            
-//        }
-//        if(rtObject == null) {
-//            Debug.LogError("Unable to create an instance of : "+QualifiedType);
-//        }
-//        rtObject.Name= Name;
-//        rtObject.InstanceId= InstanceId;
-//        return rtObject;
-//    }
     
     // ----------------------------------------------------------------------
     // Display Option Accessor
@@ -145,13 +129,10 @@ public class WD_EditorObject {
     public Type RuntimeType     { get { return Type.GetType(QualifiedType); }}
     public string TypeName {
         get {
-            int end= QualifiedType.IndexOf(',');
-            if(end < 0) return "(Unknown Type)";
-            if(QualifiedType.StartsWith(WD_EditorConfig.TypePrefix)) {
-                int prefixLen= WD_EditorConfig.TypePrefix.Length;
-                return QualifiedType.Substring(prefixLen, end-prefixLen);
-            }
-            return QualifiedType.Substring(0, end);
+            Type type= RuntimeType;
+            if(type == null) return "void";
+            if(type == typeof(float)) return "float";
+            return type.Name;
         }
     }
     public string Name {
@@ -159,7 +140,7 @@ public class WD_EditorObject {
         set { RawName= value; }
     }
     public string ToolTip {
-        get { return ToolTipEmpty ? (NameEmpty ? TypeName : Name+" "+TypeName) : RawToolTip; }
+        get { return ToolTipEmpty ? (NameEmpty ? TypeName : Name+":"+TypeName) : RawToolTip; }
         set { RawToolTip= value; }
     }
     public bool IsOnTopEdge         { get { return Edge == EdgeEnum.Top; }}
