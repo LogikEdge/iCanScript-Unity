@@ -128,52 +128,52 @@ public class WD_Reflection {
     static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         // Gather field information.
         DecodeClassFields(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
-        List<FieldInfo> fieldInfos = new List<FieldInfo>();
-        List<bool>      fieldIsOuts= new List<bool>();
-        foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
-            foreach(var fieldAttr in field.GetCustomAttributes(true)) {
-                if(fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
-                    if(field.IsPublic == false) {
-                        Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring field !!!");
-                        continue;
-                    }
-                    fieldInfos.Add(field);
-                    fieldIsOuts.Add(fieldAttr is WD_OutPortAttribute);
-                }
-            }
-        }
+//        List<FieldInfo> fieldInfos = new List<FieldInfo>();
+//        List<bool>      fieldIsOuts= new List<bool>();
+//        foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+//            foreach(var fieldAttr in field.GetCustomAttributes(true)) {
+//                if(fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
+//                    if(field.IsPublic == false) {
+//                        Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring field !!!");
+//                        continue;
+//                    }
+//                    fieldInfos.Add(field);
+//                    fieldIsOuts.Add(fieldAttr is WD_OutPortAttribute);
+//                }
+//            }
+//        }
         // Parse functions and methods.
         DecodeFunctionsAndMethods(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
-        List<string>     methodNames      = new List<string>();
-        List<string>     methodReturnNames= new List<string>();
-        List<string>     methodToolTips   = new List<string>();
-        List<string>     methodIcons      = new List<string>();
-        List<MethodInfo> methodInfos      = new List<MethodInfo>();
-        foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
-            foreach(var methodAttribute in method.GetCustomAttributes(true)) {
-                if(methodAttribute is WD_ConversionAttribute) {
-                    WD_ConversionAttribute convAttr= methodAttribute as WD_ConversionAttribute;
-                    string icon= convAttr.Icon;
-                    ParseConversion(company, package, classType, icon, method);
-                }
-                else if(methodAttribute is WD_FunctionAttribute) {                                    
-                    if(method.IsPublic == false) {
-                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");
-                        continue;                                        
-                    }
-                    // Register execution functions/methods.
-                    WD_FunctionAttribute funcAttr= methodAttribute as WD_FunctionAttribute;
-                    methodInfos.Add(method);
-                    methodNames.Add(funcAttr.Name ?? method.Name);
-                    methodReturnNames.Add(funcAttr.Return ?? "out");
-                    methodToolTips.Add(funcAttr.ToolTip ?? "No ToolTip");
-                    methodIcons.Add(funcAttr.Icon);
-                }
-            }
-        }                       
-        ParseClass(company, package, className, classToolTip, classType, classIconPath,
-                   methodInfos.ToArray(), methodNames.ToArray(), methodReturnNames.ToArray(), methodToolTips.ToArray(), methodIcons.ToArray(),
-                   fieldInfos.ToArray(), fieldIsOuts.ToArray());
+//        List<string>     methodNames      = new List<string>();
+//        List<string>     methodReturnNames= new List<string>();
+//        List<string>     methodToolTips   = new List<string>();
+//        List<string>     methodIcons      = new List<string>();
+//        List<MethodInfo> methodInfos      = new List<MethodInfo>();
+//        foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+//            foreach(var methodAttribute in method.GetCustomAttributes(true)) {
+//                if(methodAttribute is WD_ConversionAttribute) {
+//                    WD_ConversionAttribute convAttr= methodAttribute as WD_ConversionAttribute;
+//                    string icon= convAttr.Icon;
+//                    ParseConversion(company, package, classType, icon, method);
+//                }
+//                else if(methodAttribute is WD_FunctionAttribute) {                                    
+//                    if(method.IsPublic == false) {
+//                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");
+//                        continue;                                        
+//                    }
+//                    // Register execution functions/methods.
+//                    WD_FunctionAttribute funcAttr= methodAttribute as WD_FunctionAttribute;
+//                    methodInfos.Add(method);
+//                    methodNames.Add(funcAttr.Name ?? method.Name);
+//                    methodReturnNames.Add(funcAttr.Return ?? "out");
+//                    methodToolTips.Add(funcAttr.ToolTip ?? "No ToolTip");
+//                    methodIcons.Add(funcAttr.Icon);
+//                }
+//            }
+//        }                       
+//        ParseClass(company, package, className, classToolTip, classType, classIconPath,
+//                   methodInfos.ToArray(), methodNames.ToArray(), methodReturnNames.ToArray(), methodToolTips.ToArray(), methodIcons.ToArray(),
+//                   fieldInfos.ToArray(), fieldIsOuts.ToArray());
     }
     // ----------------------------------------------------------------------
     static void DecodeClassFields(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
@@ -262,101 +262,101 @@ public class WD_Reflection {
     static void DecodeInstanceMethod(MethodInfo method, string methodName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
         
     }
-    // ----------------------------------------------------------------------
-    static void ParseClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,
-                           MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, string[] toolTips, string[] icons,
-                           FieldInfo[] fieldInfos, bool[] fieldIsOuts) {
-        // Extract field names & types.
-        string[] fieldNames= new string[fieldInfos.Length];
-        Type[]   fieldTypes= new Type[fieldInfos.Length];
-        for(int i= 0; i < fieldInfos.Length; ++i) {
-            fieldNames[i]= fieldInfos[i].Name;
-            fieldTypes[i]= fieldInfos[i].FieldType;
-        }
-        // Separate functions (static methods) from methods.
-        List<int> _methodIndexes= new List<int>();
-        List<int> _propertyIndexes= new List<int>();
-        List<Type> _propertyTypes= new List<Type>();
-        List<bool> _propertyIsOuts= new List<bool>();
-        for(int i= 0; i < methodInfos.Length; ++i) {
-            if(methodInfos[i].ReturnType == typeof(void) && methodInfos[i].GetParameters().Length == 1) {
-                _propertyIndexes.Add(i);
-                _propertyTypes.Add((methodInfos[i].GetParameters())[0].ParameterType);
-                _propertyIsOuts.Add(false);
-            }
-            else if(methodInfos[i].ReturnType != typeof(void) && methodInfos[i].GetParameters().Length == 0) {
-                _propertyIndexes.Add(i);
-                _propertyTypes.Add(methodInfos[i].ReturnType);
-                _propertyIsOuts.Add(true);
-            }
-            else if(methodInfos[i].IsStatic) {
-                ParseFunction(company, package, classToolTip, classType, methodNames[i], returnNames[i], toolTips[i], icons[i], methodInfos[i]);
-            }
-            else {
-                _methodIndexes.Add(i);
-            }
-        }
-        // Class does not need to be registered if it does not have any methods to execute.
-        if(_methodIndexes.Count == 0 && _propertyIndexes.Count == 0) return;
-        // Build property information.
-        Type[] propertyTypes= _propertyTypes.ToArray();
-        bool[] propertyIsOuts= _propertyIsOuts.ToArray();
-        string[] propertyNames= new string[_propertyIndexes.Count];
-        for(int i= 0; i < _propertyIndexes.Count; ++i) {
-            string name= methodInfos[_propertyIndexes[i]].Name;
-            string tmp= name.ToUpper();
-            if((_propertyIsOuts[i] == true && tmp.StartsWith("GET")) || (_propertyIsOuts[i] == false && tmp.StartsWith("SET"))) {
-                if(name[3] == '_') {
-                    name= name.Substring(4);
-                }
-                else if(Char.IsLower(name[2]) && Char.IsUpper(name[3])) {
-                    name= name.Substring(3);                    
-                }
-            }
-            propertyNames[i]= name;
-        }
-        // Rebuild the method info from the method indexes.
-        List<MethodInfo> _methodInfos= new List<MethodInfo>();
-        List<string> _methodNames= new List<string>();
-        List<string> _returnNames= new List<string>();
-        List<string> _toolTips= new List<string>();
-        List<string> _icons= new List<string>();
-        foreach(var i in _methodIndexes) {
-            _methodInfos.Add(methodInfos[i]);
-            _methodNames.Add(methodNames[i]);
-            _returnNames.Add(returnNames[i]);
-            _toolTips.Add(toolTips[i]);
-            _icons.Add(icons[i]);
-        }
-        methodInfos= _methodInfos.ToArray();
-        methodNames= _methodNames.ToArray();
-        returnNames= _returnNames.ToArray();
-        toolTips   = _toolTips.ToArray();
-        icons      = _icons.ToArray();
-        // Parse each method.
-        Type[] returnType= new Type[methodInfos.Length];
-        string[][] paramNames= new string[methodInfos.Length][];
-        Type[][] paramTypes= new Type[methodInfos.Length][];
-        bool[][] paramIsOuts= new bool[methodInfos.Length][];
-        for(int i= 0; i < methodInfos.Length; ++i) {
-            // Return types.
-            returnType[i]= methodInfos[i].ReturnType;
-            if(returnType[i] == typeof(void)) {
-                returnType[i] = null;
-                returnNames[i]= null;
-            }
-            // Parameters.
-            paramNames[i] = ParseParameterNames(methodInfos[i]);
-            paramTypes[i] = ParseParameterTypes(methodInfos[i]);
-            paramIsOuts[i]= ParseParameterIsOuts(methodInfos[i]);
-        }        
-        // Add to database.
-        WD_DataBase.AddClass(company, package, className, classToolTip, classType, classIcon,
-                             fieldNames, fieldTypes, fieldIsOuts,
-                             propertyNames, propertyTypes, propertyIsOuts,
-                             methodInfos, methodNames, returnNames, returnType, toolTips, icons,
-                             paramNames, paramTypes, paramIsOuts);
-    }
+//    // ----------------------------------------------------------------------
+//    static void ParseClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,
+//                           MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, string[] toolTips, string[] icons,
+//                           FieldInfo[] fieldInfos, bool[] fieldIsOuts) {
+//        // Extract field names & types.
+//        string[] fieldNames= new string[fieldInfos.Length];
+//        Type[]   fieldTypes= new Type[fieldInfos.Length];
+//        for(int i= 0; i < fieldInfos.Length; ++i) {
+//            fieldNames[i]= fieldInfos[i].Name;
+//            fieldTypes[i]= fieldInfos[i].FieldType;
+//        }
+//        // Separate functions (static methods) from methods.
+//        List<int> _methodIndexes= new List<int>();
+//        List<int> _propertyIndexes= new List<int>();
+//        List<Type> _propertyTypes= new List<Type>();
+//        List<bool> _propertyIsOuts= new List<bool>();
+//        for(int i= 0; i < methodInfos.Length; ++i) {
+//            if(methodInfos[i].ReturnType == typeof(void) && methodInfos[i].GetParameters().Length == 1) {
+//                _propertyIndexes.Add(i);
+//                _propertyTypes.Add((methodInfos[i].GetParameters())[0].ParameterType);
+//                _propertyIsOuts.Add(false);
+//            }
+//            else if(methodInfos[i].ReturnType != typeof(void) && methodInfos[i].GetParameters().Length == 0) {
+//                _propertyIndexes.Add(i);
+//                _propertyTypes.Add(methodInfos[i].ReturnType);
+//                _propertyIsOuts.Add(true);
+//            }
+//            else if(methodInfos[i].IsStatic) {
+//                ParseFunction(company, package, classToolTip, classType, methodNames[i], returnNames[i], toolTips[i], icons[i], methodInfos[i]);
+//            }
+//            else {
+//                _methodIndexes.Add(i);
+//            }
+//        }
+//        // Class does not need to be registered if it does not have any methods to execute.
+//        if(_methodIndexes.Count == 0 && _propertyIndexes.Count == 0) return;
+//        // Build property information.
+//        Type[] propertyTypes= _propertyTypes.ToArray();
+//        bool[] propertyIsOuts= _propertyIsOuts.ToArray();
+//        string[] propertyNames= new string[_propertyIndexes.Count];
+//        for(int i= 0; i < _propertyIndexes.Count; ++i) {
+//            string name= methodInfos[_propertyIndexes[i]].Name;
+//            string tmp= name.ToUpper();
+//            if((_propertyIsOuts[i] == true && tmp.StartsWith("GET")) || (_propertyIsOuts[i] == false && tmp.StartsWith("SET"))) {
+//                if(name[3] == '_') {
+//                    name= name.Substring(4);
+//                }
+//                else if(Char.IsLower(name[2]) && Char.IsUpper(name[3])) {
+//                    name= name.Substring(3);                    
+//                }
+//            }
+//            propertyNames[i]= name;
+//        }
+//        // Rebuild the method info from the method indexes.
+//        List<MethodInfo> _methodInfos= new List<MethodInfo>();
+//        List<string> _methodNames= new List<string>();
+//        List<string> _returnNames= new List<string>();
+//        List<string> _toolTips= new List<string>();
+//        List<string> _icons= new List<string>();
+//        foreach(var i in _methodIndexes) {
+//            _methodInfos.Add(methodInfos[i]);
+//            _methodNames.Add(methodNames[i]);
+//            _returnNames.Add(returnNames[i]);
+//            _toolTips.Add(toolTips[i]);
+//            _icons.Add(icons[i]);
+//        }
+//        methodInfos= _methodInfos.ToArray();
+//        methodNames= _methodNames.ToArray();
+//        returnNames= _returnNames.ToArray();
+//        toolTips   = _toolTips.ToArray();
+//        icons      = _icons.ToArray();
+//        // Parse each method.
+//        Type[] returnType= new Type[methodInfos.Length];
+//        string[][] paramNames= new string[methodInfos.Length][];
+//        Type[][] paramTypes= new Type[methodInfos.Length][];
+//        bool[][] paramIsOuts= new bool[methodInfos.Length][];
+//        for(int i= 0; i < methodInfos.Length; ++i) {
+//            // Return types.
+//            returnType[i]= methodInfos[i].ReturnType;
+//            if(returnType[i] == typeof(void)) {
+//                returnType[i] = null;
+//                returnNames[i]= null;
+//            }
+//            // Parameters.
+//            paramNames[i] = ParseParameterNames(methodInfos[i]);
+//            paramTypes[i] = ParseParameterTypes(methodInfos[i]);
+//            paramIsOuts[i]= ParseParameterIsOuts(methodInfos[i]);
+//        }        
+//        // Add to database.
+//        WD_DataBase.AddClass(company, package, className, classToolTip, classType, classIcon,
+//                             fieldNames, fieldTypes, fieldIsOuts,
+//                             propertyNames, propertyTypes, propertyIsOuts,
+//                             methodInfos, methodNames, returnNames, returnType, toolTips, icons,
+//                             paramNames, paramTypes, paramIsOuts);
+//    }
 
     // ----------------------------------------------------------------------
     static void ParseConversion(string company, string package, Type classType, string icon, MethodInfo method) {
