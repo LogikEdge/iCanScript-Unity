@@ -43,7 +43,6 @@ public class WD_Graphics {
 	}
 	NodeStyle   stateStyle      = null;
 	NodeStyle   moduleStyle     = null;
-    NodeStyle   classStyle      = null;
 	NodeStyle   functionStyle   = null;
 	NodeStyle   defaultStyle    = null;
 	NodeStyle   selectedStyle   = null;
@@ -452,11 +451,7 @@ public class WD_Graphics {
             GenerateNodeStyle(ref moduleStyle, storage.Preferences.NodeColors.ModuleColor);
             return moduleStyle;
         }
-        if(node.IsClass) {
-            GenerateNodeStyle(ref classStyle, storage.Preferences.NodeColors.ClassColor);
-            return classStyle;
-        }
-        if(node.IsFunction || node.IsConversion) {
+        if(node.IsFunction || node.IsConversion || node.IsMethod) {
             GenerateNodeStyle(ref functionStyle, storage.Preferences.NodeColors.FunctionColor);
             return functionStyle;
         }
