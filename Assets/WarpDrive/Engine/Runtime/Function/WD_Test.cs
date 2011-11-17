@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-[WD_Class(Company="NewCompany", Package="Test")]
+[WD_Class(Company="TestCompany", Name="NewClassName")]
 public sealed class WD_Test {
     // ======================================================================
     // EXECUTION
@@ -26,7 +26,7 @@ public sealed class WD_Test {
     [WD_Function] public static void PrintWorking() { Debug.Log("Working"); }
 }
 
-[WD_Class(Company="NewCompany", Package="Test", Icon="WD_CalculatorIcon.psd")]
+[WD_Class(Company="TestCompany", Icon="WD_CalculatorIcon.psd")]
 public sealed class WD_Test2 {
     [WD_InPort]     public float x;
     [WD_OutPort]    public float z;

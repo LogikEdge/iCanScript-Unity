@@ -121,8 +121,14 @@ public class WD_DataBase {
         
     }
     // ----------------------------------------------------------------------
-    public static void AddInstanceMethod() {
-        
+    public static void AddInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath,
+                                       Type classType, MethodInfo methodInfo,
+                                       bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                       string retName, Type retType) {
+        Add(company, package, displayName, toolTip, iconPath,
+            WD_ObjectTypeEnum.Method, classType, methodInfo,
+            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            retName, retType);
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).

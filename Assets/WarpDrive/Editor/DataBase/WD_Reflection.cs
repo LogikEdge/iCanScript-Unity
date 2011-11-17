@@ -114,8 +114,8 @@ public class WD_Reflection {
                         // Extract class information.
                         WD_ClassAttribute classAttribute= classCustomAttribute as WD_ClassAttribute;
                         string classCompany= classAttribute.Company ?? "MyComnpany";
-                        string classPackage= classAttribute.Package ?? classType.Name;
                         string className   = classAttribute.Name    ?? classType.Name;
+                        string classPackage= classAttribute.Package ?? className;
                         string classToolTip= classAttribute.ToolTip;
                         string classIcon   = classAttribute.Icon;
                         DecodeClassInfo(classType, classCompany, classPackage, className, classToolTip, classIcon);
@@ -217,8 +217,25 @@ public class WD_Reflection {
         }                               
     }
     // ----------------------------------------------------------------------
-    static void DecodeInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string returnName) {
-        
+    static void DecodeConversion(string company, string package, string iconPath, Type classType, MethodInfo method) {
+        Type toType= method.ReturnType;
+        ParameterInfo[] parameters= method.GetParameters();
+        if(parameters.Length != 1 || toType == null) {
+            Debug.LogWarning("Conversion function must have one return type and one parameter. Ignoring conversion function in "+classType.Name);
+            return;
+        }
+        Type fromType= parameters[0].ParameterType;
+        if(method.IsPublic == false) {
+            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
+                             " is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring conversion !!!");
+            return;                                        
+        }
+        if(method.IsStatic == false) {
+            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
+                             " is not static and tagged for "+WD_EditorConfig.ProductName+". Ignoring conversion !!!");
+            return;                                        
+        }
+        WD_DataBase.AddConversion(company, package, iconPath, classType, method, fromType, toType);                                        
     }
 //    // ----------------------------------------------------------------------
 //    static void ParseClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,
@@ -317,23 +334,23 @@ public class WD_Reflection {
 //    }
 
     // ----------------------------------------------------------------------
-    static void DecodeConversion(string company, string package, string iconPath, Type classType, MethodInfo method) {
-        Type toType= method.ReturnType;
-        ParameterInfo[] parameters= method.GetParameters();
-        if(parameters.Length != 1 || toType == null) {
-            Debug.LogWarning("Conversion function must have one return type and one parameter. Ignoring conversion function in "+classType.Name);
-            return;
+    static void DecodeInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
+        // Parse return type.
+        Type retType= method.ReturnType;
+        if(retType == typeof(void)) {
+            retType= null;
+            retName= null;
         }
-        Type fromType= parameters[0].ParameterType;
-        if(method.IsPublic == false) {
-            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring conversion !!!");
-            return;                                        
-        }
-        if(method.IsStatic == false) {
-            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not static and tagged for "+WD_EditorConfig.ProductName+". Ignoring conversion !!!");
-            return;                                        
-        }
-        WD_DataBase.AddConversion(company, package, iconPath, classType, method, fromType, toType);                                        
+        // Parse parameters.
+        string[] paramNames   = ParseParameterNames(method);
+        Type[]   paramTypes   = ParseParameterTypes(method);
+        bool[]   paramIsOut   = ParseParameterIsOuts(method);
+        object[] paramDefaults= ParseParameterDefaults(method);
+
+        WD_DataBase.AddInstanceMethod(company, package, displayName, toolTip, iconPath,
+                                      classType, method,
+                                      paramIsOut, paramNames, paramTypes, paramDefaults,
+                                      retName, retType);
     }
     // ----------------------------------------------------------------------
     static void DecodeStaticMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
