@@ -256,7 +256,7 @@ public class WD_Reflection {
     }
     // ----------------------------------------------------------------------
     static void DecodeStaticMethod(MethodInfo method, string methodName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
-        
+        ParseFunction(company, package, toolTip, classType, methodName, returnName, toolTip, iconPath, method);        
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceMethod(MethodInfo method, string methodName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
