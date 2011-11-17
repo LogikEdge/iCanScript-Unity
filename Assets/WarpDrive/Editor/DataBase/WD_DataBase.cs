@@ -111,13 +111,13 @@ public class WD_DataBase {
         Functions.Clear();
     }
     // ----------------------------------------------------------------------
-    public static void AddStaticField(FieldInfo field, WD_ParamDirectionEnum direction, Type classType,
-                                      string company, string package, string className, string toolTip, string iconPath) {
+    public static void AddStaticField(string company, string package, string displayName, string toolTip, string iconPath,
+                                      Type classType, FieldInfo field, WD_ParamDirectionEnum direction) {
         
     }
     // ----------------------------------------------------------------------
-    public static void AddInstanceField(FieldInfo field, WD_ParamDirectionEnum direction, Type classType,
-                                        string company, string package, string className, string toolTip, string iconPath) {
+    public static void AddInstanceField(string company, string package, string displayName, string toolTip, string iconPath,
+                                        Type classType, FieldInfo field, WD_ParamDirectionEnum direction) {
         
     }
     // ----------------------------------------------------------------------

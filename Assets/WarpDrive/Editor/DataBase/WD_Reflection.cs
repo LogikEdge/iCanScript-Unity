@@ -155,12 +155,20 @@ public class WD_Reflection {
             }
             if(registerField) {
                 if(field.IsStatic) {
-                    WD_DataBase.AddStaticField(field, direction, classType, company, package, className, classToolTip, classIconPath);
+                    DecodeStaticField(company, package, className, classToolTip, classIconPath, classType, field, direction);
                 } else {
-                    WD_DataBase.AddInstanceField(field, direction, classType, company, package, className, classToolTip, classIconPath);
+                    DecodeInstanceField(company, package, className, classToolTip, classIconPath, classType, field, direction);
                 }                
             }
         }        
+    }
+    // ----------------------------------------------------------------------
+    static void DecodeStaticField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, WD_ParamDirectionEnum dir) {
+        WD_DataBase.AddStaticField(company, package, displayName, toolTip, iconPath, classType, field, dir);
+    }
+    // ----------------------------------------------------------------------
+    static void DecodeInstanceField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, WD_ParamDirectionEnum dir) {
+        WD_DataBase.AddInstanceField(company, package, displayName, toolTip, iconPath, classType, field, dir);        
     }
     // ----------------------------------------------------------------------
     static void DecodeFunctionsAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
