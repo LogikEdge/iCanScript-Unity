@@ -143,6 +143,7 @@ public class WD_Reflection {
             }
         }
         // Parse functions and methods.
+        DecodeFunctionsAndMethods(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
         List<string>     methodNames      = new List<string>();
         List<string>     methodReturnNames= new List<string>();
         List<string>     methodToolTips   = new List<string>();
@@ -208,32 +209,37 @@ public class WD_Reflection {
         }        
     }
     // ----------------------------------------------------------------------
-    static void DecodeFunctionAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
-        List<string>     methodNames      = new List<string>();
-        List<string>     methodReturnNames= new List<string>();
-        List<string>     methodToolTips   = new List<string>();
-        List<string>     methodIcons      = new List<string>();
-        List<MethodInfo> methodInfos      = new List<MethodInfo>();
+    static void DecodeFunctionsAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerMethod= false;
+            string methodName= method.Name;
+            string returnName= "out";
+            string toolTip= classToolTip;
+            string iconPath= classIconPath;
             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
                 if(methodAttribute is WD_ConversionAttribute) {
-                    WD_ConversionAttribute convAttr= methodAttribute as WD_ConversionAttribute;
-                    string icon= convAttr.Icon;
-                    ParseConversion(company, package, classType, icon, method);
+                    if(method.IsPublic) {
+                        WD_ConversionAttribute convAttr= methodAttribute as WD_ConversionAttribute;
+                        iconPath= convAttr.Icon;
+                        ParseConversion(company, package, classType, iconPath, method);
+                    } else {                        
+                        Debug.LogWarning("Conversion "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");
+                    }
+                    break;
                 }
                 else if(methodAttribute is WD_FunctionAttribute) {                                    
-                    if(method.IsPublic == false) {
-                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");
-                        continue;                                        
+                    if(method.IsPublic) {
+                        registerMethod= true;
+                        // Register execution functions/methods.
+                        WD_FunctionAttribute funcAttr= methodAttribute as WD_FunctionAttribute;
+                        if(funcAttr.Name    != null) methodName= funcAttr.Name; 
+                        if(funcAttr.Return  != null) returnName= funcAttr.Return;
+                        if(funcAttr.ToolTip != null) toolTip   = funcAttr.ToolTip;
+                        if(funcAttr.Icon    != null) iconPath  = funcAttr.Icon;
+                    } else {
+                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");                        
                     }
-                    // Register execution functions/methods.
-                    WD_FunctionAttribute funcAttr= methodAttribute as WD_FunctionAttribute;
-                    methodInfos.Add(method);
-                    methodNames.Add(funcAttr.Name ?? method.Name);
-                    methodReturnNames.Add(funcAttr.Return ?? "out");
-                    methodToolTips.Add(funcAttr.ToolTip ?? "No ToolTip");
-                    methodIcons.Add(funcAttr.Icon);
+                    break;                                        
                 }
             }
             if(acceptAllPublic && method.IsPublic) {
@@ -241,12 +247,20 @@ public class WD_Reflection {
             }
             if(registerMethod) {
                 if(method.IsStatic) {
-                    WD_DataBase.AddStaticMethod();
+                    DecodeStaticMethod(method, methodName, returnName, toolTip, iconPath, company, package, classType);
                 } else {
-                    WD_DataBase.AddInstanceMethod();
+                    DecodeInstanceMethod(method, methodName, returnName, toolTip, iconPath, company, package, classType);
                 }
             }
         }                               
+    }
+    // ----------------------------------------------------------------------
+    static void DecodeStaticMethod(MethodInfo method, string methodName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
+        
+    }
+    // ----------------------------------------------------------------------
+    static void DecodeInstanceMethod(MethodInfo method, string methodName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
+        
     }
     // ----------------------------------------------------------------------
     static void ParseClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,
