@@ -7,8 +7,22 @@ public class WD_Function : WD_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    object          myTargetObject= null;
+    object          myReturn      = null;
     MethodInfo      myMethodInfo  = null;
+
+    // ======================================================================
+    // Accessors
+    // ----------------------------------------------------------------------
+    protected override object DoGetParameter(int idx) {
+        return idx == myParameters.Length ? myReturn : base.DoGetParameter(idx);
+    }
+    protected override void DoSetParameter(int idx, object value) {
+        if(idx == myParameters.Length) { myReturn= value; return; }
+        base.DoSetParameter(idx, value);
+    }
+    protected override bool DoIsParameterReady(int idx, int frameId) {
+        return idx == myParameters.Length ? IsCurrent(frameId) : base.DoIsParameterReady(idx, frameId);
+    }
 
     // ======================================================================
     // Creation/Destruction
@@ -22,7 +36,7 @@ public class WD_Function : WD_FunctionBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        myReturn= myMethodInfo.Invoke(myTargetObject, myParameters);
+        myReturn= myMethodInfo.Invoke(null, myParameters);
         MarkAsCurrent(frameId);
     }
 }

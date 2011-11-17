@@ -13,28 +13,34 @@ public abstract class WD_FunctionBase : WD_Action {
     protected int[]           myInIndexes;
     protected int[]           myOutIndexes;
     protected WD_Connection[] myConnections;
-    protected object          myReturn;
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
     public object this[int idx] {
         get {
-            if(idx < myParameters.Length)  return myParameters[idx];
-            if(idx == myParameters.Length) return myReturn;
-            Debug.LogError("Invalid parameter index given");
-            return null;
+            return idx < myParameters.Length ? myParameters[idx] : DoGetParameter(idx);
         }
         set {
             if(idx < myParameters.Length)  { myParameters[idx]= value; return; }
-            if(idx == myParameters.Length) { myReturn= value; return; }
-            Debug.LogError("Invalid parameter index given");            
+            DoSetParameter(idx, value);
         }
     }
+    protected virtual object DoGetParameter(int idx) {
+        Debug.LogError("Invalid parameter index given");        
+        return null;
+    }
+    protected virtual void DoSetParameter(int idx, object value) {
+        Debug.LogError("Invalid parameter index given");                
+    }
     public bool IsParameterReady(int idx, int frameId) {
-        if(idx == myParameters.Length || myParameterIsOuts[idx]) return IsCurrent(frameId);
+        if(idx >= myParameters.Length) return DoIsParameterReady(idx, frameId);
+        if(myParameterIsOuts[idx]) return IsCurrent(frameId);
         if(!myConnections[idx].IsConnected) return true;
         return myConnections[idx].IsReady(frameId);
+    }
+    protected virtual bool DoIsParameterReady(int idx, int frameId) {
+        return true;
     }
     public int[] InIndexes  { get { return myInIndexes; }}
     public int[] OutIndexes { get { return myOutIndexes; }}
@@ -53,7 +59,6 @@ public abstract class WD_FunctionBase : WD_Action {
         }
         myInIndexes = inIdx.ToArray();
         myOutIndexes= outIdx.ToArray();
-        myReturn= null;
     }
     public void SetConnections(WD_Connection[] connections) {
         myConnections= connections;

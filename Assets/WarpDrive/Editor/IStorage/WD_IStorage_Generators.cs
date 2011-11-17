@@ -28,20 +28,19 @@ public partial class WD_IStorage {
         ForEachChild(edNode,
             edChild=>{
                 if(edChild.IsNode) {
-                    object rtChild= null;
                     switch(edChild.ObjectType) {
                         case WD_ObjectTypeEnum.StateChart: {
-                            rtChild= new WD_StateChart(edChild.Name);
-                            TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
-                            WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
-                            GenerateRuntimeChildNodes(edChild, rtChild);
+                            WD_StateChart stateChart= new WD_StateChart(edChild.Name);
+                            TreeCache[edChild.InstanceId].RuntimeObject= stateChart;
+                            WD_Reflection.InvokeAddChildIfExists(rtNode, stateChart);
+                            GenerateRuntimeChildNodes(edChild, stateChart);
                             break;
                         }
                         case WD_ObjectTypeEnum.State: {
-                            rtChild= new WD_State(edChild.Name);
-                            TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
-                            WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
-                            GenerateRuntimeChildNodes(edChild, rtChild);
+                            WD_State state= new WD_State(edChild.Name);
+                            TreeCache[edChild.InstanceId].RuntimeObject= state;
+                            WD_Reflection.InvokeAddChildIfExists(rtNode, state);
+                            GenerateRuntimeChildNodes(edChild, state);
                             break;
                         }
                         case WD_ObjectTypeEnum.TransitionEntry: {
@@ -52,7 +51,7 @@ public partial class WD_IStorage {
                             WD_Module module= new WD_Module(edChild.Name, new object[0], new bool[0]);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= module;
                             if(rtNode != null) WD_Reflection.InvokeAddChildIfExists(rtNode, module);
-                            GenerateRuntimeChildNodes(edChild, rtChild);
+                            GenerateRuntimeChildNodes(edChild, module);
                             break;                            
                         }
                         case WD_ObjectTypeEnum.Module: {
@@ -62,7 +61,7 @@ public partial class WD_IStorage {
                             WD_Module module= new WD_Module(edChild.Name, parameters, desc.ParamIsOuts);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= module;
                             if(rtNode != null) WD_Reflection.InvokeAddChildIfExists(rtNode, module);
-                            GenerateRuntimeChildNodes(edChild, rtChild);
+                            GenerateRuntimeChildNodes(edChild, module);
                             break;
                         }
                         case WD_ObjectTypeEnum.Conversion:
@@ -71,9 +70,9 @@ public partial class WD_IStorage {
                             WD_RuntimeDesc desc;
                             object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
                             if(desc == null) break;
-                            rtChild= new WD_Function(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);                                
-                            TreeCache[edChild.InstanceId].RuntimeObject= rtChild;
-                            WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
+                            WD_Function func= new WD_Function(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= func;
+                            WD_Reflection.InvokeAddChildIfExists(rtNode, func);
                             break;
                         }
                         default: {
