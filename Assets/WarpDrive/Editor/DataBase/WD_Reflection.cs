@@ -174,6 +174,34 @@ public class WD_Reflection {
                    fieldInfos.ToArray(), fieldIsOuts.ToArray());
     }
     // ----------------------------------------------------------------------
+    static void DecodeClassFields(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+        // Gather field information.
+        foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+            foreach(var fieldAttr in field.GetCustomAttributes(true)) {
+                if(field.IsPublic == true) {
+                    if(acceptAllPublic || fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
+                        WD_ParamDirectionEnum direction= WD_ParamDirectionEnum.In;
+                        if(fieldAttr is WD_OutPortAttribute) direction= WD_ParamDirectionEnum.Out;
+                        if(acceptAllPublic) direction= WD_ParamDirectionEnum.InOut;
+                        if(field.IsStatic) {
+                            WD_DataBase.AddStaticField(field, direction, classType, company, package, className, classToolTip, classIconPath);
+                        } else {
+                            WD_DataBase.AddInstanceField(field, direction, classType, company, package, className, classToolTip, classIconPath);
+                        }
+                    }                    
+                } else {
+                    if(fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
+                        Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring field !!!");
+                    }
+                }
+            }
+        }        
+    }
+    // ----------------------------------------------------------------------
+    static void DecodeFunctionAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+        
+    }
+    // ----------------------------------------------------------------------
     static void ParseClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,
                            MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, string[] toolTips, string[] icons,
                            FieldInfo[] fieldInfos, bool[] fieldInOuts) {

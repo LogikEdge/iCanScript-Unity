@@ -117,6 +117,16 @@ public class WD_DataBase {
         Functions.Clear();
     }
     // ----------------------------------------------------------------------
+    public static void AddStaticField(FieldInfo field, WD_ParamDirectionEnum direction, Type classType,
+                                      string company, string package, string className, string toolTip, string iconPath) {
+        
+    }
+    // ----------------------------------------------------------------------
+    public static void AddInstanceField(FieldInfo field, WD_ParamDirectionEnum direction, Type classType,
+                                        string company, string package, string className, string toolTip, string iconPath) {
+        
+    }
+    // ----------------------------------------------------------------------
     // Adds a conversion function
     public static void AddConversion(string company, string package, Type classType, string iconPath, MethodInfo methodInfo, Type fromType, Type toType) {
         // Don't accept automatic conversion if it already exist.
