@@ -127,6 +127,7 @@ public class WD_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         // Gather field information.
+        DecodeClassFields(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
         List<FieldInfo> fieldInfos = new List<FieldInfo>();
         List<bool>      fieldIsOuts= new List<bool>();
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
@@ -177,29 +178,64 @@ public class WD_Reflection {
     static void DecodeClassFields(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         // Gather field information.
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+            bool registerField= false;
+            WD_ParamDirectionEnum direction= WD_ParamDirectionEnum.InOut;
             foreach(var fieldAttr in field.GetCustomAttributes(true)) {
-                if(field.IsPublic == true) {
-                    if(acceptAllPublic || fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
-                        WD_ParamDirectionEnum direction= WD_ParamDirectionEnum.In;
-                        if(fieldAttr is WD_OutPortAttribute) direction= WD_ParamDirectionEnum.Out;
-                        if(acceptAllPublic) direction= WD_ParamDirectionEnum.InOut;
-                        if(field.IsStatic) {
-                            WD_DataBase.AddStaticField(field, direction, classType, company, package, className, classToolTip, classIconPath);
-                        } else {
-                            WD_DataBase.AddInstanceField(field, direction, classType, company, package, className, classToolTip, classIconPath);
-                        }
-                    }                    
-                } else {
-                    if(fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
-                        Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring field !!!");
-                    }
+                if(!field.IsPublic && (fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute)) {
+                    Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring field !!!");
+                    continue;
                 }
+                if(fieldAttr is WD_InPortAttribute) {
+                    direction= WD_ParamDirectionEnum.In;
+                    registerField= true;
+                }
+                if(fieldAttr is WD_OutPortAttribute) {
+                    direction= WD_ParamDirectionEnum.Out;
+                    registerField= true;
+                }
+            }
+            if(acceptAllPublic && field.IsPublic) {
+                registerField= true;
+                direction= WD_ParamDirectionEnum.InOut;
+            }
+            if(registerField) {
+                if(field.IsStatic) {
+                    WD_DataBase.AddStaticField(field, direction, classType, company, package, className, classToolTip, classIconPath);
+                } else {
+                    WD_DataBase.AddInstanceField(field, direction, classType, company, package, className, classToolTip, classIconPath);
+                }                
             }
         }        
     }
     // ----------------------------------------------------------------------
     static void DecodeFunctionAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
-        
+        List<string>     methodNames      = new List<string>();
+        List<string>     methodReturnNames= new List<string>();
+        List<string>     methodToolTips   = new List<string>();
+        List<string>     methodIcons      = new List<string>();
+        List<MethodInfo> methodInfos      = new List<MethodInfo>();
+        foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+            foreach(var methodAttribute in method.GetCustomAttributes(true)) {
+                if(methodAttribute is WD_ConversionAttribute) {
+                    WD_ConversionAttribute convAttr= methodAttribute as WD_ConversionAttribute;
+                    string icon= convAttr.Icon;
+                    ParseConversion(company, package, classType, icon, method);
+                }
+                else if(methodAttribute is WD_FunctionAttribute) {                                    
+                    if(method.IsPublic == false) {
+                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");
+                        continue;                                        
+                    }
+                    // Register execution functions/methods.
+                    WD_FunctionAttribute funcAttr= methodAttribute as WD_FunctionAttribute;
+                    methodInfos.Add(method);
+                    methodNames.Add(funcAttr.Name ?? method.Name);
+                    methodReturnNames.Add(funcAttr.Return ?? "out");
+                    methodToolTips.Add(funcAttr.ToolTip ?? "No ToolTip");
+                    methodIcons.Add(funcAttr.Icon);
+                }
+            }
+        }                               
     }
     // ----------------------------------------------------------------------
     static void ParseClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,
