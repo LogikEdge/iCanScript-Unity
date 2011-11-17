@@ -121,12 +121,19 @@ public class WD_DataBase {
         
     }
     // ----------------------------------------------------------------------
-    public static void AddStaticMethod() {
+    public static void AddInstanceMethod() {
         
     }
     // ----------------------------------------------------------------------
-    public static void AddInstanceMethod() {
-        
+    // Adds an execution function (no context).
+    public static void AddStaticMethod(string company, string package, string displayName, string toolTip, string iconPath,
+                                       Type classType, MethodInfo methodInfo,
+                                       bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                       string retName, Type retType) {
+        Add(company, package, displayName, toolTip, iconPath,
+            WD_ObjectTypeEnum.Function, classType, methodInfo,
+            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            retName, retType);
     }
     // ----------------------------------------------------------------------
     // Adds a conversion function
@@ -145,17 +152,6 @@ public class WD_DataBase {
             WD_ObjectTypeEnum.Conversion, classType, methodInfo,
             new bool[1]{false}, new string[1]{fromType.Name}, new Type[1]{fromType}, new object[1]{null},
             toType.Name, toType);        
-    }
-    // ----------------------------------------------------------------------
-    // Adds an execution function (no context).
-    public static void AddFunction(string company, string package, string displayName, string toolTip, string iconPath,
-                                   Type classType, MethodInfo methodInfo,
-                                   bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
-                                   string retName, Type retType) {
-        Add(company, package, displayName, toolTip, iconPath,
-            WD_ObjectTypeEnum.Function, classType, methodInfo,
-            paramIsOuts, paramNames, paramTypes, paramDefaults,
-            retName, retType);
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.

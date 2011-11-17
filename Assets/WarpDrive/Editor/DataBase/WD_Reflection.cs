@@ -166,7 +166,7 @@ public class WD_Reflection {
     static void DecodeFunctionsAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerMethod= false;
-            string methodName= method.Name;
+            string displayName= method.Name;
             string returnName= "out";
             string toolTip= classToolTip;
             string iconPath= classIconPath;
@@ -186,10 +186,10 @@ public class WD_Reflection {
                         registerMethod= true;
                         // Register execution functions/methods.
                         WD_FunctionAttribute funcAttr= methodAttribute as WD_FunctionAttribute;
-                        if(funcAttr.Name    != null) methodName= funcAttr.Name; 
-                        if(funcAttr.Return  != null) returnName= funcAttr.Return;
-                        if(funcAttr.ToolTip != null) toolTip   = funcAttr.ToolTip;
-                        if(funcAttr.Icon    != null) iconPath  = funcAttr.Icon;
+                        if(funcAttr.Name    != null) displayName= funcAttr.Name; 
+                        if(funcAttr.Return  != null) returnName = funcAttr.Return;
+                        if(funcAttr.ToolTip != null) toolTip    = funcAttr.ToolTip;
+                        if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
                         Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");                        
                     }
@@ -201,19 +201,15 @@ public class WD_Reflection {
             }
             if(registerMethod) {
                 if(method.IsStatic) {
-                    DecodeStaticMethod(method, methodName, returnName, toolTip, iconPath, company, package, classType);
+                    DecodeStaticMethod(company, package, displayName, toolTip, iconPath, classType, method, returnName);
                 } else {
-                    DecodeInstanceMethod(method, methodName, returnName, toolTip, iconPath, company, package, classType);
+                    DecodeInstanceMethod(company, package, displayName, toolTip, iconPath, classType, method, returnName);
                 }
             }
         }                               
     }
     // ----------------------------------------------------------------------
-    static void DecodeStaticMethod(MethodInfo method, string displayName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
-        ParseFunction(company, package, displayName, toolTip, iconPath, classType, method, returnName);        
-    }
-    // ----------------------------------------------------------------------
-    static void DecodeInstanceMethod(MethodInfo method, string methodName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
+    static void DecodeInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string returnName) {
         
     }
 //    // ----------------------------------------------------------------------
@@ -332,7 +328,7 @@ public class WD_Reflection {
         WD_DataBase.AddConversion(company, package, iconPath, classType, method, fromType, toType);                                        
     }
     // ----------------------------------------------------------------------
-    static void ParseFunction(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
+    static void DecodeStaticMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
         // Parse return type.
         Type retType= method.ReturnType;
         if(retType == typeof(void)) {
@@ -345,10 +341,10 @@ public class WD_Reflection {
         bool[]   paramIsOut   = ParseParameterIsOuts(method);
         object[] paramDefaults= ParseParameterDefaults(method);
 
-        WD_DataBase.AddFunction(company, package, displayName, toolTip, iconPath,
-                                classType, method,
-                                paramIsOut, paramNames, paramTypes, paramDefaults,
-                                retName, retType);
+        WD_DataBase.AddStaticMethod(company, package, displayName, toolTip, iconPath,
+                                    classType, method,
+                                    paramIsOut, paramNames, paramTypes, paramDefaults,
+                                    retName, retType);
     }
     // ----------------------------------------------------------------------
     static string[] ParseParameterNames(MethodInfo method) {
