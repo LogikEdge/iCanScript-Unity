@@ -215,6 +215,7 @@ public class WD_Reflection {
         List<string>     methodIcons      = new List<string>();
         List<MethodInfo> methodInfos      = new List<MethodInfo>();
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+            bool registerMethod= false;
             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
                 if(methodAttribute is WD_ConversionAttribute) {
                     WD_ConversionAttribute convAttr= methodAttribute as WD_ConversionAttribute;
@@ -235,12 +236,22 @@ public class WD_Reflection {
                     methodIcons.Add(funcAttr.Icon);
                 }
             }
+            if(acceptAllPublic && method.IsPublic) {
+                registerMethod= true;
+            }
+            if(registerMethod) {
+                if(method.IsStatic) {
+                    WD_DataBase.AddStaticMethod();
+                } else {
+                    WD_DataBase.AddInstanceMethod();
+                }
+            }
         }                               
     }
     // ----------------------------------------------------------------------
     static void ParseClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,
                            MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, string[] toolTips, string[] icons,
-                           FieldInfo[] fieldInfos, bool[] fieldInOuts) {
+                           FieldInfo[] fieldInfos, bool[] fieldIsOuts) {
         // Extract field names & types.
         string[] fieldNames= new string[fieldInfos.Length];
         Type[]   fieldTypes= new Type[fieldInfos.Length];
@@ -252,17 +263,17 @@ public class WD_Reflection {
         List<int> _methodIndexes= new List<int>();
         List<int> _propertyIndexes= new List<int>();
         List<Type> _propertyTypes= new List<Type>();
-        List<bool> _propertyInOuts= new List<bool>();
+        List<bool> _propertyIsOuts= new List<bool>();
         for(int i= 0; i < methodInfos.Length; ++i) {
             if(methodInfos[i].ReturnType == typeof(void) && methodInfos[i].GetParameters().Length == 1) {
                 _propertyIndexes.Add(i);
                 _propertyTypes.Add((methodInfos[i].GetParameters())[0].ParameterType);
-                _propertyInOuts.Add(false);
+                _propertyIsOuts.Add(false);
             }
             else if(methodInfos[i].ReturnType != typeof(void) && methodInfos[i].GetParameters().Length == 0) {
                 _propertyIndexes.Add(i);
                 _propertyTypes.Add(methodInfos[i].ReturnType);
-                _propertyInOuts.Add(true);
+                _propertyIsOuts.Add(true);
             }
             else if(methodInfos[i].IsStatic) {
                 ParseFunction(company, package, classToolTip, classType, methodNames[i], returnNames[i], toolTips[i], icons[i], methodInfos[i]);
@@ -275,12 +286,12 @@ public class WD_Reflection {
         if(_methodIndexes.Count == 0 && _propertyIndexes.Count == 0) return;
         // Build property information.
         Type[] propertyTypes= _propertyTypes.ToArray();
-        bool[] propertyInOuts= _propertyInOuts.ToArray();
+        bool[] propertyIsOuts= _propertyIsOuts.ToArray();
         string[] propertyNames= new string[_propertyIndexes.Count];
         for(int i= 0; i < _propertyIndexes.Count; ++i) {
             string name= methodInfos[_propertyIndexes[i]].Name;
             string tmp= name.ToUpper();
-            if((_propertyInOuts[i] == true && tmp.StartsWith("GET")) || (_propertyInOuts[i] == false && tmp.StartsWith("SET"))) {
+            if((_propertyIsOuts[i] == true && tmp.StartsWith("GET")) || (_propertyIsOuts[i] == false && tmp.StartsWith("SET"))) {
                 if(name[3] == '_') {
                     name= name.Substring(4);
                 }
@@ -312,7 +323,7 @@ public class WD_Reflection {
         Type[] returnType= new Type[methodInfos.Length];
         string[][] paramNames= new string[methodInfos.Length][];
         Type[][] paramTypes= new Type[methodInfos.Length][];
-        bool[][] paramInOuts= new bool[methodInfos.Length][];
+        bool[][] paramIsOuts= new bool[methodInfos.Length][];
         for(int i= 0; i < methodInfos.Length; ++i) {
             // Return types.
             returnType[i]= methodInfos[i].ReturnType;
@@ -323,14 +334,14 @@ public class WD_Reflection {
             // Parameters.
             paramNames[i] = ParseParameterNames(methodInfos[i]);
             paramTypes[i] = ParseParameterTypes(methodInfos[i]);
-            paramInOuts[i]= ParseParameterInOuts(methodInfos[i]);
+            paramIsOuts[i]= ParseParameterIsOuts(methodInfos[i]);
         }        
         // Add to database.
         WD_DataBase.AddClass(company, package, className, classToolTip, classType, classIcon,
-                             fieldNames, fieldTypes, fieldInOuts,
-                             propertyNames, propertyTypes, propertyInOuts,
+                             fieldNames, fieldTypes, fieldIsOuts,
+                             propertyNames, propertyTypes, propertyIsOuts,
                              methodInfos, methodNames, returnNames, returnType, toolTips, icons,
-                             paramNames, paramTypes, paramInOuts);
+                             paramNames, paramTypes, paramIsOuts);
     }
 
     // ----------------------------------------------------------------------
@@ -363,11 +374,11 @@ public class WD_Reflection {
         // Parse parameters.
         string[] paramNames   = ParseParameterNames(method);
         Type[]   paramTypes   = ParseParameterTypes(method);
-        bool[]   paramInOut   = ParseParameterInOuts(method);
+        bool[]   paramIsOut   = ParseParameterIsOuts(method);
         object[] paramDefaults= ParseParameterDefaults(method);
 
         WD_DataBase.AddFunction(company, package, classToolTip, classType, methodName,
-                                paramNames, paramTypes, paramInOut, paramDefaults,
+                                paramNames, paramTypes, paramIsOut, paramDefaults,
                                 retName, retType, toolTip, icon, method);
     }
     // ----------------------------------------------------------------------
@@ -389,13 +400,13 @@ public class WD_Reflection {
         return paramTypes;
     }
     // ----------------------------------------------------------------------
-    static bool[] ParseParameterInOuts(MethodInfo method) {
+    static bool[] ParseParameterIsOuts(MethodInfo method) {
         ParameterInfo[] parameters= method.GetParameters();
-        bool[]   paramInOuts= new bool[parameters.Length];
+        bool[]   paramIsOuts= new bool[parameters.Length];
         for(int i= 0; i < parameters.Length; ++i) {
-            paramInOuts[i]= parameters[i].IsOut;
+            paramIsOuts[i]= parameters[i].IsOut;
         }
-        return paramInOuts;
+        return paramIsOuts;
     }
     // ----------------------------------------------------------------------
     static object[] ParseParameterDefaults(MethodInfo method) {

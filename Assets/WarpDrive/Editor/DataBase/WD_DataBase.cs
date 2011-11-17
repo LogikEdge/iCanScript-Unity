@@ -127,6 +127,18 @@ public class WD_DataBase {
         
     }
     // ----------------------------------------------------------------------
+    public static void AddStaticMethod() {
+        
+    }
+    // ----------------------------------------------------------------------
+    public static void AddInstanceMethod() {
+        
+    }
+    // ----------------------------------------------------------------------
+    public static void AddConversion() {
+        
+    }
+    // ----------------------------------------------------------------------
     // Adds a conversion function
     public static void AddConversion(string company, string package, Type classType, string iconPath, MethodInfo methodInfo, Type fromType, Type toType) {
         // Don't accept automatic conversion if it already exist.
