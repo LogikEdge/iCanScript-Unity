@@ -60,6 +60,9 @@ public class WD_DataBase {
     public static string GetFunctionSignature(WD_ReflectionDesc desc) {
         string signature= TypeName(desc.ReturnType);
         signature+= " "+desc.Name+"(";
+        if(desc.ObjectType == WD_ObjectTypeEnum.Method) {
+            signature+= TypeName(desc.ClassType)+" this, ";
+        }
         for(int i= 0; i < desc.ParamNames.Length; ++i) {
             signature+= TypeName(desc.RuntimeDesc.ParamTypes[i])+" "+desc.ParamNames[i];
             if(i != desc.ParamNames.Length-1) signature+=", ";
@@ -173,19 +176,4 @@ public class WD_DataBase {
         return fd;
     }
     
-//    // ----------------------------------------------------------------------
-//    // Adds a class.
-//    public static void AddClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,                        // Class info
-//                                string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,                                                                     // Field info
-//                                string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,                                                            // Property info
-//                                MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips, string[] icons,    // Method info
-//                                string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {                                                 // Method parameter info
-//        Functions.Add(new WD_ClassDesc(company, package, className, classToolTip, classType, classIcon,
-//                                       fieldNames, fieldTypes, fieldInOuts,
-//                                       propertyNames, propertyTypes, propertyInOuts,
-//                                       methodInfos, methodNames, returnNames, returnTypes, toolTips, icons,
-//                                       parameterNames, parameterTypes, parameterInOuts));    
-//    }
-//
-
 }

@@ -42,7 +42,7 @@ public sealed class WD_Test2 {
     }
 
     [WD_Function(Return="m2", Icon="WD_MovieIcon.psd")]
-    public float Method2(Vector2 v2, Vector3 v3) {
+    public float Method1(Vector2 v2, Vector3 v3) {
         return 1.0f;
     }
 }
