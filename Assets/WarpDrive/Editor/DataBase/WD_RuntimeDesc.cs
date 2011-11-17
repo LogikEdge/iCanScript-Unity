@@ -15,6 +15,7 @@ public class WD_RuntimeDesc {
     public string               Name                = null;
     public Type                 ClassType           = null;
     public string               MethodName          = null;
+    public Type                 ThisType            = null;
     public string[]             ParamNames          = new string[0];
     public Type[]               ParamTypes          = new Type[0];
     public bool[]               ParamIsOuts         = new bool[0];

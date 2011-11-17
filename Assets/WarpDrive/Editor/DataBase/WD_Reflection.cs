@@ -108,7 +108,7 @@ public class WD_Reflection {
                     if(classCustomAttribute is WD_ClassAttribute) {
                         // Validate that the class is public.
                         if(classType.IsPublic == false) {
-                            Debug.LogWarning("Class "+classType+" is not public and tagged for WarpDrive.  Ignoring class !!!");
+                            Debug.LogWarning("Class "+classType+" is not public and tagged for "+WD_EditorConfig.ProductName+".  Ignoring class !!!");
                             continue;
                         }
                         // Extract class information.
@@ -125,7 +125,7 @@ public class WD_Reflection {
                             foreach(var fieldAttr in field.GetCustomAttributes(true)) {
                                 if(fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
                                     if(field.IsPublic == false) {
-                                        Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for WarpDrive. Ignoring field !!!");
+                                        Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring field !!!");
                                         continue;
                                     }
                                     fieldInfos.Add(field);
@@ -148,7 +148,7 @@ public class WD_Reflection {
                                 }
                                 else if(methodAttribute is WD_FunctionAttribute) {                                    
                                     if(method.IsPublic == false) {
-                                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for WarpDrive. Ignoring function !!!");
+                                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");
                                         continue;                                        
                                     }
                                     // Register execution functions/methods.
@@ -276,11 +276,11 @@ public class WD_Reflection {
         }
         Type fromType= parameters[0].ParameterType;
         if(method.IsPublic == false) {
-            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not public and tagged for WarpDrive. Ignoring conversion !!!");
+            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
         if(method.IsStatic == false) {
-            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not static and tagged for WarpDrive. Ignoring conversion !!!");
+            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not static and tagged for "+WD_EditorConfig.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
         WD_DataBase.AddConversion(company, package, classType, icon, method, fromType, toType);                                        
