@@ -4,7 +4,7 @@ using System.Collections;
 [System.Serializable]
 public enum WD_ObjectTypeEnum {
     Behaviour, Module, StateChart, State,
-    Class, Function, Conversion, TransitionEntry, TransitionExit,
+    Class, Method, Function, Conversion, TransitionEntry, TransitionExit,
 //    TransitionTrigger, TransitionEntryAction, TransitionDataStream,
     InFieldPort,         OutFieldPort,
     InPropertyPort,      OutPropertyPort,
@@ -23,6 +23,7 @@ public static partial class WD {
     public static bool IsState                (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.State; }
     public static bool IsClass                (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Class; }
     public static bool IsFunction             (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Function; }
+    public static bool IsMethod               (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Method; }
     public static bool IsConversion           (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Conversion; }
     public static bool IsTransitionEntry      (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.TransitionEntry; }
     public static bool IsTransitionExit       (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.TransitionExit; }

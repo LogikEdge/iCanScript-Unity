@@ -118,57 +118,60 @@ public class WD_Reflection {
                         string className   = classAttribute.Name    ?? classType.Name;
                         string classToolTip= classAttribute.ToolTip;
                         string classIcon   = classAttribute.Icon;
-                        // Gather field information.
-                        List<FieldInfo> fieldInfos = new List<FieldInfo>();
-                        List<bool>      fieldInOuts= new List<bool>();
-                        foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
-                            foreach(var fieldAttr in field.GetCustomAttributes(true)) {
-                                if(fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
-                                    if(field.IsPublic == false) {
-                                        Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring field !!!");
-                                        continue;
-                                    }
-                                    fieldInfos.Add(field);
-                                    fieldInOuts.Add(fieldAttr is WD_OutPortAttribute);
-                                }
-                            }
-                        }
-                        // Parse functions and methods.
-                        List<string>     methodNames      = new List<string>();
-                        List<string>     methodReturnNames= new List<string>();
-                        List<string>     methodToolTips   = new List<string>();
-                        List<string>     methodIcons      = new List<string>();
-                        List<MethodInfo> methodInfos      = new List<MethodInfo>();
-                        foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
-                            foreach(var methodAttribute in method.GetCustomAttributes(true)) {
-                                if(methodAttribute is WD_ConversionAttribute) {
-                                    WD_ConversionAttribute convAttr= methodAttribute as WD_ConversionAttribute;
-                                    string icon= convAttr.Icon;
-                                    ParseConversion(classCompany, classPackage, classType, icon, method);
-                                }
-                                else if(methodAttribute is WD_FunctionAttribute) {                                    
-                                    if(method.IsPublic == false) {
-                                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");
-                                        continue;                                        
-                                    }
-                                    // Register execution functions/methods.
-                                    WD_FunctionAttribute funcAttr= methodAttribute as WD_FunctionAttribute;
-                                    methodInfos.Add(method);
-                                    methodNames.Add(funcAttr.Name ?? method.Name);
-                                    methodReturnNames.Add(funcAttr.Return ?? "out");
-                                    methodToolTips.Add(funcAttr.ToolTip ?? "No ToolTip");
-                                    methodIcons.Add(funcAttr.Icon);
-                                }
-                            }
-                        }                       
-                        ParseClass(classCompany, classPackage, className, classToolTip, classType, classIcon,
-                                   methodInfos.ToArray(), methodNames.ToArray(), methodReturnNames.ToArray(), methodToolTips.ToArray(), methodIcons.ToArray(),
-                                   fieldInfos.ToArray(), fieldInOuts.ToArray());
+                        DecodeClassInfo(classType, classCompany, classPackage, className, classToolTip, classIcon);
                     }
-                    
                 }
             }
         }
+    }
+    // ----------------------------------------------------------------------
+    static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+        // Gather field information.
+        List<FieldInfo> fieldInfos = new List<FieldInfo>();
+        List<bool>      fieldIsOuts= new List<bool>();
+        foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+            foreach(var fieldAttr in field.GetCustomAttributes(true)) {
+                if(fieldAttr is WD_InPortAttribute || fieldAttr is WD_OutPortAttribute) {
+                    if(field.IsPublic == false) {
+                        Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring field !!!");
+                        continue;
+                    }
+                    fieldInfos.Add(field);
+                    fieldIsOuts.Add(fieldAttr is WD_OutPortAttribute);
+                }
+            }
+        }
+        // Parse functions and methods.
+        List<string>     methodNames      = new List<string>();
+        List<string>     methodReturnNames= new List<string>();
+        List<string>     methodToolTips   = new List<string>();
+        List<string>     methodIcons      = new List<string>();
+        List<MethodInfo> methodInfos      = new List<MethodInfo>();
+        foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
+            foreach(var methodAttribute in method.GetCustomAttributes(true)) {
+                if(methodAttribute is WD_ConversionAttribute) {
+                    WD_ConversionAttribute convAttr= methodAttribute as WD_ConversionAttribute;
+                    string icon= convAttr.Icon;
+                    ParseConversion(company, package, classType, icon, method);
+                }
+                else if(methodAttribute is WD_FunctionAttribute) {                                    
+                    if(method.IsPublic == false) {
+                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");
+                        continue;                                        
+                    }
+                    // Register execution functions/methods.
+                    WD_FunctionAttribute funcAttr= methodAttribute as WD_FunctionAttribute;
+                    methodInfos.Add(method);
+                    methodNames.Add(funcAttr.Name ?? method.Name);
+                    methodReturnNames.Add(funcAttr.Return ?? "out");
+                    methodToolTips.Add(funcAttr.ToolTip ?? "No ToolTip");
+                    methodIcons.Add(funcAttr.Icon);
+                }
+            }
+        }                       
+        ParseClass(company, package, className, classToolTip, classType, classIconPath,
+                   methodInfos.ToArray(), methodNames.ToArray(), methodReturnNames.ToArray(), methodToolTips.ToArray(), methodIcons.ToArray(),
+                   fieldInfos.ToArray(), fieldIsOuts.ToArray());
     }
     // ----------------------------------------------------------------------
     static void ParseClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,
