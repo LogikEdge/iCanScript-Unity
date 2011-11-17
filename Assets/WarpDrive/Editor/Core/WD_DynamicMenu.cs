@@ -400,7 +400,7 @@ public class WD_DynamicMenu {
         }
         return result.ToArray();
     }
-    WD_ReflectionBaseDesc GetReflectionDescFromMenuCommand(string menuCommand) {
+    WD_ReflectionDesc GetReflectionDescFromMenuCommand(string menuCommand) {
         menuCommand= WD_TextUtil.StripBeforeIdent(menuCommand);
         string[] idents= menuCommand.Split(new char[1]{'/'});
         if(idents.Length < 3) return null;
@@ -469,7 +469,7 @@ public class WD_DynamicMenu {
                 break;
             }
             default: {
-                WD_ReflectionBaseDesc desc= GetReflectionDescFromMenuCommand(context.Command);
+                WD_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context.Command);
                 if(desc != null) {
                     CreateFunction(context.SelectedObject, context.Storage, desc);                                           
                 }
@@ -591,7 +591,7 @@ public class WD_DynamicMenu {
         return storage.CreateState(parent.InstanceId, ProcessMenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    WD_EditorObject CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_ReflectionBaseDesc desc) {
+    WD_EditorObject CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_ReflectionDesc desc) {
         WD_EditorObject function= storage.CreateFunction(parent.InstanceId, ProcessMenuPosition, desc);
         return function;
     }

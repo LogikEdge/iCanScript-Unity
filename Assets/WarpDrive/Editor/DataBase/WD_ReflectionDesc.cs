@@ -3,10 +3,16 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class WD_ReflectionFuncDesc : WD_ReflectionBaseDesc {
+public class WD_ReflectionDesc {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+    public string           Company;
+    public string           Package;
+    public Type             ClassType;
+    public string           Name;
+    public string           ToolTip;
+    public string           IconPath;
     public string[]         ParamNames;
     public string           ReturnName;
     public WD_RuntimeDesc   RuntimeDesc;
@@ -20,11 +26,19 @@ public class WD_ReflectionFuncDesc : WD_ReflectionBaseDesc {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public WD_ReflectionFuncDesc(string company, string package, string name,
-                                 string toolTip, string iconPath,
-                                 WD_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
-                                 bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
-                                 string returnName, Type returnType) : base(company, package, name, toolTip, iconPath, classType) {
+    public WD_ReflectionDesc(string company, string package, string name,
+                             string toolTip, string iconPath,
+                             WD_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
+                             bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
+                             string returnName, Type returnType) {
+        // Editor object information.
+        Company  = company;
+        Package  = package;
+        Name     = name;
+        ToolTip  = toolTip;
+        ClassType= classType;
+        IconPath = iconPath;
+
         // Fill-in editor names
         ParamNames= paramNames;
         ReturnName= returnName;
@@ -49,7 +63,7 @@ public class WD_ReflectionFuncDesc : WD_ReflectionBaseDesc {
     // ======================================================================
     // Archiving
     // ----------------------------------------------------------------------
-    public override string Encode(int id) {
+    public string Encode(int id) {
         return RuntimeDesc.Encode(id);
     }
 }

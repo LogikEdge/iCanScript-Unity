@@ -260,18 +260,6 @@ public partial class WD_IStorage {
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
     }
-    // ----------------------------------------------------------------------
-    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ReflectionBaseDesc desc) {
-        WD_EditorObject obj= null;
-//        if(desc is WD_ClassDesc) {
-//            obj= CreateFunction(parentId, initialPos, desc as WD_ClassDesc);
-//        }
-//        else
-        if(desc is WD_ReflectionFuncDesc) {
-            obj= CreateFunction(parentId, initialPos, desc as WD_ReflectionFuncDesc);
-        }
-        return obj;
-    }
 //    // ----------------------------------------------------------------------
 //    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ClassDesc desc) {
 //        // Create the class node.
@@ -329,7 +317,7 @@ public partial class WD_IStorage {
 //        return this[id];
 //    }
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ReflectionFuncDesc desc) {
+    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ReflectionDesc desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
@@ -490,7 +478,7 @@ public partial class WD_IStorage {
         SetDirty(obj);
     }
     // ----------------------------------------------------------------------
-    public void SetSource(WD_EditorObject inPort, WD_EditorObject outPort, WD_ReflectionFuncDesc convDesc) {
+    public void SetSource(WD_EditorObject inPort, WD_EditorObject outPort, WD_ReflectionDesc convDesc) {
         Rect inPos= GetPosition(inPort);
         Rect outPos= GetPosition(outPort);
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));

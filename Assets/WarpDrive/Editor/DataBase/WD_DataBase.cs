@@ -8,7 +8,7 @@ public class WD_DataBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public static List<WD_ReflectionBaseDesc>   Functions  = new List<WD_ReflectionBaseDesc>();
+    public static List<WD_ReflectionDesc>   Functions  = new List<WD_ReflectionDesc>();
     
     // ======================================================================
     // DataBase functionality
@@ -50,18 +50,14 @@ public class WD_DataBase {
         List<string> parameters= new List<string>();
         foreach(var func in Functions) {
             if(func.Company == company && func.Package == package && func.Name == functionName) {
-                if(func is WD_ReflectionFuncDesc) {
-                    parameters.Add(GetFunctionSignature(func as WD_ReflectionFuncDesc));
-                } else {
-                    parameters.Add(null);
-                }
+                parameters.Add(GetFunctionSignature(func));
             }
         }
         return parameters.ToArray();
     }
 
     // ----------------------------------------------------------------------
-    public static string GetFunctionSignature(WD_ReflectionFuncDesc desc) {
+    public static string GetFunctionSignature(WD_ReflectionDesc desc) {
         string signature= TypeName(desc.ReturnType);
         signature+= " "+desc.Name+"(";
         for(int i= 0; i < desc.ParamNames.Length; ++i) {
@@ -78,35 +74,33 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
-    public static WD_ReflectionBaseDesc GetDescriptor(string company, string package, string functionName, string signature) {
+    public static WD_ReflectionDesc GetDescriptor(string company, string package, string functionName, string signature) {
         foreach(var desc in Functions) {
             if(desc.Company == company &&
                desc.Package == package &&
                desc.Name    == functionName) {
-                   if(signature == null || !(desc is WD_ReflectionFuncDesc)) return desc;
-                   if(signature == GetFunctionSignature(desc as WD_ReflectionFuncDesc)) return desc;
+                   if(signature == null) return desc;
+                   if(signature == GetFunctionSignature(desc)) return desc;
                }
         }
         return null;
     }
     // ----------------------------------------------------------------------
     // Finds a conversion that matches the given from/to types.
-    public static WD_ReflectionFuncDesc FindConversion(Type fromType, Type toType) {
+    public static WD_ReflectionDesc FindConversion(Type fromType, Type toType) {
         foreach(var desc in Functions) {
             if(IsConversion(desc)) {
-                WD_ReflectionFuncDesc funcDesc= desc as WD_ReflectionFuncDesc;
-                WD_RuntimeDesc conv= funcDesc.RuntimeDesc;
+                WD_RuntimeDesc conv= desc.RuntimeDesc;
                 if(WD_Types.CanBeConnectedWithoutConversion(fromType, conv.ParamTypes[0]) &&
-                   WD_Types.CanBeConnectedWithoutConversion(conv.ReturnType, toType)) return funcDesc;
+                   WD_Types.CanBeConnectedWithoutConversion(conv.ReturnType, toType)) return desc;
             }
         }
         return null;
     }
     // ----------------------------------------------------------------------
     // Returns true if the given desc is a conversion function.
-    public static bool IsConversion(WD_ReflectionBaseDesc desc) {
-        WD_ReflectionFuncDesc funcDesc= desc as WD_ReflectionFuncDesc;
-        return funcDesc != null && funcDesc.RuntimeDesc.ObjectType == WD_ObjectTypeEnum.Conversion;
+    public static bool IsConversion(WD_ReflectionDesc desc) {
+        return desc.RuntimeDesc.ObjectType == WD_ObjectTypeEnum.Conversion;
     }
     
     // ======================================================================
@@ -144,7 +138,7 @@ public class WD_DataBase {
         // Don't accept automatic conversion if it already exist.
         foreach(var desc in Functions) {
             if(IsConversion(desc)) {
-                WD_RuntimeDesc conv= (desc as WD_ReflectionFuncDesc).RuntimeDesc;
+                WD_RuntimeDesc conv= desc.RuntimeDesc;
                 if(conv.ParamTypes[0] == fromType && conv.ReturnType == toType) {
                     Debug.LogWarning("Duplicate conversion function from "+fromType+" to "+toType+" exists in classes "+conv.Method.DeclaringType+" and "+methodInfo.DeclaringType);
                     return;
@@ -173,16 +167,16 @@ public class WD_DataBase {
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.
-    public static WD_ReflectionBaseDesc Add(string company, string package, string name,
-                                            string toolTip, string iconPath,
-                                            WD_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
-                                            bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
-                                            string retName, Type retType) {
-        WD_ReflectionFuncDesc fd= new WD_ReflectionFuncDesc(company, package, name,
-                                                            toolTip, iconPath,
-                                                            objType, classType, methodInfo,
-                                                            paramIsOuts, paramNames, paramTypes, paramDefaults,
-                                                            retName, retType);
+    public static WD_ReflectionDesc Add(string company, string package, string name,
+                                        string toolTip, string iconPath,
+                                        WD_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
+                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                        string retName, Type retType) {
+        WD_ReflectionDesc fd= new WD_ReflectionDesc(company, package, name,
+                                                    toolTip, iconPath,
+                                                    objType, classType, methodInfo,
+                                                    paramIsOuts, paramNames, paramTypes, paramDefaults,
+                                                    retName, retType);
         Functions.Add(fd);
         return fd;
     }

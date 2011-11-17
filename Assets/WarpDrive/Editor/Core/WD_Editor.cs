@@ -482,7 +482,7 @@ public class WD_Editor : EditorWindow {
                     Storage.SetSource(inPort, outPort);                       
                 }
                 else {  // A conversion is required.
-                    WD_ReflectionFuncDesc conversion= WD_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
+                    WD_ReflectionDesc conversion= WD_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
                     if(conversion == null) {
                         Debug.LogWarning("No direct conversion exists from "+outPort.RuntimeType.Name+" to "+inPort.RuntimeType.Name);
                     } else {
