@@ -76,9 +76,6 @@ public partial class WD_IStorage {
                             WD_Reflection.InvokeAddChildIfExists(rtNode, rtChild);
                             break;
                         }
-                        case WD_ObjectTypeEnum.Class: {
-                            break;
-                        }
                         default: {
                             Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
                             break;
@@ -138,9 +135,6 @@ public partial class WD_IStorage {
                         case WD_ObjectTypeEnum.Function: {
                             WD_Connection[] connections= BuildRuntimeConnectionArray(edChild);
                             (TreeCache[edChild.InstanceId].RuntimeObject as WD_FunctionBase).SetConnections(connections);
-                            break;
-                        }
-                        case WD_ObjectTypeEnum.Class: {
                             break;
                         }
                         default: {

@@ -86,7 +86,6 @@ public class WD_EditorObject {
     public bool IsModule                { get { return WD.IsModule(this); }}
     public bool IsTransitionEntry       { get { return WD.IsTransitionEntry(this); }}
     public bool IsTransitionExit        { get { return WD.IsTransitionExit(this); }}
-    public bool IsClass                 { get { return WD.IsClass(this); }}
     public bool IsFunction              { get { return WD.IsFunction(this); }}
     public bool IsMethod                { get { return WD.IsMethod(this); }}
     public bool IsConversion            { get { return WD.IsConversion(this); }}

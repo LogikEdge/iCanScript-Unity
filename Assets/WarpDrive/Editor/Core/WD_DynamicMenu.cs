@@ -81,7 +81,6 @@ public class WD_DynamicMenu {
             case WD_ObjectTypeEnum.TransitionExit:  ModuleMenu(selectedObject, storage); break;
             case WD_ObjectTypeEnum.Function:        FunctionMenu(selectedObject, storage); break;
             case WD_ObjectTypeEnum.Conversion:      FunctionMenu(selectedObject, storage); break;
-            case WD_ObjectTypeEnum.Class:           ClassMenu(selectedObject, storage); break;
             default: if(selectedObject.IsPort)      PortMenu(selectedObject, storage); break;
         }
     }
@@ -267,32 +266,6 @@ public class WD_DynamicMenu {
         if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
             ShowMenu(new string[]{DeleteStr}, selectedObject, storage);            
         }
-    }
-	// ----------------------------------------------------------------------
-    void ClassMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
-        string[] menu= new string[0];
-        // Fold/Expand menu items
-        string[] tmp= null;
-        if(!storage.IsMinimized(selectedObject)) {
-            tmp= new string[menu.Length+2];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            if(storage.IsFolded(selectedObject)) {
-                tmp[menu.Length+1]= UnfoldStr;
-            } else {
-                tmp[menu.Length+1]= FoldStr;            
-            }
-            menu= tmp;            
-        }
-        // Delete menu item.
-        if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
-            tmp= new string[menu.Length+2];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            tmp[menu.Length+1]= DeleteStr;
-            menu= tmp;
-        }
-        ShowMenu(menu, selectedObject, storage);            
     }
 	// ----------------------------------------------------------------------
     void PortMenu(WD_EditorObject selectedObject, WD_IStorage storage) {

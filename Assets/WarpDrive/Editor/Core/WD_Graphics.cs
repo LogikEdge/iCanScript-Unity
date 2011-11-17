@@ -372,15 +372,7 @@ public class WD_Graphics {
     }
     bool ShouldDisplayFoldIcon(WD_EditorObject obj, WD_IStorage storage) {
         if(storage.IsMinimized(obj)) return false;
-        if(obj.IsModule || obj.IsStateChart || obj.IsState || obj.IsClass) {
-            if(obj.IsClass) {
-                bool needFoldIcon= false;
-                storage.ForEachChild(obj, (child) => { if(child.IsNode) needFoldIcon= true; });
-                return needFoldIcon;
-            }
-            return true;
-        }
-        return false;
+        return (obj.IsModule || obj.IsStateChart || obj.IsState);
     }
     Rect GetFoldIconPosition(WD_EditorObject obj, WD_IStorage storage) {
         Rect objPos= storage.GetPosition(obj);
