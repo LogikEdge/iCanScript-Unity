@@ -182,8 +182,8 @@ public class WD_Reflection {
                 if(methodAttribute is WD_ConversionAttribute) {
                     if(method.IsPublic) {
                         WD_ConversionAttribute convAttr= methodAttribute as WD_ConversionAttribute;
-                        iconPath= convAttr.Icon;
-                        ParseConversion(company, package, classType, iconPath, method);
+                        iconPath= convAttr.Icon ?? classIconPath;
+                        DecodeConversion(company, package, iconPath, classType, method);
                     } else {                        
                         Debug.LogWarning("Conversion "+method.Name+" of class "+classType.Name+" is not public and tagged for "+WD_EditorConfig.ProductName+". Ignoring function !!!");
                     }
@@ -317,7 +317,7 @@ public class WD_Reflection {
 //    }
 
     // ----------------------------------------------------------------------
-    static void ParseConversion(string company, string package, Type classType, string iconPath, MethodInfo method) {
+    static void DecodeConversion(string company, string package, string iconPath, Type classType, MethodInfo method) {
         Type toType= method.ReturnType;
         ParameterInfo[] parameters= method.GetParameters();
         if(parameters.Length != 1 || toType == null) {
