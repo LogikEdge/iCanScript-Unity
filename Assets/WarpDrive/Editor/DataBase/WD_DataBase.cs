@@ -60,7 +60,7 @@ public class WD_DataBase {
     public static string GetFunctionSignature(WD_ReflectionDesc desc) {
         string signature= TypeName(desc.ReturnType);
         signature+= " "+desc.Name+"(";
-        if(desc.ObjectType == WD_ObjectTypeEnum.Method) {
+        if(desc.ObjectType == WD_ObjectTypeEnum.InstanceMethod) {
             signature+= TypeName(desc.ClassType)+" this, ";
         }
         for(int i= 0; i < desc.ParamNames.Length; ++i) {
@@ -129,7 +129,7 @@ public class WD_DataBase {
                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                        string retName, Type retType) {
         Add(company, package, displayName, toolTip, iconPath,
-            WD_ObjectTypeEnum.Method, classType, methodInfo,
+            WD_ObjectTypeEnum.InstanceMethod, classType, methodInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             retName, retType);
     }
@@ -140,7 +140,7 @@ public class WD_DataBase {
                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                        string retName, Type retType) {
         Add(company, package, displayName, toolTip, iconPath,
-            WD_ObjectTypeEnum.Function, classType, methodInfo,
+            WD_ObjectTypeEnum.StaticMethod, classType, methodInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             retName, retType);
     }

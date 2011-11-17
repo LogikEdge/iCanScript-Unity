@@ -79,8 +79,8 @@ public class WD_DynamicMenu {
             case WD_ObjectTypeEnum.Module:          ModuleMenu(selectedObject, storage); break;
             case WD_ObjectTypeEnum.TransitionEntry: TransitionEntryModuleMenu(selectedObject, storage); break;
             case WD_ObjectTypeEnum.TransitionExit:  ModuleMenu(selectedObject, storage); break;
-            case WD_ObjectTypeEnum.Function:        FunctionMenu(selectedObject, storage); break;
-            case WD_ObjectTypeEnum.Conversion:      FunctionMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.StaticMethod:    StaticMethodMenu(selectedObject, storage); break;
+            case WD_ObjectTypeEnum.Conversion:      StaticMethodMenu(selectedObject, storage); break;
             default: if(selectedObject.IsPort)      PortMenu(selectedObject, storage); break;
         }
     }
@@ -262,7 +262,7 @@ public class WD_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    void FunctionMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
+    void StaticMethodMenu(WD_EditorObject selectedObject, WD_IStorage storage) {
         if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
             ShowMenu(new string[]{DeleteStr}, selectedObject, storage);            
         }
@@ -444,7 +444,7 @@ public class WD_DynamicMenu {
             default: {
                 WD_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context.Command);
                 if(desc != null) {
-                    CreateFunction(context.SelectedObject, context.Storage, desc);                                           
+                    CreateMethod(context.SelectedObject, context.Storage, desc);                                           
                 }
                 break;                
             }
@@ -564,9 +564,9 @@ public class WD_DynamicMenu {
         return storage.CreateState(parent.InstanceId, ProcessMenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    WD_EditorObject CreateFunction(WD_EditorObject parent, WD_IStorage storage, WD_ReflectionDesc desc) {
-        WD_EditorObject function= storage.CreateFunction(parent.InstanceId, ProcessMenuPosition, desc);
-        return function;
+    WD_EditorObject CreateMethod(WD_EditorObject parent, WD_IStorage storage, WD_ReflectionDesc desc) {
+        WD_EditorObject method= storage.CreateMethod(parent.InstanceId, ProcessMenuPosition, desc);
+        return method;
     }
 	// ----------------------------------------------------------------------
     WD_EditorObject CreateTransitionExit(WD_EditorObject inStatePort, WD_IStorage storage) {

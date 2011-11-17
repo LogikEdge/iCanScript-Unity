@@ -443,7 +443,7 @@ public class WD_Graphics {
             GenerateNodeStyle(ref moduleStyle, storage.Preferences.NodeColors.ModuleColor);
             return moduleStyle;
         }
-        if(node.IsFunction || node.IsConversion || node.IsMethod) {
+        if(node.IsStaticMethod || node.IsConversion || node.IsInstanceMethod) {
             GenerateNodeStyle(ref functionStyle, storage.Preferences.NodeColors.FunctionColor);
             return functionStyle;
         }

@@ -14,7 +14,7 @@ public class WD_EditorStrings {
 	public const string LeftArrowHeadIcon    = "WD_LeftArrowHeadIcon.psd";
 	public const string RightArrowHeadIcon   = "WD_RightArrowHeadIcon.psd";
 	public const string ModuleIcon           = "WD_ModuleIcon.png";
-	public const string FunctionIcon         = "WD_FunctionIcon.png";
+	public const string MethodIcon           = "WD_FunctionIcon.png";
 	public const string TransitionTriggerIcon= "WD_TransitionTriggerIcon.png";
 	public const string RandomIcon           = "WD_RandomIcon.png";
 	

@@ -4,7 +4,7 @@ using System.Collections;
 [System.Serializable]
 public enum WD_ObjectTypeEnum {
     Behaviour, Module, StateChart, State,
-    Method, Function, Conversion, TransitionEntry, TransitionExit,
+    InstanceMethod, StaticMethod, Conversion, TransitionEntry, TransitionExit,
 //    TransitionTrigger, TransitionEntryAction, TransitionDataStream,
     InFieldPort,         OutFieldPort,
     InPropertyPort,      OutPropertyPort,
@@ -21,8 +21,8 @@ public static partial class WD {
     public static bool IsModule               (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Module || IsTransitionEntry(obj) || IsTransitionExit(obj); }
     public static bool IsStateChart           (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.StateChart; }
     public static bool IsState                (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.State; }
-    public static bool IsFunction             (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Function; }
-    public static bool IsMethod               (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Method; }
+    public static bool IsStaticMethod         (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.StaticMethod; }
+    public static bool IsInstanceMethod       (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.InstanceMethod; }
     public static bool IsConversion           (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.Conversion; }
     public static bool IsTransitionEntry      (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.TransitionEntry; }
     public static bool IsTransitionExit       (WD_EditorObject obj) { return obj.ObjectType == WD_ObjectTypeEnum.TransitionExit; }
@@ -43,7 +43,7 @@ public static partial class WD {
     public static bool IsOutDataPort          (WD_EditorObject obj) { return IsOutFieldPort(obj) || IsOutFunctionPort(obj) || IsOutModulePort(obj) || IsOutPropertyPort(obj); }
     public static bool IsInModulePort         (WD_EditorObject obj) { return IsInDynamicModulePort(obj) || IsInStaticModulePort(obj); }
     public static bool IsOutModulePort        (WD_EditorObject obj) { return IsOutDynamicModulePort(obj) || IsOutStaticModulePort(obj); }
-    public static bool IsNode                 (WD_EditorObject obj) { return IsBehaviour(obj) || IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsMethod(obj) || IsFunction(obj) || IsConversion(obj); }
+    public static bool IsNode                 (WD_EditorObject obj) { return IsBehaviour(obj) || IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsInstanceMethod(obj) || IsStaticMethod(obj) || IsConversion(obj); }
     public static bool IsDataPort             (WD_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj); }
     public static bool IsDynamicModulePort    (WD_EditorObject obj) { return IsInDynamicModulePort(obj) || IsOutDynamicModulePort(obj); }
     public static bool IsStaticModulePort     (WD_EditorObject obj) { return IsInStaticModulePort(obj) || IsOutStaticModulePort(obj); }

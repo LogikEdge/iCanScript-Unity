@@ -65,7 +65,7 @@ public partial class WD_IStorage {
                             break;
                         }
                         case WD_ObjectTypeEnum.Conversion:
-                        case WD_ObjectTypeEnum.Function: {
+                        case WD_ObjectTypeEnum.StaticMethod: {
                             // Create function.
                             WD_RuntimeDesc desc;
                             object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
@@ -131,7 +131,7 @@ public partial class WD_IStorage {
                             break;                            
                         }
                         case WD_ObjectTypeEnum.Conversion:
-                        case WD_ObjectTypeEnum.Function: {
+                        case WD_ObjectTypeEnum.StaticMethod: {
                             WD_Connection[] connections= BuildRuntimeConnectionArray(edChild);
                             (TreeCache[edChild.InstanceId].RuntimeObject as WD_FunctionBase).SetConnections(connections);
                             break;

@@ -260,75 +260,25 @@ public partial class WD_IStorage {
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
     }
-//    // ----------------------------------------------------------------------
-//    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ClassDesc desc) {
-//        // Create the class node.
-//        int id= GetNextAvailableId();
-//        // Calcute the desired screen position of the new object.
-//        Rect parentPos= GetPosition(parentId);
-//        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
-//        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Class, localPos);
-//        this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
-//        this[id].RuntimeArchive= desc.ToString();
-//        // Create field ports
-//        for(int i= 0; i < desc.FieldNames.Length; ++i) {
-//            WD_ObjectTypeEnum portType= desc.FieldInOuts[i] ? WD_ObjectTypeEnum.OutFieldPort : WD_ObjectTypeEnum.InFieldPort;
-//            CreatePort(desc.FieldNames[i], id, desc.FieldTypes[i], portType);
-//        }
-//        // Create property ports
-//        for(int i= 0; i < desc.PropertyNames.Length; ++i) {
-//            WD_ObjectTypeEnum portType= desc.PropertyInOuts[i] ? WD_ObjectTypeEnum.OutPropertyPort : WD_ObjectTypeEnum.InPropertyPort;
-//            CreatePort(desc.PropertyNames[i], id, desc.PropertyTypes[i], portType);
-//        }
-//        // Create methods.
-//        int nbOfMethodsToShow= 0;
-//        for(int i= 0; i < desc.MethodNames.Length; ++i) {
-//            if(desc.ParameterNames[i].Length != 0) ++nbOfMethodsToShow;
-//        }
-//        for(int i= 0; i < desc.MethodNames.Length; ++i) {
-//            int methodId= -1;
-//            if(nbOfMethodsToShow > 1) {
-//                methodId= GetNextAvailableId();
-//                this[methodId]= new WD_EditorObject(methodId, desc.MethodNames[i], desc.ClassType, id, WD_ObjectTypeEnum.Function, new Rect(0,0,0,0));
-//                this[methodId].IconGUID= WD_Graphics.IconPathToGUID(desc.MethodIcons[i], this);
-//            }
-//            for(int p= 0; p < desc.ParameterNames[i].Length; ++p) {
-//                WD_ObjectTypeEnum portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutStaticModulePort : WD_ObjectTypeEnum.InStaticModulePort;
-//                WD_EditorObject classPort= CreatePort(desc.ParameterNames[i][p], id, desc.ParameterTypes[i][p], portType);
-//                if(nbOfMethodsToShow > 1) {
-//                    portType= desc.ParameterInOuts[i][p] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
-//                    WD_EditorObject funcPort= CreatePort(desc.ParameterNames[i][p], methodId, desc.ParameterTypes[i][p], portType);
-//                    if(portType == WD_ObjectTypeEnum.OutFunctionPort) {
-//                        SetSource(classPort, funcPort);
-//                    }
-//                    else {
-//                        SetSource(funcPort, classPort);
-//                    }                    
-//                }
-//            }
-//            if(desc.ReturnTypes[i] != null) {
-//                WD_EditorObject classPort= CreatePort(desc.ReturnNames[i], id, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutStaticModulePort);
-//                if(nbOfMethodsToShow > 1) {
-//                    WD_EditorObject funcPort= CreatePort(desc.ReturnNames[i], methodId, desc.ReturnTypes[i], WD_ObjectTypeEnum.OutFunctionPort);
-//                    SetSource(classPort, funcPort);                    
-//                }
-//            }
-//        }
-//        return this[id];
-//    }
     // ----------------------------------------------------------------------
-    public WD_EditorObject CreateFunction(int parentId, Vector2 initialPos, WD_ReflectionDesc desc) {
+    public WD_EditorObject CreateMethod(int parentId, Vector2 initialPos, WD_ReflectionDesc desc) {
+        return desc.ObjectType == WD_ObjectTypeEnum.InstanceMethod ?
+                    CreateInstanceMethod(parentId, initialPos, desc) : 
+                    CreateStaticMethod(parentId, initialPos, desc);
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateStaticMethod(int parentId, Vector2 initialPos, WD_ReflectionDesc desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.Function, localPos);
+        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.StaticMethod, localPos);
         this[id].RuntimeArchive= desc.Encode(id);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
-        if(this[id].IconGUID == null && desc.ObjectType == WD_ObjectTypeEnum.Function) {
-            this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.FunctionIcon, this);
+        if(this[id].IconGUID == null && desc.ObjectType == WD_ObjectTypeEnum.StaticMethod) {
+            this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.MethodIcon, this);
         }
         
         // Create input/output ports.
@@ -343,6 +293,10 @@ public partial class WD_IStorage {
             port.PortIndex= desc.ParamNames.Length;
         }
         return this[id];
+    }
+    // ----------------------------------------------------------------------
+    public WD_EditorObject CreateInstanceMethod(int parentId, Vector2 initialPos, WD_ReflectionDesc desc) {
+        return CreateStaticMethod(parentId, initialPos, desc);
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreatePort(string name, int parentId, Type valueType, WD_ObjectTypeEnum portType) {
@@ -483,7 +437,7 @@ public partial class WD_IStorage {
         Rect outPos= GetPosition(outPort);
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= GetParent(inPort).ParentId;
-        WD_EditorObject conv= CreateFunction(grandParentId, convPos, convDesc);
+        WD_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);
         ForEachChild(conv,
             (child) => {
                 if(child.IsInputPort) {
