@@ -187,19 +187,19 @@ public class WD_DataBase {
         return fd;
     }
     
-    // ----------------------------------------------------------------------
-    // Adds a class.
-    public static void AddClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,                        // Class info
-                                string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,                                                                     // Field info
-                                string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,                                                            // Property info
-                                MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips, string[] icons,    // Method info
-                                string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {                                                 // Method parameter info
-        Functions.Add(new WD_ClassDesc(company, package, className, classToolTip, classType, classIcon,
-                                       fieldNames, fieldTypes, fieldInOuts,
-                                       propertyNames, propertyTypes, propertyInOuts,
-                                       methodInfos, methodNames, returnNames, returnTypes, toolTips, icons,
-                                       parameterNames, parameterTypes, parameterInOuts));    
-    }
-
+//    // ----------------------------------------------------------------------
+//    // Adds a class.
+//    public static void AddClass(string company, string package, string className, string classToolTip, Type classType, string classIcon,                        // Class info
+//                                string[] fieldNames, Type[] fieldTypes, bool[] fieldInOuts,                                                                     // Field info
+//                                string[] propertyNames, Type[] propertyTypes, bool[] propertyInOuts,                                                            // Property info
+//                                MethodInfo[] methodInfos, string[] methodNames, string[] returnNames, Type[] returnTypes, string[] toolTips, string[] icons,    // Method info
+//                                string[][] parameterNames, Type[][] parameterTypes, bool[][] parameterInOuts) {                                                 // Method parameter info
+//        Functions.Add(new WD_ClassDesc(company, package, className, classToolTip, classType, classIcon,
+//                                       fieldNames, fieldTypes, fieldInOuts,
+//                                       propertyNames, propertyTypes, propertyInOuts,
+//                                       methodInfos, methodNames, returnNames, returnTypes, toolTips, icons,
+//                                       parameterNames, parameterTypes, parameterInOuts));    
+//    }
+//
 
 }
