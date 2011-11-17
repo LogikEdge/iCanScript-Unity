@@ -7,8 +7,8 @@ public class WD_Function : WD_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    object          myReturn      = null;
-    MethodInfo      myMethodInfo  = null;
+    protected object        myReturn      = null;
+    protected MethodInfo    myMethodInfo  = null;
 
     // ======================================================================
     // Accessors

@@ -64,6 +64,16 @@ public partial class WD_IStorage {
                             GenerateRuntimeChildNodes(edChild, module);
                             break;
                         }
+                        case WD_ObjectTypeEnum.InstanceMethod: {
+                            // Create method.
+                            WD_RuntimeDesc desc;
+                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
+                            if(desc == null) break;
+                            WD_Method method= new WD_Method(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= method;
+                            WD_Reflection.InvokeAddChildIfExists(rtNode, method);
+                            break;                            
+                        }
                         case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.StaticMethod: {
                             // Create function.
@@ -129,6 +139,33 @@ public partial class WD_IStorage {
                             (TreeCache[edChild.InstanceId].RuntimeObject as WD_FunctionBase).SetConnections(connections);
                             ConnectRuntimeChildNodes(edChild);
                             break;                            
+                        }
+                        case WD_ObjectTypeEnum.InstanceMethod: {
+                            // Parameter connections
+                            WD_Connection[] paramConnections= BuildRuntimeConnectionArray(edChild);
+                            // This connection.
+                            WD_Connection thisConnection= new WD_Connection(null, -1);
+                            WD_RuntimeDesc desc= new WD_RuntimeDesc(edChild.RuntimeArchive);
+                            int thisId= desc.ParamTypes.Length+1;
+                            ForEachChildPort(edChild,
+                                p=> {
+                                    if(p.PortIndex == thisId) {
+                                        WD_EditorObject sourcePort= GetSource(p);
+                                        if(sourcePort != null) {
+                                            WD_EditorObject sourceNode= GetParent(sourcePort);
+                                            WD_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as WD_FunctionBase;
+                                            thisConnection= new WD_Connection(rtSourceNode, sourcePort.PortIndex);
+                                        }
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            );
+                            // Set connections.
+                            WD_Method method= TreeCache[edChild.InstanceId].RuntimeObject as WD_Method;
+                            method.SetConnections(thisConnection, paramConnections);
+                            break;
+                            
                         }
                         case WD_ObjectTypeEnum.Conversion:
                         case WD_ObjectTypeEnum.StaticMethod: {

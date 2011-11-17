@@ -296,7 +296,38 @@ public partial class WD_IStorage {
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreateInstanceMethod(int parentId, Vector2 initialPos, WD_ReflectionDesc desc) {
-        return CreateStaticMethod(parentId, initialPos, desc);
+        // Create the conversion node.
+        int id= GetNextAvailableId();
+        // Calcute the desired screen position of the new object.
+        Rect parentPos= GetPosition(parentId);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        // Create new EditorObject
+        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.StaticMethod, localPos);
+        this[id].RuntimeArchive= desc.Encode(id);
+        this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
+        if(this[id].IconGUID == null && desc.ObjectType == WD_ObjectTypeEnum.StaticMethod) {
+            this[id].IconGUID= WD_Graphics.IconPathToGUID(WD_EditorStrings.MethodIcon, this);
+        }
+        
+        // Create input/output this ports.
+        WD_RuntimeDesc  rtDesc= desc.RuntimeDesc;
+        WD_EditorObject thisInPort= CreatePort("this", id, rtDesc.ClassType, WD_ObjectTypeEnum.InFunctionPort);
+        thisInPort.PortIndex= desc.ParamNames.Length+1;
+        WD_EditorObject thisOutPort= CreatePort("this", id, rtDesc.ClassType, WD_ObjectTypeEnum.OutFunctionPort);
+        thisOutPort.PortIndex= desc.ParamNames.Length+2;
+        // Create input/output ports.
+        int portIdx= 0;
+        for(; portIdx < desc.ParamNames.Length; ++portIdx) {
+            WD_ObjectTypeEnum portType= rtDesc.ParamIsOuts[portIdx] ? WD_ObjectTypeEnum.OutFunctionPort : WD_ObjectTypeEnum.InFunctionPort;
+            WD_EditorObject port= CreatePort(desc.ParamNames[portIdx], id, rtDesc.ParamTypes[portIdx], portType);
+            port.PortIndex= portIdx;
+        }
+        // Create return port
+        if(desc.ReturnName != null) {
+            WD_EditorObject port= CreatePort(desc.ReturnName, id, rtDesc.ReturnType, WD_ObjectTypeEnum.OutFunctionPort);
+            port.PortIndex= desc.ParamNames.Length;
+        }
+        return this[id];
     }
     // ----------------------------------------------------------------------
     public WD_EditorObject CreatePort(string name, int parentId, Type valueType, WD_ObjectTypeEnum portType) {
