@@ -129,12 +129,8 @@ public class WD_DataBase {
         
     }
     // ----------------------------------------------------------------------
-    public static void AddConversion() {
-        
-    }
-    // ----------------------------------------------------------------------
     // Adds a conversion function
-    public static void AddConversion(string company, string package, Type classType, string iconPath, MethodInfo methodInfo, Type fromType, Type toType) {
+    public static void AddConversion(string company, string package, string iconPath, Type classType, MethodInfo methodInfo, Type fromType, Type toType) {
         // Don't accept automatic conversion if it already exist.
         foreach(var desc in Functions) {
             if(IsConversion(desc)) {
@@ -145,35 +141,29 @@ public class WD_DataBase {
                 }                
             }
         }
-        Add(company, package, fromType.Name+"->"+toType.Name,
-            "Converts from "+fromType.Name+" to "+toType.Name, iconPath,
+        Add(company, package, fromType.Name+"->"+toType.Name, "Converts from "+fromType.Name+" to "+toType.Name, iconPath,
             WD_ObjectTypeEnum.Conversion, classType, methodInfo,
             new bool[1]{false}, new string[1]{fromType.Name}, new Type[1]{fromType}, new object[1]{null},
-            toType.Name, toType);
+            toType.Name, toType);        
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
-    public static void AddFunction(string company, string package, string classToolTip, Type classType, // Class info
-                                   string name,                                                   // Function info
-                                   string[] paramNames, Type[] paramTypes,                              // Parameter info
-                                   bool[] paramIsOuts, object[] paramDefaults,
-                                   string retName, Type retType,                                        // Return value info
-                                   string toolTip, string iconPath, MethodInfo methodInfo) {
-        Add(company, package, name,
-            toolTip ?? classToolTip, iconPath,
+    public static void AddFunction(string company, string package, string displayName, string toolTip, string iconPath,
+                                   Type classType, MethodInfo methodInfo,
+                                   bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                   string retName, Type retType) {
+        Add(company, package, displayName, toolTip, iconPath,
             WD_ObjectTypeEnum.Function, classType, methodInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             retName, retType);
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.
-    public static WD_ReflectionDesc Add(string company, string package, string name,
-                                        string toolTip, string iconPath,
+    public static WD_ReflectionDesc Add(string company, string package, string displayName, string toolTip, string iconPath,
                                         WD_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
                                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                         string retName, Type retType) {
-        WD_ReflectionDesc fd= new WD_ReflectionDesc(company, package, name,
-                                                    toolTip, iconPath,
+        WD_ReflectionDesc fd= new WD_ReflectionDesc(company, package, displayName, toolTip, iconPath,
                                                     objType, classType, methodInfo,
                                                     paramIsOuts, paramNames, paramTypes, paramDefaults,
                                                     retName, retType);

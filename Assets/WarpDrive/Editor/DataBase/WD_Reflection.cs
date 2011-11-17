@@ -209,8 +209,8 @@ public class WD_Reflection {
         }                               
     }
     // ----------------------------------------------------------------------
-    static void DecodeStaticMethod(MethodInfo method, string methodName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
-        ParseFunction(company, package, toolTip, classType, methodName, returnName, toolTip, iconPath, method);        
+    static void DecodeStaticMethod(MethodInfo method, string displayName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
+        ParseFunction(company, package, displayName, toolTip, iconPath, classType, method, returnName);        
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceMethod(MethodInfo method, string methodName, string returnName, string toolTip, string iconPath, string company, string package, Type classType) {
@@ -313,7 +313,7 @@ public class WD_Reflection {
 //    }
 
     // ----------------------------------------------------------------------
-    static void ParseConversion(string company, string package, Type classType, string icon, MethodInfo method) {
+    static void ParseConversion(string company, string package, Type classType, string iconPath, MethodInfo method) {
         Type toType= method.ReturnType;
         ParameterInfo[] parameters= method.GetParameters();
         if(parameters.Length != 1 || toType == null) {
@@ -329,10 +329,10 @@ public class WD_Reflection {
             Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+" is not static and tagged for "+WD_EditorConfig.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
-        WD_DataBase.AddConversion(company, package, classType, icon, method, fromType, toType);                                        
+        WD_DataBase.AddConversion(company, package, iconPath, classType, method, fromType, toType);                                        
     }
     // ----------------------------------------------------------------------
-    static void ParseFunction(string company, string package, string classToolTip, Type classType, string methodName, string retName, string toolTip, string icon, MethodInfo method) {
+    static void ParseFunction(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
         // Parse return type.
         Type retType= method.ReturnType;
         if(retType == typeof(void)) {
@@ -345,9 +345,10 @@ public class WD_Reflection {
         bool[]   paramIsOut   = ParseParameterIsOuts(method);
         object[] paramDefaults= ParseParameterDefaults(method);
 
-        WD_DataBase.AddFunction(company, package, classToolTip, classType, methodName,
-                                paramNames, paramTypes, paramIsOut, paramDefaults,
-                                retName, retType, toolTip, icon, method);
+        WD_DataBase.AddFunction(company, package, displayName, toolTip, iconPath,
+                                classType, method,
+                                paramIsOut, paramNames, paramTypes, paramDefaults,
+                                retName, retType);
     }
     // ----------------------------------------------------------------------
     static string[] ParseParameterNames(MethodInfo method) {
