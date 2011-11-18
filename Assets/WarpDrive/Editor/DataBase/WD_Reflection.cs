@@ -130,10 +130,8 @@ public class WD_Reflection {
                 }
             }
         }
-        DecodeNETClassInfo(typeof(string));
-        DecodeNETClassInfo(typeof(char));
-        DecodeNETClassInfo(typeof(Array));
-        DecodeUnityClassInfo(typeof(Vector3));
+        WD_UnityClasses.PopulateDataBase();
+        WD_NETClasses.PopulateDataBase();
     }
     // ----------------------------------------------------------------------
     static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
