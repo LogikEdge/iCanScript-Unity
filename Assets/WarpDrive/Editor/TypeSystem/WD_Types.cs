@@ -6,9 +6,10 @@ public static class WD_Types {
     // ----------------------------------------------------------------------
     // Returns true if type can be converted to another type
     public static bool IsA(Type baseType, Type derivedType) {
-        if(baseType == derivedType) return true;
-        if(derivedType == typeof(object)) return false;
-        return IsA(baseType, derivedType.BaseType);
+        for(; derivedType != null; derivedType= derivedType.BaseType) {
+            if(baseType == derivedType) return true;
+        }
+        return false;
     }
     public static bool IsA<BASE>(Type derivedType) {
         return IsA(typeof(BASE), derivedType);
@@ -22,7 +23,9 @@ public static class WD_Types {
 
 	// ----------------------------------------------------------------------
     public static bool CanBeConnectedWithoutConversion(Type outType, Type inType) {
-        return GetDataType(outType) == GetDataType(inType);
+        Type inDataType= GetDataType(inType);
+        Type outDataType= GetDataType(outType);
+        return IsA(inDataType, outDataType);
     }
 	// ----------------------------------------------------------------------
     public static Type GetDataType(Type t) {

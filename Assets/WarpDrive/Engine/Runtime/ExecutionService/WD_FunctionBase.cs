@@ -49,8 +49,8 @@ public abstract class WD_FunctionBase : WD_Action {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public WD_FunctionBase(string name, object[] parameters, bool[] paramIsOuts) : base(name) {
-        myParameters= parameters;
-        myParameterIsOuts= paramIsOuts;
+        myParameters= parameters ?? new object[0];
+        myParameterIsOuts= paramIsOuts ?? new bool[0];
         myConnections= new WD_Connection[0];
         List<int> inIdx= new List<int>();
         List<int> outIdx= new List<int>();
