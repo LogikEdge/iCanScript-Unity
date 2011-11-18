@@ -15,22 +15,26 @@ public class WD_DataBase {
     // ======================================================================
     // DataBase functionality
     // ----------------------------------------------------------------------
-    public static void Sort() {
-        if(!IsDirty) return;
+    public static void Sort(int min= 0, int max= -1) {
         int len= Functions.Count;
-        int min= 0;
-        int max= len-1;
+        if(min > len) return;
+        if(max == -1 || max > len) max= len-1;
+        int minRestart= min;
         while(min != max) {
-            if(GetFunctionName(Functions[min]).CompareTo(GetFunctionName(Functions[min+1])) > 0) {
+            if(CompareFunctionNames(Functions[min], Functions[min+1]) > 0) {
                 WD_ReflectionDesc tmp= Functions[min];
                 Functions[min]= Functions[min+1];
                 Functions[min+1]= tmp;
                 if(min != 0) --min;
             } else {
                 ++min;
+                if(min < minRestart) {
+                    min= minRestart;
+                } else {
+                    minRestart= min;
+                }
             }
         }
-        IsDirty= false;
     }
     // ----------------------------------------------------------------------
     // Returns all the company names for which a WarpDrive component exists.
@@ -96,6 +100,16 @@ public class WD_DataBase {
         return desc.Company+"/"+desc.Package+"/"+desc.DisplayName;
     }
     // ----------------------------------------------------------------------
+    // Returns 0 if equal, negative if first is smaller and
+    // positive if first is greather.
+    public static int CompareFunctionNames(WD_ReflectionDesc d1, WD_ReflectionDesc d2) {
+        int result= d1.Company.CompareTo(d2.Company);
+        if(result != 0) return result;
+        result= d1.Package.CompareTo(d2.Package);
+        if(result != 0) return result;
+        return d1.DisplayName.CompareTo(d2.DisplayName);
+    }
+    // ----------------------------------------------------------------------
     public static string[] BuildMenu() {
         if(!IsDirty) return FunctionMenu;
         Sort();
@@ -119,6 +133,7 @@ public class WD_DataBase {
             else               { menu.Add(previousName); }
         }
         FunctionMenu= menu.ToArray();
+        IsDirty= false;
         return FunctionMenu;
     }
     // ----------------------------------------------------------------------
@@ -225,6 +240,7 @@ public class WD_DataBase {
                                                     paramIsOuts, paramNames, paramTypes, paramDefaults,
                                                     retName, retType);
         Functions.Add(fd);
+        if(Functions.Count >= 2) { Sort(Functions.Count-2, Functions.Count-1); }
         IsDirty= true;
         return fd;
     }
