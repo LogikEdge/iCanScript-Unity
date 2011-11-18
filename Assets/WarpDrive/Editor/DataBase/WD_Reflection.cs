@@ -40,24 +40,6 @@ public class WD_Reflection {
     }
     
     // ----------------------------------------------------------------------
-    // Returns the MethodInfo associated with the IsValid method.
-    public static MethodInfo GetIsValidMethodInfo(object obj) {
-        if(obj == null) return null;
-        Type objType= obj.GetType();
-        MethodInfo methodInfo= objType.GetMethod("get_IsValid",BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-        if(methodInfo == null) return null;
-        ParameterInfo[] parameters= methodInfo.GetParameters();
-        if(parameters.Length != 0) return null;
-        if(methodInfo.ReturnType != typeof(bool)) return null;
-        return methodInfo;
-    }
-    public static bool InvokeIsValid(object obj) {
-        MethodInfo method= GetIsValidMethodInfo(obj);
-        if(method == null) return true;
-        return (bool)method.Invoke(obj, null);
-    }
-    
-    // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
     public static List<FieldInfo> GetInPortFields(Type objType) {
         List<FieldInfo> list= new List<FieldInfo>();

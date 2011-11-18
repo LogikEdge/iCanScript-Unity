@@ -27,7 +27,12 @@ public class WD_RuntimeDesc {
     // ----------------------------------------------------------------------
     public MethodInfo Method {
         get {
-            return MethodName != null ? ClassType.GetMethod(MethodName, ParamTypes) : null;            
+            if(MethodName == null) return null;
+            MethodInfo method= ClassType.GetMethod(MethodName, ParamTypes);            
+            if(method == null) {
+                Debug.LogWarning("Unable to extract MethodInfo from RuntimeDesc: "+MethodName);
+            }
+            return method;
         }
     }
     public object GetDefaultValue(int idx, WD_IStorage storage) {
@@ -69,7 +74,8 @@ public class WD_RuntimeDesc {
             if(i != ParamTypes.Length-1) result+= ";";
         }
         if(ReturnType != null) {
-            result+= ";ret "+(ReturnName != null ? ReturnName : "out")+":"+WD_Archive.Encode(ReturnType);
+            if(ParamTypes.Length != 0) result+=";";
+            result+= "ret "+(ReturnName != null ? ReturnName : "out")+":"+WD_Archive.Encode(ReturnType);
         }
         result+=">{}";
         return result;
