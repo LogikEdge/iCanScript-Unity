@@ -10,7 +10,7 @@ public class WD_ReflectionDesc {
     public string           Company;
     public string           Package;
     public Type             ClassType;
-    public string           Name;
+    public string           DisplayName;
     public string           ToolTip;
     public string           IconPath;
     public string[]         ParamNames;
@@ -32,12 +32,12 @@ public class WD_ReflectionDesc {
                              bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                              string returnName, Type returnType) {
         // Editor object information.
-        Company  = company;
-        Package  = package;
-        Name     = name;
-        ToolTip  = toolTip;
-        ClassType= classType;
-        IconPath = iconPath;
+        Company    = company;
+        Package    = package;
+        DisplayName= name;
+        ToolTip    = toolTip;
+        ClassType  = classType;
+        IconPath   = iconPath;
 
         // Fill-in editor names
         ParamNames= paramNames;

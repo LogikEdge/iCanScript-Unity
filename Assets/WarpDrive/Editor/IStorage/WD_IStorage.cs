@@ -274,7 +274,7 @@ public partial class WD_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.StaticMethod, localPos);
+        this[id]= new WD_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, WD_ObjectTypeEnum.StaticMethod, localPos);
         this[id].RuntimeArchive= desc.Encode(id);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == WD_ObjectTypeEnum.StaticMethod) {
@@ -302,7 +302,7 @@ public partial class WD_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new WD_EditorObject(id, desc.Name, desc.ClassType, parentId, WD_ObjectTypeEnum.StaticMethod, localPos);
+        this[id]= new WD_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, WD_ObjectTypeEnum.StaticMethod, localPos);
         this[id].RuntimeArchive= desc.Encode(id);
         this[id].IconGUID= WD_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == WD_ObjectTypeEnum.StaticMethod) {

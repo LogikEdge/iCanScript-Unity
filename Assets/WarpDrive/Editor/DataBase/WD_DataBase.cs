@@ -8,10 +8,29 @@ public class WD_DataBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public static List<WD_ReflectionDesc>   Functions  = new List<WD_ReflectionDesc>();
+    public static bool                      IsDirty  = true;
+    public static List<WD_ReflectionDesc>   Functions= new List<WD_ReflectionDesc>();
     
     // ======================================================================
     // DataBase functionality
+    // ----------------------------------------------------------------------
+    public static void Sort() {
+        if(!IsDirty) return;
+        int len= Functions.Count;
+        int min= 0;
+        int max= len-1;
+        while(min != max) {
+            if(GetFunctionName(Functions[min]).CompareTo(GetFunctionName(Functions[min+1])) > 0) {
+                WD_ReflectionDesc tmp= Functions[min];
+                Functions[min]= Functions[min+1];
+                Functions[min+1]= tmp;
+                if(min != 0) --min;
+            } else {
+                ++min;
+            }
+        }
+        IsDirty= false;
+    }
     // ----------------------------------------------------------------------
     // Returns all the company names for which a WarpDrive component exists.
     public static string[] GetCompanies() {
@@ -38,7 +57,7 @@ public class WD_DataBase {
         List<string> functions= new List<string>();
         foreach(var func in Functions) {
             if(func.Company == company && func.Package == package) {
-                WarpDrive.AddUniqu<string>(func.Name, functions);                
+                WarpDrive.AddUniqu<string>(func.DisplayName, functions);                
             }
         }
         return functions.ToArray();
@@ -49,7 +68,7 @@ public class WD_DataBase {
     public static string[] GetFunctionSignatures(string company, string package, string functionName) {
         List<string> parameters= new List<string>();
         foreach(var func in Functions) {
-            if(func.Company == company && func.Package == package && func.Name == functionName) {
+            if(func.Company == company && func.Package == package && func.DisplayName == functionName) {
                 parameters.Add(GetFunctionSignature(func));
             }
         }
@@ -59,7 +78,7 @@ public class WD_DataBase {
     // ----------------------------------------------------------------------
     public static string GetFunctionSignature(WD_ReflectionDesc desc) {
         string signature= TypeName(desc.ReturnType);
-        signature+= " "+desc.Name+"(";
+        signature+= " "+desc.DisplayName+"(";
         if(desc.ObjectType == WD_ObjectTypeEnum.InstanceMethod) {
             signature+= TypeName(desc.ClassType)+" this";
             if(desc.ParamNames.Length != 0) signature+=", ";
@@ -69,6 +88,11 @@ public class WD_DataBase {
             if(i != desc.ParamNames.Length-1) signature+=", ";
         }
         return signature+")";
+    }
+    // ----------------------------------------------------------------------
+    // Returns the function name in the form of "company/package/displayName".
+    public static string GetFunctionName(WD_ReflectionDesc desc) {
+        return desc.Company+"/"+desc.Package+"/"+desc.DisplayName;
     }
     // ----------------------------------------------------------------------
     static string TypeName(Type type) {
@@ -82,7 +106,7 @@ public class WD_DataBase {
         foreach(var desc in Functions) {
             if(desc.Company == company &&
                desc.Package == package &&
-               desc.Name    == functionName) {
+               desc.DisplayName == functionName) {
                    if(signature == null) return desc;
                    if(signature == GetFunctionSignature(desc)) return desc;
                }
@@ -174,6 +198,7 @@ public class WD_DataBase {
                                                     paramIsOuts, paramNames, paramTypes, paramDefaults,
                                                     retName, retType);
         Functions.Add(fd);
+        IsDirty= true;
         return fd;
     }
     
