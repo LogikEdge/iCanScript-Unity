@@ -47,7 +47,3 @@ public sealed class WD_Test2 {
     }
 }
 
-[WD_Module(Company="NewCompany", Package="Test", AllowedChildren= new Type[]{typeof(bool),typeof(int)})]
-[WD_InPort(Name="Trigger", ElementType=typeof(bool))]
-public sealed class Trigger {
-}

@@ -61,7 +61,8 @@ public class WD_DataBase {
         string signature= TypeName(desc.ReturnType);
         signature+= " "+desc.Name+"(";
         if(desc.ObjectType == WD_ObjectTypeEnum.InstanceMethod) {
-            signature+= TypeName(desc.ClassType)+" this, ";
+            signature+= TypeName(desc.ClassType)+" this";
+            if(desc.ParamNames.Length != 0) signature+=", ";
         }
         for(int i= 0; i < desc.ParamNames.Length; ++i) {
             signature+= TypeName(desc.RuntimeDesc.ParamTypes[i])+" "+desc.ParamNames[i];
