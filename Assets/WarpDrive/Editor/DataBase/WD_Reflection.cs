@@ -94,7 +94,14 @@ public class WD_Reflection {
         return fieldInfo.FieldType;
     }
 
-
+    // ----------------------------------------------------------------------
+    public static void DecodeNETClassInfo(Type type) {
+        DecodeClassInfo(type, ".NET", type.Name, type.Name, ".NET class "+type.Name, null, true);
+    }
+    // ----------------------------------------------------------------------
+    public static void DecodeUnityClassInfo(Type type) {
+        DecodeClassInfo(type, "Unity", type.Name, type.Name, "Unity class "+type.Name, null, true);
+    }
     // ----------------------------------------------------------------------
     // Scan the application for WarpDrive attributes.
     public static void ParseAppDomain() {
@@ -123,6 +130,10 @@ public class WD_Reflection {
                 }
             }
         }
+        DecodeNETClassInfo(typeof(string));
+        DecodeNETClassInfo(typeof(char));
+        DecodeNETClassInfo(typeof(Array));
+        DecodeUnityClassInfo(typeof(Vector3));
     }
     // ----------------------------------------------------------------------
     static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
