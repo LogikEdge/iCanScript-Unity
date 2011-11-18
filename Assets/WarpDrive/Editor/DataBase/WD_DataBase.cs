@@ -10,6 +10,7 @@ public class WD_DataBase {
     // ----------------------------------------------------------------------
     public static bool                      IsDirty  = true;
     public static List<WD_ReflectionDesc>   Functions= new List<WD_ReflectionDesc>();
+    public static string[]                  FunctionMenu= null;
     
     // ======================================================================
     // DataBase functionality
@@ -93,6 +94,32 @@ public class WD_DataBase {
     // Returns the function name in the form of "company/package/displayName".
     public static string GetFunctionName(WD_ReflectionDesc desc) {
         return desc.Company+"/"+desc.Package+"/"+desc.DisplayName;
+    }
+    // ----------------------------------------------------------------------
+    public static string[] BuildMenu() {
+        if(!IsDirty) return FunctionMenu;
+        Sort();
+        List<string> menu= new List<string>();
+        string previousName= "";
+        bool needsSignature= false;
+        for(int i= 0; i < Functions.Count; ++i) {
+            string newName= GetFunctionName(Functions[i]);
+            if(previousName == newName) needsSignature= true;
+            if(previousName != "") {
+                if(needsSignature) { menu.Add(previousName+"/"+GetFunctionSignature(Functions[i-1])); }
+                else               { menu.Add(previousName); }
+            }
+            if(previousName != newName) {
+                needsSignature= false;
+                previousName= newName;
+            }
+        }
+        if(previousName != "") {
+            if(needsSignature) { menu.Add(previousName+"/"+GetFunctionSignature(Functions[Functions.Count-1])); }
+            else               { menu.Add(previousName); }
+        }
+        FunctionMenu= menu.ToArray();
+        return FunctionMenu;
     }
     // ----------------------------------------------------------------------
     static string TypeName(Type type) {

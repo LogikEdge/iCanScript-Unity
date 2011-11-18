@@ -349,29 +349,7 @@ public class WD_DynamicMenu {
 	// ----------------------------------------------------------------------
     // Combines the company/package/function name into menu conforming strings.
     string[] GetFunctionMenu() {
-        List<string> result= new List<string>();
-        string[] companies= WD_DataBase.GetCompanies();
-        foreach(var company in companies) {
-            string[] packages= WD_DataBase.GetPackages(company);
-            foreach(var package in packages) {
-                string[] functions= WD_DataBase.GetFunctions(company, package);
-                foreach(var function in functions) {
-                    string[] signatures= WD_DataBase.GetFunctionSignatures(company, package, function);
-                    if(signatures.Length <= 1) {
-                        result.Add(company+"/"+package+"/"+function);                        
-                    } else {
-                        foreach(var signature in signatures) {
-                            if(signature == null) {
-                                result.Add(company+"/"+package+"/"+function);
-                            } else {
-                                result.Add(company+"/"+package+"/"+function+"/"+signature);
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return result.ToArray();
+        return WD_DataBase.BuildMenu();
     }
     WD_ReflectionDesc GetReflectionDescFromMenuCommand(string menuCommand) {
         menuCommand= WD_TextUtil.StripBeforeIdent(menuCommand);
