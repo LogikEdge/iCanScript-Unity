@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -85,6 +86,21 @@ public partial class WD_IStorage {
                             WD_Reflection.InvokeAddChildIfExists(rtNode, func);
                             break;
                         }
+                        case WD_ObjectTypeEnum.InstanceField: {
+                            // Create function.
+                            WD_RuntimeDesc desc;
+                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
+                            if(desc == null) break;
+                            FieldInfo fieldInfo= desc.Field;
+                            WD_FunctionBase rtField= desc.ParamIsOuts[1] ?
+                                new WD_GetField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as WD_FunctionBase:
+                                new WD_SetField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as WD_FunctionBase;                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= rtField;
+                            WD_Reflection.InvokeAddChildIfExists(rtNode, rtField);
+                            break;
+                        }
+                        case WD_ObjectTypeEnum.StaticField:
+                            break;
                         default: {
                             Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
                             break;
@@ -173,6 +189,13 @@ public partial class WD_IStorage {
                             (TreeCache[edChild.InstanceId].RuntimeObject as WD_FunctionBase).SetConnections(connections);
                             break;
                         }
+                        case WD_ObjectTypeEnum.InstanceField: {
+                            WD_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as WD_FunctionBase).SetConnections(connections);
+                            break;
+                        }
+                        case WD_ObjectTypeEnum.StaticField:
+                            break;
                         default: {
                             Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
                             break;

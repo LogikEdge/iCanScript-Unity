@@ -1,20 +1,19 @@
 using UnityEngine;
 using System;
+using System.Reflection;
 using System.Collections;
 
 public class WD_GetField : WD_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    protected object                myThis;
-    protected Func<object,object>   myGetMethod;
+    protected FieldInfo   myFieldInfo;
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public WD_GetField(string name, object theThis, Func<object,object> getMethod, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {
-        myThis     = theThis;
-        myGetMethod= getMethod;
+    public WD_GetField(string name, FieldInfo fieldInfo, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {
+        myFieldInfo= fieldInfo;
     }
     
     // ======================================================================
@@ -22,7 +21,8 @@ public class WD_GetField : WD_FunctionBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        myParameters[0]= myGetMethod(myThis);
+        myParameters[2]= myParameters[0];
+        myParameters[1]= myFieldInfo.GetValue(myParameters[0]);
         MarkAsCurrent(frameId);
     }
 }

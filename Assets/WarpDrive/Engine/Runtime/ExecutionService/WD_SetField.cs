@@ -1,20 +1,19 @@
 using UnityEngine;
 using System;
+using System.Reflection;
 using System.Collections;
 
 public class WD_SetField : WD_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    protected object                myThis;
-    protected Action<object,object> mySetMethod;
+    protected FieldInfo myFieldInfo;
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public WD_SetField(string name, object theThis, Action<object,object> setMethod, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {
-        myThis     = theThis;
-        mySetMethod= setMethod;
+    public WD_SetField(string name, FieldInfo fieldInfo, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {
+        myFieldInfo= fieldInfo;
     }
     
     // ======================================================================
@@ -22,7 +21,8 @@ public class WD_SetField : WD_FunctionBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        mySetMethod(myThis, myParameters[0]);
+        myParameters[2]= myParameters[0];
+        myFieldInfo.SetValue(myParameters[0], myParameters[1]);
         MarkAsCurrent(frameId);
     }
 }

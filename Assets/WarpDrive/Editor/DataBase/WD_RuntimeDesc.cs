@@ -35,6 +35,16 @@ public class WD_RuntimeDesc {
             return method;
         }
     }
+    public FieldInfo Field {
+        get {
+            if(MethodName == null) return null;
+            FieldInfo field= ClassType.GetField(MethodName);
+            if(field == null) {
+                Debug.LogWarning("Unable to extract FieldInfo from RuntimeDesc: "+MethodName);                
+            }
+            return field;
+        }
+    }
     public object GetDefaultValue(int idx, WD_IStorage storage) {
         return storage.GetDefaultValue(this, idx);
     }
