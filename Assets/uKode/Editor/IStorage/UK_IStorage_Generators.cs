@@ -1,0 +1,278 @@
+using UnityEngine;
+using System;
+using System.Reflection;
+using System.Collections;
+using System.Collections.Generic;
+
+public partial class UK_IStorage {
+    // ======================================================================
+    // Runtime code generation
+    // ----------------------------------------------------------------------
+    public void GenerateRuntimeCode() {
+        // Only generate runtime code for behaviours.
+        UK_Behaviour rtBehaviour= Storage as UK_Behaviour;
+        if(rtBehaviour == null || EditorObjects.Count == 0) return;
+        // Remove any previous runtime data.
+        UK_EditorObject edBehaviour= EditorObjects[0];
+        if(!edBehaviour.IsBehaviour) {
+            Debug.LogError("Could not locate Behaviour object.  Aborting code generation.");
+        }
+        // Remove any previous runtime object creation.
+        rtBehaviour.ClearGeneratedCode();
+        // Create all the runtime nodes.
+        GenerateRuntimeChildNodes(edBehaviour, rtBehaviour);
+        // Connect the runtime nodes.
+        ConnectRuntimeChildNodes(edBehaviour);
+    }
+    // ----------------------------------------------------------------------
+    void GenerateRuntimeChildNodes(UK_EditorObject edNode, object rtNode) {
+        ForEachChild(edNode,
+            edChild=>{
+                if(edChild.IsNode) {
+                    switch(edChild.ObjectType) {
+                        case UK_ObjectTypeEnum.StateChart: {
+                            UK_StateChart stateChart= new UK_StateChart(edChild.Name);
+                            TreeCache[edChild.InstanceId].RuntimeObject= stateChart;
+                            UK_Reflection.InvokeAddChildIfExists(rtNode, stateChart);
+                            GenerateRuntimeChildNodes(edChild, stateChart);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.State: {
+                            UK_State state= new UK_State(edChild.Name);
+                            TreeCache[edChild.InstanceId].RuntimeObject= state;
+                            UK_Reflection.InvokeAddChildIfExists(rtNode, state);
+                            GenerateRuntimeChildNodes(edChild, state);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.TransitionEntry: {
+                            GenerateRuntimeChildNodes(edChild, null);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.TransitionExit: {
+                            UK_Module module= new UK_Module(edChild.Name, new object[0], new bool[0]);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= module;
+                            if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);
+                            GenerateRuntimeChildNodes(edChild, module);
+                            break;                            
+                        }
+                        case UK_ObjectTypeEnum.Module: {
+                            UK_RuntimeDesc desc;
+                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
+                            if(desc == null) break;
+                            UK_Module module= new UK_Module(edChild.Name, parameters, desc.ParamIsOuts);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= module;
+                            if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);
+                            GenerateRuntimeChildNodes(edChild, module);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.InstanceMethod: {
+                            // Create method.
+                            UK_RuntimeDesc desc;
+                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
+                            if(desc == null) break;
+                            UK_Method method= new UK_Method(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= method;
+                            UK_Reflection.InvokeAddChildIfExists(rtNode, method);
+                            break;                            
+                        }
+                        case UK_ObjectTypeEnum.Conversion:
+                        case UK_ObjectTypeEnum.StaticMethod: {
+                            // Create function.
+                            UK_RuntimeDesc desc;
+                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
+                            if(desc == null) break;
+                            UK_Function func= new UK_Function(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= func;
+                            UK_Reflection.InvokeAddChildIfExists(rtNode, func);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.InstanceField: {
+                            // Create function.
+                            UK_RuntimeDesc desc;
+                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
+                            if(desc == null) break;
+                            FieldInfo fieldInfo= desc.Field;
+                            UK_FunctionBase rtField= desc.ParamIsOuts[1] ?
+                                new UK_GetField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase:
+                                new UK_SetField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase;                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= rtField;
+                            UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.StaticField:
+                            break;
+                        default: {
+                            Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
+                            break;
+                        }
+                    }
+                }
+            }
+        );
+    }
+    // ----------------------------------------------------------------------
+    void ConnectRuntimeChildNodes(UK_EditorObject edNode) {
+        ForEachChild(edNode,
+            edChild=>{
+                if(edChild.IsNode) {
+                    switch(edChild.ObjectType) {
+                        case UK_ObjectTypeEnum.StateChart: {
+                            ConnectRuntimeChildNodes(edChild);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.State: {
+                            ForEachChildPort(edChild,
+                                p=> {
+                                    if(p.IsOutStatePort) {
+                                        UK_EditorObject entryModule= GetTransitionEntryModule(p);
+                                        if(entryModule != null) {
+                                            UK_EditorObject triggerAction= GetTriggerModuleFromTransitionEntryModule(entryModule);
+                                            UK_EditorObject entryAction= GetActionModuleFromTransitionEntryModule(entryModule);
+                                            UK_EditorObject exitAction= GetTransitionExitModule(entryModule);
+                                            UK_Transition transition= new UK_Transition(p.Name,
+                                                                                        GetRuntimeObject(triggerAction) as UK_FunctionBase,
+                                                                                        GetRuntimeObject(GetEndStateFromTransitionEntryModule(entryModule)) as UK_State);
+                                            if(entryAction != null) { transition.AddChild(GetRuntimeObject(entryAction) as UK_Action); }
+                                            if(exitAction != null)  { transition.AddChild(GetRuntimeObject(exitAction) as UK_Action); }
+                                            UK_State state= GetRuntimeObject(edChild) as UK_State;
+                                            state.AddChild(transition);
+                                        }
+                                    }
+                                }
+                            );
+                            ConnectRuntimeChildNodes(edChild);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.TransitionEntry: {
+                            ConnectRuntimeChildNodes(edChild);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.TransitionExit: {
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.Module: {
+                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
+                            ConnectRuntimeChildNodes(edChild);
+                            break;                            
+                        }
+                        case UK_ObjectTypeEnum.InstanceMethod: {
+                            // Parameter connections
+                            UK_Connection[] paramConnections= BuildRuntimeConnectionArray(edChild);
+                            // This connection.
+                            UK_Connection thisConnection= new UK_Connection(null, -1);
+                            UK_RuntimeDesc desc= new UK_RuntimeDesc(edChild.RuntimeArchive);
+                            int thisId= desc.ParamTypes.Length+1;
+                            ForEachChildPort(edChild,
+                                p=> {
+                                    if(p.PortIndex == thisId) {
+                                        UK_EditorObject sourcePort= GetSource(p);
+                                        if(sourcePort != null) {
+                                            UK_EditorObject sourceNode= GetParent(sourcePort);
+                                            UK_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as UK_FunctionBase;
+                                            thisConnection= new UK_Connection(rtSourceNode, sourcePort.PortIndex);
+                                        }
+                                        return true;
+                                    }
+                                    return false;
+                                }
+                            );
+                            // Set connections.
+                            UK_Method method= TreeCache[edChild.InstanceId].RuntimeObject as UK_Method;
+                            method.SetConnections(thisConnection, paramConnections);
+                            break;
+                            
+                        }
+                        case UK_ObjectTypeEnum.Conversion:
+                        case UK_ObjectTypeEnum.StaticMethod: {
+                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.InstanceField: {
+                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.StaticField:
+                            break;
+                        default: {
+                            Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
+                            break;
+                        }
+                    }
+                }
+            }
+        );        
+    }
+    // ----------------------------------------------------------------------
+    // Builds the runtime parameter array information for the given
+    // editor object.
+    object[] BuildRuntimeParameterArray(UK_EditorObject edObj, out UK_RuntimeDesc desc) {
+        desc= new UK_RuntimeDesc(edObj.RuntimeArchive);
+        if(desc == null) {
+            Debug.LogWarning("Unable to locate runtime information for: "+edObj.RuntimeArchive);
+            return new object[0];
+        }
+        // Create function parameters.
+        int paramLen= desc.ParamTypes.Length;
+        object[] parameters= new object[paramLen];
+        for(int i= 0; i < paramLen; ++i) {
+            if(desc.ParamIsOuts[i]) {  // outputs
+                parameters[i]= null;
+            } else {                   // inputs
+                parameters[i]= GetDefaultValue(desc, i) ?? UK_Types.DefaultValue(desc.ParamTypes[i]);
+            }
+        }        
+        return parameters;
+    }
+    // ----------------------------------------------------------------------
+    // Builds the runtime connection array information for the given
+    // editor object.
+    UK_Connection[] BuildRuntimeConnectionArray(UK_EditorObject edObj) {
+        UK_RuntimeDesc desc= new UK_RuntimeDesc(edObj.RuntimeArchive);
+        if(desc == null) {
+            Debug.LogWarning("Unable to locate reflection information for: "+edObj.RuntimeArchive);
+            return new UK_Connection[0];
+        }
+        int paramLen= desc.ParamTypes.Length;
+        UK_Connection[] connections= new UK_Connection[paramLen];
+        for(int i= 0; i < paramLen; ++i) {
+            UK_Connection connection= new UK_Connection(null, -1);
+            ForEachChildPort(edObj,
+                p=> {
+                    if(p.PortIndex == i) {
+                        UK_EditorObject sourcePort= GetSource(p);
+                        if(sourcePort != null) {
+                            UK_EditorObject sourceNode= GetParent(sourcePort);
+                            UK_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as UK_FunctionBase;
+                            connection= new UK_Connection(rtSourceNode, sourcePort.PortIndex);
+                        }
+                        return true;
+                    }
+                    return false;
+                }
+            );
+            connections[i]= connection;
+        }
+        return connections;
+    }
+    
+    // ----------------------------------------------------------------------
+    void DisplayRuntimeDesc(UK_EditorObject obj) {
+        UK_RuntimeDesc desc= new UK_RuntimeDesc(obj.RuntimeArchive);
+        Debug.Log("Parsing: "+obj.RuntimeArchive);
+        Debug.Log("Parsing result:");
+        Debug.Log("Company= "+desc.Company+" Package= "+desc.Package+" ClassType= "+desc.ClassType.ToString()+" Name= "+desc.MethodName);
+        string paramStr= "";
+        for(int i= 0; i < desc.ParamTypes.Length; ++i) {
+            if(desc.ParamIsOuts[i]) paramStr+= "out ";
+            paramStr+= desc.ParamTypes[i].ToString();
+            if(desc.ParamDefaultValues[i] != null) {
+                paramStr+=":= "+desc.ParamDefaultValues[i].ToString();
+            }
+            paramStr+= ";";
+        }
+        Debug.Log("Parameters= "+paramStr);
+    }
+}
