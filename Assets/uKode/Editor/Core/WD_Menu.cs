@@ -6,7 +6,7 @@ public class WD_Menu {
 
     // ======================================================================
 	// Create a behavior to selected game object.
-	[MenuItem("WarpDrive/Create Behaviour")]
+	[MenuItem("uKode/Create Behaviour")]
 	public static void CreateBehaviour() {
 		// Create State Chart component.
 		WD_Behaviour storage = Selection.activeGameObject.GetComponent<WD_Behaviour>();
@@ -17,7 +17,7 @@ public class WD_Menu {
             iStorage= null;
 		}
 	}
-	[MenuItem("WarpDrive/Create Behaviour", true)]
+	[MenuItem("uKode/Create Behaviour", true)]
 	public static bool ValidateCreateBehaviour() {
 		if(Selection.activeTransform != null) {
 			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
@@ -28,7 +28,7 @@ public class WD_Menu {
 
     // ======================================================================
 	// Create a library module to selected game object.
-	[MenuItem("WarpDrive/Create Module Library")]
+	[MenuItem("uKode/Create Module Library")]
 	public static void CreateModuleLibrary() {
 		// Create State Chart component.
 		WD_Storage storage = Selection.activeGameObject.GetComponent<WD_ModuleLibrary>();
@@ -40,7 +40,7 @@ public class WD_Menu {
             iStorage= null;
 		}
 	}
-	[MenuItem("WarpDrive/Create Module Library", true)]
+	[MenuItem("uKode/Create Module Library", true)]
 	public static bool ValidateCreateModuleLibrary() {
 		if(Selection.activeTransform != null) {
 			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
@@ -51,7 +51,7 @@ public class WD_Menu {
 
     // ======================================================================
 	// Create a library module to selected game object.
-	[MenuItem("WarpDrive/Create State Chart Library")]
+	[MenuItem("uKode/Create State Chart Library")]
 	public static void CreateStateChartLibrary() {
 		// Create State Chart component.
 		WD_Storage storage = Selection.activeGameObject.GetComponent<WD_StateChartLibrary>();
@@ -63,7 +63,7 @@ public class WD_Menu {
             iStorage= null;
 		}
 	}
-	[MenuItem("WarpDrive/Create State Chart Library", true)]
+	[MenuItem("uKode/Create State Chart Library", true)]
 	public static bool ValidateCreateStateChartLibrary() {
 		if(Selection.activeTransform != null) {
 			WD_Storage storage = Selection.activeGameObject.GetComponent<WD_Storage>();
@@ -78,9 +78,9 @@ public class WD_Menu {
     }
     
     // ======================================================================
-	// WarpDrive Window.
-	[MenuItem("Window/WarpDrive Editor")]
-	public static void ShowWarpDriveEditor() {
+	// uKode Window.
+	[MenuItem("Window/uKode Editor")]
+	public static void ShowuKodeEditor() {
         WD_Editor editor= EditorWindow.GetWindow<WD_Editor>();
         editor.hideFlags= HideFlags.DontSave;
 	}

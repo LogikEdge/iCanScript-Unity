@@ -4,8 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 // ===========================================================================
-// Set of global utilities used by multiple WarpDrive classes.
-public class WarpDrive {
+// Set of global utilities used by multiple uCode classes.
+public class uCode {
     // ---------------------------------------------------------------------------
     // Add the given item to the list if it does not already exist.  True is
     // returned if the item was added.  False is returned otherwise.

@@ -85,7 +85,7 @@ public class WD_Reflection {
         DecodeClassInfo(type, "Unity", type.Name, type.Name, "Unity class "+type.Name, null, true);
     }
     // ----------------------------------------------------------------------
-    // Scan the application for WarpDrive attributes.
+    // Scan the application for uCode attributes.
     public static void ParseAppDomain() {
         // Remove all previously registered functions.
         WD_DataBase.Clear();
@@ -93,7 +93,7 @@ public class WD_Reflection {
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var classType in assembly.GetTypes()) {
                 foreach(var classCustomAttribute in classType.GetCustomAttributes(true)) {
-                    // Only register classes that have been tagged for WarpDrive.
+                    // Only register classes that have been tagged for uCode.
                     if(classCustomAttribute is WD_ClassAttribute) {
                         // Validate that the class is public.
                         if(classType.IsPublic == false) {

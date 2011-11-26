@@ -37,11 +37,11 @@ public class WD_DataBase {
         }
     }
     // ----------------------------------------------------------------------
-    // Returns all the company names for which a WarpDrive component exists.
+    // Returns all the company names for which a uCode component exists.
     public static string[] GetCompanies() {
         List<string> companies= new List<string>();
         foreach(var func in Functions) {
-            WarpDrive.AddUniqu<string>(func.Company, companies);
+            uCode.AddUniqu<string>(func.Company, companies);
         }
         return companies.ToArray();
     }
@@ -51,7 +51,7 @@ public class WD_DataBase {
         List<string> packages= new List<string>();
         foreach(var func in Functions) {
             if(func.Company == company) {
-                WarpDrive.AddUniqu<string>(func.Package, packages);                
+                uCode.AddUniqu<string>(func.Package, packages);                
             }
         }
         return packages.ToArray();
@@ -62,7 +62,7 @@ public class WD_DataBase {
         List<string> functions= new List<string>();
         foreach(var func in Functions) {
             if(func.Company == company && func.Package == package) {
-                WarpDrive.AddUniqu<string>(func.DisplayName, functions);                
+                uCode.AddUniqu<string>(func.DisplayName, functions);                
             }
         }
         return functions.ToArray();

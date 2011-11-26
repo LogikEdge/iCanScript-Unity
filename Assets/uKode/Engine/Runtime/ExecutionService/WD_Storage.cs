@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// This class is the main storage of WarpDrive.  All object are derived
+// This class is the main storage of uCode.  All object are derived
 // from this storage class.
 public class WD_Storage : MonoBehaviour {
     // ======================================================================

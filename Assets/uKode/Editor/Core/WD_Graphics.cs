@@ -171,7 +171,7 @@ public class WD_Graphics {
     // ----------------------------------------------------------------------
     public static Texture2D GetCachedIcon(string fileName, WD_IStorage storage) {
         // Try with the WarpDrice Icon prefix.
-        string iconPath= WD_UserPreferences.UserIcons.WarpDriveIconPath+"/"+fileName;
+        string iconPath= WD_UserPreferences.UserIcons.uCodeIconPath+"/"+fileName;
         Texture2D icon= GetCachedTexture(iconPath);
         if(icon == null) {
             // Try with the user definable Icon prefixes.

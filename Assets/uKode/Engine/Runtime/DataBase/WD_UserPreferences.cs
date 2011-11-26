@@ -62,14 +62,14 @@ public class WD_UserPreferences {
 
     [System.Serializable]
     public class UserHiddenPrefixes {
-        public const string WarpDrivePrefix= WD_EditorConfig.TypePrefix;
+        public const string uCodePrefix= WD_EditorConfig.TypePrefix;
         public string[]     CustomPrefixes= new string[0]; 
 
         public string GetTypeName(Type t)  { return GetName(t.Name); }
         public string GetName(string name) {
-            int prefixLen= WarpDrivePrefix.Length;
+            int prefixLen= uCodePrefix.Length;
             int nameLen= name.Length;
-            if(nameLen > prefixLen && name.Substring(0, prefixLen) == WarpDrivePrefix) return name.Substring(prefixLen, nameLen-prefixLen);
+            if(nameLen > prefixLen && name.Substring(0, prefixLen) == uCodePrefix) return name.Substring(prefixLen, nameLen-prefixLen);
             foreach(var prefix in CustomPrefixes) {
                 prefixLen= prefix.Length;
                 if(nameLen > prefixLen && name.Substring(0, prefixLen) == prefix) return name.Substring(prefixLen, name.Length-prefixLen);                
@@ -82,7 +82,7 @@ public class WD_UserPreferences {
     [System.Serializable]
     public class UserIcons {
         public bool         EnableMinimizedIcons= true;
-        public const string WarpDriveIconPath= WD_EditorConfig.GuiAssetPath;
+        public const string uCodeIconPath= WD_EditorConfig.GuiAssetPath;
         public string[]     CustomIconPaths= new string[0];
     }
     public UserIcons     Icons= new UserIcons();

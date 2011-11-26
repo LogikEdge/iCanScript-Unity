@@ -127,7 +127,7 @@ public partial class WD_IStorage {
     // ======================================================================
     // Undo/Redo support
     // ----------------------------------------------------------------------
-    public void RegisterUndo(string message= "WarpDrive") {
+    public void RegisterUndo(string message= "uCode") {
         Undo.RegisterUndo(Storage, message);
         Storage.UndoRedoId= ++UndoRedoId;        
         EditorUtility.SetDirty(Storage);
