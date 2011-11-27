@@ -159,7 +159,17 @@ public class UK_Reflection {
     }
     // ----------------------------------------------------------------------
     static void DecodeStaticField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, UK_ParamDirectionEnum dir) {
-        UK_DataBase.AddStaticField(company, package, displayName, toolTip, iconPath, classType, field, dir);
+        string[] paramNames= new string[1]{field.Name};
+        Type[] paramTypes= new Type[1]{field.FieldType};
+        object[] paramDefaultValues= new object[1]{UK_Types.DefaultValue(field.FieldType)};
+        if(dir == UK_ParamDirectionEnum.In || dir == UK_ParamDirectionEnum.InOut) {
+            bool[] paramIsOuts= new bool[1]{false};
+            UK_DataBase.AddStaticField(company, package, displayName+" (write)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+        }
+        if(dir == UK_ParamDirectionEnum.Out || dir == UK_ParamDirectionEnum.InOut) {
+            bool[] paramIsOuts= new bool[]{true};
+            UK_DataBase.AddStaticField(company, package, displayName+" (read)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+        }
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, UK_ParamDirectionEnum dir) {

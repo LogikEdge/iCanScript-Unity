@@ -182,8 +182,12 @@ public class UK_DataBase {
     }
     // ----------------------------------------------------------------------
     public static void AddStaticField(string company, string package, string displayName, string toolTip, string iconPath,
-                                      Type classType, FieldInfo field, UK_ParamDirectionEnum direction) {
-        
+                                      Type classType,
+                                      bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
+        Add(company, package, displayName, toolTip, iconPath,
+            UK_ObjectTypeEnum.StaticField, classType, null,
+            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            null, null);
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceField(string company, string package, string displayName, string toolTip, string iconPath,
