@@ -127,7 +127,7 @@ public class UK_Reflection {
             bool registerField= false;
             UK_ParamDirectionEnum direction= UK_ParamDirectionEnum.InOut;
             foreach(var fieldAttr in field.GetCustomAttributes(true)) {
-                if(!field.IsPublic && (fieldAttr is UK_InPortAttribute || fieldAttr is UK_OutPortAttribute)) {
+                if(!field.IsPublic && (fieldAttr is UK_InPortAttribute || fieldAttr is UK_OutPortAttribute || fieldAttr is UK_InOutPortAttribute)) {
                     Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+UK_EditorConfig.ProductName+". Ignoring field !!!");
                     continue;
                 }
@@ -137,6 +137,10 @@ public class UK_Reflection {
                 }
                 if(fieldAttr is UK_OutPortAttribute) {
                     direction= UK_ParamDirectionEnum.Out;
+                    registerField= true;
+                }
+                if(fieldAttr is UK_InOutPortAttribute) {
+                    direction= UK_ParamDirectionEnum.InOut;
                     registerField= true;
                 }
             }
@@ -159,11 +163,17 @@ public class UK_Reflection {
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, UK_ParamDirectionEnum dir) {
-        bool[] paramIsOuts= new bool[3]{false, dir==UK_ParamDirectionEnum.Out, true};
         string[] paramNames= new string[3]{"this", field.Name, "this"};
         Type[] paramTypes= new Type[3]{classType, field.FieldType, classType};
         object[] paramDefaultValues= new object[3]{UK_Types.DefaultValue(classType), UK_Types.DefaultValue(field.FieldType),UK_Types.DefaultValue(classType)};
-        UK_DataBase.AddInstanceField(company, package, displayName, toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);        
+        if(dir == UK_ParamDirectionEnum.In || dir == UK_ParamDirectionEnum.InOut) {
+            bool[] paramIsOuts= new bool[3]{false, false, true};
+            UK_DataBase.AddInstanceField(company, package, displayName+" (write)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+        }
+        if(dir == UK_ParamDirectionEnum.Out || dir == UK_ParamDirectionEnum.InOut) {
+            bool[] paramIsOuts= new bool[3]{false, true, true};
+            UK_DataBase.AddInstanceField(company, package, displayName+" (read)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+        }
     }
     // ----------------------------------------------------------------------
     static void DecodeFunctionsAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {

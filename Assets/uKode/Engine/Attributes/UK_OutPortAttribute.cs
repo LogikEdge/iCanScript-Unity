@@ -11,12 +11,6 @@ public class UK_OutPortAttribute : Attribute {
     }
     private string myName= null;
 
-    public Type ElementType {
-        get { return myElementType; }
-        set { myElementType= value; }
-    }
-    private Type myElementType= null;
-
     // ======================================================================
     public override string ToString() { return "UK_OutPort"; }
 }
