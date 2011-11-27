@@ -146,9 +146,9 @@ public class UK_Reflection {
             }
             if(registerField) {
                 if(field.IsStatic) {
-                    DecodeStaticField(company, package, className, classToolTip, classIconPath, classType, field, direction);
+                    DecodeStaticField(company, package, field.Name, classToolTip, classIconPath, classType, field, direction);
                 } else {
-                    DecodeInstanceField(company, package, className, classToolTip, classIconPath, classType, field, direction);
+                    DecodeInstanceField(company, package, field.Name, classToolTip, classIconPath, classType, field, direction);
                 }                
             }
         }        

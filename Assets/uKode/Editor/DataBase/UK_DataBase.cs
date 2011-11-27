@@ -188,7 +188,13 @@ public class UK_DataBase {
     // ----------------------------------------------------------------------
     public static void AddInstanceField(string company, string package, string displayName, string toolTip, string iconPath,
                                         Type classType, FieldInfo field, UK_ParamDirectionEnum direction) {
-        
+        Add(company, package, displayName, toolTip, iconPath,
+            UK_ObjectTypeEnum.InstanceField, classType, null,
+            new bool[3]{false, direction==UK_ParamDirectionEnum.Out, true},
+            new string[3]{"this", field.Name, "this"},
+            new Type[3]{classType, field.FieldType, classType},
+            new object[3]{UK_Types.DefaultValue(classType), UK_Types.DefaultValue(field.FieldType),UK_Types.DefaultValue(classType)},
+            null, null);
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath,
