@@ -99,8 +99,19 @@ public partial class UK_IStorage {
                             UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
                             break;
                         }
-                        case UK_ObjectTypeEnum.StaticField:
-                            break;
+                        case UK_ObjectTypeEnum.StaticField: {
+                            // Create function.
+                            UK_RuntimeDesc desc;
+                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
+                            if(desc == null) break;
+                            FieldInfo fieldInfo= desc.Field;
+                            UK_FunctionBase rtField= desc.ParamIsOuts[1] ?
+                                new UK_GetStaticField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase:
+                                new UK_SetStaticField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase;                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= rtField;
+                            UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
+                            break;                            
+                        }
                         default: {
                             Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
                             break;
@@ -194,8 +205,11 @@ public partial class UK_IStorage {
                             (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
                             break;
                         }
-                        case UK_ObjectTypeEnum.StaticField:
-                            break;
+                        case UK_ObjectTypeEnum.StaticField: {
+                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
+                            break;                            
+                        }
                         default: {
                             Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
                             break;
