@@ -93,8 +93,8 @@ public partial class UK_IStorage {
                             if(desc == null) break;
                             FieldInfo fieldInfo= desc.Field;
                             UK_FunctionBase rtField= desc.ParamIsOuts[1] ?
-                                new UK_GetField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase:
-                                new UK_SetField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase;                                
+                                new UK_GetInstanceField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase:
+                                new UK_SetInstanceField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase;                                
                             TreeCache[edChild.InstanceId].RuntimeObject= rtField;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
                             break;

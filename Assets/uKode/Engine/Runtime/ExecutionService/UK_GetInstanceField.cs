@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class UK_GetField : UK_FunctionBase {
+public class UK_GetInstanceField : UK_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -12,7 +12,7 @@ public class UK_GetField : UK_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_GetField(string name, FieldInfo fieldInfo, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {
+    public UK_GetInstanceField(string name, FieldInfo fieldInfo, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {
         myFieldInfo= fieldInfo;
     }
     
