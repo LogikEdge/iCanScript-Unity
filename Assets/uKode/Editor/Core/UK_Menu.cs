@@ -81,7 +81,7 @@ public class UK_Menu {
 	// uKode Window.
 	[MenuItem("Window/uKode Editor")]
 	public static void ShowuKodeEditor() {
-        UK_Editor editor= EditorWindow.GetWindow<UK_Editor>();
+        UK_Editor editor= EditorWindow.GetWindow(typeof(UK_Editor), false, "uKode Editor") as UK_Editor;
         editor.hideFlags= HideFlags.DontSave;
 	}
 
