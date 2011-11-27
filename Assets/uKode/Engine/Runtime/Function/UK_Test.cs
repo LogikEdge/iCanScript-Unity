@@ -30,6 +30,7 @@ public sealed class UK_Test {
 public sealed class UK_Test2 {
     [UK_InPort]     public float x;
     [UK_OutPort]    public float z;
+    [UK_InOutPort]  public Vector3 v3;
 
     public bool IsValid {
         [UK_Function] get { return true; }
