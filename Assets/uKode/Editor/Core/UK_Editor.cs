@@ -41,7 +41,7 @@ public class UK_Editor : EditorWindow {
     // ======================================================================
     // INITIALIZATION
 	// ----------------------------------------------------------------------
-    // Prepares the editor for editing a graph.  Not that the graph to edit
+    // Prepares the editor for editing a graph.  Note that the graph to edit
     // is not configured at this point.  We must wait for an activate from
     // the graph inspector to know which graph to edit. 
 	void OnEnable() {        
