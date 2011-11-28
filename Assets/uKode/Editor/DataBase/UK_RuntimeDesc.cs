@@ -77,7 +77,10 @@ public class UK_RuntimeDesc {
                 if(UK_Types.IsA<UnityEngine.Object>(ParamTypes[i])) {
                     result+= ":="+UK_Archive.Encode((int)ParamDefaultValues[i]);
                 } else {
-                    result+= ":="+UK_Archive.Encode(ParamDefaultValues[i]);                    
+                    string defaultValueStr= UK_Archive.Encode(ParamDefaultValues[i]);
+                    if(defaultValueStr != null) {
+                        result+= ":="+defaultValueStr;                                            
+                    }
                 }
             }
             result+= ":"+UK_Archive.Encode(ParamTypes[i]);
@@ -189,7 +192,7 @@ public class UK_RuntimeDesc {
                     paramDefaults.Add(UK_Archive.Decode(defaultValueStr, paramType));                    
                 }
             } else {
-                paramDefaults.Add(null);                
+                paramDefaults.Add(UK_Types.DefaultValue(paramType));                
             }
         }
         ParamIsOuts= paramIsOut.ToArray();

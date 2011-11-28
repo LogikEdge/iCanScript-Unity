@@ -11,11 +11,12 @@ public class UK_Archive {
         return type.AssemblyQualifiedName;
     }
     public static string Encode(object obj) {
-        if(obj.GetType().IsEnum) {
+        Type objType= obj.GetType();
+        if(objType.IsEnum) {
             int enumValue= (int)obj;
             return enumValue.ToString()+"("+obj.ToString()+")";
         }
-        if(obj.GetType() == typeof(string)) {
+        if(objType == typeof(string)) {
             string value= obj as string;
             string encoded= "\"";
             for(int i= 0; i < value.Length; ++i) {
@@ -36,19 +37,26 @@ public class UK_Archive {
             }
             return encoded+"\"";
         }
-        if(obj.GetType() == typeof(Vector2)) {
+        if(objType == typeof(Vector2)) {
             Vector2 v= (Vector2)obj;
             return "("+v.x+","+v.y+")";
         }
-        if(obj.GetType() == typeof(Vector3)) {
+        if(objType == typeof(Vector3)) {
             Vector3 v= (Vector3)obj;
             return "("+v.x+","+v.y+","+v.z+")";
         }
-        if(obj.GetType() == typeof(Vector4)) {
+        if(objType == typeof(Vector4)) {
             Vector4 v= (Vector4)obj;
             return "("+v.x+","+v.y+","+v.z+","+v.w+")";
         }
-        return (string)Convert.ChangeType(obj, typeof(string));
+        // Use converter for all remaining types.
+        try {
+            return (string)Convert.ChangeType(obj, typeof(string));            
+        }
+        catch(Exception) {
+//            Debug.LogWarning("Unable to encode object of type: "+objType.Name);
+        }
+        return null;
     }
     
 	// ----------------------------------------------------------------------
