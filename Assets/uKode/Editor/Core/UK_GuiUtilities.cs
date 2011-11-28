@@ -97,7 +97,17 @@ public class UK_GuiUtilities {
             }
             return;            
         }
-        // Support all UnityEngine objects.
+        if(dataType == typeof(Color)) {
+            Color value= portValue != null ? (Color)portValue : default(Color);
+            Color newValue= EditorGUILayout.ColorField(niceName, value);
+            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
+            if(value != newValue && storage.GetSource(port) == null) {
+                storage.SetDefaultValue(desc, portId, newValue);
+                node.RuntimeArchive= desc.Encode(desc.Id);
+            }
+            return;            
+        }
+        // Suport all UnityEngine objects.
         if(UK_Types.IsA<UnityEngine.Object>(dataType)) {
             UnityEngine.Object value= portValue != null ? portValue as UnityEngine.Object: null;
             UnityEngine.Object newValue= EditorGUILayout.ObjectField(niceName, value, dataType, true);
