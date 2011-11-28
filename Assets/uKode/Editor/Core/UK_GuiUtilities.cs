@@ -17,7 +17,14 @@ public class UK_GuiUtilities {
         // Get runtime object if it exists.
         UK_FunctionBase runtimeObject= storage.GetRuntimeObject(node) as UK_FunctionBase;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
-        object portValue= runtimeObject != null ? runtimeObject[portId] : (desc.ParamIsOuts[portId] ? UK_Types.DefaultValue(dataType) : storage.GetDefaultValue(desc, portId));
+        object portValue= null;
+        if(runtimeObject != null) {
+            portValue= runtimeObject[portId];
+        } else if(portId < desc.ParamIsOuts.Length && !desc.ParamIsOuts[portId]) {
+            portValue= storage.GetDefaultValue(desc, portId);            
+        } else {
+            portValue= UK_Types.DefaultValue(dataType);
+        }
 
         // Display primitives.
         if(dataType == typeof(bool)) {
