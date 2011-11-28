@@ -8,7 +8,6 @@ using System.Collections.Generic;
 public class UK_GuiUtilities {
     public static void OnInspectorGUI(UK_EditorObject port, UK_IStorage storage) {
         // Extract port information
-        string niceName= port.Name == null || port.Name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(port.Name);
         Type dataType= UK_Types.GetDataType(port.RuntimeType);
         UK_EditorObject node= storage.GetParent(port);
         int portId= port.PortIndex;
@@ -27,96 +26,14 @@ public class UK_GuiUtilities {
         }
 
         // Display primitives.
-        if(dataType == typeof(bool)) {
-            bool value= portValue != null ? (bool)portValue : default(bool);
-            bool newValue= EditorGUILayout.Toggle(niceName, value);
+        object newValue= null;
+        if(ShowInInspector(port.Name, dataType, portValue, out newValue)) {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
-            if(value != newValue && storage.GetSource(port) == null) {
-                storage.SetDefaultValue(desc, portId, newValue);
-                node.RuntimeArchive= desc.Encode(desc.Id);
-            }
-            return;
-        }
-        if(dataType == typeof(int)) {
-            int value= portValue != null ? (int)portValue : default(int);
-            int newValue= EditorGUILayout.IntField(niceName, value);
-            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
-            if(value != newValue && storage.GetSource(port) == null) {
-                storage.SetDefaultValue(desc, portId, newValue);
-                node.RuntimeArchive= desc.Encode(desc.Id);
-            }
-            return;
-        }
-        if(dataType == typeof(float)) {
-            float value= portValue != null ? (float)portValue : default(float);
-            float newValue= EditorGUILayout.FloatField(niceName, value);
-            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
-            if(value != newValue && storage.GetSource(port) == null) {
-                storage.SetDefaultValue(desc, portId, newValue);
-                node.RuntimeArchive= desc.Encode(desc.Id);
-            }
-            return;
-        }
-        if(dataType == typeof(string)) {
-            string value= ((string)portValue) ?? "";
-            string newValue= EditorGUILayout.TextField(niceName, value);
-            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
-            if(value != newValue && storage.GetSource(port) == null) {
-                storage.SetDefaultValue(desc, portId, newValue);
-                node.RuntimeArchive= desc.Encode(desc.Id);
-            }
-            return;
-        }
-        if(dataType == typeof(Vector2)) {
-            Vector2 value= portValue != null ? (Vector2)portValue : default(Vector2);
-            Vector2 newValue= EditorGUILayout.Vector2Field(niceName, value);
-            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
-            if(value != newValue && storage.GetSource(port) == null) {
+            if(portValue != newValue && storage.GetSource(port) == null) {
                 storage.SetDefaultValue(desc, portId, newValue);
                 node.RuntimeArchive= desc.Encode(desc.Id);
             }
             return;            
-        }
-        if(dataType == typeof(Vector3)) {
-            Vector3 value= portValue != null ? (Vector3)portValue : default(Vector3);
-            Vector3 newValue= EditorGUILayout.Vector3Field(niceName, value);
-            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
-            if(value != newValue && storage.GetSource(port) == null) {
-                storage.SetDefaultValue(desc, portId, newValue);
-                node.RuntimeArchive= desc.Encode(desc.Id);
-            }
-            return;            
-        }
-        if(dataType == typeof(Vector4)) {
-            Vector4 value= portValue != null ? (Vector4)portValue : default(Vector4);
-            Vector4 newValue= EditorGUILayout.Vector4Field(niceName, value);
-            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
-            if(value != newValue && storage.GetSource(port) == null) {
-                storage.SetDefaultValue(desc, portId, newValue);
-                node.RuntimeArchive= desc.Encode(desc.Id);
-            }
-            return;            
-        }
-        if(dataType == typeof(Color)) {
-            Color value= portValue != null ? (Color)portValue : default(Color);
-            Color newValue= EditorGUILayout.ColorField(niceName, value);
-            if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
-            if(value != newValue && storage.GetSource(port) == null) {
-                storage.SetDefaultValue(desc, portId, newValue);
-                node.RuntimeArchive= desc.Encode(desc.Id);
-            }
-            return;            
-        }
-        // Suport all UnityEngine objects.
-        if(UK_Types.IsA<UnityEngine.Object>(dataType)) {
-            UnityEngine.Object value= portValue != null ? portValue as UnityEngine.Object: null;
-            UnityEngine.Object newValue= EditorGUILayout.ObjectField(niceName, value, dataType, true);
-            if(port.IsInputPort & runtimeObject != null) runtimeObject[portId]= newValue;
-            if(value != newValue && storage.GetSource(port) == null) {
-                storage.SetDefaultValue(desc, portId, newValue);
-                node.RuntimeArchive= desc.Encode(desc.Id);
-            }
-            return;                                    
         }
 
 //        // Display array of primitives.
@@ -241,5 +158,59 @@ public class UK_GuiUtilities {
 //        }            
 //
         Debug.LogWarning("OnInspectorGUI: Unknown type: "+port.RuntimeType);
+    }
+
+    // -----------------------------------------------------------------------
+    public static bool ShowInInspector(string name, Type type, object currentValue, out object newValue) {
+        string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
+        // Display primitives.
+        if(type == typeof(bool)) {
+            bool value= currentValue != null ? (bool)currentValue : default(bool);
+            newValue= EditorGUILayout.Toggle(niceName, value);
+            return true;
+        }
+        if(type == typeof(int)) {
+            int value= currentValue != null ? (int)currentValue : default(int);
+            newValue= EditorGUILayout.IntField(niceName, value);
+            return true;
+        }
+        if(type == typeof(float)) {
+            float value= currentValue != null ? (float)currentValue : default(float);
+            newValue= EditorGUILayout.FloatField(niceName, value);
+            return true;
+        }
+        if(type == typeof(string)) {
+            string value= ((string)currentValue) ?? "";
+            newValue= EditorGUILayout.TextField(niceName, value);
+            return true;
+        }
+        if(type == typeof(Vector2)) {
+            Vector2 value= currentValue != null ? (Vector2)currentValue : default(Vector2);
+            newValue= EditorGUILayout.Vector2Field(niceName, value);
+            return true;
+        }
+        if(type == typeof(Vector3)) {
+            Vector3 value= currentValue != null ? (Vector3)currentValue : default(Vector3);
+            newValue= EditorGUILayout.Vector3Field(niceName, value);
+            return true;
+        }
+        if(type == typeof(Vector4)) {
+            Vector4 value= currentValue != null ? (Vector4)currentValue : default(Vector4);
+            newValue= EditorGUILayout.Vector4Field(niceName, value);
+            return true;
+        }
+        if(type == typeof(Color)) {
+            Color value= currentValue != null ? (Color)currentValue : default(Color);
+            newValue= EditorGUILayout.ColorField(niceName, value);
+            return true;
+        }
+        // Suport all UnityEngine objects.
+        if(UK_Types.IsA<UnityEngine.Object>(type)) {
+            UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
+            newValue= EditorGUILayout.ObjectField(niceName, value, type, true);
+            return true;
+        }        
+        newValue= null;
+        return false;
     }
 }
