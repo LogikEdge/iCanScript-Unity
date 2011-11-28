@@ -20,16 +20,16 @@ public partial class UK_IStorage {
     public void AddPortToModule(UK_EditorObject port) {
         UK_EditorObject module= GetParent(port);
         UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(module.RuntimeArchive);
-        int len= rtDesc.ParamTypes.Length;
+        int len= rtDesc.PortTypes.Length;
         port.PortIndex= len;
-        Array.Resize(ref rtDesc.ParamNames, len+1);
-        rtDesc.ParamNames[len]= port.Name;
-        Array.Resize(ref rtDesc.ParamTypes, len+1);
-        rtDesc.ParamTypes[len]= port.RuntimeType;
-        Array.Resize(ref rtDesc.ParamIsOuts, len+1);
-        rtDesc.ParamIsOuts[len]= port.IsOutputPort;
-        Array.Resize(ref rtDesc.ParamDefaultValues, len+1);
-        rtDesc.ParamDefaultValues[len]= rtDesc.ParamIsOuts[len] || port.RuntimeType == typeof(void) ? null : UK_Types.DefaultValue(port.RuntimeType);
+        Array.Resize(ref rtDesc.PortNames, len+1);
+        rtDesc.PortNames[len]= port.Name;
+        Array.Resize(ref rtDesc.PortTypes, len+1);
+        rtDesc.PortTypes[len]= port.RuntimeType;
+        Array.Resize(ref rtDesc.PortIsOuts, len+1);
+        rtDesc.PortIsOuts[len]= port.IsOutputPort;
+        Array.Resize(ref rtDesc.PortDefaultValues, len+1);
+        rtDesc.PortDefaultValues[len]= rtDesc.PortIsOuts[len] || port.RuntimeType == typeof(void) ? null : UK_Types.DefaultValue(port.RuntimeType);
         module.RuntimeArchive= rtDesc.Encode(module.InstanceId);
     }
     // ----------------------------------------------------------------------
@@ -38,17 +38,17 @@ public partial class UK_IStorage {
         UK_EditorObject module= GetParent(port);
         UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(module.RuntimeArchive);
         int idx= port.PortIndex;
-        int len= rtDesc.ParamTypes.Length;
+        int len= rtDesc.PortTypes.Length;
         for(int i= idx; i < len-1; ++i) {
-            rtDesc.ParamNames[i]= rtDesc.ParamNames[i+1];
-            rtDesc.ParamTypes[i]= rtDesc.ParamTypes[i+1];
-            rtDesc.ParamIsOuts[i]= rtDesc.ParamIsOuts[i+1];
-            rtDesc.ParamDefaultValues[i]= rtDesc.ParamDefaultValues[i+1];
+            rtDesc.PortNames[i]= rtDesc.PortNames[i+1];
+            rtDesc.PortTypes[i]= rtDesc.PortTypes[i+1];
+            rtDesc.PortIsOuts[i]= rtDesc.PortIsOuts[i+1];
+            rtDesc.PortDefaultValues[i]= rtDesc.PortDefaultValues[i+1];
         }
-        Array.Resize(ref rtDesc.ParamNames, len-1);
-        Array.Resize(ref rtDesc.ParamTypes, len-1);
-        Array.Resize(ref rtDesc.ParamIsOuts, len-1);
-        Array.Resize(ref rtDesc.ParamDefaultValues, len-1);
+        Array.Resize(ref rtDesc.PortNames, len-1);
+        Array.Resize(ref rtDesc.PortTypes, len-1);
+        Array.Resize(ref rtDesc.PortIsOuts, len-1);
+        Array.Resize(ref rtDesc.PortDefaultValues, len-1);
         module.RuntimeArchive= rtDesc.Encode(module.InstanceId);
         // Rearrange port indexes
         ForEachChildPort(module, p=> { if(p.PortIndex > idx) --p.PortIndex; });

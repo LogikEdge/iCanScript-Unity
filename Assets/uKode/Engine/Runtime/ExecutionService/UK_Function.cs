@@ -27,8 +27,24 @@ public class UK_Function : UK_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Function(string name, MethodInfo methodInfo, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {
+    public UK_Function(string name, MethodInfo methodInfo, object[] portValues, bool[] portIsOuts) : base(name) {
         myMethodInfo= methodInfo;
+        Init(portValues, portIsOuts);
+    }
+    public UK_Function(string name, MethodInfo methodInfo) : base(name) {
+        myMethodInfo= methodInfo;
+    }
+    protected new void Init(object[] portValues, bool[] portIsOuts) {
+        object[] parameters= new object[portValues.Length-1];
+        Array.Copy(portValues, parameters, parameters.Length);
+        bool[] paramIsOuts= new bool[portIsOuts.Length-1];
+        Array.Copy(portIsOuts, paramIsOuts, paramIsOuts.Length);
+        base.Init(parameters, paramIsOuts);
+    }
+    public new void SetConnections(UK_Connection[] connections) {
+        UK_Connection[] paramConnections= new UK_Connection[connections.Length-1];
+        Array.Copy(connections, paramConnections, paramConnections.Length);
+        base.SetConnections(paramConnections);
     }
     
     // ======================================================================

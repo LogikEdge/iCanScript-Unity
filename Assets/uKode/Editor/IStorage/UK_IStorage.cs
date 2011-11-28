@@ -204,7 +204,7 @@ public partial class UK_IStorage {
         rtDesc.ObjectType= UK_ObjectTypeEnum.Module;
         rtDesc.Company= UK_EditorStrings.Company;
         rtDesc.Package= UK_EditorStrings.DefaultPackage;
-        rtDesc.Name= name;
+        rtDesc.DisplayName= name;
         rtDesc.ClassType= typeof(UK_Module);
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
@@ -231,7 +231,7 @@ public partial class UK_IStorage {
         rtDesc.ObjectType= UK_ObjectTypeEnum.StateChart;
         rtDesc.Company= UK_EditorStrings.Company;
         rtDesc.Package= UK_EditorStrings.DefaultPackage;
-        rtDesc.Name= name;
+        rtDesc.DisplayName= name;
         rtDesc.ClassType= typeof(UK_StateChart);
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
@@ -255,7 +255,7 @@ public partial class UK_IStorage {
         rtDesc.ObjectType= UK_ObjectTypeEnum.State;
         rtDesc.Company= UK_EditorStrings.Company;
         rtDesc.Package= UK_EditorStrings.DefaultPackage;
-        rtDesc.Name= name;
+        rtDesc.DisplayName= name;
         rtDesc.ClassType= typeof(UK_State);
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
@@ -283,14 +283,12 @@ public partial class UK_IStorage {
         
         // Create input/output ports.
         UK_RuntimeDesc  rtDesc= desc.RuntimeDesc;
-        for(int i= 0; i < desc.ParamNames.Length; ++i) {
-            UK_ObjectTypeEnum portType= rtDesc.ParamIsOuts[i] ? UK_ObjectTypeEnum.OutFunctionPort : UK_ObjectTypeEnum.InFunctionPort;
-            UK_EditorObject port= CreatePort(desc.ParamNames[i], id, rtDesc.ParamTypes[i], portType);
-            port.PortIndex= i;
-        }
-        if(desc.ReturnName != null) {
-            UK_EditorObject port= CreatePort(desc.ReturnName, id, rtDesc.ReturnType, UK_ObjectTypeEnum.OutFunctionPort);
-            port.PortIndex= desc.ParamNames.Length;
+        for(int i= 0; i < rtDesc.PortNames.Length; ++i) {
+            if(rtDesc.PortTypes[i] != typeof(void)) {
+                UK_ObjectTypeEnum portType= rtDesc.PortIsOuts[i] ? UK_ObjectTypeEnum.OutFunctionPort : UK_ObjectTypeEnum.InFunctionPort;
+                UK_EditorObject port= CreatePort(rtDesc.PortNames[i], id, rtDesc.PortTypes[i], portType);
+                port.PortIndex= i;                
+            }
         }
         return this[id];
     }
@@ -309,23 +307,14 @@ public partial class UK_IStorage {
             this[id].IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.MethodIcon, this);
         }
         
-        // Create input/output this ports.
-        UK_RuntimeDesc  rtDesc= desc.RuntimeDesc;
-        UK_EditorObject thisInPort= CreatePort("this", id, rtDesc.ClassType, UK_ObjectTypeEnum.InFunctionPort);
-        thisInPort.PortIndex= desc.ParamNames.Length+1;
-        UK_EditorObject thisOutPort= CreatePort("this", id, rtDesc.ClassType, UK_ObjectTypeEnum.OutFunctionPort);
-        thisOutPort.PortIndex= desc.ParamNames.Length+2;
         // Create input/output ports.
-        int portIdx= 0;
-        for(; portIdx < desc.ParamNames.Length; ++portIdx) {
-            UK_ObjectTypeEnum portType= rtDesc.ParamIsOuts[portIdx] ? UK_ObjectTypeEnum.OutFunctionPort : UK_ObjectTypeEnum.InFunctionPort;
-            UK_EditorObject port= CreatePort(desc.ParamNames[portIdx], id, rtDesc.ParamTypes[portIdx], portType);
-            port.PortIndex= portIdx;
-        }
-        // Create return port
-        if(desc.ReturnName != null) {
-            UK_EditorObject port= CreatePort(desc.ReturnName, id, rtDesc.ReturnType, UK_ObjectTypeEnum.OutFunctionPort);
-            port.PortIndex= desc.ParamNames.Length;
+        UK_RuntimeDesc  rtDesc= desc.RuntimeDesc;
+        for(int portIdx= 0; portIdx < rtDesc.PortNames.Length; ++portIdx) {
+            if(rtDesc.PortTypes[portIdx] != typeof(void)) {
+                UK_ObjectTypeEnum portType= rtDesc.PortIsOuts[portIdx] ? UK_ObjectTypeEnum.OutFunctionPort : UK_ObjectTypeEnum.InFunctionPort;
+                UK_EditorObject port= CreatePort(rtDesc.PortNames[portIdx], id, rtDesc.PortTypes[portIdx], portType);
+                port.PortIndex= portIdx;                
+            }
         }
         return this[id];
     }

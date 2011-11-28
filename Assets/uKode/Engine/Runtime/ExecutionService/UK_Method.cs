@@ -31,11 +31,21 @@ public class UK_Method : UK_Function {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Method(string name, MethodInfo methodInfo, object[] parameters, bool[] paramIsOuts) : base(name, methodInfo, parameters, paramIsOuts) {
+    public UK_Method(string name, MethodInfo methodInfo, object[] portValues, bool[] portIsOuts) : base(name, methodInfo) {
+        Init(portValues, portIsOuts);
     }
-    public void SetConnections(UK_Connection thisConnection, UK_Connection[] connections) {
-        myThisConnection= thisConnection;
-        base.SetConnections(connections);
+    protected new void Init(object[] portValues, bool[] portIsOuts) {
+        object[] paramValues= new object[portValues.Length-2];
+        Array.Copy(portValues, paramValues, paramValues.Length);
+        bool[] paramIsOuts= new bool[portIsOuts.Length-2];
+        Array.Copy(portIsOuts, paramIsOuts, paramIsOuts.Length);
+        base.Init(paramValues, paramIsOuts);        
+    }
+    public new void SetConnections(UK_Connection[] connections) {
+        myThisConnection= connections[connections.Length-2];
+        UK_Connection[] paramConnections= new UK_Connection[connections.Length-2];
+        Array.Copy(connections, paramConnections, paramConnections.Length);
+        base.SetConnections(paramConnections);
     }
     
     // ======================================================================

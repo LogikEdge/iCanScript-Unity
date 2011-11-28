@@ -101,7 +101,7 @@ public class UK_Inspector : Editor {
                         SelectedObject.Name= name;
                         if(SelectedObject.IsNode) {
                             UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(SelectedObject.RuntimeArchive);
-                            rtDesc.Name= name;
+                            rtDesc.DisplayName= name;
                             SelectedObject.RuntimeArchive= rtDesc.Encode(rtDesc.Id);
                         }
                         if(SelectedObject.IsStatePort) {

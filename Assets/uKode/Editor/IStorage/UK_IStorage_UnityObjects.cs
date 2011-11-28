@@ -36,30 +36,30 @@ public partial class UK_IStorage {
         SetUnityObject(id, null);
     }
     // ----------------------------------------------------------------------
-    public object GetDefaultValue(UK_RuntimeDesc desc, int idx) {
-        if(UK_Types.IsA<UnityEngine.Object>(desc.ParamTypes[idx])) {
-            object id= desc.ParamDefaultValues[idx];
+    public object GetDefaultValue(UK_RuntimeDesc desc, int portId) {
+        if(UK_Types.IsA<UnityEngine.Object>(desc.PortTypes[portId])) {
+            object id= desc.PortDefaultValues[portId];
             if(id == null) return null;
             return GetUnityObject((int)id);
         }
-        return desc.ParamDefaultValues[idx];    
+        return desc.PortDefaultValues[portId];    
     }
     // ----------------------------------------------------------------------
-    public void SetDefaultValue(UK_RuntimeDesc desc, int idx, object obj) {
-        if(UK_Types.IsA<UnityEngine.Object>(desc.ParamTypes[idx])) {
-            object idObj= desc.ParamDefaultValues[idx];
+    public void SetDefaultValue(UK_RuntimeDesc desc, int portId, object obj) {
+        if(UK_Types.IsA<UnityEngine.Object>(desc.PortTypes[portId])) {
+            object idObj= desc.PortDefaultValues[portId];
             if(idObj == null) {
-                desc.ParamDefaultValues[idx]= AddUnityObject(obj as Object);
+                desc.PortDefaultValues[portId]= AddUnityObject(obj as Object);
                 return;
             }
             int id= (int)idObj;
             if(IsValidUnityObject(id)) {
                 SetUnityObject(id, obj as Object);
             } else {
-                desc.ParamDefaultValues[idx]= AddUnityObject(obj as Object);
+                desc.PortDefaultValues[portId]= AddUnityObject(obj as Object);
             }
             return;
         }
-        desc.ParamDefaultValues[idx]= obj;
+        desc.PortDefaultValues[portId]= obj;
     }
 }

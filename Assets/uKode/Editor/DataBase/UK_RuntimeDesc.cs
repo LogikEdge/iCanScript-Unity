@@ -12,15 +12,13 @@ public class UK_RuntimeDesc {
     public UK_ObjectTypeEnum    ObjectType          = UK_ObjectTypeEnum.Unknown;
     public string               Company             = "(no company)";
     public string               Package             = "DefaultPackage";
-    public string               Name                = null;
+    public string               DisplayName         = null;
     public Type                 ClassType           = null;
     public string               MethodName          = null;
-    public string[]             ParamNames          = new string[0];
-    public Type[]               ParamTypes          = new Type[0];
-    public bool[]               ParamIsOuts         = new bool[0];
-    public object[]             ParamDefaultValues  = new object[0];
-    public string               ReturnName          = null;
-    public Type                 ReturnType          = null;
+    public string[]             PortNames           = new string[0];
+    public Type[]               PortTypes           = new Type[0];
+    public bool[]               PortIsOuts          = new bool[0];
+    public object[]             PortDefaultValues   = new object[0];
     
     // ======================================================================
     // Accessors
@@ -45,11 +43,140 @@ public class UK_RuntimeDesc {
             return field;
         }
     }
+    // ----------------------------------------------------------------------
     public object GetDefaultValue(int idx, UK_IStorage storage) {
         return storage.GetDefaultValue(this, idx);
     }
     public void SetDefaultValue(int idx, object obj, UK_IStorage storage) {
         storage.SetDefaultValue(this, idx, obj);
+    }
+    // ----------------------------------------------------------------------
+    public string[] ParamNames {
+        get {
+            string[] result= null;
+            switch(ObjectType) {
+                case UK_ObjectTypeEnum.Module: {
+                    result= PortNames;
+                    break;
+                }
+                case UK_ObjectTypeEnum.InstanceMethod: {
+                    result= new string[PortNames.Length-3];
+                    Array.Copy(PortNames, result, result.Length);
+                    break;
+                }
+                case UK_ObjectTypeEnum.Conversion:
+                case UK_ObjectTypeEnum.StaticMethod: {
+                    result= new string[PortNames.Length-1];
+                    Array.Copy(PortNames, result, result.Length);
+                    break;
+                }
+                default: {
+                    result= new string[0]; 
+                    break;
+                }
+            }
+            return result;            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public Type[] ParamTypes {
+        get {
+            Type[] result= null;
+            switch(ObjectType) {
+                case UK_ObjectTypeEnum.Module: {
+                    result= PortTypes;
+                    break;
+                }
+                case UK_ObjectTypeEnum.InstanceMethod: {
+                    result= new Type[PortTypes.Length-3];
+                    Array.Copy(PortTypes, result, result.Length);
+                    break;
+                }
+                case UK_ObjectTypeEnum.Conversion:
+                case UK_ObjectTypeEnum.StaticMethod: {
+                    result= new Type[PortTypes.Length-1];
+                    Array.Copy(PortTypes, result, result.Length);
+                    break;
+                }
+                default: {
+                    result= new Type[0]; 
+                    break;
+                }
+            }
+            return result;            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public bool[] ParamIsOuts {
+        get {
+            bool[] result= null;
+            switch(ObjectType) {
+                case UK_ObjectTypeEnum.Module: {
+                    result= PortIsOuts;
+                    break;
+                }
+                case UK_ObjectTypeEnum.InstanceMethod: {
+                    result= new bool[PortIsOuts.Length-3];
+                    Array.Copy(PortIsOuts, result, result.Length);
+                    break;
+                }
+                case UK_ObjectTypeEnum.Conversion:
+                case UK_ObjectTypeEnum.StaticMethod: {
+                    result= new bool[PortIsOuts.Length-1];
+                    Array.Copy(PortIsOuts, result, result.Length);
+                    break;
+                }
+                default: {
+                    result= new bool[0]; 
+                    break;
+                }
+            }
+            return result;            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public string ReturnName {
+        get {
+            string result= null;
+            switch(ObjectType) {
+                case UK_ObjectTypeEnum.InstanceMethod: {
+                    result= PortNames[PortNames.Length-3];
+                    break;
+                }
+                case UK_ObjectTypeEnum.Conversion:
+                case UK_ObjectTypeEnum.StaticMethod: {
+                    result= PortNames[PortNames.Length-1];
+                    break;
+                }
+                default: {
+                    result= null; 
+                    break;
+                }
+            }
+            return result;                    
+        }
+    }
+    // ----------------------------------------------------------------------
+    public Type ReturnType {
+        get {
+            Type result= null;
+            switch(ObjectType) {
+                case UK_ObjectTypeEnum.InstanceMethod: {
+                    result= PortTypes[PortTypes.Length-3];
+                    break;
+                }
+                case UK_ObjectTypeEnum.Conversion:
+                case UK_ObjectTypeEnum.StaticMethod: {
+                    result= PortTypes[PortTypes.Length-1];
+                    break;
+                }
+                default: {
+                    result= null; 
+                    break;
+                }
+            }
+            return result;                    
+        }
     }
     
     // ======================================================================
@@ -61,7 +188,66 @@ public class UK_RuntimeDesc {
     public UK_RuntimeDesc(string encoded) {
         Decode(encoded);
     }
-
+    // ----------------------------------------------------------------------
+    public UK_RuntimeDesc(UK_ObjectTypeEnum objectType, string company, string package, string name,
+                          Type classType, string methodName,
+                          string[] paramNames, Type[] paramTypes, bool[] paramIsOuts, object[] paramDefaultValues,
+                          string returnName, Type returnType) {
+        ObjectType= objectType;
+        Company= company;
+        Package= package;
+        DisplayName= name;
+        ClassType= classType;
+        MethodName= methodName;
+        switch(ObjectType) {
+            case UK_ObjectTypeEnum.InstanceMethod: {
+                PortNames= new string[paramNames.Length+3];
+                Array.Copy(paramNames, PortNames, paramNames.Length);
+                PortNames[paramNames.Length]= returnName;
+                PortNames[paramNames.Length+1]= "this";
+                PortNames[paramNames.Length+2]= "this";
+                PortTypes= new Type[paramTypes.Length+3];
+                Array.Copy(paramTypes, PortTypes, paramTypes.Length);
+                PortTypes[paramTypes.Length]= returnType;
+                PortTypes[paramTypes.Length+1]= classType;
+                PortTypes[paramTypes.Length+2]= classType;
+                PortIsOuts= new bool[paramIsOuts.Length+3];
+                Array.Copy(paramIsOuts, PortIsOuts, paramIsOuts.Length);
+                PortIsOuts[paramIsOuts.Length]= true;
+                PortIsOuts[paramIsOuts.Length+1]= false;
+                PortIsOuts[paramIsOuts.Length+2]= true;
+                PortDefaultValues= new object[paramDefaultValues.Length+3];
+                Array.Copy(paramDefaultValues, PortDefaultValues, paramDefaultValues.Length);
+                PortDefaultValues[paramDefaultValues.Length]= UK_Types.DefaultValue(returnType);
+                PortDefaultValues[paramDefaultValues.Length+1]= UK_Types.DefaultValue(classType);
+                PortDefaultValues[paramDefaultValues.Length+2]= UK_Types.DefaultValue(classType);
+                break;
+            }
+            case UK_ObjectTypeEnum.Conversion:
+            case UK_ObjectTypeEnum.StaticMethod: {
+                PortNames= new string[paramNames.Length+1];
+                Array.Copy(paramNames, PortNames, paramNames.Length);
+                PortNames[paramNames.Length]= returnName;
+                PortTypes= new Type[paramTypes.Length+1];
+                Array.Copy(paramTypes, PortTypes, paramTypes.Length);
+                PortTypes[paramTypes.Length]= returnType;
+                PortIsOuts= new bool[paramIsOuts.Length+1];
+                Array.Copy(paramIsOuts, PortIsOuts, paramIsOuts.Length);
+                PortIsOuts[paramIsOuts.Length]= true;
+                PortDefaultValues= new object[paramDefaultValues.Length+1];
+                Array.Copy(paramDefaultValues, PortDefaultValues, paramDefaultValues.Length);
+                PortDefaultValues[paramDefaultValues.Length]= UK_Types.DefaultValue(returnType);
+                break;
+            }
+            default: {
+                PortNames= paramNames;
+                PortTypes= paramTypes;
+                PortIsOuts= paramIsOuts;
+                PortDefaultValues= paramDefaultValues;
+                break;
+            }
+        }        
+    }
 
     // ======================================================================
     // Archiving
@@ -69,28 +255,25 @@ public class UK_RuntimeDesc {
     // Encode the runtime descriptor into a string.
     // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>
     public string Encode(int id) {
-        string result= UK_Archive.Encode(id)+":"+UK_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+UK_Archive.Encode(Name ?? "")+":"+UK_Archive.Encode(ClassType)+":"+MethodName+"<";
-        for(int i= 0; i < ParamTypes.Length; ++i) {
-            if(ParamIsOuts[i]) result+= "out ";
-            result+= ParamNames[i];
-            if(ParamDefaultValues[i] != null) {
-                if(UK_Types.IsA<UnityEngine.Object>(ParamTypes[i])) {
-                    result+= ":="+UK_Archive.Encode((int)ParamDefaultValues[i]);
+        string result= UK_Archive.Encode(id)+":"+UK_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+UK_Archive.Encode(DisplayName ?? "")+":"+UK_Archive.Encode(ClassType)+":"+MethodName+"<";
+        for(int i= 0; i < PortTypes.Length; ++i) {
+            if(PortIsOuts[i]) result+= "out ";
+            result+= PortNames[i];
+            if(PortDefaultValues[i] != null) {
+                if(UK_Types.IsA<UnityEngine.Object>(PortTypes[i])) {
+                    result+= ":="+UK_Archive.Encode((int)PortDefaultValues[i]);
                 } else {
-                    string defaultValueStr= UK_Archive.Encode(ParamDefaultValues[i]);
+                    string defaultValueStr= UK_Archive.Encode(PortDefaultValues[i]);
                     if(defaultValueStr != null) {
                         result+= ":="+defaultValueStr;                                            
                     }
                 }
             }
-            result+= ":"+UK_Archive.Encode(ParamTypes[i]);
-            if(i != ParamTypes.Length-1) result+= ";";
-        }
-        if(ReturnType != null) {
-            if(ParamTypes.Length != 0) result+=";";
-            result+= "ret "+(ReturnName != null ? ReturnName : "out")+":"+UK_Archive.Encode(ReturnType);
+            result+= ":"+UK_Archive.Encode(PortTypes[i]);
+            if(i != PortTypes.Length-1) result+= ";";
         }
         result+=">{}";
+//        Debug.Log("Encode: "+result);
         return result;
     }
     // ----------------------------------------------------------------------
@@ -117,10 +300,10 @@ public class UK_RuntimeDesc {
         end= encoded.IndexOf(':');
         Package= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        // name
+        // display name
 //        Debug.Log("Decoding name=> "+encoded);
         end= encoded.IndexOf(':');
-        Name= UK_Archive.Decode<string>(encoded.Substring(0, end));
+        DisplayName= UK_Archive.Decode<string>(encoded.Substring(0, end));
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // class type
 //        Debug.Log("Decoding class type=> "+encoded);
@@ -138,39 +321,29 @@ public class UK_RuntimeDesc {
         end= encoded.IndexOf('>');
         string parameterString= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        ParseParameters(parameterString);
+        ParsePorts(parameterString);
         return this;
     }
     // ----------------------------------------------------------------------
     // Extracts the type of the parameters from the given string.
-    void ParseParameters(string paramStr) {
-        ReturnType= null;
-        List<bool>      paramIsOut   = new List<bool>();
-        List<Type>      paramTypes   = new List<Type>();
-        List<string>    paramNames   = new List<string>();
-        List<object>    paramDefaults= new List<object>();
+    void ParsePorts(string paramStr) {
+        List<bool>      portIsOut   = new List<bool>();
+        List<Type>      portTypes   = new List<Type>();
+        List<string>    portNames   = new List<string>();
+        List<object>    portDefaults= new List<object>();
         while(paramStr.Length > 0) {
             // Return type
             int end= -1;
-            if(paramStr.StartsWith("ret ")) {
-                end= paramStr.IndexOf(':');
-                ReturnName= paramStr.Substring(4, end-4);
-                paramStr= paramStr.Substring(end+1, paramStr.Length-end-1);
-                end= paramStr.IndexOf(';');
-                ReturnType= UK_Archive.Decode<Type>(paramStr.Substring(0, end > 0 ? end : paramStr.Length));
-                paramStr= end > 0 ? paramStr.Substring(end+1, paramStr.Length-end-1) : "";
-                continue;
-            }
             // in/out parameter type
             if(paramStr.StartsWith("out ")) {
-                paramIsOut.Add(true);
+                portIsOut.Add(true);
                 paramStr= paramStr.Substring(4, paramStr.Length-4);
             } else {
-                paramIsOut.Add(false);
+                portIsOut.Add(false);
             }                
             // parameter name
             end= paramStr.IndexOf(':');
-            paramNames.Add(paramStr.Substring(0, end));
+            portNames.Add(paramStr.Substring(0, end));
             paramStr= paramStr.Substring(end+1, paramStr.Length-end-1);
             // parameter default value (part 1)
             string defaultValueStr= null;
@@ -181,24 +354,24 @@ public class UK_RuntimeDesc {
             }
             // parameter type.
             end= paramStr.IndexOf(';');
-            Type paramType= UK_Archive.Decode<Type>(paramStr.Substring(0, end > 0 ? end : paramStr.Length));
-            paramTypes.Add(paramType);
+            Type portType= UK_Archive.Decode<Type>(paramStr.Substring(0, end > 0 ? end : paramStr.Length));
+            portTypes.Add(portType);
             paramStr= end > 0 ? paramStr.Substring(end+1, paramStr.Length-end-1) : "";
             // parameter default value (part 2)
             if(defaultValueStr != null) {
-                if(UK_Types.IsA<UnityEngine.Object>(paramType)) {
-                    paramDefaults.Add(UK_Archive.Decode(defaultValueStr, typeof(int)));
+                if(UK_Types.IsA<UnityEngine.Object>(portType)) {
+                    portDefaults.Add(UK_Archive.Decode(defaultValueStr, typeof(int)));
                 } else {
-                    paramDefaults.Add(UK_Archive.Decode(defaultValueStr, paramType));                    
+                    portDefaults.Add(UK_Archive.Decode(defaultValueStr, portType));                    
                 }
             } else {
-                paramDefaults.Add(UK_Types.DefaultValue(paramType));                
+                portDefaults.Add(UK_Types.DefaultValue(portType));                
             }
         }
-        ParamIsOuts= paramIsOut.ToArray();
-        ParamTypes = paramTypes.ToArray();
-        ParamNames = paramNames.ToArray();
-        ParamDefaultValues= paramDefaults.ToArray();
+        PortIsOuts= portIsOut.ToArray();
+        PortTypes = portTypes.ToArray();
+        PortNames = portNames.ToArray();
+        PortDefaultValues= portDefaults.ToArray();
     }
 
 }

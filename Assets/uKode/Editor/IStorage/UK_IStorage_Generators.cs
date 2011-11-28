@@ -56,10 +56,10 @@ public partial class UK_IStorage {
                             break;                            
                         }
                         case UK_ObjectTypeEnum.Module: {
-                            UK_RuntimeDesc desc;
-                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
-                            if(desc == null) break;
-                            UK_Module module= new UK_Module(edChild.Name, parameters, desc.ParamIsOuts);                                
+                            UK_RuntimeDesc rtDesc;
+                            object[] parameters= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            if(rtDesc == null) break;
+                            UK_Module module= new UK_Module(edChild.Name, parameters, rtDesc.PortIsOuts);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= module;
                             if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);
                             GenerateRuntimeChildNodes(edChild, module);
@@ -67,10 +67,10 @@ public partial class UK_IStorage {
                         }
                         case UK_ObjectTypeEnum.InstanceMethod: {
                             // Create method.
-                            UK_RuntimeDesc desc;
-                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
-                            if(desc == null) break;
-                            UK_Method method= new UK_Method(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);                                
+                            UK_RuntimeDesc rtDesc;
+                            object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            if(rtDesc == null) break;
+                            UK_Method method= new UK_Method(edChild.Name, rtDesc.Method, portValues, rtDesc.PortIsOuts);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= method;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, method);
                             break;                            
@@ -78,36 +78,36 @@ public partial class UK_IStorage {
                         case UK_ObjectTypeEnum.Conversion:
                         case UK_ObjectTypeEnum.StaticMethod: {
                             // Create function.
-                            UK_RuntimeDesc desc;
-                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
-                            if(desc == null) break;
-                            UK_Function func= new UK_Function(edChild.Name, desc.Method, parameters, desc.ParamIsOuts);                                
+                            UK_RuntimeDesc rtDesc;
+                            object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            if(rtDesc == null) break;
+                            UK_Function func= new UK_Function(edChild.Name, rtDesc.Method, portValues, rtDesc.PortIsOuts);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= func;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, func);
                             break;
                         }
                         case UK_ObjectTypeEnum.InstanceField: {
                             // Create function.
-                            UK_RuntimeDesc desc;
-                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
-                            if(desc == null) break;
-                            FieldInfo fieldInfo= desc.Field;
-                            UK_FunctionBase rtField= desc.ParamIsOuts[1] ?
-                                new UK_GetInstanceField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase:
-                                new UK_SetInstanceField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase;                                
+                            UK_RuntimeDesc rtDesc;
+                            object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            if(rtDesc == null) break;
+                            FieldInfo fieldInfo= rtDesc.Field;
+                            UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
+                                new UK_GetInstanceField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts) as UK_FunctionBase:
+                                new UK_SetInstanceField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts) as UK_FunctionBase;                                
                             TreeCache[edChild.InstanceId].RuntimeObject= rtField;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
                             break;
                         }
                         case UK_ObjectTypeEnum.StaticField: {
                             // Create function.
-                            UK_RuntimeDesc desc;
-                            object[] parameters= BuildRuntimeParameterArray(edChild, out desc);
-                            if(desc == null) break;
-                            FieldInfo fieldInfo= desc.Field;
-                            UK_FunctionBase rtField= desc.ParamIsOuts[1] ?
-                                new UK_GetStaticField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase:
-                                new UK_SetStaticField(edChild.Name, fieldInfo, parameters, desc.ParamIsOuts) as UK_FunctionBase;                                
+                            UK_RuntimeDesc rtDesc;
+                            object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            if(rtDesc == null) break;
+                            FieldInfo fieldInfo= rtDesc.Field;
+                            UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
+                                new UK_GetStaticField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts) as UK_FunctionBase:
+                                new UK_SetStaticField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts) as UK_FunctionBase;                                
                             TreeCache[edChild.InstanceId].RuntimeObject= rtField;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
                             break;                            
@@ -168,36 +168,14 @@ public partial class UK_IStorage {
                             break;                            
                         }
                         case UK_ObjectTypeEnum.InstanceMethod: {
-                            // Parameter connections
-                            UK_Connection[] paramConnections= BuildRuntimeConnectionArray(edChild);
-                            // This connection.
-                            UK_Connection thisConnection= new UK_Connection(null, -1);
-                            UK_RuntimeDesc desc= new UK_RuntimeDesc(edChild.RuntimeArchive);
-                            int thisId= desc.ParamTypes.Length+1;
-                            ForEachChildPort(edChild,
-                                p=> {
-                                    if(p.PortIndex == thisId) {
-                                        UK_EditorObject sourcePort= GetSource(p);
-                                        if(sourcePort != null) {
-                                            UK_EditorObject sourceNode= GetParent(sourcePort);
-                                            UK_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as UK_FunctionBase;
-                                            thisConnection= new UK_Connection(rtSourceNode, sourcePort.PortIndex);
-                                        }
-                                        return true;
-                                    }
-                                    return false;
-                                }
-                            );
-                            // Set connections.
-                            UK_Method method= TreeCache[edChild.InstanceId].RuntimeObject as UK_Method;
-                            method.SetConnections(thisConnection, paramConnections);
+                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_Method).SetConnections(connections);
                             break;
-                            
                         }
                         case UK_ObjectTypeEnum.Conversion:
                         case UK_ObjectTypeEnum.StaticMethod: {
                             UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
-                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_Function).SetConnections(connections);
                             break;
                         }
                         case UK_ObjectTypeEnum.InstanceField: {
@@ -222,36 +200,36 @@ public partial class UK_IStorage {
     // ----------------------------------------------------------------------
     // Builds the runtime parameter array information for the given
     // editor object.
-    object[] BuildRuntimeParameterArray(UK_EditorObject edObj, out UK_RuntimeDesc desc) {
-        desc= new UK_RuntimeDesc(edObj.RuntimeArchive);
-        if(desc == null) {
+    object[] BuildRuntimePortValueArray(UK_EditorObject edObj, out UK_RuntimeDesc rtDesc) {
+        rtDesc= new UK_RuntimeDesc(edObj.RuntimeArchive);
+        if(rtDesc == null) {
             Debug.LogWarning("Unable to locate runtime information for: "+edObj.RuntimeArchive);
             return new object[0];
         }
         // Create function parameters.
-        int paramLen= desc.ParamTypes.Length;
-        object[] parameters= new object[paramLen];
-        for(int i= 0; i < paramLen; ++i) {
-            if(desc.ParamIsOuts[i]) {  // outputs
-                parameters[i]= null;
+        int portLen= rtDesc.PortTypes.Length;
+        object[] portValues= new object[portLen];
+        for(int i= 0; i < portLen; ++i) {
+            if(rtDesc.PortIsOuts[i]) {  // outputs
+                portValues[i]= null;
             } else {                   // inputs
-                parameters[i]= GetDefaultValue(desc, i) ?? UK_Types.DefaultValue(desc.ParamTypes[i]);
+                portValues[i]= GetDefaultValue(rtDesc, i) ?? UK_Types.DefaultValue(rtDesc.PortTypes[i]);
             }
         }        
-        return parameters;
+        return portValues;
     }
     // ----------------------------------------------------------------------
     // Builds the runtime connection array information for the given
     // editor object.
     UK_Connection[] BuildRuntimeConnectionArray(UK_EditorObject edObj) {
-        UK_RuntimeDesc desc= new UK_RuntimeDesc(edObj.RuntimeArchive);
-        if(desc == null) {
+        UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edObj.RuntimeArchive);
+        if(rtDesc == null) {
             Debug.LogWarning("Unable to locate reflection information for: "+edObj.RuntimeArchive);
             return new UK_Connection[0];
         }
-        int paramLen= desc.ParamTypes.Length;
-        UK_Connection[] connections= new UK_Connection[paramLen];
-        for(int i= 0; i < paramLen; ++i) {
+        int portLen= rtDesc.PortTypes.Length;
+        UK_Connection[] connections= new UK_Connection[portLen];
+        for(int i= 0; i < portLen; ++i) {
             UK_Connection connection= new UK_Connection(null, -1);
             ForEachChildPort(edObj,
                 p=> {
@@ -279,11 +257,11 @@ public partial class UK_IStorage {
         Debug.Log("Parsing result:");
         Debug.Log("Company= "+desc.Company+" Package= "+desc.Package+" ClassType= "+desc.ClassType.ToString()+" Name= "+desc.MethodName);
         string paramStr= "";
-        for(int i= 0; i < desc.ParamTypes.Length; ++i) {
-            if(desc.ParamIsOuts[i]) paramStr+= "out ";
-            paramStr+= desc.ParamTypes[i].ToString();
-            if(desc.ParamDefaultValues[i] != null) {
-                paramStr+=":= "+desc.ParamDefaultValues[i].ToString();
+        for(int i= 0; i < desc.PortTypes.Length; ++i) {
+            if(desc.PortIsOuts[i]) paramStr+= "out ";
+            paramStr+= desc.PortTypes[i].ToString();
+            if(desc.PortDefaultValues[i] != null) {
+                paramStr+=":= "+desc.PortDefaultValues[i].ToString();
             }
             paramStr+= ";";
         }

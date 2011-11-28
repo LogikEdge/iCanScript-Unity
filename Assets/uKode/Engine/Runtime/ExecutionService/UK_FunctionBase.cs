@@ -49,6 +49,10 @@ public abstract class UK_FunctionBase : UK_Action {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public UK_FunctionBase(string name, object[] parameters, bool[] paramIsOuts) : base(name) {
+        Init(parameters, paramIsOuts);
+    }
+    public UK_FunctionBase(string name) : base(name) {}
+    protected void Init(object[] parameters, bool[] paramIsOuts) {
         myParameters= parameters ?? new object[0];
         myParameterIsOuts= paramIsOuts ?? new bool[0];
         myConnections= new UK_Connection[0];
@@ -58,7 +62,7 @@ public abstract class UK_FunctionBase : UK_Action {
             (paramIsOuts[i] ? outIdx : inIdx).Add(i); 
         }
         myInIndexes = inIdx.ToArray();
-        myOutIndexes= outIdx.ToArray();
+        myOutIndexes= outIdx.ToArray();        
     }
     public void SetConnections(UK_Connection[] connections) {
         myConnections= connections;

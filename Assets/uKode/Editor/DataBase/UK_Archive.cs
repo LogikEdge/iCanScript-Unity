@@ -93,6 +93,7 @@ public class UK_Archive {
             Vector2 v;
             int end= valueStr.IndexOf("(");
             if(end != 0) { Debug.LogWarning("Decode: Invalid Vector2 format !!!"); return Vector2.zero; }
+            valueStr= valueStr.Substring(1, valueStr.Length-1);
             if(!DecodeWithSeperator(ref valueStr, ',', out v.x)) return Vector4.zero;
             if(!DecodeWithSeperator(ref valueStr, ')', out v.y)) return Vector4.zero;
             return v;                        
@@ -101,6 +102,7 @@ public class UK_Archive {
             Vector3 v;
             int end= valueStr.IndexOf("(");
             if(end != 0) { Debug.LogWarning("Decode: Invalid Vector3 format !!!"); return Vector3.zero; }
+            valueStr= valueStr.Substring(1, valueStr.Length-1);
             if(!DecodeWithSeperator(ref valueStr, ',', out v.x)) return Vector4.zero;
             if(!DecodeWithSeperator(ref valueStr, ',', out v.y)) return Vector4.zero;
             if(!DecodeWithSeperator(ref valueStr, ')', out v.z)) return Vector4.zero;
@@ -110,6 +112,7 @@ public class UK_Archive {
             Vector4 v;
             int end= valueStr.IndexOf("(");
             if(end != 0) { Debug.LogWarning("Decode: Invalid Vector4 format !!!"); return Vector4.zero; }
+            valueStr= valueStr.Substring(1, valueStr.Length-1);
             if(!DecodeWithSeperator(ref valueStr, ',', out v.x)) return Vector4.zero;
             if(!DecodeWithSeperator(ref valueStr, ',', out v.y)) return Vector4.zero;
             if(!DecodeWithSeperator(ref valueStr, ',', out v.z)) return Vector4.zero;

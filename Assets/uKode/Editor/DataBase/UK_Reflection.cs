@@ -257,8 +257,7 @@ public class UK_Reflection {
         // Parse return type.
         Type retType= method.ReturnType;
         if(retType == typeof(void)) {
-            retType= null;
-            retName= null;
+            retName= "";
         }
         // Parse parameters.
         string[] paramNames   = ParseParameterNames(method);
@@ -276,8 +275,7 @@ public class UK_Reflection {
         // Parse return type.
         Type retType= method.ReturnType;
         if(retType == typeof(void)) {
-            retType= null;
-            retName= null;
+            retName= "";
         }
         // Parse parameters.
         string[] paramNames   = ParseParameterNames(method);

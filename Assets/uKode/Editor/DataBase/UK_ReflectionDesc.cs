@@ -9,20 +9,20 @@ public class UK_ReflectionDesc {
     // ----------------------------------------------------------------------
     public string           Company;
     public string           Package;
-    public Type             ClassType;
-    public string           DisplayName;
     public string           ToolTip;
     public string           IconPath;
-    public string[]         ParamNames;
-    public string           ReturnName;
     public UK_RuntimeDesc   RuntimeDesc;
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public UK_ObjectTypeEnum ObjectType { get { return RuntimeDesc.ObjectType; } set { RuntimeDesc.ObjectType= value; }}
-    public Type              ReturnType { get { return RuntimeDesc.ReturnType; } set { RuntimeDesc.ReturnType= value; }}
-    
+    public UK_ObjectTypeEnum ObjectType  { get { return RuntimeDesc.ObjectType; }}
+    public Type              ClassType   { get { return RuntimeDesc.ClassType; }}
+    public string            DisplayName { get { return RuntimeDesc.DisplayName; }}
+    public string[]          ParamNames  { get { return RuntimeDesc.ParamNames; }}
+    public string            ReturnName  { get { return RuntimeDesc.ReturnName; }}
+    public Type              ReturnType  { get { return RuntimeDesc.ReturnType; }}
+
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
@@ -34,30 +34,13 @@ public class UK_ReflectionDesc {
         // Editor object information.
         Company    = company;
         Package    = package;
-        DisplayName= name;
         ToolTip    = toolTip;
-        ClassType  = classType;
         IconPath   = iconPath;
 
-        // Fill-in editor names
-        ParamNames= paramNames;
-        ReturnName= returnName;
- 
         // Fill-in runtime details.
-        RuntimeDesc= new UK_RuntimeDesc();
-        RuntimeDesc.ObjectType= objType;
-        RuntimeDesc.ClassType= classType;
-        RuntimeDesc.MethodName= methodInfo != null ? methodInfo.Name : null;
-        RuntimeDesc.ParamIsOuts= paramIsOuts;
-        RuntimeDesc.ParamTypes= paramTypes;
-        RuntimeDesc.ParamDefaultValues= paramDefaultValues;
-        RuntimeDesc.ReturnType= returnType;
-        
-        // To be obsoleted
-        RuntimeDesc.Company   = company;
-        RuntimeDesc.Package   = package;
-        RuntimeDesc.ParamNames= paramNames;
-        RuntimeDesc.ReturnName= returnName;
+        RuntimeDesc= new UK_RuntimeDesc(objType, company, package, name, classType, methodInfo != null ? methodInfo.Name : null,
+                                        paramNames, paramTypes, paramIsOuts, paramDefaultValues,
+                                        returnName, returnType);
     }
 
     // ======================================================================

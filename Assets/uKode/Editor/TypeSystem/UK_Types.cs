@@ -18,7 +18,7 @@ public static class UK_Types {
     // ----------------------------------------------------------------------
     // Returns the default value of the given type.
     public static object DefaultValue(Type type) {
-       return type.IsValueType ? Activator.CreateInstance(type) : null;
+       return (type == null || type == typeof(void)) ? null : (type.IsValueType ? Activator.CreateInstance(type) : null);
     }
 
 	// ----------------------------------------------------------------------
