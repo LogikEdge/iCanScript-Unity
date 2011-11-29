@@ -45,11 +45,8 @@ public class UK_DynamicMenu {
     const string OnExitStr= "+ "+UK_EditorStrings.OnExitNode;
     const string PublishPortStr= "Publish on Module";
     const string EnablePortStr= "+ Enable Port";
-    const string TransitionExitStr= "+ Transition Exit";
-    const string TransitionEntryActionStr= "+ Entry Action";
-    const string TransitionEntryDataCollectorStr= "+ Data Collector";
-    const string UnhideTransitionEntryStr= "Show Transition Entry";
-    const string UnhideTransitionExitStr= "Show Transition Exit";
+    const string UnhideTransitionGuardStr= "Show Transition Guard";
+    const string UnhideTransitionActionStr= "Show Transition Action";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -73,15 +70,15 @@ public class UK_DynamicMenu {
         
         // Process the menu state.
         switch(selectedObject.ObjectType) {
-            case UK_ObjectTypeEnum.Behaviour:       BehaviourMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.StateChart:      StateChartMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.State:           StateMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.Module:          ModuleMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.TransitionEntry: TransitionEntryModuleMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.TransitionExit:  ModuleMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.StaticMethod:    StaticMethodMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.Conversion:      StaticMethodMenu(selectedObject, storage); break;
-            default: if(selectedObject.IsPort)      PortMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.Behaviour:        BehaviourMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.StateChart:       StateChartMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.State:            StateMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.Module:           ModuleMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.TransitionGuard:  ModuleMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.TransitionAction: ModuleMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.StaticMethod:     StaticMethodMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.Conversion:       StaticMethodMenu(selectedObject, storage); break;
+            default: if(selectedObject.IsPort)       PortMenu(selectedObject, storage); break;
         }
     }
 
@@ -153,49 +150,6 @@ public class UK_DynamicMenu {
             menu= tmp;
         }
         ShowMenu(menu, selectedObject, storage);
-    }
-	// ----------------------------------------------------------------------
-    void TransitionEntryModuleMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
-        string[] tmp= null;
-        string[] menu= new string[0];
-        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            // Transition entry Sub-components.
-            UK_EditorObject entryAction= storage.GetActionModuleFromTransitionEntryModule(selectedObject);
-            UK_EditorObject dataCollector= storage.GetDataCollectorModuleFromTransitionEntryModule(selectedObject);
-            if(entryAction == null || dataCollector == null) {
-                tmp= new string[menu.Length+(entryAction==null?1:0)+(dataCollector==null?1:0)];
-                menu.CopyTo(tmp, 0);
-                int idx= menu.Length;
-                if(entryAction == null) {
-                    tmp[idx++]= TransitionEntryActionStr;
-                }
-                if(dataCollector == null) {
-                    tmp[idx]= TransitionEntryDataCollectorStr;
-                }
-                menu= tmp;            
-            }
-        }
-        // Fold/Expand menu items
-        if(!storage.IsMinimized(selectedObject)) {
-            tmp= new string[menu.Length+2];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            if(storage.IsFolded(selectedObject)) {
-                tmp[menu.Length+1]= UnfoldStr;
-            } else {
-                tmp[menu.Length+1]= FoldStr;            
-            }
-            menu= tmp;            
-        }
-        // Delete menu item
-        if(selectedObject.InstanceId != 0) {
-            tmp= new string[menu.Length+2];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            tmp[menu.Length+1]= DeleteStr;
-            menu= tmp;
-        }
-        ShowMenu(menu, selectedObject, storage);        
     }
 	// ----------------------------------------------------------------------
     void StateChartMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
@@ -282,26 +236,17 @@ public class UK_DynamicMenu {
         if(selectedObject.IsStatePort) {
             int i= menu.Length;
             if(selectedObject.IsOutStatePort) {
-                UK_EditorObject sourcePort= storage.GetSource(selectedObject);
-                UK_EditorObject entryModule= storage.GetParent(sourcePort);
-                if(entryModule.IsHidden) {
+                UK_EditorObject action= null;
+                UK_EditorObject guard= storage.GetTransitionGuardAndAction(selectedObject, out action);
+                if(guard.IsHidden) {
                     string[] tmp= new string[i+1];
-                    tmp[i]= UnhideTransitionEntryStr;
+                    tmp[i]= UnhideTransitionGuardStr;
                     menu= tmp;                        
                 }
-            } else {
-                UK_EditorObject connected= storage.FindAConnectedPort(selectedObject);
-                if(connected == null) {
+                if(action.IsHidden) {
                     string[] tmp= new string[i+1];
-                    tmp[i]= TransitionExitStr;
-                    menu= tmp;
-                } else {
-                    UK_EditorObject exitModule= storage.GetParent(connected);
-                    if(exitModule.IsHidden) {
-                        string[] tmp= new string[i+1];
-                        tmp[i]= UnhideTransitionExitStr;
-                        menu= tmp;                                                
-                    }
+                    tmp[i]= UnhideTransitionActionStr;
+                    menu= tmp;                        
                 }
             }
         }
@@ -384,12 +329,11 @@ public class UK_DynamicMenu {
             case OnEntryStr:                ProcessCreateOnEntryModule(selectedObject, storage); break;
             case OnUpdateStr:               ProcessCreateOnUpdateModule(selectedObject, storage); break;
             case OnExitStr:                 ProcessCreateOnExitModule(selectedObject, storage); break;
-            case TransitionExitStr:         CreateTransitionExit(selectedObject, storage); break;
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 ProcessDestroyObject(selectedObject, storage); break;
-            case UnhideTransitionEntryStr:  ProcessUnhideTransitionEntry(selectedObject, storage); break;
-            case UnhideTransitionExitStr:   ProcessUnhideTransitionExit(selectedObject, storage); break;
+            case UnhideTransitionGuardStr:  ProcessUnhideTransitionGuard(selectedObject, storage); break;
+            case UnhideTransitionActionStr: ProcessUnhideTransitionAction(selectedObject, storage); break;
             case EnablePortStr: {
                 UK_EditorObject port= storage.CreatePort(UK_EditorStrings.EnablePort, selectedObject.InstanceId, typeof(bool), UK_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
@@ -410,14 +354,6 @@ public class UK_DynamicMenu {
                 }
                 grandParent.IsDirty= true;
                 break;                
-            }
-            case TransitionEntryActionStr: {
-                storage.CreateTransitionEntryAction(selectedObject);
-                break;
-            }
-            case TransitionEntryDataCollectorStr: {
-                storage.CreateTransitionDataCollector(selectedObject);
-                break;
             }
             default: {
                 UK_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context.Command);
@@ -511,16 +447,18 @@ public class UK_DynamicMenu {
         DestroyObject(obj, storage);    
     }
 	// ----------------------------------------------------------------------
-    void ProcessUnhideTransitionEntry(UK_EditorObject outStatePort, UK_IStorage storage) {
-        UK_EditorObject sourcePort= storage.GetSource(outStatePort);
-        UK_EditorObject entryModule= storage.GetParent(sourcePort);
-        storage.Maximize(entryModule);
+    void ProcessUnhideTransitionGuard(UK_EditorObject statePort, UK_IStorage storage) {
+        if(statePort.IsInStatePort) statePort= storage[statePort.Source];
+        UK_EditorObject action= null;
+        UK_EditorObject guard= storage.GetTransitionGuardAndAction(statePort, out action);
+        storage.Maximize(guard);
     }
 	// ----------------------------------------------------------------------
-    void ProcessUnhideTransitionExit(UK_EditorObject inStatePort, UK_IStorage storage) {
-        UK_EditorObject connected= storage.FindAConnectedPort(inStatePort);
-        UK_EditorObject exitModule= storage.GetParent(connected);
-        storage.Maximize(exitModule);
+    void ProcessUnhideTransitionAction(UK_EditorObject statePort, UK_IStorage storage) {
+        if(statePort.IsInStatePort) statePort= storage[statePort.Source];
+        UK_EditorObject action= null;
+        storage.GetTransitionGuardAndAction(statePort, out action);
+        if(action != null) storage.Maximize(action);
     }
 
     // ======================================================================
@@ -547,39 +485,8 @@ public class UK_DynamicMenu {
         return method;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject CreateTransitionExit(UK_EditorObject inStatePort, UK_IStorage storage) {
-        return storage.CreateTransitionExit(inStatePort);
-    }
-	// ----------------------------------------------------------------------
     bool DestroyObject(UK_EditorObject selectedObject, UK_IStorage storage) {
         bool isDestroyed= false;
-        // A transition cannot exist without a transition entry module.
-        if(storage.IsTransitionEntryModule(selectedObject)) {
-            UK_EditorObject outStatePort= storage.GetOutStatePortFromTransitionEntryModule(selectedObject);
-            if(EditorUtility.DisplayDialog("Deleting Transition",
-                                           "A transition cannot exist without a trigger module.  Are you sure you want to remove the transition: "+outStatePort.Name, "Delete Transition", "Cancel")) {
-                storage.DestroyInstance(selectedObject);
-                storage.DestroyInstance(outStatePort);                        
-                Reset();
-                return true;
-            }                        
-        }
-        // A transition data collector cannot exist without a transition exit module.
-        if(storage.IsTransitionExitModule(selectedObject)) {
-            UK_EditorObject entryModule= storage.GetTransitionEntryModule(selectedObject);
-            UK_EditorObject dataCollector= storage.GetDataCollectorModuleFromTransitionEntryModule(entryModule);
-            if(dataCollector != null) {
-                if(EditorUtility.DisplayDialog("Deleting Transition Exit & Associated Data Collector",
-                                               "Transition Data Collector cannot exist without a transition exit module.  Are you sure you want to remove BOTH the DATA COLLECTOR and the TRANSITION EXIT MODULE.", "Delete DataCollector & Transition Exit", "Cancel")) {
-                    storage.DestroyInstance(dataCollector.InstanceId);
-                    storage.DestroyInstance(selectedObject.InstanceId);                        
-                    Reset();
-                    return true;
-                }            
-                Reset();
-                return false;
-            }
-        }
         if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
             storage.DestroyInstance(selectedObject.InstanceId);                        
             isDestroyed= true;

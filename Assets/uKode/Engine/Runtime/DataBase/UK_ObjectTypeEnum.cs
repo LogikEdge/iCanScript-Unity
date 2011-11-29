@@ -6,7 +6,7 @@ public enum UK_ObjectTypeEnum {
     Behaviour, Module, StateChart, State,
     InstanceMethod, StaticMethod, 
     InstanceField, StaticField,
-    Conversion, TransitionEntry, TransitionExit,
+    Conversion, TransitionGuard, TransitionAction,
 //    TransitionTrigger, TransitionEntryAction, TransitionDataStream,
     InFieldPort,         OutFieldPort,
     InPropertyPort,      OutPropertyPort,
@@ -20,7 +20,7 @@ public enum UK_ObjectTypeEnum {
 
 public static partial class WD {
     public static bool IsBehaviour            (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.Behaviour; }
-    public static bool IsModule               (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.Module || IsTransitionEntry(obj) || IsTransitionExit(obj); }
+    public static bool IsModule               (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.Module || IsTransitionGuard(obj) || IsTransitionAction(obj); }
     public static bool IsStateChart           (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.StateChart; }
     public static bool IsState                (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.State; }
     public static bool IsStaticMethod         (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.StaticMethod; }
@@ -28,8 +28,8 @@ public static partial class WD {
     public static bool IsStaticField          (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.StaticField; }
     public static bool IsInstanceField        (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.InstanceField; }
     public static bool IsConversion           (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.Conversion; }
-    public static bool IsTransitionEntry      (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.TransitionEntry; }
-    public static bool IsTransitionExit       (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.TransitionExit; }
+    public static bool IsTransitionGuard      (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.TransitionGuard; }
+    public static bool IsTransitionAction     (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.TransitionAction; }
     public static bool IsEnablePort           (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.EnablePort; }
     public static bool IsInFieldPort          (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.InFieldPort; }
     public static bool IsOutFieldPort         (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.OutFieldPort; }

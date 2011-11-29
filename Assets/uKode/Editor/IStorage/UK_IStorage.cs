@@ -113,12 +113,6 @@ public partial class UK_IStorage {
                     DestroyInstanceInternal(obj.InstanceId);
                     modified= true;
                 }
-                // Synchronize data collector ports.
-                if(IsTransitionExitModule(obj)) {
-                    if(SynchronizeExitModulePorts(obj)) {
-                        modified= true;
-                    }                    
-                }
             }
         );        
         return modified;
@@ -354,11 +348,13 @@ public partial class UK_IStorage {
         }
         // Also destroy transition exit/entry module when removing transitions.
         UK_EditorObject toDestroy= EditorObjects[id];
-        if(toDestroy.IsStatePort) {
-            UK_EditorObject entryModule= GetTransitionEntryModule(toDestroy);
-            UK_EditorObject exitModule= GetTransitionExitModule(toDestroy);
-            DestroyInstanceInternal(entryModule);            
-            DestroyInstanceInternal(exitModule);
+        if(toDestroy.IsInStatePort && IsValid(toDestroy.Source)) {
+            DestroyInstanceInternal(GetSource(toDestroy));
+            return;
+        }
+        if(toDestroy.IsOutStatePort) {
+            UK_EditorObject transitionModule= GetTransitionModule(toDestroy);
+            DestroyInstanceInternal(transitionModule);
         }
         // Disconnect ports linking to this port.
         ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPort(toDestroy));

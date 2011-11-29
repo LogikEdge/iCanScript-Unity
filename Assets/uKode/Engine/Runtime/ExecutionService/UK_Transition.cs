@@ -5,77 +5,36 @@ public class UK_Transition : UK_Object {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    UK_FunctionBase myTriggerFunction = null;
-    int             myTriggerReturnIdx= -1;
-    UK_State        myEndState        = null;
-    UK_Action       myTransitionEntryAction= null;
-    UK_Action       myTransitionExitAction = null;
+    UK_FunctionBase myGuard   = null;
+    int             myGuardIdx= -1;
+    UK_Action       myAction  = null;
+    UK_State        myEndState= null;
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Transition(string name, UK_FunctionBase trigger, UK_State endState) : base(name) {
-        myTriggerFunction= trigger;
-        myTriggerReturnIdx= trigger.OutIndexes[0];
+    public UK_Transition(string name, UK_State endState, UK_FunctionBase guard, UK_FunctionBase action= null) : base(name) {
         myEndState= endState;
+        myGuard   = guard;
+        myGuardIdx= guard.OutIndexes[0];
+        myAction  = action;
     }
     
     // ======================================================================
     // Update
     // ----------------------------------------------------------------------
     public UK_State Update(int frameId) {
-        if(myTriggerFunction == null) return null;
+        if(myGuard == null) return null;
         do {
-            myTriggerFunction.Execute(frameId);            
-        } while(!myTriggerFunction.IsCurrent(frameId));
-        bool trigger= (bool)myTriggerFunction[myTriggerReturnIdx];
-        if(!trigger) return null;
-        if(myTransitionExitAction != null) {
+            myGuard.Execute(frameId);            
+        } while(!myGuard.IsCurrent(frameId));
+        bool transitionFired= (bool)myGuard[myGuardIdx];
+        if(!transitionFired) return null;
+        if(myAction != null) {
             do {
-                myTransitionEntryAction.Execute(frameId);                
-            } while(!myTransitionEntryAction.IsCurrent(frameId));
-        }
-        if(myTransitionExitAction != null) {
-            do {
-                myTransitionExitAction.Execute(frameId);                
-            } while(!myTransitionExitAction.IsCurrent(frameId));
+                myAction.Execute(frameId);                
+            } while(!myAction.IsCurrent(frameId));
         }
         return myEndState;
-    }
-
-    // ======================================================================
-    // Child Management
-    // ----------------------------------------------------------------------
-    public void AddChild(UK_Object obj) {
-        if(!(obj is UK_Module)) {
-            Debug.LogError("Invalid child type "+obj.TypeName+" being added to transition "+Name);
-            return;
-        }
-        UK_Module module= obj as UK_Module;
-        if(module.Name == UK_EngineStrings.TransitionEntryModule) {
-            myTransitionEntryAction= module;
-        }
-        else if(module.Name == UK_EngineStrings.TransitionExitModule) {
-            myTransitionExitAction= module;
-        }
-        else {
-            Debug.LogError("Only TransitionEntry and TransitionExit can be added to a Transition");
-        }
-    }
-    public void RemoveChild(UK_Object obj) {
-        if(!(obj is UK_Module)) {
-            Debug.LogError("Invalid child type "+obj.TypeName+" being added to trasnition "+Name);
-            return;
-        }
-        UK_Module module= obj as UK_Module;
-        if(module.Name == UK_EngineStrings.TransitionEntryModule) {
-            myTransitionEntryAction= null;
-        }
-        else if(module.Name == UK_EngineStrings.TransitionExitModule) {
-            myTransitionExitAction= null;
-        }
-        else {
-            Debug.LogError("Only TransitionEntry and TransitionExit can be added to a Transition");
-        }
     }
 }

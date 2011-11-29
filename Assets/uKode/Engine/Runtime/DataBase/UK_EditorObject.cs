@@ -84,8 +84,8 @@ public class UK_EditorObject {
     public bool IsStateChart            { get { return WD.IsStateChart(this); }}
     public bool IsState                 { get { return WD.IsState(this); }}
     public bool IsModule                { get { return WD.IsModule(this); }}
-    public bool IsTransitionEntry       { get { return WD.IsTransitionEntry(this); }}
-    public bool IsTransitionExit        { get { return WD.IsTransitionExit(this); }}
+    public bool IsTransitionGuard       { get { return WD.IsTransitionGuard(this); }}
+    public bool IsTransitionAction      { get { return WD.IsTransitionAction(this); }}
     public bool IsStaticMethod          { get { return WD.IsStaticMethod(this); }}
     public bool IsInstanceMethod        { get { return WD.IsInstanceMethod(this); }}
     public bool IsConversion            { get { return WD.IsConversion(this); }}

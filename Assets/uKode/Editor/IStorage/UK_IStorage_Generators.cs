@@ -44,24 +44,18 @@ public partial class UK_IStorage {
                             GenerateRuntimeChildNodes(edChild, state);
                             break;
                         }
-                        case UK_ObjectTypeEnum.TransitionEntry: {
-                            GenerateRuntimeChildNodes(edChild, null);
-                            break;
-                        }
-                        case UK_ObjectTypeEnum.TransitionExit: {
-                            UK_Module module= new UK_Module(edChild.Name, new object[0], new bool[0]);                                
-                            TreeCache[edChild.InstanceId].RuntimeObject= module;
-                            if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);
-                            GenerateRuntimeChildNodes(edChild, module);
-                            break;                            
-                        }
+                        case UK_ObjectTypeEnum.TransitionGuard:
+                        case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
-                            UK_RuntimeDesc rtDesc;
-                            object[] parameters= BuildRuntimePortValueArray(edChild, out rtDesc);
-                            if(rtDesc == null) break;
-                            UK_Module module= new UK_Module(edChild.Name, parameters, rtDesc.PortIsOuts);                                
-                            TreeCache[edChild.InstanceId].RuntimeObject= module;
-                            if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);
+                            UK_Module module= null;
+                            if(!IsTransitionModule(edChild)) {
+                                UK_RuntimeDesc rtDesc;
+                                object[] parameters= BuildRuntimePortValueArray(edChild, out rtDesc);
+                                if(rtDesc == null) break;
+                                module= new UK_Module(edChild.Name, parameters, rtDesc.PortIsOuts);                                
+                                TreeCache[edChild.InstanceId].RuntimeObject= module;
+                                if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);                                
+                            }
                             GenerateRuntimeChildNodes(edChild, module);
                             break;
                         }
@@ -135,32 +129,23 @@ public partial class UK_IStorage {
                             ForEachChildPort(edChild,
                                 p=> {
                                     if(p.IsOutStatePort) {
-                                        UK_EditorObject entryModule= GetTransitionEntryModule(p);
-                                        if(entryModule != null) {
-                                            UK_EditorObject triggerAction= GetTriggerModuleFromTransitionEntryModule(entryModule);
-                                            UK_EditorObject entryAction= GetActionModuleFromTransitionEntryModule(entryModule);
-                                            UK_EditorObject exitAction= GetTransitionExitModule(entryModule);
-                                            UK_Transition transition= new UK_Transition(p.Name,
-                                                                                        GetRuntimeObject(triggerAction) as UK_FunctionBase,
-                                                                                        GetRuntimeObject(GetEndStateFromTransitionEntryModule(entryModule)) as UK_State);
-                                            if(entryAction != null) { transition.AddChild(GetRuntimeObject(entryAction) as UK_Action); }
-                                            if(exitAction != null)  { transition.AddChild(GetRuntimeObject(exitAction) as UK_Action); }
-                                            UK_State state= GetRuntimeObject(edChild) as UK_State;
-                                            state.AddChild(transition);
-                                        }
+                                        UK_EditorObject actionModule= null;
+                                        UK_EditorObject guardModule= GetTransitionGuardAndAction(p, out actionModule);
+
+                                        UK_Transition transition= new UK_Transition(p.Name,
+                                                                                    GetRuntimeObject(GetParent(FindAConnectedPort(p))) as UK_State,
+                                                                                    GetRuntimeObject(guardModule) as UK_FunctionBase,
+                                                                                    actionModule != null ? GetRuntimeObject(actionModule) as UK_FunctionBase : null);
+                                        UK_State state= GetRuntimeObject(edChild) as UK_State;
+                                        state.AddChild(transition);
                                     }
                                 }
                             );
                             ConnectRuntimeChildNodes(edChild);
                             break;
                         }
-                        case UK_ObjectTypeEnum.TransitionEntry: {
-                            ConnectRuntimeChildNodes(edChild);
-                            break;
-                        }
-                        case UK_ObjectTypeEnum.TransitionExit: {
-                            break;
-                        }
+                        case UK_ObjectTypeEnum.TransitionGuard:
+                        case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
                             UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
                             (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
