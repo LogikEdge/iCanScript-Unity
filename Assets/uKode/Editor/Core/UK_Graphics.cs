@@ -316,6 +316,7 @@ public class UK_Graphics {
         if(storage.IsVisible(node) == false) return;
         
         // Draw minimized node.
+        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         if(storage.IsMinimized(node)) {
             Rect nodePos= storage.GetPosition(node);
@@ -323,11 +324,12 @@ public class UK_Graphics {
             Rect texturePos= new Rect(nodePos.x, nodePos.y, icon.width, icon.height);
             GUI.DrawTexture(texturePos, icon);                           
             GUI.Label(texturePos, new GUIContent("", node.ToolTip));
+            Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(title);
+            GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip));
             return;
         }
         
         // Draw node box.
-        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         GUIStyle guiStyle= nodeStyle.guiStyle;
         Rect position= storage.GetPosition(node);
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
@@ -698,7 +700,6 @@ public class UK_Graphics {
             UK_EditorObject source= storage.GetSource(port);
             UK_EditorObject sourceParent= storage.GetParent(source);
             if(storage.IsVisible(sourceParent) &&
-               !(parent.IsTransitionAction && sourceParent.IsTransitionGuard && port.IsEnablePort && storage.IsMinimized(parent)) &&
                !(port.IsOutStatePort && storage.IsMinimized(sourceParent))) {
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
                 color.a*= UK_EditorConfig.ConnectionTransparency;
