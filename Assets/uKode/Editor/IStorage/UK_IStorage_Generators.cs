@@ -44,6 +44,10 @@ public partial class UK_IStorage {
                             GenerateRuntimeChildNodes(edChild, state);
                             break;
                         }
+                        case UK_ObjectTypeEnum.TransitionModule: {
+                            GenerateRuntimeChildNodes(edChild, null);
+                            break;
+                        }
                         case UK_ObjectTypeEnum.TransitionGuard:
                         case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
@@ -139,6 +143,10 @@ public partial class UK_IStorage {
                                     }
                                 }
                             );
+                            ConnectRuntimeChildNodes(edChild);
+                            break;
+                        }
+                        case UK_ObjectTypeEnum.TransitionModule: {
                             ConnectRuntimeChildNodes(edChild);
                             break;
                         }

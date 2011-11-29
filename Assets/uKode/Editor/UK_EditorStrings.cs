@@ -15,6 +15,7 @@ public class UK_EditorStrings {
 	public const string RightArrowHeadIcon   = "UK_RightArrowHeadIcon.psd";
 	public const string ModuleIcon           = "UK_ModuleIcon.png";
 	public const string MethodIcon           = "UK_FunctionIcon.png";
+    public const string TransitionModuleIcon = "UK_MaximizeIcon.psd";
 	public const string TransitionTriggerIcon= "UK_TransitionTriggerIcon.png";
 	public const string RandomIcon           = "UK_RandomIcon.png";
 	
