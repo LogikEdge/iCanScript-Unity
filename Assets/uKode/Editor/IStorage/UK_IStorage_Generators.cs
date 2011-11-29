@@ -47,15 +47,12 @@ public partial class UK_IStorage {
                         case UK_ObjectTypeEnum.TransitionGuard:
                         case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
-                            UK_Module module= null;
-                            if(!IsTransitionModule(edChild)) {
-                                UK_RuntimeDesc rtDesc;
-                                object[] parameters= BuildRuntimePortValueArray(edChild, out rtDesc);
-                                if(rtDesc == null) break;
-                                module= new UK_Module(edChild.Name, parameters, rtDesc.PortIsOuts);                                
-                                TreeCache[edChild.InstanceId].RuntimeObject= module;
-                                if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);                                
-                            }
+                            UK_RuntimeDesc rtDesc;
+                            object[] parameters= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            if(rtDesc == null) break;
+                            UK_Module module= new UK_Module(edChild.Name, parameters, rtDesc.PortIsOuts);                                
+                            TreeCache[edChild.InstanceId].RuntimeObject= module;
+                            if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);                                
                             GenerateRuntimeChildNodes(edChild, module);
                             break;
                         }
@@ -147,9 +144,11 @@ public partial class UK_IStorage {
                         case UK_ObjectTypeEnum.TransitionGuard:
                         case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
-                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
-                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
-                            ConnectRuntimeChildNodes(edChild);
+                            if(GetRuntimeObject(edChild) != null) {
+                                UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                                (GetRuntimeObject(edChild) as UK_FunctionBase).SetConnections(connections);
+                            }
+                            ConnectRuntimeChildNodes(edChild);                                
                             break;                            
                         }
                         case UK_ObjectTypeEnum.InstanceMethod: {

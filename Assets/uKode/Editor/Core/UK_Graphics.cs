@@ -694,9 +694,12 @@ public class UK_Graphics {
     // ----------------------------------------------------------------------
     public void DrawConnection(UK_EditorObject port, UK_IStorage storage) {
         if(storage.IsVisible(port.ParentId) && storage.IsValid(port.Source)) {
+            UK_EditorObject parent= storage.GetParent(port);
             UK_EditorObject source= storage.GetSource(port);
             UK_EditorObject sourceParent= storage.GetParent(source);
-            if(storage.IsVisible(sourceParent)) {
+            if(storage.IsVisible(sourceParent) &&
+               !(parent.IsTransitionAction && sourceParent.IsTransitionGuard && port.IsEnablePort && storage.IsMinimized(parent)) &&
+               !(port.IsOutStatePort && storage.IsMinimized(sourceParent))) {
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
                 color.a*= UK_EditorConfig.ConnectionTransparency;
                 UK_ConnectionParams cp= new UK_ConnectionParams(port, storage);
@@ -704,9 +707,10 @@ public class UK_Graphics {
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
                     // Show transition name.
-                    Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(port.Name);
+                    string transitionName= storage.GetTransitionName(port);
+                    Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(transitionName);
                     Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-0.5f*labelSize.y);
-                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), new GUIContent(port.Name, port.ToolTip));
+                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), new GUIContent(transitionName, port.ToolTip));
                     // Show transition input port.
                     Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
                     tangent.Normalize();

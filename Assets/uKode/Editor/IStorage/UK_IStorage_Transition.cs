@@ -1,15 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public partial class UK_IStorage {
-    // ======================================================================
-    // Constants
-    // ----------------------------------------------------------------------
-    const string TransitionGuardModuleName= "Trigger";
-    const string TransitionActionModuleName= "Action";
-    const string TransitionGuardPortName= "trigger";
-    const string TransitionModuleName= "transition";
-    
+public partial class UK_IStorage {    
     // ======================================================================
     // Creation methods
     // ----------------------------------------------------------------------
@@ -17,29 +9,27 @@ public partial class UK_IStorage {
         Rect portRect= GetPosition(destState);
         Vector2 portPos= Math3D.ToVector2(portRect);
         outStatePort.IsNameEditable= false;
+        UK_EditorObject parent= GetParent(GetParent(outStatePort));
         // Create inStatePort
-        UK_EditorObject inStatePort= CreatePort("[false]", destState.InstanceId, typeof(void), UK_ObjectTypeEnum.InStatePort);
+        UK_EditorObject inStatePort= CreatePort("", destState.InstanceId, typeof(void), UK_ObjectTypeEnum.InStatePort);
         SetInitialPosition(inStatePort, portPos);
         SetSource(inStatePort, outStatePort);
         UpdatePortEdges(inStatePort, outStatePort);        
         inStatePort.IsNameEditable= false;
-        // Create transition module
-        UK_EditorObject transitionModule= CreateModule(GetParent(GetParent(outStatePort)).InstanceId, portPos, TransitionModuleName);
-        transitionModule.IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.TransitionTriggerIcon, this);
         // Create guard module
-        UK_EditorObject guard= CreateModule(transitionModule.InstanceId, portPos, TransitionGuardModuleName, UK_ObjectTypeEnum.TransitionGuard);
+        UK_EditorObject guard= CreateModule(parent.InstanceId, portPos, "false", UK_ObjectTypeEnum.TransitionGuard);
         guard.IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.TransitionTriggerIcon, this);
-        UK_EditorObject guardPort= CreatePort(TransitionGuardPortName, guard.InstanceId, typeof(bool), UK_ObjectTypeEnum.OutStaticModulePort);
+        UK_EditorObject guardPort= CreatePort("trigger", guard.InstanceId, typeof(bool), UK_ObjectTypeEnum.OutStaticModulePort);
         guardPort.IsNameEditable= false;
         SetSource(outStatePort, guardPort);
+        Minimize(guard);
         // Create action module
-        UK_EditorObject action= CreateModule(transitionModule.InstanceId, portPos, TransitionActionModuleName, UK_ObjectTypeEnum.TransitionAction);
-        action.IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.TransitionTriggerIcon, this);
+        UK_EditorObject action= CreateModule(parent.InstanceId, portPos, "action", UK_ObjectTypeEnum.TransitionAction);
+        action.IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.MethodIcon, this);
         UK_EditorObject enablePort= CreateEnablePort(action.InstanceId);
         enablePort.IsNameEditable= false;
         SetSource(enablePort, guardPort);
-        // Default layout to minimized.
-        Minimize(transitionModule);
+        Minimize(action);
     }
     
     // ======================================================================
@@ -48,19 +38,27 @@ public partial class UK_IStorage {
     public UK_EditorObject GetTransitionGuardAndAction(UK_EditorObject outStatePort, out UK_EditorObject action) {
         action= null;
         UK_EditorObject guardPort= GetSource(outStatePort);
+        if(guardPort == null) return null;
         UK_EditorObject[] connectedPorts= FindConnectedPorts(guardPort);
-        if(connectedPorts.Length >= 2) {
-            action= GetParent(connectedPorts[connectedPorts[0] == guardPort ? 1 : 0]);
+        foreach(var port in connectedPorts) {
+            if(port.IsEnablePort && GetParent(port).IsTransitionAction) {
+                action= GetParent(port);
+            }
         }
         return GetParent(guardPort);
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject GetTransitionModule(UK_EditorObject statePort) {
-        if(statePort.IsInStatePort) statePort= GetSource(statePort);
-        return GetParent(GetParent(GetSource(statePort)));
+    public bool IsTransitionActionEmpty(UK_EditorObject action) {
+        return !ForEachChild(action, child=> child.IsNode);
     }
     // ----------------------------------------------------------------------
-    public bool IsTransitionModule(UK_EditorObject module) {
-        return ForEachChild(module, child=> child.ObjectType == UK_ObjectTypeEnum.TransitionGuard);
+    public string GetTransitionName(UK_EditorObject statePort) {
+        if(statePort.IsInStatePort) statePort= GetSource(statePort);
+        UK_EditorObject action= null;
+        UK_EditorObject guard= GetTransitionGuardAndAction(statePort, out action);
+        if(guard == null) return "";
+        string name= "["+guard.Name+"]";
+        if(action != null && !IsTransitionActionEmpty(action)) name+= "/"+action.Name;
+        return name;
     }
 }

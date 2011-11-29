@@ -107,20 +107,16 @@ public sealed class UK_StateChart : UK_Action {
     // ----------------------------------------------------------------------
     public void AddChild(UK_Object _object) {
         UK_State state= _object as UK_State;
-        if(state == null) {
-            Debug.LogError("Trying to add an object that is not a state into State Chart!");
-            return;
+        if(state != null) {
+            if(myChildren.Count == 0) myEntryState= state;
+            myChildren.Add(state);
         }
-        if(myChildren.Count == 0) myEntryState= state;
-        myChildren.Add(state);
     }
     public void RemoveChild(UK_Object _object) {
         UK_State state= _object as UK_State;
-        if(state == null) {
-            Debug.LogError("Trying to remove an object that is not a state from a State Chart!");
-            return;
+        if(state != null) {
+            if(state == myEntryState) myEntryState= null;
+            myChildren.Remove(state);
         }
-        if(state == myEntryState) myEntryState= null;
-        myChildren.Remove(state);
     }
 }

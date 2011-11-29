@@ -353,8 +353,10 @@ public partial class UK_IStorage {
             return;
         }
         if(toDestroy.IsOutStatePort) {
-            UK_EditorObject transitionModule= GetTransitionModule(toDestroy);
-            DestroyInstanceInternal(transitionModule);
+            UK_EditorObject actionModule= null;
+            UK_EditorObject guardModule= GetTransitionGuardAndAction(toDestroy, out actionModule);
+            DestroyInstanceInternal(guardModule);
+            if(actionModule != null) DestroyInstanceInternal(actionModule);
         }
         // Disconnect ports linking to this port.
         ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPort(toDestroy));
