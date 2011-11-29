@@ -47,6 +47,7 @@ public partial class UK_IStorage {
                         case UK_ObjectTypeEnum.TransitionGuard:
                         case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
+                            if(edChild.IsTransitionAction && IsTransitionActionEmpty(edChild)) break;
                             UK_RuntimeDesc rtDesc;
                             object[] parameters= BuildRuntimePortValueArray(edChild, out rtDesc);
                             if(rtDesc == null) break;
