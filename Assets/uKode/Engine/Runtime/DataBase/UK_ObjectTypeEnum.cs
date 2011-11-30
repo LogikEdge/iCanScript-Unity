@@ -63,8 +63,8 @@ public static partial class WD {
     public static bool IsFunctionPort         (UK_EditorObject obj) { return IsInFunctionPort(obj) || IsOutFunctionPort(obj); }
     public static bool IsModulePort           (UK_EditorObject obj) { return IsInModulePort(obj) || IsOutModulePort(obj); }
     public static bool IsStatePort            (UK_EditorObject obj) { return IsInStatePort(obj) || IsOutStatePort(obj); }
-    public static bool IsTransitionPort       (UK_EditorObject obj) { return IsStatePort(obj) || IsInTransitionPort(obj) || IsOutTransitionPort(obj); }
-    public static bool IsPort                 (UK_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj) || IsStatePort(obj); }
-    public static bool IsOutputPort           (UK_EditorObject obj) { return IsOutFieldPort(obj) || IsOutPropertyPort(obj) || IsOutFunctionPort(obj) || IsOutModulePort(obj) || IsOutStatePort(obj); }
-    public static bool IsInputPort            (UK_EditorObject obj) { return IsInFieldPort(obj) || IsInPropertyPort(obj) || IsInFunctionPort(obj) || IsInModulePort(obj) || IsInStatePort(obj) || IsEnablePort(obj); }
+    public static bool IsTransitionPort       (UK_EditorObject obj) { return IsInTransitionPort(obj) || IsOutTransitionPort(obj); }
+    public static bool IsPort                 (UK_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj) || IsStatePort(obj) || IsTransitionPort(obj); }
+    public static bool IsOutputPort           (UK_EditorObject obj) { return IsOutFieldPort(obj) || IsOutPropertyPort(obj) || IsOutFunctionPort(obj) || IsOutModulePort(obj) || IsOutStatePort(obj) || IsOutTransitionPort(obj); }
+    public static bool IsInputPort            (UK_EditorObject obj) { return IsInFieldPort(obj) || IsInPropertyPort(obj) || IsInFunctionPort(obj) || IsInModulePort(obj) || IsInStatePort(obj) || IsEnablePort(obj) || IsInTransitionPort(obj); }
 }

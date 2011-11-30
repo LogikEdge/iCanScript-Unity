@@ -486,7 +486,11 @@ public class UK_Graphics {
                 Handles.color= Color.white;
                 Handles.DrawSolidDisc(center, FacingNormal, UK_EditorConfig.PortRadius);
             }
-        } else {
+        } else if(port.IsInTransitionPort || port.IsOutTransitionPort) {
+            Handles.color= Color.white;
+            Handles.DrawSolidDisc(center, FacingNormal, UK_EditorConfig.PortRadius);            
+        }
+        else {
             DrawCircularPort(center, portColor, nodeColor);
         }
         // Configure move cursor for port.
@@ -698,8 +702,7 @@ public class UK_Graphics {
         if(storage.IsVisible(port.ParentId) && storage.IsValid(port.Source)) {
             UK_EditorObject source= storage.GetSource(port);
             UK_EditorObject sourceParent= storage.GetParent(source);
-            if(storage.IsVisible(sourceParent) &&
-               !(port.IsOutStatePort && storage.IsMinimized(sourceParent))) {
+            if(storage.IsVisible(sourceParent) && !port.IsOutStatePort) {
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
                 color.a*= UK_EditorConfig.ConnectionTransparency;
                 UK_ConnectionParams cp= new UK_ConnectionParams(port, storage);
