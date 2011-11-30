@@ -1,15 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class UK_Transition : UK_Object {
+public class UK_Transition : UK_Action {
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    UK_FunctionBase myGuard;
+    int             myGuardIdx;
+    UK_Action       myAction;
+    UK_State        myEndState;
+    bool            myIsTriggered= false;
+
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    UK_FunctionBase myGuard   = null;
-    int             myGuardIdx= -1;
-    UK_Action       myAction  = null;
-    UK_State        myEndState= null;
-
+    public UK_State     EndState    { get { return myEndState; }}
+    public bool         DidTrigger  { get { return myIsTriggered; }}
+    public UK_Action    Action      { get { return myAction; }}
+    
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
@@ -23,18 +31,13 @@ public class UK_Transition : UK_Object {
     // ======================================================================
     // Update
     // ----------------------------------------------------------------------
-    public UK_State Update(int frameId) {
-        if(myGuard == null) return null;
-        do {
+    public override void Execute(int frameId) {
+        myIsTriggered= false;
+        if(myGuard != null) {
             myGuard.Execute(frameId);            
-        } while(!myGuard.IsCurrent(frameId));
-        bool transitionFired= (bool)myGuard[myGuardIdx];
-        if(!transitionFired) return null;
-        if(myAction != null) {
-            do {
-                myAction.Execute(frameId);                
-            } while(!myAction.IsCurrent(frameId));
+            if(!myGuard.IsCurrent(frameId)) return;
+            myIsTriggered= (bool)myGuard[myGuardIdx];
         }
-        return myEndState;
+        MarkAsCurrent(frameId);
     }
 }

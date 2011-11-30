@@ -48,8 +48,12 @@ public sealed class UK_State : UK_Object {
     }
     public UK_State VerifyTransitions(int frameId) {
         foreach(var transition in myTransitions) {
-            UK_State newState= transition.Update(frameId);
-            if(newState != null) return newState;
+            transition.Execute(frameId);
+            if(transition.DidTrigger) {
+                transition.Action.Execute(frameId);
+                UK_State newState=transition.EndState;
+                if(newState != null) return newState;
+            }
         }
         return null;
     }
