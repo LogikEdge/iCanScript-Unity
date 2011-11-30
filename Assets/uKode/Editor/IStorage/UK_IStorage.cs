@@ -268,7 +268,7 @@ public partial class UK_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new UK_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, UK_ObjectTypeEnum.StaticMethod, localPos);
+        this[id]= new UK_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
         this[id].RuntimeArchive= desc.Encode(id);
         this[id].IconGUID= UK_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == UK_ObjectTypeEnum.StaticMethod) {
@@ -294,7 +294,7 @@ public partial class UK_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new UK_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, UK_ObjectTypeEnum.StaticMethod, localPos);
+        this[id]= new UK_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
         this[id].RuntimeArchive= desc.Encode(id);
         this[id].IconGUID= UK_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == UK_ObjectTypeEnum.StaticMethod) {

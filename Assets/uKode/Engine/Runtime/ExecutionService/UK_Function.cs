@@ -52,7 +52,7 @@ public class UK_Function : UK_FunctionBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        myReturn= myMethodInfo.Invoke(null, myParameters);
+        myReturn= myMethodInfo.Invoke(null, myParameters);            
         MarkAsCurrent(frameId);
     }
 }
