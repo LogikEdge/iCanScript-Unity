@@ -79,4 +79,12 @@ public partial class UK_IStorage {
         if(child.ParentId == parent.InstanceId) return true;
         return IsChildOf(GetParent(child), parent);
     }
+    // ----------------------------------------------------------------------
+    public void ForEachChildPort(UK_EditorObject node, Action<UK_EditorObject> action) {
+        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort, action));
+    }
+    // ----------------------------------------------------------------------
+    public bool ForEachChildPort(UK_EditorObject node, Func<UK_EditorObject,bool> fnc) {
+        return ForEachChild(node, child=> child.IsPort ? fnc(child) : false);
+    }
 }

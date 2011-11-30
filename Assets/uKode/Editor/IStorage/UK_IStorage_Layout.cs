@@ -488,14 +488,6 @@ public partial class UK_IStorage {
     }
 
     // ----------------------------------------------------------------------
-    public void ForEachChildPort(UK_EditorObject node, Action<UK_EditorObject> action) {
-        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort, action));
-    }
-    // ----------------------------------------------------------------------
-    public bool ForEachChildPort(UK_EditorObject node, Func<UK_EditorObject,bool> fnc) {
-        return ForEachChild(node, child=> child.IsPort ? fnc(child) : false);
-    }
-    // ----------------------------------------------------------------------
     public void ForEachTopPort(UK_EditorObject node, System.Action<UK_EditorObject> fnc) {
         ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnTopEdge, fnc));
     }

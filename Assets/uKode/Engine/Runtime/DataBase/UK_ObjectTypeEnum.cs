@@ -15,6 +15,7 @@ public enum UK_ObjectTypeEnum {
     InDynamicModulePort, OutDynamicModulePort,
     InStaticModulePort,  OutStaticModulePort,
     InStatePort,         OutStatePort,
+    InTransitionPort,    OutTransitionPort,
     EnablePort,
     Unknown
 }
@@ -45,6 +46,8 @@ public static partial class WD {
     public static bool IsOutStaticModulePort  (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.OutStaticModulePort; }
     public static bool IsInStatePort          (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.InStatePort; }
     public static bool IsOutStatePort         (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.OutStatePort; }
+    public static bool IsInTransitionPort     (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.InTransitionPort; }
+    public static bool IsOutTransitionPort    (UK_EditorObject obj) { return obj.ObjectType == UK_ObjectTypeEnum.OutTransitionPort; }
     public static bool IsMethod               (UK_EditorObject obj) { return IsStaticMethod(obj) || IsInstanceMethod(obj); }
     public static bool IsField                (UK_EditorObject obj) { return IsStaticField(obj) || IsInstanceField(obj); }
     public static bool IsInDataPort           (UK_EditorObject obj) { return IsInFieldPort(obj) || IsInFunctionPort(obj) || IsInModulePort(obj) || IsInPropertyPort(obj) || IsEnablePort(obj); }
@@ -60,6 +63,7 @@ public static partial class WD {
     public static bool IsFunctionPort         (UK_EditorObject obj) { return IsInFunctionPort(obj) || IsOutFunctionPort(obj); }
     public static bool IsModulePort           (UK_EditorObject obj) { return IsInModulePort(obj) || IsOutModulePort(obj); }
     public static bool IsStatePort            (UK_EditorObject obj) { return IsInStatePort(obj) || IsOutStatePort(obj); }
+    public static bool IsTransitionPort       (UK_EditorObject obj) { return IsStatePort(obj) || IsInTransitionPort(obj) || IsOutTransitionPort(obj); }
     public static bool IsPort                 (UK_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj) || IsStatePort(obj); }
     public static bool IsOutputPort           (UK_EditorObject obj) { return IsOutFieldPort(obj) || IsOutPropertyPort(obj) || IsOutFunctionPort(obj) || IsOutModulePort(obj) || IsOutStatePort(obj); }
     public static bool IsInputPort            (UK_EditorObject obj) { return IsInFieldPort(obj) || IsInPropertyPort(obj) || IsInFunctionPort(obj) || IsInModulePort(obj) || IsInStatePort(obj) || IsEnablePort(obj); }

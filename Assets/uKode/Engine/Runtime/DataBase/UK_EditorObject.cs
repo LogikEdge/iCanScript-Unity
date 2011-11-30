@@ -99,6 +99,7 @@ public class UK_EditorObject {
     public bool IsDynamicModulePort     { get { return WD.IsDynamicModulePort(this); }}
     public bool IsStaticModulePort      { get { return WD.IsStaticModulePort(this); }}
     public bool IsStatePort             { get { return WD.IsStatePort(this); }}
+    public bool IsTransitionPort        { get { return WD.IsTransitionPort(this); }}
     public bool IsEnablePort            { get { return WD.IsEnablePort(this); }}
     public bool IsOutputPort            { get { return WD.IsOutputPort(this); }}
     public bool IsInputPort             { get { return WD.IsInputPort(this); }}
@@ -118,6 +119,8 @@ public class UK_EditorObject {
     public bool IsOutStatePort          { get { return WD.IsOutStatePort(this); }}
     public bool IsInDataPort            { get { return WD.IsInDataPort(this); }}
     public bool IsOutDataPort           { get { return WD.IsOutDataPort(this); }}
+    public bool IsInTransitionPort      { get { return WD.IsInTransitionPort(this); }}
+    public bool IsOutTransitionPort     { get { return WD.IsOutTransitionPort(this); }}
     
     // ======================================================================
     // Accessors

@@ -226,7 +226,7 @@ public partial class UK_IStorage {
             UK_Connection connection= new UK_Connection(null, -1);
             ForEachChildPort(edObj,
                 p=> {
-                    if(p.PortIndex == i) {
+                    if(p.IsDataPort && p.PortIndex == i) {
                         UK_EditorObject sourcePort= GetSource(p);
                         if(sourcePort != null) {
                             UK_EditorObject sourceNode= GetParent(sourcePort);
