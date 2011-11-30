@@ -229,6 +229,9 @@ public partial class UK_IStorage {
                     if(p.IsDataPort && p.PortIndex == i) {
                         UK_EditorObject sourcePort= GetSource(p);
                         if(sourcePort != null) {
+                            for(UK_EditorObject source2Port= GetSource(sourcePort); source2Port != null && source2Port.IsDataPort; source2Port= GetSource(source2Port)) {
+                                sourcePort= source2Port;
+                            }
                             UK_EditorObject sourceNode= GetParent(sourcePort);
                             UK_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as UK_FunctionBase;
                             connection= new UK_Connection(rtSourceNode, sourcePort.PortIndex);
