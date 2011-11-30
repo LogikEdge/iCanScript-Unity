@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class UK_FunctionBase : UK_Action {
+public class UK_FunctionBase : UK_Action {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -85,5 +85,5 @@ public abstract class UK_FunctionBase : UK_Action {
         // Execute function
         DoExecute(frameId);
     }
-    protected abstract void DoExecute(int frameId);
+    protected virtual void DoExecute(int frameId) {}
 }

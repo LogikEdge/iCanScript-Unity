@@ -18,7 +18,7 @@ public class UK_Module : UK_FunctionBase {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
+    public override void Execute(int frameId) {
         // Attempt to execute child functions.
         int maxTries= myExecuteQueue.Count; maxTries= 1+(maxTries*maxTries+maxTries)/2;
         for(; myQueueIdx < myExecuteQueue.Count && myNbOfTries < maxTries; ++myNbOfTries) {
