@@ -40,7 +40,7 @@ public partial class UK_IStorage {
 
         // Update transition module name
         if(node.IsTransitionModule) {
-            LayoutTransitionModule(node);
+            GetTransitionName(node);
         }
         
         // Minimized nodes are fully collapsed.

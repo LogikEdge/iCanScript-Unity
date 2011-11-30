@@ -55,6 +55,8 @@ public partial class UK_IStorage {
         enablePort.IsNameEditable= false;
         SetSource(enablePort, guardPort);
         Minimize(action);
+        // Set initial transition module position.
+        LayoutTransitionModule(transitionModule);
     }
     
     // ======================================================================
@@ -155,12 +157,13 @@ public partial class UK_IStorage {
         return name;
     }
     // ----------------------------------------------------------------------
-    public void LayoutTransitionModule(UK_EditorObject module) {
-        GetTransitionName(module);
+    public Rect ProposeTransitionModulePosition(UK_EditorObject module) {
+        Rect nodePos= GetPosition(module);
         UK_EditorObject inStatePort= GetInStatePort(module);
+        UK_EditorObject outStatePort= GetOutStatePort(module);
         if(inStatePort != null) {
             UK_EditorObject parent= GetParent(module);
-            UK_ConnectionParams cp= new UK_ConnectionParams(inStatePort, this);
+            UK_ConnectionParams cp= new UK_ConnectionParams(inStatePort, outStatePort, this);
             Vector2 distance= cp.End-cp.Start;
             Vector2 delta= 0.5f*UK_EditorConfig.GutterSize*(distance).normalized;
             int steps= (int)(distance.magnitude/delta.magnitude);
@@ -180,9 +183,14 @@ public partial class UK_IStorage {
             }
             Vector2 newCenter= 0.5f*(minPos+maxPos);
             newCenter= UK_ConnectionParams.ClosestPointBezier(newCenter, cp.Start, cp.End, cp.StartTangent, cp.EndTangent);
-            Rect nodePos= GetPosition(module);
-            SetPosition(module, new Rect(newCenter.x-0.5f*nodePos.width, newCenter.y-0.5f*nodePos.height, nodePos.width, nodePos.height));                    
-        }        
+            return new Rect(newCenter.x-0.5f*nodePos.width, newCenter.y-0.5f*nodePos.height, nodePos.width, nodePos.height);                            
+        }
+        return nodePos;
+    }
+    // ----------------------------------------------------------------------
+    public void LayoutTransitionModule(UK_EditorObject module) {
+        GetTransitionName(module);
+        SetPosition(module, ProposeTransitionModulePosition(module));                    
     }
     // ----------------------------------------------------------------------
     public UK_EditorObject GetInTransitionPort(UK_EditorObject parent) {
