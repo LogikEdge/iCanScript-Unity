@@ -319,9 +319,9 @@ public class UK_Graphics {
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         if(storage.IsMinimized(node)) {
-            Rect nodePos= storage.GetPosition(node);
             Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
-            Rect texturePos= new Rect(nodePos.x, nodePos.y, icon.width, icon.height);
+            Rect nodePos= storage.GetPosition(node);
+            Rect texturePos= new Rect(nodePos.x, nodePos.y, icon.width, icon.height);                
             GUI.DrawTexture(texturePos, icon);                           
             GUI.Label(texturePos, new GUIContent("", node.ToolTip));
             Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(title);
@@ -696,7 +696,6 @@ public class UK_Graphics {
     // ----------------------------------------------------------------------
     public void DrawConnection(UK_EditorObject port, UK_IStorage storage) {
         if(storage.IsVisible(port.ParentId) && storage.IsValid(port.Source)) {
-            UK_EditorObject parent= storage.GetParent(port);
             UK_EditorObject source= storage.GetSource(port);
             UK_EditorObject sourceParent= storage.GetParent(source);
             if(storage.IsVisible(sourceParent) &&
@@ -708,10 +707,10 @@ public class UK_Graphics {
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
                     // Show transition name.
-                    string transitionName= storage.GetTransitionName(port);
-                    Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(transitionName);
-                    Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-0.5f*labelSize.y);
-                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), new GUIContent(transitionName, port.ToolTip));
+//                    string transitionName= storage.GetTransitionName(port);
+//                    Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(transitionName);
+//                    Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-0.5f*labelSize.y);
+//                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), new GUIContent(transitionName, port.ToolTip));
                     // Show transition input port.
                     Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
                     tangent.Normalize();

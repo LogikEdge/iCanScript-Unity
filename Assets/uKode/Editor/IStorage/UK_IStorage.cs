@@ -584,6 +584,11 @@ public partial class UK_IStorage {
         // Don't layout node if it is not visible.
         if(!IsVisible(node)) return;
 
+        // Update transition module name
+        if(node.IsTransitionModule) {
+            LayoutTransitionModule(node);
+        }
+        
         // Minimized nodes are fully collapsed.
         if(node.IsMinimized) {
             Texture2D icon= UK_Graphics.GetMaximizeIcon(node, null, this);
@@ -694,7 +699,7 @@ public partial class UK_IStorage {
         return GetPosition(EditorObjects[id]);
     }
     // ----------------------------------------------------------------------
-    void SetPosition(UK_EditorObject node, Rect _newPos) {
+    public void SetPosition(UK_EditorObject node, Rect _newPos) {
         // Adjust node size.
         node.LocalPosition.width = _newPos.width;
         node.LocalPosition.height= _newPos.height;

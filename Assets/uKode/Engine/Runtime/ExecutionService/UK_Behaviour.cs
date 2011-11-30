@@ -112,7 +112,6 @@ public sealed class UK_Behaviour : UK_Storage {
                 break;
             }
             default: {
-                Debug.LogWarning("Ignoring unknown action being added to Behaviour: "+action.Name);
                 break;
             }
         }
@@ -135,7 +134,6 @@ public sealed class UK_Behaviour : UK_Storage {
                 break;
             }
             default: {
-                Debug.LogWarning("Ignoring unknown action being removed to Behaviour: "+action.Name);
                 break;
             }
         }        

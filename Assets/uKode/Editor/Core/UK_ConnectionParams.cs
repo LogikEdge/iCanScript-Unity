@@ -23,14 +23,11 @@ public class UK_ConnectionParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public UK_ConnectionParams(UK_EditorObject port, UK_IStorage storage) {
-        // Can only get Bezier parameters from port with a source.
-        if(!storage.IsValid(port.Source)) {
+    public UK_ConnectionParams(UK_EditorObject port, UK_EditorObject source, UK_IStorage storage) {
+        if(source == null) {
             Debug.LogError(port.Name+": Cannot obtain connection parameters for a port without a source !!!");
             return;
         }
-
-        UK_EditorObject source= storage.GetSource(port);
         Rect sourcePos= storage.GetPosition(source);
         Rect portPos  = storage.GetPosition(port);
         Start= new Vector2(sourcePos.x, sourcePos.y);
@@ -46,6 +43,8 @@ public class UK_ConnectionParams {
         // Compute connection center point.
         Center= BezierCenter(Start, End, StartTangent, EndTangent);
     }
+    // ----------------------------------------------------------------------
+    public UK_ConnectionParams(UK_EditorObject port, UK_IStorage storage) : this(port, storage.GetSource(port), storage) {}
     // ----------------------------------------------------------------------
     static Vector2 ConnectionDirectionForTo(UK_EditorObject port, UK_EditorObject to, UK_IStorage storage) {
         Vector2 direction;

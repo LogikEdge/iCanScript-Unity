@@ -9,13 +9,26 @@ public partial class UK_IStorage {
         Rect portRect= GetPosition(destState);
         Vector2 portPos= Math3D.ToVector2(portRect);
         outStatePort.IsNameEditable= false;
-        UK_EditorObject parent= GetParent(GetParent(outStatePort));
+//        UK_EditorObject parent= GetParent(GetParent(outStatePort));
         // Create inStatePort
         UK_EditorObject inStatePort= CreatePort("", destState.InstanceId, typeof(void), UK_ObjectTypeEnum.InStatePort);
         SetInitialPosition(inStatePort, portPos);
         SetSource(inStatePort, outStatePort);
         UpdatePortEdges(inStatePort, outStatePort);        
         inStatePort.IsNameEditable= false;
+        // Determine transition parent
+        bool parentFound= false;
+        UK_EditorObject parent= null;
+        for(parent= GetParent(outStatePort); parent != null; parent= GetParent(parent)) {
+            UK_EditorObject inParent= null;
+            for(inParent= GetParent(inStatePort); inParent != null; inParent= GetParent(inParent)) {
+                if(parent == inParent) {
+                    parentFound= true;
+                    break;
+                }
+            }
+            if(parentFound) break;
+        }
         // Create transition module
         UK_EditorObject transitionModule= CreateModule(parent.InstanceId, portPos, "[false]", UK_ObjectTypeEnum.TransitionModule);
         transitionModule.IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.TransitionModuleIcon, this);
@@ -40,8 +53,51 @@ public partial class UK_IStorage {
     // ======================================================================
     // Transition helpers.
     // ----------------------------------------------------------------------
-    public UK_EditorObject GetOutStatePort(UK_EditorObject statePort) {
-        return statePort.IsInStatePort ? GetSource(statePort) : statePort;
+    public UK_EditorObject GetOutStatePort(UK_EditorObject transitionObject) {
+        if(transitionObject.IsOutStatePort) return transitionObject;
+        if(transitionObject.IsInStatePort)  return GetSource(transitionObject);
+        if(transitionObject.IsTransitionModule) {
+            ForEachChild(transitionObject,
+                child=> {
+                    if(child.IsTransitionGuard) {
+                        transitionObject= child;
+                        return true;
+                    }
+                    return false;
+                }
+            );
+        }
+        if(transitionObject.IsTransitionGuard) {
+            UK_EditorObject outStatePort= null;
+            ForEachChildPort(transitionObject,
+                port=> {
+                    if(port.IsOutDataPort && port.RuntimeType == typeof(bool)) {
+                        UK_EditorObject[] connectedPorts= FindConnectedPorts(port);
+                        foreach(var p in connectedPorts) {
+                            if(p.IsOutStatePort) {
+                                outStatePort= p;
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                }
+            );
+            return outStatePort;
+        }
+        return null;
+    }
+    // ----------------------------------------------------------------------
+    public UK_EditorObject GetInStatePort(UK_EditorObject outStatePort) {
+        if(outStatePort.IsInStatePort) return outStatePort;
+        outStatePort= GetOutStatePort(outStatePort);
+        if(outStatePort == null) return null; 
+        UK_EditorObject[] connectedPorts= FindConnectedPorts(outStatePort);
+        UK_EditorObject inStatePort= null;
+        foreach(var port in connectedPorts) {
+            if(port.IsInStatePort) inStatePort= port;
+        }
+        return inStatePort;
     }
     // ----------------------------------------------------------------------
     public UK_EditorObject GetTransitionModule(UK_EditorObject statePort) {
@@ -82,5 +138,35 @@ public partial class UK_IStorage {
         UK_EditorObject transitionModule= GetTransitionModule(statePort);
         transitionModule.Name= name;
         return name;
+    }
+    // ----------------------------------------------------------------------
+    public void LayoutTransitionModule(UK_EditorObject module) {
+        GetTransitionName(module);
+        UK_EditorObject inStatePort= GetInStatePort(module);
+        if(inStatePort != null) {
+            UK_EditorObject parent= GetParent(module);
+            UK_ConnectionParams cp= new UK_ConnectionParams(inStatePort, this);
+            Vector2 distance= cp.End-cp.Start;
+            Vector2 delta= 0.5f*UK_EditorConfig.GutterSize*(distance).normalized;
+            int steps= (int)(distance.magnitude/delta.magnitude);
+            Vector2 pos= cp.Start;
+            bool minFound= false;
+            Vector2 minPos= Vector2.zero;
+            Vector2 maxPos= Vector2.zero;
+            for(int i= 0; i < steps; ++i, pos+= delta) {
+                Vector2 point= UK_ConnectionParams.ClosestPointBezier(pos, cp.Start, cp.End, cp.StartTangent, cp.EndTangent);
+                if(GetNodeAt(point) == parent) {
+                    if(!minFound) {
+                        minFound= true;
+                        minPos= point;
+                    }
+                    maxPos= point;
+                }
+            }
+            Vector2 newCenter= 0.5f*(minPos+maxPos);
+            newCenter= UK_ConnectionParams.ClosestPointBezier(newCenter, cp.Start, cp.End, cp.StartTangent, cp.EndTangent);
+            Rect nodePos= GetPosition(module);
+            SetPosition(module, new Rect(newCenter.x-0.5f*nodePos.width, newCenter.y-0.5f*nodePos.height, nodePos.width, nodePos.height));                    
+        }        
     }
 }
