@@ -35,6 +35,7 @@ public class UK_Method : UK_Function {
         Init(portValues, portIsOuts);
     }
     protected new void Init(object[] portValues, bool[] portIsOuts) {
+        myThis= portValues[portValues.Length-2];
         object[] paramValues= new object[portValues.Length-2];
         Array.Copy(portValues, paramValues, paramValues.Length);
         bool[] paramIsOuts= new bool[portIsOuts.Length-2];
