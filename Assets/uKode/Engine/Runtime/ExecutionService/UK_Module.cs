@@ -36,12 +36,6 @@ public class UK_Module : UK_FunctionBase {
         if(myNbOfTries >= maxTries) {
             Debug.LogError("Execution of graph is looping!!! "+myExecuteQueue[myQueueIdx].Name+":"+myExecuteQueue[myQueueIdx].GetType().Name+" is included in the loop. Please break the cycle and retry.");
         }
-        // Update all outputs.
-        foreach(var id in myOutIndexes) {
-            if(myConnections[id].IsConnected) {
-                myParameters[id]= myConnections[id].Value;
-            }
-        }        
         // Reset iterators for next frame.
         myQueueIdx= 0;
         myNbOfTries= 0;

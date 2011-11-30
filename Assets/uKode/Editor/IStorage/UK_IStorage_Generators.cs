@@ -230,6 +230,7 @@ public partial class UK_IStorage {
                         UK_EditorObject sourcePort= GetSource(p);
                         if(sourcePort != null) {
                             for(UK_EditorObject source2Port= GetSource(sourcePort); source2Port != null && source2Port.IsDataPort; source2Port= GetSource(source2Port)) {
+//                                Debug.Log("Now sinking from: "+GetParent(source2Port).Name+" instead of: "+GetParent(sourcePort).Name);
                                 sourcePort= source2Port;
                             }
                             UK_EditorObject sourceNode= GetParent(sourcePort);
