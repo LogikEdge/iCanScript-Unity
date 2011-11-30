@@ -77,14 +77,6 @@ public class UK_Reflection {
     }
 
     // ----------------------------------------------------------------------
-    public static void DecodeNETClassInfo(Type type) {
-        DecodeClassInfo(type, ".NET", type.Name, type.Name, ".NET class "+type.Name, null, true);
-    }
-    // ----------------------------------------------------------------------
-    public static void DecodeUnityClassInfo(Type type) {
-        DecodeClassInfo(type, "Unity", type.Name, type.Name, "Unity class "+type.Name, null, true);
-    }
-    // ----------------------------------------------------------------------
     // Scan the application for uCode attributes.
     public static void ParseAppDomain() {
         // Remove all previously registered functions.
@@ -116,7 +108,7 @@ public class UK_Reflection {
         UK_NETClasses.PopulateDataBase();
     }
     // ----------------------------------------------------------------------
-    static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+    public static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         DecodeClassFields(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
         DecodeFunctionsAndMethods(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
     }

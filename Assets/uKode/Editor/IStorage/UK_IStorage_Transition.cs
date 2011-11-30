@@ -48,7 +48,7 @@ public partial class UK_IStorage {
         SetSource(outStatePort, guardPort);
         Minimize(guard);
         // Create action module
-        UK_EditorObject action= CreateModule(transitionModule.InstanceId, portPos, "action", UK_ObjectTypeEnum.TransitionAction);
+        UK_EditorObject action= CreateModule(transitionModule.InstanceId, portPos, "NoAction", UK_ObjectTypeEnum.TransitionAction);
         action.IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.MethodIcon, this);
         action.ToolTip= "Action to be execute when the transition is taken.";
         UK_EditorObject enablePort= CreateEnablePort(action.InstanceId);

@@ -5,9 +5,14 @@ using System.Collections;
 
 public static class UK_NETClasses {
     public static void PopulateDataBase() {
-        UK_Reflection.DecodeNETClassInfo(typeof(string));
-        UK_Reflection.DecodeNETClassInfo(typeof(char));
-        UK_Reflection.DecodeNETClassInfo(typeof(Array));
-        UK_Reflection.DecodeNETClassInfo(typeof(Path));
+        DecodeNETClassInfo(typeof(string));
+        DecodeNETClassInfo(typeof(char));
+        DecodeNETClassInfo(typeof(Array));
+        DecodeNETClassInfo(typeof(Path));
     }
+    // ----------------------------------------------------------------------
+    public static void DecodeNETClassInfo(Type type) {
+        UK_Reflection.DecodeClassInfo(type, "NET", type.Name, type.Name, ".NET class "+type.Name, null, true);
+    }
+
 }
