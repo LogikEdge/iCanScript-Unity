@@ -6,13 +6,13 @@ public class UK_Module : UK_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    UK_Dispatcher   myDispatcher= null;
+    UK_ParallelDispatcher   myDispatcher= null;
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public UK_Module(string name, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {
-        myDispatcher= new UK_Dispatcher(name);
+        myDispatcher= new UK_ParallelDispatcher(name);
     }
     
     // ======================================================================

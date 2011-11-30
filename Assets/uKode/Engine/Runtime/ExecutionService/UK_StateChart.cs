@@ -35,7 +35,7 @@ public sealed class UK_StateChart : UK_Action {
     public override void Execute(int frameId) {
         // Process any active transition.
         ProcessTransition(frameId);
-        // Make certain that at least one actibe state exists.
+        // Make certain that at least one active state exists.
         if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState, frameId);
         // Execute state update functions.
         foreach(var state in myActiveStack) {

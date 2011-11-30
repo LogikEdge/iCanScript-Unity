@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_Dispatcher : UK_Action {
+public class UK_ParallelDispatcher : UK_Action {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -13,7 +13,7 @@ public class UK_Dispatcher : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Dispatcher(string name) : base(name) {}
+    public UK_ParallelDispatcher(string name) : base(name) {}
     
     // ======================================================================
     // Execution
