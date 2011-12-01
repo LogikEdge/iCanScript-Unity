@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_Module : UK_FunctionBase {
+public class UK_Module : UK_FunctionBase, UK_IDispatcher {
     // ======================================================================
-    // Properties
+    // Field
     // ----------------------------------------------------------------------
     UK_ParallelDispatcher   myDispatcher= null;
     
@@ -14,6 +14,12 @@ public class UK_Module : UK_FunctionBase {
     public UK_Module(string name, object[] parameters, bool[] paramIsOuts) : base(name, parameters, paramIsOuts) {
         myDispatcher= new UK_ParallelDispatcher(name);
     }
+
+    // ======================================================================
+    // IDispatcher implementation
+    // ----------------------------------------------------------------------
+    public UK_DispatcherBase GetDispatcher() { return myDispatcher; }
+    public bool IsStalled { get { return myDispatcher.IsStalled; }}
     
     // ======================================================================
     // Execution

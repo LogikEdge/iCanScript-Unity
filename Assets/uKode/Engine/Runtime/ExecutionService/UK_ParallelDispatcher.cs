@@ -18,7 +18,7 @@ public class UK_ParallelDispatcher : UK_DispatcherBase {
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
-        bool staled= true;
+        bool stalled= true;
         int tries= 0;
         int maxTries= myExecuteQueue.Count-myQueueIdx;
         while(myQueueIdx < myExecuteQueue.Count) {
@@ -27,23 +27,23 @@ public class UK_ParallelDispatcher : UK_DispatcherBase {
             action.Execute(frameId);            
             // Move to next child if sucessfully executed.
             if(action.IsCurrent(frameId)) {
-                staled= false;
+                stalled= false;
                 ++myQueueIdx;
                 continue;
             }
             // Verify if the child is a staled dispatcher.
-            UK_DispatcherBase childDispatcher= action as UK_DispatcherBase;
-            if(childDispatcher != null && !childDispatcher.IsStaled) {
-                staled= false;
+            UK_IDispatcher childDispatcher= action as UK_IDispatcher;
+            if(childDispatcher != null && !childDispatcher.IsStalled) {
+                stalled= false;
             }
             // Return if we have seen too many staled children.
             if(++tries > maxTries) {
-                if(!staled) {
+                if(!stalled) {
                     myNbOfRetries= 0;
-                    myIsStaled= false;
+                    myIsStalled= false;
                 } else {
                     if(++myNbOfRetries > retriesBeforeDeclaringStaled) {
-                        myIsStaled= true;
+                        myIsStalled= true;
                     }                    
                 }
                 return;
@@ -53,7 +53,7 @@ public class UK_ParallelDispatcher : UK_DispatcherBase {
             myExecuteQueue.Add(action);
         }
         // Reset iterators for next frame.
-        myIsStaled= false;
+        myIsStalled= false;
         myQueueIdx= 0;
         myNbOfRetries= 0;
         MarkAsCurrent(frameId);

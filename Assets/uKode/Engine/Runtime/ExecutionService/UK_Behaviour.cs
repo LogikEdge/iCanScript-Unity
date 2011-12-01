@@ -6,11 +6,11 @@ public sealed class UK_Behaviour : UK_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    UK_Action   myUpdateAction      = null;
-    UK_Action   myLateUpdateAction  = null;
-    UK_Action   myFixedUpdateAction = null;
-    int         myUpdateFrameId     = 0;
-    int         myFixedUpdateFrameId= 0;
+    UK_IDispatcher  myUpdateAction      = null;
+    UK_IDispatcher  myLateUpdateAction  = null;
+    UK_IDispatcher  myFixedUpdateAction = null;
+    int             myUpdateFrameId     = 0;
+    int             myFixedUpdateFrameId= 0;
     
     // ======================================================================
     // Accessors
@@ -54,26 +54,22 @@ public sealed class UK_Behaviour : UK_Storage {
     void Update() {
         ++myUpdateFrameId;
         if(myUpdateAction != null) {
-            int retry= 0;
             do {
-                ++retry;
-                myUpdateAction.Execute(myUpdateFrameId);                
-            } while(!myUpdateAction.IsCurrent(myUpdateFrameId) && retry < 10000);
-            if(retry >= 10000) {
-                Debug.LogWarning("Upadte graph seems to be looping.");
+                myUpdateAction.Execute(myUpdateFrameId);
+            } while(!myUpdateAction.IsCurrent(myUpdateFrameId) && !myUpdateAction.IsStalled);
+            if(myUpdateAction.IsStalled) {
+                Debug.LogWarning("Upadte is STALLED.");
             }
         }
     }
     // Called on evry frame after all Update have been called.
     void LateUpdate() {
         if(myLateUpdateAction != null) {
-            int retry= 0;
             do {
-                ++retry;
                 myLateUpdateAction.Execute(myUpdateFrameId);                                            
-            } while(!myLateUpdateAction.IsCurrent(myUpdateFrameId) && retry < 10000);
-            if(retry >= 10000) {
-                Debug.LogWarning("Late Upadte graph seems to be looping.");
+            } while(!myLateUpdateAction.IsCurrent(myUpdateFrameId) && !myLateUpdateAction.IsStalled);
+            if(myLateUpdateAction.IsStalled) {
+                Debug.LogWarning("LateUpadte is STALLED.");
             }
         }
     }
@@ -81,13 +77,11 @@ public sealed class UK_Behaviour : UK_Storage {
     void FixedUpdate() {
         ++myFixedUpdateFrameId;
         if(myFixedUpdateAction != null) {
-            int retry= 0;
             do {
-                ++retry;
                 myFixedUpdateAction.Execute(myFixedUpdateFrameId);                                
-            } while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId) && retry < 10000);
-            if(retry >= 10000) {
-                Debug.LogWarning("Fixed Upadte graph seems to be looping.");
+            } while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId) && !myFixedUpdateAction.IsStalled);
+            if(myFixedUpdateAction.IsStalled) {
+                Debug.LogWarning("FixedUpadte is STALLED.");
             }
         }
     }
@@ -100,15 +94,15 @@ public sealed class UK_Behaviour : UK_Storage {
         if(action == null) return;
         switch(action.Name) {
             case UK_EngineStrings.UpdateAction: {
-                myUpdateAction= action;
+                myUpdateAction= action as UK_IDispatcher;
                 break;
             }
             case UK_EngineStrings.LateUpdateAction: {
-                myLateUpdateAction= action;
+                myLateUpdateAction= action as UK_IDispatcher;
                 break;
             }
             case UK_EngineStrings.FixedUpdateAction: {
-                myFixedUpdateAction= action;
+                myFixedUpdateAction= action as UK_IDispatcher;
                 break;
             }
             default: {

@@ -19,7 +19,7 @@ public class UK_NoWaitSequencialDispatcher : UK_DispatcherBase {
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         // Attempt to execute child functions.
-        bool staled= true;
+        bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {
             UK_Action action= myExecuteQueue[i];
             bool didExecute= action.IsCurrent(frameId);
@@ -27,12 +27,12 @@ public class UK_NoWaitSequencialDispatcher : UK_DispatcherBase {
                 action.Execute(frameId);                
                 if(action.IsCurrent(frameId)) {
                     didExecute= true;
-                    staled= false;
+                    stalled= false;
                 } else {
                     // Verify if the child is a staled dispatcher.
-                    UK_DispatcherBase childDispatcher= action as UK_DispatcherBase;
-                    if(childDispatcher != null && !childDispatcher.IsStaled) {
-                        staled= false;
+                    UK_IDispatcher childDispatcher= action as UK_IDispatcher;
+                    if(childDispatcher != null && !childDispatcher.IsStalled) {
+                        stalled= false;
                     }                    
                 }
             }
@@ -41,12 +41,12 @@ public class UK_NoWaitSequencialDispatcher : UK_DispatcherBase {
             }
         }
         // Verify for a staled condition.
-        if(!staled) {
+        if(!stalled) {
             myNbOfRetries= 0;
-            myIsStaled= false;
+            myIsStalled= false;
         } else {
             if(++myNbOfRetries >= retriesBeforeDeclaringStaled) {
-                myIsStaled= true;
+                myIsStalled= true;
             }
         }
         // Don't mark as completed if not all actions have ran.

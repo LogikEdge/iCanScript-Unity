@@ -18,31 +18,31 @@ public class UK_WaitingSequencialDispatcher : UK_DispatcherBase {
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
-        bool staled= true;
+        bool stalled= true;
         while(myQueueIdx < myExecuteQueue.Count) {
             UK_Action action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
                 // Verify if the child is a staled dispatcher.
-                UK_DispatcherBase childDispatcher= action as UK_DispatcherBase;
-                if(childDispatcher != null && !childDispatcher.IsStaled) {
-                    staled= false;
+                UK_IDispatcher childDispatcher= action as UK_IDispatcher;
+                if(childDispatcher != null && !childDispatcher.IsStalled) {
+                    stalled= false;
                 }                    
-                if(!staled) {
+                if(!stalled) {
                     myNbOfRetries= 0;
-                    myIsStaled= false;
+                    myIsStalled= false;
                 } else {
                     if(++myNbOfRetries > retriesBeforeDeclaringStaled) {
-                        myIsStaled= true;
+                        myIsStalled= true;
                     }
                 }
                 return;
             }
-            staled= false;
+            stalled= false;
             ++myQueueIdx;
         }
         // Reset iterators for next frame.
-        myIsStaled= false;
+        myIsStalled= false;
         myQueueIdx= 0;
         myNbOfRetries= 0;
         MarkAsCurrent(frameId);

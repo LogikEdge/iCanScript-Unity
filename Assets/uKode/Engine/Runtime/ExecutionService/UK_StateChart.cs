@@ -2,13 +2,14 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class UK_StateChart : UK_Action {
+public sealed class UK_StateChart : UK_Action, UK_IDispatcher {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     public  UK_State        myEntryState = null;
     private List<UK_State>  myActiveStack= new List<UK_State>();
     public  List<UK_State>  myChildren   = new List<UK_State>();
+    private UK_ParallelDispatcher  myDispatcher;
     
     // ======================================================================
     // Accessors
@@ -27,7 +28,15 @@ public sealed class UK_StateChart : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_StateChart(string name) : base(name) {}
+    public UK_StateChart(string name) : base(name) {
+        myDispatcher= new UK_ParallelDispatcher(name);
+    }
+
+    // ======================================================================
+    // IDispatcher implementation
+    // ----------------------------------------------------------------------
+    public UK_DispatcherBase GetDispatcher() { return myDispatcher; }
+    public bool IsStalled { get { return myDispatcher.IsStalled; }}
     
     // ======================================================================
     // Execution
