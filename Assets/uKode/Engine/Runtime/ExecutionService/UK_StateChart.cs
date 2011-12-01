@@ -35,7 +35,6 @@ public sealed class UK_StateChart : UK_Action, UK_IDispatcher {
     // ======================================================================
     // IDispatcher implementation
     // ----------------------------------------------------------------------
-    public UK_DispatcherBase GetDispatcher() { return myDispatcher; }
     public bool IsStalled { get { return myDispatcher.IsStalled; }}
     
     // ======================================================================
@@ -52,7 +51,10 @@ public sealed class UK_StateChart : UK_Action, UK_IDispatcher {
         }
         MarkAsCurrent(frameId);
     }
-
+    public override void ForceExecute(int frameId) {
+        Execute(frameId);
+    }
+    
     // ----------------------------------------------------------------------
     void ProcessTransition(int frameId) {
         // Determine if a transition exists for one of the active states.

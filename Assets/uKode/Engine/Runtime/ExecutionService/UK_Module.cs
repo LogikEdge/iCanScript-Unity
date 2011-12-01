@@ -25,15 +25,11 @@ public class UK_Module : UK_FunctionBase, UK_IDispatcher {
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         myDispatcher.Execute(frameId);
-        if(myDispatcher.IsCurrent(frameId)) {
-            MarkAsCurrent(frameId);            
-        }
+        MarkAsCurrent(myDispatcher.FrameId);
     }
     public override void ForceExecute(int frameId) {
         myDispatcher.ForceExecute(frameId);
-        if(myDispatcher.IsCurrent(frameId)) {
-            MarkAsCurrent(frameId);
-        }
+        MarkAsCurrent(myDispatcher.FrameId);
     }
 
     // ======================================================================

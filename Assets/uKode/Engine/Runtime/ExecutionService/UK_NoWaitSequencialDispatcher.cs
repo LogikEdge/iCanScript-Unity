@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_NoWaitSequencialDispatcher : UK_DispatcherBase {
+public class UK_NoWaitSequencialDispatcher : UK_Dispatcher {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -20,7 +20,7 @@ public class UK_NoWaitSequencialDispatcher : UK_DispatcherBase {
         // Attempt to execute child functions.
         bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {
-            UK_Action action= myExecuteQueue[i];
+            UK_IAction action= myExecuteQueue[i];
             bool didExecute= action.IsCurrent(frameId);
             if(!didExecute) {
                 action.Execute(frameId);                

@@ -5,7 +5,7 @@ using System.Collections;
 // An action is the base class of the execution.  It includes a frame
 // identifier that is used to indicate if the action has been run.  This
 // indicator is the bases for the execution synchronization.
-public abstract class UK_Action : UK_Object {
+public abstract class UK_Action : UK_Object, UK_IAction {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -25,7 +25,7 @@ public abstract class UK_Action : UK_Object {
     // Execution
     // ----------------------------------------------------------------------
     public abstract void Execute(int frameId);
-    public virtual  void ForceExecute(int frameId) { Execute(frameId); }
+    public abstract void ForceExecute(int frameId);
     
     // ----------------------------------------------------------------------
     public bool IsCurrent(int frameId)     { return myFrameId == frameId; }

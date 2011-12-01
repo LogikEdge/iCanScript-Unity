@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_ParallelDispatcher : UK_DispatcherBase {
+public class UK_ParallelDispatcher : UK_Dispatcher {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -22,7 +22,7 @@ public class UK_ParallelDispatcher : UK_DispatcherBase {
         int maxTries= myExecuteQueue.Count-myQueueIdx;
         while(myQueueIdx < myExecuteQueue.Count) {
             // Attempt to execute child function.
-            UK_Action action= myExecuteQueue[myQueueIdx];
+            UK_IAction action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             // Move to next child if sucessfully executed.
             if(action.IsCurrent(frameId)) {

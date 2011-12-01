@@ -2,14 +2,14 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class UK_DispatcherBase : UK_Action, UK_IDispatcher {
+public abstract class UK_Dispatcher : UK_Action, UK_IDispatcher {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected List<UK_Action> myExecuteQueue= new List<UK_Action>();
-    protected int             myQueueIdx = 0;
-    protected bool            myIsStalled= false;
-    protected int             myNbOfRetries= 0;
+    protected List<UK_IAction> myExecuteQueue= new List<UK_IAction>();
+    protected int              myQueueIdx = 0;
+    protected bool             myIsStalled= false;
+    protected int              myNbOfRetries= 0;
     
     // ======================================================================
     // Properties
@@ -19,14 +19,14 @@ public abstract class UK_DispatcherBase : UK_Action, UK_IDispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_DispatcherBase(string name) : base(name) {}
+    public UK_Dispatcher(string name) : base(name) {}
 
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         if(myQueueIdx < myExecuteQueue.Count) {
-            UK_Action action= myExecuteQueue[myQueueIdx];
+            UK_IAction action= myExecuteQueue[myQueueIdx];
             action.ForceExecute(frameId);            
             if(action.IsCurrent(frameId)) {
                 ++myQueueIdx;
@@ -48,10 +48,10 @@ public abstract class UK_DispatcherBase : UK_Action, UK_IDispatcher {
     // ======================================================================
     // Queue Management
     // ----------------------------------------------------------------------
-    public void AddChild(UK_Action action) {
+    public void AddChild(UK_IAction action) {
         myExecuteQueue.Add(action);
     }
-    public void RemoveChild(UK_Action action) {
+    public void RemoveChild(UK_IAction action) {
         myExecuteQueue.Remove(action);
     }
 }

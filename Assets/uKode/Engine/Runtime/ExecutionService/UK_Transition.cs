@@ -40,4 +40,14 @@ public class UK_Transition : UK_Action {
         }
         MarkAsCurrent(frameId);
     }
+    // ----------------------------------------------------------------------
+    public override void ForceExecute(int frameId) {
+        myIsTriggered= false;
+        if(myGuard != null) {
+            myGuard.ForceExecute(frameId);            
+            if(!myGuard.IsCurrent(frameId)) return;
+            myIsTriggered= (bool)myGuard[myGuardIdx];
+        }
+        MarkAsCurrent(frameId);
+    }
 }

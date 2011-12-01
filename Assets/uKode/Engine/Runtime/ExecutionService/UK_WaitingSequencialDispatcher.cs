@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_WaitingSequencialDispatcher : UK_DispatcherBase {
+public class UK_WaitingSequencialDispatcher : UK_Dispatcher {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -19,7 +19,7 @@ public class UK_WaitingSequencialDispatcher : UK_DispatcherBase {
     public override void Execute(int frameId) {
         bool stalled= true;
         while(myQueueIdx < myExecuteQueue.Count) {
-            UK_Action action= myExecuteQueue[myQueueIdx];
+            UK_IAction action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
                 // Verify if the child is a staled dispatcher.
