@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 public class UK_NoWaitSequencialDispatcher : UK_DispatcherBase {
     // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    const int retriesBeforeDeclaringStaled= 3;
+          int myNbOfRetries= 0;
+
+    // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public UK_NoWaitSequencialDispatcher(string name) : base(name) {}
@@ -13,25 +19,41 @@ public class UK_NoWaitSequencialDispatcher : UK_DispatcherBase {
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         // Attempt to execute child functions.
-        int maxTries= myExecuteQueue.Count; maxTries= 1+(maxTries*maxTries+maxTries)/2;
-        for(int i= myQueueIdx; i < myExecuteQueue.Count && myNbOfTries < maxTries; ++myNbOfTries, ++i) {
+        bool staled= true;
+        for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {
             UK_Action action= myExecuteQueue[i];
-            if(!action.IsCurrent(frameId)) {
+            bool didExecute= action.IsCurrent(frameId);
+            if(!didExecute) {
                 action.Execute(frameId);                
+                if(action.IsCurrent(frameId)) {
+                    didExecute= true;
+                    staled= false;
+                } else {
+                    // Verify if the child is a staled dispatcher.
+                    UK_DispatcherBase childDispatcher= action as UK_DispatcherBase;
+                    if(childDispatcher != null && !childDispatcher.IsStaled) {
+                        staled= false;
+                    }                    
+                }
             }
-            if(i == myQueueIdx && action.IsCurrent(frameId)) {
+            if(didExecute && i == myQueueIdx) {
                 ++myQueueIdx;                
             }
         }
-        // Verify that the graph is not looping.
-        if(myNbOfTries >= maxTries) {
-            Debug.LogError("Execution of graph is looping!!! "+myExecuteQueue[myQueueIdx].Name+":"+myExecuteQueue[myQueueIdx].GetType().Name+" is included in the loop. Please break the cycle and retry.");
+        // Verify for a staled condition.
+        if(!staled) {
+            myNbOfRetries= 0;
+            myIsStaled= false;
+        } else {
+            if(++myNbOfRetries >= retriesBeforeDeclaringStaled) {
+                myIsStaled= true;
+            }
         }
         // Don't mark as completed if not all actions have ran.
         if(myQueueIdx < myExecuteQueue.Count) return;
         // Reset iterators for next frame.
         myQueueIdx= 0;
-        myNbOfTries= 0;
+        myNbOfRetries= 0;
         MarkAsCurrent(frameId);
     }
 }
