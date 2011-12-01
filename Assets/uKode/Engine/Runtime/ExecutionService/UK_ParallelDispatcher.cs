@@ -7,7 +7,6 @@ public class UK_ParallelDispatcher : UK_DispatcherBase {
     // Fields
     // ----------------------------------------------------------------------
     const int retriesBeforeDeclaringStaled= 3;
-          int myNbOfRetries= 0;
     
     // ======================================================================
     // Creation/Destruction
@@ -53,9 +52,6 @@ public class UK_ParallelDispatcher : UK_DispatcherBase {
             myExecuteQueue.Add(action);
         }
         // Reset iterators for next frame.
-        myIsStalled= false;
-        myQueueIdx= 0;
-        myNbOfRetries= 0;
-        MarkAsCurrent(frameId);
+        ResetIterator(frameId);
     }
 }

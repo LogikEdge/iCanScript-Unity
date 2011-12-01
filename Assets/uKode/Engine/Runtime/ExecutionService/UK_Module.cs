@@ -18,7 +18,6 @@ public class UK_Module : UK_FunctionBase, UK_IDispatcher {
     // ======================================================================
     // IDispatcher implementation
     // ----------------------------------------------------------------------
-    public UK_DispatcherBase GetDispatcher() { return myDispatcher; }
     public bool IsStalled { get { return myDispatcher.IsStalled; }}
     
     // ======================================================================
@@ -30,7 +29,12 @@ public class UK_Module : UK_FunctionBase, UK_IDispatcher {
             MarkAsCurrent(frameId);            
         }
     }
-
+    public override void ForceExecute(int frameId) {
+        myDispatcher.ForceExecute(frameId);
+        if(myDispatcher.IsCurrent(frameId)) {
+            MarkAsCurrent(frameId);
+        }
+    }
 
     // ======================================================================
     // Connector Management

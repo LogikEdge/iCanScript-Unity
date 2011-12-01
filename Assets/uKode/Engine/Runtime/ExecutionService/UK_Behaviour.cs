@@ -54,12 +54,13 @@ public sealed class UK_Behaviour : UK_Storage {
     void Update() {
         ++myUpdateFrameId;
         if(myUpdateAction != null) {
-            do {
+            do {        
                 myUpdateAction.Execute(myUpdateFrameId);
-            } while(!myUpdateAction.IsCurrent(myUpdateFrameId) && !myUpdateAction.IsStalled);
-            if(myUpdateAction.IsStalled) {
-                Debug.LogWarning("Upadte is STALLED.");
-            }
+                if(myUpdateAction.IsStalled) {
+                    Debug.LogWarning("Upadte is STALLED. Attempting to unstall.");
+                    myUpdateAction.ForceExecute(myUpdateFrameId);
+                }                
+            } while(!myUpdateAction.IsCurrent(myUpdateFrameId));
         }
     }
     // Called on evry frame after all Update have been called.

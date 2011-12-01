@@ -76,6 +76,10 @@ public class UK_FunctionBase : UK_Action {
         foreach(var id in myInIndexes) {
             if(myConnections[id].IsConnected && !myConnections[id].IsReady(frameId)) return;
         }
+        ForceExecute(frameId);
+    }
+    // ----------------------------------------------------------------------
+    public override void ForceExecute(int frameId) {
         // Fetch all the inputs.
         foreach(var id in myInIndexes) {
             if(myConnections[id].IsConnected) {
@@ -85,5 +89,6 @@ public class UK_FunctionBase : UK_Action {
         // Execute function
         DoExecute(frameId);
     }
+    // ----------------------------------------------------------------------
     protected virtual void DoExecute(int frameId) {}
 }

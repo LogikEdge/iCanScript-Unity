@@ -7,7 +7,6 @@ public class UK_NoWaitSequencialDispatcher : UK_DispatcherBase {
     // Fields
     // ----------------------------------------------------------------------
     const int retriesBeforeDeclaringStaled= 3;
-          int myNbOfRetries= 0;
 
     // ======================================================================
     // Creation/Destruction

@@ -25,6 +25,7 @@ public abstract class UK_Action : UK_Object {
     // Execution
     // ----------------------------------------------------------------------
     public abstract void Execute(int frameId);
+    public virtual  void ForceExecute(int frameId) { Execute(frameId); }
     
     // ----------------------------------------------------------------------
     public bool IsCurrent(int frameId)     { return myFrameId == frameId; }

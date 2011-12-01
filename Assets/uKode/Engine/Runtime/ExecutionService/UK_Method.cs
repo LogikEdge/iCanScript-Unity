@@ -52,9 +52,13 @@ public class UK_Method : UK_Function {
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
-    protected override void DoExecute(int frameId) {
+    public override void Execute(int frameId) {
         // Validate that this is ready.
         if(myThisConnection.IsConnected && !myThisConnection.IsReady(frameId)) return;
+        base.Execute(frameId);        
+    }
+    // ----------------------------------------------------------------------
+    protected override void DoExecute(int frameId) {
         // Fetch this.
         if(myThisConnection.IsConnected) {
             myThis= myThisConnection.Value;
