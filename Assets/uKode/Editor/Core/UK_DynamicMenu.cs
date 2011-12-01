@@ -76,8 +76,9 @@ public class UK_DynamicMenu {
             case UK_ObjectTypeEnum.Module:           ModuleMenu(selectedObject, storage); break;
             case UK_ObjectTypeEnum.TransitionGuard:  ModuleMenu(selectedObject, storage); break;
             case UK_ObjectTypeEnum.TransitionAction: ModuleMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.StaticMethod:     StaticMethodMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.Conversion:       StaticMethodMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.InstanceMethod:   MethodMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.StaticMethod:     MethodMenu(selectedObject, storage); break;
+            case UK_ObjectTypeEnum.Conversion:       MethodMenu(selectedObject, storage); break;
             default: if(selectedObject.IsPort)       PortMenu(selectedObject, storage); break;
         }
     }
@@ -216,7 +217,7 @@ public class UK_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    void StaticMethodMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
+    void MethodMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
         if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
             ShowMenu(new string[]{DeleteStr}, selectedObject, storage);            
         }
