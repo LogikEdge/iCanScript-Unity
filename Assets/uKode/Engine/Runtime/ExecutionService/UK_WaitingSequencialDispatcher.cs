@@ -2,14 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_WaitingSequencialDispatcher : UK_Action {
-    // ======================================================================
-    // Properties
-    // ----------------------------------------------------------------------
-    List<UK_Action> myExecuteQueue= new List<UK_Action>();
-    int             myQueueIdx = 0;
-    int             myNbOfTries= 0;
-    
+public class UK_WaitingSequencialDispatcher : UK_DispatcherBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
@@ -38,16 +31,5 @@ public class UK_WaitingSequencialDispatcher : UK_Action {
         myQueueIdx= 0;
         myNbOfTries= 0;
         MarkAsCurrent(frameId);
-    }
-
-
-    // ======================================================================
-    // Queue Management
-    // ----------------------------------------------------------------------
-    public void AddChild(UK_Action action) {
-        myExecuteQueue.Add(action);
-    }
-    public void RemoveChild(UK_Action action) {
-        myExecuteQueue.Remove(action);
     }
 }
