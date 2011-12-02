@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_Module : UK_FunctionBase, UK_IAction {
+public class UK_Module : UK_FunctionBase {
     // ======================================================================
     // Field
     // ----------------------------------------------------------------------
@@ -16,19 +16,16 @@ public class UK_Module : UK_FunctionBase, UK_IAction {
     }
 
     // ======================================================================
-    // IDispatcher implementation
-    // ----------------------------------------------------------------------
-    public new bool IsStalled { get { return myDispatcher.IsStalled; }}
-    
-    // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         myDispatcher.Execute(frameId);
+        IsStalled= myDispatcher.IsStalled;
         MarkAsCurrent(myDispatcher.FrameId);
     }
     public override void ForceExecute(int frameId) {
         myDispatcher.ForceExecute(frameId);
+        IsStalled= myDispatcher.IsStalled;
         MarkAsCurrent(myDispatcher.FrameId);
     }
 
