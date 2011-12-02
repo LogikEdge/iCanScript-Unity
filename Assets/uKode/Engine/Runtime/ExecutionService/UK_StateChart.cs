@@ -87,9 +87,25 @@ public sealed class UK_StateChart : UK_Action {
     }
     // ----------------------------------------------------------------------
     void ExecuteUpdates(int frameId) {
-        foreach(var state in myActiveStack) {
-            state.OnUpdate(frameId);
-        }                    
+        bool stalled= true;
+        while(myQueueIdx < myActiveStack.Count) {
+            UK_State state= myActiveStack[myQueueIdx];
+            UK_Action action= state.OnUpdateAction;
+            action.Execute(frameId);            
+            if(!action.IsCurrent(frameId)) {
+                // Verify if the child is a staled dispatcher.
+                if(!action.IsStalled) {
+                    stalled= false;
+                }                    
+                IsStalled= stalled;
+                return;
+            }
+            stalled= false;
+            ++myQueueIdx;
+        }
+        // Reset iterators for next frame.
+        myQueueIdx= 0;
+        MarkAsCurrent(frameId);
     }
     // ----------------------------------------------------------------------
     void MoveToState(UK_State newState, int frameId) {
