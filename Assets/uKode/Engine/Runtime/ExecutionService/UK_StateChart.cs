@@ -118,10 +118,22 @@ public sealed class UK_StateChart : UK_Action {
     }
     // ----------------------------------------------------------------------
     void ExecuteExits(int frameId) {
-        for(; myQueueIdx >= 0; --myQueueIdx) {
+        bool stalled= true;
+        while(myQueueIdx >= 0) {
             UK_State state= myActiveStack[myQueueIdx];
             if(state == myTransitionParent) break;
-            state.OnExit(frameId);
+            UK_Action action= state.OnExitAction;
+            action.Execute(frameId);            
+            if(!action.IsCurrent(frameId)) {
+                // Verify if the child is a staled dispatcher.
+                if(!action.IsStalled) {
+                    stalled= false;
+                }                    
+                IsStalled= stalled;
+                return;
+            }
+            stalled= false;
+            --myQueueIdx;
         }
         // Update active stack state.
         int stackSize= myActiveStack.Count;
@@ -141,10 +153,22 @@ public sealed class UK_StateChart : UK_Action {
     }
     // ----------------------------------------------------------------------
     void ExecuteEntries(int frameId) {
-        // Execute entry functions.
-        int newSize= myActiveStack.Count;
-        for(; myQueueIdx < newSize; ++myQueueIdx) {
-            myActiveStack[myQueueIdx].OnEntry(frameId);
+        bool stalled= true;
+        int stackSize= myActiveStack.Count;
+        while(myQueueIdx < stackSize) {
+            UK_State state= myActiveStack[myQueueIdx];
+            UK_Action action= state.OnEntryAction;
+            action.Execute(frameId);            
+            if(!action.IsCurrent(frameId)) {
+                // Verify if the child is a staled dispatcher.
+                if(!action.IsStalled) {
+                    stalled= false;
+                }                    
+                IsStalled= stalled;
+                return;
+            }
+            stalled= false;
+            ++myQueueIdx;
         }
         // Prepare to execute update functions
         myExecutionState= ExecutionState.RunningUpdate;
