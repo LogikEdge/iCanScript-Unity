@@ -50,11 +50,18 @@ public sealed class UK_StateChart : UK_Action {
         if(myExecutionState == ExecutionState.VerifyingTransition) {
             ExecuteTransitions(frameId);            
         }
+        // Execute state exit functions.
+        if(myExecutionState == ExecutionState.RunningExit) {
+            ExecuteExits(frameId);
+        }
+        // Execute state update functions.
+        if(myExecutionState == ExecutionState.RunningEntry) {
+            ExecuteEntries(frameId);
+        }
         // Execute state update functions.
         if(myExecutionState == ExecutionState.RunningUpdate) {
             ExecuteUpdates(frameId);
         }
-        MarkAsCurrent(frameId);
     }
     public override void ForceExecute(int frameId) {
         Execute(frameId);
@@ -110,7 +117,7 @@ public sealed class UK_StateChart : UK_Action {
         MarkAsCurrent(frameId);
     }
     // ----------------------------------------------------------------------
-    void ExecuteExit(int frameId) {
+    void ExecuteExits(int frameId) {
         for(; myQueueIdx >= 0; --myQueueIdx) {
             UK_State state= myActiveStack[myQueueIdx];
             if(state == myTransitionParent) break;
@@ -133,7 +140,7 @@ public sealed class UK_StateChart : UK_Action {
         myQueueIdx= stableSize;
     }
     // ----------------------------------------------------------------------
-    void ExecuteEntry(int frameId) {
+    void ExecuteEntries(int frameId) {
         // Execute entry functions.
         int newSize= myActiveStack.Count;
         for(; myQueueIdx < newSize; ++myQueueIdx) {
@@ -169,10 +176,6 @@ public sealed class UK_StateChart : UK_Action {
         // Prepare to execute exit functions.
         myExecutionState= ExecutionState.RunningExit;
         myQueueIdx= stackSize-1;
-        // Execute exit
-        ExecuteExit(frameId);
-        // Execute entry
-        ExecuteEntry(frameId);
     }
     
     // ======================================================================
