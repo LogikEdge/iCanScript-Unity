@@ -4,12 +4,18 @@ using System.Collections.Generic;
 
 public sealed class UK_StateChart : UK_Action {
     // ======================================================================
-    // Properties
+    // Internal types
     // ----------------------------------------------------------------------
-    public  UK_State        myEntryState = null;
-    private List<UK_State>  myActiveStack= new List<UK_State>();
-    public  List<UK_State>  myChildren   = new List<UK_State>();
-    private UK_ParallelDispatcher  myDispatcher;
+    enum ExecutionState { VerifyingTransition, RunningEntry, RunningExit, RunningUpdate };
+    
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    UK_State        myEntryState    = null;
+    List<UK_State>  myActiveStack   = new List<UK_State>();
+    List<UK_State>  myChildren      = new List<UK_State>();
+    int             myQueueIdx      = 0;
+    ExecutionState  myExecutionState= ExecutionState.VerifyingTransition;
     
     // ======================================================================
     // Accessors
@@ -29,20 +35,21 @@ public sealed class UK_StateChart : UK_Action {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public UK_StateChart(string name) : base(name) {
-        myDispatcher= new UK_ParallelDispatcher(name);
     }
 
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
-        // Process any active transition.
-        ProcessTransition(frameId);
         // Make certain that at least one active state exists.
         if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState, frameId);
+        // Process any active transition.
+        if(myExecutionState == ExecutionState.VerifyingTransition) {
+            ExecuteTransitions(frameId);            
+        }
         // Execute state update functions.
-        foreach(var state in myActiveStack) {
-            state.OnUpdate(frameId);
+        if(myExecutionState == ExecutionState.RunningUpdate) {
+            ExecuteUpdates(frameId);
         }
         MarkAsCurrent(frameId);
     }
@@ -51,17 +58,38 @@ public sealed class UK_StateChart : UK_Action {
     }
     
     // ----------------------------------------------------------------------
-    void ProcessTransition(int frameId) {
+    void ExecuteTransitions(int frameId) {
         // Determine if a transition exists for one of the active states.
-        UK_State newState= null;
+        UK_State state= null;
         int end= myActiveStack.Count;
-        for(int idx= 0; idx < end; ++idx) {
-            newState= myActiveStack[idx].VerifyTransitions(frameId);
-            if(newState != null) break;
+        while(myQueueIdx < end) {
+            state= myActiveStack[myQueueIdx];
+            UK_VerifyTransitions transitions= state.Transitions;
+            transitions.Execute(frameId);
+            if(transitions.IsCurrent(frameId)) {
+                IsStalled= false;
+                UK_Transition firedTransition= transitions.TriggeredTransition;
+                if(firedTransition != null && state != ActiveState) {
+                    MoveToState(state, frameId);
+                    return;
+                }
+                ++myQueueIdx;
+                continue;
+            }
+            if(!transitions.IsStalled) {
+                IsStalled= false;
+            }
+            return;
         }
-        if(newState != null && newState != ActiveState) {
-            MoveToState(newState, frameId);            
-        }
+        IsStalled= false;
+        myQueueIdx= 0;
+        myExecutionState= ExecutionState.RunningUpdate;
+    }
+    // ----------------------------------------------------------------------
+    void ExecuteUpdates(int frameId) {
+        foreach(var state in myActiveStack) {
+            state.OnUpdate(frameId);
+        }                    
     }
     // ----------------------------------------------------------------------
     void MoveToState(UK_State newState, int frameId) {

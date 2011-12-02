@@ -35,7 +35,10 @@ public class UK_Transition : UK_Action {
         myIsTriggered= false;
         if(myGuard != null) {
             myGuard.Execute(frameId);            
-            if(!myGuard.IsCurrent(frameId)) return;
+            if(!myGuard.IsCurrent(frameId)) {
+                IsStalled= myGuard.IsStalled;
+                return;
+            }
             myIsTriggered= (bool)myGuard[myGuardIdx];
         }
         MarkAsCurrent(frameId);
@@ -45,7 +48,10 @@ public class UK_Transition : UK_Action {
         myIsTriggered= false;
         if(myGuard != null) {
             myGuard.ForceExecute(frameId);            
-            if(!myGuard.IsCurrent(frameId)) return;
+            if(!myGuard.IsCurrent(frameId)) {
+                IsStalled= myGuard.IsStalled;
+                return;
+            }
             myIsTriggered= (bool)myGuard[myGuardIdx];
         }
         MarkAsCurrent(frameId);

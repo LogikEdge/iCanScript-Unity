@@ -12,21 +12,24 @@ public sealed class UK_State : UK_Object {
     public UK_Action            myOnExitAction  = null;
     public UK_State             myParentState   = null;
     public List<UK_State>       myChildren      = new List<UK_State>();
-    public List<UK_Transition>  myTransitions   = new List<UK_Transition>();
-    
+           UK_VerifyTransitions myTransitions   = null;
+           
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public UK_State  ParentState    { get { return myParentState; } }
-    public UK_State  EntryState     { get { return myEntryState; }     set { myEntryState= value; }}
-    public UK_Action OnEntryAction  { get { return myOnEntryAction; }  set { myOnEntryAction= value; }}
-    public UK_Action OnUpdateAction { get { return myOnUpdateAction; } set { myOnUpdateAction= value; }}
-    public UK_Action OnExitAction   { get { return myOnExitAction; }   set { myOnExitAction= value; }}
-
+    public UK_State             ParentState    { get { return myParentState; } }
+    public UK_State             EntryState     { get { return myEntryState; }     set { myEntryState= value; }}
+    public UK_Action            OnEntryAction  { get { return myOnEntryAction; }  set { myOnEntryAction= value; }}
+    public UK_Action            OnUpdateAction { get { return myOnUpdateAction; } set { myOnUpdateAction= value; }}
+    public UK_Action            OnExitAction   { get { return myOnExitAction; }   set { myOnExitAction= value; }}
+    public UK_VerifyTransitions Transitions    { get { return myTransitions; }}
+    
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_State(string name) : base(name) {}
+    public UK_State(string name) : base(name) {
+        myTransitions= new UK_VerifyTransitions(name);
+    }
     
     // ======================================================================
     // Update
@@ -46,17 +49,6 @@ public sealed class UK_State : UK_Object {
             myOnExitAction.Execute(frameId);
         }
     }
-    public UK_State VerifyTransitions(int frameId) {
-        foreach(var transition in myTransitions) {
-            transition.Execute(frameId);
-            if(transition.DidTrigger) {
-                transition.Action.Execute(frameId);
-                UK_State newState=transition.EndState;
-                if(newState != null) return newState;
-            }
-        }
-        return null;
-    }
 
     // ======================================================================
     // Child Management
@@ -68,7 +60,7 @@ public sealed class UK_State : UK_Object {
                 myChildren.Add(state);
             },
             (transition)=> {
-                myTransitions.Add(transition);
+                myTransitions.AddChild(transition);
             },
             (module)=> {
                 if(module.Name == UK_EngineStrings.OnEntryModule) {
@@ -96,7 +88,7 @@ public sealed class UK_State : UK_Object {
                 myChildren.Remove(state);
             },
             (transition)=> {
-                myTransitions.Remove(transition);
+                myTransitions.RemoveChild(transition);
             },
             (module)=> {
                 if(module == myOnEntryAction) {
