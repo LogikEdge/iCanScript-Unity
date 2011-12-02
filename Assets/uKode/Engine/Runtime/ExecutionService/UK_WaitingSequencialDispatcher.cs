@@ -14,7 +14,7 @@ public class UK_WaitingSequencialDispatcher : UK_Dispatcher {
     public override void Execute(int frameId) {
         bool stalled= true;
         while(myQueueIdx < myExecuteQueue.Count) {
-            UK_IAction action= myExecuteQueue[myQueueIdx];
+            UK_Action action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
                 // Verify if the child is a staled dispatcher.

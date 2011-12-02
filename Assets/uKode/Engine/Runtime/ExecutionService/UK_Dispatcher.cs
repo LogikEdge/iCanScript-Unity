@@ -6,8 +6,8 @@ public abstract class UK_Dispatcher : UK_Action {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected List<UK_IAction> myExecuteQueue= new List<UK_IAction>();
-    protected int              myQueueIdx = 0;
+    protected List<UK_Action> myExecuteQueue= new List<UK_Action>();
+    protected int             myQueueIdx = 0;
     
     // ======================================================================
     // Creation/Destruction
@@ -19,7 +19,7 @@ public abstract class UK_Dispatcher : UK_Action {
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         if(myQueueIdx < myExecuteQueue.Count) {
-            UK_IAction action= myExecuteQueue[myQueueIdx];
+            UK_Action action= myExecuteQueue[myQueueIdx];
             action.ForceExecute(frameId);            
             if(action.IsCurrent(frameId)) {
                 ++myQueueIdx;
@@ -44,10 +44,10 @@ public abstract class UK_Dispatcher : UK_Action {
     // ======================================================================
     // Queue Management
     // ----------------------------------------------------------------------
-    public void AddChild(UK_IAction action) {
+    public void AddChild(UK_Action action) {
         myExecuteQueue.Add(action);
     }
-    public void RemoveChild(UK_IAction action) {
+    public void RemoveChild(UK_Action action) {
         myExecuteQueue.Remove(action);
     }
 }

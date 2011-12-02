@@ -6,11 +6,11 @@ public sealed class UK_Behaviour : UK_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    UK_IAction  myUpdateAction      = null;
-    UK_IAction  myLateUpdateAction  = null;
-    UK_IAction  myFixedUpdateAction = null;
-    int         myUpdateFrameId     = 0;
-    int         myFixedUpdateFrameId= 0;
+    UK_Action  myUpdateAction      = null;
+    UK_Action  myLateUpdateAction  = null;
+    UK_Action  myFixedUpdateAction = null;
+    int        myUpdateFrameId     = 0;
+    int        myFixedUpdateFrameId= 0;
     
     // ======================================================================
     // Accessors
@@ -93,9 +93,9 @@ public sealed class UK_Behaviour : UK_Storage {
     // Child Management
     // ----------------------------------------------------------------------
     public void AddChild(object obj) {
-        UK_IAction action= obj as UK_IAction;
-        if(action == null || !(obj is UK_Object)) return;
-        switch((obj as UK_Object).Name) {
+        UK_Action action= obj as UK_Action;
+        if(action == null) return;
+        switch(action.Name) {
             case UK_EngineStrings.UpdateAction: {
                 myUpdateAction= action;
                 break;
@@ -115,9 +115,9 @@ public sealed class UK_Behaviour : UK_Storage {
     }
     // ----------------------------------------------------------------------
     public void RemoveChild(object obj) {
-        UK_IAction action= obj as UK_IAction;
-        if(action == null || !(obj is UK_Object)) return;
-        switch((obj as UK_Object).Name) {
+        UK_Action action= obj as UK_Action;
+        if(action == null) return;
+        switch(action.Name) {
             case UK_EngineStrings.UpdateAction: {
                 myUpdateAction= null;
                 break;

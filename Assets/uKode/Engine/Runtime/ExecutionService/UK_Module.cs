@@ -20,13 +20,13 @@ public class UK_Module : UK_FunctionBase {
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         myDispatcher.Execute(frameId);
-        IsStalled= myDispatcher.IsStalled;
         MarkAsCurrent(myDispatcher.FrameId);
+        IsStalled= myDispatcher.IsStalled;
     }
     public override void ForceExecute(int frameId) {
         myDispatcher.ForceExecute(frameId);
-        IsStalled= myDispatcher.IsStalled;
         MarkAsCurrent(myDispatcher.FrameId);
+        IsStalled= myDispatcher.IsStalled;
     }
 
     // ======================================================================

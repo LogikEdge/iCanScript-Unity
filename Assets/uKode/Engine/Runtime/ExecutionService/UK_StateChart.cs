@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class UK_StateChart : UK_Action, UK_IAction {
+public sealed class UK_StateChart : UK_Action {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------

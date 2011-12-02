@@ -5,7 +5,7 @@ using System.Collections;
 // An action is the base class of the execution.  It includes a frame
 // identifier that is used to indicate if the action has been run.  This
 // indicator is the bases for the execution synchronization.
-public abstract class UK_Action : UK_Object, UK_IAction {
+public abstract class UK_Action : UK_Object {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------

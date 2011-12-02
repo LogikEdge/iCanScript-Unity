@@ -15,7 +15,7 @@ public class UK_NoWaitSequencialDispatcher : UK_Dispatcher {
         // Attempt to execute child functions.
         bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {
-            UK_IAction action= myExecuteQueue[i];
+            UK_Action action= myExecuteQueue[i];
             bool didExecute= action.IsCurrent(frameId);
             if(!didExecute) {
                 action.Execute(frameId);                
