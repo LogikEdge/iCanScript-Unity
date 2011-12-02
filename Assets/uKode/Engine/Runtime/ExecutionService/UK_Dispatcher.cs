@@ -9,7 +9,6 @@ public abstract class UK_Dispatcher : UK_Action, UK_IDispatcher {
     protected List<UK_IAction> myExecuteQueue= new List<UK_IAction>();
     protected int              myQueueIdx = 0;
     protected bool             myIsStalled= false;
-    protected int              myNbOfRetries= 0;
     
     // ======================================================================
     // Properties
@@ -31,6 +30,12 @@ public abstract class UK_Dispatcher : UK_Action, UK_IDispatcher {
             if(action.IsCurrent(frameId)) {
                 ++myQueueIdx;
                 myIsStalled= false;
+            } else {
+                // Verify if the child is a staled dispatcher.
+                UK_IDispatcher childDispatcher= action as UK_IDispatcher;
+                if(childDispatcher != null && !childDispatcher.IsStalled) {
+                    myIsStalled= false;
+                }
             }
         }
         if(myQueueIdx >= myExecuteQueue.Count) {
@@ -41,7 +46,6 @@ public abstract class UK_Dispatcher : UK_Action, UK_IDispatcher {
     protected void ResetIterator(int frameId) {
         myIsStalled= false;
         myQueueIdx= 0;
-        myNbOfRetries= 0;
         MarkAsCurrent(frameId);        
     }
 

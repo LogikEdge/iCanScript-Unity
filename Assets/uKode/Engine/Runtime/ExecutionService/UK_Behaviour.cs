@@ -57,7 +57,7 @@ public sealed class UK_Behaviour : UK_Storage {
             do {        
                 myUpdateAction.Execute(myUpdateFrameId);
                 if(myUpdateAction.IsStalled) {
-                    Debug.LogWarning("Upadte is STALLED. Attempting to unstall.");
+                    Debug.LogWarning("Upadte is STALLED. Attempting to unblock.");
                     myUpdateAction.ForceExecute(myUpdateFrameId);
                 }                
             } while(!myUpdateAction.IsCurrent(myUpdateFrameId));
@@ -68,10 +68,11 @@ public sealed class UK_Behaviour : UK_Storage {
         if(myLateUpdateAction != null) {
             do {
                 myLateUpdateAction.Execute(myUpdateFrameId);                                            
-            } while(!myLateUpdateAction.IsCurrent(myUpdateFrameId) && !myLateUpdateAction.IsStalled);
-            if(myLateUpdateAction.IsStalled) {
-                Debug.LogWarning("LateUpadte is STALLED.");
-            }
+                if(myLateUpdateAction.IsStalled) {
+                    Debug.LogWarning("LateUpadte is STALLED. Attempting to unblock.");
+                    myLateUpdateAction.ForceExecute(myUpdateFrameId);
+                }
+            } while(!myLateUpdateAction.IsCurrent(myUpdateFrameId));
         }
     }
     // Fix-time update to be used instead of Update
@@ -80,10 +81,11 @@ public sealed class UK_Behaviour : UK_Storage {
         if(myFixedUpdateAction != null) {
             do {
                 myFixedUpdateAction.Execute(myFixedUpdateFrameId);                                
-            } while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId) && !myFixedUpdateAction.IsStalled);
-            if(myFixedUpdateAction.IsStalled) {
-                Debug.LogWarning("FixedUpadte is STALLED.");
-            }
+                if(myFixedUpdateAction.IsStalled) {
+                    Debug.LogWarning("FixedUpadte is STALLED. Attempting to unblock.");
+                    myFixedUpdateAction.ForceExecute(myFixedUpdateFrameId);
+                }
+            } while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId));
         }
     }
 

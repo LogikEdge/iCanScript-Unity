@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 public class UK_WaitingSequencialDispatcher : UK_Dispatcher {
     // ======================================================================
-    // Fields
-    // ----------------------------------------------------------------------
-    const int retriesBeforeDeclaringStaled= 5;
-
-    // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public UK_WaitingSequencialDispatcher(string name) : base(name) {}
@@ -27,23 +22,13 @@ public class UK_WaitingSequencialDispatcher : UK_Dispatcher {
                 if(childDispatcher != null && !childDispatcher.IsStalled) {
                     stalled= false;
                 }                    
-                if(!stalled) {
-                    myNbOfRetries= 0;
-                    myIsStalled= false;
-                } else {
-                    if(++myNbOfRetries > retriesBeforeDeclaringStaled) {
-                        myIsStalled= true;
-                    }
-                }
+                myIsStalled= stalled;
                 return;
             }
             stalled= false;
             ++myQueueIdx;
         }
         // Reset iterators for next frame.
-        myIsStalled= false;
-        myQueueIdx= 0;
-        myNbOfRetries= 0;
-        MarkAsCurrent(frameId);
+        ResetIterator(frameId);
     }
 }

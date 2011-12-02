@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 public class UK_NoWaitSequencialDispatcher : UK_Dispatcher {
     // ======================================================================
-    // Fields
-    // ----------------------------------------------------------------------
-    const int retriesBeforeDeclaringStaled= 3;
-
-    // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public UK_NoWaitSequencialDispatcher(string name) : base(name) {}
@@ -39,20 +34,12 @@ public class UK_NoWaitSequencialDispatcher : UK_Dispatcher {
                 ++myQueueIdx;                
             }
         }
-        // Verify for a staled condition.
-        if(!stalled) {
-            myNbOfRetries= 0;
-            myIsStalled= false;
-        } else {
-            if(++myNbOfRetries >= retriesBeforeDeclaringStaled) {
-                myIsStalled= true;
-            }
-        }
         // Don't mark as completed if not all actions have ran.
-        if(myQueueIdx < myExecuteQueue.Count) return;
+        if(myQueueIdx < myExecuteQueue.Count) {
+            myIsStalled= stalled;
+            return;
+        }
         // Reset iterators for next frame.
-        myQueueIdx= 0;
-        myNbOfRetries= 0;
-        MarkAsCurrent(frameId);
+        ResetIterator(frameId);
     }
 }

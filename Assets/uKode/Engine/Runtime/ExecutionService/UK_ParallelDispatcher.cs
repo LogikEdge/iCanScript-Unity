@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 public class UK_ParallelDispatcher : UK_Dispatcher {
     // ======================================================================
-    // Fields
-    // ----------------------------------------------------------------------
-    const int retriesBeforeDeclaringStaled= 3;
-    
-    // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public UK_ParallelDispatcher(string name) : base(name) {}
@@ -37,14 +32,7 @@ public class UK_ParallelDispatcher : UK_Dispatcher {
             }
             // Return if we have seen too many staled children.
             if(++tries > maxTries) {
-                if(!stalled) {
-                    myNbOfRetries= 0;
-                    myIsStalled= false;
-                } else {
-                    if(++myNbOfRetries > retriesBeforeDeclaringStaled) {
-                        myIsStalled= true;
-                    }                    
-                }
+                myIsStalled= stalled;
                 return;
             }
             // The function is not ready to execute so lets delay the execution.
