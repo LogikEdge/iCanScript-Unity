@@ -63,8 +63,24 @@ public sealed class UK_StateChart : UK_Action {
             ExecuteUpdates(frameId);
         }
     }
+    // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
-        Execute(frameId);
+        // Process any active transition.
+        if(myExecutionState == ExecutionState.VerifyingTransition) {
+            ForceExecuteTransitions(frameId);            
+        }
+        // Execute state exit functions.
+        if(myExecutionState == ExecutionState.RunningExit) {
+            ForceExecuteExits(frameId);
+        }
+        // Execute state update functions.
+        if(myExecutionState == ExecutionState.RunningEntry) {
+            ForceExecuteEntries(frameId);
+        }
+        // Execute state update functions.
+        if(myExecutionState == ExecutionState.RunningUpdate) {
+            ForceExecuteUpdates(frameId);
+        }
     }
     
     // ----------------------------------------------------------------------
@@ -95,6 +111,10 @@ public sealed class UK_StateChart : UK_Action {
         myExecutionState= ExecutionState.RunningUpdate;
     }
     // ----------------------------------------------------------------------
+    void ForceExecuteTransitions(int frameId) {
+        ExecuteTransitions(frameId);
+    }
+    // ----------------------------------------------------------------------
     void ExecuteUpdates(int frameId) {
         bool stalled= true;
         while(myQueueIdx < myActiveStack.Count) {
@@ -115,6 +135,10 @@ public sealed class UK_StateChart : UK_Action {
         // Reset iterators for next frame.
         myQueueIdx= 0;
         MarkAsCurrent(frameId);
+    }
+    // ----------------------------------------------------------------------
+    void ForceExecuteUpdates(int frameId) {
+        ExecuteUpdates(frameId);
     }
     // ----------------------------------------------------------------------
     void ExecuteExits(int frameId) {
@@ -152,6 +176,10 @@ public sealed class UK_StateChart : UK_Action {
         myQueueIdx= stableSize;
     }
     // ----------------------------------------------------------------------
+    void ForceExecuteExits(int frameId) {
+        ExecuteExits(frameId);
+    }
+    // ----------------------------------------------------------------------
     void ExecuteEntries(int frameId) {
         bool stalled= true;
         int stackSize= myActiveStack.Count;
@@ -173,6 +201,10 @@ public sealed class UK_StateChart : UK_Action {
         // Prepare to execute update functions
         myExecutionState= ExecutionState.RunningUpdate;
         myQueueIdx= 0;        
+    }
+    // ----------------------------------------------------------------------
+    void ForceExecuteEntries(int frameId) {
+        ExecuteEntries(frameId);
     }
     // ----------------------------------------------------------------------
     void MoveToState(UK_State newState, int frameId) {
