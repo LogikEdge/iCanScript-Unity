@@ -143,16 +143,18 @@ public sealed class UK_StateChart : UK_Action {
         while(myQueueIdx < myActiveStack.Count) {
             UK_State state= myActiveStack[myQueueIdx];
             UK_Action action= state.OnUpdateAction;
-            action.Execute(frameId);            
-            if(!action.IsCurrent(frameId)) {
-                // Verify if the child is a staled dispatcher.
-                if(!action.IsStalled) {
-                    stalled= false;
-                }                    
-                IsStalled= stalled;
-                return;
+            if(action != null) {
+                action.Execute(frameId);            
+                if(!action.IsCurrent(frameId)) {
+                    // Verify if the child is a staled dispatcher.
+                    if(!action.IsStalled) {
+                        stalled= false;
+                    }                    
+                    IsStalled= stalled;
+                    return;
+                }
+                stalled= false;                
             }
-            stalled= false;
             ++myQueueIdx;
         }
         // Reset iterators for next frame.
@@ -165,13 +167,15 @@ public sealed class UK_StateChart : UK_Action {
         if(myQueueIdx < stackSize) {
             UK_State state= myActiveStack[myQueueIdx];
             UK_Action action= state.OnUpdateAction;
-            action.ForceExecute(frameId);            
-            if(!action.IsCurrent(frameId)) {
-                // Verify if the child is a staled dispatcher.
-                IsStalled= action.IsStalled;
-                return;
+            if(action != null) {
+                action.ForceExecute(frameId);            
+                if(!action.IsCurrent(frameId)) {
+                    // Verify if the child is a staled dispatcher.
+                    IsStalled= action.IsStalled;
+                    return;
+                }
+                IsStalled= false;                
             }
-            IsStalled= false;
         }
         // Reset iterators for next frame.
         if(++myQueueIdx >= stackSize) {
@@ -186,16 +190,18 @@ public sealed class UK_StateChart : UK_Action {
             UK_State state= myActiveStack[myQueueIdx];
             if(state == myTransitionParent) break;
             UK_Action action= state.OnExitAction;
-            action.Execute(frameId);            
-            if(!action.IsCurrent(frameId)) {
-                // Verify if the child is a staled dispatcher.
-                if(!action.IsStalled) {
-                    stalled= false;
-                }                    
-                IsStalled= stalled;
-                return;
+            if(action != null) {
+                action.Execute(frameId);            
+                if(!action.IsCurrent(frameId)) {
+                    // Verify if the child is a staled dispatcher.
+                    if(!action.IsStalled) {
+                        stalled= false;
+                    }                    
+                    IsStalled= stalled;
+                    return;
+                }
+                stalled= false;                
             }
-            stalled= false;
             --myQueueIdx;
         }
         // Update active stack state.
@@ -208,12 +214,14 @@ public sealed class UK_StateChart : UK_Action {
             state= myActiveStack[myQueueIdx];
             if(state != myTransitionParent) {
                 UK_Action action= state.OnExitAction;
-                action.ForceExecute(frameId);            
-                if(!action.IsCurrent(frameId)) {
-                    IsStalled= action.IsStalled;
-                    return;
+                if(action != null) {
+                    action.ForceExecute(frameId);            
+                    if(!action.IsCurrent(frameId)) {
+                        IsStalled= action.IsStalled;
+                        return;
+                    }
+                    IsStalled= false;                                    
                 }
-                IsStalled= false;                
             }
         }
         // Update active stack state.
@@ -228,16 +236,18 @@ public sealed class UK_StateChart : UK_Action {
         while(myQueueIdx < stackSize) {
             UK_State state= myActiveStack[myQueueIdx];
             UK_Action action= state.OnEntryAction;
-            action.Execute(frameId);            
-            if(!action.IsCurrent(frameId)) {
-                // Verify if the child is a staled dispatcher.
-                if(!action.IsStalled) {
-                    stalled= false;
-                }                    
-                IsStalled= stalled;
-                return;
+            if(action != null) {
+                action.Execute(frameId);            
+                if(!action.IsCurrent(frameId)) {
+                    // Verify if the child is a staled dispatcher.
+                    if(!action.IsStalled) {
+                        stalled= false;
+                    }                    
+                    IsStalled= stalled;
+                    return;
+                }
+                stalled= false;                
             }
-            stalled= false;
             ++myQueueIdx;
         }
         // Prepare to execute update functions
@@ -250,12 +260,14 @@ public sealed class UK_StateChart : UK_Action {
         if(myQueueIdx < stackSize) {
             UK_State state= myActiveStack[myQueueIdx];
             UK_Action action= state.OnEntryAction;
-            action.ForceExecute(frameId);            
-            if(!action.IsCurrent(frameId)) {
-                IsStalled= action.IsStalled;
-                return;
+            if(action != null) {
+                action.ForceExecute(frameId);            
+                if(!action.IsCurrent(frameId)) {
+                    IsStalled= action.IsStalled;
+                    return;
+                }
+                IsStalled= false;                
             }
-            IsStalled= false;
         }
         // Prepare to execute update functions
         if(++myQueueIdx >= stackSize) {
