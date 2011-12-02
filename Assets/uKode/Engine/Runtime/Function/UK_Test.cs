@@ -19,6 +19,7 @@ public sealed class UK_Test {
     public void remove(float f) {}
     
     [UK_Conversion] public static float   Conversion(int i)     { return i; }
+    [UK_Conversion] public static int     ConversionFI(float f) { return (int)f; }
     [UK_Conversion] public static Vector2 Conversion(float f)   { return new Vector2(f,0); }
     [UK_Conversion] public static Vector3 Conversion(Vector2 v) { return new Vector3(v.x,v.y,0); }
     [UK_Conversion] public static Vector2 Conversion(Vector3 v) { return new Vector2(v.x,v.y); }

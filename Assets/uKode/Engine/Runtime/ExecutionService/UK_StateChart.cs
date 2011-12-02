@@ -159,6 +159,7 @@ public sealed class UK_StateChart : UK_Action {
         }
         // Reset iterators for next frame.
         myQueueIdx= 0;
+        myExecutionState= ExecutionState.VerifyingTransition;            
         MarkAsCurrent(frameId);
     }
     // ----------------------------------------------------------------------
@@ -180,6 +181,7 @@ public sealed class UK_StateChart : UK_Action {
         // Reset iterators for next frame.
         if(++myQueueIdx >= stackSize) {
             myQueueIdx= 0;
+            myExecutionState= ExecutionState.VerifyingTransition;            
             MarkAsCurrent(frameId);            
         }
     }
