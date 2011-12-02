@@ -11,11 +11,12 @@ public sealed class UK_StateChart : UK_Action {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    UK_State        myEntryState    = null;
-    List<UK_State>  myActiveStack   = new List<UK_State>();
-    List<UK_State>  myChildren      = new List<UK_State>();
-    int             myQueueIdx      = 0;
-    ExecutionState  myExecutionState= ExecutionState.VerifyingTransition;
+    UK_State        myEntryState      = null;
+    List<UK_State>  myActiveStack     = new List<UK_State>();
+    List<UK_State>  myChildren        = new List<UK_State>();
+    int             myQueueIdx        = 0;
+    UK_State        myTransitionParent= null;
+    ExecutionState  myExecutionState  = ExecutionState.VerifyingTransition;
     
     // ======================================================================
     // Accessors
@@ -66,20 +67,19 @@ public sealed class UK_StateChart : UK_Action {
             state= myActiveStack[myQueueIdx];
             UK_VerifyTransitions transitions= state.Transitions;
             transitions.Execute(frameId);
-            if(transitions.IsCurrent(frameId)) {
-                IsStalled= false;
-                UK_Transition firedTransition= transitions.TriggeredTransition;
-                if(firedTransition != null && state != ActiveState) {
-                    MoveToState(state, frameId);
-                    return;
+            if(!transitions.IsCurrent(frameId)) {
+                if(!transitions.IsStalled) {
+                    IsStalled= false;
                 }
-                ++myQueueIdx;
-                continue;
+                return;
             }
-            if(!transitions.IsStalled) {
-                IsStalled= false;
+            IsStalled= false;
+            UK_Transition firedTransition= transitions.TriggeredTransition;
+            if(firedTransition != null && state != ActiveState) {
+                MoveToState(state, frameId);
+                return;
             }
-            return;
+            ++myQueueIdx;
         }
         IsStalled= false;
         myQueueIdx= 0;
@@ -111,7 +111,7 @@ public sealed class UK_StateChart : UK_Action {
     void MoveToState(UK_State newState, int frameId) {
         int stackSize= myActiveStack.Count;
         // Determine transition parent node
-        UK_State transitionParent= null;
+        myTransitionParent= null;
         UK_State toTest= newState;
         int entrySize= -1;
         int idx;
@@ -119,7 +119,7 @@ public sealed class UK_StateChart : UK_Action {
             ++entrySize;
             for(idx= stackSize-1; idx >= 0; --idx) {
                 if(myActiveStack[idx] == toTest) {
-                    transitionParent= toTest;
+                    myTransitionParent= toTest;
                     break;
                 }
             }
@@ -128,14 +128,16 @@ public sealed class UK_StateChart : UK_Action {
                 ++entrySize;
                 break;
             }
-        } while(transitionParent == null);
+        } while(myTransitionParent == null);
         // Execute exit functions.
-        for(idx= stackSize-1; idx >= 0; --idx) {
-            UK_State state= myActiveStack[idx];
-            if(state == transitionParent) break;
+        myExecutionState= ExecutionState.RunningExit;
+        myQueueIdx= stackSize-1;
+        for(; myQueueIdx >= 0; --myQueueIdx) {
+            UK_State state= myActiveStack[myQueueIdx];
+            if(state == myTransitionParent) break;
             state.OnExit(frameId);
         }
-        int stableSize= idx+1;
+        int stableSize= myQueueIdx+1;
         // Update active stack state.
         int newSize= stableSize+entrySize;
         if(newSize < stackSize) myActiveStack.RemoveRange(newSize, stackSize-newSize);
@@ -147,9 +149,13 @@ public sealed class UK_StateChart : UK_Action {
             toAdd= toAdd.ParentState;            
         }
         // Execute entry functions.
-        for(idx= stableSize; idx < newSize; ++idx) {
-            myActiveStack[idx].OnEntry(frameId);
+        myExecutionState= ExecutionState.RunningEntry;
+        myQueueIdx= stableSize;
+        for(; myQueueIdx < newSize; ++myQueueIdx) {
+            myActiveStack[myQueueIdx].OnEntry(frameId);
         }
+        myExecutionState= ExecutionState.RunningUpdate;
+        myQueueIdx= 0;
     }
     
     // ======================================================================
