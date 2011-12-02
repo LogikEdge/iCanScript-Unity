@@ -74,7 +74,10 @@ public class UK_FunctionBase : UK_Action {
     public override void Execute(int frameId) {
         // Verify that we are ready to run.
         foreach(var id in myInIndexes) {
-            if(myConnections[id].IsConnected && !myConnections[id].IsReady(frameId)) return;
+            if(myConnections[id].IsConnected && !myConnections[id].IsReady(frameId)) {
+                IsStalled= true;
+                return;
+            }
         }
         ForceExecute(frameId);
     }

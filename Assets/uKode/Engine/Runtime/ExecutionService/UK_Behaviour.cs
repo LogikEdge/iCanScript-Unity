@@ -6,11 +6,11 @@ public sealed class UK_Behaviour : UK_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    UK_IDispatcher  myUpdateAction      = null;
-    UK_IDispatcher  myLateUpdateAction  = null;
-    UK_IDispatcher  myFixedUpdateAction = null;
-    int             myUpdateFrameId     = 0;
-    int             myFixedUpdateFrameId= 0;
+    UK_IAction  myUpdateAction      = null;
+    UK_IAction  myLateUpdateAction  = null;
+    UK_IAction  myFixedUpdateAction = null;
+    int         myUpdateFrameId     = 0;
+    int         myFixedUpdateFrameId= 0;
     
     // ======================================================================
     // Accessors
@@ -97,15 +97,15 @@ public sealed class UK_Behaviour : UK_Storage {
         if(action == null) return;
         switch(action.Name) {
             case UK_EngineStrings.UpdateAction: {
-                myUpdateAction= action as UK_IDispatcher;
+                myUpdateAction= action as UK_IAction;
                 break;
             }
             case UK_EngineStrings.LateUpdateAction: {
-                myLateUpdateAction= action as UK_IDispatcher;
+                myLateUpdateAction= action as UK_IAction;
                 break;
             }
             case UK_EngineStrings.FixedUpdateAction: {
-                myFixedUpdateAction= action as UK_IDispatcher;
+                myFixedUpdateAction= action as UK_IAction;
                 break;
             }
             default: {

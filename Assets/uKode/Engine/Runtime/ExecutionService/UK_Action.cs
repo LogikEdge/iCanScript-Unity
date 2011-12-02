@@ -9,12 +9,14 @@ public abstract class UK_Action : UK_Object, UK_IAction {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    int  myFrameId= 0;
+    int  myFrameId  = 0;
+    bool myIsStalled= false;
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public int FrameId { get { return myFrameId; }}
+    public int  FrameId   { get { return myFrameId; }}
+    public bool IsStalled { get { return myIsStalled; } set { myIsStalled= value; }}
     
     // ======================================================================
     // Creation/Destruction
@@ -29,5 +31,5 @@ public abstract class UK_Action : UK_Object, UK_IAction {
     
     // ----------------------------------------------------------------------
     public bool IsCurrent(int frameId)     { return myFrameId == frameId; }
-    public void MarkAsCurrent(int frameId) { myFrameId= frameId; }
+    public void MarkAsCurrent(int frameId) { myFrameId= frameId; myIsStalled= false; }
 }

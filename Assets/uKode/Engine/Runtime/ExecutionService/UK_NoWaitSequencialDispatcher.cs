@@ -24,8 +24,7 @@ public class UK_NoWaitSequencialDispatcher : UK_Dispatcher {
                     stalled= false;
                 } else {
                     // Verify if the child is a staled dispatcher.
-                    UK_IDispatcher childDispatcher= action as UK_IDispatcher;
-                    if(childDispatcher != null && !childDispatcher.IsStalled) {
+                    if(!action.IsStalled) {
                         stalled= false;
                     }                    
                 }
@@ -36,7 +35,7 @@ public class UK_NoWaitSequencialDispatcher : UK_Dispatcher {
         }
         // Don't mark as completed if not all actions have ran.
         if(myQueueIdx < myExecuteQueue.Count) {
-            myIsStalled= stalled;
+            IsStalled= stalled;
             return;
         }
         // Reset iterators for next frame.

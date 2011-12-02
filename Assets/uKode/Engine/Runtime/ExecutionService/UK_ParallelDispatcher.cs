@@ -26,13 +26,12 @@ public class UK_ParallelDispatcher : UK_Dispatcher {
                 continue;
             }
             // Verify if the child is a staled dispatcher.
-            UK_IDispatcher childDispatcher= action as UK_IDispatcher;
-            if(childDispatcher != null && !childDispatcher.IsStalled) {
+            if(!action.IsStalled) {
                 stalled= false;
             }
             // Return if we have seen too many staled children.
             if(++tries > maxTries) {
-                myIsStalled= stalled;
+                IsStalled= stalled;
                 return;
             }
             // The function is not ready to execute so lets delay the execution.

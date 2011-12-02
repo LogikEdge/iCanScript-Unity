@@ -54,7 +54,10 @@ public class UK_Method : UK_Function {
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         // Validate that this is ready.
-        if(myThisConnection.IsConnected && !myThisConnection.IsReady(frameId)) return;
+        if(myThisConnection.IsConnected && !myThisConnection.IsReady(frameId)) {
+            IsStalled= true;
+            return;
+        }
         base.Execute(frameId);        
     }
     // ----------------------------------------------------------------------

@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class UK_StateChart : UK_Action, UK_IDispatcher {
+public sealed class UK_StateChart : UK_Action, UK_IAction {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -32,11 +32,6 @@ public sealed class UK_StateChart : UK_Action, UK_IDispatcher {
         myDispatcher= new UK_ParallelDispatcher(name);
     }
 
-    // ======================================================================
-    // IDispatcher implementation
-    // ----------------------------------------------------------------------
-    public bool IsStalled { get { return myDispatcher.IsStalled; }}
-    
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------

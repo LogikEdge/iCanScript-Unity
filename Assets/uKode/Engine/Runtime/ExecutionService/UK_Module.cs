@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_Module : UK_FunctionBase, UK_IDispatcher {
+public class UK_Module : UK_FunctionBase, UK_IAction {
     // ======================================================================
     // Field
     // ----------------------------------------------------------------------
@@ -18,7 +18,7 @@ public class UK_Module : UK_FunctionBase, UK_IDispatcher {
     // ======================================================================
     // IDispatcher implementation
     // ----------------------------------------------------------------------
-    public bool IsStalled { get { return myDispatcher.IsStalled; }}
+    public new bool IsStalled { get { return myDispatcher.IsStalled; }}
     
     // ======================================================================
     // Execution

@@ -18,11 +18,10 @@ public class UK_WaitingSequencialDispatcher : UK_Dispatcher {
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
                 // Verify if the child is a staled dispatcher.
-                UK_IDispatcher childDispatcher= action as UK_IDispatcher;
-                if(childDispatcher != null && !childDispatcher.IsStalled) {
+                if(!action.IsStalled) {
                     stalled= false;
                 }                    
-                myIsStalled= stalled;
+                IsStalled= stalled;
                 return;
             }
             stalled= false;
