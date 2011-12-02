@@ -15,7 +15,9 @@ public sealed class UK_StateChart : UK_Action {
     List<UK_State>  myActiveStack     = new List<UK_State>();
     List<UK_State>  myChildren        = new List<UK_State>();
     int             myQueueIdx        = 0;
+    UK_State        myNextState       = null;
     UK_State        myTransitionParent= null;
+    int             myEntrySize       = -1;
     ExecutionState  myExecutionState  = ExecutionState.VerifyingTransition;
     
     // ======================================================================
@@ -108,15 +110,50 @@ public sealed class UK_StateChart : UK_Action {
         MarkAsCurrent(frameId);
     }
     // ----------------------------------------------------------------------
+    void ExecuteExit(int frameId) {
+        for(; myQueueIdx >= 0; --myQueueIdx) {
+            UK_State state= myActiveStack[myQueueIdx];
+            if(state == myTransitionParent) break;
+            state.OnExit(frameId);
+        }
+        // Update active stack state.
+        int stackSize= myActiveStack.Count;
+        int stableSize= myQueueIdx+1;
+        int newSize= stableSize+myEntrySize;
+        if(newSize < stackSize) myActiveStack.RemoveRange(newSize, stackSize-newSize);
+        if(newSize > myActiveStack.Capacity) myActiveStack.Capacity= newSize;
+        while(myActiveStack.Count < newSize) myActiveStack.Add(null);
+        UK_State toAdd= myNextState;
+        for(int offset= myEntrySize-1; offset >= 0; --offset) {
+            myActiveStack[stableSize+offset]= toAdd;
+            toAdd= toAdd.ParentState;            
+        }
+        // Prepare to execute entry
+        myExecutionState= ExecutionState.RunningEntry;
+        myQueueIdx= stableSize;
+    }
+    // ----------------------------------------------------------------------
+    void ExecuteEntry(int frameId) {
+        // Execute entry functions.
+        int newSize= myActiveStack.Count;
+        for(; myQueueIdx < newSize; ++myQueueIdx) {
+            myActiveStack[myQueueIdx].OnEntry(frameId);
+        }
+        // Prepare to execute update functions
+        myExecutionState= ExecutionState.RunningUpdate;
+        myQueueIdx= 0;        
+    }
+    // ----------------------------------------------------------------------
     void MoveToState(UK_State newState, int frameId) {
+        myNextState= newState;
         int stackSize= myActiveStack.Count;
         // Determine transition parent node
         myTransitionParent= null;
         UK_State toTest= newState;
-        int entrySize= -1;
+        myEntrySize= -1;
         int idx;
         do {
-            ++entrySize;
+            ++myEntrySize;
             for(idx= stackSize-1; idx >= 0; --idx) {
                 if(myActiveStack[idx] == toTest) {
                     myTransitionParent= toTest;
@@ -125,37 +162,17 @@ public sealed class UK_StateChart : UK_Action {
             }
             toTest= toTest.ParentState;
             if(toTest == null) {
-                ++entrySize;
+                ++myEntrySize;
                 break;
             }
         } while(myTransitionParent == null);
-        // Execute exit functions.
+        // Prepare to execute exit functions.
         myExecutionState= ExecutionState.RunningExit;
         myQueueIdx= stackSize-1;
-        for(; myQueueIdx >= 0; --myQueueIdx) {
-            UK_State state= myActiveStack[myQueueIdx];
-            if(state == myTransitionParent) break;
-            state.OnExit(frameId);
-        }
-        int stableSize= myQueueIdx+1;
-        // Update active stack state.
-        int newSize= stableSize+entrySize;
-        if(newSize < stackSize) myActiveStack.RemoveRange(newSize, stackSize-newSize);
-        if(newSize > myActiveStack.Capacity) myActiveStack.Capacity= newSize;
-        while(myActiveStack.Count < newSize) myActiveStack.Add(null);
-        UK_State toAdd= newState;
-        for(int offset= entrySize-1; offset >= 0; --offset) {
-            myActiveStack[stableSize+offset]= toAdd;
-            toAdd= toAdd.ParentState;            
-        }
-        // Execute entry functions.
-        myExecutionState= ExecutionState.RunningEntry;
-        myQueueIdx= stableSize;
-        for(; myQueueIdx < newSize; ++myQueueIdx) {
-            myActiveStack[myQueueIdx].OnEntry(frameId);
-        }
-        myExecutionState= ExecutionState.RunningUpdate;
-        myQueueIdx= 0;
+        // Execute exit
+        ExecuteExit(frameId);
+        // Execute entry
+        ExecuteEntry(frameId);
     }
     
     // ======================================================================
