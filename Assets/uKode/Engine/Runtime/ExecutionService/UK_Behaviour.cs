@@ -93,19 +93,19 @@ public sealed class UK_Behaviour : UK_Storage {
     // Child Management
     // ----------------------------------------------------------------------
     public void AddChild(object obj) {
-        UK_Action action= obj as UK_Action;
-        if(action == null) return;
-        switch(action.Name) {
+        UK_IAction action= obj as UK_IAction;
+        if(action == null || !(obj is UK_Object)) return;
+        switch((obj as UK_Object).Name) {
             case UK_EngineStrings.UpdateAction: {
-                myUpdateAction= action as UK_IAction;
+                myUpdateAction= action;
                 break;
             }
             case UK_EngineStrings.LateUpdateAction: {
-                myLateUpdateAction= action as UK_IAction;
+                myLateUpdateAction= action;
                 break;
             }
             case UK_EngineStrings.FixedUpdateAction: {
-                myFixedUpdateAction= action as UK_IAction;
+                myFixedUpdateAction= action;
                 break;
             }
             default: {
@@ -115,9 +115,9 @@ public sealed class UK_Behaviour : UK_Storage {
     }
     // ----------------------------------------------------------------------
     public void RemoveChild(object obj) {
-        UK_Action action= obj as UK_Action;
-        if(action == null) return;
-        switch(action.Name) {
+        UK_IAction action= obj as UK_IAction;
+        if(action == null || !(obj is UK_Object)) return;
+        switch((obj as UK_Object).Name) {
             case UK_EngineStrings.UpdateAction: {
                 myUpdateAction= null;
                 break;
