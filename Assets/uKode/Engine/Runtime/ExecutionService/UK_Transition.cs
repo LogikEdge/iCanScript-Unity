@@ -5,10 +5,11 @@ public class UK_Transition : UK_Action {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    UK_FunctionBase myGuard;
-    int             myGuardIdx;
+    UK_Action       myGuard;
     UK_Action       myAction;
     UK_State        myEndState;
+    UK_FunctionBase myTriggerFunction;
+    int             myTriggerPortIdx;
     bool            myIsTriggered= false;
 
     // ======================================================================
@@ -21,11 +22,12 @@ public class UK_Transition : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Transition(string name, UK_State endState, UK_FunctionBase guard, int guardIdx, UK_FunctionBase action= null) : base(name) {
-        myEndState= endState;
-        myGuard   = guard;
-        myGuardIdx= guardIdx;
-        myAction  = action;
+    public UK_Transition(string name, UK_State endState, UK_Action guard, UK_FunctionBase triggerFunc, int portIdx, UK_Action action= null) : base(name) {
+        myGuard          = guard;
+        myAction         = action;
+        myEndState       = endState;
+        myTriggerPortIdx = portIdx;
+        myTriggerFunction= triggerFunc;
     }
     
     // ======================================================================
@@ -33,26 +35,26 @@ public class UK_Transition : UK_Action {
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
         myIsTriggered= false;
-        if(myGuard != null) {
+        if(myGuard != null && myTriggerFunction != null) {
             myGuard.Execute(frameId);            
             if(!myGuard.IsCurrent(frameId)) {
                 IsStalled= myGuard.IsStalled;
                 return;
             }
-            myIsTriggered= (bool)myGuard[myGuardIdx];
+            myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
         }
         MarkAsCurrent(frameId);
     }
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         myIsTriggered= false;
-        if(myGuard != null) {
+        if(myGuard != null && myTriggerFunction != null) {
             myGuard.ForceExecute(frameId);            
             if(!myGuard.IsCurrent(frameId)) {
                 IsStalled= myGuard.IsStalled;
                 return;
             }
-            myIsTriggered= (bool)myGuard[myGuardIdx];
+            myIsTriggered= (bool)myTriggerFunction[myTriggerPortIdx];
         }
         MarkAsCurrent(frameId);
     }

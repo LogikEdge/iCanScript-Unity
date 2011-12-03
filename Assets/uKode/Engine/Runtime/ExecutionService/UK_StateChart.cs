@@ -100,8 +100,8 @@ public sealed class UK_StateChart : UK_Action {
             }
             IsStalled= false;
             UK_Transition firedTransition= transitions.TriggeredTransition;
-            if(firedTransition != null && state != ActiveState) {
-                MoveToState(state, frameId);
+            if(firedTransition != null && firedTransition.EndState != ActiveState) {
+                MoveToState(firedTransition.EndState, frameId);
                 return;
             }
             ++myQueueIdx;
@@ -127,8 +127,8 @@ public sealed class UK_StateChart : UK_Action {
             }
             IsStalled= false;
             UK_Transition firedTransition= transitions.TriggeredTransition;
-            if(firedTransition != null && state != ActiveState) {
-                MoveToState(state, frameId);
+            if(firedTransition != null && firedTransition.EndState != ActiveState) {
+                MoveToState(firedTransition.EndState, frameId);
                 return;
             }
         }

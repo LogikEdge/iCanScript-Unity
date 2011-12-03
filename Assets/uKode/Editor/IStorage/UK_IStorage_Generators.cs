@@ -150,6 +150,7 @@ public partial class UK_IStorage {
                                         int triggerIdx= triggerPort.PortIndex;
                                         UK_Transition transition= new UK_Transition(p.Name,
                                                                                     GetRuntimeObject(GetParent(FindAConnectedPort(p))) as UK_State,
+                                                                                    GetRuntimeObject(guardModule) as UK_FunctionBase,
                                                                                     triggerFunc, triggerIdx,
                                                                                     actionModule != null ? GetRuntimeObject(actionModule) as UK_FunctionBase : null);
                                         UK_State state= GetRuntimeObject(edChild) as UK_State;
