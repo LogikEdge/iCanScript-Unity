@@ -279,6 +279,7 @@ public sealed class UK_StateChart : UK_Action {
     }
     // ----------------------------------------------------------------------
     void MoveToState(UK_State newState, int frameId) {
+        Debug.Log("Moving to state: "+newState.Name);
         myNextState= newState;
         int stackSize= myActiveStack.Count;
         // Determine transition parent node

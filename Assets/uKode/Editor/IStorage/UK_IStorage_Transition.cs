@@ -109,12 +109,24 @@ public partial class UK_IStorage {
         if(outStatePort.IsInStatePort) return outStatePort;
         outStatePort= GetOutStatePort(outStatePort);
         if(outStatePort == null) return null; 
+        // Find transition module.
         UK_EditorObject[] connectedPorts= FindConnectedPorts(outStatePort);
         UK_EditorObject inStatePort= null;
         foreach(var port in connectedPorts) {
-            if(port.IsInStatePort) inStatePort= port;
+            if(port.IsInTransitionPort) inStatePort= port;
         }
-        return inStatePort;
+        UK_EditorObject transitionModule= GetParent(inStatePort);
+        // Find transition module output port.
+        ForEachChildPort(transitionModule,
+            p=> {
+                if(p.IsOutTransitionPort) {
+                    inStatePort= p;
+                    return true;
+                }
+                return false;
+            }
+        );
+        return FindAConnectedPort(inStatePort);
     }
     // ----------------------------------------------------------------------
     public UK_EditorObject GetTransitionModule(UK_EditorObject statePort) {

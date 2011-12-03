@@ -134,6 +134,7 @@ public partial class UK_IStorage {
                                         UK_EditorObject actionModule= null;
                                         UK_EditorObject guardModule= GetTransitionGuardAndAction(p, out actionModule);
                                         UK_EditorObject triggerPort= null;
+                                        UK_EditorObject endState= GetParent(GetInStatePort(p));
                                         ForEachChildPort(guardModule,
                                             port=> {
                                                 if(port.IsOutStaticModulePort && port.RuntimeType == typeof(bool) && port.Name == "trigger") {
@@ -149,7 +150,7 @@ public partial class UK_IStorage {
                                         UK_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : GetRuntimeObject(GetParent(triggerPort)) as UK_FunctionBase;
                                         int triggerIdx= triggerPort.PortIndex;
                                         UK_Transition transition= new UK_Transition(p.Name,
-                                                                                    GetRuntimeObject(GetParent(FindAConnectedPort(p))) as UK_State,
+                                                                                    GetRuntimeObject(GetParent(GetInStatePort(p))) as UK_State,
                                                                                     GetRuntimeObject(guardModule) as UK_FunctionBase,
                                                                                     triggerFunc, triggerIdx,
                                                                                     actionModule != null ? GetRuntimeObject(actionModule) as UK_FunctionBase : null);
