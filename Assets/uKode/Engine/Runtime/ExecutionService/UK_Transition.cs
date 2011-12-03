@@ -21,10 +21,10 @@ public class UK_Transition : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Transition(string name, UK_State endState, UK_FunctionBase guard, UK_FunctionBase action= null) : base(name) {
+    public UK_Transition(string name, UK_State endState, UK_FunctionBase guard, int guardIdx, UK_FunctionBase action= null) : base(name) {
         myEndState= endState;
         myGuard   = guard;
-        myGuardIdx= guard.OutIndexes[0];
+        myGuardIdx= guardIdx;
         myAction  = action;
     }
     

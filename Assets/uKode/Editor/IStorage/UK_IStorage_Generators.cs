@@ -133,10 +133,24 @@ public partial class UK_IStorage {
                                     if(p.IsOutStatePort) {
                                         UK_EditorObject actionModule= null;
                                         UK_EditorObject guardModule= GetTransitionGuardAndAction(p, out actionModule);
-
+                                        UK_EditorObject triggerPort= null;
+                                        ForEachChildPort(guardModule,
+                                            port=> {
+                                                if(port.IsOutStaticModulePort && port.RuntimeType == typeof(bool) && port.Name == "trigger") {
+                                                    triggerPort= port;
+                                                    return true;
+                                                }
+                                                return false;
+                                            }
+                                        );
+                                        while(GetSource(triggerPort) != null) {
+                                            triggerPort= GetSource(triggerPort);
+                                        }
+                                        UK_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : GetRuntimeObject(GetParent(triggerPort)) as UK_FunctionBase;
+                                        int triggerIdx= triggerPort.PortIndex;
                                         UK_Transition transition= new UK_Transition(p.Name,
                                                                                     GetRuntimeObject(GetParent(FindAConnectedPort(p))) as UK_State,
-                                                                                    GetRuntimeObject(guardModule) as UK_FunctionBase,
+                                                                                    triggerFunc, triggerIdx,
                                                                                     actionModule != null ? GetRuntimeObject(actionModule) as UK_FunctionBase : null);
                                         UK_State state= GetRuntimeObject(edChild) as UK_State;
                                         state.AddChild(transition);
