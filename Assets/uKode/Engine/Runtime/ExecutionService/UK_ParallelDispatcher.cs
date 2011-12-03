@@ -21,23 +21,22 @@ public class UK_ParallelDispatcher : UK_Dispatcher {
             // Attempt to execute child function.
             UK_Action action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
-            // Move to next child if sucessfully executed.
-            if(action.IsCurrent(frameId)) {
-                ++myQueueIdx;
+            if(!action.IsCurrent(frameId)) {
+                // Verify if the child is a stalled dispatcher.
+                if(!action.IsStalled) {
+                    stalled= false;
+                }
+                // Return if we have seen too many stalled children.
+                if(++tries > maxTries) {
+                    IsStalled= stalled && myQueueIdx == entryQueueIdx;
+                    return;
+                }
+                // The function is not ready to execute so lets delay the execution.
+                myExecuteQueue.RemoveAt(myQueueIdx);
+                myExecuteQueue.Add(action);
                 continue;
             }
-            // Verify if the child is a staled dispatcher.
-            if(!action.IsStalled) {
-                stalled= false;
-            }
-            // Return if we have seen too many staled children.
-            if(++tries > maxTries) {
-                IsStalled= stalled && myQueueIdx == entryQueueIdx;
-                return;
-            }
-            // The function is not ready to execute so lets delay the execution.
-            myExecuteQueue.RemoveAt(myQueueIdx);
-            myExecuteQueue.Add(action);
+            ++myQueueIdx;
         }
         // Reset iterators for next frame.
         ResetIterator(frameId);
