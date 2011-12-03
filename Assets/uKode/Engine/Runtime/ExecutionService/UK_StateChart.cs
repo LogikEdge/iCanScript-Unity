@@ -6,7 +6,7 @@ public sealed class UK_StateChart : UK_Action {
     // ======================================================================
     // Internal types
     // ----------------------------------------------------------------------
-    enum ExecutionState { VerifyingTransition, RunningEntry, RunningExit, RunningUpdate };
+    enum ExecutionState { VerifyingTransition, RunningEntry, RunningExit, RunningUpdate, RunningTransition };
     
     // ======================================================================
     // Fields
@@ -15,6 +15,7 @@ public sealed class UK_StateChart : UK_Action {
     List<UK_State>  myActiveStack     = new List<UK_State>();
     List<UK_State>  myChildren        = new List<UK_State>();
     int             myQueueIdx        = 0;
+    UK_Transition   myFiredTransition = null;
     UK_State        myNextState       = null;
     UK_State        myTransitionParent= null;
     int             myEntrySize       = -1;
@@ -48,13 +49,17 @@ public sealed class UK_StateChart : UK_Action {
         if(myActiveStack.Count == 0 && myEntryState != null) MoveToState(myEntryState, frameId);
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
-            ExecuteTransitions(frameId);            
+            ExecuteVerifyTransitions(frameId);            
         }
         // Execute state exit functions.
         if(myExecutionState == ExecutionState.RunningExit) {
             ExecuteExits(frameId);
         }
-        // Execute state update functions.
+        // Execute state transition action.
+        if(myExecutionState == ExecutionState.RunningTransition) {
+            ExecuteTransition(frameId);
+        }
+        // Execute state entry functions.
         if(myExecutionState == ExecutionState.RunningEntry) {
             ExecuteEntries(frameId);
         }
@@ -67,13 +72,17 @@ public sealed class UK_StateChart : UK_Action {
     public override void ForceExecute(int frameId) {
         // Process any active transition.
         if(myExecutionState == ExecutionState.VerifyingTransition) {
-            ForceExecuteTransitions(frameId);            
+            ForceExecuteVerifyTransitions(frameId);            
         }
         // Execute state exit functions.
         if(myExecutionState == ExecutionState.RunningExit) {
             ForceExecuteExits(frameId);
         }
-        // Execute state update functions.
+        // Execute state transition action.
+        if(myExecutionState == ExecutionState.RunningTransition) {
+            ForceExecuteTransition(frameId);
+        }
+        // Execute state entry functions.
         if(myExecutionState == ExecutionState.RunningEntry) {
             ForceExecuteEntries(frameId);
         }
@@ -84,7 +93,7 @@ public sealed class UK_StateChart : UK_Action {
     }
     
     // ----------------------------------------------------------------------
-    void ExecuteTransitions(int frameId) {
+    void ExecuteVerifyTransitions(int frameId) {
         // Determine if a transition exists for one of the active states.
         UK_State state= null;
         int end= myActiveStack.Count;
@@ -99,9 +108,9 @@ public sealed class UK_StateChart : UK_Action {
                 return;
             }
             IsStalled= false;
-            UK_Transition firedTransition= transitions.TriggeredTransition;
-            if(firedTransition != null && firedTransition.EndState != ActiveState) {
-                MoveToState(firedTransition.EndState, frameId);
+            myFiredTransition= transitions.TriggeredTransition;
+            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
+                MoveToState(myFiredTransition.EndState, frameId);
                 return;
             }
             ++myQueueIdx;
@@ -111,7 +120,7 @@ public sealed class UK_StateChart : UK_Action {
         myExecutionState= ExecutionState.RunningUpdate;
     }
     // ----------------------------------------------------------------------
-    void ForceExecuteTransitions(int frameId) {
+    void ForceExecuteVerifyTransitions(int frameId) {
         // Determine if a transition exists for one of the active states.
         UK_State state= null;
         int end= myActiveStack.Count;
@@ -136,6 +145,28 @@ public sealed class UK_StateChart : UK_Action {
             myQueueIdx= 0;
             myExecutionState= ExecutionState.RunningUpdate;            
         }
+    }
+    // ----------------------------------------------------------------------
+    void ExecuteTransition(int frameId) {
+        UK_Action action= myFiredTransition.Action;
+        if(action != null) {
+            action.Execute(frameId);
+            if(!action.IsCurrent(frameId)) {
+                IsStalled= action.IsStalled;
+                return;
+            }
+        }
+    }
+    // ----------------------------------------------------------------------
+    void ForceExecuteTransition(int frameId) {
+        UK_Action action= myFiredTransition.Action;
+        if(action != null) {
+            action.ForceExecute(frameId);
+            if(!action.IsCurrent(frameId)) {
+                IsStalled= action.IsStalled;
+                return;
+            }
+        }        
     }
     // ----------------------------------------------------------------------
     void ExecuteUpdates(int frameId) {
