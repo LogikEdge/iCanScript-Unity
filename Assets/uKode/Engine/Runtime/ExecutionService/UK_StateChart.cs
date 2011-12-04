@@ -135,9 +135,9 @@ public sealed class UK_StateChart : UK_Action {
                 return;
             }
             IsStalled= false;
-            UK_Transition firedTransition= transitions.TriggeredTransition;
-            if(firedTransition != null && firedTransition.EndState != ActiveState) {
-                MoveToState(firedTransition.EndState, frameId);
+            myFiredTransition= transitions.TriggeredTransition;
+            if(myFiredTransition != null && myFiredTransition.EndState != ActiveState) {
+                MoveToState(myFiredTransition.EndState, frameId);
                 return;
             }
         }
@@ -148,25 +148,35 @@ public sealed class UK_StateChart : UK_Action {
     }
     // ----------------------------------------------------------------------
     void ExecuteTransition(int frameId) {
-        UK_Action action= myFiredTransition.Action;
-        if(action != null) {
-            action.Execute(frameId);
-            if(!action.IsCurrent(frameId)) {
-                IsStalled= action.IsStalled;
-                return;
-            }
+        if(myFiredTransition != null) {
+            UK_Action action= myFiredTransition.Action;
+            if(action != null) {
+                action.Execute(frameId);
+                if(!action.IsCurrent(frameId)) {
+                    IsStalled= action.IsStalled;
+                    return;
+                }
+            }            
         }
+        // Prepare for running entry functions.
+        // (myQueueIdx already setup in ExecuteExit).
+        myExecutionState= ExecutionState.RunningEntry;
     }
     // ----------------------------------------------------------------------
     void ForceExecuteTransition(int frameId) {
-        UK_Action action= myFiredTransition.Action;
-        if(action != null) {
-            action.ForceExecute(frameId);
-            if(!action.IsCurrent(frameId)) {
-                IsStalled= action.IsStalled;
-                return;
-            }
-        }        
+        if(myFiredTransition != null) {
+            UK_Action action= myFiredTransition.Action;
+            if(action != null) {
+                action.ForceExecute(frameId);
+                if(!action.IsCurrent(frameId)) {
+                    IsStalled= action.IsStalled;
+                    return;
+                }
+            }                    
+        }
+        // Prepare for running entry functions.
+        // (myQueueIdx already setup in ExecuteExit).
+        myExecutionState= ExecutionState.RunningEntry;
     }
     // ----------------------------------------------------------------------
     void ExecuteUpdates(int frameId) {
@@ -190,7 +200,8 @@ public sealed class UK_StateChart : UK_Action {
         }
         // Reset iterators for next frame.
         myQueueIdx= 0;
-        myExecutionState= ExecutionState.VerifyingTransition;            
+        myExecutionState= ExecutionState.VerifyingTransition;
+        myFiredTransition= null;            
         MarkAsCurrent(frameId);
     }
     // ----------------------------------------------------------------------
@@ -213,6 +224,7 @@ public sealed class UK_StateChart : UK_Action {
         if(++myQueueIdx >= stackSize) {
             myQueueIdx= 0;
             myExecutionState= ExecutionState.VerifyingTransition;            
+            myFiredTransition= null;            
             MarkAsCurrent(frameId);            
         }
     }
@@ -351,7 +363,7 @@ public sealed class UK_StateChart : UK_Action {
             toAdd= toAdd.ParentState;            
         }
         // Prepare to execute entry
-        myExecutionState= ExecutionState.RunningEntry;
+        myExecutionState= ExecutionState.RunningTransition;
         myQueueIdx= stableSize;        
     }
     

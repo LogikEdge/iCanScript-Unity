@@ -150,7 +150,7 @@ public partial class UK_IStorage {
                                         UK_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : GetRuntimeObject(GetParent(triggerPort)) as UK_FunctionBase;
                                         int triggerIdx= triggerPort.PortIndex;
                                         UK_Transition transition= new UK_Transition(p.Name,
-                                                                                    GetRuntimeObject(GetParent(endState)) as UK_State,
+                                                                                    GetRuntimeObject(endState) as UK_State,
                                                                                     GetRuntimeObject(guardModule) as UK_FunctionBase,
                                                                                     triggerFunc, triggerIdx,
                                                                                     actionModule != null ? GetRuntimeObject(actionModule) as UK_FunctionBase : null);
