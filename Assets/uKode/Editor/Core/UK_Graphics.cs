@@ -318,10 +318,10 @@ public class UK_Graphics {
         // Draw minimized node.
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
-        if(storage.IsMinimized(node)) {
-            Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
-            Rect nodePos= GetDisplayPosition(node, storage);
-            Rect texturePos= new Rect(nodePos.x, nodePos.y, icon.width, icon.height);                
+        Rect position= GetDisplayPosition(node, storage);
+        Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
+        if(storage.IsMinimized(node) && (position.width <= 2f*icon.width || IsAnimationCompleted(node, storage))) {
+            Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
             GUI.DrawTexture(texturePos, icon);                           
             GUI.Label(texturePos, new GUIContent("", node.ToolTip));
             Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(title);
@@ -331,7 +331,6 @@ public class UK_Graphics {
         
         // Draw node box.
         GUIStyle guiStyle= nodeStyle.guiStyle;
-        Rect position= GetDisplayPosition(node, storage);
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
         float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
         position.x-= leftOffset;
@@ -740,14 +739,20 @@ public class UK_Graphics {
     // ----------------------------------------------------------------------
     static Rect GetDisplayPosition(UK_EditorObject edObj, UK_IStorage storage) {
         Rect layoutPosition= storage.GetPosition(edObj);
-        float deltaTime= Time.realtimeSinceStartup-storage.GetAnimTime(edObj);
-        if(deltaTime >= 1f) {
+        if(IsAnimationCompleted(edObj, storage)) {
             storage.SetDisplayPosition(edObj, layoutPosition);
             return layoutPosition;
         }
-        Rect displayPosition= Math3D.Lerp(storage.GetDisplayPosition(edObj), layoutPosition, deltaTime);
+        float ratio= GetAnimationRatio(edObj, storage);
+        Rect displayPosition= Math3D.Lerp(storage.GetDisplayPosition(edObj), layoutPosition, ratio);
         storage.SetDisplayPosition(edObj, displayPosition);
         return displayPosition;
+    }
+    static float GetAnimationRatio(UK_EditorObject edObj, UK_IStorage storage) {
+        return Time.realtimeSinceStartup-storage.GetAnimTime(edObj);        
+    }
+    static bool IsAnimationCompleted(UK_EditorObject edObj, UK_IStorage storage) {
+        return GetAnimationRatio(edObj, storage) >= 1f;
     }
     
     // ======================================================================
