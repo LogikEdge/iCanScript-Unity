@@ -48,10 +48,10 @@ public class UK_FunctionBase : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_FunctionBase(string name, object[] parameters, bool[] paramIsOuts) : base(name) {
+    public UK_FunctionBase(string name, object[] parameters, bool[] paramIsOuts, Vector2 layout) : base(name, layout) {
         Init(parameters, paramIsOuts);
     }
-    public UK_FunctionBase(string name) : base(name) {}
+    public UK_FunctionBase(string name, Vector2 layout) : base(name,layout) {}
     protected void Init(object[] parameters, bool[] paramIsOuts) {
         myParameters= parameters ?? new object[0];
         myParameterIsOuts= paramIsOuts ?? new bool[0];

@@ -29,16 +29,17 @@ public partial class UK_IStorage {
         ForEachChild(edNode,
             edChild=>{
                 if(edChild.IsNode) {
+                    Vector2 layout= Math3D.Middle(GetPosition(edChild));
                     switch(edChild.ObjectType) {
                         case UK_ObjectTypeEnum.StateChart: {
-                            UK_StateChart stateChart= new UK_StateChart(edChild.Name);
+                            UK_StateChart stateChart= new UK_StateChart(edChild.Name, layout);
                             TreeCache[edChild.InstanceId].RuntimeObject= stateChart;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, stateChart);
                             GenerateRuntimeChildNodes(edChild, stateChart);
                             break;
                         }
                         case UK_ObjectTypeEnum.State: {
-                            UK_State state= new UK_State(edChild.Name);
+                            UK_State state= new UK_State(edChild.Name, layout);
                             TreeCache[edChild.InstanceId].RuntimeObject= state;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, state);
                             GenerateRuntimeChildNodes(edChild, state);
@@ -55,7 +56,7 @@ public partial class UK_IStorage {
                             UK_RuntimeDesc rtDesc;
                             object[] parameters= BuildRuntimePortValueArray(edChild, out rtDesc);
                             if(rtDesc == null) break;
-                            UK_Module module= new UK_Module(edChild.Name, parameters, rtDesc.PortIsOuts);                                
+                            UK_Module module= new UK_Module(edChild.Name, parameters, rtDesc.PortIsOuts, layout);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= module;
                             if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);                                
                             GenerateRuntimeChildNodes(edChild, module);
@@ -66,7 +67,7 @@ public partial class UK_IStorage {
                             UK_RuntimeDesc rtDesc;
                             object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
                             if(rtDesc == null) break;
-                            UK_Method method= new UK_Method(edChild.Name, rtDesc.Method, portValues, rtDesc.PortIsOuts);                                
+                            UK_Method method= new UK_Method(edChild.Name, rtDesc.Method, portValues, rtDesc.PortIsOuts, layout);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= method;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, method);
                             break;                            
@@ -77,7 +78,7 @@ public partial class UK_IStorage {
                             UK_RuntimeDesc rtDesc;
                             object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
                             if(rtDesc == null) break;
-                            UK_Function func= new UK_Function(edChild.Name, rtDesc.Method, portValues, rtDesc.PortIsOuts);                                
+                            UK_Function func= new UK_Function(edChild.Name, rtDesc.Method, portValues, rtDesc.PortIsOuts, layout);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= func;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, func);
                             break;
@@ -89,8 +90,8 @@ public partial class UK_IStorage {
                             if(rtDesc == null) break;
                             FieldInfo fieldInfo= rtDesc.Field;
                             UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
-                                new UK_GetInstanceField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts) as UK_FunctionBase:
-                                new UK_SetInstanceField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts) as UK_FunctionBase;                                
+                                new UK_GetInstanceField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
+                                new UK_SetInstanceField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
                             TreeCache[edChild.InstanceId].RuntimeObject= rtField;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
                             break;
@@ -102,8 +103,8 @@ public partial class UK_IStorage {
                             if(rtDesc == null) break;
                             FieldInfo fieldInfo= rtDesc.Field;
                             UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
-                                new UK_GetStaticField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts) as UK_FunctionBase:
-                                new UK_SetStaticField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts) as UK_FunctionBase;                                
+                                new UK_GetStaticField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
+                                new UK_SetStaticField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
                             TreeCache[edChild.InstanceId].RuntimeObject= rtField;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
                             break;                            
@@ -134,7 +135,8 @@ public partial class UK_IStorage {
                                         UK_EditorObject actionModule= null;
                                         UK_EditorObject guardModule= GetTransitionGuardAndAction(p, out actionModule);
                                         UK_EditorObject triggerPort= null;
-                                        UK_EditorObject endState= GetParent(GetInStatePort(p));
+                                        UK_EditorObject inStatePort= GetInStatePort(p);
+                                        UK_EditorObject endState= GetParent(inStatePort);
                                         ForEachChildPort(guardModule,
                                             port=> {
                                                 if(port.IsOutStaticModulePort && port.RuntimeType == typeof(bool) && port.Name == "trigger") {
@@ -149,11 +151,15 @@ public partial class UK_IStorage {
                                         }
                                         UK_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : GetRuntimeObject(GetParent(triggerPort)) as UK_FunctionBase;
                                         int triggerIdx= triggerPort.PortIndex;
+                                        Rect outStatePortPos= GetPosition(p);
+                                        Rect inStatePortPos= GetPosition(inStatePort);
+                                        Vector2 layout= new Vector2(0.5f*(inStatePortPos.x+outStatePortPos.x), 0.5f*(inStatePortPos.y+outStatePortPos.y));
                                         UK_Transition transition= new UK_Transition(p.Name,
                                                                                     GetRuntimeObject(endState) as UK_State,
                                                                                     GetRuntimeObject(guardModule) as UK_FunctionBase,
                                                                                     triggerFunc, triggerIdx,
-                                                                                    actionModule != null ? GetRuntimeObject(actionModule) as UK_FunctionBase : null);
+                                                                                    actionModule != null ? GetRuntimeObject(actionModule) as UK_FunctionBase : null,
+                                                                                    layout);
                                         UK_State state= GetRuntimeObject(edChild) as UK_State;
                                         state.AddChild(transition);
                                     }

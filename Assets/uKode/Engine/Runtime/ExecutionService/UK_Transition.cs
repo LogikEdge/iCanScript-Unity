@@ -22,7 +22,7 @@ public class UK_Transition : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Transition(string name, UK_State endState, UK_Action guard, UK_FunctionBase triggerFunc, int portIdx, UK_Action action= null) : base(name) {
+    public UK_Transition(string name, UK_State endState, UK_Action guard, UK_FunctionBase triggerFunc, int portIdx, UK_Action action, Vector2 layout) : base(name, layout) {
         myGuard          = guard;
         myAction         = action;
         myEndState       = endState;

@@ -21,7 +21,7 @@ public abstract class UK_Action : UK_Object {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Action(string name) : base(name) {}
+    public UK_Action(string name, Vector2 layout) : base(name, layout) {}
      
     // ======================================================================
     // Execution

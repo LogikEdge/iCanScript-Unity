@@ -6,7 +6,7 @@ public class UK_NoWaitSequencialDispatcher : UK_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_NoWaitSequencialDispatcher(string name) : base(name) {}
+    public UK_NoWaitSequencialDispatcher(string name, Vector2 layout) : base(name, layout) {}
     
     // ======================================================================
     // Execution

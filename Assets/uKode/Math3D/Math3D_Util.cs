@@ -147,4 +147,9 @@ public static partial class Math3D {
     public static Vector2 ToVector2(Rect rect) {
         return new Vector2(rect.x, rect.y);
     }
+
+	// ----------------------------------------------------------------------
+    public static Vector2 Middle(Rect rect) {
+        return new Vector2(rect.x+0.5f*rect.width, rect.y+0.5f*rect.height);
+    }
 }

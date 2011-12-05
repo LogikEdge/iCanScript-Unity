@@ -27,11 +27,11 @@ public class UK_Function : UK_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Function(string name, MethodInfo methodInfo, object[] portValues, bool[] portIsOuts) : base(name) {
+    public UK_Function(string name, MethodInfo methodInfo, object[] portValues, bool[] portIsOuts, Vector2 layout) : base(name, layout) {
         myMethodInfo= methodInfo;
         Init(portValues, portIsOuts);
     }
-    public UK_Function(string name, MethodInfo methodInfo) : base(name) {
+    public UK_Function(string name, MethodInfo methodInfo, Vector2 layout) : base(name, layout) {
         myMethodInfo= methodInfo;
     }
     protected new void Init(object[] portValues, bool[] portIsOuts) {

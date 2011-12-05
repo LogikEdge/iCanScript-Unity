@@ -38,7 +38,7 @@ public sealed class UK_StateChart : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_StateChart(string name) : base(name) {
+    public UK_StateChart(string name, Vector2 layout) : base(name, layout) {
     }
 
     // ======================================================================

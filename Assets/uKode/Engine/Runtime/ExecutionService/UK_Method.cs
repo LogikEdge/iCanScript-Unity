@@ -31,7 +31,7 @@ public class UK_Method : UK_Function {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Method(string name, MethodInfo methodInfo, object[] portValues, bool[] portIsOuts) : base(name, methodInfo) {
+    public UK_Method(string name, MethodInfo methodInfo, object[] portValues, bool[] portIsOuts, Vector2 layout) : base(name, methodInfo, layout) {
         Init(portValues, portIsOuts);
     }
     protected new void Init(object[] portValues, bool[] portIsOuts) {

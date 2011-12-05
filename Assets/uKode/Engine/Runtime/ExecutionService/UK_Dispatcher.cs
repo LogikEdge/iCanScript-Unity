@@ -12,7 +12,7 @@ public abstract class UK_Dispatcher : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Dispatcher(string name) : base(name) {}
+    public UK_Dispatcher(string name, Vector2 layout) : base(name, layout) {}
 
     // ======================================================================
     // Execution

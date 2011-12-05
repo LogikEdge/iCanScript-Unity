@@ -27,8 +27,8 @@ public sealed class UK_State : UK_Object {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_State(string name) : base(name) {
-        myTransitions= new UK_VerifyTransitions(name);
+    public UK_State(string name, Vector2 layout) : base(name, layout) {
+        myTransitions= new UK_VerifyTransitions(name, layout);
     }
     
     // ======================================================================

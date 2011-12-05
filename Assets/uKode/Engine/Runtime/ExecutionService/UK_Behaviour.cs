@@ -57,7 +57,7 @@ public sealed class UK_Behaviour : UK_Storage {
             do {        
                 myUpdateAction.Execute(myUpdateFrameId);
                 if(myUpdateAction.IsStalled) {
-                    Debug.LogWarning("Upadte is STALLED. Attempting to unblock.");
+//                    Debug.LogWarning("Upadte is STALLED. Attempting to unblock.");
                     myUpdateAction.ForceExecute(myUpdateFrameId);
                 }                
             } while(!myUpdateAction.IsCurrent(myUpdateFrameId));
@@ -69,7 +69,7 @@ public sealed class UK_Behaviour : UK_Storage {
             do {
                 myLateUpdateAction.Execute(myUpdateFrameId);                                            
                 if(myLateUpdateAction.IsStalled) {
-                    Debug.LogWarning("LateUpadte is STALLED. Attempting to unblock.");
+//                    Debug.LogWarning("LateUpadte is STALLED. Attempting to unblock.");
                     myLateUpdateAction.ForceExecute(myUpdateFrameId);
                 }
             } while(!myLateUpdateAction.IsCurrent(myUpdateFrameId));
@@ -82,7 +82,7 @@ public sealed class UK_Behaviour : UK_Storage {
             do {
                 myFixedUpdateAction.Execute(myFixedUpdateFrameId);                                
                 if(myFixedUpdateAction.IsStalled) {
-                    Debug.LogWarning("FixedUpadte is STALLED. Attempting to unblock.");
+//                    Debug.LogWarning("FixedUpadte is STALLED. Attempting to unblock.");
                     myFixedUpdateAction.ForceExecute(myFixedUpdateFrameId);
                 }
             } while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId));

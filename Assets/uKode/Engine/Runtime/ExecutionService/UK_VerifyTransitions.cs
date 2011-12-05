@@ -18,7 +18,7 @@ public class UK_VerifyTransitions : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_VerifyTransitions(string name) : base(name) {}
+    public UK_VerifyTransitions(string name, Vector2 layout) : base(name, layout) {}
 
     // ======================================================================
     // Execution
