@@ -100,10 +100,17 @@ public class UK_Editor : EditorWindow {
     // ======================================================================
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
+    static float lastDirtyUpdateTime;
 	void Update() {
-        if(Storage != null && Storage.IsDirty) {
-//            Debug.Log("Repaint needed");
-            Repaint();
+        if(Storage != null) {
+            if(Storage.IsDirty) {
+                lastDirtyUpdateTime= Time.realtimeSinceStartup;
+            }
+            float timeSinceDirty= Time.realtimeSinceStartup-lastDirtyUpdateTime;
+            if(timeSinceDirty < 5.0f) {
+                Repaint();
+            }
+            
         }
 	}
 	

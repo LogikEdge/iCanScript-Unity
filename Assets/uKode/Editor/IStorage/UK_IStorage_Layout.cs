@@ -175,20 +175,6 @@ public partial class UK_IStorage {
         }
     }    
     // ----------------------------------------------------------------------
-    // Returns the display absolute position of the node.  The display
-    // position can be different from the layout position when the graph
-    // is animated.
-    public Rect GetDisplayPosition(UK_EditorObject node) {
-        return GetPostion(node);
-    }
-    public Rect GetDisplayPosition(int id) {
-        return GetDisplayPosition(EditorObjects[id]);
-    }
-    // ----------------------------------------------------------------------
-    public void SetDisplayPosition(UK_EditorObject node, Rect _newPos) {
-        
-    }
-    // ----------------------------------------------------------------------
     Vector2 GetTopLeftCorner(UK_EditorObject node)     {
         Rect position= GetPosition(node);
         return new Vector2(position.xMin, position.yMin);

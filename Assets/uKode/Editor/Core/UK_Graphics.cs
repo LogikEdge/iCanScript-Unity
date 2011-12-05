@@ -320,7 +320,7 @@ public class UK_Graphics {
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         if(storage.IsMinimized(node)) {
             Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
-            Rect nodePos= storage.GetPosition(node);
+            Rect nodePos= GetDisplayPosition(node, storage);
             Rect texturePos= new Rect(nodePos.x, nodePos.y, icon.width, icon.height);                
             GUI.DrawTexture(texturePos, icon);                           
             GUI.Label(texturePos, new GUIContent("", node.ToolTip));
@@ -331,7 +331,7 @@ public class UK_Graphics {
         
         // Draw node box.
         GUIStyle guiStyle= nodeStyle.guiStyle;
-        Rect position= storage.GetPosition(node);
+        Rect position= GetDisplayPosition(node, storage);
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
         float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
         position.x-= leftOffset;
@@ -359,7 +359,7 @@ public class UK_Graphics {
     // ----------------------------------------------------------------------
     public bool IsNodeTitleBarPicked(UK_EditorObject node, Vector2 pick, UK_IStorage storage) {
         if(!node.IsNode || storage.IsMinimized(node)) return false;
-        Rect titleRect= storage.GetPosition(node);
+        Rect titleRect= GetDisplayPosition(node, storage);
         GUIStyle style= GetNodeGUIStyle(node, null, storage);
         titleRect.height= style.border.top;
         return titleRect.Contains(pick);
@@ -377,7 +377,7 @@ public class UK_Graphics {
         return (obj.IsModule || obj.IsStateChart || obj.IsState);
     }
     Rect GetFoldIconPosition(UK_EditorObject obj, UK_IStorage storage) {
-        Rect objPos= storage.GetPosition(obj);
+        Rect objPos= GetDisplayPosition(obj, storage);
         return new Rect(objPos.x+8, objPos.y, foldedIcon.width, foldedIcon.height);
     }
     // ======================================================================
@@ -392,7 +392,7 @@ public class UK_Graphics {
         return obj.InstanceId != 0 && obj.IsNode && !storage.IsMinimized(obj);
     }
     Rect GetMinimizeIconPosition(UK_EditorObject obj, UK_IStorage storage) {
-        Rect objPos= storage.GetPosition(obj);
+        Rect objPos= GetDisplayPosition(obj, storage);
         return new Rect(objPos.xMax-4-minimizeIcon.width, objPos.y, minimizeIcon.width, minimizeIcon.height);
     }
     // ======================================================================
@@ -421,7 +421,7 @@ public class UK_Graphics {
         return obj.InstanceId != 0 && obj.IsNode && storage.IsMinimized(obj);
     }
     Rect GetMaximizeIconPosition(UK_EditorObject obj, UK_IStorage storage) {
-        return storage.GetPosition(obj);
+        return GetDisplayPosition(obj, storage);
     }
     // ======================================================================
     // Node style functionality
@@ -475,7 +475,7 @@ public class UK_Graphics {
         
         // Draw port
         UK_EditorObject portParent= storage.GetParent(port);         
-        Vector2 center= Math3D.ToVector2(storage.GetPosition(port));
+        Vector2 center= Math3D.ToVector2(GetDisplayPosition(port, storage));
         Type portValueType= port.RuntimeType;
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
@@ -682,7 +682,7 @@ public class UK_Graphics {
     static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
     static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
     static float TopBottomLabelOffset(UK_EditorObject port, UK_IStorage storage) {
-        float ratio= port.LocalPosition.x/storage.GetPosition(storage.GetParent(port)).width;
+        float ratio= port.LocalPosition.x/GetDisplayPosition(storage.GetParent(port), storage).width;
         float error= 100f;
         float offset= 0f;
         for(int i= 0; i < portTopBottomRatio.Length; ++i) {
@@ -735,6 +735,21 @@ public class UK_Graphics {
         }
     }
 
+    // ======================================================================
+    //  Utilities
+    // ----------------------------------------------------------------------
+    static Rect GetDisplayPosition(UK_EditorObject edObj, UK_IStorage storage) {
+        Rect layoutPosition= storage.GetPosition(edObj);
+        float deltaTime= Time.realtimeSinceStartup-storage.GetAnimTime(edObj);
+        if(deltaTime >= 1f) {
+            storage.SetDisplayPosition(edObj, layoutPosition);
+            return layoutPosition;
+        }
+        Rect displayPosition= Math3D.Lerp(storage.GetDisplayPosition(edObj), layoutPosition, deltaTime);
+        storage.SetDisplayPosition(edObj, displayPosition);
+        return displayPosition;
+    }
+    
     // ======================================================================
     //  ERROR MANAGEMENT
     // ----------------------------------------------------------------------

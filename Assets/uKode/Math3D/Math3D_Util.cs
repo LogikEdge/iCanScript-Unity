@@ -152,4 +152,25 @@ public static partial class Math3D {
     public static Vector2 Middle(Rect rect) {
         return new Vector2(rect.x+0.5f*rect.width, rect.y+0.5f*rect.height);
     }
+	// ----------------------------------------------------------------------
+    public static Rect Add(Rect r1, Rect r2) {
+        return new Rect(r1.x+r2.x, r1.y+r2.y, r1.width+r2.width, r1.height+r2.height);
+    }
+	// ----------------------------------------------------------------------
+    public static Rect Sub(Rect r1, Rect r2) {
+        return new Rect(r1.x-r2.x, r1.y-r2.y, r1.width-r2.width, r1.height-r2.height);
+    }
+	// ----------------------------------------------------------------------
+    public static Rect Mul(Rect r1, float d) {
+        return new Rect(d*r1.x, d*r1.y, d*r1.width, d*r1.height);
+    }
+	// ----------------------------------------------------------------------
+    public static Rect Div(Rect r1, float d) {
+        if(IsZero(d)) return default(Rect);
+        return Mul(r1, 1f/d);
+    }
+	// ----------------------------------------------------------------------
+    public static Rect Lerp(Rect r1, Rect r2, float ratio) {
+        return Add(r1, Mul(Sub(r2, r1), ratio));
+    }
 }

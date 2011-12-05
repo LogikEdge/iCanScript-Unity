@@ -16,6 +16,8 @@ public class UK_TreeCache {
         public int          ParentId= -1;
         public List<int>    Children= new List<int>();
         public object       RuntimeObject= null;
+        public Rect         DisplayPosition;
+        public float        AnimationTime= 0;
 
         public TreeNode()  { Reset(); }
         public void Reset() {
