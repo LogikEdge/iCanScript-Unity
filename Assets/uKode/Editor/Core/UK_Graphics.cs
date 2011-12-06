@@ -318,14 +318,11 @@ public class UK_Graphics {
     // ----------------------------------------------------------------------
     public void DrawNormalNode(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {        
         // Don't draw minimized node.
-        Rect position= GetDisplayPosition(node, storage);
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
-        Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
-        if(position.width <= icon.width+1f || position.height <= icon.height+1f) {
-            return;
-        }
+        if(IsInvisible(node, storage) || IsMinimized(node, storage)) return;
         
         // Draw node box.
+        Rect position= GetDisplayPosition(node, storage);
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         GUIStyle guiStyle= nodeStyle.guiStyle;
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
@@ -351,19 +348,19 @@ public class UK_Graphics {
     }
     // ----------------------------------------------------------------------
     public void DrawMinimizedNode(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {        
+        if(!IsMinimized(node, storage)) return;
+        
         // Draw minimized node.
         Rect position= GetDisplayPosition(node, storage);
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
-        if(position.width <= icon.width+1f || position.height <= icon.height+1f) {
-            if(!storage.IsVisible(node) || position.width < 12f || position.height < 12f) return;
-            string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
-            Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
-            GUI.DrawTexture(texturePos, icon);                           
-            GUI.Label(texturePos, new GUIContent("", node.ToolTip));
-            Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(title);
-            GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip));
-        }
+        if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
+        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
+        Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
+        GUI.DrawTexture(texturePos, icon);                           
+        GUI.Label(texturePos, new GUIContent("", node.ToolTip));
+        Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(title);
+        GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip));
     }
 
     // ======================================================================
@@ -781,24 +778,18 @@ public class UK_Graphics {
         return GetAnimationRatio(edObj, storage) >= 0.99f;
     }
 
-    static bool IsMinimized(UK_EditorObject edObj, UK_IStorage storage) {
-//        if(edObj.IsNode) {
-//            Rect position= GetDisplayPosition(edObj, storage);
-//            NodeStyle nodeStyle= GetNodeStyle(edObj, s, storage);
-//            Texture icon= GetMaximizeIcon(edObj, nodeStyle, storage);
-//            return (position.width <= icon.width+1f || position.height <= icon.height+1f);
-//        }
+    bool IsMinimized(UK_EditorObject edObj, UK_IStorage storage) {
+        if(edObj.IsNode) {
+            if(IsInvisible(edObj, storage)) return false;
+            Rect position= GetDisplayPosition(edObj, storage);
+            NodeStyle nodeStyle= GetNodeStyle(edObj, null, storage);
+            Texture icon= GetMaximizeIcon(edObj, nodeStyle, storage);
+            return (position.width <= icon.width+1f || position.height <= icon.height+1f);
+        }
         return storage.IsMinimized(edObj) && IsAnimationCompleted(edObj, storage);
     }
     static bool IsFolded(UK_EditorObject edObj, UK_IStorage storage) {
         return storage.IsFolded(edObj) && IsAnimationCompleted(edObj, storage);
-    }
-    static bool IsParentMinimized(UK_EditorObject edObj, UK_IStorage storage) {
-        UK_EditorObject parent= storage.GetParent(edObj);
-        if(parent == null) return false;
-        GetDisplayPosition(parent, storage);            // Update animation timer
-        if(IsMinimized(parent, storage)) return true;
-        return IsParentMinimized(parent, storage);        
     }
     static bool IsParentFolded(UK_EditorObject edObj, UK_IStorage storage) {
         UK_EditorObject parent= storage.GetParent(edObj);
@@ -807,18 +798,16 @@ public class UK_Graphics {
         if(IsFolded(parent, storage)) return true;
         return IsParentFolded(parent, storage);
     }
-    static bool IsVisible(UK_EditorObject edObj, UK_IStorage storage) {
-        if(storage.IsHidden(edObj) && IsAnimationCompleted(edObj, storage)) {
-            return false;
+    bool IsInvisible(UK_EditorObject edObj, UK_IStorage storage) {
+        return !IsVisible(edObj, storage);
+    }
+    bool IsVisible(UK_EditorObject edObj, UK_IStorage storage) {
+        if(edObj.IsNode) {
+            Rect position= GetDisplayPosition(edObj, storage);
+            return position.width >= 12f && position.height >= 12;  // Invisible if too small.
         }
-        if(IsParentMinimized(edObj, storage)) {
-            return false;
-        }
-        if(IsParentFolded(edObj, storage)) {
-            if(edObj.IsPort && IsFolded(storage.GetParent(edObj), storage)) return true;
-            return false;
-        }
-        return true;
+        UK_EditorObject parent= storage.GetParent(edObj);
+        return IsVisible(parent, storage) && !IsMinimized(parent, storage);
     }
     
     // ======================================================================
