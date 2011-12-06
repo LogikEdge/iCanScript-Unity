@@ -6,6 +6,11 @@ using System.Collections.Generic;
 
 public class UK_Graphics {
     // ======================================================================
+    // Constants
+    // ----------------------------------------------------------------------
+    const float kMinimizeSize= 32f;
+    
+    // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
     static public bool  IsInitialized= false;    
@@ -311,27 +316,17 @@ public class UK_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    public void DrawNode(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {
-        // Don't show hiden nodes.
+    public void DrawNormalNode(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {        
+        // Don't draw minimized node.
         Rect position= GetDisplayPosition(node, storage);
-        if(IsVisible(node, storage) == false) {
-            return;
-        }
-        
-        // Draw minimized node.
-        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
-        if(IsMinimized(node, storage)) {
-            Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
-            GUI.DrawTexture(texturePos, icon);                           
-            GUI.Label(texturePos, new GUIContent("", node.ToolTip));
-            Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(title);
-            GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip));
+        if(position.width <= icon.width+1f || position.height <= icon.height+1f) {
             return;
         }
         
         // Draw node box.
+        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         GUIStyle guiStyle= nodeStyle.guiStyle;
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
         float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
@@ -352,6 +347,22 @@ public class UK_Graphics {
         // Minimize Icon
         if(ShouldDisplayMinimizeIcon(node, storage)) {
             GUI.DrawTexture(new Rect(position.xMax-4-minimizeIcon.width, position.y, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
+        }
+    }
+    // ----------------------------------------------------------------------
+    public void DrawMinimizedNode(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {        
+        // Draw minimized node.
+        Rect position= GetDisplayPosition(node, storage);
+        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
+        Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
+        if(position.width <= icon.width+1f || position.height <= icon.height+1f) {
+            if(!storage.IsVisible(node) || position.width < 12f || position.height < 12f) return;
+            string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
+            Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
+            GUI.DrawTexture(texturePos, icon);                           
+            GUI.Label(texturePos, new GUIContent("", node.ToolTip));
+            Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(title);
+            GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip));
         }
     }
 
@@ -710,11 +721,6 @@ public class UK_Graphics {
         		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
-                    // Show transition name.
-//                    string transitionName= storage.GetTransitionName(port);
-//                    Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(transitionName);
-//                    Vector2 pos= new Vector2(cp.Center.x-0.5f*labelSize.x, cp.Center.y-0.5f*labelSize.y);
-//                    GUI.Label(new Rect(pos.x, pos.y, labelSize.x, labelSize.y), new GUIContent(transitionName, port.ToolTip));
                     // Show transition input port.
                     Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
                     tangent.Normalize();
@@ -743,7 +749,7 @@ public class UK_Graphics {
         Rect layoutPosition= GetLayoutPosition(edObj, storage);
         Rect displayPosition= storage.GetDisplayPosition(edObj);
         if(IsAnimationCompleted(edObj, storage)) {
-            if(GetAnimationRatio(edObj, storage) > 2.0f) {
+            if((GetAnimationRatio(edObj, storage)-1f)*storage.Preferences.Animation.AnimationTime > 0.2f) {  // 200ms
                 if(displayPosition.x != layoutPosition.x || displayPosition.y != layoutPosition.y ||
                    displayPosition.width!= layoutPosition.width || displayPosition.height != layoutPosition.height) {
                        storage.StartAnimTimer(edObj);
@@ -755,20 +761,33 @@ public class UK_Graphics {
         }
         float ratio= GetAnimationRatio(edObj, storage);
         displayPosition= Math3D.Lerp(displayPosition, layoutPosition, ratio);
-//        storage.SetDisplayPosition(edObj, displayPosition);
         return displayPosition;
     }
     static Rect GetLayoutPosition(UK_EditorObject edObj, UK_IStorage storage) {
+        if(!storage.IsVisible(edObj)) {
+            UK_EditorObject parent= storage.GetParent(edObj);
+            for(; !storage.IsVisible(parent); parent= storage.GetParent(parent));
+            Vector2 midPoint= Math3D.Middle(storage.GetPosition(parent));
+            return new Rect(midPoint.x, midPoint.y, 0, 0);
+        }
         return storage.GetPosition(edObj);
     }
     static float GetAnimationRatio(UK_EditorObject edObj, UK_IStorage storage) {
-        return 1f*(storage.GetAnimTime(edObj));        
-//        return 5.5f*(storage.GetAnimTime(edObj));        
+        float time= storage.Preferences.Animation.AnimationTime;
+        float invTime= Math3D.IsZero(time) ? 10000f : 1f/time;
+        return invTime*(storage.GetAnimTime(edObj));        
     }
     static bool IsAnimationCompleted(UK_EditorObject edObj, UK_IStorage storage) {
         return GetAnimationRatio(edObj, storage) >= 0.99f;
     }
+
     static bool IsMinimized(UK_EditorObject edObj, UK_IStorage storage) {
+//        if(edObj.IsNode) {
+//            Rect position= GetDisplayPosition(edObj, storage);
+//            NodeStyle nodeStyle= GetNodeStyle(edObj, s, storage);
+//            Texture icon= GetMaximizeIcon(edObj, nodeStyle, storage);
+//            return (position.width <= icon.width+1f || position.height <= icon.height+1f);
+//        }
         return storage.IsMinimized(edObj) && IsAnimationCompleted(edObj, storage);
     }
     static bool IsFolded(UK_EditorObject edObj, UK_IStorage storage) {
@@ -777,18 +796,24 @@ public class UK_Graphics {
     static bool IsParentMinimized(UK_EditorObject edObj, UK_IStorage storage) {
         UK_EditorObject parent= storage.GetParent(edObj);
         if(parent == null) return false;
+        GetDisplayPosition(parent, storage);            // Update animation timer
         if(IsMinimized(parent, storage)) return true;
         return IsParentMinimized(parent, storage);        
     }
     static bool IsParentFolded(UK_EditorObject edObj, UK_IStorage storage) {
         UK_EditorObject parent= storage.GetParent(edObj);
         if(parent == null) return false;
+        GetDisplayPosition(parent, storage);            // Update animation timer
         if(IsFolded(parent, storage)) return true;
         return IsParentFolded(parent, storage);
     }
     static bool IsVisible(UK_EditorObject edObj, UK_IStorage storage) {
-        if(storage.IsHidden(edObj) && IsAnimationCompleted(edObj, storage)) return false;
-        if(IsParentMinimized(edObj, storage)) return false;
+        if(storage.IsHidden(edObj) && IsAnimationCompleted(edObj, storage)) {
+            return false;
+        }
+        if(IsParentMinimized(edObj, storage)) {
+            return false;
+        }
         if(IsParentFolded(edObj, storage)) {
             if(edObj.IsPort && IsFolded(storage.GetParent(edObj), storage)) return true;
             return false;

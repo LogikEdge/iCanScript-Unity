@@ -86,4 +86,10 @@ public class UK_UserPreferences {
         public string[]     CustomIconPaths= new string[0];
     }
     public UserIcons     Icons= new UserIcons();
+    
+    [System.Serializable]
+    public class UserAnimation {
+        public float    AnimationTime= 1f/5.5f;
+    }
+    public UserAnimation    Animation= new UserAnimation();
 }

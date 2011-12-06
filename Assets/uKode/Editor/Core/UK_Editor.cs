@@ -541,7 +541,7 @@ public class UK_Editor : EditorWindow {
     void DrawNodes() {
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            node=> { if(node.IsNode && !Storage.IsMinimized(node)) Graphics.DrawNode(node, SelectedObject, Storage); }
+            node=> { if(node.IsNode) Graphics.DrawNormalNode(node, SelectedObject, Storage); }
         );
     }	
 	
@@ -555,7 +555,7 @@ public class UK_Editor : EditorWindow {
 
         // Display minimized nodes.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            node=> { if(node.IsNode && Storage.IsMinimized(node)) Graphics.DrawNode(node, SelectedObject, Storage); }
+            node=> { if(node.IsNode) Graphics.DrawMinimizedNode(node, SelectedObject, Storage); }
         );
     }
 
