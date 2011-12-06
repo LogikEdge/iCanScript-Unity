@@ -144,6 +144,10 @@ public partial class UK_IStorage {
     public Rect GetPosition(UK_EditorObject node) {
         if(!IsValid(node.ParentId)) return node.LocalPosition;
         Rect position= GetPosition(EditorObjects[node.ParentId]);
+        if(!IsVisible(node)) {
+            Vector2 midPoint= Math3D.Middle(position);
+            return new Rect(midPoint.x, midPoint.y, 0, 0);
+        }
         return new Rect(position.x+node.LocalPosition.x,
                         position.y+node.LocalPosition.y,
                         node.LocalPosition.width,
@@ -274,7 +278,7 @@ public partial class UK_IStorage {
             for(int i= 0; i < ports.Length; ++i) {
                 if(ports[i].IsBeingDragged == false) {
                     ports[i].LocalPosition.x= (i+0.5f) * xStep;
-                    ports[i].LocalPosition.y= 0;                
+                    ports[i].LocalPosition.y= 0;
                 }
             }
             if(!IsChildrenInSameOrder(node, ports)) {

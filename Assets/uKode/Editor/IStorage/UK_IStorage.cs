@@ -74,8 +74,8 @@ public partial class UK_IStorage {
     public UK_EditorObject GetParent(UK_EditorObject obj)        { return obj.IsParentValid ? EditorObjects[obj.ParentId] : null; }
     public UK_EditorObject GetSource(UK_EditorObject obj)        { return obj.IsSourceValid ? EditorObjects[obj.Source] : null; }
     public object          GetRuntimeObject(UK_EditorObject obj) { return IsValid(obj) ? TreeCache[obj.InstanceId].RuntimeObject : null; }
-    public float           GetAnimTime(UK_EditorObject obj)      { return IsValid(obj) ? TreeCache[obj.InstanceId].AnimationTime : Time.realtimeSinceStartup; }
-    public void            SetAnimTime(UK_EditorObject obj)      { if(IsValid(obj)) TreeCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }
+    public float           GetAnimTime(UK_EditorObject obj)      { return IsValid(obj) ? Time.realtimeSinceStartup-TreeCache[obj.InstanceId].AnimationTime : 0; }
+    public void            StartAnimTimer(UK_EditorObject obj)   { if(IsValid(obj)) TreeCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }
     public Rect            GetDisplayPosition(UK_EditorObject obj)           { return IsValid(obj) ? TreeCache[obj.InstanceId].DisplayPosition : default(Rect); }
     public void            SetDisplayPosition(UK_EditorObject obj, Rect pos) { if(IsValid(obj)) TreeCache[obj.InstanceId].DisplayPosition= pos; }
     // ----------------------------------------------------------------------
@@ -400,7 +400,6 @@ public partial class UK_IStorage {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
         eObj.Fold();
         SetDirty(eObj);
-        SetAnimTime(eObj);
     }
     public void Fold(int id) { if(IsValid(id)) Fold(EditorObjects[id]); }
     // ----------------------------------------------------------------------
@@ -408,7 +407,6 @@ public partial class UK_IStorage {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
         eObj.Unfold();
         SetDirty(eObj);
-        SetAnimTime(eObj);
     }
     public void Unfold(int id) { if(IsValid(id)) Unfold(EditorObjects[id]); }
     // ----------------------------------------------------------------------
@@ -419,37 +417,23 @@ public partial class UK_IStorage {
         if(!eObj.IsNode) return;
         if(ShouldHideOnMinimize(eObj)) { Hide(eObj); return; }
         eObj.Minimize();
-        ForEachChild(eObj,
-            child=> {
-                SetAnimTime(child);
-                if(child.IsPort) child.Minimize();
-            }
-        );
+        ForEachChild(eObj, child=> { if(child.IsPort) child.Minimize(); });
         SetDirty(eObj);
         if(IsValid(eObj.ParentId)) {
-            SetAnimTime(eObj);
             SetDirty(GetParent(eObj));
         }
-        SetAnimTime(eObj);
     }
     public void Minimize(int id) { if(IsValid(id)) Minimize(EditorObjects[id]); }
     // ----------------------------------------------------------------------
     public void Maximize(UK_EditorObject eObj) {
         if(!eObj.IsNode) return;
         eObj.Maximize();
-        ForEachChild(eObj,
-            child=> {
-                SetAnimTime(child);
-                if(child.IsPort) child.Maximize();
-            }
-        );
+        ForEachChild(eObj, child=> { if(child.IsPort) child.Maximize(); });
         SetDirty(eObj);
         if(IsValid(eObj.ParentId)) {
             UK_EditorObject parent= GetParent(eObj);
-            SetAnimTime(parent);
             SetDirty(parent);
         }
-        SetAnimTime(eObj);
     }
     public void Maximize(int id) { if(IsValid(id)) Maximize(EditorObjects[id]); }
     // ----------------------------------------------------------------------

@@ -313,14 +313,16 @@ public class UK_Graphics {
     // ----------------------------------------------------------------------
     public void DrawNode(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {
         // Don't show hiden nodes.
-        if(storage.IsVisible(node) == false) return;
+        Rect position= GetDisplayPosition(node, storage);
+        if(IsVisible(node, storage) == false) {
+            return;
+        }
         
         // Draw minimized node.
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
-        Rect position= GetDisplayPosition(node, storage);
         Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
-        if(storage.IsMinimized(node) && (position.width <= 2f*icon.width || IsAnimationCompleted(node, storage))) {
+        if(IsMinimized(node, storage)) {
             Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
             GUI.DrawTexture(texturePos, icon);                           
             GUI.Label(texturePos, new GUIContent("", node.ToolTip));
@@ -468,9 +470,9 @@ public class UK_Graphics {
     // ----------------------------------------------------------------------
     public void DrawPort(UK_EditorObject port, UK_EditorObject selectedObject, UK_IStorage storage) {
         // Only draw visible data ports.
-        if(storage.IsVisible(port) == false) return;
+        if(IsVisible(port, storage) == false) return;
         // Don't draw ports on minimized node.
-        if(storage.IsMinimized(port)) return;
+        if(IsMinimized(port, storage)) return;
         
         // Draw port
         UK_EditorObject portParent= storage.GetParent(port);         
@@ -698,13 +700,13 @@ public class UK_Graphics {
     //  CONNECTION
     // ----------------------------------------------------------------------
     public void DrawConnection(UK_EditorObject port, UK_IStorage storage) {
-        if(storage.IsVisible(port.ParentId) && storage.IsValid(port.Source)) {
+        if(IsVisible(storage.GetParent(port), storage) && storage.IsValid(port.Source)) {
             UK_EditorObject source= storage.GetSource(port);
             UK_EditorObject sourceParent= storage.GetParent(source);
-            if(storage.IsVisible(sourceParent) && !port.IsOutStatePort) {
+            if(IsVisible(sourceParent, storage) && !port.IsOutStatePort) {
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
                 color.a*= UK_EditorConfig.ConnectionTransparency;
-                UK_ConnectionParams cp= new UK_ConnectionParams(port, storage);
+                UK_ConnectionParams cp= new UK_ConnectionParams(port, GetDisplayPosition(port, storage), source, GetDisplayPosition(source, storage), storage);
         		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
@@ -738,21 +740,60 @@ public class UK_Graphics {
     //  Utilities
     // ----------------------------------------------------------------------
     static Rect GetDisplayPosition(UK_EditorObject edObj, UK_IStorage storage) {
-        Rect layoutPosition= storage.GetPosition(edObj);
+        Rect layoutPosition= GetLayoutPosition(edObj, storage);
+        Rect displayPosition= storage.GetDisplayPosition(edObj);
         if(IsAnimationCompleted(edObj, storage)) {
+            if(GetAnimationRatio(edObj, storage) > 2.0f) {
+                if(displayPosition.x != layoutPosition.x || displayPosition.y != layoutPosition.y ||
+                   displayPosition.width!= layoutPosition.width || displayPosition.height != layoutPosition.height) {
+                       storage.StartAnimTimer(edObj);
+                       return displayPosition;
+                   }
+            }
             storage.SetDisplayPosition(edObj, layoutPosition);
             return layoutPosition;
         }
         float ratio= GetAnimationRatio(edObj, storage);
-        Rect displayPosition= Math3D.Lerp(storage.GetDisplayPosition(edObj), layoutPosition, ratio);
-        storage.SetDisplayPosition(edObj, displayPosition);
+        displayPosition= Math3D.Lerp(displayPosition, layoutPosition, ratio);
+//        storage.SetDisplayPosition(edObj, displayPosition);
         return displayPosition;
     }
+    static Rect GetLayoutPosition(UK_EditorObject edObj, UK_IStorage storage) {
+        return storage.GetPosition(edObj);
+    }
     static float GetAnimationRatio(UK_EditorObject edObj, UK_IStorage storage) {
-        return Time.realtimeSinceStartup-storage.GetAnimTime(edObj);        
+        return 1f*(storage.GetAnimTime(edObj));        
+//        return 5.5f*(storage.GetAnimTime(edObj));        
     }
     static bool IsAnimationCompleted(UK_EditorObject edObj, UK_IStorage storage) {
-        return GetAnimationRatio(edObj, storage) >= 1f;
+        return GetAnimationRatio(edObj, storage) >= 0.99f;
+    }
+    static bool IsMinimized(UK_EditorObject edObj, UK_IStorage storage) {
+        return storage.IsMinimized(edObj) && IsAnimationCompleted(edObj, storage);
+    }
+    static bool IsFolded(UK_EditorObject edObj, UK_IStorage storage) {
+        return storage.IsFolded(edObj) && IsAnimationCompleted(edObj, storage);
+    }
+    static bool IsParentMinimized(UK_EditorObject edObj, UK_IStorage storage) {
+        UK_EditorObject parent= storage.GetParent(edObj);
+        if(parent == null) return false;
+        if(IsMinimized(parent, storage)) return true;
+        return IsParentMinimized(parent, storage);        
+    }
+    static bool IsParentFolded(UK_EditorObject edObj, UK_IStorage storage) {
+        UK_EditorObject parent= storage.GetParent(edObj);
+        if(parent == null) return false;
+        if(IsFolded(parent, storage)) return true;
+        return IsParentFolded(parent, storage);
+    }
+    static bool IsVisible(UK_EditorObject edObj, UK_IStorage storage) {
+        if(storage.IsHidden(edObj) && IsAnimationCompleted(edObj, storage)) return false;
+        if(IsParentMinimized(edObj, storage)) return false;
+        if(IsParentFolded(edObj, storage)) {
+            if(edObj.IsPort && IsFolded(storage.GetParent(edObj), storage)) return true;
+            return false;
+        }
+        return true;
     }
     
     // ======================================================================

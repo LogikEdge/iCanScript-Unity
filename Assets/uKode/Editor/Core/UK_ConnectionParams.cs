@@ -23,13 +23,7 @@ public class UK_ConnectionParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public UK_ConnectionParams(UK_EditorObject port, UK_EditorObject source, UK_IStorage storage) {
-        if(source == null) {
-            Debug.LogError(port.Name+": Cannot obtain connection parameters for a port without a source !!!");
-            return;
-        }
-        Rect sourcePos= storage.GetPosition(source);
-        Rect portPos  = storage.GetPosition(port);
+    public UK_ConnectionParams(UK_EditorObject port, Rect portPos, UK_EditorObject source, Rect sourcePos, UK_IStorage storage) {
         Start= new Vector2(sourcePos.x, sourcePos.y);
         End= new Vector2(portPos.x, portPos.y);
 
@@ -43,6 +37,8 @@ public class UK_ConnectionParams {
         // Compute connection center point.
         Center= BezierCenter(Start, End, StartTangent, EndTangent);
     }
+    // ----------------------------------------------------------------------
+    public UK_ConnectionParams(UK_EditorObject port, UK_EditorObject source, UK_IStorage storage) : this(port, storage.GetPosition(port), source, storage.GetPosition(source), storage) {}
     // ----------------------------------------------------------------------
     public UK_ConnectionParams(UK_EditorObject port, UK_IStorage storage) : this(port, storage.GetSource(port), storage) {}
     // ----------------------------------------------------------------------
