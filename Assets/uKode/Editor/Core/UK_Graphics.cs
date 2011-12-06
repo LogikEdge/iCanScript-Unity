@@ -477,14 +477,15 @@ public class UK_Graphics {
     //  PORT
     // ----------------------------------------------------------------------
     public void DrawPort(UK_EditorObject port, UK_EditorObject selectedObject, UK_IStorage storage) {
+        // Update display position.
+        Rect position= GetDisplayPosition(port, storage);
+
         // Only draw visible data ports.
-        if(IsVisible(port, storage) == false) return;
-        // Don't draw ports on minimized node.
-        if(IsMinimized(port, storage)) return;
+        if(IsInvisible(port, storage) || IsMinimized(port, storage)) return;
         
         // Draw port
         UK_EditorObject portParent= storage.GetParent(port);         
-        Vector2 center= Math3D.ToVector2(GetDisplayPosition(port, storage));
+        Vector2 center= Math3D.ToVector2(position);
         Type portValueType= port.RuntimeType;
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
@@ -784,19 +785,12 @@ public class UK_Graphics {
             Rect position= GetDisplayPosition(edObj, storage);
             NodeStyle nodeStyle= GetNodeStyle(edObj, null, storage);
             Texture icon= GetMaximizeIcon(edObj, nodeStyle, storage);
-            return (position.width <= icon.width+1f || position.height <= icon.height+1f);
+            return (position.width*position.height <= icon.width*icon.height+1f);
         }
         return storage.IsMinimized(edObj) && IsAnimationCompleted(edObj, storage);
     }
     static bool IsFolded(UK_EditorObject edObj, UK_IStorage storage) {
         return storage.IsFolded(edObj) && IsAnimationCompleted(edObj, storage);
-    }
-    static bool IsParentFolded(UK_EditorObject edObj, UK_IStorage storage) {
-        UK_EditorObject parent= storage.GetParent(edObj);
-        if(parent == null) return false;
-        GetDisplayPosition(parent, storage);            // Update animation timer
-        if(IsFolded(parent, storage)) return true;
-        return IsParentFolded(parent, storage);
     }
     bool IsInvisible(UK_EditorObject edObj, UK_IStorage storage) {
         return !IsVisible(edObj, storage);
