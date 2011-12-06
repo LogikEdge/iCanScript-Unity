@@ -89,7 +89,7 @@ public class UK_UserPreferences {
     
     [System.Serializable]
     public class UserAnimation {
-        public float    AnimationTime= 1f/5.5f;
+        public float    AnimationTime= 0.35f;
     }
     public UserAnimation    Animation= new UserAnimation();
 }
