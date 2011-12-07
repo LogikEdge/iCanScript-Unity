@@ -52,6 +52,7 @@ public class UK_Graphics {
 	NodeStyle   defaultStyle    = null;
 	NodeStyle   selectedStyle   = null;
 //	NodeStyle   nodeInErrorStyle= null;
+    GUIStyle    labelStyle      = null;
 
     // ======================================================================
 	// CONSTANTS
@@ -140,6 +141,20 @@ public class UK_Graphics {
         return IsInitialized;
     }
 
+    // ----------------------------------------------------------------------
+    GUIStyle GetLabelStyle(UK_IStorage storage) {
+        Color labelColor= storage.Preferences.NodeColors.LabelColor;
+        if(labelStyle == null) labelStyle= new GUIStyle();
+        labelStyle.normal.textColor= labelColor;
+        labelStyle.hover.textColor= labelColor;
+        labelStyle.focused.textColor= labelColor;
+        labelStyle.active.textColor= labelColor;
+        labelStyle.onNormal.textColor= labelColor;
+        labelStyle.onHover.textColor= labelColor;
+        labelStyle.onFocused.textColor= labelColor;
+        labelStyle.onActive.textColor= labelColor;
+        return labelStyle;
+    }
     // ----------------------------------------------------------------------
     public static Texture2D GetCachedTextureFromGUID(string guid) {
         return guid != null ? GetCachedTexture(AssetDatabase.GUIDToAssetPath(guid)) : null;
@@ -358,9 +373,10 @@ public class UK_Graphics {
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
         GUI.DrawTexture(texturePos, icon);                           
-        GUI.Label(texturePos, new GUIContent("", node.ToolTip));
+        GUIStyle labelStyle= GetLabelStyle(storage);
+        GUI.Label(texturePos, new GUIContent("", node.ToolTip), labelStyle);
         Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(title);
-        GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip));
+        GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip), labelStyle);
     }
 
     // ======================================================================
@@ -506,7 +522,8 @@ public class UK_Graphics {
         // Configure move cursor for port.
         Rect portPos= new Rect(center.x-UK_EditorConfig.PortRadius, center.y-UK_EditorConfig.PortRadius, UK_EditorConfig.PortSize, UK_EditorConfig.PortSize);
         EditorGUIUtility.AddCursorRect (portPos, MouseCursor.MoveArrow);
-        GUI.Label(portPos, new GUIContent("", port.ToolTip));
+        GUIStyle labelStyle= GetLabelStyle(storage);
+        GUI.Label(portPos, new GUIContent("", port.ToolTip), labelStyle);
         
         // Show port label.
         if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
@@ -530,7 +547,7 @@ public class UK_Graphics {
                 center.y+= UK_EditorConfig.PortSize+0.8f*labelSize.y*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y;
                 break;
         }
-        GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip));
+        GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), labelStyle);
     }
 
 	// ----------------------------------------------------------------------

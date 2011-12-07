@@ -14,6 +14,7 @@ public class UK_UserPreferences {
 
     [System.Serializable]
     public class UserNodeColors {
+        public Color    LabelColor   = Color.white;
         public Color    StateColor   = Color.cyan;
         public Color    ModuleColor  = Color.yellow;
         public Color    FunctionColor= Color.green;
