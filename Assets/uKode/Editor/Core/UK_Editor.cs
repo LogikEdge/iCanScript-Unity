@@ -513,14 +513,60 @@ public class UK_Editor : EditorWindow {
     void SetNewDataConnection(UK_EditorObject inPort, UK_EditorObject outPort, UK_ReflectionDesc conversion= null) {
         UK_EditorObject inNode= Storage.GetParent(inPort);
         UK_EditorObject outNode= Storage.GetParent(outPort);
-        UK_EditorObject inParent= Storage.GetParent(inNode); for(; inParent != null && !inParent.IsModule; inParent= Storage.GetParent(inParent));
-        UK_EditorObject outParent= Storage.GetParent(outNode); for(; outParent != null && !outParent.IsModule; outParent= Storage.GetParent(outParent));
+        UK_EditorObject inParent= GetParentModule(inNode);
+        UK_EditorObject outParent= GetParentModule(outNode);
         // No need to create module ports if both connected nodes are under the same parent.
-        if(inParent == outParent || inParent == null || outParent == null) {
+        if(inParent == outParent) {
             Storage.SetSource(inPort, outPort, conversion);
             return;
         }
+        if(inParent == null) {
+            UK_EditorObject newPort= Storage.CreatePort(inPort.Name, inParent.InstanceId, inPort.RuntimeType, UK_ObjectTypeEnum.InDynamicModulePort);
+            Storage.SetSource(inPort, newPort, conversion);
+            SetNewDataConnection(newPort, outPort);
+            return;           
+        }
+        if(outParent == null) {
+            UK_EditorObject newPort= Storage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, UK_ObjectTypeEnum.OutDynamicModulePort);
+            Storage.SetSource(newPort, outPort, conversion);
+            SetNewDataConnection(inPort, newPort);
+            return;                       
+        }
+        // Create inPort if inParent is not part of the outParent hierarchy.
+        bool inParentSeen= false;
+        for(UK_EditorObject op= GetParentModule(outParent); op != null; op= GetParentModule(op)) {
+            if(inParent == op) {
+                inParentSeen= true;
+                break;
+            }
+        }
+        if(!inParentSeen) {
+            UK_EditorObject newPort= Storage.CreatePort(inPort.Name, inParent.InstanceId, inPort.RuntimeType, UK_ObjectTypeEnum.InDynamicModulePort);
+            Storage.SetSource(inPort, newPort, conversion);
+            SetNewDataConnection(newPort, outPort);
+            return;                       
+        }
+        // Create outPort if outParent is not part of the inParent hierarchy.
+        bool outParentSeen= false;
+        for(UK_EditorObject ip= GetParentModule(inParent); ip != null; ip= GetParentModule(ip)) {
+            if(outParent == ip) {
+                outParentSeen= true;
+                break;
+            }
+        }
+        if(!outParentSeen) {
+            UK_EditorObject newPort= Storage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, UK_ObjectTypeEnum.OutDynamicModulePort);
+            Storage.SetSource(newPort, outPort, conversion);
+            SetNewDataConnection(inPort, newPort);
+            return;                       
+        }
+        // Should never happen ... just connect the ports.
         Storage.SetSource(inPort, outPort, conversion);
+    }
+    UK_EditorObject GetParentModule(UK_EditorObject edObj) {
+        UK_EditorObject parentModule= Storage.GetParent(edObj);
+        for(; parentModule != null && !parentModule.IsModule; parentModule= Storage.GetParent(parentModule));
+        return parentModule;
     }
     
     // ======================================================================
