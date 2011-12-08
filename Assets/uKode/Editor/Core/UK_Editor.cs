@@ -511,6 +511,15 @@ public class UK_Editor : EditorWindow {
         return true;
     }
     void SetNewDataConnection(UK_EditorObject inPort, UK_EditorObject outPort, UK_ReflectionDesc conversion= null) {
+        UK_EditorObject inNode= Storage.GetParent(inPort);
+        UK_EditorObject outNode= Storage.GetParent(outPort);
+        UK_EditorObject inParent= Storage.GetParent(inNode); for(; inParent != null && !inParent.IsModule; inParent= Storage.GetParent(inParent));
+        UK_EditorObject outParent= Storage.GetParent(outNode); for(; outParent != null && !outParent.IsModule; outParent= Storage.GetParent(outParent));
+        // No need to create module ports if both connected nodes are under the same parent.
+        if(inParent == outParent || inParent == null || outParent == null) {
+            Storage.SetSource(inPort, outPort, conversion);
+            return;
+        }
         Storage.SetSource(inPort, outPort, conversion);
     }
     
