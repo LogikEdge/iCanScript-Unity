@@ -486,14 +486,14 @@ public class UK_Editor : EditorWindow {
             }
             if(inPort != outPort) {
                 if(UK_Types.CanBeConnectedWithoutConversion(outPort.RuntimeType, inPort.RuntimeType)) { // No conversion needed.
-                    Storage.SetSource(inPort, outPort);                       
+                    SetNewDataConnection(inPort, outPort);                       
                 }
                 else {  // A conversion is required.
                     UK_ReflectionDesc conversion= UK_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
                     if(conversion == null) {
                         Debug.LogWarning("No direct conversion exists from "+outPort.RuntimeType.Name+" to "+inPort.RuntimeType.Name);
                     } else {
-                        Storage.SetSource(inPort, outPort, conversion);
+                        SetNewDataConnection(inPort, outPort, conversion);
                     }
                 }
             } else {
@@ -509,6 +509,9 @@ public class UK_Editor : EditorWindow {
         
         Debug.LogWarning("Trying to connect incompatible port types: "+port.TypeName+"<=>"+overlappingPort.TypeName);
         return true;
+    }
+    void SetNewDataConnection(UK_EditorObject inPort, UK_EditorObject outPort, UK_ReflectionDesc conversion= null) {
+        Storage.SetSource(inPort, outPort, conversion);
     }
     
     // ======================================================================

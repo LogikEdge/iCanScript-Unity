@@ -460,6 +460,7 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     public void SetSource(UK_EditorObject inPort, UK_EditorObject outPort, UK_ReflectionDesc convDesc) {
+        if(convDesc == null) { SetSource(inPort, outPort); return; }
         Rect inPos= GetPosition(inPort);
         Rect outPos= GetPosition(outPort);
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
