@@ -3,7 +3,7 @@ using System.Collections;
 
 public class UK_EditorConfig {
     // ----------------------------------------------------------------------
-    public const string ProductName= "uKode";
+    public const string ProductName= "Nodeling";
     public const string ProductAcronym= "UK";
 	public const string EditorPath= "Assets/"+ProductName+"/Editor";
 	public const string GuiAssetPath= EditorPath + "/Resources";
