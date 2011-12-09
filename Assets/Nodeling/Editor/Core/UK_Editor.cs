@@ -632,7 +632,7 @@ public class UK_Editor : EditorWindow {
                             // Tear down previous connection.
                             UK_EditorObject tmpPort= Storage.GetSource(port);
                             List<UK_EditorObject> toDestroy= new List<UK_EditorObject>();
-                            while(tmpPort != sourcePort) {
+                            while(tmpPort != null && tmpPort != sourcePort) {
                                 UK_EditorObject[] connected= Storage.FindConnectedPorts(tmpPort);
                                 if(connected.Length == 1) {
                                     UK_EditorObject t= Storage.GetSource(tmpPort);
