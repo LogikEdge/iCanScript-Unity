@@ -45,7 +45,7 @@
 					<key>AddCopyrightMailTo</key>
 					<true/>
 					<key>BaseURL</key>
-					<string>http://www.disruptive-sw.com/</string>
+					<string>http://www.disruptive-sw.com/Nodeling/</string>
 					<key>ConsolidateCommonFilesMode</key>
 					<integer>0</integer>
 					<key>ContactText</key>
@@ -93,7 +93,7 @@
 							<key>publicKeyPath</key>
 							<string></string>
 							<key>server</key>
-							<string>http://www.disruptive-sw.com</string>
+							<string>www.disruptive-sw.com</string>
 							<key>sftp</key>
 							<false/>
 							<key>user</key>
@@ -111,13 +111,13 @@
 					<key>SloganUsed</key>
 					<true/>
 					<key>ThemeName</key>
-					<string>Avantgarde</string>
+					<string>Alpha</string>
 					<key>TitleText</key>
 					<string>Nodeling</string>
 					<key>TitleTextUsed</key>
 					<true/>
 					<key>UUID</key>
-					<string>D757DD4C-668D-4D55-BB3F-7B0B3C0AC62D</string>
+					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>WantsXMLSiteMap</key>
 					<true/>
 					<key>WebClipIconUsed</key>
