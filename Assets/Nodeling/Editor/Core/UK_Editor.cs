@@ -628,26 +628,21 @@ public class UK_Editor : EditorWindow {
                 Storage.ForEachChildPort(node,
                     port=> {
                         if(port.IsInDataPort) {
-                            UK_EditorObject sourcePort= Storage.GetDataConnectionSource(port);
-                            // Tear down previous connection.
-                            UK_EditorObject tmpPort= Storage.GetSource(port);
-                            List<UK_EditorObject> toDestroy= new List<UK_EditorObject>();
-                            while(tmpPort != null && tmpPort != sourcePort) {
-                                UK_EditorObject[] connected= Storage.FindConnectedPorts(tmpPort);
-                                if(connected.Length == 1) {
-                                    UK_EditorObject t= Storage.GetSource(tmpPort);
-                                    toDestroy.Add(tmpPort);
-                                    tmpPort= t;
-                                } else {
-                                    break;
-                                }
-                            }
-                            foreach(var byebye in toDestroy) {
-                                Storage.DestroyInstance(byebye.InstanceId);
-                            }
+                            UK_EditorObject sourcePort= RemoveConnection(port);
                             // Rebuild new connection.
                             if(sourcePort != port) {
                                 SetNewDataConnection(port, sourcePort);
+                            }
+                        }
+                        if(port.IsOutDataPort) {
+                            UK_EditorObject[] allInPorts= FindAllConnectedInDataPorts(port);
+                            foreach(var inPort in allInPorts) {
+                                RemoveConnection(inPort);
+                            }
+                            foreach(var inPort in allInPorts) {
+                                if(inPort != port) {
+                                    SetNewDataConnection(inPort, port);                                    
+                                }
                             }
                         }
                     }
@@ -656,6 +651,49 @@ public class UK_Editor : EditorWindow {
             }
             default: {
                 break;
+            }
+        }
+    }
+    // ----------------------------------------------------------------------
+    UK_EditorObject RemoveConnection(UK_EditorObject inPort) {
+        UK_EditorObject sourcePort= Storage.GetDataConnectionSource(inPort);
+        // Tear down previous connection.
+        UK_EditorObject tmpPort= Storage.GetSource(inPort);
+        List<UK_EditorObject> toDestroy= new List<UK_EditorObject>();
+        while(tmpPort != null && tmpPort != sourcePort) {
+            UK_EditorObject[] connected= Storage.FindConnectedPorts(tmpPort);
+            if(connected.Length == 1) {
+                UK_EditorObject t= Storage.GetSource(tmpPort);
+                toDestroy.Add(tmpPort);
+                tmpPort= t;
+            } else {
+                break;
+            }
+        }
+        foreach(var byebye in toDestroy) {
+            Storage.DestroyInstance(byebye.InstanceId);
+        }
+        return sourcePort;        
+    }
+    // ----------------------------------------------------------------------
+    UK_EditorObject[] FindAllConnectedInDataPorts(UK_EditorObject outPort) {
+        List<UK_EditorObject> allInDataPorts= new List<UK_EditorObject>();
+        FillConnectedInDataPorts(outPort, allInDataPorts);
+        return allInDataPorts.ToArray();
+    }
+    // ----------------------------------------------------------------------
+    void FillConnectedInDataPorts(UK_EditorObject outPort, List<UK_EditorObject> result) {
+        if(outPort == null) return;
+        UK_EditorObject[] connectedPorts= Storage.FindConnectedPorts(outPort);
+        foreach(var port in connectedPorts) {
+            if(port.IsDataPort) {
+                if(port.IsModulePort) {
+                    FillConnectedInDataPorts(port, result);
+                } else {
+                    if(port.IsInputPort) {
+                        result.Add(port);
+                    }
+                }
             }
         }
     }
