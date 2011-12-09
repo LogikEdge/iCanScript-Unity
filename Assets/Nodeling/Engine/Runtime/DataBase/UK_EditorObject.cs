@@ -27,7 +27,7 @@ public class UK_EditorObject {
     public int          PortIndex= -1;
 
     // Non-persistant properties --------------------------------------------
-    [System.NonSerialized] public bool IsBeingDragged= false;
+    [System.NonSerialized] public bool IsFloating= false;
 
     // ======================================================================
     // Initialization
@@ -59,7 +59,7 @@ public class UK_EditorObject {
         LocalPosition= new Rect(0,0,0,0);
         Edge= EdgeEnum.None;
         Source= -1;
-        IsBeingDragged= false;
+        IsFloating= false;
         IsNameEditable= true;
         ToolTip = null;
     }

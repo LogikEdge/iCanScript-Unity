@@ -272,7 +272,7 @@ public partial class UK_IStorage {
         if(ports.Length != 0) {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
-                if(ports[i].IsBeingDragged == false) {
+                if(ports[i].IsFloating == false) {
                     ports[i].LocalPosition.x= (i+0.5f) * xStep;
                     ports[i].LocalPosition.y= 0;
                 }
@@ -288,7 +288,7 @@ public partial class UK_IStorage {
         if(ports.Length != 0) {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
-                if(ports[i].IsBeingDragged == false) {
+                if(ports[i].IsFloating == false) {
                     ports[i].LocalPosition.x= (i+0.5f) * xStep;
                     ports[i].LocalPosition.y= position.height;                
                 }
@@ -305,7 +305,7 @@ public partial class UK_IStorage {
             float topOffset= UK_EditorConfig.NodeTitleHeight;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
-                if(ports[i].IsBeingDragged == false) {
+                if(ports[i].IsFloating == false) {
                     ports[i].LocalPosition.x= 0;
                     ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
                 }
@@ -322,7 +322,7 @@ public partial class UK_IStorage {
             float topOffset= UK_EditorConfig.NodeTitleHeight;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
-                if(ports[i].IsBeingDragged == false) {
+                if(ports[i].IsFloating == false) {
                     ports[i].LocalPosition.x= position.width;
                     ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;
                 }

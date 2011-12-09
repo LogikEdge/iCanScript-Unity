@@ -259,7 +259,7 @@ public class UK_Editor : EditorWindow {
             DragType= DragTypeEnum.PortDrag;
             DragObject= port;
             DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
-            port.IsBeingDragged= true;
+            port.IsFloating= true;
             return true;
         }
 
@@ -285,7 +285,7 @@ public class UK_Editor : EditorWindow {
             inTransition.Source= outTransition.InstanceId;
             DragObject= inTransition;
             DragStartPosition= new Vector2(DragObject.LocalPosition.x, DragObject.LocalPosition.y);
-            DragObject.IsBeingDragged= true;
+            DragObject.IsFloating= true;
             return true;
         }
         
@@ -303,7 +303,7 @@ public class UK_Editor : EditorWindow {
                 case DragTypeEnum.NodeDrag: break;
                 case DragTypeEnum.PortDrag:
                     UK_EditorObject port= DragObject;
-                    port.IsBeingDragged= false;
+                    port.IsFloating= false;
                     // Verify for a new connection.
                     if(!VerifyNewConnection(port)) {
                         // Verify for disconnection.
@@ -382,7 +382,7 @@ public class UK_Editor : EditorWindow {
                     UK_EditorObject destState= GetNodeAtMousePosition();
                     if(destState != null && destState.IsState) {
                         UK_EditorObject outStatePort= Storage[DragObject.Source];
-                        outStatePort.IsBeingDragged= false;
+                        outStatePort.IsFloating= false;
                         Storage.CreateTransition(outStatePort, destState);
                         DragObject.Source= -1;
                         Storage.DestroyInstance(DragObject);
