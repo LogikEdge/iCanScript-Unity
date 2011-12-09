@@ -588,6 +588,10 @@ public class UK_Editor : EditorWindow {
         UK_EditorObject parent= Storage.GetNodeAt(point, node);
         if(parent == null) return null;
         switch(node.ObjectType) {
+            case UK_ObjectTypeEnum.Module: {
+                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
+                break;
+            }
             case UK_ObjectTypeEnum.InstanceMethod:
             case UK_ObjectTypeEnum.StaticMethod:
             case UK_ObjectTypeEnum.InstanceField:
@@ -617,7 +621,9 @@ public class UK_Editor : EditorWindow {
             case UK_ObjectTypeEnum.TransitionGuard:
             case UK_ObjectTypeEnum.TransitionAction:
             case UK_ObjectTypeEnum.Module: {
-                Storage.ForEachChild(node, c=> CleanupConnections(c));
+                List<UK_EditorObject> childNodes= new List<UK_EditorObject>();
+                Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
+                foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;
             }
             case UK_ObjectTypeEnum.InstanceMethod:
