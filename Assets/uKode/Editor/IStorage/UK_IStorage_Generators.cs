@@ -226,7 +226,7 @@ public partial class UK_IStorage {
         object[] portValues= new object[portLen];
         for(int i= 0; i < portLen; ++i) {
             if(rtDesc.PortIsOuts[i]) {  // outputs
-                portValues[i]= null;
+                portValues[i]= UK_Types.DefaultValue(rtDesc.PortTypes[i]);
             } else {                   // inputs
                 portValues[i]= GetDefaultValue(rtDesc, i) ?? UK_Types.DefaultValue(rtDesc.PortTypes[i]);
             }
@@ -251,10 +251,7 @@ public partial class UK_IStorage {
                     if(p.IsDataPort && p.PortIndex == i) {
                         UK_EditorObject sourcePort= GetSource(p);
                         if(sourcePort != null) {
-                            for(UK_EditorObject source2Port= GetSource(sourcePort); source2Port != null && source2Port.IsDataPort; source2Port= GetSource(source2Port)) {
-//                                Debug.Log("Now sinking from: "+GetParent(source2Port).Name+" instead of: "+GetParent(sourcePort).Name);
-                                sourcePort= source2Port;
-                            }
+                            sourcePort= GetDataConnectionSource(sourcePort);
                             UK_EditorObject sourceNode= GetParent(sourcePort);
                             UK_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as UK_FunctionBase;
                             connection= new UK_Connection(rtSourceNode, sourcePort.PortIndex);
@@ -267,6 +264,14 @@ public partial class UK_IStorage {
             connections[i]= connection;
         }
         return connections;
+    }
+    // ----------------------------------------------------------------------
+    UK_EditorObject GetDataConnectionSource(UK_EditorObject port) {
+        if(port == null || !port.IsDataPort) return null;
+        for(UK_EditorObject linkedPort= GetSource(port); linkedPort != null && linkedPort.IsDataPort; linkedPort= GetSource(port)) {
+            port= linkedPort;
+        }
+        return port;
     }
     
     // ----------------------------------------------------------------------
