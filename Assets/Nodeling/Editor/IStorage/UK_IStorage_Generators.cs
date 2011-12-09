@@ -176,30 +176,35 @@ public partial class UK_IStorage {
                         case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
                             if(GetRuntimeObject(edChild) != null) {
-                                UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                                object[] initValues;
+                                UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
                                 (GetRuntimeObject(edChild) as UK_FunctionBase).SetConnections(connections);
                             }
                             ConnectRuntimeChildNodes(edChild);                                
                             break;                            
                         }
                         case UK_ObjectTypeEnum.InstanceMethod: {
-                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            object[] initValues;
+                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
                             (TreeCache[edChild.InstanceId].RuntimeObject as UK_Method).SetConnections(connections);
                             break;
                         }
                         case UK_ObjectTypeEnum.Conversion:
                         case UK_ObjectTypeEnum.StaticMethod: {
-                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            object[] initValues;
+                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
                             (TreeCache[edChild.InstanceId].RuntimeObject as UK_Function).SetConnections(connections);
                             break;
                         }
                         case UK_ObjectTypeEnum.InstanceField: {
-                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            object[] initValues;
+                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
                             (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
                             break;
                         }
                         case UK_ObjectTypeEnum.StaticField: {
-                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild);
+                            object[] initValues;
+                            UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
                             (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
                             break;                            
                         }
@@ -236,40 +241,52 @@ public partial class UK_IStorage {
     // ----------------------------------------------------------------------
     // Builds the runtime connection array information for the given
     // editor object.
-    UK_Connection[] BuildRuntimeConnectionArray(UK_EditorObject edObj) {
+    UK_Connection[] BuildRuntimeConnectionArray(UK_EditorObject edObj, out object[] initValues) {
         UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edObj.RuntimeArchive);
         if(rtDesc == null) {
             Debug.LogWarning("Unable to locate reflection information for: "+edObj.RuntimeArchive);
+            initValues= new object[0];
             return new UK_Connection[0];
         }
         int portLen= rtDesc.PortTypes.Length;
         UK_Connection[] connections= new UK_Connection[portLen];
+        initValues= new object[portLen];
         for(int i= 0; i < portLen; ++i) {
-            UK_Connection connection= new UK_Connection(null, -1);
+            connections[i]= new UK_Connection(null, -1);
+            object initValue= UK_Types.DefaultValue(rtDesc.PortTypes[i]);                            
             ForEachChildPort(edObj,
                 p=> {
                     if(p.IsDataPort && p.PortIndex == i) {
-                        UK_EditorObject sourcePort= GetSource(p);
-                        if(sourcePort != null) {
-                            sourcePort= GetDataConnectionSource(sourcePort);
-                            UK_EditorObject sourceNode= GetParent(sourcePort);
-                            UK_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as UK_FunctionBase;
-                            connection= new UK_Connection(rtSourceNode, sourcePort.PortIndex);
+                        if(p.IsInputPort) {
+                            UK_EditorObject sourcePort= GetDataConnectionSource(p);
+                            if(sourcePort != null) {
+                                // Build connection information.
+                                int sourcePortIdx= sourcePort.PortIndex;
+                                UK_EditorObject sourceNode= GetParent(sourcePort);
+                                UK_FunctionBase rtSourceNode= TreeCache[sourceNode.InstanceId].RuntimeObject as UK_FunctionBase;
+                                if(sourcePort != p && !sourcePort.IsModulePort) {
+                                    connections[i]= new UK_Connection(rtSourceNode, sourcePortIdx);                                    
+                                }
+                                // Build initial value for port.
+                                UK_RuntimeDesc rtSourceDesc= new UK_RuntimeDesc(sourceNode.RuntimeArchive);
+                                initValue= GetDefaultValue(rtSourceDesc, sourcePortIdx) ?? initValue;
+                            }
                         }
                         return true;
                     }
                     return false;
                 }
             );
-            connections[i]= connection;
+            initValues[i]= initValue;
         }
         return connections;
     }
     // ----------------------------------------------------------------------
+    // Returns the last data port in the connection or NULL if none exist.
     UK_EditorObject GetDataConnectionSource(UK_EditorObject port) {
         if(port == null || !port.IsDataPort) return null;
-        for(UK_EditorObject linkedPort= GetSource(port); linkedPort != null && linkedPort.IsDataPort; linkedPort= GetSource(port)) {
-            port= linkedPort;
+        for(UK_EditorObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
+            port= sourcePort;
         }
         return port;
     }
