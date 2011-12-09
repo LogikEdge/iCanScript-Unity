@@ -265,7 +265,7 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
-    UK_EditorObject GetDataConnectionSource(UK_EditorObject port) {
+    public UK_EditorObject GetDataConnectionSource(UK_EditorObject port) {
         if(port == null || !port.IsDataPort) return null;
         for(UK_EditorObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
             port= sourcePort;

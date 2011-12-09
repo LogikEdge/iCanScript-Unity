@@ -608,6 +608,39 @@ public class UK_Editor : EditorWindow {
         UK_EditorObject oldParent= Storage.GetParent(node);
         if(newParent == null || newParent == oldParent) return;
         Storage.SetParent(node, newParent);
+        CleanupConnections(node);
+    }
+	// ----------------------------------------------------------------------
+    void CleanupConnections(UK_EditorObject node) {
+        switch(node.ObjectType) {
+            case UK_ObjectTypeEnum.TransitionModule:
+            case UK_ObjectTypeEnum.TransitionGuard:
+            case UK_ObjectTypeEnum.TransitionAction:
+            case UK_ObjectTypeEnum.Module: {
+                Storage.ForEachChild(node, c=> CleanupConnections(c));
+                break;
+            }
+            case UK_ObjectTypeEnum.InstanceMethod:
+            case UK_ObjectTypeEnum.StaticMethod:
+            case UK_ObjectTypeEnum.InstanceField:
+            case UK_ObjectTypeEnum.StaticField:
+            case UK_ObjectTypeEnum.Conversion: {
+                Storage.ForEachChildPort(node,
+                    port=> {
+                        if(port.IsInDataPort) {
+                            UK_EditorObject sourcePort= Storage.GetDataConnectionSource(port);
+                            if(sourcePort != port) {
+                                SetNewDataConnection(port, sourcePort);
+                            }
+                        }
+                    }
+                );
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
     
     // ======================================================================
