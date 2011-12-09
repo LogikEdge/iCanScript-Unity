@@ -386,7 +386,6 @@ public partial class UK_IStorage {
     // Display Options
     // ----------------------------------------------------------------------
     public bool IsVisible(UK_EditorObject eObj) {
-        if(eObj.IsHidden) return false;
         if(IsInvalid(eObj.ParentId)) return true;
         UK_EditorObject parent= GetParent(eObj);
         if(eObj.IsNode && (parent.IsFolded || parent.IsMinimized)) return false;
@@ -435,10 +434,6 @@ public partial class UK_IStorage {
         }
     }
     public void Maximize(int id) { if(IsValid(id)) Maximize(EditorObjects[id]); }
-    // ----------------------------------------------------------------------
-    public bool IsHidden(UK_EditorObject eObj) {
-        return eObj.IsHidden;
-    }
 
     // ======================================================================
     // Port Connectivity

@@ -67,7 +67,6 @@ public class UK_EditorObject {
     // ----------------------------------------------------------------------
     // Display Option Accessor
     public bool IsDisplayedNormally { get { return WD.IsDisplayedNormally(this); }}
-    public bool IsHidden            { get { return WD.IsHidden(this); }}
     public bool IsMinimized         { get { return WD.IsMinimized(this); }}
     public bool IsFolded            { get { return WD.IsFolded(this); }}
     public void DisplayNormally()   { WD.DisplayNormally(this); }
@@ -75,8 +74,6 @@ public class UK_EditorObject {
     public void Unfold()            { DisplayNormally(); }
     public void Maximize()          { DisplayNormally(); }
     public void Minimize()          { WD.Minimize(this); }
-    public void Hide()              { WD.Hide(this); }
-    public void Unhide()            { DisplayNormally(); }
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode                  { get { return WD.IsNode(this); }}
