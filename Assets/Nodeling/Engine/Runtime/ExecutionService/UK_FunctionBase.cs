@@ -48,12 +48,11 @@ public class UK_FunctionBase : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_FunctionBase(string name, object[] parameters, bool[] paramIsOuts, Vector2 layout) : base(name, layout) {
-        Init(parameters, paramIsOuts);
+    public UK_FunctionBase(string name, bool[] paramIsOuts, Vector2 layout) : base(name, layout) {
+        Init(paramIsOuts);
     }
     public UK_FunctionBase(string name, Vector2 layout) : base(name,layout) {}
-    protected void Init(object[] parameters, bool[] paramIsOuts) {
-        myParameters= parameters ?? new object[0];
+    protected void Init(bool[] paramIsOuts) {
         myParameterIsOuts= paramIsOuts ?? new bool[0];
         myConnections= new UK_Connection[0];
         List<int> inIdx= new List<int>();
@@ -64,8 +63,9 @@ public class UK_FunctionBase : UK_Action {
         myInIndexes = inIdx.ToArray();
         myOutIndexes= outIdx.ToArray();        
     }
-    public void SetConnections(UK_Connection[] connections) {
+    public void SetConnections(UK_Connection[] connections, object[] initValues) {
         myConnections= connections;
+        myParameters= initValues;
     }
     
     // ======================================================================

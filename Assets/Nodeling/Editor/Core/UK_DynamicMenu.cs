@@ -233,24 +233,6 @@ public class UK_DynamicMenu {
                 menu= new string[]{PublishPortStr};                
             }
         }
-        // State Port.
-        if(selectedObject.IsStatePort) {
-            int i= menu.Length;
-            if(selectedObject.IsOutStatePort) {
-                UK_EditorObject action= null;
-                UK_EditorObject guard= storage.GetTransitionGuardAndAction(selectedObject, out action);
-                if(guard.IsHidden) {
-                    string[] tmp= new string[i+1];
-                    tmp[i]= UnhideTransitionGuardStr;
-                    menu= tmp;                        
-                }
-                if(action.IsHidden) {
-                    string[] tmp= new string[i+1];
-                    tmp[i]= UnhideTransitionActionStr;
-                    menu= tmp;                        
-                }
-            }
-        }
         // Allow to delete a port if its parent is a module.
         if(selectedObject.IsStatePort || selectedObject.IsDynamicModulePort || selectedObject.IsEnablePort) {
             int i= menu.Length;

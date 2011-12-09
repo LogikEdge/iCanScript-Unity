@@ -84,7 +84,20 @@ public partial class UK_IStorage {
         if(obj.IsPort) { GetParent(obj).IsDirty= true; }
         obj.IsDirty= true;        
     }
-
+    // ----------------------------------------------------------------------
+    public void SetParent(UK_EditorObject edObj, UK_EditorObject newParent) {
+        Rect pos= GetPosition(edObj);
+        UK_EditorObject oldParent= GetParent(edObj);
+        edObj.ParentId= newParent.InstanceId;
+        TreeCache.UpdateInstance(oldParent);
+        TreeCache.UpdateInstance(newParent);
+        TreeCache.UpdateInstance(edObj);
+        SetPosition(edObj, pos);
+        SetDirty(edObj);
+        SetDirty(oldParent);
+        SetDirty(newParent);
+    }
+    
     // ======================================================================
     // Storage Update
     // ----------------------------------------------------------------------
@@ -116,7 +129,16 @@ public partial class UK_IStorage {
                 if((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) {
                     DestroyInstanceInternal(obj.InstanceId);
                     modified= true;
-                }
+                } 
+//                else {
+//                    if(obj.IsInDynamicModulePort) {
+//                        UK_EditorObject[] connectedPorts= FindConnectedPorts(obj);
+//                        if(connectedPorts.Length == 0) {
+//                            DestroyInstanceInternal(obj.InstanceId);
+//                            modified= true;
+//                        }
+//                    }
+//                }
             }
         );        
         return modified;
@@ -386,7 +408,6 @@ public partial class UK_IStorage {
     // Display Options
     // ----------------------------------------------------------------------
     public bool IsVisible(UK_EditorObject eObj) {
-        if(eObj.IsHidden) return false;
         if(IsInvalid(eObj.ParentId)) return true;
         UK_EditorObject parent= GetParent(eObj);
         if(eObj.IsNode && (parent.IsFolded || parent.IsMinimized)) return false;
@@ -415,7 +436,6 @@ public partial class UK_IStorage {
     }
     public void Minimize(UK_EditorObject eObj) {
         if(!eObj.IsNode) return;
-        if(ShouldHideOnMinimize(eObj)) { Hide(eObj); return; }
         eObj.Minimize();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Minimize(); });
         SetDirty(eObj);
@@ -436,20 +456,6 @@ public partial class UK_IStorage {
         }
     }
     public void Maximize(int id) { if(IsValid(id)) Maximize(EditorObjects[id]); }
-    // ----------------------------------------------------------------------
-    public bool IsHidden(UK_EditorObject eObj) {
-        return eObj.IsHidden;
-    }
-    public void Hide(UK_EditorObject eObj) {
-        if(!eObj.IsNode) return;
-        eObj.Hide();
-        ForEachChild(eObj, child=> { if(child.IsPort) child.Hide(); });
-        SetDirty(eObj);
-        if(IsValid(eObj.ParentId)) SetDirty(GetParent(eObj));
-    }
-    public void Hide(int id) { if(IsValid(id)) Hide(EditorObjects[id]); }
-    
-
 
     // ======================================================================
     // Port Connectivity
@@ -527,10 +533,10 @@ public partial class UK_IStorage {
     // Object Picking
     // ----------------------------------------------------------------------
     // Returns the node at the given position
-    public UK_EditorObject GetNodeAt(Vector2 pick) {
+    public UK_EditorObject GetNodeAt(Vector2 pick, UK_EditorObject exclude= null) {
         UK_EditorObject foundNode= null;
         FilterWith(
-            n=> n.IsNode && IsVisible(n) && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width), 
+            n=> n != exclude && n.IsNode && IsVisible(n) && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width), 
             n=> foundNode= n
         );
         return foundNode;

@@ -228,6 +228,7 @@ public class UK_Editor : EditorWindow {
                 UK_EditorObject node= DragObject;
                 Storage.MoveTo(node, DragStartPosition+delta);
                 Storage.SetDirty(node);                        
+                node.IsFloating= Event.current.command;
                 break;
             case DragTypeEnum.PortDrag:
             case DragTypeEnum.TransitionCreation:
@@ -259,7 +260,7 @@ public class UK_Editor : EditorWindow {
             DragType= DragTypeEnum.PortDrag;
             DragObject= port;
             DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
-            port.IsBeingDragged= true;
+            port.IsFloating= true;
             return true;
         }
 
@@ -271,6 +272,7 @@ public class UK_Editor : EditorWindow {
             DragObject= node;
             Rect position= Storage.GetPosition(node);
             DragStartPosition= new Vector2(position.x, position.y);                                                    
+            node.IsFloating= Event.current.command;
             return true;
         }
         
@@ -285,7 +287,7 @@ public class UK_Editor : EditorWindow {
             inTransition.Source= outTransition.InstanceId;
             DragObject= inTransition;
             DragStartPosition= new Vector2(DragObject.LocalPosition.x, DragObject.LocalPosition.y);
-            DragObject.IsBeingDragged= true;
+            DragObject.IsFloating= true;
             return true;
         }
         
@@ -300,10 +302,20 @@ public class UK_Editor : EditorWindow {
         try {
             switch(DragType) {
                 case DragTypeEnum.None: break;
-                case DragTypeEnum.NodeDrag: break;
+                case DragTypeEnum.NodeDrag: {
+                    UK_EditorObject node= DragObject;
+                    UK_EditorObject oldParent= Storage.GetParent(node);
+                    UK_EditorObject newParent= GetValidParentNodeUnder(node);
+                    if(newParent != null && newParent != oldParent) {
+                        ChangeParent(node, newParent);
+                    }
+                    Storage.SetDirty(oldParent);
+                    node.IsFloating= false;
+                    break;
+                }
                 case DragTypeEnum.PortDrag:
                     UK_EditorObject port= DragObject;
-                    port.IsBeingDragged= false;
+                    port.IsFloating= false;
                     // Verify for a new connection.
                     if(!VerifyNewConnection(port)) {
                         // Verify for disconnection.
@@ -382,7 +394,7 @@ public class UK_Editor : EditorWindow {
                     UK_EditorObject destState= GetNodeAtMousePosition();
                     if(destState != null && destState.IsState) {
                         UK_EditorObject outStatePort= Storage[DragObject.Source];
-                        outStatePort.IsBeingDragged= false;
+                        outStatePort.IsFloating= false;
                         Storage.CreateTransition(outStatePort, destState);
                         DragObject.Source= -1;
                         Storage.DestroyInstance(DragObject);
@@ -563,10 +575,89 @@ public class UK_Editor : EditorWindow {
         // Should never happen ... just connect the ports.
         Storage.SetSource(inPort, outPort, conversion);
     }
+	// ----------------------------------------------------------------------
     UK_EditorObject GetParentModule(UK_EditorObject edObj) {
         UK_EditorObject parentModule= Storage.GetParent(edObj);
         for(; parentModule != null && !parentModule.IsModule; parentModule= Storage.GetParent(parentModule));
         return parentModule;
+    }
+	// ----------------------------------------------------------------------
+    UK_EditorObject GetValidParentNodeUnder(UK_EditorObject node) {
+        if(!node.IsNode) return null;
+        Vector2 point= Math3D.Middle(Storage.GetPosition(node));
+        UK_EditorObject parent= Storage.GetNodeAt(point, node);
+        if(parent == null) return null;
+        switch(node.ObjectType) {
+            case UK_ObjectTypeEnum.InstanceMethod:
+            case UK_ObjectTypeEnum.StaticMethod:
+            case UK_ObjectTypeEnum.InstanceField:
+            case UK_ObjectTypeEnum.StaticField:
+            case UK_ObjectTypeEnum.Conversion: {
+                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
+                break;
+            }
+            default: {
+                parent= null;
+                break;
+            }
+        }
+        return parent;
+    }
+	// ----------------------------------------------------------------------
+    void ChangeParent(UK_EditorObject node, UK_EditorObject newParent) {
+        UK_EditorObject oldParent= Storage.GetParent(node);
+        if(newParent == null || newParent == oldParent) return;
+        Storage.SetParent(node, newParent);
+        CleanupConnections(node);
+    }
+	// ----------------------------------------------------------------------
+    void CleanupConnections(UK_EditorObject node) {
+        switch(node.ObjectType) {
+            case UK_ObjectTypeEnum.TransitionModule:
+            case UK_ObjectTypeEnum.TransitionGuard:
+            case UK_ObjectTypeEnum.TransitionAction:
+            case UK_ObjectTypeEnum.Module: {
+                Storage.ForEachChild(node, c=> CleanupConnections(c));
+                break;
+            }
+            case UK_ObjectTypeEnum.InstanceMethod:
+            case UK_ObjectTypeEnum.StaticMethod:
+            case UK_ObjectTypeEnum.InstanceField:
+            case UK_ObjectTypeEnum.StaticField:
+            case UK_ObjectTypeEnum.Conversion: {
+                Storage.ForEachChildPort(node,
+                    port=> {
+                        if(port.IsInDataPort) {
+                            UK_EditorObject sourcePort= Storage.GetDataConnectionSource(port);
+                            // Tear down previous connection.
+                            UK_EditorObject tmpPort= Storage.GetSource(port);
+                            List<UK_EditorObject> toDestroy= new List<UK_EditorObject>();
+                            while(tmpPort != sourcePort) {
+                                UK_EditorObject[] connected= Storage.FindConnectedPorts(tmpPort);
+                                if(connected.Length == 1) {
+                                    UK_EditorObject t= Storage.GetSource(tmpPort);
+                                    toDestroy.Add(tmpPort);
+                                    tmpPort= t;
+                                } else {
+                                    break;
+                                }
+                            }
+                            foreach(var byebye in toDestroy) {
+                                Storage.DestroyInstance(byebye.InstanceId);
+                            }
+                            // Rebuild new connection.
+                            if(sourcePort != port) {
+                                SetNewDataConnection(port, sourcePort);
+                            }
+                        }
+                    }
+                );
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
     
     // ======================================================================
@@ -590,17 +681,49 @@ public class UK_Editor : EditorWindow {
         
         // Draw editor window.
         ScrollView.Begin();
-    	DrawNodes();
-        DrawConnections();            
+    	DrawNormalNodes();
+        DrawConnections();
+        DrawMinimizedNodes();           
         ScrollView.End();
 	}
 
 	// ----------------------------------------------------------------------
-    void DrawNodes() {
+    void DrawNormalNodes() {
+        List<UK_EditorObject> floatingNodes= new List<UK_EditorObject>();
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            node=> { if(node.IsNode) Graphics.DrawNormalNode(node, SelectedObject, Storage); }
+            node=> {
+                if(node.IsNode) {
+                    if(node.IsFloating) {
+                        floatingNodes.Add(node);
+                    } else {
+                        Graphics.DrawNormalNode(node, SelectedObject, Storage);                        
+                    }
+                }
+            }
         );
+        foreach(var node in floatingNodes) {
+            Graphics.DrawNormalNode(node, SelectedObject, Storage);            
+        }
+    }	
+	// ----------------------------------------------------------------------
+    void DrawMinimizedNodes() {
+        List<UK_EditorObject> floatingNodes= new List<UK_EditorObject>();
+        // Display node starting from the root node.
+        Storage.ForEachRecursiveDepthLast(DisplayRoot,
+            node=> {
+                if(node.IsNode) {
+                    if(node.IsFloating) {
+                        floatingNodes.Add(node);
+                    } else {
+                        Graphics.DrawMinimizedNode(node, SelectedObject, Storage);                        
+                    }
+                }
+            }
+        );
+        foreach(var node in floatingNodes) {
+            Graphics.DrawMinimizedNode(node, SelectedObject, Storage);            
+        }
     }	
 	
 	// ----------------------------------------------------------------------
@@ -610,11 +733,6 @@ public class UK_Editor : EditorWindow {
 
         // Display ports.
         Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); });
-
-        // Display minimized nodes.
-        Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            node=> { if(node.IsNode) Graphics.DrawMinimizedNode(node, SelectedObject, Storage); }
-        );
     }
 
 }

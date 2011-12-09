@@ -12,7 +12,7 @@ public class UK_SetInstanceField : UK_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_SetInstanceField(string name, FieldInfo fieldInfo, object[] parameters, bool[] paramIsOuts, Vector2 layout) : base(name, parameters, paramIsOuts, layout) {
+    public UK_SetInstanceField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
         myFieldInfo= fieldInfo;
     }
     
