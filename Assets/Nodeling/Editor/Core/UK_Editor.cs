@@ -228,6 +228,7 @@ public class UK_Editor : EditorWindow {
                 UK_EditorObject node= DragObject;
                 Storage.MoveTo(node, DragStartPosition+delta);
                 Storage.SetDirty(node);                        
+                node.IsFloating= Event.current.command;
                 break;
             case DragTypeEnum.PortDrag:
             case DragTypeEnum.TransitionCreation:
@@ -271,6 +272,7 @@ public class UK_Editor : EditorWindow {
             DragObject= node;
             Rect position= Storage.GetPosition(node);
             DragStartPosition= new Vector2(position.x, position.y);                                                    
+            node.IsFloating= Event.current.command;
             return true;
         }
         
@@ -300,7 +302,11 @@ public class UK_Editor : EditorWindow {
         try {
             switch(DragType) {
                 case DragTypeEnum.None: break;
-                case DragTypeEnum.NodeDrag: break;
+                case DragTypeEnum.NodeDrag: {
+                    UK_EditorObject node= DragObject;
+                    node.IsFloating= false;
+                    break;
+                }
                 case DragTypeEnum.PortDrag:
                     UK_EditorObject port= DragObject;
                     port.IsFloating= false;
