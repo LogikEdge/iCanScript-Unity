@@ -415,7 +415,6 @@ public partial class UK_IStorage {
     }
     public void Minimize(UK_EditorObject eObj) {
         if(!eObj.IsNode) return;
-        if(ShouldHideOnMinimize(eObj)) { Hide(eObj); return; }
         eObj.Minimize();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Minimize(); });
         SetDirty(eObj);
@@ -440,16 +439,6 @@ public partial class UK_IStorage {
     public bool IsHidden(UK_EditorObject eObj) {
         return eObj.IsHidden;
     }
-    public void Hide(UK_EditorObject eObj) {
-        if(!eObj.IsNode) return;
-        eObj.Hide();
-        ForEachChild(eObj, child=> { if(child.IsPort) child.Hide(); });
-        SetDirty(eObj);
-        if(IsValid(eObj.ParentId)) SetDirty(GetParent(eObj));
-    }
-    public void Hide(int id) { if(IsValid(id)) Hide(EditorObjects[id]); }
-    
-
 
     // ======================================================================
     // Port Connectivity
