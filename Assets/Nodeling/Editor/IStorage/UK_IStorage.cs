@@ -536,7 +536,13 @@ public partial class UK_IStorage {
     public UK_EditorObject GetNodeAt(Vector2 pick, UK_EditorObject exclude= null) {
         UK_EditorObject foundNode= null;
         FilterWith(
-            n=> n != exclude && n.IsNode && IsVisible(n) && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width), 
+            n=> {
+                bool excludeFlag= false;
+                if(exclude != null) {
+                    excludeFlag= n == exclude || IsChildOf(n, exclude);
+                }
+                return !excludeFlag && n.IsNode && IsVisible(n) && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width);
+            },
             n=> foundNode= n
         );
         return foundNode;

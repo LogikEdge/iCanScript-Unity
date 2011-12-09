@@ -588,6 +588,16 @@ public class UK_Editor : EditorWindow {
         UK_EditorObject parent= Storage.GetNodeAt(point, node);
         if(parent == null) return null;
         switch(node.ObjectType) {
+            case UK_ObjectTypeEnum.StateChart: {
+                Debug.Log("Searching from: "+(parent != null ? parent.Name : "null"));
+                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
+                Debug.Log("New Valid Parent is:"+(parent != null ? parent.Name : "null"));
+                break;                
+            }
+            case UK_ObjectTypeEnum.State: {
+                while(parent != null && !parent.IsState && !parent.IsStateChart) parent= Storage.GetParent(parent);
+                break;
+            }
             case UK_ObjectTypeEnum.Module: {
                 while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
                 break;
@@ -617,6 +627,18 @@ public class UK_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void CleanupConnections(UK_EditorObject node) {
         switch(node.ObjectType) {
+            case UK_ObjectTypeEnum.StateChart: {
+                List<UK_EditorObject> childNodes= new List<UK_EditorObject>();
+                Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
+                foreach(var childNode in childNodes) { CleanupConnections(childNode); }
+                break;                
+            }
+            case UK_ObjectTypeEnum.State: {
+                List<UK_EditorObject> childNodes= new List<UK_EditorObject>();
+                Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
+                foreach(var childNode in childNodes) { CleanupConnections(childNode); }
+                break;
+            }
             case UK_ObjectTypeEnum.TransitionModule:
             case UK_ObjectTypeEnum.TransitionGuard:
             case UK_ObjectTypeEnum.TransitionAction:
