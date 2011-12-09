@@ -209,7 +209,7 @@ public partial class UK_IStorage {
         Rect childRect= new Rect(0.5f*node.LocalPosition.width,0.5f*node.LocalPosition.height,0,0);
         ForEachChild(node,
             (child)=> {
-                if(child.IsNode && IsVisible(child)) {
+                if(child.IsNode && IsVisible(child) && !child.IsFloating) {
                     childRect= Math3D.Merge(childRect, child.LocalPosition);
                 }
             }
@@ -525,11 +525,13 @@ public partial class UK_IStorage {
             if(child1.ParentId != node.InstanceId) continue;
             if(!IsVisible(child1)) continue;
             if(!child1.IsNode) continue;
+            if(child1.IsFloating) continue;
             for(int j= i+1; j < EditorObjects.Count; ++j) {
                 UK_EditorObject child2= EditorObjects[j];
                 if(child2.ParentId != node.InstanceId) continue;
                 if(!IsVisible(child2)) continue;
                 if(!child2.IsNode) continue;
+                if(child2.IsFloating) continue;
                 didCollide |= ResolveCollisionBetweenTwoNodes(child1, child2, _delta);                            
             }
         }
