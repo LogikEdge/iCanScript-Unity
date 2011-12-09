@@ -304,6 +304,12 @@ public class UK_Editor : EditorWindow {
                 case DragTypeEnum.None: break;
                 case DragTypeEnum.NodeDrag: {
                     UK_EditorObject node= DragObject;
+                    UK_EditorObject oldParent= Storage.GetParent(node);
+                    UK_EditorObject newParent= GetValidParentNodeUnder(node);
+                    if(newParent != null && newParent != oldParent) {
+                        ChangeParent(node, newParent);
+                    }
+                    Storage.SetDirty(oldParent);
                     node.IsFloating= false;
                     break;
                 }
@@ -569,10 +575,39 @@ public class UK_Editor : EditorWindow {
         // Should never happen ... just connect the ports.
         Storage.SetSource(inPort, outPort, conversion);
     }
+	// ----------------------------------------------------------------------
     UK_EditorObject GetParentModule(UK_EditorObject edObj) {
         UK_EditorObject parentModule= Storage.GetParent(edObj);
         for(; parentModule != null && !parentModule.IsModule; parentModule= Storage.GetParent(parentModule));
         return parentModule;
+    }
+	// ----------------------------------------------------------------------
+    UK_EditorObject GetValidParentNodeUnder(UK_EditorObject node) {
+        if(!node.IsNode) return null;
+        Vector2 point= Math3D.Middle(Storage.GetPosition(node));
+        UK_EditorObject parent= Storage.GetNodeAt(point, node);
+        if(parent == null) return null;
+        switch(node.ObjectType) {
+            case UK_ObjectTypeEnum.InstanceMethod:
+            case UK_ObjectTypeEnum.StaticMethod:
+            case UK_ObjectTypeEnum.InstanceField:
+            case UK_ObjectTypeEnum.StaticField:
+            case UK_ObjectTypeEnum.Conversion: {
+                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
+                break;
+            }
+            default: {
+                parent= null;
+                break;
+            }
+        }
+        return parent;
+    }
+	// ----------------------------------------------------------------------
+    void ChangeParent(UK_EditorObject node, UK_EditorObject newParent) {
+        UK_EditorObject oldParent= Storage.GetParent(node);
+        if(newParent == null || newParent == oldParent) return;
+        Storage.SetParent(node, newParent);
     }
     
     // ======================================================================
@@ -596,17 +631,49 @@ public class UK_Editor : EditorWindow {
         
         // Draw editor window.
         ScrollView.Begin();
-    	DrawNodes();
-        DrawConnections();            
+    	DrawNormalNodes();
+        DrawConnections();
+        DrawMinimizedNodes();           
         ScrollView.End();
 	}
 
 	// ----------------------------------------------------------------------
-    void DrawNodes() {
+    void DrawNormalNodes() {
+        List<UK_EditorObject> floatingNodes= new List<UK_EditorObject>();
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            node=> { if(node.IsNode) Graphics.DrawNormalNode(node, SelectedObject, Storage); }
+            node=> {
+                if(node.IsNode) {
+                    if(node.IsFloating) {
+                        floatingNodes.Add(node);
+                    } else {
+                        Graphics.DrawNormalNode(node, SelectedObject, Storage);                        
+                    }
+                }
+            }
         );
+        foreach(var node in floatingNodes) {
+            Graphics.DrawNormalNode(node, SelectedObject, Storage);            
+        }
+    }	
+	// ----------------------------------------------------------------------
+    void DrawMinimizedNodes() {
+        List<UK_EditorObject> floatingNodes= new List<UK_EditorObject>();
+        // Display node starting from the root node.
+        Storage.ForEachRecursiveDepthLast(DisplayRoot,
+            node=> {
+                if(node.IsNode) {
+                    if(node.IsFloating) {
+                        floatingNodes.Add(node);
+                    } else {
+                        Graphics.DrawMinimizedNode(node, SelectedObject, Storage);                        
+                    }
+                }
+            }
+        );
+        foreach(var node in floatingNodes) {
+            Graphics.DrawMinimizedNode(node, SelectedObject, Storage);            
+        }
     }	
 	
 	// ----------------------------------------------------------------------
@@ -616,11 +683,6 @@ public class UK_Editor : EditorWindow {
 
         // Display ports.
         Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); });
-
-        // Display minimized nodes.
-        Storage.ForEachRecursiveDepthLast(DisplayRoot,
-            node=> { if(node.IsNode) Graphics.DrawMinimizedNode(node, SelectedObject, Storage); }
-        );
     }
 
 }

@@ -84,7 +84,20 @@ public partial class UK_IStorage {
         if(obj.IsPort) { GetParent(obj).IsDirty= true; }
         obj.IsDirty= true;        
     }
-
+    // ----------------------------------------------------------------------
+    public void SetParent(UK_EditorObject edObj, UK_EditorObject newParent) {
+        Rect pos= GetPosition(edObj);
+        UK_EditorObject oldParent= GetParent(edObj);
+        edObj.ParentId= newParent.InstanceId;
+        TreeCache.UpdateInstance(oldParent);
+        TreeCache.UpdateInstance(newParent);
+        TreeCache.UpdateInstance(edObj);
+        SetPosition(edObj, pos);
+        SetDirty(edObj);
+        SetDirty(oldParent);
+        SetDirty(newParent);
+    }
+    
     // ======================================================================
     // Storage Update
     // ----------------------------------------------------------------------
@@ -511,10 +524,10 @@ public partial class UK_IStorage {
     // Object Picking
     // ----------------------------------------------------------------------
     // Returns the node at the given position
-    public UK_EditorObject GetNodeAt(Vector2 pick) {
+    public UK_EditorObject GetNodeAt(Vector2 pick, UK_EditorObject exclude= null) {
         UK_EditorObject foundNode= null;
         FilterWith(
-            n=> n.IsNode && IsVisible(n) && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width), 
+            n=> n != exclude && n.IsNode && IsVisible(n) && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width), 
             n=> foundNode= n
         );
         return foundNode;
