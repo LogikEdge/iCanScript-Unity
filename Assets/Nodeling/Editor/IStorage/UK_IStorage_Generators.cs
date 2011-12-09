@@ -52,10 +52,7 @@ public partial class UK_IStorage {
                         case UK_ObjectTypeEnum.TransitionGuard:
                         case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
-                            if(edChild.IsTransitionAction && IsTransitionActionEmpty(edChild)) break;
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
-                            if(rtDesc == null) break;
-                            UK_Module module= new UK_Module(edChild.Name, rtDesc.PortIsOuts, layout);                                
+                            UK_Module module= new UK_Module(edChild.Name, layout);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= module;
                             if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);                                
                             GenerateRuntimeChildNodes(edChild, module);
@@ -141,9 +138,7 @@ public partial class UK_IStorage {
                                                 return false;
                                             }
                                         );
-                                        while(GetSource(triggerPort) != null) {
-                                            triggerPort= GetSource(triggerPort);
-                                        }
+                                        triggerPort= GetDataConnectionSource(triggerPort);
                                         UK_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : GetRuntimeObject(GetParent(triggerPort)) as UK_FunctionBase;
                                         int triggerIdx= triggerPort.PortIndex;
                                         Rect outStatePortPos= GetPosition(p);
@@ -151,9 +146,9 @@ public partial class UK_IStorage {
                                         Vector2 layout= new Vector2(0.5f*(inStatePortPos.x+outStatePortPos.x), 0.5f*(inStatePortPos.y+outStatePortPos.y));
                                         UK_Transition transition= new UK_Transition(p.Name,
                                                                                     GetRuntimeObject(endState) as UK_State,
-                                                                                    GetRuntimeObject(guardModule) as UK_FunctionBase,
+                                                                                    GetRuntimeObject(guardModule) as UK_Module,
                                                                                     triggerFunc, triggerIdx,
-                                                                                    actionModule != null ? GetRuntimeObject(actionModule) as UK_FunctionBase : null,
+                                                                                    actionModule != null ? GetRuntimeObject(actionModule) as UK_Module : null,
                                                                                     layout);
                                         UK_State state= GetRuntimeObject(edChild) as UK_State;
                                         state.AddChild(transition);
@@ -163,18 +158,10 @@ public partial class UK_IStorage {
                             ConnectRuntimeChildNodes(edChild);
                             break;
                         }
-                        case UK_ObjectTypeEnum.TransitionModule: {
-                            ConnectRuntimeChildNodes(edChild);
-                            break;
-                        }
+                        case UK_ObjectTypeEnum.TransitionModule:
                         case UK_ObjectTypeEnum.TransitionGuard:
                         case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
-                            if(GetRuntimeObject(edChild) != null) {
-                                object[] initValues;
-                                UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
-                                (GetRuntimeObject(edChild) as UK_FunctionBase).SetConnections(connections, initValues);
-                            }
                             ConnectRuntimeChildNodes(edChild);                                
                             break;                            
                         }
