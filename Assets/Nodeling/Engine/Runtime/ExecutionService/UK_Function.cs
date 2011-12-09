@@ -27,24 +27,24 @@ public class UK_Function : UK_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Function(string name, MethodInfo methodInfo, object[] portValues, bool[] portIsOuts, Vector2 layout) : base(name, layout) {
+    public UK_Function(string name, MethodInfo methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, layout) {
         myMethodInfo= methodInfo;
-        Init(portValues, portIsOuts);
+        Init(portIsOuts);
     }
     public UK_Function(string name, MethodInfo methodInfo, Vector2 layout) : base(name, layout) {
         myMethodInfo= methodInfo;
     }
-    protected new void Init(object[] portValues, bool[] portIsOuts) {
-        object[] parameters= new object[portValues.Length-1];
-        Array.Copy(portValues, parameters, parameters.Length);
+    protected new void Init(bool[] portIsOuts) {
         bool[] paramIsOuts= new bool[portIsOuts.Length-1];
         Array.Copy(portIsOuts, paramIsOuts, paramIsOuts.Length);
-        base.Init(parameters, paramIsOuts);
+        base.Init(paramIsOuts);
     }
-    public new void SetConnections(UK_Connection[] connections) {
-        UK_Connection[] paramConnections= new UK_Connection[connections.Length-1];
-        Array.Copy(connections, paramConnections, paramConnections.Length);
-        base.SetConnections(paramConnections);
+    public new void SetConnections(UK_Connection[] connections, object[] initValues) {
+        UK_Connection[] baseConnections= new UK_Connection[connections.Length-1];
+        Array.Copy(connections, baseConnections, baseConnections.Length);
+        object[] baseInitValues= new object[initValues.Length-1];
+        Array.Copy(initValues, baseInitValues, baseInitValues.Length);
+        base.SetConnections(baseConnections, baseInitValues);
     }
     
     // ======================================================================

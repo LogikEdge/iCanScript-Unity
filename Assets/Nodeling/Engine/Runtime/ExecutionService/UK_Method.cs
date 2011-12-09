@@ -31,22 +31,22 @@ public class UK_Method : UK_Function {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Method(string name, MethodInfo methodInfo, object[] portValues, bool[] portIsOuts, Vector2 layout) : base(name, methodInfo, layout) {
-        Init(portValues, portIsOuts);
+    public UK_Method(string name, MethodInfo methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, methodInfo, layout) {
+        Init(portIsOuts);
     }
-    protected new void Init(object[] portValues, bool[] portIsOuts) {
-        myThis= portValues[portValues.Length-2];
-        object[] paramValues= new object[portValues.Length-2];
-        Array.Copy(portValues, paramValues, paramValues.Length);
-        bool[] paramIsOuts= new bool[portIsOuts.Length-2];
-        Array.Copy(portIsOuts, paramIsOuts, paramIsOuts.Length);
-        base.Init(paramValues, paramIsOuts);        
+    protected new void Init(bool[] portIsOuts) {
+        bool[] baseIsOuts= new bool[portIsOuts.Length-2];
+        Array.Copy(portIsOuts, baseIsOuts, baseIsOuts.Length);
+        base.Init(baseIsOuts);        
     }
-    public new void SetConnections(UK_Connection[] connections) {
+    public new void SetConnections(UK_Connection[] connections, object[] initValues) {
         myThisConnection= connections[connections.Length-2];
-        UK_Connection[] paramConnections= new UK_Connection[connections.Length-2];
-        Array.Copy(connections, paramConnections, paramConnections.Length);
-        base.SetConnections(paramConnections);
+        UK_Connection[] baseConnections= new UK_Connection[connections.Length-2];
+        Array.Copy(connections, baseConnections, baseConnections.Length);
+        myThis= initValues[initValues.Length-2];
+        object[] baseValues= new object[initValues.Length-2];
+        Array.Copy(initValues, baseValues, baseValues.Length);        
+        base.SetConnections(baseConnections, baseValues);
     }
     
     // ======================================================================

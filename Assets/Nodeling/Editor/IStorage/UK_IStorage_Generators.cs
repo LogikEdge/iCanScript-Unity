@@ -53,10 +53,9 @@ public partial class UK_IStorage {
                         case UK_ObjectTypeEnum.TransitionAction:
                         case UK_ObjectTypeEnum.Module: {
                             if(edChild.IsTransitionAction && IsTransitionActionEmpty(edChild)) break;
-                            UK_RuntimeDesc rtDesc;
-                            object[] parameters= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
                             if(rtDesc == null) break;
-                            UK_Module module= new UK_Module(edChild.Name, parameters, rtDesc.PortIsOuts, layout);                                
+                            UK_Module module= new UK_Module(edChild.Name, rtDesc.PortIsOuts, layout);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= module;
                             if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);                                
                             GenerateRuntimeChildNodes(edChild, module);
@@ -64,10 +63,9 @@ public partial class UK_IStorage {
                         }
                         case UK_ObjectTypeEnum.InstanceMethod: {
                             // Create method.
-                            UK_RuntimeDesc rtDesc;
-                            object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
                             if(rtDesc == null) break;
-                            UK_Method method= new UK_Method(edChild.Name, rtDesc.Method, portValues, rtDesc.PortIsOuts, layout);                                
+                            UK_Method method= new UK_Method(edChild.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= method;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, method);
                             break;                            
@@ -75,36 +73,33 @@ public partial class UK_IStorage {
                         case UK_ObjectTypeEnum.Conversion:
                         case UK_ObjectTypeEnum.StaticMethod: {
                             // Create function.
-                            UK_RuntimeDesc rtDesc;
-                            object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
                             if(rtDesc == null) break;
-                            UK_Function func= new UK_Function(edChild.Name, rtDesc.Method, portValues, rtDesc.PortIsOuts, layout);                                
+                            UK_Function func= new UK_Function(edChild.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
                             TreeCache[edChild.InstanceId].RuntimeObject= func;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, func);
                             break;
                         }
                         case UK_ObjectTypeEnum.InstanceField: {
                             // Create function.
-                            UK_RuntimeDesc rtDesc;
-                            object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
                             if(rtDesc == null) break;
                             FieldInfo fieldInfo= rtDesc.Field;
                             UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
-                                new UK_GetInstanceField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
-                                new UK_SetInstanceField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
+                                new UK_GetInstanceField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
+                                new UK_SetInstanceField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
                             TreeCache[edChild.InstanceId].RuntimeObject= rtField;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
                             break;
                         }
                         case UK_ObjectTypeEnum.StaticField: {
                             // Create function.
-                            UK_RuntimeDesc rtDesc;
-                            object[] portValues= BuildRuntimePortValueArray(edChild, out rtDesc);
+                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
                             if(rtDesc == null) break;
                             FieldInfo fieldInfo= rtDesc.Field;
                             UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
-                                new UK_GetStaticField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
-                                new UK_SetStaticField(edChild.Name, fieldInfo, portValues, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
+                                new UK_GetStaticField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
+                                new UK_SetStaticField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
                             TreeCache[edChild.InstanceId].RuntimeObject= rtField;
                             UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
                             break;                            
@@ -178,7 +173,7 @@ public partial class UK_IStorage {
                             if(GetRuntimeObject(edChild) != null) {
                                 object[] initValues;
                                 UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
-                                (GetRuntimeObject(edChild) as UK_FunctionBase).SetConnections(connections);
+                                (GetRuntimeObject(edChild) as UK_FunctionBase).SetConnections(connections, initValues);
                             }
                             ConnectRuntimeChildNodes(edChild);                                
                             break;                            
@@ -186,26 +181,26 @@ public partial class UK_IStorage {
                         case UK_ObjectTypeEnum.InstanceMethod: {
                             object[] initValues;
                             UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
-                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_Method).SetConnections(connections);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_Method).SetConnections(connections, initValues);
                             break;
                         }
                         case UK_ObjectTypeEnum.Conversion:
                         case UK_ObjectTypeEnum.StaticMethod: {
                             object[] initValues;
                             UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
-                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_Function).SetConnections(connections);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_Function).SetConnections(connections, initValues);
                             break;
                         }
                         case UK_ObjectTypeEnum.InstanceField: {
                             object[] initValues;
                             UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
-                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections, initValues);
                             break;
                         }
                         case UK_ObjectTypeEnum.StaticField: {
                             object[] initValues;
                             UK_Connection[] connections= BuildRuntimeConnectionArray(edChild, out initValues);
-                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections);
+                            (TreeCache[edChild.InstanceId].RuntimeObject as UK_FunctionBase).SetConnections(connections, initValues);
                             break;                            
                         }
                         default: {

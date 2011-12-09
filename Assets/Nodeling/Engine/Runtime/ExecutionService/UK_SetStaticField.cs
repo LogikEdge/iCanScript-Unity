@@ -12,7 +12,7 @@ public class UK_SetStaticField : UK_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_SetStaticField(string name, FieldInfo fieldInfo, object[] parameters, bool[] paramIsOuts, Vector2 layout) : base(name, parameters, paramIsOuts, layout) {
+    public UK_SetStaticField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
         myFieldInfo= fieldInfo;
     }
     

@@ -11,7 +11,7 @@ public class UK_Module : UK_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Module(string name, object[] parameters, bool[] paramIsOuts, Vector2 layout) : base(name, parameters, paramIsOuts, layout) {
+    public UK_Module(string name, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
         myDispatcher= new UK_ParallelDispatcher(name, layout);
     }
 
