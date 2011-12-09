@@ -589,9 +589,7 @@ public class UK_Editor : EditorWindow {
         if(parent == null) return null;
         switch(node.ObjectType) {
             case UK_ObjectTypeEnum.StateChart: {
-                Debug.Log("Searching from: "+(parent != null ? parent.Name : "null"));
                 while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
-                Debug.Log("New Valid Parent is:"+(parent != null ? parent.Name : "null"));
                 break;                
             }
             case UK_ObjectTypeEnum.State: {
