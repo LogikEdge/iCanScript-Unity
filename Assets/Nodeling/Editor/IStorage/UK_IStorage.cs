@@ -129,7 +129,16 @@ public partial class UK_IStorage {
                 if((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) {
                     DestroyInstanceInternal(obj.InstanceId);
                     modified= true;
-                }
+                } 
+//                else {
+//                    if(obj.IsInDynamicModulePort) {
+//                        UK_EditorObject[] connectedPorts= FindConnectedPorts(obj);
+//                        if(connectedPorts.Length == 0) {
+//                            DestroyInstanceInternal(obj.InstanceId);
+//                            modified= true;
+//                        }
+//                    }
+//                }
             }
         );        
         return modified;

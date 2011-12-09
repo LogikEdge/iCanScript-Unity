@@ -629,6 +629,23 @@ public class UK_Editor : EditorWindow {
                     port=> {
                         if(port.IsInDataPort) {
                             UK_EditorObject sourcePort= Storage.GetDataConnectionSource(port);
+                            // Tear down previous connection.
+                            UK_EditorObject tmpPort= Storage.GetSource(port);
+                            List<UK_EditorObject> toDestroy= new List<UK_EditorObject>();
+                            while(tmpPort != sourcePort) {
+                                UK_EditorObject[] connected= Storage.FindConnectedPorts(tmpPort);
+                                if(connected.Length == 1) {
+                                    UK_EditorObject t= Storage.GetSource(tmpPort);
+                                    toDestroy.Add(tmpPort);
+                                    tmpPort= t;
+                                } else {
+                                    break;
+                                }
+                            }
+                            foreach(var byebye in toDestroy) {
+                                Storage.DestroyInstance(byebye.InstanceId);
+                            }
+                            // Rebuild new connection.
                             if(sourcePort != port) {
                                 SetNewDataConnection(port, sourcePort);
                             }
