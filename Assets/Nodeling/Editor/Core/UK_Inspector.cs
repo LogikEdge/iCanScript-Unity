@@ -44,7 +44,7 @@ public class UK_Inspector : Editor {
         
 		// Create the graph editor.
         if(Editor == null) {
-            Editor= EditorWindow.GetWindow(typeof(UK_Editor), false, "uKode Editor") as UK_Editor;
+            Editor= EditorWindow.GetWindow(typeof(UK_Editor), false, "iCanScript") as UK_Editor;
             DontDestroyOnLoad(Editor);
             Editor.hideFlags= HideFlags.DontSave;            
         }

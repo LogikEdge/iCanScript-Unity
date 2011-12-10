@@ -6,7 +6,7 @@ public class UK_Menu {
 
     // ======================================================================
 	// Create a behavior to selected game object.
-	[MenuItem("uKode/Create Behaviour")]
+	[MenuItem("iCanScript/Create Behaviour")]
 	public static void CreateBehaviour() {
 		// Create State Chart component.
 		UK_Behaviour storage = Selection.activeGameObject.GetComponent<UK_Behaviour>();
@@ -17,7 +17,7 @@ public class UK_Menu {
             iStorage= null;
 		}
 	}
-	[MenuItem("uKode/Create Behaviour", true)]
+	[MenuItem("iCanScript/Create Behaviour", true)]
 	public static bool ValidateCreateBehaviour() {
 		if(Selection.activeTransform != null) {
 			UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Storage>();
@@ -28,7 +28,7 @@ public class UK_Menu {
 
     // ======================================================================
 	// Create a library module to selected game object.
-	[MenuItem("uKode/Create Module Library")]
+	[MenuItem("iCanScript/Create Module Library")]
 	public static void CreateModuleLibrary() {
 		// Create State Chart component.
 		UK_Storage storage = Selection.activeGameObject.GetComponent<UK_ModuleLibrary>();
@@ -40,7 +40,7 @@ public class UK_Menu {
             iStorage= null;
 		}
 	}
-	[MenuItem("uKode/Create Module Library", true)]
+	[MenuItem("iCanScript/Create Module Library", true)]
 	public static bool ValidateCreateModuleLibrary() {
 		if(Selection.activeTransform != null) {
 			UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Storage>();
@@ -51,7 +51,7 @@ public class UK_Menu {
 
     // ======================================================================
 	// Create a library module to selected game object.
-	[MenuItem("uKode/Create State Chart Library")]
+	[MenuItem("iCanScript/Create State Chart Library")]
 	public static void CreateStateChartLibrary() {
 		// Create State Chart component.
 		UK_Storage storage = Selection.activeGameObject.GetComponent<UK_StateChartLibrary>();
@@ -63,7 +63,7 @@ public class UK_Menu {
             iStorage= null;
 		}
 	}
-	[MenuItem("uKode/Create State Chart Library", true)]
+	[MenuItem("iCanScript/Create State Chart Library", true)]
 	public static bool ValidateCreateStateChartLibrary() {
 		if(Selection.activeTransform != null) {
 			UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Storage>();
@@ -78,10 +78,10 @@ public class UK_Menu {
     }
     
     // ======================================================================
-	// uKode Window.
-	[MenuItem("Window/uKode Editor")]
-	public static void ShowuKodeEditor() {
-        UK_Editor editor= EditorWindow.GetWindow(typeof(UK_Editor), false, "uKode Editor") as UK_Editor;
+	// iCanScript Window.
+	[MenuItem("Window/iCanScript Editor")]
+	public static void ShowiCanScriptEditor() {
+        UK_Editor editor= EditorWindow.GetWindow(typeof(UK_Editor), false, "iCanScript Editor") as UK_Editor;
         editor.hideFlags= HideFlags.DontSave;
 	}
 
