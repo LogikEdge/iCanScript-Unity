@@ -632,6 +632,34 @@ public class UK_Editor : EditorWindow {
                 break;                
             }
             case UK_ObjectTypeEnum.State: {
+                // Attempt to relocate transition modules.
+                Storage.ForEachChildPort(node,
+                    p=> {
+                        if(p.IsStatePort) {
+                            UK_EditorObject transitionModule= null;
+                            if(p.IsInStatePort) {
+                                transitionModule= Storage.GetParent(Storage.GetSource(p));
+                            } else {
+                                UK_EditorObject[] connectedPorts= Storage.FindConnectedPorts(p);
+                                foreach(var cp in connectedPorts) {
+                                    if(cp.IsInTransitionPort) {
+                                        transitionModule= Storage.GetParent(cp);
+                                        break;
+                                    }
+                                }
+                            }
+                            UK_EditorObject outState= Storage.GetParent(Storage.GetOutStatePort(transitionModule));
+                            UK_EditorObject inState= Storage.GetParent(Storage.GetInStatePort(transitionModule));
+                            UK_EditorObject newParent= Storage.GetTransitionParent(inState, outState);
+                            if(newParent != null && newParent != Storage.GetParent(transitionModule)) {
+                                ChangeParent(transitionModule, newParent);
+                                Storage.LayoutTransitionModule(transitionModule);
+                                Storage.SetDirty(Storage.GetParent(node));
+                            }
+                        }
+                    }
+                );
+                // Ask our children to cleanup their connections.
                 List<UK_EditorObject> childNodes= new List<UK_EditorObject>();
                 Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }

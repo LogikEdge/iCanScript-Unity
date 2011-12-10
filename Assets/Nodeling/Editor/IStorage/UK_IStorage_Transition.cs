@@ -17,18 +17,7 @@ public partial class UK_IStorage {
         UpdatePortEdges(inStatePort, outStatePort);        
         inStatePort.IsNameEditable= false;
         // Determine transition parent
-        bool parentFound= false;
-        UK_EditorObject parent= null;
-        for(parent= GetParent(outStatePort); parent != null; parent= GetParent(parent)) {
-            UK_EditorObject inParent= null;
-            for(inParent= GetParent(inStatePort); inParent != null; inParent= GetParent(inParent)) {
-                if(parent == inParent) {
-                    parentFound= true;
-                    break;
-                }
-            }
-            if(parentFound) break;
-        }
+        UK_EditorObject parent= GetTransitionParent(GetParent(inStatePort), GetParent(outStatePort));
         // Create transition module
         UK_EditorObject transitionModule= CreateModule(parent.InstanceId, portPos, "[false]", UK_ObjectTypeEnum.TransitionModule);
         transitionModule.IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.TransitionModuleIcon, this);
@@ -57,6 +46,23 @@ public partial class UK_IStorage {
         Minimize(action);
         // Set initial transition module position.
         LayoutTransitionModule(transitionModule);
+    }
+    // ----------------------------------------------------------------------
+    // Returns the common parent of given states.
+    public UK_EditorObject GetTransitionParent(UK_EditorObject inState, UK_EditorObject outState) {
+        bool parentFound= false;
+        UK_EditorObject parent= null;
+        for(parent= outState; parent != null; parent= GetParent(parent)) {
+            UK_EditorObject inParent= null;
+            for(inParent= inState; inParent != null; inParent= GetParent(inParent)) {
+                if(parent == inParent) {
+                    parentFound= true;
+                    break;
+                }
+            }
+            if(parentFound) break;
+        }
+        return parent;        
     }
     
     // ======================================================================
