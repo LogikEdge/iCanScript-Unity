@@ -11,7 +11,7 @@ public class UK_Editor : EditorWindow {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    UK_IStorage         Storage        = null;
+    UK_IStorage         myStorage      = null;
 	UK_Inspector        Inspector      = null;
     UK_EditorObject     DisplayRoot    = null;
     UK_DynamicMenu      DynamicMenu    = null;
@@ -34,10 +34,11 @@ public class UK_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     UK_EditorObject SelectedObject {
         get { return mySelectedObject; }
-        set { Inspector.SelectedObject= mySelectedObject= value; }
+        set { if(Inspector != null) Inspector.SelectedObject= mySelectedObject= value; }
     }
     UK_EditorObject mySelectedObject= null;
-
+    public UK_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
+    
     // ======================================================================
     // INITIALIZATION
 	// ----------------------------------------------------------------------
@@ -68,6 +69,7 @@ public class UK_Editor : EditorWindow {
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.
 	public void Activate(UK_IStorage storage, UK_Inspector inspector) {
+//        Debug.Log("Editor Activated");
         Storage= storage;
         Inspector= inspector;
         DisplayRoot= null;
@@ -75,17 +77,23 @@ public class UK_Editor : EditorWindow {
     
     // ----------------------------------------------------------------------
     public void Deactivate() {
+//        Debug.Log("Editor Deactivated");
         Inspector      = null;
 		DisplayRoot    = null;
 		Storage        = null;
     }
 
+    // ----------------------------------------------------------------------
+    public void SetInspector(UK_Inspector inspector) {
+        Inspector= inspector;
+    }
+    
 	// ----------------------------------------------------------------------
     // Assures proper initialization and returns true if editor is ready
     // to execute.
 	public bool IsInitialized() {
         // Nothing to do if we don't have a Graph to edit...
-		if(Storage == null || Inspector == null) { return false; }
+		if(Storage == null) { return false; }
         
 		// Don't run if graphic sub-system did not initialise.
 		if(UK_Graphics.IsInitialized == false) {

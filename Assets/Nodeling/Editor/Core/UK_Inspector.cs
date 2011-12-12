@@ -39,9 +39,6 @@ public class UK_Inspector : Editor {
         // The state of the inspector is non-persistant.
         hideFlags= HideFlags.DontSave;
         
-        // Get graph reference.
-        Storage= new UK_IStorage(target as UK_Storage);
-        
 		// Create the graph editor.
         if(Editor == null) {
             Editor= EditorWindow.GetWindow(typeof(UK_Editor), false, "iCanScript") as UK_Editor;
@@ -50,20 +47,29 @@ public class UK_Inspector : Editor {
         }
 
         // Configure the editor with the selected graph.
-        Editor.Activate(Storage, this);
+        UK_Storage realStorage= target as UK_Storage;
+        if(Editor.Storage == null || Editor.Storage.Storage != realStorage) {
+            Editor.Deactivate();
+            mySelectedObject= null; 
+            Storage= new UK_IStorage(realStorage);        
+            Editor.Activate(Storage, this);                        
+        } else {
+            Editor.SetInspector(this);
+        }
+        
 	}
 	
 	// ----------------------------------------------------------------------
     // Deactivate the edition of the graph.
 	public void OnDisable ()
 	{
-        // Deactivate the editor.
-        if(Editor != null) {
-            Editor.Deactivate();
-	    }
-
-        // Forget the selected object.
-		mySelectedObject= null;
+//        // Deactivate the editor.
+//        if(Editor != null) {
+//            Editor.Deactivate();
+//	    }
+//
+//        // Forget the selected object.
+//		mySelectedObject= null;
 	}
 	
 	// ----------------------------------------------------------------------

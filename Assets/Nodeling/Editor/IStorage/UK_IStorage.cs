@@ -162,7 +162,18 @@ public partial class UK_IStorage {
     // ----------------------------------------------------------------------
     void SynchronizeAfterUndoRedo() {
 //        Debug.Log("Undo/Redo was performed");
+        // Keep a copy of the previous display position.
+        List<Rect> displayPositions= new List<Rect>();
+        for(int i= 0; i < EditorObjects.Count; ++i) {
+            displayPositions.Add(IsValid(i) ? GetDisplayPosition(EditorObjects[i]) : new Rect(0,0,0,0));
+        }
+        // Rebuild editor data.
         GenerateEditorData();
+        // Put back the previous display position
+        for(int i= 0; i < displayPositions.Count; ++i) {
+            SetDisplayPosition(EditorObjects[i], displayPositions[i]);
+        }
+        // Set all object dirty.
         foreach(var obj in EditorObjects) {
             if(IsValid(obj.InstanceId)) {
                 SetDirty(obj);
