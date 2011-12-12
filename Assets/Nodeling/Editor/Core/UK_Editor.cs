@@ -118,7 +118,6 @@ public class UK_Editor : EditorWindow {
             if(timeSinceDirty < 5.0f) {
                 Repaint();
             }
-            
         }
 	}
 	
@@ -146,6 +145,9 @@ public class UK_Editor : EditorWindow {
 		// Compute new EMouse position.
 		Mouse.Update();
 
+        // Process library drag
+        ProcessLibraryDragEvents();
+        
         // Process user inputs
         ProcessEvents();
 	}
@@ -166,6 +168,50 @@ public class UK_Editor : EditorWindow {
 #region User Interaction
     // ======================================================================
     // USER INTERACTIONS
+	// ----------------------------------------------------------------------
+    void ProcessLibraryDragEvents() {
+        // Handle drag acceptance.
+        var eventType = Event.current.type;
+        if(eventType == EventType.DragPerform) {
+            // Show a copy icon on the drag
+            UK_Storage storage= GetDraggedLibrary();
+            if(storage != null) {
+                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+                DragAndDrop.AcceptDrag();                                                            
+            }
+            Event.current.Use();
+        }
+        // Handle drag updates.
+        if (eventType == EventType.DragUpdated) {
+            // Show a copy icon on the drag
+            UK_Storage storage= GetDraggedLibrary();
+            if(storage != null) {
+                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            }
+            Event.current.Use();            
+        }
+        // Insert library on drag exit.
+        if(eventType == EventType.DragExited) {
+            UK_Storage storage= GetDraggedLibrary();
+            if(storage != null) {
+                Debug.Log("iCanScript library found");
+            }
+            Event.current.Use();
+        }        
+    }
+	// ----------------------------------------------------------------------
+    UK_Storage GetDraggedLibrary() {
+        UnityEngine.Object[] draggedObjects= DragAndDrop.objectReferences;
+        if(draggedObjects.Length >= 1) {
+            GameObject go= draggedObjects[0] as GameObject;
+            if(go != null) {
+                UK_Storage storage= go.GetComponent<UK_ModuleLibrary>();
+                if(storage == null) storage= go.GetComponent<UK_StateChartLibrary>();
+                return storage;
+            }
+        }
+        return null;
+    }
 	// ----------------------------------------------------------------------
     public enum UserCommandStateEnum { Idle, Dragging, LeftButtonMenu, RightButtonMenu };
     public UserCommandStateEnum UserCommandState= UserCommandStateEnum.Idle;
