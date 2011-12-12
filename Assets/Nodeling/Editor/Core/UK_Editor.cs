@@ -34,7 +34,7 @@ public class UK_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     UK_EditorObject SelectedObject {
         get { return mySelectedObject; }
-        set { if(Inspector != null) Inspector.SelectedObject= mySelectedObject= value; }
+        set { mySelectedObject= value; if(Inspector != null) Inspector.SelectedObject= value; }
     }
     UK_EditorObject mySelectedObject= null;
     public UK_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
