@@ -202,6 +202,52 @@ public partial class UK_IStorage {
         return id;
     }
     // ----------------------------------------------------------------------
+    public UK_EditorObject CloneInstance(UK_EditorObject toClone, UK_IStorage cloneStorage, UK_EditorObject parent, Vector2 initialPos) {
+        // Create new EditorObject
+        Rect parentPos= IsValid(parent) ? GetPosition(parent) : new Rect(0,0,0,0);
+        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
+        UK_EditorObject instance= CloneInstance(toClone, cloneStorage, parent, localPos, xlat);
+        ReconnectClone(toClone, cloneStorage, xlat);
+        return instance;
+    }
+    UK_EditorObject CloneInstance(UK_EditorObject toClone, UK_IStorage cloneStorage, UK_EditorObject parent, Rect localPos, List<Prelude.Tuple<int,int>> xlat) {
+        // Create new EditorObject
+        int id= GetNextAvailableId();
+        xlat.Add(new Prelude.Tuple<int,int>(toClone.InstanceId, id));
+        this[id]= UK_EditorObject.Clone(id, toClone, parent, localPos);
+        this[id].IconGUID= toClone.IconGUID;
+        this[id].RuntimeArchive= toClone.RuntimeArchive;
+        cloneStorage.ForEachChild(toClone,
+            child=> CloneInstance(child, cloneStorage, this[id], child.LocalPosition, xlat)
+        );
+        return this[id];
+    }
+    void ReconnectClone(UK_EditorObject toClone, UK_IStorage cloneStorage, List<Prelude.Tuple<int,int>> xlat) {
+        cloneStorage.ForEachRecursive(toClone,
+            child=> {
+                if(child.Source != -1) {
+                    int id= -1;
+                    int source= -1;
+                    foreach(var pair in xlat) {
+                        if(pair.Item1 == child.InstanceId) {
+                            id= pair.Item2;
+                            if(source != -1) break;
+                        }
+                        if(pair.Item1 == child.Source) {
+                            source= pair.Item2;
+                            if(id != -1) break;
+                        }
+                    }
+                    if(source != -1) {
+                        SetSource(EditorObjects[id], EditorObjects[source]);                        
+                    }
+                }
+            }
+        );
+    }
+    
+    // ----------------------------------------------------------------------
     public UK_EditorObject CreateBehaviour() {
         // Create the function node.
         int id= GetNextAvailableId();

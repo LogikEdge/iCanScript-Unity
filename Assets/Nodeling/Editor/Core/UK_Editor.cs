@@ -194,7 +194,23 @@ public class UK_Editor : EditorWindow {
         if(eventType == EventType.DragExited) {
             UK_Storage storage= GetDraggedLibrary();
             if(storage != null) {
-                Debug.Log("iCanScript library found");
+                switch(EditorUtility.DisplayDialogComplex("Importing Library",
+                                                          "Libraries can be either copied into the graph or linked to the graph.  A copied library is decoupled from its originating library and can be modified directly inside the iCanScript graph.  A linked library references the original library and cannot be modified inplace.",
+                                                          "Copy Library",
+                                                          "Cancel",
+                                                          "Link Library")) {
+                    case 0: {
+                        PasteIntoGraph(ScrollView.ScreenToGraph(Mouse.Position), storage, storage.EditorObjects[0]);
+                        break;
+                    }
+                    case 1: {
+                        break;
+                    }
+                    case 2: {
+                        Debug.LogWarning("Linked library not supported in this version.");
+                        break;
+                    }
+                }
             }
             Event.current.Use();
         }        
@@ -636,6 +652,38 @@ public class UK_Editor : EditorWindow {
         return parentModule;
     }
 	// ----------------------------------------------------------------------
+    UK_EditorObject GetValidParentNodeUnder(Vector2 point, UK_ObjectTypeEnum objType) {
+        UK_EditorObject parent= Storage.GetNodeAt(point);
+        if(parent == null) return null;
+        switch(objType) {
+            case UK_ObjectTypeEnum.StateChart: {
+                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
+                break;                
+            }
+            case UK_ObjectTypeEnum.State: {
+                while(parent != null && !parent.IsState && !parent.IsStateChart) parent= Storage.GetParent(parent);
+                break;
+            }
+            case UK_ObjectTypeEnum.Module: {
+                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
+                break;
+            }
+            case UK_ObjectTypeEnum.InstanceMethod:
+            case UK_ObjectTypeEnum.StaticMethod:
+            case UK_ObjectTypeEnum.InstanceField:
+            case UK_ObjectTypeEnum.StaticField:
+            case UK_ObjectTypeEnum.Conversion: {
+                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
+                break;
+            }
+            default: {
+                parent= null;
+                break;
+            }
+        }
+        return parent;
+    }
+	// ----------------------------------------------------------------------
     UK_EditorObject GetValidParentNodeUnder(UK_EditorObject node) {
         if(!node.IsNode) return null;
         Vector2 point= Math3D.Middle(Storage.GetPosition(node));
@@ -804,6 +852,17 @@ public class UK_Editor : EditorWindow {
                 }
             }
         }
+    }
+	// ----------------------------------------------------------------------
+    void PasteIntoGraph(Vector2 point, UK_Storage pasteStorage, UK_EditorObject pasteRoot) {
+        if(pasteRoot == null) return;
+        UK_EditorObject parent= GetValidParentNodeUnder(point, pasteRoot.ObjectType);
+        if(parent == null) {
+            EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");
+            return;
+        }
+        UK_EditorObject pasted= Storage.CloneInstance(pasteRoot, new UK_IStorage(pasteStorage), parent, point);
+        Storage.Fold(pasted);
     }
     
     // ======================================================================
