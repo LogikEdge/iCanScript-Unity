@@ -379,7 +379,7 @@ public class UK_Editor : EditorWindow {
                     if(newParent != null && newParent != oldParent) {
                         ChangeParent(node, newParent);
                     }
-                    Storage.SetDirty(oldParent);
+                    if(oldParent != null) Storage.SetDirty(oldParent);
                     node.IsFloating= false;
                     break;
                 }
