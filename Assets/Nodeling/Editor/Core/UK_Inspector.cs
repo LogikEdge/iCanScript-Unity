@@ -31,9 +31,9 @@ public class UK_Inspector : Editor {
     
 	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
-    static bool ourAlreadyParsed= false;
 	public void OnEnable ()
 	{
+        Debug.Log("Inspector.OnEnable");
         // The state of the inspector is non-persistant.
         hideFlags= HideFlags.DontSave;
         
@@ -52,6 +52,7 @@ public class UK_Inspector : Editor {
             Storage= new UK_IStorage(realStorage);        
             Editor.Activate(Storage, this);                        
         } else {
+            Storage= Editor.Storage;
             Editor.SetInspector(this);
         }
         
