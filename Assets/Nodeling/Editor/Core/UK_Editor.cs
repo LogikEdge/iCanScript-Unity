@@ -338,7 +338,7 @@ public class UK_Editor : EditorWindow {
         if(node != null && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
             if(Event.current.control) {
                 GameObject go= new GameObject(node.Name);
-                go.hideFlags = HideFlags.HideInHierarchy;
+//                go.hideFlags = HideFlags.HideAndDontSave;
                 go.AddComponent("UK_Library");
                 UK_Library library= go.GetComponent<UK_Library>();
                 UK_IStorage iStorage= new UK_IStorage(library);
