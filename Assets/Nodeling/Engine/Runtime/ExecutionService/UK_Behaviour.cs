@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -11,6 +12,10 @@ public sealed class UK_Behaviour : UK_Storage {
     UK_Action  myFixedUpdateAction = null;
     int        myUpdateFrameId     = 0;
     int        myFixedUpdateFrameId= 0;
+    
+    // Protocol to allow modification of behaviour while the engine is running.
+    Action<object>  myModificationAction= null;
+    object          myModificationObject= null;
     
     // ======================================================================
     // Accessors
@@ -25,6 +30,14 @@ public sealed class UK_Behaviour : UK_Storage {
         myFixedUpdateAction = null;
         myUpdateFrameId     = 0;
         myFixedUpdateFrameId= 0;        
+    }
+    // ----------------------------------------------------------------------
+    public void SetModificationAction(Action<object> modifAction, object modifObject) {
+        myModificationAction= modifAction;
+        myModificationObject= modifObject;
+        if(myModificationAction != null && !Application.isPlaying) {
+            myModificationAction(myModificationObject);
+        }
     }
     
     // ----------------------------------------------------------------------
@@ -52,6 +65,9 @@ public sealed class UK_Behaviour : UK_Storage {
     // ----------------------------------------------------------------------
     // Called on every frame.
     void Update() {
+        if(myModificationAction != null) {
+            myModificationAction(myModificationObject);
+        }
         ++myUpdateFrameId;
         if(myUpdateAction != null) {
             do {        
@@ -65,6 +81,7 @@ public sealed class UK_Behaviour : UK_Storage {
     }
     // Called on evry frame after all Update have been called.
     void LateUpdate() {
+        if(myModificationAction != null) return;
         if(myLateUpdateAction != null) {
             do {
                 myLateUpdateAction.Execute(myUpdateFrameId);                                            
@@ -77,6 +94,7 @@ public sealed class UK_Behaviour : UK_Storage {
     }
     // Fix-time update to be used instead of Update
     void FixedUpdate() {
+        if(myModificationAction != null) return;
         ++myFixedUpdateFrameId;
         if(myFixedUpdateAction != null) {
             do {
