@@ -8,9 +8,12 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<true/>
+				<false/>
 				<key>ColourStyles</key>
-				<dict/>
+				<dict>
+					<key>Alpha</key>
+					<dict/>
+				</dict>
 				<key>CreditRapidWeaver</key>
 				<true/>
 				<key>CustomCopyrightUsed</key>
