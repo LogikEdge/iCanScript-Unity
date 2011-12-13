@@ -207,7 +207,7 @@ public class UK_Editor : EditorWindow {
         }
         // Insert library on drag exit.
         if(eventType == EventType.DragExited) {
-            if(EditorWindow.focusedWindow == this) {
+            if(position.Contains(Mouse.Position)) {
                 UK_Storage storage= GetDraggedLibrary();
                 if(storage != null) {
                     switch(EditorUtility.DisplayDialogComplex("Importing Library",
