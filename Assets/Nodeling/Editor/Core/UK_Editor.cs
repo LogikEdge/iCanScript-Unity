@@ -30,8 +30,8 @@ public class UK_Editor : EditorWindow {
     bool            IsDragStarted       { get { return DragObject != null; }}
 
     // ----------------------------------------------------------------------
-    static bool ourAlreadyParsed= false;
-    
+    static bool                 ourAlreadyParsed  = false;
+     
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
@@ -120,6 +120,7 @@ public class UK_Editor : EditorWindow {
     static float ourLastDirtyUpdateTime;
     static int   ourRefreshCnt;
 	void Update() {
+        // Determine repaint rate.
         if(Storage != null) {
             if(Storage.IsDirty) {
                 ourLastDirtyUpdateTime= Time.realtimeSinceStartup;
@@ -134,6 +135,8 @@ public class UK_Editor : EditorWindow {
                 }
             }
         }
+        // Cleanup objects.
+        UK_AutoReleasePool.Update();
 	}
 	
 	// ----------------------------------------------------------------------
@@ -355,7 +358,7 @@ public class UK_Editor : EditorWindow {
         if(node != null && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
             if(Event.current.control) {
                 GameObject go= new GameObject(node.Name);
-//                go.hideFlags = HideFlags.HideAndDontSave;
+                go.hideFlags = HideFlags.HideAndDontSave;
                 go.AddComponent("UK_Library");
                 UK_Library library= go.GetComponent<UK_Library>();
                 UK_IStorage iStorage= new UK_IStorage(library);
@@ -363,6 +366,7 @@ public class UK_Editor : EditorWindow {
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
                 DragAndDrop.StartDrag(node.Name);
+                UK_AutoReleasePool.AutoRelease(go, 60f);
                 // Disable dragging.
                 IsDragEnabled= false;
                 DragType= DragTypeEnum.None;
