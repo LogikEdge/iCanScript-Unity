@@ -31,12 +31,12 @@ public class UK_Menu {
 	[MenuItem("iCanScript/Create Module Library")]
 	public static void CreateModuleLibrary() {
 		// Create State Chart component.
-		UK_Storage storage = Selection.activeGameObject.GetComponent<UK_ModuleLibrary>();
+		UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Library>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<UK_ModuleLibrary>();
+			storage= Selection.activeGameObject.AddComponent<UK_Library>();
             storage.enabled= false;
             UK_IStorage iStorage= new UK_IStorage(storage);
-            iStorage.CreateModuleLibrary();
+            iStorage.CreateModule(-1, Vector2.zero, "Module Library");
             iStorage= null;
 		}
 	}
@@ -54,12 +54,12 @@ public class UK_Menu {
 	[MenuItem("iCanScript/Create State Chart Library")]
 	public static void CreateStateChartLibrary() {
 		// Create State Chart component.
-		UK_Storage storage = Selection.activeGameObject.GetComponent<UK_StateChartLibrary>();
+		UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Library>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<UK_StateChartLibrary>();
+			storage= Selection.activeGameObject.AddComponent<UK_Library>();
             storage.enabled= false;
             UK_IStorage iStorage= new UK_IStorage(storage);
-            iStorage.CreateStateChartLibrary();
+            iStorage.CreateStateChart(-1, Vector2.zero, "State Chart Library");
             iStorage= null;
 		}
 	}

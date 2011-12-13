@@ -47,7 +47,7 @@ public class UK_EditorObject {
     }
     // ----------------------------------------------------------------------
     public static UK_EditorObject Clone(int id, UK_EditorObject toClone, UK_EditorObject parent, Rect localPosition) {
-        UK_EditorObject instance= new UK_EditorObject(id, toClone.Name, toClone.RuntimeType, parent.InstanceId, toClone.ObjectType, localPosition);
+        UK_EditorObject instance= new UK_EditorObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localPosition);
         instance.RuntimeArchive= toClone.RuntimeArchive;
         instance.DisplayOption= toClone.DisplayOption;
         instance.IconGUID= toClone.IconGUID;

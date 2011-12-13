@@ -221,8 +221,7 @@ public class UK_Editor : EditorWindow {
         if(draggedObjects.Length >= 1) {
             GameObject go= draggedObjects[0] as GameObject;
             if(go != null) {
-                UK_Storage storage= go.GetComponent<UK_ModuleLibrary>();
-                if(storage == null) storage= go.GetComponent<UK_StateChartLibrary>();
+                UK_Storage storage= go.GetComponent<UK_Library>();
                 return storage;
             }
         }
@@ -337,12 +336,24 @@ public class UK_Editor : EditorWindow {
         // Node drag.
         UK_EditorObject node= Storage.GetNodeAt(pos);                
         if(node != null && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
-            Storage.RegisterUndo("Node Drag");
-            DragType= DragTypeEnum.NodeDrag;
-            DragObject= node;
-            Rect position= Storage.GetPosition(node);
-            DragStartPosition= new Vector2(position.x, position.y);                                                    
-            node.IsFloating= Event.current.command;
+            if(Event.current.control) {
+                GameObject go= new GameObject(node.Name);
+                go.hideFlags = HideFlags.HideInHierarchy;
+                go.AddComponent("UK_Library");
+                UK_Library library= go.GetComponent<UK_Library>();
+                UK_IStorage iStorage= new UK_IStorage(library);
+                iStorage.CloneInstance(node, Storage, null, Vector2.zero);
+                DragAndDrop.PrepareStartDrag();
+                DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
+                DragAndDrop.StartDrag(node.Name);
+            } else {
+                Storage.RegisterUndo("Node Drag");
+                node.IsFloating= Event.current.command;
+                DragType= DragTypeEnum.NodeDrag;
+                DragObject= node;
+                Rect position= Storage.GetPosition(node);
+                DragStartPosition= new Vector2(position.x, position.y);                                                                    
+            }
             return true;
         }
         

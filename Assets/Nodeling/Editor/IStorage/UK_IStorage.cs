@@ -53,7 +53,7 @@ public partial class UK_IStorage {
     // ----------------------------------------------------------------------
     public bool IsValid(int id)                     { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)                   { return !IsValid(id); }
-    public bool IsValid(UK_EditorObject obj)        { return IsValid(obj.InstanceId); }
+    public bool IsValid(UK_EditorObject obj)        { return obj != null && IsValid(obj.InstanceId); }
     public bool IsSourceValid(UK_EditorObject obj)  { return IsValid(obj.Source); }
     public bool IsParentValid(UK_EditorObject obj)  { return IsValid(obj.ParentId); }
     // ----------------------------------------------------------------------
@@ -260,14 +260,6 @@ public partial class UK_IStorage {
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreateModuleLibrary() {
-        // Validate that a library can only be create at the root.
-        if(EditorObjects.Count != 0) {
-            Debug.LogError("Module Library MUST be the root object !!!");
-        }
-        return CreateModule(-1, Vector2.zero, "Module Library");
-    }
-    // ----------------------------------------------------------------------
     public UK_EditorObject CreateModule(int parentId, Vector2 initialPos, string name= "", UK_ObjectTypeEnum objectType= UK_ObjectTypeEnum.Module) {
         // Create the function node.
         int id= GetNextAvailableId();
@@ -285,14 +277,6 @@ public partial class UK_IStorage {
         rtDesc.ClassType= typeof(UK_Module);
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
-    }
-    // ----------------------------------------------------------------------
-    public UK_EditorObject CreateStateChartLibrary() {
-        // Validate that a library can only be create at the root.
-        if(EditorObjects.Count != 0) {
-            Debug.LogError("Module Library MUST be the root object !!!");
-        }
-        return CreateStateChart(-1, Vector2.zero, "StateChart Library");
     }
     // ----------------------------------------------------------------------
     public UK_EditorObject CreateStateChart(int parentId, Vector2 initialPos, string name= "") {
