@@ -33,7 +33,6 @@ public class UK_Inspector : Editor {
     // Bring up the graph editor window when the inspector is activated.
 	public void OnEnable ()
 	{
-        Debug.Log("Inspector.OnEnable");
         // The state of the inspector is non-persistant.
         hideFlags= HideFlags.DontSave;
         
