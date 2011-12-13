@@ -29,6 +29,9 @@ public class UK_Editor : EditorWindow {
     bool            IsDragEnabled       = true;
     bool            IsDragStarted       { get { return DragObject != null; }}
 
+    // ----------------------------------------------------------------------
+    static bool ourAlreadyParsed= false;
+    
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
@@ -54,6 +57,12 @@ public class UK_Editor : EditorWindow {
         Graphics        = new UK_Graphics();
         ScrollView      = new UK_ScrollView();
         DynamicMenu     = new UK_DynamicMenu();
+        
+        // Inspect the assemblies for components.
+        if(!ourAlreadyParsed) {
+            ourAlreadyParsed= true;
+            UK_Reflection.ParseAppDomain();
+        }
 	}
 
 	// ----------------------------------------------------------------------
@@ -108,15 +117,21 @@ public class UK_Editor : EditorWindow {
     // ======================================================================
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
-    static float lastDirtyUpdateTime;
+    static float ourLastDirtyUpdateTime;
+    static int   ourRefreshCnt;
 	void Update() {
         if(Storage != null) {
             if(Storage.IsDirty) {
-                lastDirtyUpdateTime= Time.realtimeSinceStartup;
+                ourLastDirtyUpdateTime= Time.realtimeSinceStartup;
             }
-            float timeSinceDirty= Time.realtimeSinceStartup-lastDirtyUpdateTime;
+            float timeSinceDirty= Time.realtimeSinceStartup-ourLastDirtyUpdateTime;
             if(timeSinceDirty < 5.0f) {
                 Repaint();
+            } else {
+                if(++ourRefreshCnt > 2 || ourRefreshCnt < 0) {
+                    ourRefreshCnt= 0;
+                    Repaint();
+                }
             }
         }
 	}

@@ -31,11 +31,9 @@ public class UK_Inspector : Editor {
     
 	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
+    static bool ourAlreadyParsed= false;
 	public void OnEnable ()
 	{
-        // Inspect the assemblies for uCode components.
-        UK_Reflection.ParseAppDomain();
-        
         // The state of the inspector is non-persistant.
         hideFlags= HideFlags.DontSave;
         
