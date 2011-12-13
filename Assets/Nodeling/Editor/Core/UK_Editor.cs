@@ -192,27 +192,29 @@ public class UK_Editor : EditorWindow {
         }
         // Insert library on drag exit.
         if(eventType == EventType.DragExited) {
-            UK_Storage storage= GetDraggedLibrary();
-            if(storage != null) {
-                switch(EditorUtility.DisplayDialogComplex("Importing Library",
-                                                          "Libraries can be either copied into the graph or linked to the graph.  A copied library is decoupled from its originating library and can be modified directly inside the iCanScript graph.  A linked library references the original library and cannot be modified inplace.",
-                                                          "Copy Library",
-                                                          "Cancel",
-                                                          "Link Library")) {
-                    case 0: {
-                        PasteIntoGraph(ScrollView.ScreenToGraph(Mouse.Position), storage, storage.EditorObjects[0]);
-                        break;
-                    }
-                    case 1: {
-                        break;
-                    }
-                    case 2: {
-                        Debug.LogWarning("Linked library not supported in this version.");
-                        break;
+            if(EditorWindow.focusedWindow == this) {
+                UK_Storage storage= GetDraggedLibrary();
+                if(storage != null) {
+                    switch(EditorUtility.DisplayDialogComplex("Importing Library",
+                                                              "Libraries can be either copied into the graph or linked to the graph.  A copied library is decoupled from its originating library and can be modified directly inside the iCanScript graph.  A linked library references the original library and cannot be modified inplace.",
+                                                              "Copy Library",
+                                                              "Cancel",
+                                                              "Link Library")) {
+                        case 0: {
+                            PasteIntoGraph(ScrollView.ScreenToGraph(Mouse.Position), storage, storage.EditorObjects[0]);
+                            break;
+                        }
+                        case 1: {
+                            break;
+                        }
+                        case 2: {
+                            Debug.LogWarning("Linked library not supported in this version.");
+                            break;
+                        }
                     }
                 }
+                Event.current.Use();                
             }
-            Event.current.Use();
         }        
     }
 	// ----------------------------------------------------------------------
@@ -346,6 +348,9 @@ public class UK_Editor : EditorWindow {
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
                 DragAndDrop.StartDrag(node.Name);
+                // Disable dragging.
+                IsDragEnabled= false;
+                DragType= DragTypeEnum.None;
             } else {
                 Storage.RegisterUndo("Node Drag");
                 node.IsFloating= Event.current.command;
