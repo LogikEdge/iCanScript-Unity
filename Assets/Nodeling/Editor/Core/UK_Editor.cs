@@ -203,46 +203,18 @@ public class UK_Editor : EditorWindow {
         // Handle drag acceptance.
         var eventType = Event.current.type;
         if(eventType == EventType.DragPerform) {
-            // Show a copy icon on the drag
-            UK_Storage storage= GetDraggedLibrary();
-            if(storage != null) {
-                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-                DragAndDrop.AcceptDrag();                                                            
-            }
+            DragAndDropPerform();
             Event.current.Use();
         }
         // Handle drag updates.
         if (eventType == EventType.DragUpdated) {
-            // Show a copy icon on the drag
-            UK_Storage storage= GetDraggedLibrary();
-            if(storage != null) {
-                DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-            }
+            DragAndDropUpdated();
             Event.current.Use();            
         }
         // Insert library on drag exit.
         if(eventType == EventType.DragExited) {
             if(position.Contains(MousePosition)) {
-                UK_Storage storage= GetDraggedLibrary();
-                if(storage != null) {
-                    switch(EditorUtility.DisplayDialogComplex("Importing Library",
-                                                              "Libraries can be either copied into the graph or linked to the graph.  A copied library is decoupled from its originating library and can be modified directly inside the iCanScript graph.  A linked library references the original library and cannot be modified inplace.",
-                                                              "Copy Library",
-                                                              "Cancel",
-                                                              "Link Library")) {
-                        case 0: {
-                            PasteIntoGraph(ScrollView.ScreenToGraph(MousePosition), storage, storage.EditorObjects[0]);
-                            break;
-                        }
-                        case 1: {
-                            break;
-                        }
-                        case 2: {
-                            Debug.LogWarning("Linked library not supported in this version.");
-                            break;
-                        }
-                    }
-                }
+                DragAndDropExited();
                 Event.current.Use();                
             }
         }        
@@ -268,11 +240,6 @@ public class UK_Editor : EditorWindow {
         DetermineSelectedObject();
 
         // Process left button state.
-        if(IsMouseLeftButtonDown) {
-            
-        } else {
-//            if(PreviousLeftButtonState == UK_Mouse.ButtonStateEnum.Dragging) EndDrag();            
-        }
         switch(Mouse.LeftButtonState) {
             case UK_Mouse.ButtonStateEnum.Idle:
                 if(PreviousLeftButtonState == UK_Mouse.ButtonStateEnum.Dragging) EndDrag();
@@ -309,6 +276,91 @@ public class UK_Editor : EditorWindow {
         // Process right button state.
         if(IsMouseRightButtonDown) {
             DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.RightButtonDownPosition));            
+        }
+    }
+	// ----------------------------------------------------------------------
+    void ProcessEvent() {
+        switch(Event.current.type) {
+            case EventType.MouseMove: {
+                break;
+            }
+            case EventType.MouseDrag: {
+                break;
+            }
+            case EventType.MouseDown: {
+                switch(Event.current.button) {
+                    case 0: { // Left
+                        break;
+                    }
+                    case 1: { // Right
+                        DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.RightButtonDownPosition));
+                        break;
+                    }
+                }
+                break;
+            }
+            case EventType.MouseUp: {
+                break;
+            }
+
+            // Unity DragAndDrop events.
+            case EventType.DragPerform: {
+                DragAndDropPerform();
+                Event.current.Use();                
+                break;
+            }
+            case EventType.DragUpdated: {
+                DragAndDropUpdated();
+                Event.current.Use();            
+                break;
+            }
+            case EventType.DragExited: {
+                if(position.Contains(MousePosition)) {
+                    DragAndDropExited();
+                    Event.current.Use();
+                }
+                break;
+            }
+        }
+    }
+	// ----------------------------------------------------------------------
+    void DragAndDropPerform() {
+        // Show a copy icon on the drag
+        UK_Storage storage= GetDraggedLibrary();
+        if(storage != null) {
+            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+            DragAndDrop.AcceptDrag();                                                            
+        }        
+    }
+	// ----------------------------------------------------------------------
+    void DragAndDropUpdated() {
+        // Show a copy icon on the drag
+        UK_Storage storage= GetDraggedLibrary();
+        if(storage != null) {
+            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+        }        
+    }
+	// ----------------------------------------------------------------------
+    void DragAndDropExited() {
+        UK_Storage storage= GetDraggedLibrary();
+        if(storage != null) {
+            switch(EditorUtility.DisplayDialogComplex("Importing Library",
+                                                      "Libraries can be either copied into the graph or linked to the graph.  A copied library is decoupled from its originating library and can be modified directly inside the iCanScript graph.  A linked library references the original library and cannot be modified inplace.",
+                                                      "Copy Library",
+                                                      "Cancel",
+                                                      "Link Library")) {
+                case 0: {
+                    PasteIntoGraph(ScrollView.ScreenToGraph(MousePosition), storage, storage.EditorObjects[0]);
+                    break;
+                }
+                case 1: {
+                    break;
+                }
+                case 2: {
+                    Debug.LogWarning("Linked library not supported in this version.");
+                    break;
+                }
+            }
         }
     }
     
