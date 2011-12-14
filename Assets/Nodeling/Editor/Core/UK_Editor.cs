@@ -284,9 +284,9 @@ public class UK_Editor : EditorWindow {
         // Update the selected object.
         DetermineSelectedObject();
         // Process window events.
-        Debug.Log("Event type: "+Event.current.type);
         switch(Event.current.type) {
             case EventType.MouseMove: {
+                ResetDrag();
                 break;
             }
             case EventType.MouseDrag: {
@@ -615,10 +615,14 @@ public class UK_Editor : EditorWindow {
     
         finally {
             // Reset dragging state.
-            DragType= DragTypeEnum.None;
-            DragObject= null;
-            IsDragEnabled= true;            
+            ResetDrag();
         }
+    }
+	// ----------------------------------------------------------------------
+    void ResetDrag() {
+        DragType= DragTypeEnum.None;
+        DragObject= null;
+        IsDragEnabled= true;                    
     }
 #endregion User Interaction
     
