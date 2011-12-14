@@ -179,7 +179,8 @@ public class UK_Editor : EditorWindow {
         ProcessLibraryDragEvents();
         
         // Process user inputs
-        ProcessEvents();
+//        ProcessEvents();
+        ProcessEvent();
 	}
 
     // ======================================================================
@@ -280,26 +281,63 @@ public class UK_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     void ProcessEvent() {
+        // Update the selected object.
+        DetermineSelectedObject();
+        // Process window events.
+        Debug.Log("Event type: "+Event.current.type);
         switch(Event.current.type) {
             case EventType.MouseMove: {
                 break;
             }
             case EventType.MouseDrag: {
+                ProcessDrag();
+                Event.current.Use();
                 break;
             }
             case EventType.MouseDown: {
                 switch(Event.current.button) {
-                    case 0: { // Left
+                    case 0: { // Left mouse button
+                        if(IsDragStarted) {
+                            ProcessDrag();
+                        }
+                        Event.current.Use();
                         break;
                     }
-                    case 1: { // Right
+                    case 1: { // Right mouse button
                         DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.RightButtonDownPosition));
+                        Event.current.Use();
                         break;
                     }
                 }
                 break;
             }
             case EventType.MouseUp: {
+                if(IsDragStarted) {
+                    EndDrag();
+                } else {
+                    if(SelectedObject != null) {
+                        // Process fold/unfold click.
+                        Vector2 graphMousePos= ScrollView.ScreenToGraph(MousePosition);
+                        if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
+                            if(Storage.IsFolded(SelectedObject)) {
+                                Storage.RegisterUndo("Unfold");
+                                Storage.Unfold(SelectedObject);
+                            } else {
+                                Storage.RegisterUndo("Fold");
+                                Storage.Fold(SelectedObject);
+                            }
+                        }
+                        // Process maximize/minimize click.
+                        if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
+                            Storage.RegisterUndo("Minimize");
+                            Storage.Minimize(SelectedObject);
+                        } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
+                            Storage.RegisterUndo("Maximize");
+                            Storage.Maximize(SelectedObject);
+                        }
+                    }                                                
+                }
+                Event.current.Use();
                 break;
             }
 
