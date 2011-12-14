@@ -17,17 +17,17 @@ public class UK_Editor : EditorWindow {
     UK_DynamicMenu      DynamicMenu    = null;
 
     // ----------------------------------------------------------------------
-    public  UK_Mouse           Mouse           = null;
     private UK_Graphics        Graphics        = null;
     public  UK_ScrollView      ScrollView      = null;
     
     // ----------------------------------------------------------------------
     enum DragTypeEnum { None, PortDrag, NodeDrag, TransitionCreation };
-    DragTypeEnum    DragType            = DragTypeEnum.None;
-    UK_EditorObject DragObject          = null;
-    Vector2         DragStartPosition   = Vector2.zero;
-    bool            IsDragEnabled       = true;
-    bool            IsDragStarted       { get { return DragObject != null; }}
+    DragTypeEnum    DragType              = DragTypeEnum.None;
+    UK_EditorObject DragObject            = null;
+    Vector2         MouseDragStartPosition= Vector2.zero;
+    Vector2         DragStartPosition     = Vector2.zero;
+    bool            IsDragEnabled         = true;
+    bool            IsDragStarted         { get { return DragObject != null; }}
 
     // ----------------------------------------------------------------------
     static bool                 ourAlreadyParsed  = false;
@@ -42,7 +42,8 @@ public class UK_Editor : EditorWindow {
     UK_EditorObject mySelectedObject= null;
     public UK_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
 	// ----------------------------------------------------------------------
-    bool    IsMouseLeftButtonDown  { get { return Event.current.button == 0 && Event.current.isMouse; }}
+    bool    myIsMouseLeftButtonDown= false;
+    bool    IsMouseLeftButtonDown  { get { return Event.current.isMouse ? (myIsMouseLeftButtonDown= Event.current.button == 0) : myIsMouseLeftButtonDown; }}
     bool    IsMouseRightButtonDown { get { return Event.current.button == 1; }}
     bool    IsCommandKeyDown       { get { return Event.current.command; }}
     bool    IsControlKeyDown       { get { return Event.current.control; }}
@@ -65,7 +66,6 @@ public class UK_Editor : EditorWindow {
 		wantsMouseMove= true;
 
         // Create worker objects.
-        Mouse           = new UK_Mouse(this);
         Graphics        = new UK_Graphics();
         ScrollView      = new UK_ScrollView();
         DynamicMenu     = new UK_DynamicMenu();
@@ -81,7 +81,6 @@ public class UK_Editor : EditorWindow {
     // Releases all resources used by the UK_Behaviour editor.
     void OnDisable() {
         // Release all worker objects.
-        Mouse       = null;
         Graphics    = null;
         ScrollView  = null;
         DynamicMenu = null;
@@ -172,15 +171,8 @@ public class UK_Editor : EditorWindow {
         // Draw Graph.
         DrawGraph();
 
-		// Compute new Mouse position.
-		Mouse.Update();
-
-        // Process library drag
-        ProcessLibraryDragEvents();
-        
         // Process user inputs
-//        ProcessEvents();
-        ProcessEvent();
+        ProcessEvents();
 	}
 
     // ======================================================================
@@ -200,87 +192,7 @@ public class UK_Editor : EditorWindow {
     // ======================================================================
     // USER INTERACTIONS
 	// ----------------------------------------------------------------------
-    void ProcessLibraryDragEvents() {
-        // Handle drag acceptance.
-        var eventType = Event.current.type;
-        if(eventType == EventType.DragPerform) {
-            DragAndDropPerform();
-            Event.current.Use();
-        }
-        // Handle drag updates.
-        if (eventType == EventType.DragUpdated) {
-            DragAndDropUpdated();
-            Event.current.Use();            
-        }
-        // Insert library on drag exit.
-        if(eventType == EventType.DragExited) {
-            if(position.Contains(MousePosition)) {
-                DragAndDropExited();
-                Event.current.Use();                
-            }
-        }        
-    }
-	// ----------------------------------------------------------------------
-    UK_Storage GetDraggedLibrary() {
-        UnityEngine.Object[] draggedObjects= DragAndDrop.objectReferences;
-        if(draggedObjects.Length >= 1) {
-            GameObject go= draggedObjects[0] as GameObject;
-            if(go != null) {
-                UK_Storage storage= go.GetComponent<UK_Library>();
-                return storage;
-            }
-        }
-        return null;
-    }
-	// ----------------------------------------------------------------------
-    public enum UserCommandStateEnum { Idle, Dragging, LeftButtonMenu, RightButtonMenu };
-    public UserCommandStateEnum UserCommandState= UserCommandStateEnum.Idle;
-    UK_Mouse.ButtonStateEnum   PreviousLeftButtonState= UK_Mouse.ButtonStateEnum.Idle;    
-    public void ProcessEvents() {
-        // Update the inspector object.
-        DetermineSelectedObject();
-
-        // Process left button state.
-        switch(Mouse.LeftButtonState) {
-            case UK_Mouse.ButtonStateEnum.Idle:
-                if(PreviousLeftButtonState == UK_Mouse.ButtonStateEnum.Dragging) EndDrag();
-                break;
-            case UK_Mouse.ButtonStateEnum.SingleClick:
-                if(SelectedObject != null) {
-                    // Process fold/unfold click.
-                    Vector2 graphMousePos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
-                    if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
-                        if(Storage.IsFolded(SelectedObject)) {
-                            Storage.RegisterUndo("Unfold");
-                            Storage.Unfold(SelectedObject);
-                        } else {
-                            Storage.RegisterUndo("Fold");
-                            Storage.Fold(SelectedObject);
-                        }
-                    }
-                    // Process maximize/minimize click.
-                    if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
-                        Storage.RegisterUndo("Minimize");
-                        Storage.Minimize(SelectedObject);
-                    } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
-                        Storage.RegisterUndo("Maximize");
-                        Storage.Maximize(SelectedObject);
-                    }
-                }
-                break;
-            case UK_Mouse.ButtonStateEnum.Dragging:
-                ProcessDrag();
-                break;
-        }
-        PreviousLeftButtonState= Mouse.LeftButtonState;
-
-        // Process right button state.
-        if(IsMouseRightButtonDown) {
-            DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.RightButtonDownPosition));            
-        }
-    }
-	// ----------------------------------------------------------------------
-    void ProcessEvent() {
+    void ProcessEvents() {
         // Update the selected object.
         DetermineSelectedObject();
         // Process window events.
@@ -304,7 +216,7 @@ public class UK_Editor : EditorWindow {
                         break;
                     }
                     case 1: { // Right mouse button
-                        DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.RightButtonDownPosition));
+                        DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(MousePosition));
                         Event.current.Use();
                         break;
                     }
@@ -401,6 +313,18 @@ public class UK_Editor : EditorWindow {
             }
         }
     }
+	// ----------------------------------------------------------------------
+    UK_Storage GetDraggedLibrary() {
+        UnityEngine.Object[] draggedObjects= DragAndDrop.objectReferences;
+        if(draggedObjects.Length >= 1) {
+            GameObject go= draggedObjects[0] as GameObject;
+            if(go != null) {
+                UK_Storage storage= go.GetComponent<UK_Library>();
+                return storage;
+            }
+        }
+        return null;
+    }
     
 	// ----------------------------------------------------------------------
     void ProcessDrag() {
@@ -412,7 +336,7 @@ public class UK_Editor : EditorWindow {
 
         // Compute new object position.
         Vector2 mousePosition= ScrollView.ScreenToGraph(MousePosition);
-        Vector2 delta= mousePosition - ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
+        Vector2 delta= mousePosition - MouseDragStartPosition;
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
@@ -442,7 +366,8 @@ public class UK_Editor : EditorWindow {
         if(IsDragStarted) return true;
         
         // Use the Left mouse down position has drag start position.
-        Vector2 pos= ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
+        MouseDragStartPosition= ScrollView.ScreenToGraph(MousePosition);
+        Vector2 pos= MouseDragStartPosition;
 
         // Port drag.
         UK_EditorObject port= Storage.GetPortAt(pos);
@@ -630,7 +555,7 @@ public class UK_Editor : EditorWindow {
     // Manages the object selection.
     UK_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
-        if(!Mouse.IsLeftButtonDown && !Mouse.IsRightButtonDown) return SelectedObject;
+        if(!IsMouseLeftButtonDown && !IsMouseRightButtonDown) return SelectedObject;
         UK_EditorObject newSelected= GetObjectAtMousePosition();
         SelectedObject= newSelected;
         return SelectedObject;
