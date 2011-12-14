@@ -41,6 +41,18 @@ public class UK_Editor : EditorWindow {
     }
     UK_EditorObject mySelectedObject= null;
     public UK_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
+	// ----------------------------------------------------------------------
+    bool    IsMouseLeftButtonDown  { get { return Event.current.button == 0 && Event.current.isMouse; }}
+    bool    IsMouseRightButtonDown { get { return Event.current.button == 1; }}
+    bool    IsCommandKeyDown       { get { return Event.current.command; }}
+    bool    IsControlKeyDown       { get { return Event.current.control; }}
+    Vector2 MousePosition          {
+        get {
+            Vector2 pos= Event.current.mousePosition;
+            if(Event.current.type == EventType.MouseDrag) pos+= Event.current.delta;
+            return pos;
+        }
+    }
     
     // ======================================================================
     // INITIALIZATION
@@ -160,7 +172,7 @@ public class UK_Editor : EditorWindow {
         // Draw Graph.
         DrawGraph();
 
-		// Compute new EMouse position.
+		// Compute new Mouse position.
 		Mouse.Update();
 
         // Process library drag
@@ -210,7 +222,7 @@ public class UK_Editor : EditorWindow {
         }
         // Insert library on drag exit.
         if(eventType == EventType.DragExited) {
-            if(position.Contains(Mouse.Position)) {
+            if(position.Contains(MousePosition)) {
                 UK_Storage storage= GetDraggedLibrary();
                 if(storage != null) {
                     switch(EditorUtility.DisplayDialogComplex("Importing Library",
@@ -219,7 +231,7 @@ public class UK_Editor : EditorWindow {
                                                               "Cancel",
                                                               "Link Library")) {
                         case 0: {
-                            PasteIntoGraph(ScrollView.ScreenToGraph(Mouse.Position), storage, storage.EditorObjects[0]);
+                            PasteIntoGraph(ScrollView.ScreenToGraph(MousePosition), storage, storage.EditorObjects[0]);
                             break;
                         }
                         case 1: {
@@ -256,6 +268,11 @@ public class UK_Editor : EditorWindow {
         DetermineSelectedObject();
 
         // Process left button state.
+        if(IsMouseLeftButtonDown) {
+            
+        } else {
+//            if(PreviousLeftButtonState == UK_Mouse.ButtonStateEnum.Dragging) EndDrag();            
+        }
         switch(Mouse.LeftButtonState) {
             case UK_Mouse.ButtonStateEnum.Idle:
                 if(PreviousLeftButtonState == UK_Mouse.ButtonStateEnum.Dragging) EndDrag();
@@ -283,9 +300,6 @@ public class UK_Editor : EditorWindow {
                     }
                 }
                 break;
-            case UK_Mouse.ButtonStateEnum.DoubleClick:
-                DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition));
-                break;
             case UK_Mouse.ButtonStateEnum.Dragging:
                 ProcessDrag();
                 break;
@@ -293,11 +307,9 @@ public class UK_Editor : EditorWindow {
         PreviousLeftButtonState= Mouse.LeftButtonState;
 
         // Process right button state.
-        switch(Mouse.RightButtonState) {
-            case UK_Mouse.ButtonStateEnum.SingleClick:
-                DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.RightButtonDownPosition));
-                break;
-        }                    
+        if(IsMouseRightButtonDown) {
+            DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(Mouse.RightButtonDownPosition));            
+        }
     }
     
 	// ----------------------------------------------------------------------
@@ -309,15 +321,15 @@ public class UK_Editor : EditorWindow {
         if(!StartDrag()) return;
 
         // Compute new object position.
-        Vector2 MousePosition= ScrollView.ScreenToGraph(Mouse.Position);
-        Vector2 delta= MousePosition - ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
+        Vector2 mousePosition= ScrollView.ScreenToGraph(MousePosition);
+        Vector2 delta= mousePosition - ScrollView.ScreenToGraph(Mouse.LeftButtonDownPosition);
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
                 UK_EditorObject node= DragObject;
                 Storage.MoveTo(node, DragStartPosition+delta);
                 Storage.SetDirty(node);                        
-                node.IsFloating= Event.current.command;
+                node.IsFloating= IsCommandKeyDown;
                 break;
             case DragTypeEnum.PortDrag:
             case DragTypeEnum.TransitionCreation:
@@ -356,7 +368,7 @@ public class UK_Editor : EditorWindow {
         // Node drag.
         UK_EditorObject node= Storage.GetNodeAt(pos);                
         if(node != null && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
-            if(Event.current.control) {
+            if(IsControlKeyDown) {
                 GameObject go= new GameObject(node.Name);
                 go.hideFlags = HideFlags.HideAndDontSave;
                 go.AddComponent("UK_Library");
@@ -372,7 +384,7 @@ public class UK_Editor : EditorWindow {
                 DragType= DragTypeEnum.None;
             } else {
                 Storage.RegisterUndo("Node Drag");
-                node.IsFloating= Event.current.command;
+                node.IsFloating= IsCommandKeyDown;
                 DragType= DragTypeEnum.NodeDrag;
                 DragObject= node;
                 Rect position= Storage.GetPosition(node);
@@ -533,13 +545,13 @@ public class UK_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
     public UK_EditorObject GetObjectAtMousePosition() {
-        return GetObjectAtScreenPosition(Mouse.Position);
+        return GetObjectAtScreenPosition(MousePosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
     public UK_EditorObject GetNodeAtMousePosition() {
-        Vector2 graphPosition= ScrollView.ScreenToGraph(Mouse.Position);
+        Vector2 graphPosition= ScrollView.ScreenToGraph(MousePosition);
         return Storage.GetNodeAt(graphPosition);
     }
 
