@@ -8,6 +8,13 @@ public partial class UK_IStorage {
     // ======================================================================
     // Runtime code generation
     // ----------------------------------------------------------------------
+    public static void GenerateRuntimeCodeCallback(UK_Behaviour behaviour, object _iStorage) {
+        Debug.Log("Code generation callback invoked.");
+        UK_IStorage iStorage= _iStorage == null ? new UK_IStorage(behaviour) : _iStorage as UK_IStorage;
+        iStorage.GenerateRuntimeCode();
+        behaviour.SetCodeGenerationAction(null, null);
+    }
+    // ----------------------------------------------------------------------
     public void GenerateRuntimeCode() {
         // Only generate runtime code for behaviours.
         UK_Behaviour rtBehaviour= Storage as UK_Behaviour;

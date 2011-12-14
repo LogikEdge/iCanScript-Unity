@@ -42,9 +42,6 @@ public class UK_Editor : EditorWindow {
     UK_EditorObject mySelectedObject= null;
     public UK_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
 	// ----------------------------------------------------------------------
-    bool    myIsMouseLeftButtonDown= false;
-    bool    IsMouseLeftButtonDown  { get { return Event.current.isMouse ? (myIsMouseLeftButtonDown= Event.current.button == 0) : myIsMouseLeftButtonDown; }}
-    bool    IsMouseRightButtonDown { get { return Event.current.button == 1; }}
     bool    IsCommandKeyDown       { get { return Event.current.command; }}
     bool    IsControlKeyDown       { get { return Event.current.control; }}
     Vector2 MousePosition          {
@@ -120,7 +117,6 @@ public class UK_Editor : EditorWindow {
             UK_Graphics.Init(Storage);
 			return false;
 		}
-		
         return true;
 	}
 
@@ -193,8 +189,6 @@ public class UK_Editor : EditorWindow {
     // USER INTERACTIONS
 	// ----------------------------------------------------------------------
     void ProcessEvents() {
-        // Update the selected object.
-        DetermineSelectedObject();
         // Process window events.
         switch(Event.current.type) {
             case EventType.MouseMove: {
@@ -207,6 +201,8 @@ public class UK_Editor : EditorWindow {
                 break;
             }
             case EventType.MouseDown: {
+                // Update the selected object.
+                DetermineSelectedObject();
                 switch(Event.current.button) {
                     case 0: { // Left mouse button
                         if(IsDragStarted) {
@@ -555,7 +551,6 @@ public class UK_Editor : EditorWindow {
     // Manages the object selection.
     UK_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
-        if(!IsMouseLeftButtonDown && !IsMouseRightButtonDown) return SelectedObject;
         UK_EditorObject newSelected= GetObjectAtMousePosition();
         SelectedObject= newSelected;
         return SelectedObject;

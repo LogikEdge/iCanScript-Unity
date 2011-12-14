@@ -14,6 +14,7 @@ public class UK_Menu {
 			storage= Selection.activeGameObject.AddComponent<UK_Behaviour>();
             UK_IStorage iStorage= new UK_IStorage(storage);
             iStorage.CreateBehaviour();
+            storage.SetCodeGenerationAction(UK_IStorage.GenerateRuntimeCodeCallback, null);
             iStorage= null;
 		}
 	}

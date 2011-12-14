@@ -14,8 +14,8 @@ public sealed class UK_Behaviour : UK_Storage {
     int        myFixedUpdateFrameId= 0;
     
     // Protocol to allow modification of behaviour while the engine is running.
-    Action<object>  myModificationAction= null;
-    object          myModificationObject= null;
+    Action<UK_Behaviour,object> myCodeGenerationAction= null;
+    object                      myCodeGenerationObject= null;
     
     // ======================================================================
     // Accessors
@@ -32,12 +32,9 @@ public sealed class UK_Behaviour : UK_Storage {
         myFixedUpdateFrameId= 0;        
     }
     // ----------------------------------------------------------------------
-    public void SetModificationAction(Action<object> modifAction, object modifObject) {
-        myModificationAction= modifAction;
-        myModificationObject= modifObject;
-        if(myModificationAction != null && !Application.isPlaying) {
-            myModificationAction(myModificationObject);
-        }
+    public void SetCodeGenerationAction(Action<UK_Behaviour, object> codeGenerationAction, object codeGenerationObject= null) {
+        myCodeGenerationAction= codeGenerationAction;
+        myCodeGenerationObject= codeGenerationObject;
     }
     
     // ----------------------------------------------------------------------
@@ -49,7 +46,11 @@ public sealed class UK_Behaviour : UK_Storage {
     // ----------------------------------------------------------------------
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
-    void Start() {}
+    void Start() {
+        if(myCodeGenerationAction != null) {
+            myCodeGenerationAction(this, myCodeGenerationObject);
+        }
+    }
     
     // ----------------------------------------------------------------------
     void OnEnable() {}
@@ -65,8 +66,8 @@ public sealed class UK_Behaviour : UK_Storage {
     // ----------------------------------------------------------------------
     // Called on every frame.
     void Update() {
-        if(myModificationAction != null) {
-            myModificationAction(myModificationObject);
+        if(myCodeGenerationAction != null) {
+            myCodeGenerationAction(this, myCodeGenerationObject);
         }
         ++myUpdateFrameId;
         if(myUpdateAction != null) {
@@ -81,7 +82,7 @@ public sealed class UK_Behaviour : UK_Storage {
     }
     // Called on evry frame after all Update have been called.
     void LateUpdate() {
-        if(myModificationAction != null) return;
+        if(myCodeGenerationAction != null) return;
         if(myLateUpdateAction != null) {
             do {
                 myLateUpdateAction.Execute(myUpdateFrameId);                                            
@@ -94,7 +95,7 @@ public sealed class UK_Behaviour : UK_Storage {
     }
     // Fix-time update to be used instead of Update
     void FixedUpdate() {
-        if(myModificationAction != null) return;
+        if(myCodeGenerationAction != null) return;
         ++myFixedUpdateFrameId;
         if(myFixedUpdateAction != null) {
             do {

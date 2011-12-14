@@ -118,7 +118,11 @@ public partial class UK_IStorage {
                     Layout(obj);
                 }
             }
-        );            
+        );
+        // Ask to regenerate runtime code.
+        if(!myIsDirty && Storage is UK_Behaviour) {
+            (Storage as UK_Behaviour).SetCodeGenerationAction(UK_IStorage.GenerateRuntimeCodeCallback, this);
+        }           
     }
     // ----------------------------------------------------------------------
     public bool Cleanup() {
@@ -130,15 +134,6 @@ public partial class UK_IStorage {
                     DestroyInstanceInternal(obj.InstanceId);
                     modified= true;
                 } 
-//                else {
-//                    if(obj.IsInDynamicModulePort) {
-//                        UK_EditorObject[] connectedPorts= FindConnectedPorts(obj);
-//                        if(connectedPorts.Length == 0) {
-//                            DestroyInstanceInternal(obj.InstanceId);
-//                            modified= true;
-//                        }
-//                    }
-//                }
             }
         );        
         return modified;
