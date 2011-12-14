@@ -29,6 +29,10 @@ public class UK_Storage : MonoBehaviour {
         return id;
     }
     // ----------------------------------------------------------------------
+    public Object GetUnityObject(int id) {
+        return (id < UnityObjects.Count) ? UnityObjects[id] : null;
+    }
+    // ----------------------------------------------------------------------
     public void SetUnityObject(int id, Object value) {
         if(IsValidUnityObject(id)) UnityObjects[id]= value;
     }

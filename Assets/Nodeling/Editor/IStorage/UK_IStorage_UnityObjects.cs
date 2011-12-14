@@ -6,14 +6,14 @@ public partial class UK_IStorage {
     // ======================================================================
     // Unity Object containement functions
     // ----------------------------------------------------------------------
-    public bool IsValidUnityObject(int id) { return id < UnityObjects.Count; }
+    public bool IsValidUnityObject(int id) { return Storage.IsValidUnityObject(id); }
     // ----------------------------------------------------------------------
     public Object GetUnityObject(int id) {
-        return IsValidUnityObject(id) ? UnityObjects[id] : null;        
+        return Storage.GetUnityObject(id);        
     }
     // ----------------------------------------------------------------------
     public void SetUnityObject(int id, Object value) {
-        if(IsValidUnityObject(id)) UnityObjects[id]= value;
+        Storage.SetUnityObject(id, value);
     }
     // ----------------------------------------------------------------------
     public T GetUnityObject<T>(int id) where T : Object {
@@ -21,15 +21,7 @@ public partial class UK_IStorage {
     }    
     // ----------------------------------------------------------------------
     public int AddUnityObject(Object obj) {
-        int id= 0;
-        for(; id < UnityObjects.Count; ++id) {
-            if(UnityObjects[id] == null) {
-                UnityObjects[id]= obj;
-                return id;
-            }
-        }
-        UnityObjects.Add(obj);
-        return id;
+        return Storage.AddUnityObject(obj);
     }
     // ----------------------------------------------------------------------
     public void RemoveUnityObject(int id) {
@@ -37,29 +29,10 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     public object GetDefaultValue(UK_RuntimeDesc desc, int portId) {
-        if(UK_Types.IsA<UnityEngine.Object>(desc.PortTypes[portId])) {
-            object id= desc.PortDefaultValues[portId];
-            if(id == null) return null;
-            return GetUnityObject((int)id);
-        }
-        return desc.PortDefaultValues[portId];    
+        return desc.GetDefaultValue(portId, Storage);
     }
     // ----------------------------------------------------------------------
     public void SetDefaultValue(UK_RuntimeDesc desc, int portId, object obj) {
-        if(UK_Types.IsA<UnityEngine.Object>(desc.PortTypes[portId])) {
-            object idObj= desc.PortDefaultValues[portId];
-            if(idObj == null) {
-                desc.PortDefaultValues[portId]= AddUnityObject(obj as Object);
-                return;
-            }
-            int id= (int)idObj;
-            if(IsValidUnityObject(id)) {
-                SetUnityObject(id, obj as Object);
-            } else {
-                desc.PortDefaultValues[portId]= AddUnityObject(obj as Object);
-            }
-            return;
-        }
-        desc.PortDefaultValues[portId]= obj;
+        desc.SetDefaultValue(portId, obj, Storage);
     }
 }
