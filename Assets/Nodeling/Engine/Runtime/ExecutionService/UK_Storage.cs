@@ -15,7 +15,21 @@ public class UK_Storage : MonoBehaviour {
     [HideInInspector] public int                      UndoRedoId   = 0;
 
     // ----------------------------------------------------------------------
-	// We do not want this behaviour to run.
-	void Start () { /*enabled= false;*/ }
-	
+    public bool IsValidUnityObject(int id) { return id < UnityObjects.Count; }
+    // ----------------------------------------------------------------------
+    public int AddUnityObject(Object obj) {
+        int id= 0;
+        for(; id < UnityObjects.Count; ++id) {
+            if(UnityObjects[id] == null) {
+                UnityObjects[id]= obj;
+                return id;
+            }
+        }
+        UnityObjects.Add(obj);
+        return id;
+    }
+    // ----------------------------------------------------------------------
+    public void SetUnityObject(int id, Object value) {
+        if(IsValidUnityObject(id)) UnityObjects[id]= value;
+    }
 }

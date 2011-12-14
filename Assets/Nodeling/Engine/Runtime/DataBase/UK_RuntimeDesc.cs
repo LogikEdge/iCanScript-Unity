@@ -44,11 +44,30 @@ public class UK_RuntimeDesc {
         }
     }
     // ----------------------------------------------------------------------
-    public object GetDefaultValue(int idx, UK_IStorage storage) {
-        return storage.GetDefaultValue(this, idx);
+    public object GetDefaultValue(int portId, UK_Storage storage) {
+        if(UK_Types.IsA<UnityEngine.Object>(PortTypes[portId])) {
+            object id= PortDefaultValues[portId];
+            if(id == null) return null;
+            return storage.UnityObjects[(int)id];
+        }
+        return PortDefaultValues[portId];    
     }
-    public void SetDefaultValue(int idx, object obj, UK_IStorage storage) {
-        storage.SetDefaultValue(this, idx, obj);
+    public void SetDefaultValue(int portId, object obj, UK_Storage storage) {
+        if(UK_Types.IsA<UnityEngine.Object>(PortTypes[portId])) {
+            object idObj= PortDefaultValues[portId];
+            if(idObj == null) {
+                PortDefaultValues[portId]= storage.AddUnityObject(obj as UnityEngine.Object);
+                return;
+            }
+            int id= (int)idObj;
+            if(storage.IsValidUnityObject(id)) {
+                storage.SetUnityObject(id, obj as UnityEngine.Object);
+            } else {
+                PortDefaultValues[portId]= storage.AddUnityObject(obj as UnityEngine.Object);
+            }
+            return;
+        }
+        PortDefaultValues[portId]= obj;
     }
     // ----------------------------------------------------------------------
     public string[] ParamNames {
