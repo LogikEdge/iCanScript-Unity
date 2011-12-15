@@ -13,38 +13,10 @@
 			<dict>
 				<key>PublishingManifest</key>
 				<dict>
-					<key>rw:document:resources</key>
-					<dict>
-						<key>CreationDate</key>
-						<date>2011-12-09T03:36:48Z</date>
-						<key>DigestAlgorithm</key>
-						<string>MD5</string>
-						<key>DocumentGUID</key>
-						<string>B7560928-39D1-4B36-A679-85500592817E</string>
-						<key>PageDigests</key>
-						<dict>
-							<key>Screen-Shot-2011-11-30-at-11.46.07-AM.png</key>
-							<dict>
-								<key>Digest</key>
-								<data>
-								iuJ02fgD/Jp6
-								BbKa9RJ4uA==
-								</data>
-								<key>Size</key>
-								<integer>38172</integer>
-							</dict>
-						</dict>
-						<key>PageID</key>
-						<string>rw:document:resources</string>
-						<key>SiteRoot</key>
-						<string>resources</string>
-						<key>Version</key>
-						<integer>3</integer>
-					</dict>
 					<key>rw:plugin:stacks</key>
 					<dict>
 						<key>CreationDate</key>
-						<date>2011-12-13T02:17:40Z</date>
+						<date>2011-12-15T03:56:08Z</date>
 						<key>DigestAlgorithm</key>
 						<string>MD5</string>
 						<key>DocumentGUID</key>
@@ -82,7 +54,7 @@
 					<key>rw:theme:alpha</key>
 					<dict>
 						<key>CreationDate</key>
-						<date>2011-12-09T01:52:53Z</date>
+						<date>2011-12-15T03:56:08Z</date>
 						<key>DigestAlgorithm</key>
 						<string>MD5</string>
 						<key>DocumentGUID</key>
@@ -410,7 +382,7 @@
 					<key>AddCopyrightMailTo</key>
 					<true/>
 					<key>BaseURL</key>
-					<string>http://www.disruptive-sw.com/Nodeling/</string>
+					<string>http://www.disruptive-sw.com/</string>
 					<key>ConsolidateCommonFilesMode</key>
 					<integer>0</integer>
 					<key>ContactText</key>
@@ -452,7 +424,7 @@
 							<key>passiveMode</key>
 							<true/>
 							<key>path</key>
-							<string>/Nodeling</string>
+							<string>/</string>
 							<key>privateKeyPath</key>
 							<string></string>
 							<key>publicKeyPath</key>
