@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class UK_ConnectionParams {
+public class iCS_ConnectionParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -23,7 +23,7 @@ public class UK_ConnectionParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public UK_ConnectionParams(UK_EditorObject port, Rect portPos, UK_EditorObject source, Rect sourcePos, UK_IStorage storage) {
+    public iCS_ConnectionParams(iCS_EditorObject port, Rect portPos, iCS_EditorObject source, Rect sourcePos, iCS_IStorage storage) {
         Start= new Vector2(sourcePos.x, sourcePos.y);
         End= new Vector2(portPos.x, portPos.y);
 
@@ -38,11 +38,11 @@ public class UK_ConnectionParams {
         Center= BezierCenter(Start, End, StartTangent, EndTangent);
     }
     // ----------------------------------------------------------------------
-    public UK_ConnectionParams(UK_EditorObject port, UK_EditorObject source, UK_IStorage storage) : this(port, storage.GetPosition(port), source, storage.GetPosition(source), storage) {}
+    public iCS_ConnectionParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, storage.GetPosition(port), source, storage.GetPosition(source), storage) {}
     // ----------------------------------------------------------------------
-    public UK_ConnectionParams(UK_EditorObject port, UK_IStorage storage) : this(port, storage.GetSource(port), storage) {}
+    public iCS_ConnectionParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, storage.GetSource(port), storage) {}
     // ----------------------------------------------------------------------
-    static Vector2 ConnectionDirectionForTo(UK_EditorObject port, UK_EditorObject to, UK_IStorage storage) {
+    static Vector2 ConnectionDirectionForTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         Vector2 direction;
         if(port.IsOnLeftEdge) {
             direction= LeftDirection;
@@ -54,8 +54,8 @@ public class UK_ConnectionParams {
             direction= DownDirection;
         }
         // Inverse direction for connection between nested nodes.
-        UK_EditorObject portParent= storage.GetParent(port);
-        UK_EditorObject toParent= storage.GetParent(to);
+        iCS_EditorObject portParent= storage.GetParent(port);
+        iCS_EditorObject toParent= storage.GetParent(to);
         if(storage.IsChildOf(toParent, portParent) && (!port.IsInStatePort || (port.IsInStatePort && storage.IsBridgeConnection(port, to)))) {
             direction= -direction;
         }

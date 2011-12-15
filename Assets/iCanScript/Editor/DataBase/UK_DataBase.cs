@@ -4,12 +4,12 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_DataBase {
+public class iCS_DataBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     public static bool                      IsDirty  = true;
-    public static List<UK_ReflectionDesc>   Functions= new List<UK_ReflectionDesc>();
+    public static List<iCS_ReflectionDesc>   Functions= new List<iCS_ReflectionDesc>();
     public static string[]                  FunctionMenu= null;
     
     // ======================================================================
@@ -22,7 +22,7 @@ public class UK_DataBase {
         int minRestart= min;
         while(min != max) {
             if(CompareFunctionNames(Functions[min], Functions[min+1]) > 0) {
-                UK_ReflectionDesc tmp= Functions[min];
+                iCS_ReflectionDesc tmp= Functions[min];
                 Functions[min]= Functions[min+1];
                 Functions[min+1]= tmp;
                 if(min != 0) --min;
@@ -81,10 +81,10 @@ public class UK_DataBase {
     }
 
     // ----------------------------------------------------------------------
-    public static string GetFunctionSignature(UK_ReflectionDesc desc) {
+    public static string GetFunctionSignature(iCS_ReflectionDesc desc) {
         string signature= TypeName(desc.ReturnType);
         signature+= " "+desc.DisplayName+"(";
-        if(desc.ObjectType == UK_ObjectTypeEnum.InstanceMethod) {
+        if(desc.ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
             signature+= TypeName(desc.ClassType)+" this";
             if(desc.ParamNames.Length != 0) signature+=", ";
         }
@@ -96,13 +96,13 @@ public class UK_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns the function name in the form of "company/package/displayName".
-    public static string GetFunctionName(UK_ReflectionDesc desc) {
+    public static string GetFunctionName(iCS_ReflectionDesc desc) {
         return desc.Company+"/"+desc.Package+"/"+desc.DisplayName;
     }
     // ----------------------------------------------------------------------
     // Returns 0 if equal, negative if first is smaller and
     // positive if first is greather.
-    public static int CompareFunctionNames(UK_ReflectionDesc d1, UK_ReflectionDesc d2) {
+    public static int CompareFunctionNames(iCS_ReflectionDesc d1, iCS_ReflectionDesc d2) {
         int result= d1.Company.CompareTo(d2.Company);
         if(result != 0) return result;
         result= d1.Package.CompareTo(d2.Package);
@@ -144,7 +144,7 @@ public class UK_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
-    public static UK_ReflectionDesc GetDescriptor(string company, string package, string functionName, string signature) {
+    public static iCS_ReflectionDesc GetDescriptor(string company, string package, string functionName, string signature) {
         foreach(var desc in Functions) {
             if(desc.Company == company &&
                desc.Package == package &&
@@ -157,20 +157,20 @@ public class UK_DataBase {
     }
     // ----------------------------------------------------------------------
     // Finds a conversion that matches the given from/to types.
-    public static UK_ReflectionDesc FindConversion(Type fromType, Type toType) {
+    public static iCS_ReflectionDesc FindConversion(Type fromType, Type toType) {
         foreach(var desc in Functions) {
             if(IsConversion(desc)) {
-                UK_RuntimeDesc conv= desc.RuntimeDesc;
-                if(UK_Types.CanBeConnectedWithoutConversion(fromType, conv.ParamTypes[0]) &&
-                   UK_Types.CanBeConnectedWithoutConversion(conv.ReturnType, toType)) return desc;
+                iCS_RuntimeDesc conv= desc.RuntimeDesc;
+                if(iCS_Types.CanBeConnectedWithoutConversion(fromType, conv.ParamTypes[0]) &&
+                   iCS_Types.CanBeConnectedWithoutConversion(conv.ReturnType, toType)) return desc;
             }
         }
         return null;
     }
     // ----------------------------------------------------------------------
     // Returns true if the given desc is a conversion function.
-    public static bool IsConversion(UK_ReflectionDesc desc) {
-        return desc.RuntimeDesc.ObjectType == UK_ObjectTypeEnum.Conversion;
+    public static bool IsConversion(iCS_ReflectionDesc desc) {
+        return desc.RuntimeDesc.ObjectType == iCS_ObjectTypeEnum.Conversion;
     }
     
     // ======================================================================
@@ -185,7 +185,7 @@ public class UK_DataBase {
                                       Type classType,
                                       bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
         Add(company, package, displayName, toolTip, iconPath,
-            UK_ObjectTypeEnum.StaticField, classType, null,
+            iCS_ObjectTypeEnum.StaticField, classType, null,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             null, null);
     }
@@ -194,7 +194,7 @@ public class UK_DataBase {
                                         Type classType,
                                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
         Add(company, package, displayName, toolTip, iconPath,
-            UK_ObjectTypeEnum.InstanceField, classType, null,
+            iCS_ObjectTypeEnum.InstanceField, classType, null,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             null, null);
     }
@@ -204,7 +204,7 @@ public class UK_DataBase {
                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                        string retName, Type retType) {
         Add(company, package, displayName, toolTip, iconPath,
-            UK_ObjectTypeEnum.InstanceMethod, classType, methodInfo,
+            iCS_ObjectTypeEnum.InstanceMethod, classType, methodInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             retName, retType);
     }
@@ -215,7 +215,7 @@ public class UK_DataBase {
                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                        string retName, Type retType) {
         Add(company, package, displayName, toolTip, iconPath,
-            UK_ObjectTypeEnum.StaticMethod, classType, methodInfo,
+            iCS_ObjectTypeEnum.StaticMethod, classType, methodInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             retName, retType);
     }
@@ -225,7 +225,7 @@ public class UK_DataBase {
         // Don't accept automatic conversion if it already exist.
         foreach(var desc in Functions) {
             if(IsConversion(desc)) {
-                UK_RuntimeDesc conv= desc.RuntimeDesc;
+                iCS_RuntimeDesc conv= desc.RuntimeDesc;
                 if(conv.ParamTypes[0] == fromType && conv.ReturnType == toType) {
                     Debug.LogWarning("Duplicate conversion function from "+fromType+" to "+toType+" exists in classes "+conv.Method.DeclaringType+" and "+methodInfo.DeclaringType);
                     return;
@@ -233,17 +233,17 @@ public class UK_DataBase {
             }
         }
         Add(company, package, fromType.Name+"->"+toType.Name, "Converts from "+fromType.Name+" to "+toType.Name, iconPath,
-            UK_ObjectTypeEnum.Conversion, classType, methodInfo,
+            iCS_ObjectTypeEnum.Conversion, classType, methodInfo,
             new bool[1]{false}, new string[1]{fromType.Name}, new Type[1]{fromType}, new object[1]{null},
             toType.Name, toType);        
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.
-    public static UK_ReflectionDesc Add(string company, string package, string displayName, string toolTip, string iconPath,
-                                        UK_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
+    public static iCS_ReflectionDesc Add(string company, string package, string displayName, string toolTip, string iconPath,
+                                        iCS_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
                                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                         string retName, Type retType) {
-        UK_ReflectionDesc fd= new UK_ReflectionDesc(company, package, displayName, toolTip, iconPath,
+        iCS_ReflectionDesc fd= new iCS_ReflectionDesc(company, package, displayName, toolTip, iconPath,
                                                     objType, classType, methodInfo,
                                                     paramIsOuts, paramNames, paramTypes, paramDefaults,
                                                     retName, retType);

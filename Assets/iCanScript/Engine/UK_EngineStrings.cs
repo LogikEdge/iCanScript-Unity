@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class UK_EngineStrings {
+public class iCS_EngineStrings {
     // Special node names.
     public const string UpdateAction         = "Update";
     public const string LateUpdateAction     = "LateUpdate";

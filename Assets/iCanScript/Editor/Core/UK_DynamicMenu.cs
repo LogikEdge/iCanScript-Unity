@@ -4,12 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_DynamicMenu {
+public class iCS_DynamicMenu {
     internal class MenuContext {
         public string          Command;
-        public UK_EditorObject SelectedObject;
-        public UK_IStorage      Storage;
-        public MenuContext(string command, UK_EditorObject selected, UK_IStorage storage) {
+        public iCS_EditorObject SelectedObject;
+        public iCS_IStorage      Storage;
+        public MenuContext(string command, iCS_EditorObject selected, iCS_IStorage storage) {
             Command= command;
             SelectedObject= selected;
             Storage= storage;
@@ -40,9 +40,9 @@ public class UK_DynamicMenu {
     const string SetAsEntryStr="Set as Entry";
     const string OnGUIStr= "+ OnGUI";
     const string OnDrawGizmosStr= "+ OnDrawGizmos";
-    const string OnEntryStr= "+ "+UK_EditorStrings.OnEntryNode;
-    const string OnUpdateStr= "+ "+UK_EditorStrings.OnUpdateNode;
-    const string OnExitStr= "+ "+UK_EditorStrings.OnExitNode;
+    const string OnEntryStr= "+ "+iCS_EditorStrings.OnEntryNode;
+    const string OnUpdateStr= "+ "+iCS_EditorStrings.OnUpdateNode;
+    const string OnExitStr= "+ "+iCS_EditorStrings.OnExitNode;
     const string PublishPortStr= "Publish on Module";
     const string EnablePortStr= "+ Enable Port";
     const string UnhideTransitionGuardStr= "Show Transition Guard";
@@ -57,7 +57,7 @@ public class UK_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    public void Update(UK_EditorObject selectedObject, UK_IStorage storage, Vector2 mouseDownPosition) {
+    public void Update(iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 mouseDownPosition) {
         // Update mouse position if not already done.
         if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
 
@@ -70,21 +70,21 @@ public class UK_DynamicMenu {
         
         // Process the menu state.
         switch(selectedObject.ObjectType) {
-            case UK_ObjectTypeEnum.Behaviour:        BehaviourMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.StateChart:       StateChartMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.State:            StateMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.Module:           ModuleMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.TransitionGuard:  ModuleMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.TransitionAction: ModuleMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.InstanceMethod:   MethodMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.StaticMethod:     MethodMenu(selectedObject, storage); break;
-            case UK_ObjectTypeEnum.Conversion:       MethodMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Behaviour:        BehaviourMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.StateChart:       StateChartMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.State:            StateMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Module:           ModuleMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.TransitionGuard:  ModuleMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.TransitionAction: ModuleMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceMethod:   MethodMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.StaticMethod:     MethodMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Conversion:       MethodMenu(selectedObject, storage); break;
             default: if(selectedObject.IsPort)       PortMenu(selectedObject, storage); break;
         }
     }
 
 	// ----------------------------------------------------------------------
-    void BehaviourMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
+    void BehaviourMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         // Don't show any menu if behaviour not visible.
         if(storage.IsMinimized(selectedObject) || storage.IsFolded(selectedObject)) return;
 
@@ -102,7 +102,7 @@ public class UK_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
-    void ModuleMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
+    void ModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         string[] tmp= null;
         string[] menu= new string[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
@@ -153,7 +153,7 @@ public class UK_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
-    void StateChartMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
+    void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         string[] menu= new string[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             menu= new string[1];
@@ -183,7 +183,7 @@ public class UK_DynamicMenu {
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
-    void StateMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
+    void StateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         string[] menu= new string[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             menu= new string[6];
@@ -217,17 +217,17 @@ public class UK_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    void MethodMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
+    void MethodMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
             ShowMenu(new string[]{DeleteStr}, selectedObject, storage);            
         }
     }
 	// ----------------------------------------------------------------------
-    void PortMenu(UK_EditorObject selectedObject, UK_IStorage storage) {
+    void PortMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         string[] menu= new string[0];
         // Allow to publish port if the grand-parent is a module.
-        UK_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
-        UK_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
+        iCS_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
+        iCS_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
         if(grandParent != null && grandParent.IsModule) {
             if(!(selectedObject.IsInputPort && storage.IsValid(selectedObject.Source))) {
                 menu= new string[]{PublishPortStr};                
@@ -256,10 +256,10 @@ public class UK_DynamicMenu {
     // ======================================================================
     // Menu Utilities
 	// ----------------------------------------------------------------------
-    void ShowMenu(string[] menu, UK_EditorObject selected, UK_IStorage storage) {
+    void ShowMenu(string[] menu, iCS_EditorObject selected, iCS_IStorage storage) {
         ShowMenu(menu, MenuPosition, selected, storage);
     }
-    void ShowMenu(string[] menu, Vector2 pos, UK_EditorObject selected, UK_IStorage storage) {
+    void ShowMenu(string[] menu, Vector2 pos, iCS_EditorObject selected, iCS_IStorage storage) {
         int sepCnt= 0;
         GenericMenu gMenu= new GenericMenu();
         foreach(var item in menu) {
@@ -277,10 +277,10 @@ public class UK_DynamicMenu {
 	// ----------------------------------------------------------------------
     // Combines the company/package/function name into menu conforming strings.
     string[] GetFunctionMenu() {
-        return UK_DataBase.BuildMenu();
+        return iCS_DataBase.BuildMenu();
     }
-    UK_ReflectionDesc GetReflectionDescFromMenuCommand(string menuCommand) {
-        menuCommand= UK_TextUtil.StripBeforeIdent(menuCommand);
+    iCS_ReflectionDesc GetReflectionDescFromMenuCommand(string menuCommand) {
+        menuCommand= iCS_TextUtil.StripBeforeIdent(menuCommand);
         string[] idents= menuCommand.Split(new char[1]{'/'});
         if(idents.Length < 3) return null;
         string company= idents[0];
@@ -288,7 +288,7 @@ public class UK_DynamicMenu {
         string function= idents[2];
         string signature= null;
         if(idents.Length >= 4) signature= idents[3];
-        return UK_DataBase.GetDescriptor(company, package, function, signature);
+        return iCS_DataBase.GetDescriptor(company, package, function, signature);
     }
     
     // ======================================================================
@@ -296,8 +296,8 @@ public class UK_DynamicMenu {
 	// ----------------------------------------------------------------------
     void ProcessMenu(object obj) {
         MenuContext context= obj as MenuContext;
-        UK_EditorObject selectedObject= context.SelectedObject;
-        UK_IStorage storage= context.Storage;
+        iCS_EditorObject selectedObject= context.SelectedObject;
+        iCS_IStorage storage= context.Storage;
         storage.RegisterUndo(context.Command);
         switch(context.Command) {
             case UpdateModuleStr:           ProcessCreateUpdateModule(selectedObject, storage); break;
@@ -318,20 +318,20 @@ public class UK_DynamicMenu {
             case UnhideTransitionGuardStr:  ProcessUnhideTransitionGuard(selectedObject, storage); break;
             case UnhideTransitionActionStr: ProcessUnhideTransitionAction(selectedObject, storage); break;
             case EnablePortStr: {
-                UK_EditorObject port= storage.CreatePort(UK_EditorStrings.EnablePort, selectedObject.InstanceId, typeof(bool), UK_ObjectTypeEnum.EnablePort);
+                iCS_EditorObject port= storage.CreatePort(iCS_EditorStrings.EnablePort, selectedObject.InstanceId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
                 break;
             }
             case PublishPortStr: {
-                UK_EditorObject parent= storage.GetParent(selectedObject);
-                UK_EditorObject grandParent= storage.GetParent(parent);
+                iCS_EditorObject parent= storage.GetParent(selectedObject);
+                iCS_EditorObject grandParent= storage.GetParent(parent);
                 int grandParentId= grandParent.InstanceId;
                 if(selectedObject.IsInputPort) {
-                    UK_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, UK_ObjectTypeEnum.InDynamicModulePort);
+                    iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                     storage.SetSource(selectedObject, port);
                     port.LocalPosition= new Rect(0, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
                 } else {
-                    UK_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, UK_ObjectTypeEnum.OutDynamicModulePort);
+                    iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                     storage.SetSource(port, selectedObject);
                     port.LocalPosition= new Rect(grandParent.LocalPosition.width, parent.LocalPosition.y+selectedObject.LocalPosition.y, 0, 0);
                 }
@@ -339,7 +339,7 @@ public class UK_DynamicMenu {
                 break;                
             }
             default: {
-                UK_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context.Command);
+                iCS_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context.Command);
                 if(desc != null) {
                     CreateMethod(context.SelectedObject, context.Storage, desc);                                           
                 }
@@ -348,98 +348,98 @@ public class UK_DynamicMenu {
         }
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateUpdateModule(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject module= CreateModule(parent, storage, UK_EditorStrings.UpdateNode, false);
+    iCS_EditorObject ProcessCreateUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.UpdateNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on every frame update.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateUpdateStateChart(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject stateChart= CreateStateChart(parent, storage, UK_EditorStrings.UpdateNode, false);
+    iCS_EditorObject ProcessCreateUpdateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_EditorStrings.UpdateNode, false);
         stateChart.IsNameEditable= false;
         stateChart.ToolTip= "Executes on every frame update.";
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateLateUpdateModule(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject module= CreateModule(parent, storage, UK_EditorStrings.LateUpdateNode, false);
+    iCS_EditorObject ProcessCreateLateUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.LateUpdateNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes after every frame update.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateLateUpdateStateChart(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject stateChart= CreateStateChart(parent, storage, UK_EditorStrings.LateUpdateNode, false);
+    iCS_EditorObject ProcessCreateLateUpdateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_EditorStrings.LateUpdateNode, false);
         stateChart.IsNameEditable= false;
         stateChart.ToolTip= "Executes after every frame update.";
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateFixedUpdateModule(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject module= CreateModule(parent, storage, UK_EditorStrings.FixedUpdateNode, false);
+    iCS_EditorObject ProcessCreateFixedUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.FixedUpdateNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes at a fix frame rate. Independent from the frame update.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateFixedUpdateStateChart(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject stateChart= CreateStateChart(parent, storage, UK_EditorStrings.FixedUpdateNode, false);
+    iCS_EditorObject ProcessCreateFixedUpdateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_EditorStrings.FixedUpdateNode, false);
         stateChart.IsNameEditable= false;
         stateChart.ToolTip= "Executes at a fix frame rate. Independent from the frame update.";
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateModule(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject module= CreateModule(parent, storage);
+    iCS_EditorObject ProcessCreateModule(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject module= CreateModule(parent, storage);
         return module;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateStateChart(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject stateChart= CreateStateChart(parent, storage);
+    iCS_EditorObject ProcessCreateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject stateChart= CreateStateChart(parent, storage);
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateState(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject state= CreateState(parent, storage);
+    iCS_EditorObject ProcessCreateState(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject state= CreateState(parent, storage);
         return state;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateOnEntryModule(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject module= CreateModule(parent, storage, UK_EditorStrings.OnEntryNode, false);
+    iCS_EditorObject ProcessCreateOnEntryModule(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.OnEntryNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on entry into this state.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateOnUpdateModule(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject module= CreateModule(parent, storage, UK_EditorStrings.OnUpdateNode, false);
+    iCS_EditorObject ProcessCreateOnUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.OnUpdateNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on every frame this state is active.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject ProcessCreateOnExitModule(UK_EditorObject parent, UK_IStorage storage) {
-        UK_EditorObject module= CreateModule(parent, storage, UK_EditorStrings.OnExitNode, false);
+    iCS_EditorObject ProcessCreateOnExitModule(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.OnExitNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on exit from this state.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    void ProcessDestroyObject(UK_EditorObject obj, UK_IStorage storage) {
+    void ProcessDestroyObject(iCS_EditorObject obj, iCS_IStorage storage) {
         DestroyObject(obj, storage);    
     }
 	// ----------------------------------------------------------------------
-    void ProcessUnhideTransitionGuard(UK_EditorObject statePort, UK_IStorage storage) {
+    void ProcessUnhideTransitionGuard(iCS_EditorObject statePort, iCS_IStorage storage) {
         if(statePort.IsInStatePort) statePort= storage[statePort.Source];
-        UK_EditorObject action= null;
-        UK_EditorObject guard= storage.GetTransitionGuardAndAction(statePort, out action);
+        iCS_EditorObject action= null;
+        iCS_EditorObject guard= storage.GetTransitionGuardAndAction(statePort, out action);
         storage.Maximize(guard);
     }
 	// ----------------------------------------------------------------------
-    void ProcessUnhideTransitionAction(UK_EditorObject statePort, UK_IStorage storage) {
+    void ProcessUnhideTransitionAction(iCS_EditorObject statePort, iCS_IStorage storage) {
         if(statePort.IsInStatePort) statePort= storage[statePort.Source];
-        UK_EditorObject action= null;
+        iCS_EditorObject action= null;
         storage.GetTransitionGuardAndAction(statePort, out action);
         if(action != null) storage.Maximize(action);
     }
@@ -447,28 +447,28 @@ public class UK_DynamicMenu {
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------
-    UK_EditorObject CreateModule(UK_EditorObject parent, UK_IStorage storage, string name= "", bool nameEditable= true) {
-        UK_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, name);
+    iCS_EditorObject CreateModule(iCS_EditorObject parent, iCS_IStorage storage, string name= "", bool nameEditable= true) {
+        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, name);
         module.IsNameEditable= nameEditable;
         return module;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject CreateStateChart(UK_EditorObject parent, UK_IStorage storage, string name= "", bool nameEditable= true) {
-        UK_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, ProcessMenuPosition, name);
+    iCS_EditorObject CreateStateChart(iCS_EditorObject parent, iCS_IStorage storage, string name= "", bool nameEditable= true) {
+        iCS_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, ProcessMenuPosition, name);
         stateChart.IsNameEditable= nameEditable;
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject CreateState(UK_EditorObject parent, UK_IStorage storage, string name= "") {
+    iCS_EditorObject CreateState(iCS_EditorObject parent, iCS_IStorage storage, string name= "") {
         return storage.CreateState(parent.InstanceId, ProcessMenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject CreateMethod(UK_EditorObject parent, UK_IStorage storage, UK_ReflectionDesc desc) {
-        UK_EditorObject method= storage.CreateMethod(parent.InstanceId, ProcessMenuPosition, desc);
+    iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, iCS_ReflectionDesc desc) {
+        iCS_EditorObject method= storage.CreateMethod(parent.InstanceId, ProcessMenuPosition, desc);
         return method;
     }
 	// ----------------------------------------------------------------------
-    bool DestroyObject(UK_EditorObject selectedObject, UK_IStorage storage) {
+    bool DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         bool isDestroyed= false;
         if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
             storage.DestroyInstance(selectedObject.InstanceId);                        

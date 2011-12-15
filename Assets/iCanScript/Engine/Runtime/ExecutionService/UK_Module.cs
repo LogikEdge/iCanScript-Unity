@@ -2,9 +2,9 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_Module : UK_ParallelDispatcher {
+public class iCS_Module : iCS_ParallelDispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Module(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_Module(string name, Vector2 layout) : base(name, layout) {}
 }

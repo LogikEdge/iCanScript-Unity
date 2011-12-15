@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public static class UK_UnityClasses {
+public static class iCS_UnityClasses {
     public static void PopulateDataBase() {
         DecodeUnityClassInfo(typeof(AccelerationEvent));
         
@@ -92,6 +92,6 @@ public static class UK_UnityClasses {
     }
     // ----------------------------------------------------------------------
     public static void DecodeUnityClassInfo(Type type) {
-        UK_Reflection.DecodeClassInfo(type, "Unity", type.Name, type.Name, "Unity class "+type.Name, null, true);
+        iCS_Reflection.DecodeClassInfo(type, "Unity", type.Name, type.Name, "Unity class "+type.Name, null, true);
     }
 }

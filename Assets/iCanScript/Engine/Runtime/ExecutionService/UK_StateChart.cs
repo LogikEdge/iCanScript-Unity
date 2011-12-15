@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class UK_StateChart : UK_Action {
+public sealed class iCS_StateChart : iCS_Action {
     // ======================================================================
     // Internal types
     // ----------------------------------------------------------------------
@@ -11,24 +11,24 @@ public sealed class UK_StateChart : UK_Action {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    UK_State        myEntryState      = null;
-    List<UK_State>  myActiveStack     = new List<UK_State>();
-    List<UK_State>  myChildren        = new List<UK_State>();
+    iCS_State        myEntryState      = null;
+    List<iCS_State>  myActiveStack     = new List<iCS_State>();
+    List<iCS_State>  myChildren        = new List<iCS_State>();
     int             myQueueIdx        = 0;
-    UK_Transition   myFiredTransition = null;
-    UK_State        myNextState       = null;
-    UK_State        myTransitionParent= null;
+    iCS_Transition   myFiredTransition = null;
+    iCS_State        myNextState       = null;
+    iCS_State        myTransitionParent= null;
     int             myEntrySize       = -1;
     ExecutionState  myExecutionState  = ExecutionState.VerifyingTransition;
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public UK_State EntryState {
+    public iCS_State EntryState {
         get { return myEntryState; }
         set { myEntryState= value; }
     }
-    public UK_State ActiveState {
+    public iCS_State ActiveState {
         get {
             int end= myActiveStack.Count;
             return end == 0 ? null : myActiveStack[end-1];
@@ -38,7 +38,7 @@ public sealed class UK_StateChart : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_StateChart(string name, Vector2 layout) : base(name, layout) {
+    public iCS_StateChart(string name, Vector2 layout) : base(name, layout) {
     }
 
     // ======================================================================
@@ -95,11 +95,11 @@ public sealed class UK_StateChart : UK_Action {
     // ----------------------------------------------------------------------
     void ExecuteVerifyTransitions(int frameId) {
         // Determine if a transition exists for one of the active states.
-        UK_State state= null;
+        iCS_State state= null;
         int end= myActiveStack.Count;
         while(myQueueIdx < end) {
             state= myActiveStack[myQueueIdx];
-            UK_VerifyTransitions transitions= state.Transitions;
+            iCS_VerifyTransitions transitions= state.Transitions;
             transitions.Execute(frameId);
             if(!transitions.IsCurrent(frameId)) {
                 if(!transitions.IsStalled) {
@@ -122,11 +122,11 @@ public sealed class UK_StateChart : UK_Action {
     // ----------------------------------------------------------------------
     void ForceExecuteVerifyTransitions(int frameId) {
         // Determine if a transition exists for one of the active states.
-        UK_State state= null;
+        iCS_State state= null;
         int end= myActiveStack.Count;
         if(myQueueIdx < end) {
             state= myActiveStack[myQueueIdx];
-            UK_VerifyTransitions transitions= state.Transitions;
+            iCS_VerifyTransitions transitions= state.Transitions;
             transitions.ForceExecute(frameId);
             if(!transitions.IsCurrent(frameId)) {
                 if(!transitions.IsStalled) {
@@ -149,7 +149,7 @@ public sealed class UK_StateChart : UK_Action {
     // ----------------------------------------------------------------------
     void ExecuteTransition(int frameId) {
         if(myFiredTransition != null) {
-            UK_Action action= myFiredTransition.Action;
+            iCS_Action action= myFiredTransition.Action;
             if(action != null) {
                 action.Execute(frameId);
                 if(!action.IsCurrent(frameId)) {
@@ -165,7 +165,7 @@ public sealed class UK_StateChart : UK_Action {
     // ----------------------------------------------------------------------
     void ForceExecuteTransition(int frameId) {
         if(myFiredTransition != null) {
-            UK_Action action= myFiredTransition.Action;
+            iCS_Action action= myFiredTransition.Action;
             if(action != null) {
                 action.ForceExecute(frameId);
                 if(!action.IsCurrent(frameId)) {
@@ -182,8 +182,8 @@ public sealed class UK_StateChart : UK_Action {
     void ExecuteUpdates(int frameId) {
         bool stalled= true;
         while(myQueueIdx < myActiveStack.Count) {
-            UK_State state= myActiveStack[myQueueIdx];
-            UK_Action action= state.OnUpdateAction;
+            iCS_State state= myActiveStack[myQueueIdx];
+            iCS_Action action= state.OnUpdateAction;
             if(action != null) {
                 action.Execute(frameId);            
                 if(!action.IsCurrent(frameId)) {
@@ -208,8 +208,8 @@ public sealed class UK_StateChart : UK_Action {
     void ForceExecuteUpdates(int frameId) {
         int stackSize= myActiveStack.Count;
         if(myQueueIdx < stackSize) {
-            UK_State state= myActiveStack[myQueueIdx];
-            UK_Action action= state.OnUpdateAction;
+            iCS_State state= myActiveStack[myQueueIdx];
+            iCS_Action action= state.OnUpdateAction;
             if(action != null) {
                 action.ForceExecute(frameId);            
                 if(!action.IsCurrent(frameId)) {
@@ -232,9 +232,9 @@ public sealed class UK_StateChart : UK_Action {
     void ExecuteExits(int frameId) {
         bool stalled= true;
         while(myQueueIdx >= 0) {
-            UK_State state= myActiveStack[myQueueIdx];
+            iCS_State state= myActiveStack[myQueueIdx];
             if(state == myTransitionParent) break;
-            UK_Action action= state.OnExitAction;
+            iCS_Action action= state.OnExitAction;
             if(action != null) {
                 action.Execute(frameId);            
                 if(!action.IsCurrent(frameId)) {
@@ -254,11 +254,11 @@ public sealed class UK_StateChart : UK_Action {
     }
     // ----------------------------------------------------------------------
     void ForceExecuteExits(int frameId) {
-        UK_State state= null;
+        iCS_State state= null;
         if(myQueueIdx >= 0) {
             state= myActiveStack[myQueueIdx];
             if(state != myTransitionParent) {
-                UK_Action action= state.OnExitAction;
+                iCS_Action action= state.OnExitAction;
                 if(action != null) {
                     action.ForceExecute(frameId);            
                     if(!action.IsCurrent(frameId)) {
@@ -279,8 +279,8 @@ public sealed class UK_StateChart : UK_Action {
         bool stalled= true;
         int stackSize= myActiveStack.Count;
         while(myQueueIdx < stackSize) {
-            UK_State state= myActiveStack[myQueueIdx];
-            UK_Action action= state.OnEntryAction;
+            iCS_State state= myActiveStack[myQueueIdx];
+            iCS_Action action= state.OnEntryAction;
             if(action != null) {
                 action.Execute(frameId);            
                 if(!action.IsCurrent(frameId)) {
@@ -303,8 +303,8 @@ public sealed class UK_StateChart : UK_Action {
     void ForceExecuteEntries(int frameId) {
         int stackSize= myActiveStack.Count;
         if(myQueueIdx < stackSize) {
-            UK_State state= myActiveStack[myQueueIdx];
-            UK_Action action= state.OnEntryAction;
+            iCS_State state= myActiveStack[myQueueIdx];
+            iCS_Action action= state.OnEntryAction;
             if(action != null) {
                 action.ForceExecute(frameId);            
                 if(!action.IsCurrent(frameId)) {
@@ -321,13 +321,13 @@ public sealed class UK_StateChart : UK_Action {
         }
     }
     // ----------------------------------------------------------------------
-    void MoveToState(UK_State newState, int frameId) {
+    void MoveToState(iCS_State newState, int frameId) {
         Debug.Log("Moving to state: "+newState.Name);
         myNextState= newState;
         int stackSize= myActiveStack.Count;
         // Determine transition parent node
         myTransitionParent= null;
-        UK_State toTest= newState;
+        iCS_State toTest= newState;
         myEntrySize= -1;
         int idx;
         do {
@@ -357,7 +357,7 @@ public sealed class UK_StateChart : UK_Action {
         if(newSize < stackSize) myActiveStack.RemoveRange(newSize, stackSize-newSize);
         if(newSize > myActiveStack.Capacity) myActiveStack.Capacity= newSize;
         while(myActiveStack.Count < newSize) myActiveStack.Add(null);
-        UK_State toAdd= myNextState;
+        iCS_State toAdd= myNextState;
         for(int offset= myEntrySize-1; offset >= 0; --offset) {
             myActiveStack[stableSize+offset]= toAdd;
             toAdd= toAdd.ParentState;            
@@ -370,15 +370,15 @@ public sealed class UK_StateChart : UK_Action {
     // ======================================================================
     // Child Management
     // ----------------------------------------------------------------------
-    public void AddChild(UK_Object _object) {
-        UK_State state= _object as UK_State;
+    public void AddChild(iCS_Object _object) {
+        iCS_State state= _object as iCS_State;
         if(state != null) {
             if(myChildren.Count == 0) myEntryState= state;
             myChildren.Add(state);
         }
     }
-    public void RemoveChild(UK_Object _object) {
-        UK_State state= _object as UK_State;
+    public void RemoveChild(iCS_Object _object) {
+        iCS_State state= _object as iCS_State;
         if(state != null) {
             if(state == myEntryState) myEntryState= null;
             myChildren.Remove(state);

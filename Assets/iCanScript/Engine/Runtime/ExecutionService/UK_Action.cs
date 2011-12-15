@@ -5,7 +5,7 @@ using System.Collections;
 // An action is the base class of the execution.  It includes a frame
 // identifier that is used to indicate if the action has been run.  This
 // indicator is the bases for the execution synchronization.
-public abstract class UK_Action : UK_Object {
+public abstract class iCS_Action : iCS_Object {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -21,7 +21,7 @@ public abstract class UK_Action : UK_Object {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Action(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_Action(string name, Vector2 layout) : base(name, layout) {}
      
     // ======================================================================
     // Execution

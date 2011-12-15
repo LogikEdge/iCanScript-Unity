@@ -6,7 +6,7 @@ using System.Collections.Generic;
 // --------------------------------------------------------------------------
 // An instance of this class is dynamically created from the EditorObjects.
 [System.Serializable]
-public class UK_TreeCache {
+public class iCS_TreeCache {
     // ======================================================================
     // Child Classes
     // ----------------------------------------------------------------------
@@ -69,7 +69,7 @@ public class UK_TreeCache {
     public bool IsValid(int id)      { return id >= 0 && id < TreeCache.Count && TreeCache[id].IsValid; }
     public bool IsInvalid(int id)    { return !IsValid(id); }
     // ----------------------------------------------------------------------
-    public void CreateInstance(UK_EditorObject obj) {
+    public void CreateInstance(iCS_EditorObject obj) {
         if(obj.InstanceId < TreeCache.Count && TreeCache[obj.InstanceId].IsValid) {
             Debug.LogError("Trying to create a TreeNode with the same id has an existing TreeNode. (id)=>"+obj.InstanceId);
         }
@@ -77,7 +77,7 @@ public class UK_TreeCache {
         while(TreeCache.Count <= obj.InstanceId) TreeCache.Add(new TreeNode());
         UpdateInstance(obj);
     }
-    public void UpdateInstance(UK_EditorObject obj) {
+    public void UpdateInstance(iCS_EditorObject obj) {
         int id      = obj.InstanceId;
         int parentId= obj.ParentId;
 

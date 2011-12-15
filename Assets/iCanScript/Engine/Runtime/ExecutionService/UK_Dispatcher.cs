@@ -2,24 +2,24 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public abstract class UK_Dispatcher : UK_Action {
+public abstract class iCS_Dispatcher : iCS_Action {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    protected List<UK_Action> myExecuteQueue= new List<UK_Action>();
+    protected List<iCS_Action> myExecuteQueue= new List<iCS_Action>();
     protected int             myQueueIdx = 0;
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Dispatcher(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_Dispatcher(string name, Vector2 layout) : base(name, layout) {}
 
     // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     public override void ForceExecute(int frameId) {
         if(myQueueIdx < myExecuteQueue.Count) {
-            UK_Action action= myExecuteQueue[myQueueIdx];
+            iCS_Action action= myExecuteQueue[myQueueIdx];
             action.ForceExecute(frameId);            
             if(action.IsCurrent(frameId)) {
                 ++myQueueIdx;
@@ -44,10 +44,10 @@ public abstract class UK_Dispatcher : UK_Action {
     // ======================================================================
     // Queue Management
     // ----------------------------------------------------------------------
-    public void AddChild(UK_Action action) {
+    public void AddChild(iCS_Action action) {
         myExecuteQueue.Add(action);
     }
-    public void RemoveChild(UK_Action action) {
+    public void RemoveChild(iCS_Action action) {
         myExecuteQueue.Remove(action);
     }
 }

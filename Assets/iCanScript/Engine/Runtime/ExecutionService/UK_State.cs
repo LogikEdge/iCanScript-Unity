@@ -2,33 +2,33 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class UK_State : UK_Object {
+public sealed class iCS_State : iCS_Object {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public UK_State             myEntryState    = null;
-    public UK_Action            myOnEntryAction = null;
-    public UK_Action            myOnUpdateAction= null;
-    public UK_Action            myOnExitAction  = null;
-    public UK_State             myParentState   = null;
-    public List<UK_State>       myChildren      = new List<UK_State>();
-           UK_VerifyTransitions myTransitions   = null;
+    public iCS_State             myEntryState    = null;
+    public iCS_Action            myOnEntryAction = null;
+    public iCS_Action            myOnUpdateAction= null;
+    public iCS_Action            myOnExitAction  = null;
+    public iCS_State             myParentState   = null;
+    public List<iCS_State>       myChildren      = new List<iCS_State>();
+           iCS_VerifyTransitions myTransitions   = null;
            
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public UK_State             ParentState    { get { return myParentState; } }
-    public UK_State             EntryState     { get { return myEntryState; }     set { myEntryState= value; }}
-    public UK_Action            OnEntryAction  { get { return myOnEntryAction; }  set { myOnEntryAction= value; }}
-    public UK_Action            OnUpdateAction { get { return myOnUpdateAction; } set { myOnUpdateAction= value; }}
-    public UK_Action            OnExitAction   { get { return myOnExitAction; }   set { myOnExitAction= value; }}
-    public UK_VerifyTransitions Transitions    { get { return myTransitions; }}
+    public iCS_State             ParentState    { get { return myParentState; } }
+    public iCS_State             EntryState     { get { return myEntryState; }     set { myEntryState= value; }}
+    public iCS_Action            OnEntryAction  { get { return myOnEntryAction; }  set { myOnEntryAction= value; }}
+    public iCS_Action            OnUpdateAction { get { return myOnUpdateAction; } set { myOnUpdateAction= value; }}
+    public iCS_Action            OnExitAction   { get { return myOnExitAction; }   set { myOnExitAction= value; }}
+    public iCS_VerifyTransitions Transitions    { get { return myTransitions; }}
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_State(string name, Vector2 layout) : base(name, layout) {
-        myTransitions= new UK_VerifyTransitions(name, layout);
+    public iCS_State(string name, Vector2 layout) : base(name, layout) {
+        myTransitions= new iCS_VerifyTransitions(name, layout);
     }
     
     // ======================================================================
@@ -53,8 +53,8 @@ public sealed class UK_State : UK_Object {
     // ======================================================================
     // Child Management
     // ----------------------------------------------------------------------
-    public void AddChild(UK_Object _object) {
-        Prelude.choice<UK_State, UK_Transition, UK_Module>(_object,
+    public void AddChild(iCS_Object _object) {
+        Prelude.choice<iCS_State, iCS_Transition, iCS_Module>(_object,
             (state)=> {
                 state.myParentState= this;
                 myChildren.Add(state);
@@ -63,17 +63,17 @@ public sealed class UK_State : UK_Object {
                 myTransitions.AddChild(transition);
             },
             (module)=> {
-                if(module.Name == UK_EngineStrings.OnEntryModule) {
+                if(module.Name == iCS_EngineStrings.OnEntryModule) {
                     myOnEntryAction= module;
                 }
-                else if(module.Name == UK_EngineStrings.OnUpdateModule) {
+                else if(module.Name == iCS_EngineStrings.OnUpdateModule) {
                     myOnUpdateAction= module;
                 }
-                else if(module.Name == UK_EngineStrings.OnExitModule) {
+                else if(module.Name == iCS_EngineStrings.OnExitModule) {
                     myOnExitAction= module;
                 }
                 else {
-                    Debug.LogError("Only OnEntry, OnUpdate, and OnExit modules can be added to a UK_State");
+                    Debug.LogError("Only OnEntry, OnUpdate, and OnExit modules can be added to a iCS_State");
                 }
             },
             (otherwise)=> {
@@ -81,8 +81,8 @@ public sealed class UK_State : UK_Object {
             }
         );
     }
-    public void RemoveChild(UK_Object _object) {
-        Prelude.choice<UK_State, UK_Transition, UK_Module>(_object,
+    public void RemoveChild(iCS_Object _object) {
+        Prelude.choice<iCS_State, iCS_Transition, iCS_Module>(_object,
             (state)=> {
                 if(state == myEntryState) myEntryState= null;
                 myChildren.Remove(state);
@@ -101,7 +101,7 @@ public sealed class UK_State : UK_Object {
                     myOnExitAction= null;
                 }
                 else {
-                    Debug.LogError("Only OnEntry, OnUpdate, and OnExit modules can be removed from a UK_State");
+                    Debug.LogError("Only OnEntry, OnUpdate, and OnExit modules can be removed from a iCS_State");
                 }
             },
             (otherwise)=> {

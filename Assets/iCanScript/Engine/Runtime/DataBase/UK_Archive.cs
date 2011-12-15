@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class UK_Archive {
+public class iCS_Archive {
     // ======================================================================
     //  string to/from object conversions
 	// ----------------------------------------------------------------------

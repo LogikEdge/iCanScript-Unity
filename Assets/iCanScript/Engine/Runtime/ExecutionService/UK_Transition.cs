@@ -1,28 +1,28 @@
 using UnityEngine;
 using System.Collections;
 
-public class UK_Transition : UK_Action {
+public class iCS_Transition : iCS_Action {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    UK_Action       myGuard;
-    UK_Action       myAction;
-    UK_State        myEndState;
-    UK_FunctionBase myTriggerFunction;
+    iCS_Action       myGuard;
+    iCS_Action       myAction;
+    iCS_State        myEndState;
+    iCS_FunctionBase myTriggerFunction;
     int             myTriggerPortIdx;
     bool            myIsTriggered= false;
 
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public UK_State     EndState    { get { return myEndState; }}
+    public iCS_State     EndState    { get { return myEndState; }}
     public bool         DidTrigger  { get { return myIsTriggered; }}
-    public UK_Action    Action      { get { return myAction; }}
+    public iCS_Action    Action      { get { return myAction; }}
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Transition(string name, UK_State endState, UK_Action guard, UK_FunctionBase triggerFunc, int portIdx, UK_Action action, Vector2 layout) : base(name, layout) {
+    public iCS_Transition(string name, iCS_State endState, iCS_Action guard, iCS_FunctionBase triggerFunc, int portIdx, iCS_Action action, Vector2 layout) : base(name, layout) {
         myGuard          = guard;
         myAction         = action;
         myEndState       = endState;

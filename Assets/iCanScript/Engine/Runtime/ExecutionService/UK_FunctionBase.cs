@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_FunctionBase : UK_Action {
+public class iCS_FunctionBase : iCS_Action {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -12,7 +12,7 @@ public class UK_FunctionBase : UK_Action {
     protected bool[]          myParameterIsOuts;
     protected int[]           myInIndexes;
     protected int[]           myOutIndexes;
-    protected UK_Connection[] myConnections;
+    protected iCS_Connection[] myConnections;
     
     // ======================================================================
     // Accessors
@@ -48,10 +48,10 @@ public class UK_FunctionBase : UK_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_FunctionBase(string name, bool[] paramIsOuts, Vector2 layout) : base(name, layout) {
+    public iCS_FunctionBase(string name, bool[] paramIsOuts, Vector2 layout) : base(name, layout) {
         Init(paramIsOuts);
     }
-    public UK_FunctionBase(string name, Vector2 layout) : base(name,layout) {}
+    public iCS_FunctionBase(string name, Vector2 layout) : base(name,layout) {}
     protected void Init(bool[] paramIsOuts) {
         myParameterIsOuts= paramIsOuts;
         List<int> inIdx= new List<int>();
@@ -63,14 +63,14 @@ public class UK_FunctionBase : UK_Action {
         myOutIndexes= outIdx.ToArray();        
         // Allocate parameters & connections
         myParameters= new object[paramIsOuts.Length];
-        myConnections= new UK_Connection[paramIsOuts.Length];
-        for(int i= 0; i < myConnections.Length; ++i) myConnections[i]= UK_Connection.NoConnection;
+        myConnections= new iCS_Connection[paramIsOuts.Length];
+        for(int i= 0; i < myConnections.Length; ++i) myConnections[i]= iCS_Connection.NoConnection;
     }
-    public void SetConnections(UK_Connection[] connections, object[] initValues) {
+    public void SetConnections(iCS_Connection[] connections, object[] initValues) {
         myConnections= connections;
         myParameters= initValues;
     }
-    public void SetConnection(int id, UK_Connection connection) {
+    public void SetConnection(int id, iCS_Connection connection) {
         myConnections[id]= connection;
     }
     

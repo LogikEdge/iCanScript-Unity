@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public static class UK_Types {
+public static class iCS_Types {
     // ----------------------------------------------------------------------
     // Returns true if type can be converted to another type
     public static bool IsA(Type baseType, Type derivedType) {

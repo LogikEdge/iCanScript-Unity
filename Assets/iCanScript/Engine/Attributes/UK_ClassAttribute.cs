@@ -1,7 +1,7 @@
 using System;
 
 [AttributeUsage(AttributeTargets.Class)]
-public class UK_ClassAttribute : Attribute {
+public class iCS_ClassAttribute : Attribute {
     // ======================================================================
     // Optional Parameters
     // ----------------------------------------------------------------------
@@ -36,5 +36,5 @@ public class UK_ClassAttribute : Attribute {
     private string myIcon= null;
 
     // ======================================================================
-    public override string ToString() { return "UK_Class"; }
+    public override string ToString() { return "iCS_Class"; }
 }

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is the main storage of uCode.  All object are derived
 // from this storage class.
-public class UK_Storage : MonoBehaviour {
+public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-                      public UK_UserPreferences       Preferences  = new UK_UserPreferences();
-    [HideInInspector] public List<UK_EditorObject>    EditorObjects= new List<UK_EditorObject>();
+                      public iCS_UserPreferences       Preferences  = new iCS_UserPreferences();
+    [HideInInspector] public List<iCS_EditorObject>    EditorObjects= new List<iCS_EditorObject>();
     [HideInInspector] public List<Object>             UnityObjects = new List<Object>();
     [HideInInspector] public int                      UndoRedoId   = 0;
 
@@ -44,18 +44,18 @@ public class UK_Storage : MonoBehaviour {
     // ======================================================================
     // EditorObject Utilities
     // ----------------------------------------------------------------------
-    public UK_EditorObject GetParent(UK_EditorObject child) {
+    public iCS_EditorObject GetParent(iCS_EditorObject child) {
         if(child == null || child.ParentId == -1) return null;
         return EditorObjects[child.ParentId]; 
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject GetSource(UK_EditorObject port) {
+    public iCS_EditorObject GetSource(iCS_EditorObject port) {
         if(port == null || port.Source == -1) return null;
         return EditorObjects[port.Source];
     }
     // ----------------------------------------------------------------------
     // Returns the absolute position of the node.
-    public Rect GetPosition(UK_EditorObject node) {
+    public Rect GetPosition(iCS_EditorObject node) {
         if(!IsValidEditorObject(node.ParentId)) return node.LocalPosition;
         Rect position= GetPosition(EditorObjects[node.ParentId]);
         return new Rect(position.x+node.LocalPosition.x,
@@ -65,9 +65,9 @@ public class UK_Storage : MonoBehaviour {
     }
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
-    public UK_EditorObject GetDataConnectionSource(UK_EditorObject port) {
+    public iCS_EditorObject GetDataConnectionSource(iCS_EditorObject port) {
         if(port == null || !port.IsDataPort) return null;
-        for(UK_EditorObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
+        for(iCS_EditorObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
             port= sourcePort;
         }
         return port;

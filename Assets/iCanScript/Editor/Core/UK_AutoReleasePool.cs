@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_AutoReleasePool {
+public class iCS_AutoReleasePool {
     static List<Prelude.Tuple<float,object>> myAutoReleasePool= new List<Prelude.Tuple<float,object>>();
     
     public static void AutoRelease(object obj, float deltaTime= 1f) {

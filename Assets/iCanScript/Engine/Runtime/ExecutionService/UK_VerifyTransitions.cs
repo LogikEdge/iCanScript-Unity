@@ -2,23 +2,23 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_VerifyTransitions : UK_Action {
+public class iCS_VerifyTransitions : iCS_Action {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    List<UK_Transition>  myTransitions        = new List<UK_Transition>();
+    List<iCS_Transition>  myTransitions        = new List<iCS_Transition>();
     int                  myQueueIdx           = 0;
-    UK_Transition        myTriggeredTransition= null;
+    iCS_Transition        myTriggeredTransition= null;
     
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public UK_Transition TriggeredTransition { get { return myTriggeredTransition; }}
+    public iCS_Transition TriggeredTransition { get { return myTriggeredTransition; }}
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_VerifyTransitions(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_VerifyTransitions(string name, Vector2 layout) : base(name, layout) {}
 
     // ======================================================================
     // Execution
@@ -30,7 +30,7 @@ public class UK_VerifyTransitions : UK_Action {
         myTriggeredTransition= null;
         while(myQueueIdx < myTransitions.Count) {
             // Attempt to execute child function.
-            UK_Transition transition= myTransitions[myQueueIdx];
+            iCS_Transition transition= myTransitions[myQueueIdx];
             transition.Execute(frameId);            
             // Move to next child if sucessfully executed.
             if(transition.IsCurrent(frameId)) {
@@ -63,7 +63,7 @@ public class UK_VerifyTransitions : UK_Action {
     public override void ForceExecute(int frameId) {
         myTriggeredTransition= null;
         if(myQueueIdx < myTransitions.Count) {
-            UK_Transition transition= myTransitions[myQueueIdx];
+            iCS_Transition transition= myTransitions[myQueueIdx];
             transition.ForceExecute(frameId);            
             if(transition.IsCurrent(frameId)) {
                 if(transition.DidTrigger) {
@@ -93,10 +93,10 @@ public class UK_VerifyTransitions : UK_Action {
     // ======================================================================
     // Child management
     // ----------------------------------------------------------------------
-    public void AddChild(UK_Transition transition) {
+    public void AddChild(iCS_Transition transition) {
         myTransitions.Add(transition);
     }
-    public void RemoveChild(UK_Transition transition) {
+    public void RemoveChild(iCS_Transition transition) {
         myTransitions.Remove(transition);
     }
 }

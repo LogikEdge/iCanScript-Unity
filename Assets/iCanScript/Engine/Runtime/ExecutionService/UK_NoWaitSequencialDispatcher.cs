@@ -2,11 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_NoWaitSequencialDispatcher : UK_Dispatcher {
+public class iCS_NoWaitSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_NoWaitSequencialDispatcher(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_NoWaitSequencialDispatcher(string name, Vector2 layout) : base(name, layout) {}
     
     // ======================================================================
     // Execution
@@ -15,7 +15,7 @@ public class UK_NoWaitSequencialDispatcher : UK_Dispatcher {
         // Attempt to execute child functions.
         bool stalled= true;
         for(int i= myQueueIdx; i < myExecuteQueue.Count; ++i) {
-            UK_Action action= myExecuteQueue[i];
+            iCS_Action action= myExecuteQueue[i];
             bool didExecute= action.IsCurrent(frameId);
             if(!didExecute) {
                 action.Execute(frameId);                

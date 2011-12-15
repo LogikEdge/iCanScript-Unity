@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public partial class UK_IStorage {
+public partial class iCS_IStorage {
     // ======================================================================
     // Unity Object containement functions
     // ----------------------------------------------------------------------
@@ -28,11 +28,11 @@ public partial class UK_IStorage {
         SetUnityObject(id, null);
     }
     // ----------------------------------------------------------------------
-    public object GetDefaultValue(UK_RuntimeDesc desc, int portId) {
+    public object GetDefaultValue(iCS_RuntimeDesc desc, int portId) {
         return desc.GetDefaultValue(portId, Storage);
     }
     // ----------------------------------------------------------------------
-    public void SetDefaultValue(UK_RuntimeDesc desc, int portId, object obj) {
+    public void SetDefaultValue(iCS_RuntimeDesc desc, int portId, object obj) {
         desc.SetDefaultValue(portId, obj, Storage);
     }
 }

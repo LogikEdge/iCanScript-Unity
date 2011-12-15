@@ -5,18 +5,18 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_GuiUtilities {
-    public static void OnInspectorGUI(UK_EditorObject port, UK_IStorage storage) {
+public class iCS_GuiUtilities {
+    public static void OnInspectorGUI(iCS_EditorObject port, iCS_IStorage storage) {
         // Extract port information
-        Type dataType= UK_Types.GetDataType(port.RuntimeType);
-        UK_EditorObject node= storage.GetParent(port);
+        Type dataType= iCS_Types.GetDataType(port.RuntimeType);
+        iCS_EditorObject node= storage.GetParent(port);
         int portId= port.PortIndex;
         // Extract parent node information.
-        UK_RuntimeDesc desc= new UK_RuntimeDesc(node.RuntimeArchive);    
+        iCS_RuntimeDesc desc= new iCS_RuntimeDesc(node.RuntimeArchive);    
         // Get runtime object if it exists.
-        UK_FunctionBase runtimeObject= storage.GetRuntimeObject(node) as UK_FunctionBase;
+        iCS_FunctionBase runtimeObject= storage.GetRuntimeObject(node) as iCS_FunctionBase;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
-        object portValue= runtimeObject != null ? runtimeObject[portId] : (desc.PortIsOuts[portId] ? UK_Types.DefaultValue(dataType) : storage.GetDefaultValue(desc, portId));            
+        object portValue= runtimeObject != null ? runtimeObject[portId] : (desc.PortIsOuts[portId] ? iCS_Types.DefaultValue(dataType) : storage.GetDefaultValue(desc, portId));            
 
         // Display primitives.
         object newValue= null;
@@ -198,7 +198,7 @@ public class UK_GuiUtilities {
             return true;
         }
         // Suport all UnityEngine objects.
-        if(UK_Types.IsA<UnityEngine.Object>(type)) {
+        if(iCS_Types.IsA<UnityEngine.Object>(type)) {
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
             newValue= EditorGUILayout.ObjectField(niceName, value, type, true);
             return true;

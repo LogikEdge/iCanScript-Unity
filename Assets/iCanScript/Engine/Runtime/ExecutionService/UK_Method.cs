@@ -3,12 +3,12 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class UK_Method : UK_Function {
+public class iCS_Method : iCS_Function {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     object          myThis          = null;
-    UK_Connection   myThisConnection= null;
+    iCS_Connection   myThisConnection= null;
 
     // ======================================================================
     // Accessors
@@ -31,25 +31,25 @@ public class UK_Method : UK_Function {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Method(string name, MethodInfo methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, methodInfo, layout) {
+    public iCS_Method(string name, MethodInfo methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, methodInfo, layout) {
         Init(portIsOuts);
     }
     protected new void Init(bool[] portIsOuts) {
         bool[] baseIsOuts= new bool[portIsOuts.Length-2];
         Array.Copy(portIsOuts, baseIsOuts, baseIsOuts.Length);
-        myThisConnection= UK_Connection.NoConnection;
+        myThisConnection= iCS_Connection.NoConnection;
         base.Init(baseIsOuts);        
     }
-    public new void SetConnections(UK_Connection[] connections, object[] initValues) {
+    public new void SetConnections(iCS_Connection[] connections, object[] initValues) {
         myThisConnection= connections[connections.Length-2];
-        UK_Connection[] baseConnections= new UK_Connection[connections.Length-2];
+        iCS_Connection[] baseConnections= new iCS_Connection[connections.Length-2];
         Array.Copy(connections, baseConnections, baseConnections.Length);
         myThis= initValues[initValues.Length-2];
         object[] baseValues= new object[initValues.Length-2];
         Array.Copy(initValues, baseValues, baseValues.Length);        
         base.SetConnections(baseConnections, baseValues);
     }
-    public new void SetConnection(int id, UK_Connection connection) {
+    public new void SetConnection(int id, iCS_Connection connection) {
         if(id == myParameters.Length+1) myThisConnection= connection;
         else base.SetConnection(id, connection);
     }

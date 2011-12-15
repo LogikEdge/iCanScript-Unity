@@ -1,7 +1,7 @@
 using System;
 
 [AttributeUsage(AttributeTargets.Field | AttributeTargets.Class)]
-public class UK_InOutPortAttribute : Attribute {
+public class iCS_InOutPortAttribute : Attribute {
     // ======================================================================
     // Optional Parameters
     // ----------------------------------------------------------------------
@@ -12,5 +12,5 @@ public class UK_InOutPortAttribute : Attribute {
     private string myName= null;
 
     // ======================================================================
-    public override string ToString() { return "UK_InOutPort"; }
+    public override string ToString() { return "iCS_InOutPort"; }
 }

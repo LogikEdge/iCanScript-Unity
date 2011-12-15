@@ -1,7 +1,7 @@
 using System;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class UK_FunctionAttribute : Attribute {
+public class iCS_FunctionAttribute : Attribute {
     // ======================================================================
     // Optional Parameters
     // ----------------------------------------------------------------------
@@ -30,5 +30,5 @@ public class UK_FunctionAttribute : Attribute {
     private string myIcon= null;
     
     // ======================================================================
-    public override string ToString() { return "UK_Function"; }
+    public override string ToString() { return "iCS_Function"; }
 }

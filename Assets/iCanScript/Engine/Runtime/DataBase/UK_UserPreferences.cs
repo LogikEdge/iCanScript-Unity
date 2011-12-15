@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 
 [System.Serializable]
-public class UK_UserPreferences {
+public class iCS_UserPreferences {
     [System.Serializable]
     public class UserBackgroundGrid {
         public Color    BackgroundColor= new Color(0.169f,0.188f,0.243f,1.0f);
@@ -63,7 +63,7 @@ public class UK_UserPreferences {
 
     [System.Serializable]
     public class UserHiddenPrefixes {
-        public const string uCodePrefix= UK_EditorConfig.TypePrefix;
+        public const string uCodePrefix= iCS_EditorConfig.TypePrefix;
         public string[]     CustomPrefixes= new string[0]; 
 
         public string GetTypeName(Type t)  { return GetName(t.Name); }
@@ -83,7 +83,7 @@ public class UK_UserPreferences {
     [System.Serializable]
     public class UserIcons {
         public bool         EnableMinimizedIcons= true;
-        public const string uCodeIconPath= UK_EditorConfig.GuiAssetPath;
+        public const string uCodeIconPath= iCS_EditorConfig.GuiAssetPath;
         public string[]     CustomIconPaths= new string[0];
     }
     public UserIcons     Icons= new UserIcons();

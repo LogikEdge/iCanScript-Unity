@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class UK_GetStaticField : UK_FunctionBase {
+public class iCS_GetStaticField : iCS_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -12,7 +12,7 @@ public class UK_GetStaticField : UK_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_GetStaticField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
+    public iCS_GetStaticField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
         myFieldInfo= fieldInfo;
     }
     

@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public partial class UK_IStorage {    
+public partial class iCS_IStorage {    
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
@@ -11,15 +11,15 @@ public partial class UK_IStorage {
     // ======================================================================
     // Creation
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreateEnablePort(int parentId) {
-        UK_EditorObject enablePort= CreatePort(EnablePortStr, parentId, typeof(bool), UK_ObjectTypeEnum.EnablePort);
+    public iCS_EditorObject CreateEnablePort(int parentId) {
+        iCS_EditorObject enablePort= CreatePort(EnablePortStr, parentId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
         enablePort.IsNameEditable= false;
         return enablePort;
     }
     // ----------------------------------------------------------------------
-    public void AddPortToModule(UK_EditorObject port) {
-        UK_EditorObject module= GetParent(port);
-        UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(module.RuntimeArchive);
+    public void AddPortToModule(iCS_EditorObject port) {
+        iCS_EditorObject module= GetParent(port);
+        iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(module.RuntimeArchive);
         int len= rtDesc.PortTypes.Length;
         port.PortIndex= len;
         Array.Resize(ref rtDesc.PortNames, len+1);
@@ -29,14 +29,14 @@ public partial class UK_IStorage {
         Array.Resize(ref rtDesc.PortIsOuts, len+1);
         rtDesc.PortIsOuts[len]= port.IsOutputPort;
         Array.Resize(ref rtDesc.PortDefaultValues, len+1);
-        rtDesc.PortDefaultValues[len]= rtDesc.PortIsOuts[len] || port.RuntimeType == typeof(void) ? null : UK_Types.DefaultValue(port.RuntimeType);
+        rtDesc.PortDefaultValues[len]= rtDesc.PortIsOuts[len] || port.RuntimeType == typeof(void) ? null : iCS_Types.DefaultValue(port.RuntimeType);
         module.RuntimeArchive= rtDesc.Encode(module.InstanceId);
     }
     // ----------------------------------------------------------------------
-    public void RemovePortFromModule(UK_EditorObject port) {
+    public void RemovePortFromModule(iCS_EditorObject port) {
         // Reorganize runtime parameter information.
-        UK_EditorObject module= GetParent(port);
-        UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(module.RuntimeArchive);
+        iCS_EditorObject module= GetParent(port);
+        iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(module.RuntimeArchive);
         int idx= port.PortIndex;
         int len= rtDesc.PortTypes.Length;
         for(int i= idx; i < len-1; ++i) {
@@ -57,11 +57,11 @@ public partial class UK_IStorage {
     // ======================================================================
     // Module helpers
     // ----------------------------------------------------------------------
-    public bool HasEnablePort(UK_EditorObject module) {
+    public bool HasEnablePort(iCS_EditorObject module) {
         return ForEachChildPort(module, p=> p.IsEnablePort);
     }
-    public UK_EditorObject GetEnablePort(UK_EditorObject module) {
-        UK_EditorObject enablePort= null;
+    public iCS_EditorObject GetEnablePort(iCS_EditorObject module) {
+        iCS_EditorObject enablePort= null;
         ForEachChildPort(module, p=> { if(p.IsEnablePort) { enablePort= p; return true; } return false; });
         return enablePort;
     }

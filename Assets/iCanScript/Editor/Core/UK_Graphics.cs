@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_Graphics {
+public class iCS_Graphics {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
@@ -67,11 +67,11 @@ public class UK_Graphics {
     // ======================================================================
     //  INITIALIZATION
 	// ----------------------------------------------------------------------
-    static public bool Init(UK_IStorage storage) {
+    static public bool Init(iCS_IStorage storage) {
         // Load AA line texture.
         string texturePath;     
         if(lineTexture == null) {
-            if(!GetCachedTexture(UK_EditorStrings.AALineTexture, out lineTexture, ref lineTextureErrorSeen)) {
+            if(!GetCachedTexture(iCS_EditorStrings.AALineTexture, out lineTexture, ref lineTextureErrorSeen)) {
                 IsInitialized= false;
                 return IsInitialized;
             }
@@ -81,7 +81,7 @@ public class UK_Graphics {
         }
         // Load node texture templates.
         if(defaultNodeTexture == null) {
-            if(!GetCachedTexture(UK_EditorStrings.DefaultNodeTexture, out defaultNodeTexture, ref defaultNodeTextureErrorSeen)) {
+            if(!GetCachedTexture(iCS_EditorStrings.DefaultNodeTexture, out defaultNodeTexture, ref defaultNodeTextureErrorSeen)) {
                 IsInitialized= false;
                 return IsInitialized;
             }
@@ -90,7 +90,7 @@ public class UK_Graphics {
             }            
         }
         if(nodeMaskTexture == null) {
-            texturePath= UK_EditorConfig.GuiAssetPath +"/"+UK_EditorStrings.NodeMaskTexture;
+            texturePath= iCS_EditorConfig.GuiAssetPath +"/"+iCS_EditorStrings.NodeMaskTexture;
             nodeMaskTexture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
             if(nodeMaskTexture == null) {
                 ResourceMissingError(texturePath, ref nodeMaskTextureErrorSeen);
@@ -102,37 +102,37 @@ public class UK_Graphics {
             }            
         }
         // Load folded/unfolded icons.
-        if(!GetCachedIcon(UK_EditorStrings.FoldedIcon, out foldedIcon, ref foldedIconErrorSeen, storage)) {
+        if(!GetCachedIcon(iCS_EditorStrings.FoldedIcon, out foldedIcon, ref foldedIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
-        if(!GetCachedIcon(UK_EditorStrings.UnfoldedIcon, out unfoldedIcon, ref unfoldedIconErrorSeen, storage)) {
+        if(!GetCachedIcon(iCS_EditorStrings.UnfoldedIcon, out unfoldedIcon, ref unfoldedIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
         // Load maximize/minimize icon.
-        if(!GetCachedIcon(UK_EditorStrings.MinimizeIcon, out minimizeIcon, ref minimizeIconErrorSeen, storage)) {
+        if(!GetCachedIcon(iCS_EditorStrings.MinimizeIcon, out minimizeIcon, ref minimizeIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }
-        if(!GetCachedIcon(UK_EditorStrings.MaximizeIcon, out maximizeIcon, ref maximizeIconErrorSeen, storage)) {
+        if(!GetCachedIcon(iCS_EditorStrings.MaximizeIcon, out maximizeIcon, ref maximizeIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }
         // Load line arrow heads.
-        if(!GetCachedIcon(UK_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon, ref upArrowHeadIconErrorSeen, storage)) {
+        if(!GetCachedIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon, ref upArrowHeadIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!GetCachedIcon(UK_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon, ref downArrowHeadIconErrorSeen, storage)) {
+        if(!GetCachedIcon(iCS_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon, ref downArrowHeadIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!GetCachedIcon(UK_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon, ref leftArrowHeadIconErrorSeen, storage)) {
+        if(!GetCachedIcon(iCS_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon, ref leftArrowHeadIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!GetCachedIcon(UK_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon, ref rightArrowHeadIconErrorSeen, storage)) {
+        if(!GetCachedIcon(iCS_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon, ref rightArrowHeadIconErrorSeen, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
@@ -142,7 +142,7 @@ public class UK_Graphics {
     }
 
     // ----------------------------------------------------------------------
-    GUIStyle GetLabelStyle(UK_IStorage storage) {
+    GUIStyle GetLabelStyle(iCS_IStorage storage) {
         Color labelColor= storage.Preferences.NodeColors.LabelColor;
         if(labelStyle == null) labelStyle= new GUIStyle();
         labelStyle.normal.textColor= labelColor;
@@ -176,7 +176,7 @@ public class UK_Graphics {
     }
     // ----------------------------------------------------------------------
     static bool GetCachedTexture(string fileName, out Texture2D texture, ref bool errorSeen) {
-        string texturePath= UK_EditorConfig.GuiAssetPath+"/"+fileName;
+        string texturePath= iCS_EditorConfig.GuiAssetPath+"/"+fileName;
         texture= GetCachedTexture(texturePath);
         if(texture == null) {
             ResourceMissingError(texturePath, ref errorSeen);
@@ -189,9 +189,9 @@ public class UK_Graphics {
         return GetCachedTextureFromGUID(guid);
     }
     // ----------------------------------------------------------------------
-    public static Texture2D GetCachedIcon(string fileName, UK_IStorage storage) {
+    public static Texture2D GetCachedIcon(string fileName, iCS_IStorage storage) {
         // Try with the WarpDrice Icon prefix.
-        string iconPath= UK_UserPreferences.UserIcons.uCodeIconPath+"/"+fileName;
+        string iconPath= iCS_UserPreferences.UserIcons.uCodeIconPath+"/"+fileName;
         Texture2D icon= GetCachedTexture(iconPath);
         if(icon == null) {
             // Try with the user definable Icon prefixes.
@@ -207,7 +207,7 @@ public class UK_Graphics {
         return icon;
     }
     // ----------------------------------------------------------------------
-    public static string IconPathToGUID(string fileName, UK_IStorage storage) {
+    public static string IconPathToGUID(string fileName, iCS_IStorage storage) {
         if(fileName == null) return null;
         Texture2D icon= GetCachedIcon(fileName, storage);
         if(icon == null) return null;
@@ -215,7 +215,7 @@ public class UK_Graphics {
         return AssetDatabase.AssetPathToGUID(path);
     }
     // ----------------------------------------------------------------------
-    public static bool GetCachedIcon(string fileName, out Texture2D icon, ref bool errorSeen, UK_IStorage storage) {
+    public static bool GetCachedIcon(string fileName, out Texture2D icon, ref bool errorSeen, iCS_IStorage storage) {
         icon= GetCachedIcon(fileName, storage);
         if(icon == null) {
             ResourceMissingError(fileName, ref errorSeen);            
@@ -331,7 +331,7 @@ public class UK_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    public void DrawNormalNode(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {        
+    public void DrawNormalNode(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {        
         // Don't draw minimized node.
         if(IsInvisible(node, storage) || IsMinimized(node, storage)) return;
         
@@ -347,7 +347,7 @@ public class UK_Graphics {
         position.width+= leftOffset + rightOffset;
         position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
         GUI.Box(position, new GUIContent(title,node.ToolTip), guiStyle);            
-        EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, UK_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);
+        EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, iCS_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, storage)) {
             if(storage.IsFolded(node)) {
@@ -362,7 +362,7 @@ public class UK_Graphics {
         }
     }
     // ----------------------------------------------------------------------
-    public void DrawMinimizedNode(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {        
+    public void DrawMinimizedNode(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {        
         if(!IsMinimized(node, storage)) return;
         
         // Draw minimized node.
@@ -375,14 +375,14 @@ public class UK_Graphics {
         GUI.DrawTexture(texturePos, icon);                           
         GUIStyle labelStyle= GetLabelStyle(storage);
         GUI.Label(texturePos, new GUIContent("", node.ToolTip), labelStyle);
-        Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(title);
+        Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(title);
         GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip), labelStyle);
     }
 
     // ======================================================================
     // Picking functionality
     // ----------------------------------------------------------------------
-    public bool IsNodeTitleBarPicked(UK_EditorObject node, Vector2 pick, UK_IStorage storage) {
+    public bool IsNodeTitleBarPicked(iCS_EditorObject node, Vector2 pick, iCS_IStorage storage) {
         if(!node.IsNode || storage.IsMinimized(node)) return false;
         Rect titleRect= GetDisplayPosition(node, storage);
         GUIStyle style= GetNodeGUIStyle(node, null, storage);
@@ -392,38 +392,38 @@ public class UK_Graphics {
     // ======================================================================
     // Fold/Unfold icon functionality.
     // ----------------------------------------------------------------------
-    public bool IsFoldIconPicked(UK_EditorObject obj, Vector2 mousePos, UK_IStorage storage) {
+    public bool IsFoldIconPicked(iCS_EditorObject obj, Vector2 mousePos, iCS_IStorage storage) {
         if(!ShouldDisplayFoldIcon(obj, storage)) return false;
         Rect foldIconPos= GetFoldIconPosition(obj, storage);
         return foldIconPos.Contains(mousePos);
     }
-    bool ShouldDisplayFoldIcon(UK_EditorObject obj, UK_IStorage storage) {
+    bool ShouldDisplayFoldIcon(iCS_EditorObject obj, iCS_IStorage storage) {
         if(storage.IsMinimized(obj)) return false;
         return (obj.IsModule || obj.IsStateChart || obj.IsState);
     }
-    Rect GetFoldIconPosition(UK_EditorObject obj, UK_IStorage storage) {
+    Rect GetFoldIconPosition(iCS_EditorObject obj, iCS_IStorage storage) {
         Rect objPos= GetDisplayPosition(obj, storage);
         return new Rect(objPos.x+8, objPos.y, foldedIcon.width, foldedIcon.height);
     }
     // ======================================================================
     // Minimize icon functionality
     // ----------------------------------------------------------------------
-    public bool IsMinimizeIconPicked(UK_EditorObject obj, Vector2 mousePos, UK_IStorage storage) {
+    public bool IsMinimizeIconPicked(iCS_EditorObject obj, Vector2 mousePos, iCS_IStorage storage) {
         if(!ShouldDisplayMinimizeIcon(obj, storage)) return false;
         Rect minimizeIconPos= GetMinimizeIconPosition(obj, storage);
         return minimizeIconPos.Contains(mousePos);
     }
-    bool ShouldDisplayMinimizeIcon(UK_EditorObject obj, UK_IStorage storage) {
+    bool ShouldDisplayMinimizeIcon(iCS_EditorObject obj, iCS_IStorage storage) {
         return obj.InstanceId != 0 && obj.IsNode && !storage.IsMinimized(obj);
     }
-    Rect GetMinimizeIconPosition(UK_EditorObject obj, UK_IStorage storage) {
+    Rect GetMinimizeIconPosition(iCS_EditorObject obj, iCS_IStorage storage) {
         Rect objPos= GetDisplayPosition(obj, storage);
         return new Rect(objPos.xMax-4-minimizeIcon.width, objPos.y, minimizeIcon.width, minimizeIcon.height);
     }
     // ======================================================================
     // Maximize icon functionality
     // ----------------------------------------------------------------------
-    public static Texture2D GetMaximizeIcon(UK_EditorObject node, NodeStyle nodeStyle, UK_IStorage storage) {
+    public static Texture2D GetMaximizeIcon(iCS_EditorObject node, NodeStyle nodeStyle, iCS_IStorage storage) {
         Texture2D icon= null;
         if(storage.Preferences.Icons.EnableMinimizedIcons && node.IconGUID != null) {
             icon= GetCachedIconFromGUID(node.IconGUID);
@@ -437,23 +437,23 @@ public class UK_Graphics {
         return icon;       
     }
     // ----------------------------------------------------------------------
-    public bool IsMaximizeIconPicked(UK_EditorObject obj, Vector2 mousePos, UK_IStorage storage) {
+    public bool IsMaximizeIconPicked(iCS_EditorObject obj, Vector2 mousePos, iCS_IStorage storage) {
         if(!ShouldDisplayMaximizeIcon(obj, storage)) return false;
         Rect maximizeIconPos= GetMaximizeIconPosition(obj, storage);
         return maximizeIconPos.Contains(mousePos);
     }
-    bool ShouldDisplayMaximizeIcon(UK_EditorObject obj, UK_IStorage storage) {
+    bool ShouldDisplayMaximizeIcon(iCS_EditorObject obj, iCS_IStorage storage) {
         return obj.InstanceId != 0 && obj.IsNode && storage.IsMinimized(obj);
     }
-    Rect GetMaximizeIconPosition(UK_EditorObject obj, UK_IStorage storage) {
+    Rect GetMaximizeIconPosition(iCS_EditorObject obj, iCS_IStorage storage) {
         return GetDisplayPosition(obj, storage);
     }
     // ======================================================================
     // Node style functionality
     // ----------------------------------------------------------------------
-    NodeStyle GetNodeStyle(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {
+    NodeStyle GetNodeStyle(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {
         // Node background is dependant on node type.
-//        UK_Node runtimeNode= storage.EditorObjects.GetRuntimeObject(node) as UK_Node;
+//        iCS_Node runtimeNode= storage.EditorObjects.GetRuntimeObject(node) as iCS_Node;
 //        if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
 //            GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
 //            return nodeInErrorStyle;
@@ -477,14 +477,14 @@ public class UK_Graphics {
         GenerateNodeStyle(ref defaultStyle, Color.gray);
         return defaultStyle;
     }
-    GUIStyle GetNodeGUIStyle(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {
+    GUIStyle GetNodeGUIStyle(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         return nodeStyle.guiStyle;
     }
     
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
-    Color GetNodeColor(UK_EditorObject node, UK_EditorObject selectedObject, UK_IStorage storage) {
+    Color GetNodeColor(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {
         NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
         return nodeStyle.nodeColor;
     }
@@ -492,7 +492,7 @@ public class UK_Graphics {
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
-    public void DrawPort(UK_EditorObject port, UK_EditorObject selectedObject, UK_IStorage storage) {
+    public void DrawPort(iCS_EditorObject port, iCS_EditorObject selectedObject, iCS_IStorage storage) {
         // Update display position.
         Rect position= GetDisplayPosition(port, storage);
 
@@ -500,7 +500,7 @@ public class UK_Graphics {
         if(IsInvisible(port, storage) || IsMinimized(port, storage)) return;
         
         // Draw port
-        UK_EditorObject portParent= storage.GetParent(port);         
+        iCS_EditorObject portParent= storage.GetParent(port);         
         Vector2 center= Math3D.ToVector2(position);
         Type portValueType= port.RuntimeType;
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
@@ -510,17 +510,17 @@ public class UK_Graphics {
         } else if(port.IsStatePort) {
             if(port.IsOutStatePort) {
                 Handles.color= Color.white;
-                Handles.DrawSolidDisc(center, FacingNormal, UK_EditorConfig.PortRadius);
+                Handles.DrawSolidDisc(center, FacingNormal, iCS_EditorConfig.PortRadius);
             }
         } else if(port.IsInTransitionPort || port.IsOutTransitionPort) {
             Handles.color= Color.white;
-            Handles.DrawSolidDisc(center, FacingNormal, UK_EditorConfig.PortRadius);            
+            Handles.DrawSolidDisc(center, FacingNormal, iCS_EditorConfig.PortRadius);            
         }
         else {
             DrawCircularPort(center, portColor, nodeColor);
         }
         // Configure move cursor for port.
-        Rect portPos= new Rect(center.x-UK_EditorConfig.PortRadius, center.y-UK_EditorConfig.PortRadius, UK_EditorConfig.PortSize, UK_EditorConfig.PortSize);
+        Rect portPos= new Rect(center.x-iCS_EditorConfig.PortRadius, center.y-iCS_EditorConfig.PortRadius, iCS_EditorConfig.PortSize, iCS_EditorConfig.PortSize);
         EditorGUIUtility.AddCursorRect (portPos, MouseCursor.MoveArrow);
         GUIStyle labelStyle= GetLabelStyle(storage);
         GUI.Label(portPos, new GUIContent("", port.ToolTip), labelStyle);
@@ -528,23 +528,23 @@ public class UK_Graphics {
         // Show port label.
         if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
-        Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(name);
+        Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(name);
         switch(port.Edge) {
-            case UK_EditorObject.EdgeEnum.Left:
-                center.x+= 1 + UK_EditorConfig.PortSize;
+            case iCS_EditorObject.EdgeEnum.Left:
+                center.x+= 1 + iCS_EditorConfig.PortSize;
                 center.y-= 1 + 0.5f * labelSize.y;
                 break;
-            case UK_EditorObject.EdgeEnum.Right:
-                center.x-= 1 + labelSize.x + UK_EditorConfig.PortSize;
+            case iCS_EditorObject.EdgeEnum.Right:
+                center.x-= 1 + labelSize.x + iCS_EditorConfig.PortSize;
                 center.y-= 1 + 0.5f * labelSize.y;
                 break;
-            case UK_EditorObject.EdgeEnum.Top:            
+            case iCS_EditorObject.EdgeEnum.Top:            
                 center.x-= 1 + 0.5f*labelSize.x;
-                center.y-= UK_EditorConfig.PortSize+0.8f*labelSize.y*(1+TopBottomLabelOffset(port, storage));
+                center.y-= iCS_EditorConfig.PortSize+0.8f*labelSize.y*(1+TopBottomLabelOffset(port, storage));
                 break;
-            case UK_EditorObject.EdgeEnum.Bottom:
+            case iCS_EditorObject.EdgeEnum.Bottom:
                 center.x-= 1 + 0.5f*labelSize.x;
-                center.y+= UK_EditorConfig.PortSize+0.8f*labelSize.y*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y;
+                center.y+= iCS_EditorConfig.PortSize+0.8f*labelSize.y*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y;
                 break;
         }
         GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), labelStyle);
@@ -553,20 +553,20 @@ public class UK_Graphics {
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor) {
         Handles.color= Color.black;
-        Handles.DrawSolidDisc(_center, FacingNormal, UK_EditorConfig.PortRadius+2.0f);
+        Handles.DrawSolidDisc(_center, FacingNormal, iCS_EditorConfig.PortRadius+2.0f);
         Handles.color= _fillColor;
-        Handles.DrawSolidDisc(_center, FacingNormal, UK_EditorConfig.PortRadius);
+        Handles.DrawSolidDisc(_center, FacingNormal, iCS_EditorConfig.PortRadius);
         Handles.color= _borderColor;
-        Handles.DrawWireDisc(_center, FacingNormal, UK_EditorConfig.PortRadius+2.0f);
+        Handles.DrawWireDisc(_center, FacingNormal, iCS_EditorConfig.PortRadius+2.0f);
     }
 
 	// ----------------------------------------------------------------------
     void DrawSquarePort(Vector3 _center, Color _borderColor) {
         // Draw connector.
         Vector3[] vectors= new Vector3[5];
-        Handles.DrawSolidDisc(_center, FacingNormal, UK_EditorConfig.PortRadius);
-        float delta= UK_EditorConfig.PortRadius-1;
-        float minSize= 0.707f * UK_EditorConfig.PortRadius;
+        Handles.DrawSolidDisc(_center, FacingNormal, iCS_EditorConfig.PortRadius);
+        float delta= iCS_EditorConfig.PortRadius-1;
+        float minSize= 0.707f * iCS_EditorConfig.PortRadius;
         for(; delta > minSize; --delta) {
             vectors[0]= new Vector3(_center.x-delta, _center.y-delta, 0);
             vectors[1]= new Vector3(_center.x-delta, _center.y+delta, 0);
@@ -576,7 +576,7 @@ public class UK_Graphics {
             Handles.DrawPolyLine(vectors);
         }
 		Handles.color= _borderColor;
-        delta= UK_EditorConfig.PortRadius;
+        delta= iCS_EditorConfig.PortRadius;
         vectors[0]= new Vector3(_center.x-delta, _center.y-delta, 0);
         vectors[1]= new Vector3(_center.x-delta, _center.y+delta, 0);
         vectors[2]= new Vector3(_center.x+delta, _center.y+delta, 0);
@@ -588,7 +588,7 @@ public class UK_Graphics {
 	// ----------------------------------------------------------------------
     void DrawDiamondPort(Vector3 _center, Color _borderColor) {
         Vector3[] vectors= new Vector3[5];
-        float radius= UK_EditorConfig.PortRadius+1;
+        float radius= iCS_EditorConfig.PortRadius+1;
         Handles.DrawSolidDisc(_center, FacingNormal, 0.707f * radius);
         float delta= radius-1;
         float minSize= 0.707f * radius;
@@ -613,7 +613,7 @@ public class UK_Graphics {
 	// ----------------------------------------------------------------------
     void DrawDownTrianglePort(Vector3 _center, Color _borderColor) {
         Vector3[] vectors= new Vector3[4];
-        float radius= UK_EditorConfig.PortRadius+1;
+        float radius= iCS_EditorConfig.PortRadius+1;
         Handles.DrawLine(new Vector3(_center.x+1, _center.y+1, 0), new Vector3(_center.x-1, _center.y-1, 0));
         float delta= 1;
         for(; delta < radius; ++delta) {
@@ -635,7 +635,7 @@ public class UK_Graphics {
 	// ----------------------------------------------------------------------
     void DrawUpTrianglePort(Vector3 _center, Color _borderColor) {
         Vector3[] vectors= new Vector3[4];
-        float radius= UK_EditorConfig.PortRadius+1;
+        float radius= iCS_EditorConfig.PortRadius+1;
         Handles.DrawLine(new Vector3(_center.x+1, _center.y+1, 0), new Vector3(_center.x-1, _center.y-1, 0));
         float delta= 1;
         for(; delta < radius; ++delta) {
@@ -664,7 +664,7 @@ public class UK_Graphics {
 	// ----------------------------------------------------------------------
     void DrawRightTrianglePort(Vector3 _center, Color _borderColor) {
         Vector3[] vectors= new Vector3[4];
-        float radius= UK_EditorConfig.PortRadius+1;
+        float radius= iCS_EditorConfig.PortRadius+1;
         Handles.DrawLine(new Vector3(_center.x+1, _center.y+1, 0), new Vector3(_center.x-1, _center.y-1, 0));
         float delta= 1;
         for(; delta < radius; ++delta) {
@@ -686,7 +686,7 @@ public class UK_Graphics {
 	// ----------------------------------------------------------------------
     void DrawLeftTrianglePort(Vector3 _center, Color _borderColor) {
         Vector3[] vectors= new Vector3[4];
-        float radius= UK_EditorConfig.PortRadius+1;
+        float radius= iCS_EditorConfig.PortRadius+1;
         Handles.DrawLine(new Vector3(_center.x+1, _center.y+1, 0), new Vector3(_center.x-1, _center.y-1, 0));
         float delta= 1;
         for(; delta < radius; ++delta) {
@@ -708,7 +708,7 @@ public class UK_Graphics {
 	// ----------------------------------------------------------------------
     static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
     static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
-    static float TopBottomLabelOffset(UK_EditorObject port, UK_IStorage storage) {
+    static float TopBottomLabelOffset(iCS_EditorObject port, iCS_IStorage storage) {
         float ratio= port.LocalPosition.x/GetDisplayPosition(storage.GetParent(port), storage).width;
         float error= 100f;
         float offset= 0f;
@@ -725,14 +725,14 @@ public class UK_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(UK_EditorObject port, UK_IStorage storage) {
+    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage) {
         if(IsVisible(storage.GetParent(port), storage) && storage.IsValid(port.Source)) {
-            UK_EditorObject source= storage.GetSource(port);
-            UK_EditorObject sourceParent= storage.GetParent(source);
+            iCS_EditorObject source= storage.GetSource(port);
+            iCS_EditorObject sourceParent= storage.GetParent(source);
             if(IsVisible(sourceParent, storage) && !port.IsOutStatePort) {
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
-                color.a*= UK_EditorConfig.ConnectionTransparency;
-                UK_ConnectionParams cp= new UK_ConnectionParams(port, GetDisplayPosition(port, storage), source, GetDisplayPosition(source, storage), storage);
+                color.a*= iCS_EditorConfig.ConnectionTransparency;
+                iCS_ConnectionParams cp= new iCS_ConnectionParams(port, GetDisplayPosition(port, storage), source, GetDisplayPosition(source, storage), storage);
         		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
@@ -760,7 +760,7 @@ public class UK_Graphics {
     // ======================================================================
     //  Utilities
     // ----------------------------------------------------------------------
-    static Rect GetDisplayPosition(UK_EditorObject edObj, UK_IStorage storage) {
+    static Rect GetDisplayPosition(iCS_EditorObject edObj, iCS_IStorage storage) {
         Rect layoutPosition= GetLayoutPosition(edObj, storage);
         Rect displayPosition= storage.GetDisplayPosition(edObj);
         if(IsAnimationCompleted(edObj, storage)) {
@@ -778,25 +778,25 @@ public class UK_Graphics {
         displayPosition= Math3D.Lerp(displayPosition, layoutPosition, ratio);
         return displayPosition;
     }
-    static Rect GetLayoutPosition(UK_EditorObject edObj, UK_IStorage storage) {
+    static Rect GetLayoutPosition(iCS_EditorObject edObj, iCS_IStorage storage) {
         if(!storage.IsVisible(edObj)) {
-            UK_EditorObject parent= storage.GetParent(edObj);
+            iCS_EditorObject parent= storage.GetParent(edObj);
             for(; !storage.IsVisible(parent); parent= storage.GetParent(parent));
             Vector2 midPoint= Math3D.Middle(storage.GetPosition(parent));
             return new Rect(midPoint.x, midPoint.y, 0, 0);
         }
         return storage.GetPosition(edObj);
     }
-    static float GetAnimationRatio(UK_EditorObject edObj, UK_IStorage storage) {
+    static float GetAnimationRatio(iCS_EditorObject edObj, iCS_IStorage storage) {
         float time= storage.Preferences.Animation.AnimationTime;
         float invTime= Math3D.IsZero(time) ? 10000f : 1f/time;
         return invTime*(storage.GetAnimTime(edObj));        
     }
-    static bool IsAnimationCompleted(UK_EditorObject edObj, UK_IStorage storage) {
+    static bool IsAnimationCompleted(iCS_EditorObject edObj, iCS_IStorage storage) {
         return GetAnimationRatio(edObj, storage) >= 0.99f;
     }
 
-    bool IsMinimized(UK_EditorObject edObj, UK_IStorage storage) {
+    bool IsMinimized(iCS_EditorObject edObj, iCS_IStorage storage) {
         if(edObj.IsNode) {
             if(IsInvisible(edObj, storage)) return false;
             Rect position= GetDisplayPosition(edObj, storage);
@@ -806,18 +806,18 @@ public class UK_Graphics {
         }
         return storage.IsMinimized(edObj) && IsAnimationCompleted(edObj, storage);
     }
-    static bool IsFolded(UK_EditorObject edObj, UK_IStorage storage) {
+    static bool IsFolded(iCS_EditorObject edObj, iCS_IStorage storage) {
         return storage.IsFolded(edObj) && IsAnimationCompleted(edObj, storage);
     }
-    bool IsInvisible(UK_EditorObject edObj, UK_IStorage storage) {
+    bool IsInvisible(iCS_EditorObject edObj, iCS_IStorage storage) {
         return !IsVisible(edObj, storage);
     }
-    bool IsVisible(UK_EditorObject edObj, UK_IStorage storage) {
+    bool IsVisible(iCS_EditorObject edObj, iCS_IStorage storage) {
         if(edObj.IsNode) {
             Rect position= GetDisplayPosition(edObj, storage);
             return position.width >= 12f && position.height >= 12;  // Invisible if too small.
         }
-        UK_EditorObject parent= storage.GetParent(edObj);
+        iCS_EditorObject parent= storage.GetParent(edObj);
         return IsVisible(parent, storage) && !IsMinimized(parent, storage);
     }
     

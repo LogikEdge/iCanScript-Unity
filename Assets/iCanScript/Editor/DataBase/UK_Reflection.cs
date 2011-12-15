@@ -4,14 +4,14 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_Reflection {
+public class iCS_Reflection {
     // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
     public static List<FieldInfo> GetInPortFields(Type objType) {
         List<FieldInfo> list= new List<FieldInfo>();
         foreach(var field in objType.GetFields()) {
             foreach(var attribute in field.GetCustomAttributes(true)) {
-                if((attribute is UK_InPortAttribute)) {
+                if((attribute is iCS_InPortAttribute)) {
                     list.Add(field);
                 }
             }
@@ -24,7 +24,7 @@ public class UK_Reflection {
         List<FieldInfo> list= new List<FieldInfo>();
         foreach(var field in objType.GetFields()) {
             foreach(var attribute in field.GetCustomAttributes(true)) {
-                if((attribute is UK_OutPortAttribute)) {
+                if((attribute is iCS_OutPortAttribute)) {
                     list.Add(field);
                 }
             }
@@ -34,7 +34,7 @@ public class UK_Reflection {
 
     // ----------------------------------------------------------------------
     // Returns the type of the given port.
-    public static Type GetPortFieldType(UK_EditorObject port, UK_EditorObject portParent) {
+    public static Type GetPortFieldType(iCS_EditorObject port, iCS_EditorObject portParent) {
         FieldInfo fieldInfo= portParent.RuntimeType.GetField(port.Name);
         if(fieldInfo == null) {
             Debug.LogWarning("Invalid port name");            
@@ -46,20 +46,20 @@ public class UK_Reflection {
     // Scan the application for uCode attributes.
     public static void ParseAppDomain() {
         // Remove all previously registered functions.
-        UK_DataBase.Clear();
+        iCS_DataBase.Clear();
         // Scan the application for functions/methods/conversions to register.
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var classType in assembly.GetTypes()) {
                 foreach(var classCustomAttribute in classType.GetCustomAttributes(true)) {
                     // Only register classes that have been tagged for uCode.
-                    if(classCustomAttribute is UK_ClassAttribute) {
+                    if(classCustomAttribute is iCS_ClassAttribute) {
                         // Validate that the class is public.
                         if(classType.IsPublic == false) {
-                            Debug.LogWarning("Class "+classType+" is not public and tagged for "+UK_EditorConfig.ProductName+".  Ignoring class !!!");
+                            Debug.LogWarning("Class "+classType+" is not public and tagged for "+iCS_EditorConfig.ProductName+".  Ignoring class !!!");
                             continue;
                         }
                         // Extract class information.
-                        UK_ClassAttribute classAttribute= classCustomAttribute as UK_ClassAttribute;
+                        iCS_ClassAttribute classAttribute= classCustomAttribute as iCS_ClassAttribute;
                         string classCompany= classAttribute.Company ?? "MyComnpany";
                         string className   = classAttribute.Name    ?? classType.Name;
                         string classPackage= classAttribute.Package ?? className;
@@ -70,8 +70,8 @@ public class UK_Reflection {
                 }
             }
         }
-        UK_UnityClasses.PopulateDataBase();
-        UK_NETClasses.PopulateDataBase();
+        iCS_UnityClasses.PopulateDataBase();
+        iCS_NETClasses.PopulateDataBase();
     }
     // ----------------------------------------------------------------------
     public static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
@@ -83,28 +83,28 @@ public class UK_Reflection {
         // Gather field information.
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerField= false;
-            UK_ParamDirectionEnum direction= UK_ParamDirectionEnum.InOut;
+            iCS_ParamDirectionEnum direction= iCS_ParamDirectionEnum.InOut;
             foreach(var fieldAttr in field.GetCustomAttributes(true)) {
-                if(!field.IsPublic && (fieldAttr is UK_InPortAttribute || fieldAttr is UK_OutPortAttribute || fieldAttr is UK_InOutPortAttribute)) {
-                    Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+UK_EditorConfig.ProductName+". Ignoring field !!!");
+                if(!field.IsPublic && (fieldAttr is iCS_InPortAttribute || fieldAttr is iCS_OutPortAttribute || fieldAttr is iCS_InOutPortAttribute)) {
+                    Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring field !!!");
                     continue;
                 }
-                if(fieldAttr is UK_InPortAttribute) {
-                    direction= UK_ParamDirectionEnum.In;
+                if(fieldAttr is iCS_InPortAttribute) {
+                    direction= iCS_ParamDirectionEnum.In;
                     registerField= true;
                 }
-                if(fieldAttr is UK_OutPortAttribute) {
-                    direction= UK_ParamDirectionEnum.Out;
+                if(fieldAttr is iCS_OutPortAttribute) {
+                    direction= iCS_ParamDirectionEnum.Out;
                     registerField= true;
                 }
-                if(fieldAttr is UK_InOutPortAttribute) {
-                    direction= UK_ParamDirectionEnum.InOut;
+                if(fieldAttr is iCS_InOutPortAttribute) {
+                    direction= iCS_ParamDirectionEnum.InOut;
                     registerField= true;
                 }
             }
             if(acceptAllPublic && field.IsPublic) {
                 registerField= true;
-                direction= UK_ParamDirectionEnum.InOut;
+                direction= iCS_ParamDirectionEnum.InOut;
             }
             if(registerField) {
                 if(field.IsStatic) {
@@ -116,31 +116,31 @@ public class UK_Reflection {
         }        
     }
     // ----------------------------------------------------------------------
-    static void DecodeStaticField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, UK_ParamDirectionEnum dir) {
+    static void DecodeStaticField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
         string[] paramNames= new string[1]{field.Name};
         Type[] paramTypes= new Type[1]{field.FieldType};
-        object[] paramDefaultValues= new object[1]{UK_Types.DefaultValue(field.FieldType)};
-        if(dir == UK_ParamDirectionEnum.In || dir == UK_ParamDirectionEnum.InOut) {
+        object[] paramDefaultValues= new object[1]{iCS_Types.DefaultValue(field.FieldType)};
+        if(dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[1]{false};
-            UK_DataBase.AddStaticField(company, package, displayName+" (write)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddStaticField(company, package, displayName+" (write)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
-        if(dir == UK_ParamDirectionEnum.Out || dir == UK_ParamDirectionEnum.InOut) {
+        if(dir == iCS_ParamDirectionEnum.Out || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[]{true};
-            UK_DataBase.AddStaticField(company, package, displayName+" (read)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddStaticField(company, package, displayName+" (read)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
     }
     // ----------------------------------------------------------------------
-    static void DecodeInstanceField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, UK_ParamDirectionEnum dir) {
+    static void DecodeInstanceField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
         string[] paramNames= new string[3]{"this", field.Name, "this"};
         Type[] paramTypes= new Type[3]{classType, field.FieldType, classType};
-        object[] paramDefaultValues= new object[3]{UK_Types.DefaultValue(classType), UK_Types.DefaultValue(field.FieldType),UK_Types.DefaultValue(classType)};
-        if(dir == UK_ParamDirectionEnum.In || dir == UK_ParamDirectionEnum.InOut) {
+        object[] paramDefaultValues= new object[3]{iCS_Types.DefaultValue(classType), iCS_Types.DefaultValue(field.FieldType),iCS_Types.DefaultValue(classType)};
+        if(dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[3]{false, false, true};
-            UK_DataBase.AddInstanceField(company, package, displayName+" (write)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddInstanceField(company, package, displayName+" (write)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
-        if(dir == UK_ParamDirectionEnum.Out || dir == UK_ParamDirectionEnum.InOut) {
+        if(dir == iCS_ParamDirectionEnum.Out || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[3]{false, true, true};
-            UK_DataBase.AddInstanceField(company, package, displayName+" (read)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddInstanceField(company, package, displayName+" (read)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
     }
     // ----------------------------------------------------------------------
@@ -152,27 +152,27 @@ public class UK_Reflection {
             string toolTip= classToolTip;
             string iconPath= classIconPath;
             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
-                if(methodAttribute is UK_ConversionAttribute) {
+                if(methodAttribute is iCS_ConversionAttribute) {
                     if(method.IsPublic) {
-                        UK_ConversionAttribute convAttr= methodAttribute as UK_ConversionAttribute;
+                        iCS_ConversionAttribute convAttr= methodAttribute as iCS_ConversionAttribute;
                         iconPath= convAttr.Icon ?? classIconPath;
                         DecodeConversion(company, package, iconPath, classType, method);
                     } else {                        
-                        Debug.LogWarning("Conversion "+method.Name+" of class "+classType.Name+" is not public and tagged for "+UK_EditorConfig.ProductName+". Ignoring function !!!");
+                        Debug.LogWarning("Conversion "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring function !!!");
                     }
                     break;
                 }
-                else if(methodAttribute is UK_FunctionAttribute) {                                    
+                else if(methodAttribute is iCS_FunctionAttribute) {                                    
                     if(method.IsPublic) {
                         registerMethod= true;
                         // Register execution functions/methods.
-                        UK_FunctionAttribute funcAttr= methodAttribute as UK_FunctionAttribute;
+                        iCS_FunctionAttribute funcAttr= methodAttribute as iCS_FunctionAttribute;
                         if(funcAttr.Name    != null) displayName= funcAttr.Name; 
                         if(funcAttr.Return  != null) returnName = funcAttr.Return;
                         if(funcAttr.ToolTip != null) toolTip    = funcAttr.ToolTip;
                         if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
-                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+UK_EditorConfig.ProductName+". Ignoring function !!!");                        
+                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring function !!!");                        
                     }
                     break;                                        
                 }
@@ -200,15 +200,15 @@ public class UK_Reflection {
         Type fromType= parameters[0].ParameterType;
         if(method.IsPublic == false) {
             Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
-                             " is not public and tagged for "+UK_EditorConfig.ProductName+". Ignoring conversion !!!");
+                             " is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
         if(method.IsStatic == false) {
             Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
-                             " is not static and tagged for "+UK_EditorConfig.ProductName+". Ignoring conversion !!!");
+                             " is not static and tagged for "+iCS_EditorConfig.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
-        UK_DataBase.AddConversion(company, package, iconPath, classType, method, fromType, toType);                                        
+        iCS_DataBase.AddConversion(company, package, iconPath, classType, method, fromType, toType);                                        
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
@@ -223,7 +223,7 @@ public class UK_Reflection {
         bool[]   paramIsOut   = ParseParameterIsOuts(method);
         object[] paramDefaults= ParseParameterDefaults(method);
 
-        UK_DataBase.AddInstanceMethod(company, package, displayName, toolTip, iconPath,
+        iCS_DataBase.AddInstanceMethod(company, package, displayName, toolTip, iconPath,
                                       classType, method,
                                       paramIsOut, paramNames, paramTypes, paramDefaults,
                                       retName, retType);
@@ -241,7 +241,7 @@ public class UK_Reflection {
         bool[]   paramIsOut   = ParseParameterIsOuts(method);
         object[] paramDefaults= ParseParameterDefaults(method);
 
-        UK_DataBase.AddStaticMethod(company, package, displayName, toolTip, iconPath,
+        iCS_DataBase.AddStaticMethod(company, package, displayName, toolTip, iconPath,
                                     classType, method,
                                     paramIsOut, paramNames, paramTypes, paramDefaults,
                                     retName, retType);

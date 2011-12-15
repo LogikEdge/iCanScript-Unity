@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-[UK_Class(Company="Infaunier", Package="Math3D")]
-public sealed class UK_CosWave {
+[iCS_Class(Company="Infaunier", Package="Math3D")]
+public sealed class iCS_CosWave {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
@@ -12,7 +12,7 @@ public sealed class UK_CosWave {
     // ======================================================================
     // EXECUTION
     // ----------------------------------------------------------------------
-    [UK_Function(Return="wave")]
+    [iCS_Function(Return="wave")]
     public float CosWave(float freq, float amplitude) {
         elapseTime+= Time.deltaTime;
         return amplitude * Mathf.Cos(twoPI * freq * elapseTime);

@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-public class UK_EditorConfig {
+public class iCS_EditorConfig {
     // ----------------------------------------------------------------------
     public const string ProductName= "iCanScript";
-    public const string ProductAcronym= "UK";
+    public const string ProductAcronym= "iCS";
 	public const string EditorPath= "Assets/"+ProductName+"/Editor";
 	public const string GuiAssetPath= EditorPath + "/Resources";
 	public const string TypePrefix= ProductAcronym+"_";

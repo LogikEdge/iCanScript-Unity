@@ -3,16 +3,16 @@ using System;
 using System.Collections;
 
 [System.Serializable]
-public class UK_EditorObject {
+public class iCS_EditorObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public UK_ObjectTypeEnum    ObjectType    = UK_ObjectTypeEnum.Unknown;
+    public iCS_ObjectTypeEnum    ObjectType    = iCS_ObjectTypeEnum.Unknown;
     public int                  InstanceId    = -1;
     public int                  ParentId      = -1;
     public string               QualifiedType = "";
     public string               RuntimeArchive= null;
-    public UK_DisplayOptionEnum DisplayOption = UK_DisplayOptionEnum.Normal;
+    public iCS_DisplayOptionEnum DisplayOption = iCS_DisplayOptionEnum.Normal;
     public string               IconGUID      = null;
     public string               RawName       = "";
     public bool                 IsNameEditable= true;
@@ -32,7 +32,7 @@ public class UK_EditorObject {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public UK_EditorObject(int id, string name, Type type, int parentId, UK_ObjectTypeEnum objectType, Rect localPosition) {
+    public iCS_EditorObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType, Rect localPosition) {
         Reset();
         ObjectType= objectType;
         InstanceId= id;
@@ -46,8 +46,8 @@ public class UK_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public static UK_EditorObject Clone(int id, UK_EditorObject toClone, UK_EditorObject parent, Rect localPosition) {
-        UK_EditorObject instance= new UK_EditorObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localPosition);
+    public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent, Rect localPosition) {
+        iCS_EditorObject instance= new iCS_EditorObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localPosition);
         instance.RuntimeArchive= toClone.RuntimeArchive;
         instance.DisplayOption= toClone.DisplayOption;
         instance.IconGUID= toClone.IconGUID;
@@ -59,12 +59,12 @@ public class UK_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void Reset() {
-        ObjectType= UK_ObjectTypeEnum.Unknown;
+        ObjectType= iCS_ObjectTypeEnum.Unknown;
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
         RuntimeArchive= null;
-        DisplayOption= UK_DisplayOptionEnum.Normal;
+        DisplayOption= iCS_DisplayOptionEnum.Normal;
         IconGUID= null;
         Name= "";
         IsDirty= false;

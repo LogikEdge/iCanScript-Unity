@@ -4,13 +4,13 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class UK_Behaviour : UK_Storage {
+public sealed class iCS_Behaviour : iCS_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    UK_Action   myUpdateAction      = null;
-    UK_Action   myLateUpdateAction  = null;
-    UK_Action   myFixedUpdateAction = null;
+    iCS_Action   myUpdateAction      = null;
+    iCS_Action   myLateUpdateAction  = null;
+    iCS_Action   myFixedUpdateAction = null;
     int         myUpdateFrameId     = 0;
     int         myFixedUpdateFrameId= 0;
     object[]    myRuntimeNodes      = new object[0];
@@ -98,18 +98,18 @@ public sealed class UK_Behaviour : UK_Storage {
     // Child Management
     // ----------------------------------------------------------------------
     public void AddChild(object obj) {
-        UK_Action action= obj as UK_Action;
+        iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
-            case UK_EngineStrings.UpdateAction: {
+            case iCS_EngineStrings.UpdateAction: {
                 myUpdateAction= action;
                 break;
             }
-            case UK_EngineStrings.LateUpdateAction: {
+            case iCS_EngineStrings.LateUpdateAction: {
                 myLateUpdateAction= action;
                 break;
             }
-            case UK_EngineStrings.FixedUpdateAction: {
+            case iCS_EngineStrings.FixedUpdateAction: {
                 myFixedUpdateAction= action;
                 break;
             }
@@ -120,18 +120,18 @@ public sealed class UK_Behaviour : UK_Storage {
     }
     // ----------------------------------------------------------------------
     public void RemoveChild(object obj) {
-        UK_Action action= obj as UK_Action;
+        iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
-            case UK_EngineStrings.UpdateAction: {
+            case iCS_EngineStrings.UpdateAction: {
                 myUpdateAction= null;
                 break;
             }
-            case UK_EngineStrings.LateUpdateAction: {
+            case iCS_EngineStrings.LateUpdateAction: {
                 myLateUpdateAction= null;
                 break;
             }
-            case UK_EngineStrings.FixedUpdateAction: {
+            case iCS_EngineStrings.FixedUpdateAction: {
                 myFixedUpdateAction= null;
                 break;
             }
@@ -167,7 +167,7 @@ public sealed class UK_Behaviour : UK_Storage {
     public void GenerateRuntimeNodes() {
         // Allocate runtime node array (if not already done).
         if(EditorObjects.Count != myRuntimeNodes.Length) {
-            myRuntimeNodes= new UK_Object[EditorObjects.Count];
+            myRuntimeNodes= new iCS_Object[EditorObjects.Count];
         }
         bool needAdditionalPass= false;
         do {
@@ -189,8 +189,8 @@ public sealed class UK_Behaviour : UK_Storage {
                             break;
                         }
                         default: {
-                            UK_EditorObject edParent= GetParent(node);
-                            if(edParent.ObjectType == UK_ObjectTypeEnum.TransitionModule) {
+                            iCS_EditorObject edParent= GetParent(node);
+                            if(edParent.ObjectType == iCS_ObjectTypeEnum.TransitionModule) {
                                 edParent= GetParent(edParent);
                             }
                             parent= myRuntimeNodes[edParent.InstanceId];
@@ -204,75 +204,75 @@ public sealed class UK_Behaviour : UK_Storage {
                     // We are ready to generate new node.
                     Vector2 layout= Math3D.Middle(GetPosition(node));
                     switch(node.ObjectType) {
-                        case UK_ObjectTypeEnum.Behaviour: {
+                        case iCS_ObjectTypeEnum.Behaviour: {
                             break;
                         }
-                        case UK_ObjectTypeEnum.StateChart: {
-                            UK_StateChart stateChart= new UK_StateChart(node.Name, layout);
+                        case iCS_ObjectTypeEnum.StateChart: {
+                            iCS_StateChart stateChart= new iCS_StateChart(node.Name, layout);
                             myRuntimeNodes[node.InstanceId]= stateChart;
                             InvokeAddChildIfExists(parent, stateChart);
                             break;
                         }
-                        case UK_ObjectTypeEnum.State: {
-                            UK_State state= new UK_State(node.Name, layout);
+                        case iCS_ObjectTypeEnum.State: {
+                            iCS_State state= new iCS_State(node.Name, layout);
                             myRuntimeNodes[node.InstanceId]= state;
                             InvokeAddChildIfExists(parent, state);
                             break;
                         }
-                        case UK_ObjectTypeEnum.TransitionModule: {
+                        case iCS_ObjectTypeEnum.TransitionModule: {
                             break;
                         }
-                        case UK_ObjectTypeEnum.TransitionGuard:
-                        case UK_ObjectTypeEnum.TransitionAction: {
-                            UK_Module module= new UK_Module(node.Name, layout);                                
+                        case iCS_ObjectTypeEnum.TransitionGuard:
+                        case iCS_ObjectTypeEnum.TransitionAction: {
+                            iCS_Module module= new iCS_Module(node.Name, layout);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             break;
                         }
-                        case UK_ObjectTypeEnum.Module: {
-                            UK_Module module= new UK_Module(node.Name, layout);                                
+                        case iCS_ObjectTypeEnum.Module: {
+                            iCS_Module module= new iCS_Module(node.Name, layout);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             InvokeAddChildIfExists(parent, module);                                
                             break;
                         }
-                        case UK_ObjectTypeEnum.InstanceMethod: {
+                        case iCS_ObjectTypeEnum.InstanceMethod: {
                             // Create method.
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(node.RuntimeArchive);
+                            iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(node.RuntimeArchive);
                             if(rtDesc == null) break;
-                            UK_Method method= new UK_Method(node.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
+                            iCS_Method method= new iCS_Method(node.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
                             myRuntimeNodes[node.InstanceId]= method;
                             InvokeAddChildIfExists(parent, method);
                             break;                            
                         }
-                        case UK_ObjectTypeEnum.Conversion:
-                        case UK_ObjectTypeEnum.StaticMethod: {
+                        case iCS_ObjectTypeEnum.Conversion:
+                        case iCS_ObjectTypeEnum.StaticMethod: {
                             // Create function.
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(node.RuntimeArchive);
+                            iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(node.RuntimeArchive);
                             if(rtDesc == null) break;
-                            UK_Function func= new UK_Function(node.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
+                            iCS_Function func= new iCS_Function(node.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
                         }
-                        case UK_ObjectTypeEnum.InstanceField: {
+                        case iCS_ObjectTypeEnum.InstanceField: {
                             // Create function.
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(node.RuntimeArchive);
+                            iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(node.RuntimeArchive);
                             if(rtDesc == null) break;
                             FieldInfo fieldInfo= rtDesc.Field;
-                            UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
-                                new UK_GetInstanceField(node.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
-                                new UK_SetInstanceField(node.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
+                            iCS_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
+                                new iCS_GetInstanceField(node.Name, fieldInfo, rtDesc.PortIsOuts, layout) as iCS_FunctionBase:
+                                new iCS_SetInstanceField(node.Name, fieldInfo, rtDesc.PortIsOuts, layout) as iCS_FunctionBase;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;
                         }
-                        case UK_ObjectTypeEnum.StaticField: {
+                        case iCS_ObjectTypeEnum.StaticField: {
                             // Create function.
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(node.RuntimeArchive);
+                            iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(node.RuntimeArchive);
                             if(rtDesc == null) break;
                             FieldInfo fieldInfo= rtDesc.Field;
-                            UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
-                                new UK_GetStaticField(node.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
-                                new UK_SetStaticField(node.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
+                            iCS_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
+                                new iCS_GetStaticField(node.Name, fieldInfo, rtDesc.PortIsOuts, layout) as iCS_FunctionBase:
+                                new iCS_SetStaticField(node.Name, fieldInfo, rtDesc.PortIsOuts, layout) as iCS_FunctionBase;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;                            
@@ -292,74 +292,74 @@ public sealed class UK_Behaviour : UK_Storage {
             if(port.IsPort) {
                 switch(port.ObjectType) {
                     // Ports without code generation.
-                    case UK_ObjectTypeEnum.InTransitionPort:
-                    case UK_ObjectTypeEnum.OutTransitionPort:
-                    case UK_ObjectTypeEnum.InDynamicModulePort:
-                    case UK_ObjectTypeEnum.OutDynamicModulePort:
-                    case UK_ObjectTypeEnum.InStaticModulePort:
-                    case UK_ObjectTypeEnum.OutStaticModulePort: {
+                    case iCS_ObjectTypeEnum.InTransitionPort:
+                    case iCS_ObjectTypeEnum.OutTransitionPort:
+                    case iCS_ObjectTypeEnum.InDynamicModulePort:
+                    case iCS_ObjectTypeEnum.OutDynamicModulePort:
+                    case iCS_ObjectTypeEnum.InStaticModulePort:
+                    case iCS_ObjectTypeEnum.OutStaticModulePort: {
                         break;
                     }
 
                     // State transition ports.
-                    case UK_ObjectTypeEnum.OutStatePort: {
+                    case iCS_ObjectTypeEnum.OutStatePort: {
                         break;
                     }
-                    case UK_ObjectTypeEnum.InStatePort: {
-                        UK_EditorObject endState= GetParent(port);
-                        UK_EditorObject transitionModule= GetParent(GetSource(port));
-                        UK_EditorObject actionModule= null;
-                        UK_EditorObject triggerPort= null;
-                        UK_EditorObject outStatePort= null;
-                        UK_EditorObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
+                    case iCS_ObjectTypeEnum.InStatePort: {
+                        iCS_EditorObject endState= GetParent(port);
+                        iCS_EditorObject transitionModule= GetParent(GetSource(port));
+                        iCS_EditorObject actionModule= null;
+                        iCS_EditorObject triggerPort= null;
+                        iCS_EditorObject outStatePort= null;
+                        iCS_EditorObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
                         triggerPort= GetDataConnectionSource(triggerPort);
-                        UK_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : myRuntimeNodes[triggerPort.ParentId] as UK_FunctionBase;
+                        iCS_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
                         int triggerIdx= triggerPort.PortIndex;
                         Rect outStatePortPos= GetPosition(outStatePort);
                         Rect inStatePortPos= GetPosition(port);
                         Vector2 layout= new Vector2(0.5f*(inStatePortPos.x+outStatePortPos.x), 0.5f*(inStatePortPos.y+outStatePortPos.y));
-                        UK_Transition transition= new UK_Transition(transitionModule.Name,
-                                                                    myRuntimeNodes[endState.InstanceId] as UK_State,
-                                                                    myRuntimeNodes[guardModule.InstanceId] as UK_Module,
+                        iCS_Transition transition= new iCS_Transition(transitionModule.Name,
+                                                                    myRuntimeNodes[endState.InstanceId] as iCS_State,
+                                                                    myRuntimeNodes[guardModule.InstanceId] as iCS_Module,
                                                                     triggerFunc, triggerIdx,
-                                                                    actionModule != null ? myRuntimeNodes[actionModule.InstanceId] as UK_Module : null,
+                                                                    actionModule != null ? myRuntimeNodes[actionModule.InstanceId] as iCS_Module : null,
                                                                     layout);
-                        UK_State state= myRuntimeNodes[outStatePort.ParentId] as UK_State;
+                        iCS_State state= myRuntimeNodes[outStatePort.ParentId] as iCS_State;
                         state.AddChild(transition);
                         break;
                     }
                     
                     // Data ports.
-                    case UK_ObjectTypeEnum.OutFieldPort:
-                    case UK_ObjectTypeEnum.OutPropertyPort:
-                    case UK_ObjectTypeEnum.OutFunctionPort: {
+                    case iCS_ObjectTypeEnum.OutFieldPort:
+                    case iCS_ObjectTypeEnum.OutPropertyPort:
+                    case iCS_ObjectTypeEnum.OutFunctionPort: {
                         object parentObj= myRuntimeNodes[port.ParentId];
-                        Prelude.choice<UK_Method, UK_GetInstanceField, UK_GetStaticField, UK_SetInstanceField, UK_SetStaticField, UK_Function>(parentObj,
-                            method          => method[port.PortIndex]= UK_Types.DefaultValue(port.RuntimeType),
-                            getInstanceField=> getInstanceField[port.PortIndex]= UK_Types.DefaultValue(port.RuntimeType),
-                            getStaticField  => getStaticField[port.PortIndex]= UK_Types.DefaultValue(port.RuntimeType),
-                            setInstanceField=> setInstanceField[port.PortIndex]= UK_Types.DefaultValue(port.RuntimeType),
-                            setStaticField  => setStaticField[port.PortIndex]= UK_Types.DefaultValue(port.RuntimeType),
-                            function        => function[port.PortIndex]= UK_Types.DefaultValue(port.RuntimeType)
+                        Prelude.choice<iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
+                            method          => method[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                            getInstanceField=> getInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                            getStaticField  => getStaticField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                            setInstanceField=> setInstanceField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                            setStaticField  => setStaticField[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType),
+                            function        => function[port.PortIndex]= iCS_Types.DefaultValue(port.RuntimeType)
                         );
                         break;
                     }
-                    case UK_ObjectTypeEnum.InFieldPort:
-                    case UK_ObjectTypeEnum.InPropertyPort:
-                    case UK_ObjectTypeEnum.InFunctionPort:
-                    case UK_ObjectTypeEnum.EnablePort: {
+                    case iCS_ObjectTypeEnum.InFieldPort:
+                    case iCS_ObjectTypeEnum.InPropertyPort:
+                    case iCS_ObjectTypeEnum.InFunctionPort:
+                    case iCS_ObjectTypeEnum.EnablePort: {
                         // Build connection.
-                        UK_EditorObject sourcePort= GetDataConnectionSource(port);
-                        UK_Connection connection= sourcePort == port ?
-                                UK_Connection.NoConnection :
-                                new UK_Connection(myRuntimeNodes[sourcePort.ParentId] as UK_FunctionBase, sourcePort.PortIndex);
+                        iCS_EditorObject sourcePort= GetDataConnectionSource(port);
+                        iCS_Connection connection= sourcePort == port ?
+                                iCS_Connection.NoConnection :
+                                new iCS_Connection(myRuntimeNodes[sourcePort.ParentId] as iCS_FunctionBase, sourcePort.PortIndex);
                         // Build initial value.
-                        UK_EditorObject sourceNode= GetParent(sourcePort);
-                        UK_RuntimeDesc rtSourceDesc= new UK_RuntimeDesc(sourceNode.RuntimeArchive);
-                        object initValue= rtSourceDesc.GetDefaultValue(sourcePort.PortIndex, this) ?? UK_Types.DefaultValue(sourcePort.RuntimeType);
+                        iCS_EditorObject sourceNode= GetParent(sourcePort);
+                        iCS_RuntimeDesc rtSourceDesc= new iCS_RuntimeDesc(sourceNode.RuntimeArchive);
+                        object initValue= rtSourceDesc.GetDefaultValue(sourcePort.PortIndex, this) ?? iCS_Types.DefaultValue(sourcePort.RuntimeType);
                         // Set data port.
                         object parentObj= myRuntimeNodes[port.ParentId];
-                        Prelude.choice<UK_Method, UK_GetInstanceField, UK_GetStaticField, UK_SetInstanceField, UK_SetStaticField, UK_Function>(parentObj,
+                        Prelude.choice<iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
                             method=> {
                                 method[port.PortIndex]= initValue;
                                 method.SetConnection(port.PortIndex, connection);
@@ -392,10 +392,10 @@ public sealed class UK_Behaviour : UK_Storage {
         }
     }
     // ----------------------------------------------------------------------
-    UK_EditorObject GetTransitionModuleParts(UK_EditorObject transitionModule, out UK_EditorObject actionModule,
-                                                                               out UK_EditorObject triggerPort,
-                                                                               out UK_EditorObject outStatePort) {
-        UK_EditorObject guardModule= null;
+    iCS_EditorObject GetTransitionModuleParts(iCS_EditorObject transitionModule, out iCS_EditorObject actionModule,
+                                                                               out iCS_EditorObject triggerPort,
+                                                                               out iCS_EditorObject outStatePort) {
+        iCS_EditorObject guardModule= null;
         actionModule= null;
         triggerPort= null;
         outStatePort= null;
@@ -411,7 +411,7 @@ public sealed class UK_Behaviour : UK_Storage {
                 }
             }
             if(edObj.IsOutStaticModulePort && edObj.RuntimeType == typeof(bool) && edObj.Name == "trigger") {
-                UK_EditorObject gModule= GetParent(edObj);
+                iCS_EditorObject gModule= GetParent(edObj);
                 if(gModule.IsTransitionGuard && GetParent(gModule) == transitionModule) {
                     triggerPort= edObj;
                 }
@@ -433,7 +433,7 @@ public sealed class UK_Behaviour : UK_Storage {
     public static MethodInfo GetAddChildMethodInfo(object obj) {
         if(obj == null) return null;
         Type objType= obj.GetType();
-        MethodInfo methodInfo= objType.GetMethod(UK_EngineStrings.AddChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        MethodInfo methodInfo= objType.GetMethod(iCS_EngineStrings.AddChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         if(methodInfo == null) return null;
         ParameterInfo[] parameters= methodInfo.GetParameters();
         if(parameters.Length != 1) return null;
@@ -450,7 +450,7 @@ public sealed class UK_Behaviour : UK_Storage {
     public static MethodInfo GetRemoveChildMethodInfo(object obj) {
         if(obj == null) return null;
         Type objType= obj.GetType();
-        MethodInfo methodInfo= objType.GetMethod(UK_EngineStrings.RemoveChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        MethodInfo methodInfo= objType.GetMethod(iCS_EngineStrings.RemoveChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         if(methodInfo == null) return null;
         ParameterInfo[] parameters= methodInfo.GetParameters();
         if(parameters.Length != 1) return null;

@@ -4,23 +4,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public partial class UK_IStorage {
+public partial class iCS_IStorage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
             bool            myIsDirty    = true;
-    public  UK_Storage      Storage      = null;
-            UK_TreeCache    TreeCache    = null;
+    public  iCS_Storage      Storage      = null;
+            iCS_TreeCache    TreeCache    = null;
             int             UndoRedoId   = 0;
             bool            CleanupNeeded= true;
     
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public UK_IStorage(UK_Storage storage) {
+    public iCS_IStorage(iCS_Storage storage) {
         Init(storage);
     }
-    public void Init(UK_Storage storage) {
+    public void Init(iCS_Storage storage) {
         if(Storage != storage) {
             myIsDirty= true;
             Storage= storage;
@@ -39,7 +39,7 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
-        TreeCache= new UK_TreeCache();
+        TreeCache= new iCS_TreeCache();
         ForEach(obj=> TreeCache.CreateInstance(obj));
     }
     
@@ -47,19 +47,19 @@ public partial class UK_IStorage {
     // ======================================================================
     // Basic Accessors
     // ----------------------------------------------------------------------
-    public List<UK_EditorObject>    EditorObjects { get { return Storage.EditorObjects; }}
-    public UK_UserPreferences       Preferences   { get { return Storage.Preferences; }}
+    public List<iCS_EditorObject>    EditorObjects { get { return Storage.EditorObjects; }}
+    public iCS_UserPreferences       Preferences   { get { return Storage.Preferences; }}
     public List<UnityEngine.Object> UnityObjects  { get { return Storage.UnityObjects; }}
     // ----------------------------------------------------------------------
     public bool IsValid(int id)                     { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)                   { return !IsValid(id); }
-    public bool IsValid(UK_EditorObject obj)        { return obj != null && IsValid(obj.InstanceId); }
-    public bool IsSourceValid(UK_EditorObject obj)  { return IsValid(obj.Source); }
-    public bool IsParentValid(UK_EditorObject obj)  { return IsValid(obj.ParentId); }
+    public bool IsValid(iCS_EditorObject obj)        { return obj != null && IsValid(obj.InstanceId); }
+    public bool IsSourceValid(iCS_EditorObject obj)  { return IsValid(obj.Source); }
+    public bool IsParentValid(iCS_EditorObject obj)  { return IsValid(obj.ParentId); }
     // ----------------------------------------------------------------------
     public bool IsDirty { get { ProcessUndoRedo(); return myIsDirty; }}
     // ----------------------------------------------------------------------
-    public UK_EditorObject this[int id] {
+    public iCS_EditorObject this[int id] {
         get { return EditorObjects[id]; }
         set {
             ProcessUndoRedo();
@@ -71,27 +71,27 @@ public partial class UK_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject GetParent(UK_EditorObject obj)        { return Storage.GetParent(obj); }
-    public UK_EditorObject GetSource(UK_EditorObject obj)        { return Storage.GetSource(obj); }
-    public float           GetAnimTime(UK_EditorObject obj)      { return IsValid(obj) ? Time.realtimeSinceStartup-TreeCache[obj.InstanceId].AnimationTime : 0; }
-    public void            StartAnimTimer(UK_EditorObject obj)   { if(IsValid(obj)) TreeCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }
-    public Rect            GetDisplayPosition(UK_EditorObject obj)           { return IsValid(obj) ? TreeCache[obj.InstanceId].DisplayPosition : default(Rect); }
-    public void            SetDisplayPosition(UK_EditorObject obj, Rect pos) { if(IsValid(obj)) TreeCache[obj.InstanceId].DisplayPosition= pos; }
+    public iCS_EditorObject GetParent(iCS_EditorObject obj)        { return Storage.GetParent(obj); }
+    public iCS_EditorObject GetSource(iCS_EditorObject obj)        { return Storage.GetSource(obj); }
+    public float           GetAnimTime(iCS_EditorObject obj)      { return IsValid(obj) ? Time.realtimeSinceStartup-TreeCache[obj.InstanceId].AnimationTime : 0; }
+    public void            StartAnimTimer(iCS_EditorObject obj)   { if(IsValid(obj)) TreeCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }
+    public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? TreeCache[obj.InstanceId].DisplayPosition : default(Rect); }
+    public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) TreeCache[obj.InstanceId].DisplayPosition= pos; }
     // ----------------------------------------------------------------------
-    public object          GetRuntimeObject(UK_EditorObject obj) {
-        UK_Behaviour bh= Storage as UK_Behaviour;
+    public object          GetRuntimeObject(iCS_EditorObject obj) {
+        iCS_Behaviour bh= Storage as iCS_Behaviour;
         return obj == null || bh == null ? null : bh.GetRuntimeObject(obj.InstanceId);
     }
     // ----------------------------------------------------------------------
-    public void SetDirty(UK_EditorObject obj) {
+    public void SetDirty(iCS_EditorObject obj) {
         myIsDirty= true;
         if(obj.IsPort) { GetParent(obj).IsDirty= true; }
         obj.IsDirty= true;        
     }
     // ----------------------------------------------------------------------
-    public void SetParent(UK_EditorObject edObj, UK_EditorObject newParent) {
+    public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {
         Rect pos= GetPosition(edObj);
-        UK_EditorObject oldParent= GetParent(edObj);
+        iCS_EditorObject oldParent= GetParent(edObj);
         edObj.ParentId= newParent.InstanceId;
         TreeCache.UpdateInstance(oldParent);
         TreeCache.UpdateInstance(newParent);
@@ -197,20 +197,20 @@ public partial class UK_IStorage {
         return id;
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject CloneInstance(UK_EditorObject toClone, UK_IStorage cloneStorage, UK_EditorObject parent, Vector2 initialPos) {
+    public iCS_EditorObject CloneInstance(iCS_EditorObject toClone, iCS_IStorage cloneStorage, iCS_EditorObject parent, Vector2 initialPos) {
         // Create new EditorObject
         Rect parentPos= IsValid(parent) ? GetPosition(parent) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
-        UK_EditorObject instance= CloneInstance(toClone, cloneStorage, parent, localPos, xlat);
+        iCS_EditorObject instance= CloneInstance(toClone, cloneStorage, parent, localPos, xlat);
         ReconnectClone(toClone, cloneStorage, xlat);
         return instance;
     }
-    UK_EditorObject CloneInstance(UK_EditorObject toClone, UK_IStorage cloneStorage, UK_EditorObject parent, Rect localPos, List<Prelude.Tuple<int,int>> xlat) {
+    iCS_EditorObject CloneInstance(iCS_EditorObject toClone, iCS_IStorage cloneStorage, iCS_EditorObject parent, Rect localPos, List<Prelude.Tuple<int,int>> xlat) {
         // Create new EditorObject
         int id= GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(toClone.InstanceId, id));
-        this[id]= UK_EditorObject.Clone(id, toClone, parent, localPos);
+        this[id]= iCS_EditorObject.Clone(id, toClone, parent, localPos);
         this[id].IconGUID= toClone.IconGUID;
         this[id].RuntimeArchive= toClone.RuntimeArchive;
         cloneStorage.ForEachChild(toClone,
@@ -218,7 +218,7 @@ public partial class UK_IStorage {
         );
         return this[id];
     }
-    void ReconnectClone(UK_EditorObject toClone, UK_IStorage cloneStorage, List<Prelude.Tuple<int,int>> xlat) {
+    void ReconnectClone(iCS_EditorObject toClone, iCS_IStorage cloneStorage, List<Prelude.Tuple<int,int>> xlat) {
         cloneStorage.ForEachRecursive(toClone,
             child=> {
                 if(child.Source != -1) {
@@ -243,7 +243,7 @@ public partial class UK_IStorage {
     }
     
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreateBehaviour() {
+    public iCS_EditorObject CreateBehaviour() {
         // Create the function node.
         int id= GetNextAvailableId();
         // Validate that behaviour is at the root.
@@ -251,51 +251,51 @@ public partial class UK_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        this[id]= new UK_EditorObject(id, null, typeof(UK_Behaviour), -1, UK_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
+        this[id]= new iCS_EditorObject(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreateModule(int parentId, Vector2 initialPos, string name= "", UK_ObjectTypeEnum objectType= UK_ObjectTypeEnum.Module) {
+    public iCS_EditorObject CreateModule(int parentId, Vector2 initialPos, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Module) {
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
         Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new UK_EditorObject(id, name, typeof(UK_Module), parentId, objectType, localPos);
-        this[id].IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.ModuleIcon, this);
-        UK_RuntimeDesc rtDesc= new UK_RuntimeDesc();
-        rtDesc.ObjectType= UK_ObjectTypeEnum.Module;
-        rtDesc.Company= UK_EditorStrings.Company;
-        rtDesc.Package= UK_EditorStrings.DefaultPackage;
+        this[id]= new iCS_EditorObject(id, name, typeof(iCS_Module), parentId, objectType, localPos);
+        this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);
+        iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc();
+        rtDesc.ObjectType= iCS_ObjectTypeEnum.Module;
+        rtDesc.Company= iCS_EditorStrings.Company;
+        rtDesc.Package= iCS_EditorStrings.DefaultPackage;
         rtDesc.DisplayName= name;
-        rtDesc.ClassType= typeof(UK_Module);
+        rtDesc.ClassType= typeof(iCS_Module);
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreateStateChart(int parentId, Vector2 initialPos, string name= "") {
+    public iCS_EditorObject CreateStateChart(int parentId, Vector2 initialPos, string name= "") {
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
         Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new UK_EditorObject(id, name, typeof(UK_StateChart), parentId, UK_ObjectTypeEnum.StateChart, localPos);
+        this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos);
         // Create runtime descriptor.
-        UK_RuntimeDesc rtDesc= new UK_RuntimeDesc();
-        rtDesc.ObjectType= UK_ObjectTypeEnum.StateChart;
-        rtDesc.Company= UK_EditorStrings.Company;
-        rtDesc.Package= UK_EditorStrings.DefaultPackage;
+        iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc();
+        rtDesc.ObjectType= iCS_ObjectTypeEnum.StateChart;
+        rtDesc.Company= iCS_EditorStrings.Company;
+        rtDesc.Package= iCS_EditorStrings.DefaultPackage;
         rtDesc.DisplayName= name;
-        rtDesc.ClassType= typeof(UK_StateChart);
+        rtDesc.ClassType= typeof(iCS_StateChart);
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreateState(int parentId, Vector2 initialPos, string name= "") {
+    public iCS_EditorObject CreateState(int parentId, Vector2 initialPos, string name= "") {
         // Validate that we have a good parent.
-        UK_EditorObject parent= EditorObjects[parentId];
+        iCS_EditorObject parent= EditorObjects[parentId];
         if(parent == null || (!WD.IsStateChart(parent) && !WD.IsState(parent))) {
             Debug.LogError("State must be created as a child of StateChart or State.");
         }
@@ -305,82 +305,82 @@ public partial class UK_IStorage {
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new UK_EditorObject(id, name, typeof(UK_State), parentId, UK_ObjectTypeEnum.State, localPos);
+        this[id]= new iCS_EditorObject(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos);
         // Create runtime descriptor.
-        UK_RuntimeDesc rtDesc= new UK_RuntimeDesc();
-        rtDesc.ObjectType= UK_ObjectTypeEnum.State;
-        rtDesc.Company= UK_EditorStrings.Company;
-        rtDesc.Package= UK_EditorStrings.DefaultPackage;
+        iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc();
+        rtDesc.ObjectType= iCS_ObjectTypeEnum.State;
+        rtDesc.Company= iCS_EditorStrings.Company;
+        rtDesc.Package= iCS_EditorStrings.DefaultPackage;
         rtDesc.DisplayName= name;
-        rtDesc.ClassType= typeof(UK_State);
+        rtDesc.ClassType= typeof(iCS_State);
         this[id].RuntimeArchive= rtDesc.Encode(id);
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreateMethod(int parentId, Vector2 initialPos, UK_ReflectionDesc desc) {
-        return desc.ObjectType == UK_ObjectTypeEnum.InstanceMethod ?
+    public iCS_EditorObject CreateMethod(int parentId, Vector2 initialPos, iCS_ReflectionDesc desc) {
+        return desc.ObjectType == iCS_ObjectTypeEnum.InstanceMethod ?
                     CreateInstanceMethod(parentId, initialPos, desc) : 
                     CreateStaticMethod(parentId, initialPos, desc);
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreateStaticMethod(int parentId, Vector2 initialPos, UK_ReflectionDesc desc) {
+    public iCS_EditorObject CreateStaticMethod(int parentId, Vector2 initialPos, iCS_ReflectionDesc desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new UK_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
+        this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
         this[id].RuntimeArchive= desc.Encode(id);
-        this[id].IconGUID= UK_Graphics.IconPathToGUID(desc.IconPath, this);
-        if(this[id].IconGUID == null && desc.ObjectType == UK_ObjectTypeEnum.StaticMethod) {
-            this[id].IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.MethodIcon, this);
+        this[id].IconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
+        if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
+            this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
         }
         
         // Create input/output ports.
-        UK_RuntimeDesc  rtDesc= desc.RuntimeDesc;
+        iCS_RuntimeDesc  rtDesc= desc.RuntimeDesc;
         for(int i= 0; i < rtDesc.PortNames.Length; ++i) {
             if(rtDesc.PortTypes[i] != typeof(void)) {
-                UK_ObjectTypeEnum portType= rtDesc.PortIsOuts[i] ? UK_ObjectTypeEnum.OutFunctionPort : UK_ObjectTypeEnum.InFunctionPort;
-                UK_EditorObject port= CreatePort(rtDesc.PortNames[i], id, rtDesc.PortTypes[i], portType);
+                iCS_ObjectTypeEnum portType= rtDesc.PortIsOuts[i] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
+                iCS_EditorObject port= CreatePort(rtDesc.PortNames[i], id, rtDesc.PortTypes[i], portType);
                 port.PortIndex= i;                
             }
         }
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreateInstanceMethod(int parentId, Vector2 initialPos, UK_ReflectionDesc desc) {
+    public iCS_EditorObject CreateInstanceMethod(int parentId, Vector2 initialPos, iCS_ReflectionDesc desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
         Rect parentPos= GetPosition(parentId);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new UK_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
+        this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
         this[id].RuntimeArchive= desc.Encode(id);
-        this[id].IconGUID= UK_Graphics.IconPathToGUID(desc.IconPath, this);
-        if(this[id].IconGUID == null && desc.ObjectType == UK_ObjectTypeEnum.StaticMethod) {
-            this[id].IconGUID= UK_Graphics.IconPathToGUID(UK_EditorStrings.MethodIcon, this);
+        this[id].IconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
+        if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
+            this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
         }
         
         // Create input/output ports.
-        UK_RuntimeDesc  rtDesc= desc.RuntimeDesc;
+        iCS_RuntimeDesc  rtDesc= desc.RuntimeDesc;
         for(int portIdx= 0; portIdx < rtDesc.PortNames.Length; ++portIdx) {
             if(rtDesc.PortTypes[portIdx] != typeof(void)) {
-                UK_ObjectTypeEnum portType= rtDesc.PortIsOuts[portIdx] ? UK_ObjectTypeEnum.OutFunctionPort : UK_ObjectTypeEnum.InFunctionPort;
-                UK_EditorObject port= CreatePort(rtDesc.PortNames[portIdx], id, rtDesc.PortTypes[portIdx], portType);
+                iCS_ObjectTypeEnum portType= rtDesc.PortIsOuts[portIdx] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
+                iCS_EditorObject port= CreatePort(rtDesc.PortNames[portIdx], id, rtDesc.PortTypes[portIdx], portType);
                 port.PortIndex= portIdx;                
             }
         }
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject CreatePort(string name, int parentId, Type valueType, UK_ObjectTypeEnum portType) {
+    public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
-        UK_EditorObject port= this[id]= new UK_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
+        iCS_EditorObject port= this[id]= new iCS_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
         // Reajust data port position 
         if(port.IsDataPort && !port.IsEnablePort) {
-            UK_EditorObject parent= EditorObjects[port.ParentId];
+            iCS_EditorObject parent= EditorObjects[port.ParentId];
             if(port.IsInputPort) {
                 int nbOfPorts= GetNbOfLeftPorts(parent);
                 port.LocalPosition= new Rect(0, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);
@@ -399,7 +399,7 @@ public partial class UK_IStorage {
         // Cleanup disconnected module and state ports.
     }
     // ----------------------------------------------------------------------
-    public void DestroyInstance(UK_EditorObject eObj) {
+    public void DestroyInstance(iCS_EditorObject eObj) {
         if(eObj == null) return;
         DestroyInstance(eObj.InstanceId);
     }
@@ -409,14 +409,14 @@ public partial class UK_IStorage {
             Debug.LogError("Trying the delete a non-existing EditorObject with id= "+id);
         }
         // Also destroy transition exit/entry module when removing transitions.
-        UK_EditorObject toDestroy= EditorObjects[id];
+        iCS_EditorObject toDestroy= EditorObjects[id];
         if(toDestroy.IsInStatePort && IsValid(toDestroy.Source)) {
             DestroyInstanceInternal(GetSource(toDestroy));
             return;
         }
         if(toDestroy.IsOutStatePort) {
-            UK_EditorObject actionModule= null;
-            UK_EditorObject guardModule= GetTransitionGuardAndAction(toDestroy, out actionModule);
+            iCS_EditorObject actionModule= null;
+            iCS_EditorObject guardModule= GetTransitionGuardAndAction(toDestroy, out actionModule);
             DestroyInstanceInternal(guardModule);
             if(actionModule != null) DestroyInstanceInternal(actionModule);
         }
@@ -435,7 +435,7 @@ public partial class UK_IStorage {
         myIsDirty= true;
     }
     // ----------------------------------------------------------------------
-    void DestroyInstanceInternal(UK_EditorObject toDestroy) {
+    void DestroyInstanceInternal(iCS_EditorObject toDestroy) {
         if(toDestroy == null || IsInvalid(toDestroy.InstanceId)) return;
         DestroyInstanceInternal(toDestroy.InstanceId);
     }
@@ -443,34 +443,34 @@ public partial class UK_IStorage {
     // ======================================================================
     // Display Options
     // ----------------------------------------------------------------------
-    public bool IsVisible(UK_EditorObject eObj) {
+    public bool IsVisible(iCS_EditorObject eObj) {
         if(IsInvalid(eObj.ParentId)) return true;
-        UK_EditorObject parent= GetParent(eObj);
+        iCS_EditorObject parent= GetParent(eObj);
         if(eObj.IsNode && (parent.IsFolded || parent.IsMinimized)) return false;
         return IsVisible(parent);
     }
     public bool IsVisible(int id) { return IsInvalid(id) ? false : IsVisible(EditorObjects[id]); }
     // ----------------------------------------------------------------------
-    public bool IsFolded(UK_EditorObject eObj) { return eObj.IsFolded; }
+    public bool IsFolded(iCS_EditorObject eObj) { return eObj.IsFolded; }
     // ----------------------------------------------------------------------
-    public void Fold(UK_EditorObject eObj) {
+    public void Fold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
         eObj.Fold();
         SetDirty(eObj);
     }
     public void Fold(int id) { if(IsValid(id)) Fold(EditorObjects[id]); }
     // ----------------------------------------------------------------------
-    public void Unfold(UK_EditorObject eObj) {
+    public void Unfold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
         eObj.Unfold();
         SetDirty(eObj);
     }
     public void Unfold(int id) { if(IsValid(id)) Unfold(EditorObjects[id]); }
     // ----------------------------------------------------------------------
-    public bool IsMinimized(UK_EditorObject eObj) {
+    public bool IsMinimized(iCS_EditorObject eObj) {
         return eObj.IsMinimized;
     }
-    public void Minimize(UK_EditorObject eObj) {
+    public void Minimize(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;
         eObj.Minimize();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Minimize(); });
@@ -481,13 +481,13 @@ public partial class UK_IStorage {
     }
     public void Minimize(int id) { if(IsValid(id)) Minimize(EditorObjects[id]); }
     // ----------------------------------------------------------------------
-    public void Maximize(UK_EditorObject eObj) {
+    public void Maximize(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;
         eObj.Maximize();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Maximize(); });
         SetDirty(eObj);
         if(IsValid(eObj.ParentId)) {
-            UK_EditorObject parent= GetParent(eObj);
+            iCS_EditorObject parent= GetParent(eObj);
             SetDirty(parent);
         }
     }
@@ -496,18 +496,18 @@ public partial class UK_IStorage {
     // ======================================================================
     // Port Connectivity
     // ----------------------------------------------------------------------
-    public void SetSource(UK_EditorObject obj, UK_EditorObject src) {
+    public void SetSource(iCS_EditorObject obj, iCS_EditorObject src) {
         obj.Source= src == null ? -1 : src.InstanceId;
         SetDirty(obj);
     }
     // ----------------------------------------------------------------------
-    public void SetSource(UK_EditorObject inPort, UK_EditorObject outPort, UK_ReflectionDesc convDesc) {
+    public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc convDesc) {
         if(convDesc == null) { SetSource(inPort, outPort); return; }
         Rect inPos= GetPosition(inPort);
         Rect outPos= GetPosition(outPort);
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= GetParent(inPort).ParentId;
-        UK_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);
+        iCS_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);
         ForEachChild(conv,
             (child) => {
                 if(child.IsInputPort) {
@@ -520,52 +520,52 @@ public partial class UK_IStorage {
         Minimize(conv);
     }
     // ----------------------------------------------------------------------
-    public void DisconnectPort(UK_EditorObject port) {
+    public void DisconnectPort(iCS_EditorObject port) {
         SetSource(port, null);
         Prelude.forEach(p=> SetSource(p, null), FindConnectedPorts(port));        
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject[] FindConnectedPorts(UK_EditorObject port) {
+    public iCS_EditorObject[] FindConnectedPorts(iCS_EditorObject port) {
         return Filter(p=> p.IsPort && p.Source == port.InstanceId).ToArray();
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject FindAConnectedPort(UK_EditorObject port) {
-        UK_EditorObject[] connectedPorts= FindConnectedPorts(port);
+    public iCS_EditorObject FindAConnectedPort(iCS_EditorObject port) {
+        iCS_EditorObject[] connectedPorts= FindConnectedPorts(port);
         return connectedPorts.Length != 0 ? connectedPorts[0] : null;
     }
     // ----------------------------------------------------------------------
-    bool IsPortConnected(UK_EditorObject port) {
+    bool IsPortConnected(iCS_EditorObject port) {
         if(port.Source != -1) return true;
         foreach(var obj in EditorObjects) {
             if(obj.IsValid && obj.IsPort && obj.Source == port.InstanceId) return true;
         }
         return false;
     }
-    bool IsPortDisconnected(UK_EditorObject port) { return !IsPortConnected(port); }
+    bool IsPortDisconnected(iCS_EditorObject port) { return !IsPortConnected(port); }
     // ----------------------------------------------------------------------
-    public bool IsBridgeConnection(UK_EditorObject p1, UK_EditorObject p2) {
+    public bool IsBridgeConnection(iCS_EditorObject p1, iCS_EditorObject p2) {
         return (p1.IsDataPort && p2.IsStatePort) || (p1.IsStatePort && p2.IsDataPort);
     }
     // ----------------------------------------------------------------------
-    public bool IsInBridgeConnection(UK_EditorObject port) {
-        UK_EditorObject otherPort= GetOtherBridgePort(port);
+    public bool IsInBridgeConnection(iCS_EditorObject port) {
+        iCS_EditorObject otherPort= GetOtherBridgePort(port);
         return otherPort != null;
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject GetOtherBridgePort(UK_EditorObject port) {
+    public iCS_EditorObject GetOtherBridgePort(iCS_EditorObject port) {
         if(IsSourceValid(port)) {
-            UK_EditorObject sourcePort= GetSource(port);
+            iCS_EditorObject sourcePort= GetSource(port);
             if(IsBridgeConnection(port, sourcePort)) {
                 return sourcePort;
             }
         }
-        UK_EditorObject remotePort= FindAConnectedPort(port);
+        iCS_EditorObject remotePort= FindAConnectedPort(port);
         if(remotePort == null) return null;
         return IsBridgeConnection(port, remotePort) ? remotePort : null;
     }
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
-    public UK_EditorObject GetDataConnectionSource(UK_EditorObject port) {
+    public iCS_EditorObject GetDataConnectionSource(iCS_EditorObject port) {
         return Storage.GetDataConnectionSource(port);
     }
     
@@ -574,8 +574,8 @@ public partial class UK_IStorage {
     // Object Picking
     // ----------------------------------------------------------------------
     // Returns the node at the given position
-    public UK_EditorObject GetNodeAt(Vector2 pick, UK_EditorObject exclude= null) {
-        UK_EditorObject foundNode= null;
+    public iCS_EditorObject GetNodeAt(Vector2 pick, iCS_EditorObject exclude= null) {
+        iCS_EditorObject foundNode= null;
         FilterWith(
             n=> {
                 bool excludeFlag= false;
@@ -590,8 +590,8 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     // Returns the connection at the given position.
-    public UK_EditorObject GetPortAt(Vector2 pick) {
-        UK_EditorObject bestPort= null;
+    public iCS_EditorObject GetPortAt(Vector2 pick) {
+        iCS_EditorObject bestPort= null;
         float bestDistance= 100000;     // Simply a big value
         FilterWith(
             port=> port.IsPort && IsVisible(port),
@@ -599,7 +599,7 @@ public partial class UK_IStorage {
                 Rect tmp= GetPosition(port);
                 Vector2 position= new Vector2(tmp.x, tmp.y);
                 float distance= Vector2.Distance(position, pick);
-                if(distance < 1.5f * UK_EditorConfig.PortRadius && distance < bestDistance) {
+                if(distance < 1.5f * iCS_EditorConfig.PortRadius && distance < bestDistance) {
                     bestDistance= distance;
                     bestPort= port;
                 }                                
@@ -609,7 +609,7 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     // Returns true if pick is in the titlebar of the node.
-    public bool IsInTitleBar(UK_EditorObject node, Vector2 pick) {
+    public bool IsInTitleBar(iCS_EditorObject node, Vector2 pick) {
         if(!node.IsNode) return false;
         return true;
     }

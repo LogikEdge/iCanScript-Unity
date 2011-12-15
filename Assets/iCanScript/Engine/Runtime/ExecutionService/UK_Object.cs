@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class UK_Object {
+public class iCS_Object {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -12,7 +12,7 @@ public class UK_Object {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Object(string name, Vector2 layout) {
+    public iCS_Object(string name, Vector2 layout) {
         Name= name;
         Layout= layout;
     }

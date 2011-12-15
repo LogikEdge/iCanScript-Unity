@@ -6,24 +6,24 @@ using System.Collections.Generic;
 
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// This non-persistante class is used to edit the UK_Behaviour.
-public class UK_Editor : EditorWindow {
+// This non-persistante class is used to edit the iCS_Behaviour.
+public class iCS_Editor : EditorWindow {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-    UK_IStorage         myStorage      = null;
-	UK_Inspector        Inspector      = null;
-    UK_EditorObject     DisplayRoot    = null;
-    UK_DynamicMenu      DynamicMenu    = null;
+    iCS_IStorage         myStorage      = null;
+	iCS_Inspector        Inspector      = null;
+    iCS_EditorObject     DisplayRoot    = null;
+    iCS_DynamicMenu      DynamicMenu    = null;
 
     // ----------------------------------------------------------------------
-    private UK_Graphics        Graphics        = null;
-    public  UK_ScrollView      ScrollView      = null;
+    private iCS_Graphics        Graphics        = null;
+    public  iCS_ScrollView      ScrollView      = null;
     
     // ----------------------------------------------------------------------
     enum DragTypeEnum { None, PortDrag, NodeDrag, TransitionCreation };
     DragTypeEnum    DragType              = DragTypeEnum.None;
-    UK_EditorObject DragObject            = null;
+    iCS_EditorObject DragObject            = null;
     Vector2         MouseDragStartPosition= Vector2.zero;
     Vector2         DragStartPosition     = Vector2.zero;
     bool            IsDragEnabled         = true;
@@ -35,12 +35,12 @@ public class UK_Editor : EditorWindow {
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
-    UK_EditorObject SelectedObject {
+    iCS_EditorObject SelectedObject {
         get { return mySelectedObject; }
         set { mySelectedObject= value; if(Inspector != null) Inspector.SelectedObject= value; }
     }
-    UK_EditorObject mySelectedObject= null;
-    public UK_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
+    iCS_EditorObject mySelectedObject= null;
+    public iCS_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
 	// ----------------------------------------------------------------------
     bool    IsCommandKeyDown       { get { return Event.current.command; }}
     bool    IsControlKeyDown       { get { return Event.current.control; }}
@@ -63,19 +63,19 @@ public class UK_Editor : EditorWindow {
 		wantsMouseMove= true;
 
         // Create worker objects.
-        Graphics        = new UK_Graphics();
-        ScrollView      = new UK_ScrollView();
-        DynamicMenu     = new UK_DynamicMenu();
+        Graphics        = new iCS_Graphics();
+        ScrollView      = new iCS_ScrollView();
+        DynamicMenu     = new iCS_DynamicMenu();
         
         // Inspect the assemblies for components.
         if(!ourAlreadyParsed) {
             ourAlreadyParsed= true;
-            UK_Reflection.ParseAppDomain();
+            iCS_Reflection.ParseAppDomain();
         }
 	}
 
 	// ----------------------------------------------------------------------
-    // Releases all resources used by the UK_Behaviour editor.
+    // Releases all resources used by the iCS_Behaviour editor.
     void OnDisable() {
         // Release all worker objects.
         Graphics    = null;
@@ -85,7 +85,7 @@ public class UK_Editor : EditorWindow {
     
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.
-	public void Activate(UK_IStorage storage, UK_Inspector inspector) {
+	public void Activate(iCS_IStorage storage, iCS_Inspector inspector) {
 //        Debug.Log("Editor Activated");
         Storage= storage;
         Inspector= inspector;
@@ -101,7 +101,7 @@ public class UK_Editor : EditorWindow {
     }
 
     // ----------------------------------------------------------------------
-    public void SetInspector(UK_Inspector inspector) {
+    public void SetInspector(iCS_Inspector inspector) {
         Inspector= inspector;
     }
     
@@ -113,8 +113,8 @@ public class UK_Editor : EditorWindow {
 		if(Storage == null) { return false; }
         
 		// Don't run if graphic sub-system did not initialise.
-		if(UK_Graphics.IsInitialized == false) {
-            UK_Graphics.Init(Storage);
+		if(iCS_Graphics.IsInitialized == false) {
+            iCS_Graphics.Init(Storage);
 			return false;
 		}
         return true;
@@ -143,7 +143,7 @@ public class UK_Editor : EditorWindow {
             }
         }
         // Cleanup objects.
-        UK_AutoReleasePool.Update();
+        iCS_AutoReleasePool.Update();
 	}
 	
 	// ----------------------------------------------------------------------
@@ -175,12 +175,12 @@ public class UK_Editor : EditorWindow {
     // EDITOR WINDOW MAIN LAYOUT
 	// ----------------------------------------------------------------------
     float UsableWindowWidth() {
-        return position.width-2*UK_EditorConfig.EditorWindowGutterSize;
+        return position.width-2*iCS_EditorConfig.EditorWindowGutterSize;
     }
     
 	// ----------------------------------------------------------------------
     float UsableWindowHeight() {
-        return position.height-2*UK_EditorConfig.EditorWindowGutterSize+UK_EditorConfig.EditorWindowToolbarHeight;
+        return position.height-2*iCS_EditorConfig.EditorWindowGutterSize+iCS_EditorConfig.EditorWindowToolbarHeight;
     }
     
 
@@ -272,7 +272,7 @@ public class UK_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DragAndDropPerform() {
         // Show a copy icon on the drag
-        UK_Storage storage= GetDraggedLibrary();
+        iCS_Storage storage= GetDraggedLibrary();
         if(storage != null) {
             DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
             DragAndDrop.AcceptDrag();                                                            
@@ -281,14 +281,14 @@ public class UK_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DragAndDropUpdated() {
         // Show a copy icon on the drag
-        UK_Storage storage= GetDraggedLibrary();
+        iCS_Storage storage= GetDraggedLibrary();
         if(storage != null) {
             DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
         }        
     }
 	// ----------------------------------------------------------------------
     void DragAndDropExited() {
-        UK_Storage storage= GetDraggedLibrary();
+        iCS_Storage storage= GetDraggedLibrary();
         if(storage != null) {
             switch(EditorUtility.DisplayDialogComplex("Importing Library",
                                                       "Libraries can be either copied into the graph or linked to the graph.  A copied library is decoupled from its originating library and can be modified directly inside the iCanScript graph.  A linked library references the original library and cannot be modified inplace.",
@@ -310,12 +310,12 @@ public class UK_Editor : EditorWindow {
         }
     }
 	// ----------------------------------------------------------------------
-    UK_Storage GetDraggedLibrary() {
+    iCS_Storage GetDraggedLibrary() {
         UnityEngine.Object[] draggedObjects= DragAndDrop.objectReferences;
         if(draggedObjects.Length >= 1) {
             GameObject go= draggedObjects[0] as GameObject;
             if(go != null) {
-                UK_Storage storage= go.GetComponent<UK_Library>();
+                iCS_Storage storage= go.GetComponent<iCS_Library>();
                 return storage;
             }
         }
@@ -336,14 +336,14 @@ public class UK_Editor : EditorWindow {
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
-                UK_EditorObject node= DragObject;
+                iCS_EditorObject node= DragObject;
                 Storage.MoveTo(node, DragStartPosition+delta);
                 Storage.SetDirty(node);                        
                 node.IsFloating= IsCommandKeyDown;
                 break;
             case DragTypeEnum.PortDrag:
             case DragTypeEnum.TransitionCreation:
-                UK_EditorObject port= DragObject;
+                iCS_EditorObject port= DragObject;
                 Vector2 newLocalPos= DragStartPosition+delta;
                 port.LocalPosition.x= newLocalPos.x;
                 port.LocalPosition.y= newLocalPos.y;
@@ -366,7 +366,7 @@ public class UK_Editor : EditorWindow {
         Vector2 pos= MouseDragStartPosition;
 
         // Port drag.
-        UK_EditorObject port= Storage.GetPortAt(pos);
+        iCS_EditorObject port= Storage.GetPortAt(pos);
         if(port != null && !Storage.IsMinimized(port)) {
             Storage.RegisterUndo("Port Drag");
             DragType= DragTypeEnum.PortDrag;
@@ -377,19 +377,19 @@ public class UK_Editor : EditorWindow {
         }
 
         // Node drag.
-        UK_EditorObject node= Storage.GetNodeAt(pos);                
+        iCS_EditorObject node= Storage.GetNodeAt(pos);                
         if(node != null && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
             if(IsControlKeyDown) {
                 GameObject go= new GameObject(node.Name);
                 go.hideFlags = HideFlags.HideAndDontSave;
-                go.AddComponent("UK_Library");
-                UK_Library library= go.GetComponent<UK_Library>();
-                UK_IStorage iStorage= new UK_IStorage(library);
+                go.AddComponent("iCS_Library");
+                iCS_Library library= go.GetComponent<iCS_Library>();
+                iCS_IStorage iStorage= new iCS_IStorage(library);
                 iStorage.CloneInstance(node, Storage, null, Vector2.zero);
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
                 DragAndDrop.StartDrag(node.Name);
-                UK_AutoReleasePool.AutoRelease(go, 60f);
+                iCS_AutoReleasePool.AutoRelease(go, 60f);
                 // Disable dragging.
                 IsDragEnabled= false;
                 DragType= DragTypeEnum.None;
@@ -408,8 +408,8 @@ public class UK_Editor : EditorWindow {
         if(node != null && node.IsState) {
             Storage.RegisterUndo("Transition Creation");
             DragType= DragTypeEnum.TransitionCreation;
-            UK_EditorObject outTransition= Storage.CreatePort("[false]", node.InstanceId, typeof(void), UK_ObjectTypeEnum.OutStatePort);
-            UK_EditorObject inTransition= Storage.CreatePort("[false]", node.InstanceId, typeof(void), UK_ObjectTypeEnum.InStatePort);
+            iCS_EditorObject outTransition= Storage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutStatePort);
+            iCS_EditorObject inTransition= Storage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
             Storage.SetInitialPosition(outTransition, pos);
             Storage.SetInitialPosition(inTransition, pos);
             inTransition.Source= outTransition.InstanceId;
@@ -431,9 +431,9 @@ public class UK_Editor : EditorWindow {
             switch(DragType) {
                 case DragTypeEnum.None: break;
                 case DragTypeEnum.NodeDrag: {
-                    UK_EditorObject node= DragObject;
-                    UK_EditorObject oldParent= Storage.GetParent(node);
-                    UK_EditorObject newParent= GetValidParentNodeUnder(node);
+                    iCS_EditorObject node= DragObject;
+                    iCS_EditorObject oldParent= Storage.GetParent(node);
+                    iCS_EditorObject newParent= GetValidParentNodeUnder(node);
                     if(newParent != null && newParent != oldParent) {
                         ChangeParent(node, newParent);
                     }
@@ -442,7 +442,7 @@ public class UK_Editor : EditorWindow {
                     break;
                 }
                 case DragTypeEnum.PortDrag:
-                    UK_EditorObject port= DragObject;
+                    iCS_EditorObject port= DragObject;
                     port.IsFloating= false;
                     // Verify for a new connection.
                     if(!VerifyNewConnection(port)) {
@@ -450,16 +450,16 @@ public class UK_Editor : EditorWindow {
                         Storage.SetDirty(port);
                         if(!Storage.IsNearParent(port)) {
                             if(port.IsDataPort) {
-                                UK_EditorObject newPortParent= GetNodeAtMousePosition();
+                                iCS_EditorObject newPortParent= GetNodeAtMousePosition();
                                 if(newPortParent != null && newPortParent.IsModule) {
-                                    UK_EditorObject portParent= Storage.GetParent(port);
+                                    iCS_EditorObject portParent= Storage.GetParent(port);
                                     Rect portPos= Storage.GetPosition(port);
                                     Rect modulePos= Storage.GetPosition(newPortParent);
-                                    float portSize2= 2f*UK_EditorConfig.PortSize;
+                                    float portSize2= 2f*iCS_EditorConfig.PortSize;
                                     if(port.IsOutputPort) {
                                         if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
                                             if(!Storage.IsChildOf(newPortParent, portParent)) {
-                                                UK_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, UK_ObjectTypeEnum.InDynamicModulePort);
+                                                iCS_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                                                 port.LocalPosition.x= DragStartPosition.x;
                                                 port.LocalPosition.y= DragStartPosition.y;
                                                 Storage.SetSource(newPort, port);                               
@@ -468,7 +468,7 @@ public class UK_Editor : EditorWindow {
                                         }
                                         if(Math3D.IsWithinOrEqual(portPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
                                             if(Storage.IsChildOf(portParent, newPortParent)) {
-                                                UK_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, UK_ObjectTypeEnum.OutDynamicModulePort);
+                                                iCS_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                                                 port.LocalPosition.x= DragStartPosition.x;
                                                 port.LocalPosition.y= DragStartPosition.y;
                                                 Storage.SetSource(newPort, port);                               
@@ -479,7 +479,7 @@ public class UK_Editor : EditorWindow {
                                     if(port.IsInputPort) {
                                         if(Math3D.IsWithinOrEqual(portPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
                                             if(!Storage.IsChildOf(portParent, newPortParent)) {
-                                                UK_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, UK_ObjectTypeEnum.OutDynamicModulePort);
+                                                iCS_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                                                 port.LocalPosition.x= DragStartPosition.x;
                                                 port.LocalPosition.y= DragStartPosition.y;
                                                 Storage.SetSource(port, newPort);                               
@@ -488,7 +488,7 @@ public class UK_Editor : EditorWindow {
                                         }
                                         if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
                                             if(Storage.IsChildOf(portParent, newPortParent) || Storage.IsChildOf(newPortParent, portParent)) {
-                                                UK_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, UK_ObjectTypeEnum.InDynamicModulePort);
+                                                iCS_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                                                 port.LocalPosition.x= DragStartPosition.x;
                                                 port.LocalPosition.y= DragStartPosition.y;
                                                 if(Storage.IsChildOf(portParent, newPortParent)) {
@@ -519,9 +519,9 @@ public class UK_Editor : EditorWindow {
                     }
                     break;
                 case DragTypeEnum.TransitionCreation:
-                    UK_EditorObject destState= GetNodeAtMousePosition();
+                    iCS_EditorObject destState= GetNodeAtMousePosition();
                     if(destState != null && destState.IsState) {
-                        UK_EditorObject outStatePort= Storage[DragObject.Source];
+                        iCS_EditorObject outStatePort= Storage[DragObject.Source];
                         outStatePort.IsFloating= false;
                         Storage.CreateTransition(outStatePort, destState);
                         DragObject.Source= -1;
@@ -549,44 +549,44 @@ public class UK_Editor : EditorWindow {
     
 	// ----------------------------------------------------------------------
     // Manages the object selection.
-    UK_EditorObject DetermineSelectedObject() {
+    iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
-        UK_EditorObject newSelected= GetObjectAtMousePosition();
+        iCS_EditorObject newSelected= GetObjectAtMousePosition();
         SelectedObject= newSelected;
         return SelectedObject;
     }
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
-    public UK_EditorObject GetObjectAtMousePosition() {
+    public iCS_EditorObject GetObjectAtMousePosition() {
         return GetObjectAtScreenPosition(MousePosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
-    public UK_EditorObject GetNodeAtMousePosition() {
+    public iCS_EditorObject GetNodeAtMousePosition() {
         Vector2 graphPosition= ScrollView.ScreenToGraph(MousePosition);
         return Storage.GetNodeAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
-    public UK_EditorObject GetObjectAtScreenPosition(Vector2 _screenPos) {
+    public iCS_EditorObject GetObjectAtScreenPosition(Vector2 _screenPos) {
         Vector2 graphPosition= ScrollView.ScreenToGraph(_screenPos);
-        UK_EditorObject port= Storage.GetPortAt(graphPosition);
+        iCS_EditorObject port= Storage.GetPortAt(graphPosition);
         if(port != null) {
             if(Storage.IsMinimized(port)) return Storage.GetParent(port);
             return port;
         }
-        UK_EditorObject node= Storage.GetNodeAt(graphPosition);                
+        iCS_EditorObject node= Storage.GetNodeAt(graphPosition);                
         if(node != null) return node;
         return null;
     }
         
 	// ----------------------------------------------------------------------
-    bool VerifyNewConnection(UK_EditorObject port) {
+    bool VerifyNewConnection(iCS_EditorObject port) {
         // No new connection if no overlapping port found.
-        UK_EditorObject overlappingPort= Storage.GetOverlappingPort(port);
+        iCS_EditorObject overlappingPort= Storage.GetOverlappingPort(port);
         if(overlappingPort == null) return false;
         
         // Reestablish port position.
@@ -595,11 +595,11 @@ public class UK_Editor : EditorWindow {
         
         // Connect function & modules ports together.
         if(port.IsDataPort && overlappingPort.IsDataPort) {            
-            UK_EditorObject inPort = null;
-            UK_EditorObject outPort= null;
+            iCS_EditorObject inPort = null;
+            iCS_EditorObject outPort= null;
 
-            UK_EditorObject portParent= Storage.EditorObjects[port.ParentId];
-            UK_EditorObject overlappingPortParent= Storage.EditorObjects[overlappingPort.ParentId];
+            iCS_EditorObject portParent= Storage.EditorObjects[port.ParentId];
+            iCS_EditorObject overlappingPortParent= Storage.EditorObjects[overlappingPort.ParentId];
             bool portIsChildOfOverlapping= Storage.IsChildOf(portParent, overlappingPortParent);
             bool overlappingIsChildOfPort= Storage.IsChildOf(overlappingPortParent, portParent);
             if(portIsChildOfOverlapping || overlappingIsChildOfPort) {
@@ -628,11 +628,11 @@ public class UK_Editor : EditorWindow {
                 outPort= overlappingPort.IsOutputPort ? overlappingPort : port;
             }
             if(inPort != outPort) {
-                if(UK_Types.CanBeConnectedWithoutConversion(outPort.RuntimeType, inPort.RuntimeType)) { // No conversion needed.
+                if(iCS_Types.CanBeConnectedWithoutConversion(outPort.RuntimeType, inPort.RuntimeType)) { // No conversion needed.
                     SetNewDataConnection(inPort, outPort);                       
                 }
                 else {  // A conversion is required.
-                    UK_ReflectionDesc conversion= UK_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
+                    iCS_ReflectionDesc conversion= iCS_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
                     if(conversion == null) {
                         Debug.LogWarning("No direct conversion exists from "+outPort.RuntimeType.Name+" to "+inPort.RuntimeType.Name);
                     } else {
@@ -653,52 +653,52 @@ public class UK_Editor : EditorWindow {
         Debug.LogWarning("Trying to connect incompatible port types: "+port.TypeName+"<=>"+overlappingPort.TypeName);
         return true;
     }
-    void SetNewDataConnection(UK_EditorObject inPort, UK_EditorObject outPort, UK_ReflectionDesc conversion= null) {
-        UK_EditorObject inNode= Storage.GetParent(inPort);
-        UK_EditorObject outNode= Storage.GetParent(outPort);
-        UK_EditorObject inParent= GetParentModule(inNode);
-        UK_EditorObject outParent= GetParentModule(outNode);
+    void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc conversion= null) {
+        iCS_EditorObject inNode= Storage.GetParent(inPort);
+        iCS_EditorObject outNode= Storage.GetParent(outPort);
+        iCS_EditorObject inParent= GetParentModule(inNode);
+        iCS_EditorObject outParent= GetParentModule(outNode);
         // No need to create module ports if both connected nodes are under the same parent.
         if(inParent == outParent) {
             Storage.SetSource(inPort, outPort, conversion);
             return;
         }
         if(inParent == null) {
-            UK_EditorObject newPort= Storage.CreatePort(inPort.Name, inParent.InstanceId, inPort.RuntimeType, UK_ObjectTypeEnum.InDynamicModulePort);
+            iCS_EditorObject newPort= Storage.CreatePort(inPort.Name, inParent.InstanceId, inPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             Storage.SetSource(inPort, newPort, conversion);
             SetNewDataConnection(newPort, outPort);
             return;           
         }
         if(outParent == null) {
-            UK_EditorObject newPort= Storage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, UK_ObjectTypeEnum.OutDynamicModulePort);
+            iCS_EditorObject newPort= Storage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             Storage.SetSource(newPort, outPort, conversion);
             SetNewDataConnection(inPort, newPort);
             return;                       
         }
         // Create inPort if inParent is not part of the outParent hierarchy.
         bool inParentSeen= false;
-        for(UK_EditorObject op= GetParentModule(outParent); op != null; op= GetParentModule(op)) {
+        for(iCS_EditorObject op= GetParentModule(outParent); op != null; op= GetParentModule(op)) {
             if(inParent == op) {
                 inParentSeen= true;
                 break;
             }
         }
         if(!inParentSeen) {
-            UK_EditorObject newPort= Storage.CreatePort(inPort.Name, inParent.InstanceId, inPort.RuntimeType, UK_ObjectTypeEnum.InDynamicModulePort);
+            iCS_EditorObject newPort= Storage.CreatePort(inPort.Name, inParent.InstanceId, inPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             Storage.SetSource(inPort, newPort, conversion);
             SetNewDataConnection(newPort, outPort);
             return;                       
         }
         // Create outPort if outParent is not part of the inParent hierarchy.
         bool outParentSeen= false;
-        for(UK_EditorObject ip= GetParentModule(inParent); ip != null; ip= GetParentModule(ip)) {
+        for(iCS_EditorObject ip= GetParentModule(inParent); ip != null; ip= GetParentModule(ip)) {
             if(outParent == ip) {
                 outParentSeen= true;
                 break;
             }
         }
         if(!outParentSeen) {
-            UK_EditorObject newPort= Storage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, UK_ObjectTypeEnum.OutDynamicModulePort);
+            iCS_EditorObject newPort= Storage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             Storage.SetSource(newPort, outPort, conversion);
             SetNewDataConnection(inPort, newPort);
             return;                       
@@ -707,33 +707,33 @@ public class UK_Editor : EditorWindow {
         Storage.SetSource(inPort, outPort, conversion);
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject GetParentModule(UK_EditorObject edObj) {
-        UK_EditorObject parentModule= Storage.GetParent(edObj);
+    iCS_EditorObject GetParentModule(iCS_EditorObject edObj) {
+        iCS_EditorObject parentModule= Storage.GetParent(edObj);
         for(; parentModule != null && !parentModule.IsModule; parentModule= Storage.GetParent(parentModule));
         return parentModule;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject GetValidParentNodeUnder(Vector2 point, UK_ObjectTypeEnum objType) {
-        UK_EditorObject parent= Storage.GetNodeAt(point);
+    iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType) {
+        iCS_EditorObject parent= Storage.GetNodeAt(point);
         if(parent == null) return null;
         switch(objType) {
-            case UK_ObjectTypeEnum.StateChart: {
+            case iCS_ObjectTypeEnum.StateChart: {
                 while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
                 break;                
             }
-            case UK_ObjectTypeEnum.State: {
+            case iCS_ObjectTypeEnum.State: {
                 while(parent != null && !parent.IsState && !parent.IsStateChart) parent= Storage.GetParent(parent);
                 break;
             }
-            case UK_ObjectTypeEnum.Module: {
+            case iCS_ObjectTypeEnum.Module: {
                 while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
                 break;
             }
-            case UK_ObjectTypeEnum.InstanceMethod:
-            case UK_ObjectTypeEnum.StaticMethod:
-            case UK_ObjectTypeEnum.InstanceField:
-            case UK_ObjectTypeEnum.StaticField:
-            case UK_ObjectTypeEnum.Conversion: {
+            case iCS_ObjectTypeEnum.InstanceMethod:
+            case iCS_ObjectTypeEnum.StaticMethod:
+            case iCS_ObjectTypeEnum.InstanceField:
+            case iCS_ObjectTypeEnum.StaticField:
+            case iCS_ObjectTypeEnum.Conversion: {
                 while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
                 break;
             }
@@ -745,29 +745,29 @@ public class UK_Editor : EditorWindow {
         return parent;
     }
 	// ----------------------------------------------------------------------
-    UK_EditorObject GetValidParentNodeUnder(UK_EditorObject node) {
+    iCS_EditorObject GetValidParentNodeUnder(iCS_EditorObject node) {
         if(!node.IsNode) return null;
         Vector2 point= Math3D.Middle(Storage.GetPosition(node));
-        UK_EditorObject parent= Storage.GetNodeAt(point, node);
+        iCS_EditorObject parent= Storage.GetNodeAt(point, node);
         if(parent == null) return null;
         switch(node.ObjectType) {
-            case UK_ObjectTypeEnum.StateChart: {
+            case iCS_ObjectTypeEnum.StateChart: {
                 while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
                 break;                
             }
-            case UK_ObjectTypeEnum.State: {
+            case iCS_ObjectTypeEnum.State: {
                 while(parent != null && !parent.IsState && !parent.IsStateChart) parent= Storage.GetParent(parent);
                 break;
             }
-            case UK_ObjectTypeEnum.Module: {
+            case iCS_ObjectTypeEnum.Module: {
                 while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
                 break;
             }
-            case UK_ObjectTypeEnum.InstanceMethod:
-            case UK_ObjectTypeEnum.StaticMethod:
-            case UK_ObjectTypeEnum.InstanceField:
-            case UK_ObjectTypeEnum.StaticField:
-            case UK_ObjectTypeEnum.Conversion: {
+            case iCS_ObjectTypeEnum.InstanceMethod:
+            case iCS_ObjectTypeEnum.StaticMethod:
+            case iCS_ObjectTypeEnum.InstanceField:
+            case iCS_ObjectTypeEnum.StaticField:
+            case iCS_ObjectTypeEnum.Conversion: {
                 while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
                 break;
             }
@@ -779,31 +779,31 @@ public class UK_Editor : EditorWindow {
         return parent;
     }
 	// ----------------------------------------------------------------------
-    void ChangeParent(UK_EditorObject node, UK_EditorObject newParent) {
-        UK_EditorObject oldParent= Storage.GetParent(node);
+    void ChangeParent(iCS_EditorObject node, iCS_EditorObject newParent) {
+        iCS_EditorObject oldParent= Storage.GetParent(node);
         if(newParent == null || newParent == oldParent) return;
         Storage.SetParent(node, newParent);
         CleanupConnections(node);
     }
 	// ----------------------------------------------------------------------
-    void CleanupConnections(UK_EditorObject node) {
+    void CleanupConnections(iCS_EditorObject node) {
         switch(node.ObjectType) {
-            case UK_ObjectTypeEnum.StateChart: {
-                List<UK_EditorObject> childNodes= new List<UK_EditorObject>();
+            case iCS_ObjectTypeEnum.StateChart: {
+                List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;                
             }
-            case UK_ObjectTypeEnum.State: {
+            case iCS_ObjectTypeEnum.State: {
                 // Attempt to relocate transition modules.
                 Storage.ForEachChildPort(node,
                     p=> {
                         if(p.IsStatePort) {
-                            UK_EditorObject transitionModule= null;
+                            iCS_EditorObject transitionModule= null;
                             if(p.IsInStatePort) {
                                 transitionModule= Storage.GetParent(Storage.GetSource(p));
                             } else {
-                                UK_EditorObject[] connectedPorts= Storage.FindConnectedPorts(p);
+                                iCS_EditorObject[] connectedPorts= Storage.FindConnectedPorts(p);
                                 foreach(var cp in connectedPorts) {
                                     if(cp.IsInTransitionPort) {
                                         transitionModule= Storage.GetParent(cp);
@@ -811,9 +811,9 @@ public class UK_Editor : EditorWindow {
                                     }
                                 }
                             }
-                            UK_EditorObject outState= Storage.GetParent(Storage.GetOutStatePort(transitionModule));
-                            UK_EditorObject inState= Storage.GetParent(Storage.GetInStatePort(transitionModule));
-                            UK_EditorObject newParent= Storage.GetTransitionParent(inState, outState);
+                            iCS_EditorObject outState= Storage.GetParent(Storage.GetOutStatePort(transitionModule));
+                            iCS_EditorObject inState= Storage.GetParent(Storage.GetInStatePort(transitionModule));
+                            iCS_EditorObject newParent= Storage.GetTransitionParent(inState, outState);
                             if(newParent != null && newParent != Storage.GetParent(transitionModule)) {
                                 ChangeParent(transitionModule, newParent);
                                 Storage.LayoutTransitionModule(transitionModule);
@@ -823,36 +823,36 @@ public class UK_Editor : EditorWindow {
                     }
                 );
                 // Ask our children to cleanup their connections.
-                List<UK_EditorObject> childNodes= new List<UK_EditorObject>();
+                List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;
             }
-            case UK_ObjectTypeEnum.TransitionModule:
-            case UK_ObjectTypeEnum.TransitionGuard:
-            case UK_ObjectTypeEnum.TransitionAction:
-            case UK_ObjectTypeEnum.Module: {
-                List<UK_EditorObject> childNodes= new List<UK_EditorObject>();
+            case iCS_ObjectTypeEnum.TransitionModule:
+            case iCS_ObjectTypeEnum.TransitionGuard:
+            case iCS_ObjectTypeEnum.TransitionAction:
+            case iCS_ObjectTypeEnum.Module: {
+                List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;
             }
-            case UK_ObjectTypeEnum.InstanceMethod:
-            case UK_ObjectTypeEnum.StaticMethod:
-            case UK_ObjectTypeEnum.InstanceField:
-            case UK_ObjectTypeEnum.StaticField:
-            case UK_ObjectTypeEnum.Conversion: {
+            case iCS_ObjectTypeEnum.InstanceMethod:
+            case iCS_ObjectTypeEnum.StaticMethod:
+            case iCS_ObjectTypeEnum.InstanceField:
+            case iCS_ObjectTypeEnum.StaticField:
+            case iCS_ObjectTypeEnum.Conversion: {
                 Storage.ForEachChildPort(node,
                     port=> {
                         if(port.IsInDataPort) {
-                            UK_EditorObject sourcePort= RemoveConnection(port);
+                            iCS_EditorObject sourcePort= RemoveConnection(port);
                             // Rebuild new connection.
                             if(sourcePort != port) {
                                 SetNewDataConnection(port, sourcePort);
                             }
                         }
                         if(port.IsOutDataPort) {
-                            UK_EditorObject[] allInPorts= FindAllConnectedInDataPorts(port);
+                            iCS_EditorObject[] allInPorts= FindAllConnectedInDataPorts(port);
                             foreach(var inPort in allInPorts) {
                                 RemoveConnection(inPort);
                             }
@@ -872,15 +872,15 @@ public class UK_Editor : EditorWindow {
         }
     }
     // ----------------------------------------------------------------------
-    UK_EditorObject RemoveConnection(UK_EditorObject inPort) {
-        UK_EditorObject sourcePort= Storage.GetDataConnectionSource(inPort);
+    iCS_EditorObject RemoveConnection(iCS_EditorObject inPort) {
+        iCS_EditorObject sourcePort= Storage.GetDataConnectionSource(inPort);
         // Tear down previous connection.
-        UK_EditorObject tmpPort= Storage.GetSource(inPort);
-        List<UK_EditorObject> toDestroy= new List<UK_EditorObject>();
+        iCS_EditorObject tmpPort= Storage.GetSource(inPort);
+        List<iCS_EditorObject> toDestroy= new List<iCS_EditorObject>();
         while(tmpPort != null && tmpPort != sourcePort) {
-            UK_EditorObject[] connected= Storage.FindConnectedPorts(tmpPort);
+            iCS_EditorObject[] connected= Storage.FindConnectedPorts(tmpPort);
             if(connected.Length == 1) {
-                UK_EditorObject t= Storage.GetSource(tmpPort);
+                iCS_EditorObject t= Storage.GetSource(tmpPort);
                 toDestroy.Add(tmpPort);
                 tmpPort= t;
             } else {
@@ -893,15 +893,15 @@ public class UK_Editor : EditorWindow {
         return sourcePort;        
     }
     // ----------------------------------------------------------------------
-    UK_EditorObject[] FindAllConnectedInDataPorts(UK_EditorObject outPort) {
-        List<UK_EditorObject> allInDataPorts= new List<UK_EditorObject>();
+    iCS_EditorObject[] FindAllConnectedInDataPorts(iCS_EditorObject outPort) {
+        List<iCS_EditorObject> allInDataPorts= new List<iCS_EditorObject>();
         FillConnectedInDataPorts(outPort, allInDataPorts);
         return allInDataPorts.ToArray();
     }
     // ----------------------------------------------------------------------
-    void FillConnectedInDataPorts(UK_EditorObject outPort, List<UK_EditorObject> result) {
+    void FillConnectedInDataPorts(iCS_EditorObject outPort, List<iCS_EditorObject> result) {
         if(outPort == null) return;
-        UK_EditorObject[] connectedPorts= Storage.FindConnectedPorts(outPort);
+        iCS_EditorObject[] connectedPorts= Storage.FindConnectedPorts(outPort);
         foreach(var port in connectedPorts) {
             if(port.IsDataPort) {
                 if(port.IsModulePort) {
@@ -915,14 +915,14 @@ public class UK_Editor : EditorWindow {
         }
     }
 	// ----------------------------------------------------------------------
-    void PasteIntoGraph(Vector2 point, UK_Storage pasteStorage, UK_EditorObject pasteRoot) {
+    void PasteIntoGraph(Vector2 point, iCS_Storage pasteStorage, iCS_EditorObject pasteRoot) {
         if(pasteRoot == null) return;
-        UK_EditorObject parent= GetValidParentNodeUnder(point, pasteRoot.ObjectType);
+        iCS_EditorObject parent= GetValidParentNodeUnder(point, pasteRoot.ObjectType);
         if(parent == null) {
             EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");
             return;
         }
-        UK_EditorObject pasted= Storage.CloneInstance(pasteRoot, new UK_IStorage(pasteStorage), parent, point);
+        iCS_EditorObject pasted= Storage.CloneInstance(pasteRoot, new iCS_IStorage(pasteStorage), parent, point);
         Storage.Fold(pasted);
     }
     
@@ -955,7 +955,7 @@ public class UK_Editor : EditorWindow {
 
 	// ----------------------------------------------------------------------
     void DrawNormalNodes() {
-        List<UK_EditorObject> floatingNodes= new List<UK_EditorObject>();
+        List<iCS_EditorObject> floatingNodes= new List<iCS_EditorObject>();
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
@@ -974,7 +974,7 @@ public class UK_Editor : EditorWindow {
     }	
 	// ----------------------------------------------------------------------
     void DrawMinimizedNodes() {
-        List<UK_EditorObject> floatingNodes= new List<UK_EditorObject>();
+        List<iCS_EditorObject> floatingNodes= new List<iCS_EditorObject>();
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {

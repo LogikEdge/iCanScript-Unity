@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class UK_ReflectionDesc {
+public class iCS_ReflectionDesc {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -11,12 +11,12 @@ public class UK_ReflectionDesc {
     public string           Package;
     public string           ToolTip;
     public string           IconPath;
-    public UK_RuntimeDesc   RuntimeDesc;
+    public iCS_RuntimeDesc   RuntimeDesc;
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public UK_ObjectTypeEnum ObjectType  { get { return RuntimeDesc.ObjectType; }}
+    public iCS_ObjectTypeEnum ObjectType  { get { return RuntimeDesc.ObjectType; }}
     public Type              ClassType   { get { return RuntimeDesc.ClassType; }}
     public string            DisplayName { get { return RuntimeDesc.DisplayName; }}
     public string[]          ParamNames  { get { return RuntimeDesc.ParamNames; }}
@@ -26,9 +26,9 @@ public class UK_ReflectionDesc {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_ReflectionDesc(string company, string package, string name,
+    public iCS_ReflectionDesc(string company, string package, string name,
                              string toolTip, string iconPath,
-                             UK_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
+                             iCS_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
                              bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                              string returnName, Type returnType) {
         // Editor object information.
@@ -38,7 +38,7 @@ public class UK_ReflectionDesc {
         IconPath   = iconPath;
 
         // Fill-in runtime details.
-        RuntimeDesc= new UK_RuntimeDesc(objType, company, package, name, classType, methodInfo != null ? methodInfo.Name : null,
+        RuntimeDesc= new iCS_RuntimeDesc(objType, company, package, name, classType, methodInfo != null ? methodInfo.Name : null,
                                         paramNames, paramTypes, paramIsOuts, paramDefaultValues,
                                         returnName, returnType);
     }

@@ -2,11 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_WaitingSequencialDispatcher : UK_Dispatcher {
+public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_WaitingSequencialDispatcher(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_WaitingSequencialDispatcher(string name, Vector2 layout) : base(name, layout) {}
     
     // ======================================================================
     // Execution
@@ -14,7 +14,7 @@ public class UK_WaitingSequencialDispatcher : UK_Dispatcher {
     public override void Execute(int frameId) {
         bool stalled= true;
         while(myQueueIdx < myExecuteQueue.Count) {
-            UK_Action action= myExecuteQueue[myQueueIdx];
+            iCS_Action action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
                 // Verify if the child is a staled dispatcher.

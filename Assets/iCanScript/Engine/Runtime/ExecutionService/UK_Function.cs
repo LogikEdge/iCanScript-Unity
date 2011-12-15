@@ -3,7 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 
-public class UK_Function : UK_FunctionBase {
+public class iCS_Function : iCS_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -27,11 +27,11 @@ public class UK_Function : UK_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Function(string name, MethodInfo methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, layout) {
+    public iCS_Function(string name, MethodInfo methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, layout) {
         myMethodInfo= methodInfo;
         Init(portIsOuts);
     }
-    public UK_Function(string name, MethodInfo methodInfo, Vector2 layout) : base(name, layout) {
+    public iCS_Function(string name, MethodInfo methodInfo, Vector2 layout) : base(name, layout) {
         myMethodInfo= methodInfo;
     }
     protected new void Init(bool[] portIsOuts) {
@@ -39,14 +39,14 @@ public class UK_Function : UK_FunctionBase {
         Array.Copy(portIsOuts, paramIsOuts, paramIsOuts.Length);
         base.Init(paramIsOuts);
     }
-    public new void SetConnections(UK_Connection[] connections, object[] initValues) {
-        UK_Connection[] baseConnections= new UK_Connection[connections.Length-1];
+    public new void SetConnections(iCS_Connection[] connections, object[] initValues) {
+        iCS_Connection[] baseConnections= new iCS_Connection[connections.Length-1];
         Array.Copy(connections, baseConnections, baseConnections.Length);
         object[] baseInitValues= new object[initValues.Length-1];
         Array.Copy(initValues, baseInitValues, baseInitValues.Length);
         base.SetConnections(baseConnections, baseInitValues);
     }
-    public new void SetConnection(int id, UK_Connection connection) {
+    public new void SetConnection(int id, iCS_Connection connection) {
         if(id < myParameters.Length) base.SetConnection(id, connection);
     }
     

@@ -4,12 +4,12 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_RuntimeDesc {
+public class iCS_RuntimeDesc {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
     public int                  Id                  = -1;
-    public UK_ObjectTypeEnum    ObjectType          = UK_ObjectTypeEnum.Unknown;
+    public iCS_ObjectTypeEnum    ObjectType          = iCS_ObjectTypeEnum.Unknown;
     public string               Company             = "(no company)";
     public string               Package             = "DefaultPackage";
     public string               DisplayName         = null;
@@ -44,16 +44,16 @@ public class UK_RuntimeDesc {
         }
     }
     // ----------------------------------------------------------------------
-    public object GetDefaultValue(int portId, UK_Storage storage) {
-        if(UK_Types.IsA<UnityEngine.Object>(PortTypes[portId])) {
+    public object GetDefaultValue(int portId, iCS_Storage storage) {
+        if(iCS_Types.IsA<UnityEngine.Object>(PortTypes[portId])) {
             object id= PortDefaultValues[portId];
             if(id == null) return null;
             return storage.UnityObjects[(int)id];
         }
         return PortDefaultValues[portId];    
     }
-    public void SetDefaultValue(int portId, object obj, UK_Storage storage) {
-        if(UK_Types.IsA<UnityEngine.Object>(PortTypes[portId])) {
+    public void SetDefaultValue(int portId, object obj, iCS_Storage storage) {
+        if(iCS_Types.IsA<UnityEngine.Object>(PortTypes[portId])) {
             object idObj= PortDefaultValues[portId];
             if(idObj == null) {
                 PortDefaultValues[portId]= storage.AddUnityObject(obj as UnityEngine.Object);
@@ -74,17 +74,17 @@ public class UK_RuntimeDesc {
         get {
             string[] result= null;
             switch(ObjectType) {
-                case UK_ObjectTypeEnum.Module: {
+                case iCS_ObjectTypeEnum.Module: {
                     result= PortNames;
                     break;
                 }
-                case UK_ObjectTypeEnum.InstanceMethod: {
+                case iCS_ObjectTypeEnum.InstanceMethod: {
                     result= new string[PortNames.Length-3];
                     Array.Copy(PortNames, result, result.Length);
                     break;
                 }
-                case UK_ObjectTypeEnum.Conversion:
-                case UK_ObjectTypeEnum.StaticMethod: {
+                case iCS_ObjectTypeEnum.Conversion:
+                case iCS_ObjectTypeEnum.StaticMethod: {
                     result= new string[PortNames.Length-1];
                     Array.Copy(PortNames, result, result.Length);
                     break;
@@ -102,17 +102,17 @@ public class UK_RuntimeDesc {
         get {
             Type[] result= null;
             switch(ObjectType) {
-                case UK_ObjectTypeEnum.Module: {
+                case iCS_ObjectTypeEnum.Module: {
                     result= PortTypes;
                     break;
                 }
-                case UK_ObjectTypeEnum.InstanceMethod: {
+                case iCS_ObjectTypeEnum.InstanceMethod: {
                     result= new Type[PortTypes.Length-3];
                     Array.Copy(PortTypes, result, result.Length);
                     break;
                 }
-                case UK_ObjectTypeEnum.Conversion:
-                case UK_ObjectTypeEnum.StaticMethod: {
+                case iCS_ObjectTypeEnum.Conversion:
+                case iCS_ObjectTypeEnum.StaticMethod: {
                     result= new Type[PortTypes.Length-1];
                     Array.Copy(PortTypes, result, result.Length);
                     break;
@@ -130,17 +130,17 @@ public class UK_RuntimeDesc {
         get {
             bool[] result= null;
             switch(ObjectType) {
-                case UK_ObjectTypeEnum.Module: {
+                case iCS_ObjectTypeEnum.Module: {
                     result= PortIsOuts;
                     break;
                 }
-                case UK_ObjectTypeEnum.InstanceMethod: {
+                case iCS_ObjectTypeEnum.InstanceMethod: {
                     result= new bool[PortIsOuts.Length-3];
                     Array.Copy(PortIsOuts, result, result.Length);
                     break;
                 }
-                case UK_ObjectTypeEnum.Conversion:
-                case UK_ObjectTypeEnum.StaticMethod: {
+                case iCS_ObjectTypeEnum.Conversion:
+                case iCS_ObjectTypeEnum.StaticMethod: {
                     result= new bool[PortIsOuts.Length-1];
                     Array.Copy(PortIsOuts, result, result.Length);
                     break;
@@ -158,12 +158,12 @@ public class UK_RuntimeDesc {
         get {
             string result= null;
             switch(ObjectType) {
-                case UK_ObjectTypeEnum.InstanceMethod: {
+                case iCS_ObjectTypeEnum.InstanceMethod: {
                     result= PortNames[PortNames.Length-3];
                     break;
                 }
-                case UK_ObjectTypeEnum.Conversion:
-                case UK_ObjectTypeEnum.StaticMethod: {
+                case iCS_ObjectTypeEnum.Conversion:
+                case iCS_ObjectTypeEnum.StaticMethod: {
                     result= PortNames[PortNames.Length-1];
                     break;
                 }
@@ -180,12 +180,12 @@ public class UK_RuntimeDesc {
         get {
             Type result= null;
             switch(ObjectType) {
-                case UK_ObjectTypeEnum.InstanceMethod: {
+                case iCS_ObjectTypeEnum.InstanceMethod: {
                     result= PortTypes[PortTypes.Length-3];
                     break;
                 }
-                case UK_ObjectTypeEnum.Conversion:
-                case UK_ObjectTypeEnum.StaticMethod: {
+                case iCS_ObjectTypeEnum.Conversion:
+                case iCS_ObjectTypeEnum.StaticMethod: {
                     result= PortTypes[PortTypes.Length-1];
                     break;
                 }
@@ -201,14 +201,14 @@ public class UK_RuntimeDesc {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_RuntimeDesc() {}
+    public iCS_RuntimeDesc() {}
     // ----------------------------------------------------------------------
     // Decodes the string into its constituants.
-    public UK_RuntimeDesc(string encoded) {
+    public iCS_RuntimeDesc(string encoded) {
         Decode(encoded);
     }
     // ----------------------------------------------------------------------
-    public UK_RuntimeDesc(UK_ObjectTypeEnum objectType, string company, string package, string name,
+    public iCS_RuntimeDesc(iCS_ObjectTypeEnum objectType, string company, string package, string name,
                           Type classType, string methodName,
                           string[] paramNames, Type[] paramTypes, bool[] paramIsOuts, object[] paramDefaultValues,
                           string returnName, Type returnType) {
@@ -219,7 +219,7 @@ public class UK_RuntimeDesc {
         ClassType= classType;
         MethodName= methodName;
         switch(ObjectType) {
-            case UK_ObjectTypeEnum.InstanceMethod: {
+            case iCS_ObjectTypeEnum.InstanceMethod: {
                 PortNames= new string[paramNames.Length+3];
                 Array.Copy(paramNames, PortNames, paramNames.Length);
                 PortNames[paramNames.Length]= returnName;
@@ -237,13 +237,13 @@ public class UK_RuntimeDesc {
                 PortIsOuts[paramIsOuts.Length+2]= true;
                 PortDefaultValues= new object[paramDefaultValues.Length+3];
                 Array.Copy(paramDefaultValues, PortDefaultValues, paramDefaultValues.Length);
-                PortDefaultValues[paramDefaultValues.Length]= UK_Types.DefaultValue(returnType);
-                PortDefaultValues[paramDefaultValues.Length+1]= UK_Types.DefaultValue(classType);
-                PortDefaultValues[paramDefaultValues.Length+2]= UK_Types.DefaultValue(classType);
+                PortDefaultValues[paramDefaultValues.Length]= iCS_Types.DefaultValue(returnType);
+                PortDefaultValues[paramDefaultValues.Length+1]= iCS_Types.DefaultValue(classType);
+                PortDefaultValues[paramDefaultValues.Length+2]= iCS_Types.DefaultValue(classType);
                 break;
             }
-            case UK_ObjectTypeEnum.Conversion:
-            case UK_ObjectTypeEnum.StaticMethod: {
+            case iCS_ObjectTypeEnum.Conversion:
+            case iCS_ObjectTypeEnum.StaticMethod: {
                 PortNames= new string[paramNames.Length+1];
                 Array.Copy(paramNames, PortNames, paramNames.Length);
                 PortNames[paramNames.Length]= returnName;
@@ -255,7 +255,7 @@ public class UK_RuntimeDesc {
                 PortIsOuts[paramIsOuts.Length]= true;
                 PortDefaultValues= new object[paramDefaultValues.Length+1];
                 Array.Copy(paramDefaultValues, PortDefaultValues, paramDefaultValues.Length);
-                PortDefaultValues[paramDefaultValues.Length]= UK_Types.DefaultValue(returnType);
+                PortDefaultValues[paramDefaultValues.Length]= iCS_Types.DefaultValue(returnType);
                 break;
             }
             default: {
@@ -274,21 +274,21 @@ public class UK_RuntimeDesc {
     // Encode the runtime descriptor into a string.
     // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>
     public string Encode(int id) {
-        string result= UK_Archive.Encode(id)+":"+UK_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+UK_Archive.Encode(DisplayName ?? "")+":"+UK_Archive.Encode(ClassType)+":"+MethodName+"<";
+        string result= iCS_Archive.Encode(id)+":"+iCS_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+iCS_Archive.Encode(DisplayName ?? "")+":"+iCS_Archive.Encode(ClassType)+":"+MethodName+"<";
         for(int i= 0; i < PortTypes.Length; ++i) {
             if(PortIsOuts[i]) result+= "out ";
             result+= PortNames[i];
             if(PortDefaultValues[i] != null) {
-                if(UK_Types.IsA<UnityEngine.Object>(PortTypes[i])) {
-                    result+= ":="+UK_Archive.Encode((int)PortDefaultValues[i]);
+                if(iCS_Types.IsA<UnityEngine.Object>(PortTypes[i])) {
+                    result+= ":="+iCS_Archive.Encode((int)PortDefaultValues[i]);
                 } else {
-                    string defaultValueStr= UK_Archive.Encode(PortDefaultValues[i]);
+                    string defaultValueStr= iCS_Archive.Encode(PortDefaultValues[i]);
                     if(defaultValueStr != null) {
                         result+= ":="+defaultValueStr;                                            
                     }
                 }
             }
-            result+= ":"+UK_Archive.Encode(PortTypes[i]);
+            result+= ":"+iCS_Archive.Encode(PortTypes[i]);
             if(i != PortTypes.Length-1) result+= ";";
         }
         result+=">{}";
@@ -297,17 +297,17 @@ public class UK_RuntimeDesc {
     }
     // ----------------------------------------------------------------------
     // Fills the runtime descriptor from an encoded string.
-    public UK_RuntimeDesc Decode(string encoded) {
+    public iCS_RuntimeDesc Decode(string encoded) {
         // object id
 //        Debug.Log("Decoding object id=> "+encoded);
         int end= encoded.IndexOf(':');
-        Id= UK_Archive.Decode<int>(encoded.Substring(0, end));
+        Id= iCS_Archive.Decode<int>(encoded.Substring(0, end));
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // object type
 //        Debug.Log("Decoding object type=> "+encoded);
         end= encoded.IndexOf(':');
         string objectTypeStr= encoded.Substring(0, end);
-        ObjectType= UK_Archive.Decode<UK_ObjectTypeEnum>(objectTypeStr);
+        ObjectType= iCS_Archive.Decode<iCS_ObjectTypeEnum>(objectTypeStr);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // company
 //        Debug.Log("Decoding company=> "+encoded);
@@ -322,13 +322,13 @@ public class UK_RuntimeDesc {
         // display name
 //        Debug.Log("Decoding name=> "+encoded);
         end= encoded.IndexOf(':');
-        DisplayName= UK_Archive.Decode<string>(encoded.Substring(0, end));
+        DisplayName= iCS_Archive.Decode<string>(encoded.Substring(0, end));
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // class type
 //        Debug.Log("Decoding class type=> "+encoded);
         end= encoded.IndexOf(':');
         string className= encoded.Substring(0, end);
-        ClassType= UK_Archive.Decode<Type>(className);
+        ClassType= iCS_Archive.Decode<Type>(className);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // method name
 //        Debug.Log("Decoding method name=> "+encoded);
@@ -373,18 +373,18 @@ public class UK_RuntimeDesc {
             }
             // parameter type.
             end= paramStr.IndexOf(';');
-            Type portType= UK_Archive.Decode<Type>(paramStr.Substring(0, end > 0 ? end : paramStr.Length));
+            Type portType= iCS_Archive.Decode<Type>(paramStr.Substring(0, end > 0 ? end : paramStr.Length));
             portTypes.Add(portType);
             paramStr= end > 0 ? paramStr.Substring(end+1, paramStr.Length-end-1) : "";
             // parameter default value (part 2)
             if(defaultValueStr != null) {
-                if(UK_Types.IsA<UnityEngine.Object>(portType)) {
-                    portDefaults.Add(UK_Archive.Decode(defaultValueStr, typeof(int)));
+                if(iCS_Types.IsA<UnityEngine.Object>(portType)) {
+                    portDefaults.Add(iCS_Archive.Decode(defaultValueStr, typeof(int)));
                 } else {
-                    portDefaults.Add(UK_Archive.Decode(defaultValueStr, portType));                    
+                    portDefaults.Add(iCS_Archive.Decode(defaultValueStr, portType));                    
                 }
             } else {
-                portDefaults.Add(UK_Types.DefaultValue(portType));                
+                portDefaults.Add(iCS_Types.DefaultValue(portType));                
             }
         }
         PortIsOuts= portIsOut.ToArray();

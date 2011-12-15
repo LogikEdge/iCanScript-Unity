@@ -2,17 +2,17 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class UK_Menu {
+public class iCS_Menu {
 
     // ======================================================================
 	// Create a behavior to selected game object.
 	[MenuItem("iCanScript/Create Behaviour")]
 	public static void CreateBehaviour() {
 		// Create State Chart component.
-		UK_Behaviour storage = Selection.activeGameObject.GetComponent<UK_Behaviour>();
+		iCS_Behaviour storage = Selection.activeGameObject.GetComponent<iCS_Behaviour>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<UK_Behaviour>();
-            UK_IStorage iStorage= new UK_IStorage(storage);
+			storage= Selection.activeGameObject.AddComponent<iCS_Behaviour>();
+            iCS_IStorage iStorage= new iCS_IStorage(storage);
             iStorage.CreateBehaviour();
             iStorage= null;
 		}
@@ -20,7 +20,7 @@ public class UK_Menu {
 	[MenuItem("iCanScript/Create Behaviour", true)]
 	public static bool ValidateCreateBehaviour() {
 		if(Selection.activeTransform != null) {
-			UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Storage>();
+			iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
 			return storage == null;
 		}
 		return false;
@@ -31,11 +31,11 @@ public class UK_Menu {
 	[MenuItem("iCanScript/Create Module Library")]
 	public static void CreateModuleLibrary() {
 		// Create State Chart component.
-		UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Library>();
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Library>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<UK_Library>();
+			storage= Selection.activeGameObject.AddComponent<iCS_Library>();
             storage.enabled= false;
-            UK_IStorage iStorage= new UK_IStorage(storage);
+            iCS_IStorage iStorage= new iCS_IStorage(storage);
             iStorage.CreateModule(-1, Vector2.zero, "Module Library");
             iStorage= null;
 		}
@@ -43,7 +43,7 @@ public class UK_Menu {
 	[MenuItem("iCanScript/Create Module Library", true)]
 	public static bool ValidateCreateModuleLibrary() {
 		if(Selection.activeTransform != null) {
-			UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Storage>();
+			iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
 			return storage == null;
 		}
 		return false;
@@ -54,11 +54,11 @@ public class UK_Menu {
 	[MenuItem("iCanScript/Create State Chart Library")]
 	public static void CreateStateChartLibrary() {
 		// Create State Chart component.
-		UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Library>();
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Library>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<UK_Library>();
+			storage= Selection.activeGameObject.AddComponent<iCS_Library>();
             storage.enabled= false;
-            UK_IStorage iStorage= new UK_IStorage(storage);
+            iCS_IStorage iStorage= new iCS_IStorage(storage);
             iStorage.CreateStateChart(-1, Vector2.zero, "State Chart Library");
             iStorage= null;
 		}
@@ -66,7 +66,7 @@ public class UK_Menu {
 	[MenuItem("iCanScript/Create State Chart Library", true)]
 	public static bool ValidateCreateStateChartLibrary() {
 		if(Selection.activeTransform != null) {
-			UK_Storage storage = Selection.activeGameObject.GetComponent<UK_Storage>();
+			iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
 			return storage == null;
 		}
 		return false;
@@ -81,7 +81,7 @@ public class UK_Menu {
 	// iCanScript Window.
 	[MenuItem("Window/iCanScript Editor")]
 	public static void ShowiCanScriptEditor() {
-        UK_Editor editor= EditorWindow.GetWindow(typeof(UK_Editor), false, "iCanScript Editor") as UK_Editor;
+        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript Editor") as iCS_Editor;
         editor.hideFlags= HideFlags.DontSave;
 	}
 

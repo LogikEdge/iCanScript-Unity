@@ -4,8 +4,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// This class is used to edit UK_Behaviour components.
-public class UK_Inspector : Editor {
+// This class is used to edit iCS_Behaviour components.
+public class iCS_Inspector : Editor {
     // ======================================================================
     // Constants.
 	// ----------------------------------------------------------------------
@@ -14,13 +14,13 @@ public class UK_Inspector : Editor {
     // ======================================================================
     // PROPERTIES
 	// ----------------------------------------------------------------------
-    private UK_IStorage     Storage= null;
-	private UK_Editor	    Editor = null;
-	public  UK_EditorObject SelectedObject {
+    private iCS_IStorage     Storage= null;
+	private iCS_Editor	    Editor = null;
+	public  iCS_EditorObject SelectedObject {
 	    get { return mySelectedObject; }
 	    set { mySelectedObject= value; Repaint(); }
 	}
-	private UK_EditorObject mySelectedObject= null;
+	private iCS_EditorObject mySelectedObject= null;
 
 	// ----------------------------------------------------------------------
     // Display state properties.
@@ -38,17 +38,17 @@ public class UK_Inspector : Editor {
         
 		// Create the graph editor.
         if(Editor == null) {
-            Editor= EditorWindow.GetWindow(typeof(UK_Editor), false, "iCanScript") as UK_Editor;
+            Editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
             DontDestroyOnLoad(Editor);
             Editor.hideFlags= HideFlags.DontSave;            
         }
 
         // Configure the editor with the selected graph.
-        UK_Storage realStorage= target as UK_Storage;
+        iCS_Storage realStorage= target as iCS_Storage;
         if(Editor.Storage == null || Editor.Storage.Storage != realStorage) {
             Editor.Deactivate();
             mySelectedObject= null; 
-            Storage= new UK_IStorage(realStorage);        
+            Storage= new iCS_IStorage(realStorage);        
             Editor.Activate(Storage, this);                        
         } else {
             Storage= Editor.Storage;
@@ -81,8 +81,8 @@ public class UK_Inspector : Editor {
         
         // Draw inspector window
 		DrawDefaultInspector();
-		if(Storage.Storage is UK_Behaviour) {
-		    UK_Behaviour behaviour= Storage.Storage as UK_Behaviour;
+		if(Storage.Storage is iCS_Behaviour) {
+		    iCS_Behaviour behaviour= Storage.Storage as iCS_Behaviour;
 		    EditorGUILayout.LabelField("UpdateFrameId", behaviour.UpdateFrameId.ToString());
 		    EditorGUILayout.LabelField("FixedUpdateFrameId", behaviour.FixedUpdateFrameId.ToString());
 		}
@@ -104,7 +104,7 @@ public class UK_Inspector : Editor {
                     if(name != EmptyStr && name != SelectedObject.RawName) {
                         SelectedObject.Name= name;
                         if(SelectedObject.IsNode) {
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(SelectedObject.RuntimeArchive);
+                            iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(SelectedObject.RuntimeArchive);
                             rtDesc.DisplayName= name;
                             SelectedObject.RuntimeArchive= rtDesc.Encode(rtDesc.Id);
                         }
@@ -137,21 +137,21 @@ public class UK_Inspector : Editor {
 	}
 
 	// ----------------------------------------------------------------------
-    void InspectNode(UK_EditorObject node) {
+    void InspectNode(iCS_EditorObject node) {
         // Show runtime frame id.
-        UK_Function runtimeObject= Storage.GetRuntimeObject(node) as UK_Function;
+        iCS_Function runtimeObject= Storage.GetRuntimeObject(node) as iCS_Function;
         if(runtimeObject != null) {
             EditorGUILayout.LabelField("FrameId", runtimeObject.FrameId.ToString());
         }
         // Show Iconic image configuration.
-        Texture2D iconicTexture= UK_Graphics.GetCachedIconFromGUID(node.IconGUID);
+        Texture2D iconicTexture= iCS_Graphics.GetCachedIconFromGUID(node.IconGUID);
         Object newTexture= EditorGUILayout.ObjectField("Iconic Texture", iconicTexture, typeof(Texture2D), false) as Texture2D;
         if(newTexture != iconicTexture) {
             node.IconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
         }
         // Display specific node type information.
         switch(node.ObjectType) {
-            case UK_ObjectTypeEnum.State:
+            case iCS_ObjectTypeEnum.State:
                 InspectStateNode(node);
                 break;
             default:
@@ -162,10 +162,10 @@ public class UK_Inspector : Editor {
     
 	// ----------------------------------------------------------------------
     // Inspects data processing node.
-    void InspectDataProcessingNode(UK_EditorObject node) {
+    void InspectDataProcessingNode(iCS_EditorObject node) {
         // Collect data ports.
-        List<UK_EditorObject> inPorts= new List<UK_EditorObject>();
-        List<UK_EditorObject> outPorts= new List<UK_EditorObject>();
+        List<iCS_EditorObject> inPorts= new List<iCS_EditorObject>();
+        List<iCS_EditorObject> outPorts= new List<iCS_EditorObject>();
         Storage.ForEachChild(node,
             child=> {
                 if(child.IsInDataPort)  inPorts.Add(child);
@@ -180,7 +180,7 @@ public class UK_Inspector : Editor {
             if(showInputs) {
                 EditorGUIUtility.LookLikeControls();
                 EditorGUI.indentLevel= 2;
-                Prelude.forEach(port=> UK_GuiUtilities.OnInspectorGUI(port, Storage), inPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI(port, Storage), inPorts);
             }        
         }
 
@@ -190,17 +190,17 @@ public class UK_Inspector : Editor {
             showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
             if(showOutputs) {
                 EditorGUI.indentLevel= 2;
-                Prelude.forEach(port=> UK_GuiUtilities.OnInspectorGUI(port, Storage), outPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI(port, Storage), outPorts);
             }            
         }
     }
 
 	// ----------------------------------------------------------------------
     // Inspect state node.
-    void InspectStateNode(UK_EditorObject node) {
+    void InspectStateNode(iCS_EditorObject node) {
         // Collect transitions.
-        List<UK_EditorObject> inPorts= new List<UK_EditorObject>();
-        List<UK_EditorObject> outPorts= new List<UK_EditorObject>();
+        List<iCS_EditorObject> inPorts= new List<iCS_EditorObject>();
+        List<iCS_EditorObject> outPorts= new List<iCS_EditorObject>();
         Storage.ForEachChild(node,
             child=> {
                 if(child.IsInStatePort)  inPorts.Add(child);
@@ -215,7 +215,7 @@ public class UK_Inspector : Editor {
             if(showOutputs) {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in outPorts) {
-                    UK_EditorObject inPort= Storage.FindAConnectedPort(port);
+                    iCS_EditorObject inPort= Storage.FindAConnectedPort(port);
                     EditorGUILayout.LabelField("Name", inPort.Name);                        
                     EditorGUILayout.LabelField("State", Storage.GetParent(inPort).Name);                    
                 }
@@ -229,7 +229,7 @@ public class UK_Inspector : Editor {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in inPorts) {
                     EditorGUILayout.LabelField("Name", port.Name);                        
-                    UK_EditorObject outPort= Storage.GetSource(port);
+                    iCS_EditorObject outPort= Storage.GetSource(port);
                     EditorGUILayout.LabelField("State", Storage.GetParent(outPort).Name);                    
                 }
             }
@@ -238,9 +238,9 @@ public class UK_Inspector : Editor {
     
 	// ----------------------------------------------------------------------
     // Inspects the selected port.
-    void InspectPort(UK_EditorObject port) {
-//        if(port is UK_FieldPort) {
-//            UK_GuiUtilities.OnInspectorGUI(port as UK_FieldPort);            
+    void InspectPort(iCS_EditorObject port) {
+//        if(port is iCS_FieldPort) {
+//            iCS_GuiUtilities.OnInspectorGUI(port as iCS_FieldPort);            
 //        }
     }
 

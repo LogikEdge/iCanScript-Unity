@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class UK_ScrollView {
+public class iCS_ScrollView {
     // ----------------------------------------------------------------------
     public void Begin() {
         ScrollPosition= GUI.BeginScrollView(ScrollWindow, ScrollPosition, ScrollViewport);        
@@ -15,13 +15,13 @@ public class UK_ScrollView {
     // ----------------------------------------------------------------------
     public void Update(Rect _windowPosition, Rect _rootNodePosition) {
 	    // Adjust scroll window bounds.
-        ScrollWindow= new Rect(0, UK_EditorConfig.EditorWindowToolbarHeight, _windowPosition.width, _windowPosition.height-UK_EditorConfig.EditorWindowToolbarHeight);
+        ScrollWindow= new Rect(0, iCS_EditorConfig.EditorWindowToolbarHeight, _windowPosition.width, _windowPosition.height-iCS_EditorConfig.EditorWindowToolbarHeight);
 
         // Update scroll viewport.
-        Rect graphRect= new Rect(_rootNodePosition.x - UK_EditorConfig.GutterSize,
-                                 _rootNodePosition.y - UK_EditorConfig.GutterSize,
-                                 _rootNodePosition.width + 2*UK_EditorConfig.GutterSize,
-                                 _rootNodePosition.height + 2*UK_EditorConfig.GutterSize);
+        Rect graphRect= new Rect(_rootNodePosition.x - iCS_EditorConfig.GutterSize,
+                                 _rootNodePosition.y - iCS_EditorConfig.GutterSize,
+                                 _rootNodePosition.width + 2*iCS_EditorConfig.GutterSize,
+                                 _rootNodePosition.height + 2*iCS_EditorConfig.GutterSize);
 
         // Adjust top/left corner.
         if(ScrollViewport.x > graphRect.x) {

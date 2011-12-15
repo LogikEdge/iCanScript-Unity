@@ -4,12 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public partial class UK_IStorage {
+public partial class iCS_IStorage {
     // ======================================================================
     // Node Layout
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
-    public void SetInitialPosition(UK_EditorObject obj, Vector2 initialPosition) {
+    public void SetInitialPosition(iCS_EditorObject obj, Vector2 initialPosition) {
         if(IsValid(obj.ParentId)) {
             Rect position= GetPosition(EditorObjects[obj.ParentId]);
             obj.LocalPosition.x= initialPosition.x - position.x;
@@ -23,7 +23,7 @@ public partial class UK_IStorage {
     }
 
     // ----------------------------------------------------------------------
-    public void Layout(UK_EditorObject obj) {
+    public void Layout(iCS_EditorObject obj) {
         obj.IsDirty= false;
         ExecuteIf(obj, WD.IsNode, NodeLayout);
     }
@@ -34,7 +34,7 @@ public partial class UK_IStorage {
     // ----------------------------------------------------------------------
     // Recompute the layout of a parent node.
     // Returns "true" if the new layout is within the window area.
-    public void NodeLayout(UK_EditorObject node) {
+    public void NodeLayout(iCS_EditorObject node) {
         // Don't layout node if it is not visible.
         if(!IsVisible(node)) return;
 
@@ -45,7 +45,7 @@ public partial class UK_IStorage {
         
         // Minimized nodes are fully collapsed.
         if(node.IsMinimized) {
-            Texture2D icon= UK_Graphics.GetMaximizeIcon(node, null, this);
+            Texture2D icon= iCS_Graphics.GetMaximizeIcon(node, null, this);
             if(node.LocalPosition.width != icon.width || node.LocalPosition.height != icon.height) {
                 node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-icon.width);
                 node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-icon.height);
@@ -63,19 +63,19 @@ public partial class UK_IStorage {
         Rect  childRect   = ComputeChildRect(node);
 
         // Compute needed width.
-        float titleWidth  = UK_EditorConfig.GetNodeWidth(node.Name)+UK_EditorConfig.ExtraIconWidth;
+        float titleWidth  = iCS_EditorConfig.GetNodeWidth(node.Name)+iCS_EditorConfig.ExtraIconWidth;
         float leftMargin  = ComputeLeftMargin(node);
         float rightMargin = ComputeRightMargin(node);
-        float width       = 2.0f*UK_EditorConfig.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childRect.width);
+        float width       = 2.0f*iCS_EditorConfig.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childRect.width);
 
         // Process case without child nodes
         Rect position= GetPosition(node);
         if(Math3D.IsZero(childRect.width) || Math3D.IsZero(childRect.height)) {
             // Compute needed height.
-            UK_EditorObject[] leftPorts= GetLeftPorts(node);
-            UK_EditorObject[] rightPorts= GetRightPorts(node);
+            iCS_EditorObject[] leftPorts= GetLeftPorts(node);
+            iCS_EditorObject[] rightPorts= GetRightPorts(node);
             int nbOfPorts= leftPorts.Length > rightPorts.Length ? leftPorts.Length : rightPorts.Length;
-            float height= Mathf.Max(UK_EditorConfig.NodeTitleHeight+nbOfPorts*UK_EditorConfig.MinimumPortSeparation, UK_EditorConfig.MinimumNodeHeight);                                
+            float height= Mathf.Max(iCS_EditorConfig.NodeTitleHeight+nbOfPorts*iCS_EditorConfig.MinimumPortSeparation, iCS_EditorConfig.MinimumNodeHeight);                                
             
             // Apply new width and height.
             if(Math3D.IsNotEqual(height, position.height) || Math3D.IsNotEqual(width, position.width)) {
@@ -88,8 +88,8 @@ public partial class UK_IStorage {
         // Process case with child nodes.
         else {
             // Adjust children local offset.
-            float neededChildXOffset= UK_EditorConfig.GutterSize+leftMargin;
-            float neededChildYOffset= UK_EditorConfig.GutterSize+UK_EditorConfig.NodeTitleHeight;
+            float neededChildXOffset= iCS_EditorConfig.GutterSize+leftMargin;
+            float neededChildYOffset= iCS_EditorConfig.GutterSize+iCS_EditorConfig.NodeTitleHeight;
             if(Math3D.IsNotEqual(neededChildXOffset, childRect.x) ||
                Math3D.IsNotEqual(neededChildYOffset, childRect.y)) {
                    AdjustChildLocalPosition(node, new Vector2(neededChildXOffset-childRect.x, neededChildYOffset-childRect.y));
@@ -99,8 +99,8 @@ public partial class UK_IStorage {
             int nbOfLeftPorts = GetNbOfLeftPorts(node);
             int nbOfRightPorts= GetNbOfRightPorts(node);
             int nbOfPorts= nbOfLeftPorts > nbOfRightPorts ? nbOfLeftPorts : nbOfRightPorts;
-            float portHeight= nbOfPorts*UK_EditorConfig.MinimumPortSeparation;                                
-            float height= UK_EditorConfig.NodeTitleHeight+Mathf.Max(portHeight, childRect.height+2.0f*UK_EditorConfig.GutterSize);
+            float portHeight= nbOfPorts*iCS_EditorConfig.MinimumPortSeparation;                                
+            float height= iCS_EditorConfig.NodeTitleHeight+Mathf.Max(portHeight, childRect.height+2.0f*iCS_EditorConfig.GutterSize);
             
             float deltaWidth = width - node.LocalPosition.width;
             float deltaHeight= height - node.LocalPosition.height;
@@ -118,13 +118,13 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
-    public void MoveTo(UK_EditorObject node, Vector2 _newPos) {
+    public void MoveTo(iCS_EditorObject node, Vector2 _newPos) {
         Rect position = GetPosition(node);
         DeltaMove(node, new Vector2(_newPos.x - position.x, _newPos.y - position.y));
     }
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
-    public void DeltaMove(UK_EditorObject node, Vector2 _delta) {
+    public void DeltaMove(iCS_EditorObject node, Vector2 _delta) {
         // Move the node
         DeltaMoveInternal(node, _delta);
         // Resolve collision between siblings.
@@ -132,7 +132,7 @@ public partial class UK_IStorage {
 	}
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
-    void DeltaMoveInternal(UK_EditorObject node, Vector2 _delta) {
+    void DeltaMoveInternal(iCS_EditorObject node, Vector2 _delta) {
         if(Math3D.IsNotZero(_delta)) {
             node.LocalPosition.x+= _delta.x;
             node.LocalPosition.y+= _delta.y;
@@ -141,14 +141,14 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     // Returns the absolute position of the node.
-    public Rect GetPosition(UK_EditorObject node) {
+    public Rect GetPosition(iCS_EditorObject node) {
         return Storage.GetPosition(node);
     }
     public Rect GetPosition(int id) {
         return GetPosition(EditorObjects[id]);
     }
     // ----------------------------------------------------------------------
-    public void SetPosition(UK_EditorObject node, Rect _newPos) {
+    public void SetPosition(iCS_EditorObject node, Rect _newPos) {
         // Adjust node size.
         node.LocalPosition.width = _newPos.width;
         node.LocalPosition.height= _newPos.height;
@@ -170,36 +170,36 @@ public partial class UK_IStorage {
         }
     }    
     // ----------------------------------------------------------------------
-    Vector2 GetTopLeftCorner(UK_EditorObject node)     {
+    Vector2 GetTopLeftCorner(iCS_EditorObject node)     {
         Rect position= GetPosition(node);
         return new Vector2(position.xMin, position.yMin);
     }
-    Vector2 GetTopRightCorner(UK_EditorObject node)    {
+    Vector2 GetTopRightCorner(iCS_EditorObject node)    {
         Rect position= GetPosition(node);
         return new Vector2(position.xMax, position.yMin);
     }
-    Vector2 GetBottomLeftCorner(UK_EditorObject node)  {
+    Vector2 GetBottomLeftCorner(iCS_EditorObject node)  {
         Rect position= GetPosition(node);
         return new Vector2(position.xMin, position.yMax);
     }
-    Vector2 GetBottomRightCorner(UK_EditorObject node) {
+    Vector2 GetBottomRightCorner(iCS_EditorObject node) {
         Rect position= GetPosition(node);
         return new Vector2(position.xMax, position.yMax);
     }
     // ----------------------------------------------------------------------
-    void LayoutParent(UK_EditorObject node, Vector2 _deltaMove) {
+    void LayoutParent(iCS_EditorObject node, Vector2 _deltaMove) {
         if(!IsValid(node.ParentId)) return;
-        UK_EditorObject parentNode= GetParent(node);
+        iCS_EditorObject parentNode= GetParent(node);
         ResolveCollision(parentNode, _deltaMove);
         Layout(parentNode);
     }
     // ----------------------------------------------------------------------
-    void AdjustChildLocalPosition(UK_EditorObject node, Vector2 _delta) {
+    void AdjustChildLocalPosition(iCS_EditorObject node, Vector2 _delta) {
         ForEachChild(node, (child)=> { if(child.IsNode) DeltaMoveInternal(child, _delta); } );
     }
     // ----------------------------------------------------------------------
     // Returns the space used by all children.
-    Rect ComputeChildRect(UK_EditorObject node) {
+    Rect ComputeChildRect(iCS_EditorObject node) {
         // Compute child space.
         Rect childRect= new Rect(0.5f*node.LocalPosition.width,0.5f*node.LocalPosition.height,0,0);
         ForEachChild(node,
@@ -213,13 +213,13 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     // Returns the inner left margin.
-    float ComputeLeftMargin(UK_EditorObject node) {
+    float ComputeLeftMargin(iCS_EditorObject node) {
         float LeftMargin= 0;
         ForEachLeftPort(node,
             port=> {
                 if(!port.IsStatePort) {
-                    Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(port.Name);
-                    float nameSize= labelSize.x+UK_EditorConfig.PortSize;
+                    Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(port.Name);
+                    float nameSize= labelSize.x+iCS_EditorConfig.PortSize;
                     if(LeftMargin < nameSize) LeftMargin= nameSize;
                 }
             }
@@ -228,13 +228,13 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     // Returns the inner right margin.
-    float ComputeRightMargin(UK_EditorObject node) {
+    float ComputeRightMargin(iCS_EditorObject node) {
         float RightMargin= 0;
         ForEachRightPort(node,
             port => {
                 if(!port.IsStatePort) {
-                    Vector2 labelSize= UK_EditorConfig.GetPortLabelSize(port.Name);
-                    float nameSize= labelSize.x+UK_EditorConfig.PortSize;
+                    Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(port.Name);
+                    float nameSize= labelSize.x+iCS_EditorConfig.PortSize;
                     if(RightMargin < nameSize) RightMargin= nameSize;                    
                 }
             }
@@ -247,7 +247,7 @@ public partial class UK_IStorage {
     // Port Layout
     // ----------------------------------------------------------------------
     // Recomputes the port position.
-    public void LayoutPorts(UK_EditorObject node) {
+    public void LayoutPorts(iCS_EditorObject node) {
         // Update all port edges.
         ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort, port=> UpdatePortEdge(port)));
         
@@ -263,7 +263,7 @@ public partial class UK_IStorage {
         Rect position= GetPosition(node);
         
         // Relayout top ports.
-        UK_EditorObject[] ports= SortTopPorts(node);
+        iCS_EditorObject[] ports= SortTopPorts(node);
         if(ports.Length != 0) {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
@@ -297,7 +297,7 @@ public partial class UK_IStorage {
         // Relayout left ports.
         ports= SortLeftPorts(node);
         if(ports.Length != 0) {
-            float topOffset= UK_EditorConfig.NodeTitleHeight;
+            float topOffset= iCS_EditorConfig.NodeTitleHeight;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(ports[i].IsFloating == false) {
@@ -314,7 +314,7 @@ public partial class UK_IStorage {
         // Relayout right ports.
         ports= SortRightPorts(node);
         if(ports.Length != 0) {
-            float topOffset= UK_EditorConfig.NodeTitleHeight;
+            float topOffset= iCS_EditorConfig.NodeTitleHeight;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(ports[i].IsFloating == false) {
@@ -330,23 +330,23 @@ public partial class UK_IStorage {
     }
 
     // ----------------------------------------------------------------------
-    bool IsChildrenInSameOrder(UK_EditorObject node, UK_EditorObject[] orderedChildren) {
+    bool IsChildrenInSameOrder(iCS_EditorObject node, iCS_EditorObject[] orderedChildren) {
         return TreeCache[node.InstanceId].IsChildrenInSameOrder(Prelude.map(c=> c.InstanceId, orderedChildren));
     }
-    void ReorderChildren(UK_EditorObject node, UK_EditorObject[] orderedChildren) {
+    void ReorderChildren(iCS_EditorObject node, iCS_EditorObject[] orderedChildren) {
         TreeCache[node.InstanceId].ReorderChildren(Prelude.map(c=> c.InstanceId, orderedChildren));
     }
     // ----------------------------------------------------------------------
-    void SetAllConnectedPortsDirty(UK_EditorObject[] ports) {
+    void SetAllConnectedPortsDirty(iCS_EditorObject[] ports) {
         foreach(var p in ports) {
             if(IsValid(p.Source)) SetDirty(p);
-            UK_EditorObject[] connectedPorts= FindConnectedPorts(p);
+            iCS_EditorObject[] connectedPorts= FindConnectedPorts(p);
             foreach(var cp in connectedPorts) SetDirty(cp);
         }        
     }
     // ----------------------------------------------------------------------
-    Vector2 GetAverageConnectionPosition(UK_EditorObject port) {
-        UK_EditorObject[] connectedPorts= FindConnectedPorts(port);
+    Vector2 GetAverageConnectionPosition(iCS_EditorObject port) {
+        iCS_EditorObject[] connectedPorts= FindConnectedPorts(port);
         Vector2 posSum= Prelude.fold(
             (remotePort,sum)=> sum+Math3D.ToVector2(GetPosition(remotePort)),
             Vector2.zero,
@@ -360,40 +360,40 @@ public partial class UK_IStorage {
         return nbOfPorts != 0 ? (1.0f/nbOfPorts)*posSum : Math3D.ToVector2(GetPosition(port));        
     }
     // ----------------------------------------------------------------------
-    UK_EditorObject[] SortTopPorts(UK_EditorObject node) {
+    iCS_EditorObject[] SortTopPorts(iCS_EditorObject node) {
         Rect nodePos= GetPosition(node);
         float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
-        UK_EditorObject[] ports= GetTopPorts(node);
+        iCS_EditorObject[] ports= GetTopPorts(node);
         Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
         float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? cp.y : -cp.y, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
-    UK_EditorObject[] SortBottomPorts(UK_EditorObject node) {
+    iCS_EditorObject[] SortBottomPorts(iCS_EditorObject node) {
         Rect nodePos= GetPosition(node);
         float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
-        UK_EditorObject[] ports= GetBottomPorts(node);
+        iCS_EditorObject[] ports= GetBottomPorts(node);
         Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
         float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? -cp.y : cp.y, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
-    UK_EditorObject[] SortLeftPorts(UK_EditorObject node) {
+    iCS_EditorObject[] SortLeftPorts(iCS_EditorObject node) {
         Rect nodePos= GetPosition(node);
         float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
-        UK_EditorObject[] ports= GetLeftPorts(node);                             
+        iCS_EditorObject[] ports= GetLeftPorts(node);                             
         Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
         float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? cp.x : -cp.x, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
-    UK_EditorObject[] SortRightPorts(UK_EditorObject node) {
+    iCS_EditorObject[] SortRightPorts(iCS_EditorObject node) {
         Rect nodePos= GetPosition(node);
         float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
-        UK_EditorObject[] ports= GetRightPorts(node);
+        iCS_EditorObject[] ports= GetRightPorts(node);
         Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
         float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? -cp.x : cp.x, connectedPos);
@@ -401,7 +401,7 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     // Sorts the given port according to their relative positions.
-    UK_EditorObject[] SortPorts(UK_EditorObject[] ports, float[] keys1, float[] keys2) {
+    iCS_EditorObject[] SortPorts(iCS_EditorObject[] ports, float[] keys1, float[] keys2) {
         for(int i= 0; i < ports.Length-1; ++i) {
             for(int j= i+1; j < ports.Length; ++j) {
                 if(Math3D.IsGreater(keys1[i], keys1[j])) {
@@ -421,38 +421,38 @@ public partial class UK_IStorage {
     }
     // ----------------------------------------------------------------------
     // Returns all ports position on the top edge.
-    public UK_EditorObject[] GetTopPorts(UK_EditorObject node) {
-        List<UK_EditorObject> ports= new List<UK_EditorObject>();
+    public iCS_EditorObject[] GetTopPorts(iCS_EditorObject node) {
+        List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
         ForEachTopPort(node, ports.Add);
         return ports.ToArray();
     }
 
     // ----------------------------------------------------------------------
     // Returns all ports position on the bottom edge.
-    public UK_EditorObject[] GetBottomPorts(UK_EditorObject node) {
-        List<UK_EditorObject> ports= new List<UK_EditorObject>();
+    public iCS_EditorObject[] GetBottomPorts(iCS_EditorObject node) {
+        List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
         ForEachBottomPort(node, ports.Add);
         return ports.ToArray();
     }
 
     // ----------------------------------------------------------------------
     // Returns all ports position on the left edge.
-    public UK_EditorObject[] GetLeftPorts(UK_EditorObject node) {
-        List<UK_EditorObject> ports= new List<UK_EditorObject>();
+    public iCS_EditorObject[] GetLeftPorts(iCS_EditorObject node) {
+        List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
         ForEachLeftPort(node, ports.Add);
         return ports.ToArray();        
     }
 
     // ----------------------------------------------------------------------
     // Returns all ports position on the right edge.
-    public UK_EditorObject[] GetRightPorts(UK_EditorObject node) {
-        List<UK_EditorObject> ports= new List<UK_EditorObject>();
+    public iCS_EditorObject[] GetRightPorts(iCS_EditorObject node) {
+        List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
         ForEachRightPort(node, ports.Add);
         return ports.ToArray();
     }
     // ----------------------------------------------------------------------
     // Returns the number of ports on the top edge.
-    public int GetNbOfTopPorts(UK_EditorObject node) {
+    public int GetNbOfTopPorts(iCS_EditorObject node) {
         int nbOfPorts= 0;
         ForEachTopPort(node, _=> ++nbOfPorts);
         return nbOfPorts;
@@ -460,7 +460,7 @@ public partial class UK_IStorage {
 
     // ----------------------------------------------------------------------
     // Returns the number of ports on the bottom edge.
-    public int GetNbOfBottomPorts(UK_EditorObject node) {
+    public int GetNbOfBottomPorts(iCS_EditorObject node) {
         int nbOfPorts= 0;
         ForEachBottomPort(node, _=> ++nbOfPorts);
         return nbOfPorts;
@@ -468,7 +468,7 @@ public partial class UK_IStorage {
 
     // ----------------------------------------------------------------------
     // Returns the number of ports on the left edge.
-    public int GetNbOfLeftPorts(UK_EditorObject node) {
+    public int GetNbOfLeftPorts(iCS_EditorObject node) {
         int nbOfPorts= 0;
         ForEachLeftPort(node, _=> ++nbOfPorts);
         return nbOfPorts;
@@ -476,26 +476,26 @@ public partial class UK_IStorage {
 
     // ----------------------------------------------------------------------
     // Returns the number of ports on the right edge.
-    public int GetNbOfRightPorts(UK_EditorObject node) {
+    public int GetNbOfRightPorts(iCS_EditorObject node) {
         int nbOfPorts= 0;
         ForEachRightPort(node, _=> ++nbOfPorts);
         return nbOfPorts;
     }
 
     // ----------------------------------------------------------------------
-    public void ForEachTopPort(UK_EditorObject node, System.Action<UK_EditorObject> fnc) {
+    public void ForEachTopPort(iCS_EditorObject node, System.Action<iCS_EditorObject> fnc) {
         ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnTopEdge, fnc));
     }
     // ----------------------------------------------------------------------
-    public void ForEachBottomPort(UK_EditorObject node, System.Action<UK_EditorObject> fnc) {
+    public void ForEachBottomPort(iCS_EditorObject node, System.Action<iCS_EditorObject> fnc) {
         ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnBottomEdge, fnc));
     }
     // ----------------------------------------------------------------------
-    public void ForEachLeftPort(UK_EditorObject node, System.Action<UK_EditorObject> fnc) {
+    public void ForEachLeftPort(iCS_EditorObject node, System.Action<iCS_EditorObject> fnc) {
         ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnLeftEdge, fnc));
     }
     // ----------------------------------------------------------------------
-    public void ForEachRightPort(UK_EditorObject node, System.Action<UK_EditorObject> fnc) {
+    public void ForEachRightPort(iCS_EditorObject node, System.Action<iCS_EditorObject> fnc) {
         ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnRightEdge, fnc));
     }
 
@@ -504,7 +504,7 @@ public partial class UK_IStorage {
     // Collision Functions
     // ----------------------------------------------------------------------
     // Resolve collision on parents.
-    void ResolveCollision(UK_EditorObject node, Vector2 _delta) {
+    void ResolveCollision(iCS_EditorObject node, Vector2 _delta) {
         ResolveCollisionOnChildren(node, _delta);
         if(!IsValid(node.ParentId)) return;
         ResolveCollision(GetParent(node), _delta);
@@ -513,16 +513,16 @@ public partial class UK_IStorage {
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
-    public void ResolveCollisionOnChildren(UK_EditorObject node, Vector2 _delta) {
+    public void ResolveCollisionOnChildren(iCS_EditorObject node, Vector2 _delta) {
         bool didCollide= false;
         for(int i= 0; i < EditorObjects.Count-1; ++i) {
-            UK_EditorObject child1= EditorObjects[i];
+            iCS_EditorObject child1= EditorObjects[i];
             if(child1.ParentId != node.InstanceId) continue;
             if(!IsVisible(child1)) continue;
             if(!child1.IsNode) continue;
             if(child1.IsFloating) continue;
             for(int j= i+1; j < EditorObjects.Count; ++j) {
-                UK_EditorObject child2= EditorObjects[j];
+                iCS_EditorObject child2= EditorObjects[j];
                 if(child2.ParentId != node.InstanceId) continue;
                 if(!IsVisible(child2)) continue;
                 if(!child2.IsNode) continue;
@@ -536,7 +536,7 @@ public partial class UK_IStorage {
     // ----------------------------------------------------------------------
     // Resolves collision between two nodes. "true" is returned if a collision
     // has occured.
-    public bool ResolveCollisionBetweenTwoNodes(UK_EditorObject node, UK_EditorObject otherNode, Vector2 _delta) {
+    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject node, iCS_EditorObject otherNode, Vector2 _delta) {
         // Nothing to do if they don't collide.
         if(!DoesCollideWithGutter(node, otherNode)) return false;
 
@@ -564,26 +564,26 @@ public partial class UK_IStorage {
 
     // ----------------------------------------------------------------------
     // Returns if the given rectangle collides with the node.
-    public bool DoesCollide(UK_EditorObject node, UK_EditorObject otherNode) {
+    public bool DoesCollide(iCS_EditorObject node, iCS_EditorObject otherNode) {
         return Math3D.DoesCollide(GetPosition(node), GetPosition(otherNode));
     }
 
     // ----------------------------------------------------------------------
     // Returns if the given rectangle collides with the node.
-    public bool DoesCollideWithGutter(UK_EditorObject node, UK_EditorObject otherNode) {
+    public bool DoesCollideWithGutter(iCS_EditorObject node, iCS_EditorObject otherNode) {
         return Math3D.DoesCollide(RectWithGutter(GetPosition(node)), GetPosition(otherNode));
     }
 
     // ----------------------------------------------------------------------
     static Rect RectWithGutter(Rect _rect) {
-        float gutterSize= UK_EditorConfig.GutterSize;
+        float gutterSize= iCS_EditorConfig.GutterSize;
         float gutterSize2= 2.0f*gutterSize;
         return new Rect(_rect.x-gutterSize, _rect.y-gutterSize, _rect.width+gutterSize2, _rect.height+gutterSize2);        
     }
     
     // ----------------------------------------------------------------------
 	// Returns the seperation vector of two colliding nodes.
-	Vector2 GetSeperationVector(UK_EditorObject node, Rect _rect) {
+	Vector2 GetSeperationVector(iCS_EditorObject node, Rect _rect) {
         Rect myRect= RectWithGutter(GetPosition(node));
         Rect otherRect= _rect;
         float xMin= Mathf.Min(myRect.xMin, otherRect.xMin);
@@ -613,15 +613,15 @@ public partial class UK_IStorage {
             }            
         }
 	}
-	Vector2 GetSeperationVector(UK_EditorObject node, UK_EditorObject otherNode) {
+	Vector2 GetSeperationVector(iCS_EditorObject node, iCS_EditorObject otherNode) {
 	    return GetSeperationVector(node, GetPosition(otherNode));
 	}
 
     // ----------------------------------------------------------------------
     // Returns true if the given point is inside the node coordinates.
-    bool IsInside(UK_EditorObject node, Vector2 point) {
+    bool IsInside(iCS_EditorObject node, Vector2 point) {
         // Extend the node range to include the ports.
-        float portSize= UK_EditorConfig.PortSize;
+        float portSize= iCS_EditorConfig.PortSize;
         Rect nodePos= GetPosition(node);
         nodePos.x-= portSize;
         nodePos.y-= portSize;
@@ -632,42 +632,42 @@ public partial class UK_IStorage {
 
 
     // ======================================================================
-    // Layout from UK_Port
+    // Layout from iCS_Port
     // ----------------------------------------------------------------------
-    public void UpdatePortEdge(UK_EditorObject port) {
+    public void UpdatePortEdge(iCS_EditorObject port) {
         if(IsValid(port.Source)) UpdatePortEdges(port, EditorObjects[port.Source]);
         Prelude.forEach(p=> UpdatePortEdges(port, p), FindConnectedPorts(port));
     }
     // ----------------------------------------------------------------------
-    public void UpdatePortEdges(UK_EditorObject p1, UK_EditorObject p2) {
+    public void UpdatePortEdges(iCS_EditorObject p1, iCS_EditorObject p2) {
         // Don't update port edges for a transition bridge.  Leave the update
         // to the corresponding data connection & transition connection.
         if(IsBridgeConnection(p1,p2)) return;
-        UK_EditorObject.EdgeEnum p1Edge= p1.Edge;
-        UK_EditorObject.EdgeEnum p2Edge= p2.Edge;
+        iCS_EditorObject.EdgeEnum p1Edge= p1.Edge;
+        iCS_EditorObject.EdgeEnum p2Edge= p2.Edge;
         UpdatePortEdgesInternal(p1, p2);
         if(p1Edge != p1.Edge) SetDirty(p1);
         if(p2Edge != p2.Edge) SetDirty(p2);
     }
-    void UpdatePortEdgesInternal(UK_EditorObject p1, UK_EditorObject p2) {
+    void UpdatePortEdgesInternal(iCS_EditorObject p1, iCS_EditorObject p2) {
         // Reset edge information.
-        p1.Edge= UK_EditorObject.EdgeEnum.None;
-        p2.Edge= UK_EditorObject.EdgeEnum.None;
+        p1.Edge= iCS_EditorObject.EdgeEnum.None;
+        p2.Edge= iCS_EditorObject.EdgeEnum.None;
         UpdatePortEdgeHardConstraints(p1);
         UpdatePortEdgeHardConstraints(p2);
-        if(p1.Edge != UK_EditorObject.EdgeEnum.None && p2.Edge != UK_EditorObject.EdgeEnum.None) return;
-        UK_EditorObject p1Parent= GetParent(p1);
-        UK_EditorObject p2Parent= GetParent(p2);
+        if(p1.Edge != iCS_EditorObject.EdgeEnum.None && p2.Edge != iCS_EditorObject.EdgeEnum.None) return;
+        iCS_EditorObject p1Parent= GetParent(p1);
+        iCS_EditorObject p2Parent= GetParent(p2);
         // Verify connection between nested nodes.
         Rect parent1Rect= GetPosition(p1Parent);
         Rect parent2Rect= GetPosition(p2Parent);
         // Nested
         if(IsChildOf(p1Parent, p2Parent) ||
            IsChildOf(p2Parent, p1Parent)) {               
-            UK_EditorObject parent= null;
-            UK_EditorObject child= null;
-            UK_EditorObject pPort= null;
-            UK_EditorObject cPort= null;
+            iCS_EditorObject parent= null;
+            iCS_EditorObject child= null;
+            iCS_EditorObject pPort= null;
+            iCS_EditorObject cPort= null;
             if(IsChildOf(p1Parent, p2Parent)) {
                 parent= p2Parent;
                 child= p1Parent;
@@ -687,37 +687,37 @@ public partial class UK_IStorage {
             if(childLocalPos.x < childLocalPos.y) {
                 if(dx < dy) {
                     if(childLocalPos.x < dx) {
-                        pPort.Edge= UK_EditorObject.EdgeEnum.Left;
-                        cPort.Edge= UK_EditorObject.EdgeEnum.Left;
+                        pPort.Edge= iCS_EditorObject.EdgeEnum.Left;
+                        cPort.Edge= iCS_EditorObject.EdgeEnum.Left;
                     } else {
-                        pPort.Edge= UK_EditorObject.EdgeEnum.Right;
-                        cPort.Edge= UK_EditorObject.EdgeEnum.Right;                        
+                        pPort.Edge= iCS_EditorObject.EdgeEnum.Right;
+                        cPort.Edge= iCS_EditorObject.EdgeEnum.Right;                        
                     }
                 } else {
                     if(childLocalPos.x < dy) {
-                        pPort.Edge= UK_EditorObject.EdgeEnum.Left;
-                        cPort.Edge= UK_EditorObject.EdgeEnum.Left;                        
+                        pPort.Edge= iCS_EditorObject.EdgeEnum.Left;
+                        cPort.Edge= iCS_EditorObject.EdgeEnum.Left;                        
                     } else {
-                        pPort.Edge= UK_EditorObject.EdgeEnum.Bottom;
-                        cPort.Edge= UK_EditorObject.EdgeEnum.Bottom;                        
+                        pPort.Edge= iCS_EditorObject.EdgeEnum.Bottom;
+                        cPort.Edge= iCS_EditorObject.EdgeEnum.Bottom;                        
                     }
                 }
             } else {
                 if(dx < dy) {
                     if(childLocalPos.y < dx) {
-                        pPort.Edge= UK_EditorObject.EdgeEnum.Top;
-                        cPort.Edge= UK_EditorObject.EdgeEnum.Top;
+                        pPort.Edge= iCS_EditorObject.EdgeEnum.Top;
+                        cPort.Edge= iCS_EditorObject.EdgeEnum.Top;
                     } else {
-                        pPort.Edge= UK_EditorObject.EdgeEnum.Right;
-                        cPort.Edge= UK_EditorObject.EdgeEnum.Right;                        
+                        pPort.Edge= iCS_EditorObject.EdgeEnum.Right;
+                        cPort.Edge= iCS_EditorObject.EdgeEnum.Right;                        
                     }
                 } else {
                     if(childLocalPos.y < dy) {
-                        pPort.Edge= UK_EditorObject.EdgeEnum.Top;
-                        cPort.Edge= UK_EditorObject.EdgeEnum.Top;                        
+                        pPort.Edge= iCS_EditorObject.EdgeEnum.Top;
+                        cPort.Edge= iCS_EditorObject.EdgeEnum.Top;                        
                     } else {
-                        pPort.Edge= UK_EditorObject.EdgeEnum.Bottom;
-                        cPort.Edge= UK_EditorObject.EdgeEnum.Bottom;                        
+                        pPort.Edge= iCS_EditorObject.EdgeEnum.Bottom;
+                        cPort.Edge= iCS_EditorObject.EdgeEnum.Bottom;                        
                     }
                 }                
             }
@@ -727,11 +727,11 @@ public partial class UK_IStorage {
         if(parent1Rect.xMin <= parent2Rect.xMin && parent1Rect.xMax > parent2Rect.xMin ||
            parent2Rect.xMin <= parent1Rect.xMin && parent2Rect.xMax > parent1Rect.xMin) {
             if(parent1Rect.yMin < parent2Rect.yMin) {
-                p1.Edge= UK_EditorObject.EdgeEnum.Bottom;
-                p2.Edge= UK_EditorObject.EdgeEnum.Top;
+                p1.Edge= iCS_EditorObject.EdgeEnum.Bottom;
+                p2.Edge= iCS_EditorObject.EdgeEnum.Top;
             } else {
-                p1.Edge= UK_EditorObject.EdgeEnum.Top;
-                p2.Edge= UK_EditorObject.EdgeEnum.Bottom;                
+                p1.Edge= iCS_EditorObject.EdgeEnum.Top;
+                p2.Edge= iCS_EditorObject.EdgeEnum.Bottom;                
             }
             return;
         }
@@ -739,11 +739,11 @@ public partial class UK_IStorage {
         if(parent1Rect.yMin <= parent2Rect.yMin && parent1Rect.yMax > parent2Rect.yMin ||
            parent2Rect.yMin <= parent1Rect.yMin && parent2Rect.yMax > parent1Rect.yMin) {
             if(parent1Rect.xMin < parent2Rect.xMin) {
-                p1.Edge= UK_EditorObject.EdgeEnum.Right;
-                p2.Edge= UK_EditorObject.EdgeEnum.Left;
+                p1.Edge= iCS_EditorObject.EdgeEnum.Right;
+                p2.Edge= iCS_EditorObject.EdgeEnum.Left;
             } else {
-                p1.Edge= UK_EditorObject.EdgeEnum.Left;
-                p2.Edge= UK_EditorObject.EdgeEnum.Right;                
+                p1.Edge= iCS_EditorObject.EdgeEnum.Left;
+                p2.Edge= iCS_EditorObject.EdgeEnum.Right;                
             }
             return;
         }
@@ -751,55 +751,55 @@ public partial class UK_IStorage {
         if(parent1Rect.xMin < parent2Rect.xMin) {
             if(parent1Rect.yMin < parent2Rect.yMin) {
                 if(p1.Source == p2.InstanceId) {
-                    p1.Edge= UK_EditorObject.EdgeEnum.Bottom;
-                    p2.Edge= UK_EditorObject.EdgeEnum.Left;
+                    p1.Edge= iCS_EditorObject.EdgeEnum.Bottom;
+                    p2.Edge= iCS_EditorObject.EdgeEnum.Left;
                 } else {
-                    p1.Edge= UK_EditorObject.EdgeEnum.Right;
-                    p2.Edge= UK_EditorObject.EdgeEnum.Top;                    
+                    p1.Edge= iCS_EditorObject.EdgeEnum.Right;
+                    p2.Edge= iCS_EditorObject.EdgeEnum.Top;                    
                 }
             } else {
                 if(p1.Source == p2.InstanceId) {
-                    p1.Edge= UK_EditorObject.EdgeEnum.Right;
-                    p2.Edge= UK_EditorObject.EdgeEnum.Bottom;
+                    p1.Edge= iCS_EditorObject.EdgeEnum.Right;
+                    p2.Edge= iCS_EditorObject.EdgeEnum.Bottom;
                 } else {
-                    p1.Edge= UK_EditorObject.EdgeEnum.Top;
-                    p2.Edge= UK_EditorObject.EdgeEnum.Left;                    
+                    p1.Edge= iCS_EditorObject.EdgeEnum.Top;
+                    p2.Edge= iCS_EditorObject.EdgeEnum.Left;                    
                 }                
             }
             return;
         }
         if(parent1Rect.yMin < parent2Rect.yMin) {
             if(p1.Source == p2.InstanceId) {
-                p1.Edge= UK_EditorObject.EdgeEnum.Left;
-                p2.Edge= UK_EditorObject.EdgeEnum.Top;
+                p1.Edge= iCS_EditorObject.EdgeEnum.Left;
+                p2.Edge= iCS_EditorObject.EdgeEnum.Top;
             } else {
-                p1.Edge= UK_EditorObject.EdgeEnum.Bottom;
-                p2.Edge= UK_EditorObject.EdgeEnum.Right;                    
+                p1.Edge= iCS_EditorObject.EdgeEnum.Bottom;
+                p2.Edge= iCS_EditorObject.EdgeEnum.Right;                    
             }
         } else {
             if(p1.Source == p2.InstanceId) {
-                p1.Edge= UK_EditorObject.EdgeEnum.Top;
-                p2.Edge= UK_EditorObject.EdgeEnum.Right;
+                p1.Edge= iCS_EditorObject.EdgeEnum.Top;
+                p2.Edge= iCS_EditorObject.EdgeEnum.Right;
             } else {
-                p1.Edge= UK_EditorObject.EdgeEnum.Left;
-                p2.Edge= UK_EditorObject.EdgeEnum.Bottom;                    
+                p1.Edge= iCS_EditorObject.EdgeEnum.Left;
+                p2.Edge= iCS_EditorObject.EdgeEnum.Bottom;                    
             }            
         }
     }
-    void UpdatePortEdgeHardConstraints(UK_EditorObject port) {
+    void UpdatePortEdgeHardConstraints(iCS_EditorObject port) {
         if(port.IsEnablePort) {
-            port.Edge= UK_EditorObject.EdgeEnum.Top;
+            port.Edge= iCS_EditorObject.EdgeEnum.Top;
             return;            
         }
         if(port.IsDataPort) {
-            port.Edge= port.IsInputPort ? UK_EditorObject.EdgeEnum.Left : UK_EditorObject.EdgeEnum.Right;
+            port.Edge= port.IsInputPort ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Right;
             return;
         }
     }
     // ----------------------------------------------------------------------
     // Returns the minimal distance from the parent.
-    public float GetDistanceFromParent(UK_EditorObject port) {
-        UK_EditorObject parentNode= GetParent(port);
+    public float GetDistanceFromParent(iCS_EditorObject port) {
+        iCS_EditorObject parentNode= GetParent(port);
         Rect tmp= GetPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
         if(IsInside(parentNode, position)) return 0;
@@ -821,14 +821,14 @@ public partial class UK_IStorage {
 
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
-    public bool IsNearParent(UK_EditorObject port) {
+    public bool IsNearParent(iCS_EditorObject port) {
         if(GetNodeAt(Math3D.ToVector2(GetPosition(port))) != GetParent(port)) return false;
-        return GetDistanceFromParent(port) <= UK_EditorConfig.PortSize*2;
+        return GetDistanceFromParent(port) <= iCS_EditorConfig.PortSize*2;
     }
 
 	// ----------------------------------------------------------------------
-    public UK_EditorObject GetOverlappingPort(UK_EditorObject port) {
-        UK_EditorObject foundPort= null;
+    public iCS_EditorObject GetOverlappingPort(iCS_EditorObject port) {
+        iCS_EditorObject foundPort= null;
         Rect tmp= GetPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
         FilterWith(
@@ -837,7 +837,7 @@ public partial class UK_IStorage {
                 tmp= GetPosition(p);
                 Vector2 pPos= new Vector2(tmp.x, tmp.y);
                 float distance= Vector2.Distance(pPos, position);
-                if(distance <= 1.5*UK_EditorConfig.PortSize) {
+                if(distance <= 1.5*iCS_EditorConfig.PortSize) {
                     foundPort= p;
                 }
             }

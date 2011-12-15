@@ -2,11 +2,11 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class UK_ParallelDispatcher : UK_Dispatcher {
+public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_ParallelDispatcher(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_ParallelDispatcher(string name, Vector2 layout) : base(name, layout) {}
     
     // ======================================================================
     // Execution
@@ -19,7 +19,7 @@ public class UK_ParallelDispatcher : UK_Dispatcher {
         int queueSize= myExecuteQueue.Count;
         while(myQueueIdx < queueSize) {
             // Attempt to execute child function.
-            UK_Action action= myExecuteQueue[myQueueIdx];
+            iCS_Action action= myExecuteQueue[myQueueIdx];
             action.Execute(frameId);            
             if(!action.IsCurrent(frameId)) {
                 // Verify if the child is a stalled dispatcher.
@@ -52,7 +52,7 @@ public class UK_ParallelDispatcher : UK_Dispatcher {
             }
         }
         if(best != myQueueIdx) {
-            UK_Action tmp= myExecuteQueue[myQueueIdx];
+            iCS_Action tmp= myExecuteQueue[myQueueIdx];
             myExecuteQueue[myQueueIdx]= myExecuteQueue[best];
             myExecuteQueue[best]= tmp;
         }

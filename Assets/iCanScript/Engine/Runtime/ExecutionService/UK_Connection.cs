@@ -1,31 +1,31 @@
 using UnityEngine;
 using System.Collections;
 
-public class UK_Connection {
+public class iCS_Connection {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    Prelude.Tuple<UK_FunctionBase,int>    myConnection= null;
+    Prelude.Tuple<iCS_FunctionBase,int>    myConnection= null;
 
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
-    public static UK_Connection  NoConnection= new UK_Connection(null, -1);
+    public static iCS_Connection  NoConnection= new iCS_Connection(null, -1);
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public UK_FunctionBase Function  { get { return myConnection != null ? myConnection.Item1 : null; }}
+    public iCS_FunctionBase Function  { get { return myConnection != null ? myConnection.Item1 : null; }}
     public int             PortIndex { get { return myConnection != null ? myConnection.Item2 : -1; }}
     
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public UK_Connection() {
+    public iCS_Connection() {
         myConnection= NoConnection.myConnection;
     }
-    public UK_Connection(UK_FunctionBase function, int parameterIndex) {
-        myConnection= new Prelude.Tuple<UK_FunctionBase,int>(function, parameterIndex);
+    public iCS_Connection(iCS_FunctionBase function, int parameterIndex) {
+        myConnection= new Prelude.Tuple<iCS_FunctionBase,int>(function, parameterIndex);
     }
 
     public bool IsConnected             { get{ return myConnection.Item1 != null; }}
