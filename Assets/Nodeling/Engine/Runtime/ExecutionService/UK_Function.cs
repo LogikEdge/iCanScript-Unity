@@ -46,6 +46,9 @@ public class UK_Function : UK_FunctionBase {
         Array.Copy(initValues, baseInitValues, baseInitValues.Length);
         base.SetConnections(baseConnections, baseInitValues);
     }
+    public new void SetConnection(int id, UK_Connection connection) {
+        if(id < myParameters.Length) base.SetConnection(id, connection);
+    }
     
     // ======================================================================
     // Execution

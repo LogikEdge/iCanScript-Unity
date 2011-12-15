@@ -106,6 +106,26 @@ public static partial class Prelude {
         });
     }
     
+    // ----------------------------------------------------------------------
+    // Executes a case statement according to the type of the object
+    public static void choice<T1,T2,T3,T4,T5,T6>(object obj, Action<T1> f1,
+                                                             Action<T2> f2,
+                                                             Action<T3> f3,
+                                                             Action<T4> f4,
+                                                             Action<T5> f5,
+                                                             Action<T6> f6,
+                                                             Action<object> defaultFnc= null) where T1 : class
+                                                                                              where T2 : class
+                                                                                              where T3 : class
+                                                                                              where T4 : class
+                                                                                              where T5 : class
+                                                                                              where T6 : class {
+        choice<T1,T2,T3,T4,T5>(obj, f1, f2, f3, f4, f5, (_) => {
+            if(executeIf<T6>(obj, f6)) {}
+            else if(defaultFnc!= null) defaultFnc(obj);
+        });
+    }
+    
     // ======================================================================
     // Dynamic
     // ----------------------------------------------------------------------

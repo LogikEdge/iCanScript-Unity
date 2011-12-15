@@ -49,6 +49,11 @@ public class UK_Storage : MonoBehaviour {
         return EditorObjects[child.ParentId]; 
     }
     // ----------------------------------------------------------------------
+    public UK_EditorObject GetSource(UK_EditorObject port) {
+        if(port == null || port.Source == -1) return null;
+        return EditorObjects[port.Source];
+    }
+    // ----------------------------------------------------------------------
     // Returns the absolute position of the node.
     public Rect GetPosition(UK_EditorObject node) {
         if(!IsValidEditorObject(node.ParentId)) return node.LocalPosition;
@@ -58,4 +63,14 @@ public class UK_Storage : MonoBehaviour {
                         node.LocalPosition.width,
                         node.LocalPosition.height);
     }
+    // ----------------------------------------------------------------------
+    // Returns the last data port in the connection or NULL if none exist.
+    public UK_EditorObject GetDataConnectionSource(UK_EditorObject port) {
+        if(port == null || !port.IsDataPort) return null;
+        for(UK_EditorObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
+            port= sourcePort;
+        }
+        return port;
+    }
+    
 }

@@ -6,6 +6,11 @@ public class UK_Connection {
     // Properties
     // ----------------------------------------------------------------------
     Prelude.Tuple<UK_FunctionBase,int>    myConnection= null;
+
+    // ======================================================================
+    // Constants
+    // ----------------------------------------------------------------------
+    public static UK_Connection  NoConnection= new UK_Connection(null, -1);
     
     // ======================================================================
     // Accessors
@@ -16,6 +21,9 @@ public class UK_Connection {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
+    public UK_Connection() {
+        myConnection= NoConnection.myConnection;
+    }
     public UK_Connection(UK_FunctionBase function, int parameterIndex) {
         myConnection= new Prelude.Tuple<UK_FunctionBase,int>(function, parameterIndex);
     }

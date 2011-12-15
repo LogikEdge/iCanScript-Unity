@@ -71,8 +71,8 @@ public partial class UK_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public UK_EditorObject GetParent(UK_EditorObject obj)        { return obj.IsParentValid ? EditorObjects[obj.ParentId] : null; }
-    public UK_EditorObject GetSource(UK_EditorObject obj)        { return obj.IsSourceValid ? EditorObjects[obj.Source] : null; }
+    public UK_EditorObject GetParent(UK_EditorObject obj)        { return Storage.GetParent(obj); }
+    public UK_EditorObject GetSource(UK_EditorObject obj)        { return Storage.GetSource(obj); }
     public object          GetRuntimeObject(UK_EditorObject obj) { return IsValid(obj) ? TreeCache[obj.InstanceId].RuntimeObject : null; }
     public float           GetAnimTime(UK_EditorObject obj)      { return IsValid(obj) ? Time.realtimeSinceStartup-TreeCache[obj.InstanceId].AnimationTime : 0; }
     public void            StartAnimTimer(UK_EditorObject obj)   { if(IsValid(obj)) TreeCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }

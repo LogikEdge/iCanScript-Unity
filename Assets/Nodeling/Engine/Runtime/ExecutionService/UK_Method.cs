@@ -37,6 +37,7 @@ public class UK_Method : UK_Function {
     protected new void Init(bool[] portIsOuts) {
         bool[] baseIsOuts= new bool[portIsOuts.Length-2];
         Array.Copy(portIsOuts, baseIsOuts, baseIsOuts.Length);
+        myThisConnection= UK_Connection.NoConnection;
         base.Init(baseIsOuts);        
     }
     public new void SetConnections(UK_Connection[] connections, object[] initValues) {
@@ -47,6 +48,10 @@ public class UK_Method : UK_Function {
         object[] baseValues= new object[initValues.Length-2];
         Array.Copy(initValues, baseValues, baseValues.Length);        
         base.SetConnections(baseConnections, baseValues);
+    }
+    public new void SetConnection(int id, UK_Connection connection) {
+        if(id == myParameters.Length+1) myThisConnection= connection;
+        else base.SetConnection(id, connection);
     }
     
     // ======================================================================

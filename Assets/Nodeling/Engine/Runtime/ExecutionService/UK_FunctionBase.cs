@@ -53,8 +53,7 @@ public class UK_FunctionBase : UK_Action {
     }
     public UK_FunctionBase(string name, Vector2 layout) : base(name,layout) {}
     protected void Init(bool[] paramIsOuts) {
-        myParameterIsOuts= paramIsOuts ?? new bool[0];
-        myConnections= new UK_Connection[0];
+        myParameterIsOuts= paramIsOuts;
         List<int> inIdx= new List<int>();
         List<int> outIdx= new List<int>();
         for(int i= 0; i < paramIsOuts.Length; ++i) {
@@ -62,10 +61,17 @@ public class UK_FunctionBase : UK_Action {
         }
         myInIndexes = inIdx.ToArray();
         myOutIndexes= outIdx.ToArray();        
+        // Allocate parameters & connections
+        myParameters= new object[paramIsOuts.Length];
+        myConnections= new UK_Connection[paramIsOuts.Length];
+        for(int i= 0; i < myConnections.Length; ++i) myConnections[i]= UK_Connection.NoConnection;
     }
     public void SetConnections(UK_Connection[] connections, object[] initValues) {
         myConnections= connections;
         myParameters= initValues;
+    }
+    public void SetConnection(int id, UK_Connection connection) {
+        myConnections[id]= connection;
     }
     
     // ======================================================================
