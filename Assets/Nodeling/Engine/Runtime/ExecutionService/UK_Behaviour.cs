@@ -13,7 +13,7 @@ public sealed class UK_Behaviour : UK_Storage {
     UK_Action   myFixedUpdateAction = null;
     int         myUpdateFrameId     = 0;
     int         myFixedUpdateFrameId= 0;
-    object[]    myRuntimeNodes      = new object[0];
+    public object[]    myRuntimeNodes      = new object[0];
     
     // ======================================================================
     // Accessors
@@ -170,22 +170,31 @@ public sealed class UK_Behaviour : UK_Storage {
                     if(myRuntimeNodes[node.InstanceId] != null) continue;
                     // Wait until parent is generated.
                     object parent= null;
-                    if(node.ParentId != -1) {
-                        UK_EditorObject edParent= GetParent(node);
-                        if(edParent.ObjectType == UK_ObjectTypeEnum.TransitionModule) {
-                            edParent= GetParent(edParent);
+                    switch(node.ParentId) {
+                        case -1: {
+                            break;
                         }
-                        parent= myRuntimeNodes[edParent.InstanceId];
-                        if(parent == null) {
-                            needAdditionalPass= true;
-                            continue;
-                        }                        
+                        case 0: {
+                            parent= this;
+                            break;
+                        }
+                        default: {
+                            UK_EditorObject edParent= GetParent(node);
+                            if(edParent.ObjectType == UK_ObjectTypeEnum.TransitionModule) {
+                                edParent= GetParent(edParent);
+                            }
+                            parent= myRuntimeNodes[edParent.InstanceId];
+                            if(parent == null) {
+                                needAdditionalPass= true;
+                                continue;
+                            }
+                            break;
+                        }
                     }
                     // We are ready to generate new node.
                     Vector2 layout= Math3D.Middle(GetPosition(node));
                     switch(node.ObjectType) {
                         case UK_ObjectTypeEnum.Behaviour: {
-//                            myRuntimeNodes[node.InstanceId]= this;
                             break;
                         }
                         case UK_ObjectTypeEnum.StateChart: {
