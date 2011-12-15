@@ -145,6 +145,7 @@ public sealed class UK_Behaviour : UK_Storage {
     // Code Generation
     // ----------------------------------------------------------------------
     public void GenerateCode() {
+        Debug.Log(gameObject.name+": Generating real-time code...");
         // Remove any previous runtime object creation.
         ClearGeneratedCode();
         // Create all the runtime nodes.
