@@ -142,12 +142,7 @@ public partial class UK_IStorage {
     // ----------------------------------------------------------------------
     // Returns the absolute position of the node.
     public Rect GetPosition(UK_EditorObject node) {
-        if(!IsValid(node.ParentId)) return node.LocalPosition;
-        Rect position= GetPosition(EditorObjects[node.ParentId]);
-        return new Rect(position.x+node.LocalPosition.x,
-                        position.y+node.LocalPosition.y,
-                        node.LocalPosition.width,
-                        node.LocalPosition.height);
+        return Storage.GetPosition(node);
     }
     public Rect GetPosition(int id) {
         return GetPosition(EditorObjects[id]);

@@ -6,40 +6,6 @@ using System.Collections.Generic;
 
 public class UK_Reflection {
     // ----------------------------------------------------------------------
-    // Returns the MethodInfo associated with the AddChild method.
-    public static MethodInfo GetAddChildMethodInfo(object obj) {
-        if(obj == null) return null;
-        Type objType= obj.GetType();
-        MethodInfo methodInfo= objType.GetMethod(UK_EditorStrings.AddChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-        if(methodInfo == null) return null;
-        ParameterInfo[] parameters= methodInfo.GetParameters();
-        if(parameters.Length != 1) return null;
-        return methodInfo;
-    }
-    public static void InvokeAddChildIfExists(object parent, object child) {
-        MethodInfo method= GetAddChildMethodInfo(parent);
-        if(method == null) return;
-        method.Invoke(parent, new object[1]{child});
-    }
-    
-    // ----------------------------------------------------------------------
-    // Returns the MethodInfo associated with the RemoveChild method.
-    public static MethodInfo GetRemoveChildMethodInfo(object obj) {
-        if(obj == null) return null;
-        Type objType= obj.GetType();
-        MethodInfo methodInfo= objType.GetMethod(UK_EditorStrings.RemoveChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
-        if(methodInfo == null) return null;
-        ParameterInfo[] parameters= methodInfo.GetParameters();
-        if(parameters.Length != 1) return null;
-        return methodInfo;
-    }
-    public static void InvokeRemoveChildIfExists(object parent, object child) {
-        MethodInfo method= GetRemoveChildMethodInfo(parent);
-        if(method == null) return;
-        method.Invoke(parent, new object[1]{child});
-    }
-    
-    // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
     public static List<FieldInfo> GetInPortFields(Type objType) {
         List<FieldInfo> list= new List<FieldInfo>();

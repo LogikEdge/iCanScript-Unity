@@ -35,10 +35,6 @@ public class UK_EditorStrings {
     // Special port names.
     public const string EnablePort= "enable";
 
-    // Reflection methods
-    public const string AddChildMethod   = "AddChild";
-    public const string RemoveChildMethod= "RemoveChild";
-
     // Parsing identifiers (unused for now)
     public const string BeginBlock = "{";
     public const string EndBlock   = "}";

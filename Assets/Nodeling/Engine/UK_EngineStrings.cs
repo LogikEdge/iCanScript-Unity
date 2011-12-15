@@ -14,4 +14,9 @@ public class UK_EngineStrings {
 
     // Special port names.
     public const string EnablePort= "enable";
+    
+    // Reflection methods
+    public const string AddChildMethod   = "AddChild";
+    public const string RemoveChildMethod= "RemoveChild";
+
 }

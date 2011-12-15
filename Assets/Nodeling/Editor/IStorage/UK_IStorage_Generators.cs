@@ -27,96 +27,96 @@ public partial class UK_IStorage {
         // Remove any previous runtime object creation.
         rtBehaviour.ClearGeneratedCode();
         // Create all the runtime nodes.
-        GenerateRuntimeChildNodes(edBehaviour, rtBehaviour);
+        rtBehaviour.GenerateRuntimeNodes();
         // Connect the runtime nodes.
         ConnectRuntimeChildNodes(edBehaviour);
     }
-    // ----------------------------------------------------------------------
-    void GenerateRuntimeChildNodes(UK_EditorObject edNode, object rtNode) {
-        ForEachChild(edNode,
-            edChild=>{
-                if(edChild.IsNode) {
-                    Vector2 layout= Math3D.Middle(GetPosition(edChild));
-                    switch(edChild.ObjectType) {
-                        case UK_ObjectTypeEnum.StateChart: {
-                            UK_StateChart stateChart= new UK_StateChart(edChild.Name, layout);
-                            TreeCache[edChild.InstanceId].RuntimeObject= stateChart;
-                            UK_Reflection.InvokeAddChildIfExists(rtNode, stateChart);
-                            GenerateRuntimeChildNodes(edChild, stateChart);
-                            break;
-                        }
-                        case UK_ObjectTypeEnum.State: {
-                            UK_State state= new UK_State(edChild.Name, layout);
-                            TreeCache[edChild.InstanceId].RuntimeObject= state;
-                            UK_Reflection.InvokeAddChildIfExists(rtNode, state);
-                            GenerateRuntimeChildNodes(edChild, state);
-                            break;
-                        }
-                        case UK_ObjectTypeEnum.TransitionModule: {
-                            GenerateRuntimeChildNodes(edChild, null);
-                            break;
-                        }
-                        case UK_ObjectTypeEnum.TransitionGuard:
-                        case UK_ObjectTypeEnum.TransitionAction:
-                        case UK_ObjectTypeEnum.Module: {
-                            UK_Module module= new UK_Module(edChild.Name, layout);                                
-                            TreeCache[edChild.InstanceId].RuntimeObject= module;
-                            if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);                                
-                            GenerateRuntimeChildNodes(edChild, module);
-                            break;
-                        }
-                        case UK_ObjectTypeEnum.InstanceMethod: {
-                            // Create method.
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
-                            if(rtDesc == null) break;
-                            UK_Method method= new UK_Method(edChild.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
-                            TreeCache[edChild.InstanceId].RuntimeObject= method;
-                            UK_Reflection.InvokeAddChildIfExists(rtNode, method);
-                            break;                            
-                        }
-                        case UK_ObjectTypeEnum.Conversion:
-                        case UK_ObjectTypeEnum.StaticMethod: {
-                            // Create function.
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
-                            if(rtDesc == null) break;
-                            UK_Function func= new UK_Function(edChild.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
-                            TreeCache[edChild.InstanceId].RuntimeObject= func;
-                            UK_Reflection.InvokeAddChildIfExists(rtNode, func);
-                            break;
-                        }
-                        case UK_ObjectTypeEnum.InstanceField: {
-                            // Create function.
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
-                            if(rtDesc == null) break;
-                            FieldInfo fieldInfo= rtDesc.Field;
-                            UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
-                                new UK_GetInstanceField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
-                                new UK_SetInstanceField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
-                            TreeCache[edChild.InstanceId].RuntimeObject= rtField;
-                            UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
-                            break;
-                        }
-                        case UK_ObjectTypeEnum.StaticField: {
-                            // Create function.
-                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
-                            if(rtDesc == null) break;
-                            FieldInfo fieldInfo= rtDesc.Field;
-                            UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
-                                new UK_GetStaticField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
-                                new UK_SetStaticField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
-                            TreeCache[edChild.InstanceId].RuntimeObject= rtField;
-                            UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
-                            break;                            
-                        }
-                        default: {
-                            Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
-                            break;
-                        }
-                    }
-                }
-            }
-        );
-    }
+//    // ----------------------------------------------------------------------
+//    void GenerateRuntimeChildNodes(UK_EditorObject edNode, object rtNode) {
+//        ForEachChild(edNode,
+//            edChild=>{
+//                if(edChild.IsNode) {
+//                    Vector2 layout= Math3D.Middle(GetPosition(edChild));
+//                    switch(edChild.ObjectType) {
+//                        case UK_ObjectTypeEnum.StateChart: {
+//                            UK_StateChart stateChart= new UK_StateChart(edChild.Name, layout);
+//                            TreeCache[edChild.InstanceId].RuntimeObject= stateChart;
+//                            UK_Reflection.InvokeAddChildIfExists(rtNode, stateChart);
+//                            GenerateRuntimeChildNodes(edChild, stateChart);
+//                            break;
+//                        }
+//                        case UK_ObjectTypeEnum.State: {
+//                            UK_State state= new UK_State(edChild.Name, layout);
+//                            TreeCache[edChild.InstanceId].RuntimeObject= state;
+//                            UK_Reflection.InvokeAddChildIfExists(rtNode, state);
+//                            GenerateRuntimeChildNodes(edChild, state);
+//                            break;
+//                        }
+//                        case UK_ObjectTypeEnum.TransitionModule: {
+//                            GenerateRuntimeChildNodes(edChild, null);
+//                            break;
+//                        }
+//                        case UK_ObjectTypeEnum.TransitionGuard:
+//                        case UK_ObjectTypeEnum.TransitionAction:
+//                        case UK_ObjectTypeEnum.Module: {
+//                            UK_Module module= new UK_Module(edChild.Name, layout);                                
+//                            TreeCache[edChild.InstanceId].RuntimeObject= module;
+//                            if(rtNode != null) UK_Reflection.InvokeAddChildIfExists(rtNode, module);                                
+//                            GenerateRuntimeChildNodes(edChild, module);
+//                            break;
+//                        }
+//                        case UK_ObjectTypeEnum.InstanceMethod: {
+//                            // Create method.
+//                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
+//                            if(rtDesc == null) break;
+//                            UK_Method method= new UK_Method(edChild.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
+//                            TreeCache[edChild.InstanceId].RuntimeObject= method;
+//                            UK_Reflection.InvokeAddChildIfExists(rtNode, method);
+//                            break;                            
+//                        }
+//                        case UK_ObjectTypeEnum.Conversion:
+//                        case UK_ObjectTypeEnum.StaticMethod: {
+//                            // Create function.
+//                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
+//                            if(rtDesc == null) break;
+//                            UK_Function func= new UK_Function(edChild.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
+//                            TreeCache[edChild.InstanceId].RuntimeObject= func;
+//                            UK_Reflection.InvokeAddChildIfExists(rtNode, func);
+//                            break;
+//                        }
+//                        case UK_ObjectTypeEnum.InstanceField: {
+//                            // Create function.
+//                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
+//                            if(rtDesc == null) break;
+//                            FieldInfo fieldInfo= rtDesc.Field;
+//                            UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
+//                                new UK_GetInstanceField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
+//                                new UK_SetInstanceField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
+//                            TreeCache[edChild.InstanceId].RuntimeObject= rtField;
+//                            UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
+//                            break;
+//                        }
+//                        case UK_ObjectTypeEnum.StaticField: {
+//                            // Create function.
+//                            UK_RuntimeDesc rtDesc= new UK_RuntimeDesc(edChild.RuntimeArchive);
+//                            if(rtDesc == null) break;
+//                            FieldInfo fieldInfo= rtDesc.Field;
+//                            UK_FunctionBase rtField= rtDesc.PortIsOuts[1] ?
+//                                new UK_GetStaticField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase:
+//                                new UK_SetStaticField(edChild.Name, fieldInfo, rtDesc.PortIsOuts, layout) as UK_FunctionBase;                                
+//                            TreeCache[edChild.InstanceId].RuntimeObject= rtField;
+//                            UK_Reflection.InvokeAddChildIfExists(rtNode, rtField);
+//                            break;                            
+//                        }
+//                        default: {
+//                            Debug.LogWarning("Code could not be generated for "+edChild.ObjectType+" editor object type.");
+//                            break;
+//                        }
+//                    }
+//                }
+//            }
+//        );
+//    }
     // ----------------------------------------------------------------------
     void ConnectRuntimeChildNodes(UK_EditorObject edNode) {
         ForEachChild(edNode,
