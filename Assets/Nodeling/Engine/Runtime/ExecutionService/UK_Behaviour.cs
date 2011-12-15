@@ -13,11 +13,7 @@ public sealed class UK_Behaviour : UK_Storage {
     UK_Action   myFixedUpdateAction = null;
     int         myUpdateFrameId     = 0;
     int         myFixedUpdateFrameId= 0;
-    object[]    myRuntimeNodes      = null;
-    
-    // Protocol to allow modification of behaviour while the engine is running.
-    Action<UK_Behaviour,object> myCodeGenerationAction= null;
-    object                      myCodeGenerationObject= null;
+    object[]    myRuntimeNodes      = new object[0];
     
     // ======================================================================
     // Accessors
@@ -33,11 +29,6 @@ public sealed class UK_Behaviour : UK_Storage {
         myUpdateFrameId     = 0;
         myFixedUpdateFrameId= 0;        
     }
-    // ----------------------------------------------------------------------
-    public void SetCodeGenerationAction(Action<UK_Behaviour, object> codeGenerationAction, object codeGenerationObject= null) {
-        myCodeGenerationAction= codeGenerationAction;
-        myCodeGenerationObject= codeGenerationObject;
-    }
     
     // ----------------------------------------------------------------------
     // This function should be used to find references to other objects.
@@ -49,9 +40,12 @@ public sealed class UK_Behaviour : UK_Storage {
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
     void Start() {
-        if(myCodeGenerationAction != null) {
-            myCodeGenerationAction(this, myCodeGenerationObject);
-        }
+        // Remove any previous runtime object creation.
+        ClearGeneratedCode();
+        // Create all the runtime nodes.
+        GenerateRuntimeNodes();
+        // Connect the runtime nodes.
+        ConnectRuntimeNodes();
     }
     
     // ----------------------------------------------------------------------
@@ -68,9 +62,6 @@ public sealed class UK_Behaviour : UK_Storage {
     // ----------------------------------------------------------------------
     // Called on every frame.
     void Update() {
-        if(myCodeGenerationAction != null) {
-            myCodeGenerationAction(this, myCodeGenerationObject);
-        }
         ++myUpdateFrameId;
         if(myUpdateAction != null) {
             do {        
@@ -84,7 +75,6 @@ public sealed class UK_Behaviour : UK_Storage {
     }
     // Called on evry frame after all Update have been called.
     void LateUpdate() {
-        if(myCodeGenerationAction != null) return;
         if(myLateUpdateAction != null) {
             do {
                 myLateUpdateAction.Execute(myUpdateFrameId);                                            
@@ -97,7 +87,6 @@ public sealed class UK_Behaviour : UK_Storage {
     }
     // Fix-time update to be used instead of Update
     void FixedUpdate() {
-        if(myCodeGenerationAction != null) return;
         ++myFixedUpdateFrameId;
         if(myFixedUpdateAction != null) {
             do {
@@ -161,7 +150,7 @@ public sealed class UK_Behaviour : UK_Storage {
     // Code Generation
     // ----------------------------------------------------------------------
     public void ClearGeneratedCode() {
-        myRuntimeNodes= null;
+        myRuntimeNodes= new object[0];
         Reset();
     }
     // ----------------------------------------------------------------------
@@ -196,7 +185,7 @@ public sealed class UK_Behaviour : UK_Storage {
                     Vector2 layout= Math3D.Middle(GetPosition(node));
                     switch(node.ObjectType) {
                         case UK_ObjectTypeEnum.Behaviour: {
-                            myRuntimeNodes[node.InstanceId]= this;
+//                            myRuntimeNodes[node.InstanceId]= this;
                             break;
                         }
                         case UK_ObjectTypeEnum.StateChart: {

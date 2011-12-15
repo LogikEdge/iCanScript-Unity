@@ -15,8 +15,8 @@ public class UK_Storage : MonoBehaviour {
     [HideInInspector] public int                      UndoRedoId   = 0;
 
     // ----------------------------------------------------------------------
-    public bool IsValidEditorObject(int id) { return id < EditorObjects.Count && EditorObjects[id] != null; }
-    public bool IsValidUnityObject(int id)  { return id < UnityObjects.Count && UnityObjects[id] != null; }
+    public bool IsValidEditorObject(int id) { return id >= 0 && id < EditorObjects.Count && EditorObjects[id] != null; }
+    public bool IsValidUnityObject(int id)  { return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null; }
 
     // ======================================================================
     // UnityObject Utilities

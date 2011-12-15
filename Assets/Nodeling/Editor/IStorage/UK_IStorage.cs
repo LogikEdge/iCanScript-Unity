@@ -119,10 +119,6 @@ public partial class UK_IStorage {
                 }
             }
         );
-        // Ask to regenerate runtime code.
-        if(!myIsDirty && Storage is UK_Behaviour) {
-            (Storage as UK_Behaviour).SetCodeGenerationAction(UK_IStorage.GenerateRuntimeCodeCallback, this);
-        }           
     }
     // ----------------------------------------------------------------------
     public bool Cleanup() {
