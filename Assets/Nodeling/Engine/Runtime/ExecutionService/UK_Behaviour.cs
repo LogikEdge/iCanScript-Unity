@@ -13,7 +13,7 @@ public sealed class UK_Behaviour : UK_Storage {
     UK_Action   myFixedUpdateAction = null;
     int         myUpdateFrameId     = 0;
     int         myFixedUpdateFrameId= 0;
-    public object[]    myRuntimeNodes      = new object[0];
+    object[]    myRuntimeNodes      = new object[0];
     
     // ======================================================================
     // Accessors
@@ -40,12 +40,7 @@ public sealed class UK_Behaviour : UK_Storage {
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
     void Start() {
-        // Remove any previous runtime object creation.
-        ClearGeneratedCode();
-        // Create all the runtime nodes.
-        GenerateRuntimeNodes();
-        // Connect the runtime nodes.
-        ConnectRuntimeNodes();
+        GenerateCode();
     }
     
     // ----------------------------------------------------------------------
@@ -148,6 +143,20 @@ public sealed class UK_Behaviour : UK_Storage {
 
     // ======================================================================
     // Code Generation
+    // ----------------------------------------------------------------------
+    public void GenerateCode() {
+        // Remove any previous runtime object creation.
+        ClearGeneratedCode();
+        // Create all the runtime nodes.
+        GenerateRuntimeNodes();
+        // Connect the runtime nodes.
+        ConnectRuntimeNodes();        
+    }
+    // ----------------------------------------------------------------------
+    public object GetRuntimeObject(int id) {
+        if(id < 0 || id >= myRuntimeNodes.Length) return null;
+        return id == 0 ? this : myRuntimeNodes[id];
+    }
     // ----------------------------------------------------------------------
     public void ClearGeneratedCode() {
         myRuntimeNodes= new object[0];

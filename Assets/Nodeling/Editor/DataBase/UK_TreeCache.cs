@@ -15,7 +15,6 @@ public class UK_TreeCache {
         public bool         IsValid= false;
         public int          ParentId= -1;
         public List<int>    Children= new List<int>();
-        public object       RuntimeObject= null;
         public Rect         DisplayPosition;
         public float        AnimationTime= 0;
 
@@ -24,7 +23,6 @@ public class UK_TreeCache {
             IsValid= false;
             ParentId= -1;
             Children.Clear();
-            RuntimeObject= null;
         }
         public void AddChild(int id, TreeNode toAdd) {
             if(Prelude.elem(id, Children.ToArray())) return;
