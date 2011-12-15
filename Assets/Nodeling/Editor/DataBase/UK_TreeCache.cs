@@ -27,12 +27,10 @@ public class UK_TreeCache {
         public void AddChild(int id, TreeNode toAdd) {
             if(Prelude.elem(id, Children.ToArray())) return;
             Children.Add(id);
-//            UK_Reflection.InvokeAddChildIfExists(RuntimeObject, toAdd.RuntimeObject);
         }
         public void RemoveChild(int id, TreeNode toDelete) {
             for(int i= 0; i < Children.Count; ++i) {
                 if(Children[i] == id) {
-//                    UK_Reflection.InvokeRemoveChildIfExists(RuntimeObject, toDelete.RuntimeObject);
                     Children.RemoveAt(i);
                     return;
                 }

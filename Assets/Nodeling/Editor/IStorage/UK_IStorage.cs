@@ -35,7 +35,7 @@ public partial class UK_IStorage {
     // ----------------------------------------------------------------------
     void GenerateInternalData() {
         GenerateEditorData();
-        GenerateRuntimeCode();
+//        GenerateRuntimeCode();
     }
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
@@ -562,6 +562,11 @@ public partial class UK_IStorage {
         UK_EditorObject remotePort= FindAConnectedPort(port);
         if(remotePort == null) return null;
         return IsBridgeConnection(port, remotePort) ? remotePort : null;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the last data port in the connection or NULL if none exist.
+    public UK_EditorObject GetDataConnectionSource(UK_EditorObject port) {
+        return Storage.GetDataConnectionSource(port);
     }
     
 
