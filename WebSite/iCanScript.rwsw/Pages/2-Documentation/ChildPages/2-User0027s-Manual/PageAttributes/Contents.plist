@@ -10,7 +10,18 @@
 				<key>Changed</key>
 				<true/>
 				<key>ColourStyles</key>
-				<dict/>
+				<dict>
+					<key>Alpha</key>
+					<dict/>
+					<key>Bravo</key>
+					<dict/>
+					<key>Cameo</key>
+					<dict/>
+					<key>E Quinox 1.2</key>
+					<dict/>
+					<key>seyDoggy CRE4MY Demo</key>
+					<dict/>
+				</dict>
 				<key>CreditRapidWeaver</key>
 				<true/>
 				<key>CustomCopyrightUsed</key>
@@ -39,6 +50,53 @@
 				<integer>1</integer>
 				<key>TextEncoding</key>
 				<string>utf-8</string>
+				<key>ThemeStyles</key>
+				<dict>
+					<key>Alpha</key>
+					<array>
+						<string>Sidebar.Hide</string>
+						<string>Width.1000px</string>
+					</array>
+					<key>E Quinox 1.2</key>
+					<array>
+						<string>Background.8</string>
+						<string>Banner Image.1</string>
+						<string>Banner Size.250 px</string>
+						<string>Body Size.12px</string>
+						<string>Nav Behavior.Show on Button Press</string>
+						<string>Nav Columns.5</string>
+						<string>Sidebar Title.22px</string>
+						<string>Sidebar.Hide</string>
+						<string>Title Size.52px</string>
+						<string>Toggle.Photo Album Social Links</string>
+						<string>Width.960px</string>
+					</array>
+					<key>seyDoggy CRE4MY Demo</key>
+					<array>
+						<string>Background (header/slide show) [EC 1].No header background (color)</string>
+						<string>Background (main pre content) [EC 3].No pre content background (color)</string>
+						<string>Background gradient (body).None</string>
+						<string>Background gradient (pre/post content) [EC 2/EC 5].None</string>
+						<string>Background tile.None</string>
+						<string>Corners.Small</string>
+						<string>Font family (headings).Theme default (headings)</string>
+						<string>Font family (slogan).Theme default (slogan)</string>
+						<string>Font family (title).Theme default (title)</string>
+						<string>Font family.Helvetica (sans-serif)</string>
+						<string>Font size.Medium</string>
+						<string>Height (header/slide show) [EC 1].Hidden</string>
+						<string>Line height.Medium</string>
+						<string>Navigation type.3 tier</string>
+						<string>Sidebar position.Hide</string>
+						<string>Sidebar width.Normal</string>
+						<string>Slide show effect.Fade</string>
+						<string>Slide show speed.1 second</string>
+						<string>Slide show timeout.4 seconds</string>
+						<string>Slide show type.Off / Manual (snippet)</string>
+						<string>Title bar position.Below header</string>
+						<string>Width.960 px</string>
+					</array>
+				</dict>
 			</dict>
 			<key>Files</key>
 			<array/>

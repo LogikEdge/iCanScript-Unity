@@ -10,7 +10,12 @@
 				<key>Changed</key>
 				<true/>
 				<key>ColourStyles</key>
-				<dict/>
+				<dict>
+					<key>Alpha</key>
+					<dict/>
+					<key>seyDoggy CRE4MY Demo</key>
+					<dict/>
+				</dict>
 				<key>CreditRapidWeaver</key>
 				<true/>
 				<key>CustomCopyrightUsed</key>

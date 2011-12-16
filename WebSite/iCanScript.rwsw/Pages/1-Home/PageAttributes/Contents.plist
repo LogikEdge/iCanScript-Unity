@@ -13,6 +13,8 @@
 				<dict>
 					<key>Alpha</key>
 					<dict/>
+					<key>Cameo</key>
+					<dict/>
 				</dict>
 				<key>CreditRapidWeaver</key>
 				<true/>
@@ -27,7 +29,7 @@
 				<key>FilenameExtension</key>
 				<string>html</string>
 				<key>HasCustomThemeStyle</key>
-				<true/>
+				<false/>
 				<key>ImageFormat</key>
 				<string>Original</string>
 				<key>ImageQuality</key>
@@ -42,6 +44,21 @@
 				<integer>1</integer>
 				<key>TextEncoding</key>
 				<string>utf-8</string>
+				<key>ThemeStyles</key>
+				<dict>
+					<key>iCanScript</key>
+					<array>
+						<string>Background Style.Background Style Blue</string>
+						<string>Container Font Size.medium</string>
+						<string>Content font.Titillium</string>
+						<string>Footer Font Size.medium</string>
+						<string>Header Font Size.medium</string>
+						<string>Headers Font.Titillium</string>
+						<string>Navbar width.large</string>
+						<string>Sidebar Font Size.medium</string>
+						<string>Sidebar position and visibility.Hide</string>
+					</array>
+				</dict>
 			</dict>
 			<key>Files</key>
 			<array/>
