@@ -23,8 +23,9 @@
 <!--		<SkipType name="iCS_Object" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                          -->
 <!--		<SkipType name="iCS_SetInstanceField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                -->
 <!--		<SkipType name="iCS_SetStaticField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                  -->
-		<SkipType name="iCS_Transition" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      
-		<SkipType name="iCS_Archive" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         
+
+<!--		<SkipType name="iCS_Transition" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      -->
+<!--		<SkipType name="iCS_Archive" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         -->
 		<SkipType name="iCS_DisplayOptionEnum" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>               
 		<SkipType name="iCS_EditorObject" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                    
 		<SkipType name="iCS_ObjectTypeEnum" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                  
