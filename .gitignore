@@ -25,3 +25,7 @@ Library/InspectorExpandedItems.asset
 *.userprefs
 *.csproj
 *.unityproj
+
+publish/Obfuscar_Output/Mapping.txt
+publish/Obfuscar_Output/Assembly-CSharp.dll
+publish/Obfuscar_Output/Assembly-CSharp-Editor.dll

@@ -16,12 +16,13 @@
 <!--		<SkipType name="iCS_Connection" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      -->
 <!--		<SkipType name="iCS_Function" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                        -->
 <!--		<SkipType name="iCS_FunctionBase" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                    -->
-		<SkipType name="iCS_GetInstanceField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                
-		<SkipType name="iCS_GetStaticField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                  
-		<SkipType name="iCS_Method" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                          
-		<SkipType name="iCS_Object" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                          
-		<SkipType name="iCS_SetInstanceField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                
-		<SkipType name="iCS_SetStaticField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                  
+<!--		<SkipType name="iCS_GetInstanceField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                -->
+<!--		<SkipType name="iCS_GetStaticField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                  -->
+
+<!--		<SkipType name="iCS_Method" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                          -->
+<!--		<SkipType name="iCS_Object" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                          -->
+<!--		<SkipType name="iCS_SetInstanceField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                -->
+<!--		<SkipType name="iCS_SetStaticField" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                  -->
 		<SkipType name="iCS_Transition" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      
 		<SkipType name="iCS_Archive" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         
 		<SkipType name="iCS_DisplayOptionEnum" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>               
