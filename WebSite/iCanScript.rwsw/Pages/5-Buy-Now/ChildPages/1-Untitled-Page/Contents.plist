@@ -8,94 +8,105 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>ID</key>
-				<string>page0</string>
+				<string>page5</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Custom Style</string>
+				<string>Theme Default</string>
 				<key>PageTitle</key>
-				<string>Home</string>
+				<string>Untitled Page</string>
 				<key>PluginClassName</key>
-				<string>YHStacksPlugin</string>
+				<string>RapidCartPlugin</string>
 				<key>PluginMetadata</key>
 				<dict>
 					<key>Author</key>
-					<string>Isaiah Carew - YourHead Software</string>
+					<string>omnidea srl</string>
 					<key>Name</key>
-					<string>Stacks</string>
+					<string>RapidCart</string>
 				</dict>
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-16T18:10:30Z</date>
+					<date>2011-12-16T18:07:26Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
 					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>PageDigests</key>
 					<dict>
-						<key>files/stacks_image_6.jpg</key>
+						<key>files/5_1321474053_d12_128x128.png</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							72Hzq9F6bhi48ClZaIvy
-							bg==
+							v7rNgvoCJTb+FEkg3/E2
+							SQ==
 							</data>
 							<key>Size</key>
-							<integer>49730</integer>
+							<integer>31058</integer>
 						</dict>
-						<key>files/stacks_page_page0.css</key>
+						<key>files/5_1321474053_d12_128x128_thumb.png</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							jlrehrbOkGA64MDKUit8
-							ug==
+							FFfo9BRIsBuS/94kc7JY
+							PA==
 							</data>
 							<key>Size</key>
-							<integer>1601</integer>
+							<integer>13667</integer>
 						</dict>
-						<key>files/stacks_page_page0.js</key>
+						<key>files/6_Dice_32.png</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							4nf49Kcs/AKiir2hdl+8
-							Qg==
+							D8yEe2DggNM+dX1/ubkY
+							nA==
 							</data>
 							<key>Size</key>
-							<integer>135</integer>
+							<integer>7922</integer>
+						</dict>
+						<key>files/6_Dice_32_thumb.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							GJzJY4pGmeLsDZPeRk2+
+							SQ==
+							</data>
+							<key>Size</key>
+							<integer>12549</integer>
+						</dict>
+						<key>files/coupons.php</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							1B2M2Y8AsgTpgAmY7PhC
+							fg==
+							</data>
+							<key>Size</key>
+							<integer>0</integer>
 						</dict>
 						<key>index.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							m4IpZBt+vLX2oIv6aYpP
-							4w==
+							3nD7VJnAxz49rJJ72QId
+							XA==
 							</data>
 							<key>Size</key>
-							<integer>8828</integer>
-						</dict>
-						<key>rw_common/version.txt</key>
-						<dict>
-							<key>Digest</key>
-							<data>
-							N+zSdghICqNWmlEaY4yn
-							Tw==
-							</data>
-							<key>Size</key>
-							<integer>4</integer>
+							<integer>11719</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
-					<string>page0</string>
+					<string>page5</string>
 					<key>SiteRoot</key>
-					<string></string>
+					<string>page3/rapidcart</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>
 			</dict>
 			<key>Files</key>
-			<array/>
+			<array>
+				<string>Data.archive</string>
+			</array>
 			<key>Subsandwiches</key>
 			<array>
-				<string>Data</string>
 				<string>PageAttributes</string>
 			</array>
 		</dict>

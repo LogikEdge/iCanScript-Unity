@@ -7,20 +7,15 @@
 		<dict>
 			<key>Dictionary</key>
 			<dict>
+				<key>Changed</key>
+				<false/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
-					<dict>
-						<key>%colour_menu_text%</key>
-						<string>#6DB2D4</string>
-					</dict>
-					<key>Avantgarde</key>
 					<dict/>
 					<key>Bravo</key>
 					<dict/>
 					<key>Cameo</key>
-					<dict/>
-					<key>Delta</key>
 					<dict/>
 					<key>E Quinox 1.2</key>
 					<dict/>
@@ -29,6 +24,12 @@
 				</dict>
 				<key>CreditRapidWeaver</key>
 				<true/>
+				<key>CustomCopyrightUsed</key>
+				<false/>
+				<key>CustomSiteTitleUsed</key>
+				<false/>
+				<key>CustomSloganUsed</key>
+				<false/>
 				<key>DefaultLinkTarget</key>
 				<string>self</string>
 				<key>FilenameExtension</key>
@@ -40,7 +41,7 @@
 				<key>ImageQuality</key>
 				<string>High</string>
 				<key>IndexFilename</key>
-				<string></string>
+				<string>index.html</string>
 				<key>OutputFormat</key>
 				<string>Default</string>
 				<key>OutputXMLDeclaration</key>
@@ -56,77 +57,19 @@
 						<string>Sidebar.Hide</string>
 						<string>Width.1000px</string>
 					</array>
-					<key>Bravo</key>
-					<array>
-						<string>Sidebar.Hide</string>
-						<string>Width.1050px</string>
-					</array>
-					<key>Cameo</key>
-					<array>
-						<string>Icons.Blue</string>
-						<string>Sidebar.Hide</string>
-						<string>Width.1000px</string>
-					</array>
-					<key>Dark Glass</key>
-					<array>
-						<string>Sidebar.Hide</string>
-					</array>
-					<key>Delta</key>
-					<array>
-						<string>Icons.Orange</string>
-						<string>Sidebar.Right</string>
-						<string>Width.800px</string>
-					</array>
 					<key>E Quinox 1.2</key>
 					<array>
-						<string>Background.1</string>
+						<string>Background.8</string>
 						<string>Banner Image.1</string>
-						<string>Banner Size.300 px</string>
+						<string>Banner Size.250 px</string>
 						<string>Body Size.12px</string>
 						<string>Nav Behavior.Show on Button Press</string>
-						<string>Nav Columns.6</string>
+						<string>Nav Columns.5</string>
 						<string>Sidebar Title.22px</string>
-						<string>Sidebar.Right</string>
-						<string>Title Size.48px</string>
+						<string>Sidebar.Hide</string>
+						<string>Title Size.52px</string>
 						<string>Toggle.Photo Album Social Links</string>
 						<string>Width.960px</string>
-					</array>
-					<key>Final</key>
-					<array>
-						<string>Background Style.Background Style Grey</string>
-						<string>Container Font Size.medium</string>
-						<string>Content font.Titillium</string>
-						<string>Footer Font Size.medium</string>
-						<string>Header Font Size.medium</string>
-						<string>Headers Font.Titillium</string>
-						<string>Navbar width.large</string>
-						<string>Sidebar Font Size.medium</string>
-						<string>Sidebar position and visibility.Hide</string>
-					</array>
-					<key>Magnesium</key>
-					<array>
-						<string>Sidebar.Hide</string>
-						<string>Styles.Electric</string>
-						<string>Width.Variable</string>
-					</array>
-					<key>Modern Grunge</key>
-					<array>
-						<string>Font Family.Sans Serif</string>
-						<string>Header Alignment.Left</string>
-						<string>Sidebar.Hide</string>
-						<string>Styles.Blue</string>
-					</array>
-					<key>iCanScript</key>
-					<array>
-						<string>Background Style.Background Style Blue</string>
-						<string>Container Font Size.medium</string>
-						<string>Content font.Titillium</string>
-						<string>Footer Font Size.medium</string>
-						<string>Header Font Size.medium</string>
-						<string>Headers Font.Titillium</string>
-						<string>Navbar width.large</string>
-						<string>Sidebar Font Size.medium</string>
-						<string>Sidebar position and visibility.Hide</string>
 					</array>
 					<key>seyDoggy CRE4MY Demo</key>
 					<array>
@@ -151,7 +94,7 @@
 						<string>Slide show timeout.4 seconds</string>
 						<string>Slide show type.Off / Manual (snippet)</string>
 						<string>Title bar position.Below header</string>
-						<string>Width.1060 px</string>
+						<string>Width.960 px</string>
 					</array>
 				</dict>
 			</dict>

@@ -6,20 +6,14 @@
 	<array>
 		<dict>
 			<key>Dictionary</key>
-			<dict>
-				<key>HomePage</key>
-				<string>1-Home</string>
-			</dict>
+			<dict/>
 			<key>Files</key>
 			<array/>
 			<key>Subsandwiches</key>
 			<array>
-				<string>1-Home</string>
-				<string>2-Demos</string>
-				<string>3-Documentation</string>
-				<string>4-Download</string>
-				<string>5-Buy-Now</string>
-				<string>6-Support</string>
+				<string>1-User0027s-Manual</string>
+				<string>2-Programmer0027s-Guide</string>
+				<string>3-Release-Notes</string>
 			</array>
 		</dict>
 	</array>

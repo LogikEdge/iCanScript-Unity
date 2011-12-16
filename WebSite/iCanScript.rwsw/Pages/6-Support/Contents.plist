@@ -8,11 +8,11 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>ID</key>
-				<string>page0</string>
+				<string>page2</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Custom Style</string>
+				<string>Theme Default</string>
 				<key>PageTitle</key>
-				<string>Home</string>
+				<string>Support</string>
 				<key>PluginClassName</key>
 				<string>YHStacksPlugin</string>
 				<key>PluginMetadata</key>
@@ -25,34 +25,24 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-16T18:10:30Z</date>
+					<date>2011-12-16T18:07:28Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
 					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>PageDigests</key>
 					<dict>
-						<key>files/stacks_image_6.jpg</key>
+						<key>files/stacks_page_page2.css</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							72Hzq9F6bhi48ClZaIvy
-							bg==
+							1B2M2Y8AsgTpgAmY7PhC
+							fg==
 							</data>
 							<key>Size</key>
-							<integer>49730</integer>
+							<integer>0</integer>
 						</dict>
-						<key>files/stacks_page_page0.css</key>
-						<dict>
-							<key>Digest</key>
-							<data>
-							jlrehrbOkGA64MDKUit8
-							ug==
-							</data>
-							<key>Size</key>
-							<integer>1601</integer>
-						</dict>
-						<key>files/stacks_page_page0.js</key>
+						<key>files/stacks_page_page2.js</key>
 						<dict>
 							<key>Digest</key>
 							<data>
@@ -66,27 +56,17 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							m4IpZBt+vLX2oIv6aYpP
-							4w==
+							tocPc2iZq/recYrxSHdz
+							5A==
 							</data>
 							<key>Size</key>
-							<integer>8828</integer>
-						</dict>
-						<key>rw_common/version.txt</key>
-						<dict>
-							<key>Digest</key>
-							<data>
-							N+zSdghICqNWmlEaY4yn
-							Tw==
-							</data>
-							<key>Size</key>
-							<integer>4</integer>
+							<integer>5283</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
-					<string>page0</string>
+					<string>page2</string>
 					<key>SiteRoot</key>
-					<string></string>
+					<string>page2</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>
@@ -95,6 +75,7 @@
 			<array/>
 			<key>Subsandwiches</key>
 			<array>
+				<string>ChildPages</string>
 				<string>Data</string>
 				<string>PageAttributes</string>
 			</array>
