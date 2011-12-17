@@ -9,7 +9,7 @@ public class iCS_DataBase {
     // Properties
     // ----------------------------------------------------------------------
     public static bool                      IsDirty  = true;
-    public static List<iCS_ReflectionDesc>   Functions= new List<iCS_ReflectionDesc>();
+    public static List<iCS_ReflectionDesc>  Functions= new List<iCS_ReflectionDesc>();
     public static string[]                  FunctionMenu= null;
     
     // ======================================================================
