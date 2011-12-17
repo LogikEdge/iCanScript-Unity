@@ -97,10 +97,8 @@ public class iCS_Editor : EditorWindow {
         Debug.Log("Computer finger print is: "+iCS_FingerPrint.ToString());
         iCS_License.SerialNumber= iCS_LicenseGenerator.Standard;
         Debug.Log("Standard License is: "+iCS_License.ToString());
-        Debug.Log("Signature is: "+iCS_LicenseUtil.GetSignature(iCS_License.Decode()));
         iCS_License.SerialNumber= iCS_LicenseGenerator.Pro;
         Debug.Log("Pro License is: "+iCS_License.ToString());
-        Debug.Log("Signature is: "+iCS_LicenseUtil.GetSignature(iCS_License.Decode()));
 //		WWW www= GetWebPage();
 //		while(!www.isDone) {
 //		}
