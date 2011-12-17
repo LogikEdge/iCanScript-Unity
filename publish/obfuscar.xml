@@ -15,7 +15,7 @@
 		<!-- Needed but unknow why -->
 		<SkipType name="iCS_Archive" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
 		<SkipType name="iCS_EditorObject" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                   
-		<SkipType name="Prelude" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                             
+<!--		<SkipType name="Prelude" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                             -->
                                                                                                                                                                     
 		<!-- skip those types that need to expose the Add/Remove child methods -->                                                                                 
 		<SkipType name="iCS_Module"     skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      

@@ -405,19 +405,29 @@ public partial class iCS_IStorage {
         for(int i= 0; i < ports.Length-1; ++i) {
             for(int j= i+1; j < ports.Length; ++j) {
                 if(Math3D.IsGreater(keys1[i], keys1[j])) {
-                    Prelude.exchange(ref ports[i], ref ports[j]);
-                    Prelude.exchange(ref keys1[i], ref keys1[j]);
-                    Prelude.exchange(ref keys2[i], ref keys2[j]);
+                    Exchange(ref ports[i], ref ports[j]);
+                    Exchange(ref keys1[i], ref keys1[j]);
+                    Exchange(ref keys2[i], ref keys2[j]);
                 } else if(Math3D.IsEqual(keys1[i], keys1[j])) {                
                     if(Math3D.IsGreater(keys2[i], keys2[j])) {
-                        Prelude.exchange(ref ports[i], ref ports[j]);
-                        Prelude.exchange(ref keys1[i], ref keys1[j]);
-                        Prelude.exchange(ref keys2[i], ref keys2[j]);                    
+                        Exchange(ref ports[i], ref ports[j]);
+                        Exchange(ref keys1[i], ref keys1[j]);
+                        Exchange(ref keys2[i], ref keys2[j]);                    
                     }
                 }
             }
         }
         return ports;
+    }
+    void Exchange(ref iCS_EditorObject a, ref iCS_EditorObject b) {
+        iCS_EditorObject tmp= a;
+        a= b;
+        b= tmp;
+    }
+    void Exchange(ref float a, ref float b) {
+        float tmp= a;
+        a= b;
+        b= tmp;
     }
     // ----------------------------------------------------------------------
     // Returns all ports position on the top edge.
