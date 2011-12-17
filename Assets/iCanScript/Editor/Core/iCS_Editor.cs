@@ -83,13 +83,28 @@ public class iCS_Editor : EditorWindow {
         DynamicMenu = null;
     }
     
+    WWW GetWebPage() {
+		return new WWW("http://www.icanscript.com/index.html");
+    }
+
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.
 	public void Activate(iCS_IStorage storage, iCS_Inspector inspector) {
-//        Debug.Log("Editor Activated");
         Storage= storage;
         Inspector= inspector;
         DisplayRoot= null;
+
+        Debug.Log("Computer finger print is: "+iCS_FingerPrint.ToString());
+        iCS_License.SerialNumber= iCS_LicenseGenerator.Standard;
+        Debug.Log("Standard License is: "+iCS_License.ToString());
+        Debug.Log("Signature is: "+iCS_LicenseUtil.GetSignature(iCS_License.Decode()));
+        iCS_License.SerialNumber= iCS_LicenseGenerator.Pro;
+        Debug.Log("Pro License is: "+iCS_License.ToString());
+        Debug.Log("Signature is: "+iCS_LicenseUtil.GetSignature(iCS_License.Decode()));
+//		WWW www= GetWebPage();
+//		while(!www.isDone) {
+//		}
+//        Debug.Log(www.text);
     }
     
     // ----------------------------------------------------------------------
