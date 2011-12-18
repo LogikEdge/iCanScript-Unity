@@ -28,8 +28,8 @@ public static class iCS_LicenseFile {
         return md5Hash;
     }
     
-    public static bool IsValid() {
-        return iCS_LicenseUtil.IsZero(iCS_LicenseUtil.Xor(MD5Hash, ComputeMD5()));
+    public static bool IsValid_v1() {
+        return iCS_LicenseUtil.IsZero(iCS_LicenseUtil.Xor(MD5Hash, ComputeMD5_v1()));
     }
     
     public static new string ToString() {
@@ -40,8 +40,23 @@ public static class iCS_LicenseFile {
                "<MD5 Hash: "+iCS_LicenseUtil.ToString(MD5Hash)+">";
     }
 
+    static string PreparePath() {
+        string appPath= System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData);
+        string companyPath= appPath+"/DisruptiveSoftware";
+        if(!Directory.Exists(companyPath)) {
+            Directory.CreateDirectory(companyPath);
+        }
+        string iCanScriptPath= companyPath+"/iCanScript";
+        if(!Directory.Exists(iCanScriptPath)) {
+            Directory.CreateDirectory(iCanScriptPath);            
+        }
+        return iCanScriptPath;
+    }
+
     public static void Write() {
-        StreamWriter stream= new StreamWriter("iCanScript.license");
+        string folder= PreparePath();
+        string licenseFile= folder+"/iCanScript.license";
+        StreamWriter stream= new StreamWriter(licenseFile);
         stream.Write(ToString());
         stream.Close();
     }
