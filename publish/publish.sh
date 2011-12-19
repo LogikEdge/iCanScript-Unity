@@ -2,7 +2,10 @@ rm -r ../../iCanScriptPublish/Assets/iCanScript
 mkdir ../../iCanScriptPublish/Assets/iCanScript
 mkdir ../../iCanScriptPublish/Assets/iCanScript/Editor
 mkdir ../../iCanScriptPublish/Assets/iCanScript/Engine
+cp -r ../Assets/iCanScript/readme.txt ../../iCanScriptPublish/Assets/iCanScript/readme.txt
+cp -r ../Assets/iCanScript/AssetStore ../../iCanScriptPublish/Assets/iCanScript/AssetStore
 cp -r ../Assets/iCanScript/Editor/Resources ../../iCanScriptPublish/Assets/iCanScript/Editor/Resources
+
 
 cp /Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll Obfuscar_Input
 cp /Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll Obfuscar_Input
