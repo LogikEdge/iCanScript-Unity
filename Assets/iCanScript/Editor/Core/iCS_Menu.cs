@@ -93,15 +93,8 @@ public class iCS_Menu {
     }
     [MenuItem("iCanScript/License Manager")]
     public static void EnterLicense() {
-//        iCS_LicenseManager.Activate();
+//        EditorWindow.GetWindow(typeof(Inspector), false, "iCanScript");
     }
     
-    // ======================================================================
-	// iCanScript Window.
-	[MenuItem("Window/iCanScript Editor")]
-	public static void ShowiCanScriptEditor() {
-        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript Editor") as iCS_Editor;
-        editor.hideFlags= HideFlags.DontSave;
-	}
 
 }

@@ -35,7 +35,8 @@ public class iCS_InspectorLicense : Editor {
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
 
         // Draw inspector window
-		DrawDefaultInspector();
+//		DrawDefaultInspector();
+        EditorGUILayout.LabelField("Label", "value");
 	}
 
 }

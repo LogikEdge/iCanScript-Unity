@@ -9,6 +9,14 @@ using System.Collections.Generic;
 // This non-persistante class is used to edit the iCS_Behaviour.
 public class iCS_Editor : EditorWindow {
     // ======================================================================
+	// iCanScript Window Menu.
+	[MenuItem("Window/iCanScript Editor")]
+	public static void ShowiCanScriptEditor() {
+        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript Editor") as iCS_Editor;
+        editor.hideFlags= HideFlags.DontSave;
+	}
+
+    // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
     iCS_IStorage         myStorage      = null;
@@ -95,12 +103,15 @@ public class iCS_Editor : EditorWindow {
         DisplayRoot= null;
 
 
+//        Debug.Log("AppContentPath: "+EditorApplication.applicationContentsPath);
+//        Debug.Log("AppPath: "+EditorApplication.applicationPath);
         if(!iCS_LicenseFile.Exists) {
             Debug.Log("Generating license file.");
             iCS_LicenseFile.FillCustomerInformation("Michel Launier", "11-22-33-44-55-66-77-88-99-aa-bb-cc-dd-ee-ff-00", iCS_LicenseFile.LicenseTypeEnum.Pro);            
             iCS_LicenseFile.SetUnlockKey(iCS_UnlockKeyGenerator.Pro);            
         }
         if(iCS_LicenseFile.IsCorrupted) {
+            EditorApplication.Beep();
             EditorUtility.DisplayDialog("Corrupted iCanScript License File", "The iCanScript license file has been corrupted.  Disruptive Software will be advise of the situation and your serial number may be revoqued. iCanScript will go back to Demo mode.", "Clear License File");
             iCS_LicenseFile.Reset();
             iCS_LicenseFile.FillCustomerInformation("Michel Launier", "11-22-33-44-55-66-77-88-99-aa-bb-cc-dd-ee-ff-00", iCS_LicenseFile.LicenseTypeEnum.Pro);            
