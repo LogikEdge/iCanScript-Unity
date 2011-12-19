@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>SandwichFillings</key>
+	<array>
+		<dict>
+			<key>Dictionary</key>
+			<dict>
+				<key>Changed</key>
+				<true/>
+				<key>ColourStyles</key>
+				<dict>
+					<key>Alpha</key>
+					<dict>
+						<key>%colour_menu_text%</key>
+						<string>#6DB2D4</string>
+					</dict>
+					<key>Avantgarde</key>
+					<dict/>
+					<key>Bravo</key>
+					<dict/>
+					<key>Cameo</key>
+					<dict/>
+					<key>Delta</key>
+					<dict/>
+					<key>E Quinox 1.2</key>
+					<dict/>
+					<key>seyDoggy CRE4MY Demo</key>
+					<dict/>
+				</dict>
+				<key>CreditRapidWeaver</key>
+				<true/>
+				<key>CustomCopyrightUsed</key>
+				<false/>
+				<key>CustomSiteTitleUsed</key>
+				<false/>
+				<key>CustomSloganUsed</key>
+				<false/>
+				<key>DefaultLinkTarget</key>
+				<string>self</string>
+				<key>FilenameExtension</key>
+				<string>html</string>
+				<key>FolderName</key>
+				<string>CreateIssue</string>
+				<key>HasCustomThemeStyle</key>
+				<true/>
+				<key>ImageFormat</key>
+				<string>Original</string>
+				<key>ImageQuality</key>
+				<string>High</string>
+				<key>IndexFilename</key>
+				<string>index.html</string>
+				<key>OutputFormat</key>
+				<string>Default</string>
+				<key>OutputXMLDeclaration</key>
+				<false/>
+				<key>SidebarEnabled</key>
+				<integer>1</integer>
+				<key>TextEncoding</key>
+				<string>utf-8</string>
+				<key>ThemeStyles</key>
+				<dict>
+					<key>Alpha</key>
+					<array>
+						<string>Sidebar.Hide</string>
+						<string>Width.1000px</string>
+					</array>
+					<key>Bravo</key>
+					<array>
+						<string>Sidebar.Hide</string>
+						<string>Width.1050px</string>
+					</array>
+					<key>Cameo</key>
+					<array>
+						<string>Icons.Blue</string>
+						<string>Sidebar.Hide</string>
+						<string>Width.1000px</string>
+					</array>
+					<key>Dark Glass</key>
+					<array>
+						<string>Sidebar.Hide</string>
+					</array>
+					<key>Delta</key>
+					<array>
+						<string>Icons.Orange</string>
+						<string>Sidebar.Right</string>
+						<string>Width.800px</string>
+					</array>
+					<key>E Quinox 1.2</key>
+					<array>
+						<string>Background.1</string>
+						<string>Banner Image.1</string>
+						<string>Banner Size.300 px</string>
+						<string>Body Size.12px</string>
+						<string>Nav Behavior.Show on Button Press</string>
+						<string>Nav Columns.6</string>
+						<string>Sidebar Title.22px</string>
+						<string>Sidebar.Right</string>
+						<string>Title Size.48px</string>
+						<string>Toggle.Photo Album Social Links</string>
+						<string>Width.960px</string>
+					</array>
+					<key>Final</key>
+					<array>
+						<string>Background Style.Background Style Grey</string>
+						<string>Container Font Size.medium</string>
+						<string>Content font.Titillium</string>
+						<string>Footer Font Size.medium</string>
+						<string>Header Font Size.medium</string>
+						<string>Headers Font.Titillium</string>
+						<string>Navbar width.large</string>
+						<string>Sidebar Font Size.medium</string>
+						<string>Sidebar position and visibility.Hide</string>
+					</array>
+					<key>Magnesium</key>
+					<array>
+						<string>Sidebar.Hide</string>
+						<string>Styles.Electric</string>
+						<string>Width.Variable</string>
+					</array>
+					<key>Modern Grunge</key>
+					<array>
+						<string>Font Family.Sans Serif</string>
+						<string>Header Alignment.Left</string>
+						<string>Sidebar.Hide</string>
+						<string>Styles.Blue</string>
+					</array>
+					<key>iCanScript</key>
+					<array>
+						<string>Background Style.Background Style Blue</string>
+						<string>Container Font Size.medium</string>
+						<string>Content font.Titillium</string>
+						<string>Footer Font Size.medium</string>
+						<string>Header Font Size.medium</string>
+						<string>Headers Font.Titillium</string>
+						<string>Navbar width.large</string>
+						<string>Sidebar Font Size.medium</string>
+						<string>Sidebar position and visibility.Hide</string>
+					</array>
+					<key>seyDoggy CRE4MY Demo</key>
+					<array>
+						<string>Background (header/slide show) [EC 1].No header background (color)</string>
+						<string>Background (main pre content) [EC 3].No pre content background (color)</string>
+						<string>Background gradient (body).None</string>
+						<string>Background gradient (pre/post content) [EC 2/EC 5].None</string>
+						<string>Background tile.None</string>
+						<string>Corners.Small</string>
+						<string>Font family (headings).Theme default (headings)</string>
+						<string>Font family (slogan).Theme default (slogan)</string>
+						<string>Font family (title).Theme default (title)</string>
+						<string>Font family.Helvetica (sans-serif)</string>
+						<string>Font size.Medium</string>
+						<string>Height (header/slide show) [EC 1].Hidden</string>
+						<string>Line height.Medium</string>
+						<string>Navigation type.3 tier</string>
+						<string>Sidebar position.Hide</string>
+						<string>Sidebar width.Normal</string>
+						<string>Slide show effect.Fade</string>
+						<string>Slide show speed.1 second</string>
+						<string>Slide show timeout.4 seconds</string>
+						<string>Slide show type.Off / Manual (snippet)</string>
+						<string>Title bar position.Below header</string>
+						<string>Width.1060 px</string>
+					</array>
+				</dict>
+			</dict>
+			<key>Files</key>
+			<array/>
+			<key>Subsandwiches</key>
+			<array/>
+		</dict>
+	</array>
+	<key>Type</key>
+	<string>Page Attributes</string>
+</dict>
+</plist>

@@ -109,4 +109,8 @@ public class iCS_Menu {
     public static void ReleaseNotes() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ReleaseNotes/index.html");
     }
+    [MenuItem("iCanScript/Report a Bug")]
+    public static void ReportBug() {
+        Application.OpenURL("http://www.icanscript.com/Support/CreateIssue/index.html");
+    }
 }

@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-19T04:57:27Z</date>
+					<date>2011-12-19T05:43:38Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -66,11 +66,11 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							3C9u4CZiiImgpSqmr3YO
-							ZA==
+							tCuvjZyp7djngKqP9ZiS
+							lw==
 							</data>
 							<key>Size</key>
-							<integer>2011</integer>
+							<integer>2012</integer>
 						</dict>
 						<key>files/d4421305bf5f06bb5d6957fa92595d24.php</key>
 						<dict>
@@ -106,17 +106,17 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							v/4Pv/cgqEhO+pkqJ2O7
-							qA==
+							bnus7Aet+YuN50Olx8NV
+							eA==
 							</data>
 							<key>Size</key>
-							<integer>5383</integer>
+							<integer>5471</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
 					<string>page6</string>
 					<key>SiteRoot</key>
-					<string>page3/rapidlink</string>
+					<string>BuyNow/rapidlink</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>
