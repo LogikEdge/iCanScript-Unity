@@ -94,15 +94,23 @@ public class iCS_Editor : EditorWindow {
         Inspector= inspector;
         DisplayRoot= null;
 
+
+        if(iCS_LicenseFile.IsCorrupted) {
+            EditorUtility.DisplayDialog("Corrupted iCanScript License File", "The iCanScript license file has been corrupted.  Disruptive Software will be advise of the situation and your serial number may be revoqued. iCanScript will go back to Demo mode.", "Clear License File");
+            iCS_LicenseFile.Reset();
+        }
+
+//        if(!iCS_LicenseFile.Exists || iCS_LicenseFile.CustomerName == "") {
+            Debug.Log("Generating license file.");
+            iCS_LicenseFile.FillCustomerInformation("Michel Launier", "11-22-33-44-55-66-77-88-99-aa-bb-cc-dd-ee-ff-00", iCS_LicenseFile.LicenseTypeEnum.Pro);            
+            iCS_LicenseFile.SetUnlockKey(iCS_UnlockKeyGenerator.Pro);
+//        }
         Debug.Log("Computer finger print is: "+iCS_FingerPrint.ToString());
-        iCS_License.License= iCS_LicenseGenerator.Standard;
-        Debug.Log("Standard License is: "+iCS_License.ToString());
-        iCS_License.License= iCS_LicenseGenerator.Pro;
-        Debug.Log("Pro License is: "+iCS_License.ToString());
-        iCS_LicenseFile.FillCustomerInformation("Michel Launier", "11-22-33-44-55-66-77-88-99-aa-bb-cc-dd-ee-ff-00", DateTime.Now);
+        Debug.Log("Standard License is: "+iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Standard));
+        Debug.Log("Pro License is: "+iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Pro));
+        Debug.Log("Signature: "+iCS_LicenseUtil.GetSignature(iCS_LicenseFile.Decode()).ToString());
         Debug.Log(iCS_LicenseFile.ToString());
-        iCS_LicenseFile.Write();
-        Debug.Log(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData));
+//        Debug.Log(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData));
 //		WWW www= GetWebPage();
 //		while(!www.isDone) {
 //		}

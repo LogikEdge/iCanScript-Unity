@@ -1,31 +1,33 @@
 using UnityEngine;
 using System.Collections;
 
-public static class iCS_LicenseGenerator {
+public static class iCS_UnlockKeyGenerator {
 
     public static byte[] Standard {
         get {
             byte[] fingerPrint= iCS_FingerPrint.FingerPrint;
-            byte[] serialNumber= new byte[fingerPrint.Length];
+            byte[] serialNumber= iCS_LicenseFile.SerialNumber;
+            byte[] unlockKey= new byte[fingerPrint.Length];
             int b0= (((int)iCS_LicenseType.Standard >>8) & 255);
             int b1= ((int)iCS_LicenseType.Standard & 255);
             for(int i= 0; i < fingerPrint.Length; ++i) {
-                serialNumber[i]= (byte)((int)fingerPrint[i] ^ ((i & 1) == 0 ? b0 : b1));
+                unlockKey[i]= (byte)((int)fingerPrint[i] ^ (int)serialNumber[i] ^ ((i & 1) == 0 ? b0 : b1));
             }
-            return serialNumber;
+            return unlockKey;
         }
     }
 
     public static byte[] Pro {
         get {
             byte[] fingerPrint= iCS_FingerPrint.FingerPrint;
-            byte[] serialNumber= new byte[fingerPrint.Length];
+            byte[] serialNumber= iCS_LicenseFile.SerialNumber;
+            byte[] unlockKey= new byte[fingerPrint.Length];
             int b0= (((int)iCS_LicenseType.Pro >>8) & 255);
             int b1= ((int)iCS_LicenseType.Pro & 255);
             for(int i= 0; i < fingerPrint.Length; ++i) {
-                serialNumber[i]= (byte)((int)fingerPrint[i] ^ ((i & 1) == 0 ? b0 : b1));
+                unlockKey[i]= (byte)((int)fingerPrint[i] ^ (int)serialNumber[i] ^ ((i & 1) == 0 ? b0 : b1));
             }
-            return serialNumber;
+            return unlockKey;
         }
     }
 }
