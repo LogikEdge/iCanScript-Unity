@@ -117,6 +117,6 @@ public class iCS_Menu {
     }
     [MenuItem("iCanScript/Report a Bug",false,9)]
     public static void ReportBug() {
-        Application.OpenURL("http://www.icanscript.com/Support/CreateIssue/index.html");
+        Application.OpenURL("http://www.icanscript.com/Support/ReportBug/index.html");
     }
 }

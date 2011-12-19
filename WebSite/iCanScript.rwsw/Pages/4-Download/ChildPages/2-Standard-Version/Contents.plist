@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-19T14:00:36Z</date>
+					<date>2011-12-19T14:11:59Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -56,11 +56,11 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							RE3kM55VEo/aIlTX8h3k
-							SQ==
+							G2SOcl7Q2ZABiaTyxaNc
+							eg==
 							</data>
 							<key>Size</key>
-							<integer>5831</integer>
+							<integer>5760</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
