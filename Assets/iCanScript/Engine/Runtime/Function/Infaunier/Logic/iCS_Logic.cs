@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="Infaunier", Package="Logic")]
+[iCS_Class(Company="iCanScript", Package="Logic")]
 public class iCS_Logic {
     // Pure logic operations.
     [iCS_Function] public static bool And(bool a, bool b) { return a & b; }

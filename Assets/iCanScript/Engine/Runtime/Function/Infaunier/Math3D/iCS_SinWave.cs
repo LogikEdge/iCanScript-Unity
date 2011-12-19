@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="Infaunier", Package="Math3D")]
+[iCS_Class(Company="iCanScript", Package="Math3D")]
 public sealed class iCS_SinWave {
     // ======================================================================
     // PROPERTIES

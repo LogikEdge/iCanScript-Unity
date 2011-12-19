@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="Infaunier", Package="Math3D")]
+[iCS_Class(Company="iCanScript", Package="Math3D")]
 public class iCS_Math3D {
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static int     Add(int a, int b)             { return a+b; }
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static float   Add(float a, float b)       { return a+b; }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="Infaunier", Package="Animation")]
+[iCS_Class(Company="iCanScript", Package="Animation")]
 public class iCS_Animation {
     [iCS_Function(ToolTip="Blends two animtions using the given ratio.")]
     public static AnimationClip AnimBlend(AnimationClip anim1, AnimationClip anim2, float ratio, bool sync) {
