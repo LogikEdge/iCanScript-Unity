@@ -8,7 +8,7 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<false/>
+				<true/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
@@ -42,7 +42,7 @@
 				<key>FilenameExtension</key>
 				<string>html</string>
 				<key>FolderName</key>
-				<string>CreateIssue</string>
+				<string>StandardVersion</string>
 				<key>HasCustomThemeStyle</key>
 				<true/>
 				<key>ImageFormat</key>
@@ -94,7 +94,7 @@
 						<string>Banner Size.300 px</string>
 						<string>Body Size.12px</string>
 						<string>Nav Behavior.Show on Button Press</string>
-						<string>Nav Columns.6</string>
+						<string>Nav Columns.5</string>
 						<string>Sidebar Title.22px</string>
 						<string>Sidebar.Right</string>
 						<string>Title Size.48px</string>

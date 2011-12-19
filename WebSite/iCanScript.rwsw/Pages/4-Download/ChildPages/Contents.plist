@@ -11,7 +11,9 @@
 			<array/>
 			<key>Subsandwiches</key>
 			<array>
-				<string>1-Latest-Version</string>
+				<string>1-Demo-Version</string>
+				<string>2-Standard-Version</string>
+				<string>3-Pro-Version</string>
 			</array>
 		</dict>
 	</array>
