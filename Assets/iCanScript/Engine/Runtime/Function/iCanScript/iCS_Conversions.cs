@@ -28,6 +28,7 @@ public static class iCS_Conversions {
     [iCS_Conversion] public static Vector4 ToVector4(Vector3 v) { return v; }
 
     // ToString
+    [iCS_Conversion] public static string ToString(object v)  { return v.ToString(); }
     [iCS_Conversion] public static string ToString(int v)     { return v.ToString(); }
     [iCS_Conversion] public static string ToString(float v)   { return v.ToString(); }
     [iCS_Conversion] public static string ToString(Vector2 v) { return v.ToString(); }
