@@ -99,14 +99,14 @@ public class iCS_Menu {
     // Documentation Access
     [MenuItem("iCanScript/User's Manual")]
     public static void UserManual() {
-        Application.OpenURL("http://www.icanscript.com/page4/page8/index.html");
+        Application.OpenURL("http://www.icanscript.com/Documentation/UserManual/index.html");
     }
     [MenuItem("iCanScript/Programmer's Guide")]
     public static void ProgrammerGuide() {
-        Application.OpenURL("http://www.icanscript.com/page4/page9/index.html");
+        Application.OpenURL("http://www.icanscript.com/Documentation/ProgrammerGuide/index.html");
     }
     [MenuItem("iCanScript/Release Notes")]
     public static void ReleaseNotes() {
-        Application.OpenURL("http://www.icanscript.com/page4/page7/index.html");
+        Application.OpenURL("http://www.icanscript.com/Documentation/ReleaseNotes/index.html");
     }
 }

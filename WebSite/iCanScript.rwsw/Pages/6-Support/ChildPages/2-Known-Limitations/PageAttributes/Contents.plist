@@ -30,6 +30,8 @@
 				<string>self</string>
 				<key>FilenameExtension</key>
 				<string>html</string>
+				<key>FolderName</key>
+				<string>KnownLimitations</string>
 				<key>HasCustomThemeStyle</key>
 				<true/>
 				<key>ImageFormat</key>

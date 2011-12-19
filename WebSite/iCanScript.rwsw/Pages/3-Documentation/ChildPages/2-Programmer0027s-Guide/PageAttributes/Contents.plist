@@ -8,7 +8,7 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<false/>
+				<true/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
@@ -30,6 +30,8 @@
 				<string>self</string>
 				<key>FilenameExtension</key>
 				<string>html</string>
+				<key>FolderName</key>
+				<string>ProgrammerGuide</string>
 				<key>HasCustomThemeStyle</key>
 				<true/>
 				<key>ImageFormat</key>
