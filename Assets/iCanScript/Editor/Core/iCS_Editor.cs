@@ -95,22 +95,18 @@ public class iCS_Editor : EditorWindow {
         DisplayRoot= null;
 
 
+        if(!iCS_LicenseFile.Exists) {
+            Debug.Log("Generating license file.");
+            iCS_LicenseFile.FillCustomerInformation("Michel Launier", "11-22-33-44-55-66-77-88-99-aa-bb-cc-dd-ee-ff-00", iCS_LicenseFile.LicenseTypeEnum.Pro);            
+            iCS_LicenseFile.SetUnlockKey(iCS_UnlockKeyGenerator.Pro);            
+        }
         if(iCS_LicenseFile.IsCorrupted) {
             EditorUtility.DisplayDialog("Corrupted iCanScript License File", "The iCanScript license file has been corrupted.  Disruptive Software will be advise of the situation and your serial number may be revoqued. iCanScript will go back to Demo mode.", "Clear License File");
             iCS_LicenseFile.Reset();
+            iCS_LicenseFile.FillCustomerInformation("Michel Launier", "11-22-33-44-55-66-77-88-99-aa-bb-cc-dd-ee-ff-00", iCS_LicenseFile.LicenseTypeEnum.Pro);            
+            iCS_LicenseFile.SetUnlockKey(iCS_UnlockKeyGenerator.Pro);            
         }
 
-//        if(!iCS_LicenseFile.Exists || iCS_LicenseFile.CustomerName == "") {
-            Debug.Log("Generating license file.");
-            iCS_LicenseFile.FillCustomerInformation("Michel Launier", "11-22-33-44-55-66-77-88-99-aa-bb-cc-dd-ee-ff-00", iCS_LicenseFile.LicenseTypeEnum.Pro);            
-            iCS_LicenseFile.SetUnlockKey(iCS_UnlockKeyGenerator.Pro);
-//        }
-        Debug.Log("Computer finger print is: "+iCS_FingerPrint.ToString());
-        Debug.Log("Standard License is: "+iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Standard));
-        Debug.Log("Pro License is: "+iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Pro));
-        Debug.Log("Signature: "+iCS_LicenseUtil.GetSignature(iCS_LicenseFile.Decode()).ToString());
-        Debug.Log(iCS_LicenseFile.ToString());
-//        Debug.Log(System.Environment.GetFolderPath(System.Environment.SpecialFolder.ApplicationData));
 //		WWW www= GetWebPage();
 //		while(!www.isDone) {
 //		}

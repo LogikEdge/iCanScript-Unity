@@ -78,6 +78,25 @@ public class iCS_Menu {
     }
     
     // ======================================================================
+	// iCanScript License.
+    [MenuItem("iCanScript/Get FingerPrint")]
+    public static void GetFingerPrint() {
+        Debug.Log(iCS_LicenseUtil.ToString(iCS_FingerPrint.FingerPrint));
+    }
+    [MenuItem("iCanScript/Get Standard License")]
+    public static void GetStandardLicense() {
+        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Standard));
+    }
+    [MenuItem("iCanScript/Get Pro License")]
+    public static void GetProLicense() {
+        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Pro));
+    }
+    [MenuItem("iCanScript/License Manager")]
+    public static void EnterLicense() {
+//        iCS_LicenseManager.Activate();
+    }
+    
+    // ======================================================================
 	// iCanScript Window.
 	[MenuItem("Window/iCanScript Editor")]
 	public static void ShowiCanScriptEditor() {
