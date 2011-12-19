@@ -8,11 +8,11 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>ID</key>
-				<string>page7</string>
+				<string>page5</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Custom Style</string>
+				<string>Theme Default</string>
 				<key>PageTitle</key>
-				<string>Release Notes</string>
+				<string>2D Gameplay Tutorial</string>
 				<key>PluginClassName</key>
 				<string>YHStacksPlugin</string>
 				<key>PluginMetadata</key>
@@ -25,14 +25,14 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-19T13:45:25Z</date>
+					<date>2011-12-19T13:45:23Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
 					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>PageDigests</key>
 					<dict>
-						<key>files/stacks_page_page7.css</key>
+						<key>files/stacks_page_page5.css</key>
 						<dict>
 							<key>Digest</key>
 							<data>
@@ -42,7 +42,7 @@
 							<key>Size</key>
 							<integer>0</integer>
 						</dict>
-						<key>files/stacks_page_page7.js</key>
+						<key>files/stacks_page_page5.js</key>
 						<dict>
 							<key>Digest</key>
 							<data>
@@ -56,17 +56,17 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							POndf+EYk4OiqvFGd2dG
-							BQ==
+							06y03ZplhzrBfyeiIdQ5
+							6g==
 							</data>
 							<key>Size</key>
-							<integer>5633</integer>
+							<integer>5656</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
-					<string>page7</string>
+					<string>page5</string>
 					<key>SiteRoot</key>
-					<string>Documentation/ReleaseNotes</string>
+					<string>Demos/2DGameplayTutorial</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>

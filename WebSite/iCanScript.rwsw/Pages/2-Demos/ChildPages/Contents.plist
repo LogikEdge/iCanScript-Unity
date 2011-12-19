@@ -6,19 +6,13 @@
 	<array>
 		<dict>
 			<key>Dictionary</key>
-			<dict>
-				<key>HomePage</key>
-				<string>1-Home</string>
-			</dict>
+			<dict/>
 			<key>Files</key>
 			<array/>
 			<key>Subsandwiches</key>
 			<array>
-				<string>1-Home</string>
-				<string>2-Demos</string>
-				<string>3-Documentation</string>
-				<string>4-Download</string>
-				<string>5-Support</string>
+				<string>1-2D-Gameplay-Tutorial</string>
+				<string>2-3D-Gameplay-Tutorial</string>
 			</array>
 		</dict>
 	</array>

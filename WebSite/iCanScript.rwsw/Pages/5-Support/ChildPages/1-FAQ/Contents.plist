@@ -8,11 +8,11 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>ID</key>
-				<string>page7</string>
+				<string>page1</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Custom Style</string>
+				<string>Theme Default</string>
 				<key>PageTitle</key>
-				<string>Release Notes</string>
+				<string>FAQ</string>
 				<key>PluginClassName</key>
 				<string>YHStacksPlugin</string>
 				<key>PluginMetadata</key>
@@ -25,14 +25,14 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-19T13:45:25Z</date>
+					<date>2011-12-19T13:45:27Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
 					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>PageDigests</key>
 					<dict>
-						<key>files/stacks_page_page7.css</key>
+						<key>files/stacks_page_page1.css</key>
 						<dict>
 							<key>Digest</key>
 							<data>
@@ -42,7 +42,7 @@
 							<key>Size</key>
 							<integer>0</integer>
 						</dict>
-						<key>files/stacks_page_page7.js</key>
+						<key>files/stacks_page_page1.js</key>
 						<dict>
 							<key>Digest</key>
 							<data>
@@ -56,17 +56,17 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							POndf+EYk4OiqvFGd2dG
-							BQ==
+							FMv8HPu1ZjoYqUfrC+CD
+							Aw==
 							</data>
 							<key>Size</key>
-							<integer>5633</integer>
+							<integer>5650</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
-					<string>page7</string>
+					<string>page1</string>
 					<key>SiteRoot</key>
-					<string>Documentation/ReleaseNotes</string>
+					<string>Support/FAQ</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>

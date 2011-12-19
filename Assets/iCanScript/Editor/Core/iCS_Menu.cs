@@ -97,6 +97,12 @@ public class iCS_Menu {
     
     // ======================================================================
     // Documentation Access
+    [MenuItem("iCanScript/ ")]
+    public static void Seperator() {}
+    [MenuItem("iCanScript/Home Page")]
+    public static void HomePage() {
+        Application.OpenURL("http://www.icanscript.com/index.html");
+    }
     [MenuItem("iCanScript/User's Manual")]
     public static void UserManual() {
         Application.OpenURL("http://www.icanscript.com/Documentation/UserManual/index.html");

@@ -7,6 +7,8 @@
 		<dict>
 			<key>Dictionary</key>
 			<dict>
+				<key>Changed</key>
+				<false/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
@@ -29,10 +31,18 @@
 				</dict>
 				<key>CreditRapidWeaver</key>
 				<true/>
+				<key>CustomCopyrightUsed</key>
+				<false/>
+				<key>CustomSiteTitleUsed</key>
+				<false/>
+				<key>CustomSloganUsed</key>
+				<false/>
 				<key>DefaultLinkTarget</key>
 				<string>self</string>
 				<key>FilenameExtension</key>
 				<string>html</string>
+				<key>FolderName</key>
+				<string>3DGameplayTutorial</string>
 				<key>HasCustomThemeStyle</key>
 				<true/>
 				<key>ImageFormat</key>
@@ -40,7 +50,7 @@
 				<key>ImageQuality</key>
 				<string>High</string>
 				<key>IndexFilename</key>
-				<string></string>
+				<string>index.html</string>
 				<key>OutputFormat</key>
 				<string>Default</string>
 				<key>OutputXMLDeclaration</key>
