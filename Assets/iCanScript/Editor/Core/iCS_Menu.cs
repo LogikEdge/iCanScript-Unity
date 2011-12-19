@@ -77,24 +77,36 @@ public class iCS_Menu {
         return false;
     }
     
-    // ======================================================================
-	// iCanScript License.
-    [MenuItem("iCanScript/Get FingerPrint")]
-    public static void GetFingerPrint() {
-        Debug.Log(iCS_LicenseUtil.ToString(iCS_FingerPrint.FingerPrint));
-    }
-    [MenuItem("iCanScript/Get Standard License")]
-    public static void GetStandardLicense() {
-        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Standard));
-    }
-    [MenuItem("iCanScript/Get Pro License")]
-    public static void GetProLicense() {
-        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Pro));
-    }
-    [MenuItem("iCanScript/License Manager")]
-    public static void EnterLicense() {
-//        EditorWindow.GetWindow(typeof(Inspector), false, "iCanScript");
-    }
+//    // ======================================================================
+//	// iCanScript License.
+//    [MenuItem("iCanScript/Get FingerPrint")]
+//    public static void GetFingerPrint() {
+//        Debug.Log(iCS_LicenseUtil.ToString(iCS_FingerPrint.FingerPrint));
+//    }
+//    [MenuItem("iCanScript/Get Standard License")]
+//    public static void GetStandardLicense() {
+//        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Standard));
+//    }
+//    [MenuItem("iCanScript/Get Pro License")]
+//    public static void GetProLicense() {
+//        Debug.Log(iCS_LicenseUtil.ToString(iCS_UnlockKeyGenerator.Pro));
+//    }
+//    [MenuItem("iCanScript/License Manager")]
+//    public static void EnterLicense() {
+//    }
     
-
+    // ======================================================================
+    // Documentation Access
+    [MenuItem("iCanScript/User's Manual")]
+    public static void UserManual() {
+        Application.OpenURL("http://www.icanscript.com/page4/page8/index.html");
+    }
+    [MenuItem("iCanScript/Programmer's Guide")]
+    public static void ProgrammerGuide() {
+        Application.OpenURL("http://www.icanscript.com/page4/page9/index.html");
+    }
+    [MenuItem("iCanScript/Release Notes")]
+    public static void ReleaseNotes() {
+        Application.OpenURL("http://www.icanscript.com/page4/page7/index.html");
+    }
 }
