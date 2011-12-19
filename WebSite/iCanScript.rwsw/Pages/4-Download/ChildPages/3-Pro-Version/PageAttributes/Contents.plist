@@ -8,7 +8,7 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<true/>
+				<false/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
@@ -96,7 +96,7 @@
 						<string>Nav Behavior.Show on Button Press</string>
 						<string>Nav Columns.5</string>
 						<string>Sidebar Title.22px</string>
-						<string>Sidebar.Right</string>
+						<string>Sidebar.Hide</string>
 						<string>Title Size.48px</string>
 						<string>Toggle.Photo Album Social Links</string>
 						<string>Width.960px</string>

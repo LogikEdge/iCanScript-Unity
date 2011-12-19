@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-19T14:11:55Z</date>
+					<date>2011-12-19T19:56:46Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -36,11 +36,11 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							M3lSCZCYRuJqoPdYAqFe
-							gA==
+							Ac83hWwq730gRBZEE9Bg
+							8w==
 							</data>
 							<key>Size</key>
-							<integer>1507</integer>
+							<integer>430</integer>
 						</dict>
 						<key>files/stacks_page_page0.js</key>
 						<dict>
@@ -56,11 +56,11 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							NtAnKCyZdf3c77TdS5tZ
+							XTuX3wYdcGguipBg4aVz
 							Rg==
 							</data>
 							<key>Size</key>
-							<integer>8366</integer>
+							<integer>7729</integer>
 						</dict>
 						<key>rw_common/version.txt</key>
 						<dict>
