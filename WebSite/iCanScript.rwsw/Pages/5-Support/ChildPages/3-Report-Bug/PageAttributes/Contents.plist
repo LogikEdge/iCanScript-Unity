@@ -38,8 +38,10 @@
 				<key>CustomJavaScript</key>
 				<string>var navText = "Menu";
 </string>
+				<key>CustomSiteTitle</key>
+				<string>&lt;font face="arial"&gt;iCanScript&lt;/font&gt; &lt;span&gt;Problem Report&lt;/span&gt;</string>
 				<key>CustomSiteTitleUsed</key>
-				<false/>
+				<true/>
 				<key>CustomSloganUsed</key>
 				<false/>
 				<key>DefaultLinkTarget</key>
@@ -145,6 +147,7 @@
 						<string>Sidebar Font Size.medium</string>
 						<string>Sidebar position and visibility.Hide</string>
 						<string>Sidebar.Left</string>
+						<string>Title Size.44px</string>
 						<string>Width.960px</string>
 					</array>
 					<key>seyDoggy CRE4MY Demo</key>

@@ -8,7 +8,7 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<true/>
+				<false/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
@@ -39,7 +39,7 @@
 				<string>var navText = "Menu";
 </string>
 				<key>CustomSiteTitle</key>
-				<string>iCanscript &lt;span&gt;Documentation&lt;/span&gt;</string>
+				<string>&lt;font face="arial"&gt;iCanscript&lt;/font&gt; &lt;span&gt;Documentation&lt;/span&gt;</string>
 				<key>CustomSiteTitleUsed</key>
 				<true/>
 				<key>CustomSloganUsed</key>
@@ -63,7 +63,13 @@
 				<key>OutputXMLDeclaration</key>
 				<false/>
 				<key>SidebarEnabled</key>
-				<integer>1</integer>
+				<integer>0</integer>
+				<key>SidebarPlain</key>
+				<string>You will find Unity's documentation &lt;a href="http://unity3d.com/support/documentation/"&gt;here&lt;/a&gt;.
+
+</string>
+				<key>SidebarTitle</key>
+				<string>Unity Documentation</string>
 				<key>TextEncoding</key>
 				<string>utf-8</string>
 				<key>ThemeStyles</key>
@@ -146,7 +152,9 @@
 						<string>Navbar width.large</string>
 						<string>Sidebar Font Size.medium</string>
 						<string>Sidebar position and visibility.Hide</string>
+						<string>Sidebar Title.24px</string>
 						<string>Sidebar.Left</string>
+						<string>Title Size.48px</string>
 						<string>Width.960px</string>
 					</array>
 					<key>seyDoggy CRE4MY Demo</key>
@@ -177,7 +185,9 @@
 				</dict>
 			</dict>
 			<key>Files</key>
-			<array/>
+			<array>
+				<string>Sidebar.as</string>
+			</array>
 			<key>Subsandwiches</key>
 			<array/>
 		</dict>

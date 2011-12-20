@@ -131,7 +131,8 @@
 						<string>Navbar width.large</string>
 						<string>Sidebar Font Size.medium</string>
 						<string>Sidebar position and visibility.Hide</string>
-						<string>Sidebar.Left</string>
+						<string>Sidebar.Hide</string>
+						<string>Title Size.44px</string>
 						<string>Width.960px</string>
 					</array>
 					<key>seyDoggy CRE4MY Demo</key>
