@@ -11,9 +11,7 @@
 			<array/>
 			<key>Subsandwiches</key>
 			<array>
-				<string>1-FAQ</string>
-				<string>2-Known-Limitations</string>
-				<string>3-Report-Bug</string>
+				<string>1-News</string>
 			</array>
 		</dict>
 	</array>

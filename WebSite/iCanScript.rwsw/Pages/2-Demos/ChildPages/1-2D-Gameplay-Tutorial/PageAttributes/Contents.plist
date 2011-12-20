@@ -8,7 +8,7 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<false/>
+				<true/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
@@ -142,6 +142,7 @@
 						<string>Header Font Size.medium</string>
 						<string>Headers Font.Titillium</string>
 						<string>Nav Behavior.Show Below Banner</string>
+						<string>Nav Columns.5</string>
 						<string>Navbar width.large</string>
 						<string>Sidebar Font Size.medium</string>
 						<string>Sidebar position and visibility.Hide</string>

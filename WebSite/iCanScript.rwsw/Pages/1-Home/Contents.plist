@@ -85,6 +85,7 @@
 			<array/>
 			<key>Subsandwiches</key>
 			<array>
+				<string>ChildPages</string>
 				<string>Data</string>
 				<string>PageAttributes</string>
 			</array>
