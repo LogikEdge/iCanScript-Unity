@@ -8,7 +8,6 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    iCS_Action   myAwakeAction       = null;
     iCS_Action   myStartAction       = null;
     iCS_Action   myUpdateAction      = null;
     iCS_Action   myLateUpdateAction  = null;
@@ -25,7 +24,6 @@ public sealed class iCS_Behaviour : iCS_Storage {
     
     // ----------------------------------------------------------------------
     void Reset() {
-        myAwakeAction       = null;
         myStartAction       = null;
         myUpdateAction      = null;
         myLateUpdateAction  = null;
@@ -39,15 +37,6 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // Awake is invoked after all the objects are initialized.  Awake replaces
     // the constructor.
     void Awake() {
-        if(myAwakeAction != null) {
-            do {
-                myAwakeAction.Execute(-2);
-                if(myAwakeAction.IsStalled) {
-                    Debug.LogError("The Awake() of "+name+" is stalled.  Awake should only be used to connect object together.  Please remove any dependent processing !!!");
-                    return;
-                }
-            } while(myAwakeAction.IsCurrent(-2));
-        }
     }
 
     // ----------------------------------------------------------------------
@@ -124,10 +113,6 @@ public sealed class iCS_Behaviour : iCS_Storage {
         iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
-            case iCS_EngineStrings.AwakeAction: {
-                myAwakeAction= action;
-                break;
-            }
             case iCS_EngineStrings.StartAction: {
                 myStartAction= action;
                 break;
@@ -154,10 +139,6 @@ public sealed class iCS_Behaviour : iCS_Storage {
         iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
-            case iCS_EngineStrings.AwakeAction: {
-                myAwakeAction= null;
-                break;
-            }
             case iCS_EngineStrings.StartAction: {
                 myStartAction= null;
                 break;
