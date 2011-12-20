@@ -38,8 +38,10 @@
 				<key>CustomJavaScript</key>
 				<string>var navText = "Menu";
 </string>
+				<key>CustomSiteTitle</key>
+				<string>iCanScript &lt;span&gt;Download Demo&lt;/span&gt;</string>
 				<key>CustomSiteTitleUsed</key>
-				<false/>
+				<true/>
 				<key>CustomSloganUsed</key>
 				<false/>
 				<key>DefaultLinkTarget</key>
