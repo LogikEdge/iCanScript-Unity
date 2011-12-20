@@ -520,7 +520,7 @@ public class iCS_Graphics {
             DrawCircularPort(center, portColor, nodeColor);
         }
         // Configure move cursor for port.
-        Rect portPos= new Rect(center.x-iCS_EditorConfig.PortRadius, center.y-iCS_EditorConfig.PortRadius, iCS_EditorConfig.PortSize, iCS_EditorConfig.PortSize);
+        Rect portPos= new Rect(center.x-iCS_EditorConfig.PortRadius*1.5f, center.y-iCS_EditorConfig.PortRadius*1.5f, iCS_EditorConfig.PortSize*1.5f, iCS_EditorConfig.PortSize*1.5f);
         EditorGUIUtility.AddCursorRect (portPos, MouseCursor.MoveArrow);
         GUIStyle labelStyle= GetLabelStyle(storage);
         GUI.Label(portPos, new GUIContent("", port.ToolTip), labelStyle);

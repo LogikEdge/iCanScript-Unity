@@ -599,7 +599,7 @@ public partial class iCS_IStorage {
                 Rect tmp= GetPosition(port);
                 Vector2 position= new Vector2(tmp.x, tmp.y);
                 float distance= Vector2.Distance(position, pick);
-                if(distance < 1.5f * iCS_EditorConfig.PortRadius && distance < bestDistance) {
+                if(distance < 3f * iCS_EditorConfig.PortRadius && distance < bestDistance) {
                     bestDistance= distance;
                     bestPort= port;
                 }                                
