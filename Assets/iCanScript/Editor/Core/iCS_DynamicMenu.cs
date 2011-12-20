@@ -28,6 +28,7 @@ public class iCS_DynamicMenu {
     const string FoldStr= "Fold";
     const string UnfoldStr= "Unfold";
     const string AwakeStr= "+ Awake";
+    const string StartStr= "+ Start";
     const string ModuleStr= "+ Module";
     const string StateChartStr= "+ State Chart";
     const string StateStr= "+ State";
@@ -92,6 +93,7 @@ public class iCS_DynamicMenu {
         string[] menu= new string[]
         {
             AwakeStr,
+            StartStr,
             UpdateModuleStr,             
             UpdateStateChartStr,
             LateUpdateModuleStr,        
@@ -101,6 +103,14 @@ public class iCS_DynamicMenu {
             OnGUIStr,              
             OnDrawGizmosStr,
         };
+        for(int i= 0; i < menu.Length; ++i) {
+            string name= menu[i].Substring(2);
+            int sep= name.IndexOf('/');
+            if(sep > 0) name= name.Substring(0,sep);
+            if(AsChildNodeWithName(selectedObject, name, storage)) {
+                menu[i]= String.Concat("#+ ", name);
+            }
+        }
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
@@ -269,7 +279,12 @@ public class iCS_DynamicMenu {
                 if(sepCnt != 0) gMenu.AddSeparator("");
                 sepCnt= 0;
             } else {
-                gMenu.AddItem(new GUIContent(item), false, ProcessMenu, new MenuContext(item, selected, storage));                
+                if(item[0] == '#') {
+                    string tmp= item.Substring(1);
+                    gMenu.AddDisabledItem(new GUIContent(tmp));                                    
+                } else {
+                    gMenu.AddItem(new GUIContent(item), false, ProcessMenu, new MenuContext(item, selected, storage));                                    
+                }
                 ++sepCnt;
             }
         }
@@ -303,6 +318,7 @@ public class iCS_DynamicMenu {
         storage.RegisterUndo(context.Command);
         switch(context.Command) {
             case AwakeStr:                  ProcessCreateAwake(selectedObject, storage); break;
+            case StartStr:                  ProcessCreateStart(selectedObject, storage); break;
             case UpdateModuleStr:           ProcessCreateUpdateModule(selectedObject, storage); break;
             case UpdateStateChartStr:       ProcessCreateUpdateStateChart(selectedObject, storage); break;
             case FixedUpdateModuleStr:      ProcessCreateFixedUpdateModule(selectedObject, storage); break;
@@ -353,6 +369,13 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateAwake(iCS_EditorObject parent, iCS_IStorage storage) {
         iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.AwakeNode, false);
+        module.IsNameEditable= false;
+        module.ToolTip= "Awake is called when the behaviour is being loaded.";
+        return module;
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject ProcessCreateStart(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.StartNode, false);
         module.IsNameEditable= false;
         module.ToolTip= "Awake is called when the behaviour is being loaded.";
         return module;
@@ -486,5 +509,16 @@ public class iCS_DynamicMenu {
         }            
         Reset();
         return isDestroyed;
+    }
+	// ----------------------------------------------------------------------
+    bool AsChildNodeWithName(iCS_EditorObject parent, string name, iCS_IStorage storage) {
+        return storage.ForEachChild(parent,
+            child=> {
+                if(child.IsNode) {
+                    return child.Name == name;
+                }
+                return false;
+            }
+        );
     }
 }

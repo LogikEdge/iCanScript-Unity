@@ -7,7 +7,7 @@ public class iCS_EditorObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public iCS_ObjectTypeEnum    ObjectType    = iCS_ObjectTypeEnum.Unknown;
+    public iCS_ObjectTypeEnum   ObjectType    = iCS_ObjectTypeEnum.Unknown;
     public int                  InstanceId    = -1;
     public int                  ParentId      = -1;
     public string               QualifiedType = "";

@@ -9,6 +9,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // Properties
     // ----------------------------------------------------------------------
     iCS_Action   myAwakeAction       = null;
+    iCS_Action   myStartAction       = null;
     iCS_Action   myUpdateAction      = null;
     iCS_Action   myLateUpdateAction  = null;
     iCS_Action   myFixedUpdateAction = null;
@@ -24,6 +25,8 @@ public sealed class iCS_Behaviour : iCS_Storage {
     
     // ----------------------------------------------------------------------
     void Reset() {
+        myAwakeAction       = null;
+        myStartAction       = null;
         myUpdateAction      = null;
         myLateUpdateAction  = null;
         myFixedUpdateAction = null;
@@ -36,6 +39,8 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // Awake is invoked after all the objects are initialized.  Awake replaces
     // the constructor.
     void Awake() {
+        Debug.Log("iCS_Behaviour.Awake()");
+        GenerateCode();
         if(myAwakeAction != null) {
             do {
                 myAwakeAction.Execute(-2);
@@ -51,7 +56,16 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
     void Start() {
-        GenerateCode();
+        Debug.Log("iCS_Behaviour.Start()");
+        if(myStartAction != null) {
+            do {
+                myStartAction.Execute(-2);
+                if(myStartAction.IsStalled) {
+                    Debug.LogError("The Start() of "+name+" is stalled. Please remove any dependent processing !!!");
+                    return;
+                }
+            } while(myStartAction.IsCurrent(-2));
+        }
     }
     
     // ----------------------------------------------------------------------
@@ -116,6 +130,10 @@ public sealed class iCS_Behaviour : iCS_Storage {
                 myAwakeAction= action;
                 break;
             }
+            case iCS_EngineStrings.StartAction: {
+                myStartAction= action;
+                break;
+            }
             case iCS_EngineStrings.UpdateAction: {
                 myUpdateAction= action;
                 break;
@@ -140,6 +158,10 @@ public sealed class iCS_Behaviour : iCS_Storage {
         switch(action.Name) {
             case iCS_EngineStrings.AwakeAction: {
                 myAwakeAction= null;
+                break;
+            }
+            case iCS_EngineStrings.StartAction: {
+                myStartAction= null;
                 break;
             }
             case iCS_EngineStrings.UpdateAction: {

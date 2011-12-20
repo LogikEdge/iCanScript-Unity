@@ -26,6 +26,7 @@ public class iCS_EditorStrings {
 
     // Special node names.
     public const string AwakeNode      = "Awake";
+    public const string StartNode      = "Start";
     public const string UpdateNode     = "Update";
     public const string LateUpdateNode = "LateUpdate";
     public const string FixedUpdateNode= "FixedUpdate";

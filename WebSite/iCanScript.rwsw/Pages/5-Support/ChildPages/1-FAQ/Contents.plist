@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T15:34:17Z</date>
+					<date>2011-12-20T15:40:06Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -76,11 +76,11 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							Bqzm8pocD9V9ni+5L7+f
-							Wg==
+							5kAMpXtySh8xIHW5K70D
+							ug==
 							</data>
 							<key>Size</key>
-							<integer>32382</integer>
+							<integer>32381</integer>
 						</dict>
 						<key>files/glossary_fm.css</key>
 						<dict>
