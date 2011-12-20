@@ -39,8 +39,6 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // Awake is invoked after all the objects are initialized.  Awake replaces
     // the constructor.
     void Awake() {
-        Debug.Log("iCS_Behaviour.Awake()");
-        GenerateCode();
         if(myAwakeAction != null) {
             do {
                 myAwakeAction.Execute(-2);
@@ -56,7 +54,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
     void Start() {
-        Debug.Log("iCS_Behaviour.Start()");
+        GenerateCode();
         if(myStartAction != null) {
             do {
                 myStartAction.Execute(-2);

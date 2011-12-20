@@ -27,7 +27,7 @@ public class iCS_DynamicMenu {
     const string DeleteStr= "- Delete";
     const string FoldStr= "Fold";
     const string UnfoldStr= "Unfold";
-    const string AwakeStr= "+ Awake";
+    const string AwakeStr= "#+ Awake";
     const string StartStr= "+ Start";
     const string ModuleStr= "+ Module";
     const string StateChartStr= "+ State Chart";
