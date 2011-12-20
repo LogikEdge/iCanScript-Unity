@@ -10,7 +10,7 @@
 				<key>ID</key>
 				<string>page5</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Theme Default</string>
+				<string>Custom Style</string>
 				<key>PageTitle</key>
 				<string>2D Gameplay Tutorial</string>
 				<key>PluginClassName</key>
@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T02:44:40Z</date>
+					<date>2011-12-20T04:04:20Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -56,11 +56,11 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							dTDoo/6OlnBqt+1zaYax
-							Cw==
+							v0jf7RfkGWvEVgrvpPJu
+							kw==
 							</data>
 							<key>Size</key>
-							<integer>5779</integer>
+							<integer>5067</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>

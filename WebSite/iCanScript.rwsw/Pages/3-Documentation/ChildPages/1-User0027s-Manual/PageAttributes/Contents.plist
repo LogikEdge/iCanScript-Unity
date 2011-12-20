@@ -19,6 +19,8 @@
 					<dict/>
 					<key>E Quinox 1.2</key>
 					<dict/>
+					<key>iCanScript</key>
+					<dict/>
 					<key>seyDoggy CRE4MY Demo</key>
 					<dict/>
 				</dict>
@@ -75,6 +77,20 @@
 						<string>Sidebar Title.22px</string>
 						<string>Sidebar.Hide</string>
 						<string>Title Size.52px</string>
+						<string>Toggle.Photo Album Social Links</string>
+						<string>Width.960px</string>
+					</array>
+					<key>iCanScript</key>
+					<array>
+						<string>Background.1</string>
+						<string>Banner Image.1</string>
+						<string>Banner Size.No Banner</string>
+						<string>Body Size.12px</string>
+						<string>Nav Behavior.Show Below Banner</string>
+						<string>Nav Columns.5</string>
+						<string>Sidebar Title.22px</string>
+						<string>Sidebar.Right</string>
+						<string>Title Size.48px</string>
 						<string>Toggle.Photo Album Social Links</string>
 						<string>Width.960px</string>
 					</array>

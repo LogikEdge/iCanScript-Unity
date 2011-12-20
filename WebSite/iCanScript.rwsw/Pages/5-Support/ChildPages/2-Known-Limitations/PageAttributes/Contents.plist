@@ -8,12 +8,14 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<false/>
+				<true/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
 					<dict/>
 					<key>E Quinox 1.2</key>
+					<dict/>
+					<key>iCanScript</key>
 					<dict/>
 					<key>seyDoggy CRE4MY Demo</key>
 					<dict/>
@@ -60,6 +62,20 @@
 						<string>Banner Size.300 px</string>
 						<string>Body Size.12px</string>
 						<string>Nav Behavior.Show on Button Press</string>
+						<string>Nav Columns.5</string>
+						<string>Sidebar Title.22px</string>
+						<string>Sidebar.Right</string>
+						<string>Title Size.48px</string>
+						<string>Toggle.Photo Album Social Links</string>
+						<string>Width.960px</string>
+					</array>
+					<key>iCanScript</key>
+					<array>
+						<string>Background.1</string>
+						<string>Banner Image.1</string>
+						<string>Banner Size.No Banner</string>
+						<string>Body Size.12px</string>
+						<string>Nav Behavior.Show Below Banner</string>
 						<string>Nav Columns.5</string>
 						<string>Sidebar Title.22px</string>
 						<string>Sidebar.Right</string>

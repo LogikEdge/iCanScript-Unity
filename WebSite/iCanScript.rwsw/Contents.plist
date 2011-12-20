@@ -89,6 +89,114 @@
 						<key>Version</key>
 						<integer>3</integer>
 					</dict>
+					<key>rw:plugin:blog</key>
+					<dict>
+						<key>CreationDate</key>
+						<date>2011-12-20T04:00:49Z</date>
+						<key>DigestAlgorithm</key>
+						<string>MD5</string>
+						<key>DocumentGUID</key>
+						<string>B7560928-39D1-4B36-A679-85500592817E</string>
+						<key>PageDigests</key>
+						<dict>
+							<key>rss.gif</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								ySu0h74kFZbd
+								w1d11rHDPA==
+								</data>
+								<key>Size</key>
+								<integer>219</integer>
+							</dict>
+							<key>smiley_angry.png</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								OsvBGlBtLs1C
+								xAB3/F5vkA==
+								</data>
+								<key>Size</key>
+								<integer>1275</integer>
+							</dict>
+							<key>smiley_embarrassed.png</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								Ok+zrbTJSQbz
+								YHvbtXa5FQ==
+								</data>
+								<key>Size</key>
+								<integer>1310</integer>
+							</dict>
+							<key>smiley_footinmouth.png</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								oNlmERQNe+Jv
+								bhxYf6Q/sQ==
+								</data>
+								<key>Size</key>
+								<integer>1254</integer>
+							</dict>
+							<key>smiley_gasp.png</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								3fIF+LsL4I97
+								3PnZdsHYdg==
+								</data>
+								<key>Size</key>
+								<integer>1208</integer>
+							</dict>
+							<key>smiley_laugh.png</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								aiKkmJLIzkmw
+								I7ENY7ns/A==
+								</data>
+								<key>Size</key>
+								<integer>1283</integer>
+							</dict>
+							<key>smiley_sad.png</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								JrI6GFcEDYoD
+								NPeCi0NJDQ==
+								</data>
+								<key>Size</key>
+								<integer>1263</integer>
+							</dict>
+							<key>smiley_smile.png</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								ek1FWaeOXYzG
+								u9xa5IUf6A==
+								</data>
+								<key>Size</key>
+								<integer>1240</integer>
+							</dict>
+							<key>smiley_wink.png</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								zIRR5aU+gUMZ
+								uXop1aVLFA==
+								</data>
+								<key>Size</key>
+								<integer>1236</integer>
+							</dict>
+						</dict>
+						<key>PageID</key>
+						<string>rw:plugin:blog</string>
+						<key>SiteRoot</key>
+						<string>rw_common/plugins/blog</string>
+						<key>Version</key>
+						<integer>3</integer>
+					</dict>
 					<key>rw:plugin:stacks</key>
 					<dict>
 						<key>CreationDate</key>
@@ -1786,13 +1894,43 @@
 					<key>rw:theme:e_quinox</key>
 					<dict>
 						<key>CreationDate</key>
-						<date>2011-12-19T13:45:27Z</date>
+						<date>2011-12-20T04:00:49Z</date>
 						<key>DigestAlgorithm</key>
 						<string>MD5</string>
 						<key>DocumentGUID</key>
 						<string>B7560928-39D1-4B36-A679-85500592817E</string>
 						<key>PageDigests</key>
 						<dict>
+							<key>colour_tags-page1.css</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								1vUQk7iezoLy
+								e0YzMCVTLw==
+								</data>
+								<key>Size</key>
+								<integer>1991</integer>
+							</dict>
+							<key>colour_tags-page12.css</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								1vUQk7iezoLy
+								e0YzMCVTLw==
+								</data>
+								<key>Size</key>
+								<integer>1991</integer>
+							</dict>
+							<key>colour_tags-page16.css</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								1vUQk7iezoLy
+								e0YzMCVTLw==
+								</data>
+								<key>Size</key>
+								<integer>1991</integer>
+							</dict>
 							<key>colour_tags-page3.css</key>
 							<dict>
 								<key>Digest</key>
@@ -4192,7 +4330,7 @@
 				Y3TSPD1DRaJEQVdCREFsaWFzV0JEQWxpYXNfECRFREMx
 				NkNCNS0wQkYwLTRDQTEtQTRGMC0wMkMzQjIwRjA2REZf
 				EB5pQ2FuU2NyaXB0LXYwLjguMi51bml0eXBhY2thZ2XS
-				DElKS1dOUy50aW1lgAwjQbSgLihXpX/SPD1NTqJOQVZO
+				DElKS1dOUy50aW1lgAwjQbSgQNzj80nSPD1NTqJOQVZO
 				U0RhdGXSPD1QUqJRQV5SV1NpdGVSZXNvdXJjZV5SV1Np
 				dGVSZXNvdXJjZdI8PVRVo1VWQVxOU011dGFibGVTZXRV
 				TlNTZXTTC1gMWVtdV05TLmtleXOhH4AEoSyACYAQ0jw9
@@ -4292,7 +4430,7 @@
 					<key>SloganUsed</key>
 					<true/>
 					<key>ThemeName</key>
-					<string>E Quinox 1.2</string>
+					<string>iCanScript</string>
 					<key>TitleText</key>
 					<string>iCanScript</string>
 					<key>TitleTextUsed</key>

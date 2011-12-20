@@ -8,65 +8,85 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>ID</key>
-				<string>page6</string>
+				<string>page4</string>
 				<key>MostRecentlySelectedStyleName</key>
 				<string>Custom Style</string>
 				<key>PageTitle</key>
-				<string>3D Gameplay Tutorial</string>
+				<string>News</string>
 				<key>PluginClassName</key>
-				<string>YHStacksPlugin</string>
+				<string>RWBlogPlugin</string>
 				<key>PluginMetadata</key>
 				<dict>
 					<key>Author</key>
-					<string>Isaiah Carew - YourHead Software</string>
+					<string>Realmac Software</string>
 					<key>Name</key>
-					<string>Stacks</string>
+					<string>Blog</string>
 				</dict>
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T04:04:20Z</date>
+					<date>2011-12-20T04:04:27Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
 					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>PageDigests</key>
 					<dict>
-						<key>files/stacks_page_page6.css</key>
+						<key>files/76218bf1521d261cf3b96febe2955659-0.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							1B2M2Y8AsgTpgAmY7PhC
-							fg==
+							Td0ATYSNy1KP1PkcFwHK
+							Ag==
 							</data>
 							<key>Size</key>
-							<integer>0</integer>
+							<integer>5001</integer>
 						</dict>
-						<key>files/stacks_page_page6.js</key>
+						<key>files/archive-dec-2011.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							4nf49Kcs/AKiir2hdl+8
-							Qg==
+							0Yi1LOq8cg1jvJblxgrD
+							2w==
 							</data>
 							<key>Size</key>
-							<integer>135</integer>
+							<integer>5738</integer>
+						</dict>
+						<key>files/e36b6db92cc66cf91e5242448a727c1d-1.html</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							eINhkEt+1BfX/7c2nml/
+							4Q==
+							</data>
+							<key>Size</key>
+							<integer>5139</integer>
+						</dict>
+						<key>files/feed.xml</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							hHoOGnxUCdrGMwy2sGPF
+							AA==
+							</data>
+							<key>Size</key>
+							<integer>1718</integer>
 						</dict>
 						<key>index.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							+IV/TxNdLuFP1qb6h3Iv
-							sw==
+							li9eIt6FPPC13Nr/PNfN
+							Eg==
 							</data>
 							<key>Size</key>
-							<integer>5071</integer>
+							<integer>5456</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
-					<string>page6</string>
+					<string>page4</string>
 					<key>SiteRoot</key>
-					<string>Demos/3DGameplayTutorial</string>
+					<string>Support/News</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>

@@ -8,12 +8,14 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<false/>
+				<true/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
 					<dict/>
 					<key>E Quinox 1.2</key>
+					<dict/>
+					<key>iCanScript</key>
 					<dict/>
 					<key>seyDoggy CRE4MY Demo</key>
 					<dict/>
@@ -25,8 +27,10 @@
 				<key>CustomJavaScript</key>
 				<string>var navText = "Menu";
 </string>
+				<key>CustomSiteTitle</key>
+				<string>iCanScript &lt;span&gt;FAQ&lt;/span&gt;</string>
 				<key>CustomSiteTitleUsed</key>
-				<false/>
+				<true/>
 				<key>CustomSloganUsed</key>
 				<false/>
 				<key>DefaultLinkTarget</key>
@@ -51,6 +55,23 @@
 				<integer>1</integer>
 				<key>TextEncoding</key>
 				<string>utf-8</string>
+				<key>ThemeStyles</key>
+				<dict>
+					<key>iCanScript</key>
+					<array>
+						<string>Background.1</string>
+						<string>Banner Image.1</string>
+						<string>Banner Size.No Banner</string>
+						<string>Body Size.12px</string>
+						<string>Nav Behavior.Show Below Banner</string>
+						<string>Nav Columns.5</string>
+						<string>Sidebar Title.22px</string>
+						<string>Sidebar.Left</string>
+						<string>Title Size.48px</string>
+						<string>Toggle.Photo Album Social Links</string>
+						<string>Width.960px</string>
+					</array>
+				</dict>
 			</dict>
 			<key>Files</key>
 			<array/>

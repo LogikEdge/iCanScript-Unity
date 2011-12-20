@@ -24,6 +24,8 @@
 					<dict/>
 					<key>E Quinox 1.2</key>
 					<dict/>
+					<key>iCanScript</key>
+					<dict/>
 					<key>seyDoggy CRE4MY Demo</key>
 					<dict/>
 				</dict>
@@ -80,7 +82,7 @@
 					<key>E Quinox 1.2</key>
 					<array>
 						<string>Background.1</string>
-						<string>Banner Image.1</string>
+						<string>Banner Image.9</string>
 						<string>Banner Size.300 px</string>
 						<string>Body Size.12px</string>
 						<string>Nav Behavior.Show on Button Press</string>
@@ -118,14 +120,18 @@
 					<key>iCanScript</key>
 					<array>
 						<string>Background Style.Background Style Blue</string>
+						<string>Banner Size.No Banner</string>
 						<string>Container Font Size.medium</string>
 						<string>Content font.Titillium</string>
 						<string>Footer Font Size.medium</string>
 						<string>Header Font Size.medium</string>
 						<string>Headers Font.Titillium</string>
+						<string>Nav Behavior.Show Below Banner</string>
 						<string>Navbar width.large</string>
 						<string>Sidebar Font Size.medium</string>
 						<string>Sidebar position and visibility.Hide</string>
+						<string>Sidebar.Left</string>
+						<string>Width.960px</string>
 					</array>
 					<key>seyDoggy CRE4MY Demo</key>
 					<array>

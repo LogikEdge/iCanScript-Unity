@@ -10,7 +10,7 @@
 				<key>ID</key>
 				<string>page15</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Theme Default</string>
+				<string>Custom Style</string>
 				<key>PageTitle</key>
 				<string>Pro Version</string>
 				<key>PluginClassName</key>
@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T02:44:42Z</date>
+					<date>2011-12-20T04:04:26Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -56,11 +56,11 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							z7JWH/S+M3CUiDuj2IBS
-							bg==
+							JvfLUNBzO0ihFd7fHBwN
+							wg==
 							</data>
 							<key>Size</key>
-							<integer>5853</integer>
+							<integer>5120</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
