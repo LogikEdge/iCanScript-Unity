@@ -25,6 +25,7 @@ public class iCS_EditorStrings {
     public const string NodeMaskTexture   = "iCS_NodeMaskTexture.psd";
 
     // Special node names.
+    public const string AwakeNode      = "Awake";
     public const string UpdateNode     = "Update";
     public const string LateUpdateNode = "LateUpdate";
     public const string FixedUpdateNode= "FixedUpdate";

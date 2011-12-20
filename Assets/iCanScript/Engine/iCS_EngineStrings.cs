@@ -3,6 +3,7 @@ using System.Collections;
 
 public class iCS_EngineStrings {
     // Special node names.
+    public const string AwakeAction          = "Awake";
     public const string UpdateAction         = "Update";
     public const string LateUpdateAction     = "LateUpdate";
     public const string FixedUpdateAction    = "FixedUpdate";

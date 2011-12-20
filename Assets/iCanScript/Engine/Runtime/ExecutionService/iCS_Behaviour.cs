@@ -8,6 +8,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+    iCS_Action   myAwakeAction       = null;
     iCS_Action   myUpdateAction      = null;
     iCS_Action   myLateUpdateAction  = null;
     iCS_Action   myFixedUpdateAction = null;
@@ -34,7 +35,17 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // This function should be used to find references to other objects.
     // Awake is invoked after all the objects are initialized.  Awake replaces
     // the constructor.
-    void Awake() {}
+    void Awake() {
+        if(myAwakeAction != null) {
+            do {
+                myAwakeAction.Execute(-2);
+                if(myAwakeAction.IsStalled) {
+                    Debug.LogError("The Awake() of "+name+" is stalled.  Awake should only be used to connect object together.  Please remove any dependent processing !!!");
+                    return;
+                }
+            } while(myAwakeAction.IsCurrent(-2));
+        }
+    }
 
     // ----------------------------------------------------------------------
     // This function should be used to pass information between objects.  It
@@ -101,6 +112,10 @@ public sealed class iCS_Behaviour : iCS_Storage {
         iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
+            case iCS_EngineStrings.AwakeAction: {
+                myAwakeAction= action;
+                break;
+            }
             case iCS_EngineStrings.UpdateAction: {
                 myUpdateAction= action;
                 break;
@@ -123,6 +138,10 @@ public sealed class iCS_Behaviour : iCS_Storage {
         iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
+            case iCS_EngineStrings.AwakeAction: {
+                myAwakeAction= null;
+                break;
+            }
             case iCS_EngineStrings.UpdateAction: {
                 myUpdateAction= null;
                 break;

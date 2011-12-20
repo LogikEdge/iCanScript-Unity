@@ -27,6 +27,7 @@ public class iCS_DynamicMenu {
     const string DeleteStr= "- Delete";
     const string FoldStr= "Fold";
     const string UnfoldStr= "Unfold";
+    const string AwakeStr= "+ Awake";
     const string ModuleStr= "+ Module";
     const string StateChartStr= "+ State Chart";
     const string StateStr= "+ State";
@@ -90,6 +91,7 @@ public class iCS_DynamicMenu {
 
         string[] menu= new string[]
         {
+            AwakeStr,
             UpdateModuleStr,             
             UpdateStateChartStr,
             LateUpdateModuleStr,        
@@ -300,6 +302,7 @@ public class iCS_DynamicMenu {
         iCS_IStorage storage= context.Storage;
         storage.RegisterUndo(context.Command);
         switch(context.Command) {
+            case AwakeStr:                  ProcessCreateAwake(selectedObject, storage); break;
             case UpdateModuleStr:           ProcessCreateUpdateModule(selectedObject, storage); break;
             case UpdateStateChartStr:       ProcessCreateUpdateStateChart(selectedObject, storage); break;
             case FixedUpdateModuleStr:      ProcessCreateFixedUpdateModule(selectedObject, storage); break;
@@ -346,6 +349,13 @@ public class iCS_DynamicMenu {
                 break;                
             }
         }
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject ProcessCreateAwake(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.AwakeNode, false);
+        module.IsNameEditable= false;
+        module.ToolTip= "Awake is called when the behaviour is being loaded.";
+        return module;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
