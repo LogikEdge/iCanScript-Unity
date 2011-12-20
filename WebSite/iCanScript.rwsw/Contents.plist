@@ -41,6 +41,54 @@
 						<key>Version</key>
 						<integer>3</integer>
 					</dict>
+					<key>rw:plugin:accordion</key>
+					<dict>
+						<key>CreationDate</key>
+						<date>2011-12-20T01:17:06Z</date>
+						<key>DigestAlgorithm</key>
+						<string>MD5</string>
+						<key>DocumentGUID</key>
+						<string>B7560928-39D1-4B36-A679-85500592817E</string>
+						<key>PageDigests</key>
+						<dict>
+							<key>accordion.css</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								5Z+ymNTZoUky
+								7ehMSms1iQ==
+								</data>
+								<key>Size</key>
+								<integer>478</integer>
+							</dict>
+							<key>accordion.js</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								qKGyxTLLdidb
+								S8FnFAOSGA==
+								</data>
+								<key>Size</key>
+								<integer>2010</integer>
+							</dict>
+							<key>mootools-1.2.3.js</key>
+							<dict>
+								<key>Digest</key>
+								<data>
+								EjGWc9wlE6nH
+								MGFNoNpLGg==
+								</data>
+								<key>Size</key>
+								<integer>163005</integer>
+							</dict>
+						</dict>
+						<key>PageID</key>
+						<string>rw:plugin:accordion</string>
+						<key>SiteRoot</key>
+						<string>rw_common/plugins/accordion</string>
+						<key>Version</key>
+						<integer>3</integer>
+					</dict>
 					<key>rw:plugin:stacks</key>
 					<dict>
 						<key>CreationDate</key>
@@ -4144,7 +4192,7 @@
 				Y3TSPD1DRaJEQVdCREFsaWFzV0JEQWxpYXNfECRFREMx
 				NkNCNS0wQkYwLTRDQTEtQTRGMC0wMkMzQjIwRjA2REZf
 				EB5pQ2FuU2NyaXB0LXYwLjguMi51bml0eXBhY2thZ2XS
-				DElKS1dOUy50aW1lgAwjQbSfzoIEAFTSPD1NTqJOQVZO
+				DElKS1dOUy50aW1lgAwjQbSgLihXpX/SPD1NTqJOQVZO
 				U0RhdGXSPD1QUqJRQV5SV1NpdGVSZXNvdXJjZV5SV1Np
 				dGVSZXNvdXJjZdI8PVRVo1VWQVxOU011dGFibGVTZXRV
 				TlNTZXTTC1gMWVtdV05TLmtleXOhH4AEoSyACYAQ0jw9
@@ -4196,7 +4244,7 @@
 						<string>index.php</string>
 					</array>
 					<key>EmailAddress</key>
-					<string>michel.launier@me.com</string>
+					<string>support@icanscript.com</string>
 					<key>FavIconUsed</key>
 					<false/>
 					<key>LogoUsed</key>

@@ -8,63 +8,43 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>ID</key>
-				<string>page4</string>
+				<string>page16</string>
 				<key>MostRecentlySelectedStyleName</key>
 				<string>Theme Default</string>
 				<key>PageTitle</key>
 				<string>Documentation</string>
 				<key>PluginClassName</key>
-				<string>YHStacksPlugin</string>
+				<string>YHACPlugin</string>
 				<key>PluginMetadata</key>
 				<dict>
 					<key>Author</key>
-					<string>Isaiah Carew - YourHead Software</string>
+					<string>Isaiah Carew YourHead Software</string>
 					<key>Name</key>
-					<string>Stacks</string>
+					<string>Accordion</string>
 				</dict>
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-19T16:18:02Z</date>
+					<date>2011-12-20T02:43:07Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
 					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>PageDigests</key>
 					<dict>
-						<key>files/stacks_page_page4.css</key>
-						<dict>
-							<key>Digest</key>
-							<data>
-							1B2M2Y8AsgTpgAmY7PhC
-							fg==
-							</data>
-							<key>Size</key>
-							<integer>0</integer>
-						</dict>
-						<key>files/stacks_page_page4.js</key>
-						<dict>
-							<key>Digest</key>
-							<data>
-							4nf49Kcs/AKiir2hdl+8
-							Qg==
-							</data>
-							<key>Size</key>
-							<integer>135</integer>
-						</dict>
 						<key>index.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							SUvjov9Eq3gXxUKxf5N8
-							dw==
+							Mhqr7/PSBcM11D+dJe27
+							QQ==
 							</data>
 							<key>Size</key>
-							<integer>5712</integer>
+							<integer>8332</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
-					<string>page4</string>
+					<string>page16</string>
 					<key>SiteRoot</key>
 					<string>Documentation</string>
 					<key>Version</key>
@@ -72,11 +52,12 @@
 				</dict>
 			</dict>
 			<key>Files</key>
-			<array/>
+			<array>
+				<string>Data.archive</string>
+			</array>
 			<key>Subsandwiches</key>
 			<array>
 				<string>ChildPages</string>
-				<string>Data</string>
 				<string>PageAttributes</string>
 			</array>
 		</dict>

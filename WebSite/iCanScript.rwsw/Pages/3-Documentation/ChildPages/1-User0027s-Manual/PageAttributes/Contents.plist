@@ -8,7 +8,7 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<false/>
+				<true/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
@@ -26,8 +26,13 @@
 				<true/>
 				<key>CustomCopyrightUsed</key>
 				<false/>
+				<key>CustomJavaScript</key>
+				<string>var navText = "Menu";
+</string>
+				<key>CustomSiteTitle</key>
+				<string>iCanScript &lt;span&gt;User's Manual&lt;/span&gt;</string>
 				<key>CustomSiteTitleUsed</key>
-				<false/>
+				<true/>
 				<key>CustomSloganUsed</key>
 				<false/>
 				<key>DefaultLinkTarget</key>
