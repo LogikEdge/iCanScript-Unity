@@ -10,63 +10,43 @@
 				<key>ID</key>
 				<string>page3</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Custom Style</string>
+				<string>Theme Default</string>
 				<key>PageTitle</key>
-				<string>Demo Version</string>
+				<string>Standard Version</string>
 				<key>PluginClassName</key>
-				<string>YHStacksPlugin</string>
+				<string>RWFileSharingPlugin</string>
 				<key>PluginMetadata</key>
 				<dict>
 					<key>Author</key>
-					<string>Isaiah Carew - YourHead Software</string>
+					<string>Realmac Software</string>
 					<key>Name</key>
-					<string>Stacks</string>
+					<string>File Sharing</string>
 				</dict>
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T04:13:44Z</date>
+					<date>2011-12-20T04:44:26Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
 					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>PageDigests</key>
 					<dict>
-						<key>files/stacks_page_page3.css</key>
-						<dict>
-							<key>Digest</key>
-							<data>
-							1B2M2Y8AsgTpgAmY7PhC
-							fg==
-							</data>
-							<key>Size</key>
-							<integer>0</integer>
-						</dict>
-						<key>files/stacks_page_page3.js</key>
-						<dict>
-							<key>Digest</key>
-							<data>
-							4nf49Kcs/AKiir2hdl+8
-							Qg==
-							</data>
-							<key>Size</key>
-							<integer>135</integer>
-						</dict>
 						<key>index.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							12V6pd/LPE7tDLXhmsrh
-							wA==
+							Zzn6ZfzYLksJB4AJR8mZ
+							iw==
 							</data>
 							<key>Size</key>
-							<integer>5286</integer>
+							<integer>4735</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
 					<string>page3</string>
 					<key>SiteRoot</key>
-					<string>Download/DemoVersion</string>
+					<string>Download/StandardVersion</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>

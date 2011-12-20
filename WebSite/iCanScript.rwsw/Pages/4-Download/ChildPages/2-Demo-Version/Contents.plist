@@ -8,65 +8,45 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>ID</key>
-				<string>page15</string>
+				<string>page17</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Custom Style</string>
+				<string>Theme Default</string>
 				<key>PageTitle</key>
-				<string>Pro Version</string>
+				<string>Demo Version</string>
 				<key>PluginClassName</key>
-				<string>YHStacksPlugin</string>
+				<string>RWFileSharingPlugin</string>
 				<key>PluginMetadata</key>
 				<dict>
 					<key>Author</key>
-					<string>Isaiah Carew - YourHead Software</string>
+					<string>Realmac Software</string>
 					<key>Name</key>
-					<string>Stacks</string>
+					<string>File Sharing</string>
 				</dict>
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T04:13:45Z</date>
+					<date>2011-12-20T04:44:25Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
 					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>PageDigests</key>
 					<dict>
-						<key>files/stacks_page_page15.css</key>
-						<dict>
-							<key>Digest</key>
-							<data>
-							1B2M2Y8AsgTpgAmY7PhC
-							fg==
-							</data>
-							<key>Size</key>
-							<integer>0</integer>
-						</dict>
-						<key>files/stacks_page_page15.js</key>
-						<dict>
-							<key>Digest</key>
-							<data>
-							4nf49Kcs/AKiir2hdl+8
-							Qg==
-							</data>
-							<key>Size</key>
-							<integer>135</integer>
-						</dict>
 						<key>index.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							ta2kOjeNkCzggGOlATpv
-							2A==
+							ErenjFnsC48EqUf1Ptv1
+							ng==
 							</data>
 							<key>Size</key>
-							<integer>5360</integer>
+							<integer>4732</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
-					<string>page15</string>
+					<string>page17</string>
 					<key>SiteRoot</key>
-					<string>Download/ProVersion</string>
+					<string>Download/DemoVersion</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>

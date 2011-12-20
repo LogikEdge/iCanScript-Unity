@@ -22,6 +22,74 @@
 					<key>Name</key>
 					<string>Blog</string>
 				</dict>
+				<key>PublishingManifest</key>
+				<dict>
+					<key>CreationDate</key>
+					<date>2011-12-20T04:38:37Z</date>
+					<key>DigestAlgorithm</key>
+					<string>MD5</string>
+					<key>DocumentGUID</key>
+					<string>B7560928-39D1-4B36-A679-85500592817E</string>
+					<key>PageDigests</key>
+					<dict>
+						<key>files/76218bf1521d261cf3b96febe2955659-0.html</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							utoD2aHJcrxBUaJWo+nH
+							gw==
+							</data>
+							<key>Size</key>
+							<integer>5325</integer>
+						</dict>
+						<key>files/archive-dec-2011.html</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							y82HulbECZ5/cX4930i1
+							Eg==
+							</data>
+							<key>Size</key>
+							<integer>6062</integer>
+						</dict>
+						<key>files/e36b6db92cc66cf91e5242448a727c1d-1.html</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							HXQ5ZErR2PiIeI96FuA8
+							TA==
+							</data>
+							<key>Size</key>
+							<integer>5463</integer>
+						</dict>
+						<key>files/feed.xml</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							hhDHChXQ5IxvOlfJekGv
+							LA==
+							</data>
+							<key>Size</key>
+							<integer>1686</integer>
+						</dict>
+						<key>index.html</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							HjjFMJQZgaZrZSZlD3WY
+							mA==
+							</data>
+							<key>Size</key>
+							<integer>5771</integer>
+						</dict>
+					</dict>
+					<key>PageID</key>
+					<string>page4</string>
+					<key>SiteRoot</key>
+					<string>News</string>
+					<key>Version</key>
+					<integer>3</integer>
+				</dict>
 			</dict>
 			<key>Files</key>
 			<array/>

@@ -6,19 +6,17 @@
 	<array>
 		<dict>
 			<key>Dictionary</key>
-			<dict/>
+			<dict>
+				<key>Entries</key>
+				<array/>
+			</dict>
 			<key>Files</key>
 			<array/>
 			<key>Subsandwiches</key>
-			<array>
-				<string>1-FAQ</string>
-				<string>2-Demo-Version</string>
-				<string>3-Standard-Version</string>
-				<string>4-Pro-Version</string>
-			</array>
+			<array/>
 		</dict>
 	</array>
 	<key>Type</key>
-	<string>Pages</string>
+	<string>RapidWeaver File Sharing Data</string>
 </dict>
 </plist>
