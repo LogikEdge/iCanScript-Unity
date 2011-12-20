@@ -91,9 +91,9 @@ public class iCS_Editor : EditorWindow {
         DynamicMenu = null;
     }
     
-    WWW GetWebPage() {
-		return new WWW("http://www.icanscript.com/index.html");
-    }
+//    WWW GetWebPage() {
+//		return new WWW("http://www.icanscript.com/index.html");
+//    }
 
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.

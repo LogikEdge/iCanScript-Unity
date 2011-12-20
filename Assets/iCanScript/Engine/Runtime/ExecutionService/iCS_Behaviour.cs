@@ -12,9 +12,9 @@ public sealed class iCS_Behaviour : iCS_Storage {
     iCS_Action   myUpdateAction      = null;
     iCS_Action   myLateUpdateAction  = null;
     iCS_Action   myFixedUpdateAction = null;
-    int         myUpdateFrameId     = 0;
-    int         myFixedUpdateFrameId= 0;
-    object[]    myRuntimeNodes      = new object[0];
+    int          myUpdateFrameId     = 0;
+    int          myFixedUpdateFrameId= 0;
+    object[]     myRuntimeNodes      = new object[0];
     
     // ======================================================================
     // Accessors
@@ -51,7 +51,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                     Debug.LogError("The Start() of "+name+" is stalled. Please remove any dependent processing !!!");
                     return;
                 }
-            } while(myStartAction.IsCurrent(-2));
+            } while(!myStartAction.IsCurrent(-2));
         }
     }
     

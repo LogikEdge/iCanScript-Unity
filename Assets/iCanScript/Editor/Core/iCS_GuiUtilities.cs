@@ -25,6 +25,7 @@ public class iCS_GuiUtilities {
             if(portValue != newValue && storage.GetSource(port) == null) {
                 storage.SetDefaultValue(desc, portId, newValue);
                 node.RuntimeArchive= desc.Encode(desc.Id);
+                storage.SetDirty(node);
             }
             return;            
         }

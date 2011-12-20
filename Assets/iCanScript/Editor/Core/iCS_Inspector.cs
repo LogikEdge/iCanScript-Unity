@@ -15,7 +15,7 @@ public class iCS_Inspector : Editor {
     // PROPERTIES
 	// ----------------------------------------------------------------------
     private iCS_IStorage     Storage= null;
-	private iCS_Editor	    Editor = null;
+	private iCS_Editor	     Editor = null;
 	public  iCS_EditorObject SelectedObject {
 	    get { return mySelectedObject; }
 	    set { mySelectedObject= value; Repaint(); }
@@ -36,6 +36,26 @@ public class iCS_Inspector : Editor {
         // The state of the inspector is non-persistant.
         hideFlags= HideFlags.DontSave;
         
+        // Create the editor.
+        ActivateEditor();
+	}
+	
+	// ----------------------------------------------------------------------
+    // Deactivate the edition of the graph.
+	public void OnDisable ()
+	{
+        // Deactivate the editor.
+        if(Editor != null) {
+            Editor.Deactivate();
+	    }
+
+        // Forget the selected object.
+		mySelectedObject= null;
+	}
+	
+	// ----------------------------------------------------------------------
+    // Bring up the graph editor window when the inspector is activated.
+    void ActivateEditor() {
 		// Create the graph editor.
         if(Editor == null) {
             Editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
@@ -50,37 +70,32 @@ public class iCS_Inspector : Editor {
             mySelectedObject= null; 
             Storage= new iCS_IStorage(realStorage);        
             Editor.Activate(Storage, this);                        
+            Editor.SetInspector(this);
         } else {
             Storage= Editor.Storage;
             Editor.SetInspector(this);
-        }
-        
-	}
-	
-	// ----------------------------------------------------------------------
-    // Deactivate the edition of the graph.
-	public void OnDisable ()
-	{
-//        // Deactivate the editor.
-//        if(Editor != null) {
-//            Editor.Deactivate();
-//	    }
-//
-//        // Forget the selected object.
-//		mySelectedObject= null;
-	}
-	
+        }        
+    }
+    
 	// ----------------------------------------------------------------------
     // Paint to inspector for the selected object (see editor).
 	public override void OnInspectorGUI ()
 	{
         if(Storage == null) return;
         
+        // Make certain our editor is active.
+        ActivateEditor();
+        
         // Restore inspector skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
         
+        // Show object id.
+        EditorGUILayout.LabelField("Stortage Object ID:", Storage.Storage.GetInstanceID().ToString());
+        
         // Draw inspector window
 		DrawDefaultInspector();
+
+        // Frame count.
 		if(Storage.Storage is iCS_Behaviour) {
 		    iCS_Behaviour behaviour= Storage.Storage as iCS_Behaviour;
 		    EditorGUILayout.LabelField("UpdateFrameId", behaviour.UpdateFrameId.ToString());

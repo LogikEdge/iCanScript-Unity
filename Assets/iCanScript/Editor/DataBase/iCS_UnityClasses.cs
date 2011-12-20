@@ -156,7 +156,6 @@ public static class iCS_UnityClasses {
         DecodeUnityClassInfo(typeof(Vector2));    
         DecodeUnityClassInfo(typeof(Vector3));    
         DecodeUnityClassInfo(typeof(Vector4));
-
     }
     // ----------------------------------------------------------------------
     public static void DecodeUnityClassInfo(Type type) {

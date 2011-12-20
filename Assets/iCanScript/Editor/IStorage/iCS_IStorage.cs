@@ -9,8 +9,8 @@ public partial class iCS_IStorage {
     // Properties
     // ----------------------------------------------------------------------
             bool            myIsDirty    = true;
-    public  iCS_Storage      Storage      = null;
-            iCS_TreeCache    TreeCache    = null;
+    public  iCS_Storage     Storage      = null;
+            iCS_TreeCache   TreeCache    = null;
             int             UndoRedoId   = 0;
             bool            CleanupNeeded= true;
     
@@ -24,7 +24,8 @@ public partial class iCS_IStorage {
         if(Storage != storage) {
             myIsDirty= true;
             Storage= storage;
-            GenerateInternalData();            
+            GenerateInternalData();
+            UndoRedoId= Storage.UndoRedoId;          
         }
     }
     public void Reset() {
@@ -34,7 +35,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     void GenerateInternalData() {
-        GenerateEditorData();
+		GenerateEditorData();
 //        GenerateRuntimeCode();
     }
     // ----------------------------------------------------------------------
@@ -49,7 +50,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>    EditorObjects { get { return Storage.EditorObjects; }}
     public iCS_UserPreferences       Preferences   { get { return Storage.Preferences; }}
-    public List<UnityEngine.Object> UnityObjects  { get { return Storage.UnityObjects; }}
+    public List<UnityEngine.Object>  UnityObjects  { get { return Storage.UnityObjects; }}
     // ----------------------------------------------------------------------
     public bool IsValid(int id)                     { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)                   { return !IsValid(id); }
@@ -68,6 +69,8 @@ public partial class iCS_IStorage {
             if(TreeCache.IsValid(id)) TreeCache.UpdateInstance(value);
             else                      TreeCache.CreateInstance(value);            
             SetDirty(EditorObjects[id]);
+            iCS_EditorObject parent= GetParent(EditorObjects[id]);
+            if(parent != null) SetDirty(parent);
         }
     }
     // ----------------------------------------------------------------------
@@ -151,7 +154,7 @@ public partial class iCS_IStorage {
     void ProcessUndoRedo() {
         // Regenerate internal structures if undo/redo was performed.
         if(Storage.UndoRedoId != UndoRedoId) {
-            SynchronizeAfterUndoRedo();
+			SynchronizeAfterUndoRedo();
         }        
     }
     // ----------------------------------------------------------------------
