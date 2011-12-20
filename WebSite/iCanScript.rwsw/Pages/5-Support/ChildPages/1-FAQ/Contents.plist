@@ -8,63 +8,233 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>ID</key>
-				<string>page1</string>
+				<string>page15</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Custom Style</string>
+				<string>Theme Default</string>
 				<key>PageTitle</key>
 				<string>FAQ</string>
 				<key>PluginClassName</key>
-				<string>YHStacksPlugin</string>
+				<string>LHFaqMakerPlugin</string>
 				<key>PluginMetadata</key>
 				<dict>
 					<key>Author</key>
-					<string>Isaiah Carew - YourHead Software</string>
+					<string>loghound.com</string>
 					<key>Name</key>
-					<string>Stacks</string>
+					<string>FaqMaker</string>
 				</dict>
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T15:21:44Z</date>
+					<date>2011-12-20T15:34:17Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
 					<string>B7560928-39D1-4B36-A679-85500592817E</string>
 					<key>PageDigests</key>
 					<dict>
-						<key>files/stacks_page_page1.css</key>
+						<key>files/GoodForPrinting_fm.css</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							1B2M2Y8AsgTpgAmY7PhC
-							fg==
+							6VO5gH61ZlKQRT4ggXSU
+							qg==
 							</data>
 							<key>Size</key>
-							<integer>0</integer>
+							<integer>1263</integer>
 						</dict>
-						<key>files/stacks_page_page1.js</key>
+						<key>files/bullet_sub7.png</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							4nf49Kcs/AKiir2hdl+8
-							Qg==
+							shA9v/VTbKD793nrJSFc
+							ig==
 							</data>
 							<key>Size</key>
-							<integer>135</integer>
+							<integer>1405</integer>
+						</dict>
+						<key>files/crisp_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							pU95N/5Ij0xv3sXvpcc0
+							xw==
+							</data>
+							<key>Size</key>
+							<integer>1248</integer>
+						</dict>
+						<key>files/default_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							U1ubrP+SCOt2Gv3V30i2
+							iA==
+							</data>
+							<key>Size</key>
+							<integer>1115</integer>
+						</dict>
+						<key>files/faq.pdf</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							Bqzm8pocD9V9ni+5L7+f
+							Wg==
+							</data>
+							<key>Size</key>
+							<integer>32382</integer>
+						</dict>
+						<key>files/glossary_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							cK0zSwpOTK3WJAiF73My
+							9Q==
+							</data>
+							<key>Size</key>
+							<integer>1301</integer>
+						</dict>
+						<key>files/ipod_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							Tj8BxOLG7/jcb0NSyDy0
+							Mw==
+							</data>
+							<key>Size</key>
+							<integer>1410</integer>
+						</dict>
+						<key>files/lastCreated.xml</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							k8yPk1SvHItjOEuoMmGi
+							6w==
+							</data>
+							<key>Size</key>
+							<integer>1323</integer>
+						</dict>
+						<key>files/lastModified.xml</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							AtcgQ6GM3wDzTReZyNBL
+							WA==
+							</data>
+							<key>Size</key>
+							<integer>1323</integer>
+						</dict>
+						<key>files/pdf.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							5dJNiqPzW/lZ2SdD0lNO
+							qw==
+							</data>
+							<key>Size</key>
+							<integer>4858</integer>
+						</dict>
+						<key>files/pdfrender.html</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							jnRRpuqes1SPJu9e2nY6
+							Fg==
+							</data>
+							<key>Size</key>
+							<integer>2830</integer>
+						</dict>
+						<key>files/secondary.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							ukEuibFiGpLeLUZS1+WS
+							HA==
+							</data>
+							<key>Size</key>
+							<integer>1459</integer>
+						</dict>
+						<key>files/sidebar_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							ztb+1RGQ02r63nQ0/CBQ
+							0Q==
+							</data>
+							<key>Size</key>
+							<integer>1118</integer>
+						</dict>
+						<key>files/slice_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							ARukWY9y0QGjjHkkRJ0H
+							Ww==
+							</data>
+							<key>Size</key>
+							<integer>1496</integer>
+						</dict>
+						<key>files/small_right_grey_arrow.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							vH4PExaMjTGY/rSi4iKo
+							Wg==
+							</data>
+							<key>Size</key>
+							<integer>262</integer>
+						</dict>
+						<key>files/ss.js</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							YJv1X9v2SFzrghe/ILZb
+							ww==
+							</data>
+							<key>Size</key>
+							<integer>11898</integer>
+						</dict>
+						<key>files/ss_wp.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							aGjCMshz5YUVr8CA5IkO
+							qw==
+							</data>
+							<key>Size</key>
+							<integer>2257</integer>
+						</dict>
+						<key>files/subversion_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							JeGTUj8pFQ/e7eQF0HtR
+							uA==
+							</data>
+							<key>Size</key>
+							<integer>1067</integer>
+						</dict>
+						<key>files/usatoday_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							AfPT4PdMn60LE+fiE0dR
+							3Q==
+							</data>
+							<key>Size</key>
+							<integer>843</integer>
 						</dict>
 						<key>index.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							nO/4R33bDymnoTp2dA+n
-							JA==
+							Qs4AmlO+lFRdAQVa8nPe
+							Tw==
 							</data>
 							<key>Size</key>
-							<integer>6071</integer>
+							<integer>7098</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
-					<string>page1</string>
+					<string>page15</string>
 					<key>SiteRoot</key>
 					<string>Support/FAQ</string>
 					<key>Version</key>
@@ -72,10 +242,11 @@
 				</dict>
 			</dict>
 			<key>Files</key>
-			<array/>
+			<array>
+				<string>Data.archive</string>
+			</array>
 			<key>Subsandwiches</key>
 			<array>
-				<string>Data</string>
 				<string>PageAttributes</string>
 			</array>
 		</dict>

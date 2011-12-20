@@ -8,11 +8,11 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>ID</key>
-				<string>page3</string>
+				<string>page17</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Custom Style</string>
+				<string>Theme Default</string>
 				<key>PageTitle</key>
-				<string>Standard Version</string>
+				<string>Demo Version</string>
 				<key>PluginClassName</key>
 				<string>RWFileSharingPlugin</string>
 				<key>PluginMetadata</key>
@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T15:21:42Z</date>
+					<date>2011-12-20T15:34:15Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -36,17 +36,17 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							WxVj1nA3RXaYtcKKH+h6
-							IQ==
+							ik4/LtQmN6IPUV8xvrq3
+							9A==
 							</data>
 							<key>Size</key>
-							<integer>4938</integer>
+							<integer>4873</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
-					<string>page3</string>
+					<string>page17</string>
 					<key>SiteRoot</key>
-					<string>Download/StandardVersion</string>
+					<string>Download/DemoVersion</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>

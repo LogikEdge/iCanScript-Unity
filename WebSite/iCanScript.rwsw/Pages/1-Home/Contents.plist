@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T15:21:35Z</date>
+					<date>2011-12-20T15:34:09Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -56,11 +56,11 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							WBfsgyEh11A5MVFnQgP2
-							zA==
+							RDaauoliMK9/RPMyw5ep
+							iA==
 							</data>
 							<key>Size</key>
-							<integer>8874</integer>
+							<integer>8810</integer>
 						</dict>
 						<key>rw_common/version.txt</key>
 						<dict>
