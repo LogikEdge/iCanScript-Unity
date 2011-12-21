@@ -42,6 +42,13 @@ public partial class iCS_IStorage {
     void GenerateEditorData() {
         TreeCache= new iCS_TreeCache();
         ForEach(obj=> TreeCache.CreateInstance(obj));
+        // Initialize display position.
+        if(IsValid(0)) {
+            Vector2 graphCenter= Math3D.Middle(GetPosition(EditorObjects[0]));
+            ForEach(obj=> {
+                TreeCache[obj.InstanceId].DisplayPosition= new Rect(graphCenter.x,graphCenter.y,0,0);
+            });            
+        }
     }
     
     
