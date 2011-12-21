@@ -8,20 +8,48 @@ public class iCS_DataBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public static bool                      IsDirty  = true;
-    public static List<iCS_ReflectionDesc>  Functions= new List<iCS_ReflectionDesc>();
+    public static bool                      IsMenuDirty = true;
+    public static List<iCS_ReflectionDesc>  Functions   = new List<iCS_ReflectionDesc>();
     public static string[]                  FunctionMenu= null;
     
     // ======================================================================
     // DataBase functionality
     // ----------------------------------------------------------------------
-    public static void Sort(int min= 0, int max= -1) {
+    public static void QSort(int start, int size) {
+        if(size < 2) return;
+        int target= start+size-1;
+        int cursor= start;
+        for(int i= start; i < target; ++i) {
+            if(CompareFunctionNames(Functions[i], Functions[target]) < 0) {
+                if(i != cursor) {
+                    iCS_ReflectionDesc tmp= Functions[i];
+                    Functions[i]= Functions[cursor];
+                    Functions[cursor]= tmp;
+                }
+                ++cursor;                    
+            }
+        }
+        // Reposition the target on the cursor.
+        if(cursor != target) {
+            iCS_ReflectionDesc tmp= Functions[target];
+            Functions[target]= Functions[cursor];
+            Functions[cursor]= tmp;            
+        }
+        QSort(start, cursor-start);
+        QSort(cursor+1, size-(cursor+1));
+    }
+    // ----------------------------------------------------------------------
+    public static void BubbleSort() {
+        int reorderCnt= 0;
+        int cmpCnt= 0;
         int len= Functions.Count;
-        if(min > len) return;
-        if(max == -1 || max > len) max= len-1;
+        int min= 0;
+        int max= len-1;
         int minRestart= min;
         while(min != max) {
+            ++cmpCnt;
             if(CompareFunctionNames(Functions[min], Functions[min+1]) > 0) {
+                ++reorderCnt;
                 iCS_ReflectionDesc tmp= Functions[min];
                 Functions[min]= Functions[min+1];
                 Functions[min+1]= tmp;
@@ -35,6 +63,7 @@ public class iCS_DataBase {
                 }
             }
         }
+        Debug.Log("Len: "+len+" Cmp: "+cmpCnt+" BubbleSort reorder: "+reorderCnt);
     }
     // ----------------------------------------------------------------------
     // Returns all the company names for which a uCode component exists.
@@ -111,8 +140,9 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     public static string[] BuildMenu() {
-        if(!IsDirty) return FunctionMenu;
-        Sort();
+        if(!IsMenuDirty) return FunctionMenu;
+        QSort(0, Functions.Count);
+//        BubbleSort();
         List<string> menu= new List<string>();
         string previousName= "";
         bool needsSignature= false;
@@ -133,7 +163,7 @@ public class iCS_DataBase {
             else               { menu.Add(previousName); }
         }
         FunctionMenu= menu.ToArray();
-        IsDirty= false;
+        IsMenuDirty= false;
         return FunctionMenu;
     }
     // ----------------------------------------------------------------------
@@ -248,8 +278,7 @@ public class iCS_DataBase {
                                                     paramIsOuts, paramNames, paramTypes, paramDefaults,
                                                     retName, retType);
         Functions.Add(fd);
-        if(Functions.Count >= 2) { Sort(Functions.Count-2, Functions.Count-1); }
-        IsDirty= true;
+        IsMenuDirty= true;
         return fd;
     }
     
