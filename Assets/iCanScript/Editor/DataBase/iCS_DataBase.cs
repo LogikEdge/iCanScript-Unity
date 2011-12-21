@@ -15,28 +15,38 @@ public class iCS_DataBase {
     // ======================================================================
     // DataBase functionality
     // ----------------------------------------------------------------------
-    public static void QSort(int start, int size) {
-        if(size < 2) return;
-        int target= start+size-1;
-        int cursor= start;
-        for(int i= start; i < target; ++i) {
-            if(CompareFunctionNames(Functions[i], Functions[target]) < 0) {
-                if(i != cursor) {
+    public static void QSort() {
+        int reorderCnt= 0;
+        int cmpCnt= 0;
+        int len= Functions.Count;
+        int step= (len >> 1) + (len & 1);
+        while(step != 0) {
+            int i= 0;
+            int j= step;
+            while(j < len) {
+                ++cmpCnt;
+                if(CompareFunctionNames(Functions[i], Functions[j]) > 0) {
+                    ++reorderCnt;
                     iCS_ReflectionDesc tmp= Functions[i];
-                    Functions[i]= Functions[cursor];
-                    Functions[cursor]= tmp;
+                    Functions[i]= Functions[j];
+                    Functions[j]= tmp;
+                    int k= i-step;
+                    while(k >= 0) {
+                        ++cmpCnt;
+                        if(CompareFunctionNames(Functions[k], Functions[k+step]) < 0) break;
+                        ++reorderCnt;
+                        tmp= Functions[k];
+                        Functions[k]= Functions[k+step];
+                        Functions[k+step]= tmp;
+                        k-= step;
+                    }
                 }
-                ++cursor;                    
+                ++i;
+                ++j;
             }
+            step >>= 1;
         }
-        // Reposition the target on the cursor.
-        if(cursor != target) {
-            iCS_ReflectionDesc tmp= Functions[target];
-            Functions[target]= Functions[cursor];
-            Functions[cursor]= tmp;            
-        }
-        QSort(start, cursor-start);
-        QSort(cursor+1, size-(cursor+1));
+        Debug.Log("Len: "+len+" Cmp: "+cmpCnt+" QSort reorder: "+reorderCnt);
     }
     // ----------------------------------------------------------------------
     public static void BubbleSort() {
@@ -64,6 +74,19 @@ public class iCS_DataBase {
             }
         }
         Debug.Log("Len: "+len+" Cmp: "+cmpCnt+" BubbleSort reorder: "+reorderCnt);
+    }
+    // ----------------------------------------------------------------------
+    static bool IsSorted() {
+        int len= Functions.Count;
+        for(int i= 0; i < len-1; ++i) {
+            if(CompareFunctionNames(Functions[i], Functions[i+1]) > 0) {
+                iCS_ReflectionDesc tmp= Functions[i];
+                Functions[i]= Functions[i+1];
+                Functions[i+1]= tmp;
+                return false;
+            }
+        }
+        return true;
     }
     // ----------------------------------------------------------------------
     // Returns all the company names for which a uCode component exists.
@@ -141,8 +164,11 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     public static string[] BuildMenu() {
         if(!IsMenuDirty) return FunctionMenu;
-        QSort(0, Functions.Count);
+        QSort();
 //        BubbleSort();
+        if(!IsSorted()) {
+            Debug.Log("Menu is not properly sorted");
+        }
         List<string> menu= new List<string>();
         string previousName= "";
         bool needsSignature= false;
