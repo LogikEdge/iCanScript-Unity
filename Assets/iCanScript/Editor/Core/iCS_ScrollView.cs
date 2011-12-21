@@ -137,7 +137,7 @@ public class iCS_ScrollView {
     public void CenterAt(Vector2 graphPos) {
         Vector2 screenMiddleOffset= new Vector2(0.5f*ScreenArea.width, 0.5f*ScreenArea.height);
         Vector2 targetScrollPosition= graphPos - CanvasOrigin - screenMiddleOffset;
-        StartScrollAnim(targetScrollPosition, 0.5f);
+        StartScrollAnim(targetScrollPosition, 0.4f);
     }
 
     // ----------------------------------------------------------------------

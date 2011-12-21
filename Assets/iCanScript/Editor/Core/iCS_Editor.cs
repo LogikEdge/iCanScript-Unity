@@ -765,7 +765,15 @@ public class iCS_Editor : EditorWindow {
                 break;
             }
             case iCS_ObjectTypeEnum.Module: {
-                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
+                while(parent != null && !parent.IsModule) {
+                    if(parent.IsState) {
+                        // Should accept OnEntry/OnUpdate/OnExit if they don't exist
+                    }
+                    if(parent.IsBehaviour) {
+                        // Should accept Update, etc.. if they don't exist.
+                    }
+                    parent= Storage.GetParent(parent);
+                }
                 break;
             }
             case iCS_ObjectTypeEnum.InstanceMethod:
