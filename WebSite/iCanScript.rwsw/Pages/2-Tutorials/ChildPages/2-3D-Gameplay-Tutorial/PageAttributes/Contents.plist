@@ -8,7 +8,7 @@
 			<key>Dictionary</key>
 			<dict>
 				<key>Changed</key>
-				<false/>
+				<true/>
 				<key>ColourStyles</key>
 				<dict>
 					<key>Alpha</key>
@@ -39,7 +39,7 @@
 				<string>var navText = "Menu";
 </string>
 				<key>CustomSiteTitle</key>
-				<string>&lt;font face="arial"&gt;iCanScript&lt;/font&gt; &lt;span&gt;2D Demo&lt;/span&gt;</string>
+				<string>&lt;font face="arial"&gt;iCanScript&lt;/font&gt; &lt;span&gt;3D Demo&lt;/span&gt;</string>
 				<key>CustomSiteTitleUsed</key>
 				<true/>
 				<key>CustomSloganUsed</key>
@@ -49,7 +49,7 @@
 				<key>FilenameExtension</key>
 				<string>html</string>
 				<key>FolderName</key>
-				<string>2DGameplayTutorial</string>
+				<string>3DGameplayTutorial</string>
 				<key>HasCustomThemeStyle</key>
 				<true/>
 				<key>ImageFormat</key>
