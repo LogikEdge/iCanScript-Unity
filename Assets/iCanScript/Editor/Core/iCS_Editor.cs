@@ -100,7 +100,12 @@ public class iCS_Editor : EditorWindow {
 	public void Activate(iCS_IStorage storage, iCS_Inspector inspector) {
         Storage= storage;
         Inspector= inspector;
-        DisplayRoot= null;
+        // Set the graph root.
+        DisplayRoot= storage.IsValid(0) ? storage[0] : null;
+        // Position the scroll view in the middle of the graph.
+        if(ScrollView != null && DisplayRoot != null) {
+            ScrollView.CenterAt(Math3D.Middle(storage.GetPosition(DisplayRoot)));
+        }
 
 
 //        Debug.Log("AppContentPath: "+EditorApplication.applicationContentsPath);
@@ -172,6 +177,7 @@ public class iCS_Editor : EditorWindow {
         }
         // Cleanup objects.
         iCS_AutoReleasePool.Update();
+//        Debug.Log("DisplayRoot == null: "+(DisplayRoot == null));
 	}
 	
 	// ----------------------------------------------------------------------

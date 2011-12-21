@@ -2,9 +2,23 @@ using UnityEngine;
 using System.Collections;
 
 public class iCS_ScrollView {
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    Rect    ScreenArea    = new Rect(0,0,0,0);  // In screen coordonates
+    Rect    Canvas        = new Rect(0,0,0,0);  // In graph coordonates
+    Vector2 ScrollPosition= Vector2.zero;       // Offset in canvasjik
+
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+    Vector2 ScreenOrigin   { get { return new Vector2(ScreenArea.x, ScreenArea.y); }}
+    Vector2 CanvasOrigin   { get { return new Vector2(Canvas.x, Canvas.y); }}
+    Vector2 ViewportOrigin { get { return CanvasOrigin + ScrollPosition; }}
+    
     // ----------------------------------------------------------------------
     public void Begin() {
-        ScrollPosition= GUI.BeginScrollView(ScrollWindow, ScrollPosition, ScrollViewport);        
+        ScrollPosition= GUI.BeginScrollView(ScreenArea, ScrollPosition, Canvas);        
     }
 
     // ----------------------------------------------------------------------
@@ -13,76 +27,73 @@ public class iCS_ScrollView {
     }
     
     // ----------------------------------------------------------------------
-    public void Update(Rect _windowPosition, Rect _rootNodePosition) {
+    public void Update(Rect screenArea, Rect rootNodeRect) {
 	    // Adjust scroll window bounds.
-        ScrollWindow= new Rect(0, iCS_EditorConfig.EditorWindowToolbarHeight, _windowPosition.width, _windowPosition.height-iCS_EditorConfig.EditorWindowToolbarHeight);
+        ScreenArea= new Rect(0, iCS_EditorConfig.EditorWindowToolbarHeight, screenArea.width, screenArea.height-iCS_EditorConfig.EditorWindowToolbarHeight);
 
         // Update scroll viewport.
-        Rect graphRect= new Rect(_rootNodePosition.x - iCS_EditorConfig.GutterSize,
-                                 _rootNodePosition.y - iCS_EditorConfig.GutterSize,
-                                 _rootNodePosition.width + 2*iCS_EditorConfig.GutterSize,
-                                 _rootNodePosition.height + 2*iCS_EditorConfig.GutterSize);
+        Rect graphRect= new Rect(rootNodeRect.x - iCS_EditorConfig.GutterSize,
+                                 rootNodeRect.y - iCS_EditorConfig.GutterSize,
+                                 rootNodeRect.width + 2*iCS_EditorConfig.GutterSize,
+                                 rootNodeRect.height + 2*iCS_EditorConfig.GutterSize);
 
-        // Adjust top/left corner.
-        if(ScrollViewport.x > graphRect.x) {
-            float dx= ScrollViewport.x-graphRect.x;
-            ScrollViewport.x= graphRect.x;
+        // Assure that the canvas covers the graph area.
+        if(Canvas.x > graphRect.x) {
+            float dx= Canvas.x-graphRect.x;
+            Canvas.x= graphRect.x;
             ScrollPosition.x+= dx;
-            ScrollViewport.width+= dx;
+            Canvas.width+= dx;
         }
-        if(ScrollViewport.y > graphRect.y) {
-            float dy= ScrollViewport.y-graphRect.y;
-            ScrollViewport.y= graphRect.y;
+        if(Canvas.y > graphRect.y) {
+            float dy= Canvas.y-graphRect.y;
+            Canvas.y= graphRect.y;
             ScrollPosition.y+= dy;
-            ScrollViewport.height+= dy;
+            Canvas.height+= dy;
         }
-		if(ScrollViewport.xMax < graphRect.xMax) {
-            ScrollViewport.width+= graphRect.xMax - ScrollViewport.xMax;
+		if(Canvas.xMax < graphRect.xMax) {
+            Canvas.width+= graphRect.xMax - Canvas.xMax;
         }
-        if(ScrollViewport.yMax < graphRect.yMax) {
-            ScrollViewport.height+= graphRect.yMax - ScrollViewport.yMax;
+        if(Canvas.yMax < graphRect.yMax) {
+            Canvas.height+= graphRect.yMax - Canvas.yMax;
         }
         
-        // Clip viewport if it is larger then graph & window.
-        if(!Math3D.IsZero(ScrollPosition.x) && Math3D.IsSmaller(ScrollViewport.x+ScrollPosition.x, graphRect.x)) {
-            ScrollViewport.x+= ScrollPosition.x;
-            ScrollViewport.width-= ScrollPosition.x;
+        // Shrink so that it does not exceed the combined graph and screen area.
+        if(!Math3D.IsZero(ScrollPosition.x) && Math3D.IsSmaller(Canvas.x+ScrollPosition.x, graphRect.x)) {
+            Canvas.x+= ScrollPosition.x;
+            Canvas.width-= ScrollPosition.x;
             ScrollPosition.x= 0;
         }
-        if(!Math3D.IsZero(ScrollPosition.y) && Math3D.IsSmaller(ScrollViewport.y+ScrollPosition.y, graphRect.y)) {
-            ScrollViewport.y+= ScrollPosition.y;
-            ScrollViewport.height-= ScrollPosition.y;
+        if(!Math3D.IsZero(ScrollPosition.y) && Math3D.IsSmaller(Canvas.y+ScrollPosition.y, graphRect.y)) {
+            Canvas.y+= ScrollPosition.y;
+            Canvas.height-= ScrollPosition.y;
             ScrollPosition.y= 0;
         }
-        if(Math3D.IsGreater(ScrollViewport.xMax, graphRect.xMax)) {
-            ScrollViewport.width-= ScrollViewport.xMax-graphRect.xMax;
+        if(Math3D.IsGreater(Canvas.xMax, graphRect.xMax)) {
+            Canvas.width-= Canvas.xMax-graphRect.xMax;
         }
-        if(Math3D.IsGreater(ScrollViewport.yMax, graphRect.yMax)) {
-            ScrollViewport.height-= ScrollViewport.yMax-graphRect.yMax;
+        if(Math3D.IsGreater(Canvas.yMax, graphRect.yMax)) {
+            Canvas.height-= Canvas.yMax-graphRect.yMax;
         }
         
         // Adjust viewport width/height.
-        if(Math3D.IsSmaller(ScrollViewport.width, ScrollPosition.x+ScrollWindow.width)) {
-            ScrollViewport.width= ScrollPosition.x+ScrollWindow.width;            
+        if(Math3D.IsSmaller(Canvas.width, ScrollPosition.x+ScreenArea.width)) {
+            Canvas.width= ScrollPosition.x+ScreenArea.width;            
         }
-        if(Math3D.IsSmaller(ScrollViewport.height, ScrollPosition.y+ScrollWindow.height)) {
-            ScrollViewport.height= ScrollPosition.y+ScrollWindow.height;                    
+        if(Math3D.IsSmaller(Canvas.height, ScrollPosition.y+ScreenArea.height)) {
+            Canvas.height= ScrollPosition.y+ScreenArea.height;                    
         }
     }
     
     // ----------------------------------------------------------------------
     // Convert's screen to graph coordinates.
-    public Vector2 ScreenToGraph(Vector2 _v) {
-        Vector2 viewportPosition= new Vector2(ScrollViewport.x, ScrollViewport.y);
-        Vector2 ScrollWindowPosition= new Vector2(ScrollWindow.x, ScrollWindow.y); 
-        return _v + viewportPosition + ScrollPosition - ScrollWindowPosition;
+    public Vector2 ScreenToGraph(Vector2 point) {
+        Vector2 screenOffset= point - ScreenOrigin;
+        return ViewportOrigin + screenOffset;
     }
 
-
-    // ======================================================================
-    // PROPERTIES
     // ----------------------------------------------------------------------
-    Rect            ScrollWindow    = new Rect(0,0,0,0);
-    Rect            ScrollViewport  = new Rect(0,0,0,0);
-    Vector2         ScrollPosition  = Vector2.zero;
+    public void CenterAt(Vector2 graphPos) {
+        Vector2 screenMiddleOffset= new Vector2(0.5f*ScreenArea.width, 0.5f*ScreenArea.height);
+        ScrollPosition= graphPos - CanvasOrigin - screenMiddleOffset;
+    }
 }
