@@ -111,20 +111,20 @@ public class iCS_Menu {
     }
     // ======================================================================
     // Documentation Access
-    [MenuItem("iCanScript/",false,7)]
-    [MenuItem("iCanScript/Home Page",false,8)]
+//    [MenuItem("iCanScript/",false,7)]
+    [MenuItem("iCanScript/Documentation/Home Page",false,8)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com/index.html");
     }
-    [MenuItem("iCanScript/User's Manual",false,9)]
+    [MenuItem("iCanScript/Documentation/User's Manual",false,9)]
     public static void UserManual() {
         Application.OpenURL("http://www.icanscript.com/Documentation/UserManual/index.html");
     }
-    [MenuItem("iCanScript/Programmer's Guide",false,10)]
+    [MenuItem("iCanScript/Documentation/Programmer's Guide",false,10)]
     public static void ProgrammerGuide() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ProgrammerGuide/index.html");
     }
-    [MenuItem("iCanScript/Release Notes",false,11)]
+    [MenuItem("iCanScript/Documentation/Release Notes",false,11)]
     public static void ReleaseNotes() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ReleaseNotes/index.html");
     }
