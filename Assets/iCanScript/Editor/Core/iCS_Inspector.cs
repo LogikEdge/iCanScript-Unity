@@ -89,9 +89,6 @@ public class iCS_Inspector : Editor {
         // Restore inspector skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
         
-        // Show object id.
-        EditorGUILayout.LabelField("Stortage Object ID:", Storage.Storage.GetInstanceID().ToString());
-        
         // Draw inspector window
 		DrawDefaultInspector();
 

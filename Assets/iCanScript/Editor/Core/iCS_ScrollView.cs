@@ -7,8 +7,10 @@ public class iCS_ScrollView {
     // ----------------------------------------------------------------------
     Rect    ScreenArea    = new Rect(0,0,0,0);  // In screen coordonates
     Rect    Canvas        = new Rect(0,0,0,0);  // In graph coordonates
-    Vector2 ScrollPosition= Vector2.zero;       // Offset in canvasjik
+    Vector2 ScrollPosition= Vector2.zero;       // Offset in canvas
 
+    Prelude.Animate<Vector2>    ScrollPositionAnimation= new Prelude.Animate<Vector2>();
+    
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -28,6 +30,12 @@ public class iCS_ScrollView {
     
     // ----------------------------------------------------------------------
     public void Update(Rect screenArea, Rect rootNodeRect) {
+        // Animate the scroll position.
+        if(ScrollPositionAnimation.IsActive) {
+            ScrollPositionAnimation.Update();
+            ScrollPosition= ScrollPositionAnimation.CurrentValue;
+        }
+        
 	    // Adjust scroll window bounds.
         ScreenArea= new Rect(0, iCS_EditorConfig.EditorWindowToolbarHeight, screenArea.width, screenArea.height-iCS_EditorConfig.EditorWindowToolbarHeight);
 
@@ -41,14 +49,30 @@ public class iCS_ScrollView {
         if(Canvas.x > graphRect.x) {
             float dx= Canvas.x-graphRect.x;
             Canvas.x= graphRect.x;
-            ScrollPosition.x+= dx;
             Canvas.width+= dx;
+            ScrollPosition.x+= dx;
+            if(ScrollPositionAnimation.IsActive) {
+                Vector2 tmp= ScrollPositionAnimation.TargetValue;
+                tmp.x+= dx;
+                ScrollPositionAnimation.TargetValue= tmp;
+                tmp= ScrollPositionAnimation.StartValue;
+                tmp.x+= dx;
+                ScrollPositionAnimation.StartValue= tmp;
+            }
         }
         if(Canvas.y > graphRect.y) {
             float dy= Canvas.y-graphRect.y;
             Canvas.y= graphRect.y;
-            ScrollPosition.y+= dy;
             Canvas.height+= dy;
+            ScrollPosition.y+= dy;
+            if(ScrollPositionAnimation.IsActive) {
+                Vector2 tmp= ScrollPositionAnimation.TargetValue;
+                tmp.y+= dy;
+                ScrollPositionAnimation.TargetValue= tmp;
+                tmp= ScrollPositionAnimation.StartValue;
+                tmp.y+= dy;
+                ScrollPositionAnimation.StartValue= tmp;
+            }
         }
 		if(Canvas.xMax < graphRect.xMax) {
             Canvas.width+= graphRect.xMax - Canvas.xMax;
@@ -61,12 +85,30 @@ public class iCS_ScrollView {
         if(!Math3D.IsZero(ScrollPosition.x) && Math3D.IsSmaller(Canvas.x+ScrollPosition.x, graphRect.x)) {
             Canvas.x+= ScrollPosition.x;
             Canvas.width-= ScrollPosition.x;
+            float dx= -ScrollPosition.x;
             ScrollPosition.x= 0;
+            if(ScrollPositionAnimation.IsActive) {
+                Vector2 tmp= ScrollPositionAnimation.TargetValue;
+                tmp.x+= dx;
+                ScrollPositionAnimation.TargetValue= tmp;
+                tmp= ScrollPositionAnimation.StartValue;
+                tmp.x+= dx;
+                ScrollPositionAnimation.StartValue= tmp;
+            }
         }
         if(!Math3D.IsZero(ScrollPosition.y) && Math3D.IsSmaller(Canvas.y+ScrollPosition.y, graphRect.y)) {
             Canvas.y+= ScrollPosition.y;
             Canvas.height-= ScrollPosition.y;
+            float dy= -ScrollPosition.y;
             ScrollPosition.y= 0;
+            if(ScrollPositionAnimation.IsActive) {
+                Vector2 tmp= ScrollPositionAnimation.TargetValue;
+                tmp.y+= dy;
+                ScrollPositionAnimation.TargetValue= tmp;
+                tmp= ScrollPositionAnimation.StartValue;
+                tmp.y+= dy;
+                ScrollPositionAnimation.StartValue= tmp;
+            }
         }
         if(Math3D.IsGreater(Canvas.xMax, graphRect.xMax)) {
             Canvas.width-= Canvas.xMax-graphRect.xMax;
@@ -94,6 +136,14 @@ public class iCS_ScrollView {
     // ----------------------------------------------------------------------
     public void CenterAt(Vector2 graphPos) {
         Vector2 screenMiddleOffset= new Vector2(0.5f*ScreenArea.width, 0.5f*ScreenArea.height);
-        ScrollPosition= graphPos - CanvasOrigin - screenMiddleOffset;
+        Vector2 targetScrollPosition= graphPos - CanvasOrigin - screenMiddleOffset;
+        StartScrollAnim(targetScrollPosition, 0.5f);
+    }
+
+    // ----------------------------------------------------------------------
+    public void StartScrollAnim(Vector2 targetScrollPosition, float deltaTime) {
+        ScrollPositionAnimation.Start(ScrollPosition, targetScrollPosition, 0.5f,
+            (s,e,r)=> Math3D.Lerp(s,e,r)
+        );        
     }
 }

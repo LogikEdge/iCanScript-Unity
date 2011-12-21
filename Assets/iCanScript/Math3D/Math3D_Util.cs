@@ -169,8 +169,13 @@ public static partial class Math3D {
         if(IsZero(d)) return default(Rect);
         return Mul(r1, 1f/d);
     }
+    // ======================================================================
+    // Lerp
 	// ----------------------------------------------------------------------
-    public static Rect Lerp(Rect r1, Rect r2, float ratio) {
-        return Add(r1, Mul(Sub(r2, r1), ratio));
-    }
+    public static int     Lerp(int v1, int v2, float ratio)             { return (int)(v1+(v2-v1)*ratio); }
+    public static float   Lerp(float v1, float v2, float ratio)         { return v1+(v2-v1)*ratio; }
+    public static Vector2 Lerp(Vector2 v1, Vector2 v2, float ratio)     { return v1+(v2-v1)*ratio; }
+    public static Vector3 Lerp(Vector3 v1, Vector3 v2, float ratio)     { return v1+(v2-v1)*ratio; }
+    public static Vector4 Lerp(Vector4 v1, Vector4 v2, float ratio)     { return v1+(v2-v1)*ratio; }
+    public static Rect    Lerp(Rect r1, Rect r2, float ratio)           { return Add(r1, Mul(Sub(r2, r1), ratio)); }
 }

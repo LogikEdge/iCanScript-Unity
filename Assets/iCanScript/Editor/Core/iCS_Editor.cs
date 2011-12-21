@@ -25,8 +25,8 @@ public class iCS_Editor : EditorWindow {
     iCS_DynamicMenu      DynamicMenu    = null;
 
     // ----------------------------------------------------------------------
-    private iCS_Graphics        Graphics        = null;
-    public  iCS_ScrollView      ScrollView      = null;
+    private iCS_Graphics                Graphics  = null;
+    public  iCS_ScrollView              ScrollView= null;    
     
     // ----------------------------------------------------------------------
     enum DragTypeEnum { None, PortDrag, NodeDrag, TransitionCreation };
@@ -162,6 +162,7 @@ public class iCS_Editor : EditorWindow {
 	void Update() {
         // Determine repaint rate.
         if(Storage != null) {
+            // Repaint window
             if(Storage.IsDirty) {
                 ourLastDirtyUpdateTime= Time.realtimeSinceStartup;
             }
@@ -169,10 +170,14 @@ public class iCS_Editor : EditorWindow {
             if(timeSinceDirty < 5.0f) {
                 Repaint();
             } else {
-                if(++ourRefreshCnt > 2 || ourRefreshCnt < 0) {
+                if(++ourRefreshCnt > 4 || ourRefreshCnt < 0) {
                     ourRefreshCnt= 0;
                     Repaint();
                 }
+            }
+            // Update DisplayRoot
+            if(DisplayRoot == null && Storage.IsValid(0)) {
+                DisplayRoot= Storage[0];
             }
         }
         // Cleanup objects.
@@ -959,7 +964,27 @@ public class iCS_Editor : EditorWindow {
         iCS_EditorObject pasted= Storage.CloneInstance(pasteRoot, new iCS_IStorage(pasteStorage), parent, point);
         Storage.Fold(pasted);
     }
-    
+
+    // ======================================================================
+    // Graph Navigation
+	// ----------------------------------------------------------------------
+    public void CenterOnRoot() {
+        CenterOn(DisplayRoot);
+    }
+	// ----------------------------------------------------------------------
+    public void CenterOnSelected() {
+        CenterOn(SelectedObject ?? DisplayRoot);
+    }
+	// ----------------------------------------------------------------------
+    public void CenterOn(iCS_EditorObject obj) {
+        if(obj == null) return;
+        CenterAt(Math3D.Middle(Storage.GetPosition(obj)));
+    }
+	// ----------------------------------------------------------------------
+    public void CenterAt(Vector2 point) {
+        if(ScrollView == null) return;
+        ScrollView.CenterAt(point);
+    }
     // ======================================================================
     // NODE GRAPH DISPLAY
 	// ----------------------------------------------------------------------

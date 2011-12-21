@@ -97,25 +97,38 @@ public class iCS_Menu {
 //    }
     
     // ======================================================================
-    // Documentation Access
+    // Navigation
     [MenuItem("iCanScript/",false,4)]
-    [MenuItem("iCanScript/Home Page",false,5)]
+    [MenuItem("iCanScript/Center Graph _#&f",false,5)]
+    public static void CenterGraph() {
+        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
+        editor.CenterOnRoot();
+    }
+    [MenuItem("iCanScript/Center On Selected _&f",false,6)]
+    public static void CenterOnSelected() {
+        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
+        editor.CenterOnSelected();
+    }
+    // ======================================================================
+    // Documentation Access
+    [MenuItem("iCanScript/",false,7)]
+    [MenuItem("iCanScript/Home Page",false,8)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com/index.html");
     }
-    [MenuItem("iCanScript/User's Manual",false,6)]
+    [MenuItem("iCanScript/User's Manual",false,9)]
     public static void UserManual() {
         Application.OpenURL("http://www.icanscript.com/Documentation/UserManual/index.html");
     }
-    [MenuItem("iCanScript/Programmer's Guide",false,7)]
+    [MenuItem("iCanScript/Programmer's Guide",false,10)]
     public static void ProgrammerGuide() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ProgrammerGuide/index.html");
     }
-    [MenuItem("iCanScript/Release Notes",false,8)]
+    [MenuItem("iCanScript/Release Notes",false,11)]
     public static void ReleaseNotes() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ReleaseNotes/index.html");
     }
-    [MenuItem("iCanScript/Report a Bug",false,9)]
+    [MenuItem("iCanScript/Report a Bug",false,12)]
     public static void ReportBug() {
         Application.OpenURL("http://www.icanscript.com/Support/ReportBug/index.html");
     }
