@@ -117,29 +117,16 @@ public class iCS_DynamicMenu {
         string[] menu= new string[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             // Base menu items
-            menu= new string[2];
+            menu= new string[3];
             menu[0]= ModuleStr;
             menu[1]= StateChartStr; 
             // Enable port
             bool hasEnablePort= storage.HasEnablePort(selectedObject);
             if(!hasEnablePort) {
-                tmp= new string[menu.Length+1];
-                menu.CopyTo(tmp, 0);
-                tmp[menu.Length]= EnablePortStr;
-                menu= tmp;
-            }
-        }
-        // Fold/Expand menu items
-        if(!storage.IsMinimized(selectedObject)) {
-            tmp= new string[menu.Length+2];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            if(storage.IsFolded(selectedObject)) {
-                tmp[menu.Length+1]= UnfoldStr;
+                menu[2]= EnablePortStr;
             } else {
-                tmp[menu.Length+1]= FoldStr;            
+                menu[2]= "#"+EnablePortStr;
             }
-            menu= tmp;            
         }
         // Function menu items
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
@@ -169,20 +156,8 @@ public class iCS_DynamicMenu {
             menu= new string[1];
             menu[0]= StateStr; 
         }
-        // Fold/Expand menu items
-        string[] tmp= null;
-        if(!storage.IsMinimized(selectedObject)) {
-            tmp= new string[menu.Length+2];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            if(storage.IsFolded(selectedObject)) {
-                tmp[menu.Length+1]= UnfoldStr;
-            } else {
-                tmp[menu.Length+1]= FoldStr;            
-            }
-            menu= tmp;            
-        }
         // Delete menu item
+        string[] tmp= null;
         if(selectedObject.InstanceId != 0) {
             tmp= new string[menu.Length+2];
             menu.CopyTo(tmp, 0);
@@ -204,20 +179,8 @@ public class iCS_DynamicMenu {
             menu[4]= SeparatorStr;
             menu[5]= SetAsEntryStr;
         }
-        // Fold/Expand menu items
-        string[] tmp= null;
-        if(!storage.IsMinimized(selectedObject)) {
-            tmp= new string[menu.Length+2];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            if(storage.IsFolded(selectedObject)) {
-                tmp[menu.Length+1]= UnfoldStr;
-            } else {
-                tmp[menu.Length+1]= FoldStr;            
-            }
-            menu= tmp;            
-        }
         // Delete menu item.tmp= new string[menu.Length+2];
+        string[] tmp= null;
         tmp= new string[menu.Length+2];
         menu.CopyTo(tmp, 0);
         tmp[menu.Length]= SeparatorStr;

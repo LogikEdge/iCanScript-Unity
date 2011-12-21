@@ -46,7 +46,7 @@ public class iCS_DataBase {
             }
             step >>= 1;
         }
-        Debug.Log("Len: "+len+" Cmp: "+cmpCnt+" QSort reorder: "+reorderCnt);
+//        Debug.Log("Len: "+len+" Cmp: "+cmpCnt+" QSort reorder: "+reorderCnt);
     }
     // ----------------------------------------------------------------------
     public static void BubbleSort() {
@@ -73,7 +73,7 @@ public class iCS_DataBase {
                 }
             }
         }
-        Debug.Log("Len: "+len+" Cmp: "+cmpCnt+" BubbleSort reorder: "+reorderCnt);
+//        Debug.Log("Len: "+len+" Cmp: "+cmpCnt+" BubbleSort reorder: "+reorderCnt);
     }
     // ----------------------------------------------------------------------
     static bool IsSorted() {
