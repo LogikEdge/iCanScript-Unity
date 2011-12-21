@@ -274,6 +274,7 @@ public partial class iCS_IStorage {
         rtDesc.DisplayName= name;
         rtDesc.ClassType= typeof(iCS_Module);
         this[id].RuntimeArchive= rtDesc.Encode(id);
+        TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -293,6 +294,7 @@ public partial class iCS_IStorage {
         rtDesc.DisplayName= name;
         rtDesc.ClassType= typeof(iCS_StateChart);
         this[id].RuntimeArchive= rtDesc.Encode(id);
+        TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -317,6 +319,7 @@ public partial class iCS_IStorage {
         rtDesc.DisplayName= name;
         rtDesc.ClassType= typeof(iCS_State);
         this[id].RuntimeArchive= rtDesc.Encode(id);
+        TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -349,6 +352,7 @@ public partial class iCS_IStorage {
                 port.PortIndex= i;                
             }
         }
+        TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -375,6 +379,7 @@ public partial class iCS_IStorage {
                 port.PortIndex= portIdx;                
             }
         }
+        TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -383,7 +388,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject port= this[id]= new iCS_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
         // Reajust data port position 
         if(port.IsDataPort && !port.IsEnablePort) {
-            iCS_EditorObject parent= EditorObjects[port.ParentId];
+            iCS_EditorObject parent= GetParent(port);
             if(port.IsInputPort) {
                 int nbOfPorts= GetNbOfLeftPorts(parent);
                 port.LocalPosition= new Rect(0, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);
@@ -393,6 +398,8 @@ public partial class iCS_IStorage {
             }
         }
         if(GetParent(port).IsModule) { AddPortToModule(port); }
+        Rect parentPos= GetPosition(GetParent(port));
+        TreeCache[id].DisplayPosition= new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0);
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
