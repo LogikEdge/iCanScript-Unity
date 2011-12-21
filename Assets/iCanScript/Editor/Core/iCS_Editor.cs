@@ -300,7 +300,7 @@ public class iCS_Editor : EditorWindow {
                 break;
             }
             case EventType.DragExited: {
-                if(position.Contains(MousePosition)) {
+                if(mouseOverWindow == this) {
                     DragAndDropExited();
                     Event.current.Use();
                 }
