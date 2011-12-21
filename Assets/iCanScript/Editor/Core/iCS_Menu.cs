@@ -98,37 +98,39 @@ public class iCS_Menu {
     
     // ======================================================================
     // Navigation
-    [MenuItem("iCanScript/",false,4)]
-    [MenuItem("iCanScript/Center Graph _#&f",false,5)]
+    [MenuItem("iCanScript/",false,20)]
+    [MenuItem("iCanScript/Center Graph _#&f",false,21)]
     public static void CenterGraph() {
         iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
         editor.CenterOnRoot();
     }
-    [MenuItem("iCanScript/Center On Selected _&f",false,6)]
+    [MenuItem("iCanScript/Center On Selected _&f",false,22)]
     public static void CenterOnSelected() {
         iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
         editor.CenterOnSelected();
     }
     // ======================================================================
     // Documentation Access
-//    [MenuItem("iCanScript/",false,7)]
-    [MenuItem("iCanScript/Documentation/Home Page",false,8)]
+    [MenuItem("iCanScript/",false,30)]
+    [MenuItem("iCanScript/Documentation/Home Page",false,31)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com/index.html");
     }
-    [MenuItem("iCanScript/Documentation/User's Manual",false,9)]
+    [MenuItem("iCanScript/Documentation/User's Manual",false,32)]
     public static void UserManual() {
         Application.OpenURL("http://www.icanscript.com/Documentation/UserManual/index.html");
     }
-    [MenuItem("iCanScript/Documentation/Programmer's Guide",false,10)]
+    [MenuItem("iCanScript/Documentation/Programmer's Guide",false,33)]
     public static void ProgrammerGuide() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ProgrammerGuide/index.html");
     }
-    [MenuItem("iCanScript/Documentation/Release Notes",false,11)]
+    [MenuItem("iCanScript/Documentation/Release Notes",false,34)]
     public static void ReleaseNotes() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ReleaseNotes/index.html");
     }
-    [MenuItem("iCanScript/Report a Bug",false,12)]
+    // ======================================================================
+    // Support Access
+    [MenuItem("iCanScript/Report a Bug",false,40)]
     public static void ReportBug() {
         Application.OpenURL("http://www.icanscript.com/Support/ReportBug/index.html");
     }
