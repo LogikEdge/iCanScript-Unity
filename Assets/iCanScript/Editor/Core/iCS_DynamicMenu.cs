@@ -178,6 +178,14 @@ public class iCS_DynamicMenu {
             menu[3]= StateStr;
             menu[4]= SeparatorStr;
             menu[5]= SetAsEntryStr;
+            for(int i= 0; i < 3; ++i) {
+                string name= menu[i].Substring(2);
+                int sep= name.IndexOf('/');
+                if(sep > 0) name= name.Substring(0,sep);
+                if(AsChildNodeWithName(selectedObject, name, storage)) {
+                    menu[i]= String.Concat("#+ ", name);
+                }
+            }
         }
         // Delete menu item.tmp= new string[menu.Length+2];
         string[] tmp= null;
