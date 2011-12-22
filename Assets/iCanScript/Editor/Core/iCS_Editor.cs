@@ -768,7 +768,7 @@ public class iCS_Editor : EditorWindow {
                 while(parent != null && !parent.IsModule) {
                     if(parent.IsState) {
                         bool isAllowed= false;
-                        foreach(var allowedName in iCS_AllowedChildren.State) {
+                        foreach(var allowedName in iCS_AllowedChildren.StateChildNames) {
                             if(allowedName == objName) {
                                 isAllowed= true;
                                 break;
@@ -778,7 +778,7 @@ public class iCS_Editor : EditorWindow {
                     }
                     if(parent.IsBehaviour) {
                         bool isAllowed= false;
-                        foreach(var allowedName in iCS_AllowedChildren.Behaviour) {
+                        foreach(var allowedName in iCS_AllowedChildren.BehaviourChildNames) {
                             if(allowedName == objName) {
                                 isAllowed= true;
                                 break;
@@ -824,7 +824,7 @@ public class iCS_Editor : EditorWindow {
                 while(parent != null && !parent.IsModule) {
                     if(parent.IsState) {
                         bool isAllowed= false;
-                        foreach(var allowedName in iCS_AllowedChildren.State) {
+                        foreach(var allowedName in iCS_AllowedChildren.StateChildNames) {
                             if(allowedName == node.Name) {
                                 isAllowed= true;
                                 break;
@@ -834,7 +834,7 @@ public class iCS_Editor : EditorWindow {
                     }
                     if(parent.IsBehaviour) {
                         bool isAllowed= false;
-                        foreach(var allowedName in iCS_AllowedChildren.Behaviour) {
+                        foreach(var allowedName in iCS_AllowedChildren.BehaviourChildNames) {
                             if(allowedName == node.Name) {
                                 isAllowed= true;
                                 break;
