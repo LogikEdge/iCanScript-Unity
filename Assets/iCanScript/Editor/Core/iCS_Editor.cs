@@ -472,15 +472,17 @@ public class iCS_Editor : EditorWindow {
                 case DragTypeEnum.NodeDrag: {
                     iCS_EditorObject node= DragObject;
                     iCS_EditorObject oldParent= Storage.GetParent(node);
-                    iCS_EditorObject newParent= GetValidParentNodeUnder(node);
-                    if(newParent != null) {
-                        if(newParent != oldParent) {
-                            ChangeParent(node, newParent);
+                    if(oldParent != null) {
+                        iCS_EditorObject newParent= GetValidParentNodeUnder(node);
+                        if(newParent != null) {
+                            if(newParent != oldParent) {
+                                ChangeParent(node, newParent);
+                            }
+                        } else {
+                            Storage.MoveTo(node, DragStartPosition);
                         }
-                    } else {
-                        Storage.MoveTo(node, DragStartPosition);
+                        Storage.SetDirty(oldParent);                        
                     }
-                    if(oldParent != null) Storage.SetDirty(oldParent);
                     node.IsFloating= false;
                     break;
                 }
