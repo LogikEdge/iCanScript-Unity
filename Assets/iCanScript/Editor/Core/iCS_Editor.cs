@@ -752,8 +752,7 @@ public class iCS_Editor : EditorWindow {
         return parentModule;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType) {
-//        Debug.LogError("GetValidParent");
+    iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType, string objName) {
         iCS_EditorObject parent= Storage.GetNodeAt(point);
         if(parent == null) return null;
         switch(objType) {
@@ -768,10 +767,24 @@ public class iCS_Editor : EditorWindow {
             case iCS_ObjectTypeEnum.Module: {
                 while(parent != null && !parent.IsModule) {
                     if(parent.IsState) {
-                        // Should accept OnEntry/OnUpdate/OnExit if they don't exist
+                        bool isAllowed= false;
+                        foreach(var allowedName in iCS_AllowedChildren.State) {
+                            if(allowedName == objName) {
+                                isAllowed= true;
+                                break;
+                            }
+                        }
+                        if(isAllowed) break;
                     }
                     if(parent.IsBehaviour) {
-                        // Should accept Update, etc.. if they don't exist.
+                        bool isAllowed= false;
+                        foreach(var allowedName in iCS_AllowedChildren.Behaviour) {
+                            if(allowedName == objName) {
+                                isAllowed= true;
+                                break;
+                            }
+                        }
+                        if(isAllowed) break;
                     }
                     parent= Storage.GetParent(parent);
                 }
@@ -808,7 +821,29 @@ public class iCS_Editor : EditorWindow {
                 break;
             }
             case iCS_ObjectTypeEnum.Module: {
-                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
+                while(parent != null && !parent.IsModule) {
+                    if(parent.IsState) {
+                        bool isAllowed= false;
+                        foreach(var allowedName in iCS_AllowedChildren.State) {
+                            if(allowedName == node.Name) {
+                                isAllowed= true;
+                                break;
+                            }
+                        }
+                        if(isAllowed) break;
+                    }
+                    if(parent.IsBehaviour) {
+                        bool isAllowed= false;
+                        foreach(var allowedName in iCS_AllowedChildren.Behaviour) {
+                            if(allowedName == node.Name) {
+                                isAllowed= true;
+                                break;
+                            }
+                        }
+                        if(isAllowed) break;
+                    }
+                    parent= Storage.GetParent(parent);
+                }
                 break;
             }
             case iCS_ObjectTypeEnum.InstanceMethod:
@@ -965,7 +1000,7 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void PasteIntoGraph(Vector2 point, iCS_Storage pasteStorage, iCS_EditorObject pasteRoot) {
         if(pasteRoot == null) return;
-        iCS_EditorObject parent= GetValidParentNodeUnder(point, pasteRoot.ObjectType);
+        iCS_EditorObject parent= GetValidParentNodeUnder(point, pasteRoot.ObjectType, pasteRoot.Name);
         if(parent == null) {
             EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");
             return;
