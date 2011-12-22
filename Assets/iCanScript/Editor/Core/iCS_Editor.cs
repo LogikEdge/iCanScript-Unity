@@ -437,8 +437,8 @@ public class iCS_Editor : EditorWindow {
                 node.IsFloating= IsCommandKeyDown;
                 DragType= DragTypeEnum.NodeDrag;
                 DragObject= node;
-                Rect position= Storage.GetPosition(node);
-                DragStartPosition= new Vector2(position.x, position.y);                                                                    
+                Rect nodePos= Storage.GetPosition(node);
+                DragStartPosition= new Vector2(nodePos.x, nodePos.y);                                                                    
             }
             return true;
         }
@@ -473,8 +473,12 @@ public class iCS_Editor : EditorWindow {
                     iCS_EditorObject node= DragObject;
                     iCS_EditorObject oldParent= Storage.GetParent(node);
                     iCS_EditorObject newParent= GetValidParentNodeUnder(node);
-                    if(newParent != null && newParent != oldParent) {
-                        ChangeParent(node, newParent);
+                    if(newParent != null) {
+                        if(newParent != oldParent) {
+                            ChangeParent(node, newParent);
+                        }
+                    } else {
+                        Storage.MoveTo(node, DragStartPosition);
                     }
                     if(oldParent != null) Storage.SetDirty(oldParent);
                     node.IsFloating= false;
@@ -754,54 +758,8 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType, string objName) {
         iCS_EditorObject parent= Storage.GetNodeAt(point);
-        if(parent == null) return null;
-        switch(objType) {
-            case iCS_ObjectTypeEnum.StateChart: {
-                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
-                break;                
-            }
-            case iCS_ObjectTypeEnum.State: {
-                while(parent != null && !parent.IsState && !parent.IsStateChart) parent= Storage.GetParent(parent);
-                break;
-            }
-            case iCS_ObjectTypeEnum.Module: {
-                while(parent != null && !parent.IsModule) {
-                    if(parent.IsState) {
-                        bool isAllowed= false;
-                        foreach(var allowedName in iCS_AllowedChildren.StateChildNames) {
-                            if(allowedName == objName) {
-                                isAllowed= true;
-                                break;
-                            }
-                        }
-                        if(isAllowed) break;
-                    }
-                    if(parent.IsBehaviour) {
-                        bool isAllowed= false;
-                        foreach(var allowedName in iCS_AllowedChildren.BehaviourChildNames) {
-                            if(allowedName == objName) {
-                                isAllowed= true;
-                                break;
-                            }
-                        }
-                        if(isAllowed) break;
-                    }
-                    parent= Storage.GetParent(parent);
-                }
-                break;
-            }
-            case iCS_ObjectTypeEnum.InstanceMethod:
-            case iCS_ObjectTypeEnum.StaticMethod:
-            case iCS_ObjectTypeEnum.InstanceField:
-            case iCS_ObjectTypeEnum.StaticField:
-            case iCS_ObjectTypeEnum.Conversion: {
-                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
-                break;
-            }
-            default: {
-                parent= null;
-                break;
-            }
+        if(parent != null && !iCS_AllowedChildren.CanAddChildNode(objName, objType, parent, Storage)) {
+            parent= null;
         }
         return parent;
     }
@@ -810,54 +768,8 @@ public class iCS_Editor : EditorWindow {
         if(!node.IsNode) return null;
         Vector2 point= Math3D.Middle(Storage.GetPosition(node));
         iCS_EditorObject parent= Storage.GetNodeAt(point, node);
-        if(parent == null) return null;
-        switch(node.ObjectType) {
-            case iCS_ObjectTypeEnum.StateChart: {
-                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
-                break;                
-            }
-            case iCS_ObjectTypeEnum.State: {
-                while(parent != null && !parent.IsState && !parent.IsStateChart) parent= Storage.GetParent(parent);
-                break;
-            }
-            case iCS_ObjectTypeEnum.Module: {
-                while(parent != null && !parent.IsModule) {
-                    if(parent.IsState) {
-                        bool isAllowed= false;
-                        foreach(var allowedName in iCS_AllowedChildren.StateChildNames) {
-                            if(allowedName == node.Name) {
-                                isAllowed= true;
-                                break;
-                            }
-                        }
-                        if(isAllowed) break;
-                    }
-                    if(parent.IsBehaviour) {
-                        bool isAllowed= false;
-                        foreach(var allowedName in iCS_AllowedChildren.BehaviourChildNames) {
-                            if(allowedName == node.Name) {
-                                isAllowed= true;
-                                break;
-                            }
-                        }
-                        if(isAllowed) break;
-                    }
-                    parent= Storage.GetParent(parent);
-                }
-                break;
-            }
-            case iCS_ObjectTypeEnum.InstanceMethod:
-            case iCS_ObjectTypeEnum.StaticMethod:
-            case iCS_ObjectTypeEnum.InstanceField:
-            case iCS_ObjectTypeEnum.StaticField:
-            case iCS_ObjectTypeEnum.Conversion: {
-                while(parent != null && !parent.IsModule) parent= Storage.GetParent(parent);
-                break;
-            }
-            default: {
-                parent= null;
-                break;
-            }
+        if(parent != null && !iCS_AllowedChildren.CanAddChildNode(node.Name, node.ObjectType, parent, Storage)) {
+            parent= null;
         }
         return parent;
     }

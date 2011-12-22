@@ -28,6 +28,13 @@ public static class iCS_AllowedChildren {
         switch(parent.ObjectType) {
             case iCS_ObjectTypeEnum.Behaviour: {
                 switch(objType) {
+                    case iCS_ObjectTypeEnum.Module:
+                    case iCS_ObjectTypeEnum.StateChart: {
+                        if(NameExistsIn(childName, BehaviourChildNames) && !IsChildNodePresent(childName, parent, storage)) {
+                            isAllowed= true;
+                        }
+                        break;
+                    }
                     default: {
                         break;
                     }
@@ -65,6 +72,21 @@ public static class iCS_AllowedChildren {
                 }
                 break;
             }
+            case iCS_ObjectTypeEnum.TransitionModule: {
+                switch(objType) {
+                    case iCS_ObjectTypeEnum.TransitionGuard:
+                    case iCS_ObjectTypeEnum.TransitionAction: {
+                        isAllowed= true;
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
+                break;
+            }
+            case iCS_ObjectTypeEnum.TransitionGuard:
+            case iCS_ObjectTypeEnum.TransitionAction:
             case iCS_ObjectTypeEnum.Module: {
                 switch(objType) {
                     case iCS_ObjectTypeEnum.Behaviour:
