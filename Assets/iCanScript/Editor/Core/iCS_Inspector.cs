@@ -93,7 +93,7 @@ public class iCS_Inspector : Editor {
 		DrawDefaultInspector();
 
         // Frame count.
-		if(Storage.Storage is iCS_Behaviour) {
+		if(Storage.Storage is iCS_Behaviour && Application.isPlaying) {
 		    iCS_Behaviour behaviour= Storage.Storage as iCS_Behaviour;
 		    EditorGUILayout.LabelField("UpdateFrameId", behaviour.UpdateFrameId.ToString());
 		    EditorGUILayout.LabelField("FixedUpdateFrameId", behaviour.FixedUpdateFrameId.ToString());
@@ -140,6 +140,11 @@ public class iCS_Inspector : Editor {
                         if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).ToolTip= toolTip;
                         else Storage.GetSource(SelectedObject).ToolTip= toolTip;
                     }
+                }
+                // Show the parent name.
+                iCS_EditorObject parent= Storage.GetParent(SelectedObject);
+                if(parent != null) {
+                    EditorGUILayout.LabelField("Parent", parent.Name);
                 }
                 // Show inspector specific for each type of component.
                 if(SelectedObject.IsNode)      InspectNode(SelectedObject);

@@ -753,6 +753,7 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType) {
+//        Debug.LogError("GetValidParent");
         iCS_EditorObject parent= Storage.GetNodeAt(point);
         if(parent == null) return null;
         switch(objType) {

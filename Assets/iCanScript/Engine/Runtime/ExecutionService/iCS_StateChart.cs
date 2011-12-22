@@ -322,7 +322,6 @@ public sealed class iCS_StateChart : iCS_Action {
     }
     // ----------------------------------------------------------------------
     void MoveToState(iCS_State newState, int frameId) {
-        Debug.Log("Moving to state: "+newState.Name);
         myNextState= newState;
         int stackSize= myActiveStack.Count;
         // Determine transition parent node
