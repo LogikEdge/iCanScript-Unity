@@ -238,10 +238,12 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             myRuntimeNodes[node.InstanceId]= state;
                             InvokeAddChildIfExists(parent, state);
                             if(node.IsEntryState) {
-                                if(EditorObjects[node.ParentId].IsStateChart) {
-                                    Debug.Log("Need to set entry state.");
+                                if(parent is iCS_StateChart) {
+                                    iCS_StateChart parentStateChart= parent as iCS_StateChart;
+                                    parentStateChart.EntryState= state;
                                 } else {
-                                    Debug.Log("Need to set entry state.");                                    
+                                    iCS_State parentState= parent as iCS_State;
+                                    parentState.EntryState= state;
                                 }
                             }
                             break;
