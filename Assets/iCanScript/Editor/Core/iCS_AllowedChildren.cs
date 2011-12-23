@@ -5,6 +5,9 @@ public static class iCS_AllowedChildren {
     public static readonly string[]    BehaviourChildNames= null;
     public static readonly string[]    StateChildNames= null;
     
+    public static readonly string[]     BehaviourChildToolTips= null;
+    public static readonly string[]     StateChildToolTips= null;
+    
     static iCS_AllowedChildren() {
         BehaviourChildNames= new string[]{
             iCS_EngineStrings.BehaviourChildStart,
@@ -14,10 +17,23 @@ public static class iCS_AllowedChildren {
             iCS_EngineStrings.BehaviourChildOnGUI,
             iCS_EngineStrings.BehaviourChildOnDrawGizmos
         };
+        BehaviourChildToolTips= new string[]{
+            "Start is called just before any of the Update methods is called the first time.",
+            "Update is called every frame, if the MonoBehaviour is enabled.",
+            "LateUpdate is called every frame, if the Behaviour is enabled.",
+            "This function is called every fixed framerate frame, if the MonoBehaviour is enabled.",
+            "OnGUI is called for rendering and handling GUI events.",
+            "Implement this OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn."
+        };
         StateChildNames= new string[]{
             iCS_EngineStrings.StateChildOnEntry,
             iCS_EngineStrings.StateChildOnUpdate,
             iCS_EngineStrings.StateChildOnExit
+        };
+        StateChildToolTips= new string[]{
+            "OnEntry is called when the state is first activated before OnUpdate is called.",
+            "OnUpdate is called on every frame when the state is active.",
+            "OnExit is called when leaving the state before OnEntry is called on the newly active states."
         };
     }
     

@@ -89,23 +89,13 @@ public class iCS_DynamicMenu {
         // Don't show any menu if behaviour not visible.
         if(storage.IsMinimized(selectedObject) || storage.IsFolded(selectedObject)) return;
 
-        string[] menu= new string[]
-        {
-            StartStr,
-            UpdateModuleStr,             
-            UpdateStateChartStr,
-            LateUpdateModuleStr,        
-            LateUpdateStateChartStr,        
-            FixedUpdateModuleStr,       
-            FixedUpdateStateChartStr,       
-            OnGUIStr,              
-            OnDrawGizmosStr,
-        };
-        for(int i= 0; i < menu.Length; ++i) {
-            string name= menu[i].Substring(2);
-            int sep= name.IndexOf('/');
-            if(sep > 0) name= name.Substring(0,sep);
-            if(AsChildNodeWithName(selectedObject, name, storage)) {
+        int len= iCS_AllowedChildren.BehaviourChildNames.Length;
+        string[] menu= new string[len];
+        for(int i= 0; i < len; ++i) {
+            string name= iCS_AllowedChildren.BehaviourChildNames[i];
+            if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
+                menu[i]= String.Concat("+ ", name);
+            } else {
                 menu[i]= String.Concat("#+ ", name);
             }
         }
@@ -285,6 +275,32 @@ public class iCS_DynamicMenu {
         iCS_EditorObject selectedObject= context.SelectedObject;
         iCS_IStorage storage= context.Storage;
         storage.RegisterUndo(context.Command);
+        // Process predefined modules for Behaviour & State.
+        if(selectedObject.IsBehaviour) {
+            for(int i= 0; i < iCS_AllowedChildren.BehaviourChildNames.Length; ++i) {
+                string childName= iCS_AllowedChildren.BehaviourChildNames[i];
+                string name= context.Command.Substring(2);
+                if(name[0] == ' ') name= name.Substring(1);
+                if(name == childName) {
+                    string toolTip= iCS_AllowedChildren.BehaviourChildToolTips[i];
+                    ProcessCreateModuleWithUnchangableName(childName, selectedObject, storage, toolTip);
+                    return;
+                }
+            }
+        }
+        if(selectedObject.IsState) {
+            for(int i= 0; i < iCS_AllowedChildren.StateChildNames.Length; ++i) {
+                string childName= iCS_AllowedChildren.StateChildNames[i];
+                string name= context.Command.Substring(2);
+                if(name[0] == ' ') name= name.Substring(1);
+                if(name == childName) {
+                    string toolTip= iCS_AllowedChildren.StateChildToolTips[i];
+                    ProcessCreateModuleWithUnchangableName(childName, selectedObject, storage, toolTip);
+                    return;
+                }
+            }            
+        }
+        // Process all other types of requests.
         switch(context.Command) {
             case StartStr:                  ProcessCreateStart(selectedObject, storage); break;
             case UpdateModuleStr:           ProcessCreateUpdateModule(selectedObject, storage); break;
@@ -340,6 +356,13 @@ public class iCS_DynamicMenu {
         module.IsNameEditable= false;
         module.ToolTip= "Awake is called when the behaviour is being loaded.";
         return module;
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject ProcessCreateModuleWithUnchangableName(string behName, iCS_EditorObject parent, iCS_IStorage storage, string toolTip="") {
+        iCS_EditorObject module= CreateModule(parent, storage, behName, false);
+        module.IsNameEditable= false;
+        module.ToolTip= toolTip;
+        return module;        
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
