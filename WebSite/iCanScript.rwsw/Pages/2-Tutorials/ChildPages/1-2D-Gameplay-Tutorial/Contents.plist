@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-20T15:40:02Z</date>
+					<date>2011-12-21T11:54:55Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -56,17 +56,17 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							yNa5dFptrp8p3YoBpy8k
-							Ng==
+							CtGirERBljY6jHaCUe+V
+							rQ==
 							</data>
 							<key>Size</key>
-							<integer>5422</integer>
+							<integer>5434</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>
 					<string>page5</string>
 					<key>SiteRoot</key>
-					<string>Demos/2DGameplayTutorial</string>
+					<string>Tutorials/2DGameplayTutorial</string>
 					<key>Version</key>
 					<integer>3</integer>
 				</dict>
