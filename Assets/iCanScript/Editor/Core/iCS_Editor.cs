@@ -759,21 +759,22 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType, string objName) {
-        iCS_EditorObject parent= Storage.GetNodeAt(point);
-        if(parent != null && !iCS_AllowedChildren.CanAddChildNode(objName, objType, parent, Storage)) {
-            parent= null;
+        iCS_EditorObject newParent= Storage.GetNodeAt(point);
+        if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(objName, objType, newParent, Storage)) {
+            newParent= null;
         }
-        return parent;
+        return newParent;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetValidParentNodeUnder(iCS_EditorObject node) {
         if(!node.IsNode) return null;
         Vector2 point= Math3D.Middle(Storage.GetPosition(node));
-        iCS_EditorObject parent= Storage.GetNodeAt(point, node);
-        if(parent != null && !iCS_AllowedChildren.CanAddChildNode(node.Name, node.ObjectType, parent, Storage)) {
-            parent= null;
+        iCS_EditorObject newParent= Storage.GetNodeAt(point, node);
+        if(newParent == Storage.GetParent(node)) return newParent;
+        if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(node.Name, node.ObjectType, newParent, Storage)) {
+            newParent= null;
         }
-        return parent;
+        return newParent;
     }
 	// ----------------------------------------------------------------------
     void ChangeParent(iCS_EditorObject node, iCS_EditorObject newParent) {
