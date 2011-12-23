@@ -159,23 +159,26 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void StateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        string[] menu= new string[0];
+        string[] menu;
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            menu= new string[6];
-            menu[0]= OnEntryStr;
-            menu[1]= OnUpdateStr;
-            menu[2]= OnExitStr;
-            menu[3]= StateStr;
-            menu[4]= SeparatorStr;
-            menu[5]= SetAsEntryStr;
-            for(int i= 0; i < 3; ++i) {
-                string name= menu[i].Substring(2);
-                int sep= name.IndexOf('/');
-                if(sep > 0) name= name.Substring(0,sep);
-                if(AsChildNodeWithName(selectedObject, name, storage)) {
+            int len= iCS_AllowedChildren.StateChildNames.Length;
+            menu= new string[len+2];
+            for(int i= 0; i < len; ++i) {
+                string name= iCS_AllowedChildren.StateChildNames[i];
+                if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
+                    menu[i]= String.Concat("+ ", name);
+                } else {
                     menu[i]= String.Concat("#+ ", name);
                 }
             }
+            menu[len]= SeparatorStr;
+            if(selectedObject.IsRawEntryState) {
+                menu[len+1]= String.Concat("#", SetAsEntryStr);
+            } else {
+                menu[len+1]= SetAsEntryStr;
+            }
+        } else {
+            menu= new string[0];
         }
         // Delete menu item.tmp= new string[menu.Length+2];
         string[] tmp= null;
