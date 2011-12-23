@@ -237,6 +237,13 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             iCS_State state= new iCS_State(node.Name, layout);
                             myRuntimeNodes[node.InstanceId]= state;
                             InvokeAddChildIfExists(parent, state);
+                            if(node.IsEntryState) {
+                                if(EditorObjects[node.ParentId].IsStateChart) {
+                                    Debug.Log("Need to set entry state.");
+                                } else {
+                                    Debug.Log("Need to set entry state.");                                    
+                                }
+                            }
                             break;
                         }
                         case iCS_ObjectTypeEnum.TransitionModule: {

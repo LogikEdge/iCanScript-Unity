@@ -312,6 +312,7 @@ public class iCS_DynamicMenu {
             case ModuleStr:                 ProcessCreateModule(selectedObject, storage); break;
             case StateChartStr:             ProcessCreateStateChart(selectedObject, storage); break;
             case StateStr:                  ProcessCreateState(selectedObject, storage);  break;
+            case SetAsEntryStr:             ProcessSetStateEntry(selectedObject, storage); break;
             case OnEntryStr:                ProcessCreateOnEntryModule(selectedObject, storage); break;
             case OnUpdateStr:               ProcessCreateOnUpdateModule(selectedObject, storage); break;
             case OnExitStr:                 ProcessCreateOnExitModule(selectedObject, storage); break;
@@ -419,6 +420,30 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateState(iCS_EditorObject parent, iCS_IStorage storage) {
         iCS_EditorObject state= CreateState(parent, storage);
+        // Declare the first state added has the entry state.
+        state.IsRawEntryState= !storage.ForEachChild(parent,
+            child=> {
+                if(child.IsEntryState) {
+                    return true;
+                }
+                return false;
+            }
+        );
+        return state;
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject ProcessSetStateEntry(iCS_EditorObject state, iCS_IStorage storage) {
+        iCS_EditorObject parent= storage.GetParent(state);
+        storage.ForEachChild(parent,
+            child=>{
+                if(child.IsEntryState) {
+                    child.IsRawEntryState= false;
+                    storage.SetDirty(child);
+                }
+            }
+        );
+        state.IsRawEntryState= true;
+        storage.SetDirty(state);
         return state;
     }
 	// ----------------------------------------------------------------------

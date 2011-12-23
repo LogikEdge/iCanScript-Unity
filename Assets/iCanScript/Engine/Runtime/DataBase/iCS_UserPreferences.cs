@@ -14,11 +14,12 @@ public class iCS_UserPreferences {
 
     [System.Serializable]
     public class UserNodeColors {
-        public Color    LabelColor   = Color.white;
-        public Color    StateColor   = Color.cyan;
-        public Color    ModuleColor  = Color.yellow;
-        public Color    FunctionColor= Color.green;
-        public Color    SelectedColor= Color.white;            
+        public Color    LabelColor     = Color.white;
+        public Color    EntryStateColor= new Color(1f,0.5f,0);
+        public Color    StateColor     = Color.cyan;
+        public Color    ModuleColor    = Color.yellow;
+        public Color    FunctionColor  = Color.green;
+        public Color    SelectedColor  = Color.white;            
     }
     public UserNodeColors   NodeColors= new UserNodeColors();
 

@@ -47,6 +47,7 @@ public class iCS_Graphics {
 	    public Texture2D   maximizeIcon= null;
 	}
 	NodeStyle   stateStyle      = null;
+	NodeStyle   entryStateStyle = null;
 	NodeStyle   moduleStyle     = null;
 	NodeStyle   functionStyle   = null;
 	NodeStyle   defaultStyle    = null;
@@ -461,6 +462,10 @@ public class iCS_Graphics {
         if(node == selectedObject) {
             GenerateNodeStyle(ref selectedStyle, storage.Preferences.NodeColors.SelectedColor);
             return selectedStyle;
+        }
+        if(node.IsEntryState) {
+            GenerateNodeStyle(ref entryStateStyle, storage.Preferences.NodeColors.EntryStateColor);
+            return entryStateStyle;            
         }
         if(node.IsState || node.IsStateChart) {
             GenerateNodeStyle(ref stateStyle, storage.Preferences.NodeColors.StateColor);

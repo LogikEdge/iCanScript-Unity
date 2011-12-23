@@ -26,6 +26,9 @@ public class iCS_EditorObject {
     public int          Source   = -1;
     public int          PortIndex= -1;
 
+    // State specific attributes ---------------------------------------------
+    public bool     IsRawEntryState= false;
+    
     // Non-persistant properties --------------------------------------------
     [System.NonSerialized] public bool IsFloating= false;
 
@@ -130,6 +133,7 @@ public class iCS_EditorObject {
     public bool IsOutDataPort           { get { return WD.IsOutDataPort(this); }}
     public bool IsInTransitionPort      { get { return WD.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return WD.IsOutTransitionPort(this); }}
+    public bool IsEntryState            { get { return IsState && IsRawEntryState; }}
     
     // ======================================================================
     // Accessors

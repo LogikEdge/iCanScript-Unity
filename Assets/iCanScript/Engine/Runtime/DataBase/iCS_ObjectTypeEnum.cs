@@ -8,7 +8,6 @@ public enum iCS_ObjectTypeEnum {
     InstanceField, StaticField,
     Conversion,
     TransitionModule, TransitionGuard, TransitionAction,
-//    TransitionTrigger, TransitionEntryAction, TransitionDataStream,
     InFieldPort,         OutFieldPort,
     InPropertyPort,      OutPropertyPort,
     InFunctionPort,      OutFunctionPort,

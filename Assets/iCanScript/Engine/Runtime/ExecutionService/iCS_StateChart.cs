@@ -14,11 +14,11 @@ public sealed class iCS_StateChart : iCS_Action {
     iCS_State        myEntryState      = null;
     List<iCS_State>  myActiveStack     = new List<iCS_State>();
     List<iCS_State>  myChildren        = new List<iCS_State>();
-    int             myQueueIdx        = 0;
+    int              myQueueIdx        = 0;
     iCS_Transition   myFiredTransition = null;
     iCS_State        myNextState       = null;
     iCS_State        myTransitionParent= null;
-    int             myEntrySize       = -1;
+    int              myEntrySize       = -1;
     ExecutionState  myExecutionState  = ExecutionState.VerifyingTransition;
     
     // ======================================================================
