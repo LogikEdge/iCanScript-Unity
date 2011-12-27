@@ -204,6 +204,18 @@ public class iCS_GuiUtilities {
             newValue= EditorGUILayout.ObjectField(niceName, value, type, true);
             return true;
         }        
+//		if(type == typeof(object)) {
+//			if(currentValue != null) {
+//				// use current object type.
+//				return ShowInInspector(name, currentValue.GetType(), currentValue, out newValue);
+//			}
+//			// Select a type.
+//			EditorGUILayout.BeginHorizontal();
+//			EditorGUILayout.TextField(name+": Type->");
+//			EditorGUILayout.Popup(0, new string[]{"string","int","float"});
+//			EditorGUILayout.EndHorizontal();
+//			return ShowInInspector(name, typeof(string), null, out newValue);
+//		}
         newValue= null;
         return false;
     }
