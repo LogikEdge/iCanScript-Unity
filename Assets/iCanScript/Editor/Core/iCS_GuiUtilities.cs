@@ -204,19 +204,37 @@ public class iCS_GuiUtilities {
             newValue= EditorGUILayout.ObjectField(niceName, value, type, true);
             return true;
         }        
-//		if(type == typeof(object)) {
-//			if(currentValue != null) {
-//				// use current object type.
-//				return ShowInInspector(name, currentValue.GetType(), currentValue, out newValue);
-//			}
-//			// Select a type.
-//			EditorGUILayout.BeginHorizontal();
-//			EditorGUILayout.TextField(name+": Type->");
-//			EditorGUILayout.Popup(0, new string[]{"string","int","float"});
-//			EditorGUILayout.EndHorizontal();
-//			return ShowInInspector(name, typeof(string), null, out newValue);
-//		}
+		if(type == typeof(object)) {
+			bool changed= false;
+			object changedValue= null;
+			EditorGUILayout.BeginHorizontal();
+			if(currentValue != null) {
+				// use current object type.
+				changed= ShowInInspector(name, currentValue.GetType(), currentValue, out changedValue);
+			} else {
+				EditorGUILayout.TextField(name);
+			}
+			// Select a type.
+			string[] derivedTypes= GetListOfDerivedTypes(type);
+			int idx= currentValue != null ? GetIndexOfType(currentValue.GetType(), derivedTypes) : 0;
+			int selection= EditorGUILayout.Popup(idx, GetListOfDerivedTypes(type));
+			if(selection != idx) {
+				// TODO...
+			}
+			EditorGUILayout.EndHorizontal();
+			newValue= changedValue;
+			return changed;
+		}
         newValue= null;
         return false;
     }
+
+    // -----------------------------------------------------------------------
+	static string[] GetListOfDerivedTypes(Type baseType) {
+		return new string[]{"string","int","float"};
+	}
+    // -----------------------------------------------------------------------
+	static int GetIndexOfType(Type type, string[] allTypes) {
+		return 0;
+	}
 }
