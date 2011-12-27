@@ -282,7 +282,7 @@ public class iCS_RuntimeDesc {
                 if(iCS_Types.IsA<UnityEngine.Object>(PortTypes[i])) {
                     result+= ":="+iCS_Archive.Encode((int)PortDefaultValues[i]);
                 } else {
-                    string defaultValueStr= iCS_Archive.Encode(PortDefaultValues[i]);
+                    string defaultValueStr= iCS_Archive.Encode(PortDefaultValues[i], PortTypes[i]);
                     if(defaultValueStr != null) {
                         result+= ":="+defaultValueStr;                                            
                     }
@@ -292,7 +292,7 @@ public class iCS_RuntimeDesc {
             if(i != PortTypes.Length-1) result+= ";";
         }
         result+=">{}";
-//        Debug.Log("Encode: "+result);
+//        DisplayEncoded("Encode: ",result);
         return result;
     }
     // ----------------------------------------------------------------------
@@ -392,5 +392,16 @@ public class iCS_RuntimeDesc {
         PortNames = portNames.ToArray();
         PortDefaultValues= portDefaults.ToArray();
     }
-
+    // ----------------------------------------------------------------------
+	void DisplayEncoded(string msg, string encoded) {
+		string toDisplay= "";
+		for(int i=0; i < encoded.Length; ++i) {
+			if(encoded[i] == '\n') {
+				toDisplay+= "    ";
+			} else {
+				toDisplay+= encoded[i];
+			}
+		}
+		Debug.Log(msg+toDisplay);
+	}
 }
