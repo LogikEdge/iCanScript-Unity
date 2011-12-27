@@ -1,6 +1,6 @@
 .DS_Store
+*/.DS_Store
 Temp/
-Library/.DS_Store
 Library/assetDatabase3
 Library/AssetImportState
 Library/AssetServerCacheV3
