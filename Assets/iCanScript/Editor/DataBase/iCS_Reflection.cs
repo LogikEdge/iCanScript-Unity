@@ -185,6 +185,10 @@ public class iCS_Reflection {
                 registerMethod= true;
             }
             if(registerMethod) {
+                if(method.IsGenericMethod) {
+                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping "+method.Name+" from class "+className);
+                    continue;
+                }
                 if(method.IsStatic) {
                     DecodeStaticMethod(company, package, displayName, toolTip, iconPath, classType, method, returnName);
                 } else {
