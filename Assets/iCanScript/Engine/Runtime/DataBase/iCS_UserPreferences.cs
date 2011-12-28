@@ -45,6 +45,7 @@ public class iCS_UserPreferences {
         public UserTypeColor[]  CustomColors  = new UserTypeColor[0];
 
         public Color GetColor(Type t) {
+            if(t == null) return Color.white;
             string typeName= t.HasElementType ? t.GetElementType().Name : t.Name;
             if(typeName == BoolType.TypeName)       return BoolType.TypeColor;
             if(typeName == IntType.TypeName)        return IntType.TypeColor;

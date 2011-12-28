@@ -34,6 +34,4 @@ public static class iCS_Conversions {
     [iCS_Conversion] public static string ToString(Vector2 v) { return v.ToString(); }
     [iCS_Conversion] public static string ToString(Vector3 v) { return v.ToString(); }
     [iCS_Conversion] public static string ToString(Vector4 v) { return v.ToString(); }
-
-	[iCS_Function] public static object Fred(string s) { return s; }
 }

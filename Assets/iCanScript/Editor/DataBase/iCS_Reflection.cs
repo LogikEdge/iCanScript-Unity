@@ -37,7 +37,7 @@ public class iCS_Reflection {
     public static Type GetPortFieldType(iCS_EditorObject port, iCS_EditorObject portParent) {
         FieldInfo fieldInfo= portParent.RuntimeType.GetField(port.Name);
         if(fieldInfo == null) {
-            Debug.LogWarning("Invalid port name");            
+            Debug.LogWarning("iCanScript: Invalid port name");            
         }
         return fieldInfo.FieldType;
     }
@@ -55,7 +55,7 @@ public class iCS_Reflection {
                     if(classCustomAttribute is iCS_ClassAttribute) {
                         // Validate that the class is public.
                         if(classType.IsPublic == false) {
-                            Debug.LogWarning("Class "+classType+" is not public and tagged for "+iCS_EditorConfig.ProductName+".  Ignoring class !!!");
+                            Debug.LogWarning("iCanScript: Class "+classType+" is not public and tagged for "+iCS_EditorConfig.ProductName+".  Ignoring class !!!");
                             continue;
                         }
                         // Extract class information.
@@ -75,6 +75,10 @@ public class iCS_Reflection {
     }
     // ----------------------------------------------------------------------
     public static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+        if(classType.IsGenericType) {
+            Debug.LogWarning("iCanScript: Generic class not supported yet.  Skiping: "+classType.Name);
+            return;
+        }
         DecodeClassFields(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
         DecodeFunctionsAndMethods(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
     }
@@ -86,7 +90,7 @@ public class iCS_Reflection {
             iCS_ParamDirectionEnum direction= iCS_ParamDirectionEnum.InOut;
             foreach(var fieldAttr in field.GetCustomAttributes(true)) {
                 if(!field.IsPublic && (fieldAttr is iCS_InPortAttribute || fieldAttr is iCS_OutPortAttribute || fieldAttr is iCS_InOutPortAttribute)) {
-                    Debug.LogWarning("Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring field !!!");
+                    Debug.LogWarning("iCanScript: Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring field !!!");
                     continue;
                 }
                 if(fieldAttr is iCS_InPortAttribute) {
@@ -158,7 +162,7 @@ public class iCS_Reflection {
                         iconPath= convAttr.Icon ?? classIconPath;
                         DecodeConversion(company, package, iconPath, classType, method);
                     } else {                        
-                        Debug.LogWarning("Conversion "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring function !!!");
+                        Debug.LogWarning("iCanScript: Conversion "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring function !!!");
                     }
                     break;
                 }
@@ -172,7 +176,7 @@ public class iCS_Reflection {
                         if(funcAttr.ToolTip != null) toolTip    = funcAttr.ToolTip;
                         if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
-                        Debug.LogWarning("Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring function !!!");                        
+                        Debug.LogWarning("iCanScript: Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring function !!!");                        
                     }
                     break;                                        
                 }
@@ -194,17 +198,17 @@ public class iCS_Reflection {
         Type toType= method.ReturnType;
         ParameterInfo[] parameters= method.GetParameters();
         if(parameters.Length != 1 || toType == null) {
-            Debug.LogWarning("Conversion function must have one return type and one parameter. Ignoring conversion function in "+classType.Name);
+            Debug.LogWarning("iCanScript: Conversion function must have one return type and one parameter. Ignoring conversion function in "+classType.Name);
             return;
         }
         Type fromType= parameters[0].ParameterType;
         if(method.IsPublic == false) {
-            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
+            Debug.LogWarning("iCanScript: Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
                              " is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
         if(method.IsStatic == false) {
-            Debug.LogWarning("Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
+            Debug.LogWarning("iCanScript: Conversion from "+fromType+" to "+toType+" in class "+classType.Name+
                              " is not static and tagged for "+iCS_EditorConfig.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
