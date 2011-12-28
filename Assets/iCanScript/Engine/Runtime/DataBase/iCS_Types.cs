@@ -28,7 +28,17 @@ public static class iCS_Types {
         return IsA(inDataType, outDataType);
     }
 	// ----------------------------------------------------------------------
+    public static bool CanBeConnectedWithUpConversion(Type outType, Type inType) {
+        Type inDataType= GetDataType(inType);
+        Type outDataType= GetDataType(outType);
+        return IsA(outDataType, inDataType);
+    }
+	// ----------------------------------------------------------------------
     public static Type GetDataType(Type t) {
         return t.HasElementType ? t.GetElementType() : t;
+    }
+	// ----------------------------------------------------------------------
+    public static string GetTypeName(Type type) {
+		return type == typeof(float) ? "float" : type.Name;
     }
 }

@@ -673,16 +673,24 @@ public class iCS_Editor : EditorWindow {
                 outPort= overlappingPort.IsOutputPort ? overlappingPort : port;
             }
             if(inPort != outPort) {
-                if(iCS_Types.CanBeConnectedWithoutConversion(outPort.RuntimeType, inPort.RuntimeType)) { // No conversion needed.
+				Type inType= inPort.RuntimeType;
+				Type outType= outPort.RuntimeType;
+                if(iCS_Types.CanBeConnectedWithoutConversion(outType, inType)) { // No conversion needed.
                     SetNewDataConnection(inPort, outPort);                       
                 }
                 else {  // A conversion is required.
-                    iCS_ReflectionDesc conversion= iCS_DataBase.FindConversion(outPort.RuntimeType, inPort.RuntimeType);
-                    if(conversion == null) {
-                        Debug.LogWarning("No direct conversion exists from "+outPort.RuntimeType.Name+" to "+inPort.RuntimeType.Name);
-                    } else {
-                        SetNewDataConnection(inPort, outPort, conversion);
-                    }
+					if(iCS_Types.CanBeConnectedWithUpConversion(outType, inType)) {
+						if(EditorUtility.DisplayDialog("Up Conversion Connection", "Are you sure you want to generate a conversion from "+iCS_Types.GetTypeName(outType)+" to "+iCS_Types.GetTypeName(inType)+"?", "Generate Conversion", "Abort")) {
+							SetNewDataConnection(inPort, outPort);							
+						}
+					} else {
+	                    iCS_ReflectionDesc conversion= iCS_DataBase.FindConversion(outType, inType);
+	                    if(conversion == null) {
+							ShowNotification(new GUIContent("No direct conversion exists from "+iCS_Types.GetTypeName(outType)+" to "+iCS_Types.GetTypeName(inType)));
+	                    } else {
+	                        SetNewDataConnection(inPort, outPort, conversion);
+	                    }						
+					}
                 }
             } else {
                 Debug.LogWarning("Ports are both either inputs or outputs !!!");
