@@ -5,7 +5,23 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_GuiUtilities {
+public static class iCS_GuiUtilities {
+	public static Type[]	SupportedTypes= null;
+	
+	static iCS_GuiUtilities() {
+		SupportedTypes= new Type[]{
+	        typeof(bool),
+	        typeof(int),
+	        typeof(float),
+	        typeof(string),
+	        typeof(Vector2),
+	        typeof(Vector3),
+	        typeof(Vector4),
+	        typeof(Color),
+	        typeof(UnityEngine.Object)			
+		};
+	}
+
     public static void OnInspectorGUI(iCS_EditorObject port, iCS_IStorage storage) {
         // Extract port information
         Type dataType= iCS_Types.GetDataType(port.RuntimeType);
@@ -215,9 +231,9 @@ public class iCS_GuiUtilities {
 				EditorGUILayout.TextField(name);
 			}
 			// Select a type.
-			string[] derivedTypes= GetListOfDerivedTypes(type);
-			int idx= currentValue != null ? GetIndexOfType(currentValue.GetType(), derivedTypes) : 0;
-			int selection= EditorGUILayout.Popup(idx, GetListOfDerivedTypes(type));
+			string[] derivedTypeNames= GetListOfDerivedTypeNames(type);
+			int idx= currentValue != null ? GetIndexOfType(currentValue.GetType(), derivedTypeNames) : 0;
+			int selection= EditorGUILayout.Popup(idx, derivedTypeNames);
 			if(selection != idx) {
 				// TODO...
 			}
@@ -230,7 +246,21 @@ public class iCS_GuiUtilities {
     }
 
     // -----------------------------------------------------------------------
-	static string[] GetListOfDerivedTypes(Type baseType) {
+	static bool IsSupportedType(Type type) {
+        if(type == typeof(bool)) return true;
+        if(type == typeof(int)) return true;
+        if(type == typeof(float)) return true;
+        if(type == typeof(string)) return true;
+        if(type == typeof(Vector2)) return true;
+        if(type == typeof(Vector3)) return true;
+        if(type == typeof(Vector4)) return true;
+        if(type == typeof(Color)) return true;
+        // Suport all UnityEngine objects.
+        if(iCS_Types.IsA<UnityEngine.Object>(type)) return true;
+		return false;
+	}
+    // -----------------------------------------------------------------------
+	static string[] GetListOfDerivedTypeNames(Type baseType) {
 		return new string[]{"string","int","float"};
 	}
     // -----------------------------------------------------------------------
