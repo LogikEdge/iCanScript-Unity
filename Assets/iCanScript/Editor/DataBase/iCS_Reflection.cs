@@ -79,6 +79,7 @@ public class iCS_Reflection {
             Debug.LogWarning("iCanScript: Generic class not supported yet.  Skiping: "+classType.Name);
             return;
         }
+        DecodeConstructors(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
         DecodeClassFields(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
         DecodeFunctionsAndMethods(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
     }
@@ -146,6 +147,46 @@ public class iCS_Reflection {
             bool[] paramIsOuts= new bool[3]{false, true, true};
             iCS_DataBase.AddInstanceField(company, package, displayName+" (read)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
+    }
+    // ----------------------------------------------------------------------
+    static void DecodeConstructors(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+        foreach(var constructor in classType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+            bool registerMethod= false;
+            string displayName= className;
+            string returnName= "this";
+            string toolTip= classToolTip;
+            string iconPath= classIconPath;
+            foreach(var constructorAttribute in constructor.GetCustomAttributes(true)) {
+                if(constructorAttribute is iCS_FunctionAttribute) {                                    
+                    if(constructor.IsPublic) {
+                        registerMethod= true;
+                        // Register execution functions/methods.
+                        iCS_FunctionAttribute funcAttr= constructorAttribute as iCS_FunctionAttribute;
+                        if(funcAttr.Name    != null) displayName= funcAttr.Name; 
+                        if(funcAttr.Return  != null) returnName = funcAttr.Return;
+                        if(funcAttr.ToolTip != null) toolTip    = funcAttr.ToolTip;
+                        if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
+                    } else {
+                        Debug.LogWarning("iCanScript: Constrcutor of class "+classType.Name+" is not public and tagged for "+iCS_EditorConfig.ProductName+". Ignoring constructor !!!");                        
+                    }
+                    break;                                        
+                }
+            }
+            if(acceptAllPublic && constructor.IsPublic) {
+                registerMethod= true;
+            }
+            if(registerMethod) {
+                if(constructor.IsGenericMethod) {
+                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+className);
+                    continue;
+                }
+                DecodeConstructor(company, package, displayName, toolTip, iconPath, classType, constructor, returnName);
+            }
+        }                               
+    }
+    // ----------------------------------------------------------------------
+    static void DecodeConstructor(string company, string package, string displayName, string toolTip, string iconPath, Type classType, ConstructorInfo method, string retName) {
+        // TODO...
     }
     // ----------------------------------------------------------------------
     static void DecodeFunctionsAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
