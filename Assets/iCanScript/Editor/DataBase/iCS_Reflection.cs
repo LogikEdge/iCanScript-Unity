@@ -185,8 +185,21 @@ public class iCS_Reflection {
         }                               
     }
     // ----------------------------------------------------------------------
-    static void DecodeConstructor(string company, string package, string displayName, string toolTip, string iconPath, Type classType, ConstructorInfo method, string retName) {
+    static void DecodeConstructor(string company, string package, string displayName, string toolTip, string iconPath, Type classType, ConstructorInfo constructor, string retName) {
+        // Parse return type.
+        Type retType= classType;
+
+        // Parse parameters.
+        string[] paramNames   = ParseParameterNames(constructor);
+        Type[]   paramTypes   = ParseParameterTypes(constructor);
+        bool[]   paramIsOut   = ParseParameterIsOuts(constructor);
+        object[] paramDefaults= ParseParameterDefaults(constructor);
+
         // TODO...
+//        iCS_DataBase.AddConstructor(company, package, displayName, toolTip, iconPath,
+//                                    classType, constructor,
+//                                    paramIsOut, paramNames, paramTypes, paramDefaults,
+//                                    retName, retType);
     }
     // ----------------------------------------------------------------------
     static void DecodeFunctionsAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
@@ -296,7 +309,7 @@ public class iCS_Reflection {
                                     retName, retType);
     }
     // ----------------------------------------------------------------------
-    static string[] ParseParameterNames(MethodInfo method) {
+    static string[] ParseParameterNames(MethodBase method) {
         ParameterInfo[] parameters= method.GetParameters();
         string[] paramNames= new string[parameters.Length];
         for(int i= 0; i < parameters.Length; ++i) {
@@ -305,7 +318,7 @@ public class iCS_Reflection {
         return paramNames;
     }
     // ----------------------------------------------------------------------
-    static Type[] ParseParameterTypes(MethodInfo method) {
+    static Type[] ParseParameterTypes(MethodBase method) {
         ParameterInfo[] parameters= method.GetParameters();
         Type[]   paramTypes= new Type[parameters.Length];
         for(int i= 0; i < parameters.Length; ++i) {
@@ -314,7 +327,7 @@ public class iCS_Reflection {
         return paramTypes;
     }
     // ----------------------------------------------------------------------
-    static bool[] ParseParameterIsOuts(MethodInfo method) {
+    static bool[] ParseParameterIsOuts(MethodBase method) {
         ParameterInfo[] parameters= method.GetParameters();
         bool[]   paramIsOuts= new bool[parameters.Length];
         for(int i= 0; i < parameters.Length; ++i) {
@@ -323,7 +336,7 @@ public class iCS_Reflection {
         return paramIsOuts;
     }
     // ----------------------------------------------------------------------
-    static object[] ParseParameterDefaults(MethodInfo method) {
+    static object[] ParseParameterDefaults(MethodBase method) {
         ParameterInfo[] parameters= method.GetParameters();
         object[]   paramDefaults= new object[parameters.Length];
         for(int i= 0; i < parameters.Length; ++i) {
