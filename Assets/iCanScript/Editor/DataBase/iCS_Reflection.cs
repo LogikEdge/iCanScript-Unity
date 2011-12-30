@@ -303,9 +303,9 @@ public class iCS_Reflection {
         object[] paramDefaults= ParseParameterDefaults(method);
 
         iCS_DataBase.AddStaticMethod(company, package, displayName, toolTip, iconPath,
-                                    classType, method,
-                                    paramIsOut, paramNames, paramTypes, paramDefaults,
-                                    retName, retType);
+                                     classType, method,
+                                     paramIsOut, paramNames, paramTypes, paramDefaults,
+                                     retName, retType);
     }
     // ----------------------------------------------------------------------
     static string[] ParseParameterNames(MethodBase method) {

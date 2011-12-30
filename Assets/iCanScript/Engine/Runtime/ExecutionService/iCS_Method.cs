@@ -17,7 +17,8 @@ public class iCS_Method : iCS_Function {
         return (idx == myParameters.Length+1 || idx == myParameters.Length+2) ? myThis : base.DoGetParameter(idx); 
     }
     protected override void DoSetParameter(int idx, object value) {
-        if(idx == myParameters.Length+1 || idx == myParameters.Length+2) { myThis= value; return; }
+        if(idx == myParameters.Length+2) return;
+        if(idx == myParameters.Length+1) { myThis= value; return; }
         base.DoSetParameter(idx, value);
     }
     protected override bool DoIsParameterReady(int idx, int frameId) {

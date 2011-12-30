@@ -229,6 +229,21 @@ public class iCS_RuntimeDesc {
         ClassType= classType;
         MethodName= methodName;
         switch(ObjectType) {
+            case iCS_ObjectTypeEnum.Constructor: {
+                PortNames= new string[paramNames.Length+1];
+                Array.Copy(paramNames, PortNames, paramNames.Length);
+                PortNames[paramNames.Length]= "this";
+                PortTypes= new Type[paramTypes.Length+1];
+                Array.Copy(paramTypes, PortTypes, paramTypes.Length);
+                PortTypes[paramTypes.Length]= classType;
+                PortIsOuts= new bool[paramIsOuts.Length+1];
+                Array.Copy(paramIsOuts, PortIsOuts, paramIsOuts.Length);
+                PortIsOuts[paramIsOuts.Length]= true;
+                PortDefaultValues= new object[paramDefaultValues.Length+1];
+                Array.Copy(paramDefaultValues, PortDefaultValues, paramDefaultValues.Length);
+                PortDefaultValues[paramDefaultValues.Length]= iCS_Types.DefaultValue(classType);
+                break;
+            }
             case iCS_ObjectTypeEnum.InstanceMethod: {
                 PortNames= new string[paramNames.Length+3];
                 Array.Copy(paramNames, PortNames, paramNames.Length);

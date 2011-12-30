@@ -460,7 +460,7 @@ public class iCS_Graphics {
 //            GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
 //            return nodeInErrorStyle;
 //        }
-        if(node == selectedObject) {
+        if(node == selectedObject && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
             GenerateNodeStyle(ref selectedStyle, storage.Preferences.NodeColors.SelectedColor);
             return selectedStyle;
         }

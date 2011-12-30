@@ -272,6 +272,15 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             InvokeAddChildIfExists(parent, method);
                             break;                            
                         }
+                        case iCS_ObjectTypeEnum.Constructor: {
+                            // Create function.
+                            iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(node.RuntimeArchive);
+                            if(rtDesc == null) break;
+                            iCS_Constructor func= new iCS_Constructor(node.Name, rtDesc.Method, rtDesc.PortIsOuts, layout);                                
+                            myRuntimeNodes[node.InstanceId]= func;
+                            InvokeAddChildIfExists(parent, func);
+                            break;
+                        }
                         case iCS_ObjectTypeEnum.Conversion:
                         case iCS_ObjectTypeEnum.StaticMethod: {
                             // Create function.
