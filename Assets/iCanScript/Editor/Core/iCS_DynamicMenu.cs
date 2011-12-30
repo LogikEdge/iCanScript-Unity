@@ -163,20 +163,22 @@ public class iCS_DynamicMenu {
         string[] menu;
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             int len= iCS_AllowedChildren.StateChildNames.Length;
-            menu= new string[len+2];
+            menu= new string[len+4];
+            menu[0]= StateStr;
+            menu[1]= SeparatorStr;
             for(int i= 0; i < len; ++i) {
                 string name= iCS_AllowedChildren.StateChildNames[i];
                 if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
-                    menu[i]= String.Concat("+ ", name);
+                    menu[i+2]= String.Concat("+ ", name);
                 } else {
-                    menu[i]= String.Concat("#+ ", name);
+                    menu[i+2]= String.Concat("#+ ", name);
                 }
             }
-            menu[len]= SeparatorStr;
+            menu[len+2]= SeparatorStr;
             if(selectedObject.IsRawEntryState) {
-                menu[len+1]= String.Concat("#", SetAsEntryStr);
+                menu[len+3]= String.Concat("#", SetAsEntryStr);
             } else {
-                menu[len+1]= SetAsEntryStr;
+                menu[len+3]= SetAsEntryStr;
             }
         } else {
             menu= new string[0];
