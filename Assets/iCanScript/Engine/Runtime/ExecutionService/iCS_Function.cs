@@ -8,7 +8,7 @@ public class iCS_Function : iCS_FunctionBase {
     // Properties
     // ----------------------------------------------------------------------
     protected object        myReturn      = null;
-    protected MethodInfo    myMethodInfo  = null;
+    protected MethodBase    myMethodInfo  = null;
 
     // ======================================================================
     // Accessors
@@ -27,11 +27,11 @@ public class iCS_Function : iCS_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Function(string name, MethodInfo methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, layout) {
+    public iCS_Function(string name, MethodBase methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, layout) {
         myMethodInfo= methodInfo;
         Init(portIsOuts);
     }
-    public iCS_Function(string name, MethodInfo methodInfo, Vector2 layout) : base(name, layout) {
+    public iCS_Function(string name, MethodBase methodInfo, Vector2 layout) : base(name, layout) {
         myMethodInfo= methodInfo;
     }
     protected new void Init(bool[] portIsOuts) {

@@ -46,34 +46,6 @@ public class iCS_DataBase {
             }
             step >>= 1;
         }
-//        Debug.Log("Len: "+len+" Cmp: "+cmpCnt+" QSort reorder: "+reorderCnt);
-    }
-    // ----------------------------------------------------------------------
-    public static void BubbleSort() {
-        int reorderCnt= 0;
-        int cmpCnt= 0;
-        int len= Functions.Count;
-        int min= 0;
-        int max= len-1;
-        int minRestart= min;
-        while(min != max) {
-            ++cmpCnt;
-            if(CompareFunctionNames(Functions[min], Functions[min+1]) > 0) {
-                ++reorderCnt;
-                iCS_ReflectionDesc tmp= Functions[min];
-                Functions[min]= Functions[min+1];
-                Functions[min+1]= tmp;
-                if(min != 0) --min;
-            } else {
-                ++min;
-                if(min < minRestart) {
-                    min= minRestart;
-                } else {
-                    minRestart= min;
-                }
-            }
-        }
-//        Debug.Log("Len: "+len+" Cmp: "+cmpCnt+" BubbleSort reorder: "+reorderCnt);
     }
     // ----------------------------------------------------------------------
     static bool IsSorted() {
@@ -165,10 +137,6 @@ public class iCS_DataBase {
     public static string[] BuildMenu() {
         if(!IsMenuDirty) return FunctionMenu;
         QSort();
-//        BubbleSort();
-        if(!IsSorted()) {
-            Debug.Log("Menu is not properly sorted");
-        }
         List<string> menu= new List<string>();
         string previousName= "";
         bool needsSignature= false;
@@ -237,6 +205,16 @@ public class iCS_DataBase {
         Functions.Clear();
     }
     // ----------------------------------------------------------------------
+    public static void AddConstructor(string company, string package, string displayName, string toolTip, string iconPath,
+                                      Type classType, ConstructorInfo constructorInfo,
+                                      bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                      string retName, Type retType) {
+        Add(company, package, displayName, toolTip, iconPath,
+            iCS_ObjectTypeEnum.Constructor, classType, constructorInfo,
+            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            retName, retType);
+    }
+    // ----------------------------------------------------------------------
     public static void AddStaticField(string company, string package, string displayName, string toolTip, string iconPath,
                                       Type classType,
                                       bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
@@ -256,9 +234,9 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath,
-                                       Type classType, MethodInfo methodInfo,
-                                       bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
-                                       string retName, Type retType) {
+                                         Type classType, MethodInfo methodInfo,
+                                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                         string retName, Type retType) {
         Add(company, package, displayName, toolTip, iconPath,
             iCS_ObjectTypeEnum.InstanceMethod, classType, methodInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
@@ -296,13 +274,13 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     // Adds a new database record.
     public static iCS_ReflectionDesc Add(string company, string package, string displayName, string toolTip, string iconPath,
-                                        iCS_ObjectTypeEnum objType, Type classType, MethodInfo methodInfo,
+                                        iCS_ObjectTypeEnum objType, Type classType, MethodBase methodInfo,
                                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                         string retName, Type retType) {
         iCS_ReflectionDesc fd= new iCS_ReflectionDesc(company, package, displayName, toolTip, iconPath,
-                                                    objType, classType, methodInfo,
-                                                    paramIsOuts, paramNames, paramTypes, paramDefaults,
-                                                    retName, retType);
+                                                      objType, classType, methodInfo,
+                                                      paramIsOuts, paramNames, paramTypes, paramDefaults,
+                                                      retName, retType);
         Functions.Add(fd);
         IsMenuDirty= true;
         return fd;

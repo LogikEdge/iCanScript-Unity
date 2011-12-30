@@ -49,6 +49,7 @@ public class iCS_Graphics {
 	NodeStyle   stateStyle      = null;
 	NodeStyle   entryStateStyle = null;
 	NodeStyle   moduleStyle     = null;
+    NodeStyle   constructorStyle= null;
 	NodeStyle   functionStyle   = null;
 	NodeStyle   defaultStyle    = null;
 	NodeStyle   selectedStyle   = null;
@@ -474,6 +475,10 @@ public class iCS_Graphics {
         if(node.IsModule) {
             GenerateNodeStyle(ref moduleStyle, storage.Preferences.NodeColors.ModuleColor);
             return moduleStyle;
+        }
+        if(node.IsConstructor) {
+            GenerateNodeStyle(ref constructorStyle, storage.Preferences.NodeColors.ConstructorColor);
+            return constructorStyle;
         }
         if(node.IsStaticMethod || node.IsConversion || node.IsInstanceMethod) {
             GenerateNodeStyle(ref functionStyle, storage.Preferences.NodeColors.FunctionColor);

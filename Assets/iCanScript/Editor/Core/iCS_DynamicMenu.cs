@@ -77,10 +77,11 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.Module:           ModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionGuard:  ModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionAction: ModuleMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.Constructor:      MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceMethod:   MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.StaticMethod:     MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.Conversion:       MethodMenu(selectedObject, storage); break;
-            default: if(selectedObject.IsPort)       PortMenu(selectedObject, storage); break;
+            default: if(selectedObject.IsPort)        PortMenu(selectedObject, storage); break;
         }
     }
 
@@ -312,6 +313,8 @@ public class iCS_DynamicMenu {
             case FixedUpdateStateChartStr:  ProcessCreateFixedUpdateStateChart(selectedObject, storage); break;
             case LateUpdateModuleStr:       ProcessCreateLateUpdateModule(selectedObject, storage); break;
             case LateUpdateStateChartStr:   ProcessCreateLateUpdateStateChart(selectedObject, storage); break;
+            case OnGUIStr:                  ProcessCreateOnGui(selectedObject, storage); break;
+            case OnDrawGizmosStr:           ProcessCreateOnDrawGizmos(selectedObject, storage); break;
             case ModuleStr:                 ProcessCreateModule(selectedObject, storage); break;
             case StateChartStr:             ProcessCreateStateChart(selectedObject, storage); break;
             case StateStr:                  ProcessCreateState(selectedObject, storage);  break;
@@ -409,6 +412,16 @@ public class iCS_DynamicMenu {
         stateChart.IsNameEditable= false;
         stateChart.ToolTip= "Executes at a fix frame rate. Independent from the frame update.";
         return stateChart;
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject ProcessCreateOnGui(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_GuiUtilities.UnsupportedFeature();
+        return null;
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject ProcessCreateOnDrawGizmos(iCS_EditorObject parent, iCS_IStorage storage) {
+        iCS_GuiUtilities.UnsupportedFeature();
+        return null;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateModule(iCS_EditorObject parent, iCS_IStorage storage) {

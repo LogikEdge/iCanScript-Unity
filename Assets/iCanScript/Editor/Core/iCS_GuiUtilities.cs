@@ -267,4 +267,8 @@ public static class iCS_GuiUtilities {
 	static int GetIndexOfType(Type type, string[] allTypes) {
 		return 0;
 	}
+    // -----------------------------------------------------------------------
+    public static void UnsupportedFeature() {
+        Debug.LogWarning("The selected feature is unsupported in the current version iCanScript.  Feature is planned for a later version.  Thanks for your patience.");
+    }
 }

@@ -9,7 +9,7 @@ public class iCS_RuntimeDesc {
     // Fields
     // ----------------------------------------------------------------------
     public int                  Id                  = -1;
-    public iCS_ObjectTypeEnum    ObjectType          = iCS_ObjectTypeEnum.Unknown;
+    public iCS_ObjectTypeEnum   ObjectType          = iCS_ObjectTypeEnum.Unknown;
     public string               Company             = "(no company)";
     public string               Package             = "DefaultPackage";
     public string               DisplayName         = null;
@@ -23,10 +23,20 @@ public class iCS_RuntimeDesc {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public MethodInfo Method {
+    public MethodBase Method {
         get {
+            // Extract MethodBase for constructor.
+            MethodBase method= null;
+            if(ObjectType == iCS_ObjectTypeEnum.Constructor) {
+                method= ClassType.GetConstructor(ParamTypes);
+                if(method == null) {
+                    Debug.LogWarning("Unable to extract constructor for type: "+ClassType.Name);
+                }
+                return method;
+            }
+            // Extract MethodBase for class methods.
             if(MethodName == null) return null;
-            MethodInfo method= ClassType.GetMethod(MethodName, ParamTypes);            
+            method= ClassType.GetMethod(MethodName, ParamTypes);            
             if(method == null) {
                 Debug.LogWarning("Unable to extract MethodInfo from RuntimeDesc: "+MethodName);
             }

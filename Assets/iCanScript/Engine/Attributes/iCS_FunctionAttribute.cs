@@ -1,6 +1,6 @@
 using System;
 
-[AttributeUsage(AttributeTargets.Method)]
+[AttributeUsage(AttributeTargets.Method | AttributeTargets.Constructor)]
 public class iCS_FunctionAttribute : Attribute {
     // ======================================================================
     // Optional Parameters

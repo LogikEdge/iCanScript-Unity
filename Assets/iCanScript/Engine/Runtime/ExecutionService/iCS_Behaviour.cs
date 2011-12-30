@@ -165,7 +165,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // Code Generation
     // ----------------------------------------------------------------------
     public void GenerateCode() {
-        Debug.Log(gameObject.name+": Generating real-time code...");
+        Debug.Log("iCanScript: Generating real-time code for "+gameObject.name+"...");
         // Remove any previous runtime object creation.
         ClearGeneratedCode();
         // Create all the runtime nodes.

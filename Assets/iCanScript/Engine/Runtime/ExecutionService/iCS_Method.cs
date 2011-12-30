@@ -8,7 +8,7 @@ public class iCS_Method : iCS_Function {
     // Properties
     // ----------------------------------------------------------------------
     object          myThis          = null;
-    iCS_Connection   myThisConnection= null;
+    iCS_Connection  myThisConnection= null;
 
     // ======================================================================
     // Accessors
@@ -31,7 +31,7 @@ public class iCS_Method : iCS_Function {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Method(string name, MethodInfo methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, methodInfo, layout) {
+    public iCS_Method(string name, MethodBase methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, methodInfo, layout) {
         Init(portIsOuts);
     }
     protected new void Init(bool[] portIsOuts) {

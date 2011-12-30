@@ -195,11 +195,10 @@ public class iCS_Reflection {
         bool[]   paramIsOut   = ParseParameterIsOuts(constructor);
         object[] paramDefaults= ParseParameterDefaults(constructor);
 
-        // TODO...
-//        iCS_DataBase.AddConstructor(company, package, displayName, toolTip, iconPath,
-//                                    classType, constructor,
-//                                    paramIsOut, paramNames, paramTypes, paramDefaults,
-//                                    retName, retType);
+        iCS_DataBase.AddConstructor(company, package, displayName, toolTip, iconPath,
+                                    classType, constructor,
+                                    paramIsOut, paramNames, paramTypes, paramDefaults,
+                                    retName, retType);
     }
     // ----------------------------------------------------------------------
     static void DecodeFunctionsAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
@@ -240,7 +239,7 @@ public class iCS_Reflection {
             }
             if(registerMethod) {
                 if(method.IsGenericMethod) {
-                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping "+method.Name+" from class "+className);
+//                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping "+method.Name+" from class "+className);
                     continue;
                 }
                 if(method.IsStatic) {

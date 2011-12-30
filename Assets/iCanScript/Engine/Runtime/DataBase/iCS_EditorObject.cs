@@ -99,6 +99,7 @@ public class iCS_EditorObject {
     public bool IsTransitionModule      { get { return WD.IsTransitionModule(this); }}
     public bool IsTransitionGuard       { get { return WD.IsTransitionGuard(this); }}
     public bool IsTransitionAction      { get { return WD.IsTransitionAction(this); }}
+    public bool IsConstructor           { get { return WD.IsConstructor(this); }}
     public bool IsStaticMethod          { get { return WD.IsStaticMethod(this); }}
     public bool IsInstanceMethod        { get { return WD.IsInstanceMethod(this); }}
     public bool IsConversion            { get { return WD.IsConversion(this); }}

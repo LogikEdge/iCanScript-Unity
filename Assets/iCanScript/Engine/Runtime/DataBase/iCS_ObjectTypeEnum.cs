@@ -3,12 +3,17 @@ using System.Collections;
 
 [System.Serializable]
 public enum iCS_ObjectTypeEnum {
-    Behaviour, Module, StateChart, State,
+    // Structural objects
+    Behaviour= 0, Module, StateChart, State,
+    // Function objects
+    Constructor=100,
     InstanceMethod, StaticMethod, 
     InstanceField, StaticField,
     Conversion,
-    TransitionModule, TransitionGuard, TransitionAction,
-    InFieldPort,         OutFieldPort,
+    // Transition objects
+    TransitionModule=200, TransitionGuard, TransitionAction,
+    // Port object
+    InFieldPort=300,     OutFieldPort,
     InPropertyPort,      OutPropertyPort,
     InFunctionPort,      OutFunctionPort,
     InDynamicModulePort, OutDynamicModulePort,
@@ -16,7 +21,8 @@ public enum iCS_ObjectTypeEnum {
     InStatePort,         OutStatePort,
     InTransitionPort,    OutTransitionPort,
     EnablePort,
-    Unknown
+    // Undefined
+    Unknown=1000
 }
 
 public static partial class WD {
@@ -24,6 +30,7 @@ public static partial class WD {
     public static bool IsModule               (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Module || IsTransitionGuard(obj) || IsTransitionAction(obj) || IsTransitionModule(obj); }
     public static bool IsStateChart           (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StateChart; }
     public static bool IsState                (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.State; }
+    public static bool IsConstructor          (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
     public static bool IsStaticMethod         (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticMethod; }
     public static bool IsInstanceMethod       (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMethod; }
     public static bool IsStaticField          (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticField; }
@@ -53,7 +60,7 @@ public static partial class WD {
     public static bool IsOutDataPort          (iCS_EditorObject obj) { return IsOutFieldPort(obj) || IsOutFunctionPort(obj) || IsOutModulePort(obj) || IsOutPropertyPort(obj); }
     public static bool IsInModulePort         (iCS_EditorObject obj) { return IsInDynamicModulePort(obj) || IsInStaticModulePort(obj); }
     public static bool IsOutModulePort        (iCS_EditorObject obj) { return IsOutDynamicModulePort(obj) || IsOutStaticModulePort(obj); }
-    public static bool IsNode                 (iCS_EditorObject obj) { return IsBehaviour(obj) || IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsMethod(obj) || IsConversion(obj) || IsField(obj); }
+    public static bool IsNode                 (iCS_EditorObject obj) { return IsBehaviour(obj) || IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsConstructor(obj) || IsMethod(obj) || IsConversion(obj) || IsField(obj); }
     public static bool IsDataPort             (iCS_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj); }
     public static bool IsDynamicModulePort    (iCS_EditorObject obj) { return IsInDynamicModulePort(obj) || IsOutDynamicModulePort(obj); }
     public static bool IsStaticModulePort     (iCS_EditorObject obj) { return IsInStaticModulePort(obj) || IsOutStaticModulePort(obj); }
