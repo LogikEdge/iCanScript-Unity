@@ -30,7 +30,14 @@ public class iCS_RuntimeDesc {
             if(ObjectType == iCS_ObjectTypeEnum.Constructor) {
                 method= ClassType.GetConstructor(ParamTypes);
                 if(method == null) {
-                    Debug.LogWarning("Unable to extract constructor for type: "+ClassType.Name);
+                    string signature="(";
+                    bool first= true;
+                    foreach(var param in PortTypes) {
+                        if(first) { first= false; } else { signature+=", "; }
+                        signature+= param.Name;
+                    }
+                    signature+=")";
+                    Debug.LogWarning("Unable to extract constructor: "+ClassType.Name+signature);
                 }
                 return method;
             }
@@ -93,6 +100,7 @@ public class iCS_RuntimeDesc {
                     Array.Copy(PortNames, result, result.Length);
                     break;
                 }
+                case iCS_ObjectTypeEnum.Constructor:
                 case iCS_ObjectTypeEnum.Conversion:
                 case iCS_ObjectTypeEnum.StaticMethod: {
                     result= new string[PortNames.Length-1];
@@ -121,6 +129,7 @@ public class iCS_RuntimeDesc {
                     Array.Copy(PortTypes, result, result.Length);
                     break;
                 }
+                case iCS_ObjectTypeEnum.Constructor:
                 case iCS_ObjectTypeEnum.Conversion:
                 case iCS_ObjectTypeEnum.StaticMethod: {
                     result= new Type[PortTypes.Length-1];

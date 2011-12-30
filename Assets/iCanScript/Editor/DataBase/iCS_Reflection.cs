@@ -153,7 +153,7 @@ public class iCS_Reflection {
         foreach(var constructor in classType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
             bool registerMethod= false;
             string displayName= className;
-            string returnName= "this";
+            string returnName= "";
             string toolTip= classToolTip;
             string iconPath= classIconPath;
             foreach(var constructorAttribute in constructor.GetCustomAttributes(true)) {
@@ -186,9 +186,6 @@ public class iCS_Reflection {
     }
     // ----------------------------------------------------------------------
     static void DecodeConstructor(string company, string package, string displayName, string toolTip, string iconPath, Type classType, ConstructorInfo constructor, string retName) {
-        // Parse return type.
-        Type retType= classType;
-
         // Parse parameters.
         string[] paramNames   = ParseParameterNames(constructor);
         Type[]   paramTypes   = ParseParameterTypes(constructor);
@@ -197,8 +194,7 @@ public class iCS_Reflection {
 
         iCS_DataBase.AddConstructor(company, package, displayName, toolTip, iconPath,
                                     classType, constructor,
-                                    paramIsOut, paramNames, paramTypes, paramDefaults,
-                                    retName, retType);
+                                    paramIsOut, paramNames, paramTypes, paramDefaults);
     }
     // ----------------------------------------------------------------------
     static void DecodeFunctionsAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {

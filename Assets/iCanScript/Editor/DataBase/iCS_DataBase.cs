@@ -207,12 +207,11 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     public static void AddConstructor(string company, string package, string displayName, string toolTip, string iconPath,
                                       Type classType, ConstructorInfo constructorInfo,
-                                      bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
-                                      string retName, Type retType) {
+                                      bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
         Add(company, package, displayName, toolTip, iconPath,
             iCS_ObjectTypeEnum.Constructor, classType, constructorInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
-            retName, retType);
+            null, null);
     }
     // ----------------------------------------------------------------------
     public static void AddStaticField(string company, string package, string displayName, string toolTip, string iconPath,
