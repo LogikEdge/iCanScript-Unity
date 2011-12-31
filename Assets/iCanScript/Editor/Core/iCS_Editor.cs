@@ -712,7 +712,7 @@ public class iCS_Editor : EditorWindow {
         iCS_EditorObject inParent= GetParentModule(inNode);
         iCS_EditorObject outParent= GetParentModule(outNode);
         // No need to create module ports if both connected nodes are under the same parent.
-        if(inParent == outParent) {
+        if(inParent == outParent || inParent == outNode || inNode == outParent) {
             Storage.SetSource(inPort, outPort, conversion);
             return;
         }
