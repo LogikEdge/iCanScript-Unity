@@ -24,7 +24,8 @@ public static class iCS_GuiUtilities {
 
     public static void OnInspectorGUI(iCS_EditorObject port, iCS_IStorage storage) {
         // Extract port information
-        Type dataType= iCS_Types.GetDataType(port.RuntimeType);
+		Type portType= port.RuntimeType;
+        Type dataType= iCS_Types.GetDataType(portType);
         iCS_EditorObject node= storage.GetParent(port);
         int portId= port.PortIndex;
         // Extract parent node information.
@@ -36,7 +37,7 @@ public static class iCS_GuiUtilities {
 
         // Display primitives.
         object newValue= null;
-        if(ShowInInspector(port.Name, dataType, portValue, out newValue)) {
+        if(ShowInInspector(port.Name, dataType, portType, portValue, out newValue)) {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(portValue != newValue && storage.GetSource(port) == null) {
                 storage.SetDefaultValue(desc, portId, newValue);
@@ -171,67 +172,77 @@ public static class iCS_GuiUtilities {
     }
 
     // -----------------------------------------------------------------------
-    public static bool ShowInInspector(string name, Type type, object currentValue, out object newValue) {
+    public static bool ShowInInspector(string name, Type dataType, Type portType, object currentValue, out object newValue) {
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
         // Display primitives.
-        if(type == typeof(bool)) {
+        if(dataType == typeof(bool)) {
             bool value= currentValue != null ? (bool)currentValue : default(bool);
             newValue= EditorGUILayout.Toggle(niceName, value);
             return true;
         }
-        if(type == typeof(int)) {
+        if(dataType == typeof(int)) {
             int value= currentValue != null ? (int)currentValue : default(int);
             newValue= EditorGUILayout.IntField(niceName, value);
             return true;
         }
-        if(type == typeof(float)) {
+        if(dataType == typeof(float)) {
             float value= currentValue != null ? (float)currentValue : default(float);
             newValue= EditorGUILayout.FloatField(niceName, value);
             return true;
         }
-        if(type == typeof(string)) {
+        if(dataType == typeof(string)) {
             string value= ((string)currentValue) ?? "";
             newValue= EditorGUILayout.TextField(niceName, value);
             return true;
         }
-        if(type == typeof(Vector2)) {
+        if(portType.IsArray && dataType == typeof(Char)) {
+            string value= currentValue != null ? new string(currentValue as char[]) : "";
+			Debug.Log("Before: "+value);
+            value= EditorGUILayout.TextField(niceName, value);
+			newValue= value.ToCharArray(); 
+			Debug.Log("After: "+new string(newValue as Char[]));
+            return true;				
+        }
+        if(dataType == typeof(Vector2)) {
             Vector2 value= currentValue != null ? (Vector2)currentValue : default(Vector2);
             newValue= EditorGUILayout.Vector2Field(niceName, value);
             return true;
         }
-        if(type == typeof(Vector3)) {
+        if(dataType == typeof(Vector3)) {
             Vector3 value= currentValue != null ? (Vector3)currentValue : default(Vector3);
             newValue= EditorGUILayout.Vector3Field(niceName, value);
             return true;
         }
-        if(type == typeof(Vector4)) {
+        if(dataType == typeof(Vector4)) {
             Vector4 value= currentValue != null ? (Vector4)currentValue : default(Vector4);
             newValue= EditorGUILayout.Vector4Field(niceName, value);
             return true;
         }
-        if(type == typeof(Color)) {
+        if(dataType == typeof(Color)) {
             Color value= currentValue != null ? (Color)currentValue : default(Color);
             newValue= EditorGUILayout.ColorField(niceName, value);
             return true;
         }
         // Suport all UnityEngine objects.
-        if(iCS_Types.IsA<UnityEngine.Object>(type)) {
+        if(iCS_Types.IsA<UnityEngine.Object>(dataType)) {
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
-            newValue= EditorGUILayout.ObjectField(niceName, value, type, true);
+            newValue= EditorGUILayout.ObjectField(niceName, value, dataType, true);
             return true;
         }        
-		if(type == typeof(object)) {
+		if(dataType == typeof(object)) {
 			bool changed= false;
 			object changedValue= null;
 			EditorGUILayout.BeginHorizontal();
 			if(currentValue != null) {
 				// use current object type.
-				changed= ShowInInspector(name, currentValue.GetType(), currentValue, out changedValue);
+				Type valueType= currentValue.GetType();
+				Type dataValueType= iCS_Types.GetDataType(valueType);
+				changed= ShowInInspector(name, dataValueType, valueType, currentValue, out changedValue);
 			} else {
 				EditorGUILayout.TextField(name);
 			}
 			// Select a type.
-			string[] derivedTypeNames= GetListOfDerivedTypeNames(type);
+			string[] derivedTypeNames= GetListOfDerivedTypeNames(dataType);
 			int idx= currentValue != null ? GetIndexOfType(currentValue.GetType(), derivedTypeNames) : 0;
 			int selection= EditorGUILayout.Popup(idx, derivedTypeNames);
 			if(selection != idx) {
