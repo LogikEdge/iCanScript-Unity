@@ -716,18 +716,6 @@ public class iCS_Editor : EditorWindow {
             Storage.SetSource(inPort, outPort, conversion);
             return;
         }
-        if(inParent == null) {
-            iCS_EditorObject newPort= Storage.CreatePort(inPort.Name, inParent.InstanceId, inPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-            Storage.SetSource(inPort, newPort, conversion);
-            SetNewDataConnection(newPort, outPort);
-            return;           
-        }
-        if(outParent == null) {
-            iCS_EditorObject newPort= Storage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-            Storage.SetSource(newPort, outPort, conversion);
-            SetNewDataConnection(inPort, newPort);
-            return;                       
-        }
         // Create inPort if inParent is not part of the outParent hierarchy.
         bool inParentSeen= false;
         for(iCS_EditorObject op= GetParentModule(outParent); op != null; op= GetParentModule(op)) {
