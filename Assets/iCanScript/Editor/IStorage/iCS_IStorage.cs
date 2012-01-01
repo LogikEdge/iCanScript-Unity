@@ -207,29 +207,29 @@ public partial class iCS_IStorage {
         return id;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CloneInstance(iCS_EditorObject toClone, iCS_IStorage cloneStorage, iCS_EditorObject parent, Vector2 initialPos) {
+    public iCS_EditorObject CopyFrom(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_EditorObject destParent, Vector2 initialPos) {
         // Create new EditorObject
-        Rect parentPos= IsValid(parent) ? GetPosition(parent) : new Rect(0,0,0,0);
+        Rect parentPos= IsValid(destParent) ? GetPosition(destParent) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
-        iCS_EditorObject instance= CloneInstance(toClone, cloneStorage, parent, localPos, xlat);
-        ReconnectClone(toClone, cloneStorage, xlat);
+        iCS_EditorObject instance= CopyFrom(srcObj, srcStorage, destParent, localPos, xlat);
+        ReconnectCopy(srcObj, srcStorage, xlat);
         return instance;
     }
-    iCS_EditorObject CloneInstance(iCS_EditorObject toClone, iCS_IStorage cloneStorage, iCS_EditorObject parent, Rect localPos, List<Prelude.Tuple<int,int>> xlat) {
+    iCS_EditorObject CopyFrom(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_EditorObject destParent, Rect localPos, List<Prelude.Tuple<int,int>> xlat) {
         // Create new EditorObject
         int id= GetNextAvailableId();
-        xlat.Add(new Prelude.Tuple<int,int>(toClone.InstanceId, id));
-        this[id]= iCS_EditorObject.Clone(id, toClone, parent, localPos);
-        this[id].IconGUID= toClone.IconGUID;
-        this[id].RuntimeArchive= toClone.RuntimeArchive;
-        cloneStorage.ForEachChild(toClone,
-            child=> CloneInstance(child, cloneStorage, this[id], child.LocalPosition, xlat)
+        xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
+        this[id]= iCS_EditorObject.Clone(id, srcObj, destParent, localPos);
+        this[id].IconGUID= srcObj.IconGUID;
+		RemoveReferenceInitialValues(this[id]);
+        srcStorage.ForEachChild(srcObj,
+            child=> CopyFrom(child, srcStorage, this[id], child.LocalPosition, xlat)
         );
         return this[id];
     }
-    void ReconnectClone(iCS_EditorObject toClone, iCS_IStorage cloneStorage, List<Prelude.Tuple<int,int>> xlat) {
-        cloneStorage.ForEachRecursive(toClone,
+    void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, List<Prelude.Tuple<int,int>> xlat) {
+        srcStorage.ForEachRecursive(srcObj,
             child=> {
                 if(child.Source != -1) {
                     int id= -1;
@@ -251,7 +251,17 @@ public partial class iCS_IStorage {
             }
         );
     }
-    
+    void RemoveReferenceInitialValues(iCS_EditorObject obj) {
+		if(!obj.IsNode || obj.RuntimeArchive == null || obj.RuntimeArchive == "") return;
+		iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(obj.RuntimeArchive);
+		for(int i= 0; i < rtDesc.PortTypes.Length; ++i) {
+			Type type= rtDesc.PortTypes[i];
+			if(type != null && iCS_Types.IsA<UnityEngine.Object>(type)) {
+				rtDesc.PortDefaultValues[i]= null;
+			}
+		}
+		obj.RuntimeArchive= rtDesc.Encode(obj.InstanceId);
+	}
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateBehaviour() {
         // Create the function node.

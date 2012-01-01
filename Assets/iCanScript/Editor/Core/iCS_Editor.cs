@@ -424,7 +424,7 @@ public class iCS_Editor : EditorWindow {
                 go.AddComponent("iCS_Library");
                 iCS_Library library= go.GetComponent<iCS_Library>();
                 iCS_IStorage iStorage= new iCS_IStorage(library);
-                iStorage.CloneInstance(node, Storage, null, Vector2.zero);
+                iStorage.CopyFrom(node, Storage, null, Vector2.zero);
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
                 DragAndDrop.StartDrag(node.Name);
@@ -909,14 +909,14 @@ public class iCS_Editor : EditorWindow {
         }
     }
 	// ----------------------------------------------------------------------
-    void PasteIntoGraph(Vector2 point, iCS_Storage pasteStorage, iCS_EditorObject pasteRoot) {
-        if(pasteRoot == null) return;
-        iCS_EditorObject parent= GetValidParentNodeUnder(point, pasteRoot.ObjectType, pasteRoot.Name);
+    void PasteIntoGraph(Vector2 point, iCS_Storage sourceStorage, iCS_EditorObject sourceRoot) {
+        if(sourceRoot == null) return;
+        iCS_EditorObject parent= GetValidParentNodeUnder(point, sourceRoot.ObjectType, sourceRoot.Name);
         if(parent == null) {
             EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");
             return;
         }
-        iCS_EditorObject pasted= Storage.CloneInstance(pasteRoot, new iCS_IStorage(pasteStorage), parent, point);
+        iCS_EditorObject pasted= Storage.CopyFrom(sourceRoot, new iCS_IStorage(sourceStorage), parent, point);
         Storage.Fold(pasted);
     }
 

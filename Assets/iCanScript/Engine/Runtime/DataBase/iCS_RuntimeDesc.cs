@@ -427,7 +427,7 @@ public class iCS_RuntimeDesc {
         PortDefaultValues= portDefaults.ToArray();
     }
     // ----------------------------------------------------------------------
-	void DisplayEncoded(string msg, string encoded) {
+	public static void DisplayEncoded(string msg, string encoded) {
 		string toDisplay= "";
 		for(int i=0; i < encoded.Length; ++i) {
 			if(encoded[i] == '\n') {
