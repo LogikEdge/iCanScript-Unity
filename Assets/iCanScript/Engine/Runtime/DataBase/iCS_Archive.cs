@@ -11,6 +11,16 @@ public class iCS_Archive {
 		return Encode(obj, obj.GetType());
 	}
     public static string Encode(object obj, Type expectedType) {
+		if(expectedType.IsArray) {
+			Type expectedDataType= iCS_Types.GetDataType(expectedType);
+			Array array= obj as Array;
+			string result= "{"+Encode(array.Length, typeof(int));
+			for(int i= 0; i < array.Length; ++i) {
+				result+= Encode(array.GetValue(i), expectedDataType);
+			}
+			result+= "}\n";
+			return null;
+		}
 		if(obj is Type) {
 			Type type= obj as Type;
 	        return "{"+type.AssemblyQualifiedName+"}\n";
@@ -81,6 +91,15 @@ public class iCS_Archive {
     }
 	// ----------------------------------------------------------------------
     public static object DecodeNoMarkers(string valueStr, Type type) {
+		if(type.IsArray) {
+			Type dataType= iCS_Types.GetDataType(type);
+			int len= Decode<int>(valueStr);
+			Array array= Array.CreateInstance(dataType, len);
+			for(int i= 0; i < len; ++i) {
+				array.SetValue(Decode(valueStr, dataType), i);
+			}
+			return array;
+		}
         if(type == typeof(Type)) {
             return Type.GetType(valueStr);
         }
