@@ -18,21 +18,21 @@ public class iCS_Archive {
 			for(int i= 0; i < array.Length; ++i) {
 				result+= Encode(array.GetValue(i), expectedDataType);
 			}
-			result+= "}\n";
+			result+= "}";
 			return null;
 		}
 		if(obj is Type) {
 			Type type= obj as Type;
-	        return "{"+type.AssemblyQualifiedName+"}\n";
+	        return "{"+type.AssemblyQualifiedName+"}";
 		}
 		// Put type override if type is not the expected type.
         Type objType= obj.GetType();
 		if(objType != expectedType) {
-			return "{"+Encode(objType, typeof(Type))+Encode(obj, objType)+"}\n";
+			return "{"+Encode(objType, typeof(Type))+Encode(obj, objType)+"}";
 		}
         if(objType.IsEnum) {
             int enumValue= (int)obj;
-            return "{"+enumValue.ToString()+"("+obj.ToString()+")}\n";
+            return "{"+enumValue.ToString()+"("+obj.ToString()+")}";
         }
         if(objType == typeof(string)) {
             string value= obj as string;
@@ -53,23 +53,23 @@ public class iCS_Archive {
                     }
                 }
             }
-            return encoded+"\"}\n";
+            return encoded+"\"}";
         }
         if(objType == typeof(Vector2)) {
             Vector2 v= (Vector2)obj;
-            return "{("+v.x+","+v.y+")}\n";
+            return "{("+v.x+","+v.y+")}";
         }
         if(objType == typeof(Vector3)) {
             Vector3 v= (Vector3)obj;
-            return "{("+v.x+","+v.y+","+v.z+")}\n";
+            return "{("+v.x+","+v.y+","+v.z+")}";
         }
         if(objType == typeof(Vector4)) {
             Vector4 v= (Vector4)obj;
-            return "{("+v.x+","+v.y+","+v.z+","+v.w+")}\n";
+            return "{("+v.x+","+v.y+","+v.z+","+v.w+")}";
         }
         // Use converter for all remaining types.
         try {
-            return "{"+(string)Convert.ChangeType(obj, typeof(string))+"}\n";            
+            return "{"+(string)Convert.ChangeType(obj, typeof(string))+"}";            
         }
         catch(Exception) {
 //            Debug.LogWarning("Unable to encode object of type: "+objType.Name);
@@ -202,26 +202,20 @@ public class iCS_Archive {
 	// ----------------------------------------------------------------------
 	public static string RemoveMarkers(string toDecode) {
 		int len= toDecode.Length;
-		if(toDecode[0] != '{' || toDecode[len-2] != '}' || toDecode[len-1] != '\n') {
+		if(toDecode[0] != '{' || toDecode[len-1] != '}') {
 			Debug.LogError("Decode: formatting error: encoded string does not have the proper markers {...}");			
 			Debug.Log("Decode string is: "+toDecode);
 			return null;
 		}
-		return toDecode.Substring(1, len-3);
+		return toDecode.Substring(1, len-2);
 	}
 	// ----------------------------------------------------------------------
 	static int FindDecodeEnd(string encoded) {
 		int i;
 		for(i= 0; i < encoded.Length; ++i) {
-			if(encoded[i] == '\n') {
-				if(i == 0) {
-					++i;
-					break;
-				}
-				if(encoded[i-1] == '}') {
-					++i;
-					break;
-				}
+			if(encoded[i] == '}') {
+				++i;
+				break;
 			}
 		}
 		return i;		
