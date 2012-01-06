@@ -334,18 +334,17 @@ public class iCS_RuntimeDesc {
     public iCS_RuntimeDesc Decode(string encoded) {
         // object id
 //        Debug.Log("Decoding object id=> "+encoded);
-        int end= encoded.IndexOf(':');
-        Id= iCS_Archive.Decode<int>(encoded.Substring(0, end));
-        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+		Id= iCS_Archive.Decode<int>(ref encoded);
+		if(encoded[0] != ':') { DecodeError("Id"); return this; }
+        encoded= encoded.Substring(1);
         // object type
 //        Debug.Log("Decoding object type=> "+encoded);
-        end= encoded.IndexOf(':');
-        string objectTypeStr= encoded.Substring(0, end);
-        ObjectType= iCS_Archive.Decode<iCS_ObjectTypeEnum>(objectTypeStr);
-        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+		ObjectType= iCS_Archive.Decode<iCS_ObjectTypeEnum>(ref encoded);
+		if(encoded[0] != ':') { DecodeError("Object type"); return this; }
+        encoded= encoded.Substring(1);
         // company
 //        Debug.Log("Decoding company=> "+encoded);
-        end= encoded.IndexOf(':');
+        int end= encoded.IndexOf(':');
         Company= encoded.Substring(0, end);
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // package
@@ -355,15 +354,14 @@ public class iCS_RuntimeDesc {
         encoded= encoded.Substring(end+1, encoded.Length-end-1);
         // display name
 //        Debug.Log("Decoding name=> "+encoded);
-        end= encoded.IndexOf(':');
-        DisplayName= iCS_Archive.Decode<string>(encoded.Substring(0, end));
-        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+		DisplayName= iCS_Archive.Decode<string>(ref encoded);
+		if(encoded[0] != ':') { DecodeError("Display Name"); return this; }
+        encoded= encoded.Substring(1);
         // class type
 //        Debug.Log("Decoding class type=> "+encoded);
-        end= encoded.IndexOf(':');
-        string className= encoded.Substring(0, end);
-        ClassType= iCS_Archive.Decode<Type>(className);
-        encoded= encoded.Substring(end+1, encoded.Length-end-1);
+        ClassType= iCS_Archive.Decode<Type>(ref encoded);
+		if(encoded[0] != ':') { DecodeError("Class Type"); return this; }
+        encoded= encoded.Substring(1);
         // method name
 //        Debug.Log("Decoding method name=> "+encoded);
         end= encoded.IndexOf('<');
@@ -406,16 +404,15 @@ public class iCS_RuntimeDesc {
                 paramStr= paramStr.Substring(end+1, paramStr.Length-end-1);                
             }
             // parameter type.
-            end= paramStr.IndexOf(';');
-            Type portType= iCS_Archive.Decode<Type>(paramStr.Substring(0, end > 0 ? end : paramStr.Length));
+            Type portType= iCS_Archive.Decode<Type>(ref paramStr);
             portTypes.Add(portType);
-            paramStr= end > 0 ? paramStr.Substring(end+1, paramStr.Length-end-1) : "";
+			if(paramStr[0] == ';') paramStr= paramStr.Substring(1);
             // parameter default value (part 2)
             if(defaultValueStr != null) {
                 if(iCS_Types.IsA<UnityEngine.Object>(portType)) {
-                    portDefaults.Add(iCS_Archive.Decode(defaultValueStr, typeof(int)));
+                    portDefaults.Add(iCS_Archive.Decode(ref defaultValueStr, typeof(int)));
                 } else {
-                    portDefaults.Add(iCS_Archive.Decode(defaultValueStr, portType));                    
+                    portDefaults.Add(iCS_Archive.Decode(ref defaultValueStr, portType));                    
                 }
             } else {
                 portDefaults.Add(iCS_Types.DefaultValue(portType));                
@@ -426,6 +423,10 @@ public class iCS_RuntimeDesc {
         PortNames = portNames.ToArray();
         PortDefaultValues= portDefaults.ToArray();
     }
+    // ----------------------------------------------------------------------
+	public static void DecodeError(string message) {
+		Debug.LogWarning("iCanScript: Runtime Descriptor decoding error: "+message);
+	}
     // ----------------------------------------------------------------------
 	public static void DisplayEncoded(string msg, string encoded) {
 		string toDisplay= "";
