@@ -95,6 +95,7 @@ public class iCS_Archive {
 		SkipDecode(ref valueStr);
 		return result;
 	}
+
 	// ----------------------------------------------------------------------
     static object DecodeNoMarkers(ref string valueStr, Type type) {
 		if(type.IsArray) {
