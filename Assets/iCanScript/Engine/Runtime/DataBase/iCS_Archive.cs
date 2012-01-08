@@ -11,7 +11,8 @@ public class iCS_Archive {
 		return Encode(obj, obj.GetType());
 	}
     public static string Encode(object obj, Type expectedType) {
-		return "{"+EncodeNoMarkers(obj, obj.GetType())+"}";
+		string encoded= EncodeNoMarkers(obj, obj.GetType());
+		return "{"+encoded.Length.ToString()+':'+encoded+"}";
 	}
     static string EncodeNoMarkers(object obj, Type expectedType) {
 		if(expectedType.IsArray) {
@@ -90,14 +91,16 @@ public class iCS_Archive {
 			SkipDecode(ref valueStr);
 			return null;
 		}
-		valueStr= valueStr.Substring(1);
-		object result= DecodeNoMarkers(ref valueStr, type);
-		SkipDecode(ref valueStr);
+		int end= valueStr.IndexOf(':');
+		int size= (int)Convert.ChangeType(valueStr.Substring(1,end-1), typeof(int));
+		string toDecode= valueStr.Substring(end+1,size);
+		object result= DecodeNoMarkers(toDecode, type);
+		valueStr= valueStr.Substring(end+size+2);
 		return result;
 	}
 
 	// ----------------------------------------------------------------------
-    static object DecodeNoMarkers(ref string valueStr, Type type) {
+    static object DecodeNoMarkers(string valueStr, Type type) {
 		if(type.IsArray) {
 			Type dataType= iCS_Types.GetDataType(type);
 			int len= Decode<int>(ref valueStr);
@@ -115,6 +118,8 @@ public class iCS_Archive {
 			Type objType= Decode<Type>(ref valueStr);
 			return Decode(ref valueStr, objType);
 		}
+		// Now we are only interrested in the data type.
+		type= iCS_Types.GetDataType(type);
         if(type == typeof(string)) {
 			if(valueStr[0] != '"') {
 	            Debug.LogWarning("iCanScript: Format error when decoding string: string does not start with \"");
@@ -187,12 +192,16 @@ public class iCS_Archive {
     }
 	// ----------------------------------------------------------------------
     static bool DecodeWithSeperator<T>(ref string valueStr, char seperator, out T value) {
-        value= (T)DecodeNoMarkers(ref valueStr, typeof(T));
-        if(valueStr[0] != seperator) {
-			Debug.LogWarning("iCanScript: Decode: Invalid "+typeof(T).Name+" format !!!");
-			value= default(T);
-			return false;
+		int end= valueStr.IndexOf(seperator);
+		string toDecode= "";
+		if(end < 0) {
+			toDecode= valueStr;
+			valueStr= "";
+		} else {
+			toDecode= valueStr.Substring(0, end);
+			valueStr= valueStr.Substring(end+1);
 		}
+        value= (T)DecodeNoMarkers(toDecode, typeof(T));
         return true;
     }
 	// ----------------------------------------------------------------------

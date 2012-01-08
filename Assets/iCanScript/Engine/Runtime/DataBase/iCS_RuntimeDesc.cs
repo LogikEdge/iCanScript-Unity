@@ -311,7 +311,7 @@ public class iCS_RuntimeDesc {
         string result= iCS_Archive.Encode(id)+":"+iCS_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+iCS_Archive.Encode(DisplayName ?? "")+":"+iCS_Archive.Encode(ClassType)+":"+MethodName+"<";
         for(int i= 0; i < PortTypes.Length; ++i) {
             if(PortIsOuts[i]) result+= "out ";
-            result+= PortNames[i];
+            result+= PortNames[i]+":"+iCS_Archive.Encode(PortTypes[i]);
             if(PortDefaultValues[i] != null) {
                 if(iCS_Types.IsA<UnityEngine.Object>(PortTypes[i])) {
                     result+= ":="+iCS_Archive.Encode((int)PortDefaultValues[i]);
@@ -322,7 +322,6 @@ public class iCS_RuntimeDesc {
                     }
                 }
             }
-            result+= ":"+iCS_Archive.Encode(PortTypes[i]);
             if(i != PortTypes.Length-1) result+= ";";
         }
         result+=">{}";
@@ -395,28 +394,26 @@ public class iCS_RuntimeDesc {
             // parameter name
             end= paramStr.IndexOf(':');
             portNames.Add(paramStr.Substring(0, end));
-            paramStr= paramStr.Substring(end+1, paramStr.Length-end-1);
-            // parameter default value (part 1)
-            string defaultValueStr= null;
-            if(paramStr.StartsWith("=")) {
-                end= paramStr.IndexOf(':');
-                defaultValueStr= paramStr.Substring(1, end-1);
-                paramStr= paramStr.Substring(end+1, paramStr.Length-end-1);                
-            }
+            paramStr= paramStr.Substring(end+1);
             // parameter type.
             Type portType= iCS_Archive.Decode<Type>(ref paramStr);
             portTypes.Add(portType);
-			if(paramStr[0] == ';') paramStr= paramStr.Substring(1);
-            // parameter default value (part 2)
-            if(defaultValueStr != null) {
+            // parameter default value (part 1)
+			object initialValue= null;
+            if(paramStr.StartsWith(":=")) {
+				paramStr= paramStr.Substring(2);
                 if(iCS_Types.IsA<UnityEngine.Object>(portType)) {
-                    portDefaults.Add(iCS_Archive.Decode(ref defaultValueStr, typeof(int)));
+                    initialValue= iCS_Archive.Decode(ref paramStr, typeof(int));
                 } else {
-                    portDefaults.Add(iCS_Archive.Decode(ref defaultValueStr, portType));                    
+                    initialValue= iCS_Archive.Decode(ref paramStr, portType);                    
                 }
+            }
+            if(initialValue != null) {
+                portDefaults.Add(initialValue);
             } else {
                 portDefaults.Add(iCS_Types.DefaultValue(portType));                
             }
+			if(paramStr.Length > 0 && paramStr[0] == ';') paramStr= paramStr.Substring(1);
         }
         PortIsOuts= portIsOut.ToArray();
         PortTypes = portTypes.ToArray();
