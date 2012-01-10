@@ -11,10 +11,6 @@ public class iCS_Archive {
 		return Encode(obj, obj.GetType());
 	}
     public static string Encode(object obj, Type expectedType) {
-        iCS_Coder coder= new iCS_Coder();
-        coder.Encode(obj, "key");
-        Debug.Log("Coder: "+coder.Archive);
-        
 		string encoded= EncodeNoMarkers(obj, obj.GetType());
 		return "{"+encoded.Length.ToString()+':'+encoded+"}";
 	}

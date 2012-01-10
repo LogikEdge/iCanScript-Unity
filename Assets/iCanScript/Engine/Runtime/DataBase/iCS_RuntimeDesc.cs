@@ -1,9 +1,13 @@
 using UnityEngine;
 using System;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
+[Serializable()]
 public class iCS_RuntimeDesc {
     // ======================================================================
     // Fields
@@ -217,6 +221,35 @@ public class iCS_RuntimeDesc {
         }
     }
     
+    bool CheckSerialization() {
+        iCS_Coder coder= new iCS_Coder();
+        coder.EncodeObject("rtDesc", this);
+        string archive= coder.Archive;
+        coder.Archive= archive;
+        iCS_RuntimeDesc rtDesc= coder.DecodeObjectForKey("rtDesc") as iCS_RuntimeDesc;
+        Debug.Log("New Size: "+archive.Length);
+        Debug.Log("Encoded: "+archive);
+        if(rtDesc.Id != Id) {
+            Debug.LogWarning("Different Id");
+        }
+        if(rtDesc.ObjectType != ObjectType) {
+            Debug.LogWarning("Different ObjectType");
+        }
+        if(rtDesc.Company != Company) {
+            Debug.LogWarning("Different Company: Expected: "+Company+" Received: "+rtDesc.Company);
+        }
+        if(rtDesc.Package != Package) {
+            Debug.LogWarning("Different Package");
+        }
+        if(rtDesc.DisplayName != DisplayName) {
+            Debug.LogWarning("Different DisplayName");
+        }
+        if(rtDesc.ClassType != ClassType) {
+            Debug.LogWarning("Different ClassType");
+        }
+        return true;
+    }
+    
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
@@ -308,6 +341,8 @@ public class iCS_RuntimeDesc {
     // Encode the runtime descriptor into a string.
     // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>
     public string Encode(int id) {
+        CheckSerialization();
+        
         string result= iCS_Archive.Encode(id)+":"+iCS_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+iCS_Archive.Encode(DisplayName ?? "")+":"+iCS_Archive.Encode(ClassType)+":"+MethodName+"<";
         for(int i= 0; i < PortTypes.Length; ++i) {
             if(PortIsOuts[i]) result+= "out ";
@@ -326,6 +361,7 @@ public class iCS_RuntimeDesc {
         }
         result+=">{}";
 //        DisplayEncoded("Encode: ",result);
+        Debug.Log("Current size: "+result.Length);
         return result;
     }
     // ----------------------------------------------------------------------
