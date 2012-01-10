@@ -233,7 +233,7 @@ public class iCS_RuntimeDesc {
             Debug.LogWarning("Different Id");
         }
         if(rtDesc.ObjectType != ObjectType) {
-            Debug.LogWarning("Different ObjectType");
+            Debug.LogWarning("Different ObjectType: Expected: "+ObjectType.ToString()+" Received: "+rtDesc.ObjectType.ToString());
         }
         if(rtDesc.Company != Company) {
             Debug.LogWarning("Different Company: Expected: "+Company+" Received: "+rtDesc.Company);
@@ -242,12 +242,13 @@ public class iCS_RuntimeDesc {
             Debug.LogWarning("Different Package");
         }
         if(rtDesc.DisplayName != DisplayName) {
-            Debug.LogWarning("Different DisplayName");
+            Debug.LogWarning("Different DisplayName: Expected: "+DisplayName+" Received: "+rtDesc.DisplayName);
         }
         if(rtDesc.ClassType != ClassType) {
             Debug.LogWarning("Different ClassType");
         }
         return true;
+
     }
     
     // ======================================================================

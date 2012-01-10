@@ -41,6 +41,7 @@ public class iCS_Coder {
                 string valueStr= ExtractFromArchive(ref value);
                 myDictionary.Add(key, new Prelude.Tuple<string,string>(valueType, valueStr));
     			if(value[0] != '}') { DecodeError('}', value); return; }
+                value= value.Substring(1);
             }
 		}
 	}
@@ -185,7 +186,7 @@ public class iCS_Coder {
     // Decoding
 	// ----------------------------------------------------------------------
     public object DecodeObjectForKey(string key) {
-        if(!myDictionary.ContainsKey(key)) return null;
+        if(!myDictionary.ContainsKey(key)) { return null; }
         Prelude.Tuple<string,string> tuple= myDictionary[key];
         Type valueType= DecodeType(tuple.Item1);
         string valueStr= tuple.Item2;
