@@ -25,7 +25,7 @@ public static class iCS_GuiUtilities {
     public static void OnInspectorGUI(iCS_EditorObject port, iCS_IStorage storage) {
         // Extract port information
 		Type portType= port.RuntimeType;
-        Type dataType= iCS_Types.GetDataType(portType);
+        Type dataType= iCS_Types.GetElementType(portType);
         iCS_EditorObject node= storage.GetParent(port);
         int portId= port.PortIndex;
         // Extract parent node information.
@@ -236,7 +236,7 @@ public static class iCS_GuiUtilities {
 			if(currentValue != null) {
 				// use current object type.
 				Type valueType= currentValue.GetType();
-				Type dataValueType= iCS_Types.GetDataType(valueType);
+				Type dataValueType= iCS_Types.GetElementType(valueType);
 				changed= ShowInInspector(name, dataValueType, valueType, currentValue, out changedValue);
 			} else {
 				EditorGUILayout.TextField(name);

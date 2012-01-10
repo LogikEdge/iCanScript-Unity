@@ -11,12 +11,16 @@ public class iCS_Archive {
 		return Encode(obj, obj.GetType());
 	}
     public static string Encode(object obj, Type expectedType) {
+        iCS_Coder coder= new iCS_Coder();
+        coder.Encode(obj, "key");
+        Debug.Log("Coder: "+coder.Archive);
+        
 		string encoded= EncodeNoMarkers(obj, obj.GetType());
 		return "{"+encoded.Length.ToString()+':'+encoded+"}";
 	}
     static string EncodeNoMarkers(object obj, Type expectedType) {
 		if(expectedType.IsArray) {
-			Type expectedDataType= iCS_Types.GetDataType(expectedType);
+			Type expectedDataType= iCS_Types.GetElementType(expectedType);
 			Array array= obj as Array;
 			string result= Encode(array.Length, typeof(int));
 			for(int i= 0; i < array.Length; ++i) {
@@ -101,7 +105,7 @@ public class iCS_Archive {
 	// ----------------------------------------------------------------------
     static object DecodeNoMarkers(string valueStr, Type type) {
 		if(type.IsArray) {
-			Type dataType= iCS_Types.GetDataType(type);
+			Type dataType= iCS_Types.GetElementType(type);
 			int len= Decode<int>(ref valueStr);
 			Array array= Array.CreateInstance(dataType, len);
 			for(int i= 0; i < len; ++i) {
@@ -118,7 +122,7 @@ public class iCS_Archive {
 			return Decode(ref valueStr, objType);
 		}
 		// Now we are only interrested in the data type.
-		type= iCS_Types.GetDataType(type);
+		type= iCS_Types.GetElementType(type);
         if(type == typeof(string)) {
 			if(valueStr[0] != '"') {
 	            Debug.LogWarning("iCanScript: Format error when decoding string: string does not start with \"");

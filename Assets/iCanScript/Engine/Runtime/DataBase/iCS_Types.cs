@@ -17,24 +17,30 @@ public static class iCS_Types {
     
     // ----------------------------------------------------------------------
     // Returns the default value of the given type.
+    public static object CreateInstance(Type type) {
+       return (type == null || type == typeof(void)) ? null : Activator.CreateInstance(type);
+    }
+
+    // ----------------------------------------------------------------------
+    // Returns the default value of the given type.
     public static object DefaultValue(Type type) {
        return (type == null || type == typeof(void)) ? null : (type.IsValueType ? Activator.CreateInstance(type) : null);
     }
 
 	// ----------------------------------------------------------------------
     public static bool CanBeConnectedWithoutConversion(Type outType, Type inType) {
-        Type inDataType= GetDataType(inType);
-        Type outDataType= GetDataType(outType);
+        Type inDataType= GetElementType(inType);
+        Type outDataType= GetElementType(outType);
         return IsA(inDataType, outDataType);
     }
 	// ----------------------------------------------------------------------
     public static bool CanBeConnectedWithUpConversion(Type outType, Type inType) {
-        Type inDataType= GetDataType(inType);
-        Type outDataType= GetDataType(outType);
+        Type inDataType= GetElementType(inType);
+        Type outDataType= GetElementType(outType);
         return IsA(outDataType, inDataType);
     }
 	// ----------------------------------------------------------------------
-    public static Type GetDataType(Type t) {
+    public static Type GetElementType(Type t) {
         return t.HasElementType ? t.GetElementType() : t;
     }
 	// ----------------------------------------------------------------------
