@@ -98,7 +98,6 @@ public class iCS_Archive {
 		valueStr= valueStr.Substring(end+size+2);
 		return result;
 	}
-
 	// ----------------------------------------------------------------------
     static object DecodeNoMarkers(string valueStr, Type type) {
 		if(type.IsArray) {
