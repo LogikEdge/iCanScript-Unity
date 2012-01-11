@@ -13,11 +13,12 @@ public class iCS_Coder {
     // ======================================================================
     // Compression constants.
 	// ----------------------------------------------------------------------
-	const string DefaultTypeStr   = ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
-	const string AssemblyStr      = ", Assembly-";
-	const string VersionStr       = ", Version=";
-	const string CultureStr       = ", Culture=neutral";
-	const string PublicKeyTokenStr= ", PublicKeyToken=";
+	const string DefaultTypeStr    = ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
+	const string UnityEngineTypeStr= ", UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
+	const string AssemblyStr       = ", Assembly-";
+	const string VersionStr        = ", Version=";
+	const string CultureStr        = ", Culture=neutral";
+	const string PublicKeyTokenStr = ", PublicKeyToken=";
 	
     // ======================================================================
     // Construction/Destruction
@@ -299,23 +300,27 @@ public class iCS_Coder {
 		// Try to compress type string.
 		int defaultTypeIdx= typeAsString.IndexOf(DefaultTypeStr);
 		if(defaultTypeIdx > 0) {
-			return typeAsString.Substring(0, defaultTypeIdx)+"&&"+typeAsString.Substring(defaultTypeIdx+DefaultTypeStr.Length);
+			return typeAsString.Substring(0, defaultTypeIdx)+"!!"+typeAsString.Substring(defaultTypeIdx+DefaultTypeStr.Length);
+		}
+		int unityEngineTypeIdx= typeAsString.IndexOf(UnityEngineTypeStr);
+		if(unityEngineTypeIdx > 0) {
+			return typeAsString.Substring(0, unityEngineTypeIdx)+"!#"+typeAsString.Substring(unityEngineTypeIdx+UnityEngineTypeStr.Length);
 		}
 		int assemblyIdx= typeAsString.IndexOf(AssemblyStr);
 		if(assemblyIdx > 0) {
-			typeAsString= typeAsString.Substring(0, assemblyIdx)+"&%"+typeAsString.Substring(assemblyIdx+AssemblyStr.Length);
+			typeAsString= typeAsString.Substring(0, assemblyIdx)+"!%"+typeAsString.Substring(assemblyIdx+AssemblyStr.Length);
 		}
 		int versionIdx= typeAsString.IndexOf(VersionStr);
 		if(versionIdx > 0) {
-			typeAsString= typeAsString.Substring(0,versionIdx)+"&!"+typeAsString.Substring(versionIdx+VersionStr.Length);
+			typeAsString= typeAsString.Substring(0,versionIdx)+"!&"+typeAsString.Substring(versionIdx+VersionStr.Length);
 		}
 		int cultureIdx= typeAsString.IndexOf(CultureStr);
 		if(cultureIdx > 0) {
-			typeAsString= typeAsString.Substring(0,cultureIdx)+"&$"+typeAsString.Substring(cultureIdx+CultureStr.Length);
+			typeAsString= typeAsString.Substring(0,cultureIdx)+"!$"+typeAsString.Substring(cultureIdx+CultureStr.Length);
 		}
 		int publicKeyIdx= typeAsString.IndexOf(PublicKeyTokenStr);
 		if(publicKeyIdx > 0) {
-			typeAsString= typeAsString.Substring(0,publicKeyIdx)+"&^"+typeAsString.Substring(publicKeyIdx+PublicKeyTokenStr.Length);
+			typeAsString= typeAsString.Substring(0,publicKeyIdx)+"!^"+typeAsString.Substring(publicKeyIdx+PublicKeyTokenStr.Length);
 		}
 		return typeAsString;
 	}
@@ -675,25 +680,29 @@ public class iCS_Coder {
 		if(value == "iSt") return typeof(iCS_State);
 		if(value == "iSC") return typeof(iCS_StateChart);
 		// Decompress type string.
-		int defaultTypeIdx= value.IndexOf("&&");
+		int defaultTypeIdx= value.IndexOf("!!");
 		if(defaultTypeIdx > 0) {
 			return Type.GetType(value.Substring(0, defaultTypeIdx)+DefaultTypeStr+value.Substring(defaultTypeIdx+2));
 		}
-		int assemblyIdx= value.IndexOf("&%");
+		int unityEngineTypeIdx= value.IndexOf("!#");
+		if(unityEngineTypeIdx > 0) {
+			return Type.GetType(value.Substring(0, unityEngineTypeIdx)+UnityEngineTypeStr+value.Substring(unityEngineTypeIdx+2));
+		}
+		int assemblyIdx= value.IndexOf("!%");
 		if(assemblyIdx > 0) {
-			value= value.Substring(0, assemblyIdx)+AssemblyStr+value.Substring(assemblyIdx+1);
+			value= value.Substring(0, assemblyIdx)+AssemblyStr+value.Substring(assemblyIdx+2);
 		}
-		int versionIdx= value.IndexOf("&!");
+		int versionIdx= value.IndexOf("!&");
 		if(versionIdx > 0) {
-			value= value.Substring(0, versionIdx)+VersionStr+value.Substring(versionIdx+1);			
+			value= value.Substring(0, versionIdx)+VersionStr+value.Substring(versionIdx+2);			
 		}
-		int cultureIdx= value.IndexOf("&$");
+		int cultureIdx= value.IndexOf("!$");
 		if(cultureIdx > 0) {
-			value= value.Substring(0, cultureIdx)+CultureStr+value.Substring(cultureIdx+1);			
+			value= value.Substring(0, cultureIdx)+CultureStr+value.Substring(cultureIdx+2);			
 		}
-		int publicKeyIdx= value.IndexOf("&^");
+		int publicKeyIdx= value.IndexOf("!^");
 		if(publicKeyIdx > 0) {
-			value= value.Substring(0, publicKeyIdx)+PublicKeyTokenStr+value.Substring(publicKeyIdx+1);			
+			value= value.Substring(0, publicKeyIdx)+PublicKeyTokenStr+value.Substring(publicKeyIdx+2);			
 		}
 		return Type.GetType(value);
     }
