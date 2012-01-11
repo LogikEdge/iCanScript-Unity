@@ -86,82 +86,13 @@ public class iCS_Coder {
 	public void EncodeObject(string key, object value) {
         if(value == null) return;
 		Type valueType= value.GetType();
-		iCS_Coder coder= new iCS_Coder();
 		// Special case for arrays.
 		if(valueType.IsArray) {
-			// special case for bool arrays.
-			if(valueType == typeof(bool[])) {
-				bool[] boolArray= value as bool[];
-				string boolArrayStr= "";
-				for(int i= 0; i < boolArray.Length; ++i) {
-					boolArrayStr+= EncodeBool(boolArray[i]);
-				}
-				Add(key, valueType, boolArrayStr);
-				return;
-			}
-			// special case for string arrays.
-			if(valueType == typeof(string[])) {
-				string[] stringArray= value as string[];
-				string stringArrayStr= "";
-				for(int i= 0; i < stringArray.Length; ++i) {
-					string toEncode= stringArray[i];
-					stringArrayStr+= EncodeInt(toEncode.Length)+":"+EncodeString(toEncode);
-				}
-				Add(key, valueType, stringArrayStr);
-				return;
-			}
-			// special case for type arrays.
-			if(valueType == typeof(Type[])) {
-				Type[] typeArray= value as Type[];
-				string typeArrayStr= "";
-				for(int i= 0; i < typeArray.Length; ++i) {
-					string encodedType= EncodeType(typeArray[i]);
-					typeArrayStr+= EncodeInt(encodedType.Length)+":"+encodedType;
-				}
-				Add(key, valueType, typeArrayStr);
-				return;
-			}
-			// special case for Vector arrays.
-			if(valueType == typeof(Vector2[])) {
-				Vector2[] v2Array= value as Vector2[];
-				string v2ArrayStr= "";
-				for(int i= 0; i < v2Array.Length; ++i) {
-					string encodedV2= EncodeVector2(v2Array[i]);
-					v2ArrayStr+= EncodeInt(encodedV2.Length)+":"+encodedV2;
-				}
-				Add(key, valueType, v2ArrayStr);
-				return;
-			}
-			if(valueType == typeof(Vector3[])) {
-				Vector3[] v3Array= value as Vector3[];
-				string v3ArrayStr= "";
-				for(int i= 0; i < v3Array.Length; ++i) {
-					string encodedV3= EncodeVector3(v3Array[i]);
-					v3ArrayStr+= EncodeInt(encodedV3.Length)+":"+encodedV3;
-				}
-				Add(key, valueType, v3ArrayStr);
-				return;
-			}
-			if(valueType == typeof(Vector4[])) {
-				Vector4[] v4Array= value as Vector4[];
-				string v4ArrayStr= "";
-				for(int i= 0; i < v4Array.Length; ++i) {
-					string encodedV4= EncodeVector4(v4Array[i]);
-					v4ArrayStr+= EncodeInt(encodedV4.Length)+":"+encodedV4;
-				}
-				Add(key, valueType, v4ArrayStr);
-				return;
-			}
-			// Default for all other array type.
-			Array array= value as Array;
-			coder.EncodeInt("Length", array.Length);
-			for(int i= 0; i < array.Length; ++i) {
-				coder.EncodeObject(i.ToString(), array.GetValue(i));
-			}
-            Add(key, valueType, coder.Archive);				
+            EncodeArrayOfObjects(key, value);
             return;
 		}
 		// Special case for enums.
+		iCS_Coder coder= new iCS_Coder();
 		if(valueType.IsEnum) {
 			coder.EncodeInt("Numeric", (int)value);
 			coder.EncodeString("Name", value.ToString());
@@ -170,10 +101,20 @@ public class iCS_Coder {
         }
 		// Primitives.
         if(value is Type)    { EncodeType(key, (Type)value); return; }
+		if(value is byte)    { EncodeByte(key, (byte)value); return; }
+		if(value is sbyte)   { EncodeSByte(key, (sbyte)value); return; }
+		if(value is char)    { EncodeChar(key, (char)value); return; }
 		if(value is string)  { EncodeString(key, (string)value); return; }
 		if(value is bool)    { EncodeBool(key, (bool)value); return; }
 		if(value is int)     { EncodeInt(key, (int)value); return; }
+		if(value is uint)    { EncodeUInt(key, (uint)value); return; }
+		if(value is short)   { EncodeShort(key, (short)value); return; }
+		if(value is ushort)  { EncodeUShort(key, (ushort)value); return; }
+		if(value is long)    { EncodeLong(key, (long)value); return; }
+		if(value is ulong)   { EncodeULong(key, (ulong)value); return; }
 		if(value is float)   { EncodeFloat(key, (float)value); return; }
+		if(value is double)  { EncodeDouble(key, (double)value); return; }
+		if(value is decimal) { EncodeDecimal(key, (decimal)value); return; }
 		if(value is Vector2) { EncodeVector2(key, (Vector2)value); return; }
 		if(value is Vector3) { EncodeVector3(key, (Vector3)value); return; }
 		if(value is Vector4) { EncodeVector4(key, (Vector4)value); return; }
@@ -186,12 +127,62 @@ public class iCS_Coder {
 		Add(key, valueType, coder.Archive);
 	}
 	// ----------------------------------------------------------------------
-    public string EncodeString(string value) {
-        return value;
+    void EncodeArrayOfObjects(string key, object value) {
+		Type valueType= value.GetType();
+		// Special cases.
+		if(valueType == typeof(bool[])) {
+			bool[] boolArray= value as bool[];
+			string boolArrayStr= "";
+			for(int i= 0; i < boolArray.Length; ++i) {
+				boolArrayStr+= EncodeBool(boolArray[i]);
+			}
+			Add(key, valueType, boolArrayStr);
+			return;
+		}
+		if(valueType == typeof(int[])) {
+            EncodeArray(key, value as int[], EncodeInt);
+			return;
+		}
+		if(valueType == typeof(float[])) {
+            EncodeArray(key, value as float[], EncodeFloat);
+			return;
+		}
+		if(valueType == typeof(string[])) {
+            EncodeArray(key, value as string[], EncodeString);
+			return;
+		}
+		if(valueType == typeof(Type[])) {
+            EncodeArray(key, value as Type[], EncodeType);
+			return;
+		}
+		if(valueType == typeof(Vector2[])) {
+            EncodeArray(key, value as Vector2[], EncodeVector2);
+			return;
+		}
+		if(valueType == typeof(Vector3[])) {
+            EncodeArray(key, value as Vector3[], EncodeVector3);
+			return;
+		}
+		if(valueType == typeof(Vector4[])) {
+            EncodeArray(key, value as Vector4[], EncodeVector4);
+			return;
+		}
+		// Default for all other array type.
+		Array array= value as Array;
+		iCS_Coder coder= new iCS_Coder();
+		coder.EncodeInt("Length", array.Length);
+		for(int i= 0; i < array.Length; ++i) {
+			coder.EncodeObject(i.ToString(), array.GetValue(i));
+		}
+        Add(key, valueType, coder.Archive);				
     }
-	// ----------------------------------------------------------------------
-    public void EncodeString(string key, string value) {
-        Add(key, typeof(string), EncodeString(value));
+    void EncodeArray<T>(string key, T[] array, Func<T,string> encoder) {
+		string arrayStr= "";
+		for(int i= 0; i < array.Length; ++i) {
+			string encoded= encoder(array[i]);
+			arrayStr+= EncodeInt(encoded.Length)+":"+encoded;
+		}
+		Add(key, typeof(T[]), arrayStr);        
     }
 	// ----------------------------------------------------------------------
 	string EncodeType(Type value) {
@@ -229,11 +220,12 @@ public class iCS_Coder {
         if(value == typeof(Vector3[])) return "v3[]";
         if(value == typeof(Vector4[])) return "v4[]";
         if(value == typeof(System.Object[])) return "o[]";
-		if(value == typeof(iCS_RuntimeDesc)) return "iCS_RuntimeDesc";
-		if(value == typeof(iCS_ObjectTypeEnum)) return "iCS_ObjectTypeEnum";
-		if(value == typeof(iCS_Module)) return "iCS_Module";
-		if(value == typeof(iCS_StateChart)) return "iCS_StateChart";
-		if(value == typeof(iCS_State)) return "iCS_State";
+        // iCanScript type compression
+		if(value == typeof(iCS_RuntimeDesc)) return "iRtD";
+		if(value == typeof(iCS_ObjectTypeEnum)) return "iOTE";
+		if(value == typeof(iCS_Module)) return "iMd";
+		if(value == typeof(iCS_StateChart)) return "iSC";
+		if(value == typeof(iCS_State)) return "iSt";
         if(value.IsByRef) {
             Type elementType= value.GetElementType();
     		if(elementType == typeof(Type)) return "t&";
@@ -283,6 +275,38 @@ public class iCS_Coder {
 		Add(key, typeof(Type), EncodeType(value));
 	}
 	// ----------------------------------------------------------------------
+    public string EncodeByte(byte value) {
+        return ""+value;
+    }
+	// ----------------------------------------------------------------------
+    public void EncodeByte(string key, byte value) {
+        Add(key, typeof(byte), EncodeByte(value));
+    }
+	// ----------------------------------------------------------------------
+    public string EncodeSByte(sbyte value) {
+        return ""+value;
+    }
+	// ----------------------------------------------------------------------
+    public void EncodeSByte(string key, sbyte value) {
+        Add(key, typeof(sbyte), EncodeSByte(value));
+    }
+	// ----------------------------------------------------------------------
+    public string EncodeChar(char value) {
+        return ""+value;
+    }
+	// ----------------------------------------------------------------------
+    public void EncodeChar(string key, char value) {
+        Add(key, typeof(char), EncodeChar(value));
+    }
+	// ----------------------------------------------------------------------
+    public string EncodeString(string value) {
+        return value;
+    }
+	// ----------------------------------------------------------------------
+    public void EncodeString(string key, string value) {
+        Add(key, typeof(string), EncodeString(value));
+    }
+	// ----------------------------------------------------------------------
 	string EncodeBool(bool value) {
 		return value ? "T" : "F";
 	}
@@ -299,12 +323,68 @@ public class iCS_Coder {
 		Add(key, typeof(int), EncodeInt(value));
 	}
 	// ----------------------------------------------------------------------
+	string EncodeUInt(uint value) {
+		return (string)Convert.ChangeType(value, typeof(string));
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeUInt(string key, uint value) {
+		Add(key, typeof(uint), EncodeUInt(value));
+	}
+	// ----------------------------------------------------------------------
+	string EncodeShort(short value) {
+		return (string)Convert.ChangeType(value, typeof(string));
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeShort(string key, short value) {
+		Add(key, typeof(short), EncodeShort(value));
+	}
+	// ----------------------------------------------------------------------
+	string EncodeUShort(ushort value) {
+		return (string)Convert.ChangeType(value, typeof(string));
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeUShort(string key, ushort value) {
+		Add(key, typeof(ushort), EncodeUShort(value));
+	}
+	// ----------------------------------------------------------------------
+	string EncodeLong(long value) {
+		return (string)Convert.ChangeType(value, typeof(string));
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeLong(string key, long value) {
+		Add(key, typeof(long), EncodeLong(value));
+	}
+	// ----------------------------------------------------------------------
+	string EncodeULong(ulong value) {
+		return (string)Convert.ChangeType(value, typeof(string));
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeULong(string key, ulong value) {
+		Add(key, typeof(ulong), EncodeULong(value));
+	}
+	// ----------------------------------------------------------------------
 	string EncodeFloat(float value) {
 		return (string)Convert.ChangeType(value, typeof(string));
 	}
 	// ----------------------------------------------------------------------
 	public void EncodeFloat(string key, float value) {
 		Add(key, typeof(float), EncodeFloat(value));
+	}
+	// ----------------------------------------------------------------------
+	string EncodeDouble(double value) {
+		return (string)Convert.ChangeType(value, typeof(string));
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeDouble(string key, double value) {
+		Add(key, typeof(double), EncodeDouble(value));
+	}
+	// ----------------------------------------------------------------------
+	string EncodeDecimal(decimal value) {
+		return (string)Convert.ChangeType(value, typeof(string));
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeDecimal(string key, decimal value) {
+		Add(key, typeof(decimal), EncodeDecimal(value));
 	}
 	// ----------------------------------------------------------------------
 	string EncodeVector2(Vector2 value) {
@@ -339,91 +419,12 @@ public class iCS_Coder {
         Prelude.Tuple<string,string> tuple= myDictionary[key];
         Type valueType= DecodeType(tuple.Item1);
         string valueStr= tuple.Item2;
-        iCS_Coder coder= new iCS_Coder();
         // Special case for arrays.
 		if(valueType.IsArray) {
-            Type arrayBaseType= iCS_Types.GetElementType(valueType);
-			// Special case for bool arrays.
-			if(valueType == typeof(bool[])) {
-				bool[] boolArray= new bool[valueStr.Length];
-				for(int i= 0; i < boolArray.Length; ++i) {
-	                boolArray[i]= DecodeBool(""+valueStr[i]);
-				}
-				return boolArray;
-			}
-			// special case for string arrays.
-			if(valueType == typeof(string[])) {
-				List<string> stringList= new List<string>();
-				while(valueStr.Length > 0) {
-					int end= valueStr.IndexOf(':');
-					if(end < 0) { DecodeError(':', valueStr); return stringList.ToArray(); }
-					int strLength= DecodeInt(valueStr.Substring(0, end));
-					valueStr= valueStr.Substring(end+1);
-					stringList.Add(DecodeString(valueStr.Substring(0, strLength)));
-					valueStr= valueStr.Substring(strLength);
-				}
-				return stringList.ToArray();
-			}
-			// special case for type arrays.
-			if(valueType == typeof(Type[])) {
-				List<Type> typeList= new List<Type>();
-				while(valueStr.Length > 0) {
-					int end= valueStr.IndexOf(':');
-					if(end < 0) { DecodeError(':', valueStr); return typeList.ToArray(); }
-					int strLength= DecodeInt(valueStr.Substring(0, end));
-					valueStr= valueStr.Substring(end+1);
-					typeList.Add(DecodeType(valueStr.Substring(0, strLength)));
-					valueStr= valueStr.Substring(strLength);
-				}
-				return typeList.ToArray();
-			}
-			// special case for vector arrays.
-			if(valueType == typeof(Vector2[])) {
-				List<Vector2> v2List= new List<Vector2>();
-				while(valueStr.Length > 0) {
-					int end= valueStr.IndexOf(':');
-					if(end < 0) { DecodeError(':', valueStr); return v2List.ToArray(); }
-					int strLength= DecodeInt(valueStr.Substring(0, end));
-					valueStr= valueStr.Substring(end+1);
-					v2List.Add(DecodeVector2(valueStr.Substring(0, strLength)));
-					valueStr= valueStr.Substring(strLength);
-				}
-				return v2List.ToArray();
-			}
-			if(valueType == typeof(Vector3[])) {
-				List<Vector3> v3List= new List<Vector3>();
-				while(valueStr.Length > 0) {
-					int end= valueStr.IndexOf(':');
-					if(end < 0) { DecodeError(':', valueStr); return v3List.ToArray(); }
-					int strLength= DecodeInt(valueStr.Substring(0, end));
-					valueStr= valueStr.Substring(end+1);
-					v3List.Add(DecodeVector3(valueStr.Substring(0, strLength)));
-					valueStr= valueStr.Substring(strLength);
-				}
-				return v3List.ToArray();
-			}
-			if(valueType == typeof(Vector4[])) {
-				List<Vector4> v4List= new List<Vector4>();
-				while(valueStr.Length > 0) {
-					int end= valueStr.IndexOf(':');
-					if(end < 0) { DecodeError(':', valueStr); return v4List.ToArray(); }
-					int strLength= DecodeInt(valueStr.Substring(0, end));
-					valueStr= valueStr.Substring(end+1);
-					v4List.Add(DecodeVector4(valueStr.Substring(0, strLength)));
-					valueStr= valueStr.Substring(strLength);
-				}
-				return v4List.ToArray();
-			}
-			// All other types of arrays.
-            coder.Archive= valueStr;
-            int len= coder.DecodeIntForKey("Length");
-            Array array= Array.CreateInstance(arrayBaseType, len);
-			for(int i= 0; i < len; ++i) {
-                array.SetValue(coder.DecodeObjectForKey(i.ToString()), i);
-			}
-			return array;				
+            return DecodeArrayOfObjects(valueType, valueStr);
 		}
 		// Special case for enums.
+        iCS_Coder coder= new iCS_Coder();
 		if(valueType.IsEnum) {
             coder.Archive= valueStr;
             return coder.DecodeIntForKey("Numeric");
@@ -431,10 +432,20 @@ public class iCS_Coder {
 		// Primitives.
 		Type elementType= iCS_Types.GetElementType(valueType);
         if(elementType == typeof(Type))    return DecodeType(valueStr);
+		if(elementType == typeof(byte))    return DecodeByte(valueStr);
+		if(elementType == typeof(sbyte))   return DecodeSByte(valueStr);
+		if(elementType == typeof(char))    return DecodeChar(valueStr);
 		if(elementType == typeof(string))  return DecodeString(valueStr);
 		if(elementType == typeof(bool))    return DecodeBool(valueStr);
 		if(elementType == typeof(int))     return DecodeInt(valueStr);
+		if(elementType == typeof(uint))    return DecodeUInt(valueStr);
+		if(elementType == typeof(short))   return DecodeShort(valueStr);
+		if(elementType == typeof(ushort))  return DecodeUShort(valueStr);
+		if(elementType == typeof(long))    return DecodeLong(valueStr);
+		if(elementType == typeof(ulong))   return DecodeULong(valueStr);
 		if(elementType == typeof(float))   return DecodeFloat(valueStr);
+		if(elementType == typeof(double))  return DecodeDouble(valueStr);
+		if(elementType == typeof(decimal)) return DecodeDecimal(valueStr);
 		if(elementType == typeof(Vector2)) return DecodeVector2(valueStr);
 		if(elementType == typeof(Vector3)) return DecodeVector3(valueStr);
 		if(elementType == typeof(Vector4)) return DecodeVector4(valueStr);
@@ -447,6 +458,60 @@ public class iCS_Coder {
             }
 		}
         return obj;
+    }
+	// ----------------------------------------------------------------------
+    object DecodeArrayOfObjects(Type valueType, string valueStr) {
+        Type arrayBaseType= iCS_Types.GetElementType(valueType);
+		// Special cases.
+		if(valueType == typeof(bool[])) {
+			bool[] boolArray= new bool[valueStr.Length];
+			for(int i= 0; i < boolArray.Length; ++i) {
+                boolArray[i]= DecodeBool(""+valueStr[i]);
+			}
+			return boolArray;
+		}
+		if(valueType == typeof(int[])) {
+            return DecodeArray<int>(valueStr, DecodeInt);
+		}
+		if(valueType == typeof(float[])) {
+            return DecodeArray<float>(valueStr, DecodeFloat);
+		}
+		if(valueType == typeof(string[])) {
+            return DecodeArray<string>(valueStr, DecodeString);
+		}
+		if(valueType == typeof(Type[])) {
+            return DecodeArray<Type>(valueStr, DecodeType);
+		}
+		if(valueType == typeof(Vector2[])) {
+            return DecodeArray<Vector2>(valueStr, DecodeVector2);
+		}
+		if(valueType == typeof(Vector3[])) {
+            return DecodeArray<Vector3>(valueStr, DecodeVector3);
+		}
+		if(valueType == typeof(Vector4[])) {
+            return DecodeArray<Vector4>(valueStr, DecodeVector4);
+		}
+		// All other types of arrays.
+        iCS_Coder coder= new iCS_Coder();
+        coder.Archive= valueStr;
+        int len= coder.DecodeIntForKey("Length");
+        Array array= Array.CreateInstance(arrayBaseType, len);
+		for(int i= 0; i < len; ++i) {
+            array.SetValue(coder.DecodeObjectForKey(i.ToString()), i);
+		}
+		return array;						
+    }
+    Array DecodeArray<T>(string valueStr, Func<string,T> decoder) {
+		List<T> list= new List<T>();
+		while(valueStr.Length > 0) {
+			int end= valueStr.IndexOf(':');
+			if(end < 0) { DecodeError(':', valueStr); return list.ToArray(); }
+			int strLength= DecodeInt(valueStr.Substring(0, end));
+			valueStr= valueStr.Substring(end+1);
+			list.Add(decoder(valueStr.Substring(0, strLength)));
+			valueStr= valueStr.Substring(strLength);
+		}
+		return list.ToArray();
     }
 	// ----------------------------------------------------------------------
     Type DecodeTypeForKey(string key) {
@@ -512,11 +577,11 @@ public class iCS_Coder {
 		if(value == "v3[]") return typeof(Vector3[]);
 		if(value == "v4[]") return typeof(Vector4[]);
 		if(value == "o[]") return typeof(System.Object[]);
-		if(value == "iCS_RuntimeDesc") return typeof(iCS_RuntimeDesc);
-		if(value == "iCS_ObjectTypeEnum") return typeof(iCS_ObjectTypeEnum);
-		if(value == "iCS_Module") return typeof(iCS_Module);
-		if(value == "iCS_State") return typeof(iCS_State);
-		if(value == "iCS_StateChart") return typeof(iCS_StateChart);
+		if(value == "iRtD") return typeof(iCS_RuntimeDesc);
+		if(value == "iOTE") return typeof(iCS_ObjectTypeEnum);
+		if(value == "iMd") return typeof(iCS_Module);
+		if(value == "iSt") return typeof(iCS_State);
+		if(value == "iSC") return typeof(iCS_StateChart);
 		// Decompress type string.
 		int defaultTypeIdx= value.IndexOf("&&");
 		if(defaultTypeIdx > 0) {
@@ -542,14 +607,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     bool DecodeBoolForKey(string key) {
-        if(!myDictionary.ContainsKey(key)) return false;
-        Prelude.Tuple<string,string> tuple= myDictionary[key];
-        Type valueType= DecodeType(tuple.Item1);
-        if(!iCS_Types.IsA<int>(valueType)) {
-            DecodeTypeError("bool", valueType);
-            return false;
-        }
-        return DecodeBool(tuple.Item2);
+        return DecodeForKey<bool>(key, DecodeBool);
     }
 	// ----------------------------------------------------------------------
     bool DecodeBool(string value) {
@@ -557,44 +615,103 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     int DecodeIntForKey(string key) {
-        if(!myDictionary.ContainsKey(key)) return 0;
-        Prelude.Tuple<string,string> tuple= myDictionary[key];
-        Type valueType= DecodeType(tuple.Item1);
-        if(!iCS_Types.IsA<int>(valueType)) {
-            DecodeTypeError("int", valueType);
-            return 0;
-        }
-        return DecodeInt(tuple.Item2);
+        return DecodeForKey<int>(key, DecodeInt);
     }
 	// ----------------------------------------------------------------------
     int DecodeInt(string value) {
         return (int)Convert.ChangeType(value, typeof(int));
     }
 	// ----------------------------------------------------------------------
+    uint DecodeUIntForKey(string key) {
+        return DecodeForKey<uint>(key, DecodeUInt);
+    }
+	// ----------------------------------------------------------------------
+    uint DecodeUInt(string value) {
+        return (uint)Convert.ChangeType(value, typeof(uint));
+    }
+	// ----------------------------------------------------------------------
+    short DecodeShortForKey(string key) {
+        return DecodeForKey<short>(key, DecodeShort);
+    }
+	// ----------------------------------------------------------------------
+    short DecodeShort(string value) {
+        return (short)Convert.ChangeType(value, typeof(short));
+    }
+	// ----------------------------------------------------------------------
+    ushort DecodeUShortForKey(string key) {
+        return DecodeForKey<ushort>(key, DecodeUShort);
+    }
+	// ----------------------------------------------------------------------
+    ushort DecodeUShort(string value) {
+        return (ushort)Convert.ChangeType(value, typeof(ushort));
+    }
+	// ----------------------------------------------------------------------
+    long DecodeLongForKey(string key) {
+        return DecodeForKey<long>(key, DecodeLong);
+    }
+	// ----------------------------------------------------------------------
+    long DecodeLong(string value) {
+        return (long)Convert.ChangeType(value, typeof(long));
+    }
+	// ----------------------------------------------------------------------
+    ulong DecodeULongForKey(string key) {
+        return DecodeForKey<ulong>(key, DecodeULong);
+    }
+	// ----------------------------------------------------------------------
+    ulong DecodeULong(string value) {
+        return (ulong)Convert.ChangeType(value, typeof(ulong));
+    }
+	// ----------------------------------------------------------------------
     float DecodeFloatForKey(string key) {
-        if(!myDictionary.ContainsKey(key)) return 0f;
-        Prelude.Tuple<string,string> tuple= myDictionary[key];
-        Type valueType= DecodeType(tuple.Item1);
-        if(!iCS_Types.IsA<float>(valueType)) {
-            DecodeTypeError("float", valueType);
-            return 0f;
-        }
-        return DecodeFloat(tuple.Item2);
+        return DecodeForKey<float>(key, DecodeFloat);
     }
 	// ----------------------------------------------------------------------
     float DecodeFloat(string value) {
         return (float)Convert.ChangeType(value, typeof(float));
     }
 	// ----------------------------------------------------------------------
+    double DecodeDoubleForKey(string key) {
+        return DecodeForKey<double>(key, DecodeDouble);
+    }
+	// ----------------------------------------------------------------------
+    double DecodeDouble(string value) {
+        return (double)Convert.ChangeType(value, typeof(double));
+    }
+	// ----------------------------------------------------------------------
+    decimal DecodeDecimalForKey(string key) {
+        return DecodeForKey<decimal>(key, DecodeDecimal);
+    }
+	// ----------------------------------------------------------------------
+    decimal DecodeDecimal(string value) {
+        return (decimal)Convert.ChangeType(value, typeof(decimal));
+    }
+	// ----------------------------------------------------------------------
+    byte DecodeByteForKey(string key) {
+        return DecodeForKey<byte>(key, DecodeByte);
+    }
+	// ----------------------------------------------------------------------
+    byte DecodeByte(string value) {
+        return (byte)value[0];
+    }
+	// ----------------------------------------------------------------------
+    sbyte DecodeSByteForKey(string key) {
+        return DecodeForKey<sbyte>(key, DecodeSByte);
+    }
+	// ----------------------------------------------------------------------
+    sbyte DecodeSByte(string value) {
+        return (sbyte)value[0];
+    }
+	// ----------------------------------------------------------------------
+    char DecodeCharForKey(string key) {
+        return DecodeForKey<char>(key, DecodeChar);
+    }
+	// ----------------------------------------------------------------------
+    char DecodeChar(string value) {
+        return value[0];
+    }
+	// ----------------------------------------------------------------------
     string DecodeStringForKey(string key) {
-        if(!myDictionary.ContainsKey(key)) return null;
-        Prelude.Tuple<string,string> tuple= myDictionary[key];
-        Type valueType= DecodeType(tuple.Item1);
-        if(!iCS_Types.IsA<string>(valueType)) {
-            DecodeTypeError("string", valueType);
-            return null;
-        }
-        return DecodeString(tuple.Item2);
+        return DecodeForKey<string>(key, DecodeString);
     }
 	// ----------------------------------------------------------------------
     string DecodeString(string value) {
@@ -602,14 +719,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     Vector2 DecodeVector2ForKey(string key) {
-        if(!myDictionary.ContainsKey(key)) return Vector2.zero;
-        Prelude.Tuple<string,string> tuple= myDictionary[key];
-        Type valueType= DecodeType(tuple.Item1);
-        if(!iCS_Types.IsA<Vector2>(valueType)) {
-            DecodeTypeError("Vector2", valueType);
-            return Vector2.zero;
-        }
-        return DecodeVector2(tuple.Item2);
+        return DecodeForKey<Vector2>(key, DecodeVector2);
     }
 	// ----------------------------------------------------------------------
     Vector2 DecodeVector2(string value) {
@@ -624,14 +734,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     Vector3 DecodeVector3ForKey(string key) {
-        if(!myDictionary.ContainsKey(key)) return Vector3.zero;
-        Prelude.Tuple<string,string> tuple= myDictionary[key];
-        Type valueType= DecodeType(tuple.Item1);
-        if(!iCS_Types.IsA<Vector3>(valueType)) {
-            DecodeTypeError("Vector3", valueType);
-            return Vector3.zero;
-        }
-        return DecodeVector3(tuple.Item2);
+        return DecodeForKey<Vector3>(key, DecodeVector3);
     }
 	// ----------------------------------------------------------------------
     Vector3 DecodeVector3(string value) {
@@ -653,14 +756,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     Vector4 DecodeVector4ForKey(string key) {
-        if(!myDictionary.ContainsKey(key)) return Vector4.zero;
-        Prelude.Tuple<string,string> tuple= myDictionary[key];
-        Type valueType= DecodeType(tuple.Item1);
-        if(!iCS_Types.IsA<Vector4>(valueType)) {
-            DecodeTypeError("Vector4", valueType);
-            return Vector4.zero;
-        }
-        return DecodeVector4(tuple.Item2);
+        return DecodeForKey<Vector4>(key, DecodeVector4);
     }
 	// ----------------------------------------------------------------------
     Vector4 DecodeVector4(string value) {
@@ -687,7 +783,17 @@ public class iCS_Coder {
 		float w= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
         return new Vector4(x,y,z,w);
     }
-    
+	// ----------------------------------------------------------------------
+    T DecodeForKey<T>(string key, Func<string,T> decoder) {
+        if(!myDictionary.ContainsKey(key)) return default(T);
+        Prelude.Tuple<string,string> tuple= myDictionary[key];
+        Type valueType= DecodeType(tuple.Item1);
+        if(!iCS_Types.IsA<T>(valueType)) {
+            DecodeTypeError(typeof(T).Name, valueType);
+            return default(T);
+        }
+        return decoder(tuple.Item2);        
+    }
     // ======================================================================
     // Error processing.
 	// ----------------------------------------------------------------------

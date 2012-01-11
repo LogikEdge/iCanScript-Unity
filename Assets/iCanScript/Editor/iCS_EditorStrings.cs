@@ -45,6 +45,6 @@ public class iCS_EditorStrings {
     public const string EndParam   = ">";
 
     // Product identifiers
-    public const string Company       = "Infaunier";
+    public const string Company       = "iCanScript";
     public const string DefaultPackage= "DefaultPackage";
 }
