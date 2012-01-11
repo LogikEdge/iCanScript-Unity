@@ -130,13 +130,20 @@ public class iCS_Coder {
     void EncodeArrayOfObjects(string key, object value) {
 		Type valueType= value.GetType();
 		// Special cases.
+		if(valueType == typeof(byte[])) {
+            EncodeArrayOfChars(key, value as byte[], EncodeByte);
+			return;
+		}
+		if(valueType == typeof(sbyte[])) {
+            EncodeArrayOfChars(key, value as sbyte[], EncodeSByte);
+			return;
+		}
+		if(valueType == typeof(char[])) {
+            EncodeArrayOfChars(key, value as char[], EncodeChar);
+			return;
+		}
 		if(valueType == typeof(bool[])) {
-			bool[] boolArray= value as bool[];
-			string boolArrayStr= "";
-			for(int i= 0; i < boolArray.Length; ++i) {
-				boolArrayStr+= EncodeBool(boolArray[i]);
-			}
-			Add(key, valueType, boolArrayStr);
+            EncodeArrayOfChars(key, value as bool[], EncodeBool);
 			return;
 		}
 		if(valueType == typeof(int[])) {
@@ -218,6 +225,13 @@ public class iCS_Coder {
 			arrayStr+= encoder(array[i])+":";
 		}
 		Add(key, typeof(T[]), arrayStr);        
+    }
+    void EncodeArrayOfChars<T>(string key, T[] array, Func<T,string> encoder) {
+		string arrayStr= "";
+		for(int i= 0; i < array.Length; ++i) {
+			arrayStr+= encoder(array[i]);
+		}
+		Add(key, typeof(T[]), arrayStr);
     }
 	// ----------------------------------------------------------------------
 	string EncodeType(Type value) {
@@ -498,12 +512,17 @@ public class iCS_Coder {
     object DecodeArrayOfObjects(Type valueType, string valueStr) {
         Type arrayBaseType= iCS_Types.GetElementType(valueType);
 		// Special cases.
+		if(valueType == typeof(byte[])) {
+            return DecodeArrayOfChars<byte>(valueStr, DecodeByte);
+		}
+		if(valueType == typeof(sbyte[])) {
+            return DecodeArrayOfChars<sbyte>(valueStr, DecodeSByte);
+		}
+		if(valueType == typeof(char[])) {
+            return DecodeArrayOfChars<char>(valueStr, DecodeChar);
+		}
 		if(valueType == typeof(bool[])) {
-			bool[] boolArray= new bool[valueStr.Length];
-			for(int i= 0; i < boolArray.Length; ++i) {
-                boolArray[i]= DecodeBool(""+valueStr[i]);
-			}
-			return boolArray;
+            return DecodeArrayOfChars<bool>(valueStr, DecodeBool);
 		}
 		if(valueType == typeof(int[])) {
             return DecodeArrayOfNumerics<int>(valueStr, DecodeInt);
@@ -578,6 +597,13 @@ public class iCS_Coder {
 			valueStr= valueStr.Substring(end+1);
 		}
 		return list.ToArray();
+    }
+    Array DecodeArrayOfChars<T>(string valueStr, Func<string,T> decoder) {
+		T[] array= new T[valueStr.Length];
+		for(int i= 0; i < array.Length; ++i) {
+            array[i]= decoder(""+valueStr[i]);
+		}
+		return array;
     }
 	// ----------------------------------------------------------------------
     Type DecodeTypeForKey(string key) {
