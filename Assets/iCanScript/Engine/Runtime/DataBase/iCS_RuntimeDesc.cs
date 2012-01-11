@@ -221,36 +221,6 @@ public class iCS_RuntimeDesc {
         }
     }
     
-    bool CheckSerialization() {
-        iCS_Coder coder= new iCS_Coder();
-        coder.EncodeObject("rtDesc", this);
-        string archive= coder.Archive;
-        coder.Archive= archive;
-        iCS_RuntimeDesc rtDesc= coder.DecodeObjectForKey("rtDesc") as iCS_RuntimeDesc;
-        Debug.Log("New Size: "+archive.Length);
-        Debug.Log("Encoded: "+archive);
-        if(rtDesc.Id != Id) {
-            Debug.LogWarning("Different Id");
-        }
-        if(rtDesc.ObjectType != ObjectType) {
-            Debug.LogWarning("Different ObjectType: Expected: "+ObjectType.ToString()+" Received: "+rtDesc.ObjectType.ToString());
-        }
-        if(rtDesc.Company != Company) {
-            Debug.LogWarning("Different Company: Expected: "+Company+" Received: "+rtDesc.Company);
-        }
-        if(rtDesc.Package != Package) {
-            Debug.LogWarning("Different Package");
-        }
-        if(rtDesc.DisplayName != DisplayName) {
-            Debug.LogWarning("Different DisplayName: Expected: "+DisplayName+" Received: "+rtDesc.DisplayName);
-        }
-        if(rtDesc.ClassType != ClassType) {
-            Debug.LogWarning("Different ClassType");
-        }
-        return true;
-
-    }
-    
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
@@ -336,141 +306,37 @@ public class iCS_RuntimeDesc {
         }        
     }
 
+    // ----------------------------------------------------------------------
+	public iCS_RuntimeDesc CopyFrom(iCS_RuntimeDesc rtDesc) {
+	    Id                  = rtDesc.Id;
+	    ObjectType          = rtDesc.ObjectType;
+	    Company             = rtDesc.Company;
+	    Package             = rtDesc.Package;
+	    DisplayName         = rtDesc.DisplayName;
+	    ClassType           = rtDesc.ClassType;
+	    MethodName          = rtDesc.MethodName;
+	    PortNames           = rtDesc.PortNames;
+	    PortTypes           = rtDesc.PortTypes;
+	    PortIsOuts          = rtDesc.PortIsOuts;
+	    PortDefaultValues   = rtDesc.PortDefaultValues;
+		return this;
+	}
+	
     // ======================================================================
     // Archiving
     // ----------------------------------------------------------------------
     // Encode the runtime descriptor into a string.
     // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>
     public string Encode(int id) {
-        CheckSerialization();
-        
-        string result= iCS_Archive.Encode(id)+":"+iCS_Archive.Encode(ObjectType)+":"+Company+":"+Package+":"+iCS_Archive.Encode(DisplayName ?? "")+":"+iCS_Archive.Encode(ClassType)+":"+MethodName+"<";
-        for(int i= 0; i < PortTypes.Length; ++i) {
-            if(PortIsOuts[i]) result+= "out ";
-            result+= PortNames[i]+":"+iCS_Archive.Encode(PortTypes[i]);
-            if(PortDefaultValues[i] != null) {
-                if(iCS_Types.IsA<UnityEngine.Object>(PortTypes[i])) {
-                    result+= ":="+iCS_Archive.Encode((int)PortDefaultValues[i]);
-                } else {
-                    string defaultValueStr= iCS_Archive.Encode(PortDefaultValues[i], PortTypes[i]);
-                    if(defaultValueStr != null) {
-                        result+= ":="+defaultValueStr;                                            
-                    }
-                }
-            }
-            if(i != PortTypes.Length-1) result+= ";";
-        }
-        result+=">{}";
-//        DisplayEncoded("Encode: ",result);
-        Debug.Log("Current size: "+result.Length);
-        return result;
+        iCS_Coder coder= new iCS_Coder();
+        coder.EncodeObject("rtDesc", this);
+        return coder.Archive;
     }
     // ----------------------------------------------------------------------
     // Fills the runtime descriptor from an encoded string.
     public iCS_RuntimeDesc Decode(string encoded) {
-        // object id
-//        Debug.Log("Decoding object id=> "+encoded);
-		Id= iCS_Archive.Decode<int>(ref encoded);
-		if(encoded[0] != ':') { DecodeError("Id"); return this; }
-        encoded= encoded.Substring(1);
-        // object type
-//        Debug.Log("Decoding object type=> "+encoded);
-		ObjectType= iCS_Archive.Decode<iCS_ObjectTypeEnum>(ref encoded);
-		if(encoded[0] != ':') { DecodeError("Object type"); return this; }
-        encoded= encoded.Substring(1);
-        // company
-//        Debug.Log("Decoding company=> "+encoded);
-        int end= encoded.IndexOf(':');
-        Company= encoded.Substring(0, end);
-        encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        // package
-//        Debug.Log("Decoding package=> "+encoded);
-        end= encoded.IndexOf(':');
-        Package= encoded.Substring(0, end);
-        encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        // display name
-//        Debug.Log("Decoding name=> "+encoded);
-		DisplayName= iCS_Archive.Decode<string>(ref encoded);
-		if(encoded[0] != ':') { DecodeError("Display Name"); return this; }
-        encoded= encoded.Substring(1);
-        // class type
-//        Debug.Log("Decoding class type=> "+encoded);
-        ClassType= iCS_Archive.Decode<Type>(ref encoded);
-		if(encoded[0] != ':') { DecodeError("Class Type"); return this; }
-        encoded= encoded.Substring(1);
-        // method name
-//        Debug.Log("Decoding method name=> "+encoded);
-        end= encoded.IndexOf('<');
-        MethodName= encoded.Substring(0, end);
-        encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        // parameters
-//        Debug.Log("Decoding parameters=> "+encoded);
-        end= encoded.IndexOf('>');
-        string parameterString= encoded.Substring(0, end);
-        encoded= encoded.Substring(end+1, encoded.Length-end-1);
-        ParsePorts(parameterString);
-        return this;
+        iCS_Coder coder= new iCS_Coder();
+        coder.Archive= encoded;
+        return CopyFrom(coder.DecodeObjectForKey("rtDesc") as iCS_RuntimeDesc);
     }
-    // ----------------------------------------------------------------------
-    // Extracts the type of the parameters from the given string.
-    void ParsePorts(string paramStr) {
-        List<bool>      portIsOut   = new List<bool>();
-        List<Type>      portTypes   = new List<Type>();
-        List<string>    portNames   = new List<string>();
-        List<object>    portDefaults= new List<object>();
-        while(paramStr.Length > 0) {
-            // Return type
-            int end= -1;
-            // in/out parameter type
-            if(paramStr.StartsWith("out ")) {
-                portIsOut.Add(true);
-                paramStr= paramStr.Substring(4, paramStr.Length-4);
-            } else {
-                portIsOut.Add(false);
-            }                
-            // parameter name
-            end= paramStr.IndexOf(':');
-            portNames.Add(paramStr.Substring(0, end));
-            paramStr= paramStr.Substring(end+1);
-            // parameter type.
-            Type portType= iCS_Archive.Decode<Type>(ref paramStr);
-            portTypes.Add(portType);
-            // parameter default value (part 1)
-			object initialValue= null;
-            if(paramStr.StartsWith(":=")) {
-				paramStr= paramStr.Substring(2);
-                if(iCS_Types.IsA<UnityEngine.Object>(portType)) {
-                    initialValue= iCS_Archive.Decode(ref paramStr, typeof(int));
-                } else {
-                    initialValue= iCS_Archive.Decode(ref paramStr, portType);                    
-                }
-            }
-            if(initialValue != null) {
-                portDefaults.Add(initialValue);
-            } else {
-                portDefaults.Add(iCS_Types.DefaultValue(portType));                
-            }
-			if(paramStr.Length > 0 && paramStr[0] == ';') paramStr= paramStr.Substring(1);
-        }
-        PortIsOuts= portIsOut.ToArray();
-        PortTypes = portTypes.ToArray();
-        PortNames = portNames.ToArray();
-        PortDefaultValues= portDefaults.ToArray();
-    }
-    // ----------------------------------------------------------------------
-	public static void DecodeError(string message) {
-		Debug.LogWarning("iCanScript: Runtime Descriptor decoding error: "+message);
-	}
-    // ----------------------------------------------------------------------
-	public static void DisplayEncoded(string msg, string encoded) {
-		string toDisplay= "";
-		for(int i=0; i < encoded.Length; ++i) {
-			if(encoded[i] == '\n') {
-				toDisplay+= "    ";
-			} else {
-				toDisplay+= encoded[i];
-			}
-		}
-		Debug.Log(msg+toDisplay);
-	}
 }
