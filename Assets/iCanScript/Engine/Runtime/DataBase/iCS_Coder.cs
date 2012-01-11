@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_Coder {
+public class iCS_Coder {    
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------

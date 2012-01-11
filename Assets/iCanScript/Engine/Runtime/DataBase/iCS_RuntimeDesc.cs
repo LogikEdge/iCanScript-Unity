@@ -331,8 +331,6 @@ public class iCS_RuntimeDesc {
         iCS_Coder coder= new iCS_Coder();
         coder.EncodeObject("rtDesc", this);
         string encoded= coder.Archive;
-        Debug.Log("Encoded size: "+encoded.Length);
-        Debug.Log("Encoded: "+encoded);
         return encoded;
     }
     // ----------------------------------------------------------------------
