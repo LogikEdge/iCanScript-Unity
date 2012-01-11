@@ -200,6 +200,7 @@ public class iCS_Coder {
 		if(value == typeof(bool)) return "b";
 		if(value == typeof(int)) return "i";
 		if(value == typeof(float)) return "f";
+        if(value == typeof(char)) return "c";
         if(value == typeof(Vector2)) return "v2";
         if(value == typeof(Vector3)) return "v3";
         if(value == typeof(Vector4)) return "v4";
@@ -209,6 +210,7 @@ public class iCS_Coder {
 		if(value == typeof(bool[])) return "b[]";
 		if(value == typeof(int[])) return "i[]";
 		if(value == typeof(float[])) return "f[]";
+        if(value == typeof(char[])) return "c[]";
         if(value == typeof(Vector2[])) return "v2[]";
         if(value == typeof(Vector3[])) return "v3[]";
         if(value == typeof(Vector4[])) return "v4[]";
@@ -225,6 +227,7 @@ public class iCS_Coder {
     		if(elementType == typeof(bool)) return "b&";
     		if(elementType == typeof(int)) return "i&";
     		if(elementType == typeof(float)) return "f&";
+            if(elementType == typeof(char)) return "c&";
             if(elementType == typeof(Vector2)) return "v2&";
             if(elementType == typeof(Vector3)) return "v3&";
             if(elementType == typeof(Vector4)) return "v4&";
@@ -442,6 +445,7 @@ public class iCS_Coder {
 		if(value == "b") return typeof(bool);
 		if(value == "i") return typeof(int);
 		if(value == "f") return typeof(float);
+        if(value == "c") return typeof(char);
 		if(value == "v2") return typeof(Vector2);
 		if(value == "v3") return typeof(Vector3);
 		if(value == "v4") return typeof(Vector4);
@@ -451,6 +455,7 @@ public class iCS_Coder {
 		if(value == "b&") return typeof(bool);
 		if(value == "i&") return typeof(int);
 		if(value == "f&") return typeof(float);
+        if(value == "c&") return typeof(char);
 		if(value == "v2&") return typeof(Vector2);
 		if(value == "v3&") return typeof(Vector3);
 		if(value == "v4&") return typeof(Vector4);
@@ -460,6 +465,7 @@ public class iCS_Coder {
 		if(value == "b[]") return typeof(bool[]);
 		if(value == "i[]") return typeof(int[]);
 		if(value == "f[]") return typeof(float[]);
+        if(value == "c[]") return typeof(char[]);
 		if(value == "v2[]") return typeof(Vector2[]);
 		if(value == "v3[]") return typeof(Vector3[]);
 		if(value == "v4[]") return typeof(Vector4[]);
