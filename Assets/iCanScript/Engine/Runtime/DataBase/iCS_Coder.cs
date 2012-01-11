@@ -140,11 +140,51 @@ public class iCS_Coder {
 			return;
 		}
 		if(valueType == typeof(int[])) {
-            EncodeArray(key, value as int[], EncodeInt);
+            EncodeArrayOfNumerics(key, value as int[], EncodeInt);
+			return;
+		}
+		if(valueType == typeof(uint[])) {
+            EncodeArrayOfNumerics(key, value as uint[], EncodeUInt);
+			return;
+		}
+		if(valueType == typeof(short[])) {
+            EncodeArrayOfNumerics(key, value as short[], EncodeShort);
+			return;
+		}
+		if(valueType == typeof(ushort[])) {
+            EncodeArrayOfNumerics(key, value as ushort[], EncodeUShort);
+			return;
+		}
+		if(valueType == typeof(long[])) {
+            EncodeArrayOfNumerics(key, value as long[], EncodeLong);
+			return;
+		}
+		if(valueType == typeof(ulong[])) {
+            EncodeArrayOfNumerics(key, value as ulong[], EncodeULong);
 			return;
 		}
 		if(valueType == typeof(float[])) {
-            EncodeArray(key, value as float[], EncodeFloat);
+            EncodeArrayOfNumerics(key, value as float[], EncodeFloat);
+			return;
+		}
+		if(valueType == typeof(double[])) {
+            EncodeArrayOfNumerics(key, value as double[], EncodeDouble);
+			return;
+		}
+		if(valueType == typeof(decimal[])) {
+            EncodeArrayOfNumerics(key, value as decimal[], EncodeDecimal);
+			return;
+		}
+		if(valueType == typeof(Vector2[])) {
+            EncodeArrayOfNumerics(key, value as Vector2[], EncodeVector2);
+			return;
+		}
+		if(valueType == typeof(Vector3[])) {
+            EncodeArrayOfNumerics(key, value as Vector3[], EncodeVector3);
+			return;
+		}
+		if(valueType == typeof(Vector4[])) {
+            EncodeArrayOfNumerics(key, value as Vector4[], EncodeVector4);
 			return;
 		}
 		if(valueType == typeof(string[])) {
@@ -153,18 +193,6 @@ public class iCS_Coder {
 		}
 		if(valueType == typeof(Type[])) {
             EncodeArray(key, value as Type[], EncodeType);
-			return;
-		}
-		if(valueType == typeof(Vector2[])) {
-            EncodeArray(key, value as Vector2[], EncodeVector2);
-			return;
-		}
-		if(valueType == typeof(Vector3[])) {
-            EncodeArray(key, value as Vector3[], EncodeVector3);
-			return;
-		}
-		if(valueType == typeof(Vector4[])) {
-            EncodeArray(key, value as Vector4[], EncodeVector4);
 			return;
 		}
 		// Default for all other array type.
@@ -181,6 +209,13 @@ public class iCS_Coder {
 		for(int i= 0; i < array.Length; ++i) {
 			string encoded= encoder(array[i]);
 			arrayStr+= EncodeInt(encoded.Length)+":"+encoded;
+		}
+		Add(key, typeof(T[]), arrayStr);        
+    }
+    void EncodeArrayOfNumerics<T>(string key, T[] array, Func<T,string> encoder) {
+		string arrayStr= "";
+		for(int i= 0; i < array.Length; ++i) {
+			arrayStr+= encoder(array[i])+":";
 		}
 		Add(key, typeof(T[]), arrayStr);        
     }
@@ -226,26 +261,26 @@ public class iCS_Coder {
 		if(value == typeof(iCS_Module)) return "iMd";
 		if(value == typeof(iCS_StateChart)) return "iSC";
 		if(value == typeof(iCS_State)) return "iSt";
-        if(value.IsByRef) {
-            Type elementType= value.GetElementType();
-    		if(elementType == typeof(Type)) return "t&";
-    		if(elementType == typeof(string)) return "S&";
-    		if(elementType == typeof(bool)) return "b&";
-    		if(elementType == typeof(int)) return "i&";
-            if(elementType == typeof(uint)) return "u&";
-            if(elementType == typeof(long)) return "l&";
-            if(elementType == typeof(ulong)) return "ul&";
-            if(elementType == typeof(short)) return "s&";
-            if(elementType == typeof(ushort)) return "us&";
-    		if(elementType == typeof(float)) return "f&";
-    		if(elementType == typeof(double)) return "d&";
-            if(elementType == typeof(char)) return "c&";
-            if(elementType == typeof(byte)) return "B&";
-            if(elementType == typeof(Vector2)) return "v2&";
-            if(elementType == typeof(Vector3)) return "v3&";
-            if(elementType == typeof(Vector4)) return "v4&";
-            if(elementType == typeof(System.Object)) return "o&";
-        }
+//        if(value.IsByRef) {
+//            Type elementType= value.GetElementType();
+//    		if(elementType == typeof(Type)) return "t&";
+//    		if(elementType == typeof(string)) return "S&";
+//    		if(elementType == typeof(bool)) return "b&";
+//    		if(elementType == typeof(int)) return "i&";
+//            if(elementType == typeof(uint)) return "u&";
+//            if(elementType == typeof(long)) return "l&";
+//            if(elementType == typeof(ulong)) return "ul&";
+//            if(elementType == typeof(short)) return "s&";
+//            if(elementType == typeof(ushort)) return "us&";
+//    		if(elementType == typeof(float)) return "f&";
+//    		if(elementType == typeof(double)) return "d&";
+//            if(elementType == typeof(char)) return "c&";
+//            if(elementType == typeof(byte)) return "B&";
+//            if(elementType == typeof(Vector2)) return "v2&";
+//            if(elementType == typeof(Vector3)) return "v3&";
+//            if(elementType == typeof(Vector4)) return "v4&";
+//            if(elementType == typeof(System.Object)) return "o&";
+//        }
 		string typeAsString= value.AssemblyQualifiedName;
 		// Try to compress type string.
 		int defaultTypeIdx= typeAsString.IndexOf(DefaultTypeStr);
@@ -471,25 +506,46 @@ public class iCS_Coder {
 			return boolArray;
 		}
 		if(valueType == typeof(int[])) {
-            return DecodeArray<int>(valueStr, DecodeInt);
+            return DecodeArrayOfNumerics<int>(valueStr, DecodeInt);
+		}
+		if(valueType == typeof(uint[])) {
+            return DecodeArrayOfNumerics<uint>(valueStr, DecodeUInt);
+		}
+		if(valueType == typeof(short[])) {
+            return DecodeArrayOfNumerics<short>(valueStr, DecodeShort);
+		}
+		if(valueType == typeof(ushort[])) {
+            return DecodeArrayOfNumerics<ushort>(valueStr, DecodeUShort);
+		}
+		if(valueType == typeof(long[])) {
+            return DecodeArrayOfNumerics<long>(valueStr, DecodeLong);
+		}
+		if(valueType == typeof(ulong[])) {
+            return DecodeArrayOfNumerics<ulong>(valueStr, DecodeULong);
 		}
 		if(valueType == typeof(float[])) {
-            return DecodeArray<float>(valueStr, DecodeFloat);
+            return DecodeArrayOfNumerics<float>(valueStr, DecodeFloat);
+		}
+		if(valueType == typeof(double[])) {
+            return DecodeArrayOfNumerics<double>(valueStr, DecodeDouble);
+		}
+		if(valueType == typeof(decimal[])) {
+            return DecodeArrayOfNumerics<decimal>(valueStr, DecodeDecimal);
+		}
+		if(valueType == typeof(Vector2[])) {
+            return DecodeArrayOfNumerics<Vector2>(valueStr, DecodeVector2);
+		}
+		if(valueType == typeof(Vector3[])) {
+            return DecodeArrayOfNumerics<Vector3>(valueStr, DecodeVector3);
+		}
+		if(valueType == typeof(Vector4[])) {
+            return DecodeArrayOfNumerics<Vector4>(valueStr, DecodeVector4);
 		}
 		if(valueType == typeof(string[])) {
             return DecodeArray<string>(valueStr, DecodeString);
 		}
 		if(valueType == typeof(Type[])) {
             return DecodeArray<Type>(valueStr, DecodeType);
-		}
-		if(valueType == typeof(Vector2[])) {
-            return DecodeArray<Vector2>(valueStr, DecodeVector2);
-		}
-		if(valueType == typeof(Vector3[])) {
-            return DecodeArray<Vector3>(valueStr, DecodeVector3);
-		}
-		if(valueType == typeof(Vector4[])) {
-            return DecodeArray<Vector4>(valueStr, DecodeVector4);
 		}
 		// All other types of arrays.
         iCS_Coder coder= new iCS_Coder();
@@ -510,6 +566,16 @@ public class iCS_Coder {
 			valueStr= valueStr.Substring(end+1);
 			list.Add(decoder(valueStr.Substring(0, strLength)));
 			valueStr= valueStr.Substring(strLength);
+		}
+		return list.ToArray();
+    }
+    Array DecodeArrayOfNumerics<T>(string valueStr, Func<string,T> decoder) {
+		List<T> list= new List<T>();
+		while(valueStr.Length > 0) {
+			int end= valueStr.IndexOf(':');
+			if(end < 0) { DecodeError(':', valueStr); return list.ToArray(); }
+			list.Add(decoder(valueStr.Substring(0, end)));
+			valueStr= valueStr.Substring(end+1);
 		}
 		return list.ToArray();
     }
