@@ -330,7 +330,10 @@ public class iCS_RuntimeDesc {
     public string Encode(int id) {
         iCS_Coder coder= new iCS_Coder();
         coder.EncodeObject("rtDesc", this);
-        return coder.Archive;
+        string encoded= coder.Archive;
+        Debug.Log("Encoded size: "+encoded.Length);
+        Debug.Log("Encoded: "+encoded);
+        return encoded;
     }
     // ----------------------------------------------------------------------
     // Fills the runtime descriptor from an encoded string.

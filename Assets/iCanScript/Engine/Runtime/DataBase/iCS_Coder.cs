@@ -121,6 +121,37 @@ public class iCS_Coder {
 				Add(key, valueType, typeArrayStr);
 				return;
 			}
+			// special case for Vector arrays.
+			if(valueType == typeof(Vector2[])) {
+				Vector2[] v2Array= value as Vector2[];
+				string v2ArrayStr= "";
+				for(int i= 0; i < v2Array.Length; ++i) {
+					string encodedV2= EncodeVector2(v2Array[i]);
+					v2ArrayStr+= EncodeInt(encodedV2.Length)+":"+encodedV2;
+				}
+				Add(key, valueType, v2ArrayStr);
+				return;
+			}
+			if(valueType == typeof(Vector3[])) {
+				Vector3[] v3Array= value as Vector3[];
+				string v3ArrayStr= "";
+				for(int i= 0; i < v3Array.Length; ++i) {
+					string encodedV3= EncodeVector3(v3Array[i]);
+					v3ArrayStr+= EncodeInt(encodedV3.Length)+":"+encodedV3;
+				}
+				Add(key, valueType, v3ArrayStr);
+				return;
+			}
+			if(valueType == typeof(Vector4[])) {
+				Vector4[] v4Array= value as Vector4[];
+				string v4ArrayStr= "";
+				for(int i= 0; i < v4Array.Length; ++i) {
+					string encodedV4= EncodeVector4(v4Array[i]);
+					v4ArrayStr+= EncodeInt(encodedV4.Length)+":"+encodedV4;
+				}
+				Add(key, valueType, v4ArrayStr);
+				return;
+			}
 			// Default for all other array type.
 			Array array= value as Array;
 			coder.EncodeInt("Length", array.Length);
@@ -253,7 +284,7 @@ public class iCS_Coder {
 	}
 	// ----------------------------------------------------------------------
 	string EncodeVector2(Vector2 value) {
-		return (string)"("+value.x+","+value.y+")";
+		return (string)value.x.ToString()+","+value.y;
 	}
 	// ----------------------------------------------------------------------
 	public void EncodeVector2(string key, Vector2 value) {
@@ -261,7 +292,7 @@ public class iCS_Coder {
 	}
 	// ----------------------------------------------------------------------
 	string EncodeVector3(Vector3 value) {
-		return (string)"("+value.x+","+value.y+","+value.z+")";
+		return (string)value.x.ToString()+","+value.y+","+value.z;
 	}
 	// ----------------------------------------------------------------------
 	public void EncodeVector3(string key, Vector3 value) {
@@ -269,7 +300,7 @@ public class iCS_Coder {
 	}
 	// ----------------------------------------------------------------------
 	string EncodeVector4(Vector4 value) {
-		return (string)"("+value.x+","+value.y+","+value.z+","+value.w+")";
+		return (string)value.x.ToString()+","+value.y+","+value.z+","+value.w;
 	}
 	// ----------------------------------------------------------------------
 	public void EncodeVector4(string key, Vector4 value) {
@@ -321,6 +352,43 @@ public class iCS_Coder {
 					valueStr= valueStr.Substring(strLength);
 				}
 				return typeList.ToArray();
+			}
+			// special case for vector arrays.
+			if(valueType == typeof(Vector2[])) {
+				List<Vector2> v2List= new List<Vector2>();
+				while(valueStr.Length > 0) {
+					int end= valueStr.IndexOf(':');
+					if(end < 0) { DecodeError(':', valueStr); return v2List.ToArray(); }
+					int strLength= DecodeInt(valueStr.Substring(0, end));
+					valueStr= valueStr.Substring(end+1);
+					v2List.Add(DecodeVector2(valueStr.Substring(0, strLength)));
+					valueStr= valueStr.Substring(strLength);
+				}
+				return v2List.ToArray();
+			}
+			if(valueType == typeof(Vector3[])) {
+				List<Vector3> v3List= new List<Vector3>();
+				while(valueStr.Length > 0) {
+					int end= valueStr.IndexOf(':');
+					if(end < 0) { DecodeError(':', valueStr); return v3List.ToArray(); }
+					int strLength= DecodeInt(valueStr.Substring(0, end));
+					valueStr= valueStr.Substring(end+1);
+					v3List.Add(DecodeVector3(valueStr.Substring(0, strLength)));
+					valueStr= valueStr.Substring(strLength);
+				}
+				return v3List.ToArray();
+			}
+			if(valueType == typeof(Vector4[])) {
+				List<Vector4> v4List= new List<Vector4>();
+				while(valueStr.Length > 0) {
+					int end= valueStr.IndexOf(':');
+					if(end < 0) { DecodeError(':', valueStr); return v4List.ToArray(); }
+					int strLength= DecodeInt(valueStr.Substring(0, end));
+					valueStr= valueStr.Substring(end+1);
+					v4List.Add(DecodeVector4(valueStr.Substring(0, strLength)));
+					valueStr= valueStr.Substring(strLength);
+				}
+				return v4List.ToArray();
 			}
 			// All other types of arrays.
             coder.Archive= valueStr;
@@ -502,14 +570,8 @@ public class iCS_Coder {
 			DecodeError(',', value);
 			return Vector2.zero;
 		}
-		float x= (float)Convert.ChangeType(value.Substring(1, end-1), typeof(float));
-		value= value.Substring(end+1);
-		end= value.IndexOf(')');
-		if(end < 0) {
-			DecodeError(')', value);
-			return Vector2.zero;			
-		}
-		float y= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		float x= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		float y= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
         return new Vector2(x,y);
     }
 	// ----------------------------------------------------------------------
@@ -530,7 +592,7 @@ public class iCS_Coder {
 			DecodeError(',', value);
 			return Vector3.zero;
 		}
-		float x= (float)Convert.ChangeType(value.Substring(1, end-1), typeof(float));
+		float x= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
 		value= value.Substring(end+1);
 		end= value.IndexOf(',');
 		if(end < 0) {
@@ -538,13 +600,7 @@ public class iCS_Coder {
 			return Vector3.zero;			
 		}
 		float y= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
-		value= value.Substring(end+1);
-		end= value.IndexOf(')');
-		if(end < 0) {
-			DecodeError(')', value);
-			return Vector3.zero;			
-		}
-		float z= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		float z= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
         return new Vector3(x,y,z);
     }
 	// ----------------------------------------------------------------------
@@ -565,7 +621,7 @@ public class iCS_Coder {
 			DecodeError(',', value);
 			return Vector4.zero;
 		}
-		float x= (float)Convert.ChangeType(value.Substring(1, end-1), typeof(float));
+		float x= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
 		value= value.Substring(end+1);
 		end= value.IndexOf(',');
 		if(end < 0) {
@@ -580,12 +636,7 @@ public class iCS_Coder {
 			return Vector4.zero;			
 		}
 		float z= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
-		end= value.IndexOf(')');
-		if(end < 0) {
-			DecodeError(')', value);
-			return Vector4.zero;			
-		}
-		float w= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		float w= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
         return new Vector4(x,y,z,w);
     }
     
