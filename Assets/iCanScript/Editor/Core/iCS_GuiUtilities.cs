@@ -22,7 +22,7 @@ public static class iCS_GuiUtilities {
 		};
 	}
 
-    public static void OnInspectorGUI(iCS_EditorObject port, iCS_IStorage storage) {
+    public static void OnInspectorGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel= 0) {
         // Extract port information
 		Type portType= port.RuntimeType;
         Type dataType= iCS_Types.GetElementType(portType);
@@ -37,7 +37,7 @@ public static class iCS_GuiUtilities {
 
         // Display primitives.
         object newValue= null;
-        if(ShowInInspector(port.Name, dataType, portType, portValue, out newValue)) {
+        if(ShowInInspector(port.Name, dataType, portType, portValue, out newValue, indentLevel)) {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(portValue != newValue && storage.GetSource(port) == null) {
                 storage.SetDefaultValue(desc, portId, newValue);
@@ -51,7 +51,8 @@ public static class iCS_GuiUtilities {
     }
 
     // -----------------------------------------------------------------------
-    public static bool ShowInInspector(string name, Type dataType, Type portType, object currentValue, out object newValue) {
+    public static bool ShowInInspector(string name, Type dataType, Type portType, object currentValue, out object newValue, int indentLevel) {
+        EditorGUI.indentLevel= indentLevel;
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
         // C# data types.
         if(dataType.IsEnum) {
@@ -152,30 +153,33 @@ public static class iCS_GuiUtilities {
         }
         // Suport all UnityEngine objects.
         if(iCS_Types.IsA<UnityEngine.Object>(dataType)) {
-            Debug.Log("Unity Object: "+dataType.Name);
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
             newValue= EditorGUILayout.ObjectField(niceName, value, dataType, true);
             return true;
         }        
 		// All other types.
-		foreach(var field in dataType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
-            bool shouldInspect= true;
-            if(field.IsPublic) {
-                foreach(var attribute in field.GetCustomAttributes(true)) {
-                    if(attribute is System.NonSerializedAttribute) { shouldInspect= false; break; }
-                    if(attribute is HideInInspector) { shouldInspect= false; break; }
+        if(EditorGUILayout.Foldout(true, niceName)) {
+    		foreach(var field in dataType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+                bool shouldInspect= true;
+                if(field.IsPublic) {
+                    foreach(var attribute in field.GetCustomAttributes(true)) {
+                        if(attribute is System.NonSerializedAttribute) { shouldInspect= false; break; }
+                        if(attribute is HideInInspector) { shouldInspect= false; break; }
+                    }
+                } else {
+                    shouldInspect= false;
+                    foreach(var attribute in field.GetCustomAttributes(true)) {
+                        if(attribute is SerializeField) shouldInspect= true;
+                        if(attribute is HideInInspector) { shouldInspect= false; break; }
+                    }                
                 }
-            } else {
-                shouldInspect= false;
-                foreach(var attribute in field.GetCustomAttributes(true)) {
-                    if(attribute is SerializeField) shouldInspect= true;
-                    if(attribute is HideInInspector) { shouldInspect= false; break; }
-                }                
-            }
-            if(shouldInspect) {
-//                Debug.Log("Should inspect: "+field.Name);
-            }
-		}
+                if(shouldInspect) {
+                    object newFieldValue= null;
+                    if(currentValue == null) currentValue= iCS_Types.CreateInstance(dataType);
+                    ShowInInspector(field.Name, iCS_Types.GetElementType(field.FieldType), field.FieldType, field.GetValue(currentValue), out newFieldValue, indentLevel+1);
+                }
+    		}        
+        }
         newValue= null;
         return true;
 

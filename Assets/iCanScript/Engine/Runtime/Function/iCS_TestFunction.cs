@@ -5,6 +5,7 @@ using System.Collections;
 public class iCS_TestGenericFunction {
     public float myFloat;
     
+    [iCS_Function] public iCS_TestGenericFunction() { myFloat= 0f;}
     [iCS_Function] public iCS_TestGenericFunction(int i) { Debug.Log("Running constructor");}
     [iCS_Function] public bool IsA<T>(T b) { return false; }
 

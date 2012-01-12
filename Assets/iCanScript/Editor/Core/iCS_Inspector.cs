@@ -90,6 +90,7 @@ public class iCS_Inspector : Editor {
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector) as GUISkin;
         
         // Draw inspector window
+        EditorGUI.indentLevel= 0;
 		DrawDefaultInspector();
 
         // Frame count.
@@ -196,8 +197,7 @@ public class iCS_Inspector : Editor {
             showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
             if(showInputs) {
                 EditorGUIUtility.LookLikeControls();
-                EditorGUI.indentLevel= 2;
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI(port, Storage), inPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI(port, Storage, 2), inPorts);
             }        
         }
 
@@ -206,8 +206,7 @@ public class iCS_Inspector : Editor {
             EditorGUI.indentLevel= 1;
             showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
             if(showOutputs) {
-                EditorGUI.indentLevel= 2;
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI(port, Storage), outPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI(port, Storage, 2), outPorts);
             }            
         }
     }
