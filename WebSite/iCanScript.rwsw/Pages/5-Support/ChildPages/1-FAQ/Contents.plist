@@ -10,7 +10,7 @@
 				<key>ID</key>
 				<string>page15</string>
 				<key>MostRecentlySelectedStyleName</key>
-				<string>Theme Default</string>
+				<string>Custom Style</string>
 				<key>PageTitle</key>
 				<string>FAQ</string>
 				<key>PluginClassName</key>
@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-21T11:54:59Z</date>
+					<date>2012-01-12T03:50:08Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -42,6 +42,96 @@
 							<key>Size</key>
 							<integer>1263</integer>
 						</dict>
+						<key>files/How_do_I_create_reusable_module.html</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							XXJ4xyv1Dcxa+NuDRFt3
+							aQ==
+							</data>
+							<key>Size</key>
+							<integer>6891</integer>
+						</dict>
+						<key>files/Is_there_a_maximum_nesting_dept.html</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							M5kv3VeAB86PWR3MSWSD
+							7g==
+							</data>
+							<key>Size</key>
+							<integer>6628</integer>
+						</dict>
+						<key>files/Queen_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							PmHdDm/ReC/0ovxqK0ro
+							Lw==
+							</data>
+							<key>Size</key>
+							<integer>1174</integer>
+						</dict>
+						<key>files/RealMac_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							AhFUUuwBz0QEXtuEsfBo
+							ig==
+							</data>
+							<key>Size</key>
+							<integer>1560</integer>
+						</dict>
+						<key>files/ajax_load.gif</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							rU8euoGus22tgztADdQq
+							tg==
+							</data>
+							<key>Size</key>
+							<integer>9455</integer>
+						</dict>
+						<key>files/bubble.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							BzbxspPw3LKLY9Gj301/
+							GQ==
+							</data>
+							<key>Size</key>
+							<integer>7289</integer>
+						</dict>
+						<key>files/bullet_sub7.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							shA9v/VTbKD793nrJSFc
+							ig==
+							</data>
+							<key>Size</key>
+							<integer>1405</integer>
+						</dict>
+						<key>files/columns_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							bBEyQgHdDou2RC8Vyw3M
+							/A==
+							</data>
+							<key>Size</key>
+							<integer>2237</integer>
+						</dict>
+						<key>files/crisp_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							pU95N/5Ij0xv3sXvpcc0
+							xw==
+							</data>
+							<key>Size</key>
+							<integer>1248</integer>
+						</dict>
 						<key>files/default_fm.css</key>
 						<dict>
 							<key>Digest</key>
@@ -56,31 +146,91 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							R1S0X3BJMTu1JfJWCX3+
-							Ow==
+							2pOLHY0PCcddyWYlFp3X
+							iQ==
 							</data>
 							<key>Size</key>
-							<integer>24895</integer>
+							<integer>44124</integer>
+						</dict>
+						<key>files/glossary_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							cK0zSwpOTK3WJAiF73My
+							9Q==
+							</data>
+							<key>Size</key>
+							<integer>1301</integer>
+						</dict>
+						<key>files/ipod_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							Tj8BxOLG7/jcb0NSyDy0
+							Mw==
+							</data>
+							<key>Size</key>
+							<integer>1410</integer>
 						</dict>
 						<key>files/lastCreated.xml</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							k8yPk1SvHItjOEuoMmGi
-							6w==
+							xDTbI6T1GJaZhTZ6LIdt
+							Yw==
 							</data>
 							<key>Size</key>
-							<integer>1323</integer>
+							<integer>1637</integer>
 						</dict>
 						<key>files/lastModified.xml</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							AtcgQ6GM3wDzTReZyNBL
-							WA==
+							a1AMCHL/lkabQPwqjq9j
+							QQ==
 							</data>
 							<key>Size</key>
-							<integer>1323</integer>
+							<integer>1637</integer>
+						</dict>
+						<key>files/lh_queen_faq_A.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							lIjX7Q3HE51Bcms53Io1
+							2A==
+							</data>
+							<key>Size</key>
+							<integer>4606</integer>
+						</dict>
+						<key>files/lh_queen_faq_Q.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							RUSJMrbcXNL4bn0yNDIY
+							dw==
+							</data>
+							<key>Size</key>
+							<integer>4788</integer>
+						</dict>
+						<key>files/loading.gif</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							BpfUZ9ScaoNkE9Tuy/qV
+							8A==
+							</data>
+							<key>Size</key>
+							<integer>2276</integer>
+						</dict>
+						<key>files/mootools.v1.11.js</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							SwsH+5rna4hD/UAuBt4i
+							Lw==
+							</data>
+							<key>Size</key>
+							<integer>118488</integer>
 						</dict>
 						<key>files/pdf.png</key>
 						<dict>
@@ -96,11 +246,81 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							jnRRpuqes1SPJu9e2nY6
-							Fg==
+							nObN7vj8rM1eqQVIaoK6
+							Pw==
 							</data>
 							<key>Size</key>
-							<integer>2830</integer>
+							<integer>3160</integer>
+						</dict>
+						<key>files/screen-shot-2011-12-19-at-4.30.57-pm.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							dtlgZY/du/g0kpDJF5XJ
+							hw==
+							</data>
+							<key>Size</key>
+							<integer>20057</integer>
+						</dict>
+						<key>files/secondary.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							ukEuibFiGpLeLUZS1+WS
+							HA==
+							</data>
+							<key>Size</key>
+							<integer>1459</integer>
+						</dict>
+						<key>files/sidebar_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							ztb+1RGQ02r63nQ0/CBQ
+							0Q==
+							</data>
+							<key>Size</key>
+							<integer>1118</integer>
+						</dict>
+						<key>files/slice_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							ARukWY9y0QGjjHkkRJ0H
+							Ww==
+							</data>
+							<key>Size</key>
+							<integer>1496</integer>
+						</dict>
+						<key>files/small_right_grey_arrow.png</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							vH4PExaMjTGY/rSi4iKo
+							Wg==
+							</data>
+							<key>Size</key>
+							<integer>262</integer>
+						</dict>
+						<key>files/smoothbox.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							DtjbKS4eyluHVpy2XTeI
+							0w==
+							</data>
+							<key>Size</key>
+							<integer>1998</integer>
+						</dict>
+						<key>files/smoothbox.js</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							i3NykAUP3ufgw76WLZHY
+							lw==
+							</data>
+							<key>Size</key>
+							<integer>11102</integer>
 						</dict>
 						<key>files/ss.js</key>
 						<dict>
@@ -122,15 +342,55 @@
 							<key>Size</key>
 							<integer>2257</integer>
 						</dict>
+						<key>files/subversion_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							JeGTUj8pFQ/e7eQF0HtR
+							uA==
+							</data>
+							<key>Size</key>
+							<integer>1067</integer>
+						</dict>
+						<key>files/tips.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							7WnmuPmO8SRXDBSEWLRW
+							7Q==
+							</data>
+							<key>Size</key>
+							<integer>683</integer>
+						</dict>
+						<key>files/tipsX3.js</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							1r6uOgHHYsM4/G7tlq6/
+							tw==
+							</data>
+							<key>Size</key>
+							<integer>6638</integer>
+						</dict>
+						<key>files/usatoday_fm.css</key>
+						<dict>
+							<key>Digest</key>
+							<data>
+							AfPT4PdMn60LE+fiE0dR
+							3Q==
+							</data>
+							<key>Size</key>
+							<integer>843</integer>
+						</dict>
 						<key>index.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							ZA7uh8LVAFW1+5A9SDC2
+							0Y+MFb+mVpNKyPco/Zdz
 							BQ==
 							</data>
 							<key>Size</key>
-							<integer>7114</integer>
+							<integer>7272</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>

@@ -25,7 +25,7 @@
 				<key>PublishingManifest</key>
 				<dict>
 					<key>CreationDate</key>
-					<date>2011-12-21T11:54:54Z</date>
+					<date>2012-01-12T03:45:46Z</date>
 					<key>DigestAlgorithm</key>
 					<string>MD5</string>
 					<key>DocumentGUID</key>
@@ -36,21 +36,21 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							rWaA0U6esP8e7Odh5OmM
-							ew==
+							UPWyDsdYchevsMoxPUCe
+							hA==
 							</data>
 							<key>Size</key>
-							<integer>5367</integer>
+							<integer>5470</integer>
 						</dict>
 						<key>files/archive-dec-2011.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							P7vVEzmUzTtuzXsEXohA
-							zA==
+							6HdPCYkhp4OEWrXlyQMG
+							8w==
 							</data>
 							<key>Size</key>
-							<integer>6104</integer>
+							<integer>6160</integer>
 						</dict>
 						<key>files/e36b6db92cc66cf91e5242448a727c1d-1.html</key>
 						<dict>
@@ -66,21 +66,21 @@
 						<dict>
 							<key>Digest</key>
 							<data>
-							mbDCAd+EZiu/D3bQH/Tw
-							yA==
+							6Lbt7MMuWXUC8DcjfOnJ
+							aA==
 							</data>
 							<key>Size</key>
-							<integer>1686</integer>
+							<integer>1742</integer>
 						</dict>
 						<key>index.html</key>
 						<dict>
 							<key>Digest</key>
 							<data>
-							HsowbC+ET0OS5IJhSGOw
-							NQ==
+							TI3EGPcgcRBrpZqkqAOk
+							OA==
 							</data>
 							<key>Size</key>
-							<integer>5813</integer>
+							<integer>5869</integer>
 						</dict>
 					</dict>
 					<key>PageID</key>

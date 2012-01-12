@@ -120,7 +120,9 @@
 					<key>iCanScript</key>
 					<array>
 						<string>Background Style.Background Style Blue</string>
-						<string>Banner Size.No Banner</string>
+						<string>Background.5</string>
+						<string>Banner Image.x (slideshow)</string>
+						<string>Banner Size.200 px</string>
 						<string>Container Font Size.medium</string>
 						<string>Content font.Titillium</string>
 						<string>Footer Font Size.medium</string>

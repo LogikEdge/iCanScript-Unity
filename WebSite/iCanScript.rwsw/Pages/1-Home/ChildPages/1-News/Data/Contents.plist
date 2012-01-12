@@ -116,7 +116,7 @@
 						<key>PublishStatus</key>
 						<integer>1</integer>
 						<key>Title</key>
-						<string></string>
+						<string>Another title?</string>
 					</dict>
 				</array>
 				<key>GeneratePermalinkPages</key>
@@ -124,7 +124,7 @@
 				<key>GenerateRSSEntriesForMainPageOnly</key>
 				<false/>
 				<key>LastBuildDate</key>
-				<date>2011-12-20T03:23:11Z</date>
+				<date>2012-01-12T03:08:53Z</date>
 				<key>LastID</key>
 				<integer>2</integer>
 				<key>LastSavedBuildDate</key>

@@ -308,17 +308,17 @@ public class iCS_RuntimeDesc {
 
     // ----------------------------------------------------------------------
 	public iCS_RuntimeDesc CopyFrom(iCS_RuntimeDesc rtDesc) {
-	    Id                  = rtDesc.Id;
-	    ObjectType          = rtDesc.ObjectType;
-	    Company             = rtDesc.Company;
-	    Package             = rtDesc.Package;
-	    DisplayName         = rtDesc.DisplayName;
-	    ClassType           = rtDesc.ClassType;
-	    MethodName          = rtDesc.MethodName;
-	    PortNames           = rtDesc.PortNames;
-	    PortTypes           = rtDesc.PortTypes;
-	    PortIsOuts          = rtDesc.PortIsOuts;
-	    PortDefaultValues   = rtDesc.PortDefaultValues;
+	    Id               = rtDesc.Id;
+	    ObjectType       = rtDesc.ObjectType;
+	    Company          = rtDesc.Company;
+	    Package          = rtDesc.Package;
+	    DisplayName      = rtDesc.DisplayName;
+	    ClassType        = rtDesc.ClassType;
+	    MethodName       = rtDesc.MethodName;
+	    PortNames        = rtDesc.PortNames;
+	    PortTypes        = rtDesc.PortTypes;
+	    PortIsOuts       = rtDesc.PortIsOuts;
+	    PortDefaultValues= rtDesc.PortDefaultValues;
 		return this;
 	}
 	
