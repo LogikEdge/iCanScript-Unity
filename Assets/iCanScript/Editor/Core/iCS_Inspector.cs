@@ -18,16 +18,22 @@ public class iCS_Inspector : Editor {
 	private iCS_Editor	     Editor = null;
 	public  iCS_EditorObject SelectedObject {
 	    get { return mySelectedObject; }
-	    set { mySelectedObject= value; Repaint(); }
+	    set {
+            if(mySelectedObject != value) {
+                FoldoutDB.Clear();
+    	        mySelectedObject= value;
+            }
+	        Repaint();
+	    }
 	}
 	private iCS_EditorObject mySelectedObject= null;
-
+	private Dictionary<string,bool> FoldoutDB= new Dictionary<string,bool>();
+	
 	// ----------------------------------------------------------------------
     // Display state properties.
 	private bool    selectedObjectFold= true;
     private bool    showInputs        = false;
     private bool    showOutputs       = false;
-    
     
 	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
@@ -197,7 +203,7 @@ public class iCS_Inspector : Editor {
             showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
             if(showInputs) {
                 EditorGUIUtility.LookLikeControls();
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI(port, Storage, 2), inPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI("in", port, Storage, 2, FoldoutDB), inPorts);
             }        
         }
 
@@ -206,7 +212,7 @@ public class iCS_Inspector : Editor {
             EditorGUI.indentLevel= 1;
             showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
             if(showOutputs) {
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI(port, Storage, 2), outPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI("out", port, Storage, 2, FoldoutDB), outPorts);
             }            
         }
     }

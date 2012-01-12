@@ -22,7 +22,7 @@ public static class iCS_GuiUtilities {
 		};
 	}
 
-    public static void OnInspectorGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel= 0) {
+    public static void OnInspectorGUI(string parentName, iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,bool> foldoutDB) {
         // Extract port information
 		Type portType= port.RuntimeType;
         Type dataType= iCS_Types.GetElementType(portType);
@@ -37,7 +37,7 @@ public static class iCS_GuiUtilities {
 
         // Display primitives.
         object newValue= null;
-        if(ShowInInspector(port.Name, dataType, portType, portValue, out newValue, indentLevel)) {
+        if(ShowInInspector(port.Name, parentName, dataType, portType, portValue, out newValue, indentLevel, foldoutDB)) {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(portValue != newValue && storage.GetSource(port) == null) {
                 storage.SetDefaultValue(desc, portId, newValue);
@@ -51,7 +51,10 @@ public static class iCS_GuiUtilities {
     }
 
     // -----------------------------------------------------------------------
-    public static bool ShowInInspector(string name, Type dataType, Type portType, object currentValue, out object newValue, int indentLevel) {
+    public static bool ShowInInspector(string name, string compositeParent,
+                                       Type dataType, Type portType,
+                                       object currentValue, out object newValue,
+                                       int indentLevel, Dictionary<string,bool> foldoutDB) {
         EditorGUI.indentLevel= indentLevel;
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
         // C# data types.
@@ -158,7 +161,12 @@ public static class iCS_GuiUtilities {
             return true;
         }        
 		// All other types.
-        if(EditorGUILayout.Foldout(true, niceName)) {
+        string compositeName= compositeParent+"."+name;
+        if(!foldoutDB.ContainsKey(compositeName)) foldoutDB.Add(compositeName, false);
+        bool showCompositeObject= foldoutDB[compositeName];
+        showCompositeObject= EditorGUILayout.Foldout(showCompositeObject, niceName);
+        foldoutDB[compositeName]= showCompositeObject;
+        if(showCompositeObject) {
     		foreach(var field in dataType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
                 bool shouldInspect= true;
                 if(field.IsPublic) {
@@ -176,7 +184,7 @@ public static class iCS_GuiUtilities {
                 if(shouldInspect) {
                     object newFieldValue= null;
                     if(currentValue == null) currentValue= iCS_Types.CreateInstance(dataType);
-                    ShowInInspector(field.Name, iCS_Types.GetElementType(field.FieldType), field.FieldType, field.GetValue(currentValue), out newFieldValue, indentLevel+1);
+                    ShowInInspector(field.Name, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, field.GetValue(currentValue), out newFieldValue, indentLevel+1, foldoutDB);
                 }
     		}        
         }
