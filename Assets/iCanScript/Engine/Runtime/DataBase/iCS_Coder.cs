@@ -121,9 +121,20 @@ public class iCS_Coder {
 		if(value is Vector4) { EncodeVector4(key, (Vector4)value); return; }
 		if(value is Color)   { EncodeColor(key, (Color)value); return; }
 		// All other types.
-		foreach(var field in valueType.GetFields()) {
-            if(!field.IsStatic) {
-    			coder.EncodeObject(field.Name, field.GetValue(value));                
+		foreach(var field in valueType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+            bool shouldEncode= true;
+            if(field.IsPublic) {
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is System.NonSerializedAttribute) shouldEncode= false;
+                }
+            } else {
+                shouldEncode= false;
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is SerializeField) shouldEncode= true;
+                }                
+            }
+            if(shouldEncode) {
+    			coder.EncodeObject(field.Name, field.GetValue(value));                                
             }
 		}
 		Add(key, valueType, coder.Archive);
@@ -505,9 +516,20 @@ public class iCS_Coder {
 		// All other types.
         coder.Archive= valueStr;
         object obj= iCS_Types.CreateInstance(valueType);
-		foreach(var field in valueType.GetFields()) {
-            if(!field.IsStatic) {
-    			field.SetValue(obj, coder.DecodeObjectForKey(field.Name));
+		foreach(var field in valueType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+            bool shouldDecode= true;
+            if(field.IsPublic) {
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is System.NonSerializedAttribute) shouldDecode= false;
+                }
+            } else {
+                shouldDecode= false;
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is SerializeField) shouldDecode= true;
+                }                
+            }
+            if(shouldDecode) {
+    			field.SetValue(obj, coder.DecodeObjectForKey(field.Name));                
             }
 		}
         return obj;
