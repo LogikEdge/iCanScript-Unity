@@ -53,7 +53,13 @@ public static class iCS_GuiUtilities {
     // -----------------------------------------------------------------------
     public static bool ShowInInspector(string name, Type dataType, Type portType, object currentValue, out object newValue) {
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
-        // Display primitives.
+        // C# data types.
+        if(dataType == typeof(byte)) {
+            
+        }
+        if(dataType == typeof(sbyte)) {
+            
+        }
         if(dataType == typeof(bool)) {
             bool value= currentValue != null ? (bool)currentValue : default(bool);
             newValue= EditorGUILayout.Toggle(niceName, value);
@@ -64,15 +70,42 @@ public static class iCS_GuiUtilities {
             newValue= EditorGUILayout.IntField(niceName, value);
             return true;
         }
+        if(dataType == typeof(uint)) {
+            
+        }
+        if(dataType == typeof(short)) {
+            
+        }
+        if(dataType == typeof(ushort)) {
+            
+        }
+        if(dataType == typeof(long)) {
+            
+        }
+        if(dataType == typeof(ulong)) {
+            
+        }
         if(dataType == typeof(float)) {
             float value= currentValue != null ? (float)currentValue : default(float);
             newValue= EditorGUILayout.FloatField(niceName, value);
             return true;
         }
+        if(dataType == typeof(double)) {
+            
+        }
+        if(dataType == typeof(decimal)) {
+            
+        }
+        if(dataType == typeof(char)) {
+            
+        }
         if(dataType == typeof(string)) {
             string value= ((string)currentValue) ?? "";
             newValue= EditorGUILayout.TextField(niceName, value);
             return true;
+        }
+        if(dataType == typeof(Type)) {
+            
         }
         if(portType.IsArray && dataType == typeof(Char)) {
             string value= currentValue != null ? new string(currentValue as char[]) : "";
@@ -82,6 +115,7 @@ public static class iCS_GuiUtilities {
 			Debug.Log("After: "+new string(newValue as Char[]));
             return true;				
         }
+        // Unity data types.
         if(dataType == typeof(Vector2)) {
             Vector2 value= currentValue != null ? (Vector2)currentValue : default(Vector2);
             newValue= EditorGUILayout.Vector2Field(niceName, value);
@@ -108,31 +142,54 @@ public static class iCS_GuiUtilities {
             newValue= EditorGUILayout.ObjectField(niceName, value, dataType, true);
             return true;
         }        
-		if(dataType == typeof(object)) {
-			bool changed= false;
-			object changedValue= null;
-			EditorGUILayout.BeginHorizontal();
-			if(currentValue != null) {
-				// use current object type.
-				Type valueType= currentValue.GetType();
-				Type dataValueType= iCS_Types.GetElementType(valueType);
-				changed= ShowInInspector(name, dataValueType, valueType, currentValue, out changedValue);
-			} else {
-				EditorGUILayout.TextField(name);
-			}
-			// Select a type.
-			string[] derivedTypeNames= GetListOfDerivedTypeNames(dataType);
-			int idx= currentValue != null ? GetIndexOfType(currentValue.GetType(), derivedTypeNames) : 0;
-			int selection= EditorGUILayout.Popup(idx, derivedTypeNames);
-			if(selection != idx) {
-				// TODO...
-			}
-			EditorGUILayout.EndHorizontal();
-			newValue= changedValue;
-			return changed;
+		// All other types.
+		foreach(var field in dataType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+            bool shouldInspect= true;
+            if(field.IsPublic) {
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is System.NonSerializedAttribute) { shouldInspect= false; break; }
+                    if(attribute is HideInInspector) { shouldInspect= false; break; }
+                }
+            } else {
+                shouldInspect= false;
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is SerializeField) shouldInspect= true;
+                    if(attribute is HideInInspector) { shouldInspect= false; break; }
+                }                
+            }
+            if(shouldInspect) {
+                Debug.Log("Should inspect: "+field.Name);
+            }
 		}
         newValue= null;
-        return false;
+        return true;
+
+//
+//		if(dataType == typeof(object)) {
+//			bool changed= false;
+//			object changedValue= null;
+//			EditorGUILayout.BeginHorizontal();
+//			if(currentValue != null) {
+//				// use current object type.
+//				Type valueType= currentValue.GetType();
+//				Type dataValueType= iCS_Types.GetElementType(valueType);
+//				changed= ShowInInspector(name, dataValueType, valueType, currentValue, out changedValue);
+//			} else {
+//				EditorGUILayout.TextField(name);
+//			}
+//			// Select a type.
+//			string[] derivedTypeNames= GetListOfDerivedTypeNames(dataType);
+//			int idx= currentValue != null ? GetIndexOfType(currentValue.GetType(), derivedTypeNames) : 0;
+//			int selection= EditorGUILayout.Popup(idx, derivedTypeNames);
+//			if(selection != idx) {
+//				// TODO...
+//			}
+//			EditorGUILayout.EndHorizontal();
+//			newValue= changedValue;
+//			return changed;
+//		}
+//        newValue= null;
+//        return false;
     }
 
     // -----------------------------------------------------------------------

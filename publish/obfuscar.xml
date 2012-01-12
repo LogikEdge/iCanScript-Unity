@@ -13,8 +13,9 @@
 		<SkipType name="iCS_UserPreferences/*" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>               
 		                                                                                                                                                            
 		<!-- Needed but unknow why -->
-		<SkipType name="iCS_Archive" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_Coder" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
 		<SkipType name="iCS_EditorObject" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                   
+		<SkipType name="iCS_RuntimeDesc" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                   
                                                                                                                                                                     
 		<!-- skip those types that need to expose the Add/Remove child methods -->                                                                                 
 		<SkipType name="iCS_Module"     skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      
@@ -50,6 +51,7 @@
 		<SkipType name="iCS_Inspector" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 		<SkipType name="iCS_InspectorBehaviour" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 		<SkipType name="iCS_InspectorLibrary" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		<SkipType name="iCS_GuiUtilities" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 	
 		<!--  	<SkipType name="iCS_Menu" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>  -->
 		<!--  	<SkipType name="iCS_DynamicMenu" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>  -->
