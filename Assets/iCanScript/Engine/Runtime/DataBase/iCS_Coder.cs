@@ -271,6 +271,7 @@ public class iCS_Coder {
         if(value == typeof(Vector4[])) return "v4[]";
         if(value == typeof(System.Object[])) return "o[]";
         // iCanScript type compression
+        if(value == typeof(iCS_Behaviour)) return "iBeh";
 		if(value == typeof(iCS_RuntimeDesc)) return "iRtD";
 		if(value == typeof(iCS_ObjectTypeEnum)) return "iOTE";
 		if(value == typeof(iCS_Module)) return "iMd";
@@ -674,6 +675,7 @@ public class iCS_Coder {
 		if(value == "v3[]") return typeof(Vector3[]);
 		if(value == "v4[]") return typeof(Vector4[]);
 		if(value == "o[]") return typeof(System.Object[]);
+		if(value == "iBeh") return typeof(iCS_Behaviour);
 		if(value == "iRtD") return typeof(iCS_RuntimeDesc);
 		if(value == "iOTE") return typeof(iCS_ObjectTypeEnum);
 		if(value == "iMd") return typeof(iCS_Module);
