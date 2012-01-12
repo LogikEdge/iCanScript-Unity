@@ -490,7 +490,7 @@ public class iCS_Coder {
         iCS_Coder coder= new iCS_Coder();
 		if(valueType.IsEnum) {
             coder.Archive= valueStr;
-            return coder.DecodeIntForKey("Numeric");
+            return Enum.ToObject(valueType, coder.DecodeIntForKey("Numeric"));
         }
 		// Primitives.
 		Type elementType= iCS_Types.GetElementType(valueType);

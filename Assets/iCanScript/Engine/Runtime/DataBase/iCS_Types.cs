@@ -24,7 +24,13 @@ public static class iCS_Types {
     // ----------------------------------------------------------------------
     // Returns the default value of the given type.
     public static object DefaultValue(Type type) {
-       return (type == null || type == typeof(void)) ? null : (type.IsValueType ? Activator.CreateInstance(type) : null);
+        if(type == null || type == typeof(void)) return null;
+        if(type.IsEnum) {
+            Array enumValues= Enum.GetValues(type);
+            if(enumValues.Length <= 0) return null;
+            return Enum.ToObject(type, enumValues.GetValue(0));
+        }
+        return (type.IsValueType || type.IsEnum ? Activator.CreateInstance(type) : null);
     }
 
 	// ----------------------------------------------------------------------

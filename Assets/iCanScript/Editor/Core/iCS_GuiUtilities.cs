@@ -54,11 +54,21 @@ public static class iCS_GuiUtilities {
     public static bool ShowInInspector(string name, Type dataType, Type portType, object currentValue, out object newValue) {
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
         // C# data types.
+        if(dataType.IsEnum) {
+            if(currentValue == null) { currentValue= iCS_Types.DefaultValue(dataType); }
+            if(currentValue == null) { newValue= currentValue; return true; }
+            newValue= EditorGUILayout.EnumPopup(niceName, currentValue as System.Enum);
+            return true;
+        }
         if(dataType == typeof(byte)) {
-            
+            int value= currentValue != null ? (int)((byte)currentValue) : (int)default(byte);
+            newValue= (byte)((int)EditorGUILayout.IntField(niceName, value));
+            return true;
         }
         if(dataType == typeof(sbyte)) {
-            
+            int value= currentValue != null ? (int)((sbyte)currentValue) : (int)default(sbyte);
+            newValue= (sbyte)((int)EditorGUILayout.IntField(niceName, value));            
+            return true;
         }
         if(dataType == typeof(bool)) {
             bool value= currentValue != null ? (bool)currentValue : default(bool);
@@ -74,10 +84,14 @@ public static class iCS_GuiUtilities {
             
         }
         if(dataType == typeof(short)) {
-            
+            int value= currentValue != null ? (int)((short)currentValue) : (int)default(short);
+            newValue= (short)((int)EditorGUILayout.IntField(niceName, value));            
+            return true;            
         }
         if(dataType == typeof(ushort)) {
-            
+            int value= currentValue != null ? (int)((ushort)currentValue) : (int)default(ushort);
+            newValue= (ushort)((int)EditorGUILayout.IntField(niceName, value));            
+            return true;            
         }
         if(dataType == typeof(long)) {
             
@@ -138,6 +152,7 @@ public static class iCS_GuiUtilities {
         }
         // Suport all UnityEngine objects.
         if(iCS_Types.IsA<UnityEngine.Object>(dataType)) {
+            Debug.Log("Unity Object: "+dataType.Name);
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
             newValue= EditorGUILayout.ObjectField(niceName, value, dataType, true);
             return true;
@@ -158,7 +173,7 @@ public static class iCS_GuiUtilities {
                 }                
             }
             if(shouldInspect) {
-                Debug.Log("Should inspect: "+field.Name);
+//                Debug.Log("Should inspect: "+field.Name);
             }
 		}
         newValue= null;
