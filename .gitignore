@@ -20,7 +20,7 @@ OSX/
 Windows/
 builds/
 Library/InspectorExpandedItems.asset
-WebSite/*
+WebSite/
 
 *.tmproj
 *.pidb
