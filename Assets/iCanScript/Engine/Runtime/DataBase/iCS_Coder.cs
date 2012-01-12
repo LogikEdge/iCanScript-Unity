@@ -13,9 +13,9 @@ public class iCS_Coder {
     // ======================================================================
     // Compression constants.
 	// ----------------------------------------------------------------------
-	const string DefaultTypeStr    = ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
+	const string CSharpTypeStr     = ", Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
 	const string UnityEngineTypeStr= ", UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
-	const string AssemblyStr       = ", Assembly-";
+    const string DefaultTypeStr    = ", Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
 	const string VersionStr        = ", Version=";
 	const string CultureStr        = ", Culture=neutral";
 	const string PublicKeyTokenStr = ", PublicKeyToken=";
@@ -298,17 +298,17 @@ public class iCS_Coder {
 //        }
 		string typeAsString= value.AssemblyQualifiedName;
 		// Try to compress type string.
-		int defaultTypeIdx= typeAsString.IndexOf(DefaultTypeStr);
-		if(defaultTypeIdx > 0) {
-			return typeAsString.Substring(0, defaultTypeIdx)+"!!"+typeAsString.Substring(defaultTypeIdx+DefaultTypeStr.Length);
+		int cSharpTypeIdx= typeAsString.IndexOf(CSharpTypeStr);
+		if(cSharpTypeIdx > 0) {
+			return typeAsString.Substring(0, cSharpTypeIdx)+"!!"+typeAsString.Substring(cSharpTypeIdx+CSharpTypeStr.Length);
 		}
 		int unityEngineTypeIdx= typeAsString.IndexOf(UnityEngineTypeStr);
 		if(unityEngineTypeIdx > 0) {
 			return typeAsString.Substring(0, unityEngineTypeIdx)+"!#"+typeAsString.Substring(unityEngineTypeIdx+UnityEngineTypeStr.Length);
 		}
-		int assemblyIdx= typeAsString.IndexOf(AssemblyStr);
-		if(assemblyIdx > 0) {
-			typeAsString= typeAsString.Substring(0, assemblyIdx)+"!%"+typeAsString.Substring(assemblyIdx+AssemblyStr.Length);
+		int defaultTypeIdx= typeAsString.IndexOf(DefaultTypeStr);
+		if(defaultTypeIdx > 0) {
+			typeAsString= typeAsString.Substring(0, defaultTypeIdx)+"!%"+typeAsString.Substring(defaultTypeIdx+DefaultTypeStr.Length);
 		}
 		int versionIdx= typeAsString.IndexOf(VersionStr);
 		if(versionIdx > 0) {
@@ -680,17 +680,17 @@ public class iCS_Coder {
 		if(value == "iSt") return typeof(iCS_State);
 		if(value == "iSC") return typeof(iCS_StateChart);
 		// Decompress type string.
-		int defaultTypeIdx= value.IndexOf("!!");
-		if(defaultTypeIdx > 0) {
-			return Type.GetType(value.Substring(0, defaultTypeIdx)+DefaultTypeStr+value.Substring(defaultTypeIdx+2));
+		int cSharpTypeIdx= value.IndexOf("!!");
+		if(cSharpTypeIdx > 0) {
+			return Type.GetType(value.Substring(0, cSharpTypeIdx)+CSharpTypeStr+value.Substring(cSharpTypeIdx+2));
 		}
 		int unityEngineTypeIdx= value.IndexOf("!#");
 		if(unityEngineTypeIdx > 0) {
 			return Type.GetType(value.Substring(0, unityEngineTypeIdx)+UnityEngineTypeStr+value.Substring(unityEngineTypeIdx+2));
 		}
-		int assemblyIdx= value.IndexOf("!%");
-		if(assemblyIdx > 0) {
-			value= value.Substring(0, assemblyIdx)+AssemblyStr+value.Substring(assemblyIdx+2);
+		int defaultTypeIdx= value.IndexOf("!%");
+		if(defaultTypeIdx > 0) {
+			value= value.Substring(0, defaultTypeIdx)+DefaultTypeStr+value.Substring(defaultTypeIdx+2);
 		}
 		int versionIdx= value.IndexOf("!&");
 		if(versionIdx > 0) {
