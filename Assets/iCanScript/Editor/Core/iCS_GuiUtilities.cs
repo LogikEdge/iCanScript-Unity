@@ -57,13 +57,34 @@ public static class iCS_GuiUtilities {
                                        int indentLevel, Dictionary<string,bool> foldoutDB) {
         EditorGUI.indentLevel= indentLevel;
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
-        // C# data types.
+        // Special case for arrays
+        if(portType.IsArray) {
+            string compositeArrayName= compositeParent+"."+name;
+            if(!foldoutDB.ContainsKey(compositeArrayName)) foldoutDB.Add(compositeArrayName, false);
+            bool showArray= foldoutDB[compositeArrayName];
+            showArray= EditorGUILayout.Foldout(showArray, niceName);
+            foldoutDB[compositeArrayName]= showArray;
+            if(showArray) {
+                EditorGUI.indentLevel= indentLevel+1;
+                if(currentValue == null) currentValue= Array.CreateInstance(dataType, 1);
+                Array array= currentValue as Array;
+                int newSize= (int)EditorGUILayout.IntField("Size", array.Length);            
+                for(int i= 0; i < array.Length; ++i) {
+                    object newElementValue= null;
+                    ShowInInspector("["+i+"]", compositeArrayName, iCS_Types.GetElementType(dataType), dataType, array.GetValue(i), out newElementValue, indentLevel+1, foldoutDB);
+                }
+            }
+            newValue= currentValue;
+            return true;            
+        }
+        // Special case for enumerations
         if(dataType.IsEnum) {
             if(currentValue == null) { currentValue= iCS_Types.DefaultValue(dataType); }
             if(currentValue == null) { newValue= currentValue; return true; }
             newValue= EditorGUILayout.EnumPopup(niceName, currentValue as System.Enum);
             return true;
         }
+        // C# data types.
         if(dataType == typeof(byte)) {
             int value= currentValue != null ? (int)((byte)currentValue) : (int)default(byte);
             newValue= (byte)((int)EditorGUILayout.IntField(niceName, value));

@@ -17,5 +17,5 @@ public class iCS_TestGenericFunction {
     }
     public enum MyEnum { Red, Blue, Yellow }; 
 
-    [iCS_Function] public int Add(TestClass v, MyEnum e) { return v.x+v.y; }
+    [iCS_Function] public int Add(TestClass v, MyEnum e, TestClass[] boolArray) { return v.x+v.y; }
 }
