@@ -119,6 +119,7 @@ public class iCS_Coder {
 		if(value is Vector2) { EncodeVector2(key, (Vector2)value); return; }
 		if(value is Vector3) { EncodeVector3(key, (Vector3)value); return; }
 		if(value is Vector4) { EncodeVector4(key, (Vector4)value); return; }
+		if(value is Color)   { EncodeColor(key, (Color)value); return; }
 		// All other types.
 		foreach(var field in valueType.GetFields()) {
             if(!field.IsStatic) {
@@ -195,6 +196,10 @@ public class iCS_Coder {
             EncodeArrayOfNumerics(key, value as Vector4[], EncodeVector4);
 			return;
 		}
+		if(valueType == typeof(Color[])) {
+            EncodeArrayOfNumerics(key, value as Color[], EncodeColor);
+			return;
+		}
 		if(valueType == typeof(string[])) {
             EncodeArray(key, value as string[], EncodeString);
 			return;
@@ -236,6 +241,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
 	string EncodeType(Type value) {
+        // C# data types.
 		if(value == typeof(Type)) return "t";
 		if(value == typeof(string)) return "S";
 		if(value == typeof(bool)) return "b";
@@ -249,9 +255,6 @@ public class iCS_Coder {
 		if(value == typeof(double)) return "d";
         if(value == typeof(char)) return "c";
         if(value == typeof(byte)) return "B";
-        if(value == typeof(Vector2)) return "v2";
-        if(value == typeof(Vector3)) return "v3";
-        if(value == typeof(Vector4)) return "v4";
         if(value == typeof(System.Object)) return "o";
 		if(value == typeof(Type[])) return "t[]";
 		if(value == typeof(string[])) return "S[]";
@@ -266,37 +269,23 @@ public class iCS_Coder {
 		if(value == typeof(double[])) return "d[]";
         if(value == typeof(char[])) return "c[]";
         if(value == typeof(byte[])) return "B[]";
+        if(value == typeof(System.Object[])) return "o[]";
+        // Unity data types.
+        if(value == typeof(Vector2)) return "v2";
+        if(value == typeof(Vector3)) return "v3";
+        if(value == typeof(Vector4)) return "v4";
+        if(value == typeof(Color)) return "clr";
         if(value == typeof(Vector2[])) return "v2[]";
         if(value == typeof(Vector3[])) return "v3[]";
         if(value == typeof(Vector4[])) return "v4[]";
-        if(value == typeof(System.Object[])) return "o[]";
-        // iCanScript type compression
+        if(value == typeof(Color[])) return "clr[]";
+        // iCanScript data types.
         if(value == typeof(iCS_Behaviour)) return "iBeh";
 		if(value == typeof(iCS_RuntimeDesc)) return "iRtD";
 		if(value == typeof(iCS_ObjectTypeEnum)) return "iOTE";
 		if(value == typeof(iCS_Module)) return "iMd";
 		if(value == typeof(iCS_StateChart)) return "iSC";
 		if(value == typeof(iCS_State)) return "iSt";
-//        if(value.IsByRef) {
-//            Type elementType= value.GetElementType();
-//    		if(elementType == typeof(Type)) return "t&";
-//    		if(elementType == typeof(string)) return "S&";
-//    		if(elementType == typeof(bool)) return "b&";
-//    		if(elementType == typeof(int)) return "i&";
-//            if(elementType == typeof(uint)) return "u&";
-//            if(elementType == typeof(long)) return "l&";
-//            if(elementType == typeof(ulong)) return "ul&";
-//            if(elementType == typeof(short)) return "s&";
-//            if(elementType == typeof(ushort)) return "us&";
-//    		if(elementType == typeof(float)) return "f&";
-//    		if(elementType == typeof(double)) return "d&";
-//            if(elementType == typeof(char)) return "c&";
-//            if(elementType == typeof(byte)) return "B&";
-//            if(elementType == typeof(Vector2)) return "v2&";
-//            if(elementType == typeof(Vector3)) return "v3&";
-//            if(elementType == typeof(Vector4)) return "v4&";
-//            if(elementType == typeof(System.Object)) return "o&";
-//        }
 		string typeAsString= value.AssemblyQualifiedName;
 		// Try to compress type string.
 		int cSharpTypeIdx= typeAsString.IndexOf(CSharpTypeStr);
@@ -465,6 +454,14 @@ public class iCS_Coder {
 	public void EncodeVector4(string key, Vector4 value) {
 		Add(key, typeof(Vector4), EncodeVector4(value));
 	}
+	// ----------------------------------------------------------------------
+	string EncodeColor(Color value) {
+		return (string)value.r.ToString()+","+value.g+","+value.b+","+value.a;
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeColor(string key, Color value) {
+		Add(key, typeof(Color), EncodeColor(value));
+	}
 
     // ======================================================================
     // Decoding
@@ -504,6 +501,7 @@ public class iCS_Coder {
 		if(elementType == typeof(Vector2)) return DecodeVector2(valueStr);
 		if(elementType == typeof(Vector3)) return DecodeVector3(valueStr);
 		if(elementType == typeof(Vector4)) return DecodeVector4(valueStr);
+		if(elementType == typeof(Color))   return DecodeColor(valueStr);
 		// All other types.
         coder.Archive= valueStr;
         object obj= iCS_Types.CreateInstance(valueType);
@@ -566,6 +564,9 @@ public class iCS_Coder {
 		if(valueType == typeof(Vector4[])) {
             return DecodeArrayOfNumerics<Vector4>(valueStr, DecodeVector4);
 		}
+		if(valueType == typeof(Color[])) {
+            return DecodeArrayOfNumerics<Color>(valueStr, DecodeColor);
+		}
 		if(valueType == typeof(string[])) {
             return DecodeArray<string>(valueStr, DecodeString);
 		}
@@ -624,6 +625,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     Type DecodeType(string value) {
+        // C# data types
 		if(value == "t") return typeof(Type);
 		if(value == "S") return typeof(string);
 		if(value == "b") return typeof(bool);
@@ -637,27 +639,7 @@ public class iCS_Coder {
 		if(value == "d") return typeof(double);
         if(value == "c") return typeof(char);
         if(value == "B") return typeof(byte);
-		if(value == "v2") return typeof(Vector2);
-		if(value == "v3") return typeof(Vector3);
-		if(value == "v4") return typeof(Vector4);
 		if(value == "o") return typeof(System.Object);
-		if(value == "t&") return typeof(Type);
-		if(value == "S&") return typeof(string);
-		if(value == "b&") return typeof(bool);
-		if(value == "i&") return typeof(int);
-		if(value == "u&") return typeof(uint);
-		if(value == "l&") return typeof(long);
-		if(value == "ul&") return typeof(ulong);
-		if(value == "s&") return typeof(short);
-		if(value == "us&") return typeof(ushort);		
-		if(value == "f&") return typeof(float);
-		if(value == "d&") return typeof(double);
-        if(value == "c&") return typeof(char);
-        if(value == "B&") return typeof(byte);
-		if(value == "v2&") return typeof(Vector2);
-		if(value == "v3&") return typeof(Vector3);
-		if(value == "v4&") return typeof(Vector4);
-		if(value == "o&") return typeof(System.Object);
 		if(value == "t[]") return typeof(Type[]);
 		if(value == "S[]") return typeof(string[]);
 		if(value == "b[]") return typeof(bool[]);
@@ -671,10 +653,17 @@ public class iCS_Coder {
 		if(value == "d[]") return typeof(double[]);
         if(value == "c[]") return typeof(char[]);
         if(value == "B[]") return typeof(byte[]);
+		if(value == "o[]") return typeof(System.Object[]);
+        // Unity data types
+		if(value == "v2") return typeof(Vector2);
+		if(value == "v3") return typeof(Vector3);
+		if(value == "v4") return typeof(Vector4);
+        if(value == "clr") return typeof(Color);
 		if(value == "v2[]") return typeof(Vector2[]);
 		if(value == "v3[]") return typeof(Vector3[]);
 		if(value == "v4[]") return typeof(Vector4[]);
-		if(value == "o[]") return typeof(System.Object[]);
+        if(value == "clr[]") return typeof(Color[]);
+        // iCanScript data types.
 		if(value == "iBeh") return typeof(iCS_Behaviour);
 		if(value == "iRtD") return typeof(iCS_RuntimeDesc);
 		if(value == "iOTE") return typeof(iCS_ObjectTypeEnum);
@@ -885,6 +874,35 @@ public class iCS_Coder {
 		float z= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
 		float w= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
         return new Vector4(x,y,z,w);
+    }
+	// ----------------------------------------------------------------------
+    Color DecodeColorForKey(string key) {
+        return DecodeForKey<Color>(key, DecodeColor);
+    }
+	// ----------------------------------------------------------------------
+    Color DecodeColor(string value) {
+		int end= value.IndexOf(',');
+		if(end < 0) {
+			DecodeError(',', value);
+			return Color.black;
+		}
+		float r= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		value= value.Substring(end+1);
+		end= value.IndexOf(',');
+		if(end < 0) {
+			DecodeError(',', value);
+			return Color.black;			
+		}
+		float g= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		value= value.Substring(end+1);
+		end= value.IndexOf(',');
+		if(end < 0) {
+			DecodeError(',', value);
+			return Color.black;			
+		}
+		float b= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		float a= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
+        return new Color(r,g,b,a);
     }
 	// ----------------------------------------------------------------------
     T DecodeForKey<T>(string key, Func<string,T> decoder) {
