@@ -196,7 +196,7 @@ public class iCS_Inspector : Editor {
             showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
             if(showInputs) {
                 EditorGUIUtility.LookLikeControls();
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI("in", Storage.GetSource(port) != null, port, Storage, 2, FoldoutDB), inPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorPortGUI("in", Storage.GetSource(port) != null, port, Storage, 2, FoldoutDB), inPorts);
             }        
         }
 
@@ -205,7 +205,7 @@ public class iCS_Inspector : Editor {
             EditorGUI.indentLevel= 1;
             showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
             if(showOutputs) {
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI("out", true, port, Storage, 2, FoldoutDB), outPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorPortGUI("out", true, port, Storage, 2, FoldoutDB), outPorts);
             }            
         }
     }
