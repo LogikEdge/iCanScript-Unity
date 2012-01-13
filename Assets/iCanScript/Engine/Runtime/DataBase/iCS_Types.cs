@@ -20,7 +20,13 @@ public static class iCS_Types {
     public static object CreateInstance(Type type) {
         if(type == null || type == typeof(void)) return null;
         if(type.IsArray) return Array.CreateInstance(type.GetElementType(),0);
-        return Activator.CreateInstance(type);
+        if(IsA<UnityEngine.ScriptableObject>(type)) return ScriptableObject.CreateInstance(type);
+        try {
+            return Activator.CreateInstance(type);            
+        }
+        catch {
+            return null;
+        }
     }
 
     // ----------------------------------------------------------------------
