@@ -16,10 +16,23 @@ public static class iCS_Types {
     }
     
     // ----------------------------------------------------------------------
+    // Returns true if the given type has a default constructor.
+    public static bool CreateInstanceSupported(Type type) {
+        if(type.IsArray) return CreateInstanceSupported(GetElementType(type));
+        if(type.GetElementType() == typeof(string)) return true;
+        var defaultConstructor= type.GetConstructor(Type.EmptyTypes);
+        return defaultConstructor != null;
+    }
+    public static bool HasDefaultConstructor<T>() {
+        return CreateInstanceSupported(typeof(T));
+    }
+    
+    // ----------------------------------------------------------------------
     // Returns the default value of the given type.
     public static object CreateInstance(Type type) {
         if(type == null || type == typeof(void)) return null;
         if(type.IsArray) return Array.CreateInstance(type.GetElementType(),0);
+        if(type == typeof(string) || (type.HasElementType && type.GetElementType() == typeof(string))) return "";
         if(IsA<UnityEngine.ScriptableObject>(type)) return ScriptableObject.CreateInstance(type);
         try {
             return Activator.CreateInstance(type);            

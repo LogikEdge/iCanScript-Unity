@@ -23,6 +23,8 @@ public static class iCS_GuiUtilities {
         iCS_FunctionBase runtimeObject= storage.GetRuntimeObject(parent) as iCS_FunctionBase;
         // Determine if we are allowed to modify port value.
         bool isReadOnly= !(!hasSource && (port.IsInputPort || port.IsModulePort));
+        // Nothing to display if we don't have a runtime object and we are in readonly.
+        if(isReadOnly && runtimeObject == null) return;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
         object portValue= runtimeObject != null ? runtimeObject[portId] :
                                                   (isReadOnly ? null : storage.GetDefaultValue(desc, portId));            
@@ -32,11 +34,11 @@ public static class iCS_GuiUtilities {
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, elementType, portType, portValue, indentLevel, foldoutDB);
         if(!isReadOnly) {
             if(runtimeObject != null) runtimeObject[portId]= newPortValue;
-            if(portValue != newPortValue) {
+//            if(portValue != newPortValue) {
                 storage.SetDefaultValue(desc, portId, newPortValue);
                 parent.RuntimeArchive= desc.Encode(desc.Id);
                 storage.SetDirty(parent);
-            }
+//            }
         }
     }
 
@@ -46,20 +48,40 @@ public static class iCS_GuiUtilities {
                                          int indentLevel, Dictionary<string,bool> foldoutDB) {
         EditorGUI.indentLevel= indentLevel;
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
+        if(objType.IsArray) niceName= "["+niceName+"]";
         // Special case for readonly & null value.
         if(isReadOnly && currentValue == null) {
             EditorGUILayout.LabelField(niceName, hasSource ? "(see connection)":"(not available)");
             return currentValue;
         }
+        // Support all UnityEngine objects.
+        if(!objType.IsArray && iCS_Types.IsA<UnityEngine.Object>(elementType)) {
+            UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
+            return EditorGUILayout.ObjectField(niceName, value, elementType, true);
+        }        
         // Determine if we should create a value if the current value is null.
         if(currentValue == null) {
             // Automatically create value types.
             if(elementType.IsValueType || elementType.IsEnum) {
                 currentValue= iCS_Types.CreateInstance(elementType);
             } else { // Ask to create reference types.
-                int i= EditorGUILayout.Popup(niceName, 0, new string[]{"None",objType.Name});
-                if(i == 0) return null;
-                return iCS_Types.CreateInstance(objType);
+                Type[] derivedTypes= iCS_Reflection.GetAllTypesWithDefaultConstructorThatDeriveFrom(elementType);
+                if(derivedTypes.Length <= 1) {
+                    return iCS_Types.CreateInstance(objType);
+                }
+                string[] typeNames= new string[derivedTypes.Length+1];
+                typeNames[0]= "None";
+                if(objType.IsArray) {
+                    for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= derivedTypes[i].Name+"[]";                                        
+                } else {
+                    for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= derivedTypes[i].Name;                    
+                }
+                int idx= EditorGUILayout.Popup(niceName, 0, typeNames);
+                if(idx == 0) return null;
+                if(objType.IsArray) {
+                    return Array.CreateInstance(derivedTypes[idx-1],0);
+                }
+                return iCS_Types.CreateInstance(derivedTypes[idx-1]);
             }
         }
         // Automatically create value types the current value is not read only.
@@ -75,7 +97,6 @@ public static class iCS_GuiUtilities {
             foldoutDB[compositeArrayName]= showArray;
             if(showArray) {
                 EditorGUI.indentLevel= indentLevel+1;
-                if(currentValue == null) currentValue= Array.CreateInstance(elementType, 0);
                 Array array= currentValue as Array;
                 int newSize= (int)EditorGUILayout.IntField("Size", array.Length);            
                 for(int i= 0; i < array.Length; ++i) {
@@ -163,11 +184,6 @@ public static class iCS_GuiUtilities {
         if(elementType == typeof(Color)) {
             return EditorGUILayout.ColorField(niceName, (Color)currentValue);
         }
-        // Suport all UnityEngine objects.
-        if(iCS_Types.IsA<UnityEngine.Object>(elementType)) {
-            UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
-            return EditorGUILayout.ObjectField(niceName, value, elementType, true);
-        }        
 		// All other types.
         string compositeName= compositeParent+"."+name;
         if(!foldoutDB.ContainsKey(compositeName)) foldoutDB.Add(compositeName, false);
@@ -190,8 +206,13 @@ public static class iCS_GuiUtilities {
                     }                
                 }
                 if(shouldInspect) {
-                    if(currentValue == null) currentValue= iCS_Types.CreateInstance(elementType);
-                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, field.GetValue(currentValue), indentLevel+1, foldoutDB);
+                    object currentFieldValue= field.GetValue(currentValue);
+                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, currentFieldValue, indentLevel+1, foldoutDB);
+                    if(!isReadOnly && newFieldValue.ToString() != currentFieldValue.ToString()) {
+                        field.SetValue(currentValue, newFieldValue);
+                        Debug.Log("Setting field to "+newFieldValue.ToString()+" from: "+currentFieldValue.ToString());
+                        Debug.Log("New field value is: "+field.GetValue(currentValue).ToString());
+                    }
                 }
     		}        
         }

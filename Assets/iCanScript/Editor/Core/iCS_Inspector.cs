@@ -191,17 +191,24 @@ public class iCS_Inspector : Editor {
         );
 
         // Show inputs.
+        iCS_FunctionBase runtimeObject= Storage.GetRuntimeObject(node) as iCS_FunctionBase;
         if(inPorts.Count > 0) {
-            EditorGUI.indentLevel= 1;
-            showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
+            int indentLevel= 1;
+            if(runtimeObject != null) {
+                EditorGUI.indentLevel= indentLevel;
+                showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");                
+                ++indentLevel;
+            } else {
+                showInputs= true;
+            }
             if(showInputs) {
                 EditorGUIUtility.LookLikeControls();
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, Storage, 2, FoldoutDB), inPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorDataPortGUI(port, Storage, indentLevel, FoldoutDB), inPorts);
             }        
         }
 
         // Show outputs
-        if(outPorts.Count > 0) {
+        if(outPorts.Count > 0 && runtimeObject != null) {
             EditorGUI.indentLevel= 1;
             showOutputs= EditorGUILayout.Foldout(showOutputs, "Outputs");
             if(showOutputs) {

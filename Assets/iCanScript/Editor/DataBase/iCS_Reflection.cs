@@ -5,6 +5,20 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class iCS_Reflection {
+    // ======================================================================
+    // Fileds.
+    // ----------------------------------------------------------------------
+    public static List<Type>    AllTypesWithDefaultConstructor= new List<Type>();
+    
+    // ----------------------------------------------------------------------
+    public static Type[] GetAllTypesWithDefaultConstructorThatDeriveFrom(Type baseType) {
+        List<Type> result= new List<Type>();
+        foreach(var type in AllTypesWithDefaultConstructor) {
+            if(iCS_Types.IsA(baseType, type)) result.Add(type);
+        }
+        return result.ToArray();
+    }
+    
     // ----------------------------------------------------------------------
     // Returns the list of defined input fields.
     public static List<FieldInfo> GetInPortFields(Type objType) {
@@ -50,6 +64,7 @@ public class iCS_Reflection {
         // Scan the application for functions/methods/conversions to register.
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var classType in assembly.GetTypes()) {
+                if(iCS_Types.CreateInstanceSupported(classType)) AllTypesWithDefaultConstructor.Add(classType);
                 foreach(var classCustomAttribute in classType.GetCustomAttributes(true)) {
                     // Only register classes that have been tagged for uCode.
                     if(classCustomAttribute is iCS_ClassAttribute) {
@@ -72,6 +87,7 @@ public class iCS_Reflection {
         }
         iCS_UnityClasses.PopulateDataBase();
         iCS_NETClasses.PopulateDataBase();
+        AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------
     public static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
