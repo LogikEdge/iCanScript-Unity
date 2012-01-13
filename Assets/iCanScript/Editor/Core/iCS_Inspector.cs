@@ -111,10 +111,8 @@ public class iCS_Inspector : Editor {
         if(SelectedObject != null && SelectedObject.IsValid) {
             selectedObjectFold= EditorGUILayout.Foldout(selectedObjectFold, "Selected Object");
             if(selectedObjectFold) {
-                // Display type information.
-                EditorGUI.indentLevel= 1;
-                EditorGUILayout.LabelField("Type", SelectedObject.TypeName);
                 // Display object name.
+                EditorGUI.indentLevel= 1;
                 string name= SelectedObject.RawName;
                 if(SelectedObject.IsOutStatePort) name= Storage.FindAConnectedPort(SelectedObject).RawName;
                 if(name == null || name == "") name= EmptyStr;
@@ -147,11 +145,6 @@ public class iCS_Inspector : Editor {
                         if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).ToolTip= toolTip;
                         else Storage.GetSource(SelectedObject).ToolTip= toolTip;
                     }
-                }
-                // Show the parent name.
-                iCS_EditorObject parent= Storage.GetParent(SelectedObject);
-                if(parent != null) {
-                    EditorGUILayout.LabelField("Parent", parent.Name);
                 }
                 // Show inspector specific for each type of component.
                 if(SelectedObject.IsNode)      InspectNode(SelectedObject);
@@ -261,9 +254,10 @@ public class iCS_Inspector : Editor {
 	// ----------------------------------------------------------------------
     // Inspects the selected port.
     void InspectPort(iCS_EditorObject port) {
-//        if(port is iCS_FieldPort) {
-//            iCS_GuiUtilities.OnInspectorGUI(port as iCS_FieldPort);            
-//        }
+        iCS_EditorObject parent= Storage.GetParent(port);
+        EditorGUILayout.LabelField("Parent", parent.Name);
+        string inOut= port.IsInputPort ? (port.IsEnablePort ? "enable":"in") : "out";
+        EditorGUILayout.LabelField("Direction", inOut);        
     }
 
 
