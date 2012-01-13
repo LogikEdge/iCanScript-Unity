@@ -18,7 +18,9 @@ public static class iCS_Types {
     // ----------------------------------------------------------------------
     // Returns the default value of the given type.
     public static object CreateInstance(Type type) {
-       return (type == null || type == typeof(void)) ? null : Activator.CreateInstance(type);
+        if(type == null || type == typeof(void)) return null;
+        if(type.IsArray) return Array.CreateInstance(type.GetElementType(),0);
+        return Activator.CreateInstance(type);
     }
 
     // ----------------------------------------------------------------------
