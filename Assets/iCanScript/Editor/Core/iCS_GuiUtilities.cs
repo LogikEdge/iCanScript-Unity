@@ -7,40 +7,48 @@ using System.Collections.Generic;
 
 public static class iCS_GuiUtilities {
     // -----------------------------------------------------------------------
-    public static void OnInspectorPortGUI(string parentName, bool isReadOnly, iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,bool> foldoutDB) {
+    public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,bool> foldoutDB) {
+        // Only accept data ports.
+        if(!port.IsDataPort) return;
         // Extract port information
 		Type portType= port.RuntimeType;
         Type elementType= iCS_Types.GetElementType(portType);
-        iCS_EditorObject node= storage.GetParent(port);
+        iCS_EditorObject parent= storage.GetParent(port);
         int portId= port.PortIndex;
+        iCS_EditorObject sourcePort= storage.GetSource(port);
+        bool hasSource= sourcePort != null;
         // Extract parent node information.
-        iCS_RuntimeDesc desc= new iCS_RuntimeDesc(node.RuntimeArchive);    
+        iCS_RuntimeDesc desc= new iCS_RuntimeDesc(parent.RuntimeArchive);    
         // Get runtime object if it exists.
-        iCS_FunctionBase runtimeObject= storage.GetRuntimeObject(node) as iCS_FunctionBase;
+        iCS_FunctionBase runtimeObject= storage.GetRuntimeObject(parent) as iCS_FunctionBase;
+        // Determine if we are allowed to modify port value.
+        bool isReadOnly= !(!hasSource && (port.IsInputPort || port.IsModulePort));
         // Update port value from runtime object in priority or the descriptor string if no runtime.
-        object portValue= runtimeObject != null ? runtimeObject[portId] : (desc.PortIsOuts[portId] ? iCS_Types.DefaultValue(elementType) : storage.GetDefaultValue(desc, portId));            
-
+        object portValue= runtimeObject != null ? runtimeObject[portId] :
+                                                  (isReadOnly ? null : storage.GetDefaultValue(desc, portId));            
+        // Determine section name (used for foldout parent).
+        string foldoutName= port.IsInputPort ? "in" : "out";
         // Display primitives.
-        object newPortValue= ShowInInspector(port.Name, isReadOnly, parentName, elementType, portType, portValue, indentLevel, foldoutDB);
+        object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, elementType, portType, portValue, indentLevel, foldoutDB);
         if(!isReadOnly) {
             if(runtimeObject != null) runtimeObject[portId]= newPortValue;
             if(portValue != newPortValue) {
                 storage.SetDefaultValue(desc, portId, newPortValue);
-                node.RuntimeArchive= desc.Encode(desc.Id);
-                storage.SetDirty(node);
+                parent.RuntimeArchive= desc.Encode(desc.Id);
+                storage.SetDirty(parent);
             }
         }
     }
 
     // -----------------------------------------------------------------------
-    public static object ShowInInspector(string name, bool isReadOnly, string compositeParent,
+    public static object ShowInInspector(string name, bool isReadOnly, bool hasSource, string compositeParent,
                                          Type elementType, Type objType, object currentValue,
                                          int indentLevel, Dictionary<string,bool> foldoutDB) {
         EditorGUI.indentLevel= indentLevel;
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
         // Special case for readonly & null value.
         if(isReadOnly && currentValue == null) {
-            EditorGUILayout.LabelField(niceName, "(not available)");
+            EditorGUILayout.LabelField(niceName, hasSource ? "(see connection)":"(not available)");
             return currentValue;
         }
         // Special case for arrays
@@ -52,11 +60,11 @@ public static class iCS_GuiUtilities {
             foldoutDB[compositeArrayName]= showArray;
             if(showArray) {
                 EditorGUI.indentLevel= indentLevel+1;
-                if(currentValue == null) currentValue= Array.CreateInstance(elementType, 1);
+                if(currentValue == null) currentValue= Array.CreateInstance(elementType, 0);
                 Array array= currentValue as Array;
                 int newSize= (int)EditorGUILayout.IntField("Size", array.Length);            
                 for(int i= 0; i < array.Length; ++i) {
-                    object newElementValue= ShowInInspector("["+i+"]", isReadOnly, compositeArrayName, iCS_Types.GetElementType(elementType), elementType, array.GetValue(i), indentLevel+1, foldoutDB);
+                    object newElementValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, iCS_Types.GetElementType(elementType), elementType, array.GetValue(i), indentLevel+1, foldoutDB);
                 }
             }
             return currentValue;
@@ -190,7 +198,7 @@ public static class iCS_GuiUtilities {
                 }
                 if(shouldInspect) {
                     if(currentValue == null) currentValue= iCS_Types.CreateInstance(elementType);
-                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, field.GetValue(currentValue), indentLevel+1, foldoutDB);
+                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, field.GetValue(currentValue), indentLevel+1, foldoutDB);
                 }
     		}        
         }
