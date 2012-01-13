@@ -203,7 +203,7 @@ public class iCS_Inspector : Editor {
             showInputs= EditorGUILayout.Foldout(showInputs, "Inputs");
             if(showInputs) {
                 EditorGUIUtility.LookLikeControls();
-                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI("in", false, port, Storage, 2, FoldoutDB), inPorts);
+                Prelude.forEach(port=> iCS_GuiUtilities.OnInspectorGUI("in", Storage.GetSource(port) != null, port, Storage, 2, FoldoutDB), inPorts);
             }        
         }
 
