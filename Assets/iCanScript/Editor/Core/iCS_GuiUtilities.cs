@@ -31,10 +31,11 @@ public static class iCS_GuiUtilities {
         // Determine section name (used for foldout parent).
         string foldoutName= port.IsInputPort ? "in" : "out";
         // Display primitives.
-        object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, elementType, portType, portValue, indentLevel, foldoutDB);
+        bool isDirty= false;
+        object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, elementType, portType, portValue, indentLevel, foldoutDB, ref isDirty);
         if(!isReadOnly) {
-            if(runtimeObject != null) runtimeObject[portId]= newPortValue;
-//            if(portValue != newPortValue) {
+//            if(!isEqual(portValue, newPortValue)) {
+                if(runtimeObject != null) runtimeObject[portId]= newPortValue;
                 storage.SetDefaultValue(desc, portId, newPortValue);
                 parent.RuntimeArchive= desc.Encode(desc.Id);
                 storage.SetDirty(parent);
@@ -45,7 +46,7 @@ public static class iCS_GuiUtilities {
     // -----------------------------------------------------------------------
     public static object ShowInInspector(string name, bool isReadOnly, bool hasSource, string compositeParent,
                                          Type elementType, Type objType, object currentValue,
-                                         int indentLevel, Dictionary<string,bool> foldoutDB) {
+                                         int indentLevel, Dictionary<string,bool> foldoutDB, ref bool isDirty) {
         EditorGUI.indentLevel= indentLevel;
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
         if(objType.IsArray) niceName= "["+niceName+"]";
@@ -100,7 +101,7 @@ public static class iCS_GuiUtilities {
                 Array array= currentValue as Array;
                 int newSize= (int)EditorGUILayout.IntField("Size", array.Length);            
                 for(int i= 0; i < array.Length; ++i) {
-                    object newElementValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, iCS_Types.GetElementType(elementType), elementType, array.GetValue(i), indentLevel+1, foldoutDB);
+                    object newElementValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, iCS_Types.GetElementType(elementType), elementType, array.GetValue(i), indentLevel+1, foldoutDB, ref isDirty);
                 }
             }
             return currentValue;
@@ -207,16 +208,74 @@ public static class iCS_GuiUtilities {
                 }
                 if(shouldInspect) {
                     object currentFieldValue= field.GetValue(currentValue);
-                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, currentFieldValue, indentLevel+1, foldoutDB);
-                    if(!isReadOnly && newFieldValue.ToString() != currentFieldValue.ToString()) {
+                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, currentFieldValue, indentLevel+1, foldoutDB, ref isDirty);
+                    if(!isReadOnly && !isEqual(currentFieldValue, newFieldValue)) {
+//                        Debug.Log("Is different");
                         field.SetValue(currentValue, newFieldValue);
-                        Debug.Log("Setting field to "+newFieldValue.ToString()+" from: "+currentFieldValue.ToString());
-                        Debug.Log("New field value is: "+field.GetValue(currentValue).ToString());
                     }
                 }
     		}        
         }
         return currentValue;
+    }
+
+	// ----------------------------------------------------------------------
+    public static bool isEqual(object o1, object o2) {
+        if(o1 == o2) return true;
+        if(o1 == null && o2 == null) return true;
+        if(o1 == null || o2 == null) return false;
+        Type t1= o1.GetType();
+        Type t2= o2.GetType();
+        if(t1.IsArray && !t2.IsArray) return false;
+        if(!t1.IsArray && t2.IsArray) return false;
+        if(t1.IsArray) {
+            Array a1= o1 as Array;
+            Array a2= o2 as Array;
+            if(a1.Length != a2.Length) return false;
+            for(int i= 0; i < a1.Length; ++i) {
+                if(!isEqual(a1.GetValue(i), a2.GetValue(i))) return false;
+            }
+            return true;
+        }
+        // Don't consider reference decoration.
+        t1= t1.HasElementType ? t1.GetElementType() : t1;
+        t2= t2.HasElementType ? t2.GetElementType() : t2;
+        if(t1 != t2) return false;
+        // C# primitives
+        if(o1 is byte) return ((byte)o1) == ((byte)o2);
+        if(o1 is sbyte) return ((sbyte)o1) == ((sbyte)o2);
+        if(o1 is int) return ((int)o1) == ((int)o2);
+        if(o1 is uint) return ((uint)o1) == ((uint)o2);
+        if(o1 is short) return ((short)o1) == ((short)o2);
+        if(o1 is ushort) return ((ushort)o1) == ((ushort)o2);
+        if(o1 is long) return ((long)o1) == ((long)o2);
+        if(o1 is ulong) return ((ulong)o1) == ((ulong)o2);
+        if(o1 is float) return ((float)o1) == ((float)o2);
+        if(o1 is double) return ((double)o1) == ((double)o2);
+        if(o1 is decimal) return ((decimal)o1) == ((decimal)o2);
+        if(o1 is char) return ((char)o1) == ((char)o2);
+        if(o1 is string) return ((string)o1).CompareTo((string)o2) == 0;
+        if(o1 is Type) return ((Type)o1).AssemblyQualifiedName.CompareTo(((Type)o2).AssemblyQualifiedName) == 0;
+        // Composite objects
+		foreach(var field in t1.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+            bool shouldInspect= true;
+            if(field.IsPublic) {
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is System.NonSerializedAttribute) { shouldInspect= false; break; }
+                    if(attribute is HideInInspector) { shouldInspect= false; break; }
+                }
+            } else {
+                shouldInspect= false;
+                foreach(var attribute in field.GetCustomAttributes(true)) {
+                    if(attribute is SerializeField) shouldInspect= true;
+                    if(attribute is HideInInspector) { shouldInspect= false; break; }
+                }                
+            }
+            if(shouldInspect) {
+                if(!isEqual(field.GetValue(o1), field.GetValue(o2))) return false;
+            }
+		}        
+        return true;
     }
 
     // -----------------------------------------------------------------------
