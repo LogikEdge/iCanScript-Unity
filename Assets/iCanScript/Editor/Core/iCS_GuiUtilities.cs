@@ -22,7 +22,7 @@ public static class iCS_GuiUtilities {
 		};
 	}
 
-    public static void OnInspectorGUI(string parentName, iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,bool> foldoutDB) {
+    public static void OnInspectorGUI(string parentName, bool isReadOnly, iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,bool> foldoutDB) {
         // Extract port information
 		Type portType= port.RuntimeType;
         Type dataType= iCS_Types.GetElementType(portType);
@@ -37,7 +37,7 @@ public static class iCS_GuiUtilities {
 
         // Display primitives.
         object newValue= null;
-        if(ShowInInspector(port.Name, parentName, dataType, portType, portValue, out newValue, indentLevel, foldoutDB)) {
+        if(ShowInInspector(port.Name, isReadOnly, parentName, dataType, portType, portValue, out newValue, indentLevel, foldoutDB)) {
             if(port.IsInputPort && runtimeObject != null) runtimeObject[portId]= newValue;
             if(portValue != newValue && storage.GetSource(port) == null) {
                 storage.SetDefaultValue(desc, portId, newValue);
@@ -51,7 +51,7 @@ public static class iCS_GuiUtilities {
     }
 
     // -----------------------------------------------------------------------
-    public static bool ShowInInspector(string name, string compositeParent,
+    public static bool ShowInInspector(string name, bool isReadOnly, string compositeParent,
                                        Type dataType, Type portType,
                                        object currentValue, out object newValue,
                                        int indentLevel, Dictionary<string,bool> foldoutDB) {
@@ -71,7 +71,7 @@ public static class iCS_GuiUtilities {
                 int newSize= (int)EditorGUILayout.IntField("Size", array.Length);            
                 for(int i= 0; i < array.Length; ++i) {
                     object newElementValue= null;
-                    ShowInInspector("["+i+"]", compositeArrayName, iCS_Types.GetElementType(dataType), dataType, array.GetValue(i), out newElementValue, indentLevel+1, foldoutDB);
+                    ShowInInspector("["+i+"]", isReadOnly, compositeArrayName, iCS_Types.GetElementType(dataType), dataType, array.GetValue(i), out newElementValue, indentLevel+1, foldoutDB);
                 }
             }
             newValue= currentValue;
@@ -205,7 +205,7 @@ public static class iCS_GuiUtilities {
                 if(shouldInspect) {
                     object newFieldValue= null;
                     if(currentValue == null) currentValue= iCS_Types.CreateInstance(dataType);
-                    ShowInInspector(field.Name, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, field.GetValue(currentValue), out newFieldValue, indentLevel+1, foldoutDB);
+                    ShowInInspector(field.Name, isReadOnly, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, field.GetValue(currentValue), out newFieldValue, indentLevel+1, foldoutDB);
                 }
     		}        
         }
