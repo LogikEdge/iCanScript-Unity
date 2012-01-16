@@ -67,6 +67,7 @@ public class iCS_Coder {
         int size= DecodeInt(value.Substring(0, end));
         value= value.Substring(end+1);
         // Extract string.
+//		Debug.Log("Size= "+size+" String: "+value);
         string result= value.Substring(0, size);
         value= value.Substring(size);
 		return result;
@@ -239,14 +240,14 @@ public class iCS_Coder {
     void EncodeArrayOfNumerics<T>(string key, T[] array, Func<T,string> encoder) {
 		string arrayStr= "";
 		for(int i= 0; i < array.Length; ++i) {
-			arrayStr+= encoder(array[i])+":";
+			arrayStr+= encoder(array[i] != null ? array[i] : default(T))+":";
 		}
 		Add(key, typeof(T[]), arrayStr);        
     }
     void EncodeArrayOfChars<T>(string key, T[] array, Func<T,string> encoder) {
 		string arrayStr= "";
 		for(int i= 0; i < array.Length; ++i) {
-			arrayStr+= encoder(array[i]);
+			arrayStr+= encoder(array[i] != null ? array[i] : default(T));
 		}
 		Add(key, typeof(T[]), arrayStr);
     }
@@ -331,7 +332,7 @@ public class iCS_Coder {
 	}
 	// ----------------------------------------------------------------------
     public string EncodeByte(byte value) {
-        return ""+value;
+        return ""+(char)(0x100+value);
     }
 	// ----------------------------------------------------------------------
     public void EncodeByte(string key, byte value) {
@@ -339,7 +340,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     public string EncodeSByte(sbyte value) {
-        return ""+value;
+        return ""+(char)(0x100+value);
     }
 	// ----------------------------------------------------------------------
     public void EncodeSByte(string key, sbyte value) {
@@ -347,7 +348,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     public string EncodeChar(char value) {
-        return ""+value;
+        return ""+(char)(0x100+value);
     }
 	// ----------------------------------------------------------------------
     public void EncodeChar(string key, char value) {
@@ -805,7 +806,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     byte DecodeByte(string value) {
-        return (byte)value[0];
+        return (byte)(value[0]-0x100);
     }
 	// ----------------------------------------------------------------------
     sbyte DecodeSByteForKey(string key) {
@@ -813,7 +814,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     sbyte DecodeSByte(string value) {
-        return (sbyte)value[0];
+        return (sbyte)(value[0]-0x100);
     }
 	// ----------------------------------------------------------------------
     char DecodeCharForKey(string key) {
@@ -821,7 +822,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     char DecodeChar(string value) {
-        return value[0];
+        return (char)(value[0]-0x100);
     }
 	// ----------------------------------------------------------------------
     string DecodeStringForKey(string key) {

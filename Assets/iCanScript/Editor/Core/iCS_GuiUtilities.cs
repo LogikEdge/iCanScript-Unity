@@ -7,6 +7,10 @@ using System.Collections.Generic;
 
 public static class iCS_GuiUtilities {
     // -----------------------------------------------------------------------
+	static string   OurPreviousFocusedControl= null;
+	static int	 	OurArrayLength= 0;
+	
+    // -----------------------------------------------------------------------
     public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,bool> foldoutDB) {
         // Only accept data ports.
         if(!port.IsDataPort) return;
@@ -46,10 +50,14 @@ public static class iCS_GuiUtilities {
     public static object ShowInInspector(string name, bool isReadOnly, bool hasSource, string compositeParent,
                                          Type baseType, object currentValue,
                                          int indentLevel, Dictionary<string,bool> foldoutDB, ref bool isDirty) {
+		// Get name of current control.
+//		OurPreviousFocusedControl= GUI.GetNameOfFocusedControl();
+		// Extract type information.
         Type valueType= currentValue != null ? currentValue.GetType() : baseType;
         Type baseElementType= iCS_Types.GetElementType(baseType);
         Type valueElementType= iCS_Types.GetElementType(valueType);
         EditorGUI.indentLevel= indentLevel;
+		// Make nice name for field to edit.
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
         if(baseType.IsArray) niceName= "["+niceName+"]";
         // Special case for readonly & null value.
@@ -77,6 +85,7 @@ public static class iCS_GuiUtilities {
             } else { // Ask to create reference types.
                 Type[] derivedTypes= iCS_Reflection.GetAllTypesWithDefaultConstructorThatDeriveFrom(baseElementType);
                 if(derivedTypes.Length <= 1) {
+					isDirty= true;
                     return iCS_Types.CreateInstance(baseType);
                 }
                 string[] typeNames= new string[derivedTypes.Length+1];
@@ -105,15 +114,26 @@ public static class iCS_GuiUtilities {
             if(showArray) {
                 EditorGUI.indentLevel= indentLevel+1;
                 Array array= currentValue as Array;
-                int newSize= (int)EditorGUILayout.IntField("Size", array.Length);
-                if(newSize != array.Length) {
-                    Array newArray= Array.CreateInstance(baseElementType, newSize);
-                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
-                    array= newArray;
-                    isDirty= true;
-                }
+				string controlName= compositeArrayName+".Length";
+				bool controlWasActive= (GUI.GetNameOfFocusedControl() == controlName);
+				if(!controlWasActive) OurArrayLength= array.Length;
+				GUI.SetNextControlName(controlName);
+                OurArrayLength= EditorGUILayout.IntField("Size", OurArrayLength);
+				int newSize= OurArrayLength;
+				if(controlWasActive && GUI.GetNameOfFocusedControl() != controlName) {
+	                if(newSize != array.Length) {
+						Debug.Log("Processing new array size: "+newSize);
+	                    Array newArray= Array.CreateInstance(baseElementType, newSize);
+	                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
+	                    array= newArray;
+	                    isDirty= true;
+	                }					
+				} 
                 for(int i= 0; i < array.Length; ++i) {
-                    ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, baseElementType, array.GetValue(i), indentLevel+1, foldoutDB, ref isDirty);
+					bool elemDirty= false;
+                    object newValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, baseElementType, array.GetValue(i), indentLevel+1, foldoutDB, ref elemDirty);
+					isDirty |= elemDirty;
+					if(elemDirty) array.SetValue(newValue, i);
                 }
                 return array;
             }
@@ -200,6 +220,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(char)) {
             string value= ""+((char)currentValue);
             string newCharAsString= EditorGUILayout.TextField(niceName, value);
+			if(newCharAsString == null || newCharAsString == "") newCharAsString= " ";
             if(newCharAsString[0] != value[0]) isDirty= true;
             return (newCharAsString != null && newCharAsString.Length >= 1) ? newCharAsString[0] : default(char);
         }
