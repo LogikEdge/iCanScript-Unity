@@ -397,7 +397,11 @@ public sealed class iCS_Behaviour : iCS_Storage {
                         object initValue= rtSourceDesc.GetDefaultValue(sourcePort.PortIndex, this) ?? iCS_Types.DefaultValue(sourcePort.RuntimeType);
                         // Set data port.
                         object parentObj= myRuntimeNodes[port.ParentId];
-                        Prelude.choice<iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
+                        Prelude.choice<iCS_Constructor, iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
+                            constructor=> {
+                                constructor[port.PortIndex]= initValue;
+                                constructor.SetConnection(port.PortIndex, connection);
+                            },
                             method=> {
                                 method[port.PortIndex]= initValue;
                                 method.SetConnection(port.PortIndex, connection);
