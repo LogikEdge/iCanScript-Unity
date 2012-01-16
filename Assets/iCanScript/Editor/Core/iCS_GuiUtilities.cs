@@ -12,7 +12,6 @@ public static class iCS_GuiUtilities {
         if(!port.IsDataPort) return;
         // Extract port information
 		Type portType= port.RuntimeType;
-        Type elementType= iCS_Types.GetElementType(portType);
         iCS_EditorObject parent= storage.GetParent(port);
         int portId= port.PortIndex;
         iCS_EditorObject sourcePort= storage.GetSource(port);
@@ -32,65 +31,72 @@ public static class iCS_GuiUtilities {
         string foldoutName= port.IsInputPort ? "in" : "out";
         // Display primitives.
         bool isDirty= false;
-        object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, elementType, portType, portValue, indentLevel, foldoutDB, ref isDirty);
+        object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
         if(!isReadOnly) {
-//            if(!isEqual(portValue, newPortValue)) {
+            if(isDirty) {
                 if(runtimeObject != null) runtimeObject[portId]= newPortValue;
                 storage.SetDefaultValue(desc, portId, newPortValue);
                 parent.RuntimeArchive= desc.Encode(desc.Id);
                 storage.SetDirty(parent);
-//            }
+            }
         }
     }
 
     // -----------------------------------------------------------------------
     public static object ShowInInspector(string name, bool isReadOnly, bool hasSource, string compositeParent,
-                                         Type elementType, Type objType, object currentValue,
+                                         Type baseType, object currentValue,
                                          int indentLevel, Dictionary<string,bool> foldoutDB, ref bool isDirty) {
+        Type valueType= currentValue != null ? currentValue.GetType() : baseType;
+        Type baseElementType= iCS_Types.GetElementType(baseType);
+        Type valueElementType= iCS_Types.GetElementType(valueType);
         EditorGUI.indentLevel= indentLevel;
         string niceName= name == null || name == "" ? "(Unamed)" : ObjectNames.NicifyVariableName(name);
-        if(objType.IsArray) niceName= "["+niceName+"]";
+        if(baseType.IsArray) niceName= "["+niceName+"]";
         // Special case for readonly & null value.
         if(isReadOnly && currentValue == null) {
             EditorGUILayout.LabelField(niceName, hasSource ? "(see connection)":"(not available)");
             return currentValue;
         }
         // Support all UnityEngine objects.
-        if(!objType.IsArray && iCS_Types.IsA<UnityEngine.Object>(elementType)) {
+        if(!baseType.IsArray && iCS_Types.IsA<UnityEngine.Object>(baseElementType)) {
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
-            return EditorGUILayout.ObjectField(niceName, value, elementType, true);
+            return EditorGUILayout.ObjectField(niceName, value, baseElementType, true);
         }        
         // Determine if we should create a value if the current value is null.
         if(currentValue == null) {
             // Automatically create value types.
-            if(elementType.IsValueType || elementType.IsEnum) {
-                currentValue= iCS_Types.CreateInstance(elementType);
+            if(baseElementType.IsValueType || baseElementType.IsEnum) {
+                if(baseType.IsArray) {
+                    currentValue= Array.CreateInstance(baseElementType, 0);
+                } else {
+                    currentValue= iCS_Types.CreateInstance(baseElementType);                    
+                }
+                valueType= currentValue.GetType();
+                valueElementType= iCS_Types.GetElementType(valueType);
+                isDirty= true;
             } else { // Ask to create reference types.
-                Type[] derivedTypes= iCS_Reflection.GetAllTypesWithDefaultConstructorThatDeriveFrom(elementType);
+                Type[] derivedTypes= iCS_Reflection.GetAllTypesWithDefaultConstructorThatDeriveFrom(baseElementType);
                 if(derivedTypes.Length <= 1) {
-                    return iCS_Types.CreateInstance(objType);
+                    return iCS_Types.CreateInstance(baseType);
                 }
                 string[] typeNames= new string[derivedTypes.Length+1];
                 typeNames[0]= "None";
-                if(objType.IsArray) {
+                if(baseType.IsArray) {
                     for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= iCS_Types.GetName(derivedTypes[i])+"[]";                                        
                 } else {
                     for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= iCS_Types.GetName(derivedTypes[i]);                    
                 }
                 int idx= EditorGUILayout.Popup(niceName, 0, typeNames);
                 if(idx == 0) return null;
-                if(objType.IsArray) {
+                isDirty= true;
+                if(baseType.IsArray) {
                     return Array.CreateInstance(derivedTypes[idx-1],0);
                 }
                 return iCS_Types.CreateInstance(derivedTypes[idx-1]);
             }
         }
-        // Automatically create value types the current value is not read only.
-        if(currentValue == null && (elementType.IsValueType || elementType.IsEnum)) {
-            currentValue= iCS_Types.CreateInstance(elementType);
-        }
         // Special case for arrays
-        if(objType.IsArray) {
+        if(baseType.IsArray) {
             string compositeArrayName= compositeParent+"."+name;
             if(!foldoutDB.ContainsKey(compositeArrayName)) foldoutDB.Add(compositeArrayName, false);
             bool showArray= foldoutDB[compositeArrayName];
@@ -99,91 +105,144 @@ public static class iCS_GuiUtilities {
             if(showArray) {
                 EditorGUI.indentLevel= indentLevel+1;
                 Array array= currentValue as Array;
-                int newSize= (int)EditorGUILayout.IntField("Size", array.Length);            
-                for(int i= 0; i < array.Length; ++i) {
-                    object newElementValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, iCS_Types.GetElementType(elementType), elementType, array.GetValue(i), indentLevel+1, foldoutDB, ref isDirty);
+                int newSize= (int)EditorGUILayout.IntField("Size", array.Length);
+                if(newSize != array.Length) {
+                    Array newArray= Array.CreateInstance(baseElementType, newSize);
+                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
+                    array= newArray;
+                    isDirty= true;
                 }
+                for(int i= 0; i < array.Length; ++i) {
+                    ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, baseElementType, array.GetValue(i), indentLevel+1, foldoutDB, ref isDirty);
+                }
+                return array;
             }
             return currentValue;
         }
         // Special case for enumerations
-        if(elementType.IsEnum) {
+        if(valueElementType.IsEnum) {
             if(currentValue == null) { return currentValue; }
-            return EditorGUILayout.EnumPopup(niceName, currentValue as System.Enum);
+            System.Enum value= currentValue as System.Enum;
+            System.Enum newValue= EditorGUILayout.EnumPopup(niceName, value);
+            if(newValue.ToString().CompareTo(value.ToString()) != 0) isDirty= true;
+            return newValue;
         }
         // C# data types.
-        if(elementType == typeof(byte)) {
-            return (byte)((int)EditorGUILayout.IntField(niceName, (int)((byte)currentValue)));
+        if(valueElementType == typeof(byte)) {
+            byte value= (byte)currentValue;
+            byte newValue= (byte)((int)EditorGUILayout.IntField(niceName, (int)value));
+            if(newValue != value) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(sbyte)) {
-            return (sbyte)((int)EditorGUILayout.IntField(niceName, (int)((sbyte)currentValue)));            
+        if(valueElementType == typeof(sbyte)) {
+            sbyte value= (sbyte)currentValue;
+            sbyte newValue= (sbyte)((int)EditorGUILayout.IntField(niceName, (int)value));            
+            if(newValue != value) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(bool)) {
-            return EditorGUILayout.Toggle(niceName, (bool)currentValue);
+        if(valueElementType == typeof(bool)) {
+            bool value= (bool)currentValue;
+            bool newValue= EditorGUILayout.Toggle(niceName, value);
+            if(newValue != value) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(int)) {
-            return EditorGUILayout.IntField(niceName, (int)currentValue);
+        if(valueElementType == typeof(int)) {
+            int value= (int)currentValue;
+            int newValue= EditorGUILayout.IntField(niceName, value);
+            if(newValue != value) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(uint)) {
+        if(valueElementType == typeof(uint)) {
             string uintAsString= (string)Convert.ChangeType((uint)currentValue, typeof(string));
             string newUIntAsString= EditorGUILayout.TextField(niceName, uintAsString);
+            if(uintAsString.CompareTo(newUIntAsString) != 0) isDirty= true;
             return Convert.ChangeType(newUIntAsString, typeof(uint));
         }
-        if(elementType == typeof(short)) {
-            return (short)((int)EditorGUILayout.IntField(niceName, (int)((short)currentValue)));            
+        if(valueElementType == typeof(short)) {
+            short value= (short)currentValue;
+            short newValue= (short)((int)EditorGUILayout.IntField(niceName, (int)value));            
+            if(newValue == value) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(ushort)) {
-            return (ushort)((int)EditorGUILayout.IntField(niceName, (int)((ushort)currentValue)));            
+        if(valueElementType == typeof(ushort)) {
+            int value= (ushort)currentValue;
+            int newValue= (ushort)((int)EditorGUILayout.IntField(niceName, (int)value));            
+            if(newValue == value) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(long)) {
+        if(valueElementType == typeof(long)) {
             string longAsString= (string)Convert.ChangeType((long)currentValue, typeof(string));
             string newLongAsString= EditorGUILayout.TextField(niceName, longAsString);
+            if(longAsString.CompareTo(newLongAsString) != 0) isDirty= true;
             return Convert.ChangeType(newLongAsString, typeof(long));
         }
-        if(elementType == typeof(ulong)) {
+        if(valueElementType == typeof(ulong)) {
             string ulongAsString= (string)Convert.ChangeType((ulong)currentValue, typeof(string));
             string newULongAsString= EditorGUILayout.TextField(niceName, ulongAsString);
+            if(ulongAsString.CompareTo(newULongAsString) != 0) isDirty= true;
             return Convert.ChangeType(newULongAsString, typeof(ulong));
         }
-        if(elementType == typeof(float)) {
+        if(valueElementType == typeof(float)) {
             return EditorGUILayout.FloatField(niceName, (float)currentValue);
         }
-        if(elementType == typeof(double)) {
+        if(valueElementType == typeof(double)) {
             string doubleAsString= (string)Convert.ChangeType((double)currentValue, typeof(string));
             string newDoubleAsString= EditorGUILayout.TextField(niceName, doubleAsString);
+            if(doubleAsString.CompareTo(newDoubleAsString) != 0) isDirty= true;
             return Convert.ChangeType(newDoubleAsString, typeof(double));
         }
-        if(elementType == typeof(decimal)) {
+        if(valueElementType == typeof(decimal)) {
             float valueAsFloat= (float)((decimal)currentValue);
             float newDecimalAsFloat= EditorGUILayout.FloatField(niceName, valueAsFloat);
+            if(valueAsFloat != newDecimalAsFloat) isDirty= true;
             return (decimal)newDecimalAsFloat;
         }
-        if(elementType == typeof(char)) {
+        if(valueElementType == typeof(char)) {
             string value= ""+((char)currentValue);
             string newCharAsString= EditorGUILayout.TextField(niceName, value);
+            if(newCharAsString[0] != value[0]) isDirty= true;
             return (newCharAsString != null && newCharAsString.Length >= 1) ? newCharAsString[0] : default(char);
         }
-        if(elementType == typeof(string)) {
+        if(valueElementType == typeof(string)) {
             string value= ((string)currentValue) ?? "";
-            return EditorGUILayout.TextField(niceName, value);
+            string newValue= EditorGUILayout.TextField(niceName, value);
+            if(newValue != value) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(Type)) {
+        if(valueElementType == typeof(Type)) {
             if(currentValue == null) return true;
             EditorGUILayout.LabelField(niceName, (currentValue as Type).Name);
             return currentValue;
         }
         // Unity data types.
-        if(elementType == typeof(Vector2)) {
-            return EditorGUILayout.Vector2Field(niceName, (Vector2)currentValue);
+        if(valueElementType == typeof(Vector2)) {
+            Vector2 value= (Vector2)currentValue;
+            Vector2 newValue= EditorGUILayout.Vector2Field(niceName, value);
+            if(Math3D.IsNotEqual(newValue, value)) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(Vector3)) {
-            return EditorGUILayout.Vector3Field(niceName, (Vector3)currentValue);
+        if(valueElementType == typeof(Vector3)) {
+            Vector3 value= (Vector3)currentValue;
+            Vector3 newValue= EditorGUILayout.Vector3Field(niceName, value);
+            if(Math3D.IsNotEqual(newValue, value)) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(Vector4)) {
-            return EditorGUILayout.Vector4Field(niceName, (Vector4)currentValue);
+        if(valueElementType == typeof(Vector4)) {
+            Vector4 value= (Vector4)currentValue;
+            Vector4 newValue= EditorGUILayout.Vector4Field(niceName, value);
+            if(Math3D.IsNotEqual(newValue, value)) isDirty= true;
+            return newValue;
         }
-        if(elementType == typeof(Color)) {
-            return EditorGUILayout.ColorField(niceName, (Color)currentValue);
+        if(valueElementType == typeof(Color)) {
+            Color value= (Vector4)currentValue;
+            Color newValue= EditorGUILayout.ColorField(niceName, value);
+            if(Math3D.IsNotEqual(newValue.r, value.r) ||
+               Math3D.IsNotEqual(newValue.g, value.g) ||
+               Math3D.IsNotEqual(newValue.b, value.b) ||
+               Math3D.IsNotEqual(newValue.a, value.a)) {
+                isDirty= true;
+            }
+            return newValue;
         }
 		// All other types.
         string compositeName= compositeParent+"."+name;
@@ -192,7 +251,7 @@ public static class iCS_GuiUtilities {
         showCompositeObject= EditorGUILayout.Foldout(showCompositeObject, niceName);
         foldoutDB[compositeName]= showCompositeObject;
         if(showCompositeObject) {
-    		foreach(var field in elementType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+    		foreach(var field in valueElementType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
                 bool shouldInspect= true;
                 if(field.IsPublic) {
                     foreach(var attribute in field.GetCustomAttributes(true)) {
@@ -208,7 +267,7 @@ public static class iCS_GuiUtilities {
                 }
                 if(shouldInspect) {
                     object currentFieldValue= field.GetValue(currentValue);
-                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, iCS_Types.GetElementType(field.FieldType), field.FieldType, currentFieldValue, indentLevel+1, foldoutDB, ref isDirty);
+                    object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, field.FieldType, currentFieldValue, indentLevel+1, foldoutDB, ref isDirty);
                     if(!isReadOnly && !isEqual(currentFieldValue, newFieldValue)) {
 //                        Debug.Log("Is different");
                         field.SetValue(currentValue, newFieldValue);
