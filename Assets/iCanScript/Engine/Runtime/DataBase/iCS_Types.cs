@@ -16,6 +16,25 @@ public static class iCS_Types {
     }
     
     // ----------------------------------------------------------------------
+    // Returns the coded name for the given type.
+    public static string GetName(Type type) {
+        string result= type.Name;
+        int arg= result.IndexOf('`');
+        if(arg < 0) return result;
+        result= result.Substring(0, arg);
+        if(type.IsGenericType) {
+            result+= "<";
+            bool comma= false;
+            foreach(var t in type.GetGenericArguments()) {
+                if(!comma) { comma= true; } else { result+= ","; }
+               result+= GetName(t); 
+            }
+            result+= ">";
+        }
+        return result;
+    }
+    
+    // ----------------------------------------------------------------------
     // Returns true if the given type has a default constructor.
     public static bool CreateInstanceSupported(Type type) {
         if(type.IsArray) return CreateInstanceSupported(GetElementType(type));

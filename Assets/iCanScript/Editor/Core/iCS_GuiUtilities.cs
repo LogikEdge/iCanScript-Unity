@@ -73,9 +73,9 @@ public static class iCS_GuiUtilities {
                 string[] typeNames= new string[derivedTypes.Length+1];
                 typeNames[0]= "None";
                 if(objType.IsArray) {
-                    for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= derivedTypes[i].Name+"[]";                                        
+                    for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= iCS_Types.GetName(derivedTypes[i])+"[]";                                        
                 } else {
-                    for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= derivedTypes[i].Name;                    
+                    for(int i= 0; i < derivedTypes.Length; ++i) typeNames[i+1]= iCS_Types.GetName(derivedTypes[i]);                    
                 }
                 int idx= EditorGUILayout.Popup(niceName, 0, typeNames);
                 if(idx == 0) return null;

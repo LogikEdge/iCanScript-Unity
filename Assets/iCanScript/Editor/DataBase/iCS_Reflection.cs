@@ -11,6 +11,13 @@ public class iCS_Reflection {
     public static List<Type>    AllTypesWithDefaultConstructor= new List<Type>();
     
     // ----------------------------------------------------------------------
+    static void AddToAllTypes(Type type) {
+        if(type.Name[0] != '<' &&
+           iCS_Types.CreateInstanceSupported(type)) {
+               AllTypesWithDefaultConstructor.Add(type);
+        }
+    }
+    // ----------------------------------------------------------------------
     public static Type[] GetAllTypesWithDefaultConstructorThatDeriveFrom(Type baseType) {
         List<Type> result= new List<Type>();
         foreach(var type in AllTypesWithDefaultConstructor) {
@@ -64,7 +71,7 @@ public class iCS_Reflection {
         // Scan the application for functions/methods/conversions to register.
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var classType in assembly.GetTypes()) {
-                if(iCS_Types.CreateInstanceSupported(classType)) AllTypesWithDefaultConstructor.Add(classType);
+                AddToAllTypes(classType);
                 foreach(var classCustomAttribute in classType.GetCustomAttributes(true)) {
                     // Only register classes that have been tagged for uCode.
                     if(classCustomAttribute is iCS_ClassAttribute) {
