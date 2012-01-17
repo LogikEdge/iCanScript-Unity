@@ -61,8 +61,6 @@ public static class iCS_GuiUtilities {
     public static object ShowInInspector(string name, bool isReadOnly, bool hasSource, string compositeParent,
                                          Type baseType, object currentValue,
                                          int indentLevel, Dictionary<string,object> foldoutDB, ref bool isDirty) {
-		// Get name of current control.
-//		OurPreviousFocusedControl= GUI.GetNameOfFocusedControl();
 		// Extract type information.
         Type valueType= currentValue != null ? currentValue.GetType() : baseType;
         Type baseElementType= iCS_Types.GetElementType(baseType);
@@ -81,6 +79,22 @@ public static class iCS_GuiUtilities {
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
             return EditorGUILayout.ObjectField(niceName, value, baseElementType, true);
         }        
+        // Support Type type.
+        if(valueElementType == typeof(Type) || currentValue is Type) {
+            string typeName= currentValue != null ? (currentValue as Type).FullName : "";
+            if(ModalEdit(niceName, name, ref typeName, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
+                Type newType= Type.GetType(typeName);
+                if(newType != null) {
+                    isDirty= true;
+                    return newType;
+                }
+                else {
+                    Value(foldoutDB, compositeParent+"."+name, typeName);
+                    Debug.LogWarning("Type: "+typeName+" was not found.");
+                }
+            } 
+            return currentValue;
+        }
         // Determine if we should create a value if the current value is null.
         if(currentValue == null) {
             // Automatically create value types.
@@ -125,16 +139,8 @@ public static class iCS_GuiUtilities {
             if(showArray) {
                 EditorGUI.indentLevel= indentLevel+1;
                 Array array= currentValue as Array;
-				string controlName= compositeArrayName+".Length";
-				if(!foldoutDB.ContainsKey(controlName)) AddValue(foldoutDB, controlName, array.Length);
-				bool controlWasActive= (GUI.GetNameOfFocusedControl() == controlName);
-                int arrayLength= (int)Value(foldoutDB, controlName);
-//                Debug.Log(controlName);
-				GUI.SetNextControlName(controlName);
-                int newSize= EditorGUILayout.IntField("Size", arrayLength);
-                Value(foldoutDB, controlName, newSize);
-                Debug.Log(GUI.GetNameOfFocusedControl());
-				if(controlWasActive && GUI.GetNameOfFocusedControl() != controlName) {
+                int newSize= array.Length;
+                if(ModalEdit("Length", "Length", ref newSize, compositeArrayName, (n,v)=> EditorGUILayout.IntField(n,v), foldoutDB)) {
 	                if(newSize != array.Length) {
 						Debug.Log("Processing new array size: "+newSize);
 	                    Array newArray= Array.CreateInstance(baseElementType, newSize);
@@ -244,11 +250,6 @@ public static class iCS_GuiUtilities {
             if(newValue != value) isDirty= true;
             return newValue;
         }
-        if(valueElementType == typeof(Type)) {
-            if(currentValue == null) return true;
-            EditorGUILayout.LabelField(niceName, (currentValue as Type).Name);
-            return currentValue;
-        }
         // Unity data types.
         if(valueElementType == typeof(Vector2)) {
             Vector2 value= (Vector2)currentValue;
@@ -306,7 +307,6 @@ public static class iCS_GuiUtilities {
                     object newFieldValue= ShowInInspector(field.Name, isReadOnly, hasSource, compositeName, field.FieldType, currentFieldValue, indentLevel+1, foldoutDB, ref isFieldDirty);
                     isDirty |= isFieldDirty;
                     if(!isReadOnly && isFieldDirty) {
-//                        Debug.Log("Is different");
                         field.SetValue(currentValue, newFieldValue);
                     }
                 }
@@ -315,6 +315,22 @@ public static class iCS_GuiUtilities {
         return currentValue;
     }
 
+    // ----------------------------------------------------------------------
+    static bool ModalEdit<T>(string niceName, string name, ref T currentValue, string parentName, Func<string,T,T> editor, Dictionary<string,object> db) {
+        string controlName= parentName+"."+name;
+		if(!db.ContainsKey(controlName)) AddValue(db, controlName, currentValue);
+        T value= (T)Value(db, controlName);
+		bool controlWasActive= (GUI.GetNameOfFocusedControl() == controlName);
+		GUI.SetNextControlName(controlName);
+        T newValue= editor(niceName, value);
+        Value(db, controlName, newValue);
+        if(controlWasActive && GUI.GetNameOfFocusedControl() != controlName) {
+		    currentValue= newValue;
+		    return true;
+	    }
+        return false;
+    }
+    
 //	// ----------------------------------------------------------------------
 //    public static bool isEqual(object o1, object o2) {
 //        if(o1 == o2) return true;
