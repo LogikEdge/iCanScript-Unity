@@ -253,6 +253,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
 	string EncodeType(Type value) {
+		if(value == null) return "";
         // C# data types.
 		if(value == typeof(Type)) return "t";
 		if(value == typeof(string)) return "S";
@@ -648,6 +649,7 @@ public class iCS_Coder {
     }
 	// ----------------------------------------------------------------------
     Type DecodeType(string value) {
+		if(value.Length == 0) return null;
         // C# data types
 		if(value == "t") return typeof(Type);
 		if(value == "S") return typeof(string);

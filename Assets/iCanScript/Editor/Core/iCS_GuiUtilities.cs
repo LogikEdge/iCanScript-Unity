@@ -50,13 +50,11 @@ public static class iCS_GuiUtilities {
         // Display primitives.
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
-        if(!isReadOnly) {
-            if(isDirty) {
-                if(runtimeObject != null) runtimeObject[portId]= newPortValue;
-                storage.SetDefaultValue(desc, portId, newPortValue);
-                parent.RuntimeArchive= desc.Encode(desc.Id);
-                storage.SetDirty(parent);
-            }
+        if(!isReadOnly && isDirty) {
+            if(runtimeObject != null) runtimeObject[portId]= newPortValue;
+            storage.SetDefaultValue(desc, portId, newPortValue);
+            parent.RuntimeArchive= desc.Encode(desc.Id);
+            storage.SetDirty(parent);
         }
     }
 
@@ -77,14 +75,53 @@ public static class iCS_GuiUtilities {
             EditorGUILayout.LabelField(niceName, hasSource ? "(see connection)":"(not available)");
             return currentValue;
         }
+        // Special case for arrays
+		if(baseType.IsArray) {
+			if(currentValue == null) {
+				currentValue= Array.CreateInstance(baseElementType, 0);
+				isDirty= true;
+				return currentValue;
+			}			
+            string compositeArrayName= compositeParent+"."+name;
+            if(!foldoutDB.ContainsKey(compositeArrayName)) AddFoldout(foldoutDB, compositeArrayName, false);
+            bool showArray= Foldout(foldoutDB, compositeArrayName);
+            showArray= EditorGUILayout.Foldout(showArray, niceName);
+            Foldout(foldoutDB, compositeArrayName, showArray);
+			if(!showArray) return currentValue;
+            EditorGUI.indentLevel= indentLevel+1;
+            Array array= currentValue as Array;
+            int newSize= array.Length;
+            if(ModalEdit("Length", "Length", ref newSize, compositeArrayName, (n,v)=> EditorGUILayout.IntField(n,v), foldoutDB)) {
+                if(newSize != array.Length) {
+					if(newSize < 100 || EditorUtility.DisplayDialog("Resizing array", "The new size of the array is > 100.  Are you sure you want your new array to be resized to "+newSize+".", "Resize", "Cancel")) {
+	                    Array newArray= Array.CreateInstance(baseElementType, newSize);
+	                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
+	                    array= newArray;
+	                    isDirty= true;							
+						return array;
+					}
+                }					
+			} 
+            for(int i= 0; i < array.Length; ++i) {
+				bool elemDirty= false;
+                object newValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, baseElementType, array.GetValue(i), indentLevel+1, foldoutDB, ref elemDirty);
+				isDirty |= elemDirty;
+				if(elemDirty) array.SetValue(newValue, i);
+            }
+            return array;
+		}
         // Support all UnityEngine objects.
-        if(!baseType.IsArray && iCS_Types.IsA<UnityEngine.Object>(baseElementType)) {
+        if(iCS_Types.IsA<UnityEngine.Object>(baseElementType)) {
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
-            return EditorGUILayout.ObjectField(niceName, value, baseElementType, true);
+            UnityEngine.Object newValue= EditorGUILayout.ObjectField(niceName, value, baseElementType, true);
+			if(value == null && newValue == null) return newValue;
+			if(value != newValue ) isDirty= true;
+			return newValue;
         }        
         // Support Type type.
         if(valueElementType == typeof(Type) || currentValue is Type) {
             string typeName= currentValue != null ? (currentValue as Type).FullName : "";
+			string origTypeName= typeName;
             if(ModalEdit(niceName, name, ref typeName, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
                 Type newType= Type.GetType(typeName);
                 if(newType != null) {
@@ -92,9 +129,9 @@ public static class iCS_GuiUtilities {
                     return newType;
                 }
                 else {
-                    Value(foldoutDB, compositeParent+"."+name, typeName);
+                    Value(foldoutDB, compositeParent+"."+name, origTypeName);
                     Debug.LogWarning("Type: "+typeName+" was not found.");
-					EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript").ShowNotification(new GUIContent("Test"));
+					EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript").ShowNotification(new GUIContent("Type: '"+typeName+"' cannot be found.  Are you missing a namespace?"));
                 }
             } 
             return currentValue;
@@ -103,14 +140,9 @@ public static class iCS_GuiUtilities {
         if(currentValue == null) {
             // Automatically create value types.
             if(baseElementType.IsValueType || baseElementType.IsEnum) {
-                if(baseType.IsArray) {
-                    currentValue= Array.CreateInstance(baseElementType, 0);
-                } else {
-                    currentValue= iCS_Types.CreateInstance(baseElementType);                    
-                }
-                valueType= currentValue.GetType();
-                valueElementType= iCS_Types.GetElementType(valueType);
+                currentValue= iCS_Types.CreateInstance(baseElementType);                    
                 isDirty= true;
+				return currentValue;
             } else { // Ask to create reference types.
                 Type[] derivedTypes= iCS_Reflection.GetAllTypesWithDefaultConstructorThatDeriveFrom(baseElementType);
                 if(derivedTypes.Length <= 1) {
@@ -132,37 +164,6 @@ public static class iCS_GuiUtilities {
                 }
                 return iCS_Types.CreateInstance(derivedTypes[idx-1]);
             }
-        }
-        // Special case for arrays
-        if(baseType.IsArray) {
-            string compositeArrayName= compositeParent+"."+name;
-            if(!foldoutDB.ContainsKey(compositeArrayName)) AddFoldout(foldoutDB, compositeArrayName, false);
-            bool showArray= Foldout(foldoutDB, compositeArrayName);
-            showArray= EditorGUILayout.Foldout(showArray, niceName);
-            Foldout(foldoutDB, compositeArrayName, showArray);
-            if(showArray) {
-                EditorGUI.indentLevel= indentLevel+1;
-                Array array= currentValue as Array;
-                int newSize= array.Length;
-                if(ModalEdit("Length", "Length", ref newSize, compositeArrayName, (n,v)=> EditorGUILayout.IntField(n,v), foldoutDB)) {
-	                if(newSize != array.Length) {
-						if(newSize < 100 || EditorUtility.DisplayDialog("Resizing array", "The new size of the array is > 100.  Are you sure you want your new array to be resized to "+newSize+".", "Resize", "Cancel")) {
-		                    Array newArray= Array.CreateInstance(baseElementType, newSize);
-		                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
-		                    array= newArray;
-		                    isDirty= true;							
-						}
-	                }					
-				} 
-                for(int i= 0; i < array.Length; ++i) {
-					bool elemDirty= false;
-                    object newValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, baseElementType, array.GetValue(i), indentLevel+1, foldoutDB, ref elemDirty);
-					isDirty |= elemDirty;
-					if(elemDirty) array.SetValue(newValue, i);
-                }
-                return array;
-            }
-            return currentValue;
         }
         // Special case for enumerations
         if(valueElementType.IsEnum) {
@@ -206,13 +207,13 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(short)) {
             short value= (short)currentValue;
             short newValue= (short)((int)EditorGUILayout.IntField(niceName, (int)value));            
-            if(newValue == value) isDirty= true;
+            if(newValue != value) isDirty= true;
             return newValue;
         }
         if(valueElementType == typeof(ushort)) {
             int value= (ushort)currentValue;
             int newValue= (ushort)((int)EditorGUILayout.IntField(niceName, (int)value));            
-            if(newValue == value) isDirty= true;
+            if(newValue != value) isDirty= true;
             return newValue;
         }
         if(valueElementType == typeof(long)) {
@@ -228,7 +229,10 @@ public static class iCS_GuiUtilities {
             return Convert.ChangeType(newULongAsString, typeof(ulong));
         }
         if(valueElementType == typeof(float)) {
-            return EditorGUILayout.FloatField(niceName, (float)currentValue);
+			float value= (float)currentValue;
+            float newValue= EditorGUILayout.FloatField(niceName, (float)currentValue);
+			if(newValue != value) isDirty= true;
+			return newValue;
         }
         if(valueElementType == typeof(double)) {
             string doubleAsString= (string)Convert.ChangeType((double)currentValue, typeof(string));
