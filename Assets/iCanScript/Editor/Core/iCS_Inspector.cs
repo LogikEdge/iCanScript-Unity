@@ -27,7 +27,7 @@ public class iCS_Inspector : Editor {
 	    }
 	}
 	private iCS_EditorObject mySelectedObject= null;
-	private Dictionary<string,bool> FoldoutDB= new Dictionary<string,bool>();
+	private Dictionary<string,object> FoldoutDB= new Dictionary<string,object>();
 	
 	// ----------------------------------------------------------------------
     // Display state properties.

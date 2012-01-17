@@ -6,12 +6,23 @@ using System.Collections;
 using System.Collections.Generic;
 
 public static class iCS_GuiUtilities {
+    class GUIFieldInfo {
+        public bool    Foldout= false;
+        public object  Value= null;
+        public GUIFieldInfo(bool foldout) { Foldout= foldout; }
+        public GUIFieldInfo(object value) { Value= value; }
+    }
+    
     // -----------------------------------------------------------------------
-	static string   OurPreviousFocusedControl= null;
-	static int	 	OurArrayLength= 0;
-	
+    static void AddFoldout(Dictionary<string,object> db, string key, bool foldout) { db.Add(key, new GUIFieldInfo(foldout)); }
+    static bool Foldout(Dictionary<string,object> db, string key)                  { return ((GUIFieldInfo)(db[key])).Foldout; }
+    static void Foldout(Dictionary<string,object> db, string key, bool foldout)    { ((GUIFieldInfo)(db[key])).Foldout= foldout; }
+    static void   AddValue(Dictionary<string,object> db, string key, object value) { db.Add(key, new GUIFieldInfo(value)); }
+    static object Value(Dictionary<string,object> db, string key)                  { return ((GUIFieldInfo)(db[key])).Value; }
+    static void   Value(Dictionary<string,object> db, string key, object value)    { ((GUIFieldInfo)(db[key])).Value= value; }
+
     // -----------------------------------------------------------------------
-    public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,bool> foldoutDB) {
+    public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,object> foldoutDB) {
         // Only accept data ports.
         if(!port.IsDataPort) return;
         // Extract port information
@@ -32,7 +43,7 @@ public static class iCS_GuiUtilities {
         object portValue= runtimeObject != null ? runtimeObject[portId] :
                                                   (isReadOnly ? null : storage.GetDefaultValue(desc, portId));            
         // Determine section name (used for foldout parent).
-        string foldoutName= port.IsInputPort ? "in" : "out";
+        string foldoutName= (port.IsInputPort ? "in" : "out")+"."+parent.Name;
         // Display primitives.
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
@@ -49,7 +60,7 @@ public static class iCS_GuiUtilities {
     // -----------------------------------------------------------------------
     public static object ShowInInspector(string name, bool isReadOnly, bool hasSource, string compositeParent,
                                          Type baseType, object currentValue,
-                                         int indentLevel, Dictionary<string,bool> foldoutDB, ref bool isDirty) {
+                                         int indentLevel, Dictionary<string,object> foldoutDB, ref bool isDirty) {
 		// Get name of current control.
 //		OurPreviousFocusedControl= GUI.GetNameOfFocusedControl();
 		// Extract type information.
@@ -107,19 +118,22 @@ public static class iCS_GuiUtilities {
         // Special case for arrays
         if(baseType.IsArray) {
             string compositeArrayName= compositeParent+"."+name;
-            if(!foldoutDB.ContainsKey(compositeArrayName)) foldoutDB.Add(compositeArrayName, false);
-            bool showArray= foldoutDB[compositeArrayName];
+            if(!foldoutDB.ContainsKey(compositeArrayName)) AddFoldout(foldoutDB, compositeArrayName, false);
+            bool showArray= Foldout(foldoutDB, compositeArrayName);
             showArray= EditorGUILayout.Foldout(showArray, niceName);
-            foldoutDB[compositeArrayName]= showArray;
+            Foldout(foldoutDB, compositeArrayName, showArray);
             if(showArray) {
                 EditorGUI.indentLevel= indentLevel+1;
                 Array array= currentValue as Array;
 				string controlName= compositeArrayName+".Length";
+				if(!foldoutDB.ContainsKey(controlName)) AddValue(foldoutDB, controlName, array.Length);
 				bool controlWasActive= (GUI.GetNameOfFocusedControl() == controlName);
-				if(!controlWasActive) OurArrayLength= array.Length;
+                int arrayLength= (int)Value(foldoutDB, controlName);
+//                Debug.Log(controlName);
 				GUI.SetNextControlName(controlName);
-                OurArrayLength= EditorGUILayout.IntField("Size", OurArrayLength);
-				int newSize= OurArrayLength;
+                int newSize= EditorGUILayout.IntField("Size", arrayLength);
+                Value(foldoutDB, controlName, newSize);
+                Debug.Log(GUI.GetNameOfFocusedControl());
 				if(controlWasActive && GUI.GetNameOfFocusedControl() != controlName) {
 	                if(newSize != array.Length) {
 						Debug.Log("Processing new array size: "+newSize);
@@ -220,7 +234,7 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(char)) {
             string value= ""+((char)currentValue);
             string newCharAsString= EditorGUILayout.TextField(niceName, value);
-			if(newCharAsString == null || newCharAsString == "") newCharAsString= " ";
+			if(newCharAsString == null || newCharAsString == "" || newCharAsString[0] == 0) newCharAsString= " ";
             if(newCharAsString[0] != value[0]) isDirty= true;
             return (newCharAsString != null && newCharAsString.Length >= 1) ? newCharAsString[0] : default(char);
         }
@@ -267,10 +281,10 @@ public static class iCS_GuiUtilities {
         }
 		// All other types.
         string compositeName= compositeParent+"."+name;
-        if(!foldoutDB.ContainsKey(compositeName)) foldoutDB.Add(compositeName, false);
-        bool showCompositeObject= foldoutDB[compositeName];
+        if(!foldoutDB.ContainsKey(compositeName)) AddFoldout(foldoutDB, compositeName, false);
+        bool showCompositeObject= Foldout(foldoutDB, compositeName);
         showCompositeObject= EditorGUILayout.Foldout(showCompositeObject, niceName);
-        foldoutDB[compositeName]= showCompositeObject;
+        Foldout(foldoutDB, compositeName, showCompositeObject);
         if(showCompositeObject) {
     		foreach(var field in valueElementType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
                 bool shouldInspect= true;
