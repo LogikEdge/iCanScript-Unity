@@ -138,6 +138,7 @@ public class iCS_Inspector : Editor {
                 string toolTip= SelectedObject.RawToolTip;
                 if(SelectedObject.IsOutStatePort) toolTip= Storage.FindAConnectedPort(SelectedObject).RawToolTip;
                 if(toolTip == null || toolTip == "") toolTip= EmptyStr;
+				GUI.SetNextControlName("tooltip");
                 toolTip= EditorGUILayout.TextField("Tool Tip", toolTip);
                 if(toolTip != EmptyStr && toolTip != SelectedObject.RawToolTip) {
                     SelectedObject.ToolTip= toolTip;

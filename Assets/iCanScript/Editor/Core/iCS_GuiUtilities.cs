@@ -9,6 +9,7 @@ public static class iCS_GuiUtilities {
     class GUIFieldInfo {
         public bool    Foldout= false;
         public object  Value= null;
+		public int	   ControlID= -1;
         public GUIFieldInfo(bool foldout) { Foldout= foldout; }
         public GUIFieldInfo(object value) { Value= value; }
     }
@@ -20,6 +21,8 @@ public static class iCS_GuiUtilities {
     static void   AddValue(Dictionary<string,object> db, string key, object value) { db.Add(key, new GUIFieldInfo(value)); }
     static object Value(Dictionary<string,object> db, string key)                  { return ((GUIFieldInfo)(db[key])).Value; }
     static void   Value(Dictionary<string,object> db, string key, object value)    { ((GUIFieldInfo)(db[key])).Value= value; }
+    static int  ControlID(Dictionary<string,object> db, string key)                { return ((GUIFieldInfo)(db[key])).ControlID; }
+    static void ControlID(Dictionary<string,object> db, string key, int value)     { ((GUIFieldInfo)(db[key])).ControlID= value; }
 
     // -----------------------------------------------------------------------
     public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,object> foldoutDB) {
@@ -91,6 +94,7 @@ public static class iCS_GuiUtilities {
                 else {
                     Value(foldoutDB, compositeParent+"."+name, typeName);
                     Debug.LogWarning("Type: "+typeName+" was not found.");
+					EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript").ShowNotification(new GUIContent("Test"));
                 }
             } 
             return currentValue;
@@ -142,11 +146,12 @@ public static class iCS_GuiUtilities {
                 int newSize= array.Length;
                 if(ModalEdit("Length", "Length", ref newSize, compositeArrayName, (n,v)=> EditorGUILayout.IntField(n,v), foldoutDB)) {
 	                if(newSize != array.Length) {
-						Debug.Log("Processing new array size: "+newSize);
-	                    Array newArray= Array.CreateInstance(baseElementType, newSize);
-	                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
-	                    array= newArray;
-	                    isDirty= true;
+						if(newSize < 100 || EditorUtility.DisplayDialog("Resizing array", "The new size of the array is > 100.  Are you sure you want your new array to be resized to "+newSize+".", "Resize", "Cancel")) {
+		                    Array newArray= Array.CreateInstance(baseElementType, newSize);
+		                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
+		                    array= newArray;
+		                    isDirty= true;							
+						}
 	                }					
 				} 
                 for(int i= 0; i < array.Length; ++i) {
@@ -320,76 +325,21 @@ public static class iCS_GuiUtilities {
         string controlName= parentName+"."+name;
 		if(!db.ContainsKey(controlName)) AddValue(db, controlName, currentValue);
         T value= (T)Value(db, controlName);
-		bool controlWasActive= (GUI.GetNameOfFocusedControl() == controlName);
 		GUI.SetNextControlName(controlName);
         T newValue= editor(niceName, value);
         Value(db, controlName, newValue);
-        if(controlWasActive && GUI.GetNameOfFocusedControl() != controlName) {
+		int keyControlID= GUIUtility.keyboardControl;
+		if(GUI.GetNameOfFocusedControl() == controlName) ControlID(db, controlName, keyControlID);
+		int savedKeyControlID= ControlID(db, controlName);
+		if(savedKeyControlID == -1) return false;
+        if(savedKeyControlID != keyControlID) {
+			ControlID(db, controlName, -1);
 		    currentValue= newValue;
 		    return true;
 	    }
         return false;
     }
     
-//	// ----------------------------------------------------------------------
-//    public static bool isEqual(object o1, object o2) {
-//        if(o1 == o2) return true;
-//        if(o1 == null && o2 == null) return true;
-//        if(o1 == null || o2 == null) return false;
-//        Type t1= o1.GetType();
-//        Type t2= o2.GetType();
-//        if(t1.IsArray && !t2.IsArray) return false;
-//        if(!t1.IsArray && t2.IsArray) return false;
-//        if(t1.IsArray) {
-//            Array a1= o1 as Array;
-//            Array a2= o2 as Array;
-//            if(a1.Length != a2.Length) return false;
-//            for(int i= 0; i < a1.Length; ++i) {
-//                if(!isEqual(a1.GetValue(i), a2.GetValue(i))) return false;
-//            }
-//            return true;
-//        }
-//        // Don't consider reference decoration.
-//        t1= t1.HasElementType ? t1.GetElementType() : t1;
-//        t2= t2.HasElementType ? t2.GetElementType() : t2;
-//        if(t1 != t2) return false;
-//        // C# primitives
-//        if(o1 is byte) return ((byte)o1) == ((byte)o2);
-//        if(o1 is sbyte) return ((sbyte)o1) == ((sbyte)o2);
-//        if(o1 is int) return ((int)o1) == ((int)o2);
-//        if(o1 is uint) return ((uint)o1) == ((uint)o2);
-//        if(o1 is short) return ((short)o1) == ((short)o2);
-//        if(o1 is ushort) return ((ushort)o1) == ((ushort)o2);
-//        if(o1 is long) return ((long)o1) == ((long)o2);
-//        if(o1 is ulong) return ((ulong)o1) == ((ulong)o2);
-//        if(o1 is float) return ((float)o1) == ((float)o2);
-//        if(o1 is double) return ((double)o1) == ((double)o2);
-//        if(o1 is decimal) return ((decimal)o1) == ((decimal)o2);
-//        if(o1 is char) return ((char)o1) == ((char)o2);
-//        if(o1 is string) return ((string)o1).CompareTo((string)o2) == 0;
-//        if(o1 is Type) return ((Type)o1).AssemblyQualifiedName.CompareTo(((Type)o2).AssemblyQualifiedName) == 0;
-//        // Composite objects
-//		foreach(var field in t1.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
-//            bool shouldInspect= true;
-//            if(field.IsPublic) {
-//                foreach(var attribute in field.GetCustomAttributes(true)) {
-//                    if(attribute is System.NonSerializedAttribute) { shouldInspect= false; break; }
-//                    if(attribute is HideInInspector) { shouldInspect= false; break; }
-//                }
-//            } else {
-//                shouldInspect= false;
-//                foreach(var attribute in field.GetCustomAttributes(true)) {
-//                    if(attribute is SerializeField) shouldInspect= true;
-//                    if(attribute is HideInInspector) { shouldInspect= false; break; }
-//                }                
-//            }
-//            if(shouldInspect) {
-//                if(!isEqual(field.GetValue(o1), field.GetValue(o2))) return false;
-//            }
-//		}        
-//        return true;
-//    }
-
     // -----------------------------------------------------------------------
     public static void UnsupportedFeature() {
         Debug.LogWarning("The selected feature is unsupported in the current version of iCanScript.  Feature is planned for a later version.  Thanks for your patience.");
