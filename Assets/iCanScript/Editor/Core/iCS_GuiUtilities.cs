@@ -9,6 +9,7 @@ public static class iCS_GuiUtilities {
     class GUIFieldInfo {
         public bool    Foldout= false;
         public object  Value= null;
+		public int	   ControlID= -1;
         public GUIFieldInfo(bool foldout) { Foldout= foldout; }
         public GUIFieldInfo(object value) { Value= value; }
     }
@@ -20,6 +21,8 @@ public static class iCS_GuiUtilities {
     static void   AddValue(Dictionary<string,object> db, string key, object value) { db.Add(key, new GUIFieldInfo(value)); }
     static object Value(Dictionary<string,object> db, string key)                  { return ((GUIFieldInfo)(db[key])).Value; }
     static void   Value(Dictionary<string,object> db, string key, object value)    { ((GUIFieldInfo)(db[key])).Value= value; }
+    static int  ControlID(Dictionary<string,object> db, string key)                { return ((GUIFieldInfo)(db[key])).ControlID; }
+    static void ControlID(Dictionary<string,object> db, string key, int value)     { ((GUIFieldInfo)(db[key])).ControlID= value; }
 
     // -----------------------------------------------------------------------
     public static void OnInspectorDataPortGUI(iCS_EditorObject port, iCS_IStorage storage, int indentLevel, Dictionary<string,object> foldoutDB) {
@@ -47,13 +50,11 @@ public static class iCS_GuiUtilities {
         // Display primitives.
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
-        if(!isReadOnly) {
-            if(isDirty) {
-                if(runtimeObject != null) runtimeObject[portId]= newPortValue;
-                storage.SetDefaultValue(desc, portId, newPortValue);
-                parent.RuntimeArchive= desc.Encode(desc.Id);
-                storage.SetDirty(parent);
-            }
+        if(!isReadOnly && isDirty) {
+            if(runtimeObject != null) runtimeObject[portId]= newPortValue;
+            storage.SetDefaultValue(desc, portId, newPortValue);
+            parent.RuntimeArchive= desc.Encode(desc.Id);
+            storage.SetDirty(parent);
         }
     }
 
@@ -74,14 +75,53 @@ public static class iCS_GuiUtilities {
             EditorGUILayout.LabelField(niceName, hasSource ? "(see connection)":"(not available)");
             return currentValue;
         }
+        // Special case for arrays
+		if(baseType.IsArray) {
+			if(currentValue == null) {
+				currentValue= Array.CreateInstance(baseElementType, 0);
+				isDirty= true;
+				return currentValue;
+			}			
+            string compositeArrayName= compositeParent+"."+name;
+            if(!foldoutDB.ContainsKey(compositeArrayName)) AddFoldout(foldoutDB, compositeArrayName, false);
+            bool showArray= Foldout(foldoutDB, compositeArrayName);
+            showArray= EditorGUILayout.Foldout(showArray, niceName);
+            Foldout(foldoutDB, compositeArrayName, showArray);
+			if(!showArray) return currentValue;
+            EditorGUI.indentLevel= indentLevel+1;
+            Array array= currentValue as Array;
+            int newSize= array.Length;
+            if(ModalEdit("Length", "Length", ref newSize, compositeArrayName, (n,v)=> EditorGUILayout.IntField(n,v), foldoutDB)) {
+                if(newSize != array.Length) {
+					if(newSize < 100 || EditorUtility.DisplayDialog("Resizing array", "The new size of the array is > 100.  Are you sure you want your new array to be resized to "+newSize+".", "Resize", "Cancel")) {
+	                    Array newArray= Array.CreateInstance(baseElementType, newSize);
+	                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
+	                    array= newArray;
+	                    isDirty= true;							
+						return array;
+					}
+                }					
+			} 
+            for(int i= 0; i < array.Length; ++i) {
+				bool elemDirty= false;
+                object newValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, baseElementType, array.GetValue(i), indentLevel+1, foldoutDB, ref elemDirty);
+				isDirty |= elemDirty;
+				if(elemDirty) array.SetValue(newValue, i);
+            }
+            return array;
+		}
         // Support all UnityEngine objects.
-        if(!baseType.IsArray && iCS_Types.IsA<UnityEngine.Object>(baseElementType)) {
+        if(iCS_Types.IsA<UnityEngine.Object>(baseElementType)) {
             UnityEngine.Object value= currentValue != null ? currentValue as UnityEngine.Object: null;
-            return EditorGUILayout.ObjectField(niceName, value, baseElementType, true);
+            UnityEngine.Object newValue= EditorGUILayout.ObjectField(niceName, value, baseElementType, true);
+			if(value == null && newValue == null) return newValue;
+			if(value != newValue ) isDirty= true;
+			return newValue;
         }        
         // Support Type type.
         if(valueElementType == typeof(Type) || currentValue is Type) {
             string typeName= currentValue != null ? (currentValue as Type).FullName : "";
+			string origTypeName= typeName;
             if(ModalEdit(niceName, name, ref typeName, compositeParent, (n,v)=> EditorGUILayout.TextField(n,v), foldoutDB)) {
                 Type newType= Type.GetType(typeName);
                 if(newType != null) {
@@ -89,8 +129,9 @@ public static class iCS_GuiUtilities {
                     return newType;
                 }
                 else {
-                    Value(foldoutDB, compositeParent+"."+name, typeName);
+                    Value(foldoutDB, compositeParent+"."+name, origTypeName);
                     Debug.LogWarning("Type: "+typeName+" was not found.");
+					EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript").ShowNotification(new GUIContent("Type: '"+typeName+"' cannot be found.  Are you missing a namespace?"));
                 }
             } 
             return currentValue;
@@ -99,14 +140,9 @@ public static class iCS_GuiUtilities {
         if(currentValue == null) {
             // Automatically create value types.
             if(baseElementType.IsValueType || baseElementType.IsEnum) {
-                if(baseType.IsArray) {
-                    currentValue= Array.CreateInstance(baseElementType, 0);
-                } else {
-                    currentValue= iCS_Types.CreateInstance(baseElementType);                    
-                }
-                valueType= currentValue.GetType();
-                valueElementType= iCS_Types.GetElementType(valueType);
+                currentValue= iCS_Types.CreateInstance(baseElementType);                    
                 isDirty= true;
+				return currentValue;
             } else { // Ask to create reference types.
                 Type[] derivedTypes= iCS_Reflection.GetAllTypesWithDefaultConstructorThatDeriveFrom(baseElementType);
                 if(derivedTypes.Length <= 1) {
@@ -128,36 +164,6 @@ public static class iCS_GuiUtilities {
                 }
                 return iCS_Types.CreateInstance(derivedTypes[idx-1]);
             }
-        }
-        // Special case for arrays
-        if(baseType.IsArray) {
-            string compositeArrayName= compositeParent+"."+name;
-            if(!foldoutDB.ContainsKey(compositeArrayName)) AddFoldout(foldoutDB, compositeArrayName, false);
-            bool showArray= Foldout(foldoutDB, compositeArrayName);
-            showArray= EditorGUILayout.Foldout(showArray, niceName);
-            Foldout(foldoutDB, compositeArrayName, showArray);
-            if(showArray) {
-                EditorGUI.indentLevel= indentLevel+1;
-                Array array= currentValue as Array;
-                int newSize= array.Length;
-                if(ModalEdit("Length", "Length", ref newSize, compositeArrayName, (n,v)=> EditorGUILayout.IntField(n,v), foldoutDB)) {
-	                if(newSize != array.Length) {
-						Debug.Log("Processing new array size: "+newSize);
-	                    Array newArray= Array.CreateInstance(baseElementType, newSize);
-	                    Array.Copy(array, newArray, Mathf.Min(newSize, array.Length));
-	                    array= newArray;
-	                    isDirty= true;
-	                }					
-				} 
-                for(int i= 0; i < array.Length; ++i) {
-					bool elemDirty= false;
-                    object newValue= ShowInInspector("["+i+"]", isReadOnly, hasSource, compositeArrayName, baseElementType, array.GetValue(i), indentLevel+1, foldoutDB, ref elemDirty);
-					isDirty |= elemDirty;
-					if(elemDirty) array.SetValue(newValue, i);
-                }
-                return array;
-            }
-            return currentValue;
         }
         // Special case for enumerations
         if(valueElementType.IsEnum) {
@@ -201,13 +207,13 @@ public static class iCS_GuiUtilities {
         if(valueElementType == typeof(short)) {
             short value= (short)currentValue;
             short newValue= (short)((int)EditorGUILayout.IntField(niceName, (int)value));            
-            if(newValue == value) isDirty= true;
+            if(newValue != value) isDirty= true;
             return newValue;
         }
         if(valueElementType == typeof(ushort)) {
             int value= (ushort)currentValue;
             int newValue= (ushort)((int)EditorGUILayout.IntField(niceName, (int)value));            
-            if(newValue == value) isDirty= true;
+            if(newValue != value) isDirty= true;
             return newValue;
         }
         if(valueElementType == typeof(long)) {
@@ -223,7 +229,10 @@ public static class iCS_GuiUtilities {
             return Convert.ChangeType(newULongAsString, typeof(ulong));
         }
         if(valueElementType == typeof(float)) {
-            return EditorGUILayout.FloatField(niceName, (float)currentValue);
+			float value= (float)currentValue;
+            float newValue= EditorGUILayout.FloatField(niceName, (float)currentValue);
+			if(newValue != value) isDirty= true;
+			return newValue;
         }
         if(valueElementType == typeof(double)) {
             string doubleAsString= (string)Convert.ChangeType((double)currentValue, typeof(string));
@@ -320,76 +329,21 @@ public static class iCS_GuiUtilities {
         string controlName= parentName+"."+name;
 		if(!db.ContainsKey(controlName)) AddValue(db, controlName, currentValue);
         T value= (T)Value(db, controlName);
-		bool controlWasActive= (GUI.GetNameOfFocusedControl() == controlName);
 		GUI.SetNextControlName(controlName);
         T newValue= editor(niceName, value);
         Value(db, controlName, newValue);
-        if(controlWasActive && GUI.GetNameOfFocusedControl() != controlName) {
+		int keyControlID= GUIUtility.keyboardControl;
+		if(GUI.GetNameOfFocusedControl() == controlName) ControlID(db, controlName, keyControlID);
+		int savedKeyControlID= ControlID(db, controlName);
+		if(savedKeyControlID == -1) return false;
+        if(savedKeyControlID != keyControlID) {
+			ControlID(db, controlName, -1);
 		    currentValue= newValue;
 		    return true;
 	    }
         return false;
     }
     
-//	// ----------------------------------------------------------------------
-//    public static bool isEqual(object o1, object o2) {
-//        if(o1 == o2) return true;
-//        if(o1 == null && o2 == null) return true;
-//        if(o1 == null || o2 == null) return false;
-//        Type t1= o1.GetType();
-//        Type t2= o2.GetType();
-//        if(t1.IsArray && !t2.IsArray) return false;
-//        if(!t1.IsArray && t2.IsArray) return false;
-//        if(t1.IsArray) {
-//            Array a1= o1 as Array;
-//            Array a2= o2 as Array;
-//            if(a1.Length != a2.Length) return false;
-//            for(int i= 0; i < a1.Length; ++i) {
-//                if(!isEqual(a1.GetValue(i), a2.GetValue(i))) return false;
-//            }
-//            return true;
-//        }
-//        // Don't consider reference decoration.
-//        t1= t1.HasElementType ? t1.GetElementType() : t1;
-//        t2= t2.HasElementType ? t2.GetElementType() : t2;
-//        if(t1 != t2) return false;
-//        // C# primitives
-//        if(o1 is byte) return ((byte)o1) == ((byte)o2);
-//        if(o1 is sbyte) return ((sbyte)o1) == ((sbyte)o2);
-//        if(o1 is int) return ((int)o1) == ((int)o2);
-//        if(o1 is uint) return ((uint)o1) == ((uint)o2);
-//        if(o1 is short) return ((short)o1) == ((short)o2);
-//        if(o1 is ushort) return ((ushort)o1) == ((ushort)o2);
-//        if(o1 is long) return ((long)o1) == ((long)o2);
-//        if(o1 is ulong) return ((ulong)o1) == ((ulong)o2);
-//        if(o1 is float) return ((float)o1) == ((float)o2);
-//        if(o1 is double) return ((double)o1) == ((double)o2);
-//        if(o1 is decimal) return ((decimal)o1) == ((decimal)o2);
-//        if(o1 is char) return ((char)o1) == ((char)o2);
-//        if(o1 is string) return ((string)o1).CompareTo((string)o2) == 0;
-//        if(o1 is Type) return ((Type)o1).AssemblyQualifiedName.CompareTo(((Type)o2).AssemblyQualifiedName) == 0;
-//        // Composite objects
-//		foreach(var field in t1.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
-//            bool shouldInspect= true;
-//            if(field.IsPublic) {
-//                foreach(var attribute in field.GetCustomAttributes(true)) {
-//                    if(attribute is System.NonSerializedAttribute) { shouldInspect= false; break; }
-//                    if(attribute is HideInInspector) { shouldInspect= false; break; }
-//                }
-//            } else {
-//                shouldInspect= false;
-//                foreach(var attribute in field.GetCustomAttributes(true)) {
-//                    if(attribute is SerializeField) shouldInspect= true;
-//                    if(attribute is HideInInspector) { shouldInspect= false; break; }
-//                }                
-//            }
-//            if(shouldInspect) {
-//                if(!isEqual(field.GetValue(o1), field.GetValue(o2))) return false;
-//            }
-//		}        
-//        return true;
-//    }
-
     // -----------------------------------------------------------------------
     public static void UnsupportedFeature() {
         Debug.LogWarning("The selected feature is unsupported in the current version of iCanScript.  Feature is planned for a later version.  Thanks for your patience.");
