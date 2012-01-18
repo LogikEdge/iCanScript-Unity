@@ -12,9 +12,10 @@ public class iCS_Reflection {
     
     // ----------------------------------------------------------------------
     static void AddToAllTypes(Type type) {
-        if(type.Name[0] != '<' &&
-           iCS_Types.CreateInstanceSupported(type)) {
-               AllTypesWithDefaultConstructor.Add(type);
+        if(type == null || type.Name.Length <= 0) return;
+//        Debug.Log("Add type: "+type.Name);
+        if(type.Name[0] != '<' && iCS_Types.CreateInstanceSupported(type)) {
+            AllTypesWithDefaultConstructor.Add(type);
         }
     }
     // ----------------------------------------------------------------------

@@ -52,6 +52,7 @@
 		<SkipType name="iCS_InspectorBehaviour" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 		<SkipType name="iCS_InspectorLibrary" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 		<SkipType name="iCS_GuiUtilities" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		<!-- <SkipType name="iCS_Reflection" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/> -->
 	
 		<!--  	<SkipType name="iCS_Menu" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>  -->
 		<!--  	<SkipType name="iCS_DynamicMenu" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>  -->

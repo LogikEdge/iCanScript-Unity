@@ -25,6 +25,11 @@ public class iCS_Editor : EditorWindow {
     iCS_DynamicMenu      DynamicMenu    = null;
 
     // ----------------------------------------------------------------------
+    float LastDirtyUpdateTime     = 0f;
+    int   RefreshCnt              = 0;
+    int   InitialPositionUpdateCnt= 0;
+    
+    // ----------------------------------------------------------------------
     private iCS_Graphics                Graphics  = null;
     public  iCS_ScrollView              ScrollView= null;    
     
@@ -105,10 +110,10 @@ public class iCS_Editor : EditorWindow {
         Inspector= inspector;
         // Set the graph root.
         DisplayRoot= storage.IsValid(0) ? storage[0] : null;
-        // Position the scroll view in the middle of the graph.
-        if(ScrollView != null && DisplayRoot != null) {
-            ScrollView.CenterAt(Math3D.Middle(storage.GetPosition(DisplayRoot)));
-        }
+//        // Position the scroll view in the middle of the graph.
+//        if(ScrollView != null && DisplayRoot != null) {
+//            ScrollView.CenterAt(Math3D.Middle(storage.GetPosition(DisplayRoot)));
+//        }
 
 
 //        Debug.Log("AppContentPath: "+EditorApplication.applicationContentsPath);
@@ -159,21 +164,19 @@ public class iCS_Editor : EditorWindow {
     // ======================================================================
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
-    static float ourLastDirtyUpdateTime;
-    static int   ourRefreshCnt;
 	void Update() {
         // Determine repaint rate.
         if(Storage != null) {
             // Repaint window
             if(Storage.IsDirty) {
-                ourLastDirtyUpdateTime= Time.realtimeSinceStartup;
+                LastDirtyUpdateTime= Time.realtimeSinceStartup;
             }
-            float timeSinceDirty= Time.realtimeSinceStartup-ourLastDirtyUpdateTime;
+            float timeSinceDirty= Time.realtimeSinceStartup-LastDirtyUpdateTime;
             if(timeSinceDirty < 5.0f) {
                 Repaint();
             } else {
-                if(++ourRefreshCnt > 4 || ourRefreshCnt < 0) {
-                    ourRefreshCnt= 0;
+                if(++RefreshCnt > 4 || RefreshCnt < 0) {
+                    RefreshCnt= 0;
                     Repaint();
                 }
             }
@@ -181,10 +184,17 @@ public class iCS_Editor : EditorWindow {
             if(DisplayRoot == null && Storage.IsValid(0)) {
                 DisplayRoot= Storage[0];
             }
+            // Position the scroll view in the middle of the graph.
+            if(ScrollView != null && DisplayRoot != null) {
+                if(++InitialPositionUpdateCnt < 3) {
+                    ScrollView.CenterAt(Math3D.Middle(Storage.GetPosition(DisplayRoot)));                    
+                } else {
+                    InitialPositionUpdateCnt= 3;
+                }
+            }
         }
         // Cleanup objects.
         iCS_AutoReleasePool.Update();
-//        Debug.Log("DisplayRoot == null: "+(DisplayRoot == null));
 	}
 	
 	// ----------------------------------------------------------------------
