@@ -349,7 +349,7 @@ public class iCS_Graphics {
         position.width+= leftOffset + rightOffset;
         position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
         GUI.Box(position, new GUIContent(title,node.ToolTip), guiStyle);            
-        EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, iCS_EditorConfig.NodeTitleHeight), MouseCursor.MoveArrow);
+        EditorGUIUtility.AddCursorRect (new Rect(position.x,  position.y, position.width, iCS_EditorConfig.NodeTitleHeight), MouseCursor.Link);
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, storage)) {
             if(storage.IsFolded(node)) {
@@ -531,7 +531,7 @@ public class iCS_Graphics {
         }
         // Configure move cursor for port.
         Rect portPos= new Rect(center.x-iCS_EditorConfig.PortRadius*1.5f, center.y-iCS_EditorConfig.PortRadius*1.5f, iCS_EditorConfig.PortSize*1.5f, iCS_EditorConfig.PortSize*1.5f);
-        EditorGUIUtility.AddCursorRect (portPos, MouseCursor.MoveArrow);
+        EditorGUIUtility.AddCursorRect (portPos, MouseCursor.Link);
         GUIStyle labelStyle= GetLabelStyle(storage);
         GUI.Label(portPos, new GUIContent("", port.ToolTip), labelStyle);
         
