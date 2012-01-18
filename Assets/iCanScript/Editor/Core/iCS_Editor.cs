@@ -46,14 +46,26 @@ public class iCS_Editor : EditorWindow {
     Vector2 ScreenCenter { get { return new Vector2(0.5f*position.width, 0.5f*position.height); } }
     
     // ----------------------------------------------------------------------
-    static bool                 ourAlreadyParsed  = false;
+    static bool	ourAlreadyParsed  = false;
      
+//    // ----------------------------------------------------------------------
+//	// Editor information.
+//	bool IsNameEditorActive = false;
+//	bool IsValueEditorActive= false;
+	
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
     iCS_EditorObject SelectedObject {
         get { return mySelectedObject; }
-        set { mySelectedObject= value; if(Inspector != null) Inspector.SelectedObject= value; }
+        set {
+			if(mySelectedObject != value) {
+				mySelectedObject= value;
+				if(Inspector != null) Inspector.SelectedObject= value;				
+//  			IsNameEditorActive= false;
+//  			IsValueEditorActive= false;
+			}
+		}
     }
     iCS_EditorObject mySelectedObject= null;
     public iCS_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
@@ -195,6 +207,8 @@ public class iCS_Editor : EditorWindow {
         }
         // Cleanup objects.
         iCS_AutoReleasePool.Update();
+
+//		Debug.Log("Name Editor: "+IsNameEditorActive);
 	}
 	
 	// ----------------------------------------------------------------------
@@ -344,6 +358,21 @@ public class iCS_Editor : EditorWindow {
                 }
                 break;
             }
+//			case EventType.KeyDown: {
+//				var ev= Event.current;
+//				if(ev.keyCode == KeyCode.None) break;
+//				bool isReturn= ev.keyCode == KeyCode.Return; 
+//				if(isReturn) { IsNameEditorActive= false; Debug.Log("Name editor is deactivated."); break; }
+//				Debug.Log("Key code: "+Event.current.keyCode);
+//				if(SelectedObject != null) {
+//					Debug.Log("Name editor is activated.");
+//					IsNameEditorActive= true;
+//				} else {
+//					Debug.Log("Name editor is deactivated.");
+//					IsNameEditorActive= false;
+//				}
+//				break;
+//			}
         }
     }
 	// ----------------------------------------------------------------------
@@ -1002,6 +1031,15 @@ public class iCS_Editor : EditorWindow {
     	DrawNormalNodes();
         DrawConnections();
         DrawMinimizedNodes();           
+
+//		if(IsNameEditorActive) {
+//			Rect selectedRect= Storage.GetPosition(SelectedObject);
+//			Rect editorRect= new Rect(selectedRect.x, selectedRect.y, selectedRect.width, iCS_EditorConfig.NodeTitleHeight);
+//			GUI.SetNextControlName("NameEntry");
+//			SelectedObject.Name= GUI.TextField(editorRect, SelectedObject.Name, GUI.skin.box);
+//			GUI.FocusControl("NameEntry");
+//		}
+		
         ScrollView.End();
 	}
 
