@@ -517,7 +517,15 @@ public class iCS_Graphics {
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
         if(port.IsDataPort) {
-            DrawCircularPort(center, portColor, nodeColor);
+			Vector2 portCenter= center;
+			if(!port.IsEnablePort) portCenter.y-= 2;
+	        iCS_RuntimeDesc desc= new iCS_RuntimeDesc(portParent.RuntimeArchive);    
+			object portValue= storage.GetDefaultValue(desc, port.PortIndex);
+			if(port.IsInputPort && storage.GetSource(port) == null && portValue != null) {
+	            DrawSquarePort(portCenter, portColor, nodeColor);								
+			} else {
+	            DrawCircularPort(portCenter, portColor, nodeColor);				
+			}
         } else if(port.IsStatePort) {
             if(port.IsOutStatePort) {
                 Handles.color= Color.white;
@@ -572,28 +580,24 @@ public class iCS_Graphics {
     }
 
 	// ----------------------------------------------------------------------
-    void DrawSquarePort(Vector3 _center, Color _borderColor) {
+    void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor) {
         // Draw connector.
-        Vector3[] vectors= new Vector3[5];
-        Handles.DrawSolidDisc(_center, FacingNormal, iCS_EditorConfig.PortRadius);
-        float delta= iCS_EditorConfig.PortRadius-1;
-        float minSize= 0.707f * iCS_EditorConfig.PortRadius;
-        for(; delta > minSize; --delta) {
-            vectors[0]= new Vector3(_center.x-delta, _center.y-delta, 0);
-            vectors[1]= new Vector3(_center.x-delta, _center.y+delta, 0);
-            vectors[2]= new Vector3(_center.x+delta, _center.y+delta, 0);
-            vectors[3]= new Vector3(_center.x+delta, _center.y-delta, 0);
-            vectors[4]= vectors[0];            
-            Handles.DrawPolyLine(vectors);
-        }
-		Handles.color= _borderColor;
-        delta= iCS_EditorConfig.PortRadius;
+        Vector3[] vectors= new Vector3[4];
+        float delta= iCS_EditorConfig.PortRadius+1;
         vectors[0]= new Vector3(_center.x-delta, _center.y-delta, 0);
         vectors[1]= new Vector3(_center.x-delta, _center.y+delta, 0);
         vectors[2]= new Vector3(_center.x+delta, _center.y+delta, 0);
         vectors[3]= new Vector3(_center.x+delta, _center.y-delta, 0);
-        vectors[4]= vectors[0];
-        Handles.DrawPolyLine(vectors);
+        Handles.color= _borderColor;
+		Handles.DrawSolidRectangleWithOutline(vectors, Color.black, _borderColor);
+
+        delta= iCS_EditorConfig.PortRadius-1;
+        vectors[0]= new Vector3(_center.x-delta, _center.y-delta, 0);
+        vectors[1]= new Vector3(_center.x-delta, _center.y+delta, 0);
+        vectors[2]= new Vector3(_center.x+delta, _center.y+delta, 0);
+        vectors[3]= new Vector3(_center.x+delta, _center.y-delta, 0);
+        Handles.color= _fillColor;
+        Handles.DrawSolidRectangleWithOutline(vectors, _fillColor, _fillColor);
     }
     
 	// ----------------------------------------------------------------------
