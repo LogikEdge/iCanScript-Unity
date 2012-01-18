@@ -32,7 +32,7 @@ public class iCS_ScrollView {
     public void Update(Rect screenArea, Rect rootNodeRect) {
         // Animate the scroll position.
         if(ScrollPositionAnimation.IsActive) {
-            ScrollPositionAnimation.Update();
+        ScrollPositionAnimation.Update();
             ScrollPosition= ScrollPositionAnimation.CurrentValue;
         }
         
@@ -134,15 +134,15 @@ public class iCS_ScrollView {
     }
 
     // ----------------------------------------------------------------------
-    public void CenterAt(Vector2 graphPos) {
+    public void CenterAt(Vector2 graphPos, float deltaTime= -1f) {
         Vector2 screenMiddleOffset= new Vector2(0.5f*ScreenArea.width, 0.5f*ScreenArea.height);
         Vector2 targetScrollPosition= graphPos - CanvasOrigin - screenMiddleOffset;
-        StartScrollAnim(targetScrollPosition, 0.4f);
+        StartScrollAnim(targetScrollPosition, deltaTime < -Mathf.Epsilon ? 0.4f : deltaTime);
     }
 
     // ----------------------------------------------------------------------
     public void StartScrollAnim(Vector2 targetScrollPosition, float deltaTime) {
-        ScrollPositionAnimation.Start(ScrollPosition, targetScrollPosition, 0.5f,
+        ScrollPositionAnimation.Start(ScrollPosition, targetScrollPosition, deltaTime,
             (s,e,r)=> Math3D.Lerp(s,e,r)
         );        
     }

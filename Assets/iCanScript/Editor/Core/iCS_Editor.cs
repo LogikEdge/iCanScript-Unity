@@ -38,6 +38,9 @@ public class iCS_Editor : EditorWindow {
     bool            IsDragStarted         { get { return DragObject != null; }}
 
     // ----------------------------------------------------------------------
+    Vector2 ScreenCenter { get { return new Vector2(0.5f*position.width, 0.5f*position.height); } }
+    
+    // ----------------------------------------------------------------------
     static bool                 ourAlreadyParsed  = false;
      
     // ======================================================================
@@ -127,7 +130,6 @@ public class iCS_Editor : EditorWindow {
     
     // ----------------------------------------------------------------------
     public void Deactivate() {
-//        Debug.Log("Editor Deactivated");
         Inspector      = null;
 		DisplayRoot    = null;
 		Storage        = null;
@@ -231,11 +233,31 @@ public class iCS_Editor : EditorWindow {
         // Process window events.
         switch(Event.current.type) {
             case EventType.MouseMove: {
-                ResetDrag();
+                switch(Event.current.button) {
+                    case 0: { // Left mouse button
+                        ResetDrag();
+                        break;
+                    }
+                    case 2: { // Middle mouse button
+                        Vector2 diff= MousePosition-MouseDragStartPosition;
+                        ScrollView.CenterAt(DragStartPosition-diff, 0f);
+                        break;
+                    }
+                }
                 break;
             }
             case EventType.MouseDrag: {
-                ProcessDrag();
+                switch(Event.current.button) {
+                    case 0: { // Left mouse button
+                        ProcessDrag();
+                        break;
+                    }
+                    case 2: { // Middle mouse button
+                        Vector2 diff= MousePosition-MouseDragStartPosition;
+                        ScrollView.CenterAt(DragStartPosition-diff, 0f);
+                        break;
+                    }
+                }
                 Event.current.Use();
                 break;
             }
@@ -252,6 +274,12 @@ public class iCS_Editor : EditorWindow {
                     }
                     case 1: { // Right mouse button
                         DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(MousePosition));
+                        Event.current.Use();
+                        break;
+                    }
+                    case 2: { // Middle mouse button
+                        MouseDragStartPosition= MousePosition;
+                        DragStartPosition= ScrollView.ScreenToGraph(ScreenCenter);
                         Event.current.Use();
                         break;
                     }

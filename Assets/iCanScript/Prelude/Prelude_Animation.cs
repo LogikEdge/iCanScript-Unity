@@ -18,7 +18,7 @@ public static partial class Prelude {
         float   myStartTime= 0f;
         float   myEndTime= 0f;
         
-        public bool  IsActive       { get { return myStartTime != myEndTime; }}
+        public bool  IsActive       { get { return myStartTime != 0f || myEndTime != 0f; }}
         public bool  IsElapsed      { get { return CurrentTime() >= myEndTime; }}
         public float Ratio          { get { return IsActive ? (CurrentTime()-myStartTime)/(myEndTime-myStartTime) : 1f; }}
         public float RemainingTime  { get { return myEndTime-CurrentTime(); }}
