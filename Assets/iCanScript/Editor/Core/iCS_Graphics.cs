@@ -375,6 +375,7 @@ public class iCS_Graphics {
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
         GUI.DrawTexture(texturePos, icon);                           
+        EditorGUIUtility.AddCursorRect (texturePos, MouseCursor.Link);
         GUIStyle labelStyle= GetLabelStyle(storage);
         GUI.Label(texturePos, new GUIContent("", node.ToolTip), labelStyle);
         Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(title);
