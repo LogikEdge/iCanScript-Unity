@@ -37,7 +37,7 @@
 		<SkipType name="iCS_Math3D" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                          
 		<SkipType name="iCS_DeltaTime" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
 		<SkipType name="_NET_Variables" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      
-		<SkipType name="iCS_Test" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                            
+		<SkipType name="iCS_TestFunction" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                            
                                                                                                                                                                     
 	</Module>                                                                                                                                                       
 
