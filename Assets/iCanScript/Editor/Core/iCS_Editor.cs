@@ -190,7 +190,7 @@ public class iCS_Editor : EditorWindow {
             if(timeSinceDirty < 5.0f) {
                 Repaint();
             } else {
-                if(++RefreshCnt > 0 || RefreshCnt < 0) {
+                if(++RefreshCnt > 4 || RefreshCnt < 0) {
                     RefreshCnt= 0;
                     Repaint();
                 }
@@ -210,8 +210,6 @@ public class iCS_Editor : EditorWindow {
         }
         // Cleanup objects.
         iCS_AutoReleasePool.Update();
-
-//		Debug.Log("Name Editor: "+IsNameEditorActive);
 	}
 	
 	// ----------------------------------------------------------------------
@@ -1056,41 +1054,39 @@ public class iCS_Editor : EditorWindow {
 
 	// ----------------------------------------------------------------------
     void DrawNormalNodes() {
-        List<iCS_EditorObject> floatingNodes= new List<iCS_EditorObject>();
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
-                if(node.IsNode) {
-                    if(node.IsFloating) {
-                        floatingNodes.Add(node);
-                    } else {
-                        Graphics.DrawNormalNode(node, SelectedObject, Storage);                        
-                    }
+                if(node.IsNode && !node.IsFloating) {
+                	Graphics.DrawNormalNode(node, SelectedObject, Storage);                        
                 }
             }
         );
-        foreach(var node in floatingNodes) {
-            Graphics.DrawNormalNode(node, SelectedObject, Storage);            
-        }
+        Storage.ForEachRecursiveDepthLast(DisplayRoot,
+            node=> {
+                if(node.IsNode && node.IsFloating) {
+                	Graphics.DrawNormalNode(node, SelectedObject, Storage);                        
+                }
+            }
+        );
     }	
 	// ----------------------------------------------------------------------
     void DrawMinimizedNodes() {
-        List<iCS_EditorObject> floatingNodes= new List<iCS_EditorObject>();
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
-                if(node.IsNode) {
-                    if(node.IsFloating) {
-                        floatingNodes.Add(node);
-                    } else {
-                        Graphics.DrawMinimizedNode(node, SelectedObject, Storage);                        
-                    }
+                if(node.IsNode && !node.IsFloating) {
+                	Graphics.DrawMinimizedNode(node, SelectedObject, Storage);                        
                 }
             }
         );
-        foreach(var node in floatingNodes) {
-            Graphics.DrawMinimizedNode(node, SelectedObject, Storage);            
-        }
+        Storage.ForEachRecursiveDepthLast(DisplayRoot,
+            node=> {
+                if(node.IsNode && node.IsFloating) {
+                	Graphics.DrawMinimizedNode(node, SelectedObject, Storage);                        
+                }
+            }
+        );
     }	
 	
 	// ----------------------------------------------------------------------

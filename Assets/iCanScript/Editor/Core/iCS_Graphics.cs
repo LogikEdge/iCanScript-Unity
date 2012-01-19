@@ -520,10 +520,10 @@ public class iCS_Graphics {
         if(port.IsDataPort) {
 			Vector2 portCenter= center;
 			if(!port.IsEnablePort) portCenter.y-= 2;
-	        iCS_RuntimeDesc desc= new iCS_RuntimeDesc(portParent.RuntimeArchive);    
 			if(port.IsInputPort && storage.GetSource(port) == null) {
-				portValue= storage.GetDefaultValue(desc, port.PortIndex);
-				if(portValue != null) {
+//		        iCS_RuntimeDesc desc= new iCS_RuntimeDesc(portParent.RuntimeArchive);    
+//				portValue= storage.GetDefaultValue(desc, port.PortIndex);
+				if(/*portValue != null*/true) {
 	            	DrawSquarePort(portCenter, portColor, nodeColor);
 				} else {
 		            DrawCircularPort(portCenter, portColor, nodeColor);									
