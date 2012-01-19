@@ -1,0 +1,5 @@
+Display a square connector (instead of a circle) to indicate an input ports with a static value.
+Centre graph when editor window is first opened.
+Show Link cursor on minimized nodes.
+Change MoveArrow type to Link arrow type in the editor to be compatible with both OSX & Windows.
+Canvas can now be moved by pressing the middle mouse button.
