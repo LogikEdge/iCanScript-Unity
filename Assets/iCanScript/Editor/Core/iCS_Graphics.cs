@@ -514,15 +514,20 @@ public class iCS_Graphics {
         iCS_EditorObject portParent= storage.GetParent(port);         
         Vector2 center= Math3D.ToVector2(position);
         Type portValueType= port.RuntimeType;
+		object portValue= null;
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
         if(port.IsDataPort) {
 			Vector2 portCenter= center;
 			if(!port.IsEnablePort) portCenter.y-= 2;
 	        iCS_RuntimeDesc desc= new iCS_RuntimeDesc(portParent.RuntimeArchive);    
-			object portValue= storage.GetDefaultValue(desc, port.PortIndex);
-			if(port.IsInputPort && storage.GetSource(port) == null && portValue != null) {
-	            DrawSquarePort(portCenter, portColor, nodeColor);								
+			if(port.IsInputPort && storage.GetSource(port) == null) {
+				portValue= storage.GetDefaultValue(desc, port.PortIndex);
+				if(portValue != null) {
+	            	DrawSquarePort(portCenter, portColor, nodeColor);
+				} else {
+		            DrawCircularPort(portCenter, portColor, nodeColor);									
+				}
 			} else {
 	            DrawCircularPort(portCenter, portColor, nodeColor);				
 			}
@@ -547,26 +552,39 @@ public class iCS_Graphics {
         // Show port label.
         if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
+		string valueAsStr= portValue != null ? "value" : null;
         Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(name);
+		GUIStyle valueStyle= GUI.skin.textField;
+		Vector2 valueSize= (valueAsStr != null && valueAsStr != "") ? valueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;
+		Vector2 valuePos= center;
         switch(port.Edge) {
             case iCS_EditorObject.EdgeEnum.Left:
-                center.x+= 1 + iCS_EditorConfig.PortSize;
-                center.y-= 1 + 0.5f * labelSize.y;
+                center.x  += 1 + iCS_EditorConfig.PortSize;
+                center.y  -= 1 + 0.5f * labelSize.y;
+				valuePos.x-= 1 + valueSize.x + iCS_EditorConfig.PortSize;
+				valuePos.y-= 1 + 0.5f * valueSize.y;
                 break;
             case iCS_EditorObject.EdgeEnum.Right:
-                center.x-= 1 + labelSize.x + iCS_EditorConfig.PortSize;
-                center.y-= 1 + 0.5f * labelSize.y;
+                center.x  -= 1 + labelSize.x + iCS_EditorConfig.PortSize;
+                center.y  -= 1 + 0.5f * labelSize.y;
+				valuePos.x+= 1 + iCS_EditorConfig.PortSize;
+				valuePos.y-= 1 + 0.5f * valueSize.y;
                 break;
             case iCS_EditorObject.EdgeEnum.Top:            
                 center.x-= 1 + 0.5f*labelSize.x;
                 center.y-= iCS_EditorConfig.PortSize+0.8f*labelSize.y*(1+TopBottomLabelOffset(port, storage));
+				valueAsStr= null;
                 break;
             case iCS_EditorObject.EdgeEnum.Bottom:
                 center.x-= 1 + 0.5f*labelSize.x;
                 center.y+= iCS_EditorConfig.PortSize+0.8f*labelSize.y*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y;
+				valueAsStr= null;
                 break;
         }
         GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), labelStyle);
+		if(valueAsStr != null) {
+			//GUI.Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, valueStyle);			
+		}
     }
 
 	// ----------------------------------------------------------------------
@@ -802,11 +820,15 @@ public class iCS_Graphics {
         }
         return storage.GetPosition(edObj);
     }
+	// ----------------------------------------------------------------------
+	// Returns the time ratio of the animation between 0 and 1.
     static float GetAnimationRatio(iCS_EditorObject edObj, iCS_IStorage storage) {
         float time= storage.Preferences.Animation.AnimationTime;
         float invTime= Math3D.IsZero(time) ? 10000f : 1f/time;
         return invTime*(storage.GetAnimTime(edObj));        
     }
+	// ----------------------------------------------------------------------
+    // Returns true if the animation ratio >= 1.
     static bool IsAnimationCompleted(iCS_EditorObject edObj, iCS_IStorage storage) {
         return GetAnimationRatio(edObj, storage) >= 0.99f;
     }

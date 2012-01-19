@@ -72,14 +72,17 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     bool    IsCommandKeyDown       { get { return Event.current.command; }}
     bool    IsControlKeyDown       { get { return Event.current.control; }}
-    Vector2 MousePosition          {
-        get {
-            Vector2 pos= Event.current.mousePosition;
-            if(Event.current.type == EventType.MouseDrag) pos+= Event.current.delta;
-            return pos;
-        }
-    }
     
+	// ----------------------------------------------------------------------
+	// Mouse services
+	void UpdateMouse() {
+        myMousePosition= Event.current.mousePosition;
+//        if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
+	}
+    Vector2 MousePosition { get { return myMousePosition; } }
+	Vector2 myMousePosition= Vector2.zero;
+	Vector2 MouseDownPosition= Vector2.zero;
+	
     // ======================================================================
     // INITIALIZATION
 	// ----------------------------------------------------------------------
@@ -187,7 +190,7 @@ public class iCS_Editor : EditorWindow {
             if(timeSinceDirty < 5.0f) {
                 Repaint();
             } else {
-                if(++RefreshCnt > 4 || RefreshCnt < 0) {
+                if(++RefreshCnt > 0 || RefreshCnt < 0) {
                     RefreshCnt= 0;
                     Repaint();
                 }
@@ -229,6 +232,9 @@ public class iCS_Editor : EditorWindow {
         Rect scrollViewPosition= DisplayRoot != null ? Storage.GetPosition(DisplayRoot) : new Rect(0,0,500,500);
         ScrollView.Update(position, scrollViewPosition);
         
+		// Update mouse info.
+		UpdateMouse();
+
         // Draw Graph.
         DrawGraph();
 
@@ -281,11 +287,16 @@ public class iCS_Editor : EditorWindow {
                         ScrollView.CenterAt(DragStartPosition-diff, 0f);
                         break;
                     }
+					default: {
+						Debug.Log("Sould never occure");
+						break;
+					}
                 }
                 Event.current.Use();
                 break;
             }
             case EventType.MouseDown: {
+				MouseDownPosition= MousePosition;
                 // Update the selected object.
                 DetermineSelectedObject();
                 switch(Event.current.button) {
@@ -437,8 +448,7 @@ public class iCS_Editor : EditorWindow {
         if(!StartDrag()) return;
 
         // Compute new object position.
-        Vector2 mousePosition= ScrollView.ScreenToGraph(MousePosition);
-        Vector2 delta= mousePosition - MouseDragStartPosition;
+        Vector2 delta= MousePosition - MouseDragStartPosition;
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
@@ -468,8 +478,8 @@ public class iCS_Editor : EditorWindow {
         if(IsDragStarted) return true;
         
         // Use the Left mouse down position has drag start position.
-        MouseDragStartPosition= ScrollView.ScreenToGraph(MousePosition);
-        Vector2 pos= MouseDragStartPosition;
+        MouseDragStartPosition= MouseDownPosition;
+        Vector2 pos= ScrollView.ScreenToGraph(MouseDragStartPosition);
 
         // Port drag.
         iCS_EditorObject port= Storage.GetPortAt(pos);
@@ -533,6 +543,7 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     void EndDrag() {
+		ProcessDrag();
         try {
             switch(DragType) {
                 case DragTypeEnum.None: break;
