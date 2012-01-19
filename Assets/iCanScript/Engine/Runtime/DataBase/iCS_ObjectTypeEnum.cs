@@ -61,6 +61,8 @@ public static partial class WD {
     public static bool IsInModulePort         (iCS_EditorObject obj) { return IsInDynamicModulePort(obj) || IsInStaticModulePort(obj); }
     public static bool IsOutModulePort        (iCS_EditorObject obj) { return IsOutDynamicModulePort(obj) || IsOutStaticModulePort(obj); }
     public static bool IsNode                 (iCS_EditorObject obj) { return IsBehaviour(obj) || IsStateChart(obj) || IsState(obj) || IsModule(obj) || IsConstructor(obj) || IsMethod(obj) || IsConversion(obj) || IsField(obj); }
+	public static bool IsStateChartNode		  (iCS_EditorObject obj) { return IsStateChart(obj) || IsState(obj); }
+	public static bool IsDataNode             (iCS_EditorObject obj) { return IsModule(obj) || IsConstructor(obj) || IsMethod(obj) || IsConversion(obj) || IsField(obj); }
     public static bool IsDataPort             (iCS_EditorObject obj) { return IsFieldPort(obj) || IsFunctionPort(obj) || IsModulePort(obj) || IsPropertyPort(obj) || IsEnablePort(obj); }
     public static bool IsDynamicModulePort    (iCS_EditorObject obj) { return IsInDynamicModulePort(obj) || IsOutDynamicModulePort(obj); }
     public static bool IsStaticModulePort     (iCS_EditorObject obj) { return IsInStaticModulePort(obj) || IsOutStaticModulePort(obj); }

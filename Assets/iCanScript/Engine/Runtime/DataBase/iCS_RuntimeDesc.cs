@@ -12,7 +12,6 @@ public class iCS_RuntimeDesc {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public int                  Id                  = -1;
     public iCS_ObjectTypeEnum   ObjectType          = iCS_ObjectTypeEnum.Unknown;
     public string               Company             = "(no company)";
     public string               Package             = "DefaultPackage";
@@ -308,7 +307,6 @@ public class iCS_RuntimeDesc {
 
     // ----------------------------------------------------------------------
 	public iCS_RuntimeDesc CopyFrom(iCS_RuntimeDesc rtDesc) {
-	    Id               = rtDesc.Id;
 	    ObjectType       = rtDesc.ObjectType;
 	    Company          = rtDesc.Company;
 	    Package          = rtDesc.Package;
@@ -327,7 +325,7 @@ public class iCS_RuntimeDesc {
     // ----------------------------------------------------------------------
     // Encode the runtime descriptor into a string.
     // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>
-    public string Encode(int id) {
+    public string Encode() {
         iCS_Coder coder= new iCS_Coder();
         coder.EncodeObject("rtDesc", this);
         string encoded= coder.Archive;

@@ -5,24 +5,25 @@ using System.Collections.Generic;
 
 // --------------------------------------------------------------------------
 // An instance of this class is dynamically created from the EditorObjects.
-[System.Serializable]
 public class iCS_TreeCache {
     // ======================================================================
     // Child Classes
     // ----------------------------------------------------------------------
-    [System.Serializable]
     public class TreeNode {
         public bool         IsValid= false;
         public int          ParentId= -1;
         public List<int>    Children= new List<int>();
         public Rect         DisplayPosition;
         public float        AnimationTime= 0;
-
+		public object		InitialValue= null;
+		
         public TreeNode()  { Reset(); }
         public void Reset() {
             IsValid= false;
             ParentId= -1;
             Children.Clear();
+			AnimationTime= 0;
+			InitialValue= null;
         }
         public void AddChild(int id, TreeNode toAdd) {
             if(Prelude.elem(id, Children.ToArray())) return;

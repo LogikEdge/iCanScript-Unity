@@ -30,7 +30,7 @@ public partial class iCS_IStorage {
         rtDesc.PortIsOuts[len]= port.IsOutputPort;
         Array.Resize(ref rtDesc.PortDefaultValues, len+1);
         rtDesc.PortDefaultValues[len]= rtDesc.PortIsOuts[len] || port.RuntimeType == typeof(void) ? null : iCS_Types.DefaultValue(port.RuntimeType);
-        module.RuntimeArchive= rtDesc.Encode(module.InstanceId);
+        module.RuntimeArchive= rtDesc.Encode();
     }
     // ----------------------------------------------------------------------
     public void RemovePortFromModule(iCS_EditorObject port) {
@@ -49,7 +49,7 @@ public partial class iCS_IStorage {
         Array.Resize(ref rtDesc.PortTypes, len-1);
         Array.Resize(ref rtDesc.PortIsOuts, len-1);
         Array.Resize(ref rtDesc.PortDefaultValues, len-1);
-        module.RuntimeArchive= rtDesc.Encode(module.InstanceId);
+        module.RuntimeArchive= rtDesc.Encode();
         // Rearrange port indexes
         ForEachChildPort(module, p=> { if(p.PortIndex > idx) --p.PortIndex; });
     }

@@ -123,7 +123,7 @@ public class iCS_Inspector : Editor {
                         if(SelectedObject.IsNode) {
                             iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(SelectedObject.RuntimeArchive);
                             rtDesc.DisplayName= name;
-                            SelectedObject.RuntimeArchive= rtDesc.Encode(rtDesc.Id);
+                            SelectedObject.RuntimeArchive= rtDesc.Encode();
                         }
                         if(SelectedObject.IsStatePort) {
                             if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).Name= name;
@@ -169,6 +169,8 @@ public class iCS_Inspector : Editor {
         }
         // Display specific node type information.
         switch(node.ObjectType) {
+			case iCS_ObjectTypeEnum.StateChart:
+				break;
             case iCS_ObjectTypeEnum.State:
                 InspectStateNode(node);
                 break;

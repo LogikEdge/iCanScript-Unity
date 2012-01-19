@@ -24,7 +24,7 @@ public partial class iCS_IStorage {
         if(Storage != storage) {
             myIsDirty= true;
             Storage= storage;
-            GenerateInternalData();
+            GenerateEditorData();
             UndoRedoId= Storage.UndoRedoId;          
         }
     }
@@ -34,19 +34,30 @@ public partial class iCS_IStorage {
         TreeCache= null;
     }
     // ----------------------------------------------------------------------
-    void GenerateInternalData() {
-		GenerateEditorData();
-//        GenerateRuntimeCode();
-    }
-    // ----------------------------------------------------------------------
     void GenerateEditorData() {
         TreeCache= new iCS_TreeCache();
         ForEach(obj=> TreeCache.CreateInstance(obj));
-        // Initialize display position.
         if(IsValid(0)) {
             Vector2 graphCenter= Math3D.Middle(GetPosition(EditorObjects[0]));
             ForEach(obj=> {
+		        // Initialize display position.
                 TreeCache[obj.InstanceId].DisplayPosition= new Rect(graphCenter.x,graphCenter.y,0,0);
+//				// Initialize initial port values.
+//				if(obj.IsDataNode) {
+//					iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(obj.RuntimeArchive);
+//					for(int i= 0; i < rtDesc.PortDefaultValues.Length; ++i) {
+//						object initalValue= rtDesc.PortDefaultValues[i];
+//						if(initalValue != null) {
+//							ForEachChild(obj,
+//								child=> { 
+//									if(child.IsInDataPort && child.Source == -1) {
+//										TreeCache[child.InstanceId].InitialValue= initalValue;
+//									}
+//								}
+//							);
+//						}
+//					}
+//				}
             });            
         }
     }
@@ -123,7 +134,6 @@ public partial class iCS_IStorage {
         }
         CleanupNeeded= true;
         myIsDirty= false;
-//        Debug.Log("Storage has something to update");
 
         // Perform layout of modified nodes.
         ForEachRecursiveDepthLast(EditorObjects[0],
@@ -260,7 +270,7 @@ public partial class iCS_IStorage {
 				rtDesc.PortDefaultValues[i]= null;
 			}
 		}
-		obj.RuntimeArchive= rtDesc.Encode(obj.InstanceId);
+		obj.RuntimeArchive= rtDesc.Encode();
 	}
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateBehaviour() {
@@ -290,7 +300,7 @@ public partial class iCS_IStorage {
         rtDesc.Package= iCS_EditorStrings.DefaultPackage;
         rtDesc.DisplayName= name;
         rtDesc.ClassType= typeof(iCS_Module);
-        this[id].RuntimeArchive= rtDesc.Encode(id);
+        this[id].RuntimeArchive= rtDesc.Encode();
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
@@ -310,7 +320,7 @@ public partial class iCS_IStorage {
         rtDesc.Package= iCS_EditorStrings.DefaultPackage;
         rtDesc.DisplayName= name;
         rtDesc.ClassType= typeof(iCS_StateChart);
-        this[id].RuntimeArchive= rtDesc.Encode(id);
+        this[id].RuntimeArchive= rtDesc.Encode();
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
@@ -335,7 +345,7 @@ public partial class iCS_IStorage {
         rtDesc.Package= iCS_EditorStrings.DefaultPackage;
         rtDesc.DisplayName= name;
         rtDesc.ClassType= typeof(iCS_State);
-        this[id].RuntimeArchive= rtDesc.Encode(id);
+        this[id].RuntimeArchive= rtDesc.Encode();
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
@@ -354,7 +364,7 @@ public partial class iCS_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
-        this[id].RuntimeArchive= desc.Encode(id);
+        this[id].RuntimeArchive= desc.Encode();
         this[id].IconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
             this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
@@ -381,7 +391,7 @@ public partial class iCS_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
-        this[id].RuntimeArchive= desc.Encode(id);
+        this[id].RuntimeArchive= desc.Encode();
         this[id].IconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
             this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);

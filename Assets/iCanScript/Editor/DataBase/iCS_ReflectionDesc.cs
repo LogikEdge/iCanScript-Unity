@@ -46,7 +46,7 @@ public class iCS_ReflectionDesc {
     // ======================================================================
     // Archiving
     // ----------------------------------------------------------------------
-    public string Encode(int id) {
-        return RuntimeDesc.Encode(id);
+    public string Encode() {
+        return RuntimeDesc.Encode();
     }
 }

@@ -53,7 +53,7 @@ public static class iCS_GuiUtilities {
         if(!isReadOnly && isDirty) {
             if(runtimeObject != null) runtimeObject[portId]= newPortValue;
             storage.SetDefaultValue(desc, portId, newPortValue);
-            parent.RuntimeArchive= desc.Encode(desc.Id);
+            parent.RuntimeArchive= desc.Encode();
             storage.SetDirty(parent);
         }
     }

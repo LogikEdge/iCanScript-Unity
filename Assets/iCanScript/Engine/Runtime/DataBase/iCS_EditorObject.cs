@@ -92,6 +92,8 @@ public class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode                  { get { return WD.IsNode(this); }}
+	public bool IsDataNode				{ get { return WD.IsDataNode(this); }}
+	public bool IsStateChartNode	    { get { return WD.IsStateChartNode(this); }}
     public bool IsBehaviour             { get { return WD.IsBehaviour(this); }}
     public bool IsStateChart            { get { return WD.IsStateChart(this); }}
     public bool IsState                 { get { return WD.IsState(this); }}
