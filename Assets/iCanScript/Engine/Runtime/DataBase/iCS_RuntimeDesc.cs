@@ -26,44 +26,6 @@ public class iCS_RuntimeDesc {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public MethodBase Method {
-        get {
-            // Extract MethodBase for constructor.
-            MethodBase method= null;
-            if(ObjectType == iCS_ObjectTypeEnum.Constructor) {
-                method= ClassType.GetConstructor(ParamTypes);
-                if(method == null) {
-                    string signature="(";
-                    bool first= true;
-                    foreach(var param in PortTypes) {
-                        if(first) { first= false; } else { signature+=", "; }
-                        signature+= param.Name;
-                    }
-                    signature+=")";
-                    Debug.LogWarning("Unable to extract constructor: "+ClassType.Name+signature);
-                }
-                return method;
-            }
-            // Extract MethodBase for class methods.
-            if(MethodName == null) return null;
-            method= ClassType.GetMethod(MethodName, ParamTypes);            
-            if(method == null) {
-                Debug.LogWarning("Unable to extract MethodInfo from RuntimeDesc: "+MethodName);
-            }
-            return method;
-        }
-    }
-    public FieldInfo Field {
-        get {
-            if(MethodName == null) return null;
-            FieldInfo field= ClassType.GetField(MethodName);
-            if(field == null) {
-                Debug.LogWarning("Unable to extract FieldInfo from RuntimeDesc: "+MethodName);                
-            }
-            return field;
-        }
-    }
-    // ----------------------------------------------------------------------
     public object GetDefaultValue(int portId, iCS_Storage storage) {
         if(iCS_Types.IsA<UnityEngine.Object>(PortTypes[portId])) {
             object id= PortDefaultValues[portId];
@@ -88,136 +50,6 @@ public class iCS_RuntimeDesc {
             return;
         }
         PortDefaultValues[portId]= obj;
-    }
-    // ----------------------------------------------------------------------
-    public string[] ParamNames {
-        get {
-            string[] result= null;
-            switch(ObjectType) {
-                case iCS_ObjectTypeEnum.Module: {
-                    result= PortNames;
-                    break;
-                }
-                case iCS_ObjectTypeEnum.InstanceMethod: {
-                    result= new string[PortNames.Length-3];
-                    Array.Copy(PortNames, result, result.Length);
-                    break;
-                }
-                case iCS_ObjectTypeEnum.Constructor:
-                case iCS_ObjectTypeEnum.Conversion:
-                case iCS_ObjectTypeEnum.StaticMethod: {
-                    result= new string[PortNames.Length-1];
-                    Array.Copy(PortNames, result, result.Length);
-                    break;
-                }
-                default: {
-                    result= new string[0]; 
-                    break;
-                }
-            }
-            return result;            
-        }
-    }
-    // ----------------------------------------------------------------------
-    public Type[] ParamTypes {
-        get {
-            Type[] result= null;
-            switch(ObjectType) {
-                case iCS_ObjectTypeEnum.Module: {
-                    result= PortTypes;
-                    break;
-                }
-                case iCS_ObjectTypeEnum.InstanceMethod: {
-                    result= new Type[PortTypes.Length-3];
-                    Array.Copy(PortTypes, result, result.Length);
-                    break;
-                }
-                case iCS_ObjectTypeEnum.Constructor:
-                case iCS_ObjectTypeEnum.Conversion:
-                case iCS_ObjectTypeEnum.StaticMethod: {
-                    result= new Type[PortTypes.Length-1];
-                    Array.Copy(PortTypes, result, result.Length);
-                    break;
-                }
-                default: {
-                    result= new Type[0]; 
-                    break;
-                }
-            }
-            return result;            
-        }
-    }
-    // ----------------------------------------------------------------------
-    public bool[] ParamIsOuts {
-        get {
-            bool[] result= null;
-            switch(ObjectType) {
-                case iCS_ObjectTypeEnum.Module: {
-                    result= PortIsOuts;
-                    break;
-                }
-                case iCS_ObjectTypeEnum.InstanceMethod: {
-                    result= new bool[PortIsOuts.Length-3];
-                    Array.Copy(PortIsOuts, result, result.Length);
-                    break;
-                }
-                case iCS_ObjectTypeEnum.Conversion:
-                case iCS_ObjectTypeEnum.StaticMethod: {
-                    result= new bool[PortIsOuts.Length-1];
-                    Array.Copy(PortIsOuts, result, result.Length);
-                    break;
-                }
-                default: {
-                    result= new bool[0]; 
-                    break;
-                }
-            }
-            return result;            
-        }
-    }
-    // ----------------------------------------------------------------------
-    public string ReturnName {
-        get {
-            string result= null;
-            switch(ObjectType) {
-                case iCS_ObjectTypeEnum.InstanceMethod: {
-                    result= PortNames[PortNames.Length-3];
-                    break;
-                }
-                case iCS_ObjectTypeEnum.Conversion:
-                case iCS_ObjectTypeEnum.StaticMethod: {
-                    result= PortNames[PortNames.Length-1];
-                    break;
-                }
-                default: {
-                    result= null; 
-                    break;
-                }
-            }
-            return result;                    
-        }
-    }
-    // ----------------------------------------------------------------------
-    public Type ReturnType {
-        get {
-            Type result= null;
-            switch(ObjectType) {
-                case iCS_ObjectTypeEnum.InstanceMethod: {
-                    result= PortTypes[PortTypes.Length-3];
-                    break;
-                }
-                case iCS_ObjectTypeEnum.Conversion:
-                case iCS_ObjectTypeEnum.StaticMethod: {
-                    result= PortTypes[PortTypes.Length-1];
-                    break;
-                }
-                default: {
-                    result= null; 
-                    break;
-                }
-            }
-            return result;                    
-        }
     }
     
     // ======================================================================
@@ -322,15 +154,6 @@ public class iCS_RuntimeDesc {
 	
     // ======================================================================
     // Archiving
-    // ----------------------------------------------------------------------
-    // Encode the runtime descriptor into a string.
-    // Format: ObjectType:company:package:classType:methodName<[out] paramName[:=defaultValue]:paramType; ...>
-    public string Encode() {
-        iCS_Coder coder= new iCS_Coder();
-        coder.EncodeObject("rtDesc", this);
-        string encoded= coder.Archive;
-        return encoded;
-    }
     // ----------------------------------------------------------------------
     // Fills the runtime descriptor from an encoded string.
     public iCS_RuntimeDesc Decode(string encoded) {
