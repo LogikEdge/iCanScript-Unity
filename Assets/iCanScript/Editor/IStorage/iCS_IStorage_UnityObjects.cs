@@ -27,12 +27,4 @@ public partial class iCS_IStorage {
     public void RemoveUnityObject(int id) {
         SetUnityObject(id, null);
     }
-    // ----------------------------------------------------------------------
-    public object GetDefaultValue(iCS_RuntimeDesc desc, int portId) {
-        return desc.GetDefaultValue(portId, Storage);
-    }
-    // ----------------------------------------------------------------------
-    public void SetDefaultValue(iCS_RuntimeDesc desc, int portId, object obj) {
-        desc.SetDefaultValue(portId, obj, Storage);
-    }
 }

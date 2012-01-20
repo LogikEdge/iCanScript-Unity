@@ -18,12 +18,34 @@ public partial class iCS_IStorage {
 	public object GetInitialPortValue(iCS_EditorObject port) {
 		if(!port.IsInDataPort) return null;
 		if(port.Source != -1) return null;
-		return TreeCache[port.InstanceId].InitialValue;
+		object portValue= TreeCache[port.InstanceId].InitialValue;
+		// Special case for UnityObjects.
+        if(iCS_Types.IsA<UnityEngine.Object>(port.RuntimeType)) {
+            if(portValue == null) return null;
+            return UnityObjects[(int)portValue];
+        }
+		return portValue;
 	}
     // ----------------------------------------------------------------------
 	public void SetInitialPortValue(iCS_EditorObject port, object value) {
 		if(!port.IsInDataPort) return;
 		if(port.Source != -1) return;
+		// Special case for UnityObjects.
+        if(iCS_Types.IsA<UnityEngine.Object>(port.RuntimeType)) {
+            object idObj= TreeCache[port.InstanceId].InitialValue;
+            if(idObj == null) {
+                value= AddUnityObject(value as UnityEngine.Object);
+            } else {
+	            int id= (int)idObj;
+	            if(IsValidUnityObject(id)) {
+	                SetUnityObject(id, value as UnityEngine.Object);
+					value= idObj;
+	            } else {
+	                value= AddUnityObject(value as UnityEngine.Object);
+	            }
+	            return;	
+			}
+        }
 		TreeCache[port.InstanceId].InitialValue= value;
 		iCS_Coder coder= new iCS_Coder();
 		coder.EncodeObject("InitialValue", value);
