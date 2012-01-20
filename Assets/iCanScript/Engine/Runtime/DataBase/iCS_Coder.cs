@@ -294,7 +294,6 @@ public class iCS_Coder {
         if(value == typeof(Color[])) return "clr[]";
         // iCanScript data types.
         if(value == typeof(iCS_Behaviour)) return "iBeh";
-		if(value == typeof(iCS_RuntimeDesc)) return "iRtD";
 		if(value == typeof(iCS_ObjectTypeEnum)) return "iOTE";
 		if(value == typeof(iCS_Module)) return "iMd";
 		if(value == typeof(iCS_StateChart)) return "iSC";
@@ -690,7 +689,6 @@ public class iCS_Coder {
         if(value == "clr[]") return typeof(Color[]);
         // iCanScript data types.
 		if(value == "iBeh") return typeof(iCS_Behaviour);
-		if(value == "iRtD") return typeof(iCS_RuntimeDesc);
 		if(value == "iOTE") return typeof(iCS_ObjectTypeEnum);
 		if(value == "iMd") return typeof(iCS_Module);
 		if(value == "iSt") return typeof(iCS_State);
