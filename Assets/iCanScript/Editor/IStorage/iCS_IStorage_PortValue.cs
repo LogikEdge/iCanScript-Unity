@@ -25,10 +25,19 @@ public partial class iCS_IStorage {
 		if(!port.IsInDataPort) return;
 		if(port.Source != -1) return;
 		TreeCache[port.InstanceId].InitialValue= value;
-		iCS_Coder coder= new iCS_Coder();
-		coder.EncodeObject("InitialValue", value, Storage);
-		port.InitialValueArchive= coder.Archive; 
+        ArchiveInitialPortValue(port);
 	}
+    // ----------------------------------------------------------------------
+    public void ArchiveInitialPortValue(iCS_EditorObject port) {
+        var cache= TreeCache[port.InstanceId];
+        if(cache.InitialValue == null) {
+            port.InitialValueArchive= null;
+            return;
+        }
+		iCS_Coder coder= new iCS_Coder();
+		coder.EncodeObject("InitialValue", cache.InitialValue, Storage);
+		port.InitialValueArchive= coder.Archive;         
+    }
     // ----------------------------------------------------------------------
 	public object GetPortValue(iCS_EditorObject port) {
 		if(!port.IsDataPort) return null;

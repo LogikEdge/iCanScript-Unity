@@ -48,6 +48,7 @@ public partial class iCS_IStorage {
 				}
             });            
         }
+        CleanupUnityObjects();
     }
     
     
@@ -144,6 +145,20 @@ public partial class iCS_IStorage {
             }
         );        
         return modified;
+    }
+    // ----------------------------------------------------------------------
+    public void CleanupUnityObjects() {
+        Storage.ClearUnityObjects();
+        ForEach(
+            obj=> {
+                if(obj.IsInDataPort && obj.Source == -1 && TreeCache[obj.InstanceId].InitialValue != null) {
+                    ArchiveInitialPortValue(obj);
+                }
+                else {
+                    obj.InitialValueArchive= null; 
+                }
+            }
+        );
     }
     
     // ======================================================================
