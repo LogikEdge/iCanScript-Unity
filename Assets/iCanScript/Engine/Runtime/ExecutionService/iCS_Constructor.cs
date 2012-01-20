@@ -39,13 +39,6 @@ public class iCS_Constructor : iCS_FunctionBase {
         Array.Copy(portIsOuts, paramIsOuts, paramIsOuts.Length);
         base.Init(paramIsOuts);
     }
-    public new void SetConnections(iCS_Connection[] connections, object[] initValues) {
-        iCS_Connection[] baseConnections= new iCS_Connection[connections.Length-1];
-        Array.Copy(connections, baseConnections, baseConnections.Length);
-        object[] baseInitValues= new object[initValues.Length-1];
-        Array.Copy(initValues, baseInitValues, baseInitValues.Length);
-        base.SetConnections(baseConnections, baseInitValues);
-    }
     public new void SetConnection(int id, iCS_Connection connection) {
         if(id < myParameters.Length) base.SetConnection(id, connection);
     }

@@ -87,4 +87,32 @@ public partial class iCS_IStorage {
     public bool ForEachChildPort(iCS_EditorObject node, Func<iCS_EditorObject,bool> fnc) {
         return ForEachChild(node, child=> child.IsPort ? fnc(child) : false);
     }
+    // ----------------------------------------------------------------------
+	public void ForEachChildDataPort(iCS_EditorObject node, Action<iCS_EditorObject> action) {
+		ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsDataPort, action));
+	}
+
+	// ======================================================================
+	// High-order functions
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject[] GetSortedChildDataPorts(iCS_EditorObject node) {
+		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
+		// Get all child data ports.
+		ForEachChildDataPort(node, child=> ports.Add(child));
+		// Sort child ports according to index.
+		iCS_EditorObject[] result= ports.ToArray();
+		int i= 0;
+		for(int retry= 0; i < result.Length && retry < result.Length;) {
+			int portIndex= result[i].PortIndex;
+			if(portIndex == i) { ++i; continue; }
+			if(++retry > result.Length) break;
+			iCS_EditorObject tmp= result[portIndex];
+			result[portIndex]= result[i];
+			result[i]= tmp;
+		}
+		if(i < result.Length) {
+			Debug.LogError("iCanScript: index corruption in ports for node: "+node.Name);
+		}
+		return result;
+	}
 }

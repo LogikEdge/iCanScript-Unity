@@ -7,30 +7,35 @@ public class iCS_EditorObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public iCS_ObjectTypeEnum   ObjectType    = iCS_ObjectTypeEnum.Unknown;
-    public int                  InstanceId    = -1;
-    public int                  ParentId      = -1;
-    public string               QualifiedType = "";
-    public string               RuntimeArchive= null;
+    public iCS_ObjectTypeEnum    ObjectType    = iCS_ObjectTypeEnum.Unknown;
+    public int                   InstanceId    = -1;
+    public int                   ParentId      = -1;
+    public string                QualifiedType = "";
+    public string                RawName       = "";
+    public Rect                  LocalPosition = new Rect(0,0,0,0);
     public iCS_DisplayOptionEnum DisplayOption = iCS_DisplayOptionEnum.Normal;
-    public string               IconGUID      = null;
-    public string               RawName       = "";
-    public bool                 IsNameEditable= true;
-    public string               RawToolTip    = null;
-    public bool                 IsDirty       = false;
-    public Rect                 LocalPosition = new Rect(0,0,0,0);
+    public bool                  IsNameEditable= true;
+
+	// Node specific attributes ---------------------------------------------
+	public string				 MethodName= null;
+	public int					 NbOfParams= 0;
+    public string                IconGUID  = null;
+    public string                RawToolTip= null;
+	public bool					 HasVoidReturn= false;
 
     // Port specific attributes ---------------------------------------------
     public enum EdgeEnum { None, Top, Bottom, Right, Left };
-    public EdgeEnum     Edge     = EdgeEnum.None;
-    public int          Source   = -1;
-    public int          PortIndex= -1;
+    public EdgeEnum              Edge               = EdgeEnum.None;
+    public int                   Source             = -1;
+    public int                   PortIndex          = -1;
+	public string				 InitialValueArchive= null;
 
     // State specific attributes ---------------------------------------------
-    public bool     IsRawEntryState= false;
+    public bool                  IsRawEntryState= false;
     
     // Non-persistant properties --------------------------------------------
     [System.NonSerialized] public bool IsFloating= false;
+    [System.NonSerialized] public bool IsDirty   = false;
 
     // ======================================================================
     // Initialization
@@ -51,32 +56,44 @@ public class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent, Rect localPosition) {
         iCS_EditorObject instance= new iCS_EditorObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localPosition);
-        instance.RuntimeArchive= toClone.RuntimeArchive;
+		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
-        instance.IconGUID= toClone.IconGUID;
         instance.IsNameEditable= toClone.IsNameEditable;
+		// Node
+		instance.MethodName= toClone.MethodName;
+		instance.NbOfParams= toClone.NbOfParams;
+        instance.IconGUID= toClone.IconGUID;
         instance.RawToolTip= toClone.RawToolTip;
+		// Port
         instance.Edge= toClone.Edge;
         instance.PortIndex= toClone.PortIndex;
         return instance;
     }
     // ----------------------------------------------------------------------
     public void Reset() {
+		// Common
         ObjectType= iCS_ObjectTypeEnum.Unknown;
         InstanceId= -1;
         ParentId= -1;
         QualifiedType= "";
-        RuntimeArchive= null;
-        DisplayOption= iCS_DisplayOptionEnum.Normal;
-        IconGUID= null;
-        Name= "";
-        IsDirty= false;
+		RawName= "";
         LocalPosition= new Rect(0,0,0,0);
+        DisplayOption= iCS_DisplayOptionEnum.Normal;
+        IsNameEditable= true;
+		// Node
+		MethodName= null;
+		NbOfParams= 0;
+        IconGUID= null;
+        RawToolTip = null;
+		// Port
         Edge= EdgeEnum.None;
         Source= -1;
+		PortIndex= -1;
+		// State
+		IsRawEntryState= false;
+		// Transient
         IsFloating= false;
-        IsNameEditable= true;
-        ToolTip = null;
+        IsDirty= false;
     }
     
     // ----------------------------------------------------------------------

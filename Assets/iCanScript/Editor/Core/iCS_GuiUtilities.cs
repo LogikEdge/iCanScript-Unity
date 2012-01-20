@@ -34,8 +34,6 @@ public static class iCS_GuiUtilities {
         int portId= port.PortIndex;
         iCS_EditorObject sourcePort= storage.GetSource(port);
         bool hasSource= sourcePort != null;
-        // Extract parent node information.
-        iCS_RuntimeDesc desc= new iCS_RuntimeDesc(parent.RuntimeArchive);    
         // Get runtime object if it exists.
         iCS_FunctionBase runtimeObject= storage.GetRuntimeObject(parent) as iCS_FunctionBase;
         // Determine if we are allowed to modify port value.
@@ -43,8 +41,7 @@ public static class iCS_GuiUtilities {
         // Nothing to display if we don't have a runtime object and we are in readonly.
         if(isReadOnly && runtimeObject == null) return;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
-        object portValue= runtimeObject != null ? runtimeObject[portId] :
-                                                  (isReadOnly ? null : storage.GetDefaultValue(desc, portId));            
+		object portValue= storage.GetPortValue(port);
         // Determine section name (used for foldout parent).
         string foldoutName= (port.IsInputPort ? "in" : "out")+"."+parent.Name;
         // Display primitives.
@@ -52,8 +49,8 @@ public static class iCS_GuiUtilities {
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
         if(!isReadOnly && isDirty) {
             if(runtimeObject != null) runtimeObject[portId]= newPortValue;
-            storage.SetDefaultValue(desc, portId, newPortValue);
-            parent.RuntimeArchive= desc.Encode();
+			storage.SetInitialPortValue(port, newPortValue);
+			storage.SetPortValue(port, newPortValue);
             storage.SetDirty(parent);
         }
     }

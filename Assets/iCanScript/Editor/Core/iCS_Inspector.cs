@@ -120,11 +120,6 @@ public class iCS_Inspector : Editor {
                     name= EditorGUILayout.TextField("Name", name);
                     if(name != EmptyStr && name != SelectedObject.RawName) {
                         SelectedObject.Name= name;
-                        if(SelectedObject.IsNode) {
-                            iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(SelectedObject.RuntimeArchive);
-                            rtDesc.DisplayName= name;
-                            SelectedObject.RuntimeArchive= rtDesc.Encode();
-                        }
                         if(SelectedObject.IsStatePort) {
                             if(SelectedObject.IsOutStatePort) Storage.FindAConnectedPort(SelectedObject).Name= name;
                             else Storage.GetSource(SelectedObject).Name= name;                            

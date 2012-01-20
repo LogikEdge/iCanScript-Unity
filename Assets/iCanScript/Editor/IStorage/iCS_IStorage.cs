@@ -42,22 +42,10 @@ public partial class iCS_IStorage {
             ForEach(obj=> {
 		        // Initialize display position.
                 TreeCache[obj.InstanceId].DisplayPosition= new Rect(graphCenter.x,graphCenter.y,0,0);
-//				// Initialize initial port values.
-//				if(obj.IsDataNode) {
-//					iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(obj.RuntimeArchive);
-//					for(int i= 0; i < rtDesc.PortDefaultValues.Length; ++i) {
-//						object initalValue= rtDesc.PortDefaultValues[i];
-//						if(initalValue != null) {
-//							ForEachChild(obj,
-//								child=> { 
-//									if(child.IsInDataPort && child.Source == -1) {
-//										TreeCache[child.InstanceId].InitialValue= initalValue;
-//									}
-//								}
-//							);
-//						}
-//					}
-//				}
+				// Initialize initial port values.
+				if(obj.IsInDataPort) {
+					LoadInitialPortValueFromArchive(obj);
+				}
             });            
         }
     }
@@ -262,15 +250,14 @@ public partial class iCS_IStorage {
         );
     }
     void RemoveReferenceInitialValues(iCS_EditorObject obj) {
-		if(!obj.IsNode || obj.RuntimeArchive == null || obj.RuntimeArchive == "") return;
-		iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc(obj.RuntimeArchive);
-		for(int i= 0; i < rtDesc.PortTypes.Length; ++i) {
-			Type type= rtDesc.PortTypes[i];
-			if(type != null && iCS_Types.IsA<UnityEngine.Object>(type)) {
-				rtDesc.PortDefaultValues[i]= null;
+		if(!obj.IsNode) return;
+		ForEachChildPort(obj,
+			child=> {
+				if(child.IsDataPort && iCS_Types.IsA<UnityEngine.Object>(child.RuntimeType)) {
+					SetInitialPortValue(child, null);
+				}
 			}
-		}
-		obj.RuntimeArchive= rtDesc.Encode();
+		);
 	}
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateBehaviour() {
@@ -294,13 +281,6 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_Module), parentId, objectType, localPos);
         this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);
-        iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc();
-        rtDesc.ObjectType= iCS_ObjectTypeEnum.Module;
-        rtDesc.Company= iCS_EditorStrings.Company;
-        rtDesc.Package= iCS_EditorStrings.DefaultPackage;
-        rtDesc.DisplayName= name;
-        rtDesc.ClassType= typeof(iCS_Module);
-        this[id].RuntimeArchive= rtDesc.Encode();
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
@@ -313,14 +293,6 @@ public partial class iCS_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos);
-        // Create runtime descriptor.
-        iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc();
-        rtDesc.ObjectType= iCS_ObjectTypeEnum.StateChart;
-        rtDesc.Company= iCS_EditorStrings.Company;
-        rtDesc.Package= iCS_EditorStrings.DefaultPackage;
-        rtDesc.DisplayName= name;
-        rtDesc.ClassType= typeof(iCS_StateChart);
-        this[id].RuntimeArchive= rtDesc.Encode();
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
@@ -338,22 +310,19 @@ public partial class iCS_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos);
-        // Create runtime descriptor.
-        iCS_RuntimeDesc rtDesc= new iCS_RuntimeDesc();
-        rtDesc.ObjectType= iCS_ObjectTypeEnum.State;
-        rtDesc.Company= iCS_EditorStrings.Company;
-        rtDesc.Package= iCS_EditorStrings.DefaultPackage;
-        rtDesc.DisplayName= name;
-        rtDesc.ClassType= typeof(iCS_State);
-        this[id].RuntimeArchive= rtDesc.Encode();
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateMethod(int parentId, Vector2 initialPos, iCS_ReflectionDesc desc) {
-        return desc.ObjectType == iCS_ObjectTypeEnum.InstanceMethod ?
-                    CreateInstanceMethod(parentId, initialPos, desc) : 
-                    CreateStaticMethod(parentId, initialPos, desc);
+        iCS_EditorObject instance= desc.ObjectType == iCS_ObjectTypeEnum.InstanceMethod ?
+                    				CreateInstanceMethod(parentId, initialPos, desc) : 
+                    				CreateStaticMethod(parentId, initialPos, desc);
+
+		instance.MethodName= desc.RuntimeDesc.MethodName;
+		Type returnType= desc.ReturnType;
+		instance.HasVoidReturn= returnType == null || returnType == typeof(void);
+		return instance;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateStaticMethod(int parentId, Vector2 initialPos, iCS_ReflectionDesc desc) {
@@ -364,7 +333,6 @@ public partial class iCS_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
-        this[id].RuntimeArchive= desc.Encode();
         this[id].IconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
             this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
@@ -376,7 +344,8 @@ public partial class iCS_IStorage {
             if(rtDesc.PortTypes[i] != typeof(void)) {
                 iCS_ObjectTypeEnum portType= rtDesc.PortIsOuts[i] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
                 iCS_EditorObject port= CreatePort(rtDesc.PortNames[i], id, rtDesc.PortTypes[i], portType);
-                port.PortIndex= i;                
+                port.PortIndex= i;
+                SetInitialPortValue(port, rtDesc.PortDefaultValues[i]);
             }
         }
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
@@ -391,7 +360,6 @@ public partial class iCS_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
-        this[id].RuntimeArchive= desc.Encode();
         this[id].IconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
             this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
@@ -404,6 +372,7 @@ public partial class iCS_IStorage {
                 iCS_ObjectTypeEnum portType= rtDesc.PortIsOuts[portIdx] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
                 iCS_EditorObject port= CreatePort(rtDesc.PortNames[portIdx], id, rtDesc.PortTypes[portIdx], portType);
                 port.PortIndex= portIdx;                
+                SetInitialPortValue(port, rtDesc.PortDefaultValues[portIdx]);
             }
         }
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);

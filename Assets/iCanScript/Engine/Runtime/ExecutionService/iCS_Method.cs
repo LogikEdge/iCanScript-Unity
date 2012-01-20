@@ -41,15 +41,6 @@ public class iCS_Method : iCS_Function {
         myThisConnection= iCS_Connection.NoConnection;
         base.Init(baseIsOuts);        
     }
-    public new void SetConnections(iCS_Connection[] connections, object[] initValues) {
-        myThisConnection= connections[connections.Length-2];
-        iCS_Connection[] baseConnections= new iCS_Connection[connections.Length-2];
-        Array.Copy(connections, baseConnections, baseConnections.Length);
-        myThis= initValues[initValues.Length-2];
-        object[] baseValues= new object[initValues.Length-2];
-        Array.Copy(initValues, baseValues, baseValues.Length);        
-        base.SetConnections(baseConnections, baseValues);
-    }
     public new void SetConnection(int id, iCS_Connection connection) {
         if(id == myParameters.Length+1) myThisConnection= connection;
         else base.SetConnection(id, connection);

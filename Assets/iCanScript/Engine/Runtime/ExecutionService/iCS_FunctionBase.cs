@@ -66,10 +66,6 @@ public class iCS_FunctionBase : iCS_Action {
         myConnections= new iCS_Connection[paramIsOuts.Length];
         for(int i= 0; i < myConnections.Length; ++i) myConnections[i]= iCS_Connection.NoConnection;
     }
-    public void SetConnections(iCS_Connection[] connections, object[] initValues) {
-        myConnections= connections;
-        myParameters= initValues;
-    }
     public void SetConnection(int id, iCS_Connection connection) {
         myConnections[id]= connection;
     }
