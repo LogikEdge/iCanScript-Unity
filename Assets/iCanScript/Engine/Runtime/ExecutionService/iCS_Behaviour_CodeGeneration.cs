@@ -377,6 +377,7 @@ public sealed partial class iCS_Behaviour : iCS_Storage {
 	}
     // ----------------------------------------------------------------------
 	object GetInitialValue(iCS_EditorObject port) {
+	    if(port.InitialValueArchive == null || port.InitialValueArchive == "") return null;
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
 		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
 	}
