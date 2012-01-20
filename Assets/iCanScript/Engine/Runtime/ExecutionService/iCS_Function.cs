@@ -27,17 +27,8 @@ public class iCS_Function : iCS_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Function(string name, MethodBase methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, layout) {
+    public iCS_Function(string name, MethodBase methodInfo, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
         myMethodInfo= methodInfo;
-        Init(portIsOuts);
-    }
-    public iCS_Function(string name, MethodBase methodInfo, Vector2 layout) : base(name, layout) {
-        myMethodInfo= methodInfo;
-    }
-    protected new void Init(bool[] portIsOuts) {
-        bool[] paramIsOuts= new bool[portIsOuts.Length-1];
-        Array.Copy(portIsOuts, paramIsOuts, paramIsOuts.Length);
-        base.Init(paramIsOuts);
     }
     public new void SetConnection(int id, iCS_Connection connection) {
         if(id < myParameters.Length) base.SetConnection(id, connection);

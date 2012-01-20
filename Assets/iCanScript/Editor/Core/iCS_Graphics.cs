@@ -481,7 +481,7 @@ public class iCS_Graphics {
             GenerateNodeStyle(ref constructorStyle, storage.Preferences.NodeColors.ConstructorColor);
             return constructorStyle;
         }
-        if(node.IsStaticMethod || node.IsConversion || node.IsInstanceMethod) {
+        if(node.IsStaticMethod || node.IsConversion || node.IsInstanceMethod || node.IsInstanceField || node.IsStaticField) {
             GenerateNodeStyle(ref functionStyle, storage.Preferences.NodeColors.FunctionColor);
             return functionStyle;
         }

@@ -351,81 +351,19 @@ public sealed partial class iCS_Behaviour : iCS_Storage {
 	}
 	bool[] GetPortIsOuts(iCS_EditorObject node) {
 		iCS_EditorObject[] ports= GetChildPorts(node);
-		bool[] isOuts= new bool[ports.Length];
+		bool[] isOuts= new bool[node.NbOfParams];
 		for(int i= 0; i < isOuts.Length; ++i) {
 			isOuts[i]= ports[i].IsOutputPort;
-		}
-        switch(node.ObjectType) {
-            case iCS_ObjectTypeEnum.InstanceMethod: {
-				if(node.HasVoidReturn) {
-					int len= isOuts.Length+1;
-					bool[] tmp= new bool[len];
-	                Array.Copy(isOuts, tmp, len-1);
-					isOuts= tmp;
-					isOuts[len-1]= isOuts[len-2];
-					isOuts[len-2]= isOuts[len-3];
-					isOuts[len-3]= true;
-				}
-                break;
-            }
-            case iCS_ObjectTypeEnum.StaticMethod: {
-				if(node.HasVoidReturn) {
-					bool[] tmp= new bool[isOuts.Length+1];
-	                Array.Copy(isOuts, tmp, isOuts.Length);
-					isOuts= tmp;
-					isOuts[isOuts.Length-1]= true;
-				}
-                break;
-            }
-            case iCS_ObjectTypeEnum.Module:
-            case iCS_ObjectTypeEnum.Conversion:
-            case iCS_ObjectTypeEnum.Constructor:
-            default: {
-                break;
-            }
 		}
 		return isOuts;
 	}
 	Type[] GetParamTypes(iCS_EditorObject node) {
-        Type[] result= null;
-		Type[] portTypes= GetPortTypes(node);
-        switch(node.ObjectType) {
-            case iCS_ObjectTypeEnum.Module: {
-                result= portTypes;
-                break;
-            }
-            case iCS_ObjectTypeEnum.InstanceMethod: {
-				int paramLen= node.HasVoidReturn ? portTypes.Length-2 : portTypes.Length-3;
-                result= new Type[paramLen];
-                Array.Copy(portTypes, result, result.Length);
-                break;
-            }
-            case iCS_ObjectTypeEnum.Conversion:
-            case iCS_ObjectTypeEnum.Constructor: {
-                result= new Type[portTypes.Length-1];
-                Array.Copy(portTypes, result, result.Length);
-				break;
-			}
-            case iCS_ObjectTypeEnum.StaticMethod: {
-				int paramLen= node.HasVoidReturn ? portTypes.Length : portTypes.Length-1;
-                result= new Type[paramLen];
-                Array.Copy(portTypes, result, result.Length);
-                break;
-            }
-            default: {
-                result= new Type[0]; 
-                break;
-            }
-        }
-        return result;		
-	}
-	Type[] GetPortTypes(iCS_EditorObject node) {
 		iCS_EditorObject[] ports= GetChildPorts(node);
-		Type[] portTypes= new Type[ports.Length];
-		for(int i= 0; i < portTypes.Length; ++i) {
-			portTypes[i]= ports[i].RuntimeType;
+		Type[] result= new Type[node.NbOfParams];
+		for(int i= 0; i < result.Length; ++i) {
+			result[i]= ports[i].RuntimeType;
 		}
-		return portTypes;		
+		return result;
 	}
 	iCS_EditorObject[] GetChildPorts(iCS_EditorObject node) {
 		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
@@ -434,22 +372,12 @@ public sealed partial class iCS_Behaviour : iCS_Storage {
 		foreach(var port in EditorObjects) {
 			if(port.ParentId != nodeId) continue;
 			if(!port.IsDataPort) continue;
+			if(port.IsEnablePort) continue;
 			ports.Add(port);
 		}
 		// Sort child ports according to index.
 		iCS_EditorObject[] result= ports.ToArray();
-		int i= 0;
-		for(int retry= 0; i < result.Length && retry < result.Length;) {
-			int portIndex= result[i].PortIndex;
-			if(portIndex == i) { ++i; continue; }
-			if(++retry > result.Length) break;
-			iCS_EditorObject tmp= result[portIndex];
-			result[portIndex]= result[i];
-			result[i]= tmp;
-		}
-		if(i < result.Length) {
-			Debug.LogError("iCanScript: Cannot generate port information for node: "+node.Name);
-		}
+		Array.Sort(result, (x,y)=> x.PortIndex - y.PortIndex);
 		return result;
 	}
 

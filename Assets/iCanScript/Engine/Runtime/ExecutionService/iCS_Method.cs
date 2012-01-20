@@ -32,14 +32,8 @@ public class iCS_Method : iCS_Function {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Method(string name, MethodBase methodInfo, bool[] portIsOuts, Vector2 layout) : base(name, methodInfo, layout) {
-        Init(portIsOuts);
-    }
-    protected new void Init(bool[] portIsOuts) {
-        bool[] baseIsOuts= new bool[portIsOuts.Length-2];
-        Array.Copy(portIsOuts, baseIsOuts, baseIsOuts.Length);
+    public iCS_Method(string name, MethodBase methodInfo, bool[] paramIsOuts, Vector2 layout) : base(name, methodInfo, paramIsOuts, layout) {
         myThisConnection= iCS_Connection.NoConnection;
-        base.Init(baseIsOuts);        
     }
     public new void SetConnection(int id, iCS_Connection connection) {
         if(id == myParameters.Length+1) myThisConnection= connection;

@@ -319,9 +319,10 @@ public partial class iCS_IStorage {
                     				CreateInstanceMethod(parentId, initialPos, desc) : 
                     				CreateStaticMethod(parentId, initialPos, desc);
 
-		instance.MethodName= desc.RuntimeDesc.MethodName;
-		Type returnType= desc.ReturnType;
-		instance.HasVoidReturn= returnType == null || returnType == typeof(void);
+		Debug.Log("Create method: ParamLength: "+desc.ParamNames.Length);
+		
+		instance.MethodName= desc.MethodName;
+		instance.NbOfParams= desc.ParamTypes != null ? desc.ParamTypes.Length : 0;
 		return instance;
     }
     // ----------------------------------------------------------------------
@@ -337,17 +338,28 @@ public partial class iCS_IStorage {
         if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
             this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
         }
-        
-        // Create input/output ports.
-        iCS_RuntimeDesc  rtDesc= desc.RuntimeDesc;
-        for(int i= 0; i < rtDesc.PortNames.Length; ++i) {
-            if(rtDesc.PortTypes[i] != typeof(void)) {
-                iCS_ObjectTypeEnum portType= rtDesc.PortIsOuts[i] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
-                iCS_EditorObject port= CreatePort(rtDesc.PortNames[i], id, rtDesc.PortTypes[i], portType);
-                port.PortIndex= i;
-                SetInitialPortValue(port, rtDesc.PortDefaultValues[i]);
+        // Create parameter ports.
+		int portIdx= 0;
+		iCS_EditorObject port= null;
+        for(; portIdx < desc.ParamNames.Length; ++portIdx) {
+            if(desc.ParamTypes[portIdx] != typeof(void)) {
+                iCS_ObjectTypeEnum portType= desc.ParamIsOuts[portIdx] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
+                port= CreatePort(desc.ParamNames[portIdx], id, desc.ParamTypes[portIdx], portType);
+                port.PortIndex= portIdx;
+                SetInitialPortValue(port, desc.ParamInitialValues[portIdx]);
             }
         }
+		// Create return port.
+		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
+            port.PortIndex= portIdx++;			
+		}
+		// Create 'this' ports for constructors.
+		if(desc.ObjectType == iCS_ObjectTypeEnum.Constructor) {
+			port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.OutFunctionPort);
+	        port.PortIndex= portIdx;						
+		}
+        
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }
@@ -363,18 +375,29 @@ public partial class iCS_IStorage {
         this[id].IconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
         if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
             this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
-        }
-        
-        // Create input/output ports.
-        iCS_RuntimeDesc  rtDesc= desc.RuntimeDesc;
-        for(int portIdx= 0; portIdx < rtDesc.PortNames.Length; ++portIdx) {
-            if(rtDesc.PortTypes[portIdx] != typeof(void)) {
-                iCS_ObjectTypeEnum portType= rtDesc.PortIsOuts[portIdx] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
-                iCS_EditorObject port= CreatePort(rtDesc.PortNames[portIdx], id, rtDesc.PortTypes[portIdx], portType);
+        }        
+        // Create parameter ports.
+		int portIdx= 0;
+		iCS_EditorObject port= null;
+        for(; portIdx < desc.ParamNames.Length; ++portIdx) {
+            if(desc.ParamTypes[portIdx] != typeof(void)) {
+                iCS_ObjectTypeEnum portType= desc.ParamIsOuts[portIdx] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
+                port= CreatePort(desc.ParamNames[portIdx], id, desc.ParamTypes[portIdx], portType);
                 port.PortIndex= portIdx;                
-                SetInitialPortValue(port, rtDesc.PortDefaultValues[portIdx]);
+                SetInitialPortValue(port, desc.ParamInitialValues[portIdx]);
             }
         }
+		// Create return port.
+		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
+            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
+            port.PortIndex= portIdx++;			
+		}
+		// Create 'this' ports.
+        port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.InFunctionPort);
+        port.PortIndex= portIdx++;			
+        port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.OutFunctionPort);
+        port.PortIndex= portIdx;			
+
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
     }

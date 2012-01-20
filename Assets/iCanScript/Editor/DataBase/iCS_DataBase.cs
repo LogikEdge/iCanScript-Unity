@@ -113,7 +113,7 @@ public class iCS_DataBase {
             if(desc.ParamNames.Length != 0) signature+=", ";
         }
         for(int i= 0; i < desc.ParamNames.Length; ++i) {
-            signature+= TypeName(desc.RuntimeDesc.ParamTypes[i])+" "+desc.ParamNames[i];
+            signature+= TypeName(desc.ParamTypes[i])+" "+desc.ParamNames[i];
             if(i != desc.ParamNames.Length-1) signature+=", ";
         }
         return signature+")";
@@ -184,9 +184,8 @@ public class iCS_DataBase {
     public static iCS_ReflectionDesc FindConversion(Type fromType, Type toType) {
         foreach(var desc in Functions) {
             if(IsConversion(desc)) {
-                iCS_RuntimeDesc conv= desc.RuntimeDesc;
-                if(iCS_Types.CanBeConnectedWithoutConversion(fromType, conv.ParamTypes[0]) &&
-                   iCS_Types.CanBeConnectedWithoutConversion(conv.ReturnType, toType)) return desc;
+                if(iCS_Types.CanBeConnectedWithoutConversion(fromType, desc.ParamTypes[0]) &&
+                   iCS_Types.CanBeConnectedWithoutConversion(desc.ReturnType, toType)) return desc;
             }
         }
         return null;
@@ -194,7 +193,7 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     // Returns true if the given desc is a conversion function.
     public static bool IsConversion(iCS_ReflectionDesc desc) {
-        return desc.RuntimeDesc.ObjectType == iCS_ObjectTypeEnum.Conversion;
+        return desc.ObjectType == iCS_ObjectTypeEnum.Conversion;
     }
     
     // ======================================================================
@@ -258,9 +257,8 @@ public class iCS_DataBase {
         // Don't accept automatic conversion if it already exist.
         foreach(var desc in Functions) {
             if(IsConversion(desc)) {
-                iCS_RuntimeDesc conv= desc.RuntimeDesc;
-                if(conv.ParamTypes[0] == fromType && conv.ReturnType == toType) {
-                    Debug.LogWarning("Duplicate conversion function from "+fromType+" to "+toType+" exists in classes "+conv.Method.DeclaringType+" and "+methodInfo.DeclaringType);
+                if(desc.ParamTypes[0] == fromType && desc.ReturnType == toType) {
+                    Debug.LogWarning("Duplicate conversion function from "+fromType+" to "+toType+" exists in classes "+desc.Method.DeclaringType+" and "+methodInfo.DeclaringType);
                     return;
                 }                
             }

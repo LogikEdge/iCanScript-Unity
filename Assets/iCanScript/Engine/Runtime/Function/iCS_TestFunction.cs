@@ -24,4 +24,16 @@ public class iCS_TestGenericFunction {
     [iCS_Function] public static int TypeNameLen(Type t) { return t.Name.Length; }
 
 	[iCS_Function] public void ArrayTest(UnityEngine.Object[] uo, Type[] types) { }
+
+	public bool IsValid {
+		[iCS_Function] get { return true; }
+		[iCS_Function] set { }
+	}
+	public static bool StaticIsValid {
+		[iCS_Function] get { return true; }
+		[iCS_Function] set { }
+	}
+	[iCS_InPort] public bool myInPort= false;
+	[iCS_OutPort] public bool myOutPort= false;
+	[iCS_InOutPort] public bool myInOutPort= true;
 }

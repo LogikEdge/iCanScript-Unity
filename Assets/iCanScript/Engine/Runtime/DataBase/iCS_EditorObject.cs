@@ -21,7 +21,6 @@ public class iCS_EditorObject {
 	public int					 NbOfParams= 0;
     public string                IconGUID  = null;
     public string                RawToolTip= null;
-	public bool					 HasVoidReturn= false;
 
     // Port specific attributes ---------------------------------------------
     public enum EdgeEnum { None, Top, Bottom, Right, Left };
@@ -121,6 +120,8 @@ public class iCS_EditorObject {
     public bool IsConstructor           { get { return WD.IsConstructor(this); }}
     public bool IsStaticMethod          { get { return WD.IsStaticMethod(this); }}
     public bool IsInstanceMethod        { get { return WD.IsInstanceMethod(this); }}
+    public bool IsStaticField           { get { return WD.IsStaticField(this); }}
+    public bool IsInstanceField         { get { return WD.IsInstanceField(this); }}
     public bool IsConversion            { get { return WD.IsConversion(this); }}
     public bool IsPort                  { get { return WD.IsPort(this); }}
     public bool IsDataPort              { get { return WD.IsDataPort(this); }}
