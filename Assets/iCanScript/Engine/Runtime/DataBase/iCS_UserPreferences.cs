@@ -5,6 +5,13 @@ using System.Collections;
 [System.Serializable]
 public class iCS_UserPreferences {
     [System.Serializable]
+    public class UserDisplayOptions {
+        public bool     EditorPortValues= true;
+        public bool     PlayingPortValues= true;
+    }
+    public UserDisplayOptions DisplayOptions= new UserDisplayOptions();
+
+    [System.Serializable]
     public class UserBackgroundGrid {
         public Color    BackgroundColor= new Color(0.169f,0.188f,0.243f,1.0f);
         public Color    GridColor= new Color(0.25f,0.25f,0.25f,1.0f);
@@ -97,9 +104,4 @@ public class iCS_UserPreferences {
     }
     public UserAnimation    Animation= new UserAnimation();
 
-//    [System.Serializable]
-//    public class UserDebugSupport {
-//        public bool     ShowUnsupportedFeatureWarnings= false;
-//    }
-//    public UserDebugSupport DebugSupport= new UserDebugSupport();
 }

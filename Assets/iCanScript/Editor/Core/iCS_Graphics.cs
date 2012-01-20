@@ -518,11 +518,11 @@ public class iCS_Graphics {
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
 		object portValue= null;
         if(port.IsDataPort) {
-    		if(Application.isPlaying) portValue= storage.GetPortValue(port);
+    		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
 			if(!port.IsEnablePort) portCenter.y-= 2;
 			if(port.IsInputPort && storage.GetSource(port) == null) {
-				if(!Application.isPlaying) portValue= storage.GetPortValue(port);
+				if(!Application.isPlaying && storage.Preferences.DisplayOptions.EditorPortValues) portValue= storage.GetPortValue(port);
 				if(portValue != null) {
 	            	DrawSquarePort(portCenter, portColor, nodeColor);
 				} else {
