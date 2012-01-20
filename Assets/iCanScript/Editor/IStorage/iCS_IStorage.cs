@@ -56,10 +56,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>    EditorObjects { get { return Storage.EditorObjects; }}
     public iCS_UserPreferences       Preferences   { get { return Storage.Preferences; }}
-    public List<UnityEngine.Object>  UnityObjects  { get { return Storage.UnityObjects; }}
     // ----------------------------------------------------------------------
-    public bool IsValid(int id)                     { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
-    public bool IsInvalid(int id)                   { return !IsValid(id); }
+    public bool IsValid(int id)                      { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
+    public bool IsInvalid(int id)                    { return !IsValid(id); }
     public bool IsValid(iCS_EditorObject obj)        { return obj != null && IsValid(obj.InstanceId); }
     public bool IsSourceValid(iCS_EditorObject obj)  { return IsValid(obj.Source); }
     public bool IsParentValid(iCS_EditorObject obj)  { return IsValid(obj.ParentId); }

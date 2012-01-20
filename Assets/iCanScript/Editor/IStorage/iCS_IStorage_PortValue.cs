@@ -22,7 +22,7 @@ public partial class iCS_IStorage {
 		// Special case for UnityObjects.
         if(iCS_Types.IsA<UnityEngine.Object>(port.RuntimeType)) {
             if(portValue == null) return null;
-            return UnityObjects[(int)portValue];
+            return GetUnityObject((int)portValue);
         }
 		return portValue;
 	}
@@ -38,8 +38,7 @@ public partial class iCS_IStorage {
             } else {
 	            int id= (int)idObj;
 	            if(IsValidUnityObject(id)) {
-	                SetUnityObject(id, value as UnityEngine.Object);
-					value= idObj;
+	                value= SetUnityObject(id, value as UnityEngine.Object);
 	            } else {
 	                value= AddUnityObject(value as UnityEngine.Object);
 	            }

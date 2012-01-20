@@ -9,36 +9,78 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+	[System.Serializable]
+	public class UnityObjectRef {
+		public int     	LinkCnt= 0;
+		public Object	UnityObject= null;
+		
+		public UnityObjectRef(Object obj= null) {
+			LinkCnt= 1;
+			UnityObject= obj;
+		}
+	}
+	
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
                       public iCS_UserPreferences      Preferences  = new iCS_UserPreferences();
     [HideInInspector] public List<iCS_EditorObject>   EditorObjects= new List<iCS_EditorObject>();
-    [HideInInspector] public List<Object>             UnityObjects = new List<Object>();
+    [HideInInspector] public List<UnityObjectRef>     UnityObjects = new List<UnityObjectRef>();
     [HideInInspector] public int                      UndoRedoId   = 0;
 
     // ----------------------------------------------------------------------
     public bool IsValidEditorObject(int id) { return id >= 0 && id < EditorObjects.Count && EditorObjects[id] != null; }
-    public bool IsValidUnityObject(int id)  { return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null; }
+    public bool IsValidUnityObject(int id)  { return id >= 0 && id < UnityObjects.Count && UnityObjects[id].LinkCnt > 0; }
 
     // ======================================================================
     // UnityObject Utilities
     // ----------------------------------------------------------------------
     public int AddUnityObject(Object obj) {
+		// Search for an existing entry.
         int id= 0;
-        for(; id < UnityObjects.Count; ++id) {
-            if(UnityObjects[id] == null) {
-                UnityObjects[id]= obj;
-                return id;
-            }
-        }
-        UnityObjects.Add(obj);
+		int availableSlot= -1;
+		for(id= 0; id < UnityObjects.Count; ++id) {
+			if(UnityObjects[id].LinkCnt > 0 && UnityObjects[id].UnityObject == obj) {
+				++(UnityObjects[id].LinkCnt);
+				return id;
+			}
+			if(UnityObjects[id].LinkCnt == 0) {
+				availableSlot= id;
+			}
+		}
+		if(availableSlot != -1) {
+			UnityObjects[availableSlot].LinkCnt= 1;
+			UnityObjects[availableSlot].UnityObject= obj;
+			return availableSlot;
+		}
+        UnityObjects.Add(new UnityObjectRef(obj));
         return id;
     }
     // ----------------------------------------------------------------------
+	public void RemoveUnityObject(Object obj) {
+		for(int id= 0; id < UnityObjects.Count; ++id) {
+			if(UnityObjects[id].UnityObject == obj) {
+				if(UnityObjects[id].LinkCnt > 0) {
+					--(UnityObjects[id].LinkCnt);
+					if(UnityObjects[id].LinkCnt == 0) {
+						UnityObjects[id].UnityObject= null;
+					}					
+				}
+				return;
+			}
+		}		
+	}
+    // ----------------------------------------------------------------------
     public Object GetUnityObject(int id) {
-        return (id < UnityObjects.Count) ? UnityObjects[id] : null;
+        return (id < UnityObjects.Count) ? UnityObjects[id].UnityObject : null;
     }
     // ----------------------------------------------------------------------
-    public void SetUnityObject(int id, Object value) {
-        if(IsValidUnityObject(id)) UnityObjects[id]= value;
+    public int SetUnityObject(int id, Object value) {
+		int newId= AddUnityObject(value);
+        if(IsValidUnityObject(id)) {
+			RemoveUnityObject(GetUnityObject(id));
+		}
+		return newId;
     }
 
     // ======================================================================
