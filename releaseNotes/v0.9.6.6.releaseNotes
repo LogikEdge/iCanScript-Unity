@@ -1,3 +1,4 @@
+Generating Release Notes from Head.
 Unity objects are now removed from the save data if they are no longer in use.
 Unity game objects can now be used in arrays and complex structures.  However, they do not get removed when being reassigned.  This has a potential of accumulating unused game objects in the save data of the graph.  To be fixed in subsequent releases.
 Addition of user preferences to show/hide port value in the editor & when playing.  Port values are shown by default.
