@@ -75,14 +75,14 @@ public class iCS_Storage : MonoBehaviour {
     public Object GetUnityObject(int id) {
         return (id < UnityObjects.Count) ? UnityObjects[id].UnityObject : null;
     }
-    // ----------------------------------------------------------------------
-    public int SetUnityObject(int id, Object value) {
-		int newId= AddUnityObject(value);
-        if(IsValidUnityObject(id)) {
-			RemoveUnityObject(GetUnityObject(id));
-		}
-		return newId;
-    }
+//    // ----------------------------------------------------------------------
+//    public int SetUnityObject(int id, Object value) {
+//		int newId= AddUnityObject(value);
+//        if(IsValidUnityObject(id)) {
+//			RemoveUnityObject(GetUnityObject(id));
+//		}
+//		return newId;
+//    }
 
     // ======================================================================
     // EditorObject Utilities
