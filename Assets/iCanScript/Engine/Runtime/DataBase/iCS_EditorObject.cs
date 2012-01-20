@@ -125,8 +125,6 @@ public class iCS_EditorObject {
     public bool IsConversion            { get { return WD.IsConversion(this); }}
     public bool IsPort                  { get { return WD.IsPort(this); }}
     public bool IsDataPort              { get { return WD.IsDataPort(this); }}
-    public bool IsFieldPort             { get { return WD.IsFieldPort(this); }}
-    public bool IsPropertyPort          { get { return WD.IsPropertyPort(this); }}
     public bool IsFunctionPort          { get { return WD.IsFunctionPort(this); }}
     public bool IsModulePort            { get { return WD.IsModulePort(this); }}
     public bool IsDynamicModulePort     { get { return WD.IsDynamicModulePort(this); }}
@@ -136,10 +134,6 @@ public class iCS_EditorObject {
     public bool IsEnablePort            { get { return WD.IsEnablePort(this); }}
     public bool IsOutputPort            { get { return WD.IsOutputPort(this); }}
     public bool IsInputPort             { get { return WD.IsInputPort(this); }}
-    public bool IsInFieldPort           { get { return WD.IsInFieldPort(this); }}
-    public bool IsOutFieldPort          { get { return WD.IsOutFieldPort(this); }}
-    public bool IsInPropertyPort        { get { return WD.IsInPropertyPort(this); }}
-    public bool IsOutPropertyPort       { get { return WD.IsOutPropertyPort(this); }}
     public bool IsInFunctionPort        { get { return WD.IsInFunctionPort(this); }}
     public bool IsOutFunctionPort       { get { return WD.IsOutFunctionPort(this); }}
     public bool IsInModulePort          { get { return WD.IsInModulePort(this); }}

@@ -204,8 +204,6 @@ public sealed partial class iCS_Behaviour : iCS_Storage {
                     }
                     
                     // Data ports.
-                    case iCS_ObjectTypeEnum.OutFieldPort:
-                    case iCS_ObjectTypeEnum.OutPropertyPort:
                     case iCS_ObjectTypeEnum.OutFunctionPort: {
                         object parentObj= myRuntimeNodes[port.ParentId];
                         Prelude.choice<iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
@@ -218,8 +216,6 @@ public sealed partial class iCS_Behaviour : iCS_Storage {
                         );
                         break;
                     }
-                    case iCS_ObjectTypeEnum.InFieldPort:
-                    case iCS_ObjectTypeEnum.InPropertyPort:
                     case iCS_ObjectTypeEnum.InFunctionPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
                         // Build connection.
