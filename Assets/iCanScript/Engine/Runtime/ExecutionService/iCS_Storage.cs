@@ -32,6 +32,7 @@ public class iCS_Storage : MonoBehaviour {
     public bool IsValidEditorObject(int id) { return id >= 0 && id < EditorObjects.Count && EditorObjects[id] != null; }
     public bool IsValidUnityObject(int id)  { return id >= 0 && id < UnityObjects.Count && UnityObjects[id].LinkCnt > 0; }
 
+
     // ======================================================================
     // UnityObject Utilities
     // ----------------------------------------------------------------------

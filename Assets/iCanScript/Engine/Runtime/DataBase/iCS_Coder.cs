@@ -76,7 +76,7 @@ public class iCS_Coder {
     // ======================================================================
     // Encoding
 	// ----------------------------------------------------------------------
-	public void Add(string key, Type type, string valueStr) {
+	void Add(string key, Type type, string valueStr) {
         Prelude.Tuple<string, string> value= new Prelude.Tuple<string, string>(EncodeType(type), valueStr);
 		if(myDictionary.ContainsKey(key)) {
 			myDictionary[key]= value;
@@ -85,12 +85,12 @@ public class iCS_Coder {
 		}
 	}
 	// ----------------------------------------------------------------------
-	public void EncodeObject(string key, object value) {
+	public void EncodeObject(string key, object value, iCS_Storage storage) {
         if(value == null) return;
 		Type valueType= value.GetType();
 		// Special case for arrays.
 		if(valueType.IsArray) {
-            EncodeArrayOfObjects(key, value);
+            EncodeArrayOfObjects(key, value, storage);
             return;
 		}
 		// Special case for enums.
@@ -102,25 +102,26 @@ public class iCS_Coder {
 			return;
         }
 		// Primitives.
-        if(value is Type)    { EncodeType(key, (Type)value); return; }
-		if(value is byte)    { EncodeByte(key, (byte)value); return; }
-		if(value is sbyte)   { EncodeSByte(key, (sbyte)value); return; }
-		if(value is char)    { EncodeChar(key, (char)value); return; }
-		if(value is string)  { EncodeString(key, (string)value); return; }
-		if(value is bool)    { EncodeBool(key, (bool)value); return; }
-		if(value is int)     { EncodeInt(key, (int)value); return; }
-		if(value is uint)    { EncodeUInt(key, (uint)value); return; }
-		if(value is short)   { EncodeShort(key, (short)value); return; }
-		if(value is ushort)  { EncodeUShort(key, (ushort)value); return; }
-		if(value is long)    { EncodeLong(key, (long)value); return; }
-		if(value is ulong)   { EncodeULong(key, (ulong)value); return; }
-		if(value is float)   { EncodeFloat(key, (float)value); return; }
-		if(value is double)  { EncodeDouble(key, (double)value); return; }
-		if(value is decimal) { EncodeDecimal(key, (decimal)value); return; }
-		if(value is Vector2) { EncodeVector2(key, (Vector2)value); return; }
-		if(value is Vector3) { EncodeVector3(key, (Vector3)value); return; }
-		if(value is Vector4) { EncodeVector4(key, (Vector4)value); return; }
-		if(value is Color)   { EncodeColor(key, (Color)value); return; }
+        if(value is Type)               { EncodeType(key, (Type)value); return; }
+		if(value is byte)               { EncodeByte(key, (byte)value); return; }
+		if(value is sbyte)              { EncodeSByte(key, (sbyte)value); return; }
+		if(value is char)               { EncodeChar(key, (char)value); return; }
+		if(value is string)             { EncodeString(key, (string)value); return; }
+		if(value is bool)               { EncodeBool(key, (bool)value); return; }
+		if(value is int)                { EncodeInt(key, (int)value); return; }
+		if(value is uint)               { EncodeUInt(key, (uint)value); return; }
+		if(value is short)              { EncodeShort(key, (short)value); return; }
+		if(value is ushort)             { EncodeUShort(key, (ushort)value); return; }
+		if(value is long)               { EncodeLong(key, (long)value); return; }
+		if(value is ulong)              { EncodeULong(key, (ulong)value); return; }
+		if(value is float)              { EncodeFloat(key, (float)value); return; }
+		if(value is double)             { EncodeDouble(key, (double)value); return; }
+		if(value is decimal)            { EncodeDecimal(key, (decimal)value); return; }
+		if(value is Vector2)            { EncodeVector2(key, (Vector2)value); return; }
+		if(value is Vector3)            { EncodeVector3(key, (Vector3)value); return; }
+		if(value is Vector4)            { EncodeVector4(key, (Vector4)value); return; }
+		if(value is Color)              { EncodeColor(key, (Color)value); return; }
+		if(value is UnityEngine.Object) { EncodeUnityObject(key, value as UnityEngine.Object, storage); return; }
 		// All other types.
 		foreach(var field in valueType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
             bool shouldEncode= true;
@@ -135,13 +136,13 @@ public class iCS_Coder {
                 }                
             }
             if(shouldEncode) {
-    			coder.EncodeObject(field.Name, field.GetValue(value));                                
+    			coder.EncodeObject(field.Name, field.GetValue(value), storage);                                
             }
 		}
 		Add(key, valueType, coder.Archive);
 	}
 	// ----------------------------------------------------------------------
-    void EncodeArrayOfObjects(string key, object value) {
+    void EncodeArrayOfObjects(string key, object value, iCS_Storage storage) {
 		Type valueType= value.GetType();
 		// Special cases.
 		if(valueType == typeof(byte[])) {
@@ -225,7 +226,7 @@ public class iCS_Coder {
 		iCS_Coder coder= new iCS_Coder();
 		coder.EncodeInt("Length", array.Length);
 		for(int i= 0; i < array.Length; ++i) {
-			coder.EncodeObject(i.ToString(), array.GetValue(i));
+			coder.EncodeObject(i.ToString(), array.GetValue(i), storage);
 		}
         Add(key, valueType, coder.Archive);				
     }
@@ -326,7 +327,7 @@ public class iCS_Coder {
 		Add(key, typeof(Type), EncodeType(value));
 	}
 	// ----------------------------------------------------------------------
-    public string EncodeByte(byte value) {
+    string EncodeByte(byte value) {
         return ""+(char)(0x100+value);
     }
 	// ----------------------------------------------------------------------
@@ -334,7 +335,7 @@ public class iCS_Coder {
         Add(key, typeof(byte), EncodeByte(value));
     }
 	// ----------------------------------------------------------------------
-    public string EncodeSByte(sbyte value) {
+    string EncodeSByte(sbyte value) {
         return ""+(char)(0x100+value);
     }
 	// ----------------------------------------------------------------------
@@ -342,7 +343,7 @@ public class iCS_Coder {
         Add(key, typeof(sbyte), EncodeSByte(value));
     }
 	// ----------------------------------------------------------------------
-    public string EncodeChar(char value) {
+    string EncodeChar(char value) {
         return ""+(char)(0x100+value);
     }
 	// ----------------------------------------------------------------------
@@ -350,7 +351,7 @@ public class iCS_Coder {
         Add(key, typeof(char), EncodeChar(value));
     }
 	// ----------------------------------------------------------------------
-    public string EncodeString(string value) {
+    string EncodeString(string value) {
         return value;
     }
 	// ----------------------------------------------------------------------
@@ -469,18 +470,27 @@ public class iCS_Coder {
 	public void EncodeColor(string key, Color value) {
 		Add(key, typeof(Color), EncodeColor(value));
 	}
-
+	// ----------------------------------------------------------------------
+    string EncodeUnityObject(UnityEngine.Object uObj, iCS_Storage storage) {
+        int id= storage.AddUnityObject(uObj);
+        return EncodeInt(id);
+    }
+	// ----------------------------------------------------------------------
+    public void EncodeUnityObject(string key, UnityEngine.Object uObj, iCS_Storage storage) {
+        Add(key, typeof(UnityEngine.Object), EncodeUnityObject(uObj, storage));
+    }
+    
     // ======================================================================
     // Decoding
 	// ----------------------------------------------------------------------
-    public object DecodeObjectForKey(string key) {
+    public object DecodeObjectForKey(string key, iCS_Storage storage) {
         if(!myDictionary.ContainsKey(key)) { return null; }
         Prelude.Tuple<string,string> tuple= myDictionary[key];
         Type valueType= DecodeType(tuple.Item1);
         string valueStr= tuple.Item2;
         // Special case for arrays.
 		if(valueType.IsArray) {
-            return DecodeArrayOfObjects(valueType, valueStr);
+            return DecodeArrayOfObjects(valueType, valueStr, storage);
 		}
 		// Special case for enums.
         iCS_Coder coder= new iCS_Coder();
@@ -490,25 +500,26 @@ public class iCS_Coder {
         }
 		// Primitives.
 		Type elementType= iCS_Types.GetElementType(valueType);
-        if(elementType == typeof(Type))    return DecodeType(valueStr);
-		if(elementType == typeof(byte))    return DecodeByte(valueStr);
-		if(elementType == typeof(sbyte))   return DecodeSByte(valueStr);
-		if(elementType == typeof(char))    return DecodeChar(valueStr);
-		if(elementType == typeof(string))  return DecodeString(valueStr);
-		if(elementType == typeof(bool))    return DecodeBool(valueStr);
-		if(elementType == typeof(int))     return DecodeInt(valueStr);
-		if(elementType == typeof(uint))    return DecodeUInt(valueStr);
-		if(elementType == typeof(short))   return DecodeShort(valueStr);
-		if(elementType == typeof(ushort))  return DecodeUShort(valueStr);
-		if(elementType == typeof(long))    return DecodeLong(valueStr);
-		if(elementType == typeof(ulong))   return DecodeULong(valueStr);
-		if(elementType == typeof(float))   return DecodeFloat(valueStr);
-		if(elementType == typeof(double))  return DecodeDouble(valueStr);
-		if(elementType == typeof(decimal)) return DecodeDecimal(valueStr);
-		if(elementType == typeof(Vector2)) return DecodeVector2(valueStr);
-		if(elementType == typeof(Vector3)) return DecodeVector3(valueStr);
-		if(elementType == typeof(Vector4)) return DecodeVector4(valueStr);
-		if(elementType == typeof(Color))   return DecodeColor(valueStr);
+        if(elementType == typeof(Type))                    return DecodeType(valueStr);
+		if(elementType == typeof(byte))                    return DecodeByte(valueStr);
+		if(elementType == typeof(sbyte))                   return DecodeSByte(valueStr);
+		if(elementType == typeof(char))                    return DecodeChar(valueStr);
+		if(elementType == typeof(string))                  return DecodeString(valueStr);
+		if(elementType == typeof(bool))                    return DecodeBool(valueStr);
+		if(elementType == typeof(int))                     return DecodeInt(valueStr);
+		if(elementType == typeof(uint))                    return DecodeUInt(valueStr);
+		if(elementType == typeof(short))                   return DecodeShort(valueStr);
+		if(elementType == typeof(ushort))                  return DecodeUShort(valueStr);
+		if(elementType == typeof(long))                    return DecodeLong(valueStr);
+		if(elementType == typeof(ulong))                   return DecodeULong(valueStr);
+		if(elementType == typeof(float))                   return DecodeFloat(valueStr);
+		if(elementType == typeof(double))                  return DecodeDouble(valueStr);
+		if(elementType == typeof(decimal))                 return DecodeDecimal(valueStr);
+		if(elementType == typeof(Vector2))                 return DecodeVector2(valueStr);
+		if(elementType == typeof(Vector3))                 return DecodeVector3(valueStr);
+		if(elementType == typeof(Vector4))                 return DecodeVector4(valueStr);
+		if(elementType == typeof(Color))                   return DecodeColor(valueStr);
+		if(iCS_Types.IsA<UnityEngine.Object>(elementType)) return DecodeUnityObject(valueStr, storage);
 		// All other types.
         coder.Archive= valueStr;
         object obj= iCS_Types.CreateInstance(valueType);
@@ -525,13 +536,13 @@ public class iCS_Coder {
                 }                
             }
             if(shouldDecode) {
-    			field.SetValue(obj, coder.DecodeObjectForKey(field.Name));                
+    			field.SetValue(obj, coder.DecodeObjectForKey(field.Name, storage));                
             }
 		}
         return obj;
     }
 	// ----------------------------------------------------------------------
-    object DecodeArrayOfObjects(Type valueType, string valueStr) {
+    object DecodeArrayOfObjects(Type valueType, string valueStr, iCS_Storage storage) {
         Type arrayBaseType= iCS_Types.GetElementType(valueType);
 		// Special cases.
 		if(valueType == typeof(byte[])) {
@@ -597,7 +608,7 @@ public class iCS_Coder {
         int len= coder.DecodeIntForKey("Length");
         Array array= Array.CreateInstance(arrayBaseType, len);
 		for(int i= 0; i < len; ++i) {
-            array.SetValue(coder.DecodeObjectForKey(i.ToString()), i);
+            array.SetValue(coder.DecodeObjectForKey(i.ToString(), storage), i);
 		}
 		return array;						
     }
@@ -631,7 +642,7 @@ public class iCS_Coder {
 		return array;
     }
 	// ----------------------------------------------------------------------
-    Type DecodeTypeForKey(string key) {
+    public Type DecodeTypeForKey(string key) {
         if(!myDictionary.ContainsKey(key)) return typeof(void);
         Prelude.Tuple<string,string> tuple= myDictionary[key];
         Type valueType= DecodeType(tuple.Item1);
@@ -710,7 +721,7 @@ public class iCS_Coder {
 		return Type.GetType(value);
     }
 	// ----------------------------------------------------------------------
-    bool DecodeBoolForKey(string key) {
+    public bool DecodeBoolForKey(string key) {
         return DecodeForKey<bool>(key, DecodeBool);
     }
 	// ----------------------------------------------------------------------
@@ -718,7 +729,7 @@ public class iCS_Coder {
         return value == "T";
     }
 	// ----------------------------------------------------------------------
-    int DecodeIntForKey(string key) {
+    public int DecodeIntForKey(string key) {
         return DecodeForKey<int>(key, DecodeInt);
     }
 	// ----------------------------------------------------------------------
@@ -726,7 +737,7 @@ public class iCS_Coder {
         return (int)Convert.ChangeType(value, typeof(int));
     }
 	// ----------------------------------------------------------------------
-    uint DecodeUIntForKey(string key) {
+    public uint DecodeUIntForKey(string key) {
         return DecodeForKey<uint>(key, DecodeUInt);
     }
 	// ----------------------------------------------------------------------
@@ -734,7 +745,7 @@ public class iCS_Coder {
         return (uint)Convert.ChangeType(value, typeof(uint));
     }
 	// ----------------------------------------------------------------------
-    short DecodeShortForKey(string key) {
+    public short DecodeShortForKey(string key) {
         return DecodeForKey<short>(key, DecodeShort);
     }
 	// ----------------------------------------------------------------------
@@ -742,7 +753,7 @@ public class iCS_Coder {
         return (short)Convert.ChangeType(value, typeof(short));
     }
 	// ----------------------------------------------------------------------
-    ushort DecodeUShortForKey(string key) {
+    public ushort DecodeUShortForKey(string key) {
         return DecodeForKey<ushort>(key, DecodeUShort);
     }
 	// ----------------------------------------------------------------------
@@ -750,7 +761,7 @@ public class iCS_Coder {
         return (ushort)Convert.ChangeType(value, typeof(ushort));
     }
 	// ----------------------------------------------------------------------
-    long DecodeLongForKey(string key) {
+    public long DecodeLongForKey(string key) {
         return DecodeForKey<long>(key, DecodeLong);
     }
 	// ----------------------------------------------------------------------
@@ -758,7 +769,7 @@ public class iCS_Coder {
         return (long)Convert.ChangeType(value, typeof(long));
     }
 	// ----------------------------------------------------------------------
-    ulong DecodeULongForKey(string key) {
+    public ulong DecodeULongForKey(string key) {
         return DecodeForKey<ulong>(key, DecodeULong);
     }
 	// ----------------------------------------------------------------------
@@ -766,7 +777,7 @@ public class iCS_Coder {
         return (ulong)Convert.ChangeType(value, typeof(ulong));
     }
 	// ----------------------------------------------------------------------
-    float DecodeFloatForKey(string key) {
+    public float DecodeFloatForKey(string key) {
         return DecodeForKey<float>(key, DecodeFloat);
     }
 	// ----------------------------------------------------------------------
@@ -774,7 +785,7 @@ public class iCS_Coder {
         return (float)Convert.ChangeType(value, typeof(float));
     }
 	// ----------------------------------------------------------------------
-    double DecodeDoubleForKey(string key) {
+    public double DecodeDoubleForKey(string key) {
         return DecodeForKey<double>(key, DecodeDouble);
     }
 	// ----------------------------------------------------------------------
@@ -782,7 +793,7 @@ public class iCS_Coder {
         return (double)Convert.ChangeType(value, typeof(double));
     }
 	// ----------------------------------------------------------------------
-    decimal DecodeDecimalForKey(string key) {
+    public decimal DecodeDecimalForKey(string key) {
         return DecodeForKey<decimal>(key, DecodeDecimal);
     }
 	// ----------------------------------------------------------------------
@@ -790,7 +801,7 @@ public class iCS_Coder {
         return (decimal)Convert.ChangeType(value, typeof(decimal));
     }
 	// ----------------------------------------------------------------------
-    byte DecodeByteForKey(string key) {
+    public byte DecodeByteForKey(string key) {
         return DecodeForKey<byte>(key, DecodeByte);
     }
 	// ----------------------------------------------------------------------
@@ -798,7 +809,7 @@ public class iCS_Coder {
         return (byte)(value[0]-0x100);
     }
 	// ----------------------------------------------------------------------
-    sbyte DecodeSByteForKey(string key) {
+    public sbyte DecodeSByteForKey(string key) {
         return DecodeForKey<sbyte>(key, DecodeSByte);
     }
 	// ----------------------------------------------------------------------
@@ -806,7 +817,7 @@ public class iCS_Coder {
         return (sbyte)(value[0]-0x100);
     }
 	// ----------------------------------------------------------------------
-    char DecodeCharForKey(string key) {
+    public char DecodeCharForKey(string key) {
         return DecodeForKey<char>(key, DecodeChar);
     }
 	// ----------------------------------------------------------------------
@@ -814,7 +825,7 @@ public class iCS_Coder {
         return (char)(value[0]-0x100);
     }
 	// ----------------------------------------------------------------------
-    string DecodeStringForKey(string key) {
+    public string DecodeStringForKey(string key) {
         return DecodeForKey<string>(key, DecodeString);
     }
 	// ----------------------------------------------------------------------
@@ -822,7 +833,7 @@ public class iCS_Coder {
         return value;
     }
 	// ----------------------------------------------------------------------
-    Vector2 DecodeVector2ForKey(string key) {
+    public Vector2 DecodeVector2ForKey(string key) {
         return DecodeForKey<Vector2>(key, DecodeVector2);
     }
 	// ----------------------------------------------------------------------
@@ -837,7 +848,7 @@ public class iCS_Coder {
         return new Vector2(x,y);
     }
 	// ----------------------------------------------------------------------
-    Vector3 DecodeVector3ForKey(string key) {
+    public Vector3 DecodeVector3ForKey(string key) {
         return DecodeForKey<Vector3>(key, DecodeVector3);
     }
 	// ----------------------------------------------------------------------
@@ -859,7 +870,7 @@ public class iCS_Coder {
         return new Vector3(x,y,z);
     }
 	// ----------------------------------------------------------------------
-    Vector4 DecodeVector4ForKey(string key) {
+    public Vector4 DecodeVector4ForKey(string key) {
         return DecodeForKey<Vector4>(key, DecodeVector4);
     }
 	// ----------------------------------------------------------------------
@@ -888,7 +899,7 @@ public class iCS_Coder {
         return new Vector4(x,y,z,w);
     }
 	// ----------------------------------------------------------------------
-    Color DecodeColorForKey(string key) {
+    public Color DecodeColorForKey(string key) {
         return DecodeForKey<Color>(key, DecodeColor);
     }
 	// ----------------------------------------------------------------------
@@ -915,6 +926,22 @@ public class iCS_Coder {
 		float b= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
 		float a= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
         return new Color(r,g,b,a);
+    }
+	// ----------------------------------------------------------------------
+    public UnityEngine.Object DecodeUnityObjectForKey(string key, iCS_Storage storage) {
+        if(!myDictionary.ContainsKey(key)) return null;
+        Prelude.Tuple<string,string> tuple= myDictionary[key];
+        Type valueType= DecodeType(tuple.Item1);
+        if(!iCS_Types.IsA<UnityEngine.Object>(valueType)) {
+            DecodeTypeError(typeof(UnityEngine.Object).Name, valueType);
+            return null;
+        }
+        return DecodeUnityObject(tuple.Item2, storage);        
+    }
+	// ----------------------------------------------------------------------
+    UnityEngine.Object DecodeUnityObject(string value, iCS_Storage storage) {
+        int id= DecodeInt(value);
+        return storage.GetUnityObject(id);
     }
 	// ----------------------------------------------------------------------
     T DecodeForKey<T>(string key, Func<string,T> decoder) {

@@ -378,11 +378,7 @@ public sealed partial class iCS_Behaviour : iCS_Storage {
     // ----------------------------------------------------------------------
 	object GetInitialValue(iCS_EditorObject port) {
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
-		object initValue= coder.DecodeObjectForKey("InitialValue") ?? iCS_Types.DefaultValue(port.RuntimeType);
-		if(initValue != null && iCS_Types.IsA<UnityEngine.Object>(port.RuntimeType)) {
-			initValue= GetUnityObject((int)initValue);
-		}
-		return initValue;		
+		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
 	}
 	
     // ======================================================================
