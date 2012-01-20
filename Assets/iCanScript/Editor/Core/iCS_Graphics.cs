@@ -521,9 +521,8 @@ public class iCS_Graphics {
 			Vector2 portCenter= center;
 			if(!port.IsEnablePort) portCenter.y-= 2;
 			if(port.IsInputPort && storage.GetSource(port) == null) {
-//		        iCS_RuntimeDesc desc= new iCS_RuntimeDesc(portParent.RuntimeArchive);    
-//				portValue= storage.GetDefaultValue(desc, port.PortIndex);
-				if(/*portValue != null*/true) {
+				portValue= storage.GetPortValue(port);
+				if(portValue != null) {
 	            	DrawSquarePort(portCenter, portColor, nodeColor);
 				} else {
 		            DrawCircularPort(portCenter, portColor, nodeColor);									
@@ -583,7 +582,7 @@ public class iCS_Graphics {
         }
         GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), labelStyle);
 		if(valueAsStr != null) {
-			//GUI.Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, valueStyle);			
+			GUI.Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, valueStyle);			
 		}
     }
 

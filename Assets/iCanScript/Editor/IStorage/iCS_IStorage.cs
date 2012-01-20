@@ -319,8 +319,6 @@ public partial class iCS_IStorage {
                     				CreateInstanceMethod(parentId, initialPos, desc) : 
                     				CreateStaticMethod(parentId, initialPos, desc);
 
-		Debug.Log("Create method: ParamLength: "+desc.ParamNames.Length);
-		
 		instance.MethodName= desc.MethodName;
 		instance.NbOfParams= desc.ParamTypes != null ? desc.ParamTypes.Length : 0;
 		return instance;
