@@ -292,12 +292,7 @@ public class iCS_Coder {
         if(value == typeof(Vector3[])) return "v3[]";
         if(value == typeof(Vector4[])) return "v4[]";
         if(value == typeof(Color[])) return "clr[]";
-        // iCanScript data types.
-        if(value == typeof(iCS_Behaviour)) return "iBeh";
-		if(value == typeof(iCS_ObjectTypeEnum)) return "iOTE";
-		if(value == typeof(iCS_Module)) return "iMd";
-		if(value == typeof(iCS_StateChart)) return "iSC";
-		if(value == typeof(iCS_State)) return "iSt";
+
 		string typeAsString= value.AssemblyQualifiedName;
 		// Try to compress type string.
 		int cSharpTypeIdx= typeAsString.IndexOf(CSharpTypeStr);
@@ -687,12 +682,6 @@ public class iCS_Coder {
 		if(value == "v3[]") return typeof(Vector3[]);
 		if(value == "v4[]") return typeof(Vector4[]);
         if(value == "clr[]") return typeof(Color[]);
-        // iCanScript data types.
-		if(value == "iBeh") return typeof(iCS_Behaviour);
-		if(value == "iOTE") return typeof(iCS_ObjectTypeEnum);
-		if(value == "iMd") return typeof(iCS_Module);
-		if(value == "iSt") return typeof(iCS_State);
-		if(value == "iSC") return typeof(iCS_StateChart);
 		// Decompress type string.
 		int cSharpTypeIdx= value.IndexOf("!!");
 		if(cSharpTypeIdx > 0) {
