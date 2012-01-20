@@ -12,8 +12,8 @@ public partial class iCS_IStorage {
         return Storage.GetUnityObject(id);        
     }
     // ----------------------------------------------------------------------
-    public void SetUnityObject(int id, Object value) {
-        Storage.SetUnityObject(id, value);
+    public int SetUnityObject(int id, Object value) {
+        return Storage.SetUnityObject(id, value);
     }
     // ----------------------------------------------------------------------
     public T GetUnityObject<T>(int id) where T : Object {

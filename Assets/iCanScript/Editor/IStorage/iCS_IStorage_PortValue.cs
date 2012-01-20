@@ -54,8 +54,7 @@ public partial class iCS_IStorage {
 	public object GetPortValue(iCS_EditorObject port) {
 		if(!port.IsDataPort) return null;
 		iCS_FunctionBase funcBase= GetRuntimeObject(GetParent(port)) as iCS_FunctionBase;
-		if(funcBase == null) return GetInitialPortValue(port);
-		return funcBase[port.PortIndex];
+		return funcBase == null ? GetInitialPortValue(port) : funcBase[port.PortIndex];
 	}
     // ----------------------------------------------------------------------
 	public void SetPortValue(iCS_EditorObject port, object value) {

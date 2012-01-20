@@ -514,14 +514,15 @@ public class iCS_Graphics {
         iCS_EditorObject portParent= storage.GetParent(port);         
         Vector2 center= Math3D.ToVector2(position);
         Type portValueType= port.RuntimeType;
-		object portValue= null;
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
+		object portValue= null;
         if(port.IsDataPort) {
+    		if(Application.isPlaying) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
 			if(!port.IsEnablePort) portCenter.y-= 2;
 			if(port.IsInputPort && storage.GetSource(port) == null) {
-				portValue= storage.GetPortValue(port);
+				if(!Application.isPlaying) portValue= storage.GetPortValue(port);
 				if(portValue != null) {
 	            	DrawSquarePort(portCenter, portColor, nodeColor);
 				} else {
@@ -551,7 +552,7 @@ public class iCS_Graphics {
         // Show port label.
         if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
-		string valueAsStr= portValue != null ? "value" : null;
+		string valueAsStr= portValue != null ? GetValueAsString(portValue) : null;
         Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(name);
 		GUIStyle valueStyle= GUI.skin.textField;
 		Vector2 valueSize= (valueAsStr != null && valueAsStr != "") ? valueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;
@@ -586,6 +587,18 @@ public class iCS_Graphics {
 		}
     }
 
+	// ----------------------------------------------------------------------
+    string GetValueAsString(object value) {
+        if(value is float) return ((float)value).ToString();
+        if(value is int) return ((int)value).ToString();
+        if(value is Vector2) return ((Vector2)value).ToString();
+        if(value is Vector3) return ((Vector3)value).ToString();
+        if(value is Vector4) return ((Vector4)value).ToString();
+        if(value is Color) return ((Color)value).ToString();
+        if(value is string) return (string)value;
+        if(value is UnityEngine.Object) return (value as UnityEngine.Object).name;
+        return null;
+    }
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor) {
         Handles.color= Color.black;
