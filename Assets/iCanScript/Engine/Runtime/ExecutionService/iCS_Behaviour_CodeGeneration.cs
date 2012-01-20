@@ -224,8 +224,7 @@ public sealed partial class iCS_Behaviour : iCS_Storage {
                                 iCS_Connection.NoConnection :
                                 new iCS_Connection(myRuntimeNodes[sourcePort.ParentId] as iCS_FunctionBase, sourcePort.PortIndex);
                         // Build initial value.
-						iCS_Coder coder= new iCS_Coder(sourcePort.InitialValueArchive);
-						object initValue= coder.DecodeObjectForKey("InitialValue") ?? iCS_Types.DefaultValue(sourcePort.RuntimeType);
+						object initValue= GetInitialValue(sourcePort);
                         // Set data port.
                         object parentObj= myRuntimeNodes[port.ParentId];
                         Prelude.choice<iCS_Constructor, iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
@@ -376,7 +375,16 @@ public sealed partial class iCS_Behaviour : iCS_Storage {
 		Array.Sort(result, (x,y)=> x.PortIndex - y.PortIndex);
 		return result;
 	}
-
+    // ----------------------------------------------------------------------
+	object GetInitialValue(iCS_EditorObject port) {
+		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
+		object initValue= coder.DecodeObjectForKey("InitialValue") ?? iCS_Types.DefaultValue(port.RuntimeType);
+		if(initValue != null && iCS_Types.IsA<UnityEngine.Object>(port.RuntimeType)) {
+			initValue= GetUnityObject((int)initValue);
+		}
+		return initValue;		
+	}
+	
     // ======================================================================
     // Child Management Utilities
     // ----------------------------------------------------------------------
