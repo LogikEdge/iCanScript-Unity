@@ -121,6 +121,8 @@ public class iCS_Coder {
 		if(value is Vector3)            { EncodeVector3(key, (Vector3)value); return; }
 		if(value is Vector4)            { EncodeVector4(key, (Vector4)value); return; }
 		if(value is Color)              { EncodeColor(key, (Color)value); return; }
+		if(value is Quaternion)         { EncodeQuaternion(key, (Quaternion)value); return; }
+		if(value is Matrix4x4)          { EncodeMatrix4x4(key, (Matrix4x4)value); return; }
 		if(value is UnityEngine.Object) { EncodeUnityObject(key, value as UnityEngine.Object, storage); return; }
 		// All other types.
 		foreach(var field in valueType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
@@ -209,6 +211,10 @@ public class iCS_Coder {
             EncodeArrayOfNumerics(key, value as Vector4[], EncodeVector4);
 			return;
 		}
+		if(valueType == typeof(Quaternion[])) {
+            EncodeArrayOfNumerics(key, value as Quaternion[], EncodeQuaternion);
+			return;
+		}
 		if(valueType == typeof(Color[])) {
             EncodeArrayOfNumerics(key, value as Color[], EncodeColor);
 			return;
@@ -289,10 +295,16 @@ public class iCS_Coder {
         if(value == typeof(Vector3)) return "v3";
         if(value == typeof(Vector4)) return "v4";
         if(value == typeof(Color)) return "clr";
+        if(value == typeof(Quaternion)) return "q";
+        if(value == typeof(Matrix4x4)) return "m";
+        if(value == typeof(UnityEngine.Object)) return "O";
         if(value == typeof(Vector2[])) return "v2[]";
         if(value == typeof(Vector3[])) return "v3[]";
         if(value == typeof(Vector4[])) return "v4[]";
         if(value == typeof(Color[])) return "clr[]";
+        if(value == typeof(Quaternion[])) return "q[]";
+        if(value == typeof(Matrix4x4[])) return "m[]";
+        if(value == typeof(UnityEngine.Object[])) return "O[]";
 
 		string typeAsString= value.AssemblyQualifiedName;
 		// Try to compress type string.
@@ -463,6 +475,24 @@ public class iCS_Coder {
 		Add(key, typeof(Vector4), EncodeVector4(value));
 	}
 	// ----------------------------------------------------------------------
+	string EncodeQuaternion(Quaternion value) {
+		return (string)value.x.ToString()+","+value.y+","+value.z+","+value.w;
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeQuaternion(string key, Quaternion value) {
+		Add(key, typeof(Quaternion), EncodeQuaternion(value));
+	}
+	// ----------------------------------------------------------------------
+	string EncodeMatrix4x4(Matrix4x4 value) {
+        string result= value[0].ToString();
+        for(int i= 1; i < 16; ++i) result+= ","+value[i];
+		return result;
+	}
+	// ----------------------------------------------------------------------
+	public void EncodeMatrix4x4(string key, Matrix4x4 value) {
+		Add(key, typeof(Matrix4x4), EncodeMatrix4x4(value));
+	}
+	// ----------------------------------------------------------------------
 	string EncodeColor(Color value) {
 		return (string)value.r.ToString()+","+value.g+","+value.b+","+value.a;
 	}
@@ -519,6 +549,8 @@ public class iCS_Coder {
 		if(elementType == typeof(Vector3))                 return DecodeVector3(valueStr);
 		if(elementType == typeof(Vector4))                 return DecodeVector4(valueStr);
 		if(elementType == typeof(Color))                   return DecodeColor(valueStr);
+		if(elementType == typeof(Quaternion))              return DecodeQuaternion(valueStr);
+		if(elementType == typeof(Matrix4x4))               return DecodeMatrix4x4(valueStr);
 		if(iCS_Types.IsA<UnityEngine.Object>(elementType)) return DecodeUnityObject(valueStr, storage);
 		// All other types.
         coder.Archive= valueStr;
@@ -592,6 +624,9 @@ public class iCS_Coder {
 		}
 		if(valueType == typeof(Vector4[])) {
             return DecodeArrayOfNumerics<Vector4>(valueStr, DecodeVector4);
+		}
+		if(valueType == typeof(Quaternion[])) {
+            return DecodeArrayOfNumerics<Quaternion>(valueStr, DecodeQuaternion);
 		}
 		if(valueType == typeof(Color[])) {
             return DecodeArrayOfNumerics<Color>(valueStr, DecodeColor);
@@ -689,10 +724,16 @@ public class iCS_Coder {
 		if(value == "v3") return typeof(Vector3);
 		if(value == "v4") return typeof(Vector4);
         if(value == "clr") return typeof(Color);
+        if(value == "q") return typeof(Quaternion);
+        if(value == "m") return typeof(Matrix4x4);
+        if(value == "O") return typeof(UnityEngine.Object);
 		if(value == "v2[]") return typeof(Vector2[]);
 		if(value == "v3[]") return typeof(Vector3[]);
 		if(value == "v4[]") return typeof(Vector4[]);
         if(value == "clr[]") return typeof(Color[]);
+        if(value == "q[]") return typeof(Quaternion);
+        if(value == "m[]") return typeof(Matrix4x4);
+        if(value == "O[]") return typeof(UnityEngine.Object);
 		// Decompress type string.
 		int cSharpTypeIdx= value.IndexOf("!!");
 		if(cSharpTypeIdx > 0) {
@@ -897,6 +938,54 @@ public class iCS_Coder {
 		float z= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
 		float w= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
         return new Vector4(x,y,z,w);
+    }
+	// ----------------------------------------------------------------------
+    public Quaternion DecodeQuaternionForKey(string key) {
+        return DecodeForKey<Quaternion>(key, DecodeQuaternion);
+    }
+	// ----------------------------------------------------------------------
+    Quaternion DecodeQuaternion(string value) {
+		int end= value.IndexOf(',');
+		if(end < 0) {
+			DecodeError(',', value);
+			return Quaternion.identity;
+		}
+		float x= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		value= value.Substring(end+1);
+		end= value.IndexOf(',');
+		if(end < 0) {
+			DecodeError(',', value);
+			return Quaternion.identity;			
+		}
+		float y= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		value= value.Substring(end+1);
+		end= value.IndexOf(',');
+		if(end < 0) {
+			DecodeError(',', value);
+			return Quaternion.identity;			
+		}
+		float z= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+		float w= (float)Convert.ChangeType(value.Substring(end+1), typeof(float));
+        return new Quaternion(x,y,z,w);
+    }
+	// ----------------------------------------------------------------------
+    public Matrix4x4 DecodeMatrix4x4ForKey(string key) {
+        return DecodeForKey<Matrix4x4>(key, DecodeMatrix4x4);
+    }
+	// ----------------------------------------------------------------------
+    Matrix4x4 DecodeMatrix4x4(string value) {
+        Matrix4x4 result= new Matrix4x4();
+        for(int i= 0; i < 15; ++i) {
+    		int end= value.IndexOf(',');
+    		if(end < 0) {
+    			DecodeError(',', value);
+    			return Matrix4x4.identity;
+    		}
+    		result[i]= (float)Convert.ChangeType(value.Substring(0, end), typeof(float));
+    		value= value.Substring(end+1);
+        }
+		result[15]= (float)Convert.ChangeType(value, typeof(float));
+        return result;
     }
 	// ----------------------------------------------------------------------
     public Color DecodeColorForKey(string key) {
