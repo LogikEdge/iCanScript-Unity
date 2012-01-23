@@ -210,6 +210,27 @@ public class iCS_DynamicMenu {
                 menu= new string[]{PublishPortStr};                
             }
         }
+        // Get compatible functions.
+        if(selectedObject.IsDataPort) {
+            string[] functionMenu;
+            if(selectedObject.IsInputPort) {
+                functionMenu= iCS_DataBase.BuildMenu(false, null, true, selectedObject.RuntimeType);
+            } else {
+                functionMenu= iCS_DataBase.BuildMenu(true, selectedObject.RuntimeType, false, null);
+            }
+            if(functionMenu.Length != 0) {
+                int len= menu.Length;
+                if(len == 0) {
+                    menu= functionMenu;
+                } else {
+                    string[] tmp= new string[len+1+functionMenu.Length];
+                    menu.CopyTo(tmp, 0);
+                    menu= tmp;                
+                    menu[len]= SeparatorStr;
+                    functionMenu.CopyTo(menu,len+1);
+                }                
+            }
+        }
         // Allow to delete a port if its parent is a module.
         if(selectedObject.IsStatePort || selectedObject.IsDynamicModulePort || selectedObject.IsEnablePort) {
             int i= menu.Length;

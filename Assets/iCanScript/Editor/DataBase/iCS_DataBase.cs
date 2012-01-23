@@ -8,14 +8,16 @@ public class iCS_DataBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public static bool                      IsMenuDirty = true;
     public static List<iCS_ReflectionDesc>  Functions   = new List<iCS_ReflectionDesc>();
+    public static bool                      IsSorted    = false;
+    public static bool                      IsMenuDirty = true;
     public static string[]                  FunctionMenu= null;
     
     // ======================================================================
     // DataBase functionality
     // ----------------------------------------------------------------------
     public static void QSort() {
+        if(IsSorted) return;
         int reorderCnt= 0;
         int cmpCnt= 0;
         int len= Functions.Count;
@@ -46,62 +48,7 @@ public class iCS_DataBase {
             }
             step >>= 1;
         }
-    }
-    // ----------------------------------------------------------------------
-    static bool IsSorted() {
-        int len= Functions.Count;
-        for(int i= 0; i < len-1; ++i) {
-            if(CompareFunctionNames(Functions[i], Functions[i+1]) > 0) {
-                iCS_ReflectionDesc tmp= Functions[i];
-                Functions[i]= Functions[i+1];
-                Functions[i+1]= tmp;
-                return false;
-            }
-        }
-        return true;
-    }
-    // ----------------------------------------------------------------------
-    // Returns all the company names for which a uCode component exists.
-    public static string[] GetCompanies() {
-        List<string> companies= new List<string>();
-        foreach(var func in Functions) {
-            uCode.AddUniqu<string>(func.Company, companies);
-        }
-        return companies.ToArray();
-    }
-    // ----------------------------------------------------------------------
-    // Returns all available packages of the given company.
-    public static string[] GetPackages(string company) {
-        List<string> packages= new List<string>();
-        foreach(var func in Functions) {
-            if(func.Company == company) {
-                uCode.AddUniqu<string>(func.Package, packages);                
-            }
-        }
-        return packages.ToArray();
-    }
-    // ----------------------------------------------------------------------
-    // Returns all available functions of the given company/package.
-    public static string[] GetFunctions(string company, string package) {
-        List<string> functions= new List<string>();
-        foreach(var func in Functions) {
-            if(func.Company == company && func.Package == package) {
-                uCode.AddUniqu<string>(func.DisplayName, functions);                
-            }
-        }
-        return functions.ToArray();
-    }
-    // ----------------------------------------------------------------------
-    // Returns all available functions parameters for the given
-    // company/package/function.
-    public static string[] GetFunctionSignatures(string company, string package, string functionName) {
-        List<string> parameters= new List<string>();
-        foreach(var func in Functions) {
-            if(func.Company == company && func.Package == package && func.DisplayName == functionName) {
-                parameters.Add(GetFunctionSignature(func));
-            }
-        }
-        return parameters.ToArray();
+        IsSorted= true;
     }
 
     // ----------------------------------------------------------------------
@@ -120,8 +67,13 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns the function name in the form of "company/package/displayName".
+    public static string GetFunctionPath(iCS_ReflectionDesc desc) {
+        return desc.Company+"/"+desc.Package;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the function name in the form of "company/package/displayName".
     public static string GetFunctionName(iCS_ReflectionDesc desc) {
-        return desc.Company+"/"+desc.Package+"/"+desc.DisplayName;
+        return GetFunctionPath(desc)+"/"+desc.DisplayName;
     }
     // ----------------------------------------------------------------------
     // Returns 0 if equal, negative if first is smaller and
@@ -144,7 +96,10 @@ public class iCS_DataBase {
             string newName= GetFunctionName(Functions[i]);
             if(previousName == newName) needsSignature= true;
             if(previousName != "") {
-                if(needsSignature) { menu.Add(previousName+"/"+GetFunctionSignature(Functions[i-1])); }
+                var func= Functions[i-1];
+                var signature= "/"+GetFunctionSignature(func);
+                if(needsSignature) { menu.Add(previousName+signature); }
+//                else               { menu.Add(GetFunctionPath(func)+signature); }
                 else               { menu.Add(previousName); }
             }
             if(previousName != newName) {
@@ -153,12 +108,21 @@ public class iCS_DataBase {
             }
         }
         if(previousName != "") {
-            if(needsSignature) { menu.Add(previousName+"/"+GetFunctionSignature(Functions[Functions.Count-1])); }
+            var func= Functions[Functions.Count-1];
+            var signature= "/"+GetFunctionSignature(func);
+            if(needsSignature) { menu.Add(previousName+signature); }
+//            else               { menu.Add(GetFunctionPath(func)+signature); }
             else               { menu.Add(previousName); }
         }
         FunctionMenu= menu.ToArray();
         IsMenuDirty= false;
         return FunctionMenu;
+    }
+    // ----------------------------------------------------------------------
+    public static string[] BuildMenu(bool filterOnInput, Type inputFilter, bool filterOnOutput, Type outputFilter) {
+        QSort();
+        List<string> menu= new List<string>();
+        return menu.ToArray();
     }
     // ----------------------------------------------------------------------
     static string TypeName(Type type) {
@@ -280,6 +244,7 @@ public class iCS_DataBase {
                                                       retName, retType);
         Functions.Add(fd);
         IsMenuDirty= true;
+        IsSorted= false;
         return fd;
     }
     
