@@ -364,7 +364,7 @@ public partial class iCS_IStorage {
 		// Create return port.
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
-            port.PortIndex= portIdx++;			
+            port.PortIndex= portIdx;			
 		}
 		// Create 'this' ports for constructors.
 		if(desc.ObjectType == iCS_ObjectTypeEnum.Constructor) {
@@ -403,6 +403,8 @@ public partial class iCS_IStorage {
 		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
             port.PortIndex= portIdx++;			
+		} else {
+		    ++portIdx;
 		}
 		// Create 'this' ports.
         port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.InFunctionPort);

@@ -4,13 +4,14 @@ using System.Collections;
 
 [iCS_Class(Company="iCanScript", Package="Test")]
 public class iCS_TestGenericFunction {
-    public float myFloat;
+    public float myFloat= 0;
 	public string myString= "working";
     public GameObject	myGameObject= null;
 
     [iCS_Function] public iCS_TestGenericFunction() { myFloat= 0f;}
     [iCS_Function] public iCS_TestGenericFunction(char[] v) { foreach(var c in v) myString+= c; }
     [iCS_Function] public bool IsA<T>(T b) { return false; }
+    [iCS_Function] public float Inc() { return ++myFloat; }
 
     public override string ToString() { return myString; }
     

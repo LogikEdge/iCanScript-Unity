@@ -59,6 +59,6 @@ public class iCS_Method : iCS_Function {
         }
         // Execute function
         if(myThis != null) myReturn= myMethodInfo.Invoke(myThis, myParameters);
-        MarkAsCurrent(frameId);
+        MarkAsCurrent(frameId);        
     }
 }

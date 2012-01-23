@@ -34,4 +34,9 @@ public class iCS_Connection {
         set { myConnection.Item1[myConnection.Item2]= value; }
     }
     public bool IsReady(int frameId)    { return myConnection.Item1.IsParameterReady(myConnection.Item2, frameId); }
+    
+    // ----------------------------------------------------------------------
+    public override string ToString() {
+        return IsConnected ? myConnection.Item1.Name+"["+myConnection.Item2+"]" : "Not Connected";
+    }
 }
