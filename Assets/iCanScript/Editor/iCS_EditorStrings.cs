@@ -36,14 +36,6 @@ public class iCS_EditorStrings {
     // Special port names.
     public const string EnablePort= "enable";
 
-    // Parsing identifiers (unused for now)
-    public const string BeginBlock = "{";
-    public const string EndBlock   = "}";
-    public const string Seperator  = ":";
-    public const string Assignment = ":=";
-    public const string BeginParam = "<";
-    public const string EndParam   = ">";
-
     // Product identifiers
     public const string Company       = "iCanScript";
     public const string DefaultPackage= "DefaultPackage";
