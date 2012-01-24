@@ -403,23 +403,7 @@ public class iCS_Editor : EditorWindow {
     void DragAndDropExited() {
         iCS_Storage storage= GetDraggedLibrary();
         if(storage != null) {
-            switch(EditorUtility.DisplayDialogComplex("Importing Library",
-                                                      "Libraries can be either copied into the graph or linked to the graph.  A copied library is decoupled from its originating library and can be modified directly inside the iCanScript graph.  A linked library references the original library and cannot be modified inplace.",
-                                                      "Copy Library",
-                                                      "Cancel",
-                                                      "Link Library")) {
-                case 0: {
-                    PasteIntoGraph(ScrollView.ScreenToGraph(MousePosition), storage, storage.EditorObjects[0]);
-                    break;
-                }
-                case 1: {
-                    break;
-                }
-                case 2: {
-                    Debug.LogWarning("Linked library not supported in this version.");
-                    break;
-                }
-            }
+            PasteIntoGraph(ScrollView.ScreenToGraph(MousePosition), storage, storage.EditorObjects[0]);
         }
     }
 	// ----------------------------------------------------------------------
