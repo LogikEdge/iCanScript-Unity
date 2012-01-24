@@ -262,7 +262,8 @@ public class iCS_Inspector : Editor {
         iCS_EditorObject parent= Storage.GetParent(port);
         EditorGUILayout.LabelField("Parent", parent.Name);
         string inOut= port.IsInputPort ? (port.IsEnablePort ? "enable":"in") : "out";
-        EditorGUILayout.LabelField("Direction", inOut);        
+        EditorGUILayout.LabelField("Direction", inOut);
+        iCS_GuiUtilities.OnInspectorDataPortGUI(port, Storage, 1, FoldoutDB);        
     }
 
 
