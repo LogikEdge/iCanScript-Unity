@@ -6,8 +6,15 @@ public sealed class iCS_GameController {
     [iCS_Function(Return="analog1", Icon="iCS_JoystickIcon.psd",
                  ToolTip="RawAnalog returns the raw joystick value while Analog returns the time compensated joystick value ajusted with the input speed.")]
 
-    public static Vector2 GameController(out Vector2 rawAnalog1, float speed= 1.0f) {
-        rawAnalog1= new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-        return Time.deltaTime*speed*rawAnalog1;
+    public static Vector2 GameController(out Vector2 rawAnalog1,
+                                         out bool b1, out bool b2, out bool b3,
+                                         float speed= 1.0f) {
+        float dt= Time.deltaTime;
+        float cdt= dt*speed;
+        rawAnalog1= new Vector2(Input.GetAxis("Horizontal"), Input.GetAxisRaw("Vertical"));
+        b1= Input.GetButton("Fire1");
+        b2= Input.GetButton("Fire2");
+        b3= Input.GetButton("Fire3");
+        return cdt*rawAnalog1;
     }
 }

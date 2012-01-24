@@ -589,6 +589,7 @@ public class iCS_Graphics {
 
 	// ----------------------------------------------------------------------
     string GetValueAsString(object value) {
+        if(value is bool) return ((bool)value) ? "true" : "false";
         if(value is float) return ((float)value).ToString();
         if(value is int) return ((int)value).ToString();
         if(value is Vector2) return ((Vector2)value).ToString();
