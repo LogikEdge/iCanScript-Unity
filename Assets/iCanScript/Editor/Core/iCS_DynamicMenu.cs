@@ -83,6 +83,8 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.InstanceMethod:   MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.StaticMethod:     MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.Conversion:       MethodMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.InstanceField:    MethodMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.StaticField:      MethodMenu(selectedObject, storage); break;
             default: if(selectedObject.IsPort)        PortMenu(selectedObject, storage); break;
         }
     }

@@ -154,7 +154,7 @@ public class iCS_Reflection {
             iCS_DataBase.AddStaticField(company, package, displayName+" (set)", toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
         if(dir == iCS_ParamDirectionEnum.Out || dir == iCS_ParamDirectionEnum.InOut) {
-            bool[] paramIsOuts= new bool[]{true};
+            bool[] paramIsOuts= new bool[1]{true};
             iCS_DataBase.AddStaticField(company, package, displayName+" (get)", toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
     }

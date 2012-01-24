@@ -4,6 +4,8 @@ using System.Collections;
 
 [iCS_Class(Company="iCanScript", Package="Test")]
 public class iCS_TestGenericFunction {
+    [iCS_InPort] public static float inputPort= 0;
+
     public float myFloat= 0;
 	public string myString= "working";
     public GameObject	myGameObject= null;
