@@ -549,9 +549,24 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, iCS_ReflectionDesc desc) {
-        if(parent.IsPort) parent= storage.GetParent(storage.GetParent(parent));
-        iCS_EditorObject method= storage.CreateMethod(parent.InstanceId, ProcessMenuPosition, desc);
-        return method;
+        if(parent.IsPort) {
+            iCS_EditorObject port= parent;
+            parent= storage.GetParent(port);
+            iCS_EditorObject grandParent= storage.GetParent(parent);
+            if(!grandParent.IsModule) return null;
+            iCS_EditorObject method= storage.CreateMethod(grandParent.InstanceId, ProcessMenuPosition, desc);
+            if(port.IsInputPort) {
+                if(desc.ReturnType != null) {
+                    if(iCS_Types.IsA(port.RuntimeType, desc.ReturnType)) {
+                        
+                    }
+                }
+            } else {
+                
+            }
+            return method;
+        }
+        return storage.CreateMethod(parent.InstanceId, ProcessMenuPosition, desc);            
     }
 	// ----------------------------------------------------------------------
     bool DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage storage) {
