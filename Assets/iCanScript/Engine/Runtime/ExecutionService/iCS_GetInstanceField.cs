@@ -21,8 +21,8 @@ public class iCS_GetInstanceField : iCS_FunctionBase {
     // ----------------------------------------------------------------------
     protected override void DoExecute(int frameId) {
         // Execute function
-        myParameters[2]= myParameters[0];
         myParameters[1]= myFieldInfo.GetValue(myParameters[0]);
+        myParameters[2]= myParameters[0];
         MarkAsCurrent(frameId);
     }
 }

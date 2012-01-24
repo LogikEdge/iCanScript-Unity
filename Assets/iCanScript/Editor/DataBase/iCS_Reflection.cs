@@ -151,11 +151,11 @@ public class iCS_Reflection {
         object[] paramDefaultValues= new object[1]{iCS_Types.DefaultValue(field.FieldType)};
         if(dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[1]{false};
-            iCS_DataBase.AddStaticField(company, package, displayName+" (write)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddStaticField(company, package, displayName+" (set)", toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
         if(dir == iCS_ParamDirectionEnum.Out || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[]{true};
-            iCS_DataBase.AddStaticField(company, package, displayName+" (read)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddStaticField(company, package, displayName+" (get)", toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
     }
     // ----------------------------------------------------------------------
@@ -165,11 +165,11 @@ public class iCS_Reflection {
         object[] paramDefaultValues= new object[3]{iCS_Types.DefaultValue(classType), iCS_Types.DefaultValue(field.FieldType),iCS_Types.DefaultValue(classType)};
         if(dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[3]{false, false, true};
-            iCS_DataBase.AddInstanceField(company, package, displayName+" (write)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddInstanceField(company, package, "set_"+displayName, toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
         if(dir == iCS_ParamDirectionEnum.Out || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[3]{false, true, true};
-            iCS_DataBase.AddInstanceField(company, package, displayName+" (read)", toolTip, iconPath, classType, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddInstanceField(company, package, "get_"+displayName, toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
     }
     // ----------------------------------------------------------------------

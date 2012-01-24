@@ -119,9 +119,76 @@ public class iCS_DataBase {
         return FunctionMenu;
     }
     // ----------------------------------------------------------------------
-    public static string[] BuildMenu(bool filterOnInput, Type inputFilter, bool filterOnOutput, Type outputFilter) {
+    public static string[] BuildMenu(bool filterOnInput, Type inputType, bool filterOnOutput, Type outputType) {
         QSort();
         List<string> menu= new List<string>();
+        string previousName= "";
+        bool needsSignature= false;
+        for(int i= 0; i < Functions.Count; ++i) {
+            // Filter functions according to input or output filter.
+            bool shouldInclude= false;
+            var func= Functions[i];
+            if(filterOnInput) {
+                if(func.ClassType == inputType) {
+                    switch(func.ObjectType) {
+                        case iCS_ObjectTypeEnum.InstanceMethod:
+                        case iCS_ObjectTypeEnum.InstanceField: {
+                            shouldInclude= true;
+                            break;
+                        }
+                    }
+                }
+                for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
+                    if(func.ParamIsOuts[j] == false) {
+                        if(func.ParamTypes[j] == inputType) {
+                            shouldInclude= true;
+                        }
+                    }
+                }
+            }
+            if(!shouldInclude && filterOnOutput) {
+                if(func.ClassType == outputType) {
+                    switch(func.ObjectType) {
+                        case iCS_ObjectTypeEnum.Constructor:
+                        case iCS_ObjectTypeEnum.InstanceMethod:
+                        case iCS_ObjectTypeEnum.InstanceField: {
+                            shouldInclude= true;
+                            break;
+                        }
+                    }
+                }
+                if(func.ReturnType == outputType) shouldInclude= true;
+                for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
+                    if(func.ParamIsOuts[j]) {
+                        if(func.ParamTypes[j] == outputType) {
+                            shouldInclude= true;
+                        }
+                    }
+                }
+            }
+            if(shouldInclude) {
+                string newName= GetFunctionName(func);
+                if(previousName == newName) needsSignature= true;
+                if(previousName != "") {
+                    var prevFunc= Functions[i-1];
+                    var signature= "/"+GetFunctionSignature(prevFunc);
+                    if(needsSignature) { menu.Add(previousName+signature); }
+    //                else               { menu.Add(GetFunctionPath(prevFunc)+signature); }
+                    else               { menu.Add(previousName); }
+                }                
+                if(previousName != newName) {
+                    needsSignature= false;
+                    previousName= newName;
+                }
+            }
+        }
+        if(previousName != "") {
+            var func= Functions[Functions.Count-1];
+            var signature= "/"+GetFunctionSignature(func);
+            if(needsSignature) { menu.Add(previousName+signature); }
+//            else               { menu.Add(GetFunctionPath(func)+signature); }
+            else               { menu.Add(previousName); }
+        }
         return menu.ToArray();
     }
     // ----------------------------------------------------------------------
@@ -172,25 +239,25 @@ public class iCS_DataBase {
                                       Type classType, ConstructorInfo constructorInfo,
                                       bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
         Add(company, package, displayName, toolTip, iconPath,
-            iCS_ObjectTypeEnum.Constructor, classType, constructorInfo,
+            iCS_ObjectTypeEnum.Constructor, classType, constructorInfo, null,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             null, null);
     }
     // ----------------------------------------------------------------------
     public static void AddStaticField(string company, string package, string displayName, string toolTip, string iconPath,
-                                      Type classType,
+                                      Type classType, FieldInfo fieldInfo,
                                       bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
         Add(company, package, displayName, toolTip, iconPath,
-            iCS_ObjectTypeEnum.StaticField, classType, null,
+            iCS_ObjectTypeEnum.StaticField, classType, null, fieldInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             null, null);
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceField(string company, string package, string displayName, string toolTip, string iconPath,
-                                        Type classType,
+                                        Type classType, FieldInfo fieldInfo,
                                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
         Add(company, package, displayName, toolTip, iconPath,
-            iCS_ObjectTypeEnum.InstanceField, classType, null,
+            iCS_ObjectTypeEnum.InstanceField, classType, null, fieldInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             null, null);
     }
@@ -200,7 +267,7 @@ public class iCS_DataBase {
                                          bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                          string retName, Type retType) {
         Add(company, package, displayName, toolTip, iconPath,
-            iCS_ObjectTypeEnum.InstanceMethod, classType, methodInfo,
+            iCS_ObjectTypeEnum.InstanceMethod, classType, methodInfo, null,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             retName, retType);
     }
@@ -211,7 +278,7 @@ public class iCS_DataBase {
                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                        string retName, Type retType) {
         Add(company, package, displayName, toolTip, iconPath,
-            iCS_ObjectTypeEnum.StaticMethod, classType, methodInfo,
+            iCS_ObjectTypeEnum.StaticMethod, classType, methodInfo, null,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
             retName, retType);
     }
@@ -228,18 +295,18 @@ public class iCS_DataBase {
             }
         }
         Add(company, package, fromType.Name+"->"+toType.Name, "Converts from "+fromType.Name+" to "+toType.Name, iconPath,
-            iCS_ObjectTypeEnum.Conversion, classType, methodInfo,
+            iCS_ObjectTypeEnum.Conversion, classType, methodInfo, null,
             new bool[1]{false}, new string[1]{fromType.Name}, new Type[1]{fromType}, new object[1]{null},
             toType.Name, toType);        
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.
     public static iCS_ReflectionDesc Add(string company, string package, string displayName, string toolTip, string iconPath,
-                                        iCS_ObjectTypeEnum objType, Type classType, MethodBase methodInfo,
+                                        iCS_ObjectTypeEnum objType, Type classType, MethodBase methodInfo, FieldInfo fieldInfo,
                                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                         string retName, Type retType) {
         iCS_ReflectionDesc fd= new iCS_ReflectionDesc(company, package, displayName, toolTip, iconPath,
-                                                      objType, classType, methodInfo,
+                                                      objType, classType, methodInfo, fieldInfo,
                                                       paramIsOuts, paramNames, paramTypes, paramDefaults,
                                                       retName, retType);
         Functions.Add(fd);

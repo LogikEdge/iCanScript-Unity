@@ -6,13 +6,15 @@ using System.Collections.Generic;
 
 public class iCS_DynamicMenu {
     internal class MenuContext {
-        public string          Command;
-        public iCS_EditorObject SelectedObject;
-        public iCS_IStorage      Storage;
-        public MenuContext(string command, iCS_EditorObject selected, iCS_IStorage storage) {
+        public string               Command;
+        public iCS_EditorObject     SelectedObject;
+        public iCS_IStorage         Storage;
+        public iCS_ReflectionDesc   Descriptor;
+        public MenuContext(string command, iCS_EditorObject selected, iCS_IStorage storage, iCS_ReflectionDesc descriptor= null) {
             Command= command;
             SelectedObject= selected;
             Storage= storage;
+            Descriptor= descriptor;
         }
     }
     // ======================================================================
@@ -545,6 +547,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, iCS_ReflectionDesc desc) {
+        if(parent.IsPort) parent= storage.GetParent(storage.GetParent(parent));
         iCS_EditorObject method= storage.CreateMethod(parent.InstanceId, ProcessMenuPosition, desc);
         return method;
     }
