@@ -27,8 +27,7 @@ public partial class iCS_IStorage {
         // Reorganize runtime parameter information.
         iCS_EditorObject module= GetParent(port);
         // Rearrange port indexes
-		int idx= port.PortIndex;
-        ForEachChildDataPort(module, p=> { if(p.PortIndex > idx) --p.PortIndex; });
+        GetSortedChildDataPorts(module);
     }
     
     // ======================================================================
