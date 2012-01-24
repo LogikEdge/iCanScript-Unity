@@ -12,7 +12,7 @@ public class iCS_Editor : EditorWindow {
 	// iCanScript Window Menu.
 	[MenuItem("Window/iCanScript Editor")]
 	public static void ShowiCanScriptEditor() {
-        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript Editor") as iCS_Editor;
+        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
         editor.hideFlags= HideFlags.DontSave;
 	}
 
@@ -39,8 +39,8 @@ public class iCS_Editor : EditorWindow {
     iCS_EditorObject DragObject            = null;
     Vector2         MouseDragStartPosition= Vector2.zero;
     Vector2         DragStartPosition     = Vector2.zero;
-    bool            IsDragEnabled         = true;
-    bool            IsDragStarted         { get { return DragObject != null; }}
+    bool            IsDragEnabled         = false;
+    bool            IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
 
     // ----------------------------------------------------------------------
     Vector2 ScreenCenter { get { return new Vector2(0.5f*position.width, 0.5f*position.height); } }
@@ -77,7 +77,7 @@ public class iCS_Editor : EditorWindow {
 	// Mouse services
 	void UpdateMouse() {
         myMousePosition= Event.current.mousePosition;
-//        if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
+        if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
 	}
     Vector2 MousePosition { get { return myMousePosition; } }
 	Vector2 myMousePosition= Vector2.zero;
@@ -277,7 +277,7 @@ public class iCS_Editor : EditorWindow {
             case EventType.MouseDrag: {
                 switch(Event.current.button) {
                     case 0: { // Left mouse button
-                        ProcessDrag();
+                        ProcessDrag();                            
                         break;
                     }
                     case 2: { // Middle mouse button
@@ -299,9 +299,7 @@ public class iCS_Editor : EditorWindow {
                 DetermineSelectedObject();
                 switch(Event.current.button) {
                     case 0: { // Left mouse button
-                        if(IsDragStarted) {
-                            ProcessDrag();
-                        }
+                        IsDragEnabled= true;
                         Event.current.Use();
                         break;
                     }
@@ -664,7 +662,7 @@ public class iCS_Editor : EditorWindow {
     void ResetDrag() {
         DragType= DragTypeEnum.None;
         DragObject= null;
-        IsDragEnabled= true;                    
+        IsDragEnabled= false;                    
     }
 #endregion User Interaction
     
