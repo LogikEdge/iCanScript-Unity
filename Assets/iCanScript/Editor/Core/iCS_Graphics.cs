@@ -520,7 +520,7 @@ public class iCS_Graphics {
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
-			if(!port.IsEnablePort) portCenter.y-= 2;
+//			if(!port.IsEnablePort) portCenter.y-= 2;
 			if(port.IsInputPort && storage.GetSource(port) == null) {
 				if(!Application.isPlaying && storage.Preferences.DisplayOptions.EditorPortValues) portValue= storage.GetPortValue(port);
 				if(portValue != null) {
@@ -560,13 +560,13 @@ public class iCS_Graphics {
         switch(port.Edge) {
             case iCS_EditorObject.EdgeEnum.Left:
                 center.x  += 1 + iCS_EditorConfig.PortSize;
-                center.y  -= 1 + 0.5f * labelSize.y;
+                center.y  -= -1 + 0.5f * labelSize.y;
 				valuePos.x-= 1 + valueSize.x + iCS_EditorConfig.PortSize;
 				valuePos.y-= 1 + 0.5f * valueSize.y;
                 break;
             case iCS_EditorObject.EdgeEnum.Right:
                 center.x  -= 1 + labelSize.x + iCS_EditorConfig.PortSize;
-                center.y  -= 1 + 0.5f * labelSize.y;
+                center.y  -= -1 + 0.5f * labelSize.y;
 				valuePos.x+= 1 + iCS_EditorConfig.PortSize;
 				valuePos.y-= 1 + 0.5f * valueSize.y;
                 break;

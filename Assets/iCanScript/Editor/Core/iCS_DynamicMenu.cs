@@ -554,15 +554,37 @@ public class iCS_DynamicMenu {
             parent= storage.GetParent(port);
             iCS_EditorObject grandParent= storage.GetParent(parent);
             if(!grandParent.IsModule) return null;
-            iCS_EditorObject method= storage.CreateMethod(grandParent.InstanceId, ProcessMenuPosition, desc);
+			Vector2 pos= ProcessMenuPosition;
+			switch(port.Edge) {
+				case iCS_EditorObject.EdgeEnum.Top: {
+					pos.y-= 50;
+					break;
+				}
+				case iCS_EditorObject.EdgeEnum.Bottom: {
+					pos.y+= 50;
+					break;
+				}
+				case iCS_EditorObject.EdgeEnum.Left: {
+					pos.x-= 50;
+					break;
+				}
+				case iCS_EditorObject.EdgeEnum.Right:
+				default: {
+					pos.x+= 50;
+					break;
+				}
+			}
+            iCS_EditorObject method= storage.CreateMethod(grandParent.InstanceId, pos, desc);
             if(port.IsInputPort) {
-                if(desc.ReturnType != null) {
-                    if(iCS_Types.IsA(port.RuntimeType, desc.ReturnType)) {
-                        
-                    }
-                }
+				iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), storage.GetChildOutputDataPorts(method)); 
+				if(outputPorts.Length >= 1) {
+					storage.SetSource(port, outputPorts[0]);
+				}
             } else {
-                
+				iCS_EditorObject[] inputPorts= Prelude.filter(x=> iCS_Types.IsA(x.RuntimeType, port.RuntimeType), storage.GetChildInputDataPorts(method));
+				if(inputPorts.Length >= 1) {
+					storage.SetSource(inputPorts[0], port);
+				}
             }
             return method;
         }

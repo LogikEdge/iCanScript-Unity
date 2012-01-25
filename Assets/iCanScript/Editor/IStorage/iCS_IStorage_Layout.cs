@@ -297,7 +297,7 @@ public partial class iCS_IStorage {
         // Relayout left ports.
         ports= SortLeftPorts(node);
         if(ports.Length != 0) {
-            float topOffset= iCS_EditorConfig.NodeTitleHeight;
+            float topOffset= iCS_EditorConfig.NodeTitleHeight-2;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(ports[i].IsFloating == false) {
@@ -314,7 +314,7 @@ public partial class iCS_IStorage {
         // Relayout right ports.
         ports= SortRightPorts(node);
         if(ports.Length != 0) {
-            float topOffset= iCS_EditorConfig.NodeTitleHeight;
+            float topOffset= iCS_EditorConfig.NodeTitleHeight-2;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(ports[i].IsFloating == false) {
