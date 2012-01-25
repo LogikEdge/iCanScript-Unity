@@ -119,16 +119,17 @@ public class iCS_DataBase {
         return FunctionMenu;
     }
     // ----------------------------------------------------------------------
-    public static string[] BuildMenu(bool filterOnInput, Type inputType, bool filterOnOutput, Type outputType) {
+    public static string[] BuildMenu(Type inputType, Type outputType) {
         QSort();
         List<string> menu= new List<string>();
         string previousName= "";
         bool needsSignature= false;
+		int prevIdx= -1;
         for(int i= 0; i < Functions.Count; ++i) {
             // Filter functions according to input or output filter.
             bool shouldInclude= false;
             var func= Functions[i];
-            if(filterOnInput) {
+            if(inputType != null) {
                 if(func.ClassType == inputType) {
                     switch(func.ObjectType) {
                         case iCS_ObjectTypeEnum.InstanceMethod:
@@ -140,13 +141,14 @@ public class iCS_DataBase {
                 }
                 for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
                     if(func.ParamIsOuts[j] == false) {
-                        if(func.ParamTypes[j] == inputType) {
+//						if(func.ParamTypes[j] == inputType) {
+                        if(iCS_Types.IsA(func.ParamTypes[j], inputType)) {
                             shouldInclude= true;
                         }
                     }
                 }
             }
-            if(!shouldInclude && filterOnOutput) {
+            if(!shouldInclude && outputType != null) {
                 if(func.ClassType == outputType) {
                     switch(func.ObjectType) {
                         case iCS_ObjectTypeEnum.Constructor:
@@ -160,7 +162,8 @@ public class iCS_DataBase {
                 if(func.ReturnType == outputType) shouldInclude= true;
                 for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
                     if(func.ParamIsOuts[j]) {
-                        if(func.ParamTypes[j] == outputType) {
+//                        if(outputType == func.ParamTypes[j]) {
+                        if(iCS_Types.IsA(outputType, func.ParamTypes[j])) {
                             shouldInclude= true;
                         }
                     }
@@ -169,8 +172,8 @@ public class iCS_DataBase {
             if(shouldInclude) {
                 string newName= GetFunctionName(func);
                 if(previousName == newName) needsSignature= true;
-                if(previousName != "") {
-                    var prevFunc= Functions[i-1];
+                if(prevIdx != -1) {
+                    var prevFunc= Functions[prevIdx];
                     var signature= "/"+GetFunctionSignature(prevFunc);
                     if(needsSignature) { menu.Add(previousName+signature); }
     //                else               { menu.Add(GetFunctionPath(prevFunc)+signature); }
@@ -180,10 +183,11 @@ public class iCS_DataBase {
                     needsSignature= false;
                     previousName= newName;
                 }
+				prevIdx= i;
             }
         }
         if(previousName != "") {
-            var func= Functions[Functions.Count-1];
+            var func= Functions[prevIdx];
             var signature= "/"+GetFunctionSignature(func);
             if(needsSignature) { menu.Add(previousName+signature); }
 //            else               { menu.Add(GetFunctionPath(func)+signature); }

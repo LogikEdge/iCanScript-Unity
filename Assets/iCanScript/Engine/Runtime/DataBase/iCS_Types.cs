@@ -6,6 +6,7 @@ public static class iCS_Types {
     // ----------------------------------------------------------------------
     // Returns true if type can be converted to another type
     public static bool IsA(Type baseType, Type derivedType) {
+		if((baseType.IsArray && !derivedType.IsArray) || (!baseType.IsArray && derivedType.IsArray)) return false;
         for(; derivedType != null; derivedType= derivedType.BaseType) {
             if(baseType == derivedType) return true;
         }

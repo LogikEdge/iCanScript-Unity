@@ -218,9 +218,9 @@ public class iCS_DynamicMenu {
         if(selectedObject.IsDataPort) {
             string[] functionMenu;
             if(selectedObject.IsInputPort) {
-                functionMenu= iCS_DataBase.BuildMenu(false, null, true, selectedObject.RuntimeType);
+                functionMenu= iCS_DataBase.BuildMenu(null, selectedObject.RuntimeType);
             } else {
-                functionMenu= iCS_DataBase.BuildMenu(true, selectedObject.RuntimeType, false, null);
+                functionMenu= iCS_DataBase.BuildMenu(selectedObject.RuntimeType, null);
             }
             if(functionMenu.Length != 0) {
                 int len= menu.Length;
