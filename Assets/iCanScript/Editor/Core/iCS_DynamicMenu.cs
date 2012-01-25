@@ -48,8 +48,6 @@ public class iCS_DynamicMenu {
     const string OnExitStr= "+ "+iCS_EditorStrings.OnExitNode;
     const string PublishPortStr= "Publish on Module";
     const string EnablePortStr= "+ Enable Port";
-    const string UnhideTransitionGuardStr= "Show Transition Guard";
-    const string UnhideTransitionActionStr= "Show Transition Action";
     const string SeparatorStr= "";
 
     // ======================================================================
@@ -352,8 +350,6 @@ public class iCS_DynamicMenu {
             case FoldStr:                   storage.Fold(selectedObject); break;
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 ProcessDestroyObject(selectedObject, storage); break;
-            case UnhideTransitionGuardStr:  ProcessUnhideTransitionGuard(selectedObject, storage); break;
-            case UnhideTransitionActionStr: ProcessUnhideTransitionAction(selectedObject, storage); break;
             case EnablePortStr: {
                 iCS_EditorObject port= storage.CreatePort(iCS_EditorStrings.EnablePort, selectedObject.InstanceId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
@@ -513,20 +509,6 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void ProcessDestroyObject(iCS_EditorObject obj, iCS_IStorage storage) {
         DestroyObject(obj, storage);    
-    }
-	// ----------------------------------------------------------------------
-    void ProcessUnhideTransitionGuard(iCS_EditorObject statePort, iCS_IStorage storage) {
-        if(statePort.IsInStatePort) statePort= storage[statePort.Source];
-        iCS_EditorObject action= null;
-        iCS_EditorObject guard= storage.GetTransitionGuardAndAction(statePort, out action);
-        storage.Maximize(guard);
-    }
-	// ----------------------------------------------------------------------
-    void ProcessUnhideTransitionAction(iCS_EditorObject statePort, iCS_IStorage storage) {
-        if(statePort.IsInStatePort) statePort= storage[statePort.Source];
-        iCS_EditorObject action= null;
-        storage.GetTransitionGuardAndAction(statePort, out action);
-        if(action != null) storage.Maximize(action);
     }
 
     // ======================================================================
