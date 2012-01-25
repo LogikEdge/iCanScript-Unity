@@ -141,8 +141,8 @@ public class iCS_DataBase {
                 }
                 for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
                     if(func.ParamIsOuts[j] == false) {
-//						if(func.ParamTypes[j] == inputType) {
-                        if(iCS_Types.IsA(func.ParamTypes[j], inputType)) {
+						if(func.ParamTypes[j] == inputType) {
+//                        if(iCS_Types.IsA(func.ParamTypes[j], inputType)) {
                             shouldInclude= true;
                         }
                     }
@@ -162,8 +162,8 @@ public class iCS_DataBase {
                 if(func.ReturnType == outputType) shouldInclude= true;
                 for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
                     if(func.ParamIsOuts[j]) {
-//                        if(outputType == func.ParamTypes[j]) {
-                        if(iCS_Types.IsA(outputType, func.ParamTypes[j])) {
+                        if(outputType == func.ParamTypes[j]) {
+//                        if(iCS_Types.IsA(outputType, func.ParamTypes[j])) {
                             shouldInclude= true;
                         }
                     }
