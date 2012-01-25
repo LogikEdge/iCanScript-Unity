@@ -133,7 +133,7 @@ public class iCS_DynamicMenu {
             menu= tmp;            
         }
         // Delete menu item
-        if(selectedObject.InstanceId != 0) {
+        if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionAction) {
             tmp= new string[menu.Length+2];
             menu.CopyTo(tmp, 0);
             tmp[menu.Length]= SeparatorStr;
