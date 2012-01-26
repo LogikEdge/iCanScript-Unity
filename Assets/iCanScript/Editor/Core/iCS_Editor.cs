@@ -332,7 +332,7 @@ public class iCS_Editor : EditorWindow {
                             Storage.Minimize(SelectedObject);
                         } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
                             Storage.RegisterUndo("Maximize");
-                            Storage.Maximize(SelectedObject);
+                            Storage.Fold(SelectedObject);
                         }
                     }                                                
                 }
