@@ -828,8 +828,30 @@ public class iCS_Editor : EditorWindow {
         iCS_EditorObject oldParent= Storage.GetParent(node);
         if(newParent == null || newParent == oldParent) return;
         Storage.SetParent(node, newParent);
+		if(node.IsState) CleanupEntryState(node, oldParent);
         CleanupConnections(node);
     }
+	// ----------------------------------------------------------------------
+	void CleanupEntryState(iCS_EditorObject state, iCS_EditorObject prevParent) {
+		state.IsEntryState= false;
+		iCS_EditorObject newParent= Storage.GetParent(state);
+		bool anEntryExists= false;
+		Storage.ForEachChild(newParent, child=> { if(child.IsEntryState) anEntryExists= true; });
+		if(!anEntryExists) state.IsEntryState= true;
+		anEntryExists= false;
+		Storage.ForEachChild(prevParent, child=> { if(child.IsEntryState) anEntryExists= true; });
+		if(!anEntryExists) {
+			Storage.ForEachChild(prevParent,
+				child=> {
+					if(child.IsState) {
+						child.IsEntryState= true;
+						return true;
+					}
+					return false;
+				}
+			);
+		}
+	}
 	// ----------------------------------------------------------------------
     void CleanupConnections(iCS_EditorObject node) {
         switch(node.ObjectType) {
