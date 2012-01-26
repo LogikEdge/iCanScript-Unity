@@ -286,7 +286,6 @@ public class iCS_Editor : EditorWindow {
                         break;
                     }
 					default: {
-						Debug.Log("Sould never occure");
 						break;
 					}
                 }

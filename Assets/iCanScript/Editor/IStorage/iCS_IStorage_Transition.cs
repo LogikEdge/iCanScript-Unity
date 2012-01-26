@@ -48,13 +48,6 @@ public partial class iCS_IStorage {
         LayoutTransitionModule(transitionModule);
     }
     // ----------------------------------------------------------------------
-    public void DestroyTransition(iCS_EditorObject transitionObject) {
-        iCS_EditorObject outStatePort= GetOutStatePort(transitionObject);
-        iCS_EditorObject inStatePort= GetInTransitionPort(outStatePort);
-        iCS_EditorObject transitionModule= GetTransitionModule(outStatePort);
-        
-    }
-    // ----------------------------------------------------------------------
     // Returns the common parent of given states.
     public iCS_EditorObject GetTransitionParent(iCS_EditorObject inState, iCS_EditorObject outState) {
         bool parentFound= false;
@@ -80,6 +73,7 @@ public partial class iCS_IStorage {
         if(transitionObject.IsInStatePort) {
             do {
                 iCS_EditorObject source= GetSource(transitionObject);
+				if(source == null) return null;
                 if(source.IsOutStatePort) return source;
                 iCS_EditorObject sourceParent= GetParent(source);
                 transitionObject= GetInTransitionPort(sourceParent);                
@@ -143,8 +137,10 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject GetTransitionModule(iCS_EditorObject statePort) {
+		if(statePort == null) return null;
         // Get the outStatePort
         statePort= GetOutStatePort(statePort);
+		if(statePort == null) return null;
         return GetParent(GetParent(GetSource(statePort)));
     }
     // ----------------------------------------------------------------------

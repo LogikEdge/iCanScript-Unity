@@ -139,7 +139,7 @@ public partial class iCS_IStorage {
             obj=> {
                 // Cleanup disconnected dynamic state or module ports.
                 if((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) {
-                    DestroyInstanceInternal(obj.InstanceId);
+                    DestroyInstanceInternal(obj);
                     modified= true;
                 } 
             }
@@ -435,54 +435,6 @@ public partial class iCS_IStorage {
         TreeCache[id].DisplayPosition= new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0);
         return EditorObjects[id];        
     }
-    // ----------------------------------------------------------------------
-    public void DestroyInstance(int id) {
-        ProcessUndoRedo();
-        DestroyInstanceInternal(id);
-        // Cleanup disconnected module and state ports.
-    }
-    // ----------------------------------------------------------------------
-    public void DestroyInstance(iCS_EditorObject eObj) {
-        if(eObj == null) return;
-        DestroyInstance(eObj.InstanceId);
-    }
-    // ----------------------------------------------------------------------
-    void DestroyInstanceInternal(int id) {
-        if(IsInvalid(id)) {
-            Debug.LogError("Trying the delete a non-existing EditorObject with id= "+id);
-        }
-        // Also destroy transition exit/entry module when removing transitions.
-        iCS_EditorObject toDestroy= EditorObjects[id];
-        if(toDestroy.IsInStatePort && IsValid(toDestroy.Source)) {
-            DestroyInstanceInternal(GetSource(toDestroy));
-            return;
-        }
-        if(toDestroy.IsOutStatePort) {
-            iCS_EditorObject actionModule= null;
-            iCS_EditorObject guardModule= GetTransitionGuardAndAction(toDestroy, out actionModule);
-            DestroyInstanceInternal(guardModule);
-            if(actionModule != null) DestroyInstanceInternal(actionModule);
-        }
-        // Disconnect ports linking to this port.
-        ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPort(toDestroy));
-        // Update modules runtime data when removing a module port.
-        if(toDestroy.IsModulePort && GetParent(toDestroy).IsModule) RemovePortFromModule(toDestroy);
-        // Remove all children first.
-        while(TreeCache[id].Children.Count != 0) {
-            DestroyInstanceInternal(TreeCache[id].Children[0]);
-        }
-        TreeCache.DestroyInstance(id);
-        // Set the parent dirty to force a relayout.
-        if(IsValid(toDestroy.ParentId)) SetDirty(GetParent(toDestroy));
-        toDestroy.Reset();
-        myIsDirty= true;
-    }
-    // ----------------------------------------------------------------------
-    void DestroyInstanceInternal(iCS_EditorObject toDestroy) {
-        if(toDestroy == null || IsInvalid(toDestroy.InstanceId)) return;
-        DestroyInstanceInternal(toDestroy.InstanceId);
-    }
-    
     // ======================================================================
     // Display Options
     // ----------------------------------------------------------------------

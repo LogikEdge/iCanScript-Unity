@@ -77,6 +77,7 @@ public class iCS_DynamicMenu {
             case iCS_ObjectTypeEnum.Module:           ModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionGuard:  ModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TransitionAction: ModuleMenu(selectedObject, storage); break;
+			case iCS_ObjectTypeEnum.TransitionModule: TransitionModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.Constructor:      MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceMethod:   MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.StaticMethod:     MethodMenu(selectedObject, storage); break;
@@ -140,6 +141,12 @@ public class iCS_DynamicMenu {
             tmp[menu.Length+1]= DeleteStr;
             menu= tmp;
         }
+        ShowMenu(menu, selectedObject, storage);
+    }
+	// ----------------------------------------------------------------------
+    void TransitionModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+        string[] menu= new string[1];
+        menu[0]= DeleteStr;
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
