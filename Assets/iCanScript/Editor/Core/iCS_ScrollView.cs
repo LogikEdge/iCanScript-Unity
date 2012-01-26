@@ -32,7 +32,7 @@ public class iCS_ScrollView {
     public void Update(Rect screenArea, Rect rootNodeRect) {
         // Animate the scroll position.
         if(ScrollPositionAnimation.IsActive) {
-        ScrollPositionAnimation.Update();
+        	ScrollPositionAnimation.Update();
             ScrollPosition= ScrollPositionAnimation.CurrentValue;
         }
         

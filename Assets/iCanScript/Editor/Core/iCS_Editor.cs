@@ -25,13 +25,13 @@ public class iCS_Editor : EditorWindow {
     iCS_DynamicMenu      DynamicMenu    = null;
 
     // ----------------------------------------------------------------------
-    float LastDirtyUpdateTime     = 0f;
-    int   RefreshCnt              = 0;
-    int   InitialPositionUpdateCnt= 0;
+    float LastDirtyUpdateTime= 0f;
+    int   RefreshCnt         = 0;
     
     // ----------------------------------------------------------------------
-    private iCS_Graphics                Graphics  = null;
-    public  iCS_ScrollView              ScrollView= null;    
+    private iCS_Graphics    Graphics  = null;
+    public  iCS_ScrollView  ScrollView= null;
+    private bool			InitScrollPosition= false;
     
     // ----------------------------------------------------------------------
     enum DragTypeEnum { None, PortDrag, NodeDrag, TransitionCreation };
@@ -125,12 +125,8 @@ public class iCS_Editor : EditorWindow {
         Inspector= inspector;
         // Set the graph root.
         DisplayRoot= storage.IsValid(0) ? storage[0] : null;
-//        // Position the scroll view in the middle of the graph.
-//        if(ScrollView != null && DisplayRoot != null) {
-//            ScrollView.CenterAt(Math3D.Middle(storage.GetPosition(DisplayRoot)));
-//        }
-
-
+		InitScrollPosition= true;
+		
 //        Debug.Log("AppContentPath: "+EditorApplication.applicationContentsPath);
 //        Debug.Log("AppPath: "+EditorApplication.applicationPath);
 //        if(!iCS_LicenseFile.Exists) {
@@ -199,14 +195,6 @@ public class iCS_Editor : EditorWindow {
             if(DisplayRoot == null && Storage.IsValid(0)) {
                 DisplayRoot= Storage[0];
             }
-            // Position the scroll view in the middle of the graph.
-            if(ScrollView != null && DisplayRoot != null) {
-                if(++InitialPositionUpdateCnt < 3) {
-                    ScrollView.CenterAt(Math3D.Middle(Storage.GetPosition(DisplayRoot)));                    
-                } else {
-                    InitialPositionUpdateCnt= 3;
-                }
-            }
         }
         // Cleanup objects.
         iCS_AutoReleasePool.Update();
@@ -228,8 +216,14 @@ public class iCS_Editor : EditorWindow {
         
         // Update scroll view.
         Rect scrollViewPosition= DisplayRoot != null ? Storage.GetPosition(DisplayRoot) : new Rect(0,0,500,500);
-        ScrollView.Update(position, scrollViewPosition);
-        
+		ScrollView.Update(position, scrollViewPosition);
+		if(InitScrollPosition) {
+			InitScrollPosition= false;
+			ScrollView.CenterAt(Storage.ScrollPosition, 0);
+		} else {
+	        Storage.ScrollPosition= ScrollView.ScreenToGraph(new Vector2(0.5f*position.width, 0.5f*position.height));			
+		}
+		
 		// Update mouse info.
 		UpdateMouse();
 

@@ -9,10 +9,11 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-                      public iCS_UserPreferences      Preferences  = new iCS_UserPreferences();
-    [HideInInspector] public List<iCS_EditorObject>   EditorObjects= new List<iCS_EditorObject>();
-    [HideInInspector] public List<Object>             UnityObjects = new List<Object>();
-    [HideInInspector] public int                      UndoRedoId   = 0;
+                      public iCS_UserPreferences      Preferences   = new iCS_UserPreferences();
+    [HideInInspector] public List<iCS_EditorObject>   EditorObjects = new List<iCS_EditorObject>();
+    [HideInInspector] public List<Object>             UnityObjects  = new List<Object>();
+    [HideInInspector] public int                      UndoRedoId    = 0;
+	[HideInInspector] public Vector2				  ScrollPosition= Vector2.zero;
 
     // ----------------------------------------------------------------------
     public bool IsValidEditorObject(int id) { return id >= 0 && id < EditorObjects.Count && EditorObjects[id] != null; }
