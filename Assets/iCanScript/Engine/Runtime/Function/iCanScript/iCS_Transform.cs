@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Package="GameObject", Name="Transform")]
+[iCS_Class(Company="iCanScript", Package="GameObject")]
 public sealed class iCS_Transform {
     [iCS_Function]
     public static void Transform(GameObject gameObject, Vector3 translation) {

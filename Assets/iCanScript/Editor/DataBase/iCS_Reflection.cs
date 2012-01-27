@@ -83,12 +83,11 @@ public class iCS_Reflection {
                         }
                         // Extract class information.
                         iCS_ClassAttribute classAttribute= classCustomAttribute as iCS_ClassAttribute;
-                        string classCompany= classAttribute.Company ?? "MyComnpany";
-                        string className   = classAttribute.Name    ?? classType.Name;
-                        string classPackage= classAttribute.Package ?? className;
+                        string classCompany= classAttribute.Company;
+                        string classPackage= classAttribute.Package ?? classType.Name;
                         string classToolTip= classAttribute.ToolTip;
                         string classIcon   = classAttribute.Icon;
-                        DecodeClassInfo(classType, classCompany, classPackage, className, classToolTip, classIcon);
+                        DecodeClassInfo(classType, classCompany, classPackage, classToolTip, classIcon);
                     }
                 }
             }
@@ -98,17 +97,17 @@ public class iCS_Reflection {
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------
-    public static void DecodeClassInfo(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+    public static void DecodeClassInfo(Type classType, string company, string package, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         if(classType.IsGenericType) {
             Debug.LogWarning("iCanScript: Generic class not supported yet.  Skiping: "+classType.Name);
             return;
         }
-        DecodeConstructors(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
-        DecodeClassFields(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
-        DecodeFunctionsAndMethods(classType, company, package, className, classToolTip, classIconPath, acceptAllPublic);
+        DecodeConstructors(classType, company, package, classToolTip, classIconPath, acceptAllPublic);
+        DecodeClassFields(classType, company, package, classToolTip, classIconPath, acceptAllPublic);
+        DecodeFunctionsAndMethods(classType, company, package, classToolTip, classIconPath, acceptAllPublic);
     }
     // ----------------------------------------------------------------------
-    static void DecodeClassFields(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+    static void DecodeClassFields(Type classType, string company, string package, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         // Gather field information.
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerField= false;
@@ -137,46 +136,46 @@ public class iCS_Reflection {
             }
             if(registerField) {
                 if(field.IsStatic) {
-                    DecodeStaticField(company, package, field.Name, classToolTip, classIconPath, classType, field, direction);
+                    DecodeStaticField(company, package, classToolTip, classIconPath, classType, field, direction);
                 } else {
-                    DecodeInstanceField(company, package, field.Name, classToolTip, classIconPath, classType, field, direction);
+                    DecodeInstanceField(company, package, classToolTip, classIconPath, classType, field, direction);
                 }                
             }
         }        
     }
     // ----------------------------------------------------------------------
-    static void DecodeStaticField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
+    static void DecodeStaticField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
         string[] paramNames= new string[1]{field.Name};
         Type[] paramTypes= new Type[1]{field.FieldType};
         object[] paramDefaultValues= new object[1]{iCS_Types.DefaultValue(field.FieldType)};
         if(dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[1]{false};
-            iCS_DataBase.AddStaticField(company, package, displayName+" (set)", toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddStaticField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
         if(dir == iCS_ParamDirectionEnum.Out || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[1]{true};
-            iCS_DataBase.AddStaticField(company, package, displayName+" (get)", toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddStaticField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
     }
     // ----------------------------------------------------------------------
-    static void DecodeInstanceField(string company, string package, string displayName, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
+    static void DecodeInstanceField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
         string[] paramNames= new string[3]{"this", field.Name, "this"};
         Type[] paramTypes= new Type[3]{classType, field.FieldType, classType};
         object[] paramDefaultValues= new object[3]{iCS_Types.DefaultValue(classType), iCS_Types.DefaultValue(field.FieldType),iCS_Types.DefaultValue(classType)};
         if(dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[3]{false, false, true};
-            iCS_DataBase.AddInstanceField(company, package, "set_"+displayName, toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddInstanceField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
         if(dir == iCS_ParamDirectionEnum.Out || dir == iCS_ParamDirectionEnum.InOut) {
             bool[] paramIsOuts= new bool[3]{false, true, true};
-            iCS_DataBase.AddInstanceField(company, package, "get_"+displayName, toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
+            iCS_DataBase.AddInstanceField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, paramIsOuts, paramNames, paramTypes, paramDefaultValues);                    
         }
     }
     // ----------------------------------------------------------------------
-    static void DecodeConstructors(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+    static void DecodeConstructors(Type classType, string company, string package, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         foreach(var constructor in classType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
             bool registerMethod= false;
-            string displayName= className;
+            string displayName= classType.Name;
             string returnName= "";
             string toolTip= classToolTip;
             string iconPath= classIconPath;
@@ -201,7 +200,7 @@ public class iCS_Reflection {
             }
             if(registerMethod) {
                 if(constructor.IsGenericMethod) {
-                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+className);
+                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+classType.Name);
                     continue;
                 }
                 DecodeConstructor(company, package, displayName, toolTip, iconPath, classType, constructor, returnName);
@@ -222,7 +221,7 @@ public class iCS_Reflection {
                                     paramIsOut, paramNames, paramTypes, paramDefaults);
     }
     // ----------------------------------------------------------------------
-    static void DecodeFunctionsAndMethods(Type classType, string company, string package, string className, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+    static void DecodeFunctionsAndMethods(Type classType, string company, string package, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerMethod= false;
             string displayName= method.Name;

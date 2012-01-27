@@ -55,10 +55,19 @@ public class iCS_DataBase {
     // Returns 0 if equal, negative if first is smaller and
     // positive if first is greather.
     public static int CompareFunctionNames(iCS_ReflectionDesc d1, iCS_ReflectionDesc d2) {
-        int result= d1.Company.CompareTo(d2.Company);
-        if(result != 0) return result;
-        result= d1.Package.CompareTo(d2.Package);
-        if(result != 0) return result;
+        if(d1.Company == null && d2.Company != null) return -1;
+        if(d1.Company != null && d2.Company == null) return 1;
+        int result;
+        if(d1.Company != null) {
+            result= d1.Company.CompareTo(d2.Company);
+            if(result != 0) return result;
+        }
+        if(d1.Package == null && d2.Package != null) return -1;
+        if(d1.Package != null && d2.Package == null) return 1;
+        if(d1.Package != null) {
+            result= d1.Package.CompareTo(d2.Package);
+            if(result != 0) return result;            
+        }
         return d1.DisplayName.CompareTo(d2.DisplayName);
     }
     // ----------------------------------------------------------------------
@@ -122,13 +131,9 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
-    public static iCS_ReflectionDesc GetDescriptor(string company, string package, string signature) {
+    public static iCS_ReflectionDesc GetDescriptor(string pathAndSignature) {
         foreach(var desc in Functions) {
-            if((company == null || desc.Company == company) &&
-               (package == null || desc.Package == package) &&
-               desc.FunctionSignature == signature) {
-                   return desc;
-               }
+            if(desc.ToString() == pathAndSignature) return desc;
         }
         return null;
     }
@@ -217,10 +222,12 @@ public class iCS_DataBase {
                 }                
             }
         }
-        Add(company, package, fromType.Name+"->"+toType.Name, "Converts from "+fromType.Name+" to "+toType.Name, iconPath,
+        string fromTypeName= iCS_Types.TypeName(fromType);
+        string toTypeName= iCS_Types.TypeName(toType);
+        Add(company, package, fromTypeName+"->"+toTypeName, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
             iCS_ObjectTypeEnum.Conversion, classType, methodInfo, null,
-            new bool[1]{false}, new string[1]{fromType.Name}, new Type[1]{fromType}, new object[1]{null},
-            toType.Name);        
+            new bool[1]{false}, new string[1]{fromTypeName}, new Type[1]{fromType}, new object[1]{null},
+            toTypeName);        
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.

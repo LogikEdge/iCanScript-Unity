@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Package="Type Conversions", Name="Conversions")]
+[iCS_Class(Company="iCanScript", Package="Conversions")]
 public static class iCS_Conversions {
     // ToInt
     [iCS_Conversion] public static int   ToInt(bool v)  { return v ? 1 : 0; }

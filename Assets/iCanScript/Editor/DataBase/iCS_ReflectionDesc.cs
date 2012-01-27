@@ -105,10 +105,22 @@ public class iCS_ReflectionDesc {
     }
     // ----------------------------------------------------------------------
     // Returns the function name in the form of "company/package/displayName".
-    public string FunctionPath { get { return Company+"/"+Package; } }
+    public string FunctionPath {
+        get {
+            string package= Package ?? "";
+            if(Company == null) return package;
+            return Company+"/"+package;
+        }
+    }
     // ----------------------------------------------------------------------
     // Returns the function name in the form of "company/package/displayName".
-    public string FunctionName { get { return FunctionPath+"/"+DisplayName; }}
+    public string FunctionName {
+        get {
+            string path= FunctionPath;
+            if(path == "") return DisplayName;
+            return FunctionPath+"/"+DisplayName;
+        }
+    }
 
     // ======================================================================
     // Utilities

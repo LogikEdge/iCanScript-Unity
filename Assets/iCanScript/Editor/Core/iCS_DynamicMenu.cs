@@ -293,31 +293,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     iCS_ReflectionDesc GetReflectionDescFromMenuCommand(MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
-        string[] idents= menuCommand.Split(new char[1]{'/'});
-        string company= null;
-        string package= null;
-        string signature= null;
-        switch(idents.Length) {
-            case 1: {
-                signature= idents[0];
-                break;
-            }
-            case 2: {
-                company= idents[0];
-                signature= idents[1];
-                break;
-            }
-            case 3: {
-                company= idents[0];
-                package= idents[1];
-                signature= idents[2];
-                break;
-            }
-            default: {
-                return null;
-            }
-        }
-        return iCS_DataBase.GetDescriptor(company, package, signature);
+        return iCS_DataBase.GetDescriptor(menuCommand);
     }
     
     // ======================================================================

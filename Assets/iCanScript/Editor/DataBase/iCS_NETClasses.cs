@@ -12,7 +12,7 @@ public static class iCS_NETClasses {
     }
     // ----------------------------------------------------------------------
     public static void DecodeNETClassInfo(Type type) {
-        iCS_Reflection.DecodeClassInfo(type, "NET", type.Name, type.Name, ".NET class "+type.Name, null, true);
+        iCS_Reflection.DecodeClassInfo(type, "NET", type.Name, ".NET class "+type.Name, null, true);
     }
 
 }

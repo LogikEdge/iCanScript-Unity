@@ -159,6 +159,6 @@ public static class iCS_UnityClasses {
     }
     // ----------------------------------------------------------------------
     public static void DecodeUnityClassInfo(Type type) {
-        iCS_Reflection.DecodeClassInfo(type, "Unity", type.Name, type.Name, "Unity class "+type.Name, null, true);
+        iCS_Reflection.DecodeClassInfo(type, "Unity", type.Name, "Unity class "+type.Name, null, true);
     }
 }

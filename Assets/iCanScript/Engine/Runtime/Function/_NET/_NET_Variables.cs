@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="Variables")]
+[iCS_Class(Package="Variables")]
 public class CSharp_Variables {
     [iCS_Function(Name="bool")]      public static bool      _int(bool value)        { return value; }
     [iCS_Function(Name="int")]       public static int       _int(int value)         { return value; }

@@ -5,12 +5,6 @@ public class iCS_ClassAttribute : Attribute {
     // ======================================================================
     // Optional Parameters
     // ----------------------------------------------------------------------
-    public string Name {
-        get { return myName; }
-        set { myName= value; }
-    }
-    private string myName= null;
-    
     public string Company {
         get { return myCompany; }
         set { myCompany= value; }
