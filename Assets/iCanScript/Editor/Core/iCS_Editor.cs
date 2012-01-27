@@ -112,6 +112,7 @@ public class iCS_Editor : EditorWindow {
         Graphics    = null;
         ScrollView  = null;
         DynamicMenu = null;
+        Close();
     }
     
 //    WWW GetWebPage() {
