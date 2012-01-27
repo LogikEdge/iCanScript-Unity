@@ -731,13 +731,13 @@ public class iCS_Editor : EditorWindow {
                 }
                 else {  // A conversion is required.
 					if(iCS_Types.CanBeConnectedWithUpConversion(outType, inType)) {
-						if(EditorUtility.DisplayDialog("Up Conversion Connection", "Are you sure you want to generate a conversion from "+iCS_Types.GetTypeName(outType)+" to "+iCS_Types.GetTypeName(inType)+"?", "Generate Conversion", "Abort")) {
+						if(EditorUtility.DisplayDialog("Up Conversion Connection", "Are you sure you want to generate a conversion from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)+"?", "Generate Conversion", "Abort")) {
 							SetNewDataConnection(inPort, outPort);							
 						}
 					} else {
 	                    iCS_ReflectionDesc conversion= iCS_DataBase.FindConversion(outType, inType);
 	                    if(conversion == null) {
-							ShowNotification(new GUIContent("No direct conversion exists from "+iCS_Types.GetTypeName(outType)+" to "+iCS_Types.GetTypeName(inType)));
+							ShowNotification(new GUIContent("No direct conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
 	                    } else {
 	                        SetNewDataConnection(inPort, outPort, conversion);
 	                    }						

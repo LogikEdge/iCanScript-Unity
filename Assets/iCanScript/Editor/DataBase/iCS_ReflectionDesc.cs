@@ -15,13 +15,13 @@ public class iCS_ReflectionDesc {
     public Type                 ClassType  = null;
     public MethodBase           Method = null;
     public FieldInfo            Field= null;
+    public bool                 IsGetField= true;
     public string               ToolTip= null;
     public string               IconPath= null;
 	public string[]				ParamNames= null;
 	public Type[]				ParamTypes= null;
 	public bool[]				ParamIsOuts= null;
 	public string				ReturnName= null;
-	public Type					ReturnType= null;
 	public object[]				ParamInitialValues= null;
 
 
@@ -32,7 +32,7 @@ public class iCS_ReflectionDesc {
                               string toolTip, string iconPath,
                               iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase, FieldInfo fieldInfo,
                               bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
-                              string returnName, Type returnType) {
+                              string returnName) {
         // Editor object information.
 		ObjectType        = objType;
         Company           = company;
@@ -41,13 +41,13 @@ public class iCS_ReflectionDesc {
 		ClassType         = classType;
 		Method            = methodBase;
 		Field             = fieldInfo;
+		IsGetField        = fieldInfo != null ? paramIsOuts[ObjectType == iCS_ObjectTypeEnum.InstanceField ? 1 : 0] : true;
         ToolTip           = toolTip;
         IconPath          = iconPath;
 		ParamNames        = paramNames;
 		ParamTypes        = paramTypes;
 		ParamIsOuts       = paramIsOuts;
 		ReturnName        = returnName;
-		ReturnType        = returnType;
 		ParamInitialValues= paramDefaultValues;
     }
     // ----------------------------------------------------------------------
@@ -55,6 +55,7 @@ public class iCS_ReflectionDesc {
         return FunctionPath+"/"+FunctionSignature;
     }
     
+
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
@@ -63,6 +64,27 @@ public class iCS_ReflectionDesc {
             if(Method != null) return Method.Name;
             if(Field != null) return Field.Name;
             return null;
+        }
+    }
+//    // ----------------------------------------------------------------------
+//    ParameterInfo[] GetParameters() {
+//        if(Method != null) return Method.GetParameters();
+//        if(Field != null) return Field.Name;
+//        return null;        
+//    }
+    // ----------------------------------------------------------------------
+    public Type ReturnType {
+        get {
+            if(Method != null) {
+                if(Method.IsConstructor) return ClassType;
+                MethodInfo methodInfo= Method as MethodInfo;
+                if(methodInfo == null) return typeof(void);
+                return methodInfo.ReturnType;
+            }
+            if(Field != null) {
+                return IsGetField ? Field.FieldType : typeof(void);
+            }
+            return typeof(void);                    
         }
     }
     // ----------------------------------------------------------------------
@@ -92,9 +114,7 @@ public class iCS_ReflectionDesc {
     // Utilities
     // ----------------------------------------------------------------------
     static string TypeName(Type type) {
-        if(type == null) return "void";
-        if(type == typeof(float)) return "float";
-        return type.Name;
+        return iCS_Types.TypeName(type);
     }
     
 }

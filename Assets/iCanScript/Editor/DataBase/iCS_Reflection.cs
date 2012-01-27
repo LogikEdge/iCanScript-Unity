@@ -211,8 +211,8 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeConstructor(string company, string package, string displayName, string toolTip, string iconPath, Type classType, ConstructorInfo constructor, string retName) {
         // Parse parameters.
+        if(!AreAllParamTypesSupported(constructor)) return;
         Type[]   paramTypes   = ParseParameterTypes(constructor);
-        if(!AreAllParamTypesSupported(paramTypes)) return;
         string[] paramNames   = ParseParameterNames(constructor);
         bool[]   paramIsOut   = ParseParameterIsOuts(constructor);
         object[] paramDefaults= ParseParameterDefaults(constructor);
@@ -290,18 +290,13 @@ public class iCS_Reflection {
                              " is not static and tagged for "+iCS_EditorConfig.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
-        iCS_DataBase.AddConversion(company, package, iconPath, classType, method, fromType, toType);                                        
+        iCS_DataBase.AddConversion(company, package, iconPath, classType, method, fromType);                                        
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
-        // Parse return type.
-        Type retType= method.ReturnType;
-        if(retType == typeof(void)) {
-            retName= "";
-        }
         // Parse parameters.
+        if(!AreAllParamTypesSupported(method)) return;        
         Type[]   paramTypes   = ParseParameterTypes(method);
-        if(!AreAllParamTypesSupported(paramTypes)) return;        
         string[] paramNames   = ParseParameterNames(method);
         bool[]   paramIsOut   = ParseParameterIsOuts(method);
         object[] paramDefaults= ParseParameterDefaults(method);
@@ -309,18 +304,13 @@ public class iCS_Reflection {
         iCS_DataBase.AddInstanceMethod(company, package, displayName, toolTip, iconPath,
                                       classType, method,
                                       paramIsOut, paramNames, paramTypes, paramDefaults,
-                                      retName, retType);
+                                      retName);
     }
     // ----------------------------------------------------------------------
     static void DecodeStaticMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
-        // Parse return type.
-        Type retType= method.ReturnType;
-        if(retType == typeof(void)) {
-            retName= "";
-        }
         // Parse parameters.
+        if(!AreAllParamTypesSupported(method)) return;
         Type[]   paramTypes   = ParseParameterTypes(method);
-        if(!AreAllParamTypesSupported(paramTypes)) return;
         string[] paramNames   = ParseParameterNames(method);
         bool[]   paramIsOut   = ParseParameterIsOuts(method);
         object[] paramDefaults= ParseParameterDefaults(method);
@@ -328,7 +318,7 @@ public class iCS_Reflection {
         iCS_DataBase.AddStaticMethod(company, package, displayName, toolTip, iconPath,
                                      classType, method,
                                      paramIsOut, paramNames, paramTypes, paramDefaults,
-                                     retName, retType);
+                                     retName);
     }
     // ----------------------------------------------------------------------
     static string[] ParseParameterNames(MethodBase method) {
@@ -368,9 +358,9 @@ public class iCS_Reflection {
         return paramDefaults;
     }
     // ----------------------------------------------------------------------
-    static bool AreAllParamTypesSupported(Type[] paramTypes) {
-        foreach(var p in paramTypes) {
-            if(p.IsPointer) return false;
+    static bool AreAllParamTypesSupported(MethodBase method) {
+        foreach(var paramInfo in method.GetParameters()) {
+            if(paramInfo.ParameterType.IsPointer) return false;
         }
         return true;
     }

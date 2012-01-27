@@ -90,8 +90,21 @@ public static class iCS_Types {
     public static Type GetElementType(Type t) {
         return t.HasElementType ? t.GetElementType() : t;
     }
-	// ----------------------------------------------------------------------
-    public static string GetTypeName(Type type) {
-		return type == typeof(float) ? "float" : type.Name;
+    // ----------------------------------------------------------------------
+    public static string TypeName(Type type) {
+        if(type == null) return "void";
+        string name= null;
+        if(type.HasElementType) {
+            name= TypeName(type.GetElementType());
+            if(type.IsArray) name+= "[]";
+            if(type.IsByRef) name+= "&";
+            if(type.IsPointer) name+= "*";
+            return name;
+        }
+        if(type == typeof(float)) return "float";
+        if(type == typeof(bool)) return "bool";
+        if(type == typeof(void)) return "void";
+        return type.Name;
     }
+
 }
