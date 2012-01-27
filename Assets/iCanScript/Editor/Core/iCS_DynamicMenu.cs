@@ -291,8 +291,8 @@ public class iCS_DynamicMenu {
     string[] GetFunctionMenu() {
         return iCS_DataBase.BuildMenu();
     }
-    iCS_ReflectionDesc GetReflectionDescFromMenuCommand(string menuCommand) {
-        menuCommand= iCS_TextUtil.StripBeforeIdent(menuCommand);
+    iCS_ReflectionDesc GetReflectionDescFromMenuCommand(MenuContext menuContext) {
+        string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
         string[] idents= menuCommand.Split(new char[1]{'/'});
         if(idents.Length < 3) return null;
         string company= idents[0];
@@ -379,7 +379,7 @@ public class iCS_DynamicMenu {
                 break;                
             }
             default: {
-                iCS_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context.Command);
+                iCS_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context);
                 if(desc != null) {
                     CreateMethod(context.SelectedObject, context.Storage, desc);                                           
                 }

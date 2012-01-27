@@ -61,4 +61,31 @@ public class iCS_ReflectionDesc {
             return null;
         }
     }
+    // ----------------------------------------------------------------------
+    public string FunctionSignature {
+        get {
+            string signature= TypeName(ReturnType);
+            signature+= " "+DisplayName+"(";
+            if(ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
+                signature+= TypeName(ClassType)+" this";
+                if(ParamNames.Length != 0) signature+=", ";
+            }
+            for(int i= 0; i < ParamNames.Length; ++i) {
+                signature+= TypeName(ParamTypes[i])+" "+ParamNames[i];
+                if(i != ParamNames.Length-1) signature+=", ";
+            }
+            return signature+")";            
+        }
+    }
+
+    // ======================================================================
+    // Utilities
+    // ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------
+    static string TypeName(Type type) {
+        if(type == null) return "void";
+        if(type == typeof(float)) return "float";
+        return type.Name;
+    }
+    
 }

@@ -53,17 +53,7 @@ public class iCS_DataBase {
 
     // ----------------------------------------------------------------------
     public static string GetFunctionSignature(iCS_ReflectionDesc desc) {
-        string signature= TypeName(desc.ReturnType);
-        signature+= " "+desc.DisplayName+"(";
-        if(desc.ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
-            signature+= TypeName(desc.ClassType)+" this";
-            if(desc.ParamNames.Length != 0) signature+=", ";
-        }
-        for(int i= 0; i < desc.ParamNames.Length; ++i) {
-            signature+= TypeName(desc.ParamTypes[i])+" "+desc.ParamNames[i];
-            if(i != desc.ParamNames.Length-1) signature+=", ";
-        }
-        return signature+")";
+        return desc.FunctionSignature;
     }
     // ----------------------------------------------------------------------
     // Returns the function name in the form of "company/package/displayName".
@@ -194,12 +184,6 @@ public class iCS_DataBase {
             else               { menu.Add(previousName); }
         }
         return menu.ToArray();
-    }
-    // ----------------------------------------------------------------------
-    static string TypeName(Type type) {
-        if(type == null) return "void";
-        if(type == typeof(float)) return "float";
-        return type.Name;
     }
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
