@@ -211,8 +211,9 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeConstructor(string company, string package, string displayName, string toolTip, string iconPath, Type classType, ConstructorInfo constructor, string retName) {
         // Parse parameters.
-        string[] paramNames   = ParseParameterNames(constructor);
         Type[]   paramTypes   = ParseParameterTypes(constructor);
+        if(!AreAllParamTypesSupported(paramTypes)) return;
+        string[] paramNames   = ParseParameterNames(constructor);
         bool[]   paramIsOut   = ParseParameterIsOuts(constructor);
         object[] paramDefaults= ParseParameterDefaults(constructor);
 
@@ -299,8 +300,9 @@ public class iCS_Reflection {
             retName= "";
         }
         // Parse parameters.
-        string[] paramNames   = ParseParameterNames(method);
         Type[]   paramTypes   = ParseParameterTypes(method);
+        if(!AreAllParamTypesSupported(paramTypes)) return;        
+        string[] paramNames   = ParseParameterNames(method);
         bool[]   paramIsOut   = ParseParameterIsOuts(method);
         object[] paramDefaults= ParseParameterDefaults(method);
 
@@ -317,8 +319,9 @@ public class iCS_Reflection {
             retName= "";
         }
         // Parse parameters.
-        string[] paramNames   = ParseParameterNames(method);
         Type[]   paramTypes   = ParseParameterTypes(method);
+        if(!AreAllParamTypesSupported(paramTypes)) return;
+        string[] paramNames   = ParseParameterNames(method);
         bool[]   paramIsOut   = ParseParameterIsOuts(method);
         object[] paramDefaults= ParseParameterDefaults(method);
 
@@ -363,5 +366,12 @@ public class iCS_Reflection {
             paramDefaults[i]= (defaultValue == null || defaultValue.GetType() != parameters[i].ParameterType) ? null : defaultValue;
         }        
         return paramDefaults;
+    }
+    // ----------------------------------------------------------------------
+    static bool AreAllParamTypesSupported(Type[] paramTypes) {
+        foreach(var p in paramTypes) {
+            if(p.IsPointer) return false;
+        }
+        return true;
     }
 }

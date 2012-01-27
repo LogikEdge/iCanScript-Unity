@@ -124,8 +124,8 @@ public class iCS_DataBase {
     // Returns the descriptor associated with the given company/package/function.
     public static iCS_ReflectionDesc GetDescriptor(string company, string package, string signature) {
         foreach(var desc in Functions) {
-            if(desc.Company == company &&
-               desc.Package == package &&
+            if((company == null || desc.Company == company) &&
+               (package == null || desc.Package == package) &&
                desc.FunctionSignature == signature) {
                    return desc;
                }
