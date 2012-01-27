@@ -124,12 +124,12 @@ public class iCS_DynamicMenu {
         }
         // Function menu items
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            string[] functionMenu= GetFunctionMenu();
-            tmp= new string[menu.Length+functionMenu.Length+1];
+            List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildMenu();
+            tmp= new string[menu.Length+functionMenu.Count+1];
             menu.CopyTo(tmp, 0);
             tmp[menu.Length]= SeparatorStr;
-            for(int i= 0; i < functionMenu.Length; ++i) {
-                tmp[i+menu.Length+1]= "+ "+functionMenu[i];
+            for(int i= 0; i < functionMenu.Count; ++i) {
+                tmp[i+menu.Length+1]= "+ "+functionMenu[i].ToString();
             }
             menu= tmp;            
         }
@@ -221,23 +221,27 @@ public class iCS_DynamicMenu {
         }
         // Get compatible functions.
         if(selectedObject.IsDataPort) {
-            string[] functionMenu;
+            List<iCS_ReflectionDesc> functionMenu= null;
             if(selectedObject.IsInputPort) {
                 functionMenu= iCS_DataBase.BuildMenu(null, selectedObject.RuntimeType);
             } else {
                 functionMenu= iCS_DataBase.BuildMenu(selectedObject.RuntimeType, null);
             }
-            if(functionMenu.Length != 0) {
+            if(functionMenu.Count != 0) {
                 int len= menu.Length;
+                string[] tmp= null;
                 if(len == 0) {
-                    menu= functionMenu;
+                    tmp= new string[functionMenu.Count];
                 } else {
-                    string[] tmp= new string[len+1+functionMenu.Length];
+                    tmp= new string[len+1+functionMenu.Count];
                     menu.CopyTo(tmp, 0);
-                    menu= tmp;                
-                    menu[len]= SeparatorStr;
-                    functionMenu.CopyTo(menu,len+1);
-                }                
+                    tmp[len]= SeparatorStr;
+                    ++len;                    
+                }
+                menu= tmp;                
+                for(int i= 0; i < functionMenu.Count; ++i) {
+                    menu[len+i]= functionMenu[i].ToString();
+                }
             }
         }
         // Allow to delete a port if its parent is a module.
@@ -287,20 +291,14 @@ public class iCS_DynamicMenu {
         Reset();
     }
 	// ----------------------------------------------------------------------
-    // Combines the company/package/function name into menu conforming strings.
-    string[] GetFunctionMenu() {
-        return iCS_DataBase.BuildMenu();
-    }
     iCS_ReflectionDesc GetReflectionDescFromMenuCommand(MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
         string[] idents= menuCommand.Split(new char[1]{'/'});
         if(idents.Length < 3) return null;
         string company= idents[0];
         string package= idents[1];
-        string function= idents[2];
-        string signature= null;
-        if(idents.Length >= 4) signature= idents[3];
-        return iCS_DataBase.GetDescriptor(company, package, function, signature);
+        string signature= idents[2];
+        return iCS_DataBase.GetDescriptor(company, package, signature);
     }
     
     // ======================================================================

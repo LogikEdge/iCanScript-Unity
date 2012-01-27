@@ -50,7 +50,11 @@ public class iCS_ReflectionDesc {
 		ReturnType        = returnType;
 		ParamInitialValues= paramDefaultValues;
     }
-
+    // ----------------------------------------------------------------------
+    public override string ToString() {
+        return FunctionPath+"/"+FunctionSignature;
+    }
+    
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
@@ -77,10 +81,15 @@ public class iCS_ReflectionDesc {
             return signature+")";            
         }
     }
+    // ----------------------------------------------------------------------
+    // Returns the function name in the form of "company/package/displayName".
+    public string FunctionPath { get { return Company+"/"+Package; } }
+    // ----------------------------------------------------------------------
+    // Returns the function name in the form of "company/package/displayName".
+    public string FunctionName { get { return FunctionPath+"/"+DisplayName; }}
 
     // ======================================================================
     // Utilities
-    // ----------------------------------------------------------------------
     // ----------------------------------------------------------------------
     static string TypeName(Type type) {
         if(type == null) return "void";

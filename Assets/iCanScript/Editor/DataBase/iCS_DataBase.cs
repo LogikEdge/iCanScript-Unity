@@ -10,8 +10,8 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     public static List<iCS_ReflectionDesc>  Functions   = new List<iCS_ReflectionDesc>();
     public static bool                      IsSorted    = false;
-    public static bool                      IsMenuDirty = true;
-    public static string[]                  FunctionMenu= null;
+//    public static bool                      IsMenuDirty = true;
+//    public static string[]                  FunctionMenu= null;
     
     // ======================================================================
     // DataBase functionality
@@ -52,20 +52,6 @@ public class iCS_DataBase {
     }
 
     // ----------------------------------------------------------------------
-    public static string GetFunctionSignature(iCS_ReflectionDesc desc) {
-        return desc.FunctionSignature;
-    }
-    // ----------------------------------------------------------------------
-    // Returns the function name in the form of "company/package/displayName".
-    public static string GetFunctionPath(iCS_ReflectionDesc desc) {
-        return desc.Company+"/"+desc.Package;
-    }
-    // ----------------------------------------------------------------------
-    // Returns the function name in the form of "company/package/displayName".
-    public static string GetFunctionName(iCS_ReflectionDesc desc) {
-        return GetFunctionPath(desc)+"/"+desc.DisplayName;
-    }
-    // ----------------------------------------------------------------------
     // Returns 0 if equal, negative if first is smaller and
     // positive if first is greather.
     public static int CompareFunctionNames(iCS_ReflectionDesc d1, iCS_ReflectionDesc d2) {
@@ -76,45 +62,14 @@ public class iCS_DataBase {
         return d1.DisplayName.CompareTo(d2.DisplayName);
     }
     // ----------------------------------------------------------------------
-    public static string[] BuildMenu() {
-        if(!IsMenuDirty) return FunctionMenu;
+    public static List<iCS_ReflectionDesc> BuildMenu() {
         QSort();
-        List<string> menu= new List<string>();
-        string previousName= "";
-        bool needsSignature= false;
-        for(int i= 0; i < Functions.Count; ++i) {
-            string newName= GetFunctionName(Functions[i]);
-            if(previousName == newName) needsSignature= true;
-            if(previousName != "") {
-                var func= Functions[i-1];
-                var signature= "/"+GetFunctionSignature(func);
-                if(needsSignature) { menu.Add(previousName+signature); }
-//                else               { menu.Add(GetFunctionPath(func)+signature); }
-                else               { menu.Add(previousName); }
-            }
-            if(previousName != newName) {
-                needsSignature= false;
-                previousName= newName;
-            }
-        }
-        if(previousName != "") {
-            var func= Functions[Functions.Count-1];
-            var signature= "/"+GetFunctionSignature(func);
-            if(needsSignature) { menu.Add(previousName+signature); }
-//            else               { menu.Add(GetFunctionPath(func)+signature); }
-            else               { menu.Add(previousName); }
-        }
-        FunctionMenu= menu.ToArray();
-        IsMenuDirty= false;
-        return FunctionMenu;
+        return Functions;
     }
     // ----------------------------------------------------------------------
-    public static string[] BuildMenu(Type inputType, Type outputType) {
+    public static List<iCS_ReflectionDesc> BuildMenu(Type inputType, Type outputType) {
         QSort();
-        List<string> menu= new List<string>();
-        string previousName= "";
-        bool needsSignature= false;
-		int prevIdx= -1;
+        List<iCS_ReflectionDesc> menu= new List<iCS_ReflectionDesc>();
         for(int i= 0; i < Functions.Count; ++i) {
             // Filter functions according to input or output filter.
             bool shouldInclude= false;
@@ -160,40 +115,19 @@ public class iCS_DataBase {
                 }
             }
             if(shouldInclude) {
-                string newName= GetFunctionName(func);
-                if(previousName == newName) needsSignature= true;
-                if(prevIdx != -1) {
-                    var prevFunc= Functions[prevIdx];
-                    var signature= "/"+GetFunctionSignature(prevFunc);
-                    if(needsSignature) { menu.Add(previousName+signature); }
-    //                else               { menu.Add(GetFunctionPath(prevFunc)+signature); }
-                    else               { menu.Add(previousName); }
-                }                
-                if(previousName != newName) {
-                    needsSignature= false;
-                    previousName= newName;
-                }
-				prevIdx= i;
+                menu.Add(func);
             }
         }
-        if(previousName != "") {
-            var func= Functions[prevIdx];
-            var signature= "/"+GetFunctionSignature(func);
-            if(needsSignature) { menu.Add(previousName+signature); }
-//            else               { menu.Add(GetFunctionPath(func)+signature); }
-            else               { menu.Add(previousName); }
-        }
-        return menu.ToArray();
+        return menu;
     }
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
-    public static iCS_ReflectionDesc GetDescriptor(string company, string package, string functionName, string signature) {
+    public static iCS_ReflectionDesc GetDescriptor(string company, string package, string signature) {
         foreach(var desc in Functions) {
             if(desc.Company == company &&
                desc.Package == package &&
-               desc.DisplayName == functionName) {
-                   if(signature == null) return desc;
-                   if(signature == GetFunctionSignature(desc)) return desc;
+               desc.FunctionSignature == signature) {
+                   return desc;
                }
         }
         return null;
@@ -298,7 +232,6 @@ public class iCS_DataBase {
                                                       paramIsOuts, paramNames, paramTypes, paramDefaults,
                                                       retName, retType);
         Functions.Add(fd);
-        IsMenuDirty= true;
         IsSorted= false;
         return fd;
     }
