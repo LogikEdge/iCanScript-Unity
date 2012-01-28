@@ -27,8 +27,7 @@
 		<SkipType name="iCS_VerifyTransitions" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>               
 		                                                                                                                                                            
 		<!-- skip type that are user visible nodes -->                                                                                                             
-		<SkipType name="iCS_Animation" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
-		<SkipType name="iCS_Transform" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
+		<SkipType name="iCS_GameObject" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
 		<SkipType name="iCS_GameController" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                  
 		<SkipType name="iCS_Logic" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                           
 		<SkipType name="iCS_CosWave" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         

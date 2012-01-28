@@ -15,6 +15,9 @@ public class iCS_Math3D {
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector3 Sub(Vector3 a, Vector3 b) { return a-b; }
     [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static Vector4 Sub(Vector4 a, Vector4 b) { return a-b; }
 
+    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static int     Mul(int a, int b)         { return a*b; }
+    [iCS_Function(Icon="iCS_CalculatorIcon.psd")] public static float   Mul(float a, float b)     { return a*b; }
+
     [iCS_Function(Icon="iCS_SplitIcon.psd")] public static void    FromVector(Vector2 v, out float x, out float y)                           { x= v.x; y= v.y; }
     [iCS_Function(Icon="iCS_SplitIcon.psd")] public static void    FromVector(Vector3 v, out float x, out float y, out float z)              { x= v.x; y= v.y; z= v.z; }
     [iCS_Function(Icon="iCS_SplitIcon.psd")] public static void    FromVector(Vector4 v, out float x, out float y, out float z, out float w) { x= v.x; y= v.y; z= v.z; w= v.w; }
