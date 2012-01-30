@@ -235,10 +235,12 @@ public partial class iCS_IStorage {
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         this[id]= iCS_EditorObject.Clone(id, srcObj, destParent, localPos);
         this[id].IconGUID= srcObj.IconGUID;
-		RemoveReferenceInitialValues(this[id]);
         srcStorage.ForEachChild(srcObj,
             child=> CopyFrom(child, srcStorage, this[id], child.LocalPosition, xlat)
         );
+		if(this[id].IsInDataPort) {
+			LoadInitialPortValueFromArchive(this[id]);
+		}
         return this[id];
     }
     void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, List<Prelude.Tuple<int,int>> xlat) {
@@ -264,16 +266,6 @@ public partial class iCS_IStorage {
             }
         );
     }
-    void RemoveReferenceInitialValues(iCS_EditorObject obj) {
-		if(!obj.IsNode) return;
-		ForEachChildPort(obj,
-			child=> {
-				if(child.IsDataPort && iCS_Types.IsA<UnityEngine.Object>(child.RuntimeType)) {
-					SetInitialPortValue(child, null);
-				}
-			}
-		);
-	}
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateBehaviour() {
         // Create the function node.

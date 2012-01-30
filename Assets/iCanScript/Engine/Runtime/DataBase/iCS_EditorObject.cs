@@ -66,6 +66,9 @@ public class iCS_EditorObject {
 		// Port
         instance.Edge= toClone.Edge;
         instance.PortIndex= toClone.PortIndex;
+        if(instance.IsInDataPort && toClone.Source == -1 && !iCS_Types.IsA<UnityEngine.Object>(toClone.RuntimeType)) {
+            instance.InitialValueArchive= toClone.InitialValueArchive;
+        }
         return instance;
     }
     // ----------------------------------------------------------------------
@@ -88,6 +91,7 @@ public class iCS_EditorObject {
         Edge= EdgeEnum.None;
         Source= -1;
 		PortIndex= -1;
+		InitialValueArchive= null;
 		// State
 		IsRawEntryState= false;
 		// Transient
