@@ -33,7 +33,7 @@ public sealed class iCS_GameObject {
 
     // Translation
     [iCS_Function]
-    public static void Transform(GameObject gameObject, Vector3 translation) {
+    public static void Translate(GameObject gameObject, Vector3 translation) {
         if(gameObject == null) return;
         gameObject.transform.Translate(translation);
     }
