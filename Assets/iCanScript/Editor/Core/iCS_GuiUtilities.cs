@@ -31,7 +31,6 @@ public static class iCS_GuiUtilities {
         // Extract port information
 		Type portType= port.RuntimeType;
         iCS_EditorObject parent= storage.GetParent(port);
-        int portId= port.PortIndex;
         iCS_EditorObject sourcePort= storage.GetSource(port);
         bool hasSource= sourcePort != null;
         // Get runtime object if it exists.
@@ -48,7 +47,7 @@ public static class iCS_GuiUtilities {
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
         if(!isReadOnly && isDirty) {
-            if(runtimeObject != null) runtimeObject[portId]= newPortValue;
+            UpdateRuntimeValue(port, newPortValue, storage);
 			storage.SetInitialPortValue(port, newPortValue);
 			storage.SetPortValue(port, newPortValue);
             storage.SetDirty(parent);
@@ -339,6 +338,24 @@ public static class iCS_GuiUtilities {
 		    return true;
 	    }
         return false;
+    }
+    
+    // -----------------------------------------------------------------------
+    public static void UpdateRuntimeValue(iCS_EditorObject port, object newValue, iCS_IStorage iStorage) {
+        if(!port.IsInDataPort) return;
+        if(port.IsModulePort) {
+            iCS_EditorObject[] connectedPorts= iStorage.FindConnectedPorts(port);
+            foreach(var cp in connectedPorts) {
+                UpdateRuntimeValue(cp, newValue, iStorage);
+            }
+            return;
+        }
+        iCS_EditorObject parent= iStorage.GetParent(port);
+        if(parent == null) return;
+        // Get runtime object if it exists.
+        iCS_FunctionBase runtimeObject= iStorage.GetRuntimeObject(parent) as iCS_FunctionBase;
+        if(runtimeObject == null) return;
+        runtimeObject[port.PortIndex]= newValue;
     }
     
     // -----------------------------------------------------------------------
