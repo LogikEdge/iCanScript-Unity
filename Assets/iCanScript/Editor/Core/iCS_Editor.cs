@@ -35,12 +35,12 @@ public class iCS_Editor : EditorWindow {
     
     // ----------------------------------------------------------------------
     enum DragTypeEnum { None, PortDrag, NodeDrag, TransitionCreation };
-    DragTypeEnum    DragType              = DragTypeEnum.None;
+    DragTypeEnum     DragType              = DragTypeEnum.None;
     iCS_EditorObject DragObject            = null;
-    Vector2         MouseDragStartPosition= Vector2.zero;
-    Vector2         DragStartPosition     = Vector2.zero;
-    bool            IsDragEnabled         = false;
-    bool            IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
+    Vector2          MouseDragStartPosition= Vector2.zero;
+    Vector2          DragStartPosition     = Vector2.zero;
+    bool             IsDragEnabled         = false;
+    bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
 
     // ----------------------------------------------------------------------
     Vector2 ScreenCenter { get { return new Vector2(0.5f*position.width, 0.5f*position.height); } }
@@ -114,10 +114,6 @@ public class iCS_Editor : EditorWindow {
         DynamicMenu = null;
     }
     
-//    WWW GetWebPage() {
-//		return new WWW("http://www.icanscript.com/index.html");
-//    }
-
     // ----------------------------------------------------------------------
     // Activates the editor and initializes all Graph shared variables.
 	public void Activate(iCS_IStorage storage, iCS_Inspector inspector) {
