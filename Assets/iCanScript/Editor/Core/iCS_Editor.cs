@@ -70,8 +70,8 @@ public class iCS_Editor : EditorWindow {
     iCS_EditorObject mySelectedObject= null;
     public iCS_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
 	// ----------------------------------------------------------------------
-    bool    IsCommandKeyDown       { get { return Event.current.command; }}
-    bool    IsControlKeyDown       { get { return Event.current.control; }}
+    bool    IsFloatingKeyDown	{ get { return Event.current.control; }}
+    bool    IsCopyKeyDown       { get { return Event.current.shift; }}
     
 	// ----------------------------------------------------------------------
 	// Mouse services
@@ -428,7 +428,7 @@ public class iCS_Editor : EditorWindow {
                 iCS_EditorObject node= DragObject;
                 Storage.MoveTo(node, DragStartPosition+delta);
                 Storage.SetDirty(node);                        
-                node.IsFloating= IsCommandKeyDown;
+                node.IsFloating= IsFloatingKeyDown;
                 break;
             case DragTypeEnum.PortDrag:
             case DragTypeEnum.TransitionCreation:
@@ -468,7 +468,7 @@ public class iCS_Editor : EditorWindow {
         // Node drag.
         iCS_EditorObject node= Storage.GetNodeAt(pos);                
         if(node != null && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
-            if(IsControlKeyDown) {
+            if(IsCopyKeyDown) {
                 GameObject go= new GameObject(node.Name);
                 go.hideFlags = HideFlags.HideAndDontSave;
                 go.AddComponent("iCS_Library");
@@ -484,7 +484,7 @@ public class iCS_Editor : EditorWindow {
                 DragType= DragTypeEnum.None;
             } else {
                 Storage.RegisterUndo("Node Drag");
-                node.IsFloating= IsCommandKeyDown;
+                node.IsFloating= IsFloatingKeyDown;
                 DragType= DragTypeEnum.NodeDrag;
                 DragObject= node;
                 Rect nodePos= Storage.GetPosition(node);
