@@ -37,6 +37,11 @@ public sealed class iCS_GameObject {
         if(gameObject == null) return;
         gameObject.transform.Translate(translation);
     }
+    [iCS_Function(Name="Translate")]
+    public static void TransformUsingVelocity(GameObject gameObject, Vector3 velocity) {
+        if(gameObject == null) return;
+        gameObject.transform.Translate(Time.deltaTime*velocity);
+    }
     
     // Rotation
     [iCS_Function]
@@ -46,6 +51,14 @@ public sealed class iCS_GameObject {
     [iCS_Function]
     public static void RotateAround(GameObject gameObject, Vector3 point, Vector3 axis, float angle) {
         gameObject.transform.RotateAround(point, axis, angle);
+    }
+    [iCS_Function(Name="Rotate")]
+    public static void RotateUsingAngleVelocity(GameObject gameObject, Vector3 axis, float angleVelocity) {
+        gameObject.transform.Rotate(axis, Time.deltaTime*angleVelocity);
+    }
+    [iCS_Function(Name="RotateAround")]
+    public static void RotateAroundUsingAngleVelocity(GameObject gameObject, Vector3 point, Vector3 axis, float angleVelocity) {
+        gameObject.transform.RotateAround(point, axis, Time.deltaTime*angleVelocity);
     }
 }
 
