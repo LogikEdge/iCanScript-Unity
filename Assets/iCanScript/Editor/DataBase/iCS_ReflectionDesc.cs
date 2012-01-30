@@ -95,17 +95,47 @@ public class iCS_ReflectionDesc {
 					return DisplayName;
 				}
 				default: {
-		            string signature= TypeName(ReturnType);
-		            signature+= " "+DisplayName+"(";
+		            string signature= DisplayName;
+					// Build input string
+					string inputStr= "";
 		            if(ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
-		                signature+= TypeName(ClassType)+" this";
-		                if(ParamNames.Length != 0) signature+=", ";
+		                inputStr+= "this"/*+":"+TypeName(ClassType)*/+", ";
 		            }
 		            for(int i= 0; i < ParamNames.Length; ++i) {
-		                signature+= TypeName(ParamTypes[i])+" "+ParamNames[i];
-		                if(i != ParamNames.Length-1) signature+=", ";
+						if(!ParamTypes[i].IsByRef) {
+			                inputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i])*/+", ";
+						}
 		            }
-		            return signature+")";            					
+					// Add inputs to signature.
+					if(inputStr != "") {
+			            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
+					}
+					// Build output string
+					int nbOfOutputs= 0;
+					string outputStr= "";
+		            for(int i= 0; i < ParamNames.Length; ++i) {
+						if(ParamTypes[i].IsByRef) {
+			                outputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i].GetElementType())*/+", ";
+							++nbOfOutputs;
+						}
+		            }
+					if(ReturnType != null && ReturnType != typeof(void)) {
+						++nbOfOutputs;
+						if(ReturnName != null && ReturnName != "" && ReturnName != "out") {
+							outputStr+= /*" "+*/ReturnName;
+						} else {
+							outputStr+= ":"+TypeName(ReturnType);
+						}
+						outputStr+= ", ";
+					}
+					// Add output to signature.
+					if(nbOfOutputs == 1) {
+						signature+="->"+outputStr.Substring(0, outputStr.Length-2);
+					}
+					if(nbOfOutputs > 1) {
+						signature+="->("+outputStr.Substring(0, outputStr.Length-2)+")";
+					}
+					return signature;
 				}
 			}
         }
