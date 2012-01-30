@@ -58,6 +58,7 @@ public class iCS_EditorObject {
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
+        instance.LocalPosition= toClone.LocalPosition;
 		// Node
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;
