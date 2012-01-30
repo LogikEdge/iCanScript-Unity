@@ -241,6 +241,7 @@ public partial class iCS_IStorage {
 		if(this[id].IsInDataPort) {
 			LoadInitialPortValueFromArchive(this[id]);
 		}
+        SetDirty(this[id]);
         return this[id];
     }
     void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, List<Prelude.Tuple<int,int>> xlat) {
