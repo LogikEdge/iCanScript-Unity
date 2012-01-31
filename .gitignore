@@ -33,3 +33,15 @@ publish/Obfuscar_Output/Assembly-CSharp.dll
 publish/Obfuscar_Output/Assembly-CSharp-Editor.dll
 publish/Obfuscar_Input
 publish/Obfuscar_Output
+publish/obfuscator/Obfuscar_Output/
+publish/obfuscator/Obfuscar_Input/
+publish/iCanScriptEngine.rsp
+publish/iCanScriptEngine.dll
+publish/iCanScriptEditor.rsp
+publish/iCanScriptEditor.dll
+publish/engineFilesToExclude
+publish/engineFiles
+publish/editorFilesToExclude
+publish/editorFiles
+publish/_engineFiles
+publish/_editorFiles

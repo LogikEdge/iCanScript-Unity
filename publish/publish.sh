@@ -1,19 +1,37 @@
-rm -r ../../iCanScriptPublish/Assets/iCanScript
-mkdir ../../iCanScriptPublish/Assets/iCanScript
-mkdir ../../iCanScriptPublish/Assets/iCanScript/Editor
-mkdir ../../iCanScriptPublish/Assets/iCanScript/Engine
-cp -r ../Assets/iCanScript/readme.txt ../../iCanScriptPublish/Assets/iCanScript/readme.txt
-cp -r ../Assets/iCanScript/AssetStore ../../iCanScriptPublish/Assets/iCanScript/AssetStore
-cp -r ../Assets/iCanScript/Editor/Resources ../../iCanScriptPublish/Assets/iCanScript/Editor/Resources
+# Constants
+SOURCE_ROOT=../Assets/iCanScript
+SOURCE_EDITOR_ROOT=$SOURCE_ROOT/Editor
+SOURCE_ENGINE_ROOT=$SOURCE_ROOT/Engine
+SOURCE_EDITOR_PUBLIC_SOURCES=$SOURCE_EDITOR_ROOT/PublicSources
+SOURCE_ENGINE_PUBLIC_SOURCES=$SOURCE_ENGINE_ROOT/PublicSources
+DESTINATION_ROOT=../../iCanScriptPublish/Assets/iCanScript
+DESTINATION_EDITOR_ROOT=$DESTINATION_ROOT/Editor
+DESTINATION_ENGINE_ROOT=$DESTINATION_ROOT
+# Generate file list.
+find $SOURCE_EDITOR_PUBLIC_SOURCES -name "*.cs" >editorFilesToExclude
+find $SOURCE_ENGINE_PUBLIC_SOURCES -name "*.cs" >engineFilesToExclude
+find $SOURCE_EDITOR_ROOT -name "*.cs" >_editorFiles
+find $SOURCE_ROOT -name "*.cs" | grep -v -f _editorFiles - >_engineFiles
+grep -v -f editorFilesToExclude _editorFiles >editorFiles
+grep -v -f engineFilesToExclude _engineFiles >engineFiles
+# Create response files.
+cat EditorCommands editorFiles >iCanScriptEditor.rsp
+cat EngineCommands engineFiles >iCanScriptEngine.rsp
+# Compile libraries.
+gmcs @iCanScriptEngine.rsp
+gmcs @iCanScriptEditor.rsp
+# Run obfuscator.
+./obfuscate.sh
+# Install libraries inside the publish directory.
+rm -r -f $DESTINATION_ROOT
+mkdir $DESTINATION_ROOT
+cp iCanScriptEngine.dll $DESTINATION_ENGINE_ROOT
+mkdir $DESTINATION_EDITOR_ROOT
+cp iCanScriptEditor.dll $DESTINATION_EDITOR_ROOT
+# Install visible source files.
+cp $SOURCE_ROOT/readme.txt $DESTINATION_ROOT
+cp -r $SOURCE_ROOT/AssetStore $DESTINATION_ROOT
+cp -r $SOURCE_EDITOR_ROOT/Resources $DESTINATION_EDITOR_ROOT
+rsync -av --exclude=*/*.meta $SOURCE_EDITOR_PUBLIC_SOURCES $DESTINATION_EDITOR_ROOT
+rsync -av --exclude=*/*.meta $SOURCE_ENGINE_PUBLIC_SOURCES $DESTINATION_ENGINE_ROOT
 
-
-#cp /Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll Obfuscar_Input
-#cp /Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEditor.dll Obfuscar_Input
-#cp ../Library/ScriptAssemblies/Assembly-CSharp-Editor.dll Obfuscar_Input
-#cp ../Library/ScriptAssemblies/Assembly-CSharp.dll Obfuscar_Input
-#mono Obfuscar.exe obfuscar.xml
-#cp Obfuscar_Output/Assembly-CSharp-Editor.dll ../../iCanScriptPublish/Assets/iCanScript/Editor/iCanScriptEditor.dll
-#cp Obfuscar_Output/Assembly-CSharp.dll ../../iCanScriptPublish/Assets/iCanScript/Engine/iCanScriptEngine.dll
-
-cp ../Library/ScriptAssemblies/Assembly-CSharp-Editor.dll ../../iCanScriptPublish/Assets/iCanScript/Editor/iCanScriptEditor.dll
-cp ../Library/ScriptAssemblies/Assembly-CSharp.dll ../../iCanScriptPublish/Assets/iCanScript/Engine/iCanScriptEngine.dll
