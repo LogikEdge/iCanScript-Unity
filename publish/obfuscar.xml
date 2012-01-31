@@ -7,14 +7,28 @@
 	<Module file="$(InPath)/Assembly-CSharp.dll">       																											
 		<!-- skip type that Unity needs to see -->                                                      
 		<SkipType name="iCS_Behaviour" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
+		<SkipType name="iCS_Behaviour_CodeGeneration" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
 		<SkipType name="iCS_Library" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         
 		<SkipType name="iCS_Storage" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         
 		<SkipType name="iCS_UserPreferences" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                 
 		<SkipType name="iCS_UserPreferences/*" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>               
 		                                                                                                                                                            
+		<!-- skip custom attributes -->                                                                                 
+		<SkipType name="iCS_ClassAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_ConversionAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_FunctionAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_InOutPortAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_InPortAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_OutPortAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+
+		<!-- No intellectual property -->
+		<SkipType name="iCS_EditorConfig" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_EngineStrings" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+
 		<!-- Needed but unknow why -->
 		<SkipType name="iCS_Coder" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
 		<SkipType name="iCS_EditorObject" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                   
+		<SkipType name="iCS_EditorObject/*" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                   
                                                                                                                                                                     
 		<!-- skip those types that need to expose the Add/Remove child methods -->                                                                                 
 		<SkipType name="iCS_Module"     skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      
@@ -27,13 +41,15 @@
 		<SkipType name="iCS_VerifyTransitions" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>               
 		                                                                                                                                                            
 		<!-- skip type that are user visible nodes -->                                                                                                             
-		<SkipType name="iCS_GameObject" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
-		<SkipType name="iCS_GameController" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                  
-		<SkipType name="iCS_Logic" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                           
+		<SkipType name="_NET_Variables" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
+		<SkipType name="iCS_Conversions" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
 		<SkipType name="iCS_CosWave" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         
-		<SkipType name="iCS_SinWave" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         
+		<SkipType name="iCS_GameController" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                  
+		<SkipType name="iCS_GameObject" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
+		<SkipType name="iCS_Logic" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                           
 		<SkipType name="iCS_Math3D" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                          
-		<SkipType name="iCS_DeltaTime" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
+		<SkipType name="iCS_SinWave" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         
+		<SkipType name="iCS_Time" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
 		<SkipType name="iCS_TestFunction" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                            
                                                                                                                                                                     
 	</Module>                                                                                                                                                       
