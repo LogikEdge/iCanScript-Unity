@@ -127,7 +127,7 @@ public static class iCS_GuiUtilities {
                 else {
                     Value(foldoutDB, compositeParent+"."+name, origTypeName);
                     Debug.LogWarning("Type: "+typeName+" was not found.");
-					EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript").ShowNotification(new GUIContent("Type: '"+typeName+"' cannot be found.  Are you missing a namespace?"));
+//					EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript").ShowNotification(new GUIContent("Type: '"+typeName+"' cannot be found.  Are you missing a namespace?"));
                 }
             } 
             return currentValue;

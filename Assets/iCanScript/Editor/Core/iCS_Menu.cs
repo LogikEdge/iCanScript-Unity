@@ -6,7 +6,7 @@ public class iCS_Menu {
 
     // ======================================================================
 	// Create a behavior to selected game object.
-	[MenuItem("iCanScript/Create Behaviour #&b", false, 1)]
+	//[MenuItem("iCanScript/Create Behaviour #&b", false, 1)]
 	public static void CreateBehaviour() {
 		// Create State Chart component.
 		iCS_Behaviour storage = Selection.activeGameObject.GetComponent<iCS_Behaviour>();
@@ -17,7 +17,7 @@ public class iCS_Menu {
             iStorage= null;
 		}
 	}
-	[MenuItem("iCanScript/Create Behaviour #&b", true, 1)]
+	//[MenuItem("iCanScript/Create Behaviour #&b", true, 1)]
 	public static bool ValidateCreateBehaviour() {
         // Validate add behaviour
 		if(Selection.activeTransform != null) {
@@ -29,7 +29,7 @@ public class iCS_Menu {
 
     // ======================================================================
 	// Create a library module to selected game object.
-	[MenuItem("iCanScript/Create Module Library", false, 2)]
+	//[MenuItem("iCanScript/Create Module Library", false, 2)]
 	public static void CreateModuleLibrary() {
 		// Create State Chart component.
 		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Library>();
@@ -41,7 +41,7 @@ public class iCS_Menu {
             iStorage= null;
 		}
 	}
-	[MenuItem("iCanScript/Create Module Library", true, 2)]
+	//[MenuItem("iCanScript/Create Module Library", true, 2)]
 	public static bool ValidateCreateModuleLibrary() {
 		if(Selection.activeTransform != null) {
 			iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
@@ -52,7 +52,7 @@ public class iCS_Menu {
 
     // ======================================================================
 	// Create a library module to selected game object.
-	[MenuItem("iCanScript/Create State Chart Library", false, 3)]
+	//[MenuItem("iCanScript/Create State Chart Library", false, 3)]
 	public static void CreateStateChartLibrary() {
 		// Create State Chart component.
 		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Library>();
@@ -64,7 +64,7 @@ public class iCS_Menu {
             iStorage= null;
 		}
 	}
-	[MenuItem("iCanScript/Create State Chart Library", true, 3)]
+	//[MenuItem("iCanScript/Create State Chart Library", true, 3)]
 	public static bool ValidateCreateStateChartLibrary() {
 		if(Selection.activeTransform != null) {
 			iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
@@ -98,39 +98,39 @@ public class iCS_Menu {
     
     // ======================================================================
     // Navigation
-    [MenuItem("iCanScript/",false,20)]
-    [MenuItem("iCanScript/Center Graph _#&f",false,21)]
+    //[MenuItem("iCanScript/",false,20)]
+    //[MenuItem("iCanScript/Center Graph _#&f",false,21)]
     public static void CenterGraph() {
         iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
         editor.CenterOnRoot();
     }
-    [MenuItem("iCanScript/Center On Selected _&f",false,22)]
+    //[MenuItem("iCanScript/Center On Selected _&f",false,22)]
     public static void CenterOnSelected() {
         iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
         editor.CenterOnSelected();
     }
     // ======================================================================
     // Documentation Access
-    [MenuItem("iCanScript/",false,30)]
-    [MenuItem("iCanScript/Documentation/Home Page",false,31)]
+    //[MenuItem("iCanScript/",false,30)]
+    //[MenuItem("iCanScript/Documentation/Home Page",false,31)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com/index.html");
     }
-    [MenuItem("iCanScript/Documentation/User's Manual",false,32)]
+    //[MenuItem("iCanScript/Documentation/User's Manual",false,32)]
     public static void UserManual() {
         Application.OpenURL("http://www.icanscript.com/Documentation/UserManual/index.html");
     }
-    [MenuItem("iCanScript/Documentation/Programmer's Guide",false,33)]
+    //[MenuItem("iCanScript/Documentation/Programmer's Guide",false,33)]
     public static void ProgrammerGuide() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ProgrammerGuide/index.html");
     }
-    [MenuItem("iCanScript/Documentation/Release Notes",false,34)]
+    //[MenuItem("iCanScript/Documentation/Release Notes",false,34)]
     public static void ReleaseNotes() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ReleaseNotes/index.html");
     }
     // ======================================================================
     // Support Access
-    [MenuItem("iCanScript/Report a Bug",false,40)]
+    //[MenuItem("iCanScript/Report a Bug",false,40)]
     public static void ReportBug() {
         Application.OpenURL("http://www.icanscript.com/Support/ReportBug/index.html");
     }
