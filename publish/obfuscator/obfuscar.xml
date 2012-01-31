@@ -21,8 +21,8 @@
 		<SkipType name="iCS_OutPortAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
 
 		<!-- No intellectual property -->
-		<SkipType name="iCS_EditorConfig" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
-		<SkipType name="iCS_EngineStrings" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<!--<SkipType name="iCS_EditorConfig" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>-->                         		                                                                                                                                                            
+		<!--<SkipType name="iCS_EngineStrings" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>-->                         		                                                                                                                                                            
 
 		<!-- Needed but unknow why -->
 		<SkipType name="iCS_Coder" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
@@ -38,6 +38,9 @@
 		<SkipType name="iCS_NoWaitSequencialDispatcher" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>      
 		<SkipType name="iCS_WaitingSequencialDispatcher" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>     
 		<SkipType name="iCS_VerifyTransitions" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>               
+
+		<!-- Needed by function nodes -->
+		<SkipType name="Math3D" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 		                                                                                                                                                            
 	</Module>                                                                                                                                                       
 
@@ -47,6 +50,7 @@
 		<SkipType name="iCS_Editor" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 		<SkipType name="iCS_Inspector" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 		<SkipType name="iCS_GuiUtilities" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		<SkipType name="iCS_Menu" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 
 	</Module>
 	
