@@ -51,6 +51,7 @@
 		<SkipType name="iCS_Inspector" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 		<SkipType name="iCS_GuiUtilities" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 		<SkipType name="iCS_Menu" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		<SkipType name="iCS_Reflection" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
 
 	</Module>
 	
