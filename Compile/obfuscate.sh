@@ -1,0 +1,2 @@
+cd obfuscator; ./obfuscate.sh
+

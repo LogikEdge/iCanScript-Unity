@@ -3,7 +3,9 @@ using System;
 using System.Collections;
 
 public static class iCS_UnityClasses {
-    public static void PopulateDataBase() {
+    // ----------------------------------------------------------------------
+    // Install the desired .NET classes
+    static iCS_UnityClasses() {
         DecodeUnityClassInfo(typeof(AccelerationEvent));
         
         DecodeUnityClassInfo(typeof(AnimationCurve));
@@ -157,7 +159,13 @@ public static class iCS_UnityClasses {
         DecodeUnityClassInfo(typeof(Vector3));    
         DecodeUnityClassInfo(typeof(Vector4));
     }
+
     // ----------------------------------------------------------------------
+    // Use this function to assure execution of static constructor.
+    public static void PopulateDataBase() {}
+
+    // ----------------------------------------------------------------------
+    // Helper function to simplify .NET class decoding.
     public static void DecodeUnityClassInfo(Type type) {
         iCS_Reflection.DecodeClassInfo(type, "Unity", type.Name, "Unity class "+type.Name, null, true);
     }

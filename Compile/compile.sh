@@ -20,14 +20,18 @@ cat EngineCommands engineFiles >iCanScriptEngine.rsp
 # Compile libraries.
 gmcs @iCanScriptEngine.rsp
 gmcs @iCanScriptEditor.rsp
+# Run obfuscator.
+./obfuscate.sh
 # Install libraries inside the publish directory.
 rm -r -f $DESTINATION_ROOT
 mkdir $DESTINATION_ROOT
 cp iCanScriptEngine.dll $DESTINATION_ENGINE_ROOT
 mkdir $DESTINATION_EDITOR_ROOT
 cp iCanScriptEditor.dll $DESTINATION_EDITOR_ROOT
-cp -r $SOURCE_EDITOR_ROOT/Resources $DESTINATION_EDITOR_ROOT
 # Install visible source files.
+cp $SOURCE_ROOT/readme.txt $DESTINATION_ROOT
+cp -r $SOURCE_ROOT/AssetStore $DESTINATION_ROOT
+cp -r $SOURCE_EDITOR_ROOT/Resources $DESTINATION_EDITOR_ROOT
 rsync -av --exclude=*/*.meta $SOURCE_EDITOR_PUBLIC_SOURCES $DESTINATION_EDITOR_ROOT
 rsync -av --exclude=*/*.meta $SOURCE_ENGINE_PUBLIC_SOURCES $DESTINATION_ENGINE_ROOT
 
