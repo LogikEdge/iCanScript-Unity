@@ -652,7 +652,6 @@ public partial class iCS_IStorage {
     public void UpdatePortEdges(iCS_EditorObject p1, iCS_EditorObject p2) {
         // Don't update port edges for a transition bridge.  Leave the update
         // to the corresponding data connection & transition connection.
-        if(IsBridgeConnection(p1,p2)) return;
         iCS_EditorObject.EdgeEnum p1Edge= p1.Edge;
         iCS_EditorObject.EdgeEnum p2Edge= p2.Edge;
         UpdatePortEdgesInternal(p1, p2);

@@ -802,7 +802,14 @@ public class iCS_Graphics {
             }                                    
         }
     }
-
+    // ----------------------------------------------------------------------
+    public void DrawBezier(iCS_EditorObject endPort, Vector2 endPos, iCS_EditorObject startPort, Vector2 startPos, Type runtimeType, iCS_IStorage storage) {
+        Color color= storage.Preferences.TypeColors.GetColor(runtimeType);
+        color.a*= iCS_EditorConfig.ConnectionTransparency;
+//        iCS_ConnectionParams cp= new iCS_ConnectionParams(endPort, endPos, startPort, startPos, storage);
+//		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);        
+    }
+    
     // ======================================================================
     //  Utilities
     // ----------------------------------------------------------------------

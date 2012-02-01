@@ -430,6 +430,14 @@ public class iCS_Editor : EditorWindow {
             case DragTypeEnum.TransitionCreation:
                 iCS_EditorObject port= DragObject;
                 Vector2 newLocalPos= DragStartPosition+delta;
+                // Snap to nearby ports
+                Vector2 mousePosInGraph= ScrollView.ScreenToGraph(MousePosition);
+                iCS_EditorObject closestPort= Storage.GetPortAt(mousePosInGraph);
+                if(Vector2.Distance(Math3D.Middle(Storage.GetPosition(closestPort)), mousePosInGraph) < 2*iCS_EditorConfig.PortRadius) {
+                    Rect parentPos= Storage.GetPosition(Storage.GetParent(port));
+                    // TO BE COMPLETED
+                }
+                // Update port position.
                 port.LocalPosition.x= newLocalPos.x;
                 port.LocalPosition.y= newLocalPos.y;
                 Storage.SetDirty(port);

@@ -532,27 +532,6 @@ public partial class iCS_IStorage {
     }
     bool IsPortDisconnected(iCS_EditorObject port) { return !IsPortConnected(port); }
     // ----------------------------------------------------------------------
-    public bool IsBridgeConnection(iCS_EditorObject p1, iCS_EditorObject p2) {
-        return (p1.IsDataPort && p2.IsStatePort) || (p1.IsStatePort && p2.IsDataPort);
-    }
-    // ----------------------------------------------------------------------
-    public bool IsInBridgeConnection(iCS_EditorObject port) {
-        iCS_EditorObject otherPort= GetOtherBridgePort(port);
-        return otherPort != null;
-    }
-    // ----------------------------------------------------------------------
-    public iCS_EditorObject GetOtherBridgePort(iCS_EditorObject port) {
-        if(IsSourceValid(port)) {
-            iCS_EditorObject sourcePort= GetSource(port);
-            if(IsBridgeConnection(port, sourcePort)) {
-                return sourcePort;
-            }
-        }
-        iCS_EditorObject remotePort= FindAConnectedPort(port);
-        if(remotePort == null) return null;
-        return IsBridgeConnection(port, remotePort) ? remotePort : null;
-    }
-    // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
     public iCS_EditorObject GetDataConnectionSource(iCS_EditorObject port) {
         return Storage.GetDataConnectionSource(port);

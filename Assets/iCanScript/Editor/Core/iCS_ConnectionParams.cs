@@ -56,7 +56,7 @@ public class iCS_ConnectionParams {
         // Inverse direction for connection between nested nodes.
         iCS_EditorObject portParent= storage.GetParent(port);
         iCS_EditorObject toParent= storage.GetParent(to);
-        if(storage.IsChildOf(toParent, portParent) && (!port.IsInStatePort || (port.IsInStatePort && storage.IsBridgeConnection(port, to)))) {
+        if(storage.IsChildOf(toParent, portParent) && !port.IsInStatePort) {
             direction= -direction;
         }
         return direction;
