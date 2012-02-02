@@ -545,7 +545,9 @@ public class iCS_Graphics {
         }
         // Configure move cursor for port.
         Rect portPos= new Rect(center.x-iCS_EditorConfig.PortRadius*1.5f, center.y-iCS_EditorConfig.PortRadius*1.5f, iCS_EditorConfig.PortSize*1.5f, iCS_EditorConfig.PortSize*1.5f);
-        EditorGUIUtility.AddCursorRect (portPos, MouseCursor.Link);
+        if(!port.IsTransitionPort) {
+            EditorGUIUtility.AddCursorRect (portPos, MouseCursor.Link);            
+        }
         GUIStyle labelStyle= GetLabelStyle(storage);
         if(!port.IsFloating) {
             GUI.Label(portPos, new GUIContent("", port.ToolTip), labelStyle);            

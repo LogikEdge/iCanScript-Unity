@@ -493,7 +493,7 @@ public class iCS_Editor : EditorWindow {
 
         // Port drag.
         iCS_EditorObject port= Storage.GetPortAt(pos);
-        if(port != null && !Storage.IsMinimized(port)) {
+        if(port != null && !Storage.IsMinimized(port) && !port.IsTransitionPort) {
             Storage.RegisterUndo("Port Drag");
             Storage.CleanupDeadPorts= false;
             DragType= DragTypeEnum.PortDrag;
