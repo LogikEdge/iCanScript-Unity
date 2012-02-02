@@ -562,6 +562,16 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns the connection at the given position.
     public iCS_EditorObject GetPortAt(Vector2 pick) {
+        iCS_EditorObject port= GetClosestPortAt(pick);
+        if(port == null) return port;
+        Rect tmp= GetPosition(port);
+        Vector2 position= new Vector2(tmp.x, tmp.y);
+        float distance= Vector2.Distance(position, pick);
+        return (distance < 3f*iCS_EditorConfig.PortRadius) ? port : null;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the connection at the given position.
+    public iCS_EditorObject GetClosestPortAt(Vector2 pick) {
         iCS_EditorObject bestPort= null;
         float bestDistance= 100000;     // Simply a big value
         FilterWith(
@@ -570,7 +580,7 @@ public partial class iCS_IStorage {
                 Rect tmp= GetPosition(port);
                 Vector2 position= new Vector2(tmp.x, tmp.y);
                 float distance= Vector2.Distance(position, pick);
-                if(distance < 3f * iCS_EditorConfig.PortRadius && distance < bestDistance) {
+                if(distance < bestDistance) {
                     bestDistance= distance;
                     bestPort= port;
                 }                                

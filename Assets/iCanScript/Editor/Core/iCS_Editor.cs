@@ -436,11 +436,11 @@ public class iCS_Editor : EditorWindow {
                 DragObject.LocalPosition.y= newLocalPos.y;
                 // Snap to nearby ports
                 Vector2 mousePosInGraph= ScrollView.ScreenToGraph(MousePosition);
-                iCS_EditorObject closestPort= Storage.GetPortAt(mousePosInGraph);
+                iCS_EditorObject closestPort= Storage.GetClosestPortAt(mousePosInGraph);
                 if(closestPort != null) {
                     Rect closestPortRect= Storage.GetPosition(closestPort);
                     Vector2 closestPortPos= new Vector2(closestPortRect.x, closestPortRect.y);
-                    if(Vector2.Distance(closestPortPos, mousePosInGraph) < 10*iCS_EditorConfig.PortRadius) {
+                    if(Vector2.Distance(closestPortPos, mousePosInGraph) < 4f*iCS_EditorConfig.PortRadius) {
                         Rect parentPos= Storage.GetPosition(Storage.GetParent(DragObject));
                         DragObject.LocalPosition.x= closestPortRect.x-parentPos.x;
                         DragObject.LocalPosition.y= closestPortRect.y-parentPos.y;
