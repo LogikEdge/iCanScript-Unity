@@ -491,7 +491,7 @@ public class iCS_Editor : EditorWindow {
         MouseDragStartPosition= MouseDownPosition;
         Vector2 pos= ScrollView.ScreenToGraph(MouseDragStartPosition);
 
-        // Data port drag.
+        // Port drag.
         iCS_EditorObject port= Storage.GetPortAt(pos);
         if(port != null && !Storage.IsMinimized(port)) {
             Storage.RegisterUndo("Port Drag");
@@ -499,7 +499,14 @@ public class iCS_Editor : EditorWindow {
             DragType= DragTypeEnum.PortDrag;
             DragOriginalPort= port;
             DragFixPort= port;
-            // Create a drag port.
+            // State port can be moved to new parent.
+            if(port.IsStatePort) {
+                DragObject= port;
+                DragObject.IsFloating= true;
+                DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
+                return true;
+            }
+            // Data port. Create a drag port as appropriate.
             iCS_EditorObject parent= Storage.GetParent(port);
             if(port.IsInputPort) {
                 DragObject= Storage.CreatePort(port.Name, parent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
@@ -652,14 +659,51 @@ public class iCS_Editor : EditorWindow {
                                 break;
                             }
                         }                    
-                        if(DragObject.IsStatePort && !isNearParent) {
+                        if(DragObject.IsStatePort) {
                             DragObject.IsFloating= false;
-                            Storage.SetDirty(DragObject);
-                            if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
-                                Storage.DestroyInstance(DragObject);
-                            } else {
+                            // Get original port state & state chart.
+                            iCS_EditorObject origState= Storage.GetParent(DragObject);
+                            iCS_EditorObject origStateChart= Storage.GetParent(origState);
+                            while(origStateChart != null && !origStateChart.IsStateChart) {
+                                origStateChart= Storage.GetParent(origStateChart);
+                            }
+                            // Get new drag port state & state chart.
+                            Rect dragObjRect= Storage.GetPosition(DragObject);
+                            Vector2 dragObjPos= new Vector2(dragObjRect.x, dragObjRect.y);
+                            iCS_EditorObject newState= GetStateAt(dragObjPos);
+                            iCS_EditorObject newStateChart= null;
+                            if(newState != null) {
+                                newStateChart= Storage.GetParent(newState);
+                                while(newStateChart != null && !newStateChart.IsStateChart) {
+                                    newStateChart= Storage.GetParent(newStateChart);
+                                }
+                            }
+                            // Reset port drag if the port is on the same state.
+                            if(origState == newState) {
                                 DragObject.LocalPosition.x= DragStartPosition.x;
-                                DragObject.LocalPosition.y= DragStartPosition.y;                                
+                                DragObject.LocalPosition.y= DragStartPosition.y;
+                                break;
+                            }
+                            // Delete transition if the dragged port is not on a valid state.
+                            if(newState == null || origStateChart != newStateChart) {
+                                if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
+                                    Storage.DestroyInstance(DragObject);
+                                } else {
+                                    DragObject.LocalPosition.x= DragStartPosition.x;
+                                    DragObject.LocalPosition.y= DragStartPosition.y;                                    
+                                }
+                                break;
+                            }
+                            // Relocate transition to the new state.
+                            Storage.SetParent(DragObject, newState);
+                            iCS_EditorObject transitionModule= Storage.GetTransitionModule(DragObject);
+                            iCS_EditorObject otherStatePort= DragObject.IsInputPort ? Storage.GetOutStatePort(transitionModule) : Storage.GetInStatePort(transitionModule);
+                            iCS_EditorObject otherState= Storage.GetParent(otherStatePort);
+                            iCS_EditorObject moduleParent= Storage.GetParent(transitionModule);
+                            iCS_EditorObject newModuleParent= Storage.GetTransitionParent(newState, otherState);
+                            if(moduleParent != newModuleParent) {
+                                Storage.SetParent(transitionModule, newModuleParent);
+                                Storage.LayoutTransitionModule(transitionModule);
                             }
                             break;
                         }
@@ -844,6 +888,22 @@ public class iCS_Editor : EditorWindow {
         }
         // Should never happen ... just connect the ports.
         Storage.SetSource(inPort, outPort, conversion);
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject GetStateAt(Vector2 point) {
+        iCS_EditorObject node= Storage.GetNodeAt(point);
+        while(node != null && !node.IsState) {
+            node= Storage.GetNodeAt(point, node);
+        }
+        return node;
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject GetStateChartAt(Vector2 point) {
+        iCS_EditorObject node= Storage.GetNodeAt(point);
+        while(node != null && !node.IsStateChart) {
+            node= Storage.GetNodeAt(point, node);
+        }
+        return node;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetParentModule(iCS_EditorObject edObj) {
