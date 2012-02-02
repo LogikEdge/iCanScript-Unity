@@ -896,8 +896,10 @@ public class iCS_Graphics {
             if((GetAnimationRatio(edObj, storage)-1f)*storage.Preferences.Animation.AnimationTime > 0.2f) {  // 200ms
                 if(displayPosition.x != layoutPosition.x || displayPosition.y != layoutPosition.y ||
                    displayPosition.width!= layoutPosition.width || displayPosition.height != layoutPosition.height) {
-                       storage.StartAnimTimer(edObj);
-                       return displayPosition;
+                       if(!edObj.IsFloating) {
+                           storage.StartAnimTimer(edObj);
+                           return displayPosition;                           
+                       }
                    }
             }
             storage.SetDisplayPosition(edObj, layoutPosition);
