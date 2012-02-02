@@ -42,9 +42,10 @@ public class iCS_Graphics {
     
     // ----------------------------------------------------------------------
 	public class NodeStyle {
-	    public GUIStyle    guiStyle    = null;
-	    public Color       nodeColor   = new Color(0,0,0,0);
-	    public Texture2D   maximizeIcon= null;
+	    public GUIStyle    guiStyle          = null;
+	    public Color       nodeColor         = new Color(0,0,0,0);
+	    public float       selectedColorBoost= 0f;
+	    public Texture2D   maximizeIcon      = null;
 	}
 	NodeStyle[]   stateStyle      = new NodeStyle[2];
 	NodeStyle[]   entryStateStyle = new NodeStyle[2];
@@ -52,7 +53,6 @@ public class iCS_Graphics {
     NodeStyle[]   constructorStyle= new NodeStyle[2];
 	NodeStyle[]   functionStyle   = new NodeStyle[2];
 	NodeStyle[]   defaultStyle    = new NodeStyle[2];
-//	NodeStyle[]   selectedStyle   = new NodeStyle[2];
     GUIStyle      labelStyle      = null;
 
     // ----------------------------------------------------------------------
@@ -234,68 +234,125 @@ public class iCS_Graphics {
     }
     
     // ----------------------------------------------------------------------
-    void GenerateNodeStyle(ref NodeStyle[] nodeStyle, Color nodeColor) {
+    void GenerateNodeStyle(ref NodeStyle[] nodeStyle, Color nodeColor, iCS_IStorage storage) {
         // Build node style descriptor.
         if(nodeStyle[0] == null) {
             nodeStyle[0]= new NodeStyle();
         }
-        if(nodeStyle[0].guiStyle == null) {
-            nodeStyle[0].guiStyle= new GUIStyle();
-            nodeStyle[0].guiStyle.normal.textColor= Color.black;
-            nodeStyle[0].guiStyle.hover.textColor= Color.black;
-            nodeStyle[0].guiStyle.border= new RectOffset(13,21,20,13);
-            nodeStyle[0].guiStyle.padding= new RectOffset(3,8,17,8);
-            nodeStyle[0].guiStyle.contentOffset= new Vector2(-3, -17);
-            nodeStyle[0].guiStyle.overflow= new RectOffset(0,5,0,3);
-            nodeStyle[0].guiStyle.alignment= TextAnchor.UpperCenter;
-            nodeStyle[0].guiStyle.fontStyle= FontStyle.Bold;
+        if(nodeStyle[1] == null) {
+            nodeStyle[1]= new NodeStyle(); 
         }
-        if(nodeStyle[0].guiStyle.normal.background == null) {
-            nodeStyle[0].nodeColor= new Color(0,0,0,0);            
-            nodeStyle[0].guiStyle.normal.background= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
-        }
-        if(nodeStyle[0].guiStyle.hover.background == null) {
-            nodeStyle[0].guiStyle.hover.background= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);            
-        }
-        // Generate node normal texture.
-        if(nodeColor == nodeStyle[0].nodeColor) return;
-        for(int x= 0; x < nodeMaskTexture.width; ++x) {
-            for(int y= 0; y < nodeMaskTexture.height; ++y) {
-                if(nodeMaskTexture.GetPixel(x,y).a > 0.5f) {
-                    nodeStyle[0].guiStyle.normal.background.SetPixel(x,y, nodeColor);
-                }
-                else {
-                    nodeStyle[0].guiStyle.normal.background.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
+        // Fill in the common section of the node styles.
+        FillNodeStyle(ref nodeStyle[0]);
+        FillNodeStyle(ref nodeStyle[1]);
+        // Generate textures for non-selected node styles.
+        if(nodeColor != nodeStyle[0].nodeColor) {
+            // Generate node normal texture.
+            for(int x= 0; x < nodeMaskTexture.width; ++x) {
+                for(int y= 0; y < nodeMaskTexture.height; ++y) {
+                    if(nodeMaskTexture.GetPixel(x,y).a > 0.5f) {
+                        nodeStyle[0].guiStyle.normal.background.SetPixel(x,y, nodeColor);
+                    }
+                    else {
+                        nodeStyle[0].guiStyle.normal.background.SetPixel(x,y, defaultNodeTexture.GetPixel(x,y));
+                    }
                 }
             }
-        }
-        nodeStyle[0].guiStyle.normal.background.Apply();
-        nodeStyle[0].guiStyle.normal.background.hideFlags= HideFlags.DontSave; 
-        nodeStyle[0].nodeColor= nodeColor;
-        // Generate node hover texture.
-        for(int x= 0; x < defaultNodeTexture.width; ++x) {
-            for(int y= 0; y < defaultNodeTexture.height; ++y) {
-                if(defaultNodeTexture.GetPixel(x,y).a > 0.95f) {
-                    nodeStyle[0].guiStyle.hover.background.SetPixel(x,y, nodeStyle[0].guiStyle.normal.background.GetPixel(x,y));
-                }
-                else {
-                    nodeStyle[0].guiStyle.hover.background.SetPixel(x,y, new Color(1,1,1, defaultNodeTexture.GetPixel(x,y).a));
-                }
-            }
-        }
-        nodeStyle[0].guiStyle.hover.background.Apply();
-        nodeStyle[0].guiStyle.hover.background.hideFlags= HideFlags.DontSave;
-        // Generate minimized Icon.
-        if(nodeStyle[0].maximizeIcon == null) {
-            nodeStyle[0].maximizeIcon= new Texture2D(maximizeIcon.width, maximizeIcon.height);
-            for(int x= 0; x < maximizeIcon.width; ++x) {
-                for(int y= 0; y < maximizeIcon.height; ++y) {
-                    nodeStyle[0].maximizeIcon.SetPixel(x, y, nodeStyle[0].nodeColor * maximizeIcon.GetPixel(x,y));
+            nodeStyle[0].guiStyle.normal.background.Apply();
+            nodeStyle[0].guiStyle.normal.background.hideFlags= HideFlags.DontSave; 
+            nodeStyle[0].nodeColor= nodeColor;
+            // Generate node hover texture.
+            for(int x= 0; x < defaultNodeTexture.width; ++x) {
+                for(int y= 0; y < defaultNodeTexture.height; ++y) {
+                    if(defaultNodeTexture.GetPixel(x,y).a > 0.95f) {
+                        nodeStyle[0].guiStyle.hover.background.SetPixel(x,y, nodeStyle[0].guiStyle.normal.background.GetPixel(x,y));
+                    }
+                    else {
+                        nodeStyle[0].guiStyle.hover.background.SetPixel(x,y, new Color(1,1,1, defaultNodeTexture.GetPixel(x,y).a));
+                    }
                 }
             }
-            nodeStyle[0].maximizeIcon.Apply();
-            nodeStyle[0].maximizeIcon.hideFlags= HideFlags.DontSave;
+            nodeStyle[0].guiStyle.hover.background.Apply();
+            nodeStyle[0].guiStyle.hover.background.hideFlags= HideFlags.DontSave;
+            // Generate minimized Icon.
+            if(nodeStyle[0].maximizeIcon == null) {
+                nodeStyle[0].maximizeIcon= new Texture2D(maximizeIcon.width, maximizeIcon.height);
+                for(int x= 0; x < maximizeIcon.width; ++x) {
+                    for(int y= 0; y < maximizeIcon.height; ++y) {
+                        nodeStyle[0].maximizeIcon.SetPixel(x, y, nodeStyle[0].nodeColor * maximizeIcon.GetPixel(x,y));
+                    }
+                }
+                nodeStyle[0].maximizeIcon.Apply();
+                nodeStyle[0].maximizeIcon.hideFlags= HideFlags.DontSave;
+            }            
         }
+        // Generate textures for selected node styles.
+        float selectedColorBoost= storage.Preferences.NodeColors.SelectedColorBoost;
+        if(nodeColor != nodeStyle[1].nodeColor || nodeStyle[1].selectedColorBoost != selectedColorBoost) {
+            // Copy texture from non-selected texture
+            for(int x= 0; x < nodeMaskTexture.width; ++x) {
+                for(int y= 0; y < nodeMaskTexture.height; ++y) {
+                    float highlightWeight= 1.0f;
+                    if(nodeStyle[0].guiStyle.normal.background.GetPixel(x,y).a > 0.99f && nodeMaskTexture.GetPixel(x,y).a < 0.5f) {
+                        highlightWeight= selectedColorBoost;
+                    }
+                    Color backgroundColor= nodeStyle[0].guiStyle.normal.background.GetPixel(x,y);
+                    backgroundColor.r*= highlightWeight;
+                    backgroundColor.g*= highlightWeight;
+                    backgroundColor.b*= highlightWeight;
+                    nodeStyle[1].guiStyle.normal.background.SetPixel(x,y, backgroundColor);
+                }
+            }
+            nodeStyle[1].guiStyle.normal.background.Apply();
+            nodeStyle[1].guiStyle.normal.background.hideFlags= HideFlags.DontSave; 
+            nodeStyle[1].nodeColor= nodeColor;
+            nodeStyle[1].selectedColorBoost= selectedColorBoost;
+            // Generate node hover texture.
+            for(int x= 0; x < defaultNodeTexture.width; ++x) {
+                for(int y= 0; y < defaultNodeTexture.height; ++y) {
+                    if(defaultNodeTexture.GetPixel(x,y).a > 0.95f) {
+                        nodeStyle[1].guiStyle.hover.background.SetPixel(x,y, nodeStyle[1].guiStyle.normal.background.GetPixel(x,y));
+                    }
+                    else {
+                        nodeStyle[1].guiStyle.hover.background.SetPixel(x,y, new Color(1,1,1, defaultNodeTexture.GetPixel(x,y).a));
+                    }
+                }
+            }
+            nodeStyle[1].guiStyle.hover.background.Apply();
+            nodeStyle[1].guiStyle.hover.background.hideFlags= HideFlags.DontSave;
+            // Generate minimized Icon.
+            if(nodeStyle[1].maximizeIcon == null) {
+                nodeStyle[1].maximizeIcon= new Texture2D(maximizeIcon.width, maximizeIcon.height);
+                for(int x= 0; x < maximizeIcon.width; ++x) {
+                    for(int y= 0; y < maximizeIcon.height; ++y) {
+                        nodeStyle[1].maximizeIcon.SetPixel(x, y, nodeStyle[1].nodeColor * maximizeIcon.GetPixel(x,y));
+                    }
+                }
+                nodeStyle[1].maximizeIcon.Apply();
+                nodeStyle[1].maximizeIcon.hideFlags= HideFlags.DontSave;
+            }            
+        }
+    }
+    // ----------------------------------------------------------------------
+    void FillNodeStyle(ref NodeStyle nodeStyle) {
+        if(nodeStyle.guiStyle == null) {
+            nodeStyle.guiStyle= new GUIStyle();
+            nodeStyle.guiStyle.normal.textColor= Color.black;
+            nodeStyle.guiStyle.hover.textColor= Color.black;
+            nodeStyle.guiStyle.border= new RectOffset(13,21,20,13);
+            nodeStyle.guiStyle.padding= new RectOffset(3,8,17,8);
+            nodeStyle.guiStyle.contentOffset= new Vector2(-3, -17);
+            nodeStyle.guiStyle.overflow= new RectOffset(0,5,0,3);
+            nodeStyle.guiStyle.alignment= TextAnchor.UpperCenter;
+            nodeStyle.guiStyle.fontStyle= FontStyle.Bold;
+        }
+        if(nodeStyle.guiStyle.normal.background == null) {
+            nodeStyle.nodeColor= new Color(0,0,0,0);            
+            nodeStyle.guiStyle.normal.background= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);
+        }
+        if(nodeStyle.guiStyle.hover.background == null) {
+            nodeStyle.guiStyle.hover.background= new Texture2D(nodeMaskTexture.width, nodeMaskTexture.height);            
+        }        
     }
     
     // ======================================================================
@@ -463,33 +520,29 @@ public class iCS_Graphics {
 //            GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
 //            return nodeInErrorStyle;
 //        }
-        int idx= (node == selectedObject) ? 0 : 0;
-//        if(node == selectedObject && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
-//            GenerateNodeStyle(ref selectedStyle, storage.Preferences.NodeColors.SelectedColor);
-//            return selectedStyle;
-//        }
+        int idx= (node == selectedObject) ? 1 : 0;
         if(node.IsEntryState) {
-            GenerateNodeStyle(ref entryStateStyle, storage.Preferences.NodeColors.EntryStateColor);
-            return entryStateStyle[0];            
+            GenerateNodeStyle(ref entryStateStyle, storage.Preferences.NodeColors.EntryStateColor, storage);
+            return entryStateStyle[idx];            
         }
         if(node.IsState || node.IsStateChart) {
-            GenerateNodeStyle(ref stateStyle, storage.Preferences.NodeColors.StateColor);
-            return stateStyle[0];
+            GenerateNodeStyle(ref stateStyle, storage.Preferences.NodeColors.StateColor, storage);
+            return stateStyle[idx];
         }
         if(node.IsModule) {
-            GenerateNodeStyle(ref moduleStyle, storage.Preferences.NodeColors.ModuleColor);
-            return moduleStyle[0];
+            GenerateNodeStyle(ref moduleStyle, storage.Preferences.NodeColors.ModuleColor, storage);
+            return moduleStyle[idx];
         }
         if(node.IsConstructor) {
-            GenerateNodeStyle(ref constructorStyle, storage.Preferences.NodeColors.ConstructorColor);
-            return constructorStyle[0];
+            GenerateNodeStyle(ref constructorStyle, storage.Preferences.NodeColors.ConstructorColor, storage);
+            return constructorStyle[idx];
         }
         if(node.IsStaticMethod || node.IsConversion || node.IsInstanceMethod || node.IsInstanceField || node.IsStaticField) {
-            GenerateNodeStyle(ref functionStyle, storage.Preferences.NodeColors.FunctionColor);
-            return functionStyle[0];
+            GenerateNodeStyle(ref functionStyle, storage.Preferences.NodeColors.FunctionColor, storage);
+            return functionStyle[idx];
         }
-        GenerateNodeStyle(ref defaultStyle, Color.gray);
-        return defaultStyle[0];
+        GenerateNodeStyle(ref defaultStyle, Color.gray, storage);
+        return defaultStyle[idx];
     }
     GUIStyle GetNodeGUIStyle(iCS_EditorObject node, iCS_IStorage storage) {
         NodeStyle nodeStyle= GetNodeStyle(node, storage);
