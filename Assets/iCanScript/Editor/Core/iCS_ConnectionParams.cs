@@ -47,7 +47,7 @@ public class iCS_ConnectionParams {
         if(port.IsFloating || to.IsFloating) {
             Vector2 fromPos= Math3D.Middle(storage.GetPosition(port));
             Vector2 toPos= Math3D.Middle(storage.GetPosition(to));
-            return (toPos-fromPos).normalized;
+            return GetBestDirectionFrom((toPos-fromPos).normalized);
         } else {
             if(port.IsOnLeftEdge) {
                 direction= LeftDirection;
@@ -67,6 +67,16 @@ public class iCS_ConnectionParams {
         }
         return direction;
     }
+    // ----------------------------------------------------------------------
+    static Vector2 GetBestDirectionFrom(Vector2 dir) {
+        float up= Vector2.Dot(dir, UpDirection);
+        float right= Vector2.Dot(dir, RightDirection);
+        if(Mathf.Abs(up) > Mathf.Abs(right)) {
+            return up > 0 ? UpDirection : DownDirection;
+        }
+        return right > 0 ? RightDirection : LeftDirection;
+    }
+    
     // ----------------------------------------------------------------------
     public static Vector3 BezierCenter(Vector3 start, Vector3 end, Vector3 startTangent, Vector3 endTangent) {
         // A simple linear interpolation suffices for facing tangents.
