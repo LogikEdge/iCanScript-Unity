@@ -833,7 +833,7 @@ public class iCS_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage, bool highlight= false, float lineWidth= 1.5f) {
+    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage, bool highlight= false, float lineWidth= 2.2f) {
         iCS_EditorObject portParent= storage.GetParent(port);
         if(IsVisible(portParent, storage) && storage.IsValid(port.Source)) {
             iCS_EditorObject source= storage.GetSource(port);
@@ -844,18 +844,18 @@ public class iCS_Graphics {
                     highlight= true;
                 }
                 // Determine if this connection is part of a drag.
+                float highlightWidth= 4f;
                 bool isFloating= (port.IsFloating || source.IsFloating);
                 if(isFloating) {
-                    lineWidth= 2.5f;
-                    highlight= true;
+                    lineWidth= 4.5f;
+                    highlight= false;
+                    highlightWidth= 8f;
                 }
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
-                color.a*= isFloating ? 1f : iCS_EditorConfig.ConnectionTransparency;
-                Color highlightColor= highlight || isFloating ? Color.white : Color.black;
-                highlightColor.a*= isFloating ? 1f : iCS_EditorConfig.ConnectionTransparency;
+                Color highlightColor= highlight ? Color.white : Color.black;
                 iCS_ConnectionParams cp= new iCS_ConnectionParams(port, GetDisplayPosition(port, storage), source, GetDisplayPosition(source, storage), storage);
-        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, highlightColor, lineTexture, lineWidth+2f);
-        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, lineWidth);
+        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, highlightColor, null/*lineTexture*/, lineWidth+highlightWidth);
+        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, null/*lineTexture*/, lineWidth);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
                     // Show transition input port.

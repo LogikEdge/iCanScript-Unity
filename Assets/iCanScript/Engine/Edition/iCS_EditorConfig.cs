@@ -23,9 +23,6 @@ public class iCS_EditorConfig {
     public const float  ExtraIconWidth     = 12.0f;
     
     // ----------------------------------------------------------------------
-    public const float  ConnectionTransparency  = 0.5f;
-
-    // ----------------------------------------------------------------------
     public static GUIStyle NodeStyle        { get { return GUI.skin.button; }}
     public static GUIStyle PortLabelStyle   { get { return GUI.skin.label; }}
     
