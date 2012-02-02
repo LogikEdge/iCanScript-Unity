@@ -822,7 +822,7 @@ public class iCS_Editor : EditorWindow {
                 break;
             }
         }
-        if(!inParentSeen) {
+        if(!inParentSeen && inParent != null) {
             iCS_EditorObject newPort= Storage.CreatePort(inPort.Name, inParent.InstanceId, inPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             Storage.SetSource(inPort, newPort, conversion);
             SetNewDataConnection(newPort, outPort);
@@ -836,7 +836,7 @@ public class iCS_Editor : EditorWindow {
                 break;
             }
         }
-        if(!outParentSeen) {
+        if(!outParentSeen && outParent != null) {
             iCS_EditorObject newPort= Storage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             Storage.SetSource(newPort, outPort, conversion);
             SetNewDataConnection(inPort, newPort);
