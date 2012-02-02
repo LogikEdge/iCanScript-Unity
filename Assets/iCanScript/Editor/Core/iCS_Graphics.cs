@@ -547,7 +547,9 @@ public class iCS_Graphics {
         Rect portPos= new Rect(center.x-iCS_EditorConfig.PortRadius*1.5f, center.y-iCS_EditorConfig.PortRadius*1.5f, iCS_EditorConfig.PortSize*1.5f, iCS_EditorConfig.PortSize*1.5f);
         EditorGUIUtility.AddCursorRect (portPos, MouseCursor.Link);
         GUIStyle labelStyle= GetLabelStyle(storage);
-        GUI.Label(portPos, new GUIContent("", port.ToolTip), labelStyle);
+        if(!port.IsFloating) {
+            GUI.Label(portPos, new GUIContent("", port.ToolTip), labelStyle);            
+        }
         
         // Show port label.
         if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
@@ -582,9 +584,11 @@ public class iCS_Graphics {
                 break;
         }
         GUI.Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), labelStyle);
-		if(valueAsStr != null) {
-			GUI.Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, valueStyle);			
-		}
+        if(!port.IsFloating) {
+    		if(valueAsStr != null) {
+    			GUI.Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, valueStyle);			
+    		}            
+        }
     }
 
 	// ----------------------------------------------------------------------
@@ -771,15 +775,17 @@ public class iCS_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage) {
+    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage, bool isBold= false) {
         if(IsVisible(storage.GetParent(port), storage) && storage.IsValid(port.Source)) {
             iCS_EditorObject source= storage.GetSource(port);
             iCS_EditorObject sourceParent= storage.GetParent(source);
             if(IsVisible(sourceParent, storage) && !port.IsOutStatePort) {
+                isBold|= (port.IsFloating || source.IsFloating);
+                float lineWidth= isBold ? 3.25f : 1.5f;
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
-                color.a*= iCS_EditorConfig.ConnectionTransparency;
+                color.a*= isBold ? 1f : iCS_EditorConfig.ConnectionTransparency;
                 iCS_ConnectionParams cp= new iCS_ConnectionParams(port, GetDisplayPosition(port, storage), source, GetDisplayPosition(source, storage), storage);
-        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);
+        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, lineWidth);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
                     // Show transition input port.
@@ -802,13 +808,13 @@ public class iCS_Graphics {
             }                                    
         }
     }
-    // ----------------------------------------------------------------------
-    public void DrawBezier(iCS_EditorObject endPort, Vector2 endPos, iCS_EditorObject startPort, Vector2 startPos, Type runtimeType, iCS_IStorage storage) {
-        Color color= storage.Preferences.TypeColors.GetColor(runtimeType);
-        color.a*= iCS_EditorConfig.ConnectionTransparency;
+//    // ----------------------------------------------------------------------
+//    public void DrawBezier(iCS_EditorObject endPort, Rect endPos, iCS_EditorObject startPort, Rect startPos, Type runtimeType, iCS_IStorage storage) {
+//        Color color= storage.Preferences.TypeColors.GetColor(runtimeType);
+//        color.a*= iCS_EditorConfig.ConnectionTransparency;
 //        iCS_ConnectionParams cp= new iCS_ConnectionParams(endPort, endPos, startPort, startPos, storage);
 //		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);        
-    }
+//    }
     
     // ======================================================================
     //  Utilities

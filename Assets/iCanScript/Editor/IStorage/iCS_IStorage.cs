@@ -8,11 +8,12 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-            bool            myIsDirty    = true;
-    public  iCS_Storage     Storage      = null;
-            iCS_TreeCache   TreeCache    = null;
-            int             UndoRedoId   = 0;
-            bool            CleanupNeeded= true;
+            bool            myIsDirty       = true;
+    public  iCS_Storage     Storage         = null;
+            iCS_TreeCache   TreeCache       = null;
+            int             UndoRedoId      = 0;
+            bool            CleanupNeeded   = true;
+    public  bool            CleanupDeadPorts= true;
     
     // ======================================================================
     // Initialization
@@ -140,9 +141,11 @@ public partial class iCS_IStorage {
             obj=> {
                 // Cleanup disconnected dynamic state or module ports.
                 if((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) {
-                    DestroyInstanceInternal(obj);
+                    if(CleanupDeadPorts) {
+                        DestroyInstanceInternal(obj);                            
+                    }
                     modified= true;
-                } 
+                }                    
             }
         );        
         return modified;
@@ -562,7 +565,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject bestPort= null;
         float bestDistance= 100000;     // Simply a big value
         FilterWith(
-            port=> port.IsPort && IsVisible(port),
+            port=> port.IsPort && IsVisible(port) && !port.IsFloating,
             port=> {
                 Rect tmp= GetPosition(port);
                 Vector2 position= new Vector2(tmp.x, tmp.y);

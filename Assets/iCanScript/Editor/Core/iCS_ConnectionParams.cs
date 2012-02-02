@@ -44,14 +44,20 @@ public class iCS_ConnectionParams {
     // ----------------------------------------------------------------------
     static Vector2 ConnectionDirectionForTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         Vector2 direction;
-        if(port.IsOnLeftEdge) {
-            direction= LeftDirection;
-        } else if(port.IsOnRightEdge) {
-            direction= RightDirection;
-        } else if(port.IsOnTopEdge) {
-            direction= UpDirection;
+        if(port.IsFloating) {
+            Vector2 fromPos= Math3D.Middle(storage.GetPosition(port));
+            Vector2 toPos= Math3D.Middle(storage.GetPosition(to));
+            return (toPos-fromPos).normalized;
         } else {
-            direction= DownDirection;
+            if(port.IsOnLeftEdge) {
+                direction= LeftDirection;
+            } else if(port.IsOnRightEdge) {
+                direction= RightDirection;
+            } else if(port.IsOnTopEdge) {
+                direction= UpDirection;
+            } else {
+                direction= DownDirection;
+            }            
         }
         // Inverse direction for connection between nested nodes.
         iCS_EditorObject portParent= storage.GetParent(port);

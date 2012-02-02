@@ -37,6 +37,8 @@ public class iCS_Editor : EditorWindow {
     enum DragTypeEnum { None, PortDrag, NodeDrag, TransitionCreation };
     DragTypeEnum     DragType              = DragTypeEnum.None;
     iCS_EditorObject DragObject            = null;
+    iCS_EditorObject DragFixPort           = null;
+    iCS_EditorObject DragOriginalPort      = null;
     Vector2          MouseDragStartPosition= Vector2.zero;
     Vector2          DragStartPosition     = Vector2.zero;
     bool             IsDragEnabled         = false;
@@ -428,27 +430,58 @@ public class iCS_Editor : EditorWindow {
                 break;
             case DragTypeEnum.PortDrag:
             case DragTypeEnum.TransitionCreation:
-                iCS_EditorObject port= DragObject;
+                // Update port position.
                 Vector2 newLocalPos= DragStartPosition+delta;
+                DragObject.LocalPosition.x= newLocalPos.x;
+                DragObject.LocalPosition.y= newLocalPos.y;
                 // Snap to nearby ports
                 Vector2 mousePosInGraph= ScrollView.ScreenToGraph(MousePosition);
                 iCS_EditorObject closestPort= Storage.GetPortAt(mousePosInGraph);
-                if(Vector2.Distance(Math3D.Middle(Storage.GetPosition(closestPort)), mousePosInGraph) < 2*iCS_EditorConfig.PortRadius) {
-                    Rect parentPos= Storage.GetPosition(Storage.GetParent(port));
-                    // TO BE COMPLETED
+                if(closestPort != null) {
+                    Rect closestPortRect= Storage.GetPosition(closestPort);
+                    Vector2 closestPortPos= new Vector2(closestPortRect.x, closestPortRect.y);
+                    if(Vector2.Distance(closestPortPos, mousePosInGraph) < 10*iCS_EditorConfig.PortRadius) {
+                        Rect parentPos= Storage.GetPosition(Storage.GetParent(DragObject));
+                        DragObject.LocalPosition.x= closestPortRect.x-parentPos.x;
+                        DragObject.LocalPosition.y= closestPortRect.y-parentPos.y;
+                    }                    
                 }
-                // Update port position.
-                port.LocalPosition.x= newLocalPos.x;
-                port.LocalPosition.y= newLocalPos.y;
-                Storage.SetDirty(port);
-                if(!Storage.IsNearParent(port)) {
-                /*
-                    TODO : create a temporary port to show new connection.
-                */    
+                Storage.SetDirty(DragObject);
+                // Special case for dynamic module ports.
+                if(DragOriginalPort != null && DragOriginalPort.IsModulePort) {
+                    if(Storage.IsInside(Storage.GetParent(DragOriginalPort), mousePosInGraph)) {
+                        if(DragOriginalPort.IsOutputPort && (Storage.GetSource(DragOriginalPort) != null || DragFixPort != DragOriginalPort)) {
+                            BreakDataConnectionDrag();
+                        } else {
+                            MakeDataConnectionDrag();
+                        }
+                    } else {
+                        if(DragOriginalPort.IsInputPort && (Storage.GetSource(DragOriginalPort) != null || DragFixPort != DragOriginalPort)) {
+                            BreakDataConnectionDrag();
+                        } else {
+                            MakeDataConnectionDrag();
+                        }
+                    }
                 }
                 break;
         }
     }    
+	// ----------------------------------------------------------------------
+    void MakeDataConnectionDrag() {
+        if(DragFixPort != DragOriginalPort) {
+            Storage.SetSource(DragOriginalPort, DragFixPort);
+            Storage.SetSource(DragObject, DragOriginalPort);
+            DragFixPort= DragOriginalPort;
+        }
+    }
+	// ----------------------------------------------------------------------
+    void BreakDataConnectionDrag() {
+        if(DragFixPort == DragOriginalPort) {
+            DragFixPort= Storage.GetSource(DragOriginalPort);
+            Storage.SetSource(DragObject, DragFixPort);
+            Storage.SetSource(DragOriginalPort, null);
+        }
+    }
 	// ----------------------------------------------------------------------
     bool StartDrag() {
         // Don't select new drag type if drag already started.
@@ -458,14 +491,39 @@ public class iCS_Editor : EditorWindow {
         MouseDragStartPosition= MouseDownPosition;
         Vector2 pos= ScrollView.ScreenToGraph(MouseDragStartPosition);
 
-        // Port drag.
+        // Data port drag.
         iCS_EditorObject port= Storage.GetPortAt(pos);
         if(port != null && !Storage.IsMinimized(port)) {
             Storage.RegisterUndo("Port Drag");
+            Storage.CleanupDeadPorts= false;
             DragType= DragTypeEnum.PortDrag;
-            DragObject= port;
+            DragOriginalPort= port;
+            DragFixPort= port;
+            // Create a drag port.
+            iCS_EditorObject parent= Storage.GetParent(port);
+            if(port.IsInputPort) {
+                DragObject= Storage.CreatePort(port.Name, parent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                if(port.IsModulePort) {
+                    Storage.SetSource(DragObject, port);
+                } else {
+                    iCS_EditorObject prevSource= Storage.GetSource(port);
+                    if(prevSource != null) {
+                        DragFixPort= prevSource;
+                        Storage.SetSource(DragObject, prevSource);
+                        Storage.DisconnectPort(port);
+                    } else {
+                        Storage.SetSource(port, DragObject);
+                    }                    
+                }
+            } else {
+                DragObject= Storage.CreatePort(port.Name, parent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+                Storage.SetSource(DragObject, port);
+            }
+            Rect portPos= Storage.GetPosition(port);
+            Storage.SetInitialPosition(DragObject, new Vector2(portPos.x, portPos.y));
+            Storage.SetDisplayPosition(DragObject, portPos);
             DragStartPosition= new Vector2(port.LocalPosition.x, port.LocalPosition.y);
-            port.IsFloating= true;
+            DragObject.IsFloating= true;
             return true;
         }
 
@@ -506,6 +564,7 @@ public class iCS_Editor : EditorWindow {
             Storage.SetInitialPosition(outTransition, pos);
             Storage.SetInitialPosition(inTransition, pos);
             inTransition.Source= outTransition.InstanceId;
+            DragFixPort= outTransition;
             DragObject= inTransition;
             DragStartPosition= new Vector2(DragObject.LocalPosition.x, DragObject.LocalPosition.y);
             DragObject.IsFloating= true;
@@ -542,80 +601,68 @@ public class iCS_Editor : EditorWindow {
                     break;
                 }
                 case DragTypeEnum.PortDrag:
-                    iCS_EditorObject port= DragObject;
-                    port.IsFloating= false;
                     // Verify for a new connection.
-                    if(!VerifyNewConnection(port)) {
-                        // Verify for disconnection.
-                        Storage.SetDirty(port);
-                        if(!Storage.IsNearParent(port)) {
-                            if(port.IsDataPort) {
+                    if(!VerifyNewConnection(DragFixPort, DragObject)) {
+                        bool isNearParent= Storage.IsNearParent(DragObject);
+                        if(DragFixPort.IsDataPort) {
+                            // We don't need the drag port anymore.
+                            Rect dragPortPos= Storage.GetPosition(DragObject);
+                            Storage.DestroyInstance(DragObject);
+                            // Verify for disconnection.
+                            if(!isNearParent) {
+                                // Let's determine if we want to create a module port.
                                 iCS_EditorObject newPortParent= GetNodeAtMousePosition();
                                 if(newPortParent != null && newPortParent.IsModule) {
-                                    iCS_EditorObject portParent= Storage.GetParent(port);
-                                    Rect portPos= Storage.GetPosition(port);
+                                    iCS_EditorObject portParent= Storage.GetParent(DragFixPort);
                                     Rect modulePos= Storage.GetPosition(newPortParent);
                                     float portSize2= 2f*iCS_EditorConfig.PortSize;
-                                    if(port.IsOutputPort) {
-                                        if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
-                                            if(!Storage.IsChildOf(newPortParent, portParent)) {
-                                                iCS_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-                                                port.LocalPosition.x= DragStartPosition.x;
-                                                port.LocalPosition.y= DragStartPosition.y;
-                                                Storage.SetSource(newPort, port);                               
+                                    if(DragFixPort.IsInputPort) {
+                                        if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
+                                            if(Storage.IsChildOf(portParent, newPortParent)) {
+                                                iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+                                                SetNewDataConnection(DragFixPort, newPort);
                                                 break;
                                             }
                                         }
-                                        if(Math3D.IsWithinOrEqual(portPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
-                                            if(Storage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-                                                port.LocalPosition.x= DragStartPosition.x;
-                                                port.LocalPosition.y= DragStartPosition.y;
-                                                Storage.SetSource(newPort, port);                               
+                                        if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
+                                            if(!Storage.IsChildOf(portParent, newPortParent)) {
+                                                iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                                                SetNewDataConnection(DragFixPort, newPort);
                                                 break;                                                
                                             }
                                         }                                    
                                     }
-                                    if(port.IsInputPort) {
-                                        if(Math3D.IsWithinOrEqual(portPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
-                                            if(!Storage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-                                                port.LocalPosition.x= DragStartPosition.x;
-                                                port.LocalPosition.y= DragStartPosition.y;
-                                                Storage.SetSource(port, newPort);                               
+                                    if(DragFixPort.IsOutputPort) {
+                                        if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
+                                            if(Storage.IsChildOf(portParent, newPortParent)) {
+                                                iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                                                SetNewDataConnection(newPort, DragFixPort);
                                                 break;                                                                                                    
                                             }
                                         }
-                                        if(Math3D.IsWithinOrEqual(portPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
-                                            if(Storage.IsChildOf(portParent, newPortParent) || Storage.IsChildOf(newPortParent, portParent)) {
-                                                iCS_EditorObject newPort= Storage.CreatePort(port.Name, newPortParent.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-                                                port.LocalPosition.x= DragStartPosition.x;
-                                                port.LocalPosition.y= DragStartPosition.y;
-                                                if(Storage.IsChildOf(portParent, newPortParent)) {
-                                                    Storage.SetSource(port, newPort);
-                                                } else {
-                                                    Storage.SetSource(newPort, port);
-                                                }
+                                        if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
+                                            if(!Storage.IsChildOf(portParent, newPortParent)) {
+                                                iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+                                                SetNewDataConnection(newPort, DragFixPort);
                                                 break;
                                             }
                                         }
                                     }                                    
                                 }
-                                port.LocalPosition.x= DragStartPosition.x;
-                                port.LocalPosition.y= DragStartPosition.y;
-                                Storage.DisconnectPort(port);                                    
-                                break;
-                            }
-                            if(port.IsStatePort) {
-                                if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
-                                    Storage.DestroyInstance(port);
-                                } else {
-                                    port.LocalPosition.x= DragStartPosition.x;
-                                    port.LocalPosition.y= DragStartPosition.y;                                
-                                }
                                 break;
                             }
                         }                    
+                        if(DragObject.IsStatePort && !isNearParent) {
+                            DragObject.IsFloating= false;
+                            Storage.SetDirty(DragObject);
+                            if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
+                                Storage.DestroyInstance(DragObject);
+                            } else {
+                                DragObject.LocalPosition.x= DragStartPosition.x;
+                                DragObject.LocalPosition.y= DragStartPosition.y;                                
+                            }
+                            break;
+                        }
                     }
                     break;
                 case DragTypeEnum.TransitionCreation:
@@ -641,9 +688,12 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     void ResetDrag() {
-        DragType= DragTypeEnum.None;
-        DragObject= null;
-        IsDragEnabled= false;                    
+        DragType        = DragTypeEnum.None;
+        DragObject      = null;
+        DragOriginalPort= null;
+        DragFixPort     = null;
+        IsDragEnabled   = false;
+        Storage.CleanupDeadPorts= true;                    
     }
 #endregion User Interaction
     
@@ -684,81 +734,74 @@ public class iCS_Editor : EditorWindow {
     }
         
 	// ----------------------------------------------------------------------
-    bool VerifyNewConnection(iCS_EditorObject port) {
+    bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject dragPort) {
         // No new connection if no overlapping port found.
-        iCS_EditorObject overlappingPort= Storage.GetOverlappingPort(port);
+        iCS_EditorObject overlappingPort= Storage.GetOverlappingPort(dragPort);
         if(overlappingPort == null) return false;
+
+        // Only data ports can be connected together.
+        if(!fixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
         
-        // Reestablish port position.
-        port.LocalPosition.x= DragStartPosition.x;
-        port.LocalPosition.y= DragStartPosition.y;
+        // Destroy drag port since it is not needed anymore.
+        Storage.DestroyInstance(dragPort);
+        dragPort= null;
         
         // Connect function & modules ports together.
-        if(port.IsDataPort && overlappingPort.IsDataPort) {            
-            iCS_EditorObject inPort = null;
-            iCS_EditorObject outPort= null;
+        iCS_EditorObject inPort = null;
+        iCS_EditorObject outPort= null;
 
-            iCS_EditorObject portParent= Storage.EditorObjects[port.ParentId];
-            iCS_EditorObject overlappingPortParent= Storage.EditorObjects[overlappingPort.ParentId];
-            bool portIsChildOfOverlapping= Storage.IsChildOf(portParent, overlappingPortParent);
-            bool overlappingIsChildOfPort= Storage.IsChildOf(overlappingPortParent, portParent);
-            if(portIsChildOfOverlapping || overlappingIsChildOfPort) {
-                if(port.IsInputPort && overlappingPort.IsInputPort) {
-                    if(portIsChildOfOverlapping) {
-                        inPort= port;
-                        outPort= overlappingPort;
-                    } else {
-                        inPort= overlappingPort;
-                        outPort= port;
-                    }
-                } else if(port.IsOutputPort && overlappingPort.IsOutputPort) {
-                    if(portIsChildOfOverlapping) {
-                        inPort= overlappingPort;
-                        outPort= port;
-                    } else {
-                        inPort= port;
-                        outPort= overlappingPort;
-                    }                    
+        iCS_EditorObject portParent= Storage.EditorObjects[fixPort.ParentId];
+        iCS_EditorObject overlappingPortParent= Storage.EditorObjects[overlappingPort.ParentId];
+        bool portIsChildOfOverlapping= Storage.IsChildOf(portParent, overlappingPortParent);
+        bool overlappingIsChildOfPort= Storage.IsChildOf(overlappingPortParent, portParent);
+        if(portIsChildOfOverlapping || overlappingIsChildOfPort) {
+            if(fixPort.IsInputPort && overlappingPort.IsInputPort) {
+                if(portIsChildOfOverlapping) {
+                    inPort= fixPort;
+                    outPort= overlappingPort;
                 } else {
-                    Debug.LogWarning("Cannot connect nested node ports from input to output !!!");
-                    return true;
+                    inPort= overlappingPort;
+                    outPort= fixPort;
                 }
+            } else if(fixPort.IsOutputPort && overlappingPort.IsOutputPort) {
+                if(portIsChildOfOverlapping) {
+                    inPort= overlappingPort;
+                    outPort= fixPort;
+                } else {
+                    inPort= fixPort;
+                    outPort= overlappingPort;
+                }                    
             } else {
-                inPort = port.IsInputPort             ? port : overlappingPort;
-                outPort= overlappingPort.IsOutputPort ? overlappingPort : port;
+                Debug.LogWarning("Cannot connect nested node ports from input to output !!!");
+                return true;
             }
-            if(inPort != outPort) {
-				Type inType= inPort.RuntimeType;
-				Type outType= outPort.RuntimeType;
-                if(iCS_Types.CanBeConnectedWithoutConversion(outType, inType)) { // No conversion needed.
-                    SetNewDataConnection(inPort, outPort);                       
-                }
-                else {  // A conversion is required.
-					if(iCS_Types.CanBeConnectedWithUpConversion(outType, inType)) {
-						if(EditorUtility.DisplayDialog("Up Conversion Connection", "Are you sure you want to generate a conversion from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)+"?", "Generate Conversion", "Abort")) {
-							SetNewDataConnection(inPort, outPort);							
-						}
-					} else {
-	                    iCS_ReflectionDesc conversion= iCS_DataBase.FindConversion(outType, inType);
-	                    if(conversion == null) {
-							ShowNotification(new GUIContent("No direct conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
-	                    } else {
-	                        SetNewDataConnection(inPort, outPort, conversion);
-	                    }						
+        } else {
+            inPort = fixPort.IsInputPort          ? fixPort : overlappingPort;
+            outPort= overlappingPort.IsOutputPort ? overlappingPort : fixPort;
+        }
+        if(inPort != outPort) {
+			Type inType= inPort.RuntimeType;
+			Type outType= outPort.RuntimeType;
+            if(iCS_Types.CanBeConnectedWithoutConversion(outType, inType)) { // No conversion needed.
+                SetNewDataConnection(inPort, outPort);
+            }
+            else {  // A conversion is required.
+				if(iCS_Types.CanBeConnectedWithUpConversion(outType, inType)) {
+					if(EditorUtility.DisplayDialog("Up Conversion Connection", "Are you sure you want to generate a conversion from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)+"?", "Generate Conversion", "Abort")) {
+						SetNewDataConnection(inPort, outPort);							
 					}
-                }
-            } else {
-                Debug.LogWarning("Ports are both either inputs or outputs !!!");
+				} else {
+                    iCS_ReflectionDesc conversion= iCS_DataBase.FindConversion(outType, inType);
+                    if(conversion == null) {
+						ShowNotification(new GUIContent("No direct conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
+                    } else {
+                        SetNewDataConnection(inPort, outPort, conversion);
+                    }						
+				}
             }
-            return true;
+        } else {
+            Debug.LogWarning("Ports are both either inputs or outputs !!!");
         }
-
-        // Connect transition port together.
-        if(port.IsStatePort && overlappingPort.IsStatePort) {
-            return true;
-        }
-        
-        Debug.LogWarning("Trying to connect incompatible port types: "+port.TypeName+"<=>"+overlappingPort.TypeName);
         return true;
     }
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc conversion= null) {
