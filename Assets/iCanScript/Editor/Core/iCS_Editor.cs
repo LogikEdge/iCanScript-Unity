@@ -9,14 +9,6 @@ using System.Collections.Generic;
 // This non-persistante class is used to edit the iCS_Behaviour.
 public class iCS_Editor : EditorWindow {
     // ======================================================================
-	// iCanScript Window Menu.
-	[MenuItem("Window/iCanScript Editor")]
-	public static void ShowiCanScriptEditor() {
-        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
-        editor.hideFlags= HideFlags.DontSave;
-	}
-
-    // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
     iCS_IStorage         myStorage      = null;

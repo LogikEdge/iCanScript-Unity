@@ -44,7 +44,7 @@ public class iCS_ConnectionParams {
     // ----------------------------------------------------------------------
     static Vector2 ConnectionDirectionForTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         Vector2 direction;
-        if(port.IsFloating) {
+        if(port.IsFloating || to.IsFloating) {
             Vector2 fromPos= Math3D.Middle(storage.GetPosition(port));
             Vector2 toPos= Math3D.Middle(storage.GetPosition(to));
             return (toPos-fromPos).normalized;
