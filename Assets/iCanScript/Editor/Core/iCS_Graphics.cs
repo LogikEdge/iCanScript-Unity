@@ -287,7 +287,7 @@ public class iCS_Graphics {
             }            
         }
         // Generate textures for selected node styles.
-        float selectedColorBoost= storage.Preferences.NodeColors.SelectedColorBoost;
+        float selectedColorBoost= storage.Preferences.NodeColors.SelectedBrightness;
         if(nodeColor != nodeStyle[1].nodeColor || nodeStyle[1].selectedColorBoost != selectedColorBoost) {
             // Copy texture from non-selected texture
             for(int x= 0; x < nodeMaskTexture.width; ++x) {

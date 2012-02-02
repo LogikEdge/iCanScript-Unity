@@ -21,14 +21,14 @@ public class iCS_UserPreferences {
 
     [System.Serializable]
     public class UserNodeColors {
-        public float    SelectedColorBoost   = 0.55f;
-        public Color    LabelColor      = Color.white;
-        public Color    EntryStateColor = new Color(1f,0.5f,0.25f);
-        public Color    StateColor      = Color.cyan;
-        public Color    ModuleColor     = Color.yellow;
-        public Color    ConstructorColor= new Color(1f,0.25f,0.5f);
-        public Color    FunctionColor   = Color.green;
-        public Color    SelectedColor   = Color.white;            
+        public float    SelectedBrightness= 0.55f;
+        public Color    LabelColor        = Color.white;
+        public Color    EntryStateColor   = new Color(1f,0.5f,0.25f);
+        public Color    StateColor        = Color.cyan;
+        public Color    ModuleColor       = Color.yellow;
+        public Color    ConstructorColor  = new Color(1f,0.25f,0.5f);
+        public Color    FunctionColor     = Color.green;
+        public Color    SelectedColor     = Color.white;            
     }
     public UserNodeColors   NodeColors= new UserNodeColors();
 
