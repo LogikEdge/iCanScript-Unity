@@ -56,6 +56,9 @@ public class iCS_Graphics {
 //	NodeStyle   nodeInErrorStyle= null;
     GUIStyle    labelStyle      = null;
 
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject selectedObject= null;
+    
     // ======================================================================
 	// CONSTANTS
     // ----------------------------------------------------------------------
@@ -333,13 +336,13 @@ public class iCS_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    public void DrawNormalNode(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {        
+    public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage storage) {        
         // Don't draw minimized node.
         if(IsInvisible(node, storage) || IsMinimized(node, storage)) return;
         
         // Draw node box.
         Rect position= GetDisplayPosition(node, storage);
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
+        NodeStyle nodeStyle= GetNodeStyle(node, storage);
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         GUIStyle guiStyle= nodeStyle.guiStyle;
         float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
@@ -364,12 +367,12 @@ public class iCS_Graphics {
         }
     }
     // ----------------------------------------------------------------------
-    public void DrawMinimizedNode(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {        
+    public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage storage) {        
         if(!IsMinimized(node, storage)) return;
         
         // Draw minimized node.
         Rect position= GetDisplayPosition(node, storage);
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
+        NodeStyle nodeStyle= GetNodeStyle(node, storage);
         Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
         if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
@@ -388,7 +391,7 @@ public class iCS_Graphics {
     public bool IsNodeTitleBarPicked(iCS_EditorObject node, Vector2 pick, iCS_IStorage storage) {
         if(!node.IsNode || storage.IsMinimized(node)) return false;
         Rect titleRect= GetDisplayPosition(node, storage);
-        GUIStyle style= GetNodeGUIStyle(node, null, storage);
+        GUIStyle style= GetNodeGUIStyle(node, storage);
         titleRect.height= style.border.top;
         return titleRect.Contains(pick);
     }
@@ -454,7 +457,7 @@ public class iCS_Graphics {
     // ======================================================================
     // Node style functionality
     // ----------------------------------------------------------------------
-    NodeStyle GetNodeStyle(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {
+    NodeStyle GetNodeStyle(iCS_EditorObject node, iCS_IStorage storage) {
         // Node background is dependant on node type.
 //        iCS_Node runtimeNode= storage.EditorObjects.GetRuntimeObject(node) as iCS_Node;
 //        if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
@@ -488,22 +491,22 @@ public class iCS_Graphics {
         GenerateNodeStyle(ref defaultStyle, Color.gray);
         return defaultStyle;
     }
-    GUIStyle GetNodeGUIStyle(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
+    GUIStyle GetNodeGUIStyle(iCS_EditorObject node, iCS_IStorage storage) {
+        NodeStyle nodeStyle= GetNodeStyle(node, storage);
         return nodeStyle.guiStyle;
     }
     
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
-    Color GetNodeColor(iCS_EditorObject node, iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        NodeStyle nodeStyle= GetNodeStyle(node, selectedObject, storage);
+    Color GetNodeColor(iCS_EditorObject node, iCS_IStorage storage) {
+        NodeStyle nodeStyle= GetNodeStyle(node, storage);
         return nodeStyle.nodeColor;
     }
     
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
-    public void DrawPort(iCS_EditorObject port, iCS_EditorObject selectedObject, iCS_IStorage storage) {
+    public void DrawPort(iCS_EditorObject port, iCS_IStorage storage) {
         // Update display position.
         Rect position= GetDisplayPosition(port, storage);
 
@@ -515,7 +518,7 @@ public class iCS_Graphics {
         Vector2 center= Math3D.ToVector2(position);
         Type portValueType= port.RuntimeType;
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
-        Color nodeColor= GetNodeColor(portParent, selectedObject, storage);
+        Color nodeColor= GetNodeColor(portParent, storage);
 		object portValue= null;
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
@@ -777,16 +780,28 @@ public class iCS_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage, bool isBold= false) {
-        if(IsVisible(storage.GetParent(port), storage) && storage.IsValid(port.Source)) {
+    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage, bool highlight= false, float lineWidth= 1.5f) {
+        iCS_EditorObject portParent= storage.GetParent(port);
+        if(IsVisible(portParent, storage) && storage.IsValid(port.Source)) {
             iCS_EditorObject source= storage.GetSource(port);
             iCS_EditorObject sourceParent= storage.GetParent(source);
             if(IsVisible(sourceParent, storage) && !port.IsOutStatePort) {
-                isBold|= (port.IsFloating || source.IsFloating);
-                float lineWidth= isBold ? 3.25f : 1.5f;
+                // Determine if this connection is part of the selected object.
+                if(port == selectedObject || source == selectedObject || portParent == selectedObject || sourceParent == selectedObject) {
+                    highlight= true;
+                }
+                // Determine if this connection is part of a drag.
+                bool isFloating= (port.IsFloating || source.IsFloating);
+                if(isFloating) {
+                    lineWidth= 2.5f;
+                    highlight= true;
+                }
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
-                color.a*= isBold ? 1f : iCS_EditorConfig.ConnectionTransparency;
+                color.a*= isFloating ? 1f : iCS_EditorConfig.ConnectionTransparency;
+                Color highlightColor= highlight || isFloating ? Color.white : Color.black;
+                highlightColor.a*= isFloating ? 1f : iCS_EditorConfig.ConnectionTransparency;
                 iCS_ConnectionParams cp= new iCS_ConnectionParams(port, GetDisplayPosition(port, storage), source, GetDisplayPosition(source, storage), storage);
+        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, highlightColor, lineTexture, lineWidth+2f);
         		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, lineWidth);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
@@ -865,7 +880,7 @@ public class iCS_Graphics {
         if(edObj.IsNode) {
             if(IsInvisible(edObj, storage)) return false;
             Rect position= GetDisplayPosition(edObj, storage);
-            NodeStyle nodeStyle= GetNodeStyle(edObj, null, storage);
+            NodeStyle nodeStyle= GetNodeStyle(edObj, storage);
             Texture icon= GetMaximizeIcon(edObj, nodeStyle, storage);
             return (position.width*position.height <= icon.width*icon.height+1f);
         }

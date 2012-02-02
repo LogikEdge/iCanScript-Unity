@@ -50,11 +50,6 @@ public class iCS_Editor : EditorWindow {
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
      
-//    // ----------------------------------------------------------------------
-//	// Editor information.
-//	bool IsNameEditorActive = false;
-//	bool IsValueEditorActive= false;
-	
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
@@ -63,9 +58,8 @@ public class iCS_Editor : EditorWindow {
         set {
 			if(mySelectedObject != value) {
 				mySelectedObject= value;
+                Graphics.selectedObject= value;
 				if(Inspector != null) Inspector.SelectedObject= value;				
-//  			IsNameEditorActive= false;
-//  			IsValueEditorActive= false;
 			}
 		}
     }
@@ -99,6 +93,10 @@ public class iCS_Editor : EditorWindow {
         Graphics        = new iCS_Graphics();
         ScrollView      = new iCS_ScrollView();
         DynamicMenu     = new iCS_DynamicMenu();
+        
+        // Reset selected object.
+        SelectedObject= null;
+        Graphics.selectedObject= null;
         
         // Inspect the assemblies for components.
         if(!ourAlreadyParsed) {
@@ -1163,14 +1161,14 @@ public class iCS_Editor : EditorWindow {
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
                 if(node.IsNode && !node.IsFloating) {
-                	Graphics.DrawNormalNode(node, SelectedObject, Storage);                        
+                	Graphics.DrawNormalNode(node, Storage);                        
                 }
             }
         );
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
                 if(node.IsNode && node.IsFloating) {
-                	Graphics.DrawNormalNode(node, SelectedObject, Storage);                        
+                	Graphics.DrawNormalNode(node, Storage);                        
                 }
             }
         );
@@ -1181,14 +1179,14 @@ public class iCS_Editor : EditorWindow {
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
                 if(node.IsNode && !node.IsFloating) {
-                	Graphics.DrawMinimizedNode(node, SelectedObject, Storage);                        
+                	Graphics.DrawMinimizedNode(node, Storage);                        
                 }
             }
         );
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
                 if(node.IsNode && node.IsFloating) {
-                	Graphics.DrawMinimizedNode(node, SelectedObject, Storage);                        
+                	Graphics.DrawMinimizedNode(node, Storage);                        
                 }
             }
         );
@@ -1200,7 +1198,7 @@ public class iCS_Editor : EditorWindow {
         Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawConnection(port, Storage); });
 
         // Display ports.
-        Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, SelectedObject, Storage); });
+        Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, Storage); });
     }
 
 }
