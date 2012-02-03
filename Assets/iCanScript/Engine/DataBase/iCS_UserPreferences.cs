@@ -21,7 +21,7 @@ public class iCS_UserPreferences {
 
     [System.Serializable]
     public class UserNodeColors {
-        public float    SelectedBrightness= 0.55f;
+        public float    SelectedBrightness= 1.75f;
         public Color    LabelColor        = Color.white;
         public Color    EntryStateColor   = new Color(1f,0.5f,0.25f);
         public Color    StateColor        = Color.cyan;

@@ -573,6 +573,7 @@ public class iCS_Graphics {
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, storage);
 		object portValue= null;
+		float portRadius= port == selectedObject ? 1.5f*iCS_EditorConfig.PortRadius : iCS_EditorConfig.PortRadius;
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
@@ -580,27 +581,27 @@ public class iCS_Graphics {
 			if(port.IsInputPort && storage.GetSource(port) == null) {
 				if(!Application.isPlaying && storage.Preferences.DisplayOptions.EditorPortValues) portValue= storage.GetPortValue(port);
 				if(portValue != null) {
-	            	DrawSquarePort(portCenter, portColor, nodeColor);
+	            	DrawSquarePort(portCenter, portColor, nodeColor, portRadius);
 				} else {
-		            DrawCircularPort(portCenter, portColor, nodeColor);									
+		            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);									
 				}
 			} else {
-	            DrawCircularPort(portCenter, portColor, nodeColor);				
+	            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);				
 			}
         } else if(port.IsStatePort) {
             if(port.IsOutStatePort) {
                 Handles.color= Color.white;
-                Handles.DrawSolidDisc(center, FacingNormal, iCS_EditorConfig.PortRadius);
+                Handles.DrawSolidDisc(center, FacingNormal, portRadius);
             }
         } else if(port.IsInTransitionPort || port.IsOutTransitionPort) {
             Handles.color= Color.white;
-            Handles.DrawSolidDisc(center, FacingNormal, iCS_EditorConfig.PortRadius);            
+            Handles.DrawSolidDisc(center, FacingNormal, portRadius);            
         }
         else {
-            DrawCircularPort(center, portColor, nodeColor);
+            DrawCircularPort(center, portColor, nodeColor, portRadius);
         }
         // Configure move cursor for port.
-        Rect portPos= new Rect(center.x-iCS_EditorConfig.PortRadius*1.5f, center.y-iCS_EditorConfig.PortRadius*1.5f, iCS_EditorConfig.PortSize*1.5f, iCS_EditorConfig.PortSize*1.5f);
+        Rect portPos= new Rect(center.x-portRadius*1.5f, center.y-portRadius*1.5f, portRadius*3f, portRadius*3f);
         if(!port.IsTransitionPort) {
             EditorGUIUtility.AddCursorRect (portPos, MouseCursor.Link);            
         }
@@ -663,28 +664,29 @@ public class iCS_Graphics {
         return null;
     }
 	// ----------------------------------------------------------------------
-    void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor) {
-        Handles.color= Color.black;
-        Handles.DrawSolidDisc(_center, FacingNormal, iCS_EditorConfig.PortRadius+2.0f);
+    void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
+        Handles.color= radius > iCS_EditorConfig.PortRadius ? new Color(0.67f, 0.67f, 0.67f) : Color.black;
+        Handles.DrawSolidDisc(_center, FacingNormal, radius+2.0f);
         Handles.color= _fillColor;
-        Handles.DrawSolidDisc(_center, FacingNormal, iCS_EditorConfig.PortRadius);
+        Handles.DrawSolidDisc(_center, FacingNormal, radius);
         Handles.color= _borderColor;
-        Handles.DrawWireDisc(_center, FacingNormal, iCS_EditorConfig.PortRadius+2.0f);
+        Handles.DrawWireDisc(_center, FacingNormal, radius+2.0f);
+        Handles.DrawWireDisc(_center, FacingNormal, radius+2.5f);
     }
 
 	// ----------------------------------------------------------------------
-    void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor) {
-        // Draw connector.
+    void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
+        Color backgroundColor= radius > iCS_EditorConfig.PortRadius ? Color.white : Color.black;
         Vector3[] vectors= new Vector3[4];
-        float delta= iCS_EditorConfig.PortRadius+1;
+        float delta= radius+1;
         vectors[0]= new Vector3(_center.x-delta, _center.y-delta, 0);
         vectors[1]= new Vector3(_center.x-delta, _center.y+delta, 0);
         vectors[2]= new Vector3(_center.x+delta, _center.y+delta, 0);
         vectors[3]= new Vector3(_center.x+delta, _center.y-delta, 0);
         Handles.color= _borderColor;
-		Handles.DrawSolidRectangleWithOutline(vectors, Color.black, _borderColor);
+		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, _borderColor);
 
-        delta= iCS_EditorConfig.PortRadius-1;
+        delta= radius-1;
         vectors[0]= new Vector3(_center.x-delta, _center.y-delta, 0);
         vectors[1]= new Vector3(_center.x-delta, _center.y+delta, 0);
         vectors[2]= new Vector3(_center.x+delta, _center.y+delta, 0);
@@ -833,29 +835,29 @@ public class iCS_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage, bool highlight= false, float lineWidth= 2.2f) {
+    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage, bool highlight= false, float lineWidth= 1.5f) {
         iCS_EditorObject portParent= storage.GetParent(port);
         if(IsVisible(portParent, storage) && storage.IsValid(port.Source)) {
             iCS_EditorObject source= storage.GetSource(port);
             iCS_EditorObject sourceParent= storage.GetParent(source);
             if(IsVisible(sourceParent, storage) && !port.IsOutStatePort) {
                 // Determine if this connection is part of the selected object.
+                float highlightWidth= 2f;
+                Color highlightColor= new Color(0.67f, 0.67f, 0.67f);
                 if(port == selectedObject || source == selectedObject || portParent == selectedObject || sourceParent == selectedObject) {
                     highlight= true;
                 }
                 // Determine if this connection is part of a drag.
-                float highlightWidth= 4f;
                 bool isFloating= (port.IsFloating || source.IsFloating);
                 if(isFloating) {
-                    lineWidth= 4.5f;
                     highlight= false;
-                    highlightWidth= 8f;
                 }
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
-                Color highlightColor= highlight ? Color.white : Color.black;
                 iCS_ConnectionParams cp= new iCS_ConnectionParams(port, GetDisplayPosition(port, storage), source, GetDisplayPosition(source, storage), storage);
-        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, highlightColor, null/*lineTexture*/, lineWidth+highlightWidth);
-        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, null/*lineTexture*/, lineWidth);
+                if(highlight) {
+            		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                    
+                }
+        		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, lineWidth);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
                     // Show transition input port.
