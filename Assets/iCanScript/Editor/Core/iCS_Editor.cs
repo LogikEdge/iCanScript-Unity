@@ -22,7 +22,6 @@ public class iCS_Editor : EditorWindow {
     
     // ----------------------------------------------------------------------
     private iCS_Graphics    Graphics  = null;
-    public  iCS_ScrollView  ScrollView= null;
     private bool			InitScrollPosition= false;
     
     // ----------------------------------------------------------------------
@@ -37,8 +36,9 @@ public class iCS_Editor : EditorWindow {
     bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
 
     // ----------------------------------------------------------------------
-    Vector2 ScreenCenter { get { return new Vector2(0.5f*position.width, 0.5f*position.height); } }
-    
+    Rect    ClipingArea { get { return new Rect(ScrollPosition.x-ViewportCenter.x, ScrollPosition.y-ViewportCenter.y, position.width, position.height); }}
+    Vector2 ViewportCenter { get { return new Vector2(0.5f*position.width, 0.5f*position.height); } }
+    Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
      
@@ -58,8 +58,19 @@ public class iCS_Editor : EditorWindow {
     iCS_EditorObject mySelectedObject= null;
     public iCS_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
 	// ----------------------------------------------------------------------
+    Vector2     ScrollPosition { get { return Storage.ScrollPosition; } set { Storage.ScrollPosition= value; Graphics.Translation= value; }}
+    float       Scale {
+        get { return Storage.GuiScale; }
+        set {
+            if(value > 1.5f) value= 1.5f;
+            if(value < 0.2f) value= 0.2f;
+            Storage.GuiScale= value; Graphics.Scale= value;
+        }
+    }
+	// ----------------------------------------------------------------------
     bool    IsFloatingKeyDown	{ get { return Event.current.control; }}
     bool    IsCopyKeyDown       { get { return Event.current.shift; }}
+    bool    IsScaleKeyDown      { get { return Event.current.alt; }}
     
 	// ----------------------------------------------------------------------
 	// Mouse services
@@ -67,7 +78,7 @@ public class iCS_Editor : EditorWindow {
         myMousePosition= Event.current.mousePosition;
         if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
 	}
-    Vector2 MousePosition { get { return myMousePosition; } }
+    Vector2 MousePosition { get { return myMousePosition/Scale; } }
 	Vector2 myMousePosition= Vector2.zero;
 	Vector2 MouseDownPosition= Vector2.zero;
 	
@@ -83,7 +94,6 @@ public class iCS_Editor : EditorWindow {
 
         // Create worker objects.
         Graphics        = new iCS_Graphics();
-        ScrollView      = new iCS_ScrollView();
         DynamicMenu     = new iCS_DynamicMenu();
         
         // Reset selected object.
@@ -102,7 +112,6 @@ public class iCS_Editor : EditorWindow {
     void OnDisable() {
         // Release all worker objects.
         Graphics    = null;
-        ScrollView  = null;
         DynamicMenu = null;
     }
     
@@ -203,13 +212,9 @@ public class iCS_Editor : EditorWindow {
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
         // Update scroll view.
-        Rect scrollViewPosition= DisplayRoot != null ? Storage.GetPosition(DisplayRoot) : new Rect(0,0,500,500);
-		ScrollView.Update(position, scrollViewPosition);
 		if(InitScrollPosition) {
 			InitScrollPosition= false;
-			ScrollView.CenterAt(Storage.ScrollPosition, 0);
-		} else {
-	        Storage.ScrollPosition= ScrollView.ScreenToGraph(new Vector2(0.5f*position.width, 0.5f*position.height));			
+			CenterAt(Storage.ScrollPosition);
 		}
 		
 		// Update mouse info.
@@ -250,7 +255,7 @@ public class iCS_Editor : EditorWindow {
                     }
                     case 2: { // Middle mouse button
                         Vector2 diff= MousePosition-MouseDragStartPosition;
-                        ScrollView.CenterAt(DragStartPosition-diff, 0f);
+                        ScrollPosition= DragStartPosition-diff;
                         break;
                     }
                 }
@@ -264,7 +269,7 @@ public class iCS_Editor : EditorWindow {
                     }
                     case 2: { // Middle mouse button
                         Vector2 diff= MousePosition-MouseDragStartPosition;
-                        ScrollView.CenterAt(DragStartPosition-diff, 0f);
+                        ScrollPosition= DragStartPosition-diff;
                         break;
                     }
 					default: {
@@ -285,13 +290,13 @@ public class iCS_Editor : EditorWindow {
                         break;
                     }
                     case 1: { // Right mouse button
-                        DynamicMenu.Update(SelectedObject, Storage, ScrollView.ScreenToGraph(MousePosition));
+                        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));
                         Event.current.Use();
                         break;
                     }
                     case 2: { // Middle mouse button
                         MouseDragStartPosition= MousePosition;
-                        DragStartPosition= ScrollView.ScreenToGraph(ScreenCenter);
+                        DragStartPosition= ScrollPosition;
                         Event.current.Use();
                         break;
                     }
@@ -304,7 +309,7 @@ public class iCS_Editor : EditorWindow {
                 } else {
                     if(SelectedObject != null) {
                         // Process fold/unfold click.
-                        Vector2 graphMousePos= ScrollView.ScreenToGraph(MousePosition);
+                        Vector2 graphMousePos= ViewportToGraph(MousePosition);
                         if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
                             if(Storage.IsFolded(SelectedObject)) {
                                 Storage.RegisterUndo("Unfold");
@@ -327,7 +332,16 @@ public class iCS_Editor : EditorWindow {
                 Event.current.Use();
                 break;
             }
-
+            case EventType.ScrollWheel: {
+                Vector2 delta= Event.current.delta;
+                if(IsScaleKeyDown) {
+                    Scale= Scale+(delta.y > 0 ? 0.05f : -0.05f);
+                } else {
+                    delta*= Storage.Preferences.ControlOptions.ScrollSpeed*(1f/Scale); 
+                    ScrollPosition+= delta;                    
+                }
+                break;
+            }
             // Unity DragAndDrop events.
             case EventType.DragPerform: {
                 DragAndDropPerform();
@@ -384,7 +398,7 @@ public class iCS_Editor : EditorWindow {
     void DragAndDropExited() {
         iCS_Storage storage= GetDraggedLibrary();
         if(storage != null) {
-            PasteIntoGraph(ScrollView.ScreenToGraph(MousePosition), storage, storage.EditorObjects[0]);
+            PasteIntoGraph(ViewportToGraph(MousePosition), storage, storage.EditorObjects[0]);
         }
     }
 	// ----------------------------------------------------------------------
@@ -426,7 +440,7 @@ public class iCS_Editor : EditorWindow {
                 DragObject.LocalPosition.y= newLocalPos.y;
                 if(DragObject.IsStatePort) break;
                 // Snap to nearby ports
-                Vector2 mousePosInGraph= ScrollView.ScreenToGraph(MousePosition);
+                Vector2 mousePosInGraph= ViewportToGraph(MousePosition);
                 iCS_EditorObject closestPort= Storage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
                 if(closestPort != null) {
                     Rect closestPortRect= Storage.GetPosition(closestPort);
@@ -480,7 +494,7 @@ public class iCS_Editor : EditorWindow {
         
         // Use the Left mouse down position has drag start position.
         MouseDragStartPosition= MouseDownPosition;
-        Vector2 pos= ScrollView.ScreenToGraph(MouseDragStartPosition);
+        Vector2 pos= ViewportToGraph(MouseDragStartPosition);
 
         // Port drag.
         iCS_EditorObject port= Storage.GetPortAt(pos);
@@ -750,14 +764,14 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
     public iCS_EditorObject GetNodeAtMousePosition() {
-        Vector2 graphPosition= ScrollView.ScreenToGraph(MousePosition);
+        Vector2 graphPosition= ViewportToGraph(MousePosition);
         return Storage.GetNodeAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
     public iCS_EditorObject GetObjectAtScreenPosition(Vector2 _screenPos) {
-        Vector2 graphPosition= ScrollView.ScreenToGraph(_screenPos);
+        Vector2 graphPosition= ViewportToGraph(_screenPos);
         iCS_EditorObject port= Storage.GetPortAt(graphPosition);
         if(port != null) {
             if(Storage.IsMinimized(port)) return Storage.GetParent(port);
@@ -1108,8 +1122,7 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {
-        if(ScrollView == null) return;
-        ScrollView.CenterAt(point);
+        ScrollPosition= -ViewportCenter-point;
     }
     // ======================================================================
     // NODE GRAPH DISPLAY
@@ -1118,8 +1131,7 @@ public class iCS_Editor : EditorWindow {
         Graphics.DrawGrid(position,
                           Storage.Preferences.Grid.BackgroundColor,
                           Storage.Preferences.Grid.GridColor,
-                          Storage.Preferences.Grid.GridSpacing,
-                          ScrollView.ScreenToGraph(Vector2.zero));
+                          Storage.Preferences.Grid.GridSpacing);
     }
     
 	// ----------------------------------------------------------------------
@@ -1130,21 +1142,10 @@ public class iCS_Editor : EditorWindow {
         // Draw editor grid.
         DrawGrid();
         
-        // Draw editor window.
-        ScrollView.Begin();
+        // Draw nodes and their connections.
     	DrawNormalNodes();
         DrawConnections();
         DrawMinimizedNodes();           
-
-//		if(IsNameEditorActive) {
-//			Rect selectedRect= Storage.GetPosition(SelectedObject);
-//			Rect editorRect= new Rect(selectedRect.x, selectedRect.y, selectedRect.width, iCS_EditorConfig.NodeTitleHeight);
-//			GUI.SetNextControlName("NameEntry");
-//			SelectedObject.Name= GUI.TextField(editorRect, SelectedObject.Name, GUI.skin.box);
-//			GUI.FocusControl("NameEntry");
-//		}
-		
-        ScrollView.End();
 	}
 
 	// ----------------------------------------------------------------------

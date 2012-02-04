@@ -56,9 +56,10 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Basic Accessors
     // ----------------------------------------------------------------------
-    public List<iCS_EditorObject>    EditorObjects { get { return Storage.EditorObjects; }}
-    public iCS_UserPreferences       Preferences   { get { return Storage.Preferences; }}
+    public List<iCS_EditorObject>    EditorObjects  { get { return Storage.EditorObjects; }}
+    public iCS_UserPreferences       Preferences    { get { return Storage.Preferences; }}
 	public Vector2					 ScrollPosition { get { return Storage.ScrollPosition; } set { Storage.ScrollPosition= value; }}
+    public float                     GuiScale       { get { return Storage.GuiScale; } set { Storage.GuiScale= value; }}
     // ----------------------------------------------------------------------
     public bool IsValid(int id)                      { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)                    { return !IsValid(id); }

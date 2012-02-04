@@ -5,6 +5,13 @@ using System.Collections;
 [System.Serializable]
 public class iCS_UserPreferences {
     [System.Serializable]
+    public class UserControlOptions {
+        public float ScrollSpeed= 3f;
+        public float ScaleSpeed= 0.1f;
+    }
+    public UserControlOptions ControlOptions= new UserControlOptions();
+
+    [System.Serializable]
     public class UserDisplayOptions {
         public bool     EditorPortValues= true;
         public bool     PlayingPortValues= true;
