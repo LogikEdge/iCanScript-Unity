@@ -62,7 +62,7 @@ public class iCS_Editor : EditorWindow {
     float       Scale {
         get { return Storage.GuiScale; }
         set {
-            if(value > 1.5f) value= 1.5f;
+            if(value > 1f) value= 1f;
             if(value < 0.2f) value= 0.2f;
             Storage.GuiScale= value; Graphics.Scale= value;
         }
@@ -1122,7 +1122,8 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {
-        ScrollPosition= -ViewportCenter-point;
+        Debug.Log("Scale: "+Scale);
+        ScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
     }
     // ======================================================================
     // NODE GRAPH DISPLAY
