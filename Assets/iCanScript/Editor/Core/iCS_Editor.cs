@@ -123,6 +123,12 @@ public class iCS_Editor : EditorWindow {
         // Set the graph root.
         DisplayRoot= storage.IsValid(0) ? storage[0] : null;
 		InitScrollPosition= true;
+        // Update scale and scroll position.
+		if(storage != null && Graphics != null) {
+            // Update scale and scroll position.
+    		Scale= Scale;
+    		ScrollPosition= ScrollPosition;		    
+		}
 		
 //        Debug.Log("AppContentPath: "+EditorApplication.applicationContentsPath);
 //        Debug.Log("AppPath: "+EditorApplication.applicationPath);
@@ -163,6 +169,9 @@ public class iCS_Editor : EditorWindow {
 		// Don't run if graphic sub-system did not initialise.
 		if(iCS_Graphics.IsInitialized == false) {
             iCS_Graphics.Init(Storage);
+            // Update scale and scroll position.
+    		Scale= Scale;
+    		ScrollPosition= ScrollPosition;
 			return false;
 		}
         return true;
@@ -1122,7 +1131,6 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {
-        Debug.Log("Scale: "+Scale);
         ScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
     }
     // ======================================================================
