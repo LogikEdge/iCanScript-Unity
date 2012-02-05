@@ -71,6 +71,17 @@ public class iCS_Graphics {
         
 
     // ======================================================================
+    // Drawing staging
+	// ----------------------------------------------------------------------
+    public void Begin(Vector2 translation, float scale) {
+        Translation= translation;
+        Scale= scale;
+    }
+    public void End() {
+        
+    }
+    
+    // ======================================================================
     // GUI Warppers
 	// ----------------------------------------------------------------------
     Vector2 TranslateAndScale(Vector2 v) {

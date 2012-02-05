@@ -36,8 +36,9 @@ public class iCS_Editor : EditorWindow {
     bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
 
     // ----------------------------------------------------------------------
-    Rect    ClipingArea { get { return new Rect(ScrollPosition.x-ViewportCenter.x, ScrollPosition.y-ViewportCenter.y, position.width, position.height); }}
-    Vector2 ViewportCenter { get { return new Vector2(0.5f*position.width, 0.5f*position.height); } }
+    Rect    ClipingArea { get { return new Rect(ScrollPosition.x, ScrollPosition.y, Viewport.width, Viewport.height); }}
+    Vector2 ViewportCenter { get { return new Vector2(0.5f/Scale*position.width, 0.5f/Scale*position.height); } }
+    Rect    Viewport { get { return new Rect(0,0,position.width/Scale, position.height/Scale); }}
     Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
@@ -58,13 +59,13 @@ public class iCS_Editor : EditorWindow {
     iCS_EditorObject mySelectedObject= null;
     public iCS_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
 	// ----------------------------------------------------------------------
-    Vector2     ScrollPosition { get { return Storage.ScrollPosition; } set { Storage.ScrollPosition= value; Graphics.Translation= value; }}
+    Vector2     ScrollPosition { get { return Storage.ScrollPosition; } set { Storage.ScrollPosition= value; }}
     float       Scale {
         get { return Storage.GuiScale; }
         set {
             if(value > 1f) value= 1f;
             if(value < 0.2f) value= 0.2f;
-            Storage.GuiScale= value; Graphics.Scale= value;
+            Storage.GuiScale= value;
         }
     }
 	// ----------------------------------------------------------------------
@@ -344,7 +345,10 @@ public class iCS_Editor : EditorWindow {
             case EventType.ScrollWheel: {
                 Vector2 delta= Event.current.delta;
                 if(IsScaleKeyDown) {
+                    Vector2 pivot= ViewportToGraph(MousePosition);
                     Scale= Scale+(delta.y > 0 ? 0.05f : -0.05f);
+                    Vector2 offset= pivot-ViewportToGraph(MousePosition);
+                    ScrollPosition+= offset;
                 } else {
                     delta*= Storage.Preferences.ControlOptions.ScrollSpeed*(1f/Scale); 
                     ScrollPosition+= delta;                    
@@ -1148,6 +1152,8 @@ public class iCS_Editor : EditorWindow {
         // Ask the storage to update itself.
         Storage.Update();
         
+        Graphics.Begin(ScrollPosition, Scale);
+        
         // Draw editor grid.
         DrawGrid();
         
@@ -1155,6 +1161,8 @@ public class iCS_Editor : EditorWindow {
     	DrawNormalNodes();
         DrawConnections();
         DrawMinimizedNodes();           
+
+        Graphics.End();
 	}
 
 	// ----------------------------------------------------------------------
