@@ -59,6 +59,7 @@ public class iCS_Graphics {
     public iCS_EditorObject selectedObject= null;
     public float            Scale= 1f;
     public Vector2          Translation= Vector2.zero;
+           Matrix4x4        SavedMatrix= Matrix4x4.identity;
     
     // ======================================================================
 	// CONSTANTS
@@ -76,6 +77,7 @@ public class iCS_Graphics {
     public void Begin(Vector2 translation, float scale) {
         Translation= translation;
         Scale= scale;
+        SavedMatrix= GUI.matrix;
     }
     public void End() {
         
@@ -101,33 +103,28 @@ public class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     void GUI_Box(Rect pos, GUIContent content, GUIStyle guiStyle) {
-        Matrix4x4 save= GUI.matrix;
         GUI.Box(TranslateAndScale(pos), content, guiStyle);                    
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
-        Matrix4x4 save= GUI.matrix;
         GUI.DrawTexture(TranslateAndScale(pos), texture);                           
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
     void EditorGUIUtility_AddCursorRect(Rect rect, MouseCursor cursor) {
-        Matrix4x4 save= GUI.matrix;
         EditorGUIUtility.AddCursorRect(TranslateAndScale(rect), cursor);
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, GUIContent content, GUIStyle labelStyle) {
-        Matrix4x4 save= GUI.matrix;
         GUI.Label(TranslateAndScale(pos), content, labelStyle);
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, String content, GUIStyle labelStyle) {
-        Matrix4x4 save= GUI.matrix;
         GUI.Label(TranslateAndScale(pos), content, labelStyle);
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
     
     // ======================================================================
@@ -731,7 +728,6 @@ public class iCS_Graphics {
     }
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Matrix4x4 save= GUI.matrix;
         Vector3 center= TranslateAndScale(_center);
         Handles.color= radius > iCS_EditorConfig.PortRadius ? new Color(0.67f, 0.67f, 0.67f) : Color.black;
         Handles.DrawSolidDisc(center, FacingNormal, radius+2.0f);
@@ -740,12 +736,11 @@ public class iCS_Graphics {
         Handles.color= _borderColor;
         Handles.DrawWireDisc(center, FacingNormal, radius+2.0f);
         Handles.DrawWireDisc(center, FacingNormal, radius+2.5f);
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
 
 	// ----------------------------------------------------------------------
     void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Matrix4x4 save= GUI.matrix;
         Vector3 center= TranslateAndScale(_center);
         Color backgroundColor= radius > iCS_EditorConfig.PortRadius ? Color.white : Color.black;
         Vector3[] vectors= new Vector3[4];
@@ -764,12 +759,11 @@ public class iCS_Graphics {
         vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
         Handles.color= _fillColor;
         Handles.DrawSolidRectangleWithOutline(vectors, _fillColor, _fillColor);
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
     
 	// ----------------------------------------------------------------------
     void DrawDiamondPort(Vector3 _center, Color _borderColor) {
-        Matrix4x4 save= GUI.matrix;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[5];
         float radius= iCS_EditorConfig.PortRadius+1;
@@ -792,12 +786,11 @@ public class iCS_Graphics {
         vectors[3]= new Vector3(center.x+delta, center.y, 0);
         vectors[4]= vectors[0];
         Handles.DrawPolyLine(vectors);        
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
     
 	// ----------------------------------------------------------------------
     void DrawDownTrianglePort(Vector3 _center, Color _borderColor) {
-        Matrix4x4 save= GUI.matrix;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
         float radius= iCS_EditorConfig.PortRadius+1;
@@ -817,12 +810,11 @@ public class iCS_Graphics {
         vectors[2]= new Vector3(center.x-delta, center.y-delta, 0);
         vectors[3]= vectors[0];
         Handles.DrawPolyLine(vectors);        
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
 
 	// ----------------------------------------------------------------------
     void DrawUpTrianglePort(Vector3 _center, Color _borderColor) {
-        Matrix4x4 save= GUI.matrix;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
         float radius= iCS_EditorConfig.PortRadius+1;
@@ -849,12 +841,11 @@ public class iCS_Graphics {
         vectors[2]= new Vector3(center.x-delta, center.y+delta, 0);
         vectors[3]= vectors[0];
         Handles.DrawPolyLine(vectors);        
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
 
 	// ----------------------------------------------------------------------
     void DrawRightTrianglePort(Vector3 _center, Color _borderColor) {
-        Matrix4x4 save= GUI.matrix;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
         float radius= iCS_EditorConfig.PortRadius+1;
@@ -874,12 +865,11 @@ public class iCS_Graphics {
         vectors[2]= new Vector3(center.x-delta, center.y-delta, 0);
         vectors[3]= vectors[0];
         Handles.DrawPolyLine(vectors);        
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
 
 	// ----------------------------------------------------------------------
     void DrawLeftTrianglePort(Vector3 _center, Color _borderColor) {
-        Matrix4x4 save= GUI.matrix;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
         float radius= iCS_EditorConfig.PortRadius+1;
@@ -899,7 +889,7 @@ public class iCS_Graphics {
         vectors[2]= new Vector3(center.x+delta, center.y-delta, 0);
         vectors[3]= vectors[0];
         Handles.DrawPolyLine(vectors);        
-        GUI.matrix= save;
+        GUI.matrix= SavedMatrix;
     }
 
 	// ----------------------------------------------------------------------

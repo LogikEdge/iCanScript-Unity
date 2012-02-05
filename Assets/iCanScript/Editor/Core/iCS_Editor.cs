@@ -353,6 +353,7 @@ public class iCS_Editor : EditorWindow {
                     delta*= Storage.Preferences.ControlOptions.ScrollSpeed*(1f/Scale); 
                     ScrollPosition+= delta;                    
                 }
+                Event.current.Use();                
                 break;
             }
             // Unity DragAndDrop events.
