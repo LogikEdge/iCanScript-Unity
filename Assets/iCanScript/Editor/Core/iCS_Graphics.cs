@@ -83,6 +83,8 @@ public class iCS_Graphics {
         ClipingArea= clipingRect;
         selectedObject= selObj;
         SavedMatrix= GUI.matrix;
+        
+//        if(labelStyle != null) labelStyle.fontSize= (int)(11*Scale);
     }
     public void End() {
         GUI.matrix= SavedMatrix;
@@ -145,11 +147,6 @@ public class iCS_Graphics {
         Rect adjRect= new Rect(pos.x, pos.y, r.width, r.height);
         if(Math3D.IsNotEqual(Scale, 1f)) GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector2(adjRect.x, adjRect.y));
         return adjRect;
-
-//        Vector3 translation= Scale*new Vector3(r.x-Translation.x, r.y-Translation.y, 0);
-//        translation.y+= 26f-26f*Scale;
-//        GUI.matrix= Matrix4x4.TRS(translation, Quaternion.identity, ScaleVector3);
-//        return new Rect(0, 0, r.width, r.height);
     }
     // ----------------------------------------------------------------------
     void GUI_Box(Rect pos, GUIContent content, GUIStyle guiStyle) {
@@ -157,8 +154,13 @@ public class iCS_Graphics {
         GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
+    void GUI_Box(Rect pos, GUIContent content, NodeStyle nodeStyle) {
+        Vector2 adjPos= TranslateAndScale(pos.x, pos.y);
+        NodeDrawTest(new Rect(adjPos.x, adjPos.y,pos.width,pos.height), nodeStyle.nodeColor, new Color(0.24f, 0.27f, 0.32f));
+    }
+    // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
-        GUI.DrawTexture(TranslateAndScale(pos), texture, ScaleMode.ScaleToFit);                           
+        GUI.DrawTexture(TranslateAndScale(pos), texture, ScaleMode.ScaleToFit);                  
     }
     // ----------------------------------------------------------------------
     void EditorGUIUtility_AddCursorRect(Rect rect, MouseCursor cursor) {
@@ -173,6 +175,53 @@ public class iCS_Graphics {
     void GUI_Label(Rect pos, String content, GUIStyle labelStyle) {
         GUI.Label(ApplyTranslateAndScale(pos), content, labelStyle);
         GUI.matrix= SavedMatrix;
+    }
+    // ----------------------------------------------------------------------
+    void NodeDrawTest(Rect r, Color nodeColor, Color backgroundColor) {
+        float radius= 8f;
+        radius*= Scale;
+        r.width*= Scale;
+        r.height*= Scale;
+        
+        // Show background.
+        Handles.color= backgroundColor;
+        Handles.DrawSolidArc(new Vector3(r.x+radius, r.y+radius,0), FacingNormal, new Vector3(0,-1f,0), 90f, radius+1);
+        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.y+radius,0), FacingNormal, new Vector3(1f,0,0), 90f, radius+1);
+        Handles.DrawSolidArc(new Vector3(r.x+radius, r.yMax-radius,0), FacingNormal, new Vector3(-1f,0,0), 90f, radius+1);
+        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.yMax-radius,0), FacingNormal, new Vector3(0,1f,0), 90f, radius+1);
+        Vector3[] vectors= new Vector3[4];
+        vectors[0]= new Vector3(r.x+radius, r.y-1, 0);
+        vectors[1]= new Vector3(r.xMax-radius, r.y-1, 0);
+        vectors[2]= new Vector3(r.xMax-radius, r.yMax+1, 0);
+        vectors[3]= new Vector3(r.x+radius, r.yMax+1, 0);
+        Handles.color= Color.white;
+        Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
+        vectors[0]= new Vector3(r.x-1, r.y+radius, 0);
+        vectors[1]= new Vector3(r.xMax+1, r.y+radius, 0);
+        vectors[2]= new Vector3(r.xMax+1, r.yMax-radius, 0);
+        vectors[3]= new Vector3(r.x-1, r.yMax-radius, 0);
+        Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
+        
+        // Show frame.
+        Handles.color= nodeColor;
+        Handles.DrawSolidArc(new Vector3(r.x+radius, r.y+radius,0), FacingNormal, new Vector3(0,-1f,0), 90f, radius);
+        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.y+radius,0), FacingNormal, new Vector3(1f,0,0), 90f, radius);
+        Handles.DrawWireArc(new Vector3(r.x+radius, r.yMax-radius,0), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
+        Handles.DrawWireArc(new Vector3(r.xMax-radius, r.yMax-radius,0), FacingNormal, new Vector3(0,1f,0), 90f, radius);
+        Handles.DrawLine(new Vector3(r.x,r.y+radius,0), new Vector3(r.x, r.yMax-radius,0));
+        Handles.DrawLine(new Vector3(r.xMax,r.y+radius,0), new Vector3(r.xMax, r.yMax-radius,0));
+        Handles.DrawLine(new Vector3(r.x+radius,r.yMax,0), new Vector3(r.xMax-radius, r.yMax,0));
+        vectors[0]= new Vector3(r.x+radius, r.y, 0);
+        vectors[1]= new Vector3(r.xMax-radius, r.y, 0);
+        vectors[2]= new Vector3(r.xMax-radius, r.y+radius, 0);
+        vectors[3]= new Vector3(r.x+radius, r.y+radius, 0);
+        Handles.color= Color.white;
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0,0,0,0));
+        vectors[0]= new Vector3(r.x, r.y+radius, 0);
+        vectors[1]= new Vector3(r.xMax, r.y+radius, 0);
+        vectors[2]= new Vector3(r.xMax, r.y+1.75f*radius, 0);
+        vectors[3]= new Vector3(r.x, r.y+1.75f*radius, 0);
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0,0,0,0));
     }
     
     // ======================================================================
@@ -510,6 +559,10 @@ public class iCS_Graphics {
             }
             Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
         }
+        
+        
+        NodeDrawTest(new Rect(10,10,120,35), Color.yellow, Color.grey);
+        
     }
     
     // ======================================================================
@@ -530,7 +583,11 @@ public class iCS_Graphics {
         position.y-= guiStyle.overflow.top;
         position.width+= leftOffset + rightOffset;
         position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
-        GUI_Box(position, new GUIContent(title,node.ToolTip), guiStyle);            
+        if(((int)Time.realtimeSinceStartup & 3) == 0) {
+            GUI_Box(position, new GUIContent(title,node.ToolTip), guiStyle);            
+        } else {
+            GUI_Box(position, new GUIContent(title,node.ToolTip), nodeStyle);
+        }
         EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, iCS_EditorConfig.NodeTitleHeight), MouseCursor.Link);
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, storage)) {

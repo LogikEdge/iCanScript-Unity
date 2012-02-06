@@ -63,7 +63,7 @@ public class iCS_Editor : EditorWindow {
         get { return Storage.GuiScale; }
         set {
             if(value > 1f) value= 1f;
-            if(value < 0.2f) value= 0.2f;
+            if(value < 0.1f) value= 0.1f;
             Storage.GuiScale= value;
         }
     }
@@ -1129,7 +1129,7 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     public void CenterOn(iCS_EditorObject obj) {
-        if(obj == null) return;
+        if(obj == null || Storage == null) return;
         CenterAt(Math3D.Middle(Storage.GetPosition(obj)));
     }
 	// ----------------------------------------------------------------------
