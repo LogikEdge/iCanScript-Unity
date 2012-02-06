@@ -91,46 +91,87 @@ public class iCS_Graphics {
     // ======================================================================
     // GUI Warppers
 	// ----------------------------------------------------------------------
+    bool IsVisible(Vector2 point, float radius= 0f) {
+        if(ClipingArea.Contains(new Vector2(point.x+radius, point.y))) return true;
+        if(ClipingArea.Contains(new Vector2(point.x-radius, point.y))) return true;
+        if(ClipingArea.Contains(new Vector2(point.x, point.y+radius))) return true;
+        if(ClipingArea.Contains(new Vector2(point.x, point.y-radius))) return true;
+        return false;
+    }
+	// ----------------------------------------------------------------------
+    bool IsVisble(Rect r) {
+        Rect intersection= Clip(r);
+        return Math3D.IsNotZero(intersection.width);        
+    }
+	// ----------------------------------------------------------------------
+    bool IsFullyVisible(Rect r) {
+        return (IsVisible(new Vector2(r.x, r.y)) && IsVisible(new Vector2(r.xMax, r.yMax)));
+    }
+	// ----------------------------------------------------------------------
+    Rect Clip(Rect r) {
+        return Math3D.Intersection(r, ClipingArea);
+    }
+	// ----------------------------------------------------------------------
     Vector2 TranslateAndScale(Vector2 v) {
-        Vector2 adjVector= new Vector2(Scale*(v.x-Translation.x), Scale*(v.y-Translation.y));
-        GUIUtility.ScaleAroundPivot(ScaleVector3, adjVector);
-        return adjVector;
+        return Scale*(v-Translation);
     }
+	// ----------------------------------------------------------------------
     Vector3 TranslateAndScale(Vector3 v) {
-        Vector3 adjVector= new Vector3(Scale*(v.x-Translation.x), Scale*(v.y-Translation.y),0);
-        GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector2(adjVector.x, adjVector.y));
+        return Scale*(v-new Vector3(Translation.x, Translation.y, 0));
+    }
+	// ----------------------------------------------------------------------
+    Rect TranslateAndScale(Rect r) {
+        Vector2 pos= TranslateAndScale(new Vector2(r.x, r.y));
+        return new Rect(pos.x, pos.y, Scale*r.width, Scale*r.height);
+    }
+	// ----------------------------------------------------------------------
+    Vector2 TranslateAndScale(float x, float y) {
+        return new Vector2(Scale*(x-Translation.x), Scale*(y-Translation.y));
+    }
+	// ----------------------------------------------------------------------
+    Vector2 ApplyTranslateAndScale(Vector2 v) {
+        Vector2 adjVector= TranslateAndScale(v);
+        if(Math3D.IsNotEqual(Scale, 1f)) GUIUtility.ScaleAroundPivot(ScaleVector3, adjVector);
         return adjVector;
     }
-    Rect TranslateAndScale(Rect p) {
-        Rect adjRect= new Rect(Scale*(p.x-Translation.x), Scale*(p.y-Translation.y), p.width, p.height);
-        GUIUtility.ScaleAroundPivot(new Vector2(Scale,Scale), new Vector2(adjRect.x, adjRect.y));
+    Vector3 ApplyTranslateAndScale(Vector3 v) {
+        Vector3 adjVector= TranslateAndScale(v);
+        if(Math3D.IsNotEqual(Scale, 1f)) GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector2(adjVector.x, adjVector.y));
+        return adjVector;
+    }
+    Rect ApplyTranslateAndScale(Rect r) {
+        Rect clipedRect= Clip(r);
+        var pos= TranslateAndScale(r.x, r.y);
+        Rect adjRect= new Rect(pos.x, pos.y, r.width, r.height);
+        if(Math3D.IsNotEqual(Scale, 1f)) GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector2(adjRect.x, adjRect.y));
         return adjRect;
-//        GUI.matrix= Matrix4x4.TRS(Scale*new Vector3(p.x-Translation.x, p.y-Translation.y, 0), Quaternion.identity, ScaleVector3)*SavedMatrix;
-//        return new Rect(0, 0, p.width, p.height);
+
+//        Vector3 translation= Scale*new Vector3(r.x-Translation.x, r.y-Translation.y, 0);
+//        translation.y+= 26f-26f*Scale;
+//        GUI.matrix= Matrix4x4.TRS(translation, Quaternion.identity, ScaleVector3);
+//        return new Rect(0, 0, r.width, r.height);
     }
     // ----------------------------------------------------------------------
     void GUI_Box(Rect pos, GUIContent content, GUIStyle guiStyle) {
-        GUI.Box(TranslateAndScale(pos), content, guiStyle);                    
+        GUI.Box(ApplyTranslateAndScale(pos), content, guiStyle);                    
         GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
-        GUI.DrawTexture(TranslateAndScale(pos), texture);                           
-        GUI.matrix= SavedMatrix;
+        GUI.DrawTexture(TranslateAndScale(pos), texture, ScaleMode.ScaleToFit);                           
     }
     // ----------------------------------------------------------------------
     void EditorGUIUtility_AddCursorRect(Rect rect, MouseCursor cursor) {
         EditorGUIUtility.AddCursorRect(TranslateAndScale(rect), cursor);
-        GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, GUIContent content, GUIStyle labelStyle) {
-        GUI.Label(TranslateAndScale(pos), content, labelStyle);
+        GUI.Label(ApplyTranslateAndScale(pos), content, labelStyle);
         GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, String content, GUIStyle labelStyle) {
-        GUI.Label(TranslateAndScale(pos), content, labelStyle);
+        GUI.Label(ApplyTranslateAndScale(pos), content, labelStyle);
         GUI.matrix= SavedMatrix;
     }
     
@@ -296,7 +337,7 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     public void DrawIconCenteredAt(Vector2 point, Texture2D icon) {
         if(icon == null) return;
-        GUI_DrawTexture(TranslateAndScale(new Rect(point.x-0.5f*icon.width,point.y-0.5f*icon.height, icon.width, icon.height)), icon);
+        GUI_DrawTexture(new Rect(point.x-0.5f*icon.width,point.y-0.5f*icon.height, icon.width, icon.height), icon);
     }
     
     // ----------------------------------------------------------------------
@@ -655,7 +696,7 @@ public class iCS_Graphics {
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, storage);
 		object portValue= null;
-		float portRadius= port == selectedObject ? 1.75f*iCS_EditorConfig.PortRadius : iCS_EditorConfig.PortRadius;
+		float portRadius= port == selectedObject ? 1.67f*iCS_EditorConfig.PortRadius : iCS_EditorConfig.PortRadius;
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
@@ -673,11 +714,11 @@ public class iCS_Graphics {
         } else if(port.IsStatePort) {
             if(port.IsOutStatePort) {
                 Handles.color= Color.white;
-                Handles.DrawSolidDisc(TranslateAndScale(center), FacingNormal, portRadius);
+                Handles.DrawSolidDisc(ApplyTranslateAndScale(center), FacingNormal, portRadius);
             }
         } else if(port.IsInTransitionPort || port.IsOutTransitionPort) {
             Handles.color= Color.white;
-            Handles.DrawSolidDisc(TranslateAndScale(center), FacingNormal, portRadius);            
+            Handles.DrawSolidDisc(ApplyTranslateAndScale(center), FacingNormal, portRadius);            
         }
         else {
             DrawCircularPort(center, portColor, nodeColor, portRadius);
@@ -747,23 +788,24 @@ public class iCS_Graphics {
     }
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
+        Color outlineColor= radius > iCS_EditorConfig.PortRadius ? Color.white : Color.black;
         Vector3 center= TranslateAndScale(_center);
-        Handles.color= radius > iCS_EditorConfig.PortRadius ? new Color(0.67f, 0.67f, 0.67f) : Color.black;
-        Handles.DrawSolidDisc(center, FacingNormal, radius+2.0f);
+        radius*= Scale;
+        Handles.color= _borderColor;
+        Handles.DrawSolidDisc(center, FacingNormal, radius*1.75f);
+        Handles.color= outlineColor;
+        Handles.DrawSolidDisc(center, FacingNormal, radius*1.33f);
         Handles.color= _fillColor;
         Handles.DrawSolidDisc(center, FacingNormal, radius);
-        Handles.color= _borderColor;
-        Handles.DrawWireDisc(center, FacingNormal, radius+2.0f);
-        Handles.DrawWireDisc(center, FacingNormal, radius+2.5f);
-        GUI.matrix= SavedMatrix;
     }
 
 	// ----------------------------------------------------------------------
     void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Vector3 center= TranslateAndScale(_center);
         Color backgroundColor= radius > iCS_EditorConfig.PortRadius ? Color.white : Color.black;
+        radius*= Scale;
+        Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
-        float delta= radius+1;
+        float delta= radius*1.33f;
         vectors[0]= new Vector3(center.x-delta, center.y-delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
         vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
@@ -771,146 +813,15 @@ public class iCS_Graphics {
         Handles.color= _borderColor;
 		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, _borderColor);
 
-        delta= radius-1;
+        delta= radius*0.67f;
         vectors[0]= new Vector3(center.x-delta, center.y-delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
         vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
         vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
         Handles.color= _fillColor;
         Handles.DrawSolidRectangleWithOutline(vectors, _fillColor, _fillColor);
-        GUI.matrix= SavedMatrix;
     }
     
-	// ----------------------------------------------------------------------
-    void DrawDiamondPort(Vector3 _center, Color _borderColor) {
-        Vector3 center= TranslateAndScale(_center);
-        Vector3[] vectors= new Vector3[5];
-        float radius= iCS_EditorConfig.PortRadius+1;
-        Handles.DrawSolidDisc(center, FacingNormal, 0.707f * radius);
-        float delta= radius-1;
-        float minSize= 0.707f * radius;
-        for(; delta > minSize; --delta) {
-            vectors[0]= new Vector3(center.x, center.y-delta, 0);
-            vectors[1]= new Vector3(center.x-delta, center.y, 0);
-            vectors[2]= new Vector3(center.x, center.y+delta, 0);
-            vectors[3]= new Vector3(center.x+delta, center.y, 0);
-            vectors[4]= vectors[0];            
-            Handles.DrawPolyLine(vectors);
-        }
-		Handles.color= _borderColor;
-        delta= radius;
-        vectors[0]= new Vector3(center.x, center.y-delta, 0);
-        vectors[1]= new Vector3(center.x-delta, center.y, 0);
-        vectors[2]= new Vector3(center.x, center.y+delta, 0);
-        vectors[3]= new Vector3(center.x+delta, center.y, 0);
-        vectors[4]= vectors[0];
-        Handles.DrawPolyLine(vectors);        
-        GUI.matrix= SavedMatrix;
-    }
-    
-	// ----------------------------------------------------------------------
-    void DrawDownTrianglePort(Vector3 _center, Color _borderColor) {
-        Vector3 center= TranslateAndScale(_center);
-        Vector3[] vectors= new Vector3[4];
-        float radius= iCS_EditorConfig.PortRadius+1;
-        Handles.DrawLine(new Vector3(center.x+1, center.y+1, 0), new Vector3(center.x-1, center.y-1, 0));
-        float delta= 1;
-        for(; delta < radius; ++delta) {
-            vectors[0]= new Vector3(center.x, center.y+delta, 0);
-            vectors[1]= new Vector3(center.x+delta, center.y-delta, 0);
-            vectors[2]= new Vector3(center.x-delta, center.y-delta, 0);
-            vectors[3]= vectors[0];            
-            Handles.DrawPolyLine(vectors);
-        }
-		Handles.color= _borderColor;
-        delta= radius;
-        vectors[0]= new Vector3(center.x, center.y+delta, 0);
-        vectors[1]= new Vector3(center.x+delta, center.y-delta, 0);
-        vectors[2]= new Vector3(center.x-delta, center.y-delta, 0);
-        vectors[3]= vectors[0];
-        Handles.DrawPolyLine(vectors);        
-        GUI.matrix= SavedMatrix;
-    }
-
-	// ----------------------------------------------------------------------
-    void DrawUpTrianglePort(Vector3 _center, Color _borderColor) {
-        Vector3 center= TranslateAndScale(_center);
-        Vector3[] vectors= new Vector3[4];
-        float radius= iCS_EditorConfig.PortRadius+1;
-        Handles.DrawLine(new Vector3(center.x+1, center.y+1, 0), new Vector3(center.x-1, center.y-1, 0));
-        float delta= 1;
-        for(; delta < radius; ++delta) {
-            vectors[0]= new Vector3(center.x, center.y-delta, 0);
-            vectors[1]= new Vector3(center.x+delta, center.y+delta, 0);
-            vectors[2]= new Vector3(center.x-delta, center.y+delta, 0);
-            vectors[3]= vectors[0];            
-            Handles.DrawPolyLine(vectors);
-        }
-		Handles.color= Color.black;
-        delta= radius+1;
-        vectors[0]= new Vector3(center.x, center.y-delta, 0);
-        vectors[1]= new Vector3(center.x+delta, center.y+delta, 0);
-        vectors[2]= new Vector3(center.x-delta, center.y+delta, 0);
-        vectors[3]= vectors[0];
-        Handles.DrawPolyLine(vectors);        
-		Handles.color= _borderColor;
-        delta= radius+2;
-        vectors[0]= new Vector3(center.x, center.y-delta, 0);
-        vectors[1]= new Vector3(center.x+delta, center.y+delta, 0);
-        vectors[2]= new Vector3(center.x-delta, center.y+delta, 0);
-        vectors[3]= vectors[0];
-        Handles.DrawPolyLine(vectors);        
-        GUI.matrix= SavedMatrix;
-    }
-
-	// ----------------------------------------------------------------------
-    void DrawRightTrianglePort(Vector3 _center, Color _borderColor) {
-        Vector3 center= TranslateAndScale(_center);
-        Vector3[] vectors= new Vector3[4];
-        float radius= iCS_EditorConfig.PortRadius+1;
-        Handles.DrawLine(new Vector3(center.x+1, center.y+1, 0), new Vector3(center.x-1, center.y-1, 0));
-        float delta= 1;
-        for(; delta < radius; ++delta) {
-            vectors[0]= new Vector3(center.x+delta, center.y, 0);
-            vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
-            vectors[2]= new Vector3(center.x-delta, center.y-delta, 0);
-            vectors[3]= vectors[0];            
-            Handles.DrawPolyLine(vectors);
-        }
-		Handles.color= _borderColor;
-        delta= radius;
-        vectors[0]= new Vector3(center.x+delta, center.y, 0);
-        vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
-        vectors[2]= new Vector3(center.x-delta, center.y-delta, 0);
-        vectors[3]= vectors[0];
-        Handles.DrawPolyLine(vectors);        
-        GUI.matrix= SavedMatrix;
-    }
-
-	// ----------------------------------------------------------------------
-    void DrawLeftTrianglePort(Vector3 _center, Color _borderColor) {
-        Vector3 center= TranslateAndScale(_center);
-        Vector3[] vectors= new Vector3[4];
-        float radius= iCS_EditorConfig.PortRadius+1;
-        Handles.DrawLine(new Vector3(center.x+1, center.y+1, 0), new Vector3(center.x-1, center.y-1, 0));
-        float delta= 1;
-        for(; delta < radius; ++delta) {
-            vectors[0]= new Vector3(center.x-delta, center.y, 0);
-            vectors[1]= new Vector3(center.x+delta, center.y+delta, 0);
-            vectors[2]= new Vector3(center.x+delta, center.y-delta, 0);
-            vectors[3]= vectors[0];            
-            Handles.DrawPolyLine(vectors);
-        }
-		Handles.color= _borderColor;
-        delta= radius;
-        vectors[0]= new Vector3(center.x-delta, center.y, 0);
-        vectors[1]= new Vector3(center.x+delta, center.y+delta, 0);
-        vectors[2]= new Vector3(center.x+delta, center.y-delta, 0);
-        vectors[3]= vectors[0];
-        Handles.DrawPolyLine(vectors);        
-        GUI.matrix= SavedMatrix;
-    }
-
 	// ----------------------------------------------------------------------
     static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
     static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
@@ -950,14 +861,18 @@ public class iCS_Graphics {
                 }
                 Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
                 iCS_ConnectionParams cp= new iCS_ConnectionParams(port, GetDisplayPosition(port, storage), source, GetDisplayPosition(source, storage), storage);
-                Vector3 startPos= new Vector3(Scale*(cp.Start.x-Translation.x), Scale*(cp.Start.y-Translation.y),0);
-                Vector3 endPos= new Vector3(Scale*(cp.End.x-Translation.x), Scale*(cp.End.y-Translation.y),0);
-                Vector3 startTangent= new Vector3(Scale*(cp.StartTangent.x-Translation.x), Scale*(cp.StartTangent.y-Translation.y), 0);
-                Vector3 endTangent= new Vector3(Scale*(cp.EndTangent.x-Translation.x), Scale*(cp.EndTangent.y-Translation.y),0);
+                Vector3 startPos= TranslateAndScale(cp.Start);
+                Vector3 endPos= TranslateAndScale(cp.End);
+                Vector3 startTangent= TranslateAndScale(cp.StartTangent);
+                Vector3 endTangent= TranslateAndScale(cp.EndTangent);
+                lineWidth= Scale*lineWidth;
+                if(lineWidth < 1f) lineWidth= 1f;
                 if(highlight) {
-            		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, Scale*(lineWidth+highlightWidth));                    
+                    highlightWidth= Scale*highlightWidth;
+                    if(highlightWidth < 1f) highlightWidth= 1f;
+            		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                    
                 }
-        		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, Scale*lineWidth);
+        		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
                     // Show transition input port.

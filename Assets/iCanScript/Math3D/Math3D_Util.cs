@@ -178,4 +178,15 @@ public static partial class Math3D {
     public static Vector3 Lerp(Vector3 v1, Vector3 v2, float ratio)     { return v1+(v2-v1)*ratio; }
     public static Vector4 Lerp(Vector4 v1, Vector4 v2, float ratio)     { return v1+(v2-v1)*ratio; }
     public static Rect    Lerp(Rect r1, Rect r2, float ratio)           { return Add(r1, Mul(Sub(r2, r1), ratio)); }
+
+    // ======================================================================
+    // Rectangle utilities
+	// ----------------------------------------------------------------------
+    public static Rect Union(Rect _rect1, Rect _rect2) {
+        float xMin= Mathf.Min(_rect1.xMin, _rect2.xMin);
+        float yMin= Mathf.Min(_rect1.yMin, _rect2.yMin);
+        float xMax= Mathf.Max(_rect1.xMax, _rect2.xMax);
+        float yMax= Mathf.Max(_rect1.yMax, _rect2.yMax);
+        return new Rect(xMin, yMin, xMax-xMin, yMax-yMin);
+    }
 }
