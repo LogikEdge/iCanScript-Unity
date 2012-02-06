@@ -58,6 +58,7 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
     float            Scale= 1f;
+    Vector3          ScaleVector3= Vector3.zero;
     Vector2          Translation= Vector2.zero;
     Matrix4x4        SavedMatrix= Matrix4x4.identity;
     Rect             ClipingArea= new Rect(0,0,0,0);
@@ -78,12 +79,13 @@ public class iCS_Graphics {
     public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj) {
         Translation= translation;
         Scale= scale;
+        ScaleVector3= new Vector3(Scale, Scale, Scale);
         ClipingArea= clipingRect;
         selectedObject= selObj;
         SavedMatrix= GUI.matrix;
     }
     public void End() {
-        
+        GUI.matrix= SavedMatrix;
     }
     
     // ======================================================================
@@ -91,18 +93,20 @@ public class iCS_Graphics {
 	// ----------------------------------------------------------------------
     Vector2 TranslateAndScale(Vector2 v) {
         Vector2 adjVector= new Vector2(Scale*(v.x-Translation.x), Scale*(v.y-Translation.y));
-        GUIUtility.ScaleAroundPivot(new Vector2(Scale,Scale), adjVector);
+        GUIUtility.ScaleAroundPivot(ScaleVector3, adjVector);
         return adjVector;
     }
     Vector3 TranslateAndScale(Vector3 v) {
         Vector3 adjVector= new Vector3(Scale*(v.x-Translation.x), Scale*(v.y-Translation.y),0);
-        GUIUtility.ScaleAroundPivot(new Vector2(Scale,Scale), new Vector2(adjVector.x, adjVector.y));
+        GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector2(adjVector.x, adjVector.y));
         return adjVector;
     }
     Rect TranslateAndScale(Rect p) {
         Rect adjRect= new Rect(Scale*(p.x-Translation.x), Scale*(p.y-Translation.y), p.width, p.height);
         GUIUtility.ScaleAroundPivot(new Vector2(Scale,Scale), new Vector2(adjRect.x, adjRect.y));
         return adjRect;
+//        GUI.matrix= Matrix4x4.TRS(Scale*new Vector3(p.x-Translation.x, p.y-Translation.y, 0), Quaternion.identity, ScaleVector3)*SavedMatrix;
+//        return new Rect(0, 0, p.width, p.height);
     }
     // ----------------------------------------------------------------------
     void GUI_Box(Rect pos, GUIContent content, GUIStyle guiStyle) {
@@ -651,7 +655,7 @@ public class iCS_Graphics {
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, storage);
 		object portValue= null;
-		float portRadius= port == selectedObject ? 1.5f*iCS_EditorConfig.PortRadius : iCS_EditorConfig.PortRadius;
+		float portRadius= port == selectedObject ? 1.75f*iCS_EditorConfig.PortRadius : iCS_EditorConfig.PortRadius;
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
