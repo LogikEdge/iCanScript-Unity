@@ -56,10 +56,11 @@ public class iCS_Graphics {
     GUIStyle      labelStyle      = null;
 
     // ----------------------------------------------------------------------
-    public iCS_EditorObject selectedObject= null;
-    public float            Scale= 1f;
-    public Vector2          Translation= Vector2.zero;
-           Matrix4x4        SavedMatrix= Matrix4x4.identity;
+    iCS_EditorObject selectedObject= null;
+    float            Scale= 1f;
+    Vector2          Translation= Vector2.zero;
+    Matrix4x4        SavedMatrix= Matrix4x4.identity;
+    Rect             ClipingArea= new Rect(0,0,0,0);
     
     // ======================================================================
 	// CONSTANTS
@@ -74,9 +75,11 @@ public class iCS_Graphics {
     // ======================================================================
     // Drawing staging
 	// ----------------------------------------------------------------------
-    public void Begin(Vector2 translation, float scale) {
+    public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj) {
         Translation= translation;
         Scale= scale;
+        ClipingArea= clipingRect;
+        selectedObject= selObj;
         SavedMatrix= GUI.matrix;
     }
     public void End() {
@@ -417,38 +420,50 @@ public class iCS_Graphics {
     // ======================================================================
     //  GRID
     // ----------------------------------------------------------------------
-    public void DrawGrid(Rect position, Color backgroundColor, Color gridColor, float gridSpacing) {
+    public void DrawGrid(Rect screenArea, Color backgroundColor, Color gridColor, float gridSpacing) {
         // Draw background.
         Vector3[] vect= { new Vector3(0,0,0),
-                          new Vector3(position.width, 0, 0),
-                          new Vector3(position.width,position.height,0),
-                          new Vector3(0,position.height,0)};
+                          new Vector3(screenArea.width, 0, 0),
+                          new Vector3(screenArea.width,screenArea.height,0),
+                          new Vector3(0,screenArea.height,0)};
         Handles.color= Color.white;
         Handles.DrawSolidRectangleWithOutline(vect, backgroundColor, backgroundColor);
 
         // Draw grid lines.
-        gridSpacing*= Scale;
-        if(gridSpacing < 2) return;
-
-        float x= Translation.x/gridSpacing;    // Compute grid offset dependency on viewport.
-        x= gridSpacing-gridSpacing*(x-Mathf.Floor(x));
-        float y= Translation.y/gridSpacing;
-        y= gridSpacing-gridSpacing*(y-Mathf.Floor(y));
+        if(gridSpacing*Scale < 2) return;
         
-        float gridSpacing5= 5.0f*gridSpacing;
-        float xStepOffset= Translation.x/gridSpacing5; // Compute major grid line offset dependency on viewport.
-        int xSteps= Mathf.FloorToInt(5.0f*(xStepOffset-Mathf.Floor(xStepOffset)));
-        float yStepOffset= Translation.y/gridSpacing5; // Compute major grid line offset dependency on viewport.
-        int ySteps= Mathf.FloorToInt(5.0f*(yStepOffset-Mathf.Floor(yStepOffset)));
-
+        float gridSpacing5= 5f*gridSpacing;
+        float x= (-Translation.x)-gridSpacing*Mathf.Floor((-Translation.x)/gridSpacing);
+        float y= (-Translation.y)-gridSpacing*Mathf.Floor((-Translation.y)/gridSpacing);
+        float x5= (-Translation.x)-gridSpacing5*Mathf.Floor((-Translation.x)/gridSpacing5);
+        float y5= (-Translation.y)-gridSpacing5*Mathf.Floor((-Translation.y)/gridSpacing5);
+        
+        // Scale grid
+        x*= Scale;
+        y*= Scale;
+        x5*= Scale;
+        y5*=Scale;
+        gridSpacing*= Scale;
+        gridSpacing5*= Scale;
+        
         Color gridColor2= new Color(gridColor.r, gridColor.g, gridColor.b, 0.25f);
-        for(; x < position.width; x+= gridSpacing, ++xSteps) {
-            Handles.color= (xSteps % 5) == 0 ? gridColor : gridColor2;
-            Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,position.height,0));            
+        for(; x < screenArea.width; x+= gridSpacing) {
+            if(Mathf.Abs(x-x5) < 1f) {
+                Handles.color= gridColor;
+                x5+= gridSpacing5;
+            } else {
+                Handles.color= gridColor2;                
+            }
+            Handles.DrawLine(new Vector3(x,0,0), new Vector3(x,screenArea.height,0));            
         }
-        for(; y < position.width; y+= gridSpacing, ++ySteps) {
-            Handles.color= (ySteps % 5) == 0 ? gridColor : gridColor2;
-            Handles.DrawLine(new Vector3(0,y,0), new Vector3(position.width,y,0));            
+        for(; y < screenArea.height; y+= gridSpacing) {
+            if(Mathf.Abs(y-y5) < 1f) {
+                Handles.color= gridColor;
+                y5+= gridSpacing5;
+            } else {
+                Handles.color= gridColor2;                
+            }
+            Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
         }
     }
     

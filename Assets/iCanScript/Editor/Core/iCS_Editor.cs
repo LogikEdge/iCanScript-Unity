@@ -51,7 +51,6 @@ public class iCS_Editor : EditorWindow {
         set {
 			if(mySelectedObject != value) {
 				mySelectedObject= value;
-                Graphics.selectedObject= value;
 				if(Inspector != null) Inspector.SelectedObject= value;				
 			}
 		}
@@ -99,7 +98,6 @@ public class iCS_Editor : EditorWindow {
         
         // Reset selected object.
         SelectedObject= null;
-        Graphics.selectedObject= null;
         
         // Inspect the assemblies for components.
         if(!ourAlreadyParsed) {
@@ -1153,7 +1151,7 @@ public class iCS_Editor : EditorWindow {
         // Ask the storage to update itself.
         Storage.Update();
         
-        Graphics.Begin(ScrollPosition, Scale);
+        Graphics.Begin(ScrollPosition, Scale, ClipingArea, SelectedObject);
         
         // Draw editor grid.
         DrawGrid();
