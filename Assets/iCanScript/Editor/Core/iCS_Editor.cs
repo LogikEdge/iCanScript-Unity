@@ -63,7 +63,7 @@ public class iCS_Editor : EditorWindow {
         get { return Storage.GuiScale; }
         set {
             if(value > 1f) value= 1f;
-            if(value < 0.1f) value= 0.1f;
+            if(value < 0.15f) value= 0.15f;
             Storage.GuiScale= value;
         }
     }

@@ -54,6 +54,7 @@ public class iCS_Graphics {
 	NodeStyle[]   functionStyle   = new NodeStyle[2];
 	NodeStyle[]   defaultStyle    = new NodeStyle[2];
     GUIStyle      labelStyle      = null;
+    GUIStyle      titleStyle      = null;
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
@@ -85,6 +86,7 @@ public class iCS_Graphics {
         SavedMatrix= GUI.matrix;
         
 //        if(labelStyle != null) labelStyle.fontSize= (int)(11*Scale);
+
     }
     public void End() {
         GUI.matrix= SavedMatrix;
@@ -156,7 +158,7 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     void GUI_Box(Rect pos, GUIContent content, NodeStyle nodeStyle) {
         Vector2 adjPos= TranslateAndScale(pos.x, pos.y);
-        NodeDrawTest(new Rect(adjPos.x, adjPos.y,pos.width,pos.height), nodeStyle.nodeColor, new Color(0.24f, 0.27f, 0.32f));
+        NodeDrawTest(new Rect(adjPos.x, adjPos.y,pos.width,pos.height), nodeStyle.nodeColor, new Color(0.24f, 0.27f, 0.32f), new Color(0,0,0,0.06f), content);
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -168,38 +170,59 @@ public class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, GUIContent content, GUIStyle labelStyle) {
+        if(Scale < 0.5f) return;
         GUI.Label(ApplyTranslateAndScale(pos), content, labelStyle);
         GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, String content, GUIStyle labelStyle) {
+        if(Scale < 0.5f) return;
         GUI.Label(ApplyTranslateAndScale(pos), content, labelStyle);
         GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
-    void NodeDrawTest(Rect r, Color nodeColor, Color backgroundColor) {
+    void NodeDrawTest(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
         float radius= 8f;
         radius*= Scale;
         r.width*= Scale;
         r.height*= Scale;
         
+        // Show shadow.
+        Vector3[] vectors= new Vector3[4];
+//        Color shadowColor= new Color(1f,1f,1f,0.05f);
+        for(int i= 5; i > 0; --i) {
+            Handles.color= shadowColor;
+            Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.y+radius), FacingNormal, new Vector3(1f,0,0), 90f, radius);
+            Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.yMax-radius), FacingNormal, new Vector3(0,1f,0), 90f, radius);
+            Handles.DrawSolidArc(new Vector3(i+r.x+radius, i+r.yMax-radius), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
+            vectors[0]= new Vector3(i+r.xMax-radius, i+r.y+radius, 0);
+            vectors[1]= new Vector3(i+r.xMax, i+r.y+radius, 0);
+            vectors[2]= new Vector3(i+r.xMax, i+r.yMax-radius, 0);
+            vectors[3]= new Vector3(i+r.xMax-radius, i+r.yMax-radius, 0);
+            Handles.color= Color.white;
+            Handles.DrawSolidRectangleWithOutline(vectors, shadowColor, new Color(0,0,0,0));
+            vectors[0]= new Vector3(i+r.x+radius, i+r.yMax-radius, 0);
+            vectors[1]= new Vector3(i+r.xMax-radius, i+r.yMax-radius, 0);
+            vectors[2]= new Vector3(i+r.xMax-radius, i+r.yMax, 0);
+            vectors[3]= new Vector3(i+r.x+radius, i+r.yMax, 0);
+            Handles.color= Color.white;
+            Handles.DrawSolidRectangleWithOutline(vectors, shadowColor, new Color(0,0,0,0));
+        }
+        
         // Show background.
         Handles.color= backgroundColor;
-        Handles.DrawSolidArc(new Vector3(r.x+radius, r.y+radius,0), FacingNormal, new Vector3(0,-1f,0), 90f, radius+1);
-        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.y+radius,0), FacingNormal, new Vector3(1f,0,0), 90f, radius+1);
-        Handles.DrawSolidArc(new Vector3(r.x+radius, r.yMax-radius,0), FacingNormal, new Vector3(-1f,0,0), 90f, radius+1);
-        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.yMax-radius,0), FacingNormal, new Vector3(0,1f,0), 90f, radius+1);
-        Vector3[] vectors= new Vector3[4];
-        vectors[0]= new Vector3(r.x+radius, r.y-1, 0);
-        vectors[1]= new Vector3(r.xMax-radius, r.y-1, 0);
-        vectors[2]= new Vector3(r.xMax-radius, r.yMax+1, 0);
-        vectors[3]= new Vector3(r.x+radius, r.yMax+1, 0);
+        Handles.DrawSolidArc(new Vector3(r.x+radius, r.yMax-radius,0), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
+        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.yMax-radius,0), FacingNormal, new Vector3(0,1f,0), 90f, radius);
+        vectors[0]= new Vector3(r.x, r.y+radius, 0);
+        vectors[1]= new Vector3(r.xMax, r.y+radius, 0);
+        vectors[2]= new Vector3(r.xMax, r.yMax-radius, 0);
+        vectors[3]= new Vector3(r.x, r.yMax-radius, 0);
         Handles.color= Color.white;
         Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
-        vectors[0]= new Vector3(r.x-1, r.y+radius, 0);
-        vectors[1]= new Vector3(r.xMax+1, r.y+radius, 0);
-        vectors[2]= new Vector3(r.xMax+1, r.yMax-radius, 0);
-        vectors[3]= new Vector3(r.x-1, r.yMax-radius, 0);
+        vectors[0]= new Vector3(r.x+radius, r.yMax-radius, 0);
+        vectors[1]= new Vector3(r.xMax-radius, r.yMax-radius, 0);
+        vectors[2]= new Vector3(r.xMax-radius, r.yMax, 0);
+        vectors[3]= new Vector3(r.x+radius, r.yMax, 0);
         Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
         
         // Show frame.
@@ -222,6 +245,14 @@ public class iCS_Graphics {
         vectors[2]= new Vector3(r.xMax, r.y+1.75f*radius, 0);
         vectors[3]= new Vector3(r.x, r.y+1.75f*radius, 0);
         Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0,0,0,0));
+
+        // Show title.
+        if(Scale < 0.30f) return;
+        Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.8f*radius);
+        Vector2 titleSize= titleStyle.CalcSize(content);
+        GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector3(titleCenter.x, titleCenter.y));
+        GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, titleStyle);
+        GUI.matrix= SavedMatrix;
     }
     
     // ======================================================================
@@ -314,6 +345,22 @@ public class iCS_Graphics {
         labelStyle.onFocused.textColor= labelColor;
         labelStyle.onActive.textColor= labelColor;
         return labelStyle;
+    }
+    // ----------------------------------------------------------------------
+    GUIStyle GetTitleStyle(iCS_IStorage storage) {
+        Color titleColor= Color.black;
+        if(titleStyle == null) titleStyle= new GUIStyle();
+        titleStyle.normal.textColor= titleColor;
+        titleStyle.hover.textColor= titleColor;
+        titleStyle.focused.textColor= titleColor;
+        titleStyle.active.textColor= titleColor;
+        titleStyle.onNormal.textColor= titleColor;
+        titleStyle.onHover.textColor= titleColor;
+        titleStyle.onFocused.textColor= titleColor;
+        titleStyle.onActive.textColor= titleColor;
+        titleStyle.fontStyle= FontStyle.Bold;
+        titleStyle.fontSize= 12;
+        return titleStyle;
     }
     // ----------------------------------------------------------------------
     public static Texture2D GetCachedTextureFromGUID(string guid) {
@@ -558,11 +605,7 @@ public class iCS_Graphics {
                 Handles.color= gridColor2;                
             }
             Handles.DrawLine(new Vector3(0,y,0), new Vector3(screenArea.width,y,0));            
-        }
-        
-        
-        NodeDrawTest(new Rect(10,10,120,35), Color.yellow, Color.grey);
-        
+        }        
     }
     
     // ======================================================================
@@ -571,6 +614,9 @@ public class iCS_Graphics {
     public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage storage) {        
         // Don't draw minimized node.
         if(IsInvisible(node, storage) || IsMinimized(node, storage)) return;
+        
+        // Load title style.  (TO BE MOVED...)
+        GetTitleStyle(storage);
         
         // Draw node box.
         Rect position= GetDisplayPosition(node, storage);
@@ -583,7 +629,7 @@ public class iCS_Graphics {
         position.y-= guiStyle.overflow.top;
         position.width+= leftOffset + rightOffset;
         position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
-        if(((int)Time.realtimeSinceStartup & 3) == 0) {
+        if(false /*((int)Time.realtimeSinceStartup & 3) == 0*/) {
             GUI_Box(position, new GUIContent(title,node.ToolTip), guiStyle);            
         } else {
             GUI_Box(position, new GUIContent(title,node.ToolTip), nodeStyle);
@@ -771,11 +817,11 @@ public class iCS_Graphics {
         } else if(port.IsStatePort) {
             if(port.IsOutStatePort) {
                 Handles.color= Color.white;
-                Handles.DrawSolidDisc(ApplyTranslateAndScale(center), FacingNormal, portRadius);
+                Handles.DrawSolidDisc(TranslateAndScale(center), FacingNormal, portRadius*Scale);
             }
         } else if(port.IsInTransitionPort || port.IsOutTransitionPort) {
             Handles.color= Color.white;
-            Handles.DrawSolidDisc(ApplyTranslateAndScale(center), FacingNormal, portRadius);            
+            Handles.DrawSolidDisc(TranslateAndScale(center), FacingNormal, portRadius*Scale);            
         }
         else {
             DrawCircularPort(center, portColor, nodeColor, portRadius);
