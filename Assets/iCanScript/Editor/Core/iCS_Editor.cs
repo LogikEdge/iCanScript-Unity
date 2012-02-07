@@ -68,6 +68,8 @@ public class iCS_Editor : EditorWindow {
             Storage.GuiScale= value;
         }
     }
+    Prelude.Animate<Vector2>    AnimatedScrollPosition= new Prelude.Animate<Vector2>();
+
 	// ----------------------------------------------------------------------
     bool    IsFloatingKeyDown	{ get { return Event.current.control; }}
     bool    IsCopyKeyDown       { get { return Event.current.shift; }}
@@ -1149,7 +1151,12 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {
-        ScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
+        Vector2 newScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
+        float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
+        float deltaTime= distance/3500f;
+        if(deltaTime > 0.5f) deltaTime= 0.5f+(0.5f*(deltaTime-0.5f));
+        AnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        ScrollPosition= newScrollPosition;
     }
     // ======================================================================
     // NODE GRAPH DISPLAY
@@ -1166,7 +1173,12 @@ public class iCS_Editor : EditorWindow {
         // Ask the storage to update itself.
         Storage.Update();
         
-        Graphics.Begin(ScrollPosition, Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), Storage);
+        Vector2 graphicScrollPosition= ScrollPosition;
+        if(AnimatedScrollPosition.IsActive) {
+            AnimatedScrollPosition.Update();
+            graphicScrollPosition= AnimatedScrollPosition.CurrentValue;
+        }
+        Graphics.Begin(graphicScrollPosition, Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), Storage);
         
         // Draw editor grid.
         DrawGrid();
