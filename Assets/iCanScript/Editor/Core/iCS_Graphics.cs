@@ -47,6 +47,7 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     GUIStyle    LabelStyle              = null;
     GUIStyle    TitleStyle              = null;
+    GUIStyle    ValueStyle              = null;
     Texture2D   StateMaximizeIcon       = null;
     Texture2D   ModuleMaximizeIcon      = null;
     Texture2D   EntryStateMaximizeIcon  = null;
@@ -79,6 +80,7 @@ public class iCS_Graphics {
     public iCS_Graphics() {
         // Load title style.
         BuildTitleStyle();
+        BuildValueStyle();
     }
     
     // ======================================================================
@@ -96,7 +98,8 @@ public class iCS_Graphics {
         
         // Set font size according to scale.
         LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
-        TitleStyle.fontSize= (int)(kTitleFontSize*Scale);        
+        TitleStyle.fontSize= (int)(kTitleFontSize*Scale);
+        ValueStyle.fontSize= (int)(kLabelFontSize*Scale);        
     }
     public void End() {
     }
@@ -175,7 +178,6 @@ public class iCS_Graphics {
         
         // Show shadow.
         Vector3[] vectors= new Vector3[4];
-//        Color shadowColor= new Color(1f,1f,1f,0.05f);
         for(int i= 5; i > 0; --i) {
             Handles.color= shadowColor;
             Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.y+radius), FacingNormal, new Vector3(1f,0,0), 90f, radius);
@@ -342,6 +344,20 @@ public class iCS_Graphics {
         TitleStyle.onActive.textColor= titleColor;
         TitleStyle.fontStyle= FontStyle.Bold;
         TitleStyle.fontSize= 12;
+    }
+    // ----------------------------------------------------------------------
+    void BuildValueStyle() {
+        Color valueColor= Color.cyan;
+        if(ValueStyle == null) ValueStyle= new GUIStyle();
+        ValueStyle.normal.textColor= valueColor;
+        ValueStyle.hover.textColor= valueColor;
+        ValueStyle.focused.textColor= valueColor;
+        ValueStyle.active.textColor= valueColor;
+        ValueStyle.onNormal.textColor= valueColor;
+        ValueStyle.onHover.textColor= valueColor;
+        ValueStyle.onFocused.textColor= valueColor;
+        ValueStyle.onActive.textColor= valueColor;
+        ValueStyle.fontSize= 11;
     }
     // ----------------------------------------------------------------------
     public static Texture2D GetCachedTextureFromGUID(string guid) {
@@ -513,8 +529,9 @@ public class iCS_Graphics {
         GUI_DrawTexture(texturePos, icon);                           
         EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
         GUI_Label(texturePos, new GUIContent("", node.ToolTip), LabelStyle);
-        Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(title);
-        GUI_Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip), LabelStyle);
+        Vector2 labelSize= LabelStyle.CalcSize(new GUIContent(title));
+        texturePos= TranslateAndScale(texturePos);
+        GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip), LabelStyle);
     }
 
     // ======================================================================
@@ -697,6 +714,7 @@ public class iCS_Graphics {
             EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
         }
         if(!port.IsFloating) {
+            // TO BE VERIFIED.
             GUI_Label(portPos, new GUIContent("", port.ToolTip), LabelStyle);            
         }
         
@@ -704,38 +722,40 @@ public class iCS_Graphics {
         if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
 		string valueAsStr= portValue != null ? GetValueAsString(portValue) : null;
-        Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(name);
-		GUIStyle valueStyle= GUI.skin.textField;
-		Vector2 valueSize= (valueAsStr != null && valueAsStr != "") ? valueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;
+        Vector2 labelSize= LabelStyle.CalcSize(new GUIContent(name));
+		Vector2 valueSize= (valueAsStr != null && valueAsStr != "") ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;
 		Vector2 valuePos= center;
+		Vector2 labelPos= center;
         switch(port.Edge) {
             case iCS_EditorObject.EdgeEnum.Left:
-                center.x  += 1 + iCS_EditorConfig.PortSize;
-                center.y  -= -1 + 0.5f * labelSize.y;
-				valuePos.x-= 1 + valueSize.x + iCS_EditorConfig.PortSize;
-				valuePos.y-= 1 + 0.5f * valueSize.y;
+                labelPos.x+= 1 + iCS_EditorConfig.PortSize;
+                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
+				valuePos.x-= 1 + valueSize.x/Scale + iCS_EditorConfig.PortSize;
+				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
             case iCS_EditorObject.EdgeEnum.Right:
-                center.x  -= 1 + labelSize.x + iCS_EditorConfig.PortSize;
-                center.y  -= -1 + 0.5f * labelSize.y;
+                labelPos.x-= 1 + labelSize.x/Scale + iCS_EditorConfig.PortSize;
+                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
 				valuePos.x+= 1 + iCS_EditorConfig.PortSize;
-				valuePos.y-= 1 + 0.5f * valueSize.y;
+				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
             case iCS_EditorObject.EdgeEnum.Top:            
-                center.x-= 1 + 0.5f*labelSize.x;
-                center.y-= iCS_EditorConfig.PortSize+0.8f*labelSize.y*(1+TopBottomLabelOffset(port, storage));
+                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
+                labelPos.y-= iCS_EditorConfig.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, storage));
 				valueAsStr= null;
                 break;
             case iCS_EditorObject.EdgeEnum.Bottom:
-                center.x-= 1 + 0.5f*labelSize.x;
-                center.y+= iCS_EditorConfig.PortSize+0.8f*labelSize.y*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y;
+                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
+                labelPos.y+= iCS_EditorConfig.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y/Scale;
 				valueAsStr= null;
                 break;
         }
-        GUI_Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), LabelStyle);
+        labelPos= TranslateAndScale(labelPos);
+        valuePos= TranslateAndScale(valuePos);
+        GUI.Label(new Rect(labelPos.x, labelPos.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), LabelStyle);
         if(!port.IsFloating) {
     		if(valueAsStr != null) {
-    			GUI_Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, valueStyle);			
+    			GUI.Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, ValueStyle);			
     		}            
         }
     }
