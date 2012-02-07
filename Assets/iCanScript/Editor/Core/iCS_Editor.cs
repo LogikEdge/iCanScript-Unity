@@ -293,11 +293,16 @@ public class iCS_Editor : EditorWindow {
                 DetermineSelectedObject();
                 switch(Event.current.button) {
                     case 0: { // Left mouse button
-                        IsDragEnabled= true;
+                        if(SelectedObject != null && !SelectedObject.IsBehaviour) {
+                            IsDragEnabled= true;                            
+                        }
                         Event.current.Use();
                         break;
                     }
                     case 1: { // Right mouse button
+                        if(SelectedObject == null && DisplayRoot.IsBehaviour) {
+                            SelectedObject= DisplayRoot;
+                        }
                         DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));
                         Event.current.Use();
                         break;
@@ -1179,14 +1184,14 @@ public class iCS_Editor : EditorWindow {
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
-                if(node.IsNode && !node.IsFloating) {
+                if(node.IsNode && !node.IsFloating && !node.IsBehaviour) {
                 	Graphics.DrawNormalNode(node, Storage);                        
                 }
             }
         );
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
-                if(node.IsNode && node.IsFloating) {
+                if(node.IsNode && node.IsFloating && !node.IsBehaviour) {
                 	Graphics.DrawNormalNode(node, Storage);                        
                 }
             }
