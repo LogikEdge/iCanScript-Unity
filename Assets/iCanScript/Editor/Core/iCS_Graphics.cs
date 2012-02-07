@@ -144,7 +144,7 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     void GUI_Box(Rect pos, GUIContent content, Color nodeColor, Color backgroundColor, Color shadowColor) {
         Vector2 adjPos= TranslateAndScale(pos.x, pos.y);
-        NodeDrawTest(new Rect(adjPos.x, adjPos.y,pos.width,pos.height), nodeColor, backgroundColor, shadowColor, content);
+        DrawNode(new Rect(adjPos.x, adjPos.y,pos.width,pos.height), nodeColor, backgroundColor, shadowColor, content);
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -165,7 +165,7 @@ public class iCS_Graphics {
         GUI.Label(TranslateAndScale(pos), content, labelStyle);
     }
     // ----------------------------------------------------------------------
-    void NodeDrawTest(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
+    void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
         float radius= kNodeCornerRadius;
         radius*= Scale;
         r.width*= Scale;
