@@ -43,8 +43,8 @@ public class iCS_Graphics {
     static Dictionary<string, Texture2D>   cachedTextures= new Dictionary<string, Texture2D>();
     
     // ----------------------------------------------------------------------
-    GUIStyle    labelStyle              = null;
-    GUIStyle    titleStyle              = null;
+    GUIStyle    LabelStyle              = null;
+    GUIStyle    TitleStyle              = null;
     Texture2D   StateMaximizeIcon       = null;
     Texture2D   ModuleMaximizeIcon      = null;
     Texture2D   EntryStateMaximizeIcon  = null;
@@ -257,9 +257,9 @@ public class iCS_Graphics {
         // Show title.
         if(Scale < 0.30f) return;
         Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.8f*radius);
-        Vector2 titleSize= titleStyle.CalcSize(content);
+        Vector2 titleSize= TitleStyle.CalcSize(content);
         GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector3(titleCenter.x, titleCenter.y));
-        GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, titleStyle);
+        GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, TitleStyle);
         GUI.matrix= SavedMatrix;
     }
     
@@ -342,30 +342,30 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     void BuildLabelStyle(iCS_IStorage storage) {
         Color labelColor= storage.Preferences.NodeColors.LabelColor;
-        if(labelStyle == null) labelStyle= new GUIStyle();
-        labelStyle.normal.textColor= labelColor;
-        labelStyle.hover.textColor= labelColor;
-        labelStyle.focused.textColor= labelColor;
-        labelStyle.active.textColor= labelColor;
-        labelStyle.onNormal.textColor= labelColor;
-        labelStyle.onHover.textColor= labelColor;
-        labelStyle.onFocused.textColor= labelColor;
-        labelStyle.onActive.textColor= labelColor;
+        if(LabelStyle == null) LabelStyle= new GUIStyle();
+        LabelStyle.normal.textColor= labelColor;
+        LabelStyle.hover.textColor= labelColor;
+        LabelStyle.focused.textColor= labelColor;
+        LabelStyle.active.textColor= labelColor;
+        LabelStyle.onNormal.textColor= labelColor;
+        LabelStyle.onHover.textColor= labelColor;
+        LabelStyle.onFocused.textColor= labelColor;
+        LabelStyle.onActive.textColor= labelColor;
     }
     // ----------------------------------------------------------------------
     void BuildTitleStyle() {
         Color titleColor= Color.black;
-        if(titleStyle == null) titleStyle= new GUIStyle();
-        titleStyle.normal.textColor= titleColor;
-        titleStyle.hover.textColor= titleColor;
-        titleStyle.focused.textColor= titleColor;
-        titleStyle.active.textColor= titleColor;
-        titleStyle.onNormal.textColor= titleColor;
-        titleStyle.onHover.textColor= titleColor;
-        titleStyle.onFocused.textColor= titleColor;
-        titleStyle.onActive.textColor= titleColor;
-        titleStyle.fontStyle= FontStyle.Bold;
-        titleStyle.fontSize= 12;
+        if(TitleStyle == null) TitleStyle= new GUIStyle();
+        TitleStyle.normal.textColor= titleColor;
+        TitleStyle.hover.textColor= titleColor;
+        TitleStyle.focused.textColor= titleColor;
+        TitleStyle.active.textColor= titleColor;
+        TitleStyle.onNormal.textColor= titleColor;
+        TitleStyle.onHover.textColor= titleColor;
+        TitleStyle.onFocused.textColor= titleColor;
+        TitleStyle.onActive.textColor= titleColor;
+        TitleStyle.fontStyle= FontStyle.Bold;
+        TitleStyle.fontSize= 12;
     }
     // ----------------------------------------------------------------------
     public static Texture2D GetCachedTextureFromGUID(string guid) {
@@ -536,9 +536,9 @@ public class iCS_Graphics {
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
         GUI_DrawTexture(texturePos, icon);                           
         EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
-        GUI_Label(texturePos, new GUIContent("", node.ToolTip), labelStyle);
+        GUI_Label(texturePos, new GUIContent("", node.ToolTip), LabelStyle);
         Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(title);
-        GUI_Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip), labelStyle);
+        GUI_Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip), LabelStyle);
     }
 
     // ======================================================================
@@ -721,7 +721,7 @@ public class iCS_Graphics {
             EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
         }
         if(!port.IsFloating) {
-            GUI_Label(portPos, new GUIContent("", port.ToolTip), labelStyle);            
+            GUI_Label(portPos, new GUIContent("", port.ToolTip), LabelStyle);            
         }
         
         // Show port label.
@@ -756,7 +756,7 @@ public class iCS_Graphics {
 				valueAsStr= null;
                 break;
         }
-        GUI_Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), labelStyle);
+        GUI_Label(new Rect(center.x, center.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), LabelStyle);
         if(!port.IsFloating) {
     		if(valueAsStr != null) {
     			GUI_Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, valueStyle);			
