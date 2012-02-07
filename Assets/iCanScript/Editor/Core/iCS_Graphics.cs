@@ -8,9 +8,11 @@ public class iCS_Graphics {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
-    const float kMinimizeSize   = 32f;
+    const float kMinimizeSize    = 32f;
     const float kNodeCornerRadius= 8f;
     const float kNodeTitleHeight = 2f*kNodeCornerRadius;
+    const int   kLabelFontSize   = 11;
+    const int   kTitleFontSize   = 12;
     
     // ======================================================================
     // PROPERTIES
@@ -55,9 +57,7 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
     float            Scale= 1f;
-    Vector3          ScaleVector3= Vector3.zero;
     Vector2          Translation= Vector2.zero;
-    Matrix4x4        SavedMatrix= Matrix4x4.identity;
     Rect             ClipingArea= new Rect(0,0,0,0);
     Vector2          MousePosition= Vector2.zero;
     
@@ -87,17 +87,18 @@ public class iCS_Graphics {
     public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj, Vector2 mousePos, iCS_IStorage storage) {
         Translation= translation;
         Scale= scale;
-        ScaleVector3= new Vector3(Scale, Scale, Scale);
         ClipingArea= clipingRect;
         MousePosition= mousePos;
         selectedObject= selObj;
-        SavedMatrix= GUI.matrix;
 
         // Rebuild label style to match user preferences.
-        BuildLabelStyle(storage);        
+        BuildLabelStyle(storage);
+        
+        // Set font size according to scale.
+        LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
+        TitleStyle.fontSize= (int)(kTitleFontSize*Scale);        
     }
     public void End() {
-        GUI.matrix= SavedMatrix;
     }
     
     // ======================================================================
@@ -140,29 +141,6 @@ public class iCS_Graphics {
     Vector2 TranslateAndScale(float x, float y) {
         return new Vector2(Scale*(x-Translation.x), Scale*(y-Translation.y));
     }
-	// ----------------------------------------------------------------------
-    Vector2 ApplyTranslateAndScale(Vector2 v) {
-        Vector2 adjVector= TranslateAndScale(v);
-        if(Math3D.IsNotEqual(Scale, 1f)) GUIUtility.ScaleAroundPivot(ScaleVector3, adjVector);
-        return adjVector;
-    }
-    Vector3 ApplyTranslateAndScale(Vector3 v) {
-        Vector3 adjVector= TranslateAndScale(v);
-        if(Math3D.IsNotEqual(Scale, 1f)) GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector2(adjVector.x, adjVector.y));
-        return adjVector;
-    }
-    Rect ApplyTranslateAndScale(Rect r) {
-        Rect clipedRect= Clip(r);
-        var pos= TranslateAndScale(r.x, r.y);
-        Rect adjRect= new Rect(pos.x, pos.y, r.width, r.height);
-        if(Math3D.IsNotEqual(Scale, 1f)) GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector2(adjRect.x, adjRect.y));
-        return adjRect;
-    }
-    // ----------------------------------------------------------------------
-    void GUI_Box(Rect pos, GUIContent content, GUIStyle guiStyle) {
-        GUI.Box(ApplyTranslateAndScale(pos), content, guiStyle);                    
-        GUI.matrix= SavedMatrix;
-    }
     // ----------------------------------------------------------------------
     void GUI_Box(Rect pos, GUIContent content, Color nodeColor, Color backgroundColor, Color shadowColor) {
         Vector2 adjPos= TranslateAndScale(pos.x, pos.y);
@@ -179,14 +157,12 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, GUIContent content, GUIStyle labelStyle) {
         if(Scale < 0.5f) return;
-        GUI.Label(ApplyTranslateAndScale(pos), content, labelStyle);
-        GUI.matrix= SavedMatrix;
+        GUI.Label(TranslateAndScale(pos), content, labelStyle);
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, String content, GUIStyle labelStyle) {
         if(Scale < 0.5f) return;
-        GUI.Label(ApplyTranslateAndScale(pos), content, labelStyle);
-        GUI.matrix= SavedMatrix;
+        GUI.Label(TranslateAndScale(pos), content, labelStyle);
     }
     // ----------------------------------------------------------------------
     void NodeDrawTest(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
@@ -255,12 +231,10 @@ public class iCS_Graphics {
         Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0,0,0,0));
 
         // Show title.
-        if(Scale < 0.30f) return;
+        if(Scale < 0.4f) return;
         Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.8f*radius);
         Vector2 titleSize= TitleStyle.CalcSize(content);
-        GUIUtility.ScaleAroundPivot(ScaleVector3, new Vector3(titleCenter.x, titleCenter.y));
         GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, TitleStyle);
-        GUI.matrix= SavedMatrix;
     }
     
     // ======================================================================
