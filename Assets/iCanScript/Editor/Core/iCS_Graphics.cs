@@ -143,8 +143,12 @@ public class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     void GUI_Box(Rect pos, GUIContent content, Color nodeColor, Color backgroundColor, Color shadowColor) {
-        Vector2 adjPos= TranslateAndScale(pos.x, pos.y);
-        DrawNode(new Rect(adjPos.x, adjPos.y,pos.width,pos.height), nodeColor, backgroundColor, shadowColor, content);
+        Rect adjPos= TranslateAndScale(pos);
+        DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, content);
+        string tooltip= content.tooltip;
+        if(tooltip != null && tooltip != "") {
+            GUI.Label(adjPos, new GUIContent("", tooltip), LabelStyle);
+        }
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -168,8 +172,6 @@ public class iCS_Graphics {
     void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
         float radius= kNodeCornerRadius;
         radius*= Scale;
-        r.width*= Scale;
-        r.height*= Scale;
         
         // Show shadow.
         Vector3[] vectors= new Vector3[4];
@@ -484,7 +486,7 @@ public class iCS_Graphics {
         }
         bool isMouseOver= position.Contains(MousePosition);
         GUI_Box(position, new GUIContent(title,node.ToolTip), GetNodeColor(node, storage), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
-        EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, iCS_EditorConfig.NodeTitleHeight), MouseCursor.Link);
+        EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, storage)) {
             if(storage.IsFolded(node)) {
