@@ -627,31 +627,21 @@ public class iCS_Graphics {
         Rect position= GetDisplayPosition(node, storage);
         NodeStyle nodeStyle= GetNodeStyle(node, storage);
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
-        GUIStyle guiStyle= nodeStyle.guiStyle;
-        float leftOffset= guiStyle.overflow.left + (guiStyle.padding.left-guiStyle.overflow.left)/2;
-        float rightOffset= guiStyle.overflow.right - (guiStyle.padding.right-guiStyle.overflow.right)/2;
-        position.x-= leftOffset;
-        position.y-= guiStyle.overflow.top;
-        position.width+= leftOffset + rightOffset;
-        position.height+= guiStyle.overflow.top + guiStyle.overflow.bottom;
-        if(false /*((int)Time.realtimeSinceStartup & 3) == 0*/) {
-            GUI_Box(position, new GUIContent(title,node.ToolTip), guiStyle);            
-        } else {
-            bool isMouseOver= position.Contains(MousePosition);
-            Color backgroundColor= BackgroundColor;
-            if(node == selectedObject) {
-                float adj= storage.Preferences.NodeColors.SelectedBrightness;
-                backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
-            }
-            GUI_Box(position, new GUIContent(title,node.ToolTip), nodeStyle.nodeColor, backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
+        // Change background color if node is selected.
+        Color backgroundColor= BackgroundColor;
+        if(node == selectedObject) {
+            float adj= storage.Preferences.NodeColors.SelectedBrightness;
+            backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
         }
+        bool isMouseOver= position.Contains(MousePosition);
+        GUI_Box(position, new GUIContent(title,node.ToolTip), nodeStyle.nodeColor, backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
         EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, iCS_EditorConfig.NodeTitleHeight), MouseCursor.Link);
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, storage)) {
             if(storage.IsFolded(node)) {
-                GUI_DrawTexture(new Rect(position.x+8, position.y, foldedIcon.width, foldedIcon.height), foldedIcon);                           
+                GUI_DrawTexture(new Rect(position.x+6f, position.y, foldedIcon.width, foldedIcon.height), foldedIcon);                           
             } else {
-                GUI_DrawTexture(new Rect(position.x+8, position.y, unfoldedIcon.width, unfoldedIcon.height), unfoldedIcon);               
+                GUI_DrawTexture(new Rect(position.x+6f, position.y, unfoldedIcon.width, unfoldedIcon.height), unfoldedIcon);               
             }            
         }
         // Minimize Icon
