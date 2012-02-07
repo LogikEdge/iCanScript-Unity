@@ -11,10 +11,10 @@ using UnityEditor;
 public class iCS_InspectorBase : iCS_Inspector {
     // ---------------------------------------------------------------
     // Invokes the iCanScript .
-	new void OnEnable() {
-	    base.OnEnable();
+	public override void OnInspectorGUI() {
         // Assure that the components are properly installed.
     	iCS_Installer.Install();
+        base.OnInspectorGUI();
 	}
 }
 

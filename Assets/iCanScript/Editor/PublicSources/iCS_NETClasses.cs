@@ -6,16 +6,12 @@ using System.Collections;
 public static class iCS_NETClasses {
     // ----------------------------------------------------------------------
     // Install the desired .NET classes
-    static iCS_NETClasses() {
+    public static void PopulateDataBase() {
         DecodeNETClassInfo(typeof(string));
         DecodeNETClassInfo(typeof(char));
         DecodeNETClassInfo(typeof(Array));
-        DecodeNETClassInfo(typeof(Path));
+        DecodeNETClassInfo(typeof(Path));        
     }
-
-    // ----------------------------------------------------------------------
-    // Use this function to assure execution of static constructor.
-    public static void PopulateDataBase() {}
 
     // ----------------------------------------------------------------------
     // Helper function to simplify .NET class decoding.

@@ -9,6 +9,7 @@ public class iCS_Reflection {
     // Fileds.
     // ----------------------------------------------------------------------
     public static List<Type>    AllTypesWithDefaultConstructor= new List<Type>();
+    public static bool          NeedToRunInstaller= false;
     
     // ----------------------------------------------------------------------
     static void AddToAllTypes(Type type) {
@@ -94,6 +95,7 @@ public class iCS_Reflection {
         }
 //        iCS_UnityClasses.PopulateDataBase();
 //        iCS_NETClasses.PopulateDataBase();
+        NeedToRunInstaller= true;
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------
