@@ -15,7 +15,8 @@ public class iCS_Editor : EditorWindow {
 	iCS_Inspector        Inspector      = null;
     iCS_EditorObject     DisplayRoot    = null;
     iCS_DynamicMenu      DynamicMenu    = null;
-
+//    iCS_Magnifier        Magnifier      = null;
+    
     // ----------------------------------------------------------------------
     float LastDirtyUpdateTime= 0f;
     int   RefreshCnt         = 0;
@@ -95,6 +96,12 @@ public class iCS_Editor : EditorWindow {
         // Create worker objects.
         Graphics        = new iCS_Graphics();
         DynamicMenu     = new iCS_DynamicMenu();
+
+// Test Begin
+//        Magnifier       = EditorWindow.GetWindow(typeof(iCS_Magnifier)) as iCS_Magnifier;
+//        Magnifier.position= new Rect(0,0,250,250);
+//        Magnifier.ShowPopup();
+// Test End
         
         // Reset selected object.
         SelectedObject= null;
@@ -267,6 +274,14 @@ public class iCS_Editor : EditorWindow {
                         break;
                     }
                 }
+// Test begin
+//                if(Magnifier != null) {
+//                    float width= Magnifier.position.width;
+//                    float height= Magnifier.position.height;
+//                    Rect pos= new Rect(position.x+Scale*MousePosition.x-0.5f*width, position.y+Scale*MousePosition.y-0.5f*height, width, height);
+//                    Magnifier.position= pos;
+//                }
+// Test end
                 break;
             }
             case EventType.MouseDrag: {
@@ -1151,7 +1166,7 @@ public class iCS_Editor : EditorWindow {
         // Ask the storage to update itself.
         Storage.Update();
         
-        Graphics.Begin(ScrollPosition, Scale, ClipingArea, SelectedObject);
+        Graphics.Begin(ScrollPosition, Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition));
         
         // Draw editor grid.
         DrawGrid();

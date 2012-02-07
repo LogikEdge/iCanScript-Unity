@@ -63,25 +63,30 @@ public class iCS_Graphics {
     Vector2          Translation= Vector2.zero;
     Matrix4x4        SavedMatrix= Matrix4x4.identity;
     Rect             ClipingArea= new Rect(0,0,0,0);
+    Vector2          MousePosition= Vector2.zero;
     
     // ======================================================================
 	// CONSTANTS
     // ----------------------------------------------------------------------
-    public static readonly Vector2 UpDirection   = new Vector2(0,-1);
-    public static readonly Vector2 DownDirection = new Vector2(0,1);
-    public static readonly Vector2 RightDirection= new Vector2(1,0);
-    public static readonly Vector2 LeftDirection = new Vector2(-1,0);
-    public static readonly Vector3 FacingNormal  = new Vector3(0,0,-1);
+    public static readonly Vector2 UpDirection     = new Vector2(0,-1);
+    public static readonly Vector2 DownDirection   = new Vector2(0,1);
+    public static readonly Vector2 RightDirection  = new Vector2(1,0);
+    public static readonly Vector2 LeftDirection   = new Vector2(-1,0);
+    public static readonly Vector3 FacingNormal    = new Vector3(0,0,-1);
+	       static readonly Color   BackgroundColor = new Color(0.24f, 0.27f, 0.32f);
+	       static readonly Color   BlackShadowColor= new Color(0,0,0,0.06f);
+	       static readonly Color   WhiteShadowColor= new Color(1f,1f,1f,0.06f);
         
 
     // ======================================================================
     // Drawing staging
 	// ----------------------------------------------------------------------
-    public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj) {
+    public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj, Vector2 mousePos) {
         Translation= translation;
         Scale= scale;
         ScaleVector3= new Vector3(Scale, Scale, Scale);
         ClipingArea= clipingRect;
+        MousePosition= mousePos;
         selectedObject= selObj;
         SavedMatrix= GUI.matrix;
         
@@ -156,9 +161,9 @@ public class iCS_Graphics {
         GUI.matrix= SavedMatrix;
     }
     // ----------------------------------------------------------------------
-    void GUI_Box(Rect pos, GUIContent content, NodeStyle nodeStyle) {
+    void GUI_Box(Rect pos, GUIContent content, Color nodeColor, Color backgroundColor, Color shadowColor) {
         Vector2 adjPos= TranslateAndScale(pos.x, pos.y);
-        NodeDrawTest(new Rect(adjPos.x, adjPos.y,pos.width,pos.height), nodeStyle.nodeColor, new Color(0.24f, 0.27f, 0.32f), new Color(0,0,0,0.06f), content);
+        NodeDrawTest(new Rect(adjPos.x, adjPos.y,pos.width,pos.height), nodeColor, backgroundColor, shadowColor, content);
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -632,7 +637,13 @@ public class iCS_Graphics {
         if(false /*((int)Time.realtimeSinceStartup & 3) == 0*/) {
             GUI_Box(position, new GUIContent(title,node.ToolTip), guiStyle);            
         } else {
-            GUI_Box(position, new GUIContent(title,node.ToolTip), nodeStyle);
+            bool isMouseOver= position.Contains(MousePosition);
+            Color backgroundColor= BackgroundColor;
+            if(node == selectedObject) {
+                float adj= storage.Preferences.NodeColors.SelectedBrightness;
+                backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
+            }
+            GUI_Box(position, new GUIContent(title,node.ToolTip), nodeStyle.nodeColor, backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
         }
         EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, iCS_EditorConfig.NodeTitleHeight), MouseCursor.Link);
         // Fold/Unfold icon
