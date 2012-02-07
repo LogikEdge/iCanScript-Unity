@@ -23,8 +23,8 @@ public partial class iCS_IStorage {
         transitionModule.IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.TransitionModuleIcon, this);
         transitionModule.ToolTip= "Precondition for the transition to trigger.";
         transitionModule.IsNameEditable= false;
-        iCS_EditorObject inModulePort=  CreatePort("cond", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
-        iCS_EditorObject outModulePort= CreatePort("fired", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
+        iCS_EditorObject inModulePort=  CreatePort(" ", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
+        iCS_EditorObject outModulePort= CreatePort(" ", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
         SetSource(inModulePort, outStatePort);
         SetSource(inStatePort, outModulePort);
         Minimize(transitionModule);

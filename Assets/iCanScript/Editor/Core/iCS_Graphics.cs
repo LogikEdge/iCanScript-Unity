@@ -75,15 +75,6 @@ public class iCS_Graphics {
 	       static readonly Color   WhiteShadowColor= new Color(1f,1f,1f,0.06f);
         
     // ======================================================================
-    // Construction/Destruction
-    // ----------------------------------------------------------------------
-    public iCS_Graphics() {
-        // Load title style.
-        BuildTitleStyle();
-        BuildValueStyle();
-    }
-    
-    // ======================================================================
     // Drawing staging
 	// ----------------------------------------------------------------------
     public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj, Vector2 mousePos, iCS_IStorage storage) {
@@ -95,6 +86,8 @@ public class iCS_Graphics {
 
         // Rebuild label style to match user preferences.
         BuildLabelStyle(storage);
+        BuildTitleStyle(storage);
+        BuildValueStyle(storage);
         
         // Set font size according to scale.
         LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
@@ -331,8 +324,8 @@ public class iCS_Graphics {
         LabelStyle.onActive.textColor= labelColor;
     }
     // ----------------------------------------------------------------------
-    void BuildTitleStyle() {
-        Color titleColor= Color.black;
+    void BuildTitleStyle(iCS_IStorage storage) {
+        Color titleColor= storage.Preferences.NodeColors.TitleColor;
         if(TitleStyle == null) TitleStyle= new GUIStyle();
         TitleStyle.normal.textColor= titleColor;
         TitleStyle.hover.textColor= titleColor;
@@ -346,8 +339,8 @@ public class iCS_Graphics {
         TitleStyle.fontSize= 12;
     }
     // ----------------------------------------------------------------------
-    void BuildValueStyle() {
-        Color valueColor= Color.cyan;
+    void BuildValueStyle(iCS_IStorage storage) {
+        Color valueColor= storage.Preferences.NodeColors.ValueColor;
         if(ValueStyle == null) ValueStyle= new GUIStyle();
         ValueStyle.normal.textColor= valueColor;
         ValueStyle.hover.textColor= valueColor;
@@ -357,6 +350,7 @@ public class iCS_Graphics {
         ValueStyle.onHover.textColor= valueColor;
         ValueStyle.onFocused.textColor= valueColor;
         ValueStyle.onActive.textColor= valueColor;
+        TitleStyle.fontStyle= FontStyle.Bold;
         ValueStyle.fontSize= 11;
     }
     // ----------------------------------------------------------------------

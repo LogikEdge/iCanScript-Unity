@@ -7,7 +7,7 @@ public class iCS_UserPreferences {
     [System.Serializable]
     public class UserControlOptions {
         public float ScrollSpeed= 3f;
-        public float ScaleSpeed= 0.1f;
+        public float ScaleSpeed= 0.05f;
     }
     public UserControlOptions ControlOptions= new UserControlOptions();
 
@@ -29,7 +29,9 @@ public class iCS_UserPreferences {
     [System.Serializable]
     public class UserNodeColors {
         public float    SelectedBrightness= 1.75f;
+        public Color    TitleColor        = Color.black;
         public Color    LabelColor        = Color.white;
+        public Color    ValueColor        = new Color(1f,0.8f,0.4f);
         public Color    EntryStateColor   = new Color(1f,0.5f,0.25f);
         public Color    StateColor        = Color.cyan;
         public Color    ModuleColor       = Color.yellow;

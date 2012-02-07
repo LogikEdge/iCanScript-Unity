@@ -344,7 +344,7 @@ public class iCS_Editor : EditorWindow {
                 Vector2 delta= Event.current.delta;
                 if(IsScaleKeyDown) {
                     Vector2 pivot= ViewportToGraph(MousePosition);
-                    Scale= Scale+(delta.y > 0 ? 0.05f : -0.05f);
+                    Scale= Scale+(delta.y > 0 ? 1f : -1f)*Storage.Preferences.ControlOptions.ScaleSpeed;
                     Vector2 offset= pivot-ViewportToGraph(MousePosition);
                     ScrollPosition+= offset;
                 } else {
