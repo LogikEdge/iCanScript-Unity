@@ -1,6 +1,10 @@
 using UnityEngine;
 
 public static class iCS_Installer {
+    // ---------------------------------------------------------------
+    // Indicates if the installation  has already been executed.
+    static bool IsInstalled= false;
+    
     // ------------------------------------------------------------------------
     // Use this function to install in bulk iCanScript nodes from your classes.
     // All public fields, properties, and functions will become available when
@@ -14,8 +18,15 @@ public static class iCS_Installer {
     // calsses).
     //
     // Currently, we install the Unity & .NET components in the node database.
-    public static void Install() {
+    static iCS_Installer() {
+        if(IsInstalled) return;
+        IsInstalled= true;
+        
         iCS_NETClasses.PopulateDataBase();
-        iCS_UnityClasses.PopulateDataBase();
+        iCS_UnityClasses.PopulateDataBase();        
     }
+
+    // ------------------------------------------------------------------------
+    // Forces invokation of the constructor if not already done.
+    public static void Install() {}
 }

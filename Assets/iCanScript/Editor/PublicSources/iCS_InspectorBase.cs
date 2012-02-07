@@ -10,16 +10,11 @@ using UnityEditor;
 // classes (see iCS_Installer).
 public class iCS_InspectorBase : iCS_Inspector {
     // ---------------------------------------------------------------
-    // Indicates if the installation  has already been executed.
-    static bool IsInstalltionDone= false;
-
-    // ---------------------------------------------------------------
-    // Invokes the iCanScript installer if not already done.
+    // Invokes the iCanScript .
 	new void OnEnable() {
 	    base.OnEnable();
-        if(!IsInstalltionDone) {
-            IsInstalltionDone= true;
-    	    iCS_Installer.Install();
-        }
+        // Assure that the components are properly installed.
+    	iCS_Installer.Install();
 	}
 }
+
