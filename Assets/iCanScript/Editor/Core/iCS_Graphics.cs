@@ -625,7 +625,6 @@ public class iCS_Graphics {
         
         // Draw node box.
         Rect position= GetDisplayPosition(node, storage);
-        NodeStyle nodeStyle= GetNodeStyle(node, storage);
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         // Change background color if node is selected.
         Color backgroundColor= BackgroundColor;
@@ -634,7 +633,7 @@ public class iCS_Graphics {
             backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
         }
         bool isMouseOver= position.Contains(MousePosition);
-        GUI_Box(position, new GUIContent(title,node.ToolTip), nodeStyle.nodeColor, backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
+        GUI_Box(position, new GUIContent(title,node.ToolTip), GetNodeColor(node, storage), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
         EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, iCS_EditorConfig.NodeTitleHeight), MouseCursor.Link);
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, storage)) {
@@ -741,12 +740,6 @@ public class iCS_Graphics {
     // Node style functionality
     // ----------------------------------------------------------------------
     NodeStyle GetNodeStyle(iCS_EditorObject node, iCS_IStorage storage) {
-        // Node background is dependant on node type.
-//        iCS_Node runtimeNode= storage.EditorObjects.GetRuntimeObject(node) as iCS_Node;
-//        if(!runtimeNode.IsValid && ((int)EditorApplication.timeSinceStartup & 1) == 0) {
-//            GenerateNodeStyle(ref nodeInErrorStyle, Color.red);
-//            return nodeInErrorStyle;
-//        }
         int idx= (node == selectedObject) ? 1 : 0;
         if(node.IsEntryState) {
             GenerateNodeStyle(ref entryStateStyle, storage.Preferences.NodeColors.EntryStateColor, storage);
@@ -779,8 +772,22 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
     Color GetNodeColor(iCS_EditorObject node, iCS_IStorage storage) {
-        NodeStyle nodeStyle= GetNodeStyle(node, storage);
-        return nodeStyle.nodeColor;
+        if(node.IsEntryState) {
+            return storage.Preferences.NodeColors.EntryStateColor;
+        }
+        if(node.IsState || node.IsStateChart) {
+            return storage.Preferences.NodeColors.StateColor;
+        }
+        if(node.IsModule) {
+            return storage.Preferences.NodeColors.ModuleColor;
+        }
+        if(node.IsConstructor) {
+            return storage.Preferences.NodeColors.ConstructorColor;
+        }
+        if(node.IsStaticMethod || node.IsConversion || node.IsInstanceMethod || node.IsInstanceField || node.IsStaticField) {
+            return storage.Preferences.NodeColors.FunctionColor;
+        }
+        return Color.gray;
     }
     
     // ======================================================================
@@ -892,29 +899,37 @@ public class iCS_Graphics {
     }
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Color outlineColor= radius > iCS_EditorConfig.PortRadius ? Color.white : Color.black;
+        Color outlineColor= radius > iCS_EditorConfig.PortRadius ? Color.black : Color.black;
         Vector3 center= TranslateAndScale(_center);
         radius*= Scale;
         Handles.color= _borderColor;
-        Handles.DrawSolidDisc(center, FacingNormal, radius*1.75f);
+        Handles.DrawSolidDisc(center, FacingNormal, radius*1.85f);
         Handles.color= outlineColor;
-        Handles.DrawSolidDisc(center, FacingNormal, radius*1.33f);
+        Handles.DrawSolidDisc(center, FacingNormal, radius*1.5f);
         Handles.color= _fillColor;
         Handles.DrawSolidDisc(center, FacingNormal, radius);
     }
 
 	// ----------------------------------------------------------------------
     void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Color backgroundColor= radius > iCS_EditorConfig.PortRadius ? Color.white : Color.black;
+        Color backgroundColor= radius > iCS_EditorConfig.PortRadius ? Color.black : Color.black;
         radius*= Scale;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
-        float delta= radius*1.33f;
+        float delta= radius*1.5f;
+//        vectors[0]= new Vector3(center.x-delta, center.y-delta, 0);
+//        vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
+//        vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
+//        vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
+//        Handles.color= Color.white;
+//		Handles.DrawSolidRectangleWithOutline(vectors, _borderColor, _borderColor);
+
+        delta= radius*1.35f;
         vectors[0]= new Vector3(center.x-delta, center.y-delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
         vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
         vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
-        Handles.color= _borderColor;
+        Handles.color= Color.white;
 		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, _borderColor);
 
         delta= radius*0.67f;
@@ -922,7 +937,7 @@ public class iCS_Graphics {
         vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
         vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
         vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
-        Handles.color= _fillColor;
+        Handles.color= Color.white;
         Handles.DrawSolidRectangleWithOutline(vectors, _fillColor, _fillColor);
     }
     
@@ -999,13 +1014,6 @@ public class iCS_Graphics {
             }                                    
         }
     }
-//    // ----------------------------------------------------------------------
-//    public void DrawBezier(iCS_EditorObject endPort, Rect endPos, iCS_EditorObject startPort, Rect startPos, Type runtimeType, iCS_IStorage storage) {
-//        Color color= storage.Preferences.TypeColors.GetColor(runtimeType);
-//        color.a*= iCS_EditorConfig.ConnectionTransparency;
-//        iCS_ConnectionParams cp= new iCS_ConnectionParams(endPort, endPos, startPort, startPos, storage);
-//		Handles.DrawBezier(cp.Start, cp.End, cp.StartTangent, cp.EndTangent, color, lineTexture, 1.5f);        
-//    }
     
     // ======================================================================
     //  Utilities
