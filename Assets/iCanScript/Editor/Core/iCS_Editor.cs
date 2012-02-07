@@ -1166,7 +1166,7 @@ public class iCS_Editor : EditorWindow {
         // Ask the storage to update itself.
         Storage.Update();
         
-        Graphics.Begin(ScrollPosition, Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition));
+        Graphics.Begin(ScrollPosition, Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), Storage);
         
         // Draw editor grid.
         DrawGrid();

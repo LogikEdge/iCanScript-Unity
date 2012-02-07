@@ -77,11 +77,18 @@ public class iCS_Graphics {
 	       static readonly Color   BlackShadowColor= new Color(0,0,0,0.06f);
 	       static readonly Color   WhiteShadowColor= new Color(1f,1f,1f,0.06f);
         
-
+    // ======================================================================
+    // Construction/Destruction
+    // ----------------------------------------------------------------------
+    public iCS_Graphics() {
+        // Load title style.
+        BuildTitleStyle();
+    }
+    
     // ======================================================================
     // Drawing staging
 	// ----------------------------------------------------------------------
-    public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj, Vector2 mousePos) {
+    public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj, Vector2 mousePos, iCS_IStorage storage) {
         Translation= translation;
         Scale= scale;
         ScaleVector3= new Vector3(Scale, Scale, Scale);
@@ -89,9 +96,9 @@ public class iCS_Graphics {
         MousePosition= mousePos;
         selectedObject= selObj;
         SavedMatrix= GUI.matrix;
-        
-//        if(labelStyle != null) labelStyle.fontSize= (int)(11*Scale);
 
+        // Rebuild label style to match user preferences.
+        BuildLabelStyle(storage);        
     }
     public void End() {
         GUI.matrix= SavedMatrix;
@@ -338,7 +345,7 @@ public class iCS_Graphics {
     }
 
     // ----------------------------------------------------------------------
-    GUIStyle GetLabelStyle(iCS_IStorage storage) {
+    void BuildLabelStyle(iCS_IStorage storage) {
         Color labelColor= storage.Preferences.NodeColors.LabelColor;
         if(labelStyle == null) labelStyle= new GUIStyle();
         labelStyle.normal.textColor= labelColor;
@@ -349,10 +356,9 @@ public class iCS_Graphics {
         labelStyle.onHover.textColor= labelColor;
         labelStyle.onFocused.textColor= labelColor;
         labelStyle.onActive.textColor= labelColor;
-        return labelStyle;
     }
     // ----------------------------------------------------------------------
-    GUIStyle GetTitleStyle(iCS_IStorage storage) {
+    void BuildTitleStyle() {
         Color titleColor= Color.black;
         if(titleStyle == null) titleStyle= new GUIStyle();
         titleStyle.normal.textColor= titleColor;
@@ -365,7 +371,6 @@ public class iCS_Graphics {
         titleStyle.onActive.textColor= titleColor;
         titleStyle.fontStyle= FontStyle.Bold;
         titleStyle.fontSize= 12;
-        return titleStyle;
     }
     // ----------------------------------------------------------------------
     public static Texture2D GetCachedTextureFromGUID(string guid) {
@@ -620,9 +625,6 @@ public class iCS_Graphics {
         // Don't draw minimized node.
         if(IsInvisible(node, storage) || IsMinimized(node, storage)) return;
         
-        // Load title style.  (TO BE MOVED...)
-        GetTitleStyle(storage);
-        
         // Draw node box.
         Rect position= GetDisplayPosition(node, storage);
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
@@ -661,7 +663,6 @@ public class iCS_Graphics {
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
         GUI_DrawTexture(texturePos, icon);                           
         EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
-        GUIStyle labelStyle= GetLabelStyle(storage);
         GUI_Label(texturePos, new GUIContent("", node.ToolTip), labelStyle);
         Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(title);
         GUI_Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip), labelStyle);
@@ -839,7 +840,6 @@ public class iCS_Graphics {
         if(!port.IsTransitionPort) {
             EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
         }
-        GUIStyle labelStyle= GetLabelStyle(storage);
         if(!port.IsFloating) {
             GUI_Label(portPos, new GUIContent("", port.ToolTip), labelStyle);            
         }
