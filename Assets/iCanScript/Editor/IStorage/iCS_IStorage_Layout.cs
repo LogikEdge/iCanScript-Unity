@@ -45,12 +45,12 @@ public partial class iCS_IStorage {
         
         // Minimized nodes are fully collapsed.
         if(node.IsMinimized) {
-            Texture2D icon= iCS_Graphics.GetMaximizeIcon(node, null, this);
-            if(node.LocalPosition.width != icon.width || node.LocalPosition.height != icon.height) {
-                node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-icon.width);
-                node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-icon.height);
-                node.LocalPosition.width= icon.width;
-                node.LocalPosition.height= icon.height;
+            Vector2 iconSize= iCS_Graphics.GetMaximizeIconSize(node, this);
+            if(node.LocalPosition.width != iconSize.x || node.LocalPosition.height != iconSize.y) {
+                node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-iconSize.x);
+                node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-iconSize.y);
+                node.LocalPosition.width= iconSize.x;
+                node.LocalPosition.height= iconSize.y;
                 LayoutPorts(node);
             }
             return;

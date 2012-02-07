@@ -55,6 +55,12 @@ public class iCS_Graphics {
 	NodeStyle[]   defaultStyle    = new NodeStyle[2];
     GUIStyle      labelStyle      = null;
     GUIStyle      titleStyle      = null;
+    Texture2D   StateMaximizeIcon       = null;
+    Texture2D   ModuleMaximizeIcon      = null;
+    Texture2D   EntryStateMaximizeIcon  = null;
+    Texture2D   ConstructionMaximizeIcon= null;
+    Texture2D   FunctionMaximizeIcon    = null;
+    Texture2D   DefaultMaximizeIcon     = null;
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
@@ -343,7 +349,6 @@ public class iCS_Graphics {
         IsInitialized= true;
         return IsInitialized;
     }
-
     // ----------------------------------------------------------------------
     void BuildLabelStyle(iCS_IStorage storage) {
         Color labelColor= storage.Preferences.NodeColors.LabelColor;
@@ -656,8 +661,7 @@ public class iCS_Graphics {
         
         // Draw minimized node.
         Rect position= GetDisplayPosition(node, storage);
-        NodeStyle nodeStyle= GetNodeStyle(node, storage);
-        Texture icon= GetMaximizeIcon(node, nodeStyle, storage);
+        Texture icon= GetMaximizeIcon(node, storage);
         if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
@@ -712,18 +716,22 @@ public class iCS_Graphics {
     // ======================================================================
     // Maximize icon functionality
     // ----------------------------------------------------------------------
-    public static Texture2D GetMaximizeIcon(iCS_EditorObject node, NodeStyle nodeStyle, iCS_IStorage storage) {
+    public static Vector2 GetMaximizeIconSize(iCS_EditorObject node, iCS_IStorage storage) {
+        Texture2D icon= null;
+        if(storage.Preferences.Icons.EnableMinimizedIcons && node.IconGUID != null) {
+            icon= GetCachedIconFromGUID(node.IconGUID);
+            if(icon != null) return new Vector2(icon.width, icon.height);
+        }
+        return new Vector2(maximizeIcon.width, maximizeIcon.height);        
+    }
+    // ----------------------------------------------------------------------
+    public Texture2D GetMaximizeIcon(iCS_EditorObject node, iCS_IStorage storage) {
         Texture2D icon= null;
         if(storage.Preferences.Icons.EnableMinimizedIcons && node.IconGUID != null) {
             icon= GetCachedIconFromGUID(node.IconGUID);
             if(icon != null) return icon;
         }
-        if(nodeStyle != null) {
-            icon= nodeStyle.maximizeIcon;            
-        } else {
-            icon= maximizeIcon;
-        }
-        return icon;       
+        return GetNodeDefaultMaximizeIcon(node, storage);
     }
     // ----------------------------------------------------------------------
     public bool IsMaximizeIconPicked(iCS_EditorObject obj, Vector2 mousePos, iCS_IStorage storage) {
@@ -772,7 +780,7 @@ public class iCS_Graphics {
     
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
-    Color GetNodeColor(iCS_EditorObject node, iCS_IStorage storage) {
+    static Color GetNodeColor(iCS_EditorObject node, iCS_IStorage storage) {
         if(node.IsEntryState) {
             return storage.Preferences.NodeColors.EntryStateColor;
         }
@@ -789,6 +797,41 @@ public class iCS_Graphics {
             return storage.Preferences.NodeColors.FunctionColor;
         }
         return Color.gray;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the maximize icon for the given node.
+    Texture2D GetNodeDefaultMaximizeIcon(iCS_EditorObject node, iCS_IStorage storage) {
+        if(node.IsEntryState) {
+            return BuildMaximizeIcon(node, storage, ref EntryStateMaximizeIcon);
+        }
+        if(node.IsState || node.IsStateChart) {
+            return BuildMaximizeIcon(node, storage, ref StateMaximizeIcon);
+        }
+        if(node.IsModule) {
+            return BuildMaximizeIcon(node, storage, ref ModuleMaximizeIcon);
+        }
+        if(node.IsConstructor) {
+            return BuildMaximizeIcon(node, storage, ref ConstructionMaximizeIcon);
+        }
+        if(node.IsStaticMethod || node.IsConversion || node.IsInstanceMethod || node.IsInstanceField || node.IsStaticField) {
+            return BuildMaximizeIcon(node, storage, ref FunctionMaximizeIcon);
+        }
+        return BuildMaximizeIcon(node, storage, ref DefaultMaximizeIcon);
+    }
+    // ----------------------------------------------------------------------
+    Texture2D BuildMaximizeIcon(iCS_EditorObject node, iCS_IStorage storage, ref Texture2D icon) {
+        if(icon == null) {
+            Color nodeColor= GetNodeColor(node, storage);
+            icon= new Texture2D(maximizeIcon.width, maximizeIcon.height);
+            for(int x= 0; x < maximizeIcon.width; ++x) {
+                for(int y= 0; y < maximizeIcon.height; ++y) {
+                    icon.SetPixel(x, y, nodeColor * maximizeIcon.GetPixel(x,y));
+                }
+            }
+            icon.Apply();
+            icon.hideFlags= HideFlags.DontSave;
+        }
+        return icon;        
     }
     
     // ======================================================================
@@ -1064,8 +1107,7 @@ public class iCS_Graphics {
         if(edObj.IsNode) {
             if(IsInvisible(edObj, storage)) return false;
             Rect position= GetDisplayPosition(edObj, storage);
-            NodeStyle nodeStyle= GetNodeStyle(edObj, storage);
-            Texture icon= GetMaximizeIcon(edObj, nodeStyle, storage);
+            Texture icon= GetMaximizeIcon(edObj, storage);
             return (position.width*position.height <= icon.width*icon.height+1f);
         }
         return storage.IsMinimized(edObj) && IsAnimationCompleted(edObj, storage);
