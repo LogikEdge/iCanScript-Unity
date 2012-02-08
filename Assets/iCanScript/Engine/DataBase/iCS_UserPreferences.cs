@@ -7,7 +7,8 @@ public class iCS_UserPreferences {
     [System.Serializable]
     public class UserControlOptions {
         public float ScrollSpeed= 3f;
-        public float ScaleSpeed= 0.05f;
+		public bool  InverseZoom= false;
+        public float ZoomSpeed  = 0.05f;
     }
     public UserControlOptions ControlOptions= new UserControlOptions();
 

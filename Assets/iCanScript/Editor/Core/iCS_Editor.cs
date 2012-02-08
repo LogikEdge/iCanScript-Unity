@@ -15,7 +15,6 @@ public class iCS_Editor : EditorWindow {
 	iCS_Inspector        Inspector      = null;
     iCS_EditorObject     DisplayRoot    = null;
     iCS_DynamicMenu      DynamicMenu    = null;
-//    iCS_Magnifier        Magnifier      = null;
     
     // ----------------------------------------------------------------------
     float LastDirtyUpdateTime= 0f;
@@ -98,12 +97,6 @@ public class iCS_Editor : EditorWindow {
         Graphics        = new iCS_Graphics();
         DynamicMenu     = new iCS_DynamicMenu();
 
-// Test Begin
-//        Magnifier       = EditorWindow.GetWindow(typeof(iCS_Magnifier)) as iCS_Magnifier;
-//        Magnifier.position= new Rect(0,0,250,250);
-//        Magnifier.ShowPopup();
-// Test End
-        
         // Reset selected object.
         SelectedObject= null;
         
@@ -259,14 +252,6 @@ public class iCS_Editor : EditorWindow {
                         break;
                     }
                 }
-// Test begin
-//                if(Magnifier != null) {
-//                    float width= Magnifier.position.width;
-//                    float height= Magnifier.position.height;
-//                    Rect pos= new Rect(position.x+Scale*MousePosition.x-0.5f*width, position.y+Scale*MousePosition.y-0.5f*height, width, height);
-//                    Magnifier.position= pos;
-//                }
-// Test end
                 break;
             }
             case EventType.MouseDrag: {
@@ -349,7 +334,9 @@ public class iCS_Editor : EditorWindow {
                 Vector2 delta= Event.current.delta;
                 if(IsScaleKeyDown) {
                     Vector2 pivot= ViewportToGraph(MousePosition);
-                    Scale= Scale+(delta.y > 0 ? 1f : -1f)*Storage.Preferences.ControlOptions.ScaleSpeed;
+					float zoomSpeed= Storage.Preferences.ControlOptions.ZoomSpeed;
+					float zoomDirection= Storage.Preferences.ControlOptions.InverseZoom ? -1f : 1f;
+                    Scale= Scale+(delta.y > 0 ? 1f : -1f)*zoomSpeed*zoomDirection;
                     Vector2 offset= pivot-ViewportToGraph(MousePosition);
                     ScrollPosition+= offset;
                 } else {
@@ -1157,15 +1144,40 @@ public class iCS_Editor : EditorWindow {
     }
     
 	// ----------------------------------------------------------------------
+	Rect HeaderRect(ref Rect r, float width) {
+		Rect result= new Rect(r.x, r.y, width, r.height);
+		r.x+= width;
+		return result;
+	} 
+	void Heading() {
+		Rect r= EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
+		r.y-= 4f;
+
+		EditorGUIUtility.LookLikeControls();
+		// Show create menu
+		
+		// Show zoom control.
+//		EditorGUI.LabelField(HeaderRect(ref r, 60f), "Zoom", "");
+		EditorGUILayout.LabelField("Zoom", "", GUILayout.Width(60));
+//		Scale= EditorGUI.Slider(HeaderRect(ref r, 200f), Scale, 1f, 0.15f);
+		Scale= EditorGUILayout.Slider(Scale, 1f, 0.15f, GUILayout.Width(200));
+		EditorGUI.LabelField(r, "", "");
+		
+		EditorGUILayout.EndHorizontal();		
+	}
+	// ----------------------------------------------------------------------
 	void DrawGraph () {
         // Ask the storage to update itself.
         Storage.Update();
         
+		// Update the animated scroll position.
         Vector2 graphicScrollPosition= ScrollPosition;
         if(AnimatedScrollPosition.IsActive) {
             AnimatedScrollPosition.Update();
             graphicScrollPosition= AnimatedScrollPosition.CurrentValue;
         }
+
+		// Start graphics
         Graphics.Begin(graphicScrollPosition, Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), Storage);
         
         // Draw editor grid.
@@ -1177,6 +1189,9 @@ public class iCS_Editor : EditorWindow {
         DrawMinimizedNodes();           
 
         Graphics.End();
+
+		// Show header
+		Heading();
 	}
 
 	// ----------------------------------------------------------------------

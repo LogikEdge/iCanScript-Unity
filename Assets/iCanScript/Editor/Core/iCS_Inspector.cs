@@ -105,6 +105,7 @@ public class iCS_Inspector : Editor {
         // Draw inspector window
         EditorGUI.indentLevel= 0;
 		DrawDefaultInspector();
+		EditorGUIUtility.LookLikeControls();
 
         // Frame count.
 		if(Storage.Storage is iCS_Behaviour && Application.isPlaying) {
