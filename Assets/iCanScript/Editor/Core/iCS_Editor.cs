@@ -367,7 +367,11 @@ public class iCS_Editor : EditorWindow {
                     case KeyCode.Delete:
                     case KeyCode.Backspace: {
                         if(SelectedObject != null && SelectedObject != DisplayRoot) {
-                            iCS_EditorUtility.DestroyObject(SelectedObject, Storage);
+                            if(ev.shift) {
+                                Storage.DestroyInstance(SelectedObject.InstanceId);                                                        
+                            } else {
+                                iCS_EditorUtility.DestroyObject(SelectedObject, Storage);                                
+                            }
                         }
                         Event.current.Use();
                         break;
