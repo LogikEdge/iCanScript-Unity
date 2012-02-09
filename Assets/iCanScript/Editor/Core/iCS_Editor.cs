@@ -363,6 +363,7 @@ public class iCS_Editor : EditorWindow {
 			case EventType.KeyDown: {
 				var ev= Event.current;
 				if(ev.keyCode == KeyCode.None) break;
+//				Debug.Log("KeyCode: "+ev.keyCode);
                 switch(ev.keyCode) {
                     case KeyCode.Delete:
                     case KeyCode.Backspace: {
@@ -376,7 +377,27 @@ public class iCS_Editor : EditorWindow {
                         Event.current.Use();
                         break;
                     }
+                    case KeyCode.KeypadEnter: // fnc+return on Mac
                     case KeyCode.Insert: {
+                        Vector2 graphPos= ViewportToGraph(MousePosition);
+                        if(SelectedObject == null || SelectedObject.IsBehaviour) {
+                            Event.current.Use();
+                            break;
+                        }
+                        if(SelectedObject.IsModule) {
+                            Storage.CreateModule(SelectedObject.InstanceId, graphPos, null);
+                            Event.current.Use();
+                            break;
+                        }
+                        if(SelectedObject.IsStateChart) {
+                            Storage.CreateState(SelectedObject.InstanceId, graphPos, null);
+                            Event.current.Use();
+                            break;
+                        }
+                        if(SelectedObject.IsState) {
+                            Event.current.Use();
+                            break;
+                        }
                         ShowDynamicMenu();
                         Event.current.Use();
                         break;
@@ -1184,6 +1205,10 @@ public class iCS_Editor : EditorWindow {
 		test.y=2f;
 		EditorStyles.toolbarTextField.contentOffset= test;
 		
+        // Show mouse coordinates.
+        string mouseValue= ViewportToGraph(MousePosition).ToString();
+        iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent(mouseValue), 0, 0, true);
+        
 		// Show zoom control at the end of the toolbar.
         Scale= iCS_EditorUtility.ToolbarSlider(ref r, 120f, Scale, 1f, 0.15f, spacer, spacer, true);
         iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent("Zoom"), 0, 0, true);
