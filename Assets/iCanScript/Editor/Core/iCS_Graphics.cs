@@ -489,11 +489,7 @@ public class iCS_Graphics {
         Rect position= GetDisplayPosition(node, storage);
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         // Change background color if node is selected.
-        Color backgroundColor= BackgroundColor;
-        if(node == selectedObject) {
-            float adj= storage.Preferences.NodeColors.SelectedBrightness;
-            backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
-        }
+        Color backgroundColor= GetBackgroundColor(node, storage);
         bool isMouseOver= position.Contains(MousePosition);
         GUI_Box(position, new GUIContent(title,node.ToolTip), GetNodeColor(node, storage), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
         EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);
@@ -511,6 +507,15 @@ public class iCS_Graphics {
         }
     }
     // ----------------------------------------------------------------------
+    Color GetBackgroundColor(iCS_EditorObject node, iCS_IStorage storage) {
+        Color backgroundColor= BackgroundColor;
+        if(node == selectedObject) {
+            float adj= storage.Preferences.NodeColors.SelectedBrightness;
+            backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
+        }
+        return backgroundColor;        
+    }
+    // ----------------------------------------------------------------------
     public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage storage) {        
         if(!IsMinimized(node, storage)) return;
         
@@ -525,7 +530,17 @@ public class iCS_Graphics {
         GUI_Label(texturePos, new GUIContent("", node.ToolTip), LabelStyle);
         Vector2 labelSize= LabelStyle.CalcSize(new GUIContent(title));
         texturePos= TranslateAndScale(texturePos);
-        GUI.Label(new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y), new GUIContent(title, node.ToolTip), LabelStyle);
+        Rect labelRect= new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y);
+        if(node == selectedObject) {
+            Vector3[] vectors= new Vector3[4];
+            vectors[0]= new Vector3(labelRect.x-2, labelRect.y-2, 0);
+            vectors[1]= new Vector3(labelRect.xMax+2, labelRect.y-2, 0);
+            vectors[2]= new Vector3(labelRect.xMax+2, labelRect.yMax+2, 0);
+            vectors[3]= new Vector3(labelRect.x-2, labelRect.yMax+2, 0);
+            Handles.color= Color.white;
+            Handles.DrawSolidRectangleWithOutline(vectors, GetBackgroundColor(node, storage), GetNodeColor(node, storage));
+        }
+        GUI.Label(labelRect, new GUIContent(title, node.ToolTip), LabelStyle);
     }
 
     // ======================================================================
