@@ -1159,7 +1159,7 @@ public class iCS_Editor : EditorWindow {
 	static string[] options= new string[5]{"All", "Class", "Function", "Input", "Output"};
 	void Heading() {
 		// Determine toolbar height.
-		float height= GetGUIStyleHeight(EditorStyles.toolbar);
+		float height= iCS_EditorUtility.GetGUIStyleHeight(EditorStyles.toolbar);
 
 //		Debug.Log("Toolbar: "+height);
 //		Debug.Log("TextField: "+GetGUIStyleHeight(EditorStyles.toolbarTextField));
@@ -1174,45 +1174,23 @@ public class iCS_Editor : EditorWindow {
 		// Insert an initial spacer.
 		float spacer= 8f;
 		r.x+= spacer;
+		r.width-= spacer;
 		
-		// Show zoom control.
+        // Adjust toolbar styles
 		Vector2 test= EditorStyles.toolbar.contentOffset;
 		test.y=3f;
 		EditorStyles.toolbar.contentOffset= test;
+		test= EditorStyles.toolbarTextField.contentOffset;
+		test.y=2f;
+		EditorStyles.toolbarTextField.contentOffset= test;
 		
-		var size= EditorStyles.toolbar.CalcSize(new GUIContent("Zoom"));
-//		Debug.Log("Size: "+size);
-		
-		GUI.Label(HeaderRect(ref r, 37f), "Zoom", EditorStyles.toolbar);
-		Rect sliderRect= HeaderRect(ref r, 200f);
-		sliderRect.x+= spacer;
-		sliderRect.width-= 2f*spacer;
-		Scale= GUI.HorizontalSlider(sliderRect, Scale, 1f, 0.15f);
-		float s= ((int)(Scale*100f+0.5f))/100f;
-		string str= s.ToString();
-		if(str.Length == 1) str+=".";
-		while(str.Length < 4) str+= "0";
-		GUI.Label(HeaderRect(ref r, 60f), str, EditorStyles.toolbar);
+		// Show zoom control at the end of the toolbar.
+        Scale= iCS_EditorUtility.ToolbarSlider(ref r, 120f, Scale, 1f, 0.15f, spacer, spacer, true);
+        iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent("Zoom"), 0, 0, true);
 		
 		// Editable field test.		
-		GUI.Toolbar(HeaderRect(ref r, 400f), 0, options, EditorStyles.toolbarButton);
-		var test2= EditorStyles.toolbarTextField.margin;
-		test2.top=5;
-		EditorStyles.toolbarTextField.margin= test2;
-		GUI.TextField(HeaderRect(ref r, 200f), "Search", EditorStyles.toolbarTextField);		
-	}
-	Rect HeaderRect(ref Rect r, float width) {
-		Rect result= new Rect(r.x, r.y, width, r.height);
-		r.x+= width;
-		return result;
-	} 
-	float GetGUIStyleHeight(GUIStyle style) {
-		float height= style.lineHeight+style.border.vertical;
-		Texture backgroundTexture= style.normal.background;
-		if(backgroundTexture != null) {
-			height= backgroundTexture.height;
-		}
-		return height;		
+		iCS_EditorUtility.ToolbarButtons(ref r, 400f, 0, options, 0, 0);
+		iCS_EditorUtility.ToolbarText(ref r, 100f, "Search", 0, 0);		
 	}
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
