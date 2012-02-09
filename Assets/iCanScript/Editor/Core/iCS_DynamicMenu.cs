@@ -458,17 +458,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateState(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject state= CreateState(parent, storage);
-        // Declare the first state added has the entry state.
-        state.IsRawEntryState= !storage.ForEachChild(parent,
-            child=> {
-                if(child.IsEntryState) {
-                    return true;
-                }
-                return false;
-            }
-        );
-        return state;
+        return storage.CreateState(parent.InstanceId, ProcessMenuPosition);
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessSetStateEntry(iCS_EditorObject state, iCS_IStorage storage) {

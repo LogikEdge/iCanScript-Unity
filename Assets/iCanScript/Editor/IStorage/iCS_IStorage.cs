@@ -322,6 +322,15 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos);
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+        // Set first state as the default entry state.
+        this[id].IsRawEntryState= !ForEachChild(parent,
+            child=> {
+                if(child.IsEntryState) {
+                    return true;
+                }
+                return false;
+            }
+        );
         return this[id];
     }
     // ----------------------------------------------------------------------

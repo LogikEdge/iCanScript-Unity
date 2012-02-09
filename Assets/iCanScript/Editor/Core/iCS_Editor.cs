@@ -379,26 +379,47 @@ public class iCS_Editor : EditorWindow {
                     }
                     case KeyCode.KeypadEnter: // fnc+return on Mac
                     case KeyCode.Insert: {
+                        // Auto-insert on behaviour.
                         Vector2 graphPos= ViewportToGraph(MousePosition);
                         if(SelectedObject == null || SelectedObject.IsBehaviour) {
                             Event.current.Use();
                             break;
                         }
+                        // Don't use mouse position if it is too far from selected node.
+                        Rect parentRect= Storage.GetPosition(SelectedObject);
+                        Vector2 parentOrigin= new Vector2(parentRect.x, parentRect.y);
+                        Vector2 parentCenter= Math3D.Middle(parentRect);
+                        float radius= Vector2.Distance(parentCenter, parentOrigin);
+                        float distance= Vector2.Distance(parentCenter, graphPos);
+                        if(distance > (radius+250f)) {
+                            graphPos= parentOrigin; 
+                        }
+                        // Auto-insert on module.
                         if(SelectedObject.IsModule) {
-                            Storage.CreateModule(SelectedObject.InstanceId, graphPos, null);
+                            if(!ev.shift) {
+                                Storage.CreateModule(SelectedObject.InstanceId, graphPos, null);                                
+                            } else {
+                                Storage.CreateStateChart(SelectedObject.InstanceId, graphPos, null);
+                            }
                             Event.current.Use();
                             break;
                         }
+                        // Auto-insert on state chart.
                         if(SelectedObject.IsStateChart) {
-                            Storage.CreateState(SelectedObject.InstanceId, graphPos, null);
+                            Storage.CreateState(SelectedObject.InstanceId, graphPos);
                             Event.current.Use();
                             break;
                         }
+                        // Auto-insert on state.
                         if(SelectedObject.IsState) {
+                            if(!ev.shift) {
+                                
+                            } else {
+                                Storage.CreateState(SelectedObject.InstanceId, graphPos);
+                            }
                             Event.current.Use();
                             break;
                         }
-                        ShowDynamicMenu();
                         Event.current.Use();
                         break;
                     }
@@ -1189,7 +1210,7 @@ public class iCS_Editor : EditorWindow {
 //		Debug.Log("DropDown: "+GetGUIStyleHeight(EditorStyles.toolbarDropDown));
 
 		// Fill toolbar with background image.
-		Rect r= new Rect(0,0,position.width, height);
+		Rect r= new Rect(0,-1,position.width, height);
 		GUI.Box(r, "", EditorStyles.toolbar);
 
 		// Insert an initial spacer.
