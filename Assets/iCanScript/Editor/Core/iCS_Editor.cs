@@ -396,6 +396,27 @@ public class iCS_Editor : EditorWindow {
                         Event.current.Use();
                         break;
                     }
+                    // Fold/Minimize/Maximize.
+                    case KeyCode.Return: {
+                        if(SelectedObject != null) {
+                            if(!ev.shift) {
+                                if(SelectedObject.IsMinimized) {
+                                    Storage.Maximize(SelectedObject);
+                                    Storage.Fold(SelectedObject);
+                                } else if(SelectedObject.IsFolded) {
+                                    Storage.Maximize(SelectedObject);                                    
+                                }
+                            } else {
+                                if(SelectedObject.IsDisplayedNormally) {
+                                    Storage.Fold(SelectedObject);
+                                } else if(SelectedObject.IsFolded) {
+                                    Storage.Minimize(SelectedObject);
+                                }
+                            }                            
+                        }
+                        Event.current.Use();
+                        break;
+                    }
                     // Bookmarks
                     case KeyCode.B: {
                         if(SelectedObject != null) {
