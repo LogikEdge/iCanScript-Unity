@@ -1206,15 +1206,8 @@ public class iCS_Editor : EditorWindow {
         // Ask the storage to update itself.
         Storage.Update();
         
-		// Update the animated scroll position.
-        Vector2 graphicScrollPosition= ScrollPosition;
-        if(AnimatedScrollPosition.IsActive) {
-            AnimatedScrollPosition.Update();
-            graphicScrollPosition= AnimatedScrollPosition.CurrentValue;
-        }
-
 		// Start graphics
-        Graphics.Begin(graphicScrollPosition, Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), Storage);
+        Graphics.Begin(UpdateScrollPosition(), Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), Storage);
         
         // Draw editor grid.
         DrawGrid();
@@ -1230,6 +1223,15 @@ public class iCS_Editor : EditorWindow {
 		Heading();
 	}
 
+	// ----------------------------------------------------------------------
+	Vector2 UpdateScrollPosition() {
+        Vector2 graphicScrollPosition= ScrollPosition;
+        if(AnimatedScrollPosition.IsActive) {
+            AnimatedScrollPosition.Update();
+            graphicScrollPosition= AnimatedScrollPosition.CurrentValue;
+        }
+		return graphicScrollPosition;
+	}
 	// ----------------------------------------------------------------------
     void DrawNormalNodes() {
         // Display node starting from the root node.
