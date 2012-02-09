@@ -48,6 +48,13 @@ public class iCS_Editor : EditorWindow {
     // ======================================================================
     // ACCESSORS
 	// ----------------------------------------------------------------------
+    iCS_EditorObject StorageRoot {
+        get {
+            if(Storage == null || Prelude.length(Storage.EditorObjects) == 0) return null;
+            return Storage.EditorObjects[0];
+        }
+    }
+	// ----------------------------------------------------------------------
     iCS_EditorObject SelectedObject {
         get { return mySelectedObject; }
         set {
@@ -451,7 +458,7 @@ public class iCS_Editor : EditorWindow {
                     // Object deletion
                     case KeyCode.Delete:
                     case KeyCode.Backspace: {
-                        if(SelectedObject != null && SelectedObject != DisplayRoot) {
+                        if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot) {
                             iCS_EditorObject parent= Storage.GetParent(SelectedObject);
                             if(ev.shift) {
                                 Storage.RegisterUndo("Delete");
@@ -467,13 +474,9 @@ public class iCS_Editor : EditorWindow {
                     // Object creation.
                     case KeyCode.KeypadEnter: // fnc+return on Mac
                     case KeyCode.Insert: {
-                        // Auto-insert on behaviour.
-                        Vector2 graphPos= ViewportToGraph(MousePosition);
-                        if(SelectedObject == null || SelectedObject.IsBehaviour) {
-                            Event.current.Use();
-                            break;
-                        }
+                        if(SelectedObject == null) SelectedObject= DisplayRoot;
                         // Don't use mouse position if it is too far from selected node.
+                        Vector2 graphPos= ViewportToGraph(MousePosition);
                         Rect parentRect= Storage.GetPosition(SelectedObject);
                         Vector2 parentOrigin= new Vector2(parentRect.x, parentRect.y);
                         Vector2 parentCenter= Math3D.Middle(parentRect);
@@ -481,6 +484,25 @@ public class iCS_Editor : EditorWindow {
                         float distance= Vector2.Distance(parentCenter, graphPos);
                         if(distance > (radius+250f)) {
                             graphPos= parentOrigin; 
+                        }
+                        // Auto-insert on behaviour.
+                        if(SelectedObject.IsBehaviour) {
+                            iCS_EditorObject newObj= null;
+                            if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.BehaviourChildUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.BehaviourChildUpdate);  
+                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.BehaviourChildLateUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.BehaviourChildLateUpdate);                                  
+                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.BehaviourChildFixedUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.BehaviourChildFixedUpdate);                                  
+                            }
+                            if(newObj != null) {
+                                CenterAt(graphPos);
+                                if(ev.control) {
+                                    SelectedObject= newObj;
+                                }
+                            }
+                            Event.current.Use();
+                            break;
                         }
                         // Auto-insert on module.
                         if(SelectedObject.IsModule) {
@@ -492,7 +514,7 @@ public class iCS_Editor : EditorWindow {
                                 Storage.RegisterUndo("Create State Chart");
                                 newObj= Storage.CreateStateChart(SelectedObject.InstanceId, graphPos, null);
                             }
-                            if(ev.control) {
+                            if(ev.control && newObj != null) {
                                 SelectedObject= newObj;
                             }
                             Event.current.Use();
@@ -502,7 +524,7 @@ public class iCS_Editor : EditorWindow {
                         if(SelectedObject.IsStateChart) {
                             Storage.RegisterUndo("Create State");
                             iCS_EditorObject newObj= Storage.CreateState(SelectedObject.InstanceId, graphPos);
-                            if(ev.control) {
+                            if(ev.control && newObj != null) {
                                 SelectedObject= newObj;
                             }
                             Event.current.Use();
@@ -512,12 +534,18 @@ public class iCS_Editor : EditorWindow {
                         if(SelectedObject.IsState) {
                             iCS_EditorObject newObj= null;
                             if(!ev.shift) {
-                                
+                                if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.StateChildOnUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.StateChildOnUpdate);  
+                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.StateChildOnEntry, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.StateChildOnEntry);                                  
+                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.StateChildOnExit, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.StateChildOnExit);                                  
+                                }                                
                             } else {
                                 Storage.RegisterUndo("Create State");
                                 newObj= Storage.CreateState(SelectedObject.InstanceId, graphPos);
                             }
-                            if(ev.control) {
+                            if(ev.control && newObj != null) {
                                 SelectedObject= newObj;
                             }
                             Event.current.Use();
