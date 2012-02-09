@@ -285,10 +285,7 @@ public class iCS_Editor : EditorWindow {
                         break;
                     }
                     case 1: { // Right mouse button
-                        if(SelectedObject == null && DisplayRoot.IsBehaviour) {
-                            SelectedObject= DisplayRoot;
-                        }
-                        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));
+                        ShowDynamicMenu();
                         Event.current.Use();
                         break;
                     }
@@ -363,22 +360,34 @@ public class iCS_Editor : EditorWindow {
                 }
                 break;
             }
-//			case EventType.KeyDown: {
-//				var ev= Event.current;
-//				if(ev.keyCode == KeyCode.None) break;
-//				bool isReturn= ev.keyCode == KeyCode.Return; 
-//				if(isReturn) { IsNameEditorActive= false; Debug.Log("Name editor is deactivated."); break; }
-//				Debug.Log("Key code: "+Event.current.keyCode);
-//				if(SelectedObject != null) {
-//					Debug.Log("Name editor is activated.");
-//					IsNameEditorActive= true;
-//				} else {
-//					Debug.Log("Name editor is deactivated.");
-//					IsNameEditorActive= false;
-//				}
-//				break;
-//			}
+			case EventType.KeyDown: {
+				var ev= Event.current;
+				if(ev.keyCode == KeyCode.None) break;
+                switch(ev.keyCode) {
+                    case KeyCode.Delete:
+                    case KeyCode.Backspace: {
+                        if(SelectedObject != null && SelectedObject != DisplayRoot) {
+                            iCS_EditorUtility.DestroyObject(SelectedObject, Storage);
+                        }
+                        Event.current.Use();
+                        break;
+                    }
+                    case KeyCode.Insert: {
+                        ShowDynamicMenu();
+                        Event.current.Use();
+                        break;
+                    }
+                }
+                break;
+			}
         }
+    }
+	// ----------------------------------------------------------------------
+    void ShowDynamicMenu() {
+        if(SelectedObject == null && DisplayRoot.IsBehaviour) {
+            SelectedObject= DisplayRoot;
+        }
+        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));        
     }
 	// ----------------------------------------------------------------------
     void DragAndDropPerform() {
