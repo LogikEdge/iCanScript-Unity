@@ -334,9 +334,8 @@ public class iCS_Editor : EditorWindow {
                 Vector2 delta= Event.current.delta;
                 if(IsScaleKeyDown) {
                     Vector2 pivot= ViewportToGraph(MousePosition);
-					float zoomSpeed= Storage.Preferences.ControlOptions.ZoomSpeed;
 					float zoomDirection= Storage.Preferences.ControlOptions.InverseZoom ? -1f : 1f;
-                    Scale= Scale+(delta.y > 0 ? 1f : -1f)*zoomSpeed*zoomDirection;
+                    Scale= Scale+(delta.y > 0 ? -0.05f : 0.05f)*zoomDirection;
                     Vector2 offset= pivot-ViewportToGraph(MousePosition);
                     ScrollPosition+= offset;
                 } else {
@@ -1144,26 +1143,63 @@ public class iCS_Editor : EditorWindow {
     }
     
 	// ----------------------------------------------------------------------
+	static string[] options= new string[5]{"All", "Class", "Function", "Input", "Output"};
+	void Heading() {
+		// Determine toolbar height.
+		float height= GetGUIStyleHeight(EditorStyles.toolbar);
+
+//		Debug.Log("Toolbar: "+height);
+//		Debug.Log("TextField: "+GetGUIStyleHeight(EditorStyles.toolbarTextField));
+//		Debug.Log("Button: "+GetGUIStyleHeight(EditorStyles.toolbarButton));
+//		Debug.Log("Popup: "+GetGUIStyleHeight(EditorStyles.toolbarPopup));
+//		Debug.Log("DropDown: "+GetGUIStyleHeight(EditorStyles.toolbarDropDown));
+
+		// Fill toolbar with background image.
+		Rect r= new Rect(0,0,position.width, height);
+		GUI.Box(r, "", EditorStyles.toolbar);
+
+		// Insert an initial spacer.
+		float spacer= 8f;
+		r.x+= spacer;
+		
+		// Show zoom control.
+		Vector2 test= EditorStyles.toolbar.contentOffset;
+		test.y=3f;
+		EditorStyles.toolbar.contentOffset= test;
+		
+		var size= EditorStyles.toolbar.CalcSize(new GUIContent("Zoom"));
+//		Debug.Log("Size: "+size);
+		
+		GUI.Label(HeaderRect(ref r, 37f), "Zoom", EditorStyles.toolbar);
+		Rect sliderRect= HeaderRect(ref r, 200f);
+		sliderRect.x+= spacer;
+		sliderRect.width-= 2f*spacer;
+		Scale= GUI.HorizontalSlider(sliderRect, Scale, 1f, 0.15f);
+		float s= ((int)(Scale*100f+0.5f))/100f;
+		string str= s.ToString();
+		if(str.Length == 1) str+=".";
+		while(str.Length < 4) str+= "0";
+		GUI.Label(HeaderRect(ref r, 60f), str, EditorStyles.toolbar);
+		
+		// Editable field test.		
+		GUI.Toolbar(HeaderRect(ref r, 400f), 0, options, EditorStyles.toolbarButton);
+		var test2= EditorStyles.toolbarTextField.margin;
+		test2.top=5;
+		EditorStyles.toolbarTextField.margin= test2;
+		GUI.TextField(HeaderRect(ref r, 200f), "Search", EditorStyles.toolbarTextField);		
+	}
 	Rect HeaderRect(ref Rect r, float width) {
 		Rect result= new Rect(r.x, r.y, width, r.height);
 		r.x+= width;
 		return result;
 	} 
-	void Heading() {
-		Rect r= EditorGUILayout.BeginHorizontal(EditorStyles.toolbar);
-		r.y-= 4f;
-
-		EditorGUIUtility.LookLikeControls();
-		// Show create menu
-		
-		// Show zoom control.
-//		EditorGUI.LabelField(HeaderRect(ref r, 60f), "Zoom", "");
-		EditorGUILayout.LabelField("Zoom", "", GUILayout.Width(60));
-//		Scale= EditorGUI.Slider(HeaderRect(ref r, 200f), Scale, 1f, 0.15f);
-		Scale= EditorGUILayout.Slider(Scale, 1f, 0.15f, GUILayout.Width(200));
-		EditorGUI.LabelField(r, "", "");
-		
-		EditorGUILayout.EndHorizontal();		
+	float GetGUIStyleHeight(GUIStyle style) {
+		float height= style.lineHeight+style.border.vertical;
+		Texture backgroundTexture= style.normal.background;
+		if(backgroundTexture != null) {
+			height= backgroundTexture.height;
+		}
+		return height;		
 	}
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
