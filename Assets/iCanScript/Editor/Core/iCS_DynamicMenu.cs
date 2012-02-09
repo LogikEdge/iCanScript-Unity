@@ -574,11 +574,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     bool DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        bool isDestroyed= false;
-        if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
-            storage.DestroyInstance(selectedObject.InstanceId);                        
-            isDestroyed= true;
-        }            
+        bool isDestroyed= iCS_EditorUtility.DestroyObject(selectedObject, storage);
         Reset();
         return isDestroyed;
     }
