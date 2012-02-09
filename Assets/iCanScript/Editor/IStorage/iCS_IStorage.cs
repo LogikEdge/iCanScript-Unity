@@ -331,6 +331,8 @@ public partial class iCS_IStorage {
                 return false;
             }
         );
+        SetDirty(this[id]);
+        SetDirty(parent);
         return this[id];
     }
     // ----------------------------------------------------------------------

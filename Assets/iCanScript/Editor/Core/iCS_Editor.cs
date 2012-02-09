@@ -35,6 +35,9 @@ public class iCS_Editor : EditorWindow {
     bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
 
     // ----------------------------------------------------------------------
+    iCS_EditorObject Bookmark= null;
+    
+    // ----------------------------------------------------------------------
     Rect    ClipingArea { get { return new Rect(ScrollPosition.x, ScrollPosition.y, Viewport.width, Viewport.height); }}
     Vector2 ViewportCenter { get { return new Vector2(0.5f/Scale*position.width, 0.5f/Scale*position.height); } }
     Rect    Viewport { get { return new Rect(0,0,position.width/Scale, position.height/Scale); }}
@@ -365,18 +368,82 @@ public class iCS_Editor : EditorWindow {
 				if(ev.keyCode == KeyCode.None) break;
 //				Debug.Log("KeyCode: "+ev.keyCode);
                 switch(ev.keyCode) {
-                    case KeyCode.Delete:
-                    case KeyCode.Backspace: {
-                        if(SelectedObject != null && SelectedObject != DisplayRoot) {
-                            if(ev.shift) {
-                                Storage.DestroyInstance(SelectedObject.InstanceId);                                                        
-                            } else {
-                                iCS_EditorUtility.DestroyObject(SelectedObject, Storage);                                
-                            }
+                    // Tree navigation
+                    case KeyCode.UpArrow: {
+                        if(SelectedObject != null) {
+                            SelectedObject= Storage.GetParent(SelectedObject);
+                            CenterOnSelected();
+                        } 
+                        Event.current.Use();
+                        break;
+                    }
+                    case KeyCode.DownArrow: {
+                        if(SelectedObject == null) SelectedObject= DisplayRoot;
+                        SelectedObject= iCS_EditorUtility.GetFirstChild(SelectedObject, Storage);
+                        CenterOnSelected();
+                        Event.current.Use();
+                        break;
+                    }
+                    case KeyCode.RightArrow: {
+                        SelectedObject= iCS_EditorUtility.GetNextSibling(SelectedObject, Storage);
+                        CenterOnSelected();
+                        Event.current.Use();
+                        break;
+                    }
+                    case KeyCode.LeftArrow: {
+                        SelectedObject= iCS_EditorUtility.GetPreviousSibling(SelectedObject, Storage);
+                        CenterOnSelected();
+                        Event.current.Use();
+                        break;
+                    }
+                    // Bookmarks
+                    case KeyCode.B: {
+                        if(SelectedObject != null) {
+                            Bookmark= SelectedObject;                            
                         }
                         Event.current.Use();
                         break;
                     }
+                    case KeyCode.G: {
+                        if(Bookmark != null) {
+                            SelectedObject= Bookmark;
+                            CenterOnSelected();
+                        }
+                        Event.current.Use();
+                        break;
+                    }
+                    case KeyCode.S: {
+                        if(Bookmark != null && SelectedObject != null) {
+                            iCS_EditorObject prevBookmark= Bookmark;
+                            Bookmark= SelectedObject;
+                            SelectedObject= prevBookmark;
+                            CenterOnSelected();
+                        } else if(Bookmark != null && SelectedObject == null) {
+                            SelectedObject= Bookmark;
+                            CenterOnSelected();
+                        } else if(Bookmark == null && SelectedObject != null) {
+                            Bookmark= SelectedObject;
+                        }
+                        Event.current.Use();
+                        break;
+                    }
+                    // Object deletion
+                    case KeyCode.Delete:
+                    case KeyCode.Backspace: {
+                        if(SelectedObject != null && SelectedObject != DisplayRoot) {
+                            iCS_EditorObject parent= Storage.GetParent(SelectedObject);
+                            if(ev.shift) {
+                                Storage.RegisterUndo("Delete");
+                                Storage.DestroyInstance(SelectedObject.InstanceId);                                                        
+                            } else {
+                                iCS_EditorUtility.DestroyObject(SelectedObject, Storage);                                
+                            }
+                            SelectedObject= parent;
+                        }
+                        Event.current.Use();
+                        break;
+                    }
+                    // Object creation.
                     case KeyCode.KeypadEnter: // fnc+return on Mac
                     case KeyCode.Insert: {
                         // Auto-insert on behaviour.
@@ -396,26 +463,41 @@ public class iCS_Editor : EditorWindow {
                         }
                         // Auto-insert on module.
                         if(SelectedObject.IsModule) {
+                            iCS_EditorObject newObj= null;
                             if(!ev.shift) {
-                                Storage.CreateModule(SelectedObject.InstanceId, graphPos, null);                                
+                                Storage.RegisterUndo("Create Module");
+                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, null);                                
                             } else {
-                                Storage.CreateStateChart(SelectedObject.InstanceId, graphPos, null);
+                                Storage.RegisterUndo("Create State Chart");
+                                newObj= Storage.CreateStateChart(SelectedObject.InstanceId, graphPos, null);
+                            }
+                            if(ev.control) {
+                                SelectedObject= newObj;
                             }
                             Event.current.Use();
                             break;
                         }
                         // Auto-insert on state chart.
                         if(SelectedObject.IsStateChart) {
-                            Storage.CreateState(SelectedObject.InstanceId, graphPos);
+                            Storage.RegisterUndo("Create State");
+                            iCS_EditorObject newObj= Storage.CreateState(SelectedObject.InstanceId, graphPos);
+                            if(ev.control) {
+                                SelectedObject= newObj;
+                            }
                             Event.current.Use();
                             break;
                         }
                         // Auto-insert on state.
                         if(SelectedObject.IsState) {
+                            iCS_EditorObject newObj= null;
                             if(!ev.shift) {
                                 
                             } else {
-                                Storage.CreateState(SelectedObject.InstanceId, graphPos);
+                                Storage.RegisterUndo("Create State");
+                                newObj= Storage.CreateState(SelectedObject.InstanceId, graphPos);
+                            }
+                            if(ev.control) {
+                                SelectedObject= newObj;
                             }
                             Event.current.Use();
                             break;
@@ -1233,6 +1315,15 @@ public class iCS_Editor : EditorWindow {
 		// Show zoom control at the end of the toolbar.
         Scale= iCS_EditorUtility.ToolbarSlider(ref r, 120f, Scale, 1f, 0.15f, spacer, spacer, true);
         iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent("Zoom"), 0, 0, true);
+		
+		// Show current bookmark.
+		string bookmarkString= "Bookmark: ";
+		if(Bookmark == null) {
+		    bookmarkString+= "(empty)";
+		} else {
+		    bookmarkString+= Bookmark.Name;
+		}
+		iCS_EditorUtility.ToolbarLabel(ref r, 150f, new GUIContent(bookmarkString),0,0,true);
 		
 		// Editable field test.		
 		iCS_EditorUtility.ToolbarButtons(ref r, 400f, 0, options, 0, 0);

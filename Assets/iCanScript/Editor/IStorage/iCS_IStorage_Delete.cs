@@ -55,12 +55,40 @@ public partial class iCS_IStorage {
         // Disconnect ports linking to this port.
         ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPort(toDestroy));
         // Update modules runtime data when removing a module port.
-        if(toDestroy.IsModulePort && GetParent(toDestroy).IsModule) RemovePortFromModule(toDestroy);
+        iCS_EditorObject parent= GetParent(toDestroy);
+        if(toDestroy.IsModulePort && parent.IsModule) RemovePortFromModule(toDestroy);
+        // Remember entry state.
+        bool isEntryState= toDestroy.IsEntryState;
         // Set the parent dirty to force a relayout.
-        if(IsValid(toDestroy.ParentId)) SetDirty(GetParent(toDestroy));
+        if(IsValid(toDestroy.ParentId)) SetDirty(parent);
 		// Destroy instance.
 		TreeCache.DestroyInstance(toDestroy.InstanceId);
 		toDestroy.Reset();
-		myIsDirty= true;
+        // Reconfigure parent state if the object removed is an entry state.
+        if(isEntryState) {
+            SelectEntryState(parent);
+        }
+        myIsDirty= true;
 	}
+    // ----------------------------------------------------------------------
+    void SelectEntryState(iCS_EditorObject parent) {
+        bool entryFound= ForEachChild(parent,
+            child=> {
+                if(child.IsEntryState) {
+                    return true;
+                }
+                return false;
+            }
+        );        
+        if(entryFound) return;
+        ForEachChild(parent,
+            child=> {
+                if(child.IsState) {
+                    child.IsRawEntryState= true;
+                    return true;
+                }
+                return false;
+            }
+        );
+    }
 }
