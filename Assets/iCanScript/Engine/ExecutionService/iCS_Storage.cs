@@ -15,6 +15,7 @@ public class iCS_Storage : MonoBehaviour {
     [HideInInspector] public int                      UndoRedoId    = 0;
 	[HideInInspector] public Vector2				  ScrollPosition= Vector2.zero;
 	[HideInInspector] public float  				  GuiScale      = 1f;	
+	[HideInInspector] public int    				  SelectedObject= -1;	
 
     // ----------------------------------------------------------------------
     public bool IsValidEditorObject(int id) { return id >= 0 && id < EditorObjects.Count && EditorObjects[id] != null; }

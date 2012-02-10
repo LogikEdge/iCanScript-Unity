@@ -56,15 +56,17 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject SelectedObject {
-        get { return mySelectedObject; }
+        get {
+            int selectedID= Storage.SelectedObject;
+            if(selectedID == -1 || Storage.IsInvalid(selectedID)) return null;
+            return Storage.EditorObjects[selectedID];
+        }
         set {
-			if(mySelectedObject != value) {
-				mySelectedObject= value;
-				if(Inspector != null) Inspector.SelectedObject= value;				
-			}
+            int selectedID= value != null ? value.InstanceId : -1;
+            Storage.SelectedObject= selectedID;
+			if(Inspector != null) Inspector.SelectedObject= value;				
 		}
     }
-    iCS_EditorObject mySelectedObject= null;
     public iCS_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
 	// ----------------------------------------------------------------------
     Vector2     ScrollPosition { get { return Storage.ScrollPosition; } set { Storage.ScrollPosition= value; }}
@@ -107,9 +109,6 @@ public class iCS_Editor : EditorWindow {
         Graphics        = new iCS_Graphics();
         DynamicMenu     = new iCS_DynamicMenu();
 
-        // Reset selected object.
-        SelectedObject= null;
-        
         // Inspect the assemblies for components.
         if(!ourAlreadyParsed) {
             ourAlreadyParsed= true;
@@ -471,7 +470,8 @@ public class iCS_Editor : EditorWindow {
                     // Object deletion
                     case KeyCode.Delete:
                     case KeyCode.Backspace: {
-                        if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot) {
+                        if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
+                          !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
                             iCS_EditorObject parent= Storage.GetParent(SelectedObject);
                             Storage.RegisterUndo("Delete");
                             if(ev.shift) {

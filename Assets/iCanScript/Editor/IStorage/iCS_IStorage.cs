@@ -60,6 +60,7 @@ public partial class iCS_IStorage {
     public iCS_UserPreferences       Preferences    { get { return Storage.Preferences; }}
 	public Vector2					 ScrollPosition { get { return Storage.ScrollPosition; } set { Storage.ScrollPosition= value; }}
     public float                     GuiScale       { get { return Storage.GuiScale; } set { Storage.GuiScale= value; }}
+    public int                       SelectedObject { get { return Storage.SelectedObject; } set { Storage.SelectedObject= value; }}
     // ----------------------------------------------------------------------
     public bool IsValid(int id)                      { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)                    { return !IsValid(id); }
