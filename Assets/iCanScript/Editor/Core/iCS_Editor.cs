@@ -403,6 +403,15 @@ public class iCS_Editor : EditorWindow {
                         Event.current.Use();
                         break;
                     }
+                    case KeyCode.F: {
+                        if(ev.shift) {
+                            CenterOn(DisplayRoot);
+                        } else {
+                            CenterOn(SelectedObject);
+                        }
+                        Event.current.Use();
+                        break;
+                    }
                     // Fold/Minimize/Maximize.
                     case KeyCode.Return: {
                         if(SelectedObject != null) {
