@@ -71,12 +71,11 @@ public static class iCS_EditorUtility {
     // if the user has accepted to delete the object; false is returned 
     // otherwise.
     public static bool DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        bool isDestroyed= false;
         if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
             storage.DestroyInstance(selectedObject.InstanceId);                        
-            isDestroyed= true;
+            return true;
         }            
-        return isDestroyed;
+        return false;
     }
 
     // ======================================================================

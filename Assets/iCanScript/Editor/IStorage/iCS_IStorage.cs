@@ -187,13 +187,21 @@ public partial class iCS_IStorage {
         // Keep a copy of the previous display position.
         List<Rect> displayPositions= new List<Rect>();
         for(int i= 0; i < EditorObjects.Count; ++i) {
-            displayPositions.Add(IsValid(i) ? GetDisplayPosition(EditorObjects[i]) : new Rect(0,0,0,0));
+            displayPositions.Add(TreeCache.IsValid(i) ? GetDisplayPosition(EditorObjects[i]) : new Rect(0,0,0,0));
         }
         // Rebuild editor data.
         GenerateEditorData();
         // Put back the previous display position
         for(int i= 0; i < displayPositions.Count; ++i) {
-            SetDisplayPosition(EditorObjects[i], displayPositions[i]);
+            Rect displayPos= displayPositions[i];
+            if(Math3D.IsZero(displayPos.width) && Math3D.IsZero(displayPos.x)) {
+                iCS_EditorObject posObj= EditorObjects[i];
+                if(posObj.IsPort) posObj= GetParent(posObj);
+                Vector2 center= Math3D.Middle(GetPosition(posObj));
+                displayPos.x= center.x;
+                displayPos.y= center.y;
+            }
+            SetDisplayPosition(EditorObjects[i], displayPos);
         }
         // Set all object dirty.
         foreach(var obj in EditorObjects) {

@@ -417,15 +417,19 @@ public class iCS_Editor : EditorWindow {
                         if(SelectedObject != null) {
                             if(!ev.shift) {
                                 if(SelectedObject.IsMinimized) {
+                                    Storage.RegisterUndo("Unfold");
                                     Storage.Maximize(SelectedObject);
                                     Storage.Fold(SelectedObject);
                                 } else if(SelectedObject.IsFolded) {
+                                    Storage.RegisterUndo("Maximize");
                                     Storage.Maximize(SelectedObject);                                    
                                 }
                             } else {
                                 if(SelectedObject.IsDisplayedNormally) {
+                                    Storage.RegisterUndo("Fold");
                                     Storage.Fold(SelectedObject);
                                 } else if(SelectedObject.IsFolded) {
+                                    Storage.RegisterUndo("Minimize");
                                     Storage.Minimize(SelectedObject);
                                 }
                             }                            
@@ -469,11 +473,13 @@ public class iCS_Editor : EditorWindow {
                     case KeyCode.Backspace: {
                         if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot) {
                             iCS_EditorObject parent= Storage.GetParent(SelectedObject);
+                            Storage.RegisterUndo("Delete");
                             if(ev.shift) {
-                                Storage.RegisterUndo("Delete");
                                 Storage.DestroyInstance(SelectedObject.InstanceId);                                                        
                             } else {
-                                iCS_EditorUtility.DestroyObject(SelectedObject, Storage);                                
+                                if(!iCS_EditorUtility.DestroyObject(SelectedObject, Storage)) {
+                                    Undo.PerformUndo();
+                                }
                             }
                             SelectedObject= parent;
                         }
@@ -498,10 +504,13 @@ public class iCS_Editor : EditorWindow {
                         if(SelectedObject.IsBehaviour) {
                             iCS_EditorObject newObj= null;
                             if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.BehaviourChildUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                Storage.RegisterUndo("Create Update");
                                 newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.BehaviourChildUpdate);  
                             } else if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.BehaviourChildLateUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                Storage.RegisterUndo("Create LateUpdate");
                                 newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.BehaviourChildLateUpdate);                                  
                             } else if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.BehaviourChildFixedUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                Storage.RegisterUndo("Create FixedUpdate");
                                 newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.BehaviourChildFixedUpdate);                                  
                             }
                             if(newObj != null) {
@@ -544,10 +553,13 @@ public class iCS_Editor : EditorWindow {
                             iCS_EditorObject newObj= null;
                             if(!ev.shift) {
                                 if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.StateChildOnUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                    Storage.RegisterUndo("Create OnUpdate");
                                     newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.StateChildOnUpdate);  
                                 } else if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.StateChildOnEntry, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                    Storage.RegisterUndo("Create OnEntry");
                                     newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.StateChildOnEntry);                                  
                                 } else if(iCS_AllowedChildren.CanAddChildNode(iCS_EngineStrings.StateChildOnExit, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                    Storage.RegisterUndo("Create OnExit");
                                     newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_EngineStrings.StateChildOnExit);                                  
                                 }                                
                             } else {
