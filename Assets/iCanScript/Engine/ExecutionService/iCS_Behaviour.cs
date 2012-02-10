@@ -290,7 +290,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             // Create function.
                             FieldInfo fieldInfo= GetFieldInfo(node);
 							bool[] portIsOuts= GetPortIsOuts(node);
-                            iCS_FunctionBase rtField= portIsOuts[1] ?
+                            iCS_FunctionBase rtField= portIsOuts.Length == 0 ?
                                 new iCS_GetInstanceField(node.Name, fieldInfo, portIsOuts, layout) as iCS_FunctionBase:
                                 new iCS_SetInstanceField(node.Name, fieldInfo, portIsOuts, layout) as iCS_FunctionBase;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
@@ -301,7 +301,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             // Create function.
 							FieldInfo fieldInfo= GetFieldInfo(node);
 							bool[] portIsOuts= GetPortIsOuts(node);
-                            iCS_FunctionBase rtField= portIsOuts[1] ?
+                            iCS_FunctionBase rtField= portIsOuts.Length == 0 ?
                                 new iCS_GetStaticField(node.Name, fieldInfo, portIsOuts, layout) as iCS_FunctionBase:
                                 new iCS_SetStaticField(node.Name, fieldInfo, portIsOuts, layout) as iCS_FunctionBase;                                
                             myRuntimeNodes[node.InstanceId]= rtField;

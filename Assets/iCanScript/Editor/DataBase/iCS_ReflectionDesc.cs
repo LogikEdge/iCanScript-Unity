@@ -41,7 +41,7 @@ public class iCS_ReflectionDesc {
 		ClassType         = classType;
 		Method            = methodBase;
 		Field             = fieldInfo;
-		IsGetField        = fieldInfo != null ? paramIsOuts[ObjectType == iCS_ObjectTypeEnum.InstanceField ? 1 : 0] : true;
+		IsGetField        = fieldInfo != null ? (paramTypes.Length == 0) : true;
         ToolTip           = toolTip;
         IconPath          = iconPath;
 		ParamNames        = paramNames;

@@ -173,20 +173,22 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     public static void AddStaticField(string company, string package, string displayName, string toolTip, string iconPath,
                                       Type classType, FieldInfo fieldInfo,
-                                      bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
+                                      bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                      string retName) {
         Add(company, package, displayName, toolTip, iconPath,
             iCS_ObjectTypeEnum.StaticField, classType, null, fieldInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
-            null);
+            retName);
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceField(string company, string package, string displayName, string toolTip, string iconPath,
                                         Type classType, FieldInfo fieldInfo,
-                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
+                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                        string retName) {
         Add(company, package, displayName, toolTip, iconPath,
             iCS_ObjectTypeEnum.InstanceField, classType, null, fieldInfo,
             paramIsOuts, paramNames, paramTypes, paramDefaults,
-            null);
+            retName);
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath,

@@ -12,7 +12,8 @@ public class iCS_Integrator {
     [iCS_InOutPort] public float     Mass           = 1f;
     [iCS_InOutPort] public float     DragFactor     = 0.01f;
     [iCS_OutPort]   public Vector3[] ForceGenerators= null;
-    
+    [iCS_InOutPort]   public float     InstanceField= 0;
+    [iCS_InOutPort]   public static float StaticField=0; 
     
 	// ----------------------------------------------------------------------
     [iCS_Function] public iCS_Integrator(int nbOfForceGenerators) {
