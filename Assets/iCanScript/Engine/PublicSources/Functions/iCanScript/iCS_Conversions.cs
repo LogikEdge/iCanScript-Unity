@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 [iCS_Class(Company="Conversions", Package="bool->...")]
@@ -47,4 +48,9 @@ public static class iCS_ConversionsFromVector4 {
 [iCS_Class(Company="Conversions", Package="object->...")]
 public static class iCS_ConversionsFromObject {
 	[iCS_Conversion] public static string ToString(object v)  { return v.ToString(); }
+}
+
+[iCS_Class(Company="Conversions", Package="...[]->Array")]
+public static class iCS_ConversionsToArray {
+	[iCS_Conversion] public static Array ToArray(Vector3[] v)  { return v as Array; }
 }

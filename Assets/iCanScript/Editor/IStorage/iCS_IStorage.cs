@@ -383,11 +383,6 @@ public partial class iCS_IStorage {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
             port.PortIndex= portIdx;			
 		}
-		// Create 'this' ports for constructors.
-		if(desc.ObjectType == iCS_ObjectTypeEnum.Constructor) {
-			port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.OutFunctionPort);
-	        port.PortIndex= portIdx;						
-		}
         
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
