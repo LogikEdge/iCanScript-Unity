@@ -76,36 +76,6 @@ public class iCS_DataBase {
         return Functions;
     }
     // ----------------------------------------------------------------------
-    // Returns one descriptor per class
-    public static List<iCS_ReflectionDesc> GetClasses() {
-        List<iCS_ReflectionDesc> classes= new List<iCS_ReflectionDesc>();
-        foreach(var desc in Functions) {
-            Type classType= desc.ClassType;
-            bool found= false;
-            foreach(var existing in classes) {
-                if(classType == existing.ClassType) {
-                    found= true;
-                    break;
-                }
-            }
-            if(!found) {
-                classes.Add(desc);
-            }
-        }
-        return classes;
-    }
-    // ----------------------------------------------------------------------
-    // Returns all components of the given class.
-    public static List<iCS_ReflectionDesc> GetClassComponents(Type classType) {
-        List<iCS_ReflectionDesc> components= new List<iCS_ReflectionDesc>();
-        foreach(var desc in Functions) {
-            if(desc.ClassType == classType) {
-                components.Add(desc);
-            }
-        }
-        return components;
-    }
-    // ----------------------------------------------------------------------
     public static List<iCS_ReflectionDesc> BuildMenu(Type inputType, Type outputType) {
         QSort();
         List<iCS_ReflectionDesc> menu= new List<iCS_ReflectionDesc>();
@@ -164,14 +134,6 @@ public class iCS_DataBase {
     public static iCS_ReflectionDesc GetDescriptor(string pathAndSignature) {
         foreach(var desc in Functions) {
             if(desc.ToString() == pathAndSignature) return desc;
-        }
-        return null;
-    }
-    // ----------------------------------------------------------------------
-    // Returns the class type associated with the given company/package.
-    public static Type GetClassType(string classPath) {
-        foreach(var desc in Functions) {
-            if(desc.FunctionPath == classPath) return desc.ClassType;
         }
         return null;
     }

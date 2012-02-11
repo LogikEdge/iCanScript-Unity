@@ -122,17 +122,6 @@ public class iCS_DynamicMenu {
                 menu[2]= "#"+EnablePortStr;
             }
         }
-        // Class menu items
-        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            List<iCS_ReflectionDesc> classMenu= iCS_DataBase.GetClasses();
-            tmp= new string[menu.Length+classMenu.Count+1];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            for(int i= 0; i < classMenu.Count; ++i) {
-                tmp[i+menu.Length+1]= "++ "+classMenu[i].FunctionPath;
-            }
-            menu= tmp;            
-        }
         // Function menu items
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildMenu();
@@ -306,11 +295,6 @@ public class iCS_DynamicMenu {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
         return iCS_DataBase.GetDescriptor(menuCommand);
     }
-	// ----------------------------------------------------------------------
-    Type GetClassTypeFromMenuCommand(MenuContext menuContext) {
-        string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
-        return iCS_DataBase.GetClassType(menuCommand);
-    }
     
     // ======================================================================
     // Menu processing
@@ -388,17 +372,9 @@ public class iCS_DynamicMenu {
                 break;                
             }
             default: {
-                bool classModule= context.Command.StartsWith("++");
-                if(!classModule) {
-                    iCS_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context);
-                    if(desc != null) {
-                        CreateMethod(context.SelectedObject, context.Storage, desc);                                           
-                    }                    
-                } else {
-                    Type classType= GetClassTypeFromMenuCommand(context);
-                    if(classType != null) {
-                        CreateClassModule(context.SelectedObject, context.Storage, classType);
-                    }
+                iCS_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context);
+                if(desc != null) {
+                    CreateMethod(context.SelectedObject, context.Storage, desc);                                           
                 }
                 break;                
             }
@@ -531,11 +507,6 @@ public class iCS_DynamicMenu {
     iCS_EditorObject CreateModule(iCS_EditorObject parent, iCS_IStorage storage, string name= "", bool nameEditable= true) {
         iCS_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, name);
         module.IsNameEditable= nameEditable;
-        return module;
-    }
-	// ----------------------------------------------------------------------
-    iCS_EditorObject CreateClassModule(iCS_EditorObject parent, iCS_IStorage storage, Type classType) {
-        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, classType.Name, iCS_ObjectTypeEnum.Module, classType);
         return module;
     }
 	// ----------------------------------------------------------------------

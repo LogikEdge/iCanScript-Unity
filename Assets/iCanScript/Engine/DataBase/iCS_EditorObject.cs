@@ -154,7 +154,6 @@ public class iCS_EditorObject {
     public bool IsInTransitionPort      { get { return WD.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return WD.IsOutTransitionPort(this); }}
     public bool IsEntryState            { get { return IsState && IsRawEntryState; } set { IsRawEntryState= value; }}
-    public bool IsClassModule           { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
     
     // ======================================================================
     // Accessors
