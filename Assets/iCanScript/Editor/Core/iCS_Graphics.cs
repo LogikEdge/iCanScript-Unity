@@ -626,6 +626,9 @@ public class iCS_Graphics {
         if(node.IsState || node.IsStateChart) {
             return storage.Preferences.NodeColors.StateColor;
         }
+        if(node.IsClassModule) {
+            return storage.Preferences.NodeColors.ClassColor;
+        }
         if(node.IsModule) {
             return storage.Preferences.NodeColors.ModuleColor;
         }
