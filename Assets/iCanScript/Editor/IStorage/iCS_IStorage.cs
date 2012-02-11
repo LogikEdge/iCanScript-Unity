@@ -303,7 +303,13 @@ public partial class iCS_IStorage {
         this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
         this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+        if(runtimeType != typeof(iCS_Module)) CompleteClassModuleCreation(this[id]);
         return this[id];
+    }
+    // ----------------------------------------------------------------------
+    void CompleteClassModuleCreation(iCS_EditorObject module) {
+        iCS_EditorObject inSelfport= CreatePort("This", module.InstanceId, module.RuntimeType, iCS_ObjectTypeEnum.InStaticModulePort);
+        iCS_EditorObject outSelfport= CreatePort("This", module.InstanceId, module.RuntimeType, iCS_ObjectTypeEnum.OutStaticModulePort);
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateStateChart(int parentId, Vector2 initialPos, string name= "") {
