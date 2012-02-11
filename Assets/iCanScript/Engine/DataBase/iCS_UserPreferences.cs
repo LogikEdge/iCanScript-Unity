@@ -35,6 +35,7 @@ public class iCS_UserPreferences {
         public Color    EntryStateColor   = new Color(1f,0.5f,0.25f);
         public Color    StateColor        = Color.cyan;
         public Color    ModuleColor       = Color.yellow;
+        public Color    ClassColor        = Color.yellow;
         public Color    ConstructorColor  = new Color(1f,0.25f,0.5f);
         public Color    FunctionColor     = Color.green;
         public Color    SelectedColor     = Color.white;            
