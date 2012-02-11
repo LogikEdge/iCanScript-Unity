@@ -292,14 +292,15 @@ public partial class iCS_IStorage {
         return this[id];
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateModule(int parentId, Vector2 initialPos, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Module) {
+    public iCS_EditorObject CreateModule(int parentId, Vector2 initialPos, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Module, Type runtimeType= null) {
+		if(runtimeType == null) runtimeType= typeof(iCS_Module);
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
         Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, name, typeof(iCS_Module), parentId, objectType, localPos);
+        this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
         this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         return this[id];
