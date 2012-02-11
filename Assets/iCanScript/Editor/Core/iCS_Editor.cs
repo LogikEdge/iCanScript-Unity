@@ -575,6 +575,14 @@ public class iCS_Editor : EditorWindow {
                         Event.current.Use();
                         break;
                     }
+                    // Class module shortcuts.
+                    case KeyCode.D: {
+                        if(SelectedObject.IsClassModule) {
+                            Storage.ClassModuleShowAsFieldInputs(SelectedObject);
+                        }
+                        Event.current.Use();
+                        break;
+                    }
                 }
                 break;
 			}

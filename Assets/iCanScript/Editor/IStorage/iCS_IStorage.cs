@@ -303,7 +303,7 @@ public partial class iCS_IStorage {
         this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
         this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
-        if(runtimeType != typeof(iCS_Module)) CompleteClassModuleCreation(this[id]);
+        if(runtimeType != typeof(iCS_Module)) ClassModuleCompleteCreation(this[id]);
         return this[id];
     }
     // ----------------------------------------------------------------------
