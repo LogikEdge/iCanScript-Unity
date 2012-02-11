@@ -307,11 +307,6 @@ public partial class iCS_IStorage {
         return this[id];
     }
     // ----------------------------------------------------------------------
-    void CompleteClassModuleCreation(iCS_EditorObject module) {
-        iCS_EditorObject inSelfport= CreatePort("This", module.InstanceId, module.RuntimeType, iCS_ObjectTypeEnum.InStaticModulePort);
-        iCS_EditorObject outSelfport= CreatePort("This", module.InstanceId, module.RuntimeType, iCS_ObjectTypeEnum.OutStaticModulePort);
-    }
-    // ----------------------------------------------------------------------
     public iCS_EditorObject CreateStateChart(int parentId, Vector2 initialPos, string name= "") {
         // Create the function node.
         int id= GetNextAvailableId();

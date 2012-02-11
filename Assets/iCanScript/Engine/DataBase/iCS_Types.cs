@@ -17,6 +17,11 @@ public static class iCS_Types {
     }
     
     // ----------------------------------------------------------------------
+    // Returns true if the given type is a static class.
+    public static bool IsStaticClass(Type t) {
+        return t.IsAbstract && t.IsSealed;
+    }
+    // ----------------------------------------------------------------------
     // Returns the coded name for the given type.
     public static string GetName(Type type) {
         string result= type.Name;

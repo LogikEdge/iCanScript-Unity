@@ -15,7 +15,7 @@ public class iCS_ReflectionDesc {
     public Type                 ClassType  = null;
     public MethodBase           Method = null;
     public FieldInfo            Field= null;
-    public bool                 IsGetField= true;
+    public bool                 IsGetFieldFlag= true;
     public string               ToolTip= null;
     public string               IconPath= null;
 	public string[]				ParamNames= null;
@@ -41,7 +41,7 @@ public class iCS_ReflectionDesc {
 		ClassType         = classType;
 		Method            = methodBase;
 		Field             = fieldInfo;
-		IsGetField        = fieldInfo != null ? (paramTypes.Length == 0) : true;
+		IsGetFieldFlag    = fieldInfo != null ? (paramTypes.Length == 0) : true;
         ToolTip           = toolTip;
         IconPath          = iconPath;
 		ParamNames        = paramNames;
@@ -59,6 +59,17 @@ public class iCS_ReflectionDesc {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
+    public bool IsMethod      { get { return Method != null; }}
+    public bool IsField       { get { return Field != null; }}
+    public bool IsGetField    { get { return IsField && IsGetFieldFlag; }}
+    public bool IsSetField    { get { return IsField && !IsGetFieldFlag; }}
+    public bool IsProperty    { get { return IsGetProperty || IsSetProperty; }}
+    public bool IsGetProperty { get { return IsMethod && ParamTypes.Length == 0 && DisplayName.StartsWith("get_"); }}
+    public bool IsSetProperty { get { return IsMethod && ParamTypes.Length == 1 && DisplayName.StartsWith("set_"); }}
+    // ----------------------------------------------------------------------
+    public string FieldName    { get { return DisplayName.Substring(4); }}
+    public string PropertyName { get { return DisplayName.Substring(4); }}    
+    // ----------------------------------------------------------------------
     public string MethodName {
         get {
             if(Method != null) return Method.Name;
@@ -66,12 +77,6 @@ public class iCS_ReflectionDesc {
             return null;
         }
     }
-//    // ----------------------------------------------------------------------
-//    ParameterInfo[] GetParameters() {
-//        if(Method != null) return Method.GetParameters();
-//        if(Field != null) return Field.Name;
-//        return null;        
-//    }
     // ----------------------------------------------------------------------
     public Type ReturnType {
         get {
