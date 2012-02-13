@@ -148,7 +148,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeStaticField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
         object[] paramDefaultValues= new object[1]{iCS_Types.DefaultValue(field.FieldType)};
-        if(dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) {
+        if((dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) && !field.IsInitOnly) {
             string[] paramNames = new string[1]{field.Name};
             bool[]   paramIsOuts= new bool[1]{false};
             Type[]   paramTypes = new Type[1]{field.FieldType};
@@ -164,7 +164,7 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeInstanceField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
         object[] paramDefaultValues= new object[3]{iCS_Types.DefaultValue(classType), iCS_Types.DefaultValue(field.FieldType),iCS_Types.DefaultValue(classType)};
-        if(dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) {
+        if((dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) && !field.IsInitOnly) {
             string[] paramNames = new string[1]{field.Name};
             bool[]   paramIsOuts= new bool[1]{false};
             Type[]   paramTypes = new Type[1]{field.FieldType};

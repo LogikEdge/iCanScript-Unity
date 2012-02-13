@@ -133,17 +133,17 @@ public class iCS_DynamicMenu {
             }
             menu= tmp;            
         }
-//        // Function menu items
-//        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-//            List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildMenu();
-//            tmp= new string[menu.Length+functionMenu.Count+1];
-//            menu.CopyTo(tmp, 0);
-//            tmp[menu.Length]= SeparatorStr;
-//            for(int i= 0; i < functionMenu.Count; ++i) {
-//                tmp[i+menu.Length+1]= "+ "+functionMenu[i].ToString();
-//            }
-//            menu= tmp;            
-//        }
+        // Function menu items
+        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+            List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildMenu();
+            tmp= new string[menu.Length+functionMenu.Count+1];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= SeparatorStr;
+            for(int i= 0; i < functionMenu.Count; ++i) {
+                tmp[i+menu.Length+1]= "+ "+functionMenu[i].ToString();
+            }
+            menu= tmp;            
+        }
         // Delete menu item
         if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionAction) {
             tmp= new string[menu.Length+2];

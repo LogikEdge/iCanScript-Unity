@@ -7,9 +7,15 @@ using System.Collections.Generic;
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void ClassModuleCompleteCreation(iCS_EditorObject module) {
-        ClassModuleCreateOutputInstanceFields(module);
-        ClassModuleCreateOutputInstanceProperties(module);
-        ClassModuleCreateInputInstanceProperties(module);
+        iCS_UserPreferences.UserOnCreateClassModule control= Preferences.OnCreateClassModule;
+        if(control.OutputInstanceVariables)  ClassModuleCreateOutputInstanceFields(module);
+        if(control.InputInstanceVariables)   ClassModuleCreateInputInstanceFields(module);
+        if(control.OutputInstanceProperties) ClassModuleCreateOutputInstanceProperties(module);
+        if(control.InputInstanceProperties)  ClassModuleCreateInputInstanceProperties(module);
+        if(control.OutputClassVariables)     ClassModuleCreateOutputStaticFields(module);
+        if(control.InputClassVariables)      ClassModuleCreateInputStaticFields(module);
+        if(control.OutputClassProperties)    ClassModuleCreateOutputStaticProperties(module);
+        if(control.InputClassProperties)     ClassModuleCreateInputStaticProperties(module);
     }
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputInstanceFields(iCS_EditorObject module) {

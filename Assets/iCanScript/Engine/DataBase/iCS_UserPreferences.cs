@@ -6,8 +6,9 @@ using System.Collections;
 public class iCS_UserPreferences {
     [System.Serializable]
     public class UserControlOptions {
-        public float ScrollSpeed= 3f;
-		public bool  InverseZoom= false;
+        public float AnimationTime= 0.35f;
+        public float ScrollSpeed  = 3f;
+		public bool  InverseZoom  = false;
     }
     public UserControlOptions ControlOptions= new UserControlOptions();
 
@@ -110,9 +111,16 @@ public class iCS_UserPreferences {
     public UserIcons     Icons= new UserIcons();
     
     [System.Serializable]
-    public class UserAnimation {
-        public float    AnimationTime= 0.35f;
+    public class UserOnCreateClassModule {
+        public bool OutputInstanceVariables = true;
+        public bool OutputClassVariables    = false;
+        public bool OutputInstanceProperties= false;
+        public bool OutputClassProperties   = false;
+        public bool InputInstanceVariables  = false;
+        public bool InputClassVariables     = false;
+        public bool InputInstanceProperties = false;
+        public bool InputClassProperties    = false;
     }
-    public UserAnimation    Animation= new UserAnimation();
+    public UserOnCreateClassModule    OnCreateClassModule= new UserOnCreateClassModule();
 
 }

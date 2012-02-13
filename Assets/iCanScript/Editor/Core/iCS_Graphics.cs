@@ -904,7 +904,7 @@ public class iCS_Graphics {
         Rect layoutPosition= GetLayoutPosition(edObj, storage);
         Rect displayPosition= storage.GetDisplayPosition(edObj);
         if(IsAnimationCompleted(edObj, storage)) {
-            if((GetAnimationRatio(edObj, storage)-1f)*storage.Preferences.Animation.AnimationTime > 0.2f) {  // 200ms
+            if((GetAnimationRatio(edObj, storage)-1f)*storage.Preferences.ControlOptions.AnimationTime > 0.2f) {  // 200ms
                 if(displayPosition.x != layoutPosition.x || displayPosition.y != layoutPosition.y ||
                    displayPosition.width!= layoutPosition.width || displayPosition.height != layoutPosition.height) {
                        if(!edObj.IsFloating) {
@@ -932,7 +932,7 @@ public class iCS_Graphics {
 	// ----------------------------------------------------------------------
 	// Returns the time ratio of the animation between 0 and 1.
     static float GetAnimationRatio(iCS_EditorObject edObj, iCS_IStorage storage) {
-        float time= storage.Preferences.Animation.AnimationTime;
+        float time= storage.Preferences.ControlOptions.AnimationTime;
         float invTime= Math3D.IsZero(time) ? 10000f : 1f/time;
         return invTime*(storage.GetAnimTime(edObj));        
     }
