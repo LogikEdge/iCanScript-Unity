@@ -578,7 +578,8 @@ public class iCS_Editor : EditorWindow {
                     // Class module shortcuts.
                     case KeyCode.D: {
                         if(SelectedObject.IsClassModule) {
-                            Storage.ClassModuleShowAsFieldInputs(SelectedObject);
+                            Storage.ClassModuleCreateInputInstanceFields(SelectedObject);
+                            Storage.ClassModuleDestroyOutputInstanceFields(SelectedObject);
                         }
                         Event.current.Use();
                         break;
