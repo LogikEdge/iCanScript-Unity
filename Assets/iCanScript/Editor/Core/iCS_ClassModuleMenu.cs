@@ -9,12 +9,13 @@ public class iCS_ClassModuleMenu : EditorWindow {
     bool        IsCreateInstance= false;
     int         ConstructorIdx  = 0;
     string[]    Constructors    = new String[1]{"None"};
-    int         NbOfVariables   = 5;
-    int         NbOfMethods     = 15;
+    int         NbOfVariables   = 50;
+    int         NbOfMethods     = 150;
     int         MaxMethodWidth  = 200;
     
     // ---------------------------------------------------------------------------------
-    const int   MarginSize= 10;
+    const int   MarginSize  = 10;
+    const int   ScrollerSize= 16;
     
     // ---------------------------------------------------------------------------------
     void OnGUI() {
@@ -66,32 +67,36 @@ public class iCS_ClassModuleMenu : EditorWindow {
         int nbOfMethodsPerLine= (int)(width/MaxMethodWidth);
         if(nbOfMethodsPerLine < 1) nbOfMethodsPerLine= 1;
         float methodContentHeight  = labelHeight*((NbOfMethods+nbOfMethodsPerLine-1)/nbOfMethodsPerLine);
-        if(variableContentHeight+methodContentHeight > remainingHeight) {
+        float visibleVariableHeight= variableContentHeight;
+        float visibleMethodHeight= methodContentHeight;
+        if(visibleVariableHeight+visibleMethodHeight > remainingHeight) {
             float halfRemainingHeight= 0.5f*remainingHeight;
-            if(variableContentHeight < halfRemainingHeight) {
+            if(visibleVariableHeight < halfRemainingHeight) {
                 int nbOfMethodLines= (int)((remainingHeight-variableContentHeight)/labelHeight);
-                methodContentHeight= labelHeight*nbOfMethodLines;
-            } else if(methodContentHeight < halfRemainingHeight) {
+                visibleMethodHeight= labelHeight*nbOfMethodLines;
+            } else if(visibleMethodHeight < halfRemainingHeight) {
                 int nbOfVariableLines= (int)((remainingHeight-methodContentHeight)/labelHeight);
-                variableContentHeight= labelHeight*nbOfVariableLines;
+                visibleVariableHeight= labelHeight*nbOfVariableLines;
             } else {
                 int nbOfVariableLines= (int)(halfRemainingHeight/labelHeight);
-                variableContentHeight= labelHeight*nbOfVariableLines;
-                int nbOfMethodLines= (int)((remainingHeight-variableContentHeight)/labelHeight);
-                methodContentHeight= labelHeight*nbOfMethodLines;
+                visibleVariableHeight= labelHeight*nbOfVariableLines;
+                int nbOfMethodLines= (int)((remainingHeight-visibleVariableHeight)/labelHeight);
+                visibleMethodHeight= labelHeight*nbOfMethodLines;
             }
         }
         
         // Build variables & methods position.
-        Rect boxVariableRect= new Rect(x, headerHeight, width, fixVariableHeight+variableContentHeight);
-        Rect boxMethodRect  = new Rect(x, boxVariableRect.yMax+MarginSize, width, fixMethodHeight+methodContentHeight);
-        Rect contentVariableRect= new Rect(x, boxVariableRect.y+fixVariableHeight, width, variableContentHeight);
-        Rect contentMethodRect  = new Rect(x, boxMethodRect.y+fixMethodHeight, width, methodContentHeight);
+        Rect boxVariableRect= new Rect(x, headerHeight, width, fixVariableHeight+visibleVariableHeight);
+        Rect boxMethodRect  = new Rect(x, boxVariableRect.yMax+MarginSize, width, fixMethodHeight+visibleMethodHeight);
+        Rect scrollViewVariableRect= new Rect(x, boxVariableRect.y+fixVariableHeight, width, visibleVariableHeight);
+        Rect scrollViewMethodRect  = new Rect(x, boxMethodRect.y+fixMethodHeight, width, visibleMethodHeight);
+        Rect contentVariableRect= new Rect(0, 0, width-ScrollerSize, variableContentHeight);
+        Rect contentMethodRect  = new Rect(0, 0, width-ScrollerSize, methodContentHeight);
         
         // Variables.
         GUI.Box(boxVariableRect,"");
         GUI.Label(new Rect(0.5f*(boxVariableRect.x+boxVariableRect.xMax-variableTitleSize.x), boxVariableRect.y, variableTitleSize.x, titleHeight), variableTitle, EditorStyles.whiteLargeLabel);
-        GUI.BeginScrollView(contentVariableRect, Vector2.zero, new Rect(0,0,width, variableContentHeight));
+        GUI.BeginScrollView(scrollViewVariableRect, Vector2.zero, contentVariableRect, false, true);
         for(int i= 0; i < NbOfVariables; ++i) {
             GUI.Label(new Rect(0,i*labelHeight,100,labelHeight), "V"+i);
         }
@@ -100,7 +105,7 @@ public class iCS_ClassModuleMenu : EditorWindow {
         // Methods.
         GUI.Box(boxMethodRect, "");
         GUI.Label(new Rect(0.5f*(boxMethodRect.x+boxMethodRect.xMax-methodTitleSize.x), boxMethodRect.y, methodTitleSize.x, titleHeight), methodTitle, EditorStyles.whiteLargeLabel);
-        GUI.BeginScrollView(contentMethodRect, Vector2.zero, new Rect(0,0,width, methodContentHeight));
+        GUI.BeginScrollView(scrollViewMethodRect, Vector2.zero, contentMethodRect, false, true);
         int column= 0;
         int row= 0;
         for(int i= 0; i < NbOfMethods; ++i) {            
