@@ -78,6 +78,7 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     // Returns one descriptor per class
     public static List<iCS_ReflectionDesc> GetClasses() {
+        QSort();
         List<iCS_ReflectionDesc> classes= new List<iCS_ReflectionDesc>();
         foreach(var desc in Functions) {
             Type classType= desc.ClassType;
@@ -96,14 +97,14 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns all components of the given class.
-    public static List<iCS_ReflectionDesc> GetClassComponents(Type classType) {
+    public static iCS_ReflectionDesc[] GetClassComponents(Type classType) {
         List<iCS_ReflectionDesc> components= new List<iCS_ReflectionDesc>();
         foreach(var desc in Functions) {
             if(desc.ClassType == classType) {
                 components.Add(desc);
             }
         }
-        return components;
+        return components.ToArray();
     }
     // ----------------------------------------------------------------------
     public static List<iCS_ReflectionDesc> BuildMenu(Type inputType, Type outputType) {

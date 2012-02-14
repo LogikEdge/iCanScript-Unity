@@ -25,7 +25,7 @@ public partial class iCS_IStorage {
         }
 
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetInstanceField) {
                 ClassModuleCreatePortIfNonExisting(module, component.FieldName, component.ReturnType, iCS_ObjectTypeEnum.OutStaticModulePort);                
@@ -40,7 +40,7 @@ public partial class iCS_IStorage {
         }
 
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetInstanceField) {
                 ClassModuleDestroyPortIfNotConnected(module, component.FieldName, iCS_ObjectTypeEnum.OutStaticModulePort);                
@@ -56,7 +56,7 @@ public partial class iCS_IStorage {
         }
 
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetInstanceField) {
                 ClassModuleCreatePortIfNonExisting(module, component.FieldName, component.ParamTypes[0], iCS_ObjectTypeEnum.InStaticModulePort);                
@@ -71,7 +71,7 @@ public partial class iCS_IStorage {
         }
 
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetInstanceField) {
                 ClassModuleDestroyPortIfNotConnected(module, component.FieldName, iCS_ObjectTypeEnum.InStaticModulePort);                
@@ -82,7 +82,7 @@ public partial class iCS_IStorage {
     public void ClassModuleCreateOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetStaticField) {
                 ClassModuleCreatePortIfNonExisting(module, component.FieldName, component.ReturnType, iCS_ObjectTypeEnum.OutStaticModulePort);                
@@ -93,7 +93,7 @@ public partial class iCS_IStorage {
     public void ClassModuleDestroyOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetStaticField) {
                 ClassModuleDestroyPortIfNotConnected(module, component.FieldName, iCS_ObjectTypeEnum.OutStaticModulePort);                
@@ -105,7 +105,7 @@ public partial class iCS_IStorage {
     public void ClassModuleCreateInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetStaticField) {
                 ClassModuleCreatePortIfNonExisting(module, component.FieldName, component.ParamTypes[0], iCS_ObjectTypeEnum.InStaticModulePort);                
@@ -116,7 +116,7 @@ public partial class iCS_IStorage {
     public void ClassModuleDestroyInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetStaticField) {
                 ClassModuleDestroyPortIfNotConnected(module, component.FieldName, iCS_ObjectTypeEnum.InStaticModulePort);                
@@ -132,7 +132,7 @@ public partial class iCS_IStorage {
         }
 
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetInstanceProperty) {
                 ClassModuleCreatePortIfNonExisting(module, component.FieldName, component.ReturnType, iCS_ObjectTypeEnum.OutStaticModulePort);                
@@ -147,7 +147,7 @@ public partial class iCS_IStorage {
         }
 
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetInstanceProperty) {
                 ClassModuleDestroyPortIfNotConnected(module, component.FieldName, iCS_ObjectTypeEnum.OutStaticModulePort);                
@@ -162,7 +162,7 @@ public partial class iCS_IStorage {
         }
 
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetInstanceProperty) {
                 ClassModuleCreatePortIfNonExisting(module, component.FieldName, component.ParamTypes[0], iCS_ObjectTypeEnum.InStaticModulePort);                
@@ -177,7 +177,7 @@ public partial class iCS_IStorage {
         }
 
         // Automatically create class fields.
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetInstanceProperty) {
                 ClassModuleDestroyPortIfNotConnected(module, component.FieldName, iCS_ObjectTypeEnum.InStaticModulePort);                
@@ -187,7 +187,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetStaticProperty) {
                 ClassModuleCreatePortIfNonExisting(module, component.FieldName, component.ReturnType, iCS_ObjectTypeEnum.OutStaticModulePort);                
@@ -197,7 +197,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetStaticProperty) {
                 ClassModuleDestroyPortIfNotConnected(module, component.FieldName, iCS_ObjectTypeEnum.OutStaticModulePort);                
@@ -207,7 +207,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetStaticProperty) {
                 ClassModuleCreatePortIfNonExisting(module, component.FieldName, component.ParamTypes[0], iCS_ObjectTypeEnum.InStaticModulePort);                
@@ -217,7 +217,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        List<iCS_ReflectionDesc> components= iCS_DataBase.GetClassComponents(classType);
+        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetStaticProperty) {
                 ClassModuleDestroyPortIfNotConnected(module, component.FieldName, iCS_ObjectTypeEnum.InStaticModulePort);                

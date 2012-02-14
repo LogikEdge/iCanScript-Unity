@@ -156,6 +156,58 @@ public class iCS_ReflectionDesc {
         }
     }
     // ----------------------------------------------------------------------
+    public string FunctionSignatureNoThis {
+        get {
+			switch(ObjectType) {
+				case iCS_ObjectTypeEnum.Conversion: {
+					return DisplayName;
+				}
+				default: {
+		            string signature= DisplayName;
+					// Build input string
+					string inputStr= "";
+		            for(int i= 0; i < ParamNames.Length; ++i) {
+						if(!ParamTypes[i].IsByRef) {
+			                inputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i])*/+", ";
+						}
+		            }
+					// Add inputs to signature.
+					if(inputStr != "") {
+			            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
+					} else {
+					    signature+= "()";
+					}
+					// Build output string
+					int nbOfOutputs= 0;
+					string outputStr= "";
+		            for(int i= 0; i < ParamNames.Length; ++i) {
+						if(ParamTypes[i].IsByRef) {
+			                outputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i].GetElementType())*/+", ";
+							++nbOfOutputs;
+						}
+		            }
+					if(ReturnType != null && ReturnType != typeof(void)) {
+						++nbOfOutputs;
+						if(ReturnName != null && ReturnName != "" && ReturnName != "out") {
+							outputStr+= /*" "+*/ReturnName;
+						} else {
+							outputStr+= ":"+TypeName(ReturnType);
+						}
+						outputStr+= ", ";
+					}
+					// Add output to signature.
+					if(nbOfOutputs == 1) {
+						signature+="->"+outputStr.Substring(0, outputStr.Length-2);
+					}
+					if(nbOfOutputs > 1) {
+						signature+="->("+outputStr.Substring(0, outputStr.Length-2)+")";
+					}
+					return signature;
+				}
+			}
+        }
+    }
+    // ----------------------------------------------------------------------
     // Returns the function name in the form of "company/package/displayName".
     public string FunctionPath {
         get {

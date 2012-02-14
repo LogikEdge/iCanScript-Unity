@@ -595,7 +595,8 @@ public class iCS_Editor : EditorWindow {
             SelectedObject= DisplayRoot;
         }
         if(SelectedObject.IsClassModule) {
-            GetWindow(typeof(iCS_ClassModuleMenu));
+            var classMenu= GetWindow(typeof(iCS_ClassModuleMenu)) as iCS_ClassModuleMenu;
+            classMenu.Activate(SelectedObject, Storage);
         } else {
             DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));                    
         }
