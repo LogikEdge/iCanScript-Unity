@@ -63,9 +63,9 @@ public class iCS_ClassModuleMenu : EditorWindow {
         
         // Compute varaibales & methods content heights.
         float variableContentHeight= labelHeight*NbOfVariables;
-        int nbOfMethodPerLines= (int)(width/MaxMethodWidth);
-        if(nbOfMethodPerLines < 1) nbOfMethodPerLines= 1;
-        float methodContentHeight  = labelHeight*((NbOfMethods+nbOfMethodPerLines-1)/nbOfMethodPerLines);
+        int nbOfMethodsPerLine= (int)(width/MaxMethodWidth);
+        if(nbOfMethodsPerLine < 1) nbOfMethodsPerLine= 1;
+        float methodContentHeight  = labelHeight*((NbOfMethods+nbOfMethodsPerLine-1)/nbOfMethodsPerLine);
         if(variableContentHeight+methodContentHeight > remainingHeight) {
             float halfRemainingHeight= 0.5f*remainingHeight;
             if(variableContentHeight < halfRemainingHeight) {
@@ -93,7 +93,7 @@ public class iCS_ClassModuleMenu : EditorWindow {
         GUI.Label(new Rect(0.5f*(boxVariableRect.x+boxVariableRect.xMax-variableTitleSize.x), boxVariableRect.y, variableTitleSize.x, titleHeight), variableTitle, EditorStyles.whiteLargeLabel);
         GUI.BeginScrollView(contentVariableRect, Vector2.zero, new Rect(0,0,width, variableContentHeight));
         for(int i= 0; i < NbOfVariables; ++i) {
-            GUI.Label(new Rect(0,i*labelHeight,100,labelHeight), "V"+i);            
+            GUI.Label(new Rect(0,i*labelHeight,100,labelHeight), "V"+i);
         }
         GUI.EndScrollView();
 
@@ -101,8 +101,14 @@ public class iCS_ClassModuleMenu : EditorWindow {
         GUI.Box(boxMethodRect, "");
         GUI.Label(new Rect(0.5f*(boxMethodRect.x+boxMethodRect.xMax-methodTitleSize.x), boxMethodRect.y, methodTitleSize.x, titleHeight), methodTitle, EditorStyles.whiteLargeLabel);
         GUI.BeginScrollView(contentMethodRect, Vector2.zero, new Rect(0,0,width, methodContentHeight));
-        for(int i= 0; i < NbOfMethods; ++i) {
-            GUI.Label(new Rect(0,i*labelHeight,100,labelHeight), "M"+i);            
+        int column= 0;
+        int row= 0;
+        for(int i= 0; i < NbOfMethods; ++i) {            
+            GUI.Button(new Rect(column*MaxMethodWidth,row*labelHeight,MaxMethodWidth,labelHeight), "M"+i);            
+            if(++column >= nbOfMethodsPerLine) {
+                column= 0;
+                ++row;
+            }
         }
         GUI.EndScrollView();
 
