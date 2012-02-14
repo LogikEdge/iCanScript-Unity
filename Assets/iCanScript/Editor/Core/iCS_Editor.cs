@@ -594,7 +594,11 @@ public class iCS_Editor : EditorWindow {
         if(SelectedObject == null && DisplayRoot.IsBehaviour) {
             SelectedObject= DisplayRoot;
         }
-        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));        
+        if(SelectedObject.IsClassModule) {
+            GetWindow(typeof(iCS_ClassModuleMenu));
+        } else {
+            DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));                    
+        }
     }
 	// ----------------------------------------------------------------------
     void DragAndDropPerform() {
