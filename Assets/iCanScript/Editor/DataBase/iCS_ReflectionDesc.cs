@@ -88,6 +88,8 @@ public class iCS_ReflectionDesc {
         }
     }
     // ----------------------------------------------------------------------
+    public Type FieldType    { get { return Field.FieldType; }}
+    public Type PropertyType { get { return IsGetProperty ? ReturnType : ParamTypes[0]; }}
     public Type ReturnType {
         get {
             if(Method != null) {

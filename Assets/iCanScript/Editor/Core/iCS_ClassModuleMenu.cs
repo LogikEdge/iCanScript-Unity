@@ -23,8 +23,10 @@ public class iCS_ClassModuleMenu : EditorWindow {
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
-    const int   kMarginSize  = 10;
-    const int   kScrollerSize= 16;
+    const float   kSpacer       = 2;
+    const float   kMarginSize   = 10;
+    const float   kScrollerSize = 16;
+    const float   kCheckBoxWidth= 50;
     
     // =================================================================================
     // Properties
@@ -170,14 +172,27 @@ public class iCS_ClassModuleMenu : EditorWindow {
 
     // ---------------------------------------------------------------------------------
     void ShowVariable(int id, float width, float height) {
+        width-= 2f*kSpacer;
+        float labelWidth= 0.5f*(width-2f*kCheckBoxWidth);
         if(id >= Fields.Length+Properties.Length) return;
         string name;
+        string typeName;
         if(id < Fields.Length) {
-            name= Fields[id].DisplayName;
+            name= Fields[id].FieldName;
+            typeName= iCS_Types.TypeName(Fields[id].FieldType);
         } else {
-            name= Properties[id-Fields.Length].DisplayName;
+            name= Properties[id-Fields.Length].PropertyName;
+            typeName= iCS_Types.TypeName(Properties[id].PropertyType);
         }
-        GUI.Label(new Rect(0, id*height, width, height), name);
+        float x= kSpacer;
+        float y= id*height;
+        GUI.Toggle(new Rect(x, y, kCheckBoxWidth, height), true, "In");
+        x+= kCheckBoxWidth;
+        GUI.Toggle(new Rect(x, y, kCheckBoxWidth, height), true, "Out");
+        x+= kCheckBoxWidth;
+        GUI.Label(new Rect(x, y, labelWidth, height), name);
+        x+= labelWidth;
+        GUI.Label(new Rect(x, y, labelWidth, height), typeName);
     }
 
     // ---------------------------------------------------------------------------------
