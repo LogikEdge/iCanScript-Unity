@@ -6,6 +6,26 @@ using System.Collections.Generic;
 
 public class iCS_ClassModuleMenu : EditorWindow {
     // =================================================================================
+    // Types
+    // ---------------------------------------------------------------------------------
+    class ControlPair : Prelude.Tuple<iCS_ReflectionDesc, bool> {
+        public ControlPair(iCS_ReflectionDesc component, bool isActive= false) {
+            Component= component;
+            IsActive= isActive;
+        }
+        public iCS_ReflectionDesc Component { get { return Item1; } set { Item1= value; }}
+        public bool               IsActive  { get { return Item2; } set { Item2= value; }}
+    };
+    class VariablePair : Prelude.Tuple<ControlPair, ControlPair> {
+        public VariablePair(iCS_ReflectionDesc inputComponent, iCS_ReflectionDesc outputComponent) {
+            InputControlPair= new ControlPair(inputComponent);
+            OutputControlPair= new ControlPair(outputComponent);
+        }
+        public ControlPair InputControlPair  { get { return Item1; } set { Item1= value; }}
+        public ControlPair OutputControlPair { get { return Item2; } set { Item2= value; }}
+    };
+    
+    // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
     iCS_EditorObject        Target                = null;
@@ -13,20 +33,26 @@ public class iCS_ClassModuleMenu : EditorWindow {
     bool                    IsCreateInstance      = false;
     int                     ConstructorIdx        = 0;
     string[]                Constructors          = new String[1]{"None"};
-    float                   MaxMethodWidth        = 0;
-    iCS_ReflectionDesc[]    Fields                = null;
-    iCS_ReflectionDesc[]    Properties            = null;
-    iCS_ReflectionDesc[]    Methods               = null;
+    VariablePair[]          Fields                = null;
+    VariablePair[]          Properties            = null;
+    ControlPair[]           Methods               = null;
     Vector2                 VariableScrollPosition= Vector2.zero;
     Vector2                 MethodScrollPosition  = Vector2.zero;        
     
     // =================================================================================
+    // Layout info.
+    // ---------------------------------------------------------------------------------
+    float   MaxMethodWidth   = 0;
+    float   MaxVariableWidth = 0;
+    float   VariableNameWidth= 0;
+    
+    // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
-    const float   kSpacer       = 2;
+    const float   kSpacer       = 8;
     const float   kMarginSize   = 10;
     const float   kScrollerSize = 16;
-    const float   kCheckBoxWidth= 50;
+    const float   kCheckBoxWidth= 25;
     
     // =================================================================================
     // Properties
@@ -37,17 +63,53 @@ public class iCS_ClassModuleMenu : EditorWindow {
     // ---------------------------------------------------------------------------------
     public void Activate(iCS_EditorObject target, iCS_IStorage storage) {
         ClassType= target.RuntimeType;
-        List<iCS_ReflectionDesc> fields= new List<iCS_ReflectionDesc>();
-        List<iCS_ReflectionDesc> properties= new List<iCS_ReflectionDesc>();
-        List<iCS_ReflectionDesc> methods= new List<iCS_ReflectionDesc>();
+        List<VariablePair> fields= new List<VariablePair>();
+        List<VariablePair> properties= new List<VariablePair>();
+        List<ControlPair> methods= new List<ControlPair>();
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(ClassType);
         foreach(var component in components) {
             if(component.IsField) {
-                fields.Add(component);
+                string name= component.FieldName;
+                var variablePair= GetVariablePair(name, fields);
+                if(component.IsSetField) {
+                    if(variablePair != null) {
+                        variablePair.InputControlPair.Component= component;
+                    } else {
+                        fields.Add(new VariablePair(component, null));                        
+                    }
+                } else {
+                    if(variablePair != null) {
+                        variablePair.OutputControlPair.Component= component;
+                    } else {
+                        fields.Add(new VariablePair(null, component));                                            
+                    }
+                }
+                var fieldSize= EditorStyles.label.CalcSize(new GUIContent(name));
+                if(fieldSize.x+kSpacer > MaxVariableWidth) {
+                    MaxVariableWidth= fieldSize.x+kSpacer;
+                }
             } else if(component.IsProperty) {
-                properties.Add(component);
+                string name= component.PropertyName;
+                var variablePair= GetVariablePair(name, properties);
+                if(component.IsSetProperty) {
+                    if(variablePair != null) {
+                        variablePair.InputControlPair.Component= component;
+                    } else {
+                        properties.Add(new VariablePair(component, null));                        
+                    }
+                } else {
+                    if(variablePair != null) {
+                        variablePair.OutputControlPair.Component= component;
+                    } else {
+                        properties.Add(new VariablePair(null, component));                        
+                    }
+                }
+                var propertySize= EditorStyles.label.CalcSize(new GUIContent(name));
+                if(propertySize.x+kSpacer > MaxVariableWidth) {
+                    MaxVariableWidth= propertySize.x+kSpacer;
+                }
             } else {
-                methods.Add(component);
+                methods.Add(new ControlPair(component));
                 var signatureSize= EditorStyles.label.CalcSize(new GUIContent(component.FunctionSignatureNoThis));
                 if(signatureSize.x+12f > MaxMethodWidth) {
                     MaxMethodWidth= signatureSize.x+12f;
@@ -71,11 +133,19 @@ public class iCS_ClassModuleMenu : EditorWindow {
         GUIContent cancelButton    = new GUIContent("Cancel");
         GUIContent constructorLabel= new GUIContent("Create Instance");
         GUIContent variableTitle   = new GUIContent("Variables");
+        GUIContent inTitle         = new GUIContent("In");
+        GUIContent outTitle        = new GUIContent("Out");
+        GUIContent nameTitle       = new GUIContent("Name");
+        GUIContent typeTitle       = new GUIContent("Type");
         GUIContent methodTitle     = new GUIContent("Methods");
         
         // Compute content size.
         Vector2 labelSize= EditorStyles.label.CalcSize(constructorLabel);
         Vector2 variableTitleSize= EditorStyles.whiteLargeLabel.CalcSize(variableTitle);
+        Vector2 inTitleSize= EditorStyles.whiteLargeLabel.CalcSize(inTitle);
+        Vector2 outTitleSize= EditorStyles.whiteLargeLabel.CalcSize(outTitle);
+        Vector2 nameTitleSize= EditorStyles.whiteLargeLabel.CalcSize(nameTitle);
+        Vector2 typeTitleSize= EditorStyles.whiteLargeLabel.CalcSize(typeTitle);
         Vector2 methodTitleSize= EditorStyles.whiteLargeLabel.CalcSize(methodTitle);
         Vector2 applyButtonSize     = EditorStyles.radioButton.CalcSize(applyButton);
         Vector2 cancelButtonSize    = EditorStyles.radioButton.CalcSize(applyButton);
@@ -136,10 +206,16 @@ public class iCS_ClassModuleMenu : EditorWindow {
         Rect scrollViewMethodRect  = new Rect(x, boxMethodRect.y+fixMethodHeight, width, visibleMethodHeight);
         Rect contentVariableRect= new Rect(0, 0, width-kScrollerSize, variableContentHeight);
         Rect contentMethodRect  = new Rect(0, 0, width-kScrollerSize, methodContentHeight);
+        ComputeVariableContentLayout(contentMethodRect.width);
         
         // Variables.
         GUI.Box(boxVariableRect,"");
         GUI.Label(new Rect(0.5f*(boxVariableRect.x+boxVariableRect.xMax-variableTitleSize.x), boxVariableRect.y, variableTitleSize.x, titleHeight), variableTitle, EditorStyles.whiteLargeLabel);
+        GUI.Label(new Rect(x+kSpacer+0.5f*(kCheckBoxWidth-inTitleSize.x),   boxVariableRect.y+titleHeight, inTitleSize.x,   titleHeight), inTitle, EditorStyles.whiteLargeLabel);
+        GUI.Label(new Rect(x+kSpacer+kCheckBoxWidth+0.5f*(kCheckBoxWidth-outTitleSize.x),  boxVariableRect.y+titleHeight, outTitleSize.x,  titleHeight), outTitle, EditorStyles.whiteLargeLabel);
+        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth, boxVariableRect.y+titleHeight, nameTitleSize.x, titleHeight), nameTitle, EditorStyles.whiteLargeLabel);
+        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth+VariableNameWidth, boxVariableRect.y+titleHeight, typeTitleSize.x, titleHeight), typeTitle, EditorStyles.whiteLargeLabel);
+        GUI.Box(new Rect(scrollViewVariableRect.x, scrollViewVariableRect.y-3f, scrollViewVariableRect.width, 3),"");
         VariableScrollPosition= GUI.BeginScrollView(scrollViewVariableRect, VariableScrollPosition, contentVariableRect, false, true);
         for(int i= 0; i < NbOfVariables; ++i) {
             ShowVariable(i, contentVariableRect.width, labelHeight);
@@ -173,30 +249,79 @@ public class iCS_ClassModuleMenu : EditorWindow {
     // ---------------------------------------------------------------------------------
     void ShowVariable(int id, float width, float height) {
         width-= 2f*kSpacer;
-        float labelWidth= 0.5f*(width-2f*kCheckBoxWidth);
         if(id >= Fields.Length+Properties.Length) return;
         string name;
         string typeName;
+        VariablePair variablePair;
         if(id < Fields.Length) {
-            name= Fields[id].FieldName;
-            typeName= iCS_Types.TypeName(Fields[id].FieldType);
+            variablePair= Fields[id];
+            var field= GetAComponent(variablePair);
+            name= field.FieldName;
+            typeName= iCS_Types.TypeName(field.FieldType);
         } else {
-            name= Properties[id-Fields.Length].PropertyName;
-            typeName= iCS_Types.TypeName(Properties[id].PropertyType);
+            variablePair= Properties[id-Fields.Length];
+            var property= GetAComponent(variablePair);
+            name= property.PropertyName;
+            typeName= iCS_Types.TypeName(property.PropertyType);
         }
         float x= kSpacer;
         float y= id*height;
-        GUI.Toggle(new Rect(x, y, kCheckBoxWidth, height), true, "In");
+        var checkBoxSize= GUI.skin.toggle.CalcSize(new GUIContent(""));
+        ControlPair inputControlPair= variablePair.InputControlPair;
+        if(inputControlPair.Component != null) {
+            inputControlPair.IsActive= GUI.Toggle(new Rect(x+0.5f*(kCheckBoxWidth-checkBoxSize.x), y, kCheckBoxWidth, height), inputControlPair.IsActive, "");
+        }
         x+= kCheckBoxWidth;
-        GUI.Toggle(new Rect(x, y, kCheckBoxWidth, height), true, "Out");
-        x+= kCheckBoxWidth;
-        GUI.Label(new Rect(x, y, labelWidth, height), name);
-        x+= labelWidth;
-        GUI.Label(new Rect(x, y, labelWidth, height), typeName);
+        ControlPair outputControlPair= variablePair.OutputControlPair;
+        if(outputControlPair.Component != null) {
+            outputControlPair.IsActive= GUI.Toggle(new Rect(x+0.5f*(kCheckBoxWidth-checkBoxSize.x), y, kCheckBoxWidth, height), outputControlPair.IsActive, "");
+        }
+        x+= kCheckBoxWidth+kSpacer;
+        GUI.Label(new Rect(x, y, VariableNameWidth, height), name);
+        x+= VariableNameWidth;
+        GUI.Label(new Rect(x, y, width-x, height), typeName);
     }
 
     // ---------------------------------------------------------------------------------
     void ShowMethod(int id, int column, int row, float width, float height) {
-        GUI.Button(new Rect(column*width, row*height, width, height), Methods[id].FunctionSignatureNoThis);                    
+        GUI.Button(new Rect(column*width, row*height, width, height), Methods[id].Component.FunctionSignatureNoThis);                    
+    }
+    
+
+    // =================================================================================
+    // Layout
+    // ---------------------------------------------------------------------------------
+    void ComputeVariableContentLayout(float width) {
+        width-= 2f*kSpacer;
+        float labelWidth= 0.5f*(width-2f*kCheckBoxWidth);
+        VariableNameWidth= labelWidth < MaxVariableWidth ? MaxVariableWidth : labelWidth;        
+    }
+    
+    // =================================================================================
+    // Helpers
+    // ---------------------------------------------------------------------------------
+    iCS_ReflectionDesc GetAComponent(VariablePair pair) {
+        return pair.InputControlPair.Component ?? pair.OutputControlPair.Component; 
+    }
+    VariablePair GetVariablePair(string name, List<VariablePair> lst) {
+        foreach(var pair in lst) {
+            iCS_ReflectionDesc inputComponent= pair.InputControlPair.Component;
+            if(inputComponent != null) {
+                if(inputComponent.IsField) {
+                    if(inputComponent.FieldName == name) return pair;
+                } else {
+                    if(inputComponent.PropertyName == name) return pair;
+                }
+            }
+            iCS_ReflectionDesc outputComponent= pair.OutputControlPair.Component;
+            if(outputComponent != null) {
+                if(outputComponent.IsField) {
+                    if(outputComponent.FieldName == name) return pair;
+                } else {
+                    if(outputComponent.PropertyName == name) return pair;
+                }                
+            }
+        }
+        return null;
     }
 }
