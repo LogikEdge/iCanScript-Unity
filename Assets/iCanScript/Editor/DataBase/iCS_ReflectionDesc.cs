@@ -168,12 +168,12 @@ public class iCS_ReflectionDesc {
 					string inputStr= "";
 		            for(int i= 0; i < ParamNames.Length; ++i) {
 						if(!ParamTypes[i].IsByRef) {
-			                inputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i])*/+", ";
+			                inputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i])+", ";
 						}
 		            }
 					// Add inputs to signature.
 					if(inputStr != "") {
-			            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
+			            signature+= "("+inputStr.Substring(0, inputStr.Length-2)+")";						
 					} else {
 					    signature+= "()";
 					}
@@ -182,7 +182,7 @@ public class iCS_ReflectionDesc {
 					string outputStr= "";
 		            for(int i= 0; i < ParamNames.Length; ++i) {
 						if(ParamTypes[i].IsByRef) {
-			                outputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i].GetElementType())*/+", ";
+			                outputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i].GetElementType())+", ";
 							++nbOfOutputs;
 						}
 		            }

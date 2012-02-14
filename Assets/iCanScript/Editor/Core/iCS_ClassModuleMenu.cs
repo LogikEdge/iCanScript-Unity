@@ -8,15 +8,17 @@ public class iCS_ClassModuleMenu : EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    iCS_EditorObject        Target          = null;
-    Type                    ClassType       = null;
-    bool                    IsCreateInstance= false;
-    int                     ConstructorIdx  = 0;
-    string[]                Constructors    = new String[1]{"None"};
-    float                   MaxMethodWidth  = 0;
-    iCS_ReflectionDesc[]    Fields          = null;
-    iCS_ReflectionDesc[]    Properties      = null;
-    iCS_ReflectionDesc[]    Methods         = null;
+    iCS_EditorObject        Target                = null;
+    Type                    ClassType             = null;
+    bool                    IsCreateInstance      = false;
+    int                     ConstructorIdx        = 0;
+    string[]                Constructors          = new String[1]{"None"};
+    float                   MaxMethodWidth        = 0;
+    iCS_ReflectionDesc[]    Fields                = null;
+    iCS_ReflectionDesc[]    Properties            = null;
+    iCS_ReflectionDesc[]    Methods               = null;
+    Vector2                 VariableScrollPosition= Vector2.zero;
+    Vector2                 MethodScrollPosition  = Vector2.zero;        
     
     // =================================================================================
     // Constants
@@ -136,7 +138,7 @@ public class iCS_ClassModuleMenu : EditorWindow {
         // Variables.
         GUI.Box(boxVariableRect,"");
         GUI.Label(new Rect(0.5f*(boxVariableRect.x+boxVariableRect.xMax-variableTitleSize.x), boxVariableRect.y, variableTitleSize.x, titleHeight), variableTitle, EditorStyles.whiteLargeLabel);
-        GUI.BeginScrollView(scrollViewVariableRect, Vector2.zero, contentVariableRect, false, true);
+        VariableScrollPosition= GUI.BeginScrollView(scrollViewVariableRect, VariableScrollPosition, contentVariableRect, false, true);
         for(int i= 0; i < NbOfVariables; ++i) {
             ShowVariable(i, contentVariableRect.width, labelHeight);
         }
@@ -145,7 +147,7 @@ public class iCS_ClassModuleMenu : EditorWindow {
         // Methods.
         GUI.Box(boxMethodRect, "");
         GUI.Label(new Rect(0.5f*(boxMethodRect.x+boxMethodRect.xMax-methodTitleSize.x), boxMethodRect.y, methodTitleSize.x, titleHeight), methodTitle, EditorStyles.whiteLargeLabel);
-        GUI.BeginScrollView(scrollViewMethodRect, Vector2.zero, contentMethodRect, false, true);
+        MethodScrollPosition= GUI.BeginScrollView(scrollViewMethodRect, MethodScrollPosition, contentMethodRect, false, true);
         int column= 0;
         int row= 0;
         for(int i= 0; i < NbOfMethods; ++i) {            
