@@ -459,47 +459,10 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // Runtime information extraction
     // ----------------------------------------------------------------------
 	MethodBase GetMethodBase(iCS_EditorObject node) {
-        // Extract MethodBase for constructor.
-        MethodBase method= null;
-		Type classType= node.RuntimeType;
-        if(node.ObjectType == iCS_ObjectTypeEnum.Constructor) {
-            method= classType.GetConstructor(GetParamTypes(node));
-            if(method == null) {
-                string signature="(";
-                bool first= true;
-                foreach(var param in GetParamTypes(node)) {
-                    if(first) { first= false; } else { signature+=", "; }
-                    signature+= param.Name;
-                }
-                signature+=")";
-                Debug.LogWarning("Unable to extract constructor: "+classType.Name+signature);
-            }
-            return method;
-        }
-        // Extract MethodBase for class methods.
-        if(node.MethodName == null) return null;
-		Type[] paramTypes= GetParamTypes(node);
-        method= classType.GetMethod(node.MethodName, paramTypes);            
-        if(method == null) {
-            string signature="(";
-            bool first= true;
-            foreach(var param in paramTypes) {
-                if(first) { first= false; } else { signature+=", "; }
-                signature+= param.Name;
-            }
-            signature+=")";
-            Debug.LogWarning("iCanScript: Unable to extract MethodInfo from RuntimeDesc: "+node.MethodName+signature);
-        }
-        return method;		
+        return node.GetMethodBase(EditorObjects);
 	}
 	FieldInfo GetFieldInfo(iCS_EditorObject node) {
-        if(node.MethodName == null) return null;
-		Type classType= node.RuntimeType;
-        FieldInfo field= classType.GetField(node.MethodName);
-        if(field == null) {
-            Debug.LogWarning("iCanScript: Unable to extract FieldInfo from RuntimeDesc: "+node.MethodName);                
-        }
-        return field;		
+        return node.GetFieldInfo();
 	}
 	bool[] GetPortIsOuts(iCS_EditorObject node) {
 		iCS_EditorObject[] ports= GetChildPorts(node);
@@ -510,12 +473,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
 		return isOuts;
 	}
 	Type[] GetParamTypes(iCS_EditorObject node) {
-		iCS_EditorObject[] ports= GetChildPorts(node);
-		Type[] result= new Type[node.NbOfParams];
-		for(int i= 0; i < result.Length; ++i) {
-			result[i]= ports[i].RuntimeType;
-		}
-		return result;
+	    return node.GetParamTypes(EditorObjects);
 	}
 	iCS_EditorObject[] GetChildPorts(iCS_EditorObject node) {
 		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();

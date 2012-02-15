@@ -1,6 +1,8 @@
 using UnityEngine;
 using System;
+using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class iCS_EditorObject {
@@ -167,10 +169,7 @@ public class iCS_EditorObject {
     public Type RuntimeType     { get { return Type.GetType(QualifiedType); }}
     public string TypeName {
         get {
-            Type type= RuntimeType;
-            if(type == null) return "void";
-            if(type == typeof(float)) return "float";
-            return type.Name;
+            return iCS_Types.TypeName(RuntimeType);
         }
     }
     public string Name {
@@ -187,5 +186,75 @@ public class iCS_EditorObject {
     public bool IsOnLeftEdge        { get { return Edge == EdgeEnum.Left; }}
     public bool IsOnHorizontalEdge  { get { return IsOnTopEdge   || IsOnBottomEdge; }}
     public bool IsOnVerticalEdge    { get { return IsOnRightEdge || IsOnLeftEdge; }}
+
+    // ----------------------------------------------------------------------
+	public FieldInfo GetFieldInfo() {
+        if(MethodName == null) return null;
+		Type classType= RuntimeType;
+        FieldInfo field= classType.GetField(MethodName);
+        if(field == null) {
+            Debug.LogWarning("iCanScript: Unable to extract FieldInfo from RuntimeDesc: "+MethodName);                
+        }
+        return field;		            
+	}
+
+    // ----------------------------------------------------------------------
+	public MethodBase GetMethodBase(List<iCS_EditorObject> editorObjects) {
+        // Extract MethodBase for constructor.
+        MethodBase method= null;
+		Type classType= RuntimeType;
+        if(ObjectType == iCS_ObjectTypeEnum.Constructor) {
+            method= classType.GetConstructor(GetParamTypes(editorObjects));
+            if(method == null) {
+                string signature="(";
+                bool first= true;
+                foreach(var param in GetParamTypes(editorObjects)) {
+                    if(first) { first= false; } else { signature+=", "; }
+                    signature+= param.Name;
+                }
+                signature+=")";
+                Debug.LogWarning("Unable to extract constructor: "+classType.Name+signature);
+            }
+            return method;
+        }
+        // Extract MethodBase for class methods.
+        if(MethodName == null) return null;
+		Type[] paramTypes= GetParamTypes(editorObjects);
+        method= classType.GetMethod(MethodName, paramTypes);            
+        if(method == null) {
+            string signature="(";
+            bool first= true;
+            foreach(var param in paramTypes) {
+                if(first) { first= false; } else { signature+=", "; }
+                signature+= param.Name;
+            }
+            signature+=")";
+            Debug.LogWarning("iCanScript: Unable to extract MethodInfo from RuntimeDesc: "+MethodName+signature);
+        }
+        return method;		            
+	}
+	public Type[] GetParamTypes(List<iCS_EditorObject> editorObjects) {
+		iCS_EditorObject[] ports= GetChildPorts(editorObjects);
+		Type[] result= new Type[NbOfParams];
+		for(int i= 0; i < result.Length; ++i) {
+			result[i]= ports[i].RuntimeType;
+		}
+		return result;	        
+	}
+	iCS_EditorObject[] GetChildPorts(List<iCS_EditorObject> editorObjects) {
+		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
+		// Get all child data ports.
+		int nodeId= InstanceId;
+		foreach(var port in editorObjects) {
+			if(port.ParentId != nodeId) continue;
+			if(!port.IsDataPort) continue;
+			if(port.IsEnablePort) continue;
+			ports.Add(port);
+		}
+		// Sort child ports according to index.
+		iCS_EditorObject[] result= ports.ToArray();
+		Array.Sort(result, (x,y)=> x.PortIndex - y.PortIndex);
+		return result;            
+	}
 
 }

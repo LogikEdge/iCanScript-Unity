@@ -49,6 +49,10 @@ public class iCS_ReflectionDesc {
 		ParamIsOuts       = paramIsOuts;
 		ReturnName        = returnName;
 		ParamInitialValues= paramDefaultValues;
+		
+		// Fix parameter & return name for properties.
+		if(IsGetProperty) ReturnName= PropertyName;
+		if(IsSetProperty) ParamNames[0]= PropertyName;
     }
     // ----------------------------------------------------------------------
     public override string ToString() {

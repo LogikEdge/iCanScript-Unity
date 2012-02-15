@@ -4,9 +4,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+using P=Prelude;
+
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void ClassModuleCompleteCreation(iCS_EditorObject module) {
+        Type classType= module.RuntimeType;
+        if(!iCS_Types.IsStaticClass(classType)) {
+            ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.InStaticModulePort);
+            ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.OutStaticModulePort);            
+        }
         iCS_UserPreferences.UserOnCreateClassModule control= Preferences.OnCreateClassModule;
         if(control.OutputInstanceVariables)  ClassModuleCreateOutputInstanceFields(module);
         if(control.InputInstanceVariables)   ClassModuleCreateInputInstanceFields(module);
@@ -20,11 +27,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        if(!iCS_Types.IsStaticClass(classType)) {
-            ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.InStaticModulePort);
-        }
-
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetInstanceField) {
@@ -35,11 +37,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        if(!iCS_Types.IsStaticClass(classType)) {
-            ClassModuleDestroyPortIfNotConnected(module, "this", iCS_ObjectTypeEnum.InStaticModulePort);
-        }
-
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetInstanceField) {
@@ -51,26 +48,18 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        if(!iCS_Types.IsStaticClass(classType)) {
-            ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.OutStaticModulePort);
-        }
-
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetInstanceField) {
                 ClassModuleCreatePortIfNonExisting(module, component.FieldName, component.ParamTypes[0], iCS_ObjectTypeEnum.InStaticModulePort);                
+                System.Object constantValue= component.Field.GetRawConstantValue();
+                if(constantValue != null) Debug.Log(constantValue.GetType().Name);
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        if(!iCS_Types.IsStaticClass(classType)) {
-            ClassModuleDestroyPortIfNotConnected(module, "this", iCS_ObjectTypeEnum.OutStaticModulePort);
-        }
-
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetInstanceField) {
@@ -81,7 +70,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetStaticField) {
@@ -92,7 +80,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetStaticField) {
@@ -104,7 +91,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetStaticField) {
@@ -115,7 +101,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetStaticField) {
@@ -127,11 +112,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        if(!iCS_Types.IsStaticClass(classType)) {
-            ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.InStaticModulePort);
-        }
-
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetInstanceProperty) {
@@ -142,11 +122,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        if(!iCS_Types.IsStaticClass(classType)) {
-            ClassModuleDestroyPortIfNotConnected(module, "this", iCS_ObjectTypeEnum.InStaticModulePort);
-        }
-
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsGetInstanceProperty) {
@@ -157,11 +132,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        if(!iCS_Types.IsStaticClass(classType)) {
-            ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.OutStaticModulePort);
-        }
-
-        // Automatically create class fields.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(classType);
         foreach(var component in components) {
             if(component.IsSetInstanceProperty) {
@@ -254,5 +224,66 @@ public partial class iCS_IStorage {
         if(port == null) {
             CreatePort(portName, module.InstanceId, portType, objType);                
         }
+    }
+    // ----------------------------------------------------------------------
+    iCS_EditorObject FindFunction(iCS_EditorObject module, iCS_ReflectionDesc desc) {
+        iCS_EditorObject[] children= BuildListOfChildren(
+            child=> {
+                if(child.ObjectType != desc.ObjectType || child.NbOfParams != desc.ParamTypes.Length) return false;
+                return desc.Method != null ? desc.Method == child.GetMethodBase(EditorObjects) : desc.Field == child.GetFieldInfo();
+            },
+            module);
+        return children.Length != 0 ? children[0] : null;
+    }
+
+    // ======================================================================
+    public void ClassModuleCreate(iCS_EditorObject module, iCS_ReflectionDesc desc) {
+        if(FindFunction(module, desc) != null) return;
+        Rect moduleRect= GetPosition(module);
+        iCS_EditorObject func= CreateMethod(module.InstanceId, new Vector2(0.5f*(moduleRect.x+moduleRect.xMax), moduleRect.yMax), desc);
+        ForEachChildDataPort(func,
+            port=> {
+                string modulePortName= port.Name;
+                if(port.Name != "this" && !desc.IsField && !desc.IsProperty) {
+                    modulePortName+= "."+desc.DisplayName;
+                }
+                if(port.IsInputPort) {
+                    // Special case for "this".
+                    if(port.Name == "this") {
+                        iCS_EditorObject classPort= ClassModuleGetPort(module, modulePortName, iCS_ObjectTypeEnum.InStaticModulePort);
+                        if(classPort != null) {
+                            SetSource(port, classPort);
+                        } else {
+                            Debug.LogWarning("iCanScript: Unable to find 'this' input port in class module: "+module.Name);
+                        }
+                    } else {
+                        iCS_EditorObject classPort= ClassModuleGetPort(module, modulePortName, iCS_ObjectTypeEnum.InDynamicModulePort);
+                        if(classPort == null) {
+                            classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+                            SetSource(port, classPort);
+                        } else {
+                            Debug.LogWarning("iCanScript: Port name conflict for class module: "+module.Name+" Port name: "+modulePortName);
+                        }
+                    }
+                } else {
+                    // Special case for "this".
+                    if(port.Name == "this") {
+                    } else {
+                        iCS_EditorObject classPort= ClassModuleGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                        if(classPort == null) {
+                            classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                            SetSource(classPort, port);
+                        } else {
+                            Debug.LogWarning("iCanScript: Port name conflict for class module: "+module.Name+" Port name: "+modulePortName);
+                        }                        
+                    }
+                }
+            }
+        );
+        Minimize(func);
+    }
+    public void ClassModuleDestroy(iCS_EditorObject module, iCS_ReflectionDesc desc) {
+        iCS_EditorObject func= FindFunction(module, desc);
+        if(func != null) DestroyInstance(func);
     }
 }
