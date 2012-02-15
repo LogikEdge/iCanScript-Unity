@@ -31,7 +31,7 @@ public class iCS_FunctionBase : iCS_Action {
         return null;
     }
     protected virtual void DoSetParameter(int idx, object value) {
-        Debug.LogError("Invalid parameter index given");                
+        Debug.LogError("Invalid parameter index: "+idx+" parameter length: "+myParameters.Length);                
     }
     public bool IsParameterReady(int idx, int frameId) {
         if(idx >= myParameters.Length) return DoIsParameterReady(idx, frameId);

@@ -59,7 +59,16 @@ public class iCS_ClassWizard : EditorWindow {
     int NbOfMethods   { get { return Methods.Length; }}
     
     // ---------------------------------------------------------------------------------
+    void Init() {
+        Target= null;
+        Storage= null;
+    }
+    // ---------------------------------------------------------------------------------
     public void Activate(iCS_EditorObject target, iCS_IStorage storage) {
+        if(target == null || storage == null) {
+            Init();
+            return;
+        }
         Storage= storage;
         // Build class data.
         ClassType= target.RuntimeType;
@@ -130,16 +139,17 @@ public class iCS_ClassWizard : EditorWindow {
         Target= target;
         Repaint();
     }
-    
+    // ---------------------------------------------------------------------------------
+    public void Deactivate() {
+        Init();
+    }
     // ---------------------------------------------------------------------------------
     void OnEnable() {
-        Target= null;
-        Storage= null;
+        Init();
     }
     // ---------------------------------------------------------------------------------
     void OnDisable() {
-        Target= null;
-        Storage= null;
+        Init();
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {

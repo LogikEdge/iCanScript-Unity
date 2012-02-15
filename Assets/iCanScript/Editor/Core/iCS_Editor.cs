@@ -1418,11 +1418,18 @@ public class iCS_Editor : EditorWindow {
 		iCS_EditorUtility.ToolbarText(ref r, 100f, "Search", 0, 0);		
 	}
 	// ----------------------------------------------------------------------
+    void UpdateClassWizard() {
+        if(ClassWizard == null) return;
+        if(SelectedObject == null || !SelectedObject.IsClassModule) ClassWizard.Deactivate();
+        ClassWizard.Activate(SelectedObject, Storage);
+    }
+	// ----------------------------------------------------------------------
 	void DrawGraph () {
         // Ask the storage to update itself.
         Storage.Update();
-        
-        if(ClassWizard != null && SelectedObject != null && SelectedObject.IsClassModule) ClassWizard.Activate(SelectedObject, Storage);
+
+        // Update class wizard.
+        UpdateClassWizard();
         
 		// Start graphics
         Graphics.Begin(UpdateScrollPosition(), Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), Storage);
