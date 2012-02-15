@@ -226,7 +226,7 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    iCS_EditorObject FindFunction(iCS_EditorObject module, iCS_ReflectionDesc desc) {
+    public iCS_EditorObject ClassModuleFindFunction(iCS_EditorObject module, iCS_ReflectionDesc desc) {
         iCS_EditorObject[] children= BuildListOfChildren(
             child=> {
                 if(child.ObjectType != desc.ObjectType || child.NbOfParams != desc.ParamTypes.Length) return false;
@@ -238,7 +238,7 @@ public partial class iCS_IStorage {
 
     // ======================================================================
     public void ClassModuleCreate(iCS_EditorObject module, iCS_ReflectionDesc desc) {
-        if(FindFunction(module, desc) != null) return;
+        if(ClassModuleFindFunction(module, desc) != null) return;
         Rect moduleRect= GetPosition(module);
         iCS_EditorObject func= CreateMethod(module.InstanceId, new Vector2(0.5f*(moduleRect.x+moduleRect.xMax), moduleRect.yMax), desc);
         ForEachChildDataPort(func,
@@ -262,7 +262,7 @@ public partial class iCS_IStorage {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                             SetSource(port, classPort);
                         } else {
-                            Debug.LogWarning("iCanScript: Port name conflict for class module: "+module.Name+" Port name: "+modulePortName);
+                            SetSource(port, classPort);
                         }
                     }
                 } else {
@@ -274,7 +274,7 @@ public partial class iCS_IStorage {
                             classPort= CreatePort(modulePortName, module.InstanceId, port.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                             SetSource(classPort, port);
                         } else {
-                            Debug.LogWarning("iCanScript: Port name conflict for class module: "+module.Name+" Port name: "+modulePortName);
+                            SetSource(classPort, port);
                         }                        
                     }
                 }
@@ -283,7 +283,7 @@ public partial class iCS_IStorage {
         Minimize(func);
     }
     public void ClassModuleDestroy(iCS_EditorObject module, iCS_ReflectionDesc desc) {
-        iCS_EditorObject func= FindFunction(module, desc);
+        iCS_EditorObject func= ClassModuleFindFunction(module, desc);
         if(func != null) DestroyInstance(func);
     }
 }

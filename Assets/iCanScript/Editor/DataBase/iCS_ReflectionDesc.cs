@@ -47,7 +47,7 @@ public class iCS_ReflectionDesc {
 		ParamNames        = paramNames;
 		ParamTypes        = paramTypes;
 		ParamIsOuts       = paramIsOuts;
-		ReturnName        = returnName;
+		ReturnName        = returnName ?? (Method != null && Method.IsConstructor ? "this" : iCS_Types.TypeName(ReturnType));
 		ParamInitialValues= paramDefaultValues;
 		
 		// Fix parameter & return name for properties.

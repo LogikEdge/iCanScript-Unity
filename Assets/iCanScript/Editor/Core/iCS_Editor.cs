@@ -15,6 +15,7 @@ public class iCS_Editor : EditorWindow {
 	iCS_Inspector        Inspector      = null;
     iCS_EditorObject     DisplayRoot    = null;
     iCS_DynamicMenu      DynamicMenu    = null;
+    iCS_ClassWizard      ClassWizard    = null;
     
     // ----------------------------------------------------------------------
     float LastDirtyUpdateTime= 0f;
@@ -595,8 +596,8 @@ public class iCS_Editor : EditorWindow {
             SelectedObject= DisplayRoot;
         }
         if(SelectedObject.IsClassModule) {
-            var classMenu= GetWindow(typeof(iCS_ClassWizard)) as iCS_ClassWizard;
-            classMenu.Activate(SelectedObject, Storage);
+            ClassWizard= GetWindow(typeof(iCS_ClassWizard)) as iCS_ClassWizard;
+            ClassWizard.Activate(SelectedObject, Storage);
         } else {
             DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));                    
         }
@@ -976,6 +977,9 @@ public class iCS_Editor : EditorWindow {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
         SelectedObject= newSelected;
+        if(SelectedObject != null && SelectedObject.IsClassModule && ClassWizard != null) {
+            ClassWizard.Activate(SelectedObject, Storage);
+        }
         return SelectedObject;
     }
 
@@ -1417,6 +1421,8 @@ public class iCS_Editor : EditorWindow {
 	void DrawGraph () {
         // Ask the storage to update itself.
         Storage.Update();
+        
+        if(ClassWizard != null && SelectedObject != null && SelectedObject.IsClassModule) ClassWizard.Activate(SelectedObject, Storage);
         
 		// Start graphics
         Graphics.Begin(UpdateScrollPosition(), Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), Storage);

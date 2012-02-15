@@ -19,9 +19,9 @@ public class iCS_ClassWizard : EditorWindow {
     class VariablePair {
         public ControlPair InputControlPair= null;
         public ControlPair OutputControlPair= null;
-        public VariablePair(iCS_ReflectionDesc inputComponent, iCS_ReflectionDesc outputComponent) {
-            InputControlPair= new ControlPair(inputComponent);
-            OutputControlPair= new ControlPair(outputComponent);
+        public VariablePair(iCS_ReflectionDesc inputComponent, bool inputActive, iCS_ReflectionDesc outputComponent, bool outputActive) {
+            InputControlPair= new ControlPair(inputComponent, inputActive);
+            OutputControlPair= new ControlPair(outputComponent, outputActive);
         }
     };
     
@@ -68,20 +68,23 @@ public class iCS_ClassWizard : EditorWindow {
         List<ControlPair> methods= new List<ControlPair>();
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(ClassType);
         foreach(var component in components) {
+            bool isActive= Storage.ClassModuleFindFunction(Target, component) != null;
             if(component.IsField) {
                 string name= component.FieldName;
                 var variablePair= GetVariablePair(name, fields);
                 if(component.IsSetField) {
                     if(variablePair != null) {
                         variablePair.InputControlPair.Component= component;
+                        variablePair.InputControlPair.IsActive= isActive;
                     } else {
-                        fields.Add(new VariablePair(component, null));                        
+                        fields.Add(new VariablePair(component, isActive, null, false));                        
                     }
                 } else {
                     if(variablePair != null) {
                         variablePair.OutputControlPair.Component= component;
+                        variablePair.OutputControlPair.IsActive= isActive;
                     } else {
-                        fields.Add(new VariablePair(null, component));                                            
+                        fields.Add(new VariablePair(null, false, component, isActive));                                            
                     }
                 }
                 var fieldSize= EditorStyles.boldLabel.CalcSize(new GUIContent(name));
@@ -94,14 +97,16 @@ public class iCS_ClassWizard : EditorWindow {
                 if(component.IsSetProperty) {
                     if(variablePair != null) {
                         variablePair.InputControlPair.Component= component;
+                        variablePair.InputControlPair.IsActive= isActive;
                     } else {
-                        properties.Add(new VariablePair(component, null));                        
+                        properties.Add(new VariablePair(component, isActive, null, false));                        
                     }
                 } else {
                     if(variablePair != null) {
                         variablePair.OutputControlPair.Component= component;
+                        variablePair.OutputControlPair.IsActive= isActive;
                     } else {
-                        properties.Add(new VariablePair(null, component));                        
+                        properties.Add(new VariablePair(null, false, component, isActive));                        
                     }
                 }
                 var propertySize= EditorStyles.boldLabel.CalcSize(new GUIContent(name));
@@ -109,7 +114,7 @@ public class iCS_ClassWizard : EditorWindow {
                     MaxVariableWidth= propertySize.x+kSpacer;
                 }
             } else {
-                methods.Add(new ControlPair(component));
+                methods.Add(new ControlPair(component, isActive));
                 var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(component.FunctionSignatureNoThis));
                 if(signatureSize.x+12f > MaxMethodWidth) {
                     MaxMethodWidth= signatureSize.x+12f;
@@ -123,8 +128,19 @@ public class iCS_ClassWizard : EditorWindow {
         Methods= methods.ToArray();
     	Array.Sort(Methods, (x,y)=> x.Component.FunctionSignatureNoThis.CompareTo(y.Component.FunctionSignatureNoThis));
         Target= target;
+        Repaint();
     }
     
+    // ---------------------------------------------------------------------------------
+    void OnEnable() {
+        Target= null;
+        Storage= null;
+    }
+    // ---------------------------------------------------------------------------------
+    void OnDisable() {
+        Target= null;
+        Storage= null;
+    }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
         // Wait until window is configured.
@@ -133,8 +149,6 @@ public class iCS_ClassWizard : EditorWindow {
         EditorGUIUtility.LookLikeInspector();
         
         // Define GUI content.
-        GUIContent applyButton     = new GUIContent("Apply");
-        GUIContent cancelButton    = new GUIContent("Cancel");
         GUIContent constructorLabel= new GUIContent("Create Instance");
         GUIContent variableTitle   = new GUIContent("Variables");
         GUIContent inTitle         = new GUIContent("In");
@@ -151,28 +165,18 @@ public class iCS_ClassWizard : EditorWindow {
         Vector2 nameTitleSize= EditorStyles.boldLabel.CalcSize(nameTitle);
         Vector2 typeTitleSize= EditorStyles.boldLabel.CalcSize(typeTitle);
         Vector2 methodTitleSize= EditorStyles.boldLabel.CalcSize(methodTitle);
-        Vector2 applyButtonSize     = EditorStyles.radioButton.CalcSize(applyButton);
-        Vector2 cancelButtonSize    = EditorStyles.radioButton.CalcSize(applyButton);
         float labelHeight= 4f+labelSize.y;
         float titleHeight= 4f+variableTitleSize.y;
-        float buttonWidth= Mathf.Max(applyButtonSize.x, cancelButtonSize.x);
-        float buttonHeight= 4f+Mathf.Max(applyButtonSize.y, cancelButtonSize.y);
 
         // Compute window parameters.
         float x     = kMarginSize;
-        float y     = kMarginSize;
         float width = position.width-2f*kMarginSize;
         float height= position.height-2f*kMarginSize;
-        float yMax  = y+height;
         
         // Compute header position.
         float headerHeight= 3f*labelSize.y+kMarginSize;
         float remainingHeight= height-headerHeight;
 
-        // Compute trailer position.
-        Rect trailerRect= new Rect(x, yMax-buttonHeight, width, buttonHeight);
-        remainingHeight-= buttonHeight+kMarginSize;
-        
         // Compute variables & methods fix heights.
         float fixVariableHeight= 2f*titleHeight;
         float fixMethodHeight= titleHeight;
@@ -197,7 +201,7 @@ public class iCS_ClassWizard : EditorWindow {
                 int nbOfVariableLines= (int)(halfRemainingHeight/labelHeight);
                 visibleVariableHeight= labelHeight*nbOfVariableLines;
                 int nbOfMethodLines= (int)((remainingHeight-visibleVariableHeight)/labelHeight);
-                visibleMethodHeight= labelHeight*nbOfMethodLines;
+                visibleMethodHeight= labelHeight*(nbOfMethodLines+1);
             }
         }
         
@@ -238,14 +242,6 @@ public class iCS_ClassWizard : EditorWindow {
             }
         }
         GUI.EndScrollView();
-
-        // Display buttons.
-        if(GUI.Button(new Rect(trailerRect.xMax-2f*buttonWidth-kMarginSize, trailerRect.y, buttonWidth, buttonHeight), cancelButton)) {
-            Close();
-        }
-        if(GUI.Button(new Rect(trailerRect.xMax-buttonWidth, trailerRect.y, buttonWidth, buttonHeight), applyButton)) {
-            Close();
-        }
     }
 
     // ---------------------------------------------------------------------------------

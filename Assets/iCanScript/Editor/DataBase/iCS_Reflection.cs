@@ -231,7 +231,7 @@ public class iCS_Reflection {
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerMethod= false;
             string displayName= method.Name;
-            string returnName= "out";
+            string returnName= null;
             string toolTip= classToolTip;
             string iconPath= classIconPath;
             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
