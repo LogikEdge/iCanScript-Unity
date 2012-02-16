@@ -10,12 +10,12 @@ public static class iCS_AllowedChildren {
     
     static iCS_AllowedChildren() {
         BehaviourChildNames= new string[]{
-            iCS_EngineStrings.BehaviourChildStart,
-            iCS_EngineStrings.BehaviourChildUpdate,
-            iCS_EngineStrings.BehaviourChildLateUpdate,
-            iCS_EngineStrings.BehaviourChildFixedUpdate,
-            iCS_EngineStrings.BehaviourChildOnGUI,
-            iCS_EngineStrings.BehaviourChildOnDrawGizmos
+            iCS_Strings.BehaviourChildStart,
+            iCS_Strings.BehaviourChildUpdate,
+            iCS_Strings.BehaviourChildLateUpdate,
+            iCS_Strings.BehaviourChildFixedUpdate,
+            iCS_Strings.BehaviourChildOnGUI,
+            iCS_Strings.BehaviourChildOnDrawGizmos
         };
         BehaviourChildToolTips= new string[]{
             "Start is called just before any of the Update methods is called the first time.",
@@ -26,9 +26,9 @@ public static class iCS_AllowedChildren {
             "Implement this OnDrawGizmos if you want to draw gizmos that are also pickable and always drawn."
         };
         StateChildNames= new string[]{
-            iCS_EngineStrings.StateChildOnEntry,
-            iCS_EngineStrings.StateChildOnUpdate,
-            iCS_EngineStrings.StateChildOnExit
+            iCS_Strings.StateChildOnEntry,
+            iCS_Strings.StateChildOnUpdate,
+            iCS_Strings.StateChildOnExit
         };
         StateChildToolTips= new string[]{
             "OnEntry is called when the state is first activated before OnUpdate is called.",

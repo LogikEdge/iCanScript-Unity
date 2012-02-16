@@ -63,13 +63,13 @@ public sealed class iCS_State : iCS_Object {
                 myTransitions.AddChild(transition);
             },
             (module)=> {
-                if(module.Name == iCS_EngineStrings.StateChildOnEntry) {
+                if(module.Name == iCS_Strings.StateChildOnEntry) {
                     myOnEntryAction= module;
                 }
-                else if(module.Name == iCS_EngineStrings.StateChildOnUpdate) {
+                else if(module.Name == iCS_Strings.StateChildOnUpdate) {
                     myOnUpdateAction= module;
                 }
-                else if(module.Name == iCS_EngineStrings.StateChildOnExit) {
+                else if(module.Name == iCS_Strings.StateChildOnExit) {
                     myOnExitAction= module;
                 }
                 else {

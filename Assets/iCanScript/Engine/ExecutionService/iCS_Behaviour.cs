@@ -113,19 +113,19 @@ public sealed class iCS_Behaviour : iCS_Storage {
         iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
-            case iCS_EngineStrings.BehaviourChildStart: {
+            case iCS_Strings.BehaviourChildStart: {
                 myStartAction= action;
                 break;
             }
-            case iCS_EngineStrings.BehaviourChildUpdate: {
+            case iCS_Strings.BehaviourChildUpdate: {
                 myUpdateAction= action;
                 break;
             }
-            case iCS_EngineStrings.BehaviourChildLateUpdate: {
+            case iCS_Strings.BehaviourChildLateUpdate: {
                 myLateUpdateAction= action;
                 break;
             }
-            case iCS_EngineStrings.BehaviourChildFixedUpdate: {
+            case iCS_Strings.BehaviourChildFixedUpdate: {
                 myFixedUpdateAction= action;
                 break;
             }
@@ -139,19 +139,19 @@ public sealed class iCS_Behaviour : iCS_Storage {
         iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
-            case iCS_EngineStrings.BehaviourChildStart: {
+            case iCS_Strings.BehaviourChildStart: {
                 myStartAction= null;
                 break;
             }
-            case iCS_EngineStrings.BehaviourChildUpdate: {
+            case iCS_Strings.BehaviourChildUpdate: {
                 myUpdateAction= null;
                 break;
             }
-            case iCS_EngineStrings.BehaviourChildLateUpdate: {
+            case iCS_Strings.BehaviourChildLateUpdate: {
                 myLateUpdateAction= null;
                 break;
             }
-            case iCS_EngineStrings.BehaviourChildFixedUpdate: {
+            case iCS_Strings.BehaviourChildFixedUpdate: {
                 myFixedUpdateAction= null;
                 break;
             }
@@ -504,7 +504,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
     public static MethodInfo GetAddChildMethodInfo(object obj) {
         if(obj == null) return null;
         Type objType= obj.GetType();
-        MethodInfo methodInfo= objType.GetMethod(iCS_EngineStrings.AddChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        MethodInfo methodInfo= objType.GetMethod(iCS_Strings.AddChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         if(methodInfo == null) return null;
         ParameterInfo[] parameters= methodInfo.GetParameters();
         if(parameters.Length != 1) return null;
@@ -521,7 +521,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
     public static MethodInfo GetRemoveChildMethodInfo(object obj) {
         if(obj == null) return null;
         Type objType= obj.GetType();
-        MethodInfo methodInfo= objType.GetMethod(iCS_EngineStrings.RemoveChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
+        MethodInfo methodInfo= objType.GetMethod(iCS_Strings.RemoveChildMethod,BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static);
         if(methodInfo == null) return null;
         ParameterInfo[] parameters= methodInfo.GetParameters();
         if(parameters.Length != 1) return null;

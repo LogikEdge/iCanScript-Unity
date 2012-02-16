@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_EngineStrings {
+public class iCS_Strings {
     // Behaviour Allowed Children
     public const string BehaviourChildStart       = "Start";
     public const string BehaviourChildUpdate      = "Update";
