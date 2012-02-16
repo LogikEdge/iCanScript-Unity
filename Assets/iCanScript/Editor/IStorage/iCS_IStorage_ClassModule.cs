@@ -207,6 +207,16 @@ public partial class iCS_IStorage {
         return result;
     }
     // ----------------------------------------------------------------------
+    iCS_EditorObject ClassModuleGetInputThisPort(iCS_EditorObject module) {
+        iCS_EditorObject thisPort= ClassModuleGetPort(module, iCS_Strings.This, iCS_ObjectTypeEnum.InStaticModulePort);
+        if(thisPort == null) {
+            iCS_EditorObject constructor= ClassModuleGetConstructor(module);
+            if(constructor == null) return null;
+            thisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.This);
+        }
+        return thisPort;
+    }
+    // ----------------------------------------------------------------------
     void ClassModuleDestroyPortIfNotConnected(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
         iCS_EditorObject port= ClassModuleGetPort(module, portName, objType);
         if(port != null && GetSource(port) == null && FindAConnectedPort(port) == null) {
@@ -245,8 +255,8 @@ public partial class iCS_IStorage {
                 }
                 if(port.IsInputPort) {
                     // Special case for "this".
-                    if(port.Name == "this") {
-                        iCS_EditorObject classPort= ClassModuleGetPort(module, modulePortName, iCS_ObjectTypeEnum.InStaticModulePort);
+                    if(port.Name == iCS_Strings.This) {
+                        iCS_EditorObject classPort= ClassModuleGetInputThisPort(module);
                         if(classPort != null) {
                             SetSource(port, classPort);
                         } else {
