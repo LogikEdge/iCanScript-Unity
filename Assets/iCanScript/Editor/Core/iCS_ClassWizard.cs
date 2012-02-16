@@ -41,10 +41,10 @@ public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Layout info.
     // ---------------------------------------------------------------------------------
-    float       MaxConstructorWidth= 0;
-    float       MaxMethodWidth     = 0;
-    float       MaxVariableWidth   = 0;
-    float       VariableNameWidth  = 0;
+    float       MaxConstructorWidth= 0f;
+    float       MaxMethodWidth     = 0f;
+    float       MaxVariableWidth   = 0f;
+    float       VariableNameWidth  = 0f;
 
     // =================================================================================
     // Constant GUI Content
@@ -73,10 +73,10 @@ public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
-    const float   kSpacer       = 8;
-    const float   kMarginSize   = 10;
-    const float   kScrollerSize = 16;
-    const float   kCheckBoxWidth= 25;
+    const float   kSpacer       = 8f;
+    const float   kMarginSize   = 10f;
+    const float   kScrollerSize = 16f;
+    const float   kCheckBoxWidth= 25f;
     
     // =================================================================================
     // Properties

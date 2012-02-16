@@ -11,10 +11,11 @@ public partial class iCS_IStorage {
     void ClassModuleCompleteCreation(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
-            iCS_EditorObject port= ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.InStaticModulePort);
-            port.IsNameEditable= false;
-            port= ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.OutStaticModulePort);
-            port.IsNameEditable= false;
+            iCS_EditorObject inThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.This, classType, iCS_ObjectTypeEnum.InStaticModulePort);
+            inThisPort.IsNameEditable= false;
+            iCS_EditorObject outThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.This, classType, iCS_ObjectTypeEnum.OutStaticModulePort);
+            outThisPort.IsNameEditable= false;
+            SetSource(outThisPort, inThisPort);
         }
         iCS_UserPreferences.UserClassWizard control= Preferences.ClassWizard;
         if(control.OutputInstanceVariables)  ClassModuleCreateOutputInstanceFields(module);

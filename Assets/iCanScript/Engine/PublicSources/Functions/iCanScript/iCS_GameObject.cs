@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 [iCS_Class(Company="iCanScript", Package="GameObject")]
-public sealed class iCS_GameObject {
+public static class iCS_GameObject {
     // Global transform attributes
     [iCS_Function(ToolTip="Returns the global position of the given game object.")]
     public static Vector3 GetPosition(GameObject gameObject) {
