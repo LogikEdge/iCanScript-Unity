@@ -21,8 +21,6 @@ public class iCS_EditorStrings {
 	
     // Textures
     public const string AALineTexture     = "iCS_LineTexture.psd";
-    public const string DefaultNodeTexture= "iCS_DefaultNodeTexture.psd";
-    public const string NodeMaskTexture   = "iCS_NodeMaskTexture.psd";
 
     // Special node names.
     public const string StartNode      = "Start";
@@ -35,8 +33,4 @@ public class iCS_EditorStrings {
 
     // Special port names.
     public const string EnablePort= "enable";
-
-    // Product identifiers
-    public const string Company       = "iCanScript";
-    public const string DefaultPackage= "DefaultPackage";
 }

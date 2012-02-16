@@ -19,8 +19,6 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     static public bool  IsInitialized= false;    
     static Texture2D    lineTexture       = null;
-    static Texture2D    defaultNodeTexture= null;
-    static Texture2D    nodeMaskTexture   = null;
     static Texture2D    foldedIcon        = null;
     static Texture2D    unfoldedIcon      = null;
     static Texture2D    minimizeIcon      = null;
@@ -30,8 +28,6 @@ public class iCS_Graphics {
     static Texture2D    leftArrowHeadIcon = null;
     static Texture2D    rightArrowHeadIcon= null;
     static bool         lineTextureErrorSeen        = false;
-    static bool         defaultNodeTextureErrorSeen = false; 
-    static bool         nodeMaskTextureErrorSeen    = false;   
 	static bool         foldedIconErrorSeen         = false;
 	static bool         unfoldedIconErrorSeen       = false;
 	static bool         minimizeIconErrorSeen       = false;
@@ -239,7 +235,6 @@ public class iCS_Graphics {
 	// ----------------------------------------------------------------------
     static public bool Init(iCS_IStorage storage) {
         // Load AA line texture.
-        string texturePath;     
         if(lineTexture == null) {
             if(!GetCachedTexture(iCS_EditorStrings.AALineTexture, out lineTexture, ref lineTextureErrorSeen)) {
                 IsInitialized= false;
@@ -247,28 +242,6 @@ public class iCS_Graphics {
             }
             else {
                 lineTexture.hideFlags= HideFlags.DontSave;
-            }            
-        }
-        // Load node texture templates.
-        if(defaultNodeTexture == null) {
-            if(!GetCachedTexture(iCS_EditorStrings.DefaultNodeTexture, out defaultNodeTexture, ref defaultNodeTextureErrorSeen)) {
-                IsInitialized= false;
-                return IsInitialized;
-            }
-            else {
-                defaultNodeTexture.hideFlags= HideFlags.DontSave;
-            }            
-        }
-        if(nodeMaskTexture == null) {
-            texturePath= iCS_Config.GuiAssetPath +"/"+iCS_EditorStrings.NodeMaskTexture;
-            nodeMaskTexture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
-            if(nodeMaskTexture == null) {
-                ResourceMissingError(texturePath, ref nodeMaskTextureErrorSeen);
-                IsInitialized= false;
-                return IsInitialized;
-            }
-            else {
-                nodeMaskTexture.hideFlags= HideFlags.DontSave;
             }            
         }
         // Load folded/unfolded icons.
