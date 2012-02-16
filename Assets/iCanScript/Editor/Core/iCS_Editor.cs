@@ -45,6 +45,9 @@ public class iCS_Editor : EditorWindow {
     Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
+    // ----------------------------------------------------------------------
+	static string[] menuOptions= new string[2]{"Class", "Functional"};
+    int MenuOption= 0;
      
     // ======================================================================
     // ACCESSORS
@@ -601,7 +604,7 @@ public class iCS_Editor : EditorWindow {
             ClassWizard= GetClassWizard();
             ClassWizard.Activate(SelectedObject, Storage);
         } else {
-            DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));                    
+            DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition), MenuOption == 0);                    
         }
     }
 	// ----------------------------------------------------------------------
@@ -1370,7 +1373,6 @@ public class iCS_Editor : EditorWindow {
     }
     
 	// ----------------------------------------------------------------------
-	static string[] options= new string[5]{"All", "Class", "Function", "Input", "Output"};
 	void Heading() {
 		// Determine toolbar height.
 		float height= iCS_EditorUtility.GetGUIStyleHeight(EditorStyles.toolbar);
@@ -1416,8 +1418,8 @@ public class iCS_Editor : EditorWindow {
 		iCS_EditorUtility.ToolbarLabel(ref r, 150f, new GUIContent(bookmarkString),0,0,true);
 		
 		// Editable field test.		
-		iCS_EditorUtility.ToolbarButtons(ref r, 400f, 0, options, 0, 0);
-		iCS_EditorUtility.ToolbarText(ref r, 100f, "Search", 0, 0);		
+		iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent("Menu Type:"), 0, 0, false);		
+		MenuOption= iCS_EditorUtility.ToolbarButtons(ref r, 160f, MenuOption, menuOptions, 0, 0);
 	}
 	// ----------------------------------------------------------------------
     void UpdateClassWizard() {

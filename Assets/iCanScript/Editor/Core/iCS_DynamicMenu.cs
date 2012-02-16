@@ -21,7 +21,8 @@ public class iCS_DynamicMenu {
     // Field
     // ----------------------------------------------------------------------
     Vector2 MenuPosition= Vector2.zero;
-    Vector2 ProcessMenuPosition= Vector2.zero;    
+    Vector2 ProcessMenuPosition= Vector2.zero;
+    bool    IsClassMenu= true;    
     
     // ======================================================================
     // Menu Items
@@ -58,7 +59,7 @@ public class iCS_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    public void Update(iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 mouseDownPosition) {
+    public void Update(iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 mouseDownPosition, bool isClassMenu) {
         // Update mouse position if not already done.
         if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
 
@@ -68,6 +69,7 @@ public class iCS_DynamicMenu {
             return;
         }
         ProcessMenuPosition= MenuPosition;
+        IsClassMenu= isClassMenu;
         
         // Process the menu state.
         switch(selectedObject.ObjectType) {
@@ -122,27 +124,30 @@ public class iCS_DynamicMenu {
                 menu[2]= "#"+EnablePortStr;
             }
         }
-        // Class menu items
-        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            List<iCS_ReflectionDesc> classMenu= iCS_DataBase.GetClasses();
-            tmp= new string[menu.Length+classMenu.Count+1];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            for(int i= 0; i < classMenu.Count; ++i) {
-                tmp[i+menu.Length+1]= "++ "+classMenu[i].FunctionPath;
-            }
-            menu= tmp;            
-        }
-        // Function menu items
-        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildMenu();
-            tmp= new string[menu.Length+functionMenu.Count+1];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            for(int i= 0; i < functionMenu.Count; ++i) {
-                tmp[i+menu.Length+1]= "+ "+functionMenu[i].ToString();
-            }
-            menu= tmp;            
+        if(IsClassMenu) {
+            // Class menu items
+            if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+                List<iCS_ReflectionDesc> classMenu= iCS_DataBase.GetClasses();
+                tmp= new string[menu.Length+classMenu.Count+1];
+                menu.CopyTo(tmp, 0);
+                tmp[menu.Length]= SeparatorStr;
+                for(int i= 0; i < classMenu.Count; ++i) {
+                    tmp[i+menu.Length+1]= "++ "+classMenu[i].FunctionPath;
+                }
+                menu= tmp;            
+            }            
+        } else {
+            // Function menu items
+            if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+                List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildMenu();
+                tmp= new string[menu.Length+functionMenu.Count+1];
+                menu.CopyTo(tmp, 0);
+                tmp[menu.Length]= SeparatorStr;
+                for(int i= 0; i < functionMenu.Count; ++i) {
+                    tmp[i+menu.Length+1]= "+ "+functionMenu[i].ToString();
+                }
+                menu= tmp;            
+            }            
         }
         // Delete menu item
         if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionAction) {
