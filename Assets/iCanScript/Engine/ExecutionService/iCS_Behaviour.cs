@@ -113,19 +113,19 @@ public sealed class iCS_Behaviour : iCS_Storage {
         iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
-            case iCS_Strings.BehaviourChildStart: {
+            case iCS_Strings.Start: {
                 myStartAction= action;
                 break;
             }
-            case iCS_Strings.BehaviourChildUpdate: {
+            case iCS_Strings.Update: {
                 myUpdateAction= action;
                 break;
             }
-            case iCS_Strings.BehaviourChildLateUpdate: {
+            case iCS_Strings.LateUpdate: {
                 myLateUpdateAction= action;
                 break;
             }
-            case iCS_Strings.BehaviourChildFixedUpdate: {
+            case iCS_Strings.FixedUpdate: {
                 myFixedUpdateAction= action;
                 break;
             }
@@ -139,19 +139,19 @@ public sealed class iCS_Behaviour : iCS_Storage {
         iCS_Action action= obj as iCS_Action;
         if(action == null) return;
         switch(action.Name) {
-            case iCS_Strings.BehaviourChildStart: {
+            case iCS_Strings.Start: {
                 myStartAction= null;
                 break;
             }
-            case iCS_Strings.BehaviourChildUpdate: {
+            case iCS_Strings.Update: {
                 myUpdateAction= null;
                 break;
             }
-            case iCS_Strings.BehaviourChildLateUpdate: {
+            case iCS_Strings.LateUpdate: {
                 myLateUpdateAction= null;
                 break;
             }
-            case iCS_Strings.BehaviourChildFixedUpdate: {
+            case iCS_Strings.FixedUpdate: {
                 myFixedUpdateAction= null;
                 break;
             }

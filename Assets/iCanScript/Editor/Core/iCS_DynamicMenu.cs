@@ -43,9 +43,9 @@ public class iCS_DynamicMenu {
     const string SetAsEntryStr="Set as Entry";
     const string OnGUIStr= "+ OnGUI";
     const string OnDrawGizmosStr= "+ OnDrawGizmos";
-    const string OnEntryStr= "+ "+iCS_EditorStrings.OnEntryNode;
-    const string OnUpdateStr= "+ "+iCS_EditorStrings.OnUpdateNode;
-    const string OnExitStr= "+ "+iCS_EditorStrings.OnExitNode;
+    const string OnEntryStr= "+ "+iCS_Strings.OnEntry;
+    const string OnUpdateStr= "+ "+iCS_Strings.OnUpdate;
+    const string OnExitStr= "+ "+iCS_Strings.OnExit;
     const string PublishPortStr= "Publish on Module";
     const string EnablePortStr= "+ Enable Port";
     const string SeparatorStr= "";
@@ -367,7 +367,7 @@ public class iCS_DynamicMenu {
             case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 ProcessDestroyObject(selectedObject, storage); break;
             case EnablePortStr: {
-                iCS_EditorObject port= storage.CreatePort(iCS_EditorStrings.EnablePort, selectedObject.InstanceId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
+                iCS_EditorObject port= storage.CreatePort(iCS_Strings.EnablePort, selectedObject.InstanceId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
                 break;
             }
@@ -406,7 +406,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateStart(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.StartNode, false);
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.Start, false);
         module.IsNameEditable= false;
         module.ToolTip= "Awake is called when the behaviour is being loaded.";
         return module;
@@ -420,42 +420,42 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.UpdateNode, false);
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.Update, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on every frame update.";
         return module;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateUpdateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_EditorStrings.UpdateNode, false);
+        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_Strings.Update, false);
         stateChart.IsNameEditable= false;
         stateChart.ToolTip= "Executes on every frame update.";
         return stateChart;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateLateUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.LateUpdateNode, false);
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.LateUpdate, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes after every frame update.";
         return module;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateLateUpdateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_EditorStrings.LateUpdateNode, false);
+        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_Strings.LateUpdate, false);
         stateChart.IsNameEditable= false;
         stateChart.ToolTip= "Executes after every frame update.";
         return stateChart;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateFixedUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.FixedUpdateNode, false);
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.FixedUpdate, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes at a fix frame rate. Independent from the frame update.";
         return module;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateFixedUpdateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_EditorStrings.FixedUpdateNode, false);
+        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_Strings.FixedUpdate, false);
         stateChart.IsNameEditable= false;
         stateChart.ToolTip= "Executes at a fix frame rate. Independent from the frame update.";
         return stateChart;
@@ -501,21 +501,21 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateOnEntryModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.OnEntryNode, false);
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.OnEntry, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on entry into this state.";
         return module;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateOnUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.OnUpdateNode, false);
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.OnUpdate, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on every frame this state is active.";
         return module;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateOnExitModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_EditorStrings.OnExitNode, false);
+        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.OnExit, false);
         module.IsNameEditable= false;
         module.ToolTip= "Executes on exit from this state.";
         return module;

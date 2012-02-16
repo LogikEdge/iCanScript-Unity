@@ -22,15 +22,4 @@ public class iCS_EditorStrings {
     // Textures
     public const string AALineTexture     = "iCS_LineTexture.psd";
 
-    // Special node names.
-    public const string StartNode      = "Start";
-    public const string UpdateNode     = "Update";
-    public const string LateUpdateNode = "LateUpdate";
-    public const string FixedUpdateNode= "FixedUpdate";
-    public const string OnEntryNode    = "OnEntry";
-    public const string OnExitNode     = "OnExit";
-    public const string OnUpdateNode   = "OnUpdate";
-
-    // Special port names.
-    public const string EnablePort= "enable";
 }

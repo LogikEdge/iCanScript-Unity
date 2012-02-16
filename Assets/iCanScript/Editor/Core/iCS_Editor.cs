@@ -506,15 +506,15 @@ public class iCS_Editor : EditorWindow {
                         // Auto-insert on behaviour.
                         if(SelectedObject.IsBehaviour) {
                             iCS_EditorObject newObj= null;
-                            if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.BehaviourChildUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                            if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.Update, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
                                 Storage.RegisterUndo("Create Update");
-                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.BehaviourChildUpdate);  
-                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.BehaviourChildLateUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.Update);  
+                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.LateUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
                                 Storage.RegisterUndo("Create LateUpdate");
-                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.BehaviourChildLateUpdate);                                  
-                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.BehaviourChildFixedUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.LateUpdate);                                  
+                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.FixedUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
                                 Storage.RegisterUndo("Create FixedUpdate");
-                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.BehaviourChildFixedUpdate);                                  
+                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.FixedUpdate);                                  
                             }
                             if(newObj != null) {
                                 CenterAt(graphPos);
@@ -555,15 +555,15 @@ public class iCS_Editor : EditorWindow {
                         if(SelectedObject.IsState) {
                             iCS_EditorObject newObj= null;
                             if(!ev.shift) {
-                                if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.StateChildOnUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
                                     Storage.RegisterUndo("Create OnUpdate");
-                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.StateChildOnUpdate);  
-                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.StateChildOnEntry, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.OnUpdate);  
+                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnEntry, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
                                     Storage.RegisterUndo("Create OnEntry");
-                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.StateChildOnEntry);                                  
-                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.StateChildOnExit, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
+                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.OnEntry);                                  
+                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnExit, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
                                     Storage.RegisterUndo("Create OnExit");
-                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.StateChildOnExit);                                  
+                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.OnExit);                                  
                                 }                                
                             } else {
                                 Storage.RegisterUndo("Create State");

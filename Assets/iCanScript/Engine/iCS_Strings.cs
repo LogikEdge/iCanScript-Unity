@@ -3,17 +3,17 @@ using System.Collections;
 
 public class iCS_Strings {
     // Behaviour Allowed Children
-    public const string BehaviourChildStart       = "Start";
-    public const string BehaviourChildUpdate      = "Update";
-    public const string BehaviourChildLateUpdate  = "LateUpdate";
-    public const string BehaviourChildFixedUpdate = "FixedUpdate";
-    public const string BehaviourChildOnGUI       = "OnGUI";
-    public const string BehaviourChildOnDrawGizmos= "OnDrawGizmos";
+    public const string Start       = "Start";
+    public const string Update      = "Update";
+    public const string LateUpdate  = "LateUpdate";
+    public const string FixedUpdate = "FixedUpdate";
+    public const string OnGUI       = "OnGUI";
+    public const string OnDrawGizmos= "OnDrawGizmos";
     
     // State Allowed Children
-    public const string StateChildOnEntry = "OnEntry";
-    public const string StateChildOnUpdate= "OnUpdate";
-    public const string StateChildOnExit  = "OnExit";
+    public const string OnEntry = "OnEntry";
+    public const string OnUpdate= "OnUpdate";
+    public const string OnExit  = "OnExit";
     
     // Special node names.
     public const string TransitionEntryModule= "TransitionEntry";
