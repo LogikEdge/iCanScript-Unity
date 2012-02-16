@@ -6,19 +6,20 @@ public class iCS_Integrator {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-    [iCS_InPort]    public Vector3  Gravity        = new Vector3(0,-9.8f,0);
-    [iCS_InPort]    public float    Mass           = 1f;
-    [iCS_InPort]    public float    DragFactor     = 0.01f;
-                    public Vector3  FinalVelocity  = Vector3.zero;
-                    public Vector3  OutputVelocity = Vector3.zero;
+    [iCS_InPort]    public Vector3  Gravity         = new Vector3(0,-9.8f,0);
+    [iCS_InPort]    public float    DragFactor      = 0.01f;
+                    public float    InvMass         = 1f;
+                    public Vector3  PreviousVelocity= Vector3.zero;
+                    public Vector3  OutputVelocity  = Vector3.zero;
+                    Vector3[]       Forces          = new Vector3[3];
                     
     // ======================================================================
     // Properties
 	// ----------------------------------------------------------------------
-    public Vector3 Force1 { [iCS_Function] set { Forces[0]= value; }}
-    public Vector3 Force2 { [iCS_Function] set { Forces[1]= value; }}
-    public Vector3 Force3 { [iCS_Function] set { Forces[2]= value; }}
-    Vector3[]   Forces= new Vector3[3];
+    public float   Mass       { [iCS_Function] set { InvMass= Math3D.IsZero(value) ? 1f : 1f/value; }}
+    public Vector3 Force1     { [iCS_Function] set { Forces[0]= value; }}
+    public Vector3 Force2     { [iCS_Function] set { Forces[1]= value; }}
+    public Vector3 Force3     { [iCS_Function] set { Forces[2]= value; }}
     
 	// ----------------------------------------------------------------------
     [iCS_Function] public iCS_Integrator() {}
@@ -26,21 +27,23 @@ public class iCS_Integrator {
 	// ----------------------------------------------------------------------
     [iCS_Function(Return="Velocity")]
     public Vector3 Update(Vector3 actualDisplacement) {
-        // Update gravity
-        float dt= Time.deltaTime;
-        Vector3 newFinalVelocity= FinalVelocity+dt*Gravity;
-        
         // Apply all force generators.
+        Vector3 forceAccum= Vector3.zero;
         foreach(var force in Forces) {
-            newFinalVelocity+= force*dt;
+            forceAccum+= force;
         }
+        Vector3 accel= Gravity+forceAccum*InvMass;
         
-        // Apply drag force.
-        newFinalVelocity*= (1f-DragFactor);
-        
+        // Compute new velocity.
+        float dt= Time.deltaTime;
+        Vector3 newVelocity= PreviousVelocity+accel*dt;
+
+        // Apply drag factor.
+        newVelocity*= (1f-DragFactor*InvMass*dt);
+
         // Update velocities.
-        OutputVelocity= 0.5f*(newFinalVelocity+FinalVelocity);
-        FinalVelocity= newFinalVelocity;
+        OutputVelocity= 0.5f*(newVelocity+PreviousVelocity);
+        PreviousVelocity= newVelocity;
         return OutputVelocity;
     }
 }
