@@ -157,6 +157,8 @@ public class iCS_Editor : EditorWindow {
 		Storage        = null;
     }
 
+	// ----------------------------------------------------------------------
+    protected virtual iCS_ClassWizard GetClassWizard() { return GetWindow(typeof(iCS_ClassWizard)) as iCS_ClassWizard; }
     // ----------------------------------------------------------------------
     public void SetInspector(iCS_Inspector inspector) {
         Inspector= inspector;
@@ -596,7 +598,7 @@ public class iCS_Editor : EditorWindow {
             SelectedObject= DisplayRoot;
         }
         if(SelectedObject.IsClassModule) {
-            ClassWizard= GetWindow(typeof(iCS_ClassWizard)) as iCS_ClassWizard;
+            ClassWizard= GetClassWizard();
             ClassWizard.Activate(SelectedObject, Storage);
         } else {
             DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition));                    
