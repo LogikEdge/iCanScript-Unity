@@ -24,8 +24,8 @@ gmcs @iCanScriptEngine.rsp
 echo "Compiling editor code..."
 gmcs @iCanScriptEditor.rsp
 # Run obfuscator.
-echo "Running obfuscator..."
-./obfuscate.sh
+#echo "Running obfuscator..."
+#./obfuscate.sh
 # Install libraries inside the publish directory.
 echo "Installing into iCanScriptPublish..."
 rm -r -f $DESTINATION_ROOT
