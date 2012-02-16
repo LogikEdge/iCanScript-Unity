@@ -58,11 +58,11 @@ public class iCS_ReflectionDesc {
     public override string ToString() {
         return FunctionPath+"/"+FunctionSignature;
     }
-    
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
+    public bool IsConstructor         { get { return IsMethod && Method.IsConstructor; }}
     public bool IsMethod              { get { return Method != null; }}
     public bool IsField               { get { return Field != null; }}
     public bool IsInstanceField       { get { return ObjectType == iCS_ObjectTypeEnum.InstanceField; }}

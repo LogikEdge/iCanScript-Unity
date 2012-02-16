@@ -34,21 +34,23 @@ public class iCS_ClassWizard : EditorWindow {
     VariablePair[]          Fields                = null;
     VariablePair[]          Properties            = null;
     ControlPair[]           Methods               = null;
+    ControlPair[]           Constructors          = null;
     Vector2                 VariableScrollPosition= Vector2.zero;
     Vector2                 MethodScrollPosition  = Vector2.zero;        
     
     // =================================================================================
     // Layout info.
     // ---------------------------------------------------------------------------------
-    float       MaxMethodWidth   = 0;
-    float       MaxVariableWidth = 0;
-    float       VariableNameWidth= 0;
+    float       MaxConstructorWidth= 0;
+    float       MaxMethodWidth     = 0;
+    float       MaxVariableWidth   = 0;
+    float       VariableNameWidth  = 0;
 
     // =================================================================================
     // Constant GUI Content
     // ---------------------------------------------------------------------------------
     bool        IsGUIConstantInit= false;
-    GUIContent  ConstructorLabel = new GUIContent("Create Instance");
+    GUIContent  ConstructorTitle = new GUIContent("Instantiate");
     GUIContent  VariableTitle    = new GUIContent("Variables");
     GUIContent  InTitle          = new GUIContent("In");
     GUIContent  OutTitle         = new GUIContent("Out");
@@ -56,11 +58,14 @@ public class iCS_ClassWizard : EditorWindow {
     GUIContent  TypeTitle        = new GUIContent("Type");
     GUIContent  MethodTitle      = new GUIContent("Methods");
     Vector2     LabelSize;
+    Vector2     ConstructorTitleSize;
     Vector2     VariableTitleSize;
     Vector2     InTitleSize;
     Vector2     OutTitleSize;
     Vector2     NameTitleSize;
     Vector2     TypeTitleSize;
+    Vector2     MethodTitleSize;
+    Vector2     CheckBoxSize;    
     float       LabelHeight;
     float       TitleHeight;
     float       HeaderHeight;
@@ -96,6 +101,7 @@ public class iCS_ClassWizard : EditorWindow {
         ClassType= target.RuntimeType;
         List<VariablePair> fields= new List<VariablePair>();
         List<VariablePair> properties= new List<VariablePair>();
+        List<ControlPair> constructors= new List<ControlPair>();
         List<ControlPair> methods= new List<ControlPair>();
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(ClassType);
         foreach(var component in components) {
@@ -144,6 +150,12 @@ public class iCS_ClassWizard : EditorWindow {
                 if(propertySize.x+kSpacer > MaxVariableWidth) {
                     MaxVariableWidth= propertySize.x+kSpacer;
                 }
+            } else if(component.IsConstructor) {
+                constructors.Add(new ControlPair(component, isActive));
+                var constructorSize= EditorStyles.boldLabel.CalcSize(new GUIContent(component.FunctionSignatureNoThis));
+                if(constructorSize.x+12f > MaxConstructorWidth) {
+                    MaxConstructorWidth= constructorSize.x+12f;
+                }
             } else {
                 methods.Add(new ControlPair(component, isActive));
                 var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(component.FunctionSignatureNoThis));
@@ -156,6 +168,8 @@ public class iCS_ClassWizard : EditorWindow {
     	Array.Sort(Fields, (x,y)=> GetAComponent(x).FieldName.CompareTo(GetAComponent(y).FieldName));
         Properties= properties.ToArray();
     	Array.Sort(Properties, (x,y)=> GetAComponent(x).PropertyName.CompareTo(GetAComponent(y).PropertyName));
+        Constructors= constructors.ToArray();
+    	Array.Sort(Constructors, (x,y)=> x.Component.FunctionSignatureNoThis.CompareTo(y.Component.FunctionSignatureNoThis));        
         Methods= methods.ToArray();
     	Array.Sort(Methods, (x,y)=> x.Component.FunctionSignatureNoThis.CompareTo(y.Component.FunctionSignatureNoThis));
         Target= target;
@@ -179,16 +193,20 @@ public class iCS_ClassWizard : EditorWindow {
         if(IsGUIConstantInit) return;
         IsGUIConstantInit= true;
         // Compute content size.
-        LabelSize        = EditorStyles.label.CalcSize(ConstructorLabel);
-        VariableTitleSize= EditorStyles.boldLabel.CalcSize(VariableTitle);
-        InTitleSize      = EditorStyles.boldLabel.CalcSize(InTitle);
-        OutTitleSize     = EditorStyles.boldLabel.CalcSize(OutTitle);
-        NameTitleSize    = EditorStyles.boldLabel.CalcSize(NameTitle);
-        TypeTitleSize    = EditorStyles.boldLabel.CalcSize(TypeTitle);
-        LabelHeight      = 4f+LabelSize.y;
-        TitleHeight      = 4f+VariableTitleSize.y;
-        HeaderHeight     = 3f*LabelSize.y+kMarginSize;
-                
+        LabelSize           = EditorStyles.label.CalcSize(new GUIContent("abc")); 
+        ConstructorTitleSize= EditorStyles.boldLabel.CalcSize(ConstructorTitle);
+        VariableTitleSize   = EditorStyles.boldLabel.CalcSize(VariableTitle);
+        InTitleSize         = EditorStyles.boldLabel.CalcSize(InTitle);
+        OutTitleSize        = EditorStyles.boldLabel.CalcSize(OutTitle);
+        NameTitleSize       = EditorStyles.boldLabel.CalcSize(NameTitle);
+        TypeTitleSize       = EditorStyles.boldLabel.CalcSize(TypeTitle);
+        MethodTitleSize     = EditorStyles.boldLabel.CalcSize(MethodTitle);
+
+        LabelHeight         = 4f+LabelSize.y;
+        TitleHeight         = 4f+InTitleSize.y;
+        HeaderHeight        = 3f*LabelSize.y+kMarginSize;
+
+        CheckBoxSize        = GUI.skin.toggle.CalcSize(new GUIContent(""));                
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
@@ -203,6 +221,7 @@ public class iCS_ClassWizard : EditorWindow {
         float height= position.height-2f*kMarginSize;
         
         // Compute header position.
+        Rect headerRect= new Rect(x, 0, width, HeaderHeight);
         float remainingHeight= height-HeaderHeight;
 
         // Compute variables & methods fix heights.
@@ -243,11 +262,12 @@ public class iCS_ClassWizard : EditorWindow {
         ComputeVariableContentLayout(contentMethodRect.width);
         
         // Display Header.
-        
+        CenterTitle(headerRect, Target.Name);
+        ShowConstructor(headerRect);
         
         // Display Variables.
         GUI.Box(boxVariableRect,"");
-        CenterTitle(boxVariableRect, VariableTitle);
+        CenterTitle(boxVariableRect, VariableTitle, VariableTitleSize);
         GUI.Label(new Rect(x+kSpacer+0.5f*(kCheckBoxWidth-InTitleSize.x),   boxVariableRect.y+TitleHeight, InTitleSize.x,   TitleHeight), InTitle, EditorStyles.boldLabel);
         GUI.Label(new Rect(x+kSpacer+kCheckBoxWidth+0.5f*(kCheckBoxWidth-OutTitleSize.x),  boxVariableRect.y+TitleHeight, OutTitleSize.x,  TitleHeight), OutTitle, EditorStyles.boldLabel);
         GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth, boxVariableRect.y+TitleHeight, NameTitleSize.x, TitleHeight), NameTitle, EditorStyles.boldLabel);
@@ -261,7 +281,7 @@ public class iCS_ClassWizard : EditorWindow {
 
         // Display Methods.
         GUI.Box(boxMethodRect, "");
-        CenterTitle(boxMethodRect, MethodTitle);
+        CenterTitle(boxMethodRect, MethodTitle, MethodTitleSize);
         MethodScrollPosition= GUI.BeginScrollView(scrollViewMethodRect, MethodScrollPosition, contentMethodRect, false, true);
         int column= 0;
         int row= 0;
@@ -275,6 +295,13 @@ public class iCS_ClassWizard : EditorWindow {
         GUI.EndScrollView();
     }
 
+    // ---------------------------------------------------------------------------------
+    void ShowConstructor(Rect headerRect) {
+        float y= headerRect.y+TitleHeight;
+        GUI.Label(new Rect(headerRect.x, y, ConstructorTitleSize.x, ConstructorTitleSize.y), ConstructorTitle, EditorStyles.boldLabel);
+        float x= kSpacer+headerRect.x+ConstructorTitleSize.x;
+        GUI.Toggle(new Rect(x, y, CheckBoxSize.x, CheckBoxSize.y), false, "");
+    }
     // ---------------------------------------------------------------------------------
     void ShowVariable(int id, float width, float height) {
         width-= 2f*kSpacer;
@@ -295,11 +322,10 @@ public class iCS_ClassWizard : EditorWindow {
         }
         float x= kSpacer;
         float y= id*height;
-        var checkBoxSize= GUI.skin.toggle.CalcSize(new GUIContent(""));
         ControlPair inputControlPair= variablePair.InputControlPair;
         if(inputControlPair.Component != null) {
             bool prevActive= inputControlPair.IsActive;
-            inputControlPair.IsActive= GUI.Toggle(new Rect(x+0.5f*(kCheckBoxWidth-checkBoxSize.x), y, kCheckBoxWidth, height), inputControlPair.IsActive, "");
+            inputControlPair.IsActive= GUI.Toggle(new Rect(x+0.5f*(kCheckBoxWidth-CheckBoxSize.x), y, kCheckBoxWidth, height), inputControlPair.IsActive, "");
             if(prevActive != inputControlPair.IsActive) {
                 if(inputControlPair.IsActive) {
                     Storage.ClassModuleCreate(Target, inputControlPair.Component);
@@ -312,7 +338,7 @@ public class iCS_ClassWizard : EditorWindow {
         ControlPair outputControlPair= variablePair.OutputControlPair;
         if(outputControlPair.Component != null) {
             bool prevActive= outputControlPair.IsActive;
-            outputControlPair.IsActive= GUI.Toggle(new Rect(x+0.5f*(kCheckBoxWidth-checkBoxSize.x), y, kCheckBoxWidth, height), outputControlPair.IsActive, "");
+            outputControlPair.IsActive= GUI.Toggle(new Rect(x+0.5f*(kCheckBoxWidth-CheckBoxSize.x), y, kCheckBoxWidth, height), outputControlPair.IsActive, "");
             if(prevActive != outputControlPair.IsActive) {
                 if(outputControlPair.IsActive) {
                     Storage.ClassModuleCreate(Target, outputControlPair.Component);
@@ -366,21 +392,16 @@ public class iCS_ClassWizard : EditorWindow {
         float labelWidth= 0.5f*(width-2f*kCheckBoxWidth);
         VariableNameWidth= labelWidth < MaxVariableWidth ? MaxVariableWidth : labelWidth;        
     }
-    // ---------------------------------------------------------------------------------
-    void CenterLabel(Rect rect, string label) {
-        CenterLabel(rect, new GUIContent(label));
-    }
-    void CenterLabel(Rect rect, GUIContent content) {
-        var size= EditorStyles.label.CalcSize(content);
-        GUI.Label(new Rect(rect.x+0.5f*(rect.width-size.x), rect.y, size.x, size.y), content, EditorStyles.label);
-    }
-    // ---------------------------------------------------------------------------------
     void CenterTitle(Rect rect, string title) {
-        CenterTitle(rect, new GUIContent(title));
+        var content= new GUIContent(title);
+        var contentSize= EditorStyles.boldLabel.CalcSize(content);
+        CenterTitle(rect, content, contentSize);
     }
-    void CenterTitle(Rect rect, GUIContent content) {
-        var size= EditorStyles.boldLabel.CalcSize(content);
-        GUI.Label(new Rect(rect.x+0.5f*(rect.width-size.x), rect.y, size.x, size.y), content, EditorStyles.boldLabel);
+    void CenterTitle(Rect rect, GUIContent content, Vector2 contentSize) {
+        CenterLabel(rect, content, contentSize, EditorStyles.boldLabel);
+    }
+    void CenterLabel(Rect rect, GUIContent content, Vector2 contentSize, GUIStyle style) {
+        GUI.Label(new Rect(rect.x+0.5f*(rect.width-contentSize.x), rect.y, contentSize.x, contentSize.y), content, style);        
     }
     // =================================================================================
     // Helpers
