@@ -2,6 +2,9 @@ using UnityEngine;
 using System.Collections;
 
 public class iCS_Strings {
+    // Common
+    public const string This        = "this";
+    
     // Behaviour Allowed Children
     public const string Start       = "Start";
     public const string Update      = "Update";

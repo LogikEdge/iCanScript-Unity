@@ -20,6 +20,5 @@ public class iCS_EditorStrings {
 	public const string RandomIcon           = "iCS_RandomIcon.png";
 	
     // Textures
-    public const string AALineTexture     = "iCS_LineTexture.psd";
-
+    public const string AALineTexture        = "iCS_LineTexture.psd";
 }

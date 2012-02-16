@@ -43,6 +43,27 @@ public class iCS_ClassWizard : EditorWindow {
     float       MaxMethodWidth   = 0;
     float       MaxVariableWidth = 0;
     float       VariableNameWidth= 0;
+
+    // =================================================================================
+    // Constant GUI Content
+    // ---------------------------------------------------------------------------------
+    bool        IsGUIConstantInit= false;
+    GUIContent  ConstructorLabel = new GUIContent("Create Instance");
+    GUIContent  VariableTitle    = new GUIContent("Variables");
+    GUIContent  InTitle          = new GUIContent("In");
+    GUIContent  OutTitle         = new GUIContent("Out");
+    GUIContent  NameTitle        = new GUIContent("Name");
+    GUIContent  TypeTitle        = new GUIContent("Type");
+    GUIContent  MethodTitle      = new GUIContent("Methods");
+    Vector2     LabelSize;
+    Vector2     VariableTitleSize;
+    Vector2     InTitleSize;
+    Vector2     OutTitleSize;
+    Vector2     NameTitleSize;
+    Vector2     TypeTitleSize;
+    float       LabelHeight;
+    float       TitleHeight;
+    float       HeaderHeight;
     
     // =================================================================================
     // Constants
@@ -62,6 +83,7 @@ public class iCS_ClassWizard : EditorWindow {
     void Init() {
         Target= null;
         Storage= null;
+        IsGUIConstantInit= false;
     }
     // ---------------------------------------------------------------------------------
     public void Activate(iCS_EditorObject target, iCS_IStorage storage) {
@@ -146,77 +168,73 @@ public class iCS_ClassWizard : EditorWindow {
     // ---------------------------------------------------------------------------------
     void OnEnable() {
         Init();
+
     }
     // ---------------------------------------------------------------------------------
     void OnDisable() {
         Init();
     }
     // ---------------------------------------------------------------------------------
+    void InitConstantGUIContent() {
+        if(IsGUIConstantInit) return;
+        IsGUIConstantInit= true;
+        // Compute content size.
+        LabelSize        = EditorStyles.label.CalcSize(ConstructorLabel);
+        VariableTitleSize= EditorStyles.boldLabel.CalcSize(VariableTitle);
+        InTitleSize      = EditorStyles.boldLabel.CalcSize(InTitle);
+        OutTitleSize     = EditorStyles.boldLabel.CalcSize(OutTitle);
+        NameTitleSize    = EditorStyles.boldLabel.CalcSize(NameTitle);
+        TypeTitleSize    = EditorStyles.boldLabel.CalcSize(TypeTitle);
+        LabelHeight      = 4f+LabelSize.y;
+        TitleHeight      = 4f+VariableTitleSize.y;
+        HeaderHeight     = 3f*LabelSize.y+kMarginSize;
+                
+    }
+    // ---------------------------------------------------------------------------------
     void OnGUI() {
         // Wait until window is configured.
         if(Target == null) return;
-        
+        InitConstantGUIContent();
         EditorGUIUtility.LookLikeInspector();
         
-        // Define GUI content.
-        GUIContent constructorLabel= new GUIContent("Create Instance");
-        GUIContent variableTitle   = new GUIContent("Variables");
-        GUIContent inTitle         = new GUIContent("In");
-        GUIContent outTitle        = new GUIContent("Out");
-        GUIContent nameTitle       = new GUIContent("Name");
-        GUIContent typeTitle       = new GUIContent("Type");
-        GUIContent methodTitle     = new GUIContent("Methods");
-        
-        // Compute content size.
-        Vector2 labelSize= EditorStyles.label.CalcSize(constructorLabel);
-        Vector2 variableTitleSize= EditorStyles.boldLabel.CalcSize(variableTitle);
-        Vector2 inTitleSize= EditorStyles.boldLabel.CalcSize(inTitle);
-        Vector2 outTitleSize= EditorStyles.boldLabel.CalcSize(outTitle);
-        Vector2 nameTitleSize= EditorStyles.boldLabel.CalcSize(nameTitle);
-        Vector2 typeTitleSize= EditorStyles.boldLabel.CalcSize(typeTitle);
-        Vector2 methodTitleSize= EditorStyles.boldLabel.CalcSize(methodTitle);
-        float labelHeight= 4f+labelSize.y;
-        float titleHeight= 4f+variableTitleSize.y;
-
         // Compute window parameters.
         float x     = kMarginSize;
         float width = position.width-2f*kMarginSize;
         float height= position.height-2f*kMarginSize;
         
         // Compute header position.
-        float headerHeight= 3f*labelSize.y+kMarginSize;
-        float remainingHeight= height-headerHeight;
+        float remainingHeight= height-HeaderHeight;
 
         // Compute variables & methods fix heights.
-        float fixVariableHeight= 2f*titleHeight;
-        float fixMethodHeight= titleHeight;
+        float fixVariableHeight= 2f*TitleHeight;
+        float fixMethodHeight= TitleHeight;
         remainingHeight-= fixVariableHeight+fixMethodHeight+2f*kMarginSize;
         
         // Compute varaibales & methods content heights.
-        float variableContentHeight= labelHeight*NbOfVariables;
+        float variableContentHeight= LabelHeight*NbOfVariables;
         int nbOfMethodsPerLine= (int)(width/MaxMethodWidth);
         if(nbOfMethodsPerLine < 1) nbOfMethodsPerLine= 1;
-        float methodContentHeight  = labelHeight*((NbOfMethods+nbOfMethodsPerLine-1)/nbOfMethodsPerLine);
+        float methodContentHeight  = LabelHeight*((NbOfMethods+nbOfMethodsPerLine-1)/nbOfMethodsPerLine);
         float visibleVariableHeight= variableContentHeight;
         float visibleMethodHeight= methodContentHeight;
         if(visibleVariableHeight+visibleMethodHeight > remainingHeight) {
             float halfRemainingHeight= 0.5f*remainingHeight;
             if(visibleVariableHeight < halfRemainingHeight) {
-                int nbOfMethodLines= (int)((remainingHeight-variableContentHeight)/labelHeight);
-                visibleMethodHeight= labelHeight*nbOfMethodLines;
+                int nbOfMethodLines= (int)((remainingHeight-variableContentHeight)/LabelHeight);
+                visibleMethodHeight= LabelHeight*nbOfMethodLines;
             } else if(visibleMethodHeight < halfRemainingHeight) {
-                int nbOfVariableLines= (int)((remainingHeight-methodContentHeight)/labelHeight);
-                visibleVariableHeight= labelHeight*nbOfVariableLines;
+                int nbOfVariableLines= (int)((remainingHeight-methodContentHeight)/LabelHeight);
+                visibleVariableHeight= LabelHeight*nbOfVariableLines;
             } else {
-                int nbOfVariableLines= (int)(halfRemainingHeight/labelHeight);
-                visibleVariableHeight= labelHeight*nbOfVariableLines;
-                int nbOfMethodLines= (int)((remainingHeight-visibleVariableHeight)/labelHeight);
-                visibleMethodHeight= labelHeight*(nbOfMethodLines+1);
+                int nbOfVariableLines= (int)(halfRemainingHeight/LabelHeight);
+                visibleVariableHeight= LabelHeight*nbOfVariableLines;
+                int nbOfMethodLines= (int)((remainingHeight-visibleVariableHeight)/LabelHeight);
+                visibleMethodHeight= LabelHeight*(nbOfMethodLines+1);
             }
         }
         
         // Build variables & methods position.
-        Rect boxVariableRect= new Rect(x, headerHeight, width, fixVariableHeight+visibleVariableHeight);
+        Rect boxVariableRect= new Rect(x, HeaderHeight, width, fixVariableHeight+visibleVariableHeight);
         Rect boxMethodRect  = new Rect(x, boxVariableRect.yMax+kMarginSize, width, fixMethodHeight+visibleMethodHeight);
         Rect scrollViewVariableRect= new Rect(x, boxVariableRect.y+fixVariableHeight, width, visibleVariableHeight);
         Rect scrollViewMethodRect  = new Rect(x, boxMethodRect.y+fixMethodHeight, width, visibleMethodHeight);
@@ -224,28 +242,31 @@ public class iCS_ClassWizard : EditorWindow {
         Rect contentMethodRect  = new Rect(0, 0, width-kScrollerSize, methodContentHeight);
         ComputeVariableContentLayout(contentMethodRect.width);
         
-        // Variables.
+        // Display Header.
+        
+        
+        // Display Variables.
         GUI.Box(boxVariableRect,"");
-        GUI.Label(new Rect(0.5f*(boxVariableRect.x+boxVariableRect.xMax-variableTitleSize.x), boxVariableRect.y, variableTitleSize.x, titleHeight), variableTitle, EditorStyles.boldLabel);
-        GUI.Label(new Rect(x+kSpacer+0.5f*(kCheckBoxWidth-inTitleSize.x),   boxVariableRect.y+titleHeight, inTitleSize.x,   titleHeight), inTitle, EditorStyles.boldLabel);
-        GUI.Label(new Rect(x+kSpacer+kCheckBoxWidth+0.5f*(kCheckBoxWidth-outTitleSize.x),  boxVariableRect.y+titleHeight, outTitleSize.x,  titleHeight), outTitle, EditorStyles.boldLabel);
-        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth, boxVariableRect.y+titleHeight, nameTitleSize.x, titleHeight), nameTitle, EditorStyles.boldLabel);
-        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth+VariableNameWidth, boxVariableRect.y+titleHeight, typeTitleSize.x, titleHeight), typeTitle, EditorStyles.boldLabel);
+        CenterTitle(boxVariableRect, VariableTitle);
+        GUI.Label(new Rect(x+kSpacer+0.5f*(kCheckBoxWidth-InTitleSize.x),   boxVariableRect.y+TitleHeight, InTitleSize.x,   TitleHeight), InTitle, EditorStyles.boldLabel);
+        GUI.Label(new Rect(x+kSpacer+kCheckBoxWidth+0.5f*(kCheckBoxWidth-OutTitleSize.x),  boxVariableRect.y+TitleHeight, OutTitleSize.x,  TitleHeight), OutTitle, EditorStyles.boldLabel);
+        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth, boxVariableRect.y+TitleHeight, NameTitleSize.x, TitleHeight), NameTitle, EditorStyles.boldLabel);
+        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth+VariableNameWidth, boxVariableRect.y+TitleHeight, TypeTitleSize.x, TitleHeight), TypeTitle, EditorStyles.boldLabel);
         GUI.Box(new Rect(scrollViewVariableRect.x, scrollViewVariableRect.y-3f, scrollViewVariableRect.width, 3),"");
         VariableScrollPosition= GUI.BeginScrollView(scrollViewVariableRect, VariableScrollPosition, contentVariableRect, false, true);
         for(int i= 0; i < NbOfVariables; ++i) {
-            ShowVariable(i, contentVariableRect.width, labelHeight);
+            ShowVariable(i, contentVariableRect.width, LabelHeight);
         }
         GUI.EndScrollView();
 
-        // Methods.
+        // Display Methods.
         GUI.Box(boxMethodRect, "");
-        GUI.Label(new Rect(0.5f*(boxMethodRect.x+boxMethodRect.xMax-methodTitleSize.x), boxMethodRect.y, methodTitleSize.x, titleHeight), methodTitle, EditorStyles.boldLabel);
+        CenterTitle(boxMethodRect, MethodTitle);
         MethodScrollPosition= GUI.BeginScrollView(scrollViewMethodRect, MethodScrollPosition, contentMethodRect, false, true);
         int column= 0;
         int row= 0;
         for(int i= 0; i < NbOfMethods; ++i) {            
-            ShowMethod(i, column, row, MaxMethodWidth, labelHeight);
+            ShowMethod(i, column, row, MaxMethodWidth, LabelHeight);
             if(++column >= nbOfMethodsPerLine) {
                 column= 0;
                 ++row;
@@ -345,7 +366,22 @@ public class iCS_ClassWizard : EditorWindow {
         float labelWidth= 0.5f*(width-2f*kCheckBoxWidth);
         VariableNameWidth= labelWidth < MaxVariableWidth ? MaxVariableWidth : labelWidth;        
     }
-    
+    // ---------------------------------------------------------------------------------
+    void CenterLabel(Rect rect, string label) {
+        CenterLabel(rect, new GUIContent(label));
+    }
+    void CenterLabel(Rect rect, GUIContent content) {
+        var size= EditorStyles.label.CalcSize(content);
+        GUI.Label(new Rect(rect.x+0.5f*(rect.width-size.x), rect.y, size.x, size.y), content, EditorStyles.label);
+    }
+    // ---------------------------------------------------------------------------------
+    void CenterTitle(Rect rect, string title) {
+        CenterTitle(rect, new GUIContent(title));
+    }
+    void CenterTitle(Rect rect, GUIContent content) {
+        var size= EditorStyles.boldLabel.CalcSize(content);
+        GUI.Label(new Rect(rect.x+0.5f*(rect.width-size.x), rect.y, size.x, size.y), content, EditorStyles.boldLabel);
+    }
     // =================================================================================
     // Helpers
     // ---------------------------------------------------------------------------------
