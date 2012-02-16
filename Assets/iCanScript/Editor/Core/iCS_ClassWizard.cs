@@ -303,12 +303,25 @@ public class iCS_ClassWizard : EditorWindow {
         // Fill-in available constructors.
         string[] instanceOptions= new string[1+Constructors.Length];
         instanceOptions[0]= "Use input port (this)";
+        int instanceIdx= -1;
         for(int i= 0; i < Constructors.Length; ++i) {
             instanceOptions[i+1]= Constructors[i].Component.FunctionSignatureNoThisNoOutput;
+            if(Constructors[i].IsActive) instanceIdx= i;
         }
+        ++instanceIdx;
         float maxWidth= headerRect.width-x;
         float width= Mathf.Min(maxWidth, MaxConstructorWidth);
-        int constructorIdx= EditorGUI.Popup(new Rect(x, y, width, LabelHeight), 0, instanceOptions, EditorStyles.toolbarPopup);
+        int newIdx= EditorGUI.Popup(new Rect(x, y, width, LabelHeight), instanceIdx, instanceOptions, EditorStyles.toolbarPopup);
+        if(newIdx != instanceIdx) {
+            if(instanceIdx != 0) {
+                Constructors[instanceIdx-1].IsActive= false;
+                Storage.ClassModuleDestroyConstructor(Target);
+            }
+            if(newIdx != 0) {
+                Constructors[newIdx-1].IsActive= true;
+                Storage.ClassModuleCreateConstructor(Target, Constructors[newIdx-1].Component);
+            }
+        }
     }
     // ---------------------------------------------------------------------------------
     void ShowVariable(int id, float width, float height) {

@@ -91,7 +91,20 @@ public partial class iCS_IStorage {
 	public void ForEachChildDataPort(iCS_EditorObject node, Action<iCS_EditorObject> action) {
 		ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsDataPort, action));
 	}
-
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject FindInChildren(iCS_EditorObject parent, Func<iCS_EditorObject, bool> cond) {
+        iCS_EditorObject foundChild= null;
+        ForEachChild(parent,
+            child=> {
+                if(cond(child)) {
+                    foundChild= child;
+                    return true;
+                }
+                return false;
+            }
+        );
+        return foundChild;
+    }
 	// ======================================================================
     // List builders
     // ----------------------------------------------------------------------

@@ -217,7 +217,7 @@ public partial class iCS_IStorage {
     iCS_EditorObject ClassModuleCreatePortIfNonExisting(iCS_EditorObject module, string portName, Type portType, iCS_ObjectTypeEnum objType) {
         iCS_EditorObject port= ClassModuleGetPort(module, portName, objType);
         if(port == null) {
-            CreatePort(portName, module.InstanceId, portType, objType);                
+            port= CreatePort(portName, module.InstanceId, portType, objType);                
         }
         return port;
     }
@@ -263,7 +263,7 @@ public partial class iCS_IStorage {
                     }
                 } else {
                     // Special case for "this".
-                    if(port.Name == "this") {
+                    if(port.Name == iCS_Strings.This) {
                     } else {
                         iCS_EditorObject classPort= ClassModuleGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicModulePort);
                         if(classPort == null) {
@@ -285,24 +285,30 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject ClassModuleCreateConstructor(iCS_EditorObject module, iCS_ReflectionDesc desc) {
-        iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, "this", iCS_ObjectTypeEnum.InStaticModulePort);
-        iCS_EditorObject[] connectedPorts= FindConnectedPorts(moduleThisPort);
+        ClassModuleDestroyConstructor(module);
         iCS_EditorObject constructor= ClassModuleCreate(module, desc);
-        iCS_EditorObject thisPort= null;
-        ForEachChildDataPort(constructor,
-            port=> {
-                if(port.IsOutputPort && port.Name == "this") {
-                    thisPort= port;
-                }
-            }
-        );
+        iCS_EditorObject thisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.This);
+        iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.This, iCS_ObjectTypeEnum.InStaticModulePort);
+        if(moduleThisPort == null) return constructor;
+        iCS_EditorObject[] connectedPorts= FindConnectedPorts(moduleThisPort);
         foreach(var cp in connectedPorts) {
             SetSource(cp, thisPort);
         }
         DestroyInstance(moduleThisPort);
-        return null;
+        return constructor;
     }
-    public void ClassModuleDestroyConstructor(iCS_EditorObject module, iCS_ReflectionDesc desc) {
-        
+    public void ClassModuleDestroyConstructor(iCS_EditorObject module) {
+        iCS_EditorObject constructor= ClassModuleGetConstructor(module);
+        if(constructor == null) return;
+        iCS_EditorObject thisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.This);
+        iCS_EditorObject[] connectedPorts= FindConnectedPorts(thisPort);
+        DestroyInstance(constructor);
+        iCS_EditorObject moduleThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.This, module.RuntimeType, iCS_ObjectTypeEnum.InStaticModulePort);
+        foreach(var cp in connectedPorts) {
+            SetSource(cp, moduleThisPort);
+        }
+    }
+    public iCS_EditorObject ClassModuleGetConstructor(iCS_EditorObject module) {
+        return FindInChildren(module, child=> child.IsConstructor);
     }
 }
