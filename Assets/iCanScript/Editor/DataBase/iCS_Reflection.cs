@@ -222,7 +222,7 @@ public class iCS_Reflection {
         bool[]   paramIsOut   = ParseParameterIsOuts(constructor);
         object[] paramDefaults= ParseParameterDefaults(constructor);
 
-        iCS_DataBase.AddConstructor(company, package, displayName, toolTip, iconPath,
+        iCS_DataBase.AddConstructor(company, package, iCS_Types.RemoveProductPrefix(displayName), toolTip, iconPath,
                                     classType, constructor,
                                     paramIsOut, paramNames, paramTypes, paramDefaults);
     }

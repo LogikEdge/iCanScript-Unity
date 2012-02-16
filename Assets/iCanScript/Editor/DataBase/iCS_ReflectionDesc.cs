@@ -170,19 +170,9 @@ public class iCS_ReflectionDesc {
 				}
 				default: {
 		            string signature= DisplayName;
-					// Build input string
-					string inputStr= "";
-		            for(int i= 0; i < ParamNames.Length; ++i) {
-						if(!ParamTypes[i].IsByRef) {
-			                inputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i])+", ";
-						}
-		            }
 					// Add inputs to signature.
-					if(inputStr != "") {
-			            signature+= "("+inputStr.Substring(0, inputStr.Length-2)+")";						
-					} else {
-					    signature+= "()";
-					}
+					string inputStr= FunctionInputSignatureNoThis;
+			        signature+= "("+inputStr+")";						
 					// Build output string
 					int nbOfOutputs= 0;
 					string outputStr= "";
@@ -211,6 +201,35 @@ public class iCS_ReflectionDesc {
 					return signature;
 				}
 			}
+        }
+    }
+    // ----------------------------------------------------------------------
+    public string FunctionSignatureNoThisNoOutput {
+        get {
+			switch(ObjectType) {
+				case iCS_ObjectTypeEnum.Conversion: {
+					return DisplayName;
+				}
+				default: {
+		            string signature= DisplayName;
+					// Add inputs to signature.
+					string inputStr= FunctionInputSignatureNoThis;
+			        return signature+"("+inputStr+")";						
+                }
+            }
+        }
+    }
+    // ----------------------------------------------------------------------
+    public string FunctionInputSignatureNoThis {
+        get {
+			string inputStr= "";
+            for(int i= 0; i < ParamNames.Length; ++i) {
+				if(!ParamTypes[i].IsByRef) {
+	                inputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i])+", ";
+				}
+            }
+            if(inputStr.Length != 0) inputStr= inputStr.Substring(0, inputStr.Length-2);
+            return inputStr;
         }
     }
     // ----------------------------------------------------------------------

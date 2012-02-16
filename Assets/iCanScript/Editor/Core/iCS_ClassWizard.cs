@@ -50,15 +50,15 @@ public class iCS_ClassWizard : EditorWindow {
     // Constant GUI Content
     // ---------------------------------------------------------------------------------
     bool        IsGUIConstantInit= false;
-    GUIContent  ConstructorTitle = new GUIContent("Instantiate");
-    GUIContent  VariableTitle    = new GUIContent("Variables");
-    GUIContent  InTitle          = new GUIContent("In");
-    GUIContent  OutTitle         = new GUIContent("Out");
-    GUIContent  NameTitle        = new GUIContent("Name");
-    GUIContent  TypeTitle        = new GUIContent("Type");
-    GUIContent  MethodTitle      = new GUIContent("Methods");
+    GUIContent  InstanceTitle= new GUIContent("Instance");
+    GUIContent  VariableTitle= new GUIContent("Variables");
+    GUIContent  InTitle      = new GUIContent("In");
+    GUIContent  OutTitle     = new GUIContent("Out");
+    GUIContent  NameTitle    = new GUIContent("Name");
+    GUIContent  TypeTitle    = new GUIContent("Type");
+    GUIContent  MethodTitle  = new GUIContent("Methods");
     Vector2     LabelSize;
-    Vector2     ConstructorTitleSize;
+    Vector2     InstanceTitleSize;
     Vector2     VariableTitleSize;
     Vector2     InTitleSize;
     Vector2     OutTitleSize;
@@ -152,7 +152,7 @@ public class iCS_ClassWizard : EditorWindow {
                 }
             } else if(component.IsConstructor) {
                 constructors.Add(new ControlPair(component, isActive));
-                var constructorSize= EditorStyles.boldLabel.CalcSize(new GUIContent(component.FunctionSignatureNoThis));
+                var constructorSize= EditorStyles.boldLabel.CalcSize(new GUIContent(component.FunctionSignatureNoThisNoOutput));
                 if(constructorSize.x+12f > MaxConstructorWidth) {
                     MaxConstructorWidth= constructorSize.x+12f;
                 }
@@ -193,20 +193,20 @@ public class iCS_ClassWizard : EditorWindow {
         if(IsGUIConstantInit) return;
         IsGUIConstantInit= true;
         // Compute content size.
-        LabelSize           = EditorStyles.label.CalcSize(new GUIContent("abc")); 
-        ConstructorTitleSize= EditorStyles.boldLabel.CalcSize(ConstructorTitle);
-        VariableTitleSize   = EditorStyles.boldLabel.CalcSize(VariableTitle);
-        InTitleSize         = EditorStyles.boldLabel.CalcSize(InTitle);
-        OutTitleSize        = EditorStyles.boldLabel.CalcSize(OutTitle);
-        NameTitleSize       = EditorStyles.boldLabel.CalcSize(NameTitle);
-        TypeTitleSize       = EditorStyles.boldLabel.CalcSize(TypeTitle);
-        MethodTitleSize     = EditorStyles.boldLabel.CalcSize(MethodTitle);
-
-        LabelHeight         = 4f+LabelSize.y;
-        TitleHeight         = 4f+InTitleSize.y;
-        HeaderHeight        = 3f*LabelSize.y+kMarginSize;
-
-        CheckBoxSize        = GUI.skin.toggle.CalcSize(new GUIContent(""));                
+        LabelSize        = EditorStyles.label.CalcSize(new GUIContent("abc")); 
+        InstanceTitleSize= EditorStyles.boldLabel.CalcSize(InstanceTitle);
+        VariableTitleSize= EditorStyles.boldLabel.CalcSize(VariableTitle);
+        InTitleSize      = EditorStyles.boldLabel.CalcSize(InTitle);
+        OutTitleSize     = EditorStyles.boldLabel.CalcSize(OutTitle);
+        NameTitleSize    = EditorStyles.boldLabel.CalcSize(NameTitle);
+        TypeTitleSize    = EditorStyles.boldLabel.CalcSize(TypeTitle);
+        MethodTitleSize  = EditorStyles.boldLabel.CalcSize(MethodTitle);
+                         
+        LabelHeight      = 4f+LabelSize.y;
+        TitleHeight      = 4f+InTitleSize.y;
+        HeaderHeight     = 3f*LabelSize.y+kMarginSize;
+                         
+        CheckBoxSize     = GUI.skin.toggle.CalcSize(new GUIContent(""));                
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
@@ -298,9 +298,17 @@ public class iCS_ClassWizard : EditorWindow {
     // ---------------------------------------------------------------------------------
     void ShowConstructor(Rect headerRect) {
         float y= headerRect.y+TitleHeight;
-        GUI.Label(new Rect(headerRect.x, y, ConstructorTitleSize.x, ConstructorTitleSize.y), ConstructorTitle, EditorStyles.boldLabel);
-        float x= kSpacer+headerRect.x+ConstructorTitleSize.x;
-        GUI.Toggle(new Rect(x, y, CheckBoxSize.x, CheckBoxSize.y), false, "");
+        GUI.Label(new Rect(headerRect.x, y, InstanceTitleSize.x, InstanceTitleSize.y), InstanceTitle, EditorStyles.boldLabel);
+        float x= 2f*kSpacer+headerRect.x+InstanceTitleSize.x;
+        // Fill-in available constructors.
+        string[] instanceOptions= new string[1+Constructors.Length];
+        instanceOptions[0]= "Use input port (this)";
+        for(int i= 0; i < Constructors.Length; ++i) {
+            instanceOptions[i+1]= Constructors[i].Component.FunctionSignatureNoThisNoOutput;
+        }
+        float maxWidth= headerRect.width-x;
+        float width= Mathf.Min(maxWidth, MaxConstructorWidth);
+        int constructorIdx= EditorGUI.Popup(new Rect(x, y, width, LabelHeight), 0, instanceOptions, EditorStyles.toolbarPopup);
     }
     // ---------------------------------------------------------------------------------
     void ShowVariable(int id, float width, float height) {

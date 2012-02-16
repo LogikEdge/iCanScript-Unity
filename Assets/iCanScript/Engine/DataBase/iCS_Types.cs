@@ -24,7 +24,7 @@ public static class iCS_Types {
     // ----------------------------------------------------------------------
     // Returns the coded name for the given type.
     public static string GetName(Type type) {
-        string result= RemovePrefix(type.Name);
+        string result= RemoveProductPrefix(type.Name);
         int arg= result.IndexOf('`');
         if(arg < 0) return result;
         result= result.Substring(0, arg);
@@ -40,7 +40,7 @@ public static class iCS_Types {
         return result;
     }
     // ----------------------------------------------------------------------
-    public static string RemovePrefix(string name) {
+    public static string RemoveProductPrefix(string name) {
         if(name.StartsWith(iCS_Config.ProductPrefix)) {
             return name.Substring(iCS_Config.ProductPrefix.Length);
         }
@@ -115,7 +115,7 @@ public static class iCS_Types {
         if(type == typeof(float)) return "float";
         if(type == typeof(bool)) return "bool";
         if(type == typeof(void)) return "void";
-        return RemovePrefix(type.Name);
+        return RemoveProductPrefix(type.Name);
     }
 
 }
