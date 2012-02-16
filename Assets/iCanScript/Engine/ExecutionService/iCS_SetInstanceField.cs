@@ -22,6 +22,25 @@ public class iCS_SetInstanceField : iCS_SetStaticField {
     }
     
     // ======================================================================
+    // Accessors
+    // ----------------------------------------------------------------------
+    protected override object DoGetParameter(int idx) {
+        return (idx == 2 || idx == 3) ? myThis : base.DoGetParameter(idx); 
+    }
+    protected override void DoSetParameter(int idx, object value) {
+        if(idx == 3) return;
+        if(idx == 2) { myThis= value; return; }
+        base.DoSetParameter(idx, value);
+    }
+    protected override bool DoIsParameterReady(int idx, int frameId) {
+        if(idx == 3) return IsCurrent(frameId);
+        if(idx == 2) {
+            return !myThisConnection.IsConnected ? true : myThisConnection.IsReady(frameId);
+        }
+        return base.DoIsParameterReady(idx, frameId);
+    }
+
+    // ======================================================================
     // Execution
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {

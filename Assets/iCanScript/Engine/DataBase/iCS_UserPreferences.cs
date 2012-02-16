@@ -111,7 +111,7 @@ public class iCS_UserPreferences {
     public UserIcons     Icons= new UserIcons();
     
     [System.Serializable]
-    public class UserOnCreateClassModule {
+    public class UserClassWizard {
         public bool OutputInstanceVariables = true;
         public bool OutputClassVariables    = false;
         public bool OutputInstanceProperties= false;
@@ -121,6 +121,6 @@ public class iCS_UserPreferences {
         public bool InputInstanceProperties = false;
         public bool InputClassProperties    = false;
     }
-    public UserOnCreateClassModule    OnCreateClassModule= new UserOnCreateClassModule();
+    public UserClassWizard    ClassWizard= new UserClassWizard();
 
 }
