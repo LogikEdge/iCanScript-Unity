@@ -16,5 +16,9 @@ public class iCS_InspectorBase : iCS_Inspector {
     	iCS_Installer.Install();
         base.OnInspectorGUI();
 	}
+    // ---------------------------------------------------------------
+    protected override iCS_Editor GetEditor() {
+        return iCS_EditorProxy.GetEditor();
+    }
 }
 

@@ -60,6 +60,10 @@ public class iCS_Inspector : Editor {
 	}
 	
 	// ----------------------------------------------------------------------
+    protected virtual iCS_Editor GetEditor() {
+        return null;
+    }
+	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
     void ActivateEditor() {
         iCS_Storage realStorage= target as iCS_Storage;
@@ -72,9 +76,7 @@ public class iCS_Inspector : Editor {
 		}
 		// Create the graph editor.
         if(Editor == null) {
-            Editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
-            DontDestroyOnLoad(Editor);
-            Editor.hideFlags= HideFlags.DontSave;            
+            Editor= GetEditor();
         }
 
         // Configure the editor with the selected graph.

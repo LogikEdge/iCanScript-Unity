@@ -101,13 +101,13 @@ public class iCS_Menu {
     //[MenuItem("iCanScript/",false,20)]
     //[MenuItem("iCanScript/Center Graph _#&f",false,21)]
     public static void CenterGraph() {
-        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
-        editor.CenterOnRoot();
+//        iCS_EditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_EditorProxy), false, "iCanScript") as iCS_EditorProxy;
+//        editorProxy.Editor.CenterOnRoot();
     }
     //[MenuItem("iCanScript/Center On Selected _&f",false,22)]
     public static void CenterOnSelected() {
-        iCS_Editor editor= EditorWindow.GetWindow(typeof(iCS_Editor), false, "iCanScript") as iCS_Editor;
-        editor.CenterOnSelected();
+//        iCS_EditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_EditorProxy), false, "iCanScript") as iCS_EditorProxy;
+//        editorProxy.Editor.CenterOnSelected();
     }
     // ======================================================================
     // Documentation Access

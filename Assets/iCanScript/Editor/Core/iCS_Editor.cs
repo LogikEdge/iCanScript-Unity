@@ -102,7 +102,7 @@ public class iCS_Editor : EditorWindow {
     // Prepares the editor for editing a graph.  Note that the graph to edit
     // is not configured at this point.  We must wait for an activate from
     // the graph inspector to know which graph to edit. 
-	void OnEnable() {        
+	public void OnEnable() {        
 		// Tell Unity we want to be informed of move drag events
 		wantsMouseMove= true;
 
@@ -119,7 +119,7 @@ public class iCS_Editor : EditorWindow {
 
 	// ----------------------------------------------------------------------
     // Releases all resources used by the iCS_Behaviour editor.
-    void OnDisable() {
+    public void OnDisable() {
         // Release all worker objects.
         Graphics    = null;
         DynamicMenu = null;
@@ -181,7 +181,7 @@ public class iCS_Editor : EditorWindow {
     // ======================================================================
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
-	void Update() {
+	public void Update() {
         // Determine repaint rate.
         if(Storage != null) {
             // Repaint window
@@ -207,13 +207,13 @@ public class iCS_Editor : EditorWindow {
 	}
 	
 	// ----------------------------------------------------------------------
-    void OnSelectionChanged() {
+    public void OnSelectionChanged() {
         Update();
     }
     
 	// ----------------------------------------------------------------------
 	// User GUI function.
-	void OnGUI() {
+	public void OnGUI() {
 		// Don't do start editor if not properly initialized.
 		if( !IsInitialized() ) return;
        	
