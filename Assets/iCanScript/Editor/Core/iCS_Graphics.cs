@@ -260,7 +260,7 @@ public class iCS_Graphics {
             }            
         }
         if(nodeMaskTexture == null) {
-            texturePath= iCS_EditorConfig.GuiAssetPath +"/"+iCS_EditorStrings.NodeMaskTexture;
+            texturePath= iCS_Config.GuiAssetPath +"/"+iCS_EditorStrings.NodeMaskTexture;
             nodeMaskTexture= AssetDatabase.LoadAssetAtPath(texturePath, typeof(Texture2D)) as Texture2D;
             if(nodeMaskTexture == null) {
                 ResourceMissingError(texturePath, ref nodeMaskTextureErrorSeen);
@@ -374,7 +374,7 @@ public class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     static bool GetCachedTexture(string fileName, out Texture2D texture, ref bool errorSeen) {
-        string texturePath= iCS_EditorConfig.GuiAssetPath+"/"+fileName;
+        string texturePath= iCS_Config.GuiAssetPath+"/"+fileName;
         texture= GetCachedTexture(texturePath);
         if(texture == null) {
             ResourceMissingError(texturePath, ref errorSeen);
@@ -693,7 +693,7 @@ public class iCS_Graphics {
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, storage);
 		object portValue= null;
-		float portRadius= port == selectedObject ? 1.67f*iCS_EditorConfig.PortRadius : iCS_EditorConfig.PortRadius;
+		float portRadius= port == selectedObject ? 1.67f*iCS_Config.PortRadius : iCS_Config.PortRadius;
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
@@ -740,25 +740,25 @@ public class iCS_Graphics {
 		Vector2 labelPos= center;
         switch(port.Edge) {
             case iCS_EditorObject.EdgeEnum.Left:
-                labelPos.x+= 1 + iCS_EditorConfig.PortSize;
+                labelPos.x+= 1 + iCS_Config.PortSize;
                 labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
-				valuePos.x-= 1 + valueSize.x/Scale + iCS_EditorConfig.PortSize;
+				valuePos.x-= 1 + valueSize.x/Scale + iCS_Config.PortSize;
 				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
             case iCS_EditorObject.EdgeEnum.Right:
-                labelPos.x-= 1 + labelSize.x/Scale + iCS_EditorConfig.PortSize;
+                labelPos.x-= 1 + labelSize.x/Scale + iCS_Config.PortSize;
                 labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
-				valuePos.x+= 1 + iCS_EditorConfig.PortSize;
+				valuePos.x+= 1 + iCS_Config.PortSize;
 				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
             case iCS_EditorObject.EdgeEnum.Top:            
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y-= iCS_EditorConfig.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, storage));
+                labelPos.y-= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, storage));
 				valueAsStr= null;
                 break;
             case iCS_EditorObject.EdgeEnum.Bottom:
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y+= iCS_EditorConfig.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y/Scale;
+                labelPos.y+= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y/Scale;
 				valueAsStr= null;
                 break;
         }
@@ -787,7 +787,7 @@ public class iCS_Graphics {
     }
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Color outlineColor= radius > iCS_EditorConfig.PortRadius ? Color.black : Color.black;
+        Color outlineColor= radius > iCS_Config.PortRadius ? Color.black : Color.black;
         Vector3 center= TranslateAndScale(_center);
         radius*= Scale;
         Handles.color= _borderColor;
@@ -800,7 +800,7 @@ public class iCS_Graphics {
 
 	// ----------------------------------------------------------------------
     void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Color backgroundColor= radius > iCS_EditorConfig.PortRadius ? Color.black : Color.black;
+        Color backgroundColor= radius > iCS_Config.PortRadius ? Color.black : Color.black;
         radius*= Scale;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];

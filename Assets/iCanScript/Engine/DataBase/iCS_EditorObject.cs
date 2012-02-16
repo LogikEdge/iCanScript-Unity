@@ -173,7 +173,9 @@ public class iCS_EditorObject {
         }
     }
     public string Name {
-        get { return NameEmpty ? TypeName : RawName; }
+        get {
+            return NameEmpty ? ":"+TypeName : (IsClassModule ? RawName+":"+TypeName : RawName);
+        }
         set { RawName= value; }
     }
     public string ToolTip {

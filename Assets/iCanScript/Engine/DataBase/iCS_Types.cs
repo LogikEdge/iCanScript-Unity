@@ -24,7 +24,7 @@ public static class iCS_Types {
     // ----------------------------------------------------------------------
     // Returns the coded name for the given type.
     public static string GetName(Type type) {
-        string result= type.Name;
+        string result= RemovePrefix(type.Name);
         int arg= result.IndexOf('`');
         if(arg < 0) return result;
         result= result.Substring(0, arg);
@@ -39,7 +39,13 @@ public static class iCS_Types {
         }
         return result;
     }
-    
+    // ----------------------------------------------------------------------
+    public static string RemovePrefix(string name) {
+        if(name.StartsWith(iCS_Config.ProductPrefix)) {
+            return name.Substring(iCS_Config.ProductPrefix.Length);
+        }
+        return name;
+    }
     // ----------------------------------------------------------------------
     // Returns true if the given type has a default constructor.
     public static bool CreateInstanceSupported(Type type) {
@@ -109,7 +115,7 @@ public static class iCS_Types {
         if(type == typeof(float)) return "float";
         if(type == typeof(bool)) return "bool";
         if(type == typeof(void)) return "void";
-        return type.Name;
+        return RemovePrefix(type.Name);
     }
 
 }

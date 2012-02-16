@@ -236,12 +236,12 @@ public class iCS_Editor : EditorWindow {
     // EDITOR WINDOW MAIN LAYOUT
 	// ----------------------------------------------------------------------
     float UsableWindowWidth() {
-        return position.width-2*iCS_EditorConfig.EditorWindowGutterSize;
+        return position.width-2*iCS_Config.EditorWindowGutterSize;
     }
     
 	// ----------------------------------------------------------------------
     float UsableWindowHeight() {
-        return position.height-2*iCS_EditorConfig.EditorWindowGutterSize+iCS_EditorConfig.EditorWindowToolbarHeight;
+        return position.height-2*iCS_Config.EditorWindowGutterSize+iCS_Config.EditorWindowToolbarHeight;
     }
     
 
@@ -672,7 +672,7 @@ public class iCS_Editor : EditorWindow {
                 if(closestPort != null) {
                     Rect closestPortRect= Storage.GetPosition(closestPort);
                     Vector2 closestPortPos= new Vector2(closestPortRect.x, closestPortRect.y);
-                    if(Vector2.Distance(closestPortPos, mousePosInGraph) < 4f*iCS_EditorConfig.PortRadius) {
+                    if(Vector2.Distance(closestPortPos, mousePosInGraph) < 4f*iCS_Config.PortRadius) {
                         Rect parentPos= Storage.GetPosition(Storage.GetParent(DragObject));
                         DragObject.LocalPosition.x= closestPortRect.x-parentPos.x;
                         DragObject.LocalPosition.y= closestPortRect.y-parentPos.y;
@@ -854,7 +854,7 @@ public class iCS_Editor : EditorWindow {
                                 if(newPortParent != null && newPortParent.IsModule) {
                                     iCS_EditorObject portParent= Storage.GetParent(DragFixPort);
                                     Rect modulePos= Storage.GetPosition(newPortParent);
-                                    float portSize2= 2f*iCS_EditorConfig.PortSize;
+                                    float portSize2= 2f*iCS_Config.PortSize;
                                     if(DragFixPort.IsInputPort) {
                                         if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
                                             if(Storage.IsChildOf(portParent, newPortParent)) {

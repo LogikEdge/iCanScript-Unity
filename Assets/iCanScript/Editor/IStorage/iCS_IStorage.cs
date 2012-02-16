@@ -585,7 +585,7 @@ public partial class iCS_IStorage {
         Rect tmp= GetPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
         float distance= Vector2.Distance(position, pick);
-        return (distance < 3f*iCS_EditorConfig.PortRadius) ? port : null;
+        return (distance < 3f*iCS_Config.PortRadius) ? port : null;
     }
     // ----------------------------------------------------------------------
     // Returns the connection at the given position.

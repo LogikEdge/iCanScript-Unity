@@ -63,10 +63,10 @@ public partial class iCS_IStorage {
         Rect  childRect   = ComputeChildRect(node);
 
         // Compute needed width.
-        float titleWidth  = iCS_EditorConfig.GetNodeWidth(node.Name)+iCS_EditorConfig.ExtraIconWidth;
+        float titleWidth  = iCS_Config.GetNodeWidth(node.Name)+iCS_Config.ExtraIconWidth;
         float leftMargin  = ComputeLeftMargin(node);
         float rightMargin = ComputeRightMargin(node);
-        float width       = 2.0f*iCS_EditorConfig.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childRect.width);
+        float width       = 2.0f*iCS_Config.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childRect.width);
 
         // Process case without child nodes
         Rect position= GetPosition(node);
@@ -75,7 +75,7 @@ public partial class iCS_IStorage {
             iCS_EditorObject[] leftPorts= GetLeftPorts(node);
             iCS_EditorObject[] rightPorts= GetRightPorts(node);
             int nbOfPorts= leftPorts.Length > rightPorts.Length ? leftPorts.Length : rightPorts.Length;
-            float height= Mathf.Max(iCS_EditorConfig.NodeTitleHeight+nbOfPorts*iCS_EditorConfig.MinimumPortSeparation, iCS_EditorConfig.MinimumNodeHeight);                                
+            float height= Mathf.Max(iCS_Config.NodeTitleHeight+nbOfPorts*iCS_Config.MinimumPortSeparation, iCS_Config.MinimumNodeHeight);                                
             
             // Apply new width and height.
             if(Math3D.IsNotEqual(height, position.height) || Math3D.IsNotEqual(width, position.width)) {
@@ -88,8 +88,8 @@ public partial class iCS_IStorage {
         // Process case with child nodes.
         else {
             // Adjust children local offset.
-            float neededChildXOffset= iCS_EditorConfig.GutterSize+leftMargin;
-            float neededChildYOffset= iCS_EditorConfig.GutterSize+iCS_EditorConfig.NodeTitleHeight;
+            float neededChildXOffset= iCS_Config.GutterSize+leftMargin;
+            float neededChildYOffset= iCS_Config.GutterSize+iCS_Config.NodeTitleHeight;
             if(Math3D.IsNotEqual(neededChildXOffset, childRect.x) ||
                Math3D.IsNotEqual(neededChildYOffset, childRect.y)) {
                    AdjustChildLocalPosition(node, new Vector2(neededChildXOffset-childRect.x, neededChildYOffset-childRect.y));
@@ -99,8 +99,8 @@ public partial class iCS_IStorage {
             int nbOfLeftPorts = GetNbOfLeftPorts(node);
             int nbOfRightPorts= GetNbOfRightPorts(node);
             int nbOfPorts= nbOfLeftPorts > nbOfRightPorts ? nbOfLeftPorts : nbOfRightPorts;
-            float portHeight= nbOfPorts*iCS_EditorConfig.MinimumPortSeparation;                                
-            float height= iCS_EditorConfig.NodeTitleHeight+Mathf.Max(portHeight, childRect.height+2.0f*iCS_EditorConfig.GutterSize);
+            float portHeight= nbOfPorts*iCS_Config.MinimumPortSeparation;                                
+            float height= iCS_Config.NodeTitleHeight+Mathf.Max(portHeight, childRect.height+2.0f*iCS_Config.GutterSize);
             
             float deltaWidth = width - node.LocalPosition.width;
             float deltaHeight= height - node.LocalPosition.height;
@@ -218,8 +218,8 @@ public partial class iCS_IStorage {
         ForEachLeftPort(node,
             port=> {
                 if(!port.IsStatePort && !port.IsFloating) {
-                    Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(port.Name);
-                    float nameSize= labelSize.x+iCS_EditorConfig.PortSize;
+                    Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
+                    float nameSize= labelSize.x+iCS_Config.PortSize;
                     if(LeftMargin < nameSize) LeftMargin= nameSize;
                 }
             }
@@ -233,8 +233,8 @@ public partial class iCS_IStorage {
         ForEachRightPort(node,
             port => {
                 if(!port.IsStatePort && !port.IsFloating) {
-                    Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(port.Name);
-                    float nameSize= labelSize.x+iCS_EditorConfig.PortSize;
+                    Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
+                    float nameSize= labelSize.x+iCS_Config.PortSize;
                     if(RightMargin < nameSize) RightMargin= nameSize;                    
                 }
             }
@@ -297,7 +297,7 @@ public partial class iCS_IStorage {
         // Relayout left ports.
         ports= SortLeftPorts(node);
         if(ports.Length != 0) {
-            float topOffset= iCS_EditorConfig.NodeTitleHeight-2;
+            float topOffset= iCS_Config.NodeTitleHeight-2;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(ports[i].IsFloating == false) {
@@ -314,7 +314,7 @@ public partial class iCS_IStorage {
         // Relayout right ports.
         ports= SortRightPorts(node);
         if(ports.Length != 0) {
-            float topOffset= iCS_EditorConfig.NodeTitleHeight-2;
+            float topOffset= iCS_Config.NodeTitleHeight-2;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(ports[i].IsFloating == false) {
@@ -586,7 +586,7 @@ public partial class iCS_IStorage {
 
     // ----------------------------------------------------------------------
     static Rect RectWithGutter(Rect _rect) {
-        float gutterSize= iCS_EditorConfig.GutterSize;
+        float gutterSize= iCS_Config.GutterSize;
         float gutterSize2= 2.0f*gutterSize;
         return new Rect(_rect.x-gutterSize, _rect.y-gutterSize, _rect.width+gutterSize2, _rect.height+gutterSize2);        
     }
@@ -631,7 +631,7 @@ public partial class iCS_IStorage {
     // Returns true if the given point is inside the node coordinates.
     public bool IsInside(iCS_EditorObject node, Vector2 point) {
         // Extend the node range to include the ports.
-        float portSize= iCS_EditorConfig.PortSize;
+        float portSize= iCS_Config.PortSize;
         Rect nodePos= GetPosition(node);
         nodePos.x-= portSize;
         nodePos.y-= portSize;
@@ -832,7 +832,7 @@ public partial class iCS_IStorage {
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearParent(iCS_EditorObject port) {
         if(GetNodeAt(Math3D.ToVector2(GetPosition(port))) != GetParent(port)) return false;
-        return GetDistanceFromParent(port) <= iCS_EditorConfig.PortSize*2;
+        return GetDistanceFromParent(port) <= iCS_Config.PortSize*2;
     }
 
 	// ----------------------------------------------------------------------
@@ -846,7 +846,7 @@ public partial class iCS_IStorage {
                 tmp= GetPosition(p);
                 Vector2 pPos= new Vector2(tmp.x, tmp.y);
                 float distance= Vector2.Distance(pPos, position);
-                if(distance <= 1.5*iCS_EditorConfig.PortSize) {
+                if(distance <= 1.5*iCS_Config.PortSize) {
                     foundPort= p;
                 }
             }

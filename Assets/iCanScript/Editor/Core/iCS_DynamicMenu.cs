@@ -535,7 +535,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateClassModule(iCS_EditorObject parent, iCS_IStorage storage, Type classType) {
-        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, classType.Name, iCS_ObjectTypeEnum.Module, classType);
+        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, null, iCS_ObjectTypeEnum.Module, classType);
         return module;
     }
 	// ----------------------------------------------------------------------

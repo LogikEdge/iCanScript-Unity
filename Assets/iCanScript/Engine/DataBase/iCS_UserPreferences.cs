@@ -85,7 +85,7 @@ public class iCS_UserPreferences {
 
     [System.Serializable]
     public class UserHiddenPrefixes {
-        public const string uCodePrefix= iCS_EditorConfig.TypePrefix;
+        public const string uCodePrefix= iCS_Config.ProductPrefix;
         public string[]     CustomPrefixes= new string[0]; 
 
         public string GetTypeName(Type t)  { return GetName(t.Name); }
@@ -105,7 +105,7 @@ public class iCS_UserPreferences {
     [System.Serializable]
     public class UserIcons {
         public bool         EnableMinimizedIcons= true;
-        public const string uCodeIconPath= iCS_EditorConfig.GuiAssetPath;
+        public const string uCodeIconPath= iCS_Config.GuiAssetPath;
         public string[]     CustomIconPaths= new string[0];
     }
     public UserIcons     Icons= new UserIcons();

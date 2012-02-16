@@ -186,7 +186,7 @@ public partial class iCS_IStorage {
             iCS_EditorObject parent= GetParent(module);
             iCS_ConnectionParams cp= new iCS_ConnectionParams(inStatePort, outStatePort, this);
             Vector2 distance= cp.End-cp.Start;
-            Vector2 delta= 0.5f*iCS_EditorConfig.GutterSize*(distance).normalized;
+            Vector2 delta= 0.5f*iCS_Config.GutterSize*(distance).normalized;
             int steps= (int)(distance.magnitude/delta.magnitude);
             Vector2 pos= cp.Start;
             bool minFound= false;

@@ -11,8 +11,10 @@ public partial class iCS_IStorage {
     void ClassModuleCompleteCreation(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
-            ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.InStaticModulePort);
-            ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.OutStaticModulePort);            
+            iCS_EditorObject port= ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.InStaticModulePort);
+            port.IsNameEditable= false;
+            port= ClassModuleCreatePortIfNonExisting(module, "this", classType, iCS_ObjectTypeEnum.OutStaticModulePort);
+            port.IsNameEditable= false;
         }
         iCS_UserPreferences.UserClassWizard control= Preferences.ClassWizard;
         if(control.OutputInstanceVariables)  ClassModuleCreateOutputInstanceFields(module);
@@ -212,11 +214,12 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    void ClassModuleCreatePortIfNonExisting(iCS_EditorObject module, string portName, Type portType, iCS_ObjectTypeEnum objType) {
+    iCS_EditorObject ClassModuleCreatePortIfNonExisting(iCS_EditorObject module, string portName, Type portType, iCS_ObjectTypeEnum objType) {
         iCS_EditorObject port= ClassModuleGetPort(module, portName, objType);
         if(port == null) {
             CreatePort(portName, module.InstanceId, portType, objType);                
         }
+        return port;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject ClassModuleFindFunction(iCS_EditorObject module, iCS_ReflectionDesc desc) {
@@ -230,8 +233,8 @@ public partial class iCS_IStorage {
     }
 
     // ======================================================================
-    public void ClassModuleCreate(iCS_EditorObject module, iCS_ReflectionDesc desc) {
-        if(ClassModuleFindFunction(module, desc) != null) return;
+    public iCS_EditorObject ClassModuleCreate(iCS_EditorObject module, iCS_ReflectionDesc desc) {
+        if(ClassModuleFindFunction(module, desc) != null) return null;
         Rect moduleRect= GetPosition(module);
         iCS_EditorObject func= CreateMethod(module.InstanceId, new Vector2(0.5f*(moduleRect.x+moduleRect.xMax), moduleRect.yMax), desc);
         ForEachChildDataPort(func,
@@ -274,9 +277,32 @@ public partial class iCS_IStorage {
             }
         );
         Minimize(func);
+        return func;
     }
     public void ClassModuleDestroy(iCS_EditorObject module, iCS_ReflectionDesc desc) {
         iCS_EditorObject func= ClassModuleFindFunction(module, desc);
         if(func != null) DestroyInstance(func);
+    }
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject ClassModuleCreateConstructor(iCS_EditorObject module, iCS_ReflectionDesc desc) {
+        iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, "this", iCS_ObjectTypeEnum.InStaticModulePort);
+        iCS_EditorObject[] connectedPorts= FindConnectedPorts(moduleThisPort);
+        iCS_EditorObject constructor= ClassModuleCreate(module, desc);
+        iCS_EditorObject thisPort= null;
+        ForEachChildDataPort(constructor,
+            port=> {
+                if(port.IsOutputPort && port.Name == "this") {
+                    thisPort= port;
+                }
+            }
+        );
+        foreach(var cp in connectedPorts) {
+            SetSource(cp, thisPort);
+        }
+        DestroyInstance(moduleThisPort);
+        return null;
+    }
+    public void ClassModuleDestroyConstructor(iCS_EditorObject module, iCS_ReflectionDesc desc) {
+        
     }
 }
