@@ -172,7 +172,7 @@ public class iCS_ReflectionDesc {
 		            string signature= DisplayName;
 					// Add inputs to signature.
 					string inputStr= FunctionInputSignatureNoThis;
-			        signature+= "("+inputStr+")";						
+			        signature+= " ("+inputStr+")";						
 					// Build output string
 					int nbOfOutputs= 0;
 					string outputStr= "";
@@ -193,10 +193,10 @@ public class iCS_ReflectionDesc {
 					}
 					// Add output to signature.
 					if(nbOfOutputs == 1) {
-						signature+="->"+outputStr.Substring(0, outputStr.Length-2);
+						signature+=" -> "+outputStr.Substring(0, outputStr.Length-2);
 					}
 					if(nbOfOutputs > 1) {
-						signature+="->("+outputStr.Substring(0, outputStr.Length-2)+")";
+						signature+=" -> ("+outputStr.Substring(0, outputStr.Length-2)+")";
 					}
 					return signature;
 				}
@@ -214,7 +214,7 @@ public class iCS_ReflectionDesc {
 		            string signature= DisplayName;
 					// Add inputs to signature.
 					string inputStr= FunctionInputSignatureNoThis;
-			        return signature+"("+inputStr+")";						
+			        return signature+" ("+inputStr+")";						
                 }
             }
         }

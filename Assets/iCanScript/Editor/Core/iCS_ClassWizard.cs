@@ -56,7 +56,7 @@ public class iCS_ClassWizard : EditorWindow {
     GUIContent  OutTitle     = new GUIContent("Out");
     GUIContent  NameTitle    = new GUIContent("Name");
     GUIContent  TypeTitle    = new GUIContent("Type");
-    GUIContent  MethodTitle  = new GUIContent("Methods");
+    GUIContent  MethodTitle  = new GUIContent("Operations");
     Vector2     LabelSize;
     Vector2     InstanceTitleSize;
     Vector2     VariableTitleSize;
@@ -151,6 +151,11 @@ public class iCS_ClassWizard : EditorWindow {
                     MaxVariableWidth= propertySize.x+kSpacer;
                 }
             } else if(component.IsConstructor) {
+                isActive= false;
+                iCS_EditorObject existing= Storage.ClassModuleGetConstructor(Target);
+                if(existing != null && component.Method == existing.GetMethodBase(Storage.EditorObjects)) {
+                    isActive= true;
+                }
                 constructors.Add(new ControlPair(component, isActive));
                 var constructorSize= EditorStyles.boldLabel.CalcSize(new GUIContent(component.FunctionSignatureNoThisNoOutput));
                 if(constructorSize.x+12f > MaxConstructorWidth) {

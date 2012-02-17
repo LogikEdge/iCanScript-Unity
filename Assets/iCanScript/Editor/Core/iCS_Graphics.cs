@@ -653,6 +653,7 @@ public class iCS_Graphics {
     //  PORT
     // ----------------------------------------------------------------------
     public void DrawPort(iCS_EditorObject port, iCS_IStorage storage) {
+        if(port == null || storage == null) return;
         // Update display position.
         Rect position= GetDisplayPosition(port, storage);
 
@@ -663,6 +664,7 @@ public class iCS_Graphics {
         iCS_EditorObject portParent= storage.GetParent(port);         
         Vector2 center= Math3D.ToVector2(position);
         Type portValueType= port.RuntimeType;
+        if(portValueType == null) return;
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, storage);
 		object portValue= null;

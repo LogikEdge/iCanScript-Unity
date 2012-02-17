@@ -1,14 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Package="Integrator")]
-public class iCS_Integrator {
+[iCS_Class(Company="iCanScript", Package="ParticalPhysics")]
+public class iCS_ParticalPhysics {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-    [iCS_InPort]    public Vector3  Gravity         = new Vector3(0,-9.8f,0);
-    [iCS_InPort]    public float    DragFactor      = 0.01f;
-                    public float    InvMass         = 1f;
+    [iCS_InPort]    public Vector3  Gravity;
+    [iCS_InPort]    public float    Damping;
+                    public float    InvMass;
                     public Vector3  PreviousVelocity= Vector3.zero;
                     public Vector3  OutputVelocity  = Vector3.zero;
                     Vector3[]       Forces          = new Vector3[3];
@@ -22,11 +22,18 @@ public class iCS_Integrator {
     public Vector3 Force3     { [iCS_Function] set { Forces[2]= value; }}
     
 	// ----------------------------------------------------------------------
-    [iCS_Function] public iCS_Integrator() {}
+    [iCS_Function]
+    public iCS_ParticalPhysics() : this(new Vector3(0f,-9.8f,0f), 1f, 0.005f) {}
+    [iCS_Function]
+    public iCS_ParticalPhysics(Vector3 gravity, float mass= 1f, float damping= 0.995f) {
+        Gravity= gravity;
+        Mass= mass;
+        Damping= damping;
+    }
 
 	// ----------------------------------------------------------------------
     [iCS_Function(Return="Velocity")]
-    public Vector3 Update(Vector3 actualDisplacement) {
+    public Vector3 Integrate(Vector3 actualDisplacement) {
         // Apply all force generators.
         Vector3 forceAccum= Vector3.zero;
         foreach(var force in Forces) {
@@ -39,7 +46,7 @@ public class iCS_Integrator {
         Vector3 newVelocity= PreviousVelocity+accel*dt;
 
         // Apply drag factor.
-        newVelocity*= (1f-DragFactor*InvMass*dt);
+        newVelocity*= Mathf.Pow(Damping, dt);
 
         // Update velocities.
         OutputVelocity= 0.5f*(newVelocity+PreviousVelocity);
