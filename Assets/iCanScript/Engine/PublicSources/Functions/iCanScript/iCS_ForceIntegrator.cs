@@ -8,6 +8,7 @@ public class iCS_ForceIntegrator {
 	// ----------------------------------------------------------------------
     [iCS_InPort]    public Vector3  Gravity;
     [iCS_InPort]    public float    Damping;
+    [iCS_OutPort]   public Vector3  Acceleration;
                     public float    InvMass;
                     public Vector3  PreviousVelocity= Vector3.zero;
                     public Vector3  OutputVelocity  = Vector3.zero;
@@ -48,14 +49,14 @@ public class iCS_ForceIntegrator {
         foreach(var force in Forces) {
             forceAcc+= force;
         }
-        Vector3 accelAcc= Gravity+forceAcc*InvMass;
+        Acceleration= Gravity+forceAcc*InvMass;
         foreach(var accel in Accelerations) {
-			accelAcc+= accel;
+			Acceleration+= accel;
 		}
 
         // Compute new velocity.
         float dt= Time.deltaTime;
-        Vector3 newVelocity= PreviousVelocity+accelAcc*dt;
+        Vector3 newVelocity= PreviousVelocity+Acceleration*dt;
 
         // Apply drag factor.
         newVelocity*= Mathf.Pow(Damping, dt);
