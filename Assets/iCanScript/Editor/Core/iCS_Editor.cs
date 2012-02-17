@@ -603,9 +603,8 @@ public class iCS_Editor : EditorWindow {
         if(SelectedObject.IsClassModule) {
             ClassWizard= GetClassWizard();
             ClassWizard.Activate(SelectedObject, Storage);
-        } else {
-            DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition), MenuOption == 0);                    
         }
+        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition), MenuOption == 0);                    
     }
 	// ----------------------------------------------------------------------
     void DragAndDropPerform() {
