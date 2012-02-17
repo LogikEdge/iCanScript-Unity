@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Package="ParticalPhysics")]
-public class iCS_ParticalPhysics {
+[iCS_Class(Company="iCanScript")]
+public class iCS_ForceIntegrator {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
@@ -23,9 +23,9 @@ public class iCS_ParticalPhysics {
     
 	// ----------------------------------------------------------------------
     [iCS_Function]
-    public iCS_ParticalPhysics() : this(new Vector3(0f,-9.8f,0f), 1f, 0.005f) {}
+    public iCS_ForceIntegrator() : this(new Vector3(0f,-9.8f,0f), 1f, 0.005f) {}
     [iCS_Function]
-    public iCS_ParticalPhysics(Vector3 gravity, float mass= 1f, float damping= 0.995f) {
+    public iCS_ForceIntegrator(Vector3 gravity, float mass= 1f, float damping= 0.995f) {
         Gravity= gravity;
         Mass= mass;
         Damping= damping;

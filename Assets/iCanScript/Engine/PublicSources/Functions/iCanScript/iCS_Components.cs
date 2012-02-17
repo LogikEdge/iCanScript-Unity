@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Package="Component")]
+[iCS_Class(Company="iCanScript")]
 public sealed class iCS_Component {
     // Mesh
     [iCS_Function(Return="meshFilter", ToolTip="Returns the MeshFilter associated with the game object.")]

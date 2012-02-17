@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Package="GameObject")]
+[iCS_Class(Company="iCanScript")]
 public static class iCS_GameObject {
     // Global transform attributes
     [iCS_Function(ToolTip="Returns the global position of the given game object.")]
