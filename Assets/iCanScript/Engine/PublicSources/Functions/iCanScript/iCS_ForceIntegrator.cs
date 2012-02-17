@@ -12,14 +12,18 @@ public class iCS_ForceIntegrator {
                     public Vector3  PreviousVelocity= Vector3.zero;
                     public Vector3  OutputVelocity  = Vector3.zero;
                     Vector3[]       Forces          = new Vector3[3];
+					Vector3[]		Accelerations   = new Vector3[3];
                     
     // ======================================================================
     // Properties
 	// ----------------------------------------------------------------------
-    public float   Mass       { [iCS_Function] set { InvMass= Math3D.IsZero(value) ? 1f : 1f/value; }}
-    public Vector3 Force1     { [iCS_Function] set { Forces[0]= value; }}
-    public Vector3 Force2     { [iCS_Function] set { Forces[1]= value; }}
-    public Vector3 Force3     { [iCS_Function] set { Forces[2]= value; }}
+    public float   Mass       		{ [iCS_Function] set { InvMass= Math3D.IsZero(value) ? 1f : 1f/value; }}
+    public Vector3 Force1     		{ [iCS_Function] set { Forces[0]= value; }}
+    public Vector3 Force2     		{ [iCS_Function] set { Forces[1]= value; }}
+    public Vector3 Force3     		{ [iCS_Function] set { Forces[2]= value; }}
+    public Vector3 Acceleration1	{ [iCS_Function] set { Accelerations[0]= value; }}
+    public Vector3 Acceleration2	{ [iCS_Function] set { Accelerations[1]= value; }}
+    public Vector3 Acceleration3	{ [iCS_Function] set { Accelerations[2]= value; }}
     
 	// ----------------------------------------------------------------------
     [iCS_Function]
@@ -33,17 +37,25 @@ public class iCS_ForceIntegrator {
 
 	// ----------------------------------------------------------------------
     [iCS_Function(Return="Velocity")]
-    public Vector3 Integrate(Vector3 actualDisplacement) {
+    public Vector3 Integrate(Vector3 actualVelocity, out Vector3 displacement) {
+		// Compensate for external velocity change.
+		if(Mathf.Abs(actualVelocity.sqrMagnitude - OutputVelocity.sqrMagnitude) > 0.01f) {
+			PreviousVelocity= actualVelocity;
+		}
+
         // Apply all force generators.
-        Vector3 forceAccum= Vector3.zero;
+        Vector3 forceAcc= Vector3.zero;
         foreach(var force in Forces) {
-            forceAccum+= force;
+            forceAcc+= force;
         }
-        Vector3 accel= Gravity+forceAccum*InvMass;
-        
+        Vector3 accelAcc= Gravity+forceAcc*InvMass;
+        foreach(var accel in Accelerations) {
+			accelAcc+= accel;
+		}
+
         // Compute new velocity.
         float dt= Time.deltaTime;
-        Vector3 newVelocity= PreviousVelocity+accel*dt;
+        Vector3 newVelocity= PreviousVelocity+accelAcc*dt;
 
         // Apply drag factor.
         newVelocity*= Mathf.Pow(Damping, dt);
@@ -51,6 +63,7 @@ public class iCS_ForceIntegrator {
         // Update velocities.
         OutputVelocity= 0.5f*(newVelocity+PreviousVelocity);
         PreviousVelocity= newVelocity;
+		displacement= OutputVelocity*dt;
         return OutputVelocity;
     }
 }
