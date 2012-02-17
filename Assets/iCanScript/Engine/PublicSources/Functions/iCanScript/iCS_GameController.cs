@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Package="Input")]
+[iCS_Class(Company="iCanScript", Package="Input", Icon="iCS_JoystickIcon.psd")]
 public static class iCS_GameController {
     [iCS_Function(Return="analog1", Icon="iCS_JoystickIcon.psd",
                  ToolTip="RawAnalog returns the raw joystick value while Analog returns the time compensated joystick value ajusted with the input speed.")]
