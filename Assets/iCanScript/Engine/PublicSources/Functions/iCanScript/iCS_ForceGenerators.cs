@@ -5,7 +5,7 @@ using System.Collections;
 public static class iCS_ForceGenerators {
 
     [iCS_Class(Company="iCanScript")]
-    public class DesiredVelocity {
+    class DesiredVelocity {
         float MaxAcceleration;
     }
     
