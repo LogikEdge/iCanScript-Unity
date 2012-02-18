@@ -10,14 +10,18 @@ public class iCS_ImpulseForceGenerator {
 	float	MainImpulseTime;
 	float	SecondaryImpulseTime;
 	float	RetriggerDelay;
+	float   InitialVelocityBoost;
 	
 	[iCS_Function]
-	public iCS_ImpulseForceGenerator(Vector3 mainImpulseAccel, float mainImpulseTime, Vector3 secondaryImpulseAccel, float secondaryImpulseTime, float retriggerDelay) {
+	public iCS_ImpulseForceGenerator(Vector3 mainImpulseAccel, float mainImpulseTime,
+	                                 Vector3 secondaryImpulseAccel, float secondaryImpulseTime,
+	                                 float retriggerDelay, float initialVelocityBoost) {
 		MainImpulse         = mainImpulseAccel;
 		MainImpulseTime     = mainImpulseTime;
 		SecondaryImpulse    = secondaryImpulseAccel;
 		SecondaryImpulseTime= secondaryImpulseTime;
 		RetriggerDelay      = Mathf.Max(retriggerDelay, Mathf.Max(mainImpulseTime, secondaryImpulseTime));
+        InitialVelocityBoost= initialVelocityBoost;
 		IsActive            = false;
 	}
 	
@@ -52,6 +56,7 @@ public class iCS_ImpulseForceGenerator {
 		// Determine if we should start the impulse.
 		IsActive= true;
 		StartTime= currentTime;
-		return MainImpulse+SecondaryImpulse;
+		var direction= MainImpulse.normalized;
+		return MainImpulse+SecondaryImpulse+direction*InitialVelocityBoost/dt;
 	}
 }
