@@ -255,10 +255,8 @@ public partial class iCS_IStorage {
             return;
         }
 
-		// Gather all ports.
-        Rect position= GetPosition(node);
-        
         // Relayout top ports.
+        Rect position= GetPosition(node);        
         iCS_EditorObject[] ports= SortTopPorts(node);
         if(ports.Length != 0) {
             float xStep= position.width / ports.Length;
@@ -268,7 +266,7 @@ public partial class iCS_IStorage {
                     ports[i].LocalPosition.y= 0;
                 }
             }
-            if(!IsChildrenInSameOrder(node, ports)) {
+            if(!AreChildrenInSameOrder(node, ports)) {
                 ReorderChildren(node, ports);
                 SetAllConnectedPortsDirty(ports);
             }            
@@ -284,7 +282,7 @@ public partial class iCS_IStorage {
                     ports[i].LocalPosition.y= position.height;                
                 }
             }            
-            if(!IsChildrenInSameOrder(node, ports)) {
+            if(!AreChildrenInSameOrder(node, ports)) {
                 ReorderChildren(node, ports);
                 SetAllConnectedPortsDirty(ports);
             }            
@@ -301,7 +299,7 @@ public partial class iCS_IStorage {
                     ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
                 }
             }
-            if(!IsChildrenInSameOrder(node, ports)) {
+            if(!AreChildrenInSameOrder(node, ports)) {
                 ReorderChildren(node, ports);
                 SetAllConnectedPortsDirty(ports);
             }            
@@ -318,7 +316,7 @@ public partial class iCS_IStorage {
                     ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;
                 }
             }
-            if(!IsChildrenInSameOrder(node, ports)) {
+            if(!AreChildrenInSameOrder(node, ports)) {
                 ReorderChildren(node, ports);
                 SetAllConnectedPortsDirty(ports);
             }            
@@ -326,8 +324,8 @@ public partial class iCS_IStorage {
     }
 
     // ----------------------------------------------------------------------
-    bool IsChildrenInSameOrder(iCS_EditorObject node, iCS_EditorObject[] orderedChildren) {
-        return TreeCache[node.InstanceId].IsChildrenInSameOrder(Prelude.map(c=> c.InstanceId, orderedChildren));
+    bool AreChildrenInSameOrder(iCS_EditorObject node, iCS_EditorObject[] orderedChildren) {
+        return TreeCache[node.InstanceId].AreChildrenInSameOrder(Prelude.map(c=> c.InstanceId, orderedChildren));
     }
     void ReorderChildren(iCS_EditorObject node, iCS_EditorObject[] orderedChildren) {
         TreeCache[node.InstanceId].ReorderChildren(Prelude.map(c=> c.InstanceId, orderedChildren));

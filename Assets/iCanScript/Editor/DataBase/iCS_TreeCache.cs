@@ -37,7 +37,7 @@ public class iCS_TreeCache {
                 }
             }
         }
-        public bool IsChildrenInSameOrder(int[] orderedChildren) {
+        public bool AreChildrenInSameOrder(int[] orderedChildren) {
             int i= 0;
             for(int j= 0; j < Children.Count; ++j) {
                 if(Children[j] == orderedChildren[i]) {
@@ -47,7 +47,7 @@ public class iCS_TreeCache {
             return false;
         }
         public void ReorderChildren(int[] orderedChildren) {
-            if(IsChildrenInSameOrder(orderedChildren)) return;
+            if(AreChildrenInSameOrder(orderedChildren)) return;
             List<int> others= Prelude.filter(c=> Prelude.notElem(c,orderedChildren), Children);
             int i= 0;
             Prelude.forEach(c=> Children[i++]= c, orderedChildren);
