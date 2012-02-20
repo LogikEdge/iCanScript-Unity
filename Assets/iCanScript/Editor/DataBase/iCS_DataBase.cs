@@ -10,8 +10,6 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     public static List<iCS_ReflectionDesc>  Functions   = new List<iCS_ReflectionDesc>();
     public static bool                      IsSorted    = false;
-//    public static bool                      IsMenuDirty = true;
-//    public static string[]                  FunctionMenu= null;
     
     // ======================================================================
     // DataBase functionality

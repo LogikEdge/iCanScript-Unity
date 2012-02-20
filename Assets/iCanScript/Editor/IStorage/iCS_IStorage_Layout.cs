@@ -213,7 +213,7 @@ public partial class iCS_IStorage {
         float LeftMargin= 0;
         ForEachLeftPort(node,
             port=> {
-                if(!port.IsStatePort && !port.IsFloating) {
+                if(!port.IsStatePort && IsPortOnParent(port)) {
                     Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
                     float nameSize= labelSize.x+iCS_Config.PortSize;
                     if(LeftMargin < nameSize) LeftMargin= nameSize;
@@ -228,7 +228,7 @@ public partial class iCS_IStorage {
         float RightMargin= 0;
         ForEachRightPort(node,
             port => {
-                if(!port.IsStatePort && !port.IsFloating) {
+                if(!port.IsStatePort && IsPortOnParent(port)) {
                     Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
                     float nameSize= labelSize.x+iCS_Config.PortSize;
                     if(RightMargin < nameSize) RightMargin= nameSize;                    
@@ -261,9 +261,9 @@ public partial class iCS_IStorage {
         if(ports.Length != 0) {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
-                if(ports[i].IsFloating == false) {
+                if(!ports[i].IsFloating) {
                     ports[i].LocalPosition.x= (i+0.5f) * xStep;
-                    ports[i].LocalPosition.y= 0;
+                    ports[i].LocalPosition.y= 0;                    
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -277,7 +277,7 @@ public partial class iCS_IStorage {
         if(ports.Length != 0) {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
-                if(ports[i].IsFloating == false) {
+                if(!ports[i].IsFloating) {
                     ports[i].LocalPosition.x= (i+0.5f) * xStep;
                     ports[i].LocalPosition.y= position.height;                
                 }
@@ -294,7 +294,7 @@ public partial class iCS_IStorage {
             float topOffset= iCS_Config.NodeTitleHeight-2;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
-                if(ports[i].IsFloating == false) {
+                if(!ports[i].IsFloating) {
                     ports[i].LocalPosition.x= 0;
                     ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
                 }
@@ -311,7 +311,7 @@ public partial class iCS_IStorage {
             float topOffset= iCS_Config.NodeTitleHeight-2;
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
-                if(ports[i].IsFloating == false) {
+                if(!ports[i].IsFloating) {
                     ports[i].LocalPosition.x= position.width;
                     ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;
                 }
@@ -340,6 +340,10 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     Vector2 GetAverageConnectionPosition(iCS_EditorObject port) {
+        if(!Preferences.ControlOptions.AutoPortLayout) {
+            var p= GetPosition(port);
+            return new Vector2(p.x, p.y);
+        }
         iCS_EditorObject[] connectedPorts= FindConnectedPorts(port);
         Vector2 posSum= Prelude.fold(
             (remotePort,sum)=> sum+Math3D.ToVector2(GetPosition(remotePort)),
@@ -348,7 +352,7 @@ public partial class iCS_IStorage {
         );
         int nbOfPorts= connectedPorts.Length;
         if(IsValid(port.Source)) {
-            posSum+= Math3D.ToVector2(GetPosition(EditorObjects[port.Source]));
+            posSum+= Math3D.ToVector2(GetPosition(GetSource(port)));
             ++nbOfPorts;
         }
         return nbOfPorts != 0 ? (1.0f/nbOfPorts)*posSum : Math3D.ToVector2(GetPosition(port));        
@@ -427,7 +431,7 @@ public partial class iCS_IStorage {
     // Returns all ports position on the top edge.
     public iCS_EditorObject[] GetTopPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachTopPort(node, port=> { if(!port.IsFloating) ports.Add(port);});
+        ForEachTopPort(node, port=> { if(IsPortOnParent(port)) ports.Add(port);});
         return ports.ToArray();
     }
 
@@ -435,7 +439,7 @@ public partial class iCS_IStorage {
     // Returns all ports position on the bottom edge.
     public iCS_EditorObject[] GetBottomPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachBottomPort(node, port=> { if(!port.IsFloating) ports.Add(port);});
+        ForEachBottomPort(node, port=> { if(IsPortOnParent(port)) ports.Add(port);});
         return ports.ToArray();
     }
 
@@ -443,7 +447,7 @@ public partial class iCS_IStorage {
     // Returns all ports position on the left edge.
     public iCS_EditorObject[] GetLeftPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachLeftPort(node, port=> { if(!port.IsFloating) ports.Add(port);});
+        ForEachLeftPort(node, port=> { if(IsPortOnParent(port)) ports.Add(port);});
         return ports.ToArray();        
     }
 
@@ -451,8 +455,12 @@ public partial class iCS_IStorage {
     // Returns all ports position on the right edge.
     public iCS_EditorObject[] GetRightPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachRightPort(node, port=> { if(!port.IsFloating) ports.Add(port);});
+        ForEachRightPort(node, port=> { if(IsPortOnParent(port)) ports.Add(port);});
         return ports.ToArray();
+    }
+    // ----------------------------------------------------------------------
+    bool IsPortOnParent(iCS_EditorObject port) {
+        return !port.IsFloating || IsNearParentEdge(port);
     }
     // ----------------------------------------------------------------------
     // Returns the number of ports on the top edge.
@@ -829,6 +837,48 @@ public partial class iCS_IStorage {
         return GetDistanceFromParent(port) <= iCS_Config.PortSize*2;
     }
 
+    // ----------------------------------------------------------------------
+    // Returns true if the distance to parent is less then twice the port size.
+    public bool IsNearParentEdge(iCS_EditorObject port, iCS_EditorObject.EdgeEnum edge= iCS_EditorObject.EdgeEnum.None) {
+        var pos= Math3D.ToVector2(GetPosition(port));
+        if(GetNodeAt(pos) != GetParent(port)) return false;
+        if(GetDistanceFromParent(port) > iCS_Config.PortSize) return false;
+        iCS_EditorObject.EdgeEnum closestEdge= GetClosestEdge(GetParent(port), pos);
+        return closestEdge == (edge != iCS_EditorObject.EdgeEnum.None ? edge : port.Edge);
+    }
+    // ----------------------------------------------------------------------
+    public void PositionOnEdge(iCS_EditorObject port) {
+        var parent= GetParent(port);
+        var parentPos= GetPosition(parent);
+        switch(GetClosestEdge(parent, Math3D.ToVector2(GetPosition(port)))) {
+            case iCS_EditorObject.EdgeEnum.Top:      port.LocalPosition.y= 0; break; 
+            case iCS_EditorObject.EdgeEnum.Bottom:   port.LocalPosition.y= parentPos.height; break;
+            case iCS_EditorObject.EdgeEnum.Left:     port.LocalPosition.x= 0; break;
+            case iCS_EditorObject.EdgeEnum.Right:    port.LocalPosition.x= parentPos.width; break;
+        }
+    }
+    // ----------------------------------------------------------------------
+    iCS_EditorObject.EdgeEnum GetClosestEdge(iCS_EditorObject node, Vector2 point) {
+        var pos= GetPosition(node);
+        float xDistance   = Mathf.Abs(point.x-pos.x);
+        float xMaxDistance= Mathf.Abs(point.x-pos.xMax);
+        float yDistance   = Mathf.Abs(point.y-pos.y);
+        float yMaxDistance= Mathf.Abs(point.y-pos.yMax);
+        if(xDistance < xMaxDistance) {
+            if(yDistance < yMaxDistance) {
+                return xDistance < yDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Top;
+            } else {
+                return xDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Bottom;
+            }
+        } else {
+            if(yDistance < yMaxDistance) {
+                return xMaxDistance < yDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Top;
+            } else {
+                return xMaxDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Bottom;
+            }            
+        }
+    }
+    
 	// ----------------------------------------------------------------------
     public iCS_EditorObject GetOverlappingPort(iCS_EditorObject port) {
         iCS_EditorObject foundPort= null;
