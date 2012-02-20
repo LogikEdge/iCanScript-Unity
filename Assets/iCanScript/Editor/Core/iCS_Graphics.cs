@@ -650,6 +650,19 @@ public class iCS_Graphics {
     }
     
     // ======================================================================
+    //  Output Mux
+    // ----------------------------------------------------------------------
+    public void DrawOutputMux(iCS_EditorObject mux, iCS_IStorage storage) {
+        if(mux == null || storage == null) return;
+        Rect pos= storage.GetPosition(mux);
+        iCS_EditorObject muxParent= storage.GetParent(mux);         
+        Handles.color= GetNodeColor(muxParent, storage);
+        Handles.DrawLine(new Vector3(pos.x, pos.y), new Vector3(pos.xMax, pos.y+iCS_Config.PortSize));
+        Handles.DrawLine(new Vector3(pos.x, pos.yMax), new Vector3(pos.xMax, pos.yMax-iCS_Config.PortSize));
+        Handles.DrawLine(new Vector3(pos.xMax, pos.y+iCS_Config.PortSize), new Vector3(pos.xMax, pos.yMax-iCS_Config.PortSize));
+    }
+    
+    // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
     public void DrawPort(iCS_EditorObject port, iCS_IStorage storage) {

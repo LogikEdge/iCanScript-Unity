@@ -30,6 +30,7 @@ public class iCS_EditorObject {
     public int                   Source             = -1;
     public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;
+	public int                   PortGroup          = 0;
 
     // State specific attributes ---------------------------------------------
     public bool                  IsRawEntryState= false;

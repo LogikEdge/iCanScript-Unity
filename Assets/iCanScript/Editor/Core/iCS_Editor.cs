@@ -890,6 +890,13 @@ public class iCS_Editor : EditorWindow {
                                         }
                                     }                                    
                                 }
+                                if(newPortParent != null && DragFixPort.IsOutputPort && (newPortParent.IsState || newPortParent.IsStateChart)) {
+                                    iCS_EditorObject portParent= Storage.GetParent(DragFixPort);
+                                    Rect modulePos= Storage.GetPosition(newPortParent);
+                                    float portSize2= 2f*iCS_Config.PortSize;
+                                    iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                                    SetNewDataConnection(newPort, DragFixPort);
+                                }
                                 break;
                             }
                         }                    
@@ -1088,8 +1095,8 @@ public class iCS_Editor : EditorWindow {
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc conversion= null) {
         iCS_EditorObject inNode= Storage.GetParent(inPort);
         iCS_EditorObject outNode= Storage.GetParent(outPort);
-        iCS_EditorObject inParent= GetParentModule(inNode);
-        iCS_EditorObject outParent= GetParentModule(outNode);
+        iCS_EditorObject inParent= GetParentNode(inNode);
+        iCS_EditorObject outParent= GetParentNode(outNode);
         // No need to create module ports if both connected nodes are under the same parent.
         if(inParent == outParent || inParent == outNode || inNode == outParent) {
             Storage.SetSource(inPort, outPort, conversion);
@@ -1097,21 +1104,21 @@ public class iCS_Editor : EditorWindow {
         }
         // Create inPort if inParent is not part of the outParent hierarchy.
         bool inParentSeen= false;
-        for(iCS_EditorObject op= GetParentModule(outParent); op != null; op= GetParentModule(op)) {
+        for(iCS_EditorObject op= GetParentNode(outParent); op != null; op= GetParentNode(op)) {
             if(inParent == op) {
                 inParentSeen= true;
                 break;
             }
         }
         if(!inParentSeen && inParent != null) {
-            iCS_EditorObject newPort= Storage.CreatePort(inPort.Name, inParent.InstanceId, inPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+            iCS_EditorObject newPort= Storage.CreatePort(outPort.Name, inParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             Storage.SetSource(inPort, newPort, conversion);
             SetNewDataConnection(newPort, outPort);
             return;                       
         }
         // Create outPort if outParent is not part of the inParent hierarchy.
         bool outParentSeen= false;
-        for(iCS_EditorObject ip= GetParentModule(inParent); ip != null; ip= GetParentModule(ip)) {
+        for(iCS_EditorObject ip= GetParentNode(inParent); ip != null; ip= GetParentNode(ip)) {
             if(outParent == ip) {
                 outParentSeen= true;
                 break;
@@ -1147,6 +1154,12 @@ public class iCS_Editor : EditorWindow {
         iCS_EditorObject parentModule= Storage.GetParent(edObj);
         for(; parentModule != null && !parentModule.IsModule; parentModule= Storage.GetParent(parentModule));
         return parentModule;
+    }
+	// ----------------------------------------------------------------------
+    iCS_EditorObject GetParentNode(iCS_EditorObject edObj) {
+        iCS_EditorObject parentNode= Storage.GetParent(edObj);
+        for(; parentNode != null && !parentNode.IsNode; parentNode= Storage.GetParent(parentNode));
+        return parentNode;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType, string objName) {
