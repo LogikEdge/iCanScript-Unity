@@ -124,6 +124,7 @@ public partial class iCS_IStorage {
             if(CleanupNeeded) CleanupNeeded= Cleanup();
             return;
         }
+        Debug.Log("Graph is dirty");
         CleanupNeeded= true;
         myIsDirty= false;
 
@@ -131,6 +132,7 @@ public partial class iCS_IStorage {
         ForEachRecursiveDepthLast(EditorObjects[0],
             obj=> {
                 if(obj.IsDirty) {
+                    Debug.Log(obj.Name+" is dirty");
                     Layout(obj);
                 }
             }
@@ -145,8 +147,11 @@ public partial class iCS_IStorage {
                 if((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) {
                     if(CleanupDeadPorts) {
                         DestroyInstanceInternal(obj);                            
+                        modified= true;
                     }
-                    modified= true;
+                    else {
+                        Debug.Log("Waiting for release of CleanupDeadPorts");
+                    }
                 }                    
             }
         );        

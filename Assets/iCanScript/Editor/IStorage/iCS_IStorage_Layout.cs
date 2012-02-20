@@ -27,10 +27,6 @@ public partial class iCS_IStorage {
         obj.IsDirty= false;
         ExecuteIf(obj, WD.IsNode, NodeLayout);
     }
-    public void Layout(int id) {
-        if(IsInvalid(id)) return;
-        Layout(EditorObjects[id]);
-    }
     // ----------------------------------------------------------------------
     // Recompute the layout of a parent node.
     // Returns "true" if the new layout is within the window area.
