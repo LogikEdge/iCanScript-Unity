@@ -760,10 +760,10 @@ public class iCS_Editor : EditorWindow {
                 DragObject.LocalPosition.y= newLocalPos.y;
                 if(DragObject.IsStatePort) break;
                 // Determine if we should convert to data port connection drag.
+                iCS_EditorObject parent= Storage.GetParent(DragOriginalPort);
                 if(!Storage.IsNearParentEdge(DragObject)) {
                     // Data port. Create a drag port as appropriate.
                     DragObject.IsFloating= false;
-                    iCS_EditorObject parent= Storage.GetParent(DragOriginalPort);
                     if(DragOriginalPort.IsInputPort) {
                         DragObject= Storage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                         iCS_EditorObject prevSource= Storage.GetSource(DragOriginalPort);
@@ -788,6 +788,7 @@ public class iCS_Editor : EditorWindow {
                     DragObject.IsFloating= true;
                 } else {
                     Storage.PositionOnEdge(DragObject);
+                    Storage.LayoutPorts(parent);
                 }
                 break;
             }
@@ -821,7 +822,6 @@ public class iCS_Editor : EditorWindow {
                         DragObject.LocalPosition.y= closestPortRect.y-parentPos.y;
                     }                    
                 }
-                Storage.SetDirty(DragObject);
                 // Special case for module ports.
                 if(DragOriginalPort.IsModulePort) {
                     if(Storage.IsInside(Storage.GetParent(DragOriginalPort), mousePosInGraph)) {
