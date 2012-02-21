@@ -25,7 +25,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void Layout(iCS_EditorObject obj) {
         obj.IsDirty= false;
-        ExecuteIf(obj, WD.IsNode, NodeLayout);
+        ExecuteIf(obj, iCS_ObjectType.IsNode, NodeLayout);
     }
     // ----------------------------------------------------------------------
     // Recompute the layout of a parent node.

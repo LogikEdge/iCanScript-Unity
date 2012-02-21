@@ -53,7 +53,7 @@ public partial class iCS_IStorage {
 	void DestroySingleObject(iCS_EditorObject toDestroy) {
 		if(toDestroy == null || toDestroy.InstanceId == -1) return;
         // Disconnect ports linking to this port.
-        ExecuteIf(toDestroy, WD.IsPort, _=> DisconnectPort(toDestroy));
+        ExecuteIf(toDestroy, iCS_ObjectType.IsPort, _=> DisconnectPort(toDestroy));
         // Update modules runtime data when removing a module port.
         iCS_EditorObject parent= GetParent(toDestroy);
         if(toDestroy.IsModulePort && parent.IsModule) RemovePortFromModule(toDestroy);

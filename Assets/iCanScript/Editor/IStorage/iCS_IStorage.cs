@@ -325,7 +325,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateState(int parentId, Vector2 initialPos, string name= "") {
         // Validate that we have a good parent.
         iCS_EditorObject parent= EditorObjects[parentId];
-        if(parent == null || (!WD.IsStateChart(parent) && !WD.IsState(parent))) {
+        if(parent == null || (!parent.IsStateChart && !parent.IsState)) {
             Debug.LogError("State must be created as a child of StateChart or State.");
         }
         // Create the function node.
