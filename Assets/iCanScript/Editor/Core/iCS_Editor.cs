@@ -652,10 +652,14 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void BreakDataConnectionDrag() {
         var originalSource= Storage.GetSource(DragOriginalPort);
-        if(originalSource != null) {
+        if(originalSource != null && originalSource != DragObject) {
             DragFixPort= originalSource;
             Storage.SetSource(DragObject, DragFixPort);
-            Storage.SetSource(DragOriginalPort, null);                                
+            Storage.SetSource(DragOriginalPort, null);
+        } else {
+            if(DragFixPort == DragOriginalPort) {
+                Storage.SetSource(DragFixPort, DragObject);
+            }
         }
     }
 	// ----------------------------------------------------------------------
@@ -769,8 +773,8 @@ public class iCS_Editor : EditorWindow {
                             Storage.SetSource(DragOriginalPort, null);
                             DragObject.Name= DragFixPort.Name;
                         } else {
-                            Storage.SetSource(DragFixPort, DragObject);
                             DragFixPort= DragOriginalPort;
+                            Storage.SetSource(DragFixPort, DragObject);
                         }                    
                     } else {
                         DragObject= Storage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
