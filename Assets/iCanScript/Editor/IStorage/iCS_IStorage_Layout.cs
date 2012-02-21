@@ -811,15 +811,17 @@ public partial class iCS_IStorage {
     public bool IsNearParentEdge(iCS_EditorObject port, iCS_EditorObject.EdgeEnum edge= iCS_EditorObject.EdgeEnum.None) {
         var pos= Math3D.ToVector2(GetPosition(port));
         if(GetNodeAt(pos) != GetParent(port)) return false;
-        if(GetDistanceFromParent(port) > iCS_Config.PortSize) return false;
-        iCS_EditorObject.EdgeEnum closestEdge= GetClosestEdge(GetParent(port), pos);
+        float distance;
+        iCS_EditorObject.EdgeEnum closestEdge= GetClosestEdge(GetParent(port), pos, out distance);
+        if(distance > 2f*iCS_Config.PortSize) return false;
         return closestEdge == (edge != iCS_EditorObject.EdgeEnum.None ? edge : port.Edge);
     }
     // ----------------------------------------------------------------------
     public void PositionOnEdge(iCS_EditorObject port) {
         var parent= GetParent(port);
         var parentPos= GetPosition(parent);
-        switch(GetClosestEdge(parent, Math3D.ToVector2(GetPosition(port)))) {
+        float distance;
+        switch(GetClosestEdge(parent, Math3D.ToVector2(GetPosition(port)), out distance)) {
             case iCS_EditorObject.EdgeEnum.Top:      port.LocalPosition.y= 0; break; 
             case iCS_EditorObject.EdgeEnum.Bottom:   port.LocalPosition.y= parentPos.height; break;
             case iCS_EditorObject.EdgeEnum.Left:     port.LocalPosition.x= 0; break;
@@ -827,12 +829,13 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    iCS_EditorObject.EdgeEnum GetClosestEdge(iCS_EditorObject node, Vector2 point) {
+    iCS_EditorObject.EdgeEnum GetClosestEdge(iCS_EditorObject node, Vector2 point, out float distance) {
         var pos= GetPosition(node);
         float xDistance   = Mathf.Abs(point.x-pos.x);
         float xMaxDistance= Mathf.Abs(point.x-pos.xMax);
         float yDistance   = Mathf.Abs(point.y-pos.y);
         float yMaxDistance= Mathf.Abs(point.y-pos.yMax);
+        distance= Mathf.Min(Mathf.Min(xDistance, xMaxDistance), Mathf.Min(yDistance, yMaxDistance));
         if(xDistance < xMaxDistance) {
             if(yDistance < yMaxDistance) {
                 return xDistance < yDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Top;
