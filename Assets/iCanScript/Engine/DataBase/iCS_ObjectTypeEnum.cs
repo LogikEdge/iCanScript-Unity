@@ -3,22 +3,28 @@ using System.Collections;
 
 [System.Serializable]
 public enum iCS_ObjectTypeEnum {
-    // Structural objects
+    // Structural nodes
     Behaviour= 0, Module, StateChart, State,
-    // Function objects
+
+    // Function nodes
     Constructor=100,
     InstanceMethod, StaticMethod, 
     InstanceField, StaticField,
     Conversion,
-    // Transition objects
+
+    // Transition nodes
     TransitionModule=200, TransitionGuard, TransitionAction,
-    // Port object
+
+    // Data ports
     InFunctionPort= 300, OutFunctionPort,
     InDynamicModulePort, OutDynamicModulePort,
     InStaticModulePort,  OutStaticModulePort,
-    InStatePort,         OutStatePort,
+    EnablePort,			 TriggerPort,
+
+	// State ports
+    InStatePort= 400,    OutStatePort,
     InTransitionPort,    OutTransitionPort,
-    EnablePort,
+
     // Undefined
     Unknown=1000
 }

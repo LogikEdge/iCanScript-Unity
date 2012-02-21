@@ -231,6 +231,70 @@ public class iCS_Graphics {
         Vector2 titleSize= TitleStyle.CalcSize(content);
         GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, TitleStyle);
     }
+    // ----------------------------------------------------------------------
+    void DrawMux(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor) {
+        r= TranslateAndScale(r);
+        float radius= kNodeCornerRadius;
+        radius*= Scale;
+        
+        // Show shadow.
+        Vector3[] vectors= new Vector3[4];
+        for(int i= 5; i > 0; --i) {
+            Handles.color= shadowColor;
+            Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.y+radius), FacingNormal, new Vector3(1f,0,0), 90f, radius);
+            Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.yMax-radius), FacingNormal, new Vector3(0,1f,0), 90f, radius);
+            Handles.DrawSolidArc(new Vector3(i+r.x+radius, i+r.yMax-radius), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
+            vectors[0]= new Vector3(i+r.xMax-radius, i+r.y+radius, 0);
+            vectors[1]= new Vector3(i+r.xMax, i+r.y+radius, 0);
+            vectors[2]= new Vector3(i+r.xMax, i+r.yMax-radius, 0);
+            vectors[3]= new Vector3(i+r.xMax-radius, i+r.yMax-radius, 0);
+            Handles.color= Color.white;
+            Handles.DrawSolidRectangleWithOutline(vectors, shadowColor, new Color(0,0,0,0));
+            vectors[0]= new Vector3(i+r.x+radius, i+r.yMax-radius, 0);
+            vectors[1]= new Vector3(i+r.xMax-radius, i+r.yMax-radius, 0);
+            vectors[2]= new Vector3(i+r.xMax-radius, i+r.yMax, 0);
+            vectors[3]= new Vector3(i+r.x+radius, i+r.yMax, 0);
+            Handles.color= Color.white;
+            Handles.DrawSolidRectangleWithOutline(vectors, shadowColor, new Color(0,0,0,0));
+        }
+        
+        // Show background.
+        Handles.color= backgroundColor;
+        Handles.DrawSolidArc(new Vector3(r.x+radius, r.yMax-radius,0), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
+        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.yMax-radius,0), FacingNormal, new Vector3(0,1f,0), 90f, radius);
+        vectors[0]= new Vector3(r.x, r.y+radius, 0);
+        vectors[1]= new Vector3(r.xMax, r.y+radius, 0);
+        vectors[2]= new Vector3(r.xMax, r.yMax-radius, 0);
+        vectors[3]= new Vector3(r.x, r.yMax-radius, 0);
+        Handles.color= Color.white;
+        Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
+        vectors[0]= new Vector3(r.x+radius, r.yMax-radius, 0);
+        vectors[1]= new Vector3(r.xMax-radius, r.yMax-radius, 0);
+        vectors[2]= new Vector3(r.xMax-radius, r.yMax, 0);
+        vectors[3]= new Vector3(r.x+radius, r.yMax, 0);
+        Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
+        
+        // Show frame.
+        Handles.color= nodeColor;
+        Handles.DrawSolidArc(new Vector3(r.x+radius, r.y+radius,0), FacingNormal, new Vector3(0,-1f,0), 90f, radius);
+        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.y+radius,0), FacingNormal, new Vector3(1f,0,0), 90f, radius);
+        Handles.DrawWireArc(new Vector3(r.x+radius, r.yMax-radius,0), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
+        Handles.DrawWireArc(new Vector3(r.xMax-radius, r.yMax-radius,0), FacingNormal, new Vector3(0,1f,0), 90f, radius);
+        Handles.DrawLine(new Vector3(r.x,r.y+radius,0), new Vector3(r.x, r.yMax-radius,0));
+        Handles.DrawLine(new Vector3(r.xMax,r.y+radius,0), new Vector3(r.xMax, r.yMax-radius,0));
+        Handles.DrawLine(new Vector3(r.x+radius,r.yMax,0), new Vector3(r.xMax-radius, r.yMax,0));
+        vectors[0]= new Vector3(r.x+radius, r.y, 0);
+        vectors[1]= new Vector3(r.xMax-radius, r.y, 0);
+        vectors[2]= new Vector3(r.xMax-radius, r.y+radius, 0);
+        vectors[3]= new Vector3(r.x+radius, r.y+radius, 0);
+        Handles.color= Color.white;
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0,0,0,0));
+        vectors[0]= new Vector3(r.x, r.y+radius, 0);
+        vectors[1]= new Vector3(r.xMax, r.y+radius, 0);
+        vectors[2]= new Vector3(r.xMax, r.y+1.75f*radius, 0);
+        vectors[3]= new Vector3(r.x, r.y+1.75f*radius, 0);
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0,0,0,0));
+	}
 	// ----------------------------------------------------------------------
     bool ShouldShowLabel() {
         return Scale >= 0.5f;        
@@ -468,6 +532,12 @@ public class iCS_Graphics {
         // Don't draw minimized node.
         if(IsInvisible(node, storage) || IsMinimized(node, storage)) return;
         
+		// Special case for Muxes
+		if(node.IsMux) {
+			DrawNormalMux(node, storage);
+			return;
+		}
+		
         // Draw node box.
         Rect position= GetDisplayPosition(node, storage);
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
@@ -506,15 +576,36 @@ public class iCS_Graphics {
         Rect position= GetDisplayPosition(node, storage);
         Texture icon= GetMaximizeIcon(node, storage);
         if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
-        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
         GUI_DrawTexture(texturePos, icon);                           
         EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
         GUI_Label(texturePos, new GUIContent("", node.ToolTip), LabelStyle);
+		ShowTitleOver(texturePos, node, storage);
+    }
+    // ----------------------------------------------------------------------
+	void DrawNormalMux(iCS_EditorObject mux, iCS_IStorage storage) {
+        // Draw node box.
+        Rect position= GetDisplayPosition(mux, storage);
+        // Change background color if node is selected.
+        Color backgroundColor= GetBackgroundColor(mux, storage);
+        bool isMouseOver= position.Contains(MousePosition);
+        DrawMux(position, GetNodeColor(mux, storage), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
+        EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);
+        // Minimize Icon
+        if(ShouldDisplayMinimizeIcon(mux, storage)) {
+            GUI_DrawTexture(new Rect(position.x+0.5f*(position.width-minimizeIcon.width), position.y-1f, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
+        }		
+		// Show node title.
+		ShowTitleOver(position, mux, storage);
+	}
+    // ----------------------------------------------------------------------
+	void ShowTitleOver(Rect pos, iCS_EditorObject node, iCS_IStorage storage) {
         if(!ShouldShowTitle()) return;
+        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
         Vector2 labelSize= LabelStyle.CalcSize(new GUIContent(title));
-        texturePos= TranslateAndScale(texturePos);
-        Rect labelRect= new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y);
+		pos.y-=5f;	// Put title a bit higher.
+        pos= TranslateAndScale(pos);
+        Rect labelRect= new Rect(0.5f*(pos.x+pos.xMax-labelSize.x), pos.y-labelSize.y, labelSize.x, labelSize.y);
         if(node == selectedObject) {
             Vector3[] vectors= new Vector3[4];
             vectors[0]= new Vector3(labelRect.x-2, labelRect.y-2, 0);
@@ -524,9 +615,9 @@ public class iCS_Graphics {
             Handles.color= Color.white;
             Handles.DrawSolidRectangleWithOutline(vectors, GetBackgroundColor(node, storage), GetNodeColor(node, storage));
         }
-        GUI.Label(labelRect, new GUIContent(title, node.ToolTip), LabelStyle);
-    }
-
+        GUI.Label(labelRect, new GUIContent(title, node.ToolTip), LabelStyle);		
+	}
+	
     // ======================================================================
     // Picking functionality
     // ----------------------------------------------------------------------
@@ -704,11 +795,7 @@ public class iCS_Graphics {
 		            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);									
 				}
 			} else {
-			    if(port.IsOutputPort && (portParent.IsState || portParent.IsStateChart)) {
-			        DrawStateOutputMuxPort(portCenter, portColor, nodeColor, portRadius);
-			    } else {
-    	            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);							        
-			    }
+    	    	DrawCircularPort(portCenter, portColor, nodeColor, portRadius);							        
 			}
         } else if(port.IsStatePort) {
             if(port.IsOutStatePort) {
@@ -734,6 +821,7 @@ public class iCS_Graphics {
         
         // Show port label.
         if(port.IsStatePort) return;    // State transition name is handle by DrawConnection. 
+		if(portParent.IsMux) return;	// No labels on Mux ports.
         if(!ShouldShowLabel()) return;  // Don't show label & values if scale does not permit.
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
 		string valueAsStr= portValue != null ? GetValueAsString(portValue) : null;

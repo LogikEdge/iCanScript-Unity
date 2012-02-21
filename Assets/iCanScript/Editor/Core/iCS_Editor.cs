@@ -1073,12 +1073,16 @@ public class iCS_Editor : EditorWindow {
 
         // Only data ports can be connected together.
         if(!fixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
-        iCS_EditorObject portParent= Storage.GetParent(fixPort);
-        iCS_EditorObject overlappingPortParent= Storage.GetParent(overlappingPort);
-        
         // Destroy drag port since it is not needed anymore.
         Storage.DestroyInstance(dragPort);
         dragPort= null;
+
+        iCS_EditorObject portParent= Storage.GetParent(fixPort);
+        iCS_EditorObject overlappingPortParent= Storage.GetParent(overlappingPort);
+        if(overlappingPort.IsOutputPort && (overlappingPortParent.IsState || overlappingPortParent.IsStateChart)) {
+			CreateStateMux(fixPort, overlappingPort);
+			return true;
+		}
         
         // Connect function & modules ports together.
         iCS_EditorObject inPort = null;
@@ -1136,6 +1140,25 @@ public class iCS_Editor : EditorWindow {
         }
         return true;
     }
+	// ----------------------------------------------------------------------
+	void CreateStateMux(iCS_EditorObject fixPort, iCS_EditorObject stateMuxPort) {
+		var source= Storage.GetSource(stateMuxPort);
+		if(source == null) {
+			SetNewDataConnection(stateMuxPort, fixPort);
+			return;
+		}
+		var mux= Storage.GetParent(source);
+		if(!mux.IsMuxAny) {
+			mux= Storage.CreateModule(stateMuxPort.ParentId, Math3D.ToVector2(Storage.GetPosition(stateMuxPort)), "mux", iCS_ObjectTypeEnum.Module, typeof(iCS_SelectAny));
+			var inMuxPort1= Storage.CreatePort(source.Name, mux.InstanceId, source.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+			var outMuxPort= Storage.CreatePort(fixPort.Name, mux.InstanceId, fixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+			SetNewDataConnection(inMuxPort1, source);
+			SetNewDataConnection(stateMuxPort, outMuxPort);
+		}
+		var inMuxPort2= Storage.CreatePort(fixPort.Name, mux.InstanceId, fixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+		SetNewDataConnection(inMuxPort2, fixPort);
+	}
+	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc conversion= null) {
         iCS_EditorObject inNode= Storage.GetParent(inPort);
         iCS_EditorObject outNode= Storage.GetParent(outPort);

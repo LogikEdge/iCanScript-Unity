@@ -52,6 +52,20 @@ public partial class iCS_IStorage {
             return;
         }
 
+		// Special cases for muxes.
+		if(node.IsMux) {
+	        Rect pos= node.LocalPosition;
+            iCS_EditorObject[] leftPorts= GetLeftPorts(node);
+			float muxHeight= 2.0f*iCS_Config.GutterSize + leftPorts.Length*iCS_Config.MinimumPortSeparation;                                
+			float muxWidth = 2.5f*iCS_Config.PortSize;
+			if(Math3D.IsNotEqual(muxHeight, pos.height) || Math3D.IsNotEqual(muxWidth, pos.width)) {
+				var center= Math3D.Middle(pos);
+				node.LocalPosition= new Rect(center.x-0.5f*muxWidth, center.y-0.5f*muxHeight, muxWidth, muxHeight);
+				LayoutPorts(node);
+			}
+			return;
+		}
+		
         // Resolve collision on children.
         ResolveCollisionOnChildren(node, Vector2.zero);
 

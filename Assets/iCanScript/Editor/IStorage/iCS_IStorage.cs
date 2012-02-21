@@ -145,7 +145,9 @@ public partial class iCS_IStorage {
         ForEach(
             obj=> {
                 // Cleanup disconnected dynamic state or module ports.
-                if((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) {
+				var parent= GetParent(obj);
+                if((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj) ||
+				   (obj.IsDynamicModulePort && GetSource(obj) == null && (parent.IsStateChart || parent.IsState))) {
                     if(CleanupDeadPorts) {
                         DestroyInstanceInternal(obj);                            
                         modified= true;
@@ -304,9 +306,13 @@ public partial class iCS_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
-        this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);
+		if(this[id].IsMux) {
+	        this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MuxIcon, this);
+		} else {
+	        this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);			
+		}
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
-        if(runtimeType != typeof(iCS_Module)) ClassModuleCompleteCreation(this[id]);
+        if(this[id].IsClassModule) ClassModuleCompleteCreation(this[id]);
         return this[id];
     }
     // ----------------------------------------------------------------------

@@ -156,7 +156,9 @@ public class iCS_EditorObject {
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
     public bool IsEntryState            { get { return IsState && IsRawEntryState; } set { IsRawEntryState= value; }}
-    public bool IsClassModule           { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
+    public bool IsClassModule           { get { return IsModule && RuntimeType != typeof(iCS_Module) && RuntimeType != typeof(iCS_SelectAny); }}
+	public bool IsMuxAny				{ get { return IsModule && RuntimeType == typeof(iCS_SelectAny); }}
+	public bool IsMux				    { get { return IsMuxAny; }}
     
     // ======================================================================
     // Accessors

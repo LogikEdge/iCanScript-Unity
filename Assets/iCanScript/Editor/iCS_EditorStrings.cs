@@ -18,6 +18,7 @@ public class iCS_EditorStrings {
     public const string TransitionModuleIcon = "iCS_MaximizeIcon.psd";
 	public const string TransitionTriggerIcon= "iCS_TransitionTriggerIcon.png";
 	public const string RandomIcon           = "iCS_RandomIcon.png";
+	public const string MuxIcon				 = "iCS_JoinIcon.psd";
 	
     // Textures
     public const string AALineTexture        = "iCS_LineTexture.psd";
