@@ -915,6 +915,7 @@ public class iCS_Graphics {
             storage.SetDisplayPosition(edObj, layoutPosition);
             return layoutPosition;
         }
+        storage.IsAnimationPlaying= true;
         float ratio= GetAnimationRatio(edObj, storage);
         displayPosition= Math3D.Lerp(displayPosition, layoutPosition, ratio);
         return displayPosition;

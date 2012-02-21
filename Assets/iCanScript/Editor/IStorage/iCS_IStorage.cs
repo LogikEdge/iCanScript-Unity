@@ -8,12 +8,13 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-            bool            myIsDirty       = true;
-    public  iCS_Storage     Storage         = null;
-            iCS_TreeCache   TreeCache       = null;
-            int             UndoRedoId      = 0;
-            bool            CleanupNeeded   = true;
-    public  bool            CleanupDeadPorts= true;
+            bool            myIsDirty         = true;
+    public  bool            IsAnimationPlaying= false;
+    public  iCS_Storage     Storage           = null;
+            iCS_TreeCache   TreeCache         = null;
+            int             UndoRedoId        = 0;
+            bool            CleanupNeeded     = true;
+    public  bool            CleanupDeadPorts  = true;
     
     // ======================================================================
     // Initialization
@@ -124,7 +125,7 @@ public partial class iCS_IStorage {
             if(CleanupNeeded) CleanupNeeded= Cleanup();
             return;
         }
-        Debug.Log("Graph is dirty");
+//        Debug.Log("Graph is dirty");
         CleanupNeeded= true;
         myIsDirty= false;
 
@@ -132,7 +133,7 @@ public partial class iCS_IStorage {
         ForEachRecursiveDepthLast(EditorObjects[0],
             obj=> {
                 if(obj.IsDirty) {
-                    Debug.Log(obj.Name+" is dirty");
+//                    Debug.Log(obj.Name+" is dirty");
                     Layout(obj);
                 }
             }

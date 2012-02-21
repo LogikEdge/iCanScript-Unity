@@ -14,8 +14,9 @@ public class iCS_UserPreferences {
 
     [System.Serializable]
     public class UserDisplayOptions {
-        public bool     EditorPortValues= true;
-        public bool     PlayingPortValues= true;
+        public bool     EditorPortValues    = true;
+        public bool     PlayingPortValues   = true;
+        public float    PortValueRefreshRate= 0.25f;
     }
     public UserDisplayOptions DisplayOptions= new UserDisplayOptions();
 

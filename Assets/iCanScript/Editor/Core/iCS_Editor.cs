@@ -18,8 +18,7 @@ public class iCS_Editor : EditorWindow {
     iCS_ClassWizard      ClassWizard    = null;
     
     // ----------------------------------------------------------------------
-    float LastDirtyUpdateTime= 0f;
-    int   RefreshCnt         = 0;
+    int RefreshCounter= 0;
     
     // ----------------------------------------------------------------------
     private iCS_Graphics    Graphics  = null;
@@ -190,17 +189,16 @@ public class iCS_Editor : EditorWindow {
         // Determine repaint rate.
         if(Storage != null) {
             // Repaint window
-            if(Storage.IsDirty) {
-                LastDirtyUpdateTime= Time.realtimeSinceStartup;
-            }
-            float timeSinceDirty= Time.realtimeSinceStartup-LastDirtyUpdateTime;
-            if(timeSinceDirty < 5.0f) {
+            if(Storage.IsDirty || Storage.IsAnimationPlaying || AnimatedScrollPosition.IsActive) {
+//                Debug.Log("IsDirty: "+Storage.IsDirty+" AnimationPlaying: "+Storage.IsAnimationPlaying+" ScrollAnimation: "+AnimatedScrollPosition.IsActive);
+                Storage.IsAnimationPlaying= false;
                 Repaint();
-            } else {
-                if(++RefreshCnt > 4 || RefreshCnt < 0) {
-                    RefreshCnt= 0;
-                    Repaint();
-                }
+            }
+            float refreshFactor= (Application.isPlaying || mouseOverWindow == this ? 8f : 1f);
+            int newRefreshCounter= (int)(Time.realtimeSinceStartup*refreshFactor);
+            if(newRefreshCounter != RefreshCounter) {
+                RefreshCounter= newRefreshCounter;
+                Repaint();
             }
             // Update DisplayRoot
             if(DisplayRoot == null && Storage.IsValid(0)) {
@@ -218,9 +216,19 @@ public class iCS_Editor : EditorWindow {
     
 	// ----------------------------------------------------------------------
 	// User GUI function.
+//    static int frameCount= 0;
+//    static int seconds= 0;
 	public void OnGUI() {
 		// Don't do start editor if not properly initialized.
 		if( !IsInitialized() ) return;
+       	
+//        ++frameCount;
+//       	int newTime= (int)Time.realtimeSinceStartup;
+//       	if(newTime != seconds) {
+//       	    seconds= newTime;
+//       	    Debug.Log("GUI calls/seconds: "+frameCount);
+//            frameCount= 0;
+//       	}
        	
         // Load Editor Skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
