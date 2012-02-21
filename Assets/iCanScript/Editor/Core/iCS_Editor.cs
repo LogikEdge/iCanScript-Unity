@@ -612,7 +612,8 @@ public class iCS_Editor : EditorWindow {
             ClassWizard= GetClassWizard();
             ClassWizard.Activate(SelectedObject, Storage);
         }
-        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition), MenuOption == 0);                    
+        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition), MenuOption == 0);
+        Storage.SetDirty(SelectedObject);                    
     }
 	// ----------------------------------------------------------------------
     void DragAndDropPerform() {
@@ -882,7 +883,7 @@ public class iCS_Editor : EditorWindow {
                 case DragTypeEnum.PortRelocation:
                     DragObject.IsFloating= false;
                     if(DragObject.IsDataPort) {
-                        Storage.SetDirty(DragObject);
+                        Storage.LayoutPorts(Storage.GetParent(DragObject));
                         break;
                     }
                     if(DragObject.IsStatePort) {
