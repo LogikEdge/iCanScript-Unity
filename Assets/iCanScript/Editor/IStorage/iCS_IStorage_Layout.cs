@@ -268,7 +268,6 @@ public partial class iCS_IStorage {
             }
             if(!AreChildrenInSameOrder(node, ports)) {
                 ReorderChildren(node, ports);
-                SetAllConnectedPortsDirty(ports);
             }            
         }
 
@@ -284,7 +283,6 @@ public partial class iCS_IStorage {
             }            
             if(!AreChildrenInSameOrder(node, ports)) {
                 ReorderChildren(node, ports);
-                SetAllConnectedPortsDirty(ports);
             }            
         }
 
@@ -301,7 +299,6 @@ public partial class iCS_IStorage {
             }
             if(!AreChildrenInSameOrder(node, ports)) {
                 ReorderChildren(node, ports);
-                SetAllConnectedPortsDirty(ports);
             }            
         }
 
@@ -318,7 +315,6 @@ public partial class iCS_IStorage {
             }
             if(!AreChildrenInSameOrder(node, ports)) {
                 ReorderChildren(node, ports);
-                SetAllConnectedPortsDirty(ports);
             }            
         }        
     }
@@ -331,38 +327,11 @@ public partial class iCS_IStorage {
         TreeCache[node.InstanceId].ReorderChildren(Prelude.map(c=> c.InstanceId, orderedChildren));
     }
     // ----------------------------------------------------------------------
-    void SetAllConnectedPortsDirty(iCS_EditorObject[] ports) {
-        foreach(var p in ports) {
-            if(IsValid(p.Source)) SetDirty(p);
-            iCS_EditorObject[] connectedPorts= FindConnectedPorts(p);
-            foreach(var cp in connectedPorts) SetDirty(cp);
-        }        
-    }
-    // ----------------------------------------------------------------------
-    Vector2 GetAverageConnectionPosition(iCS_EditorObject port) {
-        if(!Preferences.ControlOptions.AutoPortLayout) {
-            var p= GetPosition(port);
-            return new Vector2(p.x, p.y);
-        }
-        iCS_EditorObject[] connectedPorts= FindConnectedPorts(port);
-        Vector2 posSum= Prelude.fold(
-            (remotePort,sum)=> sum+Math3D.ToVector2(GetPosition(remotePort)),
-            Vector2.zero,
-            connectedPorts
-        );
-        int nbOfPorts= connectedPorts.Length;
-        if(IsValid(port.Source)) {
-            posSum+= Math3D.ToVector2(GetPosition(GetSource(port)));
-            ++nbOfPorts;
-        }
-        return nbOfPorts != 0 ? (1.0f/nbOfPorts)*posSum : Math3D.ToVector2(GetPosition(port));        
-    }
-    // ----------------------------------------------------------------------
     iCS_EditorObject[] SortTopPorts(iCS_EditorObject node) {
         Rect nodePos= GetPosition(node);
         float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
         iCS_EditorObject[] ports= GetTopPorts(node);
-        Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
+        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? cp.y : -cp.y, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
@@ -372,7 +341,7 @@ public partial class iCS_IStorage {
         Rect nodePos= GetPosition(node);
         float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
         iCS_EditorObject[] ports= GetBottomPorts(node);
-        Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
+        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? -cp.y : cp.y, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
@@ -382,7 +351,7 @@ public partial class iCS_IStorage {
         Rect nodePos= GetPosition(node);
         float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
         iCS_EditorObject[] ports= GetLeftPorts(node);                             
-        Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
+        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? cp.x : -cp.x, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
@@ -392,7 +361,7 @@ public partial class iCS_IStorage {
         Rect nodePos= GetPosition(node);
         float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
         iCS_EditorObject[] ports= GetRightPorts(node);
-        Vector2[] connectedPos= Prelude.map(p=> GetAverageConnectionPosition(p), ports);
+        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? -cp.x : cp.x, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);

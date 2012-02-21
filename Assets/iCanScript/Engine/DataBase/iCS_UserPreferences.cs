@@ -9,7 +9,6 @@ public class iCS_UserPreferences {
         public float AnimationTime = 0.35f;
         public float ScrollSpeed   = 3f;
 		public bool  InverseZoom   = false;
-		public bool  AutoPortLayout= false;
     }
     public UserControlOptions ControlOptions= new UserControlOptions();
 
