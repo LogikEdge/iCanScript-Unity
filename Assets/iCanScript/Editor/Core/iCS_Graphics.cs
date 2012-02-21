@@ -1043,7 +1043,8 @@ public class iCS_Graphics {
         return GetAnimationRatio(edObj, storage) >= 0.99f;
     }
 
-    bool IsMinimized(iCS_EditorObject edObj, iCS_IStorage storage) {
+   	// ----------------------------------------------------------------------
+ 	bool IsMinimized(iCS_EditorObject edObj, iCS_IStorage storage) {
         if(edObj.IsNode) {
             if(IsInvisible(edObj, storage)) return false;
             Rect position= GetDisplayPosition(edObj, storage);
