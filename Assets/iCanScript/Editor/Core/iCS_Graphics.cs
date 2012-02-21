@@ -704,7 +704,11 @@ public class iCS_Graphics {
 		            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);									
 				}
 			} else {
-	            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);				
+			    if(port.IsOutputPort && (portParent.IsState || portParent.IsStateChart)) {
+			        DrawStateOutputMuxPort(portCenter, portColor, nodeColor, portRadius);
+			    } else {
+    	            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);							        
+			    }
 			}
         } else if(port.IsStatePort) {
             if(port.IsOutStatePort) {
@@ -786,7 +790,7 @@ public class iCS_Graphics {
     }
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Color outlineColor= radius > iCS_Config.PortRadius ? Color.black : Color.black;
+        Color outlineColor= Color.black;
         Vector3 center= TranslateAndScale(_center);
         radius*= Scale;
         Handles.color= _borderColor;
@@ -799,7 +803,7 @@ public class iCS_Graphics {
 
 	// ----------------------------------------------------------------------
     void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        Color backgroundColor= radius > iCS_Config.PortRadius ? Color.black : Color.black;
+        Color backgroundColor= Color.black;
         radius*= Scale;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
@@ -820,6 +824,15 @@ public class iCS_Graphics {
         vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
         Handles.color= Color.white;
         Handles.DrawSolidRectangleWithOutline(vectors, _fillColor, _fillColor);
+    }
+
+	// ----------------------------------------------------------------------
+    void DrawStateOutputMuxPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
+        radius*= Scale*5f;
+        Vector3 center= TranslateAndScale(_center);
+        center.z-=3f*radius;
+        Handles.color= _fillColor;
+        Handles.ConeCap(0, center, Quaternion.AngleAxis(110f, Vector3.up), radius);
     }
     
 	// ----------------------------------------------------------------------

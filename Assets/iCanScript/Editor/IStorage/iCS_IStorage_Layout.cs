@@ -136,14 +136,6 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    // Returns the absolute position of the node.
-    public Rect GetPosition(iCS_EditorObject node) {
-        return Storage.GetPosition(node);
-    }
-    public Rect GetPosition(int id) {
-        return GetPosition(EditorObjects[id]);
-    }
-    // ----------------------------------------------------------------------
     public void SetPosition(iCS_EditorObject node, Rect _newPos) {
         // Adjust node size.
         node.LocalPosition.width = _newPos.width;
@@ -598,19 +590,6 @@ public partial class iCS_IStorage {
 	    return GetSeperationVector(node, GetPosition(otherNode));
 	}
 
-    // ----------------------------------------------------------------------
-    // Returns true if the given point is inside the node coordinates.
-    public bool IsInside(iCS_EditorObject node, Vector2 point) {
-        // Extend the node range to include the ports.
-        float portSize= iCS_Config.PortSize;
-        Rect nodePos= GetPosition(node);
-        nodePos.x-= portSize;
-        nodePos.y-= portSize;
-        nodePos.width+= 2f*portSize;
-        nodePos.height+= 2f*portSize;
-        return nodePos.Contains(point);
-    }
-
 
     // ======================================================================
     // Layout from iCS_Port
@@ -777,46 +756,6 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    // Returns the minimal distance from the parent.
-    public float GetDistanceFromParent(iCS_EditorObject port) {
-        iCS_EditorObject parentNode= GetParent(port);
-        Rect tmp= GetPosition(port);
-        Vector2 position= new Vector2(tmp.x, tmp.y);
-        if(IsInside(parentNode, position)) return 0;
-        Rect parentPosition= GetPosition(parentNode);
-        if(position.x > parentPosition.xMin && position.x < parentPosition.xMax) {
-            return Mathf.Min(Mathf.Abs(position.y-parentPosition.yMin),
-                             Mathf.Abs(position.y-parentPosition.yMax));
-        }
-        if(position.y > parentPosition.yMin && position.y < parentPosition.yMax) {
-            return Mathf.Min(Mathf.Abs(position.x-parentPosition.xMin),
-                             Mathf.Abs(position.x-parentPosition.xMax));
-        }
-        float distance= Vector2.Distance(position, GetTopLeftCorner(parentNode));
-        distance= Mathf.Min(distance, Vector2.Distance(position, GetTopRightCorner(parentNode)));
-        distance= Mathf.Min(distance, Vector2.Distance(position, GetBottomLeftCorner(parentNode)));
-        distance= Mathf.Min(distance, Vector2.Distance(position, GetBottomRightCorner(parentNode)));
-        return distance;
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns true if the distance to parent is less then twice the port size.
-    public bool IsNearParent(iCS_EditorObject port) {
-        if(GetNodeAt(Math3D.ToVector2(GetPosition(port))) != GetParent(port)) return false;
-        return GetDistanceFromParent(port) <= iCS_Config.PortSize*2;
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns true if the distance to parent is less then twice the port size.
-    public bool IsNearParentEdge(iCS_EditorObject port, iCS_EditorObject.EdgeEnum edge= iCS_EditorObject.EdgeEnum.None) {
-        var pos= Math3D.ToVector2(GetPosition(port));
-        if(GetNodeAt(pos) != GetParent(port)) return false;
-        float distance;
-        iCS_EditorObject.EdgeEnum closestEdge= GetClosestEdge(GetParent(port), pos, out distance);
-        if(distance > 2f*iCS_Config.PortSize) return false;
-        return closestEdge == (edge != iCS_EditorObject.EdgeEnum.None ? edge : port.Edge);
-    }
-    // ----------------------------------------------------------------------
     public void PositionOnEdge(iCS_EditorObject port) {
         var parent= GetParent(port);
         var parentPos= GetPosition(parent);
@@ -828,29 +767,6 @@ public partial class iCS_IStorage {
             case iCS_EditorObject.EdgeEnum.Right:    port.LocalPosition.x= parentPos.width; break;
         }
     }
-    // ----------------------------------------------------------------------
-    iCS_EditorObject.EdgeEnum GetClosestEdge(iCS_EditorObject node, Vector2 point, out float distance) {
-        var pos= GetPosition(node);
-        float xDistance   = Mathf.Abs(point.x-pos.x);
-        float xMaxDistance= Mathf.Abs(point.x-pos.xMax);
-        float yDistance   = Mathf.Abs(point.y-pos.y);
-        float yMaxDistance= Mathf.Abs(point.y-pos.yMax);
-        distance= Mathf.Min(Mathf.Min(xDistance, xMaxDistance), Mathf.Min(yDistance, yMaxDistance));
-        if(xDistance < xMaxDistance) {
-            if(yDistance < yMaxDistance) {
-                return xDistance < yDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Top;
-            } else {
-                return xDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Bottom;
-            }
-        } else {
-            if(yDistance < yMaxDistance) {
-                return xMaxDistance < yDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Top;
-            } else {
-                return xMaxDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Bottom;
-            }            
-        }
-    }
-    
 	// ----------------------------------------------------------------------
     public iCS_EditorObject GetOverlappingPort(iCS_EditorObject port) {
         iCS_EditorObject foundPort= null;

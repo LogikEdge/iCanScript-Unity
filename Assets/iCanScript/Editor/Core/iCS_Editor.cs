@@ -946,7 +946,8 @@ public class iCS_Editor : EditorWindow {
                             if(!isNearParent) {
                                 // Let's determine if we want to create a module port.
                                 iCS_EditorObject newPortParent= GetNodeAtMousePosition();
-                                if(newPortParent != null && newPortParent.IsModule) {
+                                if(newPortParent == null) break;
+                                if(newPortParent.IsModule) {
                                     iCS_EditorObject portParent= Storage.GetParent(DragFixPort);
                                     Rect modulePos= Storage.GetPosition(newPortParent);
                                     float portSize2= 2f*iCS_Config.PortSize;
@@ -983,9 +984,10 @@ public class iCS_Editor : EditorWindow {
                                         }
                                     }                                    
                                 }
-                                if(newPortParent != null && DragFixPort.IsOutputPort && (newPortParent.IsState || newPortParent.IsStateChart)) {
+                                if(DragFixPort.IsOutputPort && (newPortParent.IsState || newPortParent.IsStateChart)) {
                                     iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                                     SetNewDataConnection(newPort, DragFixPort);
+                                    Debug.Log("New output state port");
                                     break;
                                 }
                             }

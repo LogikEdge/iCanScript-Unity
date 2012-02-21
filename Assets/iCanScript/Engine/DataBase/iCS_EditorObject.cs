@@ -20,7 +20,7 @@ public class iCS_EditorObject {
 
 	// Node specific attributes ---------------------------------------------
 	public string				 MethodName= null;
-	public int					 NbOfParams= 0;
+	public int					 NbOfParams= 0;     // Also used as port group
     public string                IconGUID  = null;
     public string                RawToolTip= null;
 
@@ -30,7 +30,6 @@ public class iCS_EditorObject {
     public int                   Source             = -1;
     public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;
-	public int                   PortGroup          = 0;
 
     // State specific attributes ---------------------------------------------
     public bool                  IsRawEntryState= false;
@@ -162,6 +161,7 @@ public class iCS_EditorObject {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
+    public int  PortGroup       { get { return NbOfParams; } set { NbOfParams= value; }}
     public bool IsValid         { get { return InstanceId != -1; }}
     public bool IsParentValid   { get { return ParentId != -1; }}
     public bool IsSourceValid   { get { return Source != -1; }}
