@@ -509,8 +509,11 @@ public partial class iCS_IStorage {
     // Port Connectivity
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject obj, iCS_EditorObject src) {
-        obj.Source= src == null ? -1 : src.InstanceId;
-        SetDirty(obj);
+        int id= src == null ? -1 : src.InstanceId;
+        if(id != obj.Source) {
+            obj.Source= id; 
+            SetDirty(obj);            
+        }
     }
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc convDesc) {

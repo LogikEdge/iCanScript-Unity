@@ -645,18 +645,17 @@ public class iCS_Editor : EditorWindow {
     
 	// ----------------------------------------------------------------------
     void MakeDataConnectionDrag() {
-        if(DragFixPort != DragOriginalPort) {
-            Storage.SetSource(DragOriginalPort, DragFixPort);
-            Storage.SetSource(DragObject, DragOriginalPort);
-            DragFixPort= DragOriginalPort;
-        }
+        if(DragFixPort != DragOriginalPort) Storage.SetSource(DragOriginalPort, DragFixPort);
+        Storage.SetSource(DragObject, DragOriginalPort);
+        DragFixPort= DragOriginalPort;
     }
 	// ----------------------------------------------------------------------
     void BreakDataConnectionDrag() {
-        if(DragFixPort == DragOriginalPort) {
-            DragFixPort= Storage.GetSource(DragOriginalPort);
+        var originalSource= Storage.GetSource(DragOriginalPort);
+        if(originalSource != null) {
+            DragFixPort= originalSource;
             Storage.SetSource(DragObject, DragFixPort);
-            Storage.SetSource(DragOriginalPort, null);
+            Storage.SetSource(DragOriginalPort, null);                                
         }
     }
 	// ----------------------------------------------------------------------
@@ -822,13 +821,13 @@ public class iCS_Editor : EditorWindow {
                 // Special case for module ports.
                 if(DragOriginalPort.IsModulePort) {
                     if(Storage.IsInside(Storage.GetParent(DragOriginalPort), mousePosInGraph)) {
-                        if(DragOriginalPort.IsOutputPort && (Storage.GetSource(DragOriginalPort) != null || DragFixPort != DragOriginalPort)) {
+                        if(DragOriginalPort.IsOutputPort) {
                             BreakDataConnectionDrag();
                         } else {
                             MakeDataConnectionDrag();
                         }
                     } else {
-                        if(DragOriginalPort.IsInputPort && (Storage.GetSource(DragOriginalPort) != null || DragFixPort != DragOriginalPort)) {
+                        if(DragOriginalPort.IsInputPort) {
                             BreakDataConnectionDrag();
                         } else {
                             MakeDataConnectionDrag();
