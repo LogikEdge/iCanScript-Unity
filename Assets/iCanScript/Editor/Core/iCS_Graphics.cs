@@ -152,13 +152,15 @@ public class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, GUIContent content, GUIStyle labelStyle) {
-        if(Scale < 0.5f) return;
-        GUI.Label(TranslateAndScale(pos), content, labelStyle);
+        if(ShouldShowLabel()) {
+            GUI.Label(TranslateAndScale(pos), content, labelStyle);            
+        }
     }
     // ----------------------------------------------------------------------
     void GUI_Label(Rect pos, String content, GUIStyle labelStyle) {
-        if(Scale < 0.5f) return;
-        GUI.Label(TranslateAndScale(pos), content, labelStyle);
+        if(ShouldShowLabel()) {
+            GUI.Label(TranslateAndScale(pos), content, labelStyle);            
+        }
     }
     // ----------------------------------------------------------------------
     void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
@@ -224,12 +226,20 @@ public class iCS_Graphics {
         Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0,0,0,0));
 
         // Show title.
-        if(Scale < 0.4f) return;
+        if(!ShouldShowTitle()) return;
         Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.8f*radius);
         Vector2 titleSize= TitleStyle.CalcSize(content);
         GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, TitleStyle);
     }
-    
+	// ----------------------------------------------------------------------
+    bool ShouldShowLabel() {
+        return Scale >= 0.5f;        
+    }
+	// ----------------------------------------------------------------------
+    bool ShouldShowTitle() {
+        return Scale >= 0.4f;    
+    }
+
     // ======================================================================
     //  INITIALIZATION
 	// ----------------------------------------------------------------------
@@ -501,6 +511,7 @@ public class iCS_Graphics {
         GUI_DrawTexture(texturePos, icon);                           
         EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
         GUI_Label(texturePos, new GUIContent("", node.ToolTip), LabelStyle);
+        if(!ShouldShowTitle()) return;
         Vector2 labelSize= LabelStyle.CalcSize(new GUIContent(title));
         texturePos= TranslateAndScale(texturePos);
         Rect labelRect= new Rect(0.5f*(texturePos.x+texturePos.xMax-labelSize.x), texturePos.y-labelSize.y, labelSize.x, labelSize.y);
@@ -685,7 +696,6 @@ public class iCS_Graphics {
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
-//			if(!port.IsEnablePort) portCenter.y-= 2;
 			if(port.IsInputPort && storage.GetSource(port) == null) {
 				if(!Application.isPlaying && storage.Preferences.DisplayOptions.EditorPortValues) portValue= storage.GetPortValue(port);
 				if(portValue != null) {
@@ -719,7 +729,8 @@ public class iCS_Graphics {
         }
         
         // Show port label.
-        if(port.IsStatePort) return;     // State transition name is handle by DrawConnection. 
+        if(port.IsStatePort) return;    // State transition name is handle by DrawConnection. 
+        if(!ShouldShowLabel()) return;  // Don't show label & values if scale does not permit.
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
 		string valueAsStr= portValue != null ? GetValueAsString(portValue) : null;
         Vector2 labelSize= LabelStyle.CalcSize(new GUIContent(name));
