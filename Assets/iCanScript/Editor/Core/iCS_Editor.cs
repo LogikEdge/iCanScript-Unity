@@ -985,7 +985,7 @@ public class iCS_Editor : EditorWindow {
                                     }                                    
                                 }
                                 if(DragFixPort.IsOutputPort && (newPortParent.IsState || newPortParent.IsStateChart)) {
-									if(Storage.IsNearNodeEdge(newPortParent, Math3D.ToVector2(dragPortPos, iCS_EditorObject.EdgeEnum.Right))) {
+									if(Storage.IsNearNodeEdge(newPortParent, Math3D.ToVector2(dragPortPos), iCS_EditorObject.EdgeEnum.Right)) {
 	                                    iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
 	                                    SetNewDataConnection(newPort, DragFixPort);
 	                                    Debug.Log("New output state port");										
