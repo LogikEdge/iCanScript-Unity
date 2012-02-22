@@ -502,19 +502,10 @@ public partial class iCS_IStorage {
     // collision has occured.
     public void ResolveCollisionOnChildren(iCS_EditorObject node, Vector2 _delta) {
         bool didCollide= false;
-        for(int i= 0; i < EditorObjects.Count-1; ++i) {
-            iCS_EditorObject child1= EditorObjects[i];
-            if(child1.ParentId != node.InstanceId) continue;
-            if(!IsVisible(child1)) continue;
-            if(!child1.IsNode) continue;
-            if(child1.IsFloating) continue;
-            for(int j= i+1; j < EditorObjects.Count; ++j) {
-                iCS_EditorObject child2= EditorObjects[j];
-                if(child2.ParentId != node.InstanceId) continue;
-                if(!IsVisible(child2)) continue;
-                if(!child2.IsNode) continue;
-                if(child2.IsFloating) continue;
-                didCollide |= ResolveCollisionBetweenTwoNodes(child1, child2, _delta);                            
+        iCS_EditorObject[] children= BuildListOfChildren(c=> IsVisible(c) && c.IsNode && !c.IsFloating,node);
+        for(int i= 0; i < children.Length-1; ++i) {
+            for(int j= i+1; j < children.Length; ++j) {
+                didCollide |= ResolveCollisionBetweenTwoNodes(children[i], children[j], _delta);                            
             }
         }
         if(didCollide) ResolveCollisionOnChildren(node, _delta);
