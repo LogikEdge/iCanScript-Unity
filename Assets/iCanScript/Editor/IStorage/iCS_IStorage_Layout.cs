@@ -53,7 +53,7 @@ public partial class iCS_IStorage {
         }
 
 		// Special cases for muxes.
-		if(node.IsMux) {
+		if(node.IsMuxModule) {
 	        Rect pos= node.LocalPosition;
             iCS_EditorObject[] leftPorts= GetLeftPorts(node);
 			float muxHeight= 2.0f*iCS_Config.GutterSize + leftPorts.Length*iCS_Config.MinimumPortSeparation;                                

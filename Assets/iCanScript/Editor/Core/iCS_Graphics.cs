@@ -533,7 +533,7 @@ public class iCS_Graphics {
         if(IsInvisible(node, storage) || IsMinimized(node, storage)) return;
         
 		// Special case for Muxes
-		if(node.IsMux) {
+		if(node.IsMuxModule) {
 			DrawNormalMux(node, storage);
 			return;
 		}
@@ -820,9 +820,9 @@ public class iCS_Graphics {
         }
         
         // Show port label.
-        if(port.IsStatePort) return;    // State transition name is handle by DrawConnection. 
-		if(portParent.IsMux) return;	// No labels on Mux ports.
-        if(!ShouldShowLabel()) return;  // Don't show label & values if scale does not permit.
+        if(port.IsStatePort) return;        // State transition name is handle by DrawConnection. 
+		if(portParent.IsMuxModule) return;	// No labels on Mux ports.
+        if(!ShouldShowLabel()) return;      // Don't show label & values if scale does not permit.
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
 		string valueAsStr= portValue != null ? GetValueAsString(portValue) : null;
         Vector2 labelSize= LabelStyle.CalcSize(new GUIContent(name));

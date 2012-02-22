@@ -1127,24 +1127,9 @@ public class iCS_Editor : EditorWindow {
             outPort= overlappingPort.IsOutputPort ? overlappingPort : fixPort;
         }
         if(inPort != outPort) {
-			Type inType= inPort.RuntimeType;
-			Type outType= outPort.RuntimeType;
-            if(iCS_Types.CanBeConnectedWithoutConversion(outType, inType)) { // No conversion needed.
-                SetNewDataConnection(inPort, outPort);
-            }
-            else {  // A conversion is required.
-				if(iCS_Types.CanBeConnectedWithUpConversion(outType, inType)) {
-					if(EditorUtility.DisplayDialog("Up Conversion Connection", "Are you sure you want to generate a conversion from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)+"?", "Generate Conversion", "Abort")) {
-						SetNewDataConnection(inPort, outPort);							
-					}
-				} else {
-                    iCS_ReflectionDesc conversion= iCS_DataBase.FindConversion(outType, inType);
-                    if(conversion == null) {
-						ShowNotification(new GUIContent("No direct conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
-                    } else {
-                        SetNewDataConnection(inPort, outPort, conversion);
-                    }						
-				}
+            iCS_ReflectionDesc conversion= null;
+            if(VerifyConnectionTypes(inPort, outPort, out conversion)) {
+                SetNewDataConnection(inPort, outPort, conversion);                
             }
         } else {
             Debug.LogWarning("Ports are both either inputs or outputs !!!");
@@ -1152,22 +1137,46 @@ public class iCS_Editor : EditorWindow {
         return true;
     }
 	// ----------------------------------------------------------------------
+    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out iCS_ReflectionDesc conversion) {
+        conversion= null;
+		Type inType= inPort.RuntimeType;
+		Type outType= outPort.RuntimeType;
+        if(iCS_Types.CanBeConnectedWithoutConversion(outType, inType)) { // No conversion needed.
+            return true;
+        }
+        // A conversion is required.
+		if(iCS_Types.CanBeConnectedWithUpConversion(outType, inType)) {
+			if(EditorUtility.DisplayDialog("Up Conversion Connection", "Are you sure you want to generate a conversion from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)+"?", "Generate Conversion", "Abort")) {
+                return true;
+			}
+            return false;
+		}
+        conversion= iCS_DataBase.FindConversion(outType, inType);
+        if(conversion == null) {
+			ShowNotification(new GUIContent("No direct conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
+            return false;
+        }
+        return true;
+    }
+	// ----------------------------------------------------------------------
 	void CreateStateMux(iCS_EditorObject fixPort, iCS_EditorObject stateMuxPort) {
+        iCS_ReflectionDesc conversion= null;
+        if(!VerifyConnectionTypes(stateMuxPort, fixPort, out conversion)) return;
 		var source= Storage.GetSource(stateMuxPort);
 		if(source == null) {
-			SetNewDataConnection(stateMuxPort, fixPort);
+			SetNewDataConnection(stateMuxPort, fixPort, conversion);
 			return;
 		}
 		var mux= Storage.GetParent(source);
-		if(!mux.IsMuxAny) {
-			mux= Storage.CreateModule(stateMuxPort.ParentId, Math3D.ToVector2(Storage.GetPosition(stateMuxPort)), "mux", iCS_ObjectTypeEnum.Module, typeof(iCS_SelectAny));
+		if(!mux.IsMuxModule) {
+			mux= Storage.CreateModule(stateMuxPort.ParentId, Math3D.ToVector2(Storage.GetPosition(stateMuxPort)), "mux", iCS_ObjectTypeEnum.Module, typeof(iCS_Selector));
 			var inMuxPort1= Storage.CreatePort(source.Name, mux.InstanceId, source.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-			var outMuxPort= Storage.CreatePort(fixPort.Name, mux.InstanceId, fixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+			var outMuxPort= Storage.CreatePort(fixPort.Name, mux.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
 			SetNewDataConnection(inMuxPort1, source);
 			SetNewDataConnection(stateMuxPort, outMuxPort);
 		}
 		var inMuxPort2= Storage.CreatePort(fixPort.Name, mux.InstanceId, fixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-		SetNewDataConnection(inMuxPort2, fixPort);
+		SetNewDataConnection(inMuxPort2, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc conversion= null) {
