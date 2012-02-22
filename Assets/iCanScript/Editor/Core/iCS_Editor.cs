@@ -1505,8 +1505,11 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void UpdateClassWizard() {
         if(ClassWizard == null) return;
-        if(SelectedObject == null || !SelectedObject.IsClassModule) ClassWizard.Deactivate();
-        ClassWizard.Activate(SelectedObject, Storage);
+        if(SelectedObject == null || !SelectedObject.IsClassModule) {
+            ClassWizard.Deactivate();
+        } else {
+            ClassWizard.Activate(SelectedObject, Storage);            
+        }
     }
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
