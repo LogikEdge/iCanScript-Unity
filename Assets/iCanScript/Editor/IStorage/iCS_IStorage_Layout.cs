@@ -69,18 +69,18 @@ public partial class iCS_IStorage {
         // Resolve collision on children.
         ResolveCollisionOnChildren(node, Vector2.zero);
 
-        // Determine needed child rect.
-        Rect  childRect   = ComputeChildRect(node);
+        // Determine needed child rect (in global space).
+        Rect  childrenGlobalRect= ComputeChildrenRect(node);
 
         // Compute needed width.
         float titleWidth  = iCS_Config.GetNodeWidth(node.Name)+iCS_Config.ExtraIconWidth;
         float leftMargin  = ComputeLeftMargin(node);
         float rightMargin = ComputeRightMargin(node);
-        float width       = 2.0f*iCS_Config.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childRect.width);
+        float width       = 2.0f*iCS_Config.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childrenGlobalRect.width);
 
         // Process case without child nodes
-        Rect position= GetPosition(node);
-        if(Math3D.IsZero(childRect.width) || Math3D.IsZero(childRect.height)) {
+        Rect globalPosition= GetPosition(node);
+        if(Math3D.IsZero(childrenGlobalRect.width) || Math3D.IsZero(childrenGlobalRect.height)) {
             // Compute needed height.
             iCS_EditorObject[] leftPorts= GetLeftPorts(node);
             iCS_EditorObject[] rightPorts= GetRightPorts(node);
@@ -88,10 +88,10 @@ public partial class iCS_IStorage {
             float height= Mathf.Max(iCS_Config.NodeTitleHeight+nbOfPorts*iCS_Config.MinimumPortSeparation, iCS_Config.MinimumNodeHeight);                                
             
             // Apply new width and height.
-            if(Math3D.IsNotEqual(height, position.height) || Math3D.IsNotEqual(width, position.width)) {
-                float deltaWidth = width - position.width;
-                float deltaHeight= height - position.height;
-                Rect newPos= new Rect(position.xMin-0.5f*deltaWidth, position.yMin-0.5f*deltaHeight, width, height);
+            if(Math3D.IsNotEqual(height, globalPosition.height) || Math3D.IsNotEqual(width, globalPosition.width)) {
+                float deltaWidth = width - globalPosition.width;
+                float deltaHeight= height - globalPosition.height;
+                Rect newPos= new Rect(globalPosition.xMin-0.5f*deltaWidth, globalPosition.yMin-0.5f*deltaHeight, width, height);
                 SetPosition(node, newPos);
             }
         }
@@ -100,9 +100,11 @@ public partial class iCS_IStorage {
             // Adjust children local offset.
             float neededChildXOffset= iCS_Config.GutterSize+leftMargin;
             float neededChildYOffset= iCS_Config.GutterSize+iCS_Config.NodeTitleHeight;
-            if(Math3D.IsNotEqual(neededChildXOffset, childRect.x) ||
-               Math3D.IsNotEqual(neededChildYOffset, childRect.y)) {
-                   AdjustChildLocalPosition(node, new Vector2(neededChildXOffset-childRect.x, neededChildYOffset-childRect.y));
+            float neededNodeGlobalX= childrenGlobalRect.x-neededChildXOffset;
+            float neededNodeGlobalY= childrenGlobalRect.y-neededChildYOffset;
+            if(Math3D.IsNotEqual(neededNodeGlobalX, globalPosition.x) ||
+               Math3D.IsNotEqual(neededNodeGlobalY, globalPosition.y)) {
+                   AdjustChildLocalPosition(node, new Vector2(globalPosition.x-neededNodeGlobalX, globalPosition.y-neededNodeGlobalY));
             }
 
             // Compute needed height.
@@ -110,15 +112,11 @@ public partial class iCS_IStorage {
             int nbOfRightPorts= GetNbOfRightPorts(node);
             int nbOfPorts= nbOfLeftPorts > nbOfRightPorts ? nbOfLeftPorts : nbOfRightPorts;
             float portHeight= nbOfPorts*iCS_Config.MinimumPortSeparation;                                
-            float height= iCS_Config.NodeTitleHeight+Mathf.Max(portHeight, childRect.height+2.0f*iCS_Config.GutterSize);
+            float height= iCS_Config.NodeTitleHeight+Mathf.Max(portHeight, childrenGlobalRect.height+2.0f*iCS_Config.GutterSize);
             
-            float deltaWidth = width - node.LocalPosition.width;
-            float deltaHeight= height - node.LocalPosition.height;
-            float xMin= position.xMin-0.5f*deltaWidth;
-            float yMin= position.yMin-0.5f*deltaHeight;
-            if(Math3D.IsNotEqual(xMin, position.xMin) || Math3D.IsNotEqual(yMin, position.yMin) ||
-               Math3D.IsNotEqual(width, node.LocalPosition.width) || Math3D.IsNotEqual(height, node.LocalPosition.height)) {
-                Rect newPos= new Rect(xMin, yMin, width, height);
+            if(Math3D.IsNotEqual(globalPosition.x, neededNodeGlobalX) || Math3D.IsNotEqual(globalPosition.y, neededNodeGlobalY) ||
+               Math3D.IsNotEqual(globalPosition.width, width) || Math3D.IsNotEqual(globalPosition.height, height)) {
+                Rect newPos= new Rect(neededNodeGlobalX, neededNodeGlobalY, width, height);
                 SetPosition(node, newPos);
             }
         }
@@ -130,7 +128,8 @@ public partial class iCS_IStorage {
     // Moves the node without changing its size.
     public void MoveTo(iCS_EditorObject node, Vector2 _newPos) {
         Rect position = GetPosition(node);
-        DeltaMove(node, new Vector2(_newPos.x - position.x, _newPos.y - position.y));
+        var delta= new Vector2(_newPos.x - position.x, _newPos.y - position.y);
+        DeltaMove(node, delta);
     }
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
@@ -152,6 +151,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetPosition(iCS_EditorObject node, Rect _newPos) {
         // Adjust node size.
+        Rect position= GetPosition(node);
         node.LocalPosition.width = _newPos.width;
         node.LocalPosition.height= _newPos.height;
         // Reposition node.
@@ -160,15 +160,13 @@ public partial class iCS_IStorage {
             node.LocalPosition.y= _newPos.y;            
         }
         else {
-            Rect position= GetPosition(node);
             Rect deltaMove= new Rect(_newPos.xMin-position.xMin, _newPos.yMin-position.yMin, _newPos.width-position.width, _newPos.height-position.height);
             node.LocalPosition.x+= deltaMove.x;
             node.LocalPosition.y+= deltaMove.y;
-            node.LocalPosition.width= _newPos.width;
-            node.LocalPosition.height= _newPos.height;
-            float separationX= Mathf.Abs(deltaMove.x) > Mathf.Abs(deltaMove.width) ? deltaMove.x : deltaMove.width;
-            float separationY= Mathf.Abs(deltaMove.y) > Mathf.Abs(deltaMove.height) ? deltaMove.y : deltaMove.height;
-            LayoutParent(node, new Vector2(separationX, separationY));
+            float separationX= Math3D.IsNotZero(deltaMove.x) ? deltaMove.x : deltaMove.width;
+            float separationY= Math3D.IsNotZero(deltaMove.y) ? deltaMove.y : deltaMove.height;
+            var separationVector= new Vector2(separationX, separationY);
+            LayoutParent(node, separationVector);
         }
     }    
     // ----------------------------------------------------------------------
@@ -212,6 +210,25 @@ public partial class iCS_IStorage {
             }
         );
         return childRect;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the space used by all children.
+    Rect ComputeChildrenRect(iCS_EditorObject node) {
+        // Compute child space.
+        Rect childrenRect= new Rect(0,0,0,0);
+        ForEachChild(node,
+            (child)=> {
+                if(child.IsNode && IsVisible(child) && !child.IsFloating) {
+                    var childPos= GetPosition(child);
+                    if(Math3D.IsZero(childrenRect.width)) {
+                        childrenRect= childPos;
+                    } else {
+                        childrenRect= Math3D.Merge(childrenRect, childPos);                        
+                    }
+                }
+            }
+        );
+        return childrenRect;
     }
     // ----------------------------------------------------------------------
     // Returns the inner left margin.
