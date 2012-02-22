@@ -152,6 +152,13 @@ public partial class iCS_IStorage {
                         DestroyInstanceInternal(obj);                            
                         modified= true;
                     }
+                }
+                if(obj.IsConversion) {
+                    if(GetSource(FindInChildren(obj, c=> c.IsInDataPort)) == null ||
+                       FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataPort)) == null) {
+                       DestroyInstanceInternal(obj);
+                       modified= true;
+                    }
                 }                    
             }
         );        

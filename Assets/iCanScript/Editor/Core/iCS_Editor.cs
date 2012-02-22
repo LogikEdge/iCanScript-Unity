@@ -997,7 +997,6 @@ public class iCS_Editor : EditorWindow {
 									if(Storage.IsNearNodeEdge(newPortParent, Math3D.ToVector2(dragPortPos), iCS_EditorObject.EdgeEnum.Right)) {
 	                                    iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
 	                                    SetNewDataConnection(newPort, DragFixPort);
-	                                    Debug.Log("New output state port");										
 									}
                                     break;
                                 }
@@ -1175,7 +1174,7 @@ public class iCS_Editor : EditorWindow {
 			SetNewDataConnection(inMuxPort1, source);
 			SetNewDataConnection(stateMuxPort, outMuxPort);
 		}
-		var inMuxPort2= Storage.CreatePort(fixPort.Name, mux.InstanceId, fixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+		var inMuxPort2= Storage.CreatePort(fixPort.Name, mux.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
 		SetNewDataConnection(inMuxPort2, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------
