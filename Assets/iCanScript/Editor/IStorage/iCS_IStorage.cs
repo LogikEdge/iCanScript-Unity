@@ -473,6 +473,14 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void Fold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
+        if(eObj.IsFunction) {
+            if(eObj.IsMinimized) {
+                Maximize(eObj);
+            } else {
+                Minimize(eObj);                
+            }
+            return;
+        }
         eObj.Fold();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Maximize(); });
         SetDirty(eObj);
@@ -481,6 +489,10 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void Unfold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
+        if(eObj.IsFunction) {
+            Maximize(eObj);
+            return;
+        }
         eObj.Unfold();
         SetDirty(eObj);
     }
@@ -500,6 +512,7 @@ public partial class iCS_IStorage {
     }
     public void Minimize(int id) { if(IsValid(id)) Minimize(EditorObjects[id]); }
     // ----------------------------------------------------------------------
+    public bool IsMaximized(iCS_EditorObject eObj) { return eObj.IsMaximized; }
     public void Maximize(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;
         eObj.Maximize();

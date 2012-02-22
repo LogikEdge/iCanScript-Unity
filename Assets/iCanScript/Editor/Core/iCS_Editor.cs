@@ -35,6 +35,7 @@ public class iCS_Editor : EditorWindow {
     bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
 
     // ----------------------------------------------------------------------
+    iCS_EditorObject SelectedObjectBeforeMouseDown= null;
     iCS_EditorObject Bookmark= null;
     
     // ----------------------------------------------------------------------
@@ -87,6 +88,7 @@ public class iCS_Editor : EditorWindow {
     bool    IsFloatingKeyDown	{ get { return Event.current.control; }}
     bool    IsCopyKeyDown       { get { return Event.current.shift; }}
     bool    IsScaleKeyDown      { get { return Event.current.alt; }}
+    bool    IsShiftKeyDown      { get { return Event.current.shift; }}
     
 	// ----------------------------------------------------------------------
 	// Mouse services
@@ -298,6 +300,7 @@ public class iCS_Editor : EditorWindow {
             case EventType.MouseDown: {
 				MouseDownPosition= MousePosition;
                 // Update the selected object.
+                SelectedObjectBeforeMouseDown= SelectedObject;
                 DetermineSelectedObject();
                 switch(Event.current.button) {
                     case 0: { // Left mouse button
@@ -326,7 +329,7 @@ public class iCS_Editor : EditorWindow {
                     EndDrag();
                 } else {
                     if(SelectedObject != null) {
-                        // Process fold/unfold click.
+                        // Process fold/unfold/minimize/maximize click.
                         Vector2 graphMousePos= ViewportToGraph(MousePosition);
                         if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
                             if(Storage.IsFolded(SelectedObject)) {
@@ -336,14 +339,16 @@ public class iCS_Editor : EditorWindow {
                                 Storage.RegisterUndo("Fold");
                                 Storage.Fold(SelectedObject);
                             }
-                        }
-                        // Process maximize/minimize click.
-                        if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
+                        } else if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
                             Storage.RegisterUndo("Minimize");
                             Storage.Minimize(SelectedObject);
                         } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
                             Storage.RegisterUndo("Maximize");
                             Storage.Fold(SelectedObject);
+                        } else {
+                            if(SelectedObject == SelectedObjectBeforeMouseDown) {
+                                ProcessNodeDisplayOptionEvent();                                
+                            }
                         }
                     }                                                
                 }
@@ -427,26 +432,7 @@ public class iCS_Editor : EditorWindow {
                     }
                     // Fold/Minimize/Maximize.
                     case KeyCode.Return: {
-                        if(SelectedObject != null) {
-                            if(!ev.shift) {
-                                if(SelectedObject.IsMinimized) {
-                                    Storage.RegisterUndo("Unfold");
-                                    Storage.Maximize(SelectedObject);
-                                    Storage.Fold(SelectedObject);
-                                } else if(SelectedObject.IsFolded) {
-                                    Storage.RegisterUndo("Maximize");
-                                    Storage.Maximize(SelectedObject);                                    
-                                }
-                            } else {
-                                if(SelectedObject.IsDisplayedNormally) {
-                                    Storage.RegisterUndo("Fold");
-                                    Storage.Fold(SelectedObject);
-                                } else if(SelectedObject.IsFolded) {
-                                    Storage.RegisterUndo("Minimize");
-                                    Storage.Minimize(SelectedObject);
-                                }
-                            }                            
-                        }
+                        ProcessNodeDisplayOptionEvent();
                         Event.current.Use();
                         break;
                     }
@@ -603,6 +589,29 @@ public class iCS_Editor : EditorWindow {
 			}
         }
     }
+	// ----------------------------------------------------------------------
+    void ProcessNodeDisplayOptionEvent() {
+        if(SelectedObject != null && SelectedObject.IsNode) {
+            if(!IsShiftKeyDown) {
+                if(SelectedObject.IsMinimized) {
+                    Storage.RegisterUndo("Unfold");
+                    Storage.Fold(SelectedObject);
+                } else if(SelectedObject.IsFolded) {
+                    Storage.RegisterUndo("Maximize");
+                    Storage.Maximize(SelectedObject);                                    
+                }
+            } else {
+                if(SelectedObject.IsMaximized) {
+                    Storage.RegisterUndo("Fold");
+                    Storage.Fold(SelectedObject);
+                } else if(SelectedObject.IsFolded) {
+                    Storage.RegisterUndo("Minimize");
+                    Storage.Minimize(SelectedObject);
+                }
+            }                            
+        }        
+    }
+
 	// ----------------------------------------------------------------------
     void ShowDynamicMenu() {
         if(SelectedObject == null && DisplayRoot.IsBehaviour) {

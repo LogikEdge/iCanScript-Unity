@@ -15,7 +15,7 @@ public class iCS_EditorObject {
     public string                QualifiedType = "";
     public string                RawName       = "";
     public Rect                  LocalPosition = new Rect(0,0,0,0);
-    public iCS_DisplayOptionEnum DisplayOption = iCS_DisplayOptionEnum.Normal;
+    public iCS_DisplayOptionEnum DisplayOption = iCS_DisplayOptionEnum.Maximized;
     public bool                  IsNameEditable= true;
 
 	// Node specific attributes ---------------------------------------------
@@ -83,7 +83,7 @@ public class iCS_EditorObject {
         QualifiedType= "";
 		RawName= "";
         LocalPosition= new Rect(0,0,0,0);
-        DisplayOption= iCS_DisplayOptionEnum.Normal;
+        DisplayOption= iCS_DisplayOptionEnum.Maximized;
         IsNameEditable= true;
 		// Node
 		MethodName= null;
@@ -104,14 +104,13 @@ public class iCS_EditorObject {
     
     // ----------------------------------------------------------------------
     // Display Option Accessor
-    public bool IsDisplayedNormally { get { return WD.IsDisplayedNormally(this); }}
-    public bool IsMinimized         { get { return WD.IsMinimized(this); }}
-    public bool IsFolded            { get { return WD.IsFolded(this); }}
-    public void DisplayNormally()   { WD.DisplayNormally(this); }
-    public void Fold()              { WD.Fold(this); }
-    public void Unfold()            { DisplayNormally(); }
-    public void Maximize()          { DisplayNormally(); }
-    public void Minimize()          { WD.Minimize(this); }
+    public bool IsMaximized         { get { return iCS_DisplayOption.IsMaximized(this); }}
+    public bool IsMinimized         { get { return iCS_DisplayOption.IsMinimized(this); }}
+    public bool IsFolded            { get { return iCS_DisplayOption.IsFolded(this); }}
+    public void Fold()              { iCS_DisplayOption.Fold(this); }
+    public void Unfold()            { Maximize(); }
+    public void Maximize()          { iCS_DisplayOption.Maximize(this); }
+    public void Minimize()          { iCS_DisplayOption.Minimize(this); }
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode                  { get { return iCS_ObjectType.IsNode(this); }}
@@ -124,6 +123,7 @@ public class iCS_EditorObject {
     public bool IsTransitionModule      { get { return iCS_ObjectType.IsTransitionModule(this); }}
     public bool IsTransitionGuard       { get { return iCS_ObjectType.IsTransitionGuard(this); }}
     public bool IsTransitionAction      { get { return iCS_ObjectType.IsTransitionAction(this); }}
+    public bool IsFunction              { get { return iCS_ObjectType.IsFunction(this); }}
     public bool IsConstructor           { get { return iCS_ObjectType.IsConstructor(this); }}
     public bool IsStaticMethod          { get { return iCS_ObjectType.IsStaticMethod(this); }}
     public bool IsInstanceMethod        { get { return iCS_ObjectType.IsInstanceMethod(this); }}

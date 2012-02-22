@@ -54,6 +54,7 @@ public static class iCS_ObjectType {
     public static bool IsOutStatePort         (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutStatePort; }
     public static bool IsInTransitionPort     (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InTransitionPort; }
     public static bool IsOutTransitionPort    (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutTransitionPort; }
+    public static bool IsFunction             (iCS_EditorObject obj) { return IsConstructor(obj) || IsMethod(obj) || IsField(obj) || IsConversion(obj); } 
     public static bool IsMethod               (iCS_EditorObject obj) { return IsStaticMethod(obj) || IsInstanceMethod(obj); }
     public static bool IsField                (iCS_EditorObject obj) { return IsStaticField(obj) || IsInstanceField(obj); }
     public static bool IsInDataPort           (iCS_EditorObject obj) { return IsInFunctionPort(obj) || IsInModulePort(obj) || IsEnablePort(obj); }
