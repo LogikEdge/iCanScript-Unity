@@ -263,7 +263,8 @@ public class iCS_DataBase {
         }
         string fromTypeName= iCS_Types.TypeName(fromType);
         string toTypeName= iCS_Types.TypeName(toType);
-        Add(company, package, fromTypeName+"->"+toTypeName, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
+        string toTypeNameUpper= Char.ToUpper(toTypeName[0])+toTypeName.Substring(1);
+        Add(company, package, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
             iCS_ObjectTypeEnum.Conversion, classType, methodInfo, null,
             new bool[1]{false}, new string[1]{fromTypeName}, new Type[1]{fromType}, new object[1]{null},
             toTypeName);        

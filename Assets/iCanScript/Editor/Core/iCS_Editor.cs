@@ -1118,7 +1118,7 @@ public class iCS_Editor : EditorWindow {
                     outPort= overlappingPort;
                 }                    
             } else {
-                Debug.LogWarning("Cannot connect nested node ports from input to output !!!");
+                ShowNotification(new GUIContent("Cannot connect nested node ports from input to output !!!"));
                 return true;
             }
         } else {
@@ -1131,7 +1131,8 @@ public class iCS_Editor : EditorWindow {
                 SetNewDataConnection(inPort, outPort, conversion);                
             }
         } else {
-            Debug.LogWarning("Ports are both either inputs or outputs !!!");
+            string direction= inPort.IsInputPort ? "input" : "output";
+            ShowNotification(new GUIContent("Cannot connect an "+direction+" port to an "+direction+" port !!!"));
         }
         return true;
     }
@@ -1152,7 +1153,7 @@ public class iCS_Editor : EditorWindow {
 		}
         conversion= iCS_DataBase.FindConversion(outType, inType);
         if(conversion == null) {
-			ShowNotification(new GUIContent("No direct conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
+			ShowNotification(new GUIContent("No automatic type conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
             return false;
         }
         return true;
