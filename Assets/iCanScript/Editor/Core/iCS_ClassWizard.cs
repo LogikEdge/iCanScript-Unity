@@ -92,10 +92,15 @@ public class iCS_ClassWizard : EditorWindow {
     }
     // ---------------------------------------------------------------------------------
     public void Activate(iCS_EditorObject target, iCS_IStorage storage) {
+        // Transform invalid activation to a deactivation.
         if(target == null || storage == null) {
             Init();
             return;
         }
+        // Nothing to do if target does not change.
+        if(target == Target && storage == Storage) return;
+        // Update main state variables.
+        Target= target;
         Storage= storage;
         // Build class data.
         ClassType= target.RuntimeType;
