@@ -1171,7 +1171,7 @@ public class iCS_Editor : EditorWindow {
 		if(!mux.IsMuxModule) {
 			mux= Storage.CreateModule(stateMuxPort.ParentId, Math3D.ToVector2(Storage.GetPosition(stateMuxPort)), "mux", iCS_ObjectTypeEnum.Module, typeof(iCS_Selector));
 			var inMuxPort1= Storage.CreatePort(source.Name, mux.InstanceId, source.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-			var outMuxPort= Storage.CreatePort(fixPort.Name, mux.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+			var outMuxPort= Storage.CreatePort(fixPort.Name, mux.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutStaticModulePort);
 			SetNewDataConnection(inMuxPort1, source);
 			SetNewDataConnection(stateMuxPort, outMuxPort);
 		}
