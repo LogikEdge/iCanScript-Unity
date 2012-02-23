@@ -301,6 +301,7 @@ public partial class iCS_IStorage {
         }
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, new Rect(0,0,0,0));
+		SetDirty(this[id]);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -320,6 +321,7 @@ public partial class iCS_IStorage {
 		}
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         if(this[id].IsClassModule) ClassModuleCompleteCreation(this[id]);
+		SetDirty(this[id]);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -332,6 +334,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos);
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+		SetDirty(this[id]);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -359,7 +362,6 @@ public partial class iCS_IStorage {
             }
         );
         SetDirty(this[id]);
-        SetDirty(parent);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -403,6 +405,7 @@ public partial class iCS_IStorage {
 		}
         
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+		SetDirty(this[id]);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -443,6 +446,7 @@ public partial class iCS_IStorage {
         port.PortIndex= portIdx;			
 
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+		SetDirty(this[id]);
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -463,6 +467,7 @@ public partial class iCS_IStorage {
         if(GetParent(port).IsModule) { AddPortToModule(port); }
         Rect parentPos= GetPosition(GetParent(port));
         TreeCache[id].DisplayPosition= new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0);
+		SetDirty(this[id]);
         return EditorObjects[id];        
     }
     // ======================================================================

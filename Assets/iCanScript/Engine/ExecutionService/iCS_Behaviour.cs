@@ -163,10 +163,61 @@ public sealed class iCS_Behaviour : iCS_Storage {
 
 
     // ======================================================================
+    // Sanity Check
+    // ----------------------------------------------------------------------
+	public bool SanityCheck() {
+		bool storageCorruption= false;
+		bool sanityNeeded= false;
+		do {
+			sanityNeeded= false;
+			for(int i= 0; i < EditorObjects.Count; ++i) {
+				if(EditorObjects[i].InstanceId == -1) continue;
+				if(EditorObjects[i].InstanceId != i) {
+					sanityNeeded= true;
+					EditorObjects[i].InstanceId= -1;
+					continue;
+				}
+				int parentId= EditorObjects[i].ParentId;
+				if(i == 0) {
+					if(parentId != -1) {
+						sanityNeeded= true;
+						EditorObjects[0].ParentId= -1;
+						continue;
+					}
+				} else {
+					// The parent id must be valid.
+					if(!IsInBounds(parentId)) {
+						sanityNeeded= true;
+						EditorObjects[i].InstanceId= -1;
+						continue;				
+					}
+					// A port cannot be a parent.
+					if(EditorObjects[parentId].IsPort) {
+						sanityNeeded= true;
+						EditorObjects[i].InstanceId= -1;
+						continue;										
+					}				
+				}
+			}
+			if(sanityNeeded) {
+				storageCorruption= true;
+				Debug.Log("Sanity detected an error.");
+			}
+		} while(sanityNeeded);
+		return storageCorruption;
+	}
+    // ----------------------------------------------------------------------
+	bool IsInBounds(int id) { return id >= 0 && id < EditorObjects.Count; }
+	
+    // ======================================================================
     // Code Generation
     // ----------------------------------------------------------------------
     public void GenerateCode() {
         Debug.Log("iCanScript: Generating real-time code for "+gameObject.name+"...");
+		// Verify for storage sanity.
+		if(SanityCheck()) {
+			Debug.LogWarning("iCanScript: storage corruption has been detected.  Attempting recovery...");
+		}
         // Remove any previous runtime object creation.
         ClearGeneratedCode();
         // Create all the runtime nodes.
@@ -189,6 +240,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
         // Allocate runtime node array (if not already done).
         if(EditorObjects.Count != myRuntimeNodes.Length) {
             myRuntimeNodes= new iCS_Object[EditorObjects.Count];
+			for(int i= 0; i < myRuntimeNodes.Length; ++i) myRuntimeNodes[i]= null;
         }
         bool needAdditionalPass= false;
         do {
@@ -196,12 +248,13 @@ public sealed class iCS_Behaviour : iCS_Storage {
             needAdditionalPass= false;
             // Generate all runtime nodes.
             foreach(var node in EditorObjects) {
+				if(node.InstanceId == -1) continue;
                 if(node.IsNode) {
                     // Was already generated in a previous pass.
                     if(myRuntimeNodes[node.InstanceId] != null) continue;
                     // Wait until parent is generated.
                     object parent= null;
-                    switch(node.ParentId) {
+					switch(node.ParentId) {
                         case -1: {
                             break;
                         }
@@ -210,7 +263,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             break;
                         }
                         default: {
-                            iCS_EditorObject edParent= GetParent(node);
+							iCS_EditorObject edParent= GetParent(node);
                             if(edParent.ObjectType == iCS_ObjectTypeEnum.TransitionModule) {
                                 edParent= GetParent(edParent);
                             }
@@ -320,6 +373,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // ----------------------------------------------------------------------
     public void ConnectRuntimeNodes() {
         foreach(var port in EditorObjects) {
+			if(port.InstanceId == -1) continue;
             if(port.IsPort) {
                 switch(port.ObjectType) {
                     // Ports without code generation.

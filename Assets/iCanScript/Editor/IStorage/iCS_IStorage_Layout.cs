@@ -22,11 +22,16 @@ public partial class iCS_IStorage {
         SetDirty(obj);
     }
 
+//    // ----------------------------------------------------------------------
+//	Vector2 GetMinimumNodeSize(iCS_EditorObject node) {
+//        return iCS_Graphics.GetMaximizeIconSize(node, this);
+//	}
     // ----------------------------------------------------------------------
     public void Layout(iCS_EditorObject obj) {
         obj.IsDirty= false;
         ExecuteIf(obj, iCS_ObjectType.IsNode, NodeLayout);
     }
+
     // ----------------------------------------------------------------------
     // Recompute the layout of a parent node.
     // Returns "true" if the new layout is within the window area.
