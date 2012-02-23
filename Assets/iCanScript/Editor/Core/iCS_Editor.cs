@@ -470,17 +470,14 @@ public class iCS_Editor : EditorWindow {
                     // Object deletion
                     case KeyCode.Delete:
                     case KeyCode.Backspace: {
-                        Debug.Log("Delete seen");
                         if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
                           !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
                             iCS_EditorObject parent= Storage.GetParent(SelectedObject);
-                            Storage.RegisterUndo("Delete");
                             if(ev.shift) {
+                                Storage.RegisterUndo("Delete");
                                 Storage.DestroyInstance(SelectedObject.InstanceId);                                                        
                             } else {
-                                if(!iCS_EditorUtility.DestroyObject(SelectedObject, Storage)) {
-                                    Undo.PerformUndo();
-                                }
+                                iCS_EditorUtility.DestroyObject(SelectedObject, Storage);
                             }
                             SelectedObject= parent;
                         }
@@ -625,6 +622,8 @@ public class iCS_Editor : EditorWindow {
         if(SelectedObject != null && SelectedObject.IsClassModule) {
             ClassWizard= GetClassWizard();
             ClassWizard.Activate(SelectedObject, Storage);
+            // Keep keyboard focus.
+            Focus();
         }        
     }
 	// ----------------------------------------------------------------------

@@ -72,6 +72,7 @@ public static class iCS_EditorUtility {
     // otherwise.
     public static bool DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
+            storage.RegisterUndo("Delete");
             storage.DestroyInstance(selectedObject.InstanceId);                        
             return true;
         }            
