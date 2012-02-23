@@ -585,26 +585,33 @@ public partial class iCS_IStorage {
 	// Returns the seperation vector of two colliding nodes.
 	Vector2 GetSeperationVector(iCS_EditorObject node, Rect _rect) {
         Rect myRect= RectWithGutter(GetPosition(node));
-        Rect intersection= Math3D.Intersection(myRect, _rect);
-        if(Math3D.IsZero(intersection.width) && Math3D.IsZero(intersection.height)) return Vector2.zero;
-
-        // Determine independant X & Y separation vectors.
-        Vector2 xSeparation= Vector2.zero;
-        if(Math3D.IsEqual(myRect.x, intersection.x)) {
-            xSeparation= new Vector2(-intersection.width, 0);
-        } else if(Math3D.IsEqual(myRect.xMax, intersection.xMax)) {
-            xSeparation= new Vector2(intersection.width, 0);
+        Rect otherRect= _rect;
+        float xMin= Mathf.Min(myRect.xMin, otherRect.xMin);
+        float yMin= Mathf.Min(myRect.yMin, otherRect.yMin);
+        float xMax= Mathf.Max(myRect.xMax, otherRect.xMax);
+        float yMax= Mathf.Max(myRect.yMax, otherRect.yMax);
+        float xDistance= xMax-xMin;
+        float yDistance= yMax-yMin;
+        float totalWidth= myRect.width+otherRect.width;
+        float totalHeight= myRect.height+otherRect.height;
+        if(xDistance >= totalWidth) return Vector2.zero;
+        if(yDistance >= totalHeight) return Vector2.zero;
+        if((totalWidth-xDistance) < (totalHeight-yDistance)) {
+            if(myRect.xMin < otherRect.xMin) {
+                return new Vector2(totalWidth-xDistance, 0);
+            }
+            else {
+                return new Vector2(xDistance-totalWidth, 0);
+            }
         }
-        Vector2 ySeparation= Vector2.zero;
-        if(Math3D.IsEqual(myRect.y, intersection.y)) {
-            ySeparation= new Vector2(0, -intersection.height);
-        } else if(Math3D.IsEqual(myRect.yMax, intersection.yMax)){
-            ySeparation= new Vector2(0, intersection.height);
-        }            
-        if(Mathf.Abs(xSeparation.x) < Mathf.Abs(ySeparation.y)) {
-            return xSeparation;
+        else {
+            if(myRect.yMin < otherRect.yMin) {
+                return new Vector2(0, totalHeight-yDistance);
+            }
+            else {
+                return new Vector2(0, yDistance-totalHeight);                
+            }            
         }
-        return ySeparation;
 	}
 
 
