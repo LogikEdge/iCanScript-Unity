@@ -592,23 +592,21 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void ProcessNodeDisplayOptionEvent() {
         if(SelectedObject != null && SelectedObject.IsNode) {
-            if(!IsShiftKeyDown) {
-                if(SelectedObject.IsMinimized) {
-                    Storage.RegisterUndo("Unfold");
-                    Storage.Fold(SelectedObject);
-                } else if(SelectedObject.IsFolded) {
-                    Storage.RegisterUndo("Maximize");
-                    Storage.Maximize(SelectedObject);                                    
-                }
+            if(SelectedObject.IsMinimized) {
+                Storage.RegisterUndo("Unfold");
+                Storage.Fold(SelectedObject);
+            } else if(SelectedObject.IsMaximized) {
+                Storage.RegisterUndo("Fold");
+                Storage.Fold(SelectedObject);
             } else {
-                if(SelectedObject.IsMaximized) {
-                    Storage.RegisterUndo("Fold");
-                    Storage.Fold(SelectedObject);
-                } else if(SelectedObject.IsFolded) {
+                if(IsShiftKeyDown) {
                     Storage.RegisterUndo("Minimize");
                     Storage.Minimize(SelectedObject);
+                } else {
+                    Storage.RegisterUndo("Maximize");
+                    Storage.Maximize(SelectedObject);                                                        
                 }
-            }                            
+            }
         }        
     }
 
