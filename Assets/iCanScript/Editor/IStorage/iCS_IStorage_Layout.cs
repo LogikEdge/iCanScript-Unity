@@ -22,10 +22,6 @@ public partial class iCS_IStorage {
         SetDirty(obj);
     }
 
-//    // ----------------------------------------------------------------------
-//	Vector2 GetMinimumNodeSize(iCS_EditorObject node) {
-//        return iCS_Graphics.GetMaximizeIconSize(node, this);
-//	}
     // ----------------------------------------------------------------------
     public void Layout(iCS_EditorObject obj) {
         obj.IsDirty= false;
