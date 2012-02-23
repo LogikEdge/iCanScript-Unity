@@ -235,13 +235,13 @@ public class iCS_Reflection {
             string toolTip= classToolTip;
             string iconPath= classIconPath;
             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
-                if(methodAttribute is iCS_ConversionAttribute) {
+                if(methodAttribute is iCS_TypeCastAttribute) {
                     if(method.IsPublic) {
-                        iCS_ConversionAttribute convAttr= methodAttribute as iCS_ConversionAttribute;
-                        iconPath= convAttr.Icon ?? classIconPath;
-                        DecodeConversion(company, package, iconPath, classType, method);
+                        iCS_TypeCastAttribute typeCastAttr= methodAttribute as iCS_TypeCastAttribute;
+                        iconPath= typeCastAttr.Icon ?? classIconPath;
+                        DecodeTypeCast(company, package, iconPath, classType, method);
                     } else {                        
-                        Debug.LogWarning("iCanScript: Conversion "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");
+                        Debug.LogWarning("iCanScript: Type Cast "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");
                     }
                     break;
                 }
@@ -277,7 +277,7 @@ public class iCS_Reflection {
         }                               
     }
     // ----------------------------------------------------------------------
-    static void DecodeConversion(string company, string package, string iconPath, Type classType, MethodInfo method) {
+    static void DecodeTypeCast(string company, string package, string iconPath, Type classType, MethodInfo method) {
         Type toType= method.ReturnType;
         ParameterInfo[] parameters= method.GetParameters();
         if(parameters.Length != 1 || toType == null) {
@@ -295,7 +295,7 @@ public class iCS_Reflection {
                              " is not static and tagged for "+iCS_Config.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
-        iCS_DataBase.AddConversion(company, package, iconPath, classType, method, fromType);                                        
+        iCS_DataBase.AddTypeCast(company, package, iconPath, classType, method, fromType);                                        
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {

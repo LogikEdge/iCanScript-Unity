@@ -153,7 +153,7 @@ public partial class iCS_IStorage {
                         modified= true;
                     }
                 }
-                if(obj.IsConversion) {
+                if(obj.IsTypeCast) {
                     if(GetSource(FindInChildren(obj, c=> c.IsInDataPort)) == null ||
                        FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataPort)) == null) {
                        DestroyInstanceInternal(obj);

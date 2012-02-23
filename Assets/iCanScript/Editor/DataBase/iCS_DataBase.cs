@@ -176,9 +176,9 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Finds a conversion that matches the given from/to types.
-    public static iCS_ReflectionDesc FindConversion(Type fromType, Type toType) {
+    public static iCS_ReflectionDesc FindTypeCast(Type fromType, Type toType) {
         foreach(var desc in Functions) {
-            if(IsConversion(desc)) {
+            if(IsTypeCast(desc)) {
                 if(iCS_Types.CanBeConnectedWithoutConversion(fromType, desc.ParamTypes[0]) &&
                    iCS_Types.CanBeConnectedWithoutConversion(desc.ReturnType, toType)) return desc;
             }
@@ -187,8 +187,8 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns true if the given desc is a conversion function.
-    public static bool IsConversion(iCS_ReflectionDesc desc) {
-        return desc.ObjectType == iCS_ObjectTypeEnum.Conversion;
+    public static bool IsTypeCast(iCS_ReflectionDesc desc) {
+        return desc.ObjectType == iCS_ObjectTypeEnum.TypeCast;
     }
     
     // ======================================================================
@@ -250,13 +250,13 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Adds a conversion function
-    public static void AddConversion(string company, string package, string iconPath, Type classType, MethodInfo methodInfo, Type fromType) {
+    public static void AddTypeCast(string company, string package, string iconPath, Type classType, MethodInfo methodInfo, Type fromType) {
         // Don't accept automatic conversion if it already exist.
         Type toType= methodInfo.ReturnType;
         foreach(var desc in Functions) {
-            if(IsConversion(desc)) {
+            if(IsTypeCast(desc)) {
                 if(desc.ParamTypes[0] == fromType && desc.ReturnType == toType) {
-                    Debug.LogWarning("Duplicate conversion function from "+fromType+" to "+toType+" exists in classes "+desc.Method.DeclaringType+" and "+methodInfo.DeclaringType);
+                    Debug.LogWarning("Duplicate type cast from "+fromType+" to "+toType+" exists in classes "+desc.Method.DeclaringType+" and "+methodInfo.DeclaringType);
                     return;
                 }                
             }
@@ -265,7 +265,7 @@ public class iCS_DataBase {
         string toTypeName= iCS_Types.TypeName(toType);
         string toTypeNameUpper= Char.ToUpper(toTypeName[0])+toTypeName.Substring(1);
         Add(company, package, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
-            iCS_ObjectTypeEnum.Conversion, classType, methodInfo, null,
+            iCS_ObjectTypeEnum.TypeCast, classType, methodInfo, null,
             new bool[1]{false}, new string[1]{fromTypeName}, new Type[1]{fromType}, new object[1]{null},
             toTypeName);        
     }

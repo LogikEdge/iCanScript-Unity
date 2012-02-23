@@ -710,7 +710,7 @@ public class iCS_Graphics {
         if(node.IsConstructor) {
             return storage.Preferences.NodeColors.ConstructorColor;
         }
-        if(node.IsStaticMethod || node.IsConversion || node.IsInstanceMethod || node.IsInstanceField || node.IsStaticField) {
+        if(node.IsFunction) {
             return storage.Preferences.NodeColors.FunctionColor;
         }
         return Color.gray;
@@ -730,7 +730,7 @@ public class iCS_Graphics {
         if(node.IsConstructor) {
             return BuildMaximizeIcon(node, storage, ref ConstructionMaximizeIcon);
         }
-        if(node.IsStaticMethod || node.IsConversion || node.IsInstanceMethod || node.IsInstanceField || node.IsStaticField) {
+        if(node.IsFunction) {
             return BuildMaximizeIcon(node, storage, ref FunctionMaximizeIcon);
         }
         return BuildMaximizeIcon(node, storage, ref DefaultMaximizeIcon);

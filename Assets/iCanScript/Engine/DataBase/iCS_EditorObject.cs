@@ -114,7 +114,6 @@ public class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode                  { get { return iCS_ObjectType.IsNode(this); }}
-	public bool IsDataNode				{ get { return iCS_ObjectType.IsDataNode(this); }}
 	public bool IsStateChartNode	    { get { return iCS_ObjectType.IsStateChartNode(this); }}
     public bool IsBehaviour             { get { return iCS_ObjectType.IsBehaviour(this); }}
     public bool IsStateChart            { get { return iCS_ObjectType.IsStateChart(this); }}
@@ -129,7 +128,7 @@ public class iCS_EditorObject {
     public bool IsInstanceMethod        { get { return iCS_ObjectType.IsInstanceMethod(this); }}
     public bool IsStaticField           { get { return iCS_ObjectType.IsStaticField(this); }}
     public bool IsInstanceField         { get { return iCS_ObjectType.IsInstanceField(this); }}
-    public bool IsConversion            { get { return iCS_ObjectType.IsConversion(this); }}
+    public bool IsTypeCast              { get { return iCS_ObjectType.IsTypeCast(this); }}
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
     public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
     public bool IsFunctionPort          { get { return iCS_ObjectType.IsFunctionPort(this); }}

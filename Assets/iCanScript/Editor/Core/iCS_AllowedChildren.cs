@@ -120,7 +120,7 @@ public static class iCS_AllowedChildren {
             case iCS_ObjectTypeEnum.StaticMethod:
             case iCS_ObjectTypeEnum.InstanceField:
             case iCS_ObjectTypeEnum.StaticField:
-            case iCS_ObjectTypeEnum.Conversion: {
+            case iCS_ObjectTypeEnum.TypeCast: {
                 break;
             }
             default: {

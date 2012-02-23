@@ -278,7 +278,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             InvokeAddChildIfExists(parent, func);
                             break;
                         }
-                        case iCS_ObjectTypeEnum.Conversion:
+                        case iCS_ObjectTypeEnum.TypeCast:
                         case iCS_ObjectTypeEnum.StaticMethod: {
                             // Create function.
                             iCS_Function func= new iCS_Function(node.Name, GetMethodBase(node), GetPortIsOuts(node), layout);                                

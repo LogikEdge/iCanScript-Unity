@@ -111,112 +111,91 @@ public class iCS_ReflectionDesc {
     // ----------------------------------------------------------------------
     public string FunctionSignature {
         get {
-			switch(ObjectType) {
-				case iCS_ObjectTypeEnum.Conversion: {
-					return DisplayName;
+            string signature= DisplayName;
+			// Build input string
+			string inputStr= "";
+            if(ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
+                inputStr+= "this"/*+":"+TypeName(ClassType)*/+", ";
+            }
+            for(int i= 0; i < ParamNames.Length; ++i) {
+				if(!ParamTypes[i].IsByRef) {
+	                inputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i])*/+", ";
 				}
-				default: {
-		            string signature= DisplayName;
-					// Build input string
-					string inputStr= "";
-		            if(ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
-		                inputStr+= "this"/*+":"+TypeName(ClassType)*/+", ";
-		            }
-		            for(int i= 0; i < ParamNames.Length; ++i) {
-						if(!ParamTypes[i].IsByRef) {
-			                inputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i])*/+", ";
-						}
-		            }
-					// Add inputs to signature.
-					if(inputStr != "") {
-			            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
-					}
-					// Build output string
-					int nbOfOutputs= 0;
-					string outputStr= "";
-		            for(int i= 0; i < ParamNames.Length; ++i) {
-						if(ParamTypes[i].IsByRef) {
-			                outputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i].GetElementType())*/+", ";
-							++nbOfOutputs;
-						}
-		            }
-					if(ReturnType != null && ReturnType != typeof(void)) {
-						++nbOfOutputs;
-						if(ReturnName != null && ReturnName != "" && ReturnName != "out") {
-							outputStr+= /*" "+*/ReturnName;
-						} else {
-							outputStr+= ":"+TypeName(ReturnType);
-						}
-						outputStr+= ", ";
-					}
-					// Add output to signature.
-					if(nbOfOutputs == 1) {
-						signature+="->"+outputStr.Substring(0, outputStr.Length-2);
-					}
-					if(nbOfOutputs > 1) {
-						signature+="->("+outputStr.Substring(0, outputStr.Length-2)+")";
-					}
-					return signature;
-				}
+            }
+			// Add inputs to signature.
+			if(inputStr != "") {
+	            signature+= " ("+inputStr.Substring(0, inputStr.Length-2)+")";						
 			}
+			// Build output string
+			int nbOfOutputs= 0;
+			string outputStr= "";
+            for(int i= 0; i < ParamNames.Length; ++i) {
+				if(ParamTypes[i].IsByRef) {
+	                outputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i].GetElementType())*/+", ";
+					++nbOfOutputs;
+				}
+            }
+			if(ReturnType != null && ReturnType != typeof(void)) {
+				++nbOfOutputs;
+				if(ReturnName != null && ReturnName != "" && ReturnName != "out") {
+					outputStr+= /*" "+*/ReturnName;
+				} else {
+					outputStr+= ":"+TypeName(ReturnType);
+				}
+				outputStr+= ", ";
+			}
+			// Add output to signature.
+			if(nbOfOutputs == 1) {
+				signature+="->"+outputStr.Substring(0, outputStr.Length-2);
+			}
+			if(nbOfOutputs > 1) {
+				signature+="->("+outputStr.Substring(0, outputStr.Length-2)+")";
+			}
+			return signature;
         }
     }
     // ----------------------------------------------------------------------
     public string FunctionSignatureNoThis {
         get {
-			switch(ObjectType) {
-				case iCS_ObjectTypeEnum.Conversion: {
-					return DisplayName;
+            string signature= DisplayName;
+			// Add inputs to signature.
+			string inputStr= FunctionInputSignatureNoThis;
+	        signature+= " ("+inputStr+")";						
+			// Build output string
+			int nbOfOutputs= 0;
+			string outputStr= "";
+            for(int i= 0; i < ParamNames.Length; ++i) {
+				if(ParamTypes[i].IsByRef) {
+	                outputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i].GetElementType())+", ";
+					++nbOfOutputs;
 				}
-				default: {
-		            string signature= DisplayName;
-					// Add inputs to signature.
-					string inputStr= FunctionInputSignatureNoThis;
-			        signature+= " ("+inputStr+")";						
-					// Build output string
-					int nbOfOutputs= 0;
-					string outputStr= "";
-		            for(int i= 0; i < ParamNames.Length; ++i) {
-						if(ParamTypes[i].IsByRef) {
-			                outputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i].GetElementType())+", ";
-							++nbOfOutputs;
-						}
-		            }
-					if(ReturnType != null && ReturnType != typeof(void)) {
-						++nbOfOutputs;
-						if(ReturnName != null && ReturnName != "" && ReturnName != "out") {
-							outputStr+= /*" "+*/ReturnName;
-						} else {
-							outputStr+= ":"+TypeName(ReturnType);
-						}
-						outputStr+= ", ";
-					}
-					// Add output to signature.
-					if(nbOfOutputs == 1) {
-						signature+=" -> "+outputStr.Substring(0, outputStr.Length-2);
-					}
-					if(nbOfOutputs > 1) {
-						signature+=" -> ("+outputStr.Substring(0, outputStr.Length-2)+")";
-					}
-					return signature;
+            }
+			if(ReturnType != null && ReturnType != typeof(void)) {
+				++nbOfOutputs;
+				if(ReturnName != null && ReturnName != "" && ReturnName != "out") {
+					outputStr+= /*" "+*/ReturnName;
+				} else {
+					outputStr+= ":"+TypeName(ReturnType);
 				}
+				outputStr+= ", ";
 			}
+			// Add output to signature.
+			if(nbOfOutputs == 1) {
+				signature+=" -> "+outputStr.Substring(0, outputStr.Length-2);
+			}
+			if(nbOfOutputs > 1) {
+				signature+=" -> ("+outputStr.Substring(0, outputStr.Length-2)+")";
+			}
+			return signature;
         }
     }
     // ----------------------------------------------------------------------
     public string FunctionSignatureNoThisNoOutput {
         get {
-			switch(ObjectType) {
-				case iCS_ObjectTypeEnum.Conversion: {
-					return DisplayName;
-				}
-				default: {
-		            string signature= DisplayName;
-					// Add inputs to signature.
-					string inputStr= FunctionInputSignatureNoThis;
-			        return signature+" ("+inputStr+")";						
-                }
-            }
+            string signature= DisplayName;
+			// Add inputs to signature.
+			string inputStr= FunctionInputSignatureNoThis;
+	        return signature+" ("+inputStr+")";						
         }
     }
     // ----------------------------------------------------------------------

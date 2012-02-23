@@ -1,7 +1,7 @@
 using System;
 
 [AttributeUsage(AttributeTargets.Method)]
-public class iCS_ConversionAttribute : Attribute {
+public class iCS_TypeCastAttribute : Attribute {
     // ======================================================================
     // Optional Parameters
     // ----------------------------------------------------------------------
@@ -12,5 +12,5 @@ public class iCS_ConversionAttribute : Attribute {
     private string myIcon= null;
     
     // ======================================================================
-    public override string ToString() { return "iCS_Conversion"; }
+    public override string ToString() { return "iCS_TypeCast"; }
 }

@@ -1137,8 +1137,8 @@ public class iCS_Editor : EditorWindow {
         return true;
     }
 	// ----------------------------------------------------------------------
-    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out iCS_ReflectionDesc conversion) {
-        conversion= null;
+    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out iCS_ReflectionDesc typeCast) {
+        typeCast= null;
 		Type inType= inPort.RuntimeType;
 		Type outType= outPort.RuntimeType;
         if(iCS_Types.CanBeConnectedWithoutConversion(outType, inType)) { // No conversion needed.
@@ -1151,8 +1151,8 @@ public class iCS_Editor : EditorWindow {
 			}
             return false;
 		}
-        conversion= iCS_DataBase.FindConversion(outType, inType);
-        if(conversion == null) {
+        typeCast= iCS_DataBase.FindTypeCast(outType, inType);
+        if(typeCast == null) {
 			ShowNotification(new GUIContent("No automatic type conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
             return false;
         }
@@ -1352,7 +1352,7 @@ public class iCS_Editor : EditorWindow {
             case iCS_ObjectTypeEnum.StaticMethod:
             case iCS_ObjectTypeEnum.InstanceField:
             case iCS_ObjectTypeEnum.StaticField:
-            case iCS_ObjectTypeEnum.Conversion: {
+            case iCS_ObjectTypeEnum.TypeCast: {
                 Storage.ForEachChildPort(node,
                     port=> {
                         if(port.IsInDataPort) {
