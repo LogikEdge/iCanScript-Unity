@@ -615,12 +615,16 @@ public class iCS_Editor : EditorWindow {
         if(SelectedObject == null && DisplayRoot.IsBehaviour) {
             SelectedObject= DisplayRoot;
         }
+        ShowClassWizard();
+        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition), MenuOption == 0);
+        Storage.SetDirty(SelectedObject);                    
+    }
+	// ----------------------------------------------------------------------
+    void ShowClassWizard() {
         if(SelectedObject.IsClassModule) {
             ClassWizard= GetClassWizard();
             ClassWizard.Activate(SelectedObject, Storage);
-        }
-        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition), MenuOption == 0);
-        Storage.SetDirty(SelectedObject);                    
+        }        
     }
 	// ----------------------------------------------------------------------
     void DragAndDropPerform() {
@@ -1040,9 +1044,7 @@ public class iCS_Editor : EditorWindow {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
         SelectedObject= newSelected;
-        if(SelectedObject != null && SelectedObject.IsClassModule && ClassWizard != null) {
-            ClassWizard.Activate(SelectedObject, Storage);
-        }
+        ShowClassWizard();
         return SelectedObject;
     }
 
