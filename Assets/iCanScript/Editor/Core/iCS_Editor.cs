@@ -1566,14 +1566,14 @@ public class iCS_Editor : EditorWindow {
         // Display node starting from the root node.
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
-                if(node.IsNode && !node.IsFloating /*&& !node.IsBehaviour*/) {
+                if(node.IsNode && !node.IsFloating && !node.IsBehaviour) {
                 	Graphics.DrawNormalNode(node, Storage);                        
                 }
             }
         );
         Storage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
-                if(node.IsNode && node.IsFloating /*&& !node.IsBehaviour*/) {
+                if(node.IsNode && node.IsFloating && !node.IsBehaviour) {
                 	Graphics.DrawNormalNode(node, Storage);                        
                 }
             }
