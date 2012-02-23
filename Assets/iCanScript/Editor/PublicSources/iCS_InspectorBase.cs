@@ -10,13 +10,6 @@ using UnityEditor;
 // classes (see iCS_Installer).
 public class iCS_InspectorBase : iCS_Inspector {
     // ---------------------------------------------------------------
-    // Invokes the iCanScript .
-	public override void OnInspectorGUI() {
-        // Assure that the components are properly installed.
-    	iCS_Installer.Install();
-        base.OnInspectorGUI();
-	}
-    // ---------------------------------------------------------------
     protected override iCS_Editor GetEditor() {
         return iCS_EditorProxy.GetEditor();
     }
