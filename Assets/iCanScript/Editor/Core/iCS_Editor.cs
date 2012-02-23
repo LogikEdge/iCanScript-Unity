@@ -94,7 +94,7 @@ public class iCS_Editor : EditorWindow {
 	// Mouse services
 	void UpdateMouse() {
         myMousePosition= Event.current.mousePosition;
-//        if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
+        if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
 	}
     Vector2 MousePosition { get { return myMousePosition/Scale; } }
 	Vector2 myMousePosition= Vector2.zero;
