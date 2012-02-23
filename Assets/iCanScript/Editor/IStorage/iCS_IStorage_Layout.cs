@@ -541,7 +541,7 @@ public partial class iCS_IStorage {
         if(!DoesCollideWithGutter(node, otherNode)) return false;
 
         // Compute penetration.
-        Vector2 penetration= GetSeperationVector(node, GetPosition(otherNode), _delta);
+        Vector2 penetration= GetSeperationVector(node, GetPosition(otherNode));
 		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) return false;
 
 		// Seperate using the known movement.
@@ -583,7 +583,7 @@ public partial class iCS_IStorage {
     
     // ----------------------------------------------------------------------
 	// Returns the seperation vector of two colliding nodes.
-	Vector2 GetSeperationVector(iCS_EditorObject node, Rect _rect, Vector2 _delta) {
+	Vector2 GetSeperationVector(iCS_EditorObject node, Rect _rect) {
         Rect myRect= RectWithGutter(GetPosition(node));
         Rect intersection= Math3D.Intersection(myRect, _rect);
         if(Math3D.IsZero(intersection.width) && Math3D.IsZero(intersection.height)) return Vector2.zero;
@@ -602,10 +602,8 @@ public partial class iCS_IStorage {
             ySeparation= new Vector2(0, intersection.height);
         }            
         if(Mathf.Abs(xSeparation.x) < Mathf.Abs(ySeparation.y)) {
-            Debug.Log("Collision detected: delta: "+_delta+" intersection: "+intersection+" seperationVector: "+xSeparation);
             return xSeparation;
         }
-        Debug.Log("Collision detected: delta: "+_delta+" intersection: "+intersection+" seperationVector: "+ySeparation);
         return ySeparation;
 	}
 
