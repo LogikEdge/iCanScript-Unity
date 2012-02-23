@@ -46,7 +46,7 @@ public class iCS_Editor : EditorWindow {
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
     // ----------------------------------------------------------------------
-	static string[] menuOptions= new string[2]{"Class", "Functional"};
+	static string[] menuOptions= new string[2]{"Normal", "Expert"};
     int MenuOption= 0;
      
     // ======================================================================
@@ -470,6 +470,7 @@ public class iCS_Editor : EditorWindow {
                     // Object deletion
                     case KeyCode.Delete:
                     case KeyCode.Backspace: {
+                        Debug.Log("Delete seen");
                         if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
                           !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
                             iCS_EditorObject parent= Storage.GetParent(SelectedObject);
@@ -621,7 +622,7 @@ public class iCS_Editor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     void ShowClassWizard() {
-        if(SelectedObject.IsClassModule) {
+        if(SelectedObject != null && SelectedObject.IsClassModule) {
             ClassWizard= GetClassWizard();
             ClassWizard.Activate(SelectedObject, Storage);
         }        
@@ -1518,7 +1519,7 @@ public class iCS_Editor : EditorWindow {
 		
 		// Editable field test.		
 		iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent("Menu Type:"), 0, 0, false);		
-		MenuOption= iCS_EditorUtility.ToolbarButtons(ref r, 160f, MenuOption, menuOptions, 0, 0);
+		MenuOption= iCS_EditorUtility.ToolbarButtons(ref r, 120f, MenuOption, menuOptions, 0, 0);
 	}
 	// ----------------------------------------------------------------------
     void UpdateClassWizard() {

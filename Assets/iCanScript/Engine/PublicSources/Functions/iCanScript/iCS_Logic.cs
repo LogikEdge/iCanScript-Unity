@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 [iCS_Class(Company="iCanScript", Package="Conditions")]
-public class iCS_Logic {
+public static class iCS_Logic {
     // Comparaison operations.
     [iCS_Function] public static bool IsZero(float a, out bool not)                           { bool result= Math3D.IsZero(a); not= !result; return result; }
     [iCS_Function] public static bool IsNotZero(float a, out bool not)                        { bool result= Math3D.IsNotZero(a); not= !result; return result; }
@@ -15,7 +15,7 @@ public class iCS_Logic {
 }
 
 [iCS_Class(Company="iCanScript", Package="Boolean")]
-public class iCS_Boolean {
+public static class iCS_Boolean {
     [iCS_Function] public static bool And(bool a, bool b) { return a & b; }
     [iCS_Function] public static bool Or (bool a, bool b) { return a | b; }
     [iCS_Function] public static bool Xor(bool a, bool b) { return a ^ b; }
