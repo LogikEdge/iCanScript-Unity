@@ -34,7 +34,7 @@ public static class iCS_ObjectType {
     public static bool IsNode                 (iCS_EditorObject obj) { return IsStructuralNode(obj) || IsFunction(obj); }
 
     // Structural nodes.
-    public static bool IsStructuralNode       (iCS_EditorObject obj) { return IsBehaviour(obj) || IsModule(obj) || IsState(obj); }
+    public static bool IsStructuralNode       (iCS_EditorObject obj) { return IsBehaviour(obj) || IsModule(obj) || IsState(obj) || IsStateChart(obj); }
     public static bool IsBehaviour            (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Behaviour; }
     public static bool IsModule               (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Module || IsTransitionGuard(obj) || IsTransitionAction(obj) || IsTransitionModule(obj); }
     public static bool IsStateChart           (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StateChart; }

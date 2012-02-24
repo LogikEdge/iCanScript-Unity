@@ -663,7 +663,7 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     public static Vector2 GetMaximizeIconSize(iCS_EditorObject node, iCS_IStorage storage) {
         Texture2D icon= null;
-        if(storage.Preferences.Icons.EnableMinimizedIcons && node.IconGUID != null) {
+        if(storage.Preferences.Icons.EnableMinimizedIcons && node != null && node.IconGUID != null) {
             icon= GetCachedIconFromGUID(node.IconGUID);
             if(icon != null) return new Vector2(icon.width, icon.height);
         }
@@ -672,7 +672,7 @@ public class iCS_Graphics {
     // ----------------------------------------------------------------------
     public Texture2D GetMaximizeIcon(iCS_EditorObject node, iCS_IStorage storage) {
         Texture2D icon= null;
-        if(storage.Preferences.Icons.EnableMinimizedIcons && node.IconGUID != null) {
+        if(storage.Preferences.Icons.EnableMinimizedIcons && node != null && node.IconGUID != null) {
             icon= GetCachedIconFromGUID(node.IconGUID);
             if(icon != null) return icon;
         }

@@ -16,7 +16,6 @@ public partial class iCS_IStorage {
             inThisPort.IsNameEditable= false;
             iCS_EditorObject outThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.This, classType, iCS_ObjectTypeEnum.OutStaticModulePort);
             outThisPort.IsNameEditable= false;
-//            SetSource(outThisPort, inThisPort);
         }
         iCS_UserPreferences.UserClassWizard control= Preferences.ClassWizard;
         if(control.OutputInstanceVariables)  ClassModuleCreateOutputInstanceFields(module);
@@ -36,6 +35,8 @@ public partial class iCS_IStorage {
                 module.IconGUID= iconGUID;
             }            
         }
+        Fold(module);
+        SetDirty(module);
     }
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputInstanceFields(iCS_EditorObject module) {
@@ -298,6 +299,7 @@ public partial class iCS_IStorage {
             }
         );
         Minimize(func);
+        NodeLayout(func);
         return func;
     }
     public void ClassModuleDestroy(iCS_EditorObject module, iCS_ReflectionDesc desc) {
@@ -314,6 +316,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.This);
         SetSource(moduleThisPort, constructorThisPort);
         Minimize(constructor);
+        NodeLayout(constructor);
         return constructor;
     }
     public void ClassModuleDestroyConstructor(iCS_EditorObject module) {

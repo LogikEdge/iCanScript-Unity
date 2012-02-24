@@ -329,11 +329,11 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
-        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,0,0);
-        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        Rect localPos= PositionNewNodeInParent(parentId, initialPos);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos);
-        TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+        var center= Math3D.Middle(GetPosition(this[id]));
+        TreeCache[id].DisplayPosition= new Rect(center.x,center.y,0,0);
 		SetDirty(this[id]);
         return this[id];
     }
@@ -347,8 +347,7 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
-        Rect parentPos= GetPosition(parentId);
-        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        Rect localPos= PositionNewNodeInParent(parentId, initialPos);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos);
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
@@ -378,15 +377,16 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateStaticMethod(int parentId, Vector2 initialPos, iCS_ReflectionDesc desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
+        // Determine minimized icon.
+        var iconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
+        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
+            iconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
+        }        
         // Calcute the desired screen position of the new object.
-        Rect parentPos= GetPosition(parentId);
-        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        Rect localPos= PositionNewNodeInParent(parentId, initialPos, iconGUID);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
-        this[id].IconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
-        if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
-            this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
-        }
+        this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -412,15 +412,16 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateInstanceMethod(int parentId, Vector2 initialPos, iCS_ReflectionDesc desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
+        // Determine minimized icon.
+        var iconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
+        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
+            iconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
+        }        
         // Calcute the desired screen position of the new object.
-        Rect parentPos= GetPosition(parentId);
-        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        Rect localPos= PositionNewNodeInParent(parentId, initialPos, iconGUID);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
-        this[id].IconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
-        if(this[id].IconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
-            this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
-        }        
+        this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -469,6 +470,26 @@ public partial class iCS_IStorage {
         TreeCache[id].DisplayPosition= new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0);
 		SetDirty(this[id]);
         return EditorObjects[id];        
+    }
+    // ----------------------------------------------------------------------
+    Rect PositionNewNodeInParent(int parentId, Vector2 initialPos, string iconGUID= null) {
+        Rect localPos;
+        Texture2D icon= iCS_Graphics.GetCachedTextureFromGUID(iconGUID);
+        var size= icon != null ? new Vector2(icon.width, icon.height) : iCS_Graphics.GetMaximizeIconSize(null, this);
+        if(IsValid(parentId)) {
+            iCS_EditorObject parent= EditorObjects[parentId];
+            var parentRect= GetPosition(parent);
+            if(parentRect.Contains(initialPos)) {
+                localPos= new Rect(initialPos.x-parentRect.x, initialPos.y-parentRect.y,size.x,size.y);
+            } else {
+                localPos= new Rect(parentRect.width, parentRect.height, size.x, size.y);
+                parent.LocalPosition.width += 2f*iCS_Config.GutterSize+size.x;
+                parent.LocalPosition.height+= 2f*iCS_Config.GutterSize+size.y;                
+            }
+        } else {
+            localPos= new Rect(initialPos.x,initialPos.y,size.x,size.y);
+        }        
+        return localPos;
     }
     // ======================================================================
     // Display Options
