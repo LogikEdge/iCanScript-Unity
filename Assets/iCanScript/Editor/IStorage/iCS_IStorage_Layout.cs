@@ -151,6 +151,7 @@ ReLayoutNode(GetParent(node));
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
     public void DeltaMove(iCS_EditorObject node, Vector2 _delta) {
+        Debug.Log("Need to compute ratios for children of: "+GetParent(node).Name ?? "Universe");
         // Move the node
         DeltaMoveInternal(node, _delta);
         // Resolve collision between siblings.
@@ -866,8 +867,14 @@ ReLayoutNode(GetParent(node));
                 Rect intersection= Math3D.Intersection(r1, r2);
                 if(Math3D.IsNotZero(intersection.width) && Math3D.IsNotZero(intersection.height)) {
 //                    Debug.Log("Intersection: "+children[i].Name+" & "+children[j].Name+": "+intersection+" width: "+width+" height: "+height);
-                    width= Mathf.Max(width, intersection.width/Mathf.Abs(ratios[i].x-ratios[j].x));
-                    height=Mathf.Max(height, intersection.height/Mathf.Abs(ratios[i].y-ratios[j].y));
+                    float xRatioDelta= Mathf.Abs(ratios[i].x-ratios[j].x);
+                    float yRatioDelta= Mathf.Abs(ratios[i].y-ratios[j].y);
+                    if(Math3D.IsZero(xRatioDelta) && Math3D.IsZero(yRatioDelta)) {
+                        Debug.LogWarning("Collision is too strong:  Aborting Relayout...");
+                        return;
+                    }
+                    width= Mathf.Max(width, intersection.width/xRatioDelta);
+                    height=Mathf.Max(height, intersection.height/yRatioDelta);
                 }
             }
         }
