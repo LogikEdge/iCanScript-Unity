@@ -25,13 +25,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void Layout(iCS_EditorObject obj) {
         obj.IsDirty= false;
-        ExecuteIf(obj, iCS_ObjectType.IsNode, NodeLayout);
+        ExecuteIf(obj, iCS_ObjectType.IsNode, o=> NodeLayout(o));
     }
 
     // ----------------------------------------------------------------------
     // Recompute the layout of a parent node.
     // Returns "true" if the new layout is within the window area.
-    public void NodeLayout(iCS_EditorObject node) {
+    public void NodeLayout(iCS_EditorObject node, bool needsToBeCentered= false) {
         // Don't layout node if it is not visible.
         if(!IsVisible(node)) return;
 
@@ -115,9 +115,21 @@ public partial class iCS_IStorage {
             float portHeight= nbOfPorts*iCS_Config.MinimumPortSeparation;                                
             float height= iCS_Config.NodeTitleHeight+Mathf.Max(portHeight, childrenGlobalRect.height+2.0f*iCS_Config.GutterSize);
             
+            // Relocate node if centering is needed 
+            Rect newPos= new Rect(neededNodeGlobalX, neededNodeGlobalY, width, height);
+            if(needsToBeCentered) {
+                var currentCenter= Math3D.Middle(globalPosition);
+                var newCenter= Math3D.Middle(newPos);
+                var diff= currentCenter-newCenter; 
+                if(Math3D.IsNotZero(diff)) {
+                    newPos.x+= diff.x;
+                    newPos.y+= diff.y;
+                    neededNodeGlobalX+= diff.x;
+                    neededNodeGlobalY+= diff.y;
+                }
+            }
             if(Math3D.IsNotEqual(globalPosition.x, neededNodeGlobalX) || Math3D.IsNotEqual(globalPosition.y, neededNodeGlobalY) ||
                Math3D.IsNotEqual(globalPosition.width, width) || Math3D.IsNotEqual(globalPosition.height, height)) {
-                Rect newPos= new Rect(neededNodeGlobalX, neededNodeGlobalY, width, height);
                 SetPosition(node, newPos);
             }
         }

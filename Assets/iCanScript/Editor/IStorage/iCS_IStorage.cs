@@ -529,7 +529,7 @@ public partial class iCS_IStorage {
         if(!eObj.IsNode) return;
         eObj.Maximize();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Maximize(); });
-        SetDirty(eObj);
+        NodeLayout(eObj,true);
         if(IsValid(eObj.ParentId)) {
             iCS_EditorObject parent= GetParent(eObj);
             SetDirty(parent);
