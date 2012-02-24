@@ -328,7 +328,6 @@ public class iCS_Editor : EditorWindow {
                 if(IsDragStarted) {
                     EndDrag();
                 } else {
-                    Debug.Log("clickCount: "+Event.current.clickCount);
                     if(SelectedObject != null && Event.current.clickCount > 0 && (Event.current.clickCount & 1) == 0) {
                         // Process fold/unfold/minimize/maximize click.
                         Vector2 graphMousePos= ViewportToGraph(MousePosition);
