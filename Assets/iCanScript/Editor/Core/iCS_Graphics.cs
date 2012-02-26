@@ -162,6 +162,17 @@ public class iCS_Graphics {
             GUI.Label(TranslateAndScale(pos), content, labelStyle);            
         }
     }
+    
+    // ----------------------------------------------------------------------
+    public static void DrawRect(Rect rect, Color fillColor, Color outlineColor) {
+        Vector3[] vectors= new Vector3[4];
+        vectors[0]= new Vector3(rect.x, rect.y, 0);
+        vectors[1]= new Vector3(rect.xMax, rect.y, 0);
+        vectors[2]= new Vector3(rect.xMax, rect.yMax, 0);
+        vectors[3]= new Vector3(rect.x, rect.yMax, 0);        
+        Handles.color= Color.white;
+        Handles.DrawSolidRectangleWithOutline(vectors, fillColor, outlineColor);
+    }
     // ----------------------------------------------------------------------
     void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
         float radius= kNodeCornerRadius;

@@ -1550,6 +1550,7 @@ public class iCS_Editor : EditorWindow {
 
         Graphics.End();
 
+        ShowScrollButton();
 		// Show header
 		Heading();
 	}
@@ -1609,4 +1610,31 @@ public class iCS_Editor : EditorWindow {
         Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, Storage); });
     }
 
+	// ----------------------------------------------------------------------
+    const float scrollButtonSize=32f;
+    void ShowScrollButton() {
+        Rect rect= new Rect(0,0,position.width,position.height);
+        if(!rect.Contains(MousePosition)) return;
+        if(position.width < 3f*scrollButtonSize || position.height < 3f*scrollButtonSize) return;
+        bool shouldShowButton= false;
+        if(MousePosition.x < scrollButtonSize) {
+            rect= Math3D.Intersection(rect, new Rect(0, 0, scrollButtonSize, position.height-1f));            
+            shouldShowButton= true;
+        }
+        if(MousePosition.x > position.width-scrollButtonSize) {
+            rect= Math3D.Intersection(rect, new Rect(position.width-scrollButtonSize, 0, scrollButtonSize-2f, position.height-1f));            
+            shouldShowButton= true;
+        }
+        if(MousePosition.y < scrollButtonSize) {
+            rect= Math3D.Intersection(rect, new Rect(0, 0, position.width-2f, scrollButtonSize));
+            shouldShowButton= true;
+        }
+        if(MousePosition.y > position.height-scrollButtonSize) {
+            rect= Math3D.Intersection(rect, new Rect(0, position.height-scrollButtonSize, position.width-2f, scrollButtonSize-1f));
+            shouldShowButton= true;
+        }
+        if(shouldShowButton) {
+            iCS_Graphics.DrawRect(rect, new Color(1f,1f,1f,0.06f), Color.white);            
+        }
+    }
 }
