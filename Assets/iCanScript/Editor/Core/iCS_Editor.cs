@@ -1559,7 +1559,7 @@ public class iCS_Editor : EditorWindow {
 
         Graphics.End();
 
-        ShowScrollButton();
+        ShowScrollButton(CanScrollInDirection(DetectScrollZone()));
 		// Show header
 		Heading();
 	}
@@ -1648,8 +1648,35 @@ public class iCS_Editor : EditorWindow {
         return direction;        
     }
 	// ----------------------------------------------------------------------
-    void ShowScrollButton() {
-        Vector2 direction= DetectScrollZone();
+    Vector2 CanScrollInDirection(Vector2 dir) {
+        Rect rootRect= Storage.GetPosition(DisplayRoot);
+        var rootCenter= Math3D.Middle(rootRect);
+        var topLeftCorner= ViewportToGraph(new Vector2(0, GetHeaderHeight()));
+        var bottomRightCorner= ViewportToGraph(new Vector2(position.width, position.height));
+        if(Math3D.IsSmaller(dir.x, 0f)) {
+            if(!rootRect.Contains(new Vector2(topLeftCorner.x, rootCenter.y))) {
+                dir.x= 0f;
+            }
+        }
+        if(Math3D.IsGreater(dir.x,0f)) {
+            if(!rootRect.Contains(new Vector2(bottomRightCorner.x, rootCenter.y))) {
+                dir.x= 0f;
+            }
+        }
+        if(Math3D.IsSmaller(dir.y, 0f)) {
+            if(!rootRect.Contains(new Vector2(rootCenter.x, topLeftCorner.y))) {
+                dir.y= 0f;
+            }
+        }
+        if(Math3D.IsGreater(dir.y,0f)) {
+            if(!rootRect.Contains(new Vector2(rootCenter.x, bottomRightCorner.y))) {
+                dir.y= 0f;
+            }
+        }
+        return dir;
+    }
+	// ----------------------------------------------------------------------
+    void ShowScrollButton(Vector2 direction) {
         if(Math3D.IsZero(direction)) return;
         float headerHeight= GetHeaderHeight();
         Rect rect= new Rect(0,headerHeight,position.width,position.height-headerHeight);
