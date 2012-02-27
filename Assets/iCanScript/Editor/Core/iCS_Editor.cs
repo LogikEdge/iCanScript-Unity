@@ -1665,6 +1665,22 @@ public class iCS_Editor : EditorWindow {
         if(Math3D.IsEqual(direction.y, 1f)) {
             rect= Math3D.Intersection(rect, new Rect(0, position.height-scrollButtonSize, position.width-2f, scrollButtonSize-1f));
         }
-        iCS_Graphics.DrawRect(rect, new Color(1f,1f,1f,0.06f), Color.white);            
+        Color backgroundColor= new Color(1f,1f,1f,0.06f);
+        iCS_Graphics.DrawRect(rect, backgroundColor, backgroundColor);
+        // Draw arrow head
+        Vector3[] tv= new Vector3[4];
+        tv[0]= 0.4f*scrollButtonSize * direction.normalized;            
+        Quaternion q1= Quaternion.AngleAxis(90f, Vector3.forward);
+        tv[1]= q1*tv[0];
+        Quaternion q2= Quaternion.AngleAxis(270f, Vector3.forward);
+        tv[2]= q2*tv[0];
+        tv[3]= tv[0];
+        var center= Math3D.Middle(rect);
+        for(int i= 0; i < 4; ++i) {
+            tv[i].x+= center.x;
+            tv[i].y+= center.y;
+        }
+        Color arrowColor= new Color(1f,1f,1f,0.5f);
+        Handles.DrawSolidRectangleWithOutline(tv, arrowColor, arrowColor);
     }
 }
