@@ -1634,16 +1634,16 @@ public class iCS_Editor : EditorWindow {
         if(!rect.Contains(MousePosition)) return direction;
         if(position.width < 3f*scrollButtonSize || position.height < 3f*scrollButtonSize) return direction;
         if(MousePosition.x < scrollButtonSize) {
-            direction.x= -1f;
+            direction.x= -(scrollButtonSize-MousePosition.x)/scrollButtonSize;
         }
         if(MousePosition.x > position.width-scrollButtonSize) {
-            direction.x= 1f;
+            direction.x= (MousePosition.x-position.width+scrollButtonSize)/scrollButtonSize;
         }
         if(MousePosition.y < scrollButtonSize+headerHeight) {
-            direction.y= -1f;
+            direction.y= -(scrollButtonSize+headerHeight-MousePosition.y)/scrollButtonSize;
         }
         if(MousePosition.y > position.height-scrollButtonSize) {
-            direction.y= 1f;
+            direction.y= (MousePosition.y-position.height+scrollButtonSize)/scrollButtonSize;
         }
         return direction;        
     }
@@ -1680,16 +1680,16 @@ public class iCS_Editor : EditorWindow {
         if(Math3D.IsZero(direction)) return;
         float headerHeight= GetHeaderHeight();
         Rect rect= new Rect(0,headerHeight,position.width,position.height-headerHeight);
-        if(Math3D.IsEqual(direction.x, -1f)) {
+        if(Math3D.IsSmaller(direction.x, 0f)) {
             rect= Math3D.Intersection(rect, new Rect(0, 0, scrollButtonSize, position.height-1f));            
         }
-        if(Math3D.IsEqual(direction.x, 1f)) {
+        if(Math3D.IsGreater(direction.x, 0f)) {
             rect= Math3D.Intersection(rect, new Rect(position.width-scrollButtonSize, 0, scrollButtonSize-2f, position.height-1f));            
         }
-        if(Math3D.IsEqual(direction.y, -1f)) {
+        if(Math3D.IsSmaller(direction.y, 0f)) {
             rect= Math3D.Intersection(rect, new Rect(0, headerHeight, position.width-2f, scrollButtonSize-1f));
         }
-        if(Math3D.IsEqual(direction.y, 1f)) {
+        if(Math3D.IsGreater(direction.y, 0f)) {
             rect= Math3D.Intersection(rect, new Rect(0, position.height-scrollButtonSize, position.width-2f, scrollButtonSize-1f));
         }
         Color backgroundColor= new Color(1f,1f,1f,0.06f);
