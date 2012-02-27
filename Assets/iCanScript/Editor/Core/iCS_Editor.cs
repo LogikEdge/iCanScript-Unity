@@ -1472,9 +1472,13 @@ public class iCS_Editor : EditorWindow {
     }
     
 	// ----------------------------------------------------------------------
+    float GetHeaderHeight() {
+		return iCS_EditorUtility.GetGUIStyleHeight(EditorStyles.toolbar);        
+    }
+	// ----------------------------------------------------------------------
 	void Heading() {
 		// Determine toolbar height.
-		float height= iCS_EditorUtility.GetGUIStyleHeight(EditorStyles.toolbar);
+		float height= GetHeaderHeight();
 
 //		Debug.Log("Toolbar: "+height);
 //		Debug.Log("TextField: "+GetGUIStyleHeight(EditorStyles.toolbarTextField));
@@ -1610,31 +1614,52 @@ public class iCS_Editor : EditorWindow {
         Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, Storage); });
     }
 
+    // ======================================================================
+    // SCROLL ZONE
+	// ----------------------------------------------------------------------
+    bool IsInScrollZone() {
+        return Math3D.IsNotZero(DetectScrollZone());
+    }
 	// ----------------------------------------------------------------------
     const float scrollButtonSize=32f;
-    void ShowScrollButton() {
-        Rect rect= new Rect(0,0,position.width,position.height);
-        if(!rect.Contains(MousePosition)) return;
-        if(position.width < 3f*scrollButtonSize || position.height < 3f*scrollButtonSize) return;
-        bool shouldShowButton= false;
+    Vector2 DetectScrollZone() {
+        Vector2 direction= Vector2.zero;
+        float headerHeight= GetHeaderHeight();
+        Rect rect= new Rect(0,headerHeight,position.width,position.height-headerHeight);
+        if(!rect.Contains(MousePosition)) return direction;
+        if(position.width < 3f*scrollButtonSize || position.height < 3f*scrollButtonSize) return direction;
         if(MousePosition.x < scrollButtonSize) {
-            rect= Math3D.Intersection(rect, new Rect(0, 0, scrollButtonSize, position.height-1f));            
-            shouldShowButton= true;
+            direction.x= -1f;
         }
         if(MousePosition.x > position.width-scrollButtonSize) {
-            rect= Math3D.Intersection(rect, new Rect(position.width-scrollButtonSize, 0, scrollButtonSize-2f, position.height-1f));            
-            shouldShowButton= true;
+            direction.x= 1f;
         }
-        if(MousePosition.y < scrollButtonSize) {
-            rect= Math3D.Intersection(rect, new Rect(0, 0, position.width-2f, scrollButtonSize));
-            shouldShowButton= true;
+        if(MousePosition.y < scrollButtonSize+headerHeight) {
+            direction.y= -1f;
         }
         if(MousePosition.y > position.height-scrollButtonSize) {
+            direction.y= 1f;
+        }
+        return direction;        
+    }
+	// ----------------------------------------------------------------------
+    void ShowScrollButton() {
+        Vector2 direction= DetectScrollZone();
+        if(Math3D.IsZero(direction)) return;
+        float headerHeight= GetHeaderHeight();
+        Rect rect= new Rect(0,headerHeight,position.width,position.height-headerHeight);
+        if(Math3D.IsEqual(direction.x, -1f)) {
+            rect= Math3D.Intersection(rect, new Rect(0, 0, scrollButtonSize, position.height-1f));            
+        }
+        if(Math3D.IsEqual(direction.x, 1f)) {
+            rect= Math3D.Intersection(rect, new Rect(position.width-scrollButtonSize, 0, scrollButtonSize-2f, position.height-1f));            
+        }
+        if(Math3D.IsEqual(direction.y, -1f)) {
+            rect= Math3D.Intersection(rect, new Rect(0, headerHeight, position.width-2f, scrollButtonSize-1f));
+        }
+        if(Math3D.IsEqual(direction.y, 1f)) {
             rect= Math3D.Intersection(rect, new Rect(0, position.height-scrollButtonSize, position.width-2f, scrollButtonSize-1f));
-            shouldShowButton= true;
         }
-        if(shouldShowButton) {
-            iCS_Graphics.DrawRect(rect, new Color(1f,1f,1f,0.06f), Color.white);            
-        }
+        iCS_Graphics.DrawRect(rect, new Color(1f,1f,1f,0.06f), Color.white);            
     }
 }
