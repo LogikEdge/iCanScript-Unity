@@ -1668,8 +1668,9 @@ public class iCS_Editor : EditorWindow {
         Color backgroundColor= new Color(1f,1f,1f,0.06f);
         iCS_Graphics.DrawRect(rect, backgroundColor, backgroundColor);
         // Draw arrow head
+        direction.Normalize();
         Vector3[] tv= new Vector3[4];
-        tv[0]= 0.4f*scrollButtonSize * direction.normalized;            
+        tv[0]= 0.4f*scrollButtonSize * direction;            
         Quaternion q1= Quaternion.AngleAxis(90f, Vector3.forward);
         tv[1]= q1*tv[0];
         Quaternion q2= Quaternion.AngleAxis(270f, Vector3.forward);
@@ -1677,8 +1678,8 @@ public class iCS_Editor : EditorWindow {
         tv[3]= tv[0];
         var center= Math3D.Middle(rect);
         for(int i= 0; i < 4; ++i) {
-            tv[i].x+= center.x;
-            tv[i].y+= center.y;
+            tv[i].x+= center.x-0.2f*scrollButtonSize*direction.x;
+            tv[i].y+= center.y-0.2f*scrollButtonSize*direction.y;
         }
         Color arrowColor= new Color(1f,1f,1f,0.5f);
         Handles.DrawSolidRectangleWithOutline(tv, arrowColor, arrowColor);
