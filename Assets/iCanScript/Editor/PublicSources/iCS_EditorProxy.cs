@@ -9,9 +9,12 @@ public class iCS_EditorProxy : iCS_Editor {
         DontDestroyOnLoad(editorProxy);
         editorProxy.hideFlags= HideFlags.DontSave;                    
         // Assure that the components are properly installed.
-    	iCS_Installer.Install();
         return editorProxy;        
     } 
+    // ----------------------------------------------------------------------
+    protected override void InvokeInstaller() {
+    	iCS_Installer.Install();        
+    }
     // ----------------------------------------------------------------------
     protected override iCS_ClassWizard GetClassWizard() {
         return iCS_ClassWizardProxy.GetClassWizard();

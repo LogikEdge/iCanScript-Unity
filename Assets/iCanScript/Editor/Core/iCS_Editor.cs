@@ -162,7 +162,8 @@ public class iCS_Editor : EditorWindow {
     }
 
 	// ----------------------------------------------------------------------
-    protected virtual iCS_ClassWizard GetClassWizard() { return GetWindow(typeof(iCS_ClassWizard)) as iCS_ClassWizard; }
+    protected virtual iCS_ClassWizard GetClassWizard()  { return GetWindow(typeof(iCS_ClassWizard)) as iCS_ClassWizard; }
+    protected virtual void            InvokeInstaller() {}
     // ----------------------------------------------------------------------
     public void SetInspector(iCS_Inspector inspector) {
         Inspector= inspector;
@@ -206,6 +207,10 @@ public class iCS_Editor : EditorWindow {
             if(DisplayRoot == null && Storage.IsValid(0)) {
                 DisplayRoot= Storage[0];
             }
+        }
+        // Make certain the installer is ran.
+        if(iCS_Reflection.NeedToRunInstaller) {
+            InvokeInstaller();
         }
         // Cleanup objects.
         iCS_AutoReleasePool.Update();
