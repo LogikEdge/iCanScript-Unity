@@ -97,7 +97,8 @@ public class iCS_Editor : EditorWindow {
         myMousePosition= Event.current.mousePosition;
         if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
 	}
-    Vector2 MousePosition { get { return myMousePosition/Scale; } }
+    Vector2 MousePosition      { get { return myMousePosition/Scale; } }
+    Vector2 MouseGraphPosition { get { return ViewportToGraph(MousePosition); }}
 	Vector2 myMousePosition= Vector2.zero;
 	Vector2 MouseDownPosition= Vector2.zero;
 	
@@ -345,8 +346,8 @@ public class iCS_Editor : EditorWindow {
                 } else {
                     if(SelectedObject != null && Event.current.clickCount > 0 && (Event.current.clickCount & 1) == 0) {
                         // Process fold/unfold/minimize/maximize click.
-                        Vector2 graphMousePos= ViewportToGraph(MousePosition);
-                        if(Graphics.IsFoldIconPicked(SelectedObject, graphMousePos, Storage)) {
+                        Vector2 mouseGraphPos= MouseGraphPosition;
+                        if(Graphics.IsFoldIconPicked(SelectedObject, mouseGraphPos, Storage)) {
                             if(Storage.IsFolded(SelectedObject)) {
                                 Storage.RegisterUndo("Unfold");
                                 Storage.Unfold(SelectedObject);
@@ -354,10 +355,10 @@ public class iCS_Editor : EditorWindow {
                                 Storage.RegisterUndo("Fold");
                                 Storage.Fold(SelectedObject);
                             }
-                        } else if(Graphics.IsMinimizeIconPicked(SelectedObject, graphMousePos, Storage)) {
+                        } else if(Graphics.IsMinimizeIconPicked(SelectedObject, mouseGraphPos, Storage)) {
                             Storage.RegisterUndo("Minimize");
                             Storage.Minimize(SelectedObject);
-                        } else if(Graphics.IsMaximizeIconPicked(SelectedObject, graphMousePos, Storage)) {
+                        } else if(Graphics.IsMaximizeIconPicked(SelectedObject, mouseGraphPos, Storage)) {
                             Storage.RegisterUndo("Maximize");
                             Storage.Fold(SelectedObject);
                         } else {
@@ -373,7 +374,7 @@ public class iCS_Editor : EditorWindow {
             case EventType.ScrollWheel: {
                 Vector2 delta= Event.current.delta;
                 if(IsScaleKeyDown) {
-                    Vector2 pivot= ViewportToGraph(MousePosition);
+                    Vector2 pivot= MouseGraphPosition;
 					float zoomDirection= Storage.Preferences.ControlOptions.InverseZoom ? -1f : 1f;
                     Scale= Scale+(delta.y > 0 ? -0.05f : 0.05f)*zoomDirection;
                     Vector2 offset= pivot-ViewportToGraph(MousePosition);
