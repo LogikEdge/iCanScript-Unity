@@ -520,17 +520,6 @@ public partial class iCS_IStorage {
     }
     public void Fold(int id) { if(IsValid(id)) Fold(EditorObjects[id]); }
     // ----------------------------------------------------------------------
-    public void Unfold(iCS_EditorObject eObj) {
-        if(!eObj.IsNode) return;    // Only nodes can be folded.
-        if(eObj.IsFunction) {
-            Maximize(eObj);
-            return;
-        }
-        eObj.Unfold();
-        SetDirty(eObj);
-    }
-    public void Unfold(int id) { if(IsValid(id)) Unfold(EditorObjects[id]); }
-    // ----------------------------------------------------------------------
     public bool IsMinimized(iCS_EditorObject eObj) {
         return eObj.IsMinimized;
     }

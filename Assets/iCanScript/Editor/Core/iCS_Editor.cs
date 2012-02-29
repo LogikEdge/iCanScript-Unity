@@ -99,8 +99,9 @@ public class iCS_Editor : EditorWindow {
 	}
     Vector2 MousePosition      { get { return myMousePosition/Scale; } }
     Vector2 MouseGraphPosition { get { return ViewportToGraph(MousePosition); }}
-	Vector2 myMousePosition= Vector2.zero;
+	Vector2 myMousePosition  = Vector2.zero;
 	Vector2 MouseDownPosition= Vector2.zero;
+	float   MouseUpTime      = 0f;
 	
     // ======================================================================
     // INITIALIZATION
@@ -341,16 +342,18 @@ public class iCS_Editor : EditorWindow {
                 break;
             }
             case EventType.MouseUp: {
+                float mouseUpDeltaTime= CurrentTime-MouseUpTime;
+                MouseUpTime= CurrentTime;
                 if(IsDragStarted) {
                     EndDrag();
                 } else {
-                    if(SelectedObject != null && Event.current.clickCount > 0 && (Event.current.clickCount & 1) == 0) {
+                    if(SelectedObject != null) {
                         // Process fold/unfold/minimize/maximize click.
                         Vector2 mouseGraphPos= MouseGraphPosition;
                         if(Graphics.IsFoldIconPicked(SelectedObject, mouseGraphPos, Storage)) {
                             if(Storage.IsFolded(SelectedObject)) {
                                 Storage.RegisterUndo("Unfold");
-                                Storage.Unfold(SelectedObject);
+                                Storage.Maximize(SelectedObject);
                             } else {
                                 Storage.RegisterUndo("Fold");
                                 Storage.Fold(SelectedObject);
@@ -358,11 +361,8 @@ public class iCS_Editor : EditorWindow {
                         } else if(Graphics.IsMinimizeIconPicked(SelectedObject, mouseGraphPos, Storage)) {
                             Storage.RegisterUndo("Minimize");
                             Storage.Minimize(SelectedObject);
-                        } else if(Graphics.IsMaximizeIconPicked(SelectedObject, mouseGraphPos, Storage)) {
-                            Storage.RegisterUndo("Maximize");
-                            Storage.Fold(SelectedObject);
                         } else {
-                            if(SelectedObject == SelectedObjectBeforeMouseDown) {
+                            if(SelectedObject == SelectedObjectBeforeMouseDown && mouseUpDeltaTime < 0.25f) {
                                 ProcessNodeDisplayOptionEvent();                                
                             }
                         }

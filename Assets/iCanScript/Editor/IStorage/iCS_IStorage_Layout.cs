@@ -151,7 +151,7 @@ ReLayoutNode(GetParent(node));
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
     public void DeltaMove(iCS_EditorObject node, Vector2 _delta) {
-        Debug.Log("Need to compute ratios for children of: "+GetParent(node).Name ?? "Universe");
+//        Debug.Log("Need to compute ratios for children of: "+GetParent(node).Name ?? "Universe");
         // Move the node
         DeltaMoveInternal(node, _delta);
         // Resolve collision between siblings.

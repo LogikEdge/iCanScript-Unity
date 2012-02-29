@@ -28,8 +28,6 @@ public class iCS_DynamicMenu {
     // Menu Items
 	// ----------------------------------------------------------------------
     const string DeleteStr= "- Delete";
-    const string FoldStr= "Fold";
-    const string UnfoldStr= "Unfold";
     const string StartStr= "+ Start";
     const string ModuleStr= "+ Module";
     const string StateChartStr= "+ State Chart";
@@ -368,8 +366,6 @@ public class iCS_DynamicMenu {
             case OnEntryStr:                ProcessCreateOnEntryModule(selectedObject, storage); break;
             case OnUpdateStr:               ProcessCreateOnUpdateModule(selectedObject, storage); break;
             case OnExitStr:                 ProcessCreateOnExitModule(selectedObject, storage); break;
-            case FoldStr:                   storage.Fold(selectedObject); break;
-            case UnfoldStr:                 storage.Unfold(selectedObject); break;
             case DeleteStr:                 ProcessDestroyObject(selectedObject, storage); break;
             case EnablePortStr: {
                 iCS_EditorObject port= storage.CreatePort(iCS_Strings.EnablePort, selectedObject.InstanceId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
