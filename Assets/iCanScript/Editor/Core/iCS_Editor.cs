@@ -453,14 +453,14 @@ public class iCS_Editor : EditorWindow {
                         break;
                     }
                     // Bookmarks
-                    case KeyCode.B: {
+                    case KeyCode.B: {  // Bookmark selected object
                         if(SelectedObject != null) {
                             Bookmark= SelectedObject;                            
                         }
                         Event.current.Use();
                         break;
                     }
-                    case KeyCode.G: {
+                    case KeyCode.G: {  // Goto bookmark
                         if(Bookmark != null) {
                             SelectedObject= Bookmark;
                             CenterOnSelected();
@@ -468,7 +468,7 @@ public class iCS_Editor : EditorWindow {
                         Event.current.Use();
                         break;
                     }
-                    case KeyCode.S: {
+                    case KeyCode.S: {  // Switch bookmark and selected object
                         if(Bookmark != null && SelectedObject != null) {
                             iCS_EditorObject prevBookmark= Bookmark;
                             Bookmark= SelectedObject;
@@ -479,6 +479,13 @@ public class iCS_Editor : EditorWindow {
                             CenterOnSelected();
                         } else if(Bookmark == null && SelectedObject != null) {
                             Bookmark= SelectedObject;
+                        }
+                        Event.current.Use();
+                        break;
+                    }
+                    case KeyCode.C: {  // Connect bookmark and selected port.
+                        if(Bookmark != null && Bookmark.IsDataPort && SelectedObject != null && SelectedObject.IsDataPort) {
+                            VerifyNewConnection(Bookmark, SelectedObject);
                         }
                         Event.current.Use();
                         break;
@@ -963,7 +970,7 @@ public class iCS_Editor : EditorWindow {
                     break;
                 case DragTypeEnum.PortConnection:
                     // Verify for a new connection.
-                    if(!VerifyNewConnection(DragFixPort, DragObject)) {
+                    if(!VerifyNewDragConnection(DragFixPort, DragObject)) {
                         bool isNearParent= Storage.IsNearParent(DragObject);
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
@@ -1092,7 +1099,7 @@ public class iCS_Editor : EditorWindow {
     }
         
 	// ----------------------------------------------------------------------
-    bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject dragPort) {
+    bool VerifyNewDragConnection(iCS_EditorObject fixPort, iCS_EditorObject dragPort) {
         // No new connection if no overlapping port found.
         iCS_EditorObject overlappingPort= Storage.GetOverlappingPort(dragPort);
         if(overlappingPort == null) return false;
@@ -1102,7 +1109,12 @@ public class iCS_Editor : EditorWindow {
         // Destroy drag port since it is not needed anymore.
         Storage.DestroyInstance(dragPort);
         dragPort= null;
-
+        return VerifyNewConnection(fixPort, overlappingPort);
+    }
+	// ----------------------------------------------------------------------
+    bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject overlappingPort) {
+        // Only data ports can be connected together.
+        if(!fixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
         iCS_EditorObject portParent= Storage.GetParent(fixPort);
         iCS_EditorObject overlappingPortParent= Storage.GetParent(overlappingPort);
         if(overlappingPort.IsOutputPort && (overlappingPortParent.IsState || overlappingPortParent.IsStateChart)) {
