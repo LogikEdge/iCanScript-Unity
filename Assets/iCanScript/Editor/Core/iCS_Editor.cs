@@ -18,7 +18,9 @@ public class iCS_Editor : EditorWindow {
     iCS_ClassWizard      ClassWizard    = null;
     
     // ----------------------------------------------------------------------
-    int RefreshCounter= 0;
+    int   RefreshCounter= 0;
+    float CurrentTime   = 0;
+    float DeltaTime     = 0;
     
     // ----------------------------------------------------------------------
     private iCS_Graphics    Graphics  = null;
@@ -91,7 +93,6 @@ public class iCS_Editor : EditorWindow {
     bool    IsShiftKeyDown      { get { return Event.current.shift; }}
     
 	// ----------------------------------------------------------------------
-	// Mouse services
 	void UpdateMouse() {
         myMousePosition= Event.current.mousePosition;
         if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
@@ -136,6 +137,8 @@ public class iCS_Editor : EditorWindow {
         Inspector= inspector;
         // Set the graph root.
         DisplayRoot= storage.IsValid(0) ? storage[0] : null;
+        // Get snapshot for realtime clock.
+        CurrentTime= Time.realtimeSinceStartup;
 		
 //        Debug.Log("AppContentPath: "+EditorApplication.applicationContentsPath);
 //        Debug.Log("AppPath: "+EditorApplication.applicationPath);
@@ -229,6 +232,10 @@ public class iCS_Editor : EditorWindow {
 		// Don't do start editor if not properly initialized.
 		if( !IsInitialized() ) return;
        	
+        // Update GUI time.
+        DeltaTime= Time.realtimeSinceStartup-CurrentTime;
+        CurrentTime= Time.realtimeSinceStartup;
+        
 //        ++frameCount;
 //       	int newTime= (int)Time.realtimeSinceStartup;
 //       	if(newTime != seconds) {
@@ -242,12 +249,15 @@ public class iCS_Editor : EditorWindow {
         
 		// Update mouse info.
 		UpdateMouse();
-
+		
         // Draw Graph.
         DrawGraph();
 
         // Process user inputs
         ProcessEvents();
+
+		// Process scroll zone.
+		ProcessScrollZone();
 	}
 
     // ======================================================================
@@ -1559,7 +1569,9 @@ public class iCS_Editor : EditorWindow {
 
         Graphics.End();
 
-        ShowScrollButton(CanScrollInDirection(DetectScrollZone()));
+        // Show scroll zone (is applicable).
+        if(IsDragStarted) DrawScrollZone();
+
 		// Show header
 		Heading();
 	}
@@ -1622,11 +1634,36 @@ public class iCS_Editor : EditorWindow {
     // ======================================================================
     // SCROLL ZONE
 	// ----------------------------------------------------------------------
+    void ProcessScrollZone() {
+        // Compute the amount of scroll needed.
+        var dir= CanScrollInDirection(DetectScrollZone());
+        if(Math3D.IsZero(dir)) return;
+        dir*= Storage.Preferences.ControlOptions.EdgeScrollSpeed*DeltaTime;
+
+        // Adjust according to scroll zone.
+        switch(DragType) {
+            case DragTypeEnum.PortConnection:
+            case DragTypeEnum.TransitionCreation: {
+                MouseDragStartPosition-= dir;
+                ScrollPosition= ScrollPosition+dir;
+                ProcessDrag();
+                break;
+            }
+            default: break;
+        }
+    }
+	// ----------------------------------------------------------------------
+    void DrawScrollZone() {
+        var dir= CanScrollInDirection(DetectScrollZone());
+        if(Math3D.IsZero(dir)) return;
+        ShowScrollButton(dir);
+    }
+	// ----------------------------------------------------------------------
     bool IsInScrollZone() {
         return Math3D.IsNotZero(DetectScrollZone());
     }
 	// ----------------------------------------------------------------------
-    const float scrollButtonSize=32f;
+    const float scrollButtonSize=24f;
     Vector2 DetectScrollZone() {
         Vector2 direction= Vector2.zero;
         float headerHeight= GetHeaderHeight();

@@ -6,9 +6,10 @@ using System.Collections;
 public class iCS_UserPreferences {
     [System.Serializable]
     public class UserControlOptions {
-        public float AnimationTime = 0.35f;
-        public float ScrollSpeed   = 3f;
-		public bool  InverseZoom   = false;
+        public float AnimationTime      = 0.35f;
+        public float ScrollSpeed        = 3f;
+		public float PortDragScrollSpeed= 400f;
+		public bool  InverseZoom        = false;
     }
     public UserControlOptions ControlOptions= new UserControlOptions();
 
