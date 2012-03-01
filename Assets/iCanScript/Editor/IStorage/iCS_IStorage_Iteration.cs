@@ -80,6 +80,14 @@ public partial class iCS_IStorage {
         return IsChildOf(GetParent(child), parent);
     }
     // ----------------------------------------------------------------------
+    public void ForEachChildNode(iCS_EditorObject node, Action<iCS_EditorObject> action) {
+        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsNode, action));        
+    }
+    // ----------------------------------------------------------------------
+    public bool ForEachChildNode(iCS_EditorObject node, Func<iCS_EditorObject,bool> fnc) {
+        return ForEachChild(node, child=> child.IsNode ? fnc(child) : false);
+    }
+    // ----------------------------------------------------------------------
     public void ForEachChildPort(iCS_EditorObject node, Action<iCS_EditorObject> action) {
         ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort, action));
     }
