@@ -35,8 +35,6 @@ public partial class iCS_IStorage {
         // Don't layout node if it is not visible.
         if(!IsVisible(node)) return;
 
-ReLayoutNode(GetParent(node));
-
         // Update transition module name
         if(node.IsTransitionModule) {
             GetTransitionName(node);
@@ -138,8 +136,6 @@ ReLayoutNode(GetParent(node));
 
         // Layout child ports
         LayoutPorts(node);
-        
-ReLayoutNode(GetParent(node));        
     }
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
@@ -822,66 +818,4 @@ ReLayoutNode(GetParent(node));
         );
         return foundPort;
     }	
-
-
-
-
-
-
-
-    // ======================================================================
-    // THIS IS TEST CODE TO DETERMINE IF WE CAN WORK WITH RATIOS
-	// ----------------------------------------------------------------------
-    public void ReLayoutNode(iCS_EditorObject node) {
-        if(node == null) return;
-//        Debug.Log("-------------------------------\nReLayout: "+node.Name);
-        Rect currentChildrenRect= ComputeChildrenRect(node);
-        Vector2 origin= Math3D.ToVector2(currentChildrenRect);
-        Vector2 delta= origin-Math3D.ToVector2(GetPosition(node));
-
-        // Get children.
-        iCS_EditorObject[] children= BuildListOfChildren(c=> c.IsNode ,node);
-        // Build ratios for each child.
-        Vector2[] ratios= Prelude.map(
-            c=> {
-                var v= Math3D.Middle(c.LocalPosition)-delta;
-                return new Vector2(v.x/currentChildrenRect.width, v.y/currentChildrenRect.height);
-            },
-            children
-        );
-        // Determine parent maximum bounding box size.
-        float width= 0f;
-        float height= 0f;
-        for(int i= 0; i < children.Length; ++i) {
-            iCS_EditorObject child= children[i];
-            float childHalfWidth = 0.5f*child.LocalPosition.width;
-            float childHalfHeight= 0.5f*child.LocalPosition.height;
-            width= Mathf.Max(width, childHalfWidth/ratios[i].x);
-            width= Mathf.Max(width, childHalfWidth/(1-ratios[i].x));
-            height= Mathf.Max(height, childHalfHeight/ratios[i].y);
-            height=Mathf.Max(height, childHalfHeight/(1-ratios[i].y));
-            for(int j= i+1; j < children.Length; ++j) {
-                iCS_EditorObject child2= children[j];
-                Rect r1= new Rect(width*ratios[i].x-childHalfWidth-0.5f*iCS_Config.GutterSize, height*ratios[i].y-childHalfHeight-0.5f*iCS_Config.GutterSize, child.LocalPosition.width+iCS_Config.GutterSize, child.LocalPosition.height+iCS_Config.GutterSize);
-                Rect r2= new Rect(width*ratios[j].x-0.5f*(child2.LocalPosition.width+iCS_Config.GutterSize), height*ratios[j].y-0.5f*(child2.LocalPosition.height+iCS_Config.GutterSize), child2.LocalPosition.width+iCS_Config.GutterSize, child2.LocalPosition.height+iCS_Config.GutterSize);
-                Rect intersection= Math3D.Intersection(r1, r2);
-                if(Math3D.IsNotZero(intersection.width) && Math3D.IsNotZero(intersection.height)) {
-//                    Debug.Log("Intersection: "+children[i].Name+" & "+children[j].Name+": "+intersection+" width: "+width+" height: "+height);
-                    float xRatioDelta= Mathf.Abs(ratios[i].x-ratios[j].x);
-                    float yRatioDelta= Mathf.Abs(ratios[i].y-ratios[j].y);
-                    if(Math3D.IsZero(xRatioDelta) && Math3D.IsZero(yRatioDelta)) {
-                        Debug.LogWarning("Collision is too strong:  Aborting Relayout...");
-                        return;
-                    }
-                    width= Mathf.Max(width, intersection.width/xRatioDelta);
-                    height=Mathf.Max(height, intersection.height/yRatioDelta);
-                }
-            }
-        }
-
-//        Debug.Log("---> Current size: "+new Vector2(currentChildrenRect.width, currentChildrenRect.height)+" proposed size: "+new Vector2(width, height));
-//        for(int k= 0; k < children.Length; ++k) {
-//            Debug.Log(children[k].Name+": ratio: "+ratios[k]+" current: "+(Math3D.Middle(GetPosition(children[k]))-origin)+" proposed: "+new Vector2(width*ratios[k].x, height*ratios[k].y));
-//        }
-    }
 }

@@ -8,10 +8,10 @@ public class iCS_FunctionBase : iCS_Action {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    protected object[]        myParameters;
-    protected bool[]          myParameterIsOuts;
-    protected int[]           myInIndexes;
-    protected int[]           myOutIndexes;
+    protected object[]         myParameters;
+    protected bool[]           myParameterIsOuts;
+    protected int[]            myInIndexes;
+    protected int[]            myOutIndexes;
     protected iCS_Connection[] myConnections;
     
     // ======================================================================

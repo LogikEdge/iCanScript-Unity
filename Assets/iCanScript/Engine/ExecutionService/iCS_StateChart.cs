@@ -19,7 +19,7 @@ public sealed class iCS_StateChart : iCS_Action {
     iCS_State        myNextState       = null;
     iCS_State        myTransitionParent= null;
     int              myEntrySize       = -1;
-    ExecutionState  myExecutionState  = ExecutionState.VerifyingTransition;
+    ExecutionState   myExecutionState  = ExecutionState.VerifyingTransition;
     
     // ======================================================================
     // Accessors
