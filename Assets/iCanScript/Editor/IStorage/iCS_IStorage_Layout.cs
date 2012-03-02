@@ -792,8 +792,7 @@ public partial class iCS_IStorage {
     public void PositionOnEdge(iCS_EditorObject port) {
         var parent= GetParent(port);
         var parentPos= GetPosition(parent);
-        float distance;
-        switch(GetClosestEdge(parent, Math3D.ToVector2(GetPosition(port)), out distance)) {
+        switch(GetClosestEdge(parent, Math3D.ToVector2(GetPosition(port)))) {
             case iCS_EditorObject.EdgeEnum.Top:      port.LocalPosition.y= 0; break; 
             case iCS_EditorObject.EdgeEnum.Bottom:   port.LocalPosition.y= parentPos.height; break;
             case iCS_EditorObject.EdgeEnum.Left:     port.LocalPosition.x= 0; break;

@@ -58,66 +58,76 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearNodeEdge(iCS_EditorObject node, Vector2 point, iCS_EditorObject.EdgeEnum edge) {
-        float distance;
-        iCS_EditorObject.EdgeEnum closestEdge= GetClosestEdge(node, point, out distance);
-        if(distance > 2f*iCS_Config.PortSize) return false;
-        return closestEdge == edge;
+		float maxDistance= 2f*iCS_Config.PortSize;
+        float distance= maxDistance+1f;
+		var pos= GetPosition(node);
+		switch(edge) {
+			case iCS_EditorObject.EdgeEnum.Left: {
+				distance= GetDistanceFromVerticalLineSegment(point, pos.y, pos.yMax, pos.x);
+				break;
+			}
+			case iCS_EditorObject.EdgeEnum.Right: {
+				distance= GetDistanceFromVerticalLineSegment(point, pos.y, pos.yMax, pos.xMax);
+				break;
+			}
+			case iCS_EditorObject.EdgeEnum.Bottom: {
+				distance= GetDistanceFromHorizontalLineSegment(point, pos.x, pos.xMax, pos.yMax);
+				break;
+			}
+			case iCS_EditorObject.EdgeEnum.Top: {
+				distance= GetDistanceFromHorizontalLineSegment(point, pos.x, pos.xMax, pos.y);
+				break;
+			}
+		}
+        return distance <= maxDistance;
     }
     // ----------------------------------------------------------------------
-    iCS_EditorObject.EdgeEnum GetClosestEdge(iCS_EditorObject node, Vector2 point, out float distance) {
+    iCS_EditorObject.EdgeEnum GetClosestEdge(iCS_EditorObject node, Vector2 point) {
         var pos= GetPosition(node);
         float xDistance   = Mathf.Abs(point.x-pos.x);
         float xMaxDistance= Mathf.Abs(point.x-pos.xMax);
         float yDistance   = Mathf.Abs(point.y-pos.y);
         float yMaxDistance= Mathf.Abs(point.y-pos.yMax);
-        distance= Mathf.Min(Mathf.Min(xDistance, xMaxDistance), Mathf.Min(yDistance, yMaxDistance));
         if(xDistance < xMaxDistance) {
             if(yDistance < yMaxDistance) {
-                if(xDistance < yDistance) {
-					if(point.y < pos.y)    distance= Mathf.Max(distance, pos.y-point.y);
-					if(point.y > pos.yMax) distance= Mathf.Max(distance, point.y-pos.yMax);
-					return iCS_EditorObject.EdgeEnum.Left;
-				} else {
-					if(point.x < pos.x)    distance= Mathf.Max(distance, pos.x-point.x);
-					if(point.x > pos.xMax) distance= Mathf.Max(distance, point.x-pos.xMax);
-					return iCS_EditorObject.EdgeEnum.Top;					
-				}
+                return xDistance < yDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Top;					
             } else {
-                if(xDistance < yMaxDistance) {
-					if(point.y < pos.y)    distance= Mathf.Max(distance, pos.y-point.y);
-					if(point.y > pos.yMax) distance= Mathf.Max(distance, point.y-pos.yMax);
-					return iCS_EditorObject.EdgeEnum.Left;	
-				} else {
-					if(point.x < pos.x)    distance= Mathf.Max(distance, pos.x-point.x);
-					if(point.x > pos.xMax) distance= Mathf.Max(distance, point.x-pos.xMax);
-					return iCS_EditorObject.EdgeEnum.Bottom;
-				}
+                return xDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Bottom;
             }
         } else {
             if(yDistance < yMaxDistance) {
-                if(xMaxDistance < yDistance) {
-					if(point.y < pos.y)    distance= Mathf.Max(distance, pos.y-point.y);
-					if(point.y > pos.yMax) distance= Mathf.Max(distance, point.y-pos.yMax);
-					return iCS_EditorObject.EdgeEnum.Right;
-				} else {
-					if(point.x < pos.x)    distance= Mathf.Max(distance, pos.x-point.x);
-					if(point.x > pos.xMax) distance= Mathf.Max(distance, point.x-pos.xMax);
-					return iCS_EditorObject.EdgeEnum.Top;
-				}
+                return xMaxDistance < yDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Top;
             } else {
-                if(xMaxDistance < yMaxDistance) {
-					if(point.y < pos.y)    distance= Mathf.Max(distance, pos.y-point.y);
-					if(point.y > pos.yMax) distance= Mathf.Max(distance, point.y-pos.yMax);
-					return iCS_EditorObject.EdgeEnum.Right;
-				} else {
-					if(point.x < pos.x)    distance= Mathf.Max(distance, pos.x-point.x);
-					if(point.x > pos.xMax) distance= Mathf.Max(distance, point.x-pos.xMax);
-					return iCS_EditorObject.EdgeEnum.Bottom;
-				}
+                return xMaxDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Bottom;
             }            
         }
     }
-
+    // ----------------------------------------------------------------------
+	float GetDistanceFromHorizontalLineSegment(Vector2 point, float x1, float x2, float y) {
+		if(x1 > x2) {
+			var tmp= x1;
+			x1= x2;
+			x2= tmp;
+		}
+		float distance= Mathf.Abs(point.y-y);
+		if(point.x >= x1 && point.x <= x2) return distance;
+		if(point.x < x1) return Mathf.Max(distance, x1-point.x);
+		return Mathf.Max(distance, point.x-x2);
+		
+	}
+    // ----------------------------------------------------------------------
+	float GetDistanceFromVerticalLineSegment(Vector2 point, float y1, float y2, float x) {
+		if(y1 > y2) {
+			var tmp= y1;
+			y1= y2;
+			y2= tmp;
+		}
+		float distance= Mathf.Abs(point.x-x);
+		if(point.y >= y1 && point.y <= y2) return distance;
+		if(point.y < y1) return Mathf.Max(distance, y1-point.y);
+		return Mathf.Max(distance, point.y-y2);
+		
+	}
     // ----------------------------------------------------------------------
     // Returns the minimal distance from the parent.
     public float GetDistanceFromParent(iCS_EditorObject port) {
