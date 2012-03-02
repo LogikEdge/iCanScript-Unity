@@ -73,15 +73,47 @@ public partial class iCS_IStorage {
         distance= Mathf.Min(Mathf.Min(xDistance, xMaxDistance), Mathf.Min(yDistance, yMaxDistance));
         if(xDistance < xMaxDistance) {
             if(yDistance < yMaxDistance) {
-                return xDistance < yDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Top;
+                if(xDistance < yDistance) {
+					if(point.y < pos.y)    distance= Mathf.Max(distance, pos.y-point.y);
+					if(point.y > pos.yMax) distance= Mathf.Max(distance, point.y-pos.yMax);
+					return iCS_EditorObject.EdgeEnum.Left;
+				} else {
+					if(point.x < pos.x)    distance= Mathf.Max(distance, pos.x-point.x);
+					if(point.x > pos.xMax) distance= Mathf.Max(distance, point.x-pos.xMax);
+					return iCS_EditorObject.EdgeEnum.Top;					
+				}
             } else {
-                return xDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Bottom;
+                if(xDistance < yMaxDistance) {
+					if(point.y < pos.y)    distance= Mathf.Max(distance, pos.y-point.y);
+					if(point.y > pos.yMax) distance= Mathf.Max(distance, point.y-pos.yMax);
+					return iCS_EditorObject.EdgeEnum.Left;	
+				} else {
+					if(point.x < pos.x)    distance= Mathf.Max(distance, pos.x-point.x);
+					if(point.x > pos.xMax) distance= Mathf.Max(distance, point.x-pos.xMax);
+					return iCS_EditorObject.EdgeEnum.Bottom;
+				}
             }
         } else {
             if(yDistance < yMaxDistance) {
-                return xMaxDistance < yDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Top;
+                if(xMaxDistance < yDistance) {
+					if(point.y < pos.y)    distance= Mathf.Max(distance, pos.y-point.y);
+					if(point.y > pos.yMax) distance= Mathf.Max(distance, point.y-pos.yMax);
+					return iCS_EditorObject.EdgeEnum.Right;
+				} else {
+					if(point.x < pos.x)    distance= Mathf.Max(distance, pos.x-point.x);
+					if(point.x > pos.xMax) distance= Mathf.Max(distance, point.x-pos.xMax);
+					return iCS_EditorObject.EdgeEnum.Top;
+				}
             } else {
-                return xMaxDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Bottom;
+                if(xMaxDistance < yMaxDistance) {
+					if(point.y < pos.y)    distance= Mathf.Max(distance, pos.y-point.y);
+					if(point.y > pos.yMax) distance= Mathf.Max(distance, point.y-pos.yMax);
+					return iCS_EditorObject.EdgeEnum.Right;
+				} else {
+					if(point.x < pos.x)    distance= Mathf.Max(distance, pos.x-point.x);
+					if(point.x > pos.xMax) distance= Mathf.Max(distance, point.x-pos.xMax);
+					return iCS_EditorObject.EdgeEnum.Bottom;
+				}
             }            
         }
     }

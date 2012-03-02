@@ -715,8 +715,8 @@ public class iCS_Editor : EditorWindow {
         Vector2 pos= ViewportToGraph(MouseDragStartPosition);
 
         // Port drag.
-        iCS_EditorObject port= Storage.GetPortAt(pos);
-        if(port != null && !Storage.IsMinimized(port) && !port.IsTransitionPort) {
+        iCS_EditorObject port= SelectedObject;
+        if(port != null && port.IsPort && !Storage.IsMinimized(port) && !port.IsTransitionPort) {
             Storage.RegisterUndo("Port Drag");
             Storage.CleanupDeadPorts= false;
             DragType= DragTypeEnum.PortRelocation;
@@ -729,8 +729,8 @@ public class iCS_Editor : EditorWindow {
         }
 
         // Node drag.
-        iCS_EditorObject node= Storage.GetNodeAt(pos);                
-        if(node != null && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
+        iCS_EditorObject node= SelectedObject;                
+        if(node != null && node.IsNode && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
             if(IsCopyKeyDown) {
                 GameObject go= new GameObject(node.Name);
                 go.hideFlags = HideFlags.HideAndDontSave;
@@ -797,38 +797,20 @@ public class iCS_Editor : EditorWindow {
                 node.IsFloating= IsFloatingKeyDown;
                 break;
             case DragTypeEnum.PortRelocation: {
+				// We can't relocate a mux port child.
+				if(Storage.IsMuxPortChild(DragObject)) {
+					CreateDragPort();
+					return;
+				}
                 // Update port position.
                 Vector2 newLocalPos= DragStartPosition+delta;
                 DragObject.LocalPosition.x= newLocalPos.x;
                 DragObject.LocalPosition.y= newLocalPos.y;
                 if(DragObject.IsStatePort) break;
                 // Determine if we should convert to data port connection drag.
-                iCS_EditorObject parent= Storage.GetParent(DragOriginalPort);
+                iCS_EditorObject parent= Storage.GetParentNode(DragOriginalPort);
                 if(!Storage.IsNearParentEdge(DragObject)) {
-                    // Data port. Create a drag port as appropriate.
-                    DragObject.IsFloating= false;
-                    if(DragOriginalPort.IsInputPort) {
-                        DragObject= Storage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-                        iCS_EditorObject prevSource= Storage.GetSource(DragOriginalPort);
-                        if(prevSource != null) {
-                            DragFixPort= prevSource;
-                            Storage.SetSource(DragObject, DragFixPort);
-                            Storage.SetSource(DragOriginalPort, null);
-                            DragObject.Name= DragFixPort.Name;
-                        } else {
-                            DragFixPort= DragOriginalPort;
-                            Storage.SetSource(DragFixPort, DragObject);
-                        }                    
-                    } else {
-                        DragObject= Storage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-                        DragFixPort= DragOriginalPort;
-                        Storage.SetSource(DragObject, DragOriginalPort);
-                    }
-                    DragType= DragTypeEnum.PortConnection;
-                    Rect portPos= Storage.GetPosition(DragOriginalPort);
-                    Storage.SetInitialPosition(DragObject, new Vector2(portPos.x, portPos.y));
-                    Storage.SetDisplayPosition(DragObject, portPos);
-                    DragObject.IsFloating= true;
+					CreateDragPort();
                 } else {
                     Storage.PositionOnEdge(DragObject);
                     Storage.LayoutPorts(parent);
@@ -841,7 +823,7 @@ public class iCS_Editor : EditorWindow {
                 DragObject.LocalPosition.x= newLocalPos.x;
                 DragObject.LocalPosition.y= newLocalPos.y;
                 // Determine if we should go back to port reloaction.
-                if(Storage.IsNearParentEdge(DragObject, DragOriginalPort.Edge)) {
+                if(!Storage.IsMuxPortChild(DragObject) && Storage.IsNearParentEdge(DragObject, DragOriginalPort.Edge)) {
                     iCS_EditorObject dragObjectSource= Storage.GetSource(DragObject);
                     if(dragObjectSource != DragOriginalPort) {
                         Storage.SetSource(DragOriginalPort, dragObjectSource);
@@ -1061,6 +1043,40 @@ public class iCS_Editor : EditorWindow {
     }
 #endregion User Interaction
     
+	// ----------------------------------------------------------------------
+	void CreateDragPort() {
+        // Data port. Create a drag port as appropriate.
+        iCS_EditorObject parent= Storage.GetParentNode(DragOriginalPort);
+        DragObject.IsFloating= false;
+        if(DragOriginalPort.IsInputPort) {
+            DragObject= Storage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+            iCS_EditorObject prevSource= Storage.GetSource(DragOriginalPort);
+            if(prevSource != null) {
+                DragFixPort= prevSource;
+                Storage.SetSource(DragObject, DragFixPort);
+                Storage.SetSource(DragOriginalPort, null);
+                DragObject.Name= DragFixPort.Name;
+            } else {
+                DragFixPort= DragOriginalPort;
+                Storage.SetSource(DragFixPort, DragObject);
+            }                    
+        } else {
+            DragObject= Storage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+            DragFixPort= DragOriginalPort;
+            Storage.SetSource(DragObject, DragOriginalPort);
+        }
+        DragType= DragTypeEnum.PortConnection;
+        Rect portPos= Storage.GetPosition(DragOriginalPort);
+        Storage.SetInitialPosition(DragObject, new Vector2(portPos.x, portPos.y));
+        Storage.SetDisplayPosition(DragObject, portPos);
+		Rect parentPos= Storage.GetPosition(parent);
+		// Reset initial position if port is being dettached from it original parent.
+		if(Storage.IsMuxPortChild(DragOriginalPort)) {
+			DragStartPosition= Math3D.ToVector2(portPos)-Math3D.ToVector2(parentPos);			
+		}
+        DragObject.IsFloating= true;		
+	}
+	
 	// ----------------------------------------------------------------------
     // Manages the object selection.
     iCS_EditorObject DetermineSelectedObject() {

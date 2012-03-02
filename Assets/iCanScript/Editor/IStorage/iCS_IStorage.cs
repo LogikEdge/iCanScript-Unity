@@ -71,7 +71,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public bool IsDirty { get { ProcessUndoRedo(); return myIsDirty; }}
     // ----------------------------------------------------------------------
-    public bool IsMuxPort(iCS_EditorObject eObj)	{ return eObj.IsDataPort && NbOfChildren(eObj, c=> c.IsDataPort) != 0; }
+    public bool IsMuxPort(iCS_EditorObject eObj)		{ return eObj.IsDataPort && NbOfChildren(eObj, c=> c.IsDataPort) != 0; }
+	public bool IsMuxPortChild(iCS_EditorObject eObj)	{ return eObj != null && eObj.IsDataPort && GetParent(eObj).IsDataPort; }
     // ----------------------------------------------------------------------
     public iCS_EditorObject this[int id] {
         get { return EditorObjects[id]; }
@@ -87,10 +88,11 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetParent(iCS_EditorObject obj)        { return Storage.GetParent(obj); }
-    public iCS_EditorObject GetSource(iCS_EditorObject obj)        { return Storage.GetSource(obj); }
-    public float           GetAnimTime(iCS_EditorObject obj)      { return IsValid(obj) ? Time.realtimeSinceStartup-TreeCache[obj.InstanceId].AnimationTime : 0; }
-    public void            StartAnimTimer(iCS_EditorObject obj)   { if(IsValid(obj)) TreeCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }
+    public iCS_EditorObject GetParent(iCS_EditorObject obj)         { return Storage.GetParent(obj); }
+	public iCS_EditorObject GetParentNode(iCS_EditorObject obj)		{ var parent= GetParent(obj); while(parent != null && !parent.IsNode) parent= GetParent(parent); return parent; }
+    public iCS_EditorObject GetSource(iCS_EditorObject obj)         { return Storage.GetSource(obj); }
+    public float           GetAnimTime(iCS_EditorObject obj)        { return IsValid(obj) ? Time.realtimeSinceStartup-TreeCache[obj.InstanceId].AnimationTime : 0; }
+    public void            StartAnimTimer(iCS_EditorObject obj)     { if(IsValid(obj)) TreeCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }
     public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? TreeCache[obj.InstanceId].DisplayPosition : default(Rect); }
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) TreeCache[obj.InstanceId].DisplayPosition= pos; }
     // ----------------------------------------------------------------------
