@@ -763,19 +763,6 @@ public class iCS_Graphics {
     }
     
     // ======================================================================
-    //  Output Mux
-    // ----------------------------------------------------------------------
-    public void DrawOutputMux(iCS_EditorObject mux, iCS_IStorage storage) {
-        if(mux == null || storage == null) return;
-        Rect pos= storage.GetPosition(mux);
-        iCS_EditorObject muxParent= storage.GetParent(mux);         
-        Handles.color= GetNodeColor(muxParent, storage);
-        Handles.DrawLine(new Vector3(pos.x, pos.y), new Vector3(pos.xMax, pos.y+iCS_Config.PortSize));
-        Handles.DrawLine(new Vector3(pos.x, pos.yMax), new Vector3(pos.xMax, pos.yMax-iCS_Config.PortSize));
-        Handles.DrawLine(new Vector3(pos.xMax, pos.y+iCS_Config.PortSize), new Vector3(pos.xMax, pos.yMax-iCS_Config.PortSize));
-    }
-    
-    // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
     public void DrawPort(iCS_EditorObject port, iCS_IStorage storage) {
@@ -798,15 +785,19 @@ public class iCS_Graphics {
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
-			if(port.IsInputPort && storage.GetSource(port) == null) {
-				if(!Application.isPlaying && storage.Preferences.DisplayOptions.EditorPortValues) portValue= storage.GetPortValue(port);
-				if(portValue != null) {
-	            	DrawSquarePort(portCenter, portColor, nodeColor, portRadius);
-				} else {
-		            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);									
-				}
+			if(storage.IsMuxPort(port)) {
+				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
 			} else {
-    	    	DrawCircularPort(portCenter, portColor, nodeColor, portRadius);							        
+				if(port.IsInputPort && storage.GetSource(port) == null) {
+					if(!Application.isPlaying && storage.Preferences.DisplayOptions.EditorPortValues) portValue= storage.GetPortValue(port);
+					if(portValue != null) {
+		            	DrawSquarePort(portCenter, portColor, nodeColor, portRadius);
+					} else {
+			            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);									
+					}
+				} else {
+	    	    	DrawCircularPort(portCenter, portColor, nodeColor, portRadius);							        
+				}				
 			}
         } else if(port.IsStatePort) {
             if(port.IsOutStatePort) {
@@ -906,9 +897,8 @@ public class iCS_Graphics {
         radius*= Scale;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
-        float delta= radius*1.5f;
+        float delta= radius*1.35f;
 
-        delta= radius*1.35f;
         vectors[0]= new Vector3(center.x-delta, center.y-delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
         vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
@@ -926,12 +916,27 @@ public class iCS_Graphics {
     }
 
 	// ----------------------------------------------------------------------
-    void DrawStateOutputMuxPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-        radius*= Scale*5f;
+    void DrawMuxPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
+        Color backgroundColor= Color.black;
+        radius*= Scale;
         Vector3 center= TranslateAndScale(_center);
-        center.z-=3f*radius;
-        Handles.color= _fillColor;
-        Handles.ConeCap(0, center, Quaternion.AngleAxis(110f, Vector3.up), radius);
+        Vector3[] vectors= new Vector3[4];
+        float delta= radius*1.35f;
+
+        vectors[0]= new Vector3(center.x-delta, center.y-2f*delta, 0);
+        vectors[1]= new Vector3(center.x-delta, center.y+2f*delta, 0);
+        vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
+        vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
+        Handles.color= Color.white;
+		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, _borderColor);
+
+        delta= radius*0.67f;
+        vectors[0]= new Vector3(center.x-delta, center.y-2f*delta, 0);
+        vectors[1]= new Vector3(center.x-delta, center.y+2f*delta, 0);
+        vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
+        vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
+        Handles.color= Color.white;
+        Handles.DrawSolidRectangleWithOutline(vectors, _fillColor, _fillColor);
     }
     
 	// ----------------------------------------------------------------------
@@ -1076,6 +1081,7 @@ public class iCS_Graphics {
             return position.width >= 12f && position.height >= 12;  // Invisible if too small.
         }
         iCS_EditorObject parent= storage.GetParent(edObj);
+		if(parent.IsDataPort) return false;
         return IsVisible(parent, storage) && !IsMinimized(parent, storage);
     }
     

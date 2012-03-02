@@ -1066,6 +1066,12 @@ public class iCS_Editor : EditorWindow {
     iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
+		if(SelectedObject != null && Storage.IsMuxPort(newSelected)) {
+			if(SelectedObject == newSelected || Storage.GetParent(SelectedObject) == newSelected) {
+				RotateSelectedMuxPort();
+				return SelectedObject;
+			}
+		}
         SelectedObject= newSelected;
         ShowClassWizard();
         return SelectedObject;
@@ -1097,7 +1103,37 @@ public class iCS_Editor : EditorWindow {
         if(node != null) return node;
         return null;
     }
-        
+	// ----------------------------------------------------------------------
+    void RotateSelectedMuxPort() {
+		if(SelectedObject == null || !SelectedObject.IsDataPort) return;
+		if(Storage.IsMuxPort(SelectedObject)) {
+			Storage.ForEachChild(SelectedObject, 
+				c=> {
+					if(c.IsDataPort) {
+						SelectedObject= c;
+						return true;
+					}
+					return false;
+				}
+			);
+			return;
+		}
+		iCS_EditorObject muxPort= Storage.GetParent(SelectedObject);
+		if(!muxPort.IsDataPort) return;
+		bool takeNext= false;
+		bool found= Storage.ForEachChild(muxPort,
+			c=> {
+				if(takeNext) {
+					SelectedObject= c;
+					return true;
+				}
+				if(c == SelectedObject) takeNext= true;
+				return false;
+			}
+		);
+		if(!found) SelectedObject= muxPort;
+	}
+	
 	// ----------------------------------------------------------------------
     bool VerifyNewDragConnection(iCS_EditorObject fixPort, iCS_EditorObject dragPort) {
         // No new connection if no overlapping port found.
@@ -1191,20 +1227,20 @@ public class iCS_Editor : EditorWindow {
         iCS_ReflectionDesc conversion= null;
         if(!VerifyConnectionTypes(stateMuxPort, fixPort, out conversion)) return;
 		var source= Storage.GetSource(stateMuxPort);
-		if(source == null) {
+		// Simply connect a disconnected mux state port.
+		if(source == null && Storage.NbOfChildren(stateMuxPort, c=> c.IsDataPort) == 0) {
 			SetNewDataConnection(stateMuxPort, fixPort, conversion);
 			return;
 		}
-		var mux= Storage.GetParent(source);
-		if(!mux.IsMuxModule) {
-			mux= Storage.CreateModule(stateMuxPort.ParentId, Math3D.ToVector2(Storage.GetPosition(stateMuxPort)), "mux", iCS_ObjectTypeEnum.Module, typeof(iCS_Selector));
-			var inMuxPort1= Storage.CreatePort(source.Name, mux.InstanceId, source.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-			var outMuxPort= Storage.CreatePort(fixPort.Name, mux.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.OutStaticModulePort);
-			SetNewDataConnection(inMuxPort1, source);
-			SetNewDataConnection(stateMuxPort, outMuxPort);
+		// Convert source port to child port.
+		if(source != null) {
+			var firstMuxInput= Storage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+			Storage.SetSource(firstMuxInput, source);
+			Storage.SetSource(stateMuxPort, null);
 		}
-		var inMuxPort2= Storage.CreatePort(fixPort.Name, mux.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-		SetNewDataConnection(inMuxPort2, fixPort, conversion);
+		// Create new mux input port.
+		var inMuxPort= Storage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+		SetNewDataConnection(inMuxPort, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc conversion= null) {

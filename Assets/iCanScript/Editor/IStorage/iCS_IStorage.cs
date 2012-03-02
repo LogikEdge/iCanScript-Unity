@@ -71,6 +71,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public bool IsDirty { get { ProcessUndoRedo(); return myIsDirty; }}
     // ----------------------------------------------------------------------
+    public bool IsMuxPort(iCS_EditorObject eObj)	{ return eObj.IsDataPort && NbOfChildren(eObj, c=> c.IsDataPort) != 0; }
+    // ----------------------------------------------------------------------
     public iCS_EditorObject this[int id] {
         get { return EditorObjects[id]; }
         set {
@@ -146,13 +148,20 @@ public partial class iCS_IStorage {
             obj=> {
                 // Cleanup disconnected dynamic state or module ports.
 				var parent= GetParent(obj);
-                if((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj) ||
-				   (obj.IsDynamicModulePort && GetSource(obj) == null && (parent.IsStateChart || parent.IsState))) {
-                    if(CleanupDeadPorts) {
+                if(CleanupDeadPorts) {
+					bool shouldRemove= false;
+					if(IsMuxPort(obj)) {
+						shouldRemove= false;
+					} else {
+						shouldRemove= ((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) ||
+						              (obj.IsDynamicModulePort && GetSource(obj) == null && (parent.IsStateChart || parent.IsState));
+						
+					}
+					if(shouldRemove) {
                         DestroyInstanceInternal(obj);                            
-                        modified= true;
-                    }
-                }
+                        modified= true;						
+					}
+				}
                 if(obj.IsTypeCast) {
                     if(GetSource(FindInChildren(obj, c=> c.IsInDataPort)) == null ||
                        FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataPort)) == null) {
@@ -455,8 +464,10 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         iCS_EditorObject port= this[id]= new iCS_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
         // Reajust data port position 
-        if(port.IsDataPort && !port.IsEnablePort) {
-            iCS_EditorObject parent= GetParent(port);
+        iCS_EditorObject parent= GetParent(port);
+		if(port.IsDataPort && parent.IsDataPort) {
+			port.LocalPosition= new Rect(0,0,0,0);
+		} else if(port.IsDataPort && !port.IsEnablePort) {
             if(port.IsInputPort) {
                 int nbOfPorts= GetNbOfLeftPorts(parent);
                 port.LocalPosition= new Rect(0, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);
@@ -498,6 +509,7 @@ public partial class iCS_IStorage {
         if(IsInvalid(eObj.ParentId)) return true;
         iCS_EditorObject parent= GetParent(eObj);
         if(eObj.IsNode && (parent.IsFolded || parent.IsMinimized)) return false;
+		if(eObj.IsDataPort && parent.IsDataPort) return false;
         return IsVisible(parent);
     }
     public bool IsVisible(int id) { return IsInvalid(id) ? false : IsVisible(EditorObjects[id]); }

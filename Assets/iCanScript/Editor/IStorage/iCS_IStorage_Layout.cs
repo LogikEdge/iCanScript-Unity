@@ -806,7 +806,7 @@ public partial class iCS_IStorage {
         Rect tmp= GetPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
         FilterWith(
-            p=> p.IsPort && p != port,
+            p=> p.IsPort && p != port && IsVisible(p),
             p=> {
                 tmp= GetPosition(p);
                 Vector2 pPos= new Vector2(tmp.x, tmp.y);

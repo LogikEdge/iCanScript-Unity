@@ -13,6 +13,16 @@ public partial class iCS_IStorage {
     public List<iCS_EditorObject> Filter(Func<iCS_EditorObject,bool> cond) {
         return Prelude.filter(cond, EditorObjects);
     }
+	public int NbOfChildren(iCS_EditorObject parent) {
+		if(!IsValid(parent)) return 0;
+		return TreeCache[parent.InstanceId].Children.Count;
+	}
+	public int NbOfChildren(iCS_EditorObject parent, Func<iCS_EditorObject, bool> filter) {
+		if(!IsValid(parent)) return 0;
+		int cnt= 0;
+		ForEachChild(parent, c=> { if(filter(c)) ++cnt; });
+		return cnt;
+	}
     public void ForEachChild(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
