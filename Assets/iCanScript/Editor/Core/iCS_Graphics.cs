@@ -778,10 +778,15 @@ public class iCS_Graphics {
         Vector2 center= Math3D.ToVector2(position);
         Type portValueType= port.RuntimeType;
         if(portValueType == null) return;
+		// Determine port colors
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, storage);
+		// Compute port radius
+		float portRadius= iCS_Config.PortRadius;
+		if(port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == storage.GetParent(selectedObject))) {
+			portRadius= 1.67f*iCS_Config.PortRadius;			
+		}
 		object portValue= null;
-		float portRadius= port == selectedObject ? 1.67f*iCS_Config.PortRadius : iCS_Config.PortRadius;
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;

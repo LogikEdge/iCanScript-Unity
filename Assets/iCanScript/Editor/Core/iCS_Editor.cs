@@ -1066,7 +1066,7 @@ public class iCS_Editor : EditorWindow {
     iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
-		if(SelectedObject != null && Storage.IsMuxPort(newSelected)) {
+		if(SelectedObject != null && newSelected != null && Storage.IsMuxPort(newSelected)) {
 			if(SelectedObject == newSelected || Storage.GetParent(SelectedObject) == newSelected) {
 				RotateSelectedMuxPort();
 				return SelectedObject;
