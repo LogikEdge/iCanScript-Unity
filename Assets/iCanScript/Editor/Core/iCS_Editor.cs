@@ -39,6 +39,7 @@ public class iCS_Editor : EditorWindow {
     // ----------------------------------------------------------------------
     iCS_EditorObject SelectedObjectBeforeMouseDown= null;
     iCS_EditorObject Bookmark= null;
+	bool			 ShouldRotateMuxPort= false;
     
     // ----------------------------------------------------------------------
     Rect    ClipingArea { get { return new Rect(ScrollPosition.x, ScrollPosition.y, Viewport.width, Viewport.height); }}
@@ -347,6 +348,7 @@ public class iCS_Editor : EditorWindow {
                 if(IsDragStarted) {
                     EndDrag();
                 } else {
+					if(ShouldRotateMuxPort) RotateSelectedMuxPort();
                     if(SelectedObject != null) {
                         // Process fold/unfold/minimize/maximize click.
                         Vector2 mouseGraphPos= MouseGraphPosition;
@@ -1082,12 +1084,11 @@ public class iCS_Editor : EditorWindow {
     iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
-		if(SelectedObject != null && newSelected != null && Storage.IsMuxPort(newSelected)) {
-			if(SelectedObject == newSelected || Storage.GetParent(SelectedObject) == newSelected) {
-				RotateSelectedMuxPort();
-				return SelectedObject;
-			}
+		if(SelectedObject != null && Storage.IsMuxPort(newSelected) && Storage.GetMuxPort(SelectedObject) == newSelected) {
+			ShouldRotateMuxPort= true;
+			return SelectedObject;
 		}
+		ShouldRotateMuxPort= false;
         SelectedObject= newSelected;
         ShowClassWizard();
         return SelectedObject;
