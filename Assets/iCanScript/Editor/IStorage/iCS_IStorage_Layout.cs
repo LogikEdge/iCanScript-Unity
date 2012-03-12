@@ -452,7 +452,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     bool IsPortOnParent(iCS_EditorObject port) {
-        return !port.IsFloating || IsNearParentEdge(port);
+        return !port.IsFloating;
     }
     // ----------------------------------------------------------------------
     // Returns the number of ports on the top edge.

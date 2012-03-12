@@ -824,8 +824,8 @@ public class iCS_Editor : EditorWindow {
                 Vector2 newLocalPos= DragStartPosition+delta;
                 DragObject.LocalPosition.x= newLocalPos.x;
                 DragObject.LocalPosition.y= newLocalPos.y;
-                // Determine if we should go back to port reloaction.
-                if(!Storage.IsMuxPortChild(DragObject) && Storage.IsNearParentEdge(DragObject, DragOriginalPort.Edge)) {
+                // Determine if we should go back to port relocation.
+                if(!Storage.IsMuxPortChild(DragOriginalPort) && Storage.IsNearParentEdge(DragObject, DragOriginalPort.Edge)) {
                     iCS_EditorObject dragObjectSource= Storage.GetSource(DragObject);
                     if(dragObjectSource != DragOriginalPort) {
                         Storage.SetSource(DragOriginalPort, dragObjectSource);
