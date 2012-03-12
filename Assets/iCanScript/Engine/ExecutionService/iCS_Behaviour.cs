@@ -248,10 +248,19 @@ public sealed class iCS_Behaviour : iCS_Storage {
             needAdditionalPass= false;
             // Generate all runtime nodes.
             foreach(var node in EditorObjects) {
+                // Uninitialized.
 				if(node.InstanceId == -1) continue;
+                // Was already generated in a previous pass.
+                if(myRuntimeNodes[node.InstanceId] != null) continue;
+                Vector2 layout= Math3D.Middle(GetPosition(node));
+                // Special case for mux ports.
+                if(node.IsMuxPort) {
+                    bool[] isOuts= new bool[node.NbOfParams];
+                    for(int i= 0; i < node.NbOfParams; ++i) isOuts[i]= false;
+                    myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, isOuts, layout);
+                    continue;
+                }
                 if(node.IsNode) {
-                    // Was already generated in a previous pass.
-                    if(myRuntimeNodes[node.InstanceId] != null) continue;
                     // Wait until parent is generated.
                     object parent= null;
 					switch(node.ParentId) {
@@ -276,7 +285,6 @@ public sealed class iCS_Behaviour : iCS_Storage {
                         }
                     }
                     // We are ready to generate new node.
-                    Vector2 layout= Math3D.Middle(GetPosition(node));
                     switch(node.ObjectType) {
                         case iCS_ObjectTypeEnum.Behaviour: {
                             break;

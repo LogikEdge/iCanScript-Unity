@@ -20,7 +20,7 @@ public class iCS_EditorObject {
 
 	// Node specific attributes ---------------------------------------------
 	public string				 MethodName= null;
-	public int					 NbOfParams= 0;     // Also used as port group
+	public int					 NbOfParams= 0;     // Also used for port group
     public string                IconGUID  = null;
     public string                RawToolTip= null;
 

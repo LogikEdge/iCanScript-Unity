@@ -72,7 +72,7 @@ public partial class iCS_IStorage {
     public bool IsDirty { get { ProcessUndoRedo(); return myIsDirty; }}
     // ----------------------------------------------------------------------
     public bool IsMuxPort(iCS_EditorObject eObj)		{ return eObj.IsDataPort && NbOfChildren(eObj, c=> c.IsDataPort) != 0; }
-	public bool IsMuxPortChild(iCS_EditorObject eObj)	{ return eObj != null && eObj.IsDataPort && GetParent(eObj).IsDataPort; }
+	public bool IsMuxPortChild(iCS_EditorObject eObj)	{ return eObj != null && Storage.IsMuxPortChild(eObj.InstanceId); }
 	public bool IsInMuxPortGroup(iCS_EditorObject eObj)	{ return IsMuxPort(eObj) || IsMuxPortChild(eObj); }
 	public iCS_EditorObject GetMuxPort(iCS_EditorObject eObj) { return IsMuxPort(eObj) ? eObj : (IsMuxPortChild(eObj) ? GetParent(eObj) : null); }
     // ----------------------------------------------------------------------

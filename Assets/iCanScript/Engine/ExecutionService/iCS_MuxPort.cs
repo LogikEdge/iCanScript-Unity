@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_Mux : iCS_FunctionBase {
+public class iCS_MuxPort : iCS_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -27,7 +27,7 @@ public class iCS_Mux : iCS_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Mux(string name, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {}
+    public iCS_MuxPort(string name, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {}
 
     // ======================================================================
     // Execution
