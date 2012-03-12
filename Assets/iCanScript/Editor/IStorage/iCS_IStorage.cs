@@ -327,11 +327,7 @@ public partial class iCS_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
-		if(this[id].IsMuxModule) {
-	        this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MuxIcon, this);
-		} else {
-	        this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);			
-		}
+	    this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);			
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         if(this[id].IsClassModule) ClassModuleCompleteCreation(this[id]);
 		SetDirty(this[id]);

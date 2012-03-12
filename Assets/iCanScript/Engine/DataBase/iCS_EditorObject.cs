@@ -155,14 +155,13 @@ public class iCS_EditorObject {
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
     public bool IsEntryState            { get { return IsState && IsRawEntryState; } set { IsRawEntryState= value; }}
-    public bool IsClassModule           { get { return IsModule && !IsMuxModule && RuntimeType != typeof(iCS_Module); }}
-	public bool IsMuxModule				{ get { return IsModule && RuntimeType == typeof(iCS_Selector); }}
+    public bool IsClassModule           { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
     
     // ======================================================================
     // Feature support
     // ----------------------------------------------------------------------
     public bool SupportsAdditionOfPorts { get { return IsModule; }}
-    public bool SupportsNestedNodes     { get { return IsModule && !IsMuxModule; }}
+    public bool SupportsNestedNodes     { get { return IsModule; }}
     
     // ======================================================================
     // Accessors

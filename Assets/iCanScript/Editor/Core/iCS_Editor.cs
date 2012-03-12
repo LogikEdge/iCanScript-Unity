@@ -815,7 +815,7 @@ public class iCS_Editor : EditorWindow {
 					CreateDragPort();
                 } else {
                     Storage.PositionOnEdge(DragObject);
-                    Storage.LayoutPorts(parent);
+                    Storage.LayoutPorts(parent); 
                 }
                 break;
             }

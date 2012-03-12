@@ -543,12 +543,6 @@ public class iCS_Graphics {
         // Don't draw minimized node.
         if(IsInvisible(node, storage) || IsMinimized(node, storage)) return;
         
-		// Special case for Muxes
-		if(node.IsMuxModule) {
-			DrawNormalMux(node, storage);
-			return;
-		}
-		
         // Draw node box.
         Rect position= GetDisplayPosition(node, storage);
         string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
@@ -593,22 +587,6 @@ public class iCS_Graphics {
         GUI_Label(texturePos, new GUIContent("", node.ToolTip), LabelStyle);
 		ShowTitleOver(texturePos, node, storage);
     }
-    // ----------------------------------------------------------------------
-	void DrawNormalMux(iCS_EditorObject mux, iCS_IStorage storage) {
-        // Draw node box.
-        Rect position= GetDisplayPosition(mux, storage);
-        // Change background color if node is selected.
-        Color backgroundColor= GetBackgroundColor(mux, storage);
-        bool isMouseOver= position.Contains(MousePosition);
-        DrawMux(position, GetNodeColor(mux, storage), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
-        EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);
-        // Minimize Icon
-        if(ShouldDisplayMinimizeIcon(mux, storage)) {
-            GUI_DrawTexture(new Rect(position.x+0.5f*(position.width-minimizeIcon.width), position.y-1f, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
-        }		
-		// Show node title.
-		ShowTitleOver(position, mux, storage);
-	}
     // ----------------------------------------------------------------------
 	void ShowTitleOver(Rect pos, iCS_EditorObject node, iCS_IStorage storage) {
         if(!ShouldShowTitle()) return;
@@ -828,7 +806,6 @@ public class iCS_Graphics {
         
         // Show port label.
         if(port.IsStatePort) return;        // State transition name is handle by DrawConnection. 
-		if(portParent.IsMuxModule) return;	// No labels on Mux ports.
         if(!ShouldShowLabel()) return;      // Don't show label & values if scale does not permit.
         string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
 		string valueAsStr= portValue != null ? GetValueAsString(portValue) : null;
