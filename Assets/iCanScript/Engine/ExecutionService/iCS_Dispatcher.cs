@@ -7,7 +7,7 @@ public abstract class iCS_Dispatcher : iCS_Action {
     // Fields
     // ----------------------------------------------------------------------
     protected List<iCS_Action> myExecuteQueue= new List<iCS_Action>();
-    protected int             myQueueIdx = 0;
+    protected int              myQueueIdx = 0;
     
     // ======================================================================
     // Creation/Destruction

@@ -5,21 +5,12 @@ public class iCS_MuxPort : iCS_FunctionBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    protected object	myReturn= null;		// +1
 	
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    protected override object DoGetParameter(int idx) {
-        if(idx == myParameters.Length) return myReturn;
- 		return base.DoGetParameter(idx);
-    }
-    protected override void DoSetParameter(int idx, object value) {
-        if(idx == myParameters.Length) { myReturn= value; return; }
-        base.DoSetParameter(idx, value);
-    }
     protected override bool DoIsParameterReady(int idx, int frameId) {
-		if(idx != myParameters.Length) return base.DoIsParameterReady(idx, frameId);
+		if(idx != 0) return base.DoIsParameterReady(idx, frameId);
 		if(IsCurrent(frameId)) return true;
 		return ReadAnyInput(frameId);
     }
@@ -46,7 +37,7 @@ public class iCS_MuxPort : iCS_FunctionBase {
 	bool ReadAnyInput(int frameId) {
         foreach(var id in myInIndexes) {
             if(myConnections[id].IsConnected && myConnections[id].IsReady(frameId)) {
-                myReturn= myConnections[id].Value;
+                myParameters[0]= myConnections[id].Value;
                 MarkAsCurrent(frameId);
                 return true;
             }

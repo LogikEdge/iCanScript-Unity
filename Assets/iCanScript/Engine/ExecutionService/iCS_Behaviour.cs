@@ -253,6 +253,11 @@ public sealed class iCS_Behaviour : iCS_Storage {
                 // Was already generated in a previous pass.
                 if(myRuntimeNodes[node.InstanceId] != null) continue;
                 Vector2 layout= Math3D.Middle(GetPosition(node));
+				// Special case for active ports.
+				if(node.IsOutMuxPort) {
+					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, new bool[1]{true}, layout);
+					continue;
+				}
                 if(node.IsNode) {
                     // Wait until parent is generated.
                     object parent= null;
@@ -431,11 +436,15 @@ public sealed class iCS_Behaviour : iCS_Storage {
                     case iCS_ObjectTypeEnum.InFunctionPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
                         // Build connection.
+						iCS_Connection connection= iCS_Connection.NoConnection;
                         iCS_EditorObject sourcePort= GetDataConnectionSource(port);
-						iCS_FunctionBase sourceFunc= (myRuntimeNodes[sourcePort.InstanceId] ?? myRuntimeNodes[sourcePort.ParentId]) as iCS_FunctionBase;
-                        iCS_Connection connection= sourcePort == port ?
-                                iCS_Connection.NoConnection :
-                                new iCS_Connection(sourceFunc, sourcePort.PortIndex);
+						if(sourcePort != port) {
+							if(myRuntimeNodes[sourcePort.InstanceId] != null) {
+								connection= new iCS_Connection(myRuntimeNodes[sourcePort.InstanceId] as iCS_FunctionBase, 0);							
+							} else {
+								connection= new iCS_Connection(myRuntimeNodes[sourcePort.ParentId] as iCS_FunctionBase, sourcePort.PortIndex);
+							}
+						}
                         // Build initial value.
 						object initValue= GetInitialValue(sourcePort);
                         // Set data port.
