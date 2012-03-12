@@ -476,7 +476,7 @@ public partial class iCS_IStorage {
                 port.LocalPosition= new Rect(parent.LocalPosition.width, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);                
             }
         }
-        if(GetParent(port).IsModule) { AddPortToModule(port); }
+        if(port.IsModulePort) 	{ AddDynamicPort(port); }
         Rect parentPos= GetPosition(GetParent(port));
         TreeCache[id].DisplayPosition= new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0);
 		SetDirty(this[id]);

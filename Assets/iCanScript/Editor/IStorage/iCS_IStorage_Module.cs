@@ -16,19 +16,6 @@ public partial class iCS_IStorage {
         enablePort.IsNameEditable= false;
         return enablePort;
     }
-    // ----------------------------------------------------------------------
-    public void AddPortToModule(iCS_EditorObject port) {
-        iCS_EditorObject module= GetParent(port);
-		port.PortIndex= GetSortedChildDataPorts(module).Length;
-		SetInitialPortValue(port, iCS_Types.DefaultValue(port.RuntimeType));
-    }
-    // ----------------------------------------------------------------------
-    public void RemovePortFromModule(iCS_EditorObject port) {
-        // Reorganize runtime parameter information.
-        iCS_EditorObject module= GetParent(port);
-        // Rearrange port indexes
-        GetSortedChildDataPorts(module);
-    }
     
     // ======================================================================
     // Module helpers
