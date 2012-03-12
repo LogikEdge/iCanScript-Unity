@@ -800,7 +800,7 @@ public class iCS_Editor : EditorWindow {
                 break;
             case DragTypeEnum.PortRelocation: {
 				// We can't relocate a mux port child.
-				if(Storage.IsMuxPortChild(DragObject)) {
+				if(DragObject.IsInMuxPort) {
 					CreateDragPort();
 					return;
 				}
@@ -825,7 +825,7 @@ public class iCS_Editor : EditorWindow {
                 DragObject.LocalPosition.x= newLocalPos.x;
                 DragObject.LocalPosition.y= newLocalPos.y;
                 // Determine if we should go back to port relocation.
-                if(!Storage.IsMuxPortChild(DragOriginalPort) && Storage.IsNearParentEdge(DragObject, DragOriginalPort.Edge)) {
+                if(!DragOriginalPort.IsInMuxPort && Storage.IsNearParentEdge(DragObject, DragOriginalPort.Edge)) {
                     iCS_EditorObject dragObjectSource= Storage.GetSource(DragObject);
                     if(dragObjectSource != DragOriginalPort) {
                         Storage.SetSource(DragOriginalPort, dragObjectSource);
@@ -1073,7 +1073,7 @@ public class iCS_Editor : EditorWindow {
         Storage.SetDisplayPosition(DragObject, portPos);
 		Rect parentPos= Storage.GetPosition(parent);
 		// Reset initial position if port is being dettached from it original parent.
-		if(Storage.IsMuxPortChild(DragOriginalPort)) {
+		if(DragOriginalPort.IsInMuxPort) {
 			DragStartPosition= Math3D.ToVector2(portPos)-Math3D.ToVector2(parentPos);			
 		}
         DragObject.IsFloating= true;		
@@ -1084,7 +1084,7 @@ public class iCS_Editor : EditorWindow {
     iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
-		if(SelectedObject != null && Storage.IsMuxPort(newSelected) && Storage.GetMuxPort(SelectedObject) == newSelected) {
+		if(SelectedObject != null && newSelected.IsOutMuxPort && Storage.GetOutMuxPort(SelectedObject) == newSelected) {
 			ShouldRotateMuxPort= true;
 			return SelectedObject;
 		}
@@ -1123,7 +1123,7 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void RotateSelectedMuxPort() {
 		if(SelectedObject == null || !SelectedObject.IsDataPort) return;
-		if(Storage.IsMuxPort(SelectedObject)) {
+		if(SelectedObject.IsOutMuxPort) {
 			Storage.ForEachChild(SelectedObject, 
 				c=> {
 					if(c.IsDataPort) {
@@ -1251,12 +1251,13 @@ public class iCS_Editor : EditorWindow {
 		}
 		// Convert source port to child port.
 		if(source != null) {
-			var firstMuxInput= Storage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.OutMuxPort;
+			var firstMuxInput= Storage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
 			Storage.SetSource(firstMuxInput, source);
 			Storage.SetSource(stateMuxPort, null);
 		}
 		// Create new mux input port.
-		var inMuxPort= Storage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+		var inMuxPort= Storage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
 		SetNewDataConnection(inMuxPort, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------

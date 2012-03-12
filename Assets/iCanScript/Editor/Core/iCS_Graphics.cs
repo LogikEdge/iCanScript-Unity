@@ -768,7 +768,7 @@ public class iCS_Graphics {
         if(port.IsDataPort) {
     		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
 			Vector2 portCenter= center;
-			if(storage.IsMuxPort(port)) {
+			if(port.IsOutMuxPort) {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
 			} else {
 				if(port.IsInputPort && storage.GetSource(port) == null) {

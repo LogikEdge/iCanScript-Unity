@@ -25,6 +25,9 @@ public enum iCS_ObjectTypeEnum {
     InStatePort= 400,    OutStatePort,
     InTransitionPort,    OutTransitionPort,
 
+	// Active ports.
+	InMuxPort= 500,      OutMuxPort,
+	
     // Undefined
     Unknown=1000
 }
@@ -69,19 +72,22 @@ public static class iCS_ObjectType {
     public static bool IsOutStatePort         (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutStatePort; }
     public static bool IsInTransitionPort     (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InTransitionPort; }
     public static bool IsOutTransitionPort    (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutTransitionPort; }
-    public static bool IsInDataPort           (iCS_EditorObject obj) { return IsInFunctionPort(obj) || IsInModulePort(obj) || IsEnablePort(obj); }
-    public static bool IsOutDataPort          (iCS_EditorObject obj) { return IsOutFunctionPort(obj) || IsOutModulePort(obj); }
+    public static bool IsInDataPort           (iCS_EditorObject obj) { return IsInFunctionPort(obj) || IsInModulePort(obj) || IsEnablePort(obj) || IsInMuxPort(obj); }
+    public static bool IsOutDataPort          (iCS_EditorObject obj) { return IsOutFunctionPort(obj) || IsOutModulePort(obj) || IsOutMuxPort(obj); }
     public static bool IsInModulePort         (iCS_EditorObject obj) { return IsInDynamicModulePort(obj) || IsInStaticModulePort(obj); }
     public static bool IsOutModulePort        (iCS_EditorObject obj) { return IsOutDynamicModulePort(obj) || IsOutStaticModulePort(obj); }
 	public static bool IsStateChartNode		  (iCS_EditorObject obj) { return IsStateChart(obj) || IsState(obj); }
-    public static bool IsDataPort             (iCS_EditorObject obj) { return IsFunctionPort(obj) || IsModulePort(obj) || IsEnablePort(obj); }
+    public static bool IsDataPort             (iCS_EditorObject obj) { return IsInDataPort(obj) || IsOutDataPort(obj); }
     public static bool IsDynamicModulePort    (iCS_EditorObject obj) { return IsInDynamicModulePort(obj) || IsOutDynamicModulePort(obj); }
     public static bool IsStaticModulePort     (iCS_EditorObject obj) { return IsInStaticModulePort(obj) || IsOutStaticModulePort(obj); }
     public static bool IsFunctionPort         (iCS_EditorObject obj) { return IsInFunctionPort(obj) || IsOutFunctionPort(obj); }
     public static bool IsModulePort           (iCS_EditorObject obj) { return IsInModulePort(obj) || IsOutModulePort(obj); }
     public static bool IsStatePort            (iCS_EditorObject obj) { return IsInStatePort(obj) || IsOutStatePort(obj); }
     public static bool IsTransitionPort       (iCS_EditorObject obj) { return IsInTransitionPort(obj) || IsOutTransitionPort(obj); }
-    public static bool IsPort                 (iCS_EditorObject obj) { return IsFunctionPort(obj) || IsModulePort(obj) || IsEnablePort(obj) || IsStatePort(obj) || IsTransitionPort(obj); }
-    public static bool IsOutputPort           (iCS_EditorObject obj) { return IsOutFunctionPort(obj) || IsOutModulePort(obj) || IsOutStatePort(obj) || IsOutTransitionPort(obj); }
-    public static bool IsInputPort            (iCS_EditorObject obj) { return IsInFunctionPort(obj) || IsInModulePort(obj) || IsInStatePort(obj) || IsEnablePort(obj) || IsInTransitionPort(obj); }
+    public static bool IsPort                 (iCS_EditorObject obj) { return IsDataPort(obj)|| IsStatePort(obj) || IsTransitionPort(obj); }
+    public static bool IsOutputPort           (iCS_EditorObject obj) { return IsOutDataPort(obj) || IsOutStatePort(obj) || IsOutTransitionPort(obj); }
+    public static bool IsInputPort            (iCS_EditorObject obj) { return IsInDataPort(obj)|| IsInStatePort(obj)|| IsInTransitionPort(obj); }
+	public static bool IsMuxPort			  (iCS_EditorObject obj) { return IsInMuxPort(obj) || IsOutMuxPort(obj); }
+	public static bool IsOutMuxPort			  (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutMuxPort; }
+	public static bool IsInMuxPort			  (iCS_EditorObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InMuxPort; }
 }

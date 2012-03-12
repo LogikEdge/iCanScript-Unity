@@ -432,9 +432,10 @@ public sealed class iCS_Behaviour : iCS_Storage {
                     case iCS_ObjectTypeEnum.EnablePort: {
                         // Build connection.
                         iCS_EditorObject sourcePort= GetDataConnectionSource(port);
+						iCS_FunctionBase sourceFunc= (myRuntimeNodes[sourcePort.InstanceId] ?? myRuntimeNodes[sourcePort.ParentId]) as iCS_FunctionBase;
                         iCS_Connection connection= sourcePort == port ?
                                 iCS_Connection.NoConnection :
-                                new iCS_Connection(myRuntimeNodes[sourcePort.ParentId] as iCS_FunctionBase, sourcePort.PortIndex);
+                                new iCS_Connection(sourceFunc, sourcePort.PortIndex);
                         // Build initial value.
 						object initValue= GetInitialValue(sourcePort);
                         // Set data port.

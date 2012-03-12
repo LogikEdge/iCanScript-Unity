@@ -156,6 +156,9 @@ public class iCS_EditorObject {
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
     public bool IsEntryState            { get { return IsState && IsRawEntryState; } set { IsRawEntryState= value; }}
     public bool IsClassModule           { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
+	public bool	IsMuxPort				{ get { return iCS_ObjectType.IsMuxPort(this); }}
+	public bool IsInMuxPort				{ get { return iCS_ObjectType.IsInMuxPort(this); }}
+	public bool IsOutMuxPort			{ get { return iCS_ObjectType.IsOutMuxPort(this); }}
     
     // ======================================================================
     // Feature support

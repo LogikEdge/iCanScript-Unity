@@ -71,10 +71,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public bool IsDirty { get { ProcessUndoRedo(); return myIsDirty; }}
     // ----------------------------------------------------------------------
-    public bool IsMuxPort(iCS_EditorObject eObj)		{ return eObj.IsDataPort && NbOfChildren(eObj, c=> c.IsDataPort) != 0; }
-	public bool IsMuxPortChild(iCS_EditorObject eObj)	{ return eObj != null && Storage.IsMuxPortChild(eObj.InstanceId); }
-	public bool IsInMuxPortGroup(iCS_EditorObject eObj)	{ return IsMuxPort(eObj) || IsMuxPortChild(eObj); }
-	public iCS_EditorObject GetMuxPort(iCS_EditorObject eObj) { return IsMuxPort(eObj) ? eObj : (IsMuxPortChild(eObj) ? GetParent(eObj) : null); }
+	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? GetParent(eObj) : null); }
     // ----------------------------------------------------------------------
     public iCS_EditorObject this[int id] {
         get { return EditorObjects[id]; }
@@ -154,8 +151,18 @@ public partial class iCS_IStorage {
 				var parent= GetParent(obj);
                 if(CleanupDeadPorts) {
 					bool shouldRemove= false;
-					if(IsMuxPort(obj)) {
-						shouldRemove= false;
+					if(obj.IsOutMuxPort) {
+						int nbOfChildren= NbOfChildren(obj, c=> c.IsInDataPort);
+						if(nbOfChildren == 1) {
+							iCS_EditorObject child= GetChildInputDataPorts(obj)[0];
+							obj.Source= child.Source;
+							obj.ObjectType= iCS_ObjectTypeEnum.OutDynamicModulePort;
+							DestroyInstanceInternal(child);
+						} else {
+							shouldRemove= nbOfChildren == 0 && IsPortDisconnected(obj);							
+						}
+					} else if(obj.IsInMuxPort) {
+						shouldRemove= GetSource(obj) == null;
 					} else {
 						shouldRemove= ((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) ||
 						              (obj.IsDynamicModulePort && GetSource(obj) == null && (parent.IsStateChart || parent.IsState));
