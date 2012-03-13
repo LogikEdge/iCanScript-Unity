@@ -34,7 +34,7 @@ public static class iCS_GuiUtilities {
         iCS_EditorObject sourcePort= storage.GetSource(port);
         bool hasSource= sourcePort != null;
         // Get runtime object if it exists.
-        iCS_FunctionBase runtimeObject= storage.GetRuntimeObject(parent) as iCS_FunctionBase;
+        iCS_IParams runtimeObject= storage.GetRuntimeObject(parent) as iCS_IParams;
         // Determine if we are allowed to modify port value.
         bool isReadOnly= !(!hasSource && (port.IsInputPort || port.IsModulePort));
         // Nothing to display if we don't have a runtime object and we are in readonly.
@@ -353,9 +353,9 @@ public static class iCS_GuiUtilities {
         iCS_EditorObject parent= iStorage.GetParent(port);
         if(parent == null) return;
         // Get runtime object if it exists.
-        iCS_FunctionBase runtimeObject= iStorage.GetRuntimeObject(parent) as iCS_FunctionBase;
+        iCS_IParams runtimeObject= iStorage.GetRuntimeObject(parent) as iCS_IParams;
         if(runtimeObject == null) return;
-        runtimeObject[port.PortIndex]= newValue;
+        runtimeObject.SetParameter(port.PortIndex, newValue);
     }
     
     // -----------------------------------------------------------------------

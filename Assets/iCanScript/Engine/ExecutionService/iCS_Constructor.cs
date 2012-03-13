@@ -30,8 +30,8 @@ public class iCS_Constructor : iCS_FunctionBase {
     public iCS_Constructor(string name, MethodBase methodBase, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
         myMethodBase= methodBase;
     }
-    public new void SetConnection(int id, iCS_Connection connection) {
-        if(id < myParameters.Length) base.SetConnection(id, connection);
+    public new void SetParameterConnection(int id, iCS_Connection connection) {
+        if(id < myParameters.Length) base.SetParameterConnection(id, connection);
     }
     
     // ======================================================================

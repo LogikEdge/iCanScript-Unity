@@ -35,9 +35,9 @@ public class iCS_Method : iCS_Function {
     public iCS_Method(string name, MethodBase methodInfo, bool[] paramIsOuts, Vector2 layout) : base(name, methodInfo, paramIsOuts, layout) {
         myThisConnection= iCS_Connection.NoConnection;
     }
-    public new void SetConnection(int id, iCS_Connection connection) {
+    public new void SetParameterConnection(int id, iCS_Connection connection) {
         if(id == myParameters.Length+1) myThisConnection= connection;
-        else base.SetConnection(id, connection);
+        else base.SetParameterConnection(id, connection);
     }
     
     // ======================================================================

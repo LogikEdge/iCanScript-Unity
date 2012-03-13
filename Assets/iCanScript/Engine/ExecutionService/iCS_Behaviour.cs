@@ -436,8 +436,8 @@ public sealed class iCS_Behaviour : iCS_Storage {
                     case iCS_ObjectTypeEnum.InFunctionPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
                         // Build connection.
-						iCS_Connection connection= iCS_Connection.NoConnection;
                         iCS_EditorObject sourcePort= GetDataConnectionSource(port);
+						iCS_Connection connection= iCS_Connection.NoConnection;
 						if(sourcePort != port) {
 							if(myRuntimeNodes[sourcePort.InstanceId] != null) {
 								connection= new iCS_Connection(myRuntimeNodes[sourcePort.InstanceId] as iCS_FunctionBase, 0);							
@@ -452,31 +452,31 @@ public sealed class iCS_Behaviour : iCS_Storage {
                         Prelude.choice<iCS_Constructor, iCS_Method, iCS_GetInstanceField, iCS_GetStaticField, iCS_SetInstanceField, iCS_SetStaticField, iCS_Function>(parentObj,
                             constructor=> {
                                 constructor[port.PortIndex]= initValue;
-                                constructor.SetConnection(port.PortIndex, connection);
+                                constructor.SetParameterConnection(port.PortIndex, connection);
                             },
                             method=> {
                                 method[port.PortIndex]= initValue;
-                                method.SetConnection(port.PortIndex, connection);
+                                method.SetParameterConnection(port.PortIndex, connection);
                             },
                             getInstanceField=> {
                                 getInstanceField[port.PortIndex]= initValue;
-                                getInstanceField.SetConnection(port.PortIndex, connection);
+                                getInstanceField.SetParameterConnection(port.PortIndex, connection);
                             },
                             getStaticField=> {
                                 getStaticField[port.PortIndex]= initValue;
-                                getStaticField.SetConnection(port.PortIndex, connection);
+                                getStaticField.SetParameterConnection(port.PortIndex, connection);
                             },
                             setInstanceField=> {
                                 setInstanceField[port.PortIndex]= initValue;
-                                setInstanceField.SetConnection(port.PortIndex, connection);
+                                setInstanceField.SetParameterConnection(port.PortIndex, connection);
                             },
                             setStaticField=> {
                                 setStaticField[port.PortIndex]= initValue;
-                                setStaticField.SetConnection(port.PortIndex, connection);
+                                setStaticField.SetParameterConnection(port.PortIndex, connection);
                             },
                             function=> {
                                 function[port.PortIndex]= initValue;
-                                function.SetConnection(port.PortIndex, connection);
+                                function.SetParameterConnection(port.PortIndex, connection);
                             }
                         );
                         break;

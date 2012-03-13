@@ -199,7 +199,7 @@ public class iCS_Inspector : Editor {
         );
 
         // Show inputs.
-        iCS_FunctionBase runtimeObject= Storage.GetRuntimeObject(node) as iCS_FunctionBase;
+        iCS_IParams runtimeObject= Storage.GetRuntimeObject(node) as iCS_IParams;
         if(inPorts.Count > 0) {
             int indentLevel= 1;
             if(runtimeObject != null) {

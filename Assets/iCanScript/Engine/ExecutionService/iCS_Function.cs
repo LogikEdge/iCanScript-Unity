@@ -30,8 +30,8 @@ public class iCS_Function : iCS_FunctionBase {
     public iCS_Function(string name, MethodBase methodInfo, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
         myMethodInfo= methodInfo;
     }
-    public new void SetConnection(int id, iCS_Connection connection) {
-        if(id < myParameters.Length) base.SetConnection(id, connection);
+    public new void SetParameterConnection(int id, iCS_Connection connection) {
+        if(id < myParameters.Length) base.SetParameterConnection(id, connection);
     }
     
     // ======================================================================

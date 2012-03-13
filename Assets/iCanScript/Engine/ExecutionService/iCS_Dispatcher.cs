@@ -25,7 +25,7 @@ public abstract class iCS_Dispatcher : iCS_Action {
                 ++myQueueIdx;
                 IsStalled= false;
             } else {
-                // Verify if the child is a staled dispatcher.
+                // Verify if the child is a staled dispatcher.     
                 if(!action.IsStalled) {
                     IsStalled= false;
                 }

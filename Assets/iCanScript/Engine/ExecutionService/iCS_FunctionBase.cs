@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_FunctionBase : iCS_Action {
+public class iCS_FunctionBase : iCS_Action, iCS_IParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -15,16 +15,32 @@ public class iCS_FunctionBase : iCS_Action {
     protected iCS_Connection[] myConnections;
     
     // ======================================================================
+    // IParams implementation
+    // ----------------------------------------------------------------------
+	public string GetParameterName(int idx) { return Name+"["+idx+"]"; }
+	public object GetParameter(int idx) {
+        return idx < myParameters.Length ? myParameters[idx] : DoGetParameter(idx);		
+	}
+	public void SetParameter(int idx, object value) {
+        if(idx < myParameters.Length)  { myParameters[idx]= value; return; }
+        DoSetParameter(idx, value);		
+	}
+    public bool IsParameterReady(int idx, int frameId) {
+        if(idx >= myParameters.Length) return DoIsParameterReady(idx, frameId);
+        if(myParameterIsOuts[idx]) return IsCurrent(frameId);
+        if(!myConnections[idx].IsConnected) return true;
+        return myConnections[idx].IsReady(frameId);
+    }
+	public void SetParameterConnection(int idx, iCS_Connection connection) {
+		myConnections[idx]= connection;
+	}
+	
+    // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
     public object this[int idx] {
-        get {
-            return idx < myParameters.Length ? myParameters[idx] : DoGetParameter(idx);
-        }
-        set {
-            if(idx < myParameters.Length)  { myParameters[idx]= value; return; }
-            DoSetParameter(idx, value);
-        }
+        get { return GetParameter(idx); }
+        set { SetParameter(idx, value); }
     }
     protected virtual object DoGetParameter(int idx) {
         Debug.LogError("Invalid parameter index given");        
@@ -32,12 +48,6 @@ public class iCS_FunctionBase : iCS_Action {
     }
     protected virtual void DoSetParameter(int idx, object value) {
         Debug.LogError("Name: "+Name+"=> Invalid parameter index: "+idx+" parameter length: "+myParameters.Length);                
-    }
-    public bool IsParameterReady(int idx, int frameId) {
-        if(idx >= myParameters.Length) return DoIsParameterReady(idx, frameId);
-        if(myParameterIsOuts[idx]) return IsCurrent(frameId);
-        if(!myConnections[idx].IsConnected) return true;
-        return myConnections[idx].IsReady(frameId);
     }
     protected virtual bool DoIsParameterReady(int idx, int frameId) {
         return true;
@@ -61,9 +71,6 @@ public class iCS_FunctionBase : iCS_Action {
         myParameters= new object[paramIsOuts.Length];
         myConnections= new iCS_Connection[paramIsOuts.Length];
         for(int i= 0; i < myConnections.Length; ++i) myConnections[i]= iCS_Connection.NoConnection;
-    }
-    public void SetConnection(int id, iCS_Connection connection) {
-        myConnections[id]= connection;
     }
     
     // ======================================================================

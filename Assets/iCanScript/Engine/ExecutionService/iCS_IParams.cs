@@ -1,0 +1,7 @@
+public interface iCS_IParams {
+	string GetParameterName(int idx);
+    object GetParameter(int idx);
+    void   SetParameter(int idx, object value);
+    bool   IsParameterReady(int idx, int frameId);
+	void   SetParameterConnection(int idx, iCS_Connection connection);
+}

@@ -16,9 +16,9 @@ public class iCS_SetInstanceField : iCS_SetStaticField {
     public iCS_SetInstanceField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, Vector2 layout) : base(name, fieldInfo, paramIsOuts, layout) {
         myThisConnection= iCS_Connection.NoConnection;
     }
-    public new void SetConnection(int id, iCS_Connection connection) {
+    public new void SetParameterConnection(int id, iCS_Connection connection) {
         if(id == 2) myThisConnection= connection;
-        else base.SetConnection(id, connection);
+        else base.SetParameterConnection(id, connection);
     }
     
     // ======================================================================
