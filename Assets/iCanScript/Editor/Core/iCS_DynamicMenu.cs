@@ -111,16 +111,9 @@ public class iCS_DynamicMenu {
         string[] menu= new string[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             // Base menu items
-            menu= new string[3];
+            menu= new string[2];
             menu[0]= ModuleStr;
             menu[1]= StateChartStr; 
-            // Enable port
-            bool hasEnablePort= storage.HasEnablePort(selectedObject);
-            if(!hasEnablePort) {
-                menu[2]= EnablePortStr;
-            } else {
-                menu[2]= "#"+EnablePortStr;
-            }
         }
         if(IsClassMenu) {
             // Class menu items
