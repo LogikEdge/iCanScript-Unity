@@ -4,14 +4,22 @@ using System.Collections;
 [iCS_Class(Company="iCanScript", Package="Conditions")]
 public static class iCS_Logic {
     // Comparaison operations.
-    [iCS_Function] public static bool IsZero(float a, out bool not)                           { bool result= Math3D.IsZero(a); not= !result; return result; }
-    [iCS_Function] public static bool IsNotZero(float a, out bool not)                        { bool result= Math3D.IsNotZero(a); not= !result; return result; }
-    [iCS_Function] public static bool IsEqual(float a, float b, out bool not)                 { bool result= Math3D.IsEqual(a,b); not= !result; return result; }
-    [iCS_Function] public static bool IsNotEqual(float a, float b, out bool not)              { bool result= Math3D.IsNotEqual(a,b); not= !result; return result; }
-    [iCS_Function] public static bool IsGreater(float value, float bias, out bool not)        { bool result= Math3D.IsGreater(value,bias); not= !result; return result; }
-    [iCS_Function] public static bool IsSmaller(float value, float bias, out bool not)        { bool result= Math3D.IsSmaller(value,bias); not= !result; return result; }
-    [iCS_Function] public static bool IsGreaterOrEqual(float value, float bias, out bool not) { bool result= Math3D.IsGreaterOrEqual(value,bias); not= !result; return result; }
-    [iCS_Function] public static bool IsSmallerOrEqual(float value, float bias, out bool not) { bool result= Math3D.IsSmallerOrEqual(value,bias); not= !result; return result; }
+    [iCS_Function(Return="True")]
+    public static bool IsZero(float a, out bool False)                           { bool result= Math3D.IsZero(a); False= !result; return result; }
+    [iCS_Function(Return="True")]
+    public static bool IsNotZero(float a, out bool False)                        { bool result= Math3D.IsNotZero(a); False= !result; return result; }
+    [iCS_Function(Return="True")]
+    public static bool IsEqual(float a, float b, out bool False)                 { bool result= Math3D.IsEqual(a,b); False= !result; return result; }
+    [iCS_Function(Return="True")]
+    public static bool IsNotEqual(float a, float b, out bool False)              { bool result= Math3D.IsNotEqual(a,b); False= !result; return result; }
+    [iCS_Function(Return="True")]
+    public static bool IsGreater(float value, float bias, out bool False)        { bool result= Math3D.IsGreater(value,bias); False= !result; return result; }
+    [iCS_Function(Return="True")]
+    public static bool IsSmaller(float value, float bias, out bool False)        { bool result= Math3D.IsSmaller(value,bias); False= !result; return result; }
+    [iCS_Function(Return="True")]
+    public static bool IsGreaterOrEqual(float value, float bias, out bool False) { bool result= Math3D.IsGreaterOrEqual(value,bias); False= !result; return result; }
+    [iCS_Function(Return="True")]
+    public static bool IsSmallerOrEqual(float value, float bias, out bool False) { bool result= Math3D.IsSmallerOrEqual(value,bias); False= !result; return result; }
 }
 
 [iCS_Class(Company="iCanScript", Package="Boolean")]

@@ -351,6 +351,8 @@ public partial class iCS_IStorage {
         var center= Math3D.Middle(GetPosition(this[id]));
         TreeCache[id].DisplayPosition= new Rect(center.x,center.y,0,0);
 		SetDirty(this[id]);
+        // Automatically create entry state.
+        CreateState(this[id].InstanceId, Vector2.zero, "EntryState");
         return this[id];
     }
     // ----------------------------------------------------------------------
