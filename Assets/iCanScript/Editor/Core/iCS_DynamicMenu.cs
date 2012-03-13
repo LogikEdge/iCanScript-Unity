@@ -10,6 +10,7 @@ public class iCS_DynamicMenu {
         public iCS_EditorObject     SelectedObject;
         public iCS_IStorage         Storage;
         public iCS_ReflectionDesc   Descriptor;
+        public MenuContext() : this(null, null, null) {}
         public MenuContext(string command, iCS_EditorObject selected, iCS_IStorage storage, iCS_ReflectionDesc descriptor= null) {
             Command= command;
             SelectedObject= selected;
@@ -94,13 +95,13 @@ public class iCS_DynamicMenu {
         if(storage.IsMinimized(selectedObject) || storage.IsFolded(selectedObject)) return;
 
         int len= iCS_AllowedChildren.BehaviourChildNames.Length;
-        string[] menu= new string[len];
+		MenuContext[] menu= new MenuContext[len];
         for(int i= 0; i < len; ++i) {
             string name= iCS_AllowedChildren.BehaviourChildNames[i];
             if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
-                menu[i]= String.Concat("+ ", name);
+                menu[i].Command= String.Concat("+ ", name);
             } else {
-                menu[i]= String.Concat("#+ ", name);
+                menu[i].Command= String.Concat("#+ ", name);
             }
         }
         ShowMenu(menu, selectedObject, storage);
@@ -108,12 +109,12 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void ModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         string[] tmp= null;
-        string[] menu= new string[0];
+        MenuContext[] menu= new MenuContext[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             // Base menu items
-            menu= new string[3];
-            menu[0]= ModuleStr;
-            menu[1]= StateChartStr; 
+            menu= new MenuContext[3];
+            menu[0].Command= ModuleStr;
+            menu[1].Command= StateChartStr; 
             // Enable port
             bool hasEnablePort= storage.HasEnablePort(selectedObject);
             if(!hasEnablePort) {
@@ -281,10 +282,10 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Menu Utilities
 	// ----------------------------------------------------------------------
-    void ShowMenu(string[] menu, iCS_EditorObject selected, iCS_IStorage storage) {
+    void ShowMenu(MenuContext[] menu, iCS_EditorObject selected, iCS_IStorage storage) {
         ShowMenu(menu, MenuPosition, selected, storage);
     }
-    void ShowMenu(string[] menu, Vector2 pos, iCS_EditorObject selected, iCS_IStorage storage) {
+    void ShowMenu(MenuContext[] menu, Vector2 pos, iCS_EditorObject selected, iCS_IStorage storage) {
         int sepCnt= 0;
         GenericMenu gMenu= new GenericMenu();
         foreach(var item in menu) {
@@ -292,11 +293,13 @@ public class iCS_DynamicMenu {
                 if(sepCnt != 0) gMenu.AddSeparator("");
                 sepCnt= 0;
             } else {
-                if(item[0] == '#') {
-                    string tmp= item.Substring(1);
+                if(item.Command[0] == '#') {
+                    string tmp= item.Command.Substring(1);
                     gMenu.AddDisabledItem(new GUIContent(tmp));                                    
                 } else {
-                    gMenu.AddItem(new GUIContent(item), false, ProcessMenu, new MenuContext(item, selected, storage));                                    
+					item.SelectedObject= selected;
+					item.Storage= storage;
+                    gMenu.AddItem(new GUIContent(item.Command), false, ProcessMenu, item);                                    
                 }
                 ++sepCnt;
             }
