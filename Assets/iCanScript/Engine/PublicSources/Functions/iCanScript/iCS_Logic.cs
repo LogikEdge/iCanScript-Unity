@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript", Package="Conditions")]
+[iCS_Class]
 public static class iCS_Conditions {
     // Comparaison operations.
     [iCS_Function(Return="True")]
@@ -22,7 +22,7 @@ public static class iCS_Conditions {
     public static bool IsSmallerOrEqual(float value, float bias, out bool False) { bool result= Math3D.IsSmallerOrEqual(value,bias); False= !result; return result; }
 }
 
-[iCS_Class(Company="iCanScript", Package="Boolean")]
+[iCS_Class]
 public static class iCS_Boolean {
     [iCS_Function] public static bool And(bool a, bool b) { return a & b; }
     [iCS_Function] public static bool Or (bool a, bool b) { return a | b; }
