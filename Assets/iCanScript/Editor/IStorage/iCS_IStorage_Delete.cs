@@ -56,7 +56,7 @@ public partial class iCS_IStorage {
         ExecuteIf(toDestroy, iCS_ObjectType.IsPort, _=> DisconnectPort(toDestroy));
         // Update modules runtime data when removing a module port.
         iCS_EditorObject parent= GetParent(toDestroy);
-        if(toDestroy.IsModulePort) 	 RemoveDynamicPort(toDestroy);
+        if(toDestroy.IsModulePort || toDestroy.IsInMuxPort) 	 RemoveDynamicPort(toDestroy);
         // Remember entry state.
         bool isEntryState= toDestroy.IsEntryState;
         // Set the parent dirty to force a relayout.

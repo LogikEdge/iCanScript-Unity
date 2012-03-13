@@ -192,7 +192,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
 						continue;				
 					}
 					// A port cannot be a parent.
-					if(EditorObjects[parentId].IsPort) {
+					if(EditorObjects[parentId].IsPort && !EditorObjects[parentId].IsOutMuxPort) {
 						sanityNeeded= true;
 						EditorObjects[i].InstanceId= -1;
 						continue;										
@@ -255,7 +255,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                 Vector2 layout= Math3D.Middle(GetPosition(node));
 				// Special case for active ports.
 				if(node.IsOutMuxPort) {
-					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, new bool[1]{true}, layout);
+					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, layout);
 					continue;
 				}
                 if(node.IsNode) {
@@ -388,14 +388,18 @@ public sealed class iCS_Behaviour : iCS_Storage {
                     case iCS_ObjectTypeEnum.InDynamicModulePort:
                     case iCS_ObjectTypeEnum.OutDynamicModulePort:
                     case iCS_ObjectTypeEnum.InStaticModulePort:
-                    case iCS_ObjectTypeEnum.OutStaticModulePort: {
-                        break;
-                    }
-
-                    // State transition ports.
+                    case iCS_ObjectTypeEnum.OutStaticModulePort:
                     case iCS_ObjectTypeEnum.OutStatePort: {
                         break;
                     }
+					case iCS_ObjectTypeEnum.InMuxPort: {
+						iCS_IParams rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_IParams;
+						if(rtMuxPort == null) break;
+                        iCS_EditorObject sourcePort= GetDataConnectionSource(port);
+						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
+						rtMuxPort.SetParameterConnection(port.PortIndex, connection);
+						break;
+					}
                     case iCS_ObjectTypeEnum.InStatePort: {
                         iCS_EditorObject endState= GetParent(port);
                         iCS_EditorObject transitionModule= GetParent(GetSource(port));
@@ -437,14 +441,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                     case iCS_ObjectTypeEnum.EnablePort: {
                         // Build connection.
                         iCS_EditorObject sourcePort= GetDataConnectionSource(port);
-						iCS_Connection connection= iCS_Connection.NoConnection;
-						if(sourcePort != port) {
-							if(myRuntimeNodes[sourcePort.InstanceId] != null) {
-								connection= new iCS_Connection(myRuntimeNodes[sourcePort.InstanceId] as iCS_FunctionBase, 0);							
-							} else {
-								connection= new iCS_Connection(myRuntimeNodes[sourcePort.ParentId] as iCS_FunctionBase, sourcePort.PortIndex);
-							}
-						}
+						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
                         // Build initial value.
 						object initValue= GetInitialValue(sourcePort);
                         // Set data port.
@@ -560,6 +557,16 @@ public sealed class iCS_Behaviour : iCS_Storage {
 	    if(port.InitialValueArchive == null || port.InitialValueArchive == "") return null;
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
 		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
+	}
+    // ----------------------------------------------------------------------
+	iCS_Connection BuildConnection(iCS_EditorObject port) {
+		iCS_Connection connection= iCS_Connection.NoConnection;
+		if(myRuntimeNodes[port.InstanceId] != null) {
+			connection= new iCS_Connection(myRuntimeNodes[port.InstanceId] as iCS_IParams, 0);							
+		} else {
+			connection= new iCS_Connection(myRuntimeNodes[port.ParentId] as iCS_IParams, port.PortIndex);
+		}
+		return connection;
 	}
 	
     // ======================================================================

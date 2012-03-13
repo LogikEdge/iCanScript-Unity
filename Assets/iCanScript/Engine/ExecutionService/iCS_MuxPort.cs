@@ -1,27 +1,53 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_MuxPort : iCS_FunctionBase {
+public class iCS_MuxPort : iCS_Action, iCS_IParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+	object 			 myReturn;
+    iCS_Connection[] myConnections;
 	
     // ======================================================================
-    // Accessors
+    // IParams implementation
     // ----------------------------------------------------------------------
-    protected override bool DoIsParameterReady(int idx, int frameId) {
-		if(idx != 0) return base.DoIsParameterReady(idx, frameId);
+	public string GetParameterName(int idx) 			{ return Name+"["+idx+"]"; }
+    public object GetParameter(int idx) 				{ return idx == 0 ? myReturn : null; }
+    public void   SetParameter(int idx, object value)	{ if(idx == 0) myReturn= value; }
+    public bool   IsParameterReady(int idx, int frameId) {
+		if(idx != 0) return false;
 		if(IsCurrent(frameId)) return true;
-		return ReadAnyInput(frameId);
-    }
+		return ReadAnyInput(frameId);	
+	}
+	public void   SetParameterConnection(int idx, iCS_Connection connection) {
+		if(idx < 0) {
+			Debug.LogWarning("iCanScript: SetConnection index invalid: "+idx);
+			return;
+		}
+		if(idx >= myConnections.Length) {
+			var newConnections= new iCS_Connection[idx+1];
+			int i= 0;
+			for(; i < myConnections.Length; ++i) {
+				newConnections[i]= myConnections[i];
+			}
+			for(; i < newConnections.Length; ++i) {
+				newConnections[i]= iCS_Connection.NoConnection;
+			}
+			myConnections= newConnections;
+		}
+		myConnections[idx]= connection;
+	}
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_MuxPort(string name, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {}
+    public iCS_MuxPort(string name, Vector2 layout) : base(name, layout) {
+		myConnections= new iCS_Connection[1];
+		myConnections[0]= iCS_Connection.NoConnection;
+	}
 
     // ======================================================================
-    // Execution
+    // Execution (not used)
     // ----------------------------------------------------------------------
     public override void Execute(int frameId) {
 		if(!ReadAnyInput(frameId)) {
@@ -35,13 +61,13 @@ public class iCS_MuxPort : iCS_FunctionBase {
     }
     // ----------------------------------------------------------------------
 	bool ReadAnyInput(int frameId) {
-        foreach(var id in myInIndexes) {
-            if(myConnections[id].IsConnected && myConnections[id].IsReady(frameId)) {
-                myParameters[0]= myConnections[id].Value;
+		for(int i= 1; i < myConnections.Length; ++i) {
+            if(myConnections[i].IsConnected && myConnections[i].IsReady(frameId)) {
+                myReturn= myConnections[i].Value;
                 MarkAsCurrent(frameId);
                 return true;
-            }
-        }
+            }			
+		}
 		return false;		
 	}
 }
