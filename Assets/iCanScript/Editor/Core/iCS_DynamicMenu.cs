@@ -112,6 +112,7 @@ public class iCS_DynamicMenu {
         MenuContext[] menu= new MenuContext[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             // Base menu items
+<<<<<<< HEAD
             menu= new MenuContext[3];
             menu[0].Command= ModuleStr;
             menu[1].Command= StateChartStr; 
@@ -122,23 +123,32 @@ public class iCS_DynamicMenu {
             } else {
                 menu[2]= "#"+EnablePortStr;
             }
+=======
+            menu= new string[2];
+            menu[0]= ModuleStr;
+            menu[1]= StateChartStr; 
+>>>>>>> 03d0f834ae0327b73f8a77dd304d1f5aebcadd68
         }
         if(IsClassMenu) {
             // Class menu items
             if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-                List<iCS_ReflectionDesc> classMenu= iCS_DataBase.GetClasses();
+                List<iCS_ReflectionDesc> classMenu= iCS_DataBase.BuildNormalMenu();
                 tmp= new string[menu.Length+classMenu.Count+1];
                 menu.CopyTo(tmp, 0);
                 tmp[menu.Length]= SeparatorStr;
                 for(int i= 0; i < classMenu.Count; ++i) {
-                    tmp[i+menu.Length+1]= "++ "+classMenu[i].FunctionPath;
+                    if(iCS_Types.IsStaticClass(classMenu[i].ClassType)) {
+                        tmp[i+menu.Length+1]= "++ "+classMenu[i].ToString();                        
+                    } else {
+                        tmp[i+menu.Length+1]= "++ "+classMenu[i].FunctionPath;
+                    }
                 }
                 menu= tmp;            
             }            
         } else {
             // Function menu items
             if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-                List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildMenu();
+                List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildExpertMenu();
                 tmp= new string[menu.Length+functionMenu.Count+1];
                 menu.CopyTo(tmp, 0);
                 tmp[menu.Length]= SeparatorStr;

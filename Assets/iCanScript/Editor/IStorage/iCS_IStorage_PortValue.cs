@@ -42,13 +42,22 @@ public partial class iCS_IStorage {
 	public object GetPortValue(iCS_EditorObject port) {
 		if(!port.IsDataPort) return null;
 		while(GetSource(port) != null) port= GetSource(port);
-		iCS_IParams funcBase= GetRuntimeObject(GetParent(port)) as iCS_IParams;
+		iCS_IParams funcBase= GetRuntimeObject(port) as iCS_IParams;
+		if(funcBase != null) {
+		    return funcBase.GetParameter(0);
+		}
+		funcBase= GetRuntimeObject(GetParent(port)) as iCS_IParams;
 		return funcBase == null ? GetInitialPortValue(port) : funcBase.GetParameter(port.PortIndex);
 	}
     // ----------------------------------------------------------------------
 	public void SetPortValue(iCS_EditorObject port, object value) {
 		if(!port.IsDataPort) return;
-		iCS_IParams funcBase= GetRuntimeObject(GetParent(port)) as iCS_IParams;
+		iCS_IParams funcBase= GetRuntimeObject(port) as iCS_IParams;
+        if(funcBase != null) {
+            funcBase.SetParameter(0, value);
+            return;
+        }
+		funcBase= GetRuntimeObject(GetParent(port)) as iCS_IParams;
 		if(funcBase == null) return;
 		funcBase.SetParameter(port.PortIndex, value);
 	}

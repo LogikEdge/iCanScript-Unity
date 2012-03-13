@@ -970,8 +970,11 @@ public class iCS_Graphics {
                     highlightWidth= Scale*highlightWidth;
                     if(highlightWidth < 1f) highlightWidth= 1f;
             		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, highlightColor, lineTexture, lineWidth+highlightWidth);                    
+            		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
+                } else {
+                    color.a= 0.6f*color.a;
+            		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                    
                 }
-        		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);
                 // Show transition name for state connections.
                 if(port.IsInStatePort) {
                     // Show transition input port.

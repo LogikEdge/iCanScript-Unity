@@ -69,9 +69,32 @@ public class iCS_DataBase {
         return d1.DisplayName.CompareTo(d2.DisplayName);
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_ReflectionDesc> BuildMenu() {
+    public static List<iCS_ReflectionDesc> BuildExpertMenu() {
         QSort();
         return Functions;
+    }
+    // ----------------------------------------------------------------------
+    public static List<iCS_ReflectionDesc> BuildNormalMenu() {
+        QSort();
+        List<iCS_ReflectionDesc> menu= new List<iCS_ReflectionDesc>();
+        foreach(var desc in Functions) {
+            Type classType= desc.ClassType;
+            if(iCS_Types.IsStaticClass(classType)) {
+                menu.Add(desc);
+            } else {
+                bool found= false;
+                foreach(var existing in menu) {
+                    if(classType == existing.ClassType) {
+                        found= true;
+                        break;
+                    }
+                }
+                if(!found) {
+                    menu.Add(desc);
+                }                
+            }
+        }
+        return menu;        
     }
     // ----------------------------------------------------------------------
     // Returns one descriptor per class

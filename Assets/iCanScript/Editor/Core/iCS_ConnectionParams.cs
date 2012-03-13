@@ -28,8 +28,8 @@ public class iCS_ConnectionParams {
         End= new Vector2(portPos.x, portPos.y);
 
         // Compute Bezier tangents.
-        Vector2 startDir= ConnectionDirectionForTo(source, port, storage);
-        Vector2 endDir= ConnectionDirectionForTo(port, source, storage);
+        Vector2 startDir= ConnectionDirectionFromTo(source, port, storage);
+        Vector2 endDir= ConnectionDirectionFromTo(port, source, storage);
 		Vector2 vertex= End-Start;
         StartTangent= Start + startDir * 0.25f * (vertex.magnitude + Mathf.Abs(Vector2.Dot(startDir, vertex)));
         EndTangent  = End + endDir * 0.25f * (vertex.magnitude + Mathf.Abs(Vector2.Dot(endDir, vertex)));
@@ -42,7 +42,7 @@ public class iCS_ConnectionParams {
     // ----------------------------------------------------------------------
     public iCS_ConnectionParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, storage.GetSource(port), storage) {}
     // ----------------------------------------------------------------------
-    static Vector2 ConnectionDirectionForTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
+    static Vector2 ConnectionDirectionFromTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         Vector2 direction;
         if(port.IsFloating || to.IsFloating) {
             Vector2 fromPos= Math3D.Middle(storage.GetPosition(port));
