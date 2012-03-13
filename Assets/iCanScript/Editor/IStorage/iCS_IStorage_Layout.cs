@@ -44,6 +44,10 @@ public partial class iCS_IStorage {
         if(node.IsMinimized) {
             Vector2 iconSize= iCS_Graphics.GetMaximizeIconSize(node, this);
             if(node.LocalPosition.width != iconSize.x || node.LocalPosition.height != iconSize.y) {
+                if(IsValid(node.ParentId)) {
+                    if(node.LocalPosition.x == 0) node.LocalPosition.x= 0.5f*GetParent(node).LocalPosition.width;
+                    if(node.LocalPosition.y == 0) node.LocalPosition.y= 0.5f*GetParent(node).LocalPosition.height;                    
+                }
                 node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-iconSize.x);
                 node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-iconSize.y);
                 node.LocalPosition.width= iconSize.x;
@@ -53,6 +57,9 @@ public partial class iCS_IStorage {
             return;
         }
 
+        // Refresh children that have not yet perfromed a layout.
+        ForEachChild(node, c=> { if(c.LocalPosition.x == 0 && c.LocalPosition.y == 0) SetDirty(c); });
+        
         // Resolve collision on children.
         ResolveCollisionOnChildren(node, Vector2.zero);
 
