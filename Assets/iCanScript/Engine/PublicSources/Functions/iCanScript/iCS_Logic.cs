@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 [iCS_Class(Company="iCanScript", Package="Conditions")]
-public static class iCS_Logic {
+public static class iCS_Conditions {
     // Comparaison operations.
     [iCS_Function(Return="True")]
     public static bool IsZero(float a, out bool False)                           { bool result= Math3D.IsZero(a); False= !result; return result; }
