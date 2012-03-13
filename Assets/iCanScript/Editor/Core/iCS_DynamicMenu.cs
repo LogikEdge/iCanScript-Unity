@@ -10,8 +10,8 @@ public class iCS_DynamicMenu {
         public iCS_EditorObject     SelectedObject;
         public iCS_IStorage         Storage;
         public iCS_ReflectionDesc   Descriptor;
-        public MenuContext() : this(null, null, null) {}
-        public MenuContext(string command, iCS_EditorObject selected, iCS_IStorage storage, iCS_ReflectionDesc descriptor= null) {
+        public MenuContext(string command, iCS_ReflectionDesc descriptor= null) : this(command, descriptor, null, null) {}
+        public MenuContext(string command, iCS_ReflectionDesc descriptor, iCS_EditorObject selected, iCS_IStorage storage) {
             Command= command;
             SelectedObject= selected;
             Storage= storage;
@@ -99,48 +99,35 @@ public class iCS_DynamicMenu {
         for(int i= 0; i < len; ++i) {
             string name= iCS_AllowedChildren.BehaviourChildNames[i];
             if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
-                menu[i].Command= String.Concat("+ ", name);
+                menu[i]= new MenuContext(String.Concat("+ ", name));
             } else {
-                menu[i].Command= String.Concat("#+ ", name);
+                menu[i]= new MenuContext(String.Concat("#+ ", name));
             }
         }
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        string[] tmp= null;
+        MenuContext[] tmp= null;
         MenuContext[] menu= new MenuContext[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             // Base menu items
-<<<<<<< HEAD
-            menu= new MenuContext[3];
-            menu[0].Command= ModuleStr;
-            menu[1].Command= StateChartStr; 
-            // Enable port
-            bool hasEnablePort= storage.HasEnablePort(selectedObject);
-            if(!hasEnablePort) {
-                menu[2]= EnablePortStr;
-            } else {
-                menu[2]= "#"+EnablePortStr;
-            }
-=======
-            menu= new string[2];
-            menu[0]= ModuleStr;
-            menu[1]= StateChartStr; 
->>>>>>> 03d0f834ae0327b73f8a77dd304d1f5aebcadd68
+            menu= new MenuContext[2];
+            menu[0]= new MenuContext(ModuleStr);
+            menu[1]= new MenuContext(StateChartStr); 
         }
         if(IsClassMenu) {
             // Class menu items
             if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
                 List<iCS_ReflectionDesc> classMenu= iCS_DataBase.BuildNormalMenu();
-                tmp= new string[menu.Length+classMenu.Count+1];
+                tmp= new MenuContext[menu.Length+classMenu.Count+1];
                 menu.CopyTo(tmp, 0);
-                tmp[menu.Length]= SeparatorStr;
+                tmp[menu.Length]= new MenuContext(SeparatorStr);
                 for(int i= 0; i < classMenu.Count; ++i) {
                     if(iCS_Types.IsStaticClass(classMenu[i].ClassType)) {
-                        tmp[i+menu.Length+1]= "++ "+classMenu[i].ToString();                        
+                        tmp[i+menu.Length+1]= new MenuContext("++ "+classMenu[i].ToString(), classMenu[i]);                        
                     } else {
-                        tmp[i+menu.Length+1]= "++ "+classMenu[i].FunctionPath;
+                        tmp[i+menu.Length+1]= new MenuContext("++ "+classMenu[i].FunctionPath, classMenu[i]);
                     }
                 }
                 menu= tmp;            
@@ -149,80 +136,80 @@ public class iCS_DynamicMenu {
             // Function menu items
             if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
                 List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildExpertMenu();
-                tmp= new string[menu.Length+functionMenu.Count+1];
+                tmp= new MenuContext[menu.Length+functionMenu.Count+1];
                 menu.CopyTo(tmp, 0);
-                tmp[menu.Length]= SeparatorStr;
+                tmp[menu.Length]= new MenuContext(SeparatorStr);
                 for(int i= 0; i < functionMenu.Count; ++i) {
-                    tmp[i+menu.Length+1]= "+ "+functionMenu[i].ToString();
+                    tmp[i+menu.Length+1]= new MenuContext("+ "+functionMenu[i].ToString(), functionMenu[i]);
                 }
                 menu= tmp;            
             }            
         }
         // Delete menu item
         if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionAction) {
-            tmp= new string[menu.Length+2];
+            tmp= new MenuContext[menu.Length+2];
             menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            tmp[menu.Length+1]= DeleteStr;
+            tmp[menu.Length]= new MenuContext(SeparatorStr);
+            tmp[menu.Length+1]= new MenuContext(DeleteStr);
             menu= tmp;
         }
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void TransitionModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        string[] menu= new string[1];
-        menu[0]= DeleteStr;
+        MenuContext[] menu= new MenuContext[1];
+        menu[0]= new MenuContext(DeleteStr);
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        string[] menu= new string[0];
+        MenuContext[] menu= new MenuContext[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            menu= new string[1];
-            menu[0]= StateStr; 
+            menu= new MenuContext[1];
+            menu[0]= new MenuContext(StateStr); 
         }
         // Delete menu item
-        string[] tmp= null;
+        MenuContext[] tmp= null;
         if(selectedObject.InstanceId != 0) {
-            tmp= new string[menu.Length+2];
+            tmp= new MenuContext[menu.Length+2];
             menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= SeparatorStr;
-            tmp[menu.Length+1]= DeleteStr;
+            tmp[menu.Length]= new MenuContext(SeparatorStr);
+            tmp[menu.Length+1]= new MenuContext(DeleteStr);
             menu= tmp;
         }
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void StateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        string[] menu;
+        MenuContext[] menu;
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             int len= iCS_AllowedChildren.StateChildNames.Length;
-            menu= new string[len+4];
-            menu[0]= StateStr;
-            menu[1]= SeparatorStr;
+            menu= new MenuContext[len+4];
+            menu[0]= new MenuContext(StateStr);
+            menu[1]= new MenuContext(SeparatorStr);
             for(int i= 0; i < len; ++i) {
                 string name= iCS_AllowedChildren.StateChildNames[i];
                 if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
-                    menu[i+2]= String.Concat("+ ", name);
+                    menu[i+2]= new MenuContext(String.Concat("+ ", name));
                 } else {
-                    menu[i+2]= String.Concat("#+ ", name);
+                    menu[i+2]= new MenuContext(String.Concat("#+ ", name));
                 }
             }
-            menu[len+2]= SeparatorStr;
+            menu[len+2]= new MenuContext(SeparatorStr);
             if(selectedObject.IsRawEntryState) {
-                menu[len+3]= String.Concat("#", SetAsEntryStr);
+                menu[len+3]= new MenuContext(String.Concat("#", SetAsEntryStr));
             } else {
-                menu[len+3]= SetAsEntryStr;
+                menu[len+3]= new MenuContext(SetAsEntryStr);
             }
         } else {
-            menu= new string[0];
+            menu= new MenuContext[0];
         }
         // Delete menu item.tmp= new string[menu.Length+2];
-        string[] tmp= null;
-        tmp= new string[menu.Length+2];
+        MenuContext[] tmp= null;
+        tmp= new MenuContext[menu.Length+2];
         menu.CopyTo(tmp, 0);
-        tmp[menu.Length]= SeparatorStr;
-        tmp[menu.Length+1]= DeleteStr;
+        tmp[menu.Length]= new MenuContext(SeparatorStr);
+        tmp[menu.Length+1]= new MenuContext(DeleteStr);
         menu= tmp;
         ShowMenu(menu, selectedObject, storage);
     }
@@ -230,18 +217,21 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void MethodMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
-            ShowMenu(new string[]{DeleteStr}, selectedObject, storage);            
+			MenuContext[] menu= new MenuContext[1];
+			menu[0]= new MenuContext(DeleteStr);
+            ShowMenu(menu, selectedObject, storage);            
         }
     }
 	// ----------------------------------------------------------------------
     void PortMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        string[] menu= new string[0];
+        MenuContext[] menu= new MenuContext[0];
         // Allow to publish port if the grand-parent is a module.
         iCS_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
         iCS_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
         if(grandParent != null && grandParent.IsModule) {
             if(!(selectedObject.IsInputPort && storage.IsValid(selectedObject.Source))) {
-                menu= new string[]{PublishPortStr};                
+                menu= new MenuContext[1];
+				menu[0]= new MenuContext(PublishPortStr);                
             }
         }
         // Get compatible functions.
@@ -254,18 +244,18 @@ public class iCS_DynamicMenu {
             }
             if(functionMenu.Count != 0) {
                 int len= menu.Length;
-                string[] tmp= null;
+                MenuContext[] tmp= null;
                 if(len == 0) {
-                    tmp= new string[functionMenu.Count];
+                    tmp= new MenuContext[functionMenu.Count];
                 } else {
-                    tmp= new string[len+1+functionMenu.Count];
+                    tmp= new MenuContext[len+1+functionMenu.Count];
                     menu.CopyTo(tmp, 0);
-                    tmp[len]= SeparatorStr;
+                    tmp[len]= new MenuContext(SeparatorStr);
                     ++len;                    
                 }
                 menu= tmp;                
                 for(int i= 0; i < functionMenu.Count; ++i) {
-                    menu[len+i]= functionMenu[i].ToString();
+                    menu[len+i]= new MenuContext(functionMenu[i].ToString(), functionMenu[i]);
                 }
             }
         }
@@ -273,13 +263,13 @@ public class iCS_DynamicMenu {
         if(selectedObject.IsStatePort || selectedObject.IsDynamicModulePort || selectedObject.IsEnablePort) {
             int i= menu.Length;
             if(i == 0) {
-                menu= new string[1];
-                menu[0]= DeleteStr;
+                menu= new MenuContext[1];
+                menu[0]= new MenuContext(DeleteStr);
             } else {
-                string[] tmp= new string[i+2];
+                MenuContext[] tmp= new MenuContext[i+2];
                 menu.CopyTo(tmp, 0);
-                tmp[i]= SeparatorStr;
-                tmp[i+1]= DeleteStr;
+                tmp[i]= new MenuContext(SeparatorStr);
+                tmp[i+1]= new MenuContext(DeleteStr);
                 menu= tmp;                
             }
         }
@@ -299,7 +289,7 @@ public class iCS_DynamicMenu {
         int sepCnt= 0;
         GenericMenu gMenu= new GenericMenu();
         foreach(var item in menu) {
-            if(item == SeparatorStr) {
+            if(item.Command == SeparatorStr) {
                 if(sepCnt != 0) gMenu.AddSeparator("");
                 sepCnt= 0;
             } else {
@@ -402,14 +392,16 @@ public class iCS_DynamicMenu {
                 break;                
             }
             default: {
+				iCS_ReflectionDesc desc= context.Descriptor;
+				if(desc == null) {
+					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
+					break;
+				}
                 bool classModule= context.Command.StartsWith("++");
                 if(!classModule) {
-                    iCS_ReflectionDesc desc= GetReflectionDescFromMenuCommand(context);
-                    if(desc != null) {
-                        CreateMethod(context.SelectedObject, context.Storage, desc);                                           
-                    }                    
+                	CreateMethod(context.SelectedObject, context.Storage, desc);                                           
                 } else {
-                    Type classType= GetClassTypeFromMenuCommand(context);
+                    Type classType= desc.ClassType;
                     if(classType != null) {
                         CreateClassModule(context.SelectedObject, context.Storage, classType);
                     }
