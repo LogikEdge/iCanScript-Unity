@@ -1603,8 +1603,9 @@ public class iCS_Editor : EditorWindow {
 		iCS_EditorUtility.ToolbarLabel(ref r, 150f, new GUIContent(bookmarkString),0,0,true);
 		
 		// Editable field test.		
-		iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent("Menu Type:"), 0, 0, false);		
-		MenuOption= iCS_EditorUtility.ToolbarButtons(ref r, 120f, MenuOption, menuOptions, 0, 0);
+		iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent("Mode:"), 0, 0, false);		
+		MenuOption= iCS_EditorUtility.ToolbarButtons(ref r, 90f, MenuOption, menuOptions, 0, 0);
+		iCS_EditorUtility.ToolbarButtons(ref r, 8f, -1, new string[1]{""}, 0, 0);
 	}
 	// ----------------------------------------------------------------------
     void UpdateClassWizard() {
