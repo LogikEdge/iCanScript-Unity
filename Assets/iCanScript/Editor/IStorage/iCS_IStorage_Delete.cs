@@ -42,11 +42,11 @@ public partial class iCS_IStorage {
 		// Detroy the transition as a single block.
 		if(toDestroy.IsStatePort || toDestroy.IsTransitionModule) {
 	        iCS_EditorObject outStatePort= GetOutStatePort(toDestroy);
-	        iCS_EditorObject inStatePort= GetInTransitionPort(outStatePort);
-	        iCS_EditorObject transitionModule= GetTransitionModule(outStatePort);
-			ScheduleDestroyInstance(inStatePort);
-			ScheduleDestroyInstance(transitionModule);
-			ScheduleDestroyInstance(outStatePort);
+	        iCS_EditorObject inStatePort= GetInTransitionPort(toDestroy);
+	        iCS_EditorObject transitionModule= GetTransitionModule(toDestroy);
+			if(inStatePort != null)      ScheduleDestroyInstance(inStatePort);
+			if(transitionModule != null) ScheduleDestroyInstance(transitionModule);
+			if(outStatePort != null)     ScheduleDestroyInstance(outStatePort);
 		}
 	}
     // ----------------------------------------------------------------------
