@@ -179,6 +179,7 @@ public static class iCS_EditorUtility {
     public static int ToolbarButtons(ref Rect toolbarRect, float width, int value, string[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
 		Rect r= HeaderRect(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
-        return GUI.Toolbar(r, value, options, EditorStyles.toolbarButton);
+        int newValue= GUI.Toolbar(r, value, options, EditorStyles.toolbarButton);
+		return newValue;
     }
 }
