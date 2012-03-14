@@ -247,17 +247,17 @@ public class iCS_Graphics {
         r= TranslateAndScale(r);
         Vector3 center= Math3D.Middle(r);
         Vector3 tangent= Vector3.Cross(dir, Vector3.forward);
-        float size= 6*Scale;
+        float size= 9f*Scale;
         Vector3 head= size*dir;
         Vector3 bottom= size*tangent;
         
         Vector3[] vectors= new Vector3[4];
         vectors[0]= center+head;
         vectors[1]= center-head+bottom;
-        vectors[2]= center-head-bottom;
-        vectors[3]= center+head;
+        vectors[2]= center-0.6f*head;
+        vectors[3]= center-head-bottom;
         Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0.75f, 0.75f, 0.75f));
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0.25f, 0.25f, 0.25f));
 	}
 	// ----------------------------------------------------------------------
     bool ShouldShowLabel() {
