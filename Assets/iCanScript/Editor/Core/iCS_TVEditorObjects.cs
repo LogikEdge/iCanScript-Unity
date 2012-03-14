@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_TVEditorObjects : iCS_ITreeViewItem {
+public class iCS_TVEditorObjects : iCS_ITree {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
