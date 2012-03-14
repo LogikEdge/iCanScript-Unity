@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-[iCS_Class(Company="TypeCasts")]
+[iCS_Class]
 public static class iCS_TypeCasts {
     // To Bool.
     [iCS_TypeCast] public static bool   ToBool(object o)    { return o != null; }

@@ -125,9 +125,9 @@ public class iCS_DynamicMenu {
                 tmp[menu.Length]= new MenuContext(SeparatorStr);
                 for(int i= 0; i < classMenu.Count; ++i) {
                     if(iCS_Types.IsStaticClass(classMenu[i].ClassType)) {
-                        tmp[i+menu.Length+1]= new MenuContext("++ "+classMenu[i].ToString(), classMenu[i]);                        
+                        tmp[i+menu.Length+1]= new MenuContext("+ "+classMenu[i].ToString(), classMenu[i]);                        
                     } else {
-                        tmp[i+menu.Length+1]= new MenuContext("++ "+classMenu[i].FunctionPath, classMenu[i]);
+                        tmp[i+menu.Length+1]= new MenuContext("+ "+classMenu[i].FunctionPath, classMenu[i]);
                     }
                 }
                 menu= tmp;            
@@ -397,8 +397,7 @@ public class iCS_DynamicMenu {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
 				}
-                bool classModule= context.Command.StartsWith("++");
-                if(!classModule) {
+                if(!ShouldCreateClassModule(desc)) {
                 	CreateMethod(context.SelectedObject, context.Storage, desc);                                           
                 } else {
                     Type classType= desc.ClassType;
@@ -614,4 +613,9 @@ public class iCS_DynamicMenu {
             }
         );
     }
+	// ----------------------------------------------------------------------
+	bool ShouldCreateClassModule(iCS_ReflectionDesc desc) {
+		if(!IsClassMenu) return false;
+		return !iCS_Types.IsStaticClass(desc.ClassType);
+	}
 }
