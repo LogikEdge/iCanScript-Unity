@@ -221,9 +221,9 @@ public class iCS_Graphics {
         Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.y+radius,0), FacingNormal, new Vector3(1f,0,0), 90f, radius);
         Handles.DrawWireArc(new Vector3(r.x+radius, r.yMax-radius,0), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
         Handles.DrawWireArc(new Vector3(r.xMax-radius, r.yMax-radius,0), FacingNormal, new Vector3(0,1f,0), 90f, radius);
-        Handles.DrawLine(new Vector3(r.x,r.y+radius,0), new Vector3(r.x, r.yMax-radius,0));
+        Handles.DrawLine(new Vector3(r.x,r.y+radius,0), new Vector3(r.x, r.yMax-radius+1f,0));
         Handles.DrawLine(new Vector3(r.xMax,r.y+radius,0), new Vector3(r.xMax, r.yMax-radius,0));
-        Handles.DrawLine(new Vector3(r.x+radius,r.yMax,0), new Vector3(r.xMax-radius, r.yMax,0));
+        Handles.DrawLine(new Vector3(r.x+radius,r.yMax,0), new Vector3(r.xMax-radius+1f, r.yMax,0));
         vectors[0]= new Vector3(r.x+radius, r.y, 0);
         vectors[1]= new Vector3(r.xMax-radius, r.y, 0);
         vectors[2]= new Vector3(r.xMax-radius, r.y+radius, 0);
@@ -243,68 +243,21 @@ public class iCS_Graphics {
         GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, TitleStyle);
     }
     // ----------------------------------------------------------------------
-    void DrawMux(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor) {
+    void DrawMinimizedTransitionModule(Vector2 dir, Rect r, Color nodeColor) {
         r= TranslateAndScale(r);
-        float radius= kNodeCornerRadius;
-        radius*= Scale;
+        Vector3 center= Math3D.Middle(r);
+        Vector3 tangent= Vector3.Cross(dir, Vector3.forward);
+        float size= 6*Scale;
+        Vector3 head= size*dir;
+        Vector3 bottom= size*tangent;
         
-        // Show shadow.
         Vector3[] vectors= new Vector3[4];
-        for(int i= 5; i > 0; --i) {
-            Handles.color= shadowColor;
-            Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.y+radius), FacingNormal, new Vector3(1f,0,0), 90f, radius);
-            Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.yMax-radius), FacingNormal, new Vector3(0,1f,0), 90f, radius);
-            Handles.DrawSolidArc(new Vector3(i+r.x+radius, i+r.yMax-radius), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
-            vectors[0]= new Vector3(i+r.xMax-radius, i+r.y+radius, 0);
-            vectors[1]= new Vector3(i+r.xMax, i+r.y+radius, 0);
-            vectors[2]= new Vector3(i+r.xMax, i+r.yMax-radius, 0);
-            vectors[3]= new Vector3(i+r.xMax-radius, i+r.yMax-radius, 0);
-            Handles.color= Color.white;
-            Handles.DrawSolidRectangleWithOutline(vectors, shadowColor, new Color(0,0,0,0));
-            vectors[0]= new Vector3(i+r.x+radius, i+r.yMax-radius, 0);
-            vectors[1]= new Vector3(i+r.xMax-radius, i+r.yMax-radius, 0);
-            vectors[2]= new Vector3(i+r.xMax-radius, i+r.yMax, 0);
-            vectors[3]= new Vector3(i+r.x+radius, i+r.yMax, 0);
-            Handles.color= Color.white;
-            Handles.DrawSolidRectangleWithOutline(vectors, shadowColor, new Color(0,0,0,0));
-        }
-        
-        // Show background.
-        Handles.color= backgroundColor;
-        Handles.DrawSolidArc(new Vector3(r.x+radius, r.yMax-radius,0), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
-        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.yMax-radius,0), FacingNormal, new Vector3(0,1f,0), 90f, radius);
-        vectors[0]= new Vector3(r.x, r.y+radius, 0);
-        vectors[1]= new Vector3(r.xMax, r.y+radius, 0);
-        vectors[2]= new Vector3(r.xMax, r.yMax-radius, 0);
-        vectors[3]= new Vector3(r.x, r.yMax-radius, 0);
+        vectors[0]= center+head;
+        vectors[1]= center-head+bottom;
+        vectors[2]= center-head-bottom;
+        vectors[3]= center+head;
         Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
-        vectors[0]= new Vector3(r.x+radius, r.yMax-radius, 0);
-        vectors[1]= new Vector3(r.xMax-radius, r.yMax-radius, 0);
-        vectors[2]= new Vector3(r.xMax-radius, r.yMax, 0);
-        vectors[3]= new Vector3(r.x+radius, r.yMax, 0);
-        Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
-        
-        // Show frame.
-        Handles.color= nodeColor;
-        Handles.DrawSolidArc(new Vector3(r.x+radius, r.y+radius,0), FacingNormal, new Vector3(0,-1f,0), 90f, radius);
-        Handles.DrawSolidArc(new Vector3(r.xMax-radius, r.y+radius,0), FacingNormal, new Vector3(1f,0,0), 90f, radius);
-        Handles.DrawWireArc(new Vector3(r.x+radius, r.yMax-radius,0), FacingNormal, new Vector3(-1f,0,0), 90f, radius);
-        Handles.DrawWireArc(new Vector3(r.xMax-radius, r.yMax-radius,0), FacingNormal, new Vector3(0,1f,0), 90f, radius);
-        Handles.DrawLine(new Vector3(r.x,r.y+radius,0), new Vector3(r.x, r.yMax-radius,0));
-        Handles.DrawLine(new Vector3(r.xMax,r.y+radius,0), new Vector3(r.xMax, r.yMax-radius,0));
-        Handles.DrawLine(new Vector3(r.x+radius,r.yMax,0), new Vector3(r.xMax-radius, r.yMax,0));
-        vectors[0]= new Vector3(r.x+radius, r.y, 0);
-        vectors[1]= new Vector3(r.xMax-radius, r.y, 0);
-        vectors[2]= new Vector3(r.xMax-radius, r.y+radius, 0);
-        vectors[3]= new Vector3(r.x+radius, r.y+radius, 0);
-        Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0,0,0,0));
-        vectors[0]= new Vector3(r.x, r.y+radius, 0);
-        vectors[1]= new Vector3(r.xMax, r.y+radius, 0);
-        vectors[2]= new Vector3(r.xMax, r.y+1.75f*radius, 0);
-        vectors[3]= new Vector3(r.x, r.y+1.75f*radius, 0);
-        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0,0,0,0));
+        Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0.75f, 0.75f, 0.75f));
 	}
 	// ----------------------------------------------------------------------
     bool ShouldShowLabel() {
@@ -582,7 +535,11 @@ public class iCS_Graphics {
         Texture icon= GetMaximizeIcon(node, storage);
         if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
-        GUI_DrawTexture(texturePos, icon);                           
+        if(node.IsTransitionModule) {
+            DrawMinimizedTransitionModule(storage.GetTransitionModuleVector(node), texturePos, Color.white);
+        } else {
+            GUI_DrawTexture(texturePos, icon);                                       
+        }
         EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
         GUI_Label(texturePos, new GUIContent("", node.ToolTip), LabelStyle);
 		ShowTitleOver(texturePos, node, storage);

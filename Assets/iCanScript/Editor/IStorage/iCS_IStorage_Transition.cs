@@ -259,6 +259,7 @@ public partial class iCS_IStorage {
         var outStatePos= Math3D.ToVector2(GetPosition(outStatePort));
         var inTransitionPos= Math3D.ToVector2(GetPosition(inTransitionPort));
         var outTransitionPos= Math3D.ToVector2(GetPosition(outTransitionPort));
-        return 0.5f*((inStatePos-outTransitionPos).normalized+(inTransitionPos-outStatePos).normalized);
+        Vector2 dir= ((inStatePos-outTransitionPos).normalized+(inTransitionPos-outStatePos).normalized).normalized;
+        return dir;
     }
 }
