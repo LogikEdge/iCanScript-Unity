@@ -49,6 +49,12 @@ public class iCS_ConnectionParams {
             Vector2 toPos= Math3D.Middle(storage.GetPosition(to));
             return GetBestDirectionFrom((toPos-fromPos).normalized);
         } else {
+            if(port.IsOutTransitionPort && storage.GetParent(port).IsMinimized) {
+                return storage.GetTransitionModuleVector(storage.GetParent(port));
+            }
+            if(port.IsInTransitionPort && storage.GetParent(port).IsMinimized) {
+                return -storage.GetTransitionModuleVector(storage.GetParent(port));
+            }
             if(port.IsOnLeftEdge) {
                 direction= LeftDirection;
             } else if(port.IsOnRightEdge) {

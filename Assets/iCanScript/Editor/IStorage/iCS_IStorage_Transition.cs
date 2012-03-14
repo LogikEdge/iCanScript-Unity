@@ -136,6 +136,42 @@ public partial class iCS_IStorage {
         return FindAConnectedPort(inStatePort);
     }
     // ----------------------------------------------------------------------
+    public iCS_EditorObject GetInTransitionPort(iCS_EditorObject obj) {
+        if(obj.IsInTransitionPort) return obj;
+        iCS_EditorObject transitionModule= obj.IsTransitionModule ?
+                obj :
+                (obj.IsOutTransitionPort ? GetParent(obj) : GetTransitionModule(obj));
+        iCS_EditorObject inTransitionPort= null;
+        ForEachChildPort(transitionModule,
+            p=> {
+                if(p.IsInTransitionPort) {
+                    inTransitionPort= p;
+                    return true;
+                }
+                return false;
+            }
+        );
+        return inTransitionPort;
+    }
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject GetOutTransitionPort(iCS_EditorObject obj) {
+        if(obj.IsOutTransitionPort) return obj;
+        iCS_EditorObject transitionModule= obj.IsTransitionModule ? 
+                obj :
+                (obj.IsInTransitionPort ? GetParent(obj) : GetTransitionModule(obj));
+        iCS_EditorObject outTransitionPort= null;
+        ForEachChildPort(transitionModule,
+            p=> {
+                if(p.IsOutTransitionPort) {
+                    outTransitionPort= p;
+                    return true;
+                }
+                return false;
+            }
+        );
+        return outTransitionPort;
+    }
+    // ----------------------------------------------------------------------
     public iCS_EditorObject GetTransitionModule(iCS_EditorObject statePort) {
 		if(statePort == null) return null;
         // Get the outStatePort
@@ -214,17 +250,15 @@ public partial class iCS_IStorage {
         SetPosition(module, ProposeTransitionModulePosition(module));                    
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetInTransitionPort(iCS_EditorObject parent) {
-        iCS_EditorObject inTransitionPort= null;
-        ForEachChildPort(parent,
-            port=> {
-                if(port.IsInTransitionPort) {
-                    inTransitionPort= port;
-                    return true;
-                }
-                return false;
-            }
-        );
-        return inTransitionPort;
+    public Vector2 GetTransitionModuleVector(iCS_EditorObject module) {
+        iCS_EditorObject inStatePort      = GetInStatePort(module);
+        iCS_EditorObject outStatePort     = GetOutStatePort(module);
+        iCS_EditorObject inTransitionPort = GetInTransitionPort(module);
+        iCS_EditorObject outTransitionPort= GetOutTransitionPort(module);
+        var inStatePos= Math3D.ToVector2(GetPosition(inStatePort));
+        var outStatePos= Math3D.ToVector2(GetPosition(outStatePort));
+        var inTransitionPos= Math3D.ToVector2(GetPosition(inTransitionPort));
+        var outTransitionPos= Math3D.ToVector2(GetPosition(outTransitionPort));
+        return 0.5f*((inStatePos-outTransitionPos).normalized+(inTransitionPos-outStatePos).normalized);
     }
 }
