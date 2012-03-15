@@ -19,6 +19,7 @@ public class iCS_EditorStrings {
 	public const string TransitionTriggerIcon= "iCS_TransitionTriggerIcon.png";
 	public const string RandomIcon           = "iCS_RandomIcon.png";
 	public const string MuxIcon				 = "iCS_JoinIcon.psd";
+	public const string CancelIcon           = "iCS_CancelIcon.png";
 	
     // Textures
     public const string AALineTexture        = "iCS_LineTexture.psd";

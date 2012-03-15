@@ -27,19 +27,7 @@ public class iCS_Graphics {
     static Texture2D    downArrowHeadIcon = null;
     static Texture2D    leftArrowHeadIcon = null;
     static Texture2D    rightArrowHeadIcon= null;
-    static bool         lineTextureErrorSeen        = false;
-	static bool         foldedIconErrorSeen         = false;
-	static bool         unfoldedIconErrorSeen       = false;
-	static bool         minimizeIconErrorSeen       = false;
-	static bool         maximizeIconErrorSeen       = false;
-	static bool         upArrowHeadIconErrorSeen    = false;
-	static bool         downArrowHeadIconErrorSeen  = false;
-	static bool         leftArrowHeadIconErrorSeen  = false;
-	static bool         rightArrowHeadIconErrorSeen = false;
 	
-    // ----------------------------------------------------------------------
-    static Dictionary<string, Texture2D>   cachedTextures= new Dictionary<string, Texture2D>();
-    
     // ----------------------------------------------------------------------
     GUIStyle    LabelStyle              = null;
     GUIStyle    TitleStyle              = null;
@@ -274,7 +262,7 @@ public class iCS_Graphics {
     static public bool Init(iCS_IStorage storage) {
         // Load AA line texture.
         if(lineTexture == null) {
-            if(!GetCachedTexture(iCS_EditorStrings.AALineTexture, out lineTexture, ref lineTextureErrorSeen)) {
+            if(!iCS_TextureCache.GetTexture(iCS_EditorStrings.AALineTexture, out lineTexture)) {
                 IsInitialized= false;
                 return IsInitialized;
             }
@@ -283,37 +271,37 @@ public class iCS_Graphics {
             }            
         }
         // Load folded/unfolded icons.
-        if(!GetCachedIcon(iCS_EditorStrings.FoldedIcon, out foldedIcon, ref foldedIconErrorSeen, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.FoldedIcon, out foldedIcon, storage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
-        if(!GetCachedIcon(iCS_EditorStrings.UnfoldedIcon, out unfoldedIcon, ref unfoldedIconErrorSeen, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UnfoldedIcon, out unfoldedIcon, storage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
         // Load maximize/minimize icon.
-        if(!GetCachedIcon(iCS_EditorStrings.MinimizeIcon, out minimizeIcon, ref minimizeIconErrorSeen, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MinimizeIcon, out minimizeIcon, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }
-        if(!GetCachedIcon(iCS_EditorStrings.MaximizeIcon, out maximizeIcon, ref maximizeIconErrorSeen, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MaximizeIcon, out maximizeIcon, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }
         // Load line arrow heads.
-        if(!GetCachedIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon, ref upArrowHeadIconErrorSeen, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!GetCachedIcon(iCS_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon, ref downArrowHeadIconErrorSeen, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!GetCachedIcon(iCS_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon, ref leftArrowHeadIconErrorSeen, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!GetCachedIcon(iCS_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon, ref rightArrowHeadIconErrorSeen, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon, storage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
@@ -363,74 +351,6 @@ public class iCS_Graphics {
         ValueStyle.onActive.textColor= valueColor;
         TitleStyle.fontStyle= FontStyle.Bold;
         ValueStyle.fontSize= 11;
-    }
-    // ----------------------------------------------------------------------
-    public static Texture2D GetCachedTextureFromGUID(string guid) {
-        return guid != null ? GetCachedTexture(AssetDatabase.GUIDToAssetPath(guid)) : null;
-    }
-    // ----------------------------------------------------------------------
-    public static Texture2D GetCachedTexture(string fileName) {
-        Texture2D texture= null;
-        if(cachedTextures.ContainsKey(fileName)) {
-            cachedTextures.TryGetValue(fileName, out texture);
-            if(texture != null) return texture;
-            cachedTextures.Remove(fileName);
-        }
-        texture= AssetDatabase.LoadAssetAtPath(fileName, typeof(Texture2D)) as Texture2D;
-        if(texture != null) {
-            cachedTextures.Add(fileName, texture);
-            texture.hideFlags= HideFlags.DontSave;
-        }
-        return texture;
-    }
-    // ----------------------------------------------------------------------
-    static bool GetCachedTexture(string fileName, out Texture2D texture, ref bool errorSeen) {
-        string texturePath= iCS_Config.GuiAssetPath+"/"+fileName;
-        texture= GetCachedTexture(texturePath);
-        if(texture == null) {
-            ResourceMissingError(texturePath, ref errorSeen);
-            return false;
-        }        
-        return true;            
-    }
-    // ----------------------------------------------------------------------
-    public static Texture2D GetCachedIconFromGUID(string guid) {
-        return GetCachedTextureFromGUID(guid);
-    }
-    // ----------------------------------------------------------------------
-    public static Texture2D GetCachedIcon(string fileName, iCS_IStorage storage) {
-        // Try with the WarpDrice Icon prefix.
-        string iconPath= iCS_UserPreferences.UserIcons.uCodeIconPath+"/"+fileName;
-        Texture2D icon= GetCachedTexture(iconPath);
-        if(icon == null) {
-            // Try with the user definable Icon prefixes.
-            foreach(var path in storage.Preferences.Icons.CustomIconPaths) {
-                icon= GetCachedTexture(path+"/"+fileName);
-                if(icon != null) break;
-            }
-            // Try without any prefix.
-            if(icon == null) {
-                icon= GetCachedTexture(fileName);                            
-            }
-        }
-        return icon;
-    }
-    // ----------------------------------------------------------------------
-    public static string IconPathToGUID(string fileName, iCS_IStorage storage) {
-        if(fileName == null) return null;
-        Texture2D icon= GetCachedIcon(fileName, storage);
-        if(icon == null) return null;
-        string path= AssetDatabase.GetAssetPath(icon);
-        return AssetDatabase.AssetPathToGUID(path);
-    }
-    // ----------------------------------------------------------------------
-    public static bool GetCachedIcon(string fileName, out Texture2D icon, ref bool errorSeen, iCS_IStorage storage) {
-        icon= GetCachedIcon(fileName, storage);
-        if(icon == null) {
-            ResourceMissingError(fileName, ref errorSeen);            
-            return false;
-        }
-        return true;
     }
     // ----------------------------------------------------------------------
     public void DrawIconCenteredAt(Vector2 point, Texture2D icon) {
@@ -610,7 +530,7 @@ public class iCS_Graphics {
     public static Vector2 GetMaximizeIconSize(iCS_EditorObject node, iCS_IStorage storage) {
         Texture2D icon= null;
         if(storage.Preferences.Icons.EnableMinimizedIcons && node != null && node.IconGUID != null) {
-            icon= GetCachedIconFromGUID(node.IconGUID);
+            icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
             if(icon != null) return new Vector2(icon.width, icon.height);
         }
         return new Vector2(maximizeIcon.width, maximizeIcon.height);        
@@ -619,7 +539,7 @@ public class iCS_Graphics {
     public Texture2D GetMaximizeIcon(iCS_EditorObject node, iCS_IStorage storage) {
         Texture2D icon= null;
         if(storage.Preferences.Icons.EnableMinimizedIcons && node != null && node.IconGUID != null) {
-            icon= GetCachedIconFromGUID(node.IconGUID);
+            icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
             if(icon != null) return icon;
         }
         return GetNodeDefaultMaximizeIcon(node, storage);
@@ -1027,19 +947,4 @@ public class iCS_Graphics {
         return IsVisible(parent, storage) && !IsMinimized(parent, storage);
     }
     
-    // ======================================================================
-    //  ERROR MANAGEMENT
-    // ----------------------------------------------------------------------
-	public static void ResourceMissingError(string _name, ref bool _alreadySeen) {
-        string errorMsg= "Unable to locate editor resource: " + _name;
-        if(!_alreadySeen) {
-    		EditorUtility.DisplayDialog ("State Chart Abort Message", errorMsg, "Ok");            
-        }
-		else {
-		    Debug.LogError(errorMsg);
-	    }
-		_alreadySeen= true;
-	}
-
-
 }

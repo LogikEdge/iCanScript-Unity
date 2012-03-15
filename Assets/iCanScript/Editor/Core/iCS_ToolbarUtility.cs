@@ -6,6 +6,14 @@ public static class iCS_ToolbarUtility {
     // ======================================================================
     // Toolbar utilities.
 	// ----------------------------------------------------------------------
+    public static Rect BuildToolbar(float width, float yOffset= 0) {
+        Rect toolbarRect= new Rect(0,yOffset,width,GetHeight());
+        Rect r= toolbarRect;
+        r.height+= 20f;
+		GUI.Box(r, "", EditorStyles.toolbar);
+        return toolbarRect;
+    }
+	// ----------------------------------------------------------------------
     public static float GetHeight() {
 		return iCS_EditorUtility.GetGUIStyleHeight(EditorStyles.toolbar);        
     }	// ----------------------------------------------------------------------
@@ -52,7 +60,7 @@ public static class iCS_ToolbarUtility {
     public static string Text(ref Rect toolbarRect, float width, string value, float leftMargin, float rightMargin, bool isRightJustified= false) {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
-        r.y+= 1f;
+        r.y+= 2f;
         return GUI.TextField(r, value, EditorStyles.toolbarTextField);
     }
 	// ----------------------------------------------------------------------
@@ -66,7 +74,19 @@ public static class iCS_ToolbarUtility {
     public static string Search(ref Rect toolbarRect, float width, string value, float leftMargin, float rightMargin, bool isRightJustified= false) {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
-        r.y+= 1f;
+        r.y+= 2f;
         return GUI.TextField(r, value, EditorStyles.toolbarTextField);        
+    }
+	// ----------------------------------------------------------------------
+    public static int Popup(ref Rect toolbarRect, float width, string label, int index, string[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
+		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
+        if(r.width < 1f) return index;
+        return EditorGUI.Popup(r, /*label, */index, options, EditorStyles.toolbarDropDown);
+    }
+	// ----------------------------------------------------------------------
+    public static int Popup(ref Rect toolbarRect, float width, GUIContent content, int index, GUIContent[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
+		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
+        if(r.width < 1f) return index;
+        return EditorGUI.Popup(r, content, index, options, EditorStyles.toolbarDropDown);
     }
 }

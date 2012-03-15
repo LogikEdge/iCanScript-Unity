@@ -1562,31 +1562,21 @@ public class iCS_Editor : EditorWindow {
     
 	// ----------------------------------------------------------------------
 	void Heading() {
-		// Determine toolbar height.
-		float height= iCS_ToolbarUtility.GetHeight();
-
-//		Debug.Log("Toolbar: "+height);
-//		Debug.Log("TextField: "+GetGUIStyleHeight(EditorStyles.toolbarTextField));
-//		Debug.Log("Button: "+GetGUIStyleHeight(EditorStyles.toolbarButton));
-//		Debug.Log("Popup: "+GetGUIStyleHeight(EditorStyles.toolbarPopup));
-//		Debug.Log("DropDown: "+GetGUIStyleHeight(EditorStyles.toolbarDropDown));
-
-		// Fill toolbar with background image.
-		Rect r= new Rect(0,-1,position.width, height);
-		GUI.Box(r, "", EditorStyles.toolbar);
+		// Build standard toolbar at top of editor window.
+		Rect r= iCS_ToolbarUtility.BuildToolbar(position.width, -1f);
 
 		// Insert an initial spacer.
 		float spacer= 8f;
 		r.x+= spacer;
 		r.width-= spacer;
 		
-        // Adjust toolbar styles
-		Vector2 test= EditorStyles.toolbar.contentOffset;
-		test.y=3f;
-		EditorStyles.toolbar.contentOffset= test;
-		test= EditorStyles.toolbarTextField.contentOffset;
-		test.y=2f;
-		EditorStyles.toolbarTextField.contentOffset= test;
+//        // Adjust toolbar styles
+//		Vector2 test= EditorStyles.toolbar.contentOffset;
+//		test.y=3f;
+//		EditorStyles.toolbar.contentOffset= test;
+//		test= EditorStyles.toolbarTextField.contentOffset;
+//		test.y=2f;
+//		EditorStyles.toolbarTextField.contentOffset= test;
 		
         // Show mouse coordinates.
         string mouseValue= ViewportToGraph(MousePosition).ToString();

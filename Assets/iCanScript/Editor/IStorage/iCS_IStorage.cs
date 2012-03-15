@@ -334,7 +334,7 @@ public partial class iCS_IStorage {
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,16,16);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
-	    this[id].IconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);			
+	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon, this);			
         TreeCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
         if(this[id].IsClassModule) ClassModuleCompleteCreation(this[id]);
 		SetDirty(this[id]);
@@ -396,9 +396,9 @@ public partial class iCS_IStorage {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Determine minimized icon.
-        var iconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
+        var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath, this);
         if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
-            iconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
+            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
         }        
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(parentId, initialPos, iconGUID);
@@ -431,9 +431,9 @@ public partial class iCS_IStorage {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Determine minimized icon.
-        var iconGUID= iCS_Graphics.IconPathToGUID(desc.IconPath, this);
+        var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath, this);
         if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
-            iconGUID= iCS_Graphics.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
+            iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
         }        
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(parentId, initialPos, iconGUID);
@@ -494,7 +494,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     Rect PositionNewNodeInParent(int parentId, Vector2 initialPos, string iconGUID= null) {
         Rect localPos;
-        Texture2D icon= iCS_Graphics.GetCachedTextureFromGUID(iconGUID);
+        Texture2D icon= iCS_TextureCache.GetTextureFromGUID(iconGUID);
         var size= icon != null ? new Vector2(icon.width, icon.height) : iCS_Graphics.GetMaximizeIconSize(null, this);
         if(IsValid(parentId)) {
             iCS_EditorObject parent= EditorObjects[parentId];

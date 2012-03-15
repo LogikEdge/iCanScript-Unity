@@ -167,7 +167,7 @@ public class iCS_Inspector : Editor {
             EditorGUILayout.LabelField("FrameId", runtimeObject.FrameId.ToString());
         }
         // Show Iconic image configuration.
-        Texture2D iconicTexture= iCS_Graphics.GetCachedIconFromGUID(node.IconGUID);
+        Texture2D iconicTexture= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
         Object newTexture= EditorGUILayout.ObjectField("Iconic Texture", iconicTexture, typeof(Texture2D), false) as Texture2D;
         if(newTexture != iconicTexture) {
             node.IconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;

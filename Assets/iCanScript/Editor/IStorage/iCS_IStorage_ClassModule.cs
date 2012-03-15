@@ -30,7 +30,7 @@ public partial class iCS_IStorage {
         // Use the class Icon if it exists.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(module.RuntimeType);
         if(components.Length != 0) {
-            var iconGUID= iCS_Graphics.IconPathToGUID(components[0].IconPath, this);
+            var iconGUID= iCS_TextureCache.IconPathToGUID(components[0].IconPath, this);
             if(iconGUID != null) {
                 module.IconGUID= iconGUID;
             }            
