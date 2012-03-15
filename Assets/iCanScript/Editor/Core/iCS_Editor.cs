@@ -454,6 +454,13 @@ public class iCS_Editor : EditorWindow {
                         Event.current.Use();
                         break;
                     }
+                    case KeyCode.H: {  // Show Help
+                        if(SelectedObject != null) {
+                            Help.ShowHelpPage("file:///unity/ScriptReference/index.html");
+                        }
+                        Event.current.Use();
+                        break;
+                    }
                     // Bookmarks
                     case KeyCode.B: {  // Bookmark selected object
                         if(SelectedObject != null) {
@@ -1554,13 +1561,9 @@ public class iCS_Editor : EditorWindow {
     }
     
 	// ----------------------------------------------------------------------
-    float GetHeaderHeight() {
-		return iCS_EditorUtility.GetGUIStyleHeight(EditorStyles.toolbar);        
-    }
-	// ----------------------------------------------------------------------
 	void Heading() {
 		// Determine toolbar height.
-		float height= GetHeaderHeight();
+		float height= iCS_ToolbarUtility.GetHeight();
 
 //		Debug.Log("Toolbar: "+height);
 //		Debug.Log("TextField: "+GetGUIStyleHeight(EditorStyles.toolbarTextField));
@@ -1587,11 +1590,11 @@ public class iCS_Editor : EditorWindow {
 		
         // Show mouse coordinates.
         string mouseValue= ViewportToGraph(MousePosition).ToString();
-        iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent(mouseValue), 0, 0, true);
+        iCS_ToolbarUtility.Label(ref r, new GUIContent(mouseValue), 0, 0, true);
         
 		// Show zoom control at the end of the toolbar.
-        Scale= iCS_EditorUtility.ToolbarSlider(ref r, 120f, Scale, 1f, 0.15f, spacer, spacer, true);
-        iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent("Zoom"), 0, 0, true);
+        Scale= iCS_ToolbarUtility.Slider(ref r, 120f, Scale, 1f, 0.15f, spacer, spacer, true);
+        iCS_ToolbarUtility.Label(ref r, new GUIContent("Zoom"), 0, 0, true);
 		
 		// Show current bookmark.
 		string bookmarkString= "Bookmark: ";
@@ -1600,12 +1603,12 @@ public class iCS_Editor : EditorWindow {
 		} else {
 		    bookmarkString+= Bookmark.Name;
 		}
-		iCS_EditorUtility.ToolbarLabel(ref r, 150f, new GUIContent(bookmarkString),0,0,true);
+		iCS_ToolbarUtility.Label(ref r, 150f, new GUIContent(bookmarkString),0,0,true);
 		
 		// Editable field test.		
-		iCS_EditorUtility.ToolbarLabel(ref r, new GUIContent("Mode:"), 0, 0, false);		
-		MenuOption= iCS_EditorUtility.ToolbarButtons(ref r, 90f, MenuOption, menuOptions, 0, 0);
-		iCS_EditorUtility.ToolbarButtons(ref r, 8f, -1, new string[1]{""}, 0, 0);
+		iCS_ToolbarUtility.Label(ref r, new GUIContent("Mode:"), 0, 0, false);		
+		MenuOption= iCS_ToolbarUtility.Buttons(ref r, 90f, MenuOption, menuOptions, 0, 0);
+		iCS_ToolbarUtility.Buttons(ref r, 8f, -1, new string[1]{""}, 0, 0);
 	}
 	// ----------------------------------------------------------------------
     void UpdateClassWizard() {
@@ -1734,7 +1737,7 @@ public class iCS_Editor : EditorWindow {
     const float scrollButtonSize=24f;
     Vector2 DetectScrollZone() {
         Vector2 direction= Vector2.zero;
-        float headerHeight= GetHeaderHeight();
+        float headerHeight= iCS_ToolbarUtility.GetHeight();
         Rect rect= new Rect(0,headerHeight,position.width,position.height-headerHeight);
         if(!rect.Contains(MousePosition)) return direction;
         if(position.width < 3f*scrollButtonSize || position.height < 3f*scrollButtonSize) return direction;
@@ -1756,7 +1759,7 @@ public class iCS_Editor : EditorWindow {
     Vector2 CanScrollInDirection(Vector2 dir) {
         Rect rootRect= Storage.GetPosition(DisplayRoot);
         var rootCenter= Math3D.Middle(rootRect);
-        var topLeftCorner= ViewportToGraph(new Vector2(0, GetHeaderHeight()));
+        var topLeftCorner= ViewportToGraph(new Vector2(0, iCS_ToolbarUtility.GetHeight()));
         var bottomRightCorner= ViewportToGraph(new Vector2(position.width, position.height));
         if(Math3D.IsSmaller(dir.x, 0f)) {
             if(!rootRect.Contains(new Vector2(topLeftCorner.x, rootCenter.y))) {
@@ -1783,7 +1786,7 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void ShowScrollButton(Vector2 direction) {
         if(Math3D.IsZero(direction)) return;
-        float headerHeight= GetHeaderHeight();
+        float headerHeight= iCS_ToolbarUtility.GetHeight();
         Rect rect= new Rect(0,headerHeight,position.width,position.height-headerHeight);
         if(Math3D.IsSmaller(direction.x, 0f)) {
             rect= Math3D.Intersection(rect, new Rect(0, 0, scrollButtonSize, position.height-1f));            
