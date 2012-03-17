@@ -73,15 +73,23 @@ public static class iCS_ToolbarUtility {
 	// ----------------------------------------------------------------------
     public static string Search(ref Rect toolbarRect, float width, string value, float leftMargin, float rightMargin, bool isRightJustified= false) {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
-        if(r.width < 1f) return value;
+        float iconSize= GetHeight();
+        if(r.width < iconSize+1f) return value;
         r.y+= 2f;
+        r.width-= iconSize;
+        Texture2D cancelIcon= null;
+        if(iCS_TextureCache.GetTexture(iCS_EditorStrings.CancelIcon, out cancelIcon)) {
+            GUI.DrawTexture(new Rect(r.xMax, r.y, iconSize, iconSize), cancelIcon);
+        } else {
+            Debug.LogWarning("iCanScript: Cannot find cancel Icon in resource folder !!!");
+        }
         return GUI.TextField(r, value, EditorStyles.toolbarTextField);        
     }
 	// ----------------------------------------------------------------------
     public static int Popup(ref Rect toolbarRect, float width, string label, int index, string[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return index;
-        return EditorGUI.Popup(r, /*label, */index, options, EditorStyles.toolbarDropDown);
+        return EditorGUI.Popup(r, label, index, options, EditorStyles.toolbarDropDown);
     }
 	// ----------------------------------------------------------------------
     public static int Popup(ref Rect toolbarRect, float width, GUIContent content, int index, GUIContent[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {

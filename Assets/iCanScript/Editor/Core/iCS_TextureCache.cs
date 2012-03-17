@@ -86,9 +86,9 @@ public static class iCS_TextureCache {
     // ----------------------------------------------------------------------
 	public static void ResourceMissingError(string _name) {
         bool alreadySeen= OurErrorAlreadySeen.ContainsKey(_name);
-        string errorMsg= "Unable to locate editor resource: " + _name;
+        string errorMsg= "iCanScript: Unable to locate editor resource: " + _name;
         if(!alreadySeen) {
-    		EditorUtility.DisplayDialog ("State Chart Abort Message", errorMsg, "Ok");            
+    		EditorUtility.DisplayDialog ("Resource Missing", errorMsg, "Ok");            
             OurErrorAlreadySeen.Add(_name, true);
         }
 		else {
