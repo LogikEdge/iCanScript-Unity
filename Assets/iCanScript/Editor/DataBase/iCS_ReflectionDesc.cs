@@ -115,11 +115,11 @@ public class iCS_ReflectionDesc {
 			// Build input string
 			string inputStr= "";
             if(ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
-                inputStr+= "this"/*+":"+TypeName(ClassType)*/+", ";
+                inputStr+= "this"+":"+TypeName(ClassType)+", ";
             }
             for(int i= 0; i < ParamNames.Length; ++i) {
 				if(!ParamTypes[i].IsByRef) {
-	                inputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i])*/+", ";
+	                inputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i])+", ";
 				}
             }
 			// Add inputs to signature.
@@ -131,7 +131,7 @@ public class iCS_ReflectionDesc {
 			string outputStr= "";
             for(int i= 0; i < ParamNames.Length; ++i) {
 				if(ParamTypes[i].IsByRef) {
-	                outputStr+= ParamNames[i]/*+":"+TypeName(ParamTypes[i].GetElementType())*/+", ";
+	                outputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i].GetElementType())+", ";
 					++nbOfOutputs;
 				}
             }

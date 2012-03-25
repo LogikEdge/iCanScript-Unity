@@ -36,7 +36,9 @@ public class iCS_ClassWizard : EditorWindow {
     ControlPair[]           Methods               = null;
     ControlPair[]           Constructors          = null;
     Vector2                 VariableScrollPosition= Vector2.zero;
-    Vector2                 MethodScrollPosition  = Vector2.zero;        
+    Vector2                 MethodScrollPosition  = Vector2.zero;
+    DSTableView             VariableTableView     = null;
+    DSTableView             OperationTableView    = null;        
     
     // =================================================================================
     // Layout info.
@@ -59,12 +61,12 @@ public class iCS_ClassWizard : EditorWindow {
     GUIContent  MethodTitle  = new GUIContent("Operations");
     Vector2     LabelSize;
     Vector2     InstanceTitleSize;
-    Vector2     VariableTitleSize;
+//    Vector2     VariableTitleSize;
     Vector2     InTitleSize;
     Vector2     OutTitleSize;
     Vector2     NameTitleSize;
     Vector2     TypeTitleSize;
-    Vector2     MethodTitleSize;
+//    Vector2     MethodTitleSize;
     Vector2     CheckBoxSize;    
     float       LabelHeight;
     float       TitleHeight;
@@ -203,15 +205,20 @@ public class iCS_ClassWizard : EditorWindow {
     void InitConstantGUIContent() {
         if(IsGUIConstantInit) return;
         IsGUIConstantInit= true;
+
+        // Initialize table views.
+        VariableTableView= new DSTableView(VariableTitle);
+        OperationTableView= new DSTableView(MethodTitle);
+        
         // Compute content size.
         LabelSize        = EditorStyles.label.CalcSize(new GUIContent("abc")); 
         InstanceTitleSize= EditorStyles.boldLabel.CalcSize(InstanceTitle);
-        VariableTitleSize= EditorStyles.boldLabel.CalcSize(VariableTitle);
+//        VariableTitleSize= EditorStyles.boldLabel.CalcSize(VariableTitle);
         InTitleSize      = EditorStyles.boldLabel.CalcSize(InTitle);
         OutTitleSize     = EditorStyles.boldLabel.CalcSize(OutTitle);
         NameTitleSize    = EditorStyles.boldLabel.CalcSize(NameTitle);
         TypeTitleSize    = EditorStyles.boldLabel.CalcSize(TypeTitle);
-        MethodTitleSize  = EditorStyles.boldLabel.CalcSize(MethodTitle);
+//        MethodTitleSize  = EditorStyles.boldLabel.CalcSize(MethodTitle);
                          
         LabelHeight      = 4f+LabelSize.y;
         TitleHeight      = 4f+InTitleSize.y;
@@ -277,8 +284,9 @@ public class iCS_ClassWizard : EditorWindow {
         ShowConstructor(headerRect);
         
         // Display Variables.
-        GUI.Box(boxVariableRect,"");
-        CenterTitle(boxVariableRect, VariableTitle, VariableTitleSize);
+//        GUI.Box(boxVariableRect,"");
+//        CenterTitle(boxVariableRect, VariableTitle, VariableTitleSize);
+        VariableTableView.Display(boxVariableRect);
         GUI.Label(new Rect(x+kSpacer+0.5f*(kCheckBoxWidth-InTitleSize.x),   boxVariableRect.y+TitleHeight, InTitleSize.x,   TitleHeight), InTitle, EditorStyles.boldLabel);
         GUI.Label(new Rect(x+kSpacer+kCheckBoxWidth+0.5f*(kCheckBoxWidth-OutTitleSize.x),  boxVariableRect.y+TitleHeight, OutTitleSize.x,  TitleHeight), OutTitle, EditorStyles.boldLabel);
         GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth, boxVariableRect.y+TitleHeight, NameTitleSize.x, TitleHeight), NameTitle, EditorStyles.boldLabel);
@@ -291,8 +299,9 @@ public class iCS_ClassWizard : EditorWindow {
         GUI.EndScrollView();
 
         // Display Methods.
-        GUI.Box(boxMethodRect, "");
-        CenterTitle(boxMethodRect, MethodTitle, MethodTitleSize);
+//        GUI.Box(boxMethodRect, "");
+//        CenterTitle(boxMethodRect, MethodTitle, MethodTitleSize);
+        OperationTableView.Display(boxMethodRect);
         MethodScrollPosition= GUI.BeginScrollView(scrollViewMethodRect, MethodScrollPosition, contentMethodRect, false, true);
         int column= 0;
         int row= 0;

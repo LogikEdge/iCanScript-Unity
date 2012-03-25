@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -217,6 +218,12 @@ public class iCS_Editor : EditorWindow {
         // Make certain the installer is ran.
         if(iCS_Reflection.NeedToRunInstaller) {
             InvokeInstaller();
+//            StreamWriter stream= new StreamWriter("database.txt");
+//            List<iCS_ReflectionDesc> menu= iCS_DataBase.BuildExpertMenu();
+//            foreach(var desc in menu) {
+//                stream.Write(desc.FunctionPath+"/"+desc.FunctionSignature+"\n");
+//            }
+//            stream.Close();
         }
         // Cleanup objects.
         iCS_AutoReleasePool.Update();
