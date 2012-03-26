@@ -7,10 +7,8 @@ public class DSTableColumn : DSViewWithTitle {
     // Fields
     // ----------------------------------------------------------------------
     string  myIdentifier;
-    float   myClientMinimumWidth;
-    float   myClientMaximumWidth;
-    float   myClientMinSize;
-    float   myClientMaxSize;
+    float   myMinimumContentWidth;
+    float   myMaximumContentWidth;
     
     // ======================================================================
     // Properties
@@ -20,27 +18,35 @@ public class DSTableColumn : DSViewWithTitle {
         set { myIdentifier= value; }
     }
     public float MinimumFrameWidth {
-        get { return myClientMinimumWidth+Margins.horizontal; }
-        set { myClientMinimumWidth= value-Margins.horizontal; }
+        get { return myMinimumContentWidth+Margins.horizontal; }
+        set { myMinimumContentWidth= value-Margins.horizontal; }
     }
     public float MaximumFrameWidth {
-        get { return myClientMaximumWidth+Margins.vertical; }
-        set { myClientMaximumWidth= value-Margins.vertical; }
+        get { return myMaximumContentWidth+Margins.vertical; }
+        set { myMaximumContentWidth= value-Margins.vertical; }
     }
-
+    public float MinimumContentWidth {
+        get { return myMinimumContentWidth; }
+        set { myMinimumContentWidth= value; }
+    }
+    public float MaximumContentWidth {
+        get { return myMaximumContentWidth; }
+        set { myMaximumContentWidth= value; }
+    }
+    
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
     public DSTableColumn(string identifier, GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                         float minSize, float maxSize, RectOffset margins, Rect viewArea)
+                         float minWidth, float maxWidth, RectOffset margins, Rect viewArea)
     : base(title, titleAlignment, titleSeperator, margins, viewArea) {
         Identifier= identifier;
-        myClientMinSize= minSize;
-        myClientMaxSize= maxSize;
+        myMinimumContentWidth= minWidth;
+        myMaximumContentWidth= maxWidth;
     }
     public DSTableColumn(string identifier, GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                         float minSize, float maxSize, RectOffset margins)
-    : this(identifier, title, titleAlignment, titleSeperator, minSize, maxSize, margins, new Rect(0,0,0,0)) {}
+                         float minWidth, float maxWidth, RectOffset margins)
+    : this(identifier, title, titleAlignment, titleSeperator, minWidth, maxWidth, margins, new Rect(0,0,0,0)) {}
     
     // ======================================================================
     // Display
