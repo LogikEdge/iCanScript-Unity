@@ -76,9 +76,13 @@ public class iCS_ClassWizard : EditorWindow {
     // Constants
     // ---------------------------------------------------------------------------------
     const float   kSpacer       = 8f;
-    const float   kMarginSize   = 10f;
+    const int     kMarginSize   = 10;
     const float   kScrollerSize = 16f;
     const float   kCheckBoxWidth= 25f;
+    const string  kInColumnId   = "In";
+    const string  kOutColumnId  = "Out";
+    const string  kNameColumnId = "Name";
+    const string  kTypeColumnId = "Type";
     
     // =================================================================================
     // Properties
@@ -207,8 +211,20 @@ public class iCS_ClassWizard : EditorWindow {
         IsGUIConstantInit= true;
 
         // Initialize table views.
-        VariableTableView= new DSTableView(VariableTitle);
-        OperationTableView= new DSTableView(MethodTitle);
+        VariableTableView= new DSTableView(VariableTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
+        DSTableColumn inColumn= new DSTableColumn(kInColumnId, new GUIContent("In"), TextAlignment.Center, true,
+                                                  kCheckBoxWidth, kCheckBoxWidth, new RectOffset(kMarginSize,kMarginSize,0,0));
+        VariableTableView.AddSubview(inColumn);
+        DSTableColumn outColumn= new DSTableColumn(kOutColumnId, new GUIContent("Out"), TextAlignment.Center, true,
+                                                   kCheckBoxWidth, kCheckBoxWidth, new RectOffset(kMarginSize,kMarginSize,0,0));
+        VariableTableView.AddSubview(outColumn);
+        DSTableColumn variableNameColumn= new DSTableColumn(kNameColumnId, new GUIContent("Name"), TextAlignment.Left, true,
+                                                            0, -1f, new RectOffset(kMarginSize,kMarginSize,0,0));
+        VariableTableView.AddSubview(variableNameColumn);
+        DSTableColumn variableTypeColumn= new DSTableColumn(kTypeColumnId, new GUIContent("Type"), TextAlignment.Left, true,
+                                                            0, -1f, new RectOffset(kMarginSize,kMarginSize,0,0));
+        VariableTableView.AddSubview(variableTypeColumn);
+        OperationTableView= new DSTableView(MethodTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
         
         // Compute content size.
         LabelSize        = EditorStyles.label.CalcSize(new GUIContent("abc")); 

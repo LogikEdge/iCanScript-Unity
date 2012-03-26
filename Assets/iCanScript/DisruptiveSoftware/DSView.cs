@@ -7,18 +7,27 @@ public class DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Rect            myViewArea;
+    Rect            myFrameArea;
+    Rect            myContentArea;
+    RectOffset      myMargins;
     List<DSView>    mySubviews= new List<DSView>();
 
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public Rect ViewArea {
-        get { return myViewArea; }
-        set { myViewArea= value; }
+    public Rect FrameArea {
+        get { return myFrameArea; }
+        set { myFrameArea= value; UpdateClientArea(); }
+    }
+    public Rect ContentArea {
+        get { return myContentArea; }
     }
     public List<DSView> Subviews {
         get { return mySubviews; }
+    }
+    public RectOffset Margins {
+        get { return myMargins; }
+        set { myMargins= value; UpdateClientArea(); }
     }
 
     // ======================================================================
@@ -29,6 +38,14 @@ public class DSView {
     const float   kHorizontalMargin= 10f;
     const float   kVerticalMargin  = 10f;
 
+    // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
+    public DSView(RectOffset margins, Rect frameArea) {
+        Margins= margins;
+        FrameArea= frameArea;
+    }
+    
     // ======================================================================
     // Subview management
     // ----------------------------------------------------------------------
@@ -51,15 +68,19 @@ public class DSView {
     }
     
     // ======================================================================
-    // Display Utility
+    // View area management.
     // ----------------------------------------------------------------------
-    public Vector2  Center              { get { return Math3D.Middle(ViewArea); }}    
-    public float    HorizontalCenter    { get { return 0.5f*(ViewArea.x+ViewArea.xMax); }}
-    public float    VerticalCenter      { get { return 0.5f*(ViewArea.y+ViewArea.yMax); }}
-    public float    CenterHorizontaly(float width) {
-        return ViewArea.x+0.5f*(ViewArea.width-width);
+    void UpdateClientArea() {
+        myContentArea= myFrameArea;
+        myContentArea.x+= myMargins.left;
+        myContentArea.width-= myMargins.horizontal;
+        myContentArea.y+= myMargins.top;
+        myContentArea.height-= myMargins.vertical;
+        ViewAreaDidChange();    
     }
-    public float    CenterVerticalyCenter(float height) {
-        return ViewArea.y+0.5f*(ViewArea.height-height);
-    }
+    
+    // ======================================================================
+    // Notification methods.
+    // ----------------------------------------------------------------------
+    protected virtual void ViewAreaDidChange() {}
 }

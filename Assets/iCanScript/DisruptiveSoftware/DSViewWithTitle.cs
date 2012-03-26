@@ -6,11 +6,12 @@ public class DSViewWithTitle : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    GUIContent  myTitle         = null;
-    Vector2     myTitleSize     = Vector2.zero;
-    bool        myTitleSeperator= false;
-    Rect        myTitleArea;
-    Rect        mySubviewArea;
+    GUIContent      myTitle               = null;
+    TextAlignment   myTitleAlignment      = TextAlignment.Center;
+    Vector2         myTitleSize           = Vector2.zero;
+    bool            myTitleSeperator      = false;
+    Rect            myTitleArea;
+    Rect            myBodyArea;
     
     // ======================================================================
     // Properties
@@ -24,68 +25,97 @@ public class DSViewWithTitle : DSView {
             } else {
                 myTitleSize= Vector2.zero;
             }
-            UpdateSubviewArea();
+            UpdateTitleAndBodyArea();
         }
     }
     public bool TitleSeperator {
         get { return myTitleSeperator; }
-        set { myTitleSeperator= value; UpdateSubviewArea(); }
+        set { myTitleSeperator= value; UpdateTitleAndBodyArea(); }
     }
-    public Rect SubviewArea {
-        get { return mySubviewArea; }
+    public TextAlignment TitleAlignment {
+        get { return myTitleAlignment; }
+        set { myTitleAlignment= value; }
     }
+    public Rect TitleArea   { get { return myTitleArea; }}
+    public Rect BodyArea    { get { return myBodyArea; }}
     
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSViewWithTitle(Rect viewArea, GUIContent title, bool titleSeperator= false) {
-        ViewArea= viewArea;
+    public DSViewWithTitle(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
+                           RectOffset margins, Rect frameArea)
+    : base(margins, frameArea) {
         Title= title;
         TitleSeperator= titleSeperator;
+        TitleAlignment= titleAlignment;
     }
-    public DSViewWithTitle(GUIContent title, bool titleSeperator= false) : this(new Rect(0,0,0,0), title, titleSeperator) {}
-    public DSViewWithTitle() : this(new GUIContent("title")) {}
+    public DSViewWithTitle(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
+                           RectOffset margins)
+    : this(title, titleAlignment, titleSeperator, margins, new Rect(0,0,0,0)) {}
     
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public void Display(Rect viewArea) { ViewArea= viewArea; Display(); }
-    public void Display() {
-        GUI.Box(ViewArea,"");
+    public virtual void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
+    public virtual void Display() {
+        GUI.Box(FrameArea,"");
         if(myTitle != null && myTitleSize.x != 0) {
-            CenterTitle(ViewArea, myTitle, myTitleSize);
+            // Display title.
+            Rect titleRect;
+            switch(TitleAlignment) {
+                case TextAlignment.Left: {
+                    titleRect= new Rect(TitleArea.x, TitleArea.y, myTitleSize.x, myTitleSize.y);
+                    break;
+                }
+                case TextAlignment.Right: {
+                    titleRect= new Rect(TitleArea.xMax-myTitleSize.x, TitleArea.y, myTitleSize.x, myTitleSize.y);
+                    break;
+                }
+                case TextAlignment.Center:
+                default: {
+                    titleRect= new Rect(TitleArea.x+0.5f*(TitleArea.width-myTitleSize.x), TitleArea.y, myTitleSize.x, myTitleSize.y);
+                    break;
+                }
+            }
+            GUI.Label(titleRect, Title, EditorStyles.boldLabel);        
+            // Display title seperator.
             if(myTitleSeperator) {
-                float x= ViewArea.x;
-                float y= ViewArea.y+myTitleSize.y;
-                Rect seperatorRect= new Rect(x, y, ViewArea.width, 3f);
+                float x= FrameArea.x;
+                float y= FrameArea.y+myTitleSize.y;
+                Rect seperatorRect= new Rect(x, y, FrameArea.width, 3f);
                 GUI.Box(seperatorRect, "");
             }
         }
     }
 
     // ======================================================================
-    // Display Utilities
+    // View area management.
     // ----------------------------------------------------------------------
-    void CenterTitle(Rect rect, GUIContent content, Vector2 contentSize) {
-        CenterLabel(rect, content, contentSize, EditorStyles.boldLabel);
+    protected override void ViewAreaDidChange() {
+        base.ViewAreaDidChange();
+        UpdateTitleAndBodyArea();
     }
-    void CenterLabel(Rect rect, GUIContent content, Vector2 contentSize, GUIStyle style) {
-        GUI.Label(new Rect(CenterHorizontaly(contentSize.x), rect.y, contentSize.x, contentSize.y), content, style);        
-    }
-    void UpdateSubviewArea() {
-        // Update subview area.
-        mySubviewArea= ViewArea;
-        myTitleArea= ViewArea;
+    void UpdateTitleAndBodyArea() {
+        // Update title & subview coordinates.
+        myTitleArea= ContentArea;
         myTitleArea.height= 0f;
         if(myTitle != null && myTitleSize.y != 0) {
             myTitleArea.height+= myTitleSize.y;
-            mySubviewArea.y+= myTitleSize.y;
-            mySubviewArea.height-= myTitleSize.y;
+            myBodyArea.y+= myTitleSize.y;
+            myBodyArea.height-= myTitleSize.y;
         }
         if(myTitleSeperator) {
             myTitleArea.height+= 3f;
-            mySubviewArea.y+= 3f;
-            mySubviewArea.height-= 3f;
+            myBodyArea.y+= 3f;
+            myBodyArea.height-= 3f;
         }
+        // Validate adjusted cordinates.
+        if(myTitleArea.width < 0f) myTitleArea.width= 0f;
+        if(myTitleArea.height > ContentArea.height) myTitleArea.height= ContentArea.height;
+        if(myBodyArea.width < 0f) myBodyArea.width= 0f;
+        if(myBodyArea.x > ContentArea.xMax) myBodyArea.x= ContentArea.xMax;
+        if(myBodyArea.y > ContentArea.yMax) myBodyArea.y= ContentArea.yMax;
+        if(myBodyArea.xMax > ContentArea.xMax) myBodyArea.xMax= ContentArea.xMax;
+        if(myBodyArea.yMax > ContentArea.yMax) myBodyArea.yMax= ContentArea.yMax;
     }
 }

@@ -14,18 +14,28 @@ public class DSTableView : DSViewWithTitle {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSTableView(Rect viewArea, GUIContent title, bool titleSeperator= false)
-        : base(viewArea, title, titleSeperator) {}
-    public DSTableView(GUIContent title, bool titleSeperator= false)
-        : this(new Rect(0,0,0,0), title, titleSeperator) {}
-    public DSTableView()
-        : this(new GUIContent("title")) {}
+    public DSTableView(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
+                       RectOffset margins, Rect viewArea)
+        : base(title, titleAlignment, titleSeperator, margins, viewArea) {}
+    public DSTableView(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
+                       RectOffset margins)
+        : this(title, titleAlignment, titleSeperator, margins, new Rect(0,0,0,0)) {}
     
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public void Display(Rect viewArea) { base.Display(viewArea); }
-    public void Display()              { base.Display(); }
+    public override void Display() {
+        // Duisplay bounding box and title.
+        base.Display();
+        
+        // Determine width of each column.
+        ForEachSubview(
+            subview=> {
+                
+            }
+        );
+        
+    }
 
     // ======================================================================
     // Display Utilities
