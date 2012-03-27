@@ -126,7 +126,9 @@ public class DSTableView : DSViewWithTitle {
                     }
                 }
                 displayRect= Math3D.Intersection(column.ContentArea, displayRect);
-                myDataSource.DisplayObjectInTableView(this, column, row, displayRect);
+				if(Math3D.IsNotZero(displayRect.width) && Math3D.IsNotZero(displayRect.height)) {
+	                myDataSource.DisplayObjectInTableView(this, column, row, displayRect);					
+				}
                 if(displayRect.height > maxHeight) maxHeight= displayRect.height;
             }
             y+= maxHeight;
