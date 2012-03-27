@@ -574,25 +574,29 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
 
             string columnId= tableColumn.Identifier;
             if(string.Compare(columnId, kInColumnId) == 0 && inputControlPair.Component != null) {
-                bool prevActive= inputControlPair.IsActive;
-                inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
-                if(prevActive != inputControlPair.IsActive) {
-                    if(inputControlPair.IsActive) {
-                        Storage.ClassModuleCreate(Target, inputControlPair.Component);
-                    } else {
-                        Storage.ClassModuleDestroy(Target, inputControlPair.Component);
-                    }                
-                }                
+				if(Math3D.IsEqual(position.height, CheckBoxSize.y) && Math3D.IsEqual(position.width, CheckBoxSize.x)) {
+	                bool prevActive= inputControlPair.IsActive;
+	                inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
+	                if(prevActive != inputControlPair.IsActive) {
+	                    if(inputControlPair.IsActive) {
+	                        Storage.ClassModuleCreate(Target, inputControlPair.Component);
+	                    } else {
+	                        Storage.ClassModuleDestroy(Target, inputControlPair.Component);
+	                    }                
+	                }                					
+				}
             }
             if(string.Compare(columnId, kOutColumnId) == 0 && outputControlPair.Component != null) {
-                bool prevActive= outputControlPair.IsActive;
-                outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
-                if(prevActive != outputControlPair.IsActive) {
-                    if(outputControlPair.IsActive) {
-                        Storage.ClassModuleCreate(Target, outputControlPair.Component);
-                    } else {
-                        Storage.ClassModuleDestroy(Target, outputControlPair.Component);
-                    }                
+				if(Math3D.IsEqual(position.height, CheckBoxSize.y) && Math3D.IsEqual(position.width, CheckBoxSize.x)) {
+	                bool prevActive= outputControlPair.IsActive;
+	                outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
+	                if(prevActive != outputControlPair.IsActive) {
+	                    if(outputControlPair.IsActive) {
+	                        Storage.ClassModuleCreate(Target, outputControlPair.Component);
+	                    } else {
+	                        Storage.ClassModuleDestroy(Target, outputControlPair.Component);
+	                    }                
+					}
                 }                
             }
             GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;

@@ -94,47 +94,55 @@ public class DSTableView : DSViewWithTitle {
             columnAreas[columnAreas.Count-1]= tmp;
         }
                 
-        // Show each column.
+        // Show each column & compute combined columns data display area.
+		Rect columnsDisplayPosition= BodyArea;
         for(int i= 0; i < columns.Count; ++i) {
             if(Math3D.IsNotZero(columnAreas[i].width)) {
                 columns[i].Display(columnAreas[i]);
+				if(columns[i].BodyArea.y > columnsDisplayPosition.y) {
+					columnsDisplayPosition.y= columns[i].BodyArea.y;
+					columnsDisplayPosition.yMax= BodyArea.yMax;
+				}
             }
         }
-        
+
         // Show column content.
         if(myDataSource == null) return;
-        float y= columns[0].BodyArea.y;
-        int nbOfRows= myDataSource.NumberOfRowsInTableView(this);
-        for(int row= 0; row < nbOfRows; ++row) {
-            float maxHeight= 0;
-            foreach(var column in columns) {
-                Vector2 dataSize= myDataSource.DisplaySizeForObjectInTableView(this, column, row);
-                Rect displayRect= new Rect(0, y, dataSize.x, dataSize.y);
-                switch(column.TitleAlignment) {
-                    case TextAlignment.Left: {
-                        displayRect.x= column.ContentArea.x;
-                        break;
-                    }
-                    case TextAlignment.Right: {
-                        displayRect.x= column.ContentArea.xMax-dataSize.x;
-                        break;
-                    }
-                    case TextAlignment.Center:
-                    default: {
-                        displayRect.x= column.ContentArea.x+0.5f*(column.ContentArea.width-dataSize.x);
-                        break;
-                    }
-                }
-                displayRect= Math3D.Intersection(column.ContentArea, displayRect);
-				if(Math3D.IsNotZero(displayRect.width) && Math3D.IsNotZero(displayRect.height)) {
-	                myDataSource.DisplayObjectInTableView(this, column, row, displayRect);					
-				}
-                if(displayRect.height > maxHeight) maxHeight= displayRect.height;
-            }
-            y+= maxHeight;
-        }
-//        myScrollPosition= GUI.BeginScrollView(scrollViewVariableRect, myScrollPosition, contentVariableRect, false, true);
-//        GUI.EndScrollView;
+		Rect columnsContentArea= columnsDisplayPosition;
+        myScrollPosition= GUI.BeginScrollView(columnsDisplayPosition, myScrollPosition, columnsContentArea, false, true);
+		{
+	        float y= columns[0].BodyArea.y;
+	        int nbOfRows= myDataSource.NumberOfRowsInTableView(this);
+	        for(int row= 0; row < nbOfRows; ++row) {
+	            float maxHeight= 0;
+	            foreach(var column in columns) {
+	                Vector2 dataSize= myDataSource.DisplaySizeForObjectInTableView(this, column, row);
+	                Rect displayRect= new Rect(0, y, dataSize.x, dataSize.y);
+	                switch(column.TitleAlignment) {
+	                    case TextAlignment.Left: {
+	                        displayRect.x= column.ContentArea.x;
+	                        break;
+	                    }
+	                    case TextAlignment.Right: {
+	                        displayRect.x= column.ContentArea.xMax-dataSize.x;
+	                        break;
+	                    }
+	                    case TextAlignment.Center:
+	                    default: {
+	                        displayRect.x= column.ContentArea.x+0.5f*(column.ContentArea.width-dataSize.x);
+	                        break;
+	                    }
+	                }
+	                displayRect= Math3D.Intersection(columnsDisplayPosition, displayRect);
+					if(Math3D.IsNotZero(displayRect.width) && Math3D.IsNotZero(displayRect.height)) {
+		                myDataSource.DisplayObjectInTableView(this, column, row, displayRect);					
+					}
+	                if(displayRect.height > maxHeight) maxHeight= displayRect.height;
+	            }
+	            y+= maxHeight;
+	        }
+		}
+        GUI.EndScrollView();
     }
 
     // ======================================================================
