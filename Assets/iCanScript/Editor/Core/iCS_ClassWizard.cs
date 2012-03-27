@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ClassWizard : EditorWindow {
+public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     // =================================================================================
     // Types
     // ---------------------------------------------------------------------------------
@@ -75,7 +75,7 @@ public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
-    const float   kSpacer       = 8f;
+    const int     kSpacer       = 8;
     const int     kMarginSize   = 10;
     const float   kScrollerSize = 16f;
     const float   kCheckBoxWidth= 25f;
@@ -211,20 +211,21 @@ public class iCS_ClassWizard : EditorWindow {
         IsGUIConstantInit= true;
 
         // Initialize table views.
-        VariableTableView= new DSTableView(VariableTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
+        VariableTableView= new DSTableView(VariableTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,0));
+        VariableTableView.DataSource= this;
         DSTableColumn inColumn= new DSTableColumn(kInColumnId, new GUIContent("In"), TextAlignment.Center, true,
-                                                  kCheckBoxWidth, kCheckBoxWidth, new RectOffset(kMarginSize,kMarginSize,0,0));
+                                                  kCheckBoxWidth, new RectOffset(0,0,0,0));
         VariableTableView.AddSubview(inColumn);
         DSTableColumn outColumn= new DSTableColumn(kOutColumnId, new GUIContent("Out"), TextAlignment.Center, true,
-                                                   kCheckBoxWidth, kCheckBoxWidth, new RectOffset(kMarginSize,kMarginSize,0,0));
+                                                   kCheckBoxWidth, new RectOffset(0,0,0,0));
         VariableTableView.AddSubview(outColumn);
         DSTableColumn variableNameColumn= new DSTableColumn(kNameColumnId, new GUIContent("Name"), TextAlignment.Left, true,
-                                                            0, -1f, new RectOffset(kMarginSize,kMarginSize,0,0));
+                                                            -1f, new RectOffset(kSpacer,kSpacer,0,0));
         VariableTableView.AddSubview(variableNameColumn);
         DSTableColumn variableTypeColumn= new DSTableColumn(kTypeColumnId, new GUIContent("Type"), TextAlignment.Left, true,
-                                                            0, -1f, new RectOffset(kMarginSize,kMarginSize,0,0));
+                                                            -1f, new RectOffset(kSpacer,kSpacer,0,0));
         VariableTableView.AddSubview(variableTypeColumn);
-        OperationTableView= new DSTableView(MethodTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
+        OperationTableView= new DSTableView(MethodTitle, TextAlignment.Center, false, new RectOffset(kSpacer,0,0,0));
         
         // Compute content size.
         LabelSize        = EditorStyles.label.CalcSize(new GUIContent("abc")); 
@@ -302,17 +303,18 @@ public class iCS_ClassWizard : EditorWindow {
         // Display Variables.
 //        GUI.Box(boxVariableRect,"");
 //        CenterTitle(boxVariableRect, VariableTitle, VariableTitleSize);
+        VariableTableView.AdjustContentWidth(kNameColumnId, MaxVariableWidth-2f*kSpacer);
         VariableTableView.Display(boxVariableRect);
-        GUI.Label(new Rect(x+kSpacer+0.5f*(kCheckBoxWidth-InTitleSize.x),   boxVariableRect.y+TitleHeight, InTitleSize.x,   TitleHeight), InTitle, EditorStyles.boldLabel);
-        GUI.Label(new Rect(x+kSpacer+kCheckBoxWidth+0.5f*(kCheckBoxWidth-OutTitleSize.x),  boxVariableRect.y+TitleHeight, OutTitleSize.x,  TitleHeight), OutTitle, EditorStyles.boldLabel);
-        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth, boxVariableRect.y+TitleHeight, NameTitleSize.x, TitleHeight), NameTitle, EditorStyles.boldLabel);
-        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth+VariableNameWidth, boxVariableRect.y+TitleHeight, TypeTitleSize.x, TitleHeight), TypeTitle, EditorStyles.boldLabel);
-        GUI.Box(new Rect(scrollViewVariableRect.x, scrollViewVariableRect.y-3f, scrollViewVariableRect.width, 3),"");
-        VariableScrollPosition= GUI.BeginScrollView(scrollViewVariableRect, VariableScrollPosition, contentVariableRect, false, true);
-        for(int i= 0; i < NbOfVariables; ++i) {
-            ShowVariable(i, contentVariableRect.width, LabelHeight);
-        }
-        GUI.EndScrollView();
+//        GUI.Label(new Rect(x+kSpacer+0.5f*(kCheckBoxWidth-InTitleSize.x),   boxVariableRect.y+TitleHeight, InTitleSize.x,   TitleHeight), InTitle, EditorStyles.boldLabel);
+//        GUI.Label(new Rect(x+kSpacer+kCheckBoxWidth+0.5f*(kCheckBoxWidth-OutTitleSize.x),  boxVariableRect.y+TitleHeight, OutTitleSize.x,  TitleHeight), OutTitle, EditorStyles.boldLabel);
+//        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth, boxVariableRect.y+TitleHeight, NameTitleSize.x, TitleHeight), NameTitle, EditorStyles.boldLabel);
+//        GUI.Label(new Rect(x+2f*kSpacer+2f*kCheckBoxWidth+VariableNameWidth, boxVariableRect.y+TitleHeight, TypeTitleSize.x, TitleHeight), TypeTitle, EditorStyles.boldLabel);
+//        GUI.Box(new Rect(scrollViewVariableRect.x, scrollViewVariableRect.y-3f, scrollViewVariableRect.width, 3),"");
+//        VariableScrollPosition= GUI.BeginScrollView(scrollViewVariableRect, VariableScrollPosition, contentVariableRect, false, true);
+//        for(int i= 0; i < NbOfVariables; ++i) {
+//            ShowVariable(i, contentVariableRect.width, LabelHeight);
+//        }
+//        GUI.EndScrollView();
 
         // Display Methods.
 //        GUI.Box(boxMethodRect, "");
@@ -486,5 +488,122 @@ public class iCS_ClassWizard : EditorWindow {
             }
         }
         return null;
+    }
+
+    // =================================================================================
+    // TableViewDataSource
+    // ---------------------------------------------------------------------------------
+    public int NumberOfRowsInTableView(DSTableView tableView) {
+        if(tableView == VariableTableView) {
+            return NbOfVariables;
+        }
+        if(tableView == OperationTableView) {
+            return NbOfMethods;
+        }
+        return 0;
+    }
+    public float WidthOfColumnInTableView(DSTableView tableView, DSTableColumn tableColumn) {
+        if(tableView == VariableTableView) {
+            string columnId= tableColumn.Identifier;
+            if(string.Compare(columnId, kInColumnId) == 0 || string.Compare(columnId, kOutColumnId) == 0) {
+                return kCheckBoxWidth;
+            }
+            if(string.Compare(columnId, kNameColumnId) == 0) {
+                return MaxVariableWidth;
+            }
+            return 0f;
+        }
+        if(tableView == OperationTableView) {
+            return MaxMethodWidth;
+        }
+        return 0f;        
+    }
+    public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
+        if(tableView == VariableTableView) {
+            string columnId= tableColumn.Identifier;
+            if(string.Compare(columnId, kInColumnId) == 0 || string.Compare(columnId, kOutColumnId) == 0) {
+                return CheckBoxSize;
+            }
+            string name;
+            string typeName;
+            VariablePair variablePair;
+            if(row < Fields.Length) {
+                variablePair= Fields[row];
+                var field= GetAComponent(variablePair);
+                name= field.FieldName;
+                typeName= iCS_Types.TypeName(field.FieldType);
+            } else {
+                variablePair= Properties[row-Fields.Length];
+                var property= GetAComponent(variablePair);
+                name= property.PropertyName;
+                typeName= iCS_Types.TypeName(property.PropertyType);
+            }
+            ControlPair inputControlPair= variablePair.InputControlPair;
+            ControlPair outputControlPair= variablePair.OutputControlPair;
+            GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
+            if(string.Compare(columnId, kNameColumnId) == 0) {
+                return labelStyle.CalcSize(new GUIContent(name));
+            }
+            if(string.Compare(columnId, kTypeColumnId) == 0) {
+                return labelStyle.CalcSize(new GUIContent(typeName));                
+            }
+            return Vector2.zero;
+        }
+        if(tableView == OperationTableView) {
+        }
+        return Vector2.zero;
+    }
+    public void DisplayObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row, Rect position) {
+        if(tableView == VariableTableView) {
+            string name;
+            string typeName;
+            VariablePair variablePair;
+            if(row < Fields.Length) {
+                variablePair= Fields[row];
+                var field= GetAComponent(variablePair);
+                name= field.FieldName;
+                typeName= iCS_Types.TypeName(field.FieldType);
+            } else {
+                variablePair= Properties[row-Fields.Length];
+                var property= GetAComponent(variablePair);
+                name= property.PropertyName;
+                typeName= iCS_Types.TypeName(property.PropertyType);
+            }
+            ControlPair inputControlPair= variablePair.InputControlPair;
+            ControlPair outputControlPair= variablePair.OutputControlPair;
+
+            string columnId= tableColumn.Identifier;
+            if(string.Compare(columnId, kInColumnId) == 0 && inputControlPair.Component != null) {
+                bool prevActive= inputControlPair.IsActive;
+                inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
+                if(prevActive != inputControlPair.IsActive) {
+                    if(inputControlPair.IsActive) {
+                        Storage.ClassModuleCreate(Target, inputControlPair.Component);
+                    } else {
+                        Storage.ClassModuleDestroy(Target, inputControlPair.Component);
+                    }                
+                }                
+            }
+            if(string.Compare(columnId, kOutColumnId) == 0 && outputControlPair.Component != null) {
+                bool prevActive= outputControlPair.IsActive;
+                outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
+                if(prevActive != outputControlPair.IsActive) {
+                    if(outputControlPair.IsActive) {
+                        Storage.ClassModuleCreate(Target, outputControlPair.Component);
+                    } else {
+                        Storage.ClassModuleDestroy(Target, outputControlPair.Component);
+                    }                
+                }                
+            }
+            GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
+            if(string.Compare(columnId, kNameColumnId) == 0) {
+                GUI.Label(position, name, labelStyle);                
+            }
+            if(string.Compare(columnId, kTypeColumnId) == 0) {
+                GUI.Label(position, typeName, labelStyle);                                
+            }
+        }
+        if(tableView == OperationTableView) {
+        }        
     }
 }

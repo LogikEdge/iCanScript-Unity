@@ -56,9 +56,17 @@ public class DSViewWithTitle : DSView {
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public virtual void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
-    public virtual void Display() {
-        GUI.Box(FrameArea,"");
+    public override void Display() {
+        DisplayFrame();
+        DisplayTitle();
+        DisplayTitleSeperator();
+    }
+    public void DisplayFrame() {
+        if(FrameArea.width <= 0 || FrameArea.height <= 0) return;
+        GUI.Box(FrameArea,"");        
+    }
+    public void DisplayTitle() {
+        if(FrameArea.width <= 0 || FrameArea.height <= 0) return;
         if(myTitle != null && myTitleSize.x != 0) {
             // Display title.
             Rect titleRect;
@@ -77,17 +85,19 @@ public class DSViewWithTitle : DSView {
                     break;
                 }
             }
-            GUI.Label(titleRect, Title, EditorStyles.boldLabel);        
-            // Display title seperator.
-            if(myTitleSeperator) {
-                float x= FrameArea.x;
-                float y= FrameArea.y+myTitleSize.y;
-                Rect seperatorRect= new Rect(x, y, FrameArea.width, 3f);
-                GUI.Box(seperatorRect, "");
-            }
+            titleRect= Math3D.Intersection(FrameArea, titleRect);
+            if(titleRect.width > 0 && titleRect.height > 0) GUI.Label(titleRect, Title, EditorStyles.boldLabel);        
         }
     }
-
+    public void DisplayTitleSeperator() {
+        if(FrameArea.width <= 0 || FrameArea.height <= 0) return;
+        if(!myTitleSeperator) return;
+        float x= FrameArea.x;
+        float y= FrameArea.y+myTitleSize.y;
+        Rect seperatorRect= new Rect(x, y, FrameArea.width, 3f);
+        GUI.Box(seperatorRect, "");
+    }
+    
     // ======================================================================
     // View area management.
     // ----------------------------------------------------------------------
@@ -98,6 +108,7 @@ public class DSViewWithTitle : DSView {
     void UpdateTitleAndBodyArea() {
         // Update title & subview coordinates.
         myTitleArea= ContentArea;
+        myBodyArea= ContentArea;
         myTitleArea.height= 0f;
         if(myTitle != null && myTitleSize.y != 0) {
             myTitleArea.height+= myTitleSize.y;

@@ -47,6 +47,12 @@ public class DSView {
     }
     
     // ======================================================================
+    // Display
+    // ----------------------------------------------------------------------
+    public virtual void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
+    public virtual void Display()               {}
+
+    // ======================================================================
     // Subview management
     // ----------------------------------------------------------------------
     public void AddSubview(DSView subview) {
