@@ -297,6 +297,11 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         ShowConstructor(headerRect);
         
         // Display Variables.
+//		Vector2 variableFullFrame= VariableTableView.FullFrameSize;
+//		float availableWidth= position.width-2f*kMarginSize;
+//		bool bottomScrollBar= variableFullFrame.x > availableWidth;
+//		Rect variableRect= new Rect(kMarginSize, HeaderHeight, availableWidth, variableFullFrame.y+(bottomScrollBar ? kScrollerSize : 0));
+//        VariableTableView.Display(variableRect);
         VariableTableView.Display(boxVariableRect);
 
         // Display Methods.
@@ -341,57 +346,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
                 Storage.ClassModuleCreateConstructor(Target, Constructors[newIdx-1].Component);
             }
         }
-    }
-    // ---------------------------------------------------------------------------------
-    void ShowVariable(int id, float width, float height) {
-        width-= 2f*kSpacer;
-        if(id >= Fields.Length+Properties.Length) return;
-        string name;
-        string typeName;
-        VariablePair variablePair;
-        if(id < Fields.Length) {
-            variablePair= Fields[id];
-            var field= GetAComponent(variablePair);
-            name= field.FieldName;
-            typeName= iCS_Types.TypeName(field.FieldType);
-        } else {
-            variablePair= Properties[id-Fields.Length];
-            var property= GetAComponent(variablePair);
-            name= property.PropertyName;
-            typeName= iCS_Types.TypeName(property.PropertyType);
-        }
-        float x= kSpacer;
-        float y= id*height;
-        ControlPair inputControlPair= variablePair.InputControlPair;
-        if(inputControlPair.Component != null) {
-            bool prevActive= inputControlPair.IsActive;
-            inputControlPair.IsActive= GUI.Toggle(new Rect(x+0.5f*(kCheckBoxWidth-CheckBoxSize.x), y, kCheckBoxWidth, height), inputControlPair.IsActive, "");
-            if(prevActive != inputControlPair.IsActive) {
-                if(inputControlPair.IsActive) {
-                    Storage.ClassModuleCreate(Target, inputControlPair.Component);
-                } else {
-                    Storage.ClassModuleDestroy(Target, inputControlPair.Component);
-                }                
-            }
-        }
-        x+= kCheckBoxWidth;
-        ControlPair outputControlPair= variablePair.OutputControlPair;
-        if(outputControlPair.Component != null) {
-            bool prevActive= outputControlPair.IsActive;
-            outputControlPair.IsActive= GUI.Toggle(new Rect(x+0.5f*(kCheckBoxWidth-CheckBoxSize.x), y, kCheckBoxWidth, height), outputControlPair.IsActive, "");
-            if(prevActive != outputControlPair.IsActive) {
-                if(outputControlPair.IsActive) {
-                    Storage.ClassModuleCreate(Target, outputControlPair.Component);
-                } else {
-                    Storage.ClassModuleDestroy(Target, outputControlPair.Component);
-                }                
-            }
-        }
-        x+= kCheckBoxWidth+kSpacer;
-        GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
-        GUI.Label(new Rect(x, y, VariableNameWidth, height), name, labelStyle);
-        x+= VariableNameWidth;
-        GUI.Label(new Rect(x, y, width-x, height), typeName, labelStyle);
     }
 
     // ---------------------------------------------------------------------------------
@@ -482,22 +436,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
             return NbOfMethods;
         }
         return 0;
-    }
-    public float WidthOfColumnInTableView(DSTableView tableView, DSTableColumn tableColumn) {
-        if(tableView == VariableTableView) {
-            string columnId= tableColumn.Identifier;
-            if(string.Compare(columnId, kInColumnId) == 0 || string.Compare(columnId, kOutColumnId) == 0) {
-                return kCheckBoxWidth;
-            }
-            if(string.Compare(columnId, kNameColumnId) == 0) {
-                return MaxVariableWidth;
-            }
-            return 0f;
-        }
-        if(tableView == OperationTableView) {
-            return MaxMethodWidth;
-        }
-        return 0f;        
     }
     public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
         if(tableView == VariableTableView) {

@@ -21,7 +21,19 @@ public class DSTableView : DSViewWithTitle {
         get { return myDataSource; }
         set { myDataSource= value; RecomputeColumnAreas(); }
     }
-
+	public Vector2 FullFrameSize {
+		get {
+			Vector2 columnsSize= Vector2.zero;
+			foreach(var c in myColumns) {
+				Vector2 fullColumn= c.FullFrameSize;
+				columnsSize.x+= fullColumn.x;
+				if(fullColumn.y > columnsSize.y) columnsSize.y= fullColumn.y;
+			}
+			return new Vector2(Margins.horizontal+columnsSize.x,
+				               Margins.vertical+TitleArea.height+columnsSize.y);
+		}
+	}
+	
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
@@ -63,6 +75,8 @@ public class DSTableView : DSViewWithTitle {
     // Display
     // ----------------------------------------------------------------------
     public override void Display() {
+		Debug.Log("FullFrameSize= "+FullFrameSize+" Frame= "+FrameArea);
+
         // Duisplay bounding box and title.
         base.Display();
         if(myDataSource == null) return;
