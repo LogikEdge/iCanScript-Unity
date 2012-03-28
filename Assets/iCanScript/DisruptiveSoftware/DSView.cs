@@ -21,6 +21,7 @@ public class DSView {
     }
     public Rect ContentArea {
         get { return myContentArea; }
+		set { FrameArea= new Rect(value.x-myMargins.left, value.y-myMargins.top, value.width+myMargins.horizontal, value.height+myMargins.vertical); }
     }
     public List<DSView> Subviews {
         get { return mySubviews; }

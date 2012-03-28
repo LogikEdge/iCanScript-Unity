@@ -9,7 +9,8 @@ public class DSTableView : DSViewWithTitle {
     // ----------------------------------------------------------------------
     Vector2                 myScrollPosition;
     DSTableViewDataSource   myDataSource= null;
-    
+    float 					myColumnContentHeight= 0f;
+
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -17,6 +18,11 @@ public class DSTableView : DSViewWithTitle {
         get { return myDataSource; }
         set { myDataSource= value; }
     }
+
+    // =================================================================================
+    // Constants
+    // ---------------------------------------------------------------------------------
+    const float   kScrollerSize = 16f;
     
     // ======================================================================
     // Initialization
@@ -49,7 +55,7 @@ public class DSTableView : DSViewWithTitle {
     public void AdjustContentWidth(string columnIdentifier, float contentWidth) {
         DSTableColumn tableColumn= FindTableColumn(columnIdentifier);
         if(tableColumn == null) return;
-        tableColumn.ContentWidth= contentWidth;
+        tableColumn.DataSize= new Vector2(contentWidth, tableColumn.DataSize.y);
     }
     
     // ======================================================================
@@ -71,34 +77,39 @@ public class DSTableView : DSViewWithTitle {
         );
         if(columns.Count == 0) return;
 
-        // Determine width of each column.
-        List<Rect> columnAreas= new List<Rect>();
-        Rect remainingArea= BodyArea;
+        // Determine content width of each column.
+		List<Rect> columnContentAreas= new List<Rect>();
+		float columnX= BodyArea.x;
         for(int i= 0; i < columns.Count; ++i) {
-            if(Math3D.IsGreater(remainingArea.width,0f)) {
-                DSTableColumn tableColumn= columns[i];
-                float columnWidth= tableColumn.ContentWidth+tableColumn.Margins.horizontal;
-                columnWidth= Mathf.Min(remainingArea.width, columnWidth);
-                Rect columnArea= remainingArea;
-                columnArea.width= columnWidth;
-                remainingArea.x+= columnWidth;
-                remainingArea.width-= columnWidth;
-                columnAreas.Add(columnArea);
+            DSTableColumn tableColumn= columns[i];
+            float columnWidth= tableColumn.DataSize.x+tableColumn.Margins.horizontal;
+			columnContentAreas.Add(new Rect(columnX, BodyArea.y, columnWidth, myColumnContentHeight));
+			columnX+= columnWidth;
+        }
+
+        // Determine display width of each column.
+        List<Rect> columnDisplayAreas= new List<Rect>();
+        float remainingWidth= BodyArea.width;
+        for(int i= 0; i < columns.Count; ++i) {
+            if(Math3D.IsGreater(remainingWidth,0f)) {
+				Rect columnArea= Math3D.Intersection(BodyArea, columnContentAreas[i]);
+				remainingWidth-= columnArea.width;
+                columnDisplayAreas.Add(columnArea);
             } else {
-                columnAreas.Add(new Rect(0,0,0,0));
+                columnDisplayAreas.Add(new Rect(0,0,0,0));
             }
         }
-        if(remainingArea.width > 0f) {
-            Rect tmp= columnAreas[columnAreas.Count-1];
-            tmp.width+= remainingArea.width;
-            columnAreas[columnAreas.Count-1]= tmp;
+        if(remainingWidth > kScrollerSize) {
+            Rect tmp= columnDisplayAreas[columnDisplayAreas.Count-1];
+            tmp.width+= remainingWidth-kScrollerSize;
+            columnDisplayAreas[columnDisplayAreas.Count-1]= tmp;
         }
                 
         // Show each column & compute combined columns data display area.
 		Rect columnsDisplayPosition= BodyArea;
         for(int i= 0; i < columns.Count; ++i) {
-            if(Math3D.IsNotZero(columnAreas[i].width)) {
-                columns[i].Display(columnAreas[i]);
+            if(Math3D.IsNotZero(columnDisplayAreas[i].width)) {
+                columns[i].Display(columnDisplayAreas[i]);
 				if(columns[i].BodyArea.y > columnsDisplayPosition.y) {
 					columnsDisplayPosition.y= columns[i].BodyArea.y;
 					columnsDisplayPosition.yMax= BodyArea.yMax;
@@ -109,7 +120,9 @@ public class DSTableView : DSViewWithTitle {
         // Show column content.
         if(myDataSource == null) return;
 		Rect columnsContentArea= columnsDisplayPosition;
-        myScrollPosition= GUI.BeginScrollView(columnsDisplayPosition, myScrollPosition, columnsContentArea, false, true);
+		if(columnsContentArea.height < myColumnContentHeight) columnsContentArea.height= myColumnContentHeight;
+		myColumnContentHeight= 0f;
+        myScrollPosition= GUI.BeginScrollView(columnsDisplayPosition, myScrollPosition, columnsContentArea, false, false);
 		{
 	        float y= columns[0].BodyArea.y;
 	        int nbOfRows= myDataSource.NumberOfRowsInTableView(this);
@@ -133,13 +146,11 @@ public class DSTableView : DSViewWithTitle {
 	                        break;
 	                    }
 	                }
-	                displayRect= Math3D.Intersection(columnsDisplayPosition, displayRect);
-					if(Math3D.IsNotZero(displayRect.width) && Math3D.IsNotZero(displayRect.height)) {
-		                myDataSource.DisplayObjectInTableView(this, column, row, displayRect);					
-					}
+		            myDataSource.DisplayObjectInTableView(this, column, row, displayRect);					
 	                if(displayRect.height > maxHeight) maxHeight= displayRect.height;
 	            }
 	            y+= maxHeight;
+				myColumnContentHeight+= maxHeight;
 	        }
 		}
         GUI.EndScrollView();
