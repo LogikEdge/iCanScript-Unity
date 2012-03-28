@@ -209,19 +209,19 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         IsGUIConstantInit= true;
 
         // Initialize table views.
-        VariableTableView= new DSTableView(VariableTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,0));
+        VariableTableView= new DSTableView(VariableTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,kSpacer));
         VariableTableView.DataSource= this;
         DSTableColumn inColumn= new DSTableColumn(kInColumnId, new GUIContent("In"), TextAlignment.Center, true,
-                                                  kCheckBoxWidth, new RectOffset(0,0,0,0));
+                                                  new RectOffset(kSpacer,kSpacer,0,0));
         VariableTableView.AddSubview(inColumn);
         DSTableColumn outColumn= new DSTableColumn(kOutColumnId, new GUIContent("Out"), TextAlignment.Center, true,
-                                                   kCheckBoxWidth, new RectOffset(0,0,0,0));
+                                                   new RectOffset(kSpacer,kSpacer,0,0));
         VariableTableView.AddSubview(outColumn);
         DSTableColumn variableNameColumn= new DSTableColumn(kNameColumnId, new GUIContent("Name"), TextAlignment.Left, true,
-                                                            -1f, new RectOffset(kSpacer,kSpacer,0,0));
+                                                            new RectOffset(kSpacer,kSpacer,0,0));
         VariableTableView.AddSubview(variableNameColumn);
         DSTableColumn variableTypeColumn= new DSTableColumn(kTypeColumnId, new GUIContent("Type"), TextAlignment.Left, true,
-                                                            -1f, new RectOffset(kSpacer,kSpacer,0,0));
+                                                            new RectOffset(kSpacer,kSpacer,0,0));
         VariableTableView.AddSubview(variableTypeColumn);
         OperationTableView= new DSTableView(MethodTitle, TextAlignment.Center, false, new RectOffset(kSpacer,0,0,0));
         
@@ -256,7 +256,7 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         float remainingHeight= height-HeaderHeight;
 
         // Compute variables & methods fix heights.
-        float fixVariableHeight= 2f*TitleHeight;
+        float fixVariableHeight= 2f*TitleHeight+3f;
         float fixMethodHeight= TitleHeight;
         remainingHeight-= fixVariableHeight+fixMethodHeight+2f*kMarginSize;
         
@@ -297,7 +297,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         ShowConstructor(headerRect);
         
         // Display Variables.
-        VariableTableView.AdjustContentWidth(kNameColumnId, MaxVariableWidth-2f*kSpacer);
         VariableTableView.Display(boxVariableRect);
 
         // Display Methods.

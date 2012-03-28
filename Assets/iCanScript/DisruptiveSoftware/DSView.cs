@@ -17,18 +17,18 @@ public class DSView {
     // ----------------------------------------------------------------------
     public Rect FrameArea {
         get { return myFrameArea; }
-        set { myFrameArea= value; UpdateClientArea(); }
+        set { myFrameArea= value; UpdateContentArea(); }
     }
     public Rect ContentArea {
         get { return myContentArea; }
-		set { FrameArea= new Rect(value.x-myMargins.left, value.y-myMargins.top, value.width+myMargins.horizontal, value.height+myMargins.vertical); }
+		set { FrameArea= new Rect(value.x-myMargins.left, value.y-myMargins.top, value.width+myMargins.horizontal, value.height+myMargins.vertical); UpdateContentArea(); }
     }
     public List<DSView> Subviews {
         get { return mySubviews; }
     }
     public RectOffset Margins {
         get { return myMargins; }
-        set { myMargins= value; UpdateClientArea(); }
+        set { myMargins= value; UpdateContentArea(); }
     }
 
     // ======================================================================
@@ -56,10 +56,10 @@ public class DSView {
     // ======================================================================
     // Subview management
     // ----------------------------------------------------------------------
-    public void AddSubview(DSView subview) {
+    public virtual void AddSubview(DSView subview) {
         mySubviews.Add(subview);
     }
-    public bool RemoveSubview(DSView subview) {
+    public virtual bool RemoveSubview(DSView subview) {
         return mySubviews.Remove(subview);
     }
     public void ForEachSubview(Action<DSView> action) {
@@ -77,12 +77,18 @@ public class DSView {
     // ======================================================================
     // View area management.
     // ----------------------------------------------------------------------
-    void UpdateClientArea() {
+    void UpdateContentArea() {
         myContentArea= myFrameArea;
         myContentArea.x+= myMargins.left;
         myContentArea.width-= myMargins.horizontal;
         myContentArea.y+= myMargins.top;
         myContentArea.height-= myMargins.vertical;
+		if(Math3D.IsSmallerOrEqual(myContentArea.width, 0f) || Math3D.IsSmallerOrEqual(myContentArea.height, 0f)) {
+			myContentArea.x= myFrameArea.x;
+			myContentArea.y= myFrameArea.y;
+			myContentArea.width= 0f;
+			myContentArea.height= 0f;
+		}
         ViewAreaDidChange();    
     }
     
