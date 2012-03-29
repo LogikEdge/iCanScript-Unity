@@ -98,6 +98,7 @@ public class DSTableView : DSViewWithTitle {
         // Show column data.
 		Rect scrollDisplayArea= myColumnsDisplayDataArea;
 		if(scrollDisplayArea.xMax < BodyArea.xMax) scrollDisplayArea.xMax= BodyArea.xMax;
+		if(scrollDisplayArea.yMax < BodyArea.yMax) scrollDisplayArea.yMax= BodyArea.yMax;
         myScrollPosition= GUI.BeginScrollView(scrollDisplayArea, myScrollPosition, myColumnsTotalDataArea, false, false);
 		{
 	        float y= myColumnsTotalDataArea.y;

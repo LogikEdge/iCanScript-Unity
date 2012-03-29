@@ -46,6 +46,7 @@ public class DSView {
         Margins= margins;
         FrameArea= frameArea;
     }
+    public DSView(RectOffset margins) : this(margins, new Rect(0,0,0,0)) {}
     
     // ======================================================================
     // Display

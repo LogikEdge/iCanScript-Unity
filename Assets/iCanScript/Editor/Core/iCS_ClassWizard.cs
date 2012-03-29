@@ -35,8 +35,8 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     VariablePair[]          Properties            = null;
     ControlPair[]           Methods               = null;
     ControlPair[]           Constructors          = null;
-    Vector2                 VariableScrollPosition= Vector2.zero;
-    Vector2                 MethodScrollPosition  = Vector2.zero;
+    DSViewWithTitle         ClassWizardView       = null;
+    DSView                  ConstructorView       = null;
     DSTableView             VariableTableView     = null;
     DSTableView             OperationTableView    = null;        
     
@@ -44,9 +44,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     // Layout info.
     // ---------------------------------------------------------------------------------
     float       MaxConstructorWidth= 0f;
-    float       MaxMethodWidth     = 0f;
-    float       MaxVariableWidth   = 0f;
-    float       VariableNameWidth  = 0f;
 
     // =================================================================================
     // Constant GUI Content
@@ -54,21 +51,11 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     bool        IsGUIConstantInit= false;
     GUIContent  InstanceTitle= new GUIContent("Instance");
     GUIContent  VariableTitle= new GUIContent("Variables");
-    GUIContent  InTitle      = new GUIContent("In");
-    GUIContent  OutTitle     = new GUIContent("Out");
-    GUIContent  NameTitle    = new GUIContent("Name");
-    GUIContent  TypeTitle    = new GUIContent("Type");
     GUIContent  MethodTitle  = new GUIContent("Operations");
     Vector2     LabelSize;
     Vector2     InstanceTitleSize;
-    Vector2     InTitleSize;
-    Vector2     OutTitleSize;
-    Vector2     NameTitleSize;
-    Vector2     TypeTitleSize;
     Vector2     CheckBoxSize;    
     float       LabelHeight;
-    float       TitleHeight;
-    float       HeaderHeight;
     
     // =================================================================================
     // Constants
@@ -107,6 +94,7 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         // Update main state variables.
         Target= target;
         Storage= storage;
+        if(ClassWizardView != null) ClassWizardView.Title= new GUIContent(Target.Name);
         // Build class data.
         ClassType= target.RuntimeType;
         List<VariablePair> fields= new List<VariablePair>();
@@ -134,10 +122,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
                         fields.Add(new VariablePair(null, false, component, isActive));                                            
                     }
                 }
-                var fieldSize= EditorStyles.boldLabel.CalcSize(new GUIContent(name));
-                if(fieldSize.x+kSpacer > MaxVariableWidth) {
-                    MaxVariableWidth= fieldSize.x+kSpacer;
-                }
             } else if(component.IsProperty) {
                 string name= component.PropertyName;
                 var variablePair= GetVariablePair(name, properties);
@@ -156,10 +140,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
                         properties.Add(new VariablePair(null, false, component, isActive));                        
                     }
                 }
-                var propertySize= EditorStyles.boldLabel.CalcSize(new GUIContent(name));
-                if(propertySize.x+kSpacer > MaxVariableWidth) {
-                    MaxVariableWidth= propertySize.x+kSpacer;
-                }
             } else if(component.IsConstructor) {
                 isActive= false;
                 iCS_EditorObject existing= Storage.ClassModuleGetConstructor(Target);
@@ -173,10 +153,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
                 }
             } else {
                 methods.Add(new ControlPair(component, isActive));
-                var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(component.FunctionSignatureNoThis));
-                if(signatureSize.x+12f > MaxMethodWidth) {
-                    MaxMethodWidth= signatureSize.x+12f;
-                }
             }
         }
         Fields= fields.ToArray();
@@ -209,7 +185,24 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         if(IsGUIConstantInit) return;
         IsGUIConstantInit= true;
 
+        // Compute content size.
+        LabelSize        = EditorStyles.label.CalcSize(new GUIContent("abc")); 
+        InstanceTitleSize= EditorStyles.boldLabel.CalcSize(InstanceTitle);
+                         
+        LabelHeight      = 4f+LabelSize.y;
+                         
+        CheckBoxSize     = GUI.skin.toggle.CalcSize(new GUIContent(""));                
+
+        // Initialize class wizard view.
+        string classTitle= Target != null ? Target.Name : "Class Wizard";
+        GUIContent classWizardTitle= new GUIContent(classTitle);
+        ClassWizardView= new DSViewWithTitle(classWizardTitle, TextAlignment.Center, false,
+                                             new RectOffset(kMarginSize, kMarginSize, 0, kMarginSize));
+
+        ConstructorView= new DSView(new RectOffset(0,0,kSpacer,kSpacer));
+        
         // Initialize table views.
+        
         VariableTableView= new DSTableView(VariableTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,kSpacer));
         VariableTableView.DataSource= this;
         DSTableColumn inColumn= new DSTableColumn(kInColumnId, new GUIContent("In"), TextAlignment.Center, true,
@@ -225,24 +218,10 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
                                                             new RectOffset(kSpacer,kSpacer,0,0));
         VariableTableView.AddSubview(variableTypeColumn);
 
-        OperationTableView= new DSTableView(MethodTitle, TextAlignment.Center, false, new RectOffset(kSpacer,0,0,0));
+        OperationTableView= new DSTableView(MethodTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,kSpacer));
 		OperationTableView.DataSource= this;
 		DSTableColumn operationColumn= new DSTableColumn(kOperationColumnId, null, TextAlignment.Left, false, new RectOffset(0,0,0,0));
 		OperationTableView.AddSubview(operationColumn);
-        
-        // Compute content size.
-        LabelSize        = EditorStyles.label.CalcSize(new GUIContent("abc")); 
-        InstanceTitleSize= EditorStyles.boldLabel.CalcSize(InstanceTitle);
-        InTitleSize      = EditorStyles.boldLabel.CalcSize(InTitle);
-        OutTitleSize     = EditorStyles.boldLabel.CalcSize(OutTitle);
-        NameTitleSize    = EditorStyles.boldLabel.CalcSize(NameTitle);
-        TypeTitleSize    = EditorStyles.boldLabel.CalcSize(TypeTitle);
-                         
-        LabelHeight      = 4f+LabelSize.y;
-        TitleHeight      = 4f+InTitleSize.y;
-        HeaderHeight     = 3f*LabelSize.y+kMarginSize;
-                         
-        CheckBoxSize     = GUI.skin.toggle.CalcSize(new GUIContent(""));                
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
@@ -250,57 +229,46 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         if(Target == null) return;
         InitConstantGUIContent();
         EditorGUIUtility.LookLikeInspector();
+
+        // Display Header.
+        ClassWizardView.Display(new Rect(0,0,position.width, position.height));
         
         // Compute window parameters.
-        float x     = kMarginSize;
-        float width = position.width-2f*kMarginSize;
-        float height= position.height-2f*kMarginSize;
-        
-        // Compute header position.
-        Rect headerRect= new Rect(x, 0, width, HeaderHeight);
-        float remainingHeight= height-HeaderHeight;
-
-        // Compute variables & methods fix heights.
-        float fixVariableHeight= 2f*TitleHeight+3f;
-        float fixMethodHeight= TitleHeight;
-        remainingHeight-= fixVariableHeight+fixMethodHeight+2f*kMarginSize;
-        
-        // Compute varaibales & methods content heights.
-        float variableContentHeight= LabelHeight*NbOfVariables;
-        int nbOfMethodsPerLine= (int)(width/MaxMethodWidth);
-        if(nbOfMethodsPerLine < 1) nbOfMethodsPerLine= 1;
-        float methodContentHeight  = LabelHeight*((NbOfMethods+nbOfMethodsPerLine-1)/nbOfMethodsPerLine);
-        float visibleVariableHeight= variableContentHeight;
-        float visibleMethodHeight= methodContentHeight;
-        if(visibleVariableHeight+visibleMethodHeight > remainingHeight) {
-            float halfRemainingHeight= 0.5f*remainingHeight;
-            if(visibleVariableHeight < halfRemainingHeight) {
-                int nbOfMethodLines= (int)((remainingHeight-variableContentHeight)/LabelHeight);
-                visibleMethodHeight= LabelHeight*nbOfMethodLines;
-            } else if(visibleMethodHeight < halfRemainingHeight) {
-                int nbOfVariableLines= (int)((remainingHeight-methodContentHeight)/LabelHeight);
-                visibleVariableHeight= LabelHeight*nbOfVariableLines;
-            } else {
-                int nbOfVariableLines= (int)(halfRemainingHeight/LabelHeight);
-                visibleVariableHeight= LabelHeight*nbOfVariableLines;
-                int nbOfMethodLines= (int)((remainingHeight-visibleVariableHeight)/LabelHeight);
-                visibleMethodHeight= LabelHeight*(nbOfMethodLines+1);
+            Rect headerRect= ClassWizardView.BodyArea;
+            headerRect.height= ConstructorView.Margins.vertical+LabelHeight;
+        ConstructorView.Display(headerRect);
+        ShowConstructor(ConstructorView.ContentArea);
+            Rect remainingArea= ClassWizardView.BodyArea;
+            remainingArea.y+= ConstructorView.FrameArea.height;
+            remainingArea.height-= ConstructorView.FrameArea.height;
+            float variableHeight= VariableTableView.FullFrameSize.y;
+            float operationHeight= OperationTableView.FullFrameSize.y;
+            float neededHeight= variableHeight+operationHeight+kMarginSize;
+            float remainingHeight= remainingArea.height;
+            if(VariableTableView.HasHorizontalScroller && (variableHeight < 0.5f*remainingHeight || neededHeight < remainingHeight)) {
+                variableHeight= VariableTableView.FullFrameSizeWithScrollers.y;
+                neededHeight= variableHeight+operationHeight+kMarginSize;
             }
-        }
-        
-        // Build variables & methods position.
-        Rect boxVariableRect= new Rect(x, HeaderHeight, width, fixVariableHeight+visibleVariableHeight);
-        Rect boxMethodRect  = new Rect(x, boxVariableRect.yMax+kMarginSize, width, fixMethodHeight+visibleMethodHeight);
-        Rect scrollViewVariableRect= new Rect(x, boxVariableRect.y+fixVariableHeight, width, visibleVariableHeight);
-        Rect scrollViewMethodRect  = new Rect(x, boxMethodRect.y+fixMethodHeight, width, visibleMethodHeight);
-        Rect contentVariableRect= new Rect(0, 0, width-kScrollerSize, variableContentHeight);
-        Rect contentMethodRect  = new Rect(0, 0, width-kScrollerSize, methodContentHeight);
-        ComputeVariableContentLayout(contentMethodRect.width);
-        
-        // Display Header.
-        CenterTitle(headerRect, Target.Name);
-        ShowConstructor(headerRect);
-        
+            if(OperationTableView.HasHorizontalScroller && (operationHeight < 0.5f*remainingHeight || neededHeight < remainingHeight)) {
+                operationHeight= OperationTableView.FullFrameSizeWithScrollers.y;
+                neededHeight= variableHeight+operationHeight+kMarginSize;
+            }
+            if(neededHeight > remainingHeight) {
+                if(variableHeight < 0.5f*remainingHeight) {
+                    operationHeight= remainingHeight-variableHeight;
+                } else if(operationHeight < 0.5f*remainingHeight) {
+                    variableHeight= remainingHeight-operationHeight;
+                } else {
+                    variableHeight= (variableHeight/neededHeight)*remainingHeight;
+                    operationHeight= remainingHeight- variableHeight;
+                }
+            }
+            Rect boxVariableRect= remainingArea;
+            boxVariableRect.height= variableHeight;
+            Rect boxMethodRect= remainingArea;
+            boxMethodRect.y+= variableHeight+kMarginSize;
+            boxMethodRect.height= operationHeight;
+            
         // Display Variables.
         VariableTableView.Display(boxVariableRect);
 
@@ -310,7 +278,7 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
 
     // ---------------------------------------------------------------------------------
     void ShowConstructor(Rect headerRect) {
-        float y= headerRect.y+TitleHeight;
+        float y= headerRect.y;
         GUI.Label(new Rect(headerRect.x, y, InstanceTitleSize.x, InstanceTitleSize.y), InstanceTitle, EditorStyles.boldLabel);
         float x= 2f*kSpacer+headerRect.x+InstanceTitleSize.x;
         // Fill-in available constructors.
@@ -338,25 +306,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     }
 
 
-    // =================================================================================
-    // Layout
-    // ---------------------------------------------------------------------------------
-    void ComputeVariableContentLayout(float width) {
-        width-= 2f*kSpacer;
-        float labelWidth= 0.5f*(width-2f*kCheckBoxWidth);
-        VariableNameWidth= labelWidth < MaxVariableWidth ? MaxVariableWidth : labelWidth;        
-    }
-    void CenterTitle(Rect rect, string title) {
-        var content= new GUIContent(title);
-        var contentSize= EditorStyles.boldLabel.CalcSize(content);
-        CenterTitle(rect, content, contentSize);
-    }
-    void CenterTitle(Rect rect, GUIContent content, Vector2 contentSize) {
-        CenterLabel(rect, content, contentSize, EditorStyles.boldLabel);
-    }
-    void CenterLabel(Rect rect, GUIContent content, Vector2 contentSize, GUIStyle style) {
-        GUI.Label(new Rect(rect.x+0.5f*(rect.width-contentSize.x), rect.y, contentSize.x, contentSize.y), content, style);        
-    }
     // =================================================================================
     // Helpers
     // ---------------------------------------------------------------------------------
