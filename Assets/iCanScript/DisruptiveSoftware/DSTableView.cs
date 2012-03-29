@@ -33,6 +33,15 @@ public class DSTableView : DSViewWithTitle {
 				               Margins.vertical+TitleArea.height+columnsSize.y);
 		}
 	}
+	public Vector2 FullFrameSizeWithScrollers {
+		get { return FullFrameSize + new Vector2(kScrollerSize, kScrollerSize); }
+	}
+	public bool HasHorizontalScroller {
+		get { return FrameArea.width < FullFrameSize.x; }
+	}
+	public bool HasVerticalScroller {
+		get { return FrameArea.height < FullFrameSize.y; }
+	}
 	
     // =================================================================================
     // Constants
