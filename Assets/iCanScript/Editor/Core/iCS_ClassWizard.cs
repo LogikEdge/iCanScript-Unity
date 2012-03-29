@@ -38,7 +38,10 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     DSViewWithTitle         ClassWizardView       = null;
     DSView                  ConstructorView       = null;
     DSTableView             VariableTableView     = null;
-    DSTableView             OperationTableView    = null;        
+    DSTableView             OperationTableView    = null;
+
+    DSTableView             ClassesTableView      = null;
+    List<iCS_ReflectionDesc> Classes= new List<iCS_ReflectionDesc>();
     
     // =================================================================================
     // Layout info.
@@ -81,6 +84,8 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         Target= null;
         Storage= null;
         IsGUIConstantInit= false;
+        
+        Classes= iCS_DataBase.GetClasses();
     }
     // ---------------------------------------------------------------------------------
     public void Activate(iCS_EditorObject target, iCS_IStorage storage) {
@@ -222,6 +227,9 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
 		OperationTableView.DataSource= this;
 		DSTableColumn operationColumn= new DSTableColumn(kOperationColumnId, null, TextAlignment.Left, false, new RectOffset(0,0,0,0));
 		OperationTableView.AddSubview(operationColumn);
+		
+		ClassesTableView= new DSTableView(new GUIContent("Classes"), TextAlignment.Center, false, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
+		
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {

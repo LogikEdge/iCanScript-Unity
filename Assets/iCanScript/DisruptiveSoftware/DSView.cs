@@ -9,6 +9,7 @@ public class DSView {
     // ----------------------------------------------------------------------
     Rect            myFrameArea;
     Rect            myContentArea;
+    Vector2         myMinimumContentSize= Vector2.zero;
     RectOffset      myMargins;
     List<DSView>    mySubviews= new List<DSView>();
 
@@ -29,6 +30,13 @@ public class DSView {
     public RectOffset Margins {
         get { return myMargins; }
         set { myMargins= value; UpdateContentArea(); }
+    }
+    public Vector2 MinimumContentSize {
+        get { return myMinimumContentSize; }
+        set { myMinimumContentSize= value; }
+    }
+    public Vector2 MinimumFrameSize {
+        get { return myMinimumContentSize+new Vector2(myMargins.horizontal, myMargins.vertical); }
     }
 
     // ======================================================================
