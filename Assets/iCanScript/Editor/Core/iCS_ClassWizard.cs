@@ -73,14 +73,15 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
-    const int     kSpacer       = 8;
-    const int     kMarginSize   = 10;
-    const float   kScrollerSize = 16f;
-    const float   kCheckBoxWidth= 25f;
-    const string  kInColumnId   = "In";
-    const string  kOutColumnId  = "Out";
-    const string  kNameColumnId = "Name";
-    const string  kTypeColumnId = "Type";
+    const int     kSpacer           = 8;
+    const int     kMarginSize       = 10;
+    const float   kScrollerSize     = 16f;
+    const float   kCheckBoxWidth    = 25f;
+    const string  kInColumnId       = "In";
+    const string  kOutColumnId      = "Out";
+    const string  kNameColumnId     = "Name";
+    const string  kTypeColumnId     = "Type";
+	const string  kOperationColumnId= "Operation";
     
     // =================================================================================
     // Properties
@@ -223,7 +224,11 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         DSTableColumn variableTypeColumn= new DSTableColumn(kTypeColumnId, new GUIContent("Type"), TextAlignment.Left, true,
                                                             new RectOffset(kSpacer,kSpacer,0,0));
         VariableTableView.AddSubview(variableTypeColumn);
+
         OperationTableView= new DSTableView(MethodTitle, TextAlignment.Center, false, new RectOffset(kSpacer,0,0,0));
+		OperationTableView.DataSource= this;
+		DSTableColumn operationColumn= new DSTableColumn(kOperationColumnId, null, TextAlignment.Left, false, new RectOffset(0,0,0,0));
+		OperationTableView.AddSubview(operationColumn);
         
         // Compute content size.
         LabelSize        = EditorStyles.label.CalcSize(new GUIContent("abc")); 
@@ -297,26 +302,10 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         ShowConstructor(headerRect);
         
         // Display Variables.
-//		Vector2 variableFullFrame= VariableTableView.FullFrameSize;
-//		float availableWidth= position.width-2f*kMarginSize;
-//		bool bottomScrollBar= variableFullFrame.x > availableWidth;
-//		Rect variableRect= new Rect(kMarginSize, HeaderHeight, availableWidth, variableFullFrame.y+(bottomScrollBar ? kScrollerSize : 0));
-//        VariableTableView.Display(variableRect);
         VariableTableView.Display(boxVariableRect);
 
         // Display Methods.
         OperationTableView.Display(boxMethodRect);
-        MethodScrollPosition= GUI.BeginScrollView(scrollViewMethodRect, MethodScrollPosition, contentMethodRect, false, true);
-        int column= 0;
-        int row= 0;
-        for(int i= 0; i < NbOfMethods; ++i) {            
-            ShowMethod(i, column, row, MaxMethodWidth, LabelHeight);
-            if(++column >= nbOfMethodsPerLine) {
-                column= 0;
-                ++row;
-            }
-        }
-        GUI.EndScrollView();
     }
 
     // ---------------------------------------------------------------------------------
@@ -348,35 +337,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         }
     }
 
-    // ---------------------------------------------------------------------------------
-    void ShowMethod(int id, int column, int row, float width, float height) {
-        GUIStyle style= GUI.skin.button;
-        var alignment= style.alignment;
-        var fontStyle= style.fontStyle;
-        var textColor= style.normal.textColor;        
-        var background= style.normal.background;
-        style.alignment= TextAnchor.MiddleLeft;
-        if(Methods[id].IsActive) {
-            style.normal.textColor= Color.white;
-            style.fontStyle= FontStyle.Bold;
-            style.normal.background= style.active.background;            
-        } else {
-            style.fontStyle= FontStyle.Italic;
-        }
-        if(GUI.Button(new Rect(column*width, row*height, width, height), Methods[id].Component.FunctionSignatureNoThis)) {
-            Methods[id].IsActive^= true;
-            if(Methods[id].IsActive) {
-                Storage.ClassModuleCreate(Target, Methods[id].Component);
-            } else {
-                Storage.ClassModuleDestroy(Target, Methods[id].Component);
-            }
-        }
-        style.normal.textColor= textColor;
-        style.normal.background= background;
-        style.fontStyle= fontStyle;
-        style.alignment= alignment;
-    }
-    
 
     // =================================================================================
     // Layout
@@ -469,6 +429,9 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
             return Vector2.zero;
         }
         if(tableView == OperationTableView) {
+            var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(Methods[row].Component.FunctionSignatureNoThis));
+			signatureSize.x+= 12f;
+			return signatureSize;
         }
         return Vector2.zero;
     }
@@ -527,6 +490,31 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
             }
         }
         if(tableView == OperationTableView) {
+	        GUIStyle style= GUI.skin.button;
+	        var alignment= style.alignment;
+	        var fontStyle= style.fontStyle;
+	        var textColor= style.normal.textColor;        
+	        var background= style.normal.background;
+	        style.alignment= TextAnchor.MiddleLeft;
+	        if(Methods[row].IsActive) {
+	            style.normal.textColor= Color.white;
+	            style.fontStyle= FontStyle.Bold;
+	            style.normal.background= style.active.background;            
+	        } else {
+	            style.fontStyle= FontStyle.Italic;
+	        }
+	        if(GUI.Button(position, Methods[row].Component.FunctionSignatureNoThis)) {
+	            Methods[row].IsActive^= true;
+	            if(Methods[row].IsActive) {
+	                Storage.ClassModuleCreate(Target, Methods[row].Component);
+	            } else {
+	                Storage.ClassModuleDestroy(Target, Methods[row].Component);
+	            }
+	        }
+	        style.normal.textColor= textColor;
+	        style.normal.background= background;
+	        style.fontStyle= fontStyle;
+	        style.alignment= alignment;
         }        
     }
 }
