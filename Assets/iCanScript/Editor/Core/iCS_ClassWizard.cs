@@ -503,6 +503,7 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
 	        } else {
 	            style.fontStyle= FontStyle.Italic;
 	        }
+			position.width= tableColumn.DataSize.x;
 	        if(GUI.Button(position, Methods[row].Component.FunctionSignatureNoThis)) {
 	            Methods[row].IsActive^= true;
 	            if(Methods[row].IsActive) {

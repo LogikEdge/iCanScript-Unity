@@ -75,8 +75,6 @@ public class DSTableView : DSViewWithTitle {
     // Display
     // ----------------------------------------------------------------------
     public override void Display() {
-		Debug.Log("FullFrameSize= "+FullFrameSize+" Frame= "+FrameArea);
-
         // Duisplay bounding box and title.
         base.Display();
         if(myDataSource == null) return;
