@@ -76,7 +76,7 @@ public class DSTableView : DSViewWithTitle {
         return result;
     }
     // ----------------------------------------------------------------------
-    void ReloadData() {
+    public void ReloadData() {
 		RecomputeColumnAreas();
 	}
 	

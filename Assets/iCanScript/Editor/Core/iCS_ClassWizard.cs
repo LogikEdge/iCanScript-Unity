@@ -39,10 +39,9 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     DSView                  ConstructorView       = null;
     DSTableView             VariableTableView     = null;
     DSTableView             OperationTableView    = null;
-
-    DSTableView             ClassesTableView      = null;
-    List<iCS_ReflectionDesc> Classes= new List<iCS_ReflectionDesc>();
     
+    iCS_ClassListController ClassListController= new iCS_ClassListController();
+
     // =================================================================================
     // Layout info.
     // ---------------------------------------------------------------------------------
@@ -72,6 +71,9 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     const string  kNameColumnId     = "Name";
     const string  kTypeColumnId     = "Type";
 	const string  kOperationColumnId= "Operation";
+	const string  kClassTypeColumnId= "Class";
+	const string  kPackageColumnId  = "Package";
+	const string  kCompanyColumnId  = "Company";
     
     // =================================================================================
     // Properties
@@ -84,8 +86,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         Target= null;
         Storage= null;
         IsGUIConstantInit= false;
-        
-        Classes= iCS_DataBase.GetClasses();
     }
     // ---------------------------------------------------------------------------------
     public void Activate(iCS_EditorObject target, iCS_IStorage storage) {
@@ -227,9 +227,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
 		OperationTableView.DataSource= this;
 		DSTableColumn operationColumn= new DSTableColumn(kOperationColumnId, null, TextAlignment.Left, false, new RectOffset(0,0,0,0));
 		OperationTableView.AddSubview(operationColumn);
-		
-		ClassesTableView= new DSTableView(new GUIContent("Classes"), TextAlignment.Center, false, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
-		
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
@@ -278,7 +275,8 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
             boxMethodRect.height= operationHeight;
             
         // Display Variables.
-        VariableTableView.Display(boxVariableRect);
+//        VariableTableView.Display(boxVariableRect);
+        ClassListController.Display(boxVariableRect);
 
         // Display Methods.
         OperationTableView.Display(boxMethodRect);
