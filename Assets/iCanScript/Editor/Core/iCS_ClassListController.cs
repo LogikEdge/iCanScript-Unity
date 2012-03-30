@@ -7,8 +7,11 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
+	DSView						myView           = null;
     DSTableView                 myTableView      = null;
     List<iCS_ReflectionDesc>    myClasses        = null;
+	List<string>				myPackages       = new List<string>();
+	List<string>				myCompanies		 = new List<string>();
     List<iCS_ReflectionDesc>    myFilteredClasses= null;
     GUIStyle                    myColumnDataStyle= null;
     bool                        myIsInitialized  = false;
@@ -46,6 +49,10 @@ public class iCS_ClassListController : DSTableViewDataSource {
         
         // Get list all classes.
         myClasses= iCS_DataBase.GetClasses();
+		foreach(var desc in myClasses) {
+			if(!myPackages.Contains(desc.Package)) myPackages.Add(desc.Package);
+			if(!myCompanies.Contains(desc.Company)) myCompanies.Add(desc.Company);
+		}
         myFilteredClasses= myClasses;
         
         // Build table view.
@@ -59,11 +66,27 @@ public class iCS_ClassListController : DSTableViewDataSource {
         myTableView.AddSubview(classColumn);
         myTableView.AddSubview(packageColumn);
         myTableView.AddSubview(companyColumn);  
-        myTableView.DataSource= this;      
+        myTableView.DataSource= this;
+
+      	myView= new DSView(new RectOffset(0,0,0,0));
     }
-    public void Filter(string filter) {
+    public void Filter(string classSubstringFilter, string packageSubstringFilter, string companySubstringFilter) {
         myFilteredClasses= Prelude.filter(
-            d=> filter == null || filter == "" || d.ClassType.Name.ToUpper().IndexOf(filter.ToUpper()) != -1,
+            d=> {
+				bool companyOk= true;
+				if(!IsEmptyString(companySubstringFilter)) {
+					if(d.Company.ToUpper().IndexOf(companySubstringFilter.ToUpper()) == -1) companyOk= false;
+				}
+				bool packageOk= true;
+				if(!IsEmptyString(packageSubstringFilter)) {
+					if(d.Package.ToUpper().IndexOf(packageSubstringFilter.ToUpper()) == -1) packageOk= false;
+				}
+				bool classOk= true;
+				if(!IsEmptyString(classSubstringFilter)) {
+					if(d.ClassType.Name.ToUpper().IndexOf(classSubstringFilter.ToUpper()) == -1) classOk= false;
+				}
+				return companyOk && packageOk && classOk;
+			},
             myClasses);
         myTableView.ReloadData();
     }
@@ -96,13 +119,18 @@ public class iCS_ClassListController : DSTableViewDataSource {
         iCS_ReflectionDesc desc= myFilteredClasses[row];
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kClassColumnId) == 0) {
-            GUI.Label(position, desc.ClassType.Name);
+            GUI.Label(position, desc.ClassType.Name, myColumnDataStyle);
         }
         if(string.Compare(columnId, kPackageColumnId) == 0) {
-            GUI.Label(position, desc.Package);
+            GUI.Label(position, desc.Package, myColumnDataStyle);
         }
         if(string.Compare(columnId, kCompanyColumnId) == 0) {
-            GUI.Label(position, desc.Company);
+            GUI.Label(position, desc.Company, myColumnDataStyle);
         }
     }
+
+    // =================================================================================
+    // Miscelanious
+    // ---------------------------------------------------------------------------------
+	static bool IsEmptyString(string s) { return s == null || s == ""; }
 }

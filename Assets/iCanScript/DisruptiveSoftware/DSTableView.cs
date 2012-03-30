@@ -52,11 +52,8 @@ public class DSTableView : DSViewWithTitle {
     // Initialization
     // ----------------------------------------------------------------------
     public DSTableView(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                       RectOffset margins, Rect viewArea)
-        : base(title, titleAlignment, titleSeperator, margins, viewArea) {}
-    public DSTableView(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
                        RectOffset margins)
-        : this(title, titleAlignment, titleSeperator, margins, new Rect(0,0,0,0)) {}
+        : base(title, titleAlignment, titleSeperator, margins) {}
     
     // ======================================================================
     // Column Methods
@@ -83,7 +80,7 @@ public class DSTableView : DSViewWithTitle {
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public override void Display() {
+    protected override void Display() {
         // Duisplay bounding box and title.
         base.Display();
         if(myDataSource == null) return;
@@ -91,7 +88,7 @@ public class DSTableView : DSViewWithTitle {
         // Display frame and title of each column.
         for(int i= 0; i < myColumns.Count; ++i) {
             if(Math3D.IsNotZero(myColumns[i].ContentArea.width)) {
-                myColumns[i].Display();
+                myColumns[i].Display(myColumns[i].FrameArea);
             }
         }
 

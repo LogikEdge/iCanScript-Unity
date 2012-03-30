@@ -43,20 +43,17 @@ public class DSViewWithTitle : DSView {
     // Initialization
     // ----------------------------------------------------------------------
     public DSViewWithTitle(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                           RectOffset margins, Rect frameArea)
-    : base(margins, frameArea) {
+                           RectOffset margins)
+    : base(margins) {
         Title= title;
         TitleSeperator= titleSeperator;
         TitleAlignment= titleAlignment;
     }
-    public DSViewWithTitle(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                           RectOffset margins)
-    : this(title, titleAlignment, titleSeperator, margins, new Rect(0,0,0,0)) {}
     
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public override void Display() {
+    protected override void Display() {
         DisplayFrame();
         DisplayTitle();
         DisplayTitleSeperator();

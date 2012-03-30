@@ -7,11 +7,11 @@ public class DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Rect            myFrameArea;
-    Rect            myContentArea;
+    Rect            myFrameArea         = new Rect(0,0,0,0);
+    Rect            myContentArea       = new Rect(0,0,0,0);
     Vector2         myMinimumContentSize= Vector2.zero;
-    RectOffset      myMargins;
-    List<DSView>    mySubviews= new List<DSView>();
+    RectOffset      myMargins           = new RectOffset(0,0,0,0);
+    List<DSView>    mySubviews          = new List<DSView>();
 
     // ======================================================================
     // Properties
@@ -50,17 +50,15 @@ public class DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSView(RectOffset margins, Rect frameArea) {
+    public DSView(RectOffset margins) {
         Margins= margins;
-        FrameArea= frameArea;
     }
-    public DSView(RectOffset margins) : this(margins, new Rect(0,0,0,0)) {}
     
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public virtual void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
-    public virtual void Display()               {}
+    public    virtual void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
+    protected virtual void Display()               {}
 
     // ======================================================================
     // Subview management

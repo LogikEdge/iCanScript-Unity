@@ -36,7 +36,7 @@ public class DSTableColumn : DSViewWithTitle {
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public override void Display() {
+    protected override void Display() {
         base.Display();
     }
 }
