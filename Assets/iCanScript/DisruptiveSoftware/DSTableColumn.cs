@@ -20,16 +20,13 @@ public class DSTableColumn : DSViewWithTitle {
         get { return myDataSize; }
         set { myDataSize= value; }
     }
-	public Vector2 FullFrameSize {
-		get { return new Vector2(DataSize.x+Margins.horizontal, DataSize.y+Margins.vertical+TitleArea.height); }
-	}
     
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
     public DSTableColumn(string identifier, GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                         RectOffset margins)
-    : base(title, titleAlignment, titleSeperator, margins) {
+                         RectOffset margins, bool shouldDisplayFrame= true)
+    : base(title, titleAlignment, titleSeperator, margins, shouldDisplayFrame) {
         Identifier= identifier;
     }
     
@@ -38,5 +35,12 @@ public class DSTableColumn : DSViewWithTitle {
     // ----------------------------------------------------------------------
     protected override void Display() {
         base.Display();
+    }
+
+	// ======================================================================
+    // View method overrides
+    // ----------------------------------------------------------------------
+    protected override Vector2 GetFullFrameSize() {
+		return new Vector2(DataSize.x+Margins.horizontal, DataSize.y+Margins.vertical+TitleArea.height);
     }
 }

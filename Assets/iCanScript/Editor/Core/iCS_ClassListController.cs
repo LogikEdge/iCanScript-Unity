@@ -7,7 +7,6 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	DSView						myView           = null;
     DSTableView                 myTableView      = null;
     List<iCS_ReflectionDesc>    myClasses        = null;
 	List<string>				myPackages       = new List<string>();
@@ -67,8 +66,6 @@ public class iCS_ClassListController : DSTableViewDataSource {
         myTableView.AddSubview(packageColumn);
         myTableView.AddSubview(companyColumn);  
         myTableView.DataSource= this;
-
-      	myView= new DSView(new RectOffset(0,0,0,0));
     }
     public void Filter(string classSubstringFilter, string packageSubstringFilter, string companySubstringFilter) {
         myFilteredClasses= Prelude.filter(

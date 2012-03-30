@@ -6,10 +6,11 @@ public class DSViewWithTitle : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    GUIContent      myTitle               = null;
-    TextAlignment   myTitleAlignment      = TextAlignment.Center;
-    Vector2         myTitleSize           = Vector2.zero;
-    bool            myTitleSeperator      = false;
+    GUIContent      myTitle         = null;
+    TextAlignment   myTitleAlignment= TextAlignment.Center;
+    bool            myTitleSeperator= false;
+    GUIStyle        myTitleGUIStyle = EditorStyles.boldLabel;
+    Vector2         myTitleSize     = Vector2.zero;
     Rect            myTitleArea;
     Rect            myBodyArea;
     
@@ -21,7 +22,7 @@ public class DSViewWithTitle : DSView {
         set {
             myTitle= value;
             if(myTitle != null) {
-                myTitleSize= EditorStyles.boldLabel.CalcSize(myTitle);                
+                myTitleSize= TitleGUIStyle.CalcSize(myTitle);                
             } else {
                 myTitleSize= Vector2.zero;
             }
@@ -38,13 +39,17 @@ public class DSViewWithTitle : DSView {
     }
     public Rect TitleArea   { get { return myTitleArea; }}
     public Rect BodyArea    { get { return myBodyArea; }}
+    public GUIStyle TitleGUIStyle {
+        get { return myTitleGUIStyle; }
+        set { myTitleGUIStyle= value ?? EditorStyles.boldLabel; }
+    }
     
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
     public DSViewWithTitle(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                           RectOffset margins)
-    : base(margins) {
+                           RectOffset margins, bool shouldDisplayFrame= true)
+     : base(margins, shouldDisplayFrame) {
         Title= title;
         TitleSeperator= titleSeperator;
         TitleAlignment= titleAlignment;
@@ -54,13 +59,9 @@ public class DSViewWithTitle : DSView {
     // Display
     // ----------------------------------------------------------------------
     protected override void Display() {
-        DisplayFrame();
+        base.Display();
         DisplayTitle();
         DisplayTitleSeperator();
-    }
-    public void DisplayFrame() {
-        if(FrameArea.width <= 0 || FrameArea.height <= 0) return;
-        GUI.Box(FrameArea,"");        
     }
     public void DisplayTitle() {
         if(FrameArea.width <= 0 || FrameArea.height <= 0) return;
@@ -102,10 +103,20 @@ public class DSViewWithTitle : DSView {
         base.ViewAreaDidChange();
         UpdateTitleAndBodyArea();
     }
+    protected override Vector2 GetMinimumFrameSize() { 
+        var baseMinFrameSize= base.GetMinimumFrameSize();
+        float width= Mathf.Max(myTitleSize.x+Margins.horizontal, baseMinFrameSize.x);
+        float height= myTitleSize.y+baseMinFrameSize.y;
+        if(TitleSeperator) {
+            height+= 3f;
+        }
+        return new Vector2(width, height);
+    }
+
     void UpdateTitleAndBodyArea() {
         // Update title & subview coordinates.
-        myTitleArea= ContentArea;
-        myBodyArea= ContentArea;
+        myTitleArea= DisplayArea;
+        myBodyArea= DisplayArea;
         myTitleArea.height= 0f;
         if(myTitle != null && myTitleSize.y != 0) {
             myTitleArea.height+= myTitleSize.y;
@@ -119,11 +130,11 @@ public class DSViewWithTitle : DSView {
         }
         // Validate adjusted cordinates.
         if(myTitleArea.width < 0f) myTitleArea.width= 0f;
-        if(myTitleArea.height > ContentArea.height) myTitleArea.height= ContentArea.height;
+        if(myTitleArea.height > DisplayArea.height) myTitleArea.height= DisplayArea.height;
         if(myBodyArea.width < 0f) myBodyArea.width= 0f;
-        if(myBodyArea.x > ContentArea.xMax) myBodyArea.x= ContentArea.xMax;
-        if(myBodyArea.y > ContentArea.yMax) myBodyArea.y= ContentArea.yMax;
-        if(myBodyArea.xMax > ContentArea.xMax) myBodyArea.xMax= ContentArea.xMax;
-        if(myBodyArea.yMax > ContentArea.yMax) myBodyArea.yMax= ContentArea.yMax;
+        if(myBodyArea.x > DisplayArea.xMax) myBodyArea.x= DisplayArea.xMax;
+        if(myBodyArea.y > DisplayArea.yMax) myBodyArea.y= DisplayArea.yMax;
+        if(myBodyArea.xMax > DisplayArea.xMax) myBodyArea.xMax= DisplayArea.xMax;
+        if(myBodyArea.yMax > DisplayArea.yMax) myBodyArea.yMax= DisplayArea.yMax;
     }
 }

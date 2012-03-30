@@ -21,21 +21,6 @@ public class DSTableView : DSViewWithTitle {
         get { return myDataSource; }
         set { myDataSource= value; RecomputeColumnAreas(); }
     }
-	public Vector2 FullFrameSize {
-		get {
-			Vector2 columnsSize= Vector2.zero;
-			foreach(var c in myColumns) {
-				Vector2 fullColumn= c.FullFrameSize;
-				columnsSize.x+= fullColumn.x;
-				if(fullColumn.y > columnsSize.y) columnsSize.y= fullColumn.y;
-			}
-			return new Vector2(Margins.horizontal+columnsSize.x,
-				               Margins.vertical+TitleArea.height+columnsSize.y);
-		}
-	}
-	public Vector2 FullFrameSizeWithScrollers {
-		get { return FullFrameSize + new Vector2(kScrollerSize, kScrollerSize); }
-	}
 	public bool HasHorizontalScroller {
 		get { return FrameArea.width < FullFrameSize.x; }
 	}
@@ -52,8 +37,8 @@ public class DSTableView : DSViewWithTitle {
     // Initialization
     // ----------------------------------------------------------------------
     public DSTableView(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                       RectOffset margins)
-        : base(title, titleAlignment, titleSeperator, margins) {}
+                       RectOffset margins, bool shouldDisplayFrame= true)
+        : base(title, titleAlignment, titleSeperator, margins, shouldDisplayFrame) {}
     
     // ======================================================================
     // Column Methods
@@ -87,7 +72,7 @@ public class DSTableView : DSViewWithTitle {
         
         // Display frame and title of each column.
         for(int i= 0; i < myColumns.Count; ++i) {
-            if(Math3D.IsNotZero(myColumns[i].ContentArea.width)) {
+            if(Math3D.IsNotZero(myColumns[i].DisplayArea.width)) {
                 myColumns[i].Display(myColumns[i].FrameArea);
             }
         }
@@ -105,16 +90,16 @@ public class DSTableView : DSViewWithTitle {
 	                Rect displayRect= new Rect(0, y, dataSize.x, dataSize.y);
 	                switch(column.TitleAlignment) {
 	                    case TextAlignment.Left: {
-	                        displayRect.x= column.ContentArea.x;
+	                        displayRect.x= column.DisplayArea.x;
 	                        break;
 	                    }
 	                    case TextAlignment.Right: {
-	                        displayRect.x= column.ContentArea.xMax-dataSize.x;
+	                        displayRect.x= column.DisplayArea.xMax-dataSize.x;
 	                        break;
 	                    }
 	                    case TextAlignment.Center:
 	                    default: {
-	                        displayRect.x= column.ContentArea.x+0.5f*(column.ContentArea.width-dataSize.x);
+	                        displayRect.x= column.DisplayArea.x+0.5f*(column.DisplayArea.width-dataSize.x);
 	                        break;
 	                    }
 	                }
@@ -133,6 +118,21 @@ public class DSTableView : DSViewWithTitle {
 		base.ViewAreaDidChange();
 		RecomputeColumnAreas();
 	}
+    protected override Vector2 GetMinimumFrameSize() {
+        var baseMinFameSize= base.GetMinimumFrameSize();
+        float height= baseMinFameSize.y;
+        if(myColumns.Count >= 1) {
+            height+= myColumns[0].MinimumFrameSize.y;
+        }
+        if(myRowHeights.Length >= 1) {
+            height+= myRowHeights.Length;
+        }
+        if(myRowHeights.Length >= 2) {
+            height+= kScrollerSize;
+        }
+        return new Vector2(baseMinFameSize.x, height);
+    }
+	
 	void RecomputeColumnAreas() {
 		// Clear previous column information.
 		myColumns.Clear();
@@ -198,6 +198,22 @@ public class DSTableView : DSViewWithTitle {
 		myColumnsDisplayDataArea= Math3D.Intersection(BodyArea, myColumnsTotalDataArea);
 	}
 	
+	// ======================================================================
+    // View method overrides
+    // ----------------------------------------------------------------------
+	protected override bool SupportsHorizontalScroller() { return true; }
+    protected override bool SupportsVerticalScroller()   { return true; }
+    protected override Vector2 GetFullFrameSize() {
+		Vector2 columnsSize= Vector2.zero;
+		foreach(var c in myColumns) {
+			Vector2 fullColumn= c.FullFrameSize;
+			columnsSize.x+= fullColumn.x;
+			if(fullColumn.y > columnsSize.y) columnsSize.y= fullColumn.y;
+		}
+		return new Vector2(Margins.horizontal+columnsSize.x,
+			               Margins.vertical+TitleArea.height+columnsSize.y);        
+    }
+    
 	// ======================================================================
     // Subview management
     // ----------------------------------------------------------------------

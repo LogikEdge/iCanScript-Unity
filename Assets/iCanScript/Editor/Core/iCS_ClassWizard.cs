@@ -202,9 +202,9 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         string classTitle= Target != null ? Target.Name : "Class Wizard";
         GUIContent classWizardTitle= new GUIContent(classTitle);
         ClassWizardView= new DSViewWithTitle(classWizardTitle, TextAlignment.Center, false,
-                                             new RectOffset(kMarginSize, kMarginSize, 0, kMarginSize));
+                                             new RectOffset(kMarginSize, kMarginSize, 0, kMarginSize), false);
 
-        ConstructorView= new DSView(new RectOffset(0,0,kSpacer,kSpacer));
+        ConstructorView= new DSView(new RectOffset(0,0,kSpacer,kSpacer), false);
         
         // Initialize table views.
         
@@ -242,7 +242,7 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
             Rect headerRect= ClassWizardView.BodyArea;
             headerRect.height= ConstructorView.Margins.vertical+LabelHeight;
         ConstructorView.Display(headerRect);
-        ShowConstructor(ConstructorView.ContentArea);
+        ShowConstructor(ConstructorView.DisplayArea);
             Rect remainingArea= ClassWizardView.BodyArea;
             remainingArea.y+= ConstructorView.FrameArea.height;
             remainingArea.height-= ConstructorView.FrameArea.height;

@@ -23,8 +23,8 @@ public class DSVerticalLayoutView : DSViewWithTitle {
     // Initialization
     // ----------------------------------------------------------------------
     public DSVerticalLayoutView(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                                RectOffset margins)
-        : base(title, titleAlignment, titleSeperator, margins) {}
+                                RectOffset margins, bool shouldDisplayFrame= true)
+        : base(title, titleAlignment, titleSeperator, margins, shouldDisplayFrame) {}
     
     // ----------------------------------------------------------------------
     public void ReloadData() {
@@ -44,7 +44,7 @@ public class DSVerticalLayoutView : DSViewWithTitle {
 		ForEachSubview(mySubviews.Add);
 		float minHeight= 0;
 		foreach(var sv in mySubviews) {
-			minHeight+= sv.MinimalFrameSize.y;
+			minHeight+= sv.MinimumFrameSize.y;
 		}
 	}
 	
