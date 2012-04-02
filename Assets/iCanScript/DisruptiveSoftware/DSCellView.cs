@@ -36,18 +36,18 @@ public class DSCellView : DSView {
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    protected override void Display() {
+    public override void Display() {
         if(myDrawCellAction != null) myDrawCellAction(DisplayArea);
     }
-    protected override void ViewAreaDidChange() {
-        base.ViewAreaDidChange();
+    protected override void OnViewAreaChange() {
+        base.OnViewAreaChange();
         ReloadData();
     }
     protected override Vector2 GetMinimumFrameSize() {
         return base.GetMinimumFrameSize() + myDataSize;
     }
 
-    public void ReloadData() {
+    public override void ReloadData() {
         if(myGetDisplaySize != null) myDataSize= myGetDisplaySize();        
     }
 

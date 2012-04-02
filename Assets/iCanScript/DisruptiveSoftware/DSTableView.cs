@@ -21,18 +21,7 @@ public class DSTableView : DSViewWithTitle {
         get { return myDataSource; }
         set { myDataSource= value; RecomputeColumnAreas(); }
     }
-	public bool HasHorizontalScroller {
-		get { return FrameArea.width < FullFrameSize.x; }
-	}
-	public bool HasVerticalScroller {
-		get { return FrameArea.height < FullFrameSize.y; }
-	}
 	
-    // =================================================================================
-    // Constants
-    // ---------------------------------------------------------------------------------
-    const float   kScrollerSize = 16f;
-    
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
@@ -58,14 +47,14 @@ public class DSTableView : DSViewWithTitle {
         return result;
     }
     // ----------------------------------------------------------------------
-    public void ReloadData() {
+    public override void ReloadData() {
 		RecomputeColumnAreas();
 	}
 	
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    protected override void Display() {
+    public override void Display() {
         // Duisplay bounding box and title.
         base.Display();
         if(myDataSource == null) return;
@@ -114,8 +103,8 @@ public class DSTableView : DSViewWithTitle {
     // ======================================================================
     // View dimension change notification.
     // ----------------------------------------------------------------------
-    protected override void ViewAreaDidChange() {
-		base.ViewAreaDidChange();
+    protected override void OnViewAreaChange() {
+		base.OnViewAreaChange();
 		RecomputeColumnAreas();
 	}
     protected override Vector2 GetMinimumFrameSize() {
@@ -201,8 +190,8 @@ public class DSTableView : DSViewWithTitle {
 	// ======================================================================
     // View method overrides
     // ----------------------------------------------------------------------
-	protected override bool SupportsHorizontalScroller() { return true; }
-    protected override bool SupportsVerticalScroller()   { return true; }
+	protected override bool GetHasHorizontalScroller() { return FrameArea.width < FullFrameSize.x; }
+    protected override bool GetHasVerticalScroller()   { return FrameArea.height < FullFrameSize.y; }
     protected override Vector2 GetFullFrameSize() {
 		Vector2 columnsSize= Vector2.zero;
 		foreach(var c in myColumns) {

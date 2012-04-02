@@ -6,14 +6,10 @@ public class DSVerticalLayoutView : DSViewWithTitle {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	List<DSView>	mySubviews= new List<DSView>();
 	
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-	public Vector2 FullFrameSize {
-		get { return Vector2.zero; }
-	}
 	
     // =================================================================================
     // Constants
@@ -27,32 +23,58 @@ public class DSVerticalLayoutView : DSViewWithTitle {
         : base(title, titleAlignment, titleSeperator, margins, shouldDisplayFrame) {}
     
     // ----------------------------------------------------------------------
-    public void ReloadData() {
+    public override void ReloadData() {
 		Relayout();
 	}
 	
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    protected override void Display() {
+    public override void Display() {
         // Duisplay bounding box and title.
         base.Display();
+        ForEachSubview(
+            sv=> {
+                sv.Display();
+            }
+        );
     }
     // ----------------------------------------------------------------------
 	void Relayout() {
-		mySubviews.Clear();
-		ForEachSubview(mySubviews.Add);
+        // Determine minimum & maximum height.
 		float minHeight= 0;
-		foreach(var sv in mySubviews) {
-			minHeight+= sv.MinimumFrameSize.y;
-		}
+		float maxHeight= 0;
+		ForEachSubview(
+            sv=> {
+    			minHeight+= sv.MinimumFrameSize.y;
+                maxHeight+= sv.FullFrameSize.y;                
+            }
+		);
+		float deltaHeight= maxHeight-minHeight;
+		// Compute frame size for each subview.
+        float remainingHeight= BodyArea.y-minHeight;
+        if(remainingHeight < 0) remainingHeight= 0;
+        float y= BodyArea.y;
+        ForEachSubview(
+            sv=> {
+                var minSize= sv.MinimumFrameSize;
+                var maxSize= sv.FullFrameSize;
+    		    float delta= remainingHeight*(maxSize.y-minSize.y)/deltaHeight;
+    		    float height= minSize.y+delta;
+    		    if(height > maxSize.y) height= maxSize.y;
+    		    remainingHeight-= height- minSize.y;
+    		    deltaHeight-= maxSize.y-minSize.y;
+    		    sv.FrameArea= new Rect(BodyArea.x, y, BodyArea.width, height);
+    		    y+= height;                
+            }
+        );
 	}
 	
     // ======================================================================
     // View dimension change notification.
     // ----------------------------------------------------------------------
-    protected override void ViewAreaDidChange() {
-		base.ViewAreaDidChange();
+    protected override void OnViewAreaChange() {
+		base.OnViewAreaChange();
 		Relayout();
 	}
 	

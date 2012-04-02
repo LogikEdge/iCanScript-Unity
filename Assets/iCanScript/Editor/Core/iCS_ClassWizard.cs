@@ -207,7 +207,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         ConstructorView= new DSView(new RectOffset(0,0,kSpacer,kSpacer), false);
         
         // Initialize table views.
-        
         VariableTableView= new DSTableView(VariableTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,kSpacer));
         VariableTableView.DataSource= this;
         DSTableColumn inColumn= new DSTableColumn(kInColumnId, new GUIContent("In"), TextAlignment.Center, true,

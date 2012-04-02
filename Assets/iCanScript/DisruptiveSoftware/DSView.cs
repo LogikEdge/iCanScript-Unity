@@ -7,19 +7,13 @@ public class DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Rect            myFrameArea         = new Rect(0,0,0,0);
-    RectOffset      myMargins           = new RectOffset(0,0,0,0);
-    bool            myShouldDisplayFrame= true;
+    Rect            myFrameArea         = new Rect(0,0,0,0);        // Total area to use for display.
+    RectOffset      myMargins           = new RectOffset(0,0,0,0);  // Content margins.
+    bool            myShouldDisplayFrame= true;                     // A frame box is displayed when set to true.
+    GUIStyle        myFrameGUIStyle     = null;                     // The style used for the frame box.
+    List<DSView>    mySubviews          = new List<DSView>();       // All configured subviews.
+    Rect            myDisplayArea       = new Rect(0,0,0,0);        // Display area for the content.
 
-    Rect            myDisplayArea       = new Rect(0,0,0,0);
-    GUIStyle        myFrameGUIStyle     = null;
-    List<DSView>    mySubviews          = new List<DSView>();
-
-    // =================================================================================
-    // Constants
-    // ---------------------------------------------------------------------------------
-    const float   kScrollerSize = 16f;
-    
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -31,22 +25,18 @@ public class DSView {
         get { return myMargins; }
         set { myMargins= value; UpdateDisplayArea(); }
     }
-    public Rect DisplayArea {
-        get { return myDisplayArea; }
-    }
-    public Vector2 MinimumFrameSize {
-        get { return GetMinimumFrameSize(); }
-    }
-    public Vector2 FullFrameSize {
-        get { return GetFullFrameSize(); }
-    }
+    public Rect    DisplayArea           { get { return myDisplayArea; }}
+    public bool    HasHorizontalScroller { get { return GetHasHorizontalScroller(); }}
+    public bool    HasVerticalScroller   { get { return GetHasVerticalScroller(); }}
+    public Vector2 MinimumFrameSize      { get { return GetMinimumFrameSize(); }}
+    public Vector2 FullFrameSize         { get { return GetFullFrameSize(); }}
     public Vector2 FullFrameSizeWithScrollers {
         get {
             var result= FullFrameSize;
-            if(SupportsHorizontalScroller()) {
+            if(GetHasHorizontalScroller()) {
                 result.y+= kScrollerSize;
             }
-            if(SupportsVerticalScroller()) {
+            if(GetHasVerticalScroller()) {
                 result.x+= kScrollerSize;
             }
             return result;
@@ -60,17 +50,16 @@ public class DSView {
         get { return myFrameGUIStyle; }
         set { myFrameGUIStyle= value; }
     }
-    public List<DSView> Subviews {
-        get { return mySubviews; }
-    }
+    public List<DSView> Subviews { get { return mySubviews; }}
     
     // ======================================================================
     // Common view constants
     // ----------------------------------------------------------------------
-    const float   kHorizontalSpacer= 8f;
-    const float   kVerticalSpacer  = 8f;
-    const float   kHorizontalMargin= 10f;
-    const float   kVerticalMargin  = 10f;
+    public const float   kHorizontalSpacer= 8f;
+    public const float   kVerticalSpacer  = 8f;
+    public const float   kHorizontalMargin= 10f;
+    public const float   kVerticalMargin  = 10f;
+    public const float   kScrollerSize = 16f;
 
     // ======================================================================
     // Initialization
@@ -83,8 +72,8 @@ public class DSView {
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public    virtual void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
-    protected virtual void Display() {
+    public virtual void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
+    public virtual void Display() {
         if(myShouldDisplayFrame == false || FrameArea.width <= 0 || FrameArea.height <= 0) return;
         if(myFrameGUIStyle != null) {
             GUI.Box(FrameArea,"", myFrameGUIStyle);
@@ -92,7 +81,8 @@ public class DSView {
             GUI.Box(FrameArea,"");                    
         }
     }
-
+    public virtual void ReloadData() {}
+    
     // ======================================================================
     // Subview management
     // ----------------------------------------------------------------------
@@ -115,6 +105,15 @@ public class DSView {
     }
     
     // ======================================================================
+    // Methods to override to customize view behaviour.
+    // ----------------------------------------------------------------------
+    protected virtual void      OnViewAreaChange()          {}
+    protected virtual Vector2   GetMinimumFrameSize()       { return new Vector2(Margins.horizontal, Margins.vertical); }
+    protected virtual Vector2   GetFullFrameSize()          { return GetMinimumFrameSize(); }
+    protected virtual bool      GetHasHorizontalScroller()  { return false; }
+    protected virtual bool      GetHasVerticalScroller()    { return false; }
+
+    // ======================================================================
     // View area management.
     // ----------------------------------------------------------------------
     void UpdateDisplayArea() {
@@ -129,15 +128,6 @@ public class DSView {
 			myDisplayArea.width= 0f;
 			myDisplayArea.height= 0f;
 		}
-        ViewAreaDidChange();    
+        OnViewAreaChange();    
     }
-    
-    // ======================================================================
-    // Notification methods.
-    // ----------------------------------------------------------------------
-    protected virtual void      ViewAreaDidChange()          {}
-    protected virtual Vector2   GetMinimumFrameSize()        { return new Vector2(Margins.horizontal, Margins.vertical); }
-    protected virtual Vector2   GetFullFrameSize()           { return GetMinimumFrameSize(); }
-    protected virtual bool      SupportsHorizontalScroller() { return false; }
-    protected virtual bool      SupportsVerticalScroller()   { return false; }
 }
