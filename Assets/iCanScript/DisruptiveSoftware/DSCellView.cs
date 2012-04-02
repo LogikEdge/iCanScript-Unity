@@ -46,9 +46,12 @@ public class DSCellView : DSView {
     protected override Vector2 GetMinimumFrameSize() {
         return base.GetMinimumFrameSize() + myDataSize;
     }
+    protected override Vector2 GetFullFrameSize() {
+        return base.GetFullFrameSize() + myDataSize;
+    }
 
     public override void ReloadData() {
-        if(myGetDisplaySize != null) myDataSize= myGetDisplaySize();        
+        myDataSize= myGetDisplaySize != null ? myGetDisplaySize() : Vector2.zero;        
     }
 
 }

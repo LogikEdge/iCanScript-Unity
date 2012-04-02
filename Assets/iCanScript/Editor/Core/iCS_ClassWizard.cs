@@ -36,11 +36,12 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     ControlPair[]           Methods               = null;
     ControlPair[]           Constructors          = null;
     DSViewWithTitle         ClassWizardView       = null;
-    DSView                  ConstructorView       = null;
+    DSCellView              ConstructorView       = null;
     DSTableView             VariableTableView     = null;
     DSTableView             OperationTableView    = null;
     
     iCS_ClassListController ClassListController= new iCS_ClassListController();
+    DSVerticalLayoutView    LayoutView         = null;
 
     // =================================================================================
     // Layout info.
@@ -204,7 +205,7 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         ClassWizardView= new DSViewWithTitle(classWizardTitle, TextAlignment.Center, false,
                                              new RectOffset(kMarginSize, kMarginSize, 0, kMarginSize), false);
 
-        ConstructorView= new DSView(new RectOffset(0,0,kSpacer,kSpacer), false);
+        ConstructorView= new DSCellView(GetConstrcutorDisplaySize, DrawConstructorCell, new RectOffset(0,0,kSpacer,kSpacer), false);
         
         // Initialize table views.
         VariableTableView= new DSTableView(VariableTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,kSpacer));
@@ -226,6 +227,11 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
 		OperationTableView.DataSource= this;
 		DSTableColumn operationColumn= new DSTableColumn(kOperationColumnId, null, TextAlignment.Left, false, new RectOffset(0,0,0,0));
 		OperationTableView.AddSubview(operationColumn);
+		
+		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
+        LayoutView.AddSubview(ConstructorView);
+		LayoutView.AddSubview(VariableTableView);
+		LayoutView.AddSubview(OperationTableView);
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
@@ -235,13 +241,13 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         EditorGUIUtility.LookLikeInspector();
 
         // Display Header.
-        ClassWizardView.Display(new Rect(0,0,position.width, position.height));
+//        ClassWizardView.Display(new Rect(0,0,position.width, position.height));
         
         // Compute window parameters.
             Rect headerRect= ClassWizardView.BodyArea;
             headerRect.height= ConstructorView.Margins.vertical+LabelHeight;
-        ConstructorView.Display(headerRect);
-        ShowConstructor(ConstructorView.DisplayArea);
+//        ConstructorView.Display(headerRect);
+//        ShowConstructor(ConstructorView.DisplayArea);
             Rect remainingArea= ClassWizardView.BodyArea;
             remainingArea.y+= ConstructorView.FrameArea.height;
             remainingArea.height-= ConstructorView.FrameArea.height;
@@ -275,10 +281,13 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
             
         // Display Variables.
 //        VariableTableView.Display(boxVariableRect);
-        ClassListController.Display(boxVariableRect);
+//        ClassListController.Display(boxVariableRect);
 
         // Display Methods.
-        OperationTableView.Display(boxMethodRect);
+//        OperationTableView.Display(boxMethodRect);
+
+//        LayoutView.Display(ClassWizardView.BodyArea);
+        LayoutView.Display(new Rect(0,0,position.width, position.height));
     }
 
     // ---------------------------------------------------------------------------------
@@ -471,5 +480,14 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
 	        style.fontStyle= fontStyle;
 	        style.alignment= alignment;
         }        
+    }
+    // ---------------------------------------------------------------------------------
+    Vector2 GetConstrcutorDisplaySize() {
+        float width= ClassWizardView.BodyArea.width;
+        float height= LabelHeight;
+        return new Vector2(width, height);
+    }
+    void DrawConstructorCell(Rect position) {
+        ShowConstructor(position);
     }
 }

@@ -42,28 +42,28 @@ public class DSVerticalLayoutView : DSViewWithTitle {
     // ----------------------------------------------------------------------
 	void Relayout() {
         // Determine minimum & maximum height.
-		float minHeight= 0;
-		float maxHeight= 0;
+		float totalMinHeight= 0;
+		float totalMaxHeight= 0;
 		ForEachSubview(
             sv=> {
-    			minHeight+= sv.MinimumFrameSize.y;
-                maxHeight+= sv.FullFrameSize.y;                
+    			totalMinHeight+= sv.MinimumFrameSize.y;
+                totalMaxHeight+= sv.FullFrameSize.y;                
             }
 		);
-		float deltaHeight= maxHeight-minHeight;
+		float totalDeltaHeight= totalMaxHeight-totalMinHeight;
 		// Compute frame size for each subview.
-        float remainingHeight= BodyArea.y-minHeight;
+        float remainingHeight= BodyArea.height-totalMinHeight;
         if(remainingHeight < 0) remainingHeight= 0;
         float y= BodyArea.y;
         ForEachSubview(
             sv=> {
                 var minSize= sv.MinimumFrameSize;
                 var maxSize= sv.FullFrameSize;
-    		    float delta= remainingHeight*(maxSize.y-minSize.y)/deltaHeight;
+    		    float delta= remainingHeight*(maxSize.y-minSize.y)/totalDeltaHeight;
     		    float height= minSize.y+delta;
     		    if(height > maxSize.y) height= maxSize.y;
     		    remainingHeight-= height- minSize.y;
-    		    deltaHeight-= maxSize.y-minSize.y;
+    		    totalDeltaHeight-= maxSize.y-minSize.y;
     		    sv.FrameArea= new Rect(BodyArea.x, y, BodyArea.width, height);
     		    y+= height;                
             }
