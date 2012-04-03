@@ -8,6 +8,7 @@ public class DSTableColumn : DSViewWithTitle {
     // ----------------------------------------------------------------------
     string  myIdentifier= null;
     Vector2 myDataSize  = Vector2.zero;
+	float   myWidth     = 0;
     
     // ======================================================================
     // Properties
@@ -20,6 +21,14 @@ public class DSTableColumn : DSViewWithTitle {
         get { return myDataSize; }
         set { myDataSize= value; }
     }
+	public float Width {
+		get { return myWidth; }
+		set {
+			if(value == 0) { myWidth= 0; return; }
+			if(value < 2f*Margins.horizontal) value= 2f*Margins.horizontal;
+			myWidth= value;
+		}
+	}
     
     // ======================================================================
     // Initialization

@@ -13,7 +13,6 @@ public class iCS_ClassListController : DSTableViewDataSource {
 	List<string>				myCompanies		 = new List<string>();
     List<iCS_ReflectionDesc>    myFilteredClasses= null;
     GUIStyle                    myColumnDataStyle= null;
-    bool                        myIsInitialized  = false;
 
     // =================================================================================
     // Constants
@@ -27,7 +26,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-    public DSTableView TableView { get { return myTableView; }}
+    public DSView View { get { return myTableView; }}
     public GUIStyle ColumnDataStyle {
         get { return myColumnDataStyle; }
         set {
@@ -38,11 +37,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-    public void Init() {
-        // Verify if we have already initialized our environment.
-        if(myIsInitialized) return;
-        myIsInitialized= true;
-        
+	public iCS_ClassListController() {
         // Default GUI Style.
         if(myColumnDataStyle == null) myColumnDataStyle= EditorStyles.label;
         
@@ -67,6 +62,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
         myTableView.AddSubview(companyColumn);  
         myTableView.DataSource= this;
     }
+    // ---------------------------------------------------------------------------------
     public void Filter(string classSubstringFilter, string packageSubstringFilter, string companySubstringFilter) {
         myFilteredClasses= Prelude.filter(
             d=> {
@@ -88,7 +84,6 @@ public class iCS_ClassListController : DSTableViewDataSource {
         myTableView.ReloadData();
     }
     public void Display(Rect frameArea) {
-        Init();
         myTableView.Display(frameArea);
     }
     

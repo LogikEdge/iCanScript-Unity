@@ -660,7 +660,7 @@ public class iCS_Editor : EditorWindow {
     void ShowClassWizard() {
         if(SelectedObject != null && SelectedObject.IsClassModule) {
             ClassWizard= GetClassWizard();
-            ClassWizard.Activate(SelectedObject, Storage);
+            ClassWizard.OnActivate(SelectedObject, Storage);
             // Keep keyboard focus.
             Focus();
         }        
@@ -1613,7 +1613,7 @@ public class iCS_Editor : EditorWindow {
         if(SelectedObject == null || !SelectedObject.IsClassModule) {
             ClassWizard.Deactivate();
         } else {
-            ClassWizard.Activate(SelectedObject, Storage);            
+            ClassWizard.OnActivate(SelectedObject, Storage);            
         }
     }
 	// ----------------------------------------------------------------------

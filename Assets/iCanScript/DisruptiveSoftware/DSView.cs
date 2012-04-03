@@ -5,6 +5,13 @@ using System.Collections.Generic;
 
 public class DSView {
     // ======================================================================
+    // Types
+    // ----------------------------------------------------------------------
+	public enum AnchorEnum { TopLeft, TopCenter, TopRight,
+		                     CenterLeft, Center, CenterRight,
+						     BottomLeft, BottomCenter, BottomRight };
+	
+    // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
     Rect            myFrameArea         = new Rect(0,0,0,0);        // Total area to use for display.
@@ -13,7 +20,8 @@ public class DSView {
     GUIStyle        myFrameGUIStyle     = null;                     // The style used for the frame box.
     List<DSView>    mySubviews          = new List<DSView>();       // All configured subviews.
     Rect            myDisplayArea       = new Rect(0,0,0,0);        // Display area for the content.
-    Vector2         myDisplayRatio      = Vector2.zero;             // Desired display ratio (automatique if zero)
+	AnchorEnum	    myAnchor			= AnchorEnum.Center;		// Frame anchor position.
+    Vector2         myDisplayRatio      = Vector2.zero;             // Desired display ratio (automatique if zero).
 
     // ======================================================================
     // Properties
@@ -56,7 +64,11 @@ public class DSView {
         get { return myDisplayRatio; }
         set { myDisplayRatio= value; OnViewAreaChange(); }
     }
-    
+    public AnchorEnum Anchor {
+		get { return myAnchor; }
+		set { myAnchor= value; OnViewAreaChange(); }
+	}
+	
     // ======================================================================
     // Common view constants
     // ----------------------------------------------------------------------

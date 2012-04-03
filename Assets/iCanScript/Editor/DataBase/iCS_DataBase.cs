@@ -128,6 +128,22 @@ public class iCS_DataBase {
         return components.ToArray();
     }
     // ----------------------------------------------------------------------
+	public static iCS_ReflectionDesc[] GetClassConstructors(Type classType) {
+		return Prelude.filter(c=> c.IsConstructor, GetClassComponents(classType));
+	}
+    // ----------------------------------------------------------------------
+	public static iCS_ReflectionDesc[] GetClassFields(Type classType) {
+		return Prelude.filter(c=> c.IsField, GetClassComponents(classType));
+	}
+    // ----------------------------------------------------------------------
+	public static iCS_ReflectionDesc[] GetClassProperties(Type classType) {
+		return Prelude.filter(c=> c.IsProperty, GetClassComponents(classType));
+	}
+    // ----------------------------------------------------------------------
+	public static iCS_ReflectionDesc[] GetClassMethods(Type classType) {
+		return Prelude.filter(c=> !(c.IsConstructor || c.IsField || c.IsProperty), GetClassComponents(classType));
+	}
+    // ----------------------------------------------------------------------
     public static List<iCS_ReflectionDesc> BuildMenu(Type inputType, Type outputType) {
         QSort();
         List<iCS_ReflectionDesc> menu= new List<iCS_ReflectionDesc>();

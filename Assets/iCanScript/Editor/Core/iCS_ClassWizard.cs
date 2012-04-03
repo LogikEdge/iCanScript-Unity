@@ -31,16 +31,14 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     iCS_EditorObject        Target                = null;
     iCS_IStorage            Storage               = null;
     Type                    ClassType             = null;
-    VariablePair[]          Fields                = null;
-    VariablePair[]          Properties            = null;
     ControlPair[]           Methods               = null;
     ControlPair[]           Constructors          = null;
     DSCellView              ConstructorView       = null;
-    DSTableView             VariableTableView     = null;
     DSTableView             OperationTableView    = null;
     
-    iCS_ClassListController ClassListController= new iCS_ClassListController();
-    DSVerticalLayoutView    LayoutView         = null;
+    iCS_ClassListController     	ClassListController     = null;
+	iCS_ClassVariablesController	ClassVariablesController= null;
+    DSVerticalLayoutView        	LayoutView              = null;
 
     // =================================================================================
     // Layout info.
@@ -50,13 +48,11 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     // =================================================================================
     // Constant GUI Content
     // ---------------------------------------------------------------------------------
-    bool        IsGUIConstantInit= false;
     GUIContent  InstanceTitle= new GUIContent("Instance");
     GUIContent  VariableTitle= new GUIContent("Variables");
     GUIContent  MethodTitle  = new GUIContent("Operations");
     Vector2     LabelSize;
     Vector2     InstanceTitleSize;
-    Vector2     CheckBoxSize;    
     float       LabelHeight;
     
     // =================================================================================
@@ -78,17 +74,15 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-    int NbOfVariables { get { return Fields.Length + Properties.Length; }}
     int NbOfMethods   { get { return Methods.Length; }}
     
     // ---------------------------------------------------------------------------------
     void Init() {
         Target= null;
         Storage= null;
-        IsGUIConstantInit= false;
     }
     // ---------------------------------------------------------------------------------
-    public void Activate(iCS_EditorObject target, iCS_IStorage storage) {
+    public void OnActivate(iCS_EditorObject target, iCS_IStorage storage) {
         // Transform invalid activation to a deactivation.
         if(target == null || storage == null) {
             Init();
@@ -102,49 +96,13 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         if(LayoutView != null) LayoutView.Title= new GUIContent(Target.Name);
         // Build class data.
         ClassType= target.RuntimeType;
-        List<VariablePair> fields= new List<VariablePair>();
-        List<VariablePair> properties= new List<VariablePair>();
         List<ControlPair> constructors= new List<ControlPair>();
         List<ControlPair> methods= new List<ControlPair>();
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(ClassType);
         foreach(var component in components) {
             bool isActive= Storage.ClassModuleFindFunction(Target, component) != null;
             if(component.IsField) {
-                string name= component.FieldName;
-                var variablePair= GetVariablePair(name, fields);
-                if(component.IsSetField) {
-                    if(variablePair != null) {
-                        variablePair.InputControlPair.Component= component;
-                        variablePair.InputControlPair.IsActive= isActive;
-                    } else {
-                        fields.Add(new VariablePair(component, isActive, null, false));                        
-                    }
-                } else {
-                    if(variablePair != null) {
-                        variablePair.OutputControlPair.Component= component;
-                        variablePair.OutputControlPair.IsActive= isActive;
-                    } else {
-                        fields.Add(new VariablePair(null, false, component, isActive));                                            
-                    }
-                }
             } else if(component.IsProperty) {
-                string name= component.PropertyName;
-                var variablePair= GetVariablePair(name, properties);
-                if(component.IsSetProperty) {
-                    if(variablePair != null) {
-                        variablePair.InputControlPair.Component= component;
-                        variablePair.InputControlPair.IsActive= isActive;
-                    } else {
-                        properties.Add(new VariablePair(component, isActive, null, false));                        
-                    }
-                } else {
-                    if(variablePair != null) {
-                        variablePair.OutputControlPair.Component= component;
-                        variablePair.OutputControlPair.IsActive= isActive;
-                    } else {
-                        properties.Add(new VariablePair(null, false, component, isActive));                        
-                    }
-                }
             } else if(component.IsConstructor) {
                 isActive= false;
                 iCS_EditorObject existing= Storage.ClassModuleGetConstructor(Target);
@@ -160,15 +118,12 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
                 methods.Add(new ControlPair(component, isActive));
             }
         }
-        Fields= fields.ToArray();
-    	Array.Sort(Fields, (x,y)=> GetAComponent(x).FieldName.CompareTo(GetAComponent(y).FieldName));
-        Properties= properties.ToArray();
-    	Array.Sort(Properties, (x,y)=> GetAComponent(x).PropertyName.CompareTo(GetAComponent(y).PropertyName));
         Constructors= constructors.ToArray();
     	Array.Sort(Constructors, (x,y)=> x.Component.FunctionSignatureNoThis.CompareTo(y.Component.FunctionSignatureNoThis));        
         Methods= methods.ToArray();
     	Array.Sort(Methods, (x,y)=> x.Component.FunctionSignatureNoThis.CompareTo(y.Component.FunctionSignatureNoThis));
         Target= target;
+		InitConstantGUIContent();
         Repaint();
     }
     // ---------------------------------------------------------------------------------
@@ -187,8 +142,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     }
     // ---------------------------------------------------------------------------------
     void InitConstantGUIContent() {
-        if(IsGUIConstantInit) return;
-        IsGUIConstantInit= true;
 
         // Compute content size.
         LabelSize        = EditorStyles.label.CalcSize(new GUIContent("abc")); 
@@ -196,8 +149,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
                          
         LabelHeight      = 4f+LabelSize.y;
                          
-        CheckBoxSize     = GUI.skin.toggle.CalcSize(new GUIContent(""));                
-
         // Create frame layout object.
         string classTitle= Target != null ? Target.Name : "Class Wizard";
         GUIContent classWizardTitle= new GUIContent(classTitle);
@@ -206,38 +157,23 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         ConstructorView= new DSCellView(GetConstrcutorDisplaySize, DrawConstructorCell, new RectOffset(0,0,kSpacer,kSpacer), false);
         
         // Initialize table views.
-        VariableTableView= new DSTableView(VariableTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,kSpacer));
-        VariableTableView.DataSource= this;
-        DSTableColumn inColumn= new DSTableColumn(kInColumnId, new GUIContent("In"), TextAlignment.Center, true,
-                                                  new RectOffset(kSpacer,kSpacer,0,0));
-        VariableTableView.AddSubview(inColumn);
-        DSTableColumn outColumn= new DSTableColumn(kOutColumnId, new GUIContent("Out"), TextAlignment.Center, true,
-                                                   new RectOffset(kSpacer,kSpacer,0,0));
-        VariableTableView.AddSubview(outColumn);
-        DSTableColumn variableNameColumn= new DSTableColumn(kNameColumnId, new GUIContent("Name"), TextAlignment.Left, true,
-                                                            new RectOffset(kSpacer,kSpacer,0,0));
-        VariableTableView.AddSubview(variableNameColumn);
-        DSTableColumn variableTypeColumn= new DSTableColumn(kTypeColumnId, new GUIContent("Type"), TextAlignment.Left, true,
-                                                            new RectOffset(kSpacer,kSpacer,0,0));
-        VariableTableView.AddSubview(variableTypeColumn);
-
         OperationTableView= new DSTableView(MethodTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,kSpacer));
 		OperationTableView.DataSource= this;
 		DSTableColumn operationColumn= new DSTableColumn(kOperationColumnId, null, TextAlignment.Left, false, new RectOffset(0,0,0,0));
 		OperationTableView.AddSubview(operationColumn);
 		
-        ClassListController.Init();
-        ClassListController.TableView.DisplayRatio= new Vector2(1f, 0.25f);
-        LayoutView.AddSubview(ClassListController.TableView);
+        ClassListController= new iCS_ClassListController();
+        ClassListController.View.DisplayRatio= new Vector2(1f, 0.25f);
+		ClassVariablesController= new iCS_ClassVariablesController(Target.RuntimeType, Storage, VariableTitle, Target);
+        LayoutView.AddSubview(ClassListController.View);
         LayoutView.AddSubview(ConstructorView);
-		LayoutView.AddSubview(VariableTableView);
+		LayoutView.AddSubview(ClassVariablesController.View);
 		LayoutView.AddSubview(OperationTableView);
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
         // Wait until window is configured.
         if(Target == null) return;
-        InitConstantGUIContent();
         EditorGUIUtility.LookLikeInspector();
         LayoutView.Display(new Rect(0,0,position.width, position.height));
     }
@@ -304,45 +240,12 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     // TableViewDataSource
     // ---------------------------------------------------------------------------------
     public int NumberOfRowsInTableView(DSTableView tableView) {
-        if(tableView == VariableTableView) {
-            return NbOfVariables;
-        }
         if(tableView == OperationTableView) {
             return NbOfMethods;
         }
         return 0;
     }
     public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
-        if(tableView == VariableTableView) {
-            string columnId= tableColumn.Identifier;
-            if(string.Compare(columnId, kInColumnId) == 0 || string.Compare(columnId, kOutColumnId) == 0) {
-                return CheckBoxSize;
-            }
-            string name;
-            string typeName;
-            VariablePair variablePair;
-            if(row < Fields.Length) {
-                variablePair= Fields[row];
-                var field= GetAComponent(variablePair);
-                name= field.FieldName;
-                typeName= iCS_Types.TypeName(field.FieldType);
-            } else {
-                variablePair= Properties[row-Fields.Length];
-                var property= GetAComponent(variablePair);
-                name= property.PropertyName;
-                typeName= iCS_Types.TypeName(property.PropertyType);
-            }
-            ControlPair inputControlPair= variablePair.InputControlPair;
-            ControlPair outputControlPair= variablePair.OutputControlPair;
-            GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
-            if(string.Compare(columnId, kNameColumnId) == 0) {
-                return labelStyle.CalcSize(new GUIContent(name));
-            }
-            if(string.Compare(columnId, kTypeColumnId) == 0) {
-                return labelStyle.CalcSize(new GUIContent(typeName));                
-            }
-            return Vector2.zero;
-        }
         if(tableView == OperationTableView) {
             var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(Methods[row].Component.FunctionSignatureNoThis));
 			signatureSize.x+= 12f;
@@ -351,59 +254,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         return Vector2.zero;
     }
     public void DisplayObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row, Rect position) {
-        if(tableView == VariableTableView) {
-            string name;
-            string typeName;
-            VariablePair variablePair;
-            if(row < Fields.Length) {
-                variablePair= Fields[row];
-                var field= GetAComponent(variablePair);
-                name= field.FieldName;
-                typeName= iCS_Types.TypeName(field.FieldType);
-            } else {
-                variablePair= Properties[row-Fields.Length];
-                var property= GetAComponent(variablePair);
-                name= property.PropertyName;
-                typeName= iCS_Types.TypeName(property.PropertyType);
-            }
-            ControlPair inputControlPair= variablePair.InputControlPair;
-            ControlPair outputControlPair= variablePair.OutputControlPair;
-
-            string columnId= tableColumn.Identifier;
-            if(string.Compare(columnId, kInColumnId) == 0 && inputControlPair.Component != null) {
-				if(Math3D.IsEqual(position.height, CheckBoxSize.y) && Math3D.IsEqual(position.width, CheckBoxSize.x)) {
-	                bool prevActive= inputControlPair.IsActive;
-	                inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
-	                if(prevActive != inputControlPair.IsActive) {
-	                    if(inputControlPair.IsActive) {
-	                        Storage.ClassModuleCreate(Target, inputControlPair.Component);
-	                    } else {
-	                        Storage.ClassModuleDestroy(Target, inputControlPair.Component);
-	                    }                
-	                }                					
-				}
-            }
-            if(string.Compare(columnId, kOutColumnId) == 0 && outputControlPair.Component != null) {
-				if(Math3D.IsEqual(position.height, CheckBoxSize.y) && Math3D.IsEqual(position.width, CheckBoxSize.x)) {
-	                bool prevActive= outputControlPair.IsActive;
-	                outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
-	                if(prevActive != outputControlPair.IsActive) {
-	                    if(outputControlPair.IsActive) {
-	                        Storage.ClassModuleCreate(Target, outputControlPair.Component);
-	                    } else {
-	                        Storage.ClassModuleDestroy(Target, outputControlPair.Component);
-	                    }                
-					}
-                }                
-            }
-            GUIStyle labelStyle= inputControlPair.IsActive || outputControlPair.IsActive ? EditorStyles.boldLabel : EditorStyles.label;
-            if(string.Compare(columnId, kNameColumnId) == 0) {
-                GUI.Label(position, name, labelStyle);                
-            }
-            if(string.Compare(columnId, kTypeColumnId) == 0) {
-                GUI.Label(position, typeName, labelStyle);                                
-            }
-        }
         if(tableView == OperationTableView) {
 	        GUIStyle style= GUI.skin.button;
 	        var alignment= style.alignment;
