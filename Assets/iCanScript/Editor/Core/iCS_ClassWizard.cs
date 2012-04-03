@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
+public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Types
     // ---------------------------------------------------------------------------------
@@ -16,14 +16,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
             IsActive= isActive;
         }
     };
-    class VariablePair {
-        public ControlPair InputControlPair= null;
-        public ControlPair OutputControlPair= null;
-        public VariablePair(iCS_ReflectionDesc inputComponent, bool inputActive, iCS_ReflectionDesc outputComponent, bool outputActive) {
-            InputControlPair= new ControlPair(inputComponent, inputActive);
-            OutputControlPair= new ControlPair(outputComponent, outputActive);
-        }
-    };
     
     // =================================================================================
     // Fields
@@ -31,14 +23,13 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     iCS_EditorObject        Target                = null;
     iCS_IStorage            Storage               = null;
     Type                    ClassType             = null;
-    ControlPair[]           Methods               = null;
     ControlPair[]           Constructors          = null;
     DSCellView              ConstructorView       = null;
-    DSTableView             OperationTableView    = null;
     
-    iCS_ClassListController     	ClassListController     = null;
-	iCS_ClassVariablesController	ClassVariablesController= null;
-    DSVerticalLayoutView        	LayoutView              = null;
+    iCS_ClassListController     	ClassListController      = null;
+	iCS_ClassVariablesController	ClassVariablesController = null;
+	iCS_ClassOperationsController	ClassOperationsController= null;
+    DSVerticalLayoutView        	LayoutView               = null;
 
     // =================================================================================
     // Layout info.
@@ -74,7 +65,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-    int NbOfMethods   { get { return Methods.Length; }}
     
     // ---------------------------------------------------------------------------------
     void Init() {
@@ -97,31 +87,20 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         // Build class data.
         ClassType= target.RuntimeType;
         List<ControlPair> constructors= new List<ControlPair>();
-        List<ControlPair> methods= new List<ControlPair>();
-        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(ClassType);
-        foreach(var component in components) {
-            bool isActive= Storage.ClassModuleFindFunction(Target, component) != null;
-            if(component.IsField) {
-            } else if(component.IsProperty) {
-            } else if(component.IsConstructor) {
-                isActive= false;
-                iCS_EditorObject existing= Storage.ClassModuleGetConstructor(Target);
-                if(existing != null && component.Method == existing.GetMethodBase(Storage.EditorObjects)) {
-                    isActive= true;
-                }
-                constructors.Add(new ControlPair(component, isActive));
-                var constructorSize= EditorStyles.boldLabel.CalcSize(new GUIContent(component.FunctionSignatureNoThisNoOutput));
-                if(constructorSize.x+12f > MaxConstructorWidth) {
-                    MaxConstructorWidth= constructorSize.x+12f;
-                }
-            } else {
-                methods.Add(new ControlPair(component, isActive));
+        foreach(var component in iCS_DataBase.GetClassConstructors(ClassType)) {
+            bool isActive= false;
+            iCS_EditorObject existing= Storage.ClassModuleGetConstructor(Target);
+            if(existing != null && component.Method == existing.GetMethodBase(Storage.EditorObjects)) {
+                isActive= true;
+            }
+            constructors.Add(new ControlPair(component, isActive));
+            var constructorSize= EditorStyles.boldLabel.CalcSize(new GUIContent(component.FunctionSignatureNoThisNoOutput));
+            if(constructorSize.x+12f > MaxConstructorWidth) {
+                MaxConstructorWidth= constructorSize.x+12f;
             }
         }
         Constructors= constructors.ToArray();
     	Array.Sort(Constructors, (x,y)=> x.Component.FunctionSignatureNoThis.CompareTo(y.Component.FunctionSignatureNoThis));        
-        Methods= methods.ToArray();
-    	Array.Sort(Methods, (x,y)=> x.Component.FunctionSignatureNoThis.CompareTo(y.Component.FunctionSignatureNoThis));
         Target= target;
 		InitConstantGUIContent();
         Repaint();
@@ -157,18 +136,14 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         ConstructorView= new DSCellView(GetConstrcutorDisplaySize, DrawConstructorCell, new RectOffset(0,0,kSpacer,kSpacer), false);
         
         // Initialize table views.
-        OperationTableView= new DSTableView(MethodTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,kSpacer));
-		OperationTableView.DataSource= this;
-		DSTableColumn operationColumn= new DSTableColumn(kOperationColumnId, null, TextAlignment.Left, false, new RectOffset(0,0,0,0));
-		OperationTableView.AddSubview(operationColumn);
-		
         ClassListController= new iCS_ClassListController();
         ClassListController.View.DisplayRatio= new Vector2(1f, 0.25f);
 		ClassVariablesController= new iCS_ClassVariablesController(Target.RuntimeType, Storage, VariableTitle, Target);
+		ClassOperationsController= new iCS_ClassOperationsController(Target.RuntimeType, Storage, MethodTitle, Target);
         LayoutView.AddSubview(ClassListController.View);
         LayoutView.AddSubview(ConstructorView);
 		LayoutView.AddSubview(ClassVariablesController.View);
-		LayoutView.AddSubview(OperationTableView);
+		LayoutView.AddSubview(ClassOperationsController.View);
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
@@ -211,78 +186,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     // =================================================================================
     // Helpers
     // ---------------------------------------------------------------------------------
-    iCS_ReflectionDesc GetAComponent(VariablePair pair) {
-        return pair.InputControlPair.Component ?? pair.OutputControlPair.Component; 
-    }
-    VariablePair GetVariablePair(string name, List<VariablePair> lst) {
-        foreach(var pair in lst) {
-            iCS_ReflectionDesc inputComponent= pair.InputControlPair.Component;
-            if(inputComponent != null) {
-                if(inputComponent.IsField) {
-                    if(inputComponent.FieldName == name) return pair;
-                } else {
-                    if(inputComponent.PropertyName == name) return pair;
-                }
-            }
-            iCS_ReflectionDesc outputComponent= pair.OutputControlPair.Component;
-            if(outputComponent != null) {
-                if(outputComponent.IsField) {
-                    if(outputComponent.FieldName == name) return pair;
-                } else {
-                    if(outputComponent.PropertyName == name) return pair;
-                }                
-            }
-        }
-        return null;
-    }
-
-    // =================================================================================
-    // TableViewDataSource
-    // ---------------------------------------------------------------------------------
-    public int NumberOfRowsInTableView(DSTableView tableView) {
-        if(tableView == OperationTableView) {
-            return NbOfMethods;
-        }
-        return 0;
-    }
-    public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
-        if(tableView == OperationTableView) {
-            var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(Methods[row].Component.FunctionSignatureNoThis));
-			signatureSize.x+= 12f;
-			return signatureSize;
-        }
-        return Vector2.zero;
-    }
-    public void DisplayObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row, Rect position) {
-        if(tableView == OperationTableView) {
-	        GUIStyle style= GUI.skin.button;
-	        var alignment= style.alignment;
-	        var fontStyle= style.fontStyle;
-	        var textColor= style.normal.textColor;        
-	        var background= style.normal.background;
-	        style.alignment= TextAnchor.MiddleLeft;
-	        if(Methods[row].IsActive) {
-	            style.normal.textColor= Color.white;
-	            style.fontStyle= FontStyle.Bold;
-	            style.normal.background= style.active.background;            
-	        } else {
-	            style.fontStyle= FontStyle.Italic;
-	        }
-			position.width= tableColumn.DataSize.x;
-	        if(GUI.Button(position, Methods[row].Component.FunctionSignatureNoThis)) {
-	            Methods[row].IsActive^= true;
-	            if(Methods[row].IsActive) {
-	                Storage.ClassModuleCreate(Target, Methods[row].Component);
-	            } else {
-	                Storage.ClassModuleDestroy(Target, Methods[row].Component);
-	            }
-	        }
-	        style.normal.textColor= textColor;
-	        style.normal.background= background;
-	        style.fontStyle= fontStyle;
-	        style.alignment= alignment;
-        }        
-    }
     // ---------------------------------------------------------------------------------
     Vector2 GetConstrcutorDisplaySize() {
         float width= LayoutView.BodyArea.width;
