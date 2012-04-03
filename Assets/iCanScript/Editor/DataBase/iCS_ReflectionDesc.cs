@@ -82,7 +82,8 @@ public class iCS_ReflectionDesc {
     public bool IsSetStaticProperty   { get { return ObjectType == iCS_ObjectTypeEnum.StaticMethod && IsSetProperty; }}
     // ----------------------------------------------------------------------
     public string FieldName    { get { return DisplayName.Substring(4); }}
-    public string PropertyName { get { return DisplayName.Substring(4); }}    
+    public string PropertyName { get { return DisplayName.Substring(4); }}
+    public string VariableName { get { return DisplayName.Substring(4); }}
     // ----------------------------------------------------------------------
     public string MethodName {
         get {
@@ -94,6 +95,7 @@ public class iCS_ReflectionDesc {
     // ----------------------------------------------------------------------
     public Type FieldType    { get { return Field.FieldType; }}
     public Type PropertyType { get { return IsGetProperty ? ReturnType : ParamTypes[0]; }}
+	public Type VariableType { get { return IsField ? FieldType : PropertyType; }}
     public Type ReturnType {
         get {
             if(Method != null) {

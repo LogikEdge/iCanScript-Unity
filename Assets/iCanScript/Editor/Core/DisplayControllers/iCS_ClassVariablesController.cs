@@ -73,26 +73,23 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 
 		// Extract fields & properties from class descriptor.
         List<VariablePair> variables= new List<VariablePair>();
-        iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(myClassType);
-        foreach(var component in components) {
+        foreach(var component in iCS_DataBase.GetClassVariables(myClassType)) {
             bool isActive= (myTarget != null && myStorage != null) ? myStorage.ClassModuleFindFunction(myTarget, component) != null : false;
-            if(component.IsField || component.IsProperty) {
-                string name= GetVariableName(component);
-                var variablePair= GetVariablePair(name, variables);
-                if(component.IsSetField || component.IsSetProperty) {
-                    if(variablePair != null) {
-                        variablePair.InputControlPair.Component= component;
-                        variablePair.InputControlPair.IsActive= isActive;
-                    } else {
-                        variables.Add(new VariablePair(component, isActive, null, false));                        
-                    }
+            string name= component.VariableName;
+            var variablePair= GetVariablePair(name, variables);
+            if(component.IsSetField || component.IsSetProperty) {
+                if(variablePair != null) {
+                    variablePair.InputControlPair.Component= component;
+                    variablePair.InputControlPair.IsActive= isActive;
                 } else {
-                    if(variablePair != null) {
-                        variablePair.OutputControlPair.Component= component;
-                        variablePair.OutputControlPair.IsActive= isActive;
-                    } else {
-                        variables.Add(new VariablePair(null, false, component, isActive));                                            
-                    }
+                    variables.Add(new VariablePair(component, isActive, null, false));                        
+                }
+            } else {
+                if(variablePair != null) {
+                    variablePair.OutputControlPair.Component= component;
+                    variablePair.OutputControlPair.IsActive= isActive;
+                } else {
+                    variables.Add(new VariablePair(null, false, component, isActive));                                            
                 }
             }
         }
@@ -120,16 +117,10 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     // Helpers
     // ---------------------------------------------------------------------------------
 	string GetVariableName(VariablePair pair) {
-		return GetVariableName(GetAComponent(pair));
-	}
-	string GetVariableName(iCS_ReflectionDesc component) {
-		return component.IsField ? component.FieldName : component.PropertyName;
+		return GetAComponent(pair).VariableName;
 	}
 	Type GetVariableType(VariablePair pair) {
-		return GetVariableType(GetAComponent(pair));
-	}
-	Type GetVariableType(iCS_ReflectionDesc component) {
-		return component.IsField ? component.FieldType : component.PropertyType;
+		return GetAComponent(pair).VariableType;
 	}
     iCS_ReflectionDesc GetAComponent(VariablePair pair) {
         return pair.InputControlPair.Component ?? pair.OutputControlPair.Component; 

@@ -140,6 +140,10 @@ public class iCS_DataBase {
 		return Prelude.filter(c=> c.IsProperty, GetClassComponents(classType));
 	}
     // ----------------------------------------------------------------------
+	public static iCS_ReflectionDesc[] GetClassVariables(Type classType) {
+		return Prelude.filter(c=> c.IsField || c.IsProperty, GetClassComponents(classType));
+	}
+    // ----------------------------------------------------------------------
 	public static iCS_ReflectionDesc[] GetClassMethods(Type classType) {
 		return Prelude.filter(c=> !(c.IsConstructor || c.IsField || c.IsProperty), GetClassComponents(classType));
 	}
