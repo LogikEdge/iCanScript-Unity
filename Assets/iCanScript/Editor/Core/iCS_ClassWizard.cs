@@ -35,7 +35,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     VariablePair[]          Properties            = null;
     ControlPair[]           Methods               = null;
     ControlPair[]           Constructors          = null;
-    DSViewWithTitle         ClassWizardView       = null;
     DSCellView              ConstructorView       = null;
     DSTableView             VariableTableView     = null;
     DSTableView             OperationTableView    = null;
@@ -100,7 +99,7 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         // Update main state variables.
         Target= target;
         Storage= storage;
-        if(ClassWizardView != null) ClassWizardView.Title= new GUIContent(Target.Name);
+        if(LayoutView != null) LayoutView.Title= new GUIContent(Target.Name);
         // Build class data.
         ClassType= target.RuntimeType;
         List<VariablePair> fields= new List<VariablePair>();
@@ -199,11 +198,10 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
                          
         CheckBoxSize     = GUI.skin.toggle.CalcSize(new GUIContent(""));                
 
-        // Initialize class wizard view.
+        // Create frame layout object.
         string classTitle= Target != null ? Target.Name : "Class Wizard";
         GUIContent classWizardTitle= new GUIContent(classTitle);
-        ClassWizardView= new DSViewWithTitle(classWizardTitle, TextAlignment.Center, false,
-                                             new RectOffset(kMarginSize, kMarginSize, 0, kMarginSize), false);
+		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
 
         ConstructorView= new DSCellView(GetConstrcutorDisplaySize, DrawConstructorCell, new RectOffset(0,0,kSpacer,kSpacer), false);
         
@@ -228,7 +226,8 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
 		DSTableColumn operationColumn= new DSTableColumn(kOperationColumnId, null, TextAlignment.Left, false, new RectOffset(0,0,0,0));
 		OperationTableView.AddSubview(operationColumn);
 		
-		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
+        ClassListController.Init();
+        LayoutView.AddSubview(ClassListController.TableView);
         LayoutView.AddSubview(ConstructorView);
 		LayoutView.AddSubview(VariableTableView);
 		LayoutView.AddSubview(OperationTableView);
@@ -239,54 +238,6 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
         if(Target == null) return;
         InitConstantGUIContent();
         EditorGUIUtility.LookLikeInspector();
-
-        // Display Header.
-//        ClassWizardView.Display(new Rect(0,0,position.width, position.height));
-        
-        // Compute window parameters.
-            Rect headerRect= ClassWizardView.BodyArea;
-            headerRect.height= ConstructorView.Margins.vertical+LabelHeight;
-//        ConstructorView.Display(headerRect);
-//        ShowConstructor(ConstructorView.DisplayArea);
-            Rect remainingArea= ClassWizardView.BodyArea;
-            remainingArea.y+= ConstructorView.FrameArea.height;
-            remainingArea.height-= ConstructorView.FrameArea.height;
-            float variableHeight= VariableTableView.FullFrameSize.y;
-            float operationHeight= OperationTableView.FullFrameSize.y;
-            float neededHeight= variableHeight+operationHeight+kMarginSize;
-            float remainingHeight= remainingArea.height;
-            if(VariableTableView.HasHorizontalScroller && (variableHeight < 0.5f*remainingHeight || neededHeight < remainingHeight)) {
-                variableHeight= VariableTableView.FullFrameSizeWithScrollers.y;
-                neededHeight= variableHeight+operationHeight+kMarginSize;
-            }
-            if(OperationTableView.HasHorizontalScroller && (operationHeight < 0.5f*remainingHeight || neededHeight < remainingHeight)) {
-                operationHeight= OperationTableView.FullFrameSizeWithScrollers.y;
-                neededHeight= variableHeight+operationHeight+kMarginSize;
-            }
-            if(neededHeight > remainingHeight) {
-                if(variableHeight < 0.5f*remainingHeight) {
-                    operationHeight= remainingHeight-variableHeight;
-                } else if(operationHeight < 0.5f*remainingHeight) {
-                    variableHeight= remainingHeight-operationHeight;
-                } else {
-                    variableHeight= (variableHeight/neededHeight)*remainingHeight;
-                    operationHeight= remainingHeight- variableHeight;
-                }
-            }
-            Rect boxVariableRect= remainingArea;
-            boxVariableRect.height= variableHeight;
-            Rect boxMethodRect= remainingArea;
-            boxMethodRect.y+= variableHeight+kMarginSize;
-            boxMethodRect.height= operationHeight;
-            
-        // Display Variables.
-//        VariableTableView.Display(boxVariableRect);
-//        ClassListController.Display(boxVariableRect);
-
-        // Display Methods.
-//        OperationTableView.Display(boxMethodRect);
-
-//        LayoutView.Display(ClassWizardView.BodyArea);
         LayoutView.Display(new Rect(0,0,position.width, position.height));
     }
 
@@ -483,7 +434,7 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
     }
     // ---------------------------------------------------------------------------------
     Vector2 GetConstrcutorDisplaySize() {
-        float width= ClassWizardView.BodyArea.width;
+        float width= LayoutView.BodyArea.width;
         float height= LabelHeight;
         return new Vector2(width, height);
     }

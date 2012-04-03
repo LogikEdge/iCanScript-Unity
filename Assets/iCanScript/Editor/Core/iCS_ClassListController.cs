@@ -38,7 +38,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-    void Init() {
+    public void Init() {
         // Verify if we have already initialized our environment.
         if(myIsInitialized) return;
         myIsInitialized= true;
