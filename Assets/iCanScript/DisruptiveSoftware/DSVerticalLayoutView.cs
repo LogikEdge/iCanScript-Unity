@@ -62,6 +62,8 @@ public class DSVerticalLayoutView : DSViewWithTitle {
     		    float delta= remainingHeight*(maxSize.y-minSize.y)/totalDeltaHeight;
     		    float height= minSize.y+delta;
     		    if(height > maxSize.y) height= maxSize.y;
+    		    if(sv.DisplayRatio.y != 0 && height > BodyArea.height*sv.DisplayRatio.y) height= BodyArea.height*sv.DisplayRatio.y;
+    		    if(height < minSize.y) height= minSize.y;
     		    remainingHeight-= height- minSize.y;
     		    totalDeltaHeight-= maxSize.y-minSize.y;
     		    sv.FrameArea= new Rect(BodyArea.x, y, BodyArea.width, height);

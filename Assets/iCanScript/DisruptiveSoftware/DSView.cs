@@ -13,6 +13,7 @@ public class DSView {
     GUIStyle        myFrameGUIStyle     = null;                     // The style used for the frame box.
     List<DSView>    mySubviews          = new List<DSView>();       // All configured subviews.
     Rect            myDisplayArea       = new Rect(0,0,0,0);        // Display area for the content.
+    Vector2         myDisplayRatio      = Vector2.zero;             // Desired display ratio (automatique if zero)
 
     // ======================================================================
     // Properties
@@ -51,6 +52,10 @@ public class DSView {
         set { myFrameGUIStyle= value; }
     }
     public List<DSView> Subviews { get { return mySubviews; }}
+    public Vector2 DisplayRatio {
+        get { return myDisplayRatio; }
+        set { myDisplayRatio= value; OnViewAreaChange(); }
+    }
     
     // ======================================================================
     // Common view constants

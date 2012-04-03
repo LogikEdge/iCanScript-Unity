@@ -114,7 +114,11 @@ public class DSTableView : DSViewWithTitle {
             height+= myColumns[0].MinimumFrameSize.y;
         }
         if(myRowHeights.Length >= 1) {
-            height+= myRowHeights.Length;
+            float maxRowHeight= 0;
+            foreach(var rh in myRowHeights) {
+                if(rh > maxRowHeight) maxRowHeight= rh;
+            }
+            height+= maxRowHeight;
         }
         if(myRowHeights.Length >= 2) {
             height+= kScrollerSize;

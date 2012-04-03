@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-[iCS_Class(Company="iCanScript")]
+[iCS_Class(Company="iCanScript", Package="SimplePhysic")]
 public class iCS_DesiredVelocityForceGenerator {
 	float MaxAcceleration;
 	float MaxDeceleration;

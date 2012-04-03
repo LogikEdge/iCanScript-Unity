@@ -163,6 +163,6 @@ public static class iCS_UnityClasses {
     // ----------------------------------------------------------------------
     // Helper function to simplify .NET class decoding.
     public static void DecodeUnityClassInfo(Type type) {
-        iCS_Reflection.DecodeClassInfo(type, "Unity", type.Name, "Unity class "+type.Name, null, true);
+        iCS_Reflection.DecodeClassInfo(type, "Unity", "UnityEngine", "Unity class "+type.Name, null, true);
     }
 }

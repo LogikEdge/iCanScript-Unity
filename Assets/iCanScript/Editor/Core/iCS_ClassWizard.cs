@@ -227,6 +227,7 @@ public class iCS_ClassWizard : EditorWindow, DSTableViewDataSource {
 		OperationTableView.AddSubview(operationColumn);
 		
         ClassListController.Init();
+        ClassListController.TableView.DisplayRatio= new Vector2(1f, 0.25f);
         LayoutView.AddSubview(ClassListController.TableView);
         LayoutView.AddSubview(ConstructorView);
 		LayoutView.AddSubview(VariableTableView);

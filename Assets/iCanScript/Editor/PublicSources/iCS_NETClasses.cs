@@ -16,6 +16,6 @@ public static class iCS_NETClasses {
     // ----------------------------------------------------------------------
     // Helper function to simplify .NET class decoding.
     public static void DecodeNETClassInfo(Type type) {
-        iCS_Reflection.DecodeClassInfo(type, "NET", type.Name, ".NET class "+type.Name, null, true);
+        iCS_Reflection.DecodeClassInfo(type, "NET", "System", ".NET class "+type.Name, null, true);
     }
 }
