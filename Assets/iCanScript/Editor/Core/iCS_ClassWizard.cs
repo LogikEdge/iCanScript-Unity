@@ -15,6 +15,7 @@ public class iCS_ClassWizard : EditorWindow {
 
     DSVerticalLayoutView            LayoutView               = null;
     DSCellView                      ConstructorView          = null;
+	DSSearchView					SearchView               = null;
     iCS_ClassListController     	ClassListController      = null;
 	iCS_ClassVariablesController	ClassVariablesController = null;
 	iCS_ClassOperationsController	ClassOperationsController= null;
@@ -108,6 +109,8 @@ public class iCS_ClassWizard : EditorWindow {
 		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
         
         // Populate frame layout.
+		SearchView= new DSSearchView(OnSearch, new RectOffset(0,0,kSpacer,kSpacer), false);
+		
         ClassListController= new iCS_ClassListController();
         ClassListController.View.DisplayRatio= new Vector2(1f, 0.25f);
 
@@ -116,6 +119,7 @@ public class iCS_ClassWizard : EditorWindow {
 		ClassVariablesController= new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, VariableTitle, myTarget);
 		ClassOperationsController= new iCS_ClassOperationsController(myTarget.RuntimeType, myStorage, MethodTitle, myTarget);
 
+        LayoutView.AddSubview(SearchView);
         LayoutView.AddSubview(ClassListController.View);
         LayoutView.AddSubview(ConstructorView);
 		LayoutView.AddSubview(ClassVariablesController.View);
@@ -162,4 +166,13 @@ public class iCS_ClassWizard : EditorWindow {
             }
         }
     }
+
+
+    // =================================================================================
+    // View Test
+    // ---------------------------------------------------------------------------------
+	void OnSearch(DSSearchView searchView, string searchString) {
+		Debug.Log("Search string changed to: "+searchString);
+		ClassListController.Filter(searchString, null, null);
+	}
 }

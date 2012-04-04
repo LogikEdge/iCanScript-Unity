@@ -6,50 +6,59 @@ public class DSSearchView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Action<Rect>    myDrawCellAction= null;
-    Func<Vector2>   myGetContentSize= null;
-    Vector2         myContentSize   = Vector2.zero;
-        
+    Action<DSSearchView,string>	mySearchAction       = null;
+    string 						mySearchString       = "";
+	GUIStyle					mySearchFieldGUIStyle= null;
+	Vector2						myMinimumContentSize;
+	Vector2						myMaximumContentSize;
+	
     // ======================================================================
     // Propreties
     // ----------------------------------------------------------------------
-    public Action<Rect> DrawCellAction {
-        get { return myDrawCellAction; }
-        set { myDrawCellAction= value; }
+    public Action<DSSearchView,string> SearchAction {
+        get { return mySearchAction; }
+        set { mySearchAction= value; }
     }
-    public Func<Vector2> GetContentSize {
-        get { return myGetContentSize; }
-        set { myGetContentSize= value; ReloadData(); }
-    }
-
+	public string SearchString {
+		get { return mySearchString; }
+		set { mySearchString= value ?? ""; }
+	}
+	public GUIStyle SearchFieldGUIStyle {
+		get { return mySearchFieldGUIStyle; }
+		set { mySearchFieldGUIStyle= value; CalculateContentSize(); }
+	}
+	
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSSearchView(Func<Vector2> getContentSizeFnc, Action<Rect> drawCellAction,
-                      RectOffset margins, bool shouldDisplayFrame= false)
+    public DSSearchView(Action<DSSearchView,string> searchAction,
+                        RectOffset margins, bool shouldDisplayFrame= false)
      : base(margins, shouldDisplayFrame) {
-        myDrawCellAction= drawCellAction;
-        GetContentSize= getContentSizeFnc;
+		mySearchAction= searchAction;
+		CalculateContentSize();
     }
-    
+    void CalculateContentSize() {
+		myMinimumContentSize= (mySearchFieldGUIStyle ?? GUI.skin.textField).CalcSize(new GUIContent("1234567"));
+		myMaximumContentSize= (mySearchFieldGUIStyle ?? GUI.skin.textField).CalcSize(new GUIContent("12345678901234"));
+	}
+
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
     public override void Display() {
-        if(myDrawCellAction != null) myDrawCellAction(DisplayArea);
-    }
-    protected override void OnViewAreaChange() {
-        base.OnViewAreaChange();
-        ReloadData();
+		if(mySearchFieldGUIStyle == null) {
+			mySearchString= GUI.TextField(DisplayArea, mySearchString);			
+		} else {
+			mySearchString= GUI.TextField(DisplayArea, mySearchString, mySearchFieldGUIStyle);
+		}
+		if(GUI.changed) {
+			if(mySearchAction != null) mySearchAction(this, mySearchString);
+		}
     }
     protected override Vector2 GetMinimumFrameSize() {
-        return base.GetMinimumFrameSize() + myContentSize;
+        return MarginsSize + myMinimumContentSize;
     }
     protected override Vector2 GetFullFrameSize() {
-        return base.GetFullFrameSize() + myContentSize;
-    }
-
-    public override void ReloadData() {
-        myContentSize= myGetContentSize != null ? myGetContentSize() : Vector2.zero;        
+        return MarginsSize + myMaximumContentSize;
     }
 }

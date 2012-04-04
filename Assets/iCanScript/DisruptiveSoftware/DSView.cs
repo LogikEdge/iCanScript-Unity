@@ -34,6 +34,7 @@ public class DSView {
         get { return myMargins; }
         set { myMargins= value; UpdateDisplayArea(); }
     }
+	public Vector2 MarginsSize           { get { return new Vector2(Margins.horizontal, Margins.vertical); }} 
     public Rect    DisplayArea           { get { return myDisplayArea; }}
     public bool    HasHorizontalScroller { get { return GetHasHorizontalScroller(); }}
     public bool    HasVerticalScroller   { get { return GetHasVerticalScroller(); }}
