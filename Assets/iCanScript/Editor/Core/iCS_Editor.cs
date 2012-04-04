@@ -54,7 +54,7 @@ public class iCS_Editor : EditorWindow {
     int MenuOption= 0;
      
     // ======================================================================
-    // ACCESSORS
+    // Accessors
 	// ----------------------------------------------------------------------
     iCS_EditorObject StorageRoot {
         get {
@@ -89,6 +89,7 @@ public class iCS_Editor : EditorWindow {
     Prelude.Animate<Vector2>    AnimatedScrollPosition= new Prelude.Animate<Vector2>();
 
 	// ----------------------------------------------------------------------
+	bool    HasKeyboardFocus    { get { return focusedWindow == this; }}
     bool    IsFloatingKeyDown	{ get { return Event.current.control; }}
     bool    IsCopyKeyDown       { get { return Event.current.shift; }}
     bool    IsScaleKeyDown      { get { return Event.current.alt; }}
@@ -414,6 +415,7 @@ public class iCS_Editor : EditorWindow {
                 break;
             }
 			case EventType.KeyDown: {
+			    if(!HasKeyboardFocus) break;
 				var ev= Event.current;
 				if(ev.keyCode == KeyCode.None) break;
 //				Debug.Log("KeyCode: "+ev.keyCode);
@@ -659,10 +661,11 @@ public class iCS_Editor : EditorWindow {
 	// ----------------------------------------------------------------------
     void ShowClassWizard() {
         if(SelectedObject != null && SelectedObject.IsClassModule) {
+            bool hadKeyboardFocus= HasKeyboardFocus;
             ClassWizard= GetClassWizard();
             ClassWizard.OnActivate(SelectedObject, Storage);
             // Keep keyboard focus.
-            Focus();
+            if(hadKeyboardFocus) Focus();
         }        
     }
 	// ----------------------------------------------------------------------
