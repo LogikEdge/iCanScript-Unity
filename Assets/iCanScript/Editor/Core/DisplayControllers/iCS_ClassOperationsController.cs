@@ -6,28 +6,16 @@ using System.Collections.Generic;
 
 public class iCS_ClassOperationsController : DSTableViewDataSource {
     // =================================================================================
-    // Types
-    // ---------------------------------------------------------------------------------
-    class ControlPair {
-        public iCS_ReflectionDesc  Component= null;
-        public bool                IsActive= false;
-        public ControlPair(iCS_ReflectionDesc component, bool isActive= false) {
-            Component= component;
-            IsActive= isActive;
-        }
-    };
-
-    // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	Type				myClassType= null;
-	iCS_EditorObject	myTarget   = null;
-	iCS_IStorage		myStorage  = null;
-    GUIContent    		myTitle    = null;
-    DSTableView			myTableView= null;
-	ControlPair[]		myMethods  = null;
+	Type				    myClassType      = null;
+	iCS_EditorObject	    myTarget         = null;
+	iCS_IStorage		    myStorage        = null;
+    GUIContent    		    myTitle          = null;
+    DSTableView			    myTableView      = null;
+	iCS_ReflectionDesc[]    myMethods        = null;
+	bool[]                  myIsMethodPresent= null;
     
-	
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
@@ -55,16 +43,17 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
 		myTitle= title ?? new GUIContent(kDefaultTitle);
 		myTarget= target;
 		
-		// Common varaibles.
-
 		// Extract fields & properties from class descriptor.
-        List<ControlPair> methods= new List<ControlPair>();
-        foreach(var component in iCS_DataBase.GetClassMethods(myClassType)) {
-            bool isActive= (myTarget != null && myStorage != null) ? myStorage.ClassModuleFindFunction(myTarget, component) != null : false;
-            methods.Add(new ControlPair(component, isActive));
+        myMethods= iCS_DataBase.GetClassMethods(myClassType);
+    	Array.Sort(myMethods, (x,y)=> x.FunctionSignatureNoThis.CompareTo(y.FunctionSignatureNoThis));
+
+        // Build method presence on the given target.
+    	myIsMethodPresent= new bool[myMethods.Length];
+        if(myTarget != null && myStorage != null) {
+            for(int i= 0; i < myMethods.Length; ++i) {
+                myIsMethodPresent[i]= myStorage.ClassModuleFindFunction(myTarget, myMethods[i]) != null;
+            }            
         }
-        myMethods= methods.ToArray();
-    	Array.Sort(myMethods, (x,y)=> x.Component.FunctionSignatureNoThis.CompareTo(y.Component.FunctionSignatureNoThis));
 
 		// Build view
         myTableView= new DSTableView(myTitle, TextAlignment.Center, false, new RectOffset(kSpacer,kSpacer,0,kSpacer));
@@ -82,7 +71,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
     // ---------------------------------------------------------------------------------
     public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
 		if(myClassType == null) return Vector2.zero;
-        var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(myMethods[row].Component.FunctionSignatureNoThis));
+        var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(myMethods[row].FunctionSignatureNoThis));
 		signatureSize.x+= 12f;
 		return signatureSize;
     }
@@ -95,7 +84,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
         var textColor= style.normal.textColor;        
         var background= style.normal.background;
         style.alignment= TextAnchor.MiddleLeft;
-        if(myMethods[row].IsActive) {
+        if(myIsMethodPresent[row]) {
             style.normal.textColor= Color.white;
             style.fontStyle= FontStyle.Bold;
             style.normal.background= style.active.background;            
@@ -103,12 +92,12 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
             style.fontStyle= FontStyle.Italic;
         }
 		position.width= tableColumn.DataSize.x;
-        if(GUI.Button(position, myMethods[row].Component.FunctionSignatureNoThis) && myTarget != null && myStorage != null) {
-            myMethods[row].IsActive^= true;
-            if(myMethods[row].IsActive) {
-                myStorage.ClassModuleCreate(myTarget, myMethods[row].Component);
+        if(GUI.Button(position, myMethods[row].FunctionSignatureNoThis) && myTarget != null && myStorage != null) {
+            myIsMethodPresent[row]^= true;
+            if(myIsMethodPresent[row]) {
+                myStorage.ClassModuleCreate(myTarget, myMethods[row]);
             } else {
-                myStorage.ClassModuleDestroy(myTarget, myMethods[row].Component);
+                myStorage.ClassModuleDestroy(myTarget, myMethods[row]);
             }
         }
         style.normal.textColor= textColor;
@@ -116,5 +105,4 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
         style.fontStyle= fontStyle;
         style.alignment= alignment;
     }
-
 }
