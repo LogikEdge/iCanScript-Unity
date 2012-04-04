@@ -13,6 +13,7 @@ public class iCS_ClassWizard : EditorWindow {
     iCS_ReflectionDesc[]            myConstructors  = null;
     int                             myConstructorIdx= -1;
 
+    DSVerticalLayoutView            MainView                 = null;
 	DSAccordionView					AccordionView            = null;
     DSVerticalLayoutView            LayoutView               = null;
     DSCellView                      ConstructorView          = null;
@@ -104,7 +105,6 @@ public class iCS_ClassWizard : EditorWindow {
                          
         LabelHeight      = 4f+LabelSize.y;
                          
-		AccordionView= new DSAccordionView(new RectOffset(0,0,0,0), false);
 
         // Create frame layout object.
         string classTitle= myTarget != null ? myTarget.Name : "Class Wizard";
@@ -129,9 +129,14 @@ public class iCS_ClassWizard : EditorWindow {
 		LayoutView.AddSubview(ClassOperationsController.View);
 
 		// Build accrodion view
+		AccordionView= new DSAccordionView(new RectOffset(0,0,0,0), false);
 		AccordionView.AddSubview(ClassListController.View);
 		AccordionView.AddSubview(ClassVariablesController.View);
 		AccordionView.AddSubview(ClassOperationsController.View);
+
+		MainView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
+		MainView.AddSubview(SearchView);
+		MainView.AddSubview(AccordionView);
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
@@ -139,7 +144,7 @@ public class iCS_ClassWizard : EditorWindow {
         if(myTarget == null) return;
         EditorGUIUtility.LookLikeInspector();
 //        LayoutView.Display(new Rect(0,0,position.width, position.height));
-		AccordionView.Display(new Rect(0,0,position.width, position.height));
+		MainView.Display(new Rect(0,0,position.width, position.height));
     }
 
     // =================================================================================
