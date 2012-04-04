@@ -13,6 +13,7 @@ public class iCS_ClassWizard : EditorWindow {
     iCS_ReflectionDesc[]            myConstructors  = null;
     int                             myConstructorIdx= -1;
 
+	DSAccordionView					AccordionView            = null;
     DSVerticalLayoutView            LayoutView               = null;
     DSCellView                      ConstructorView          = null;
 	DSSearchView					SearchView               = null;
@@ -103,6 +104,8 @@ public class iCS_ClassWizard : EditorWindow {
                          
         LabelHeight      = 4f+LabelSize.y;
                          
+		AccordionView= new DSAccordionView(new RectOffset(0,0,0,0), false);
+
         // Create frame layout object.
         string classTitle= myTarget != null ? myTarget.Name : "Class Wizard";
         GUIContent classWizardTitle= new GUIContent(classTitle);
@@ -120,17 +123,23 @@ public class iCS_ClassWizard : EditorWindow {
 		ClassOperationsController= new iCS_ClassOperationsController(myTarget.RuntimeType, myStorage, MethodTitle, myTarget);
 
         LayoutView.AddSubview(SearchView);
-        LayoutView.AddSubview(ClassListController.View);
+//        LayoutView.AddSubview(ClassListController.View);
         LayoutView.AddSubview(ConstructorView);
 		LayoutView.AddSubview(ClassVariablesController.View);
 		LayoutView.AddSubview(ClassOperationsController.View);
+
+		// Build accrodion view
+		AccordionView.AddSubview(ClassListController.View);
+		AccordionView.AddSubview(ClassVariablesController.View);
+		AccordionView.AddSubview(ClassOperationsController.View);
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
         // Wait until window is configured.
         if(myTarget == null) return;
         EditorGUIUtility.LookLikeInspector();
-        LayoutView.Display(new Rect(0,0,position.width, position.height));
+//        LayoutView.Display(new Rect(0,0,position.width, position.height));
+		AccordionView.Display(new Rect(0,0,position.width, position.height));
     }
 
     // =================================================================================
@@ -155,7 +164,7 @@ public class iCS_ClassWizard : EditorWindow {
         float width= Mathf.Min(maxWidth, MaxConstructorWidth);
         int instanceIdx= myConstructorIdx+1;
         int newIdx= EditorGUI.Popup(new Rect(x, y, width, LabelHeight), instanceIdx, instanceOptions, EditorStyles.toolbarPopup);
-        if(newIdx != instanceIdx) {
+        if(GUI.changed) {
             myConstructorIdx= -1;
             if(instanceIdx != 0) {
                 myStorage.ClassModuleDestroyConstructor(myTarget);
@@ -172,7 +181,6 @@ public class iCS_ClassWizard : EditorWindow {
     // View Test
     // ---------------------------------------------------------------------------------
 	void OnSearch(DSSearchView searchView, string searchString) {
-		Debug.Log("Search string changed to: "+searchString);
 		ClassListController.Filter(searchString, null, null);
 	}
 }
