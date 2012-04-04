@@ -16,10 +16,10 @@ public class DSView {
     // ----------------------------------------------------------------------
     Rect            myFrameArea         = new Rect(0,0,0,0);        // Total area to use for display.
     RectOffset      myMargins           = new RectOffset(0,0,0,0);  // Content margins.
+    Rect            myDisplayArea       = new Rect(0,0,0,0);        // Display area for the content.
     bool            myShouldDisplayFrame= true;                     // A frame box is displayed when set to true.
     GUIStyle        myFrameGUIStyle     = null;                     // The style used for the frame box.
     List<DSView>    mySubviews          = new List<DSView>();       // All configured subviews.
-    Rect            myDisplayArea       = new Rect(0,0,0,0);        // Display area for the content.
 	AnchorEnum	    myAnchor			= AnchorEnum.Center;		// Frame anchor position.
     Vector2         myDisplayRatio      = Vector2.zero;             // Desired display ratio (automatique if zero).
 

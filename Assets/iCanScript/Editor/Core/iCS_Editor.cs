@@ -1611,7 +1611,7 @@ public class iCS_Editor : EditorWindow {
     void UpdateClassWizard() {
         if(ClassWizard == null) return;
         if(SelectedObject == null || !SelectedObject.IsClassModule) {
-            ClassWizard.Deactivate();
+            ClassWizard.OnDeactivate();
         } else {
             ClassWizard.OnActivate(SelectedObject, Storage);            
         }
