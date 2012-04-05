@@ -16,7 +16,6 @@ public class DSView {
     // ----------------------------------------------------------------------
     Rect            myFrameArea         = new Rect(0,0,0,0);        // Total area to use for display.
     RectOffset      myMargins           = new RectOffset(0,0,0,0);  // Content margins.
-    Rect            myDisplayArea       = new Rect(0,0,0,0);        // Display area for the content.
     bool            myShouldDisplayFrame= true;                     // A frame box is displayed when set to true.
     GUIStyle        myFrameGUIStyle     = null;                     // The style used for the frame box.
     List<DSView>    mySubviews          = new List<DSView>();       // All configured subviews.
@@ -28,14 +27,19 @@ public class DSView {
     // ----------------------------------------------------------------------
     public Rect FrameArea {
         get { return myFrameArea; }
-        set { myFrameArea= value; UpdateDisplayArea(); }
+        set { myFrameArea= value; ProcessFrameAreaChange(); }
     }
     public RectOffset Margins {
         get { return myMargins; }
-        set { myMargins= value; UpdateDisplayArea(); }
+        set { myMargins= value; ProcessFrameAreaChange(); }
+    }
+    public Rect DisplayArea {
+        get {
+            return new Rect(FrameArea.x+Margins.left, FrameArea.y+Margins.top,
+                            FrameArea.width-Margins.horizontal, FrameArea.height-Margins.vertical);
+        }
     }
 	public Vector2 MarginsSize           { get { return new Vector2(Margins.horizontal, Margins.vertical); }} 
-    public Rect    DisplayArea           { get { return myDisplayArea; }}
     public bool    HasHorizontalScroller { get { return GetHasHorizontalScroller(); }}
     public bool    HasVerticalScroller   { get { return GetHasVerticalScroller(); }}
     public Vector2 MinimumFrameSize      { get { return GetMinimumFrameSize(); }}
@@ -134,18 +138,9 @@ public class DSView {
     // ======================================================================
     // View area management.
     // ----------------------------------------------------------------------
-    void UpdateDisplayArea() {
-        myDisplayArea= myFrameArea;
-        myDisplayArea.x+= myMargins.left;
-        myDisplayArea.width-= myMargins.horizontal;
-        myDisplayArea.y+= myMargins.top;
-        myDisplayArea.height-= myMargins.vertical;
-		if(Math3D.IsSmallerOrEqual(myDisplayArea.width, 0f) || Math3D.IsSmallerOrEqual(myDisplayArea.height, 0f)) {
-			myDisplayArea.x= myFrameArea.x;
-			myDisplayArea.y= myFrameArea.y;
-			myDisplayArea.width= 0f;
-			myDisplayArea.height= 0f;
-		}
+    void ProcessFrameAreaChange() {
+        if(myFrameArea.width < MarginsSize.x)  myFrameArea.width = MarginsSize.x;
+        if(myFrameArea.height < MarginsSize.y) myFrameArea.height= MarginsSize.y;
         OnViewAreaChange();    
     }
 }
