@@ -136,7 +136,7 @@ public class iCS_ClassWizard : EditorWindow {
 
 		MainView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
 		MainView.AddSubview(SearchView);
-		MainView.AddSubview(AccordionView);
+//		MainView.AddSubview(AccordionView);
     }
     // ---------------------------------------------------------------------------------
     void OnGUI() {
@@ -145,6 +145,7 @@ public class iCS_ClassWizard : EditorWindow {
         EditorGUIUtility.LookLikeInspector();
 //        LayoutView.Display(new Rect(0,0,position.width, position.height));
 		MainView.Display(new Rect(0,0,position.width, position.height));
+//		AccordionView.Display(new Rect(0,0,position.width, position.height));
     }
 
     // =================================================================================

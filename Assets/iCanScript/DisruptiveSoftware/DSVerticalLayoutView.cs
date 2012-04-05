@@ -93,4 +93,29 @@ public class DSVerticalLayoutView : DSViewWithTitle {
 		return result;
     }
 
+    // ----------------------------------------------------------------------
+    protected override Vector2 GetMinimumFrameSize() {
+		Vector2 size= Vector2.zero;
+		ForEachSubview(
+			sv=> {
+				var svSize= sv.MinimumFrameSize;
+				if(svSize.x > size.x) size.x= svSize.x;
+				size.y+= svSize.y;
+			}
+		);
+		return size+MarginsSize;
+	}
+    // ----------------------------------------------------------------------
+    protected override Vector2 GetFullFrameSize() {
+		Vector2 size= Vector2.zero;
+		ForEachSubview(
+			sv=> {
+				var svSize= sv.FullFrameSize;
+				if(svSize.x > size.x) size.x= svSize.x;
+				size.y+= svSize.y;
+			}
+		);
+		return size+MarginsSize;
+	}
+
 }

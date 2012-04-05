@@ -11,6 +11,15 @@ public class DSAccordionView : DSView {
 	GUIContent[]			mySelections   = null;
 	int						mySelectionIdx = 0;
 	bool					myHasSelectionChanged= true;
+	int						mySelectionsPerLine= 1;
+	
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+	public int SelectionsPerLine {
+		get { return mySelectionsPerLine; }
+		set { mySelectionsPerLine= value < 1 ? 1 : value; }
+	}
 	
     // ======================================================================
     // Initialization
@@ -48,7 +57,7 @@ public class DSAccordionView : DSView {
 	}
 	void DrawSelection(Rect position) {
 		if(mySelections == null || mySelections.Length < 1) return;
-		mySelectionIdx= GUI.SelectionGrid(position, mySelectionIdx, mySelections, 1);
+		mySelectionIdx= GUI.SelectionGrid(position, mySelectionIdx, mySelections, SelectionsPerLine);
 		myHasSelectionChanged= GUI.changed;
 	}
 	
