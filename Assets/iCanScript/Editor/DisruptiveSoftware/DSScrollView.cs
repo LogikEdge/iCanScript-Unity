@@ -1,74 +1,54 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
-public class DSScrollView : DSViewWithTitle {
+public class DSScrollView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Vector2 myScrollPosition= Vector2.zero;
-	Rect    myDataArea      = new Rect(0,0,0,0);
+    Vector2 		myScrollPosition= Vector2.zero;
+    Vector2 		myContentSize   = Vector2.zero;
+	Func<Vector2>	myGetContentSize= null;
+	Action<Rect>	myDisplayContent= null;
 	
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+	Rect ContentArea { get { return new Rect(0,0,myContentSize.x,myContentSize.y); }}
 	
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
+    public const float   kScrollerSize = 16f;
     
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSScrollView(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-                        RectOffset margins, bool shouldDisplayFrame= true)
-        : base(title, titleAlignment, titleSeperator, margins, shouldDisplayFrame) {}
+    public DSScrollView(RectOffset margins, bool shouldDisplayFrame= true)
+        : base(margins, shouldDisplayFrame) {}
     
     // ======================================================================
     // View behaviour overrides
     // ----------------------------------------------------------------------
     public override void ReloadData() {
-        if(Subviews.Count == 0) { myDataArea= new Rect(0,0,0,0); return; }
-        myDataArea= Subviews[0].FrameArea;
-        for(int i= 1; i < Subviews.Count; ++i) {
-            myDataArea= Math3D.Union(myDataArea, Subviews[i].FrameArea);
-        }
+		myContentSize= myGetContentSize != null ? myGetContentSize() : Vector2.zero;
 	}
 	
     // ----------------------------------------------------------------------
     public override void Display() {
         // Display bounding box and title.
         base.Display();
-        myScrollPosition= GUI.BeginScrollView(BodyArea, myScrollPosition, myDataArea, false, false);
-        ForEachSubview(
-            sv=> {
-                sv.Display();
-            }
-        );
+        myScrollPosition= GUI.BeginScrollView(DisplayArea, myScrollPosition, ContentArea, false, false);
+			if(myDisplayContent != null) myDisplayContent(ContentArea);
         GUI.EndScrollView();
     }
 	
     // ----------------------------------------------------------------------
     protected override void OnViewAreaChange() {
 		base.OnViewAreaChange();
+		ReloadData();
 	}
 	
-    // ----------------------------------------------------------------------
-    public override void AddSubview(DSView subview) {
-		base.AddSubview(subview);
-    }
-    public override bool RemoveSubview(DSView subview) {
-		bool result= base.RemoveSubview(subview);
-		return result;
-    }
-
-    // ----------------------------------------------------------------------
-    protected override bool GetHasHorizontalScroller() {
-        return BodyArea.width < myDataArea.width;
-    }
-    protected override bool GetHasVerticalScroller() {
-        return BodyArea.height < myDataArea.width;
-    }
-    
     // ----------------------------------------------------------------------
     protected override Vector2 GetMinimumFrameSize() {
         Vector2 baseSize= base.GetMinimumFrameSize();
