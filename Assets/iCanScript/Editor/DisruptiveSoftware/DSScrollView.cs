@@ -52,14 +52,14 @@ public class DSScrollView : DSView {
     // ----------------------------------------------------------------------
     protected override Vector2 GetMinimumFrameSize() {
         Vector2 baseSize= base.GetMinimumFrameSize();
-        float width= Mathf.Max(baseSize.x, Margins.horizontal+myDataArea.width);
-        float height= baseSize.y+myDataArea.height;
+        float width= Mathf.Max(baseSize.x, Margins.horizontal+myContentSize.x);
+        float height= baseSize.y+myContentSize.y;
         return new Vector2(width, height);
     }
     protected override Vector2 GetFullFrameSize() {
         Vector2 baseSize= base.GetFullFrameSize();
-        float width= Mathf.Max(baseSize.x, Margins.horizontal+myDataArea.width);
-        float height= baseSize.y+myDataArea.height;
+        float width= Mathf.Max(baseSize.x, Margins.horizontal+myContentSize.x);
+        float height= baseSize.y+myContentSize.y;
         return new Vector2(width, height);
     }
     
