@@ -21,6 +21,8 @@ public class DSView {
     List<DSView>    mySubviews          = new List<DSView>();       // All configured subviews.
 	AnchorEnum	    myAnchor			= AnchorEnum.Center;		// Frame anchor position.
     Vector2         myDisplayRatio      = Vector2.zero;             // Desired display ratio (automatique if zero).
+	Func<Vector2>	myGetContentSizeDelegate= null;
+	Action<Rect>	myDisplayDelegate       = null;
 
     // ======================================================================
     // Properties
@@ -73,7 +75,7 @@ public class DSView {
 		get { return myAnchor; }
 		set { myAnchor= value; OnViewAreaChange(); }
 	}
-	
+
     // ======================================================================
     // Common view constants
     // ----------------------------------------------------------------------
@@ -96,12 +98,48 @@ public class DSView {
     // ----------------------------------------------------------------------
     public virtual void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
     public virtual void Display() {
-        if(myShouldDisplayFrame == false || FrameArea.width <= 0 || FrameArea.height <= 0) return;
-        if(myFrameGUIStyle != null) {
-            GUI.Box(FrameArea,"", myFrameGUIStyle);
-        } else {
-            GUI.Box(FrameArea,"");                    
-        }
+		DisplayFrame();
+		Rect displayArea= DisplayArea;
+		float x= displayArea.x;
+		float y= displayArea.y;
+		float width= displayArea.width;
+		float height= displayArea.height;
+		Vector2 contentSize= GetContentSize();
+		if(contentSize.x < displayArea.width) {
+			width= contentSize.x;
+			switch(myAnchor) {
+				case AnchorEnum.Center:
+				case AnchorEnum.TopCenter:
+				case AnchorEnum.BottomCenter: {
+					x+= 0.5f*(displayArea.width - contentSize.x);
+					break;
+				}
+				case AnchorEnum.TopRight:
+				case AnchorEnum.CenterRight:
+				case AnchorEnum.BottomRight: {
+					x= displayArea.xMax-contentSize.x;
+					break;
+				}
+			}
+		}
+		if(contentSize.y < displayArea.height) {
+			height= contentSize.y;
+			switch(myAnchor) {
+				case AnchorEnum.Center:
+				case AnchorEnum.CenterRight:
+				case AnchorEnum.CenterLeft: {
+					y+= 0.5f*(displayArea.height - contentSize.y);
+					break;
+				}
+				case AnchorEnum.BottomRight:
+				case AnchorEnum.BottomCenter:
+				case AnchorEnum.BottomLeft: {
+					y= displayArea.yMax-contentSize.y;
+					break;
+				}
+			}
+		}
+		DisplayContent(new Rect(x,y,width,height));
     }
     public virtual void ReloadData() {}
     
@@ -143,4 +181,18 @@ public class DSView {
         if(myFrameArea.height < MarginsSize.y) myFrameArea.height= MarginsSize.y;
         OnViewAreaChange();    
     }
+	void DisplayFrame() {
+        if(myShouldDisplayFrame == false || FrameArea.width <= 0 || FrameArea.height <= 0) return;
+        if(myFrameGUIStyle != null) {
+            GUI.Box(FrameArea,"", myFrameGUIStyle);
+        } else {
+            GUI.Box(FrameArea,"");                    
+        }		
+	}
+	Vector2 GetContentSize() {
+		return myGetContentSizeDelegate != null ? myGetContentSizeDelegate() : Vector2.zero;
+	}
+	void DisplayContent(Rect area) {
+		if(myDisplayDelegate != null) myDisplayDelegate(area);
+	}
 }
