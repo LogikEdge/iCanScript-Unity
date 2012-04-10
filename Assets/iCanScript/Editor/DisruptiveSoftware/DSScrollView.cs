@@ -6,10 +6,11 @@ public class DSScrollView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Vector2 		myScrollPosition= Vector2.zero;
-    Vector2 		myContentSize   = Vector2.zero;
-	Func<Vector2>	myGetContentSize= null;
-	Action<Rect>	myDisplayContent= null;
+    Vector2 		        myScrollPosition= Vector2.zero;
+    Vector2 		        myContentSize   = Vector2.zero;
+	Func<DSView,Vector2>    myGetContentSizeDelegate= null;
+	Action<DSView,Rect>	    myDisplayContentDelegate= null;
+    Action<DSView>          myOnViewChangeDelegate  = null;
 	
     // ======================================================================
     // Properties
@@ -30,37 +31,22 @@ public class DSScrollView : DSView {
     // ======================================================================
     // View behaviour overrides
     // ----------------------------------------------------------------------
-    public override void ReloadData() {
-		myContentSize= myGetContentSize != null ? myGetContentSize() : Vector2.zero;
-	}
-	
-    // ----------------------------------------------------------------------
     public override void Display() {
         // Display bounding box and title.
         base.Display();
+        myContentSize= GetContentSize();
         myScrollPosition= GUI.BeginScrollView(DisplayArea, myScrollPosition, ContentArea, false, false);
-			if(myDisplayContent != null) myDisplayContent(ContentArea);
+            DisplayContent();
         GUI.EndScrollView();
     }
 	
+    // ======================================================================
+    // Delegates.
     // ----------------------------------------------------------------------
-    protected override void OnViewAreaChange() {
-		base.OnViewAreaChange();
-		ReloadData();
-	}
-	
-    // ----------------------------------------------------------------------
-    protected override Vector2 GetMinimumFrameSize() {
-        Vector2 baseSize= base.GetMinimumFrameSize();
-        float width= Mathf.Max(baseSize.x, Margins.horizontal+myContentSize.x);
-        float height= baseSize.y+myContentSize.y;
-        return new Vector2(width, height);
+    Vector2 GetContentSize() {
+        return myGetContentSizeDelegate != null ? myGetContentSizeDelegate(this) : Vector2.zero;
     }
-    protected override Vector2 GetFullFrameSize() {
-        Vector2 baseSize= base.GetFullFrameSize();
-        float width= Mathf.Max(baseSize.x, Margins.horizontal+myContentSize.x);
-        float height= baseSize.y+myContentSize.y;
-        return new Vector2(width, height);
+    void DisplayContent() {
+        if(myDisplayDelegate != null) myDisplayDelegate(this, ContentArea);
     }
-    
 }

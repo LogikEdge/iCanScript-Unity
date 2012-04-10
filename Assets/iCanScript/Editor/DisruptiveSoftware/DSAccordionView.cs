@@ -7,7 +7,7 @@ public class DSAccordionView : DSView {
     // Fields
     // ----------------------------------------------------------------------
 	DSVerticalLayoutView	myLayoutView   = null;
-	DSCellView				mySelectionView= null;
+	DSView				    mySelectionView= null;
 	GUIContent[]			mySelections   = null;
 	int						mySelectionIdx = 0;
 	bool					myHasSelectionChanged= true;
@@ -28,7 +28,7 @@ public class DSAccordionView : DSView {
 	: base(margins, shouldDisplayFrame) {
 		myLayoutView= new DSVerticalLayoutView(null, TextAlignment.Center, false,
 	                                           new RectOffset(0,0,0,0), false);
-		mySelectionView= new DSCellView(GetSelectionSize, DrawSelection, new RectOffset(0,0,0,0), false);
+		mySelectionView= new DSView(new RectOffset(0,0,0,0), false, DrawSelection, GetSelectionSize);
 		myLayoutView.AddSubview(mySelectionView);
 	}
 

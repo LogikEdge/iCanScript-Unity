@@ -14,16 +14,15 @@ public class DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Rect            myFrameArea         = new Rect(0,0,0,0);        // Total area to use for display.
-    RectOffset      myMargins           = new RectOffset(0,0,0,0);  // Content margins.
-    bool            myShouldDisplayFrame= true;                     // A frame box is displayed when set to true.
-    GUIStyle        myFrameGUIStyle     = null;                     // The style used for the frame box.
-    List<DSView>    mySubviews          = new List<DSView>();       // All configured subviews.
-	AnchorEnum	    myAnchor			= AnchorEnum.Center;		// Frame anchor position.
-    Vector2         myDisplayRatio      = Vector2.zero;             // Desired display ratio (automatique if zero).
-	Func<Vector2>	myGetContentSizeDelegate= null;
-	Action<Rect>	myDisplayDelegate       = null;
-
+    Rect                    myFrameArea             = new Rect(0,0,0,0);        // Total area to use for display.
+    RectOffset              myMargins               = new RectOffset(0,0,0,0);  // Content margins.
+    bool                    myShouldDisplayFrame    = true;                     // A frame box is displayed when set to true.
+    GUIStyle                myFrameGUIStyle         = null;                     // The style used for the frame box.
+	AnchorEnum	            myAnchor			    = AnchorEnum.Center;		// Frame anchor position.
+	Func<DSView,Vector2>    myGetContentSizeDelegate= null;
+	Action<DSView,Rect>	    myDisplayDelegate       = null;
+    Action<DSView>          myOnViewChangeDelegate  = null;
+    
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -41,23 +40,9 @@ public class DSView {
                             FrameArea.width-Margins.horizontal, FrameArea.height-Margins.vertical);
         }
     }
-	public Vector2 MarginsSize           { get { return new Vector2(Margins.horizontal, Margins.vertical); }} 
-    public bool    HasHorizontalScroller { get { return GetHasHorizontalScroller(); }}
-    public bool    HasVerticalScroller   { get { return GetHasVerticalScroller(); }}
-    public Vector2 MinimumFrameSize      { get { return GetMinimumFrameSize(); }}
-    public Vector2 FullFrameSize         { get { return GetFullFrameSize(); }}
-    public Vector2 FullFrameSizeWithScrollers {
-        get {
-            var result= FullFrameSize;
-            if(GetHasHorizontalScroller()) {
-                result.y+= kScrollerSize;
-            }
-            if(GetHasVerticalScroller()) {
-                result.x+= kScrollerSize;
-            }
-            return result;
-        }
-    }
+	public Vector2 MarginsSize {
+	    get { return new Vector2(Margins.horizontal, Margins.vertical); }
+	} 
     public bool ShouldDisplayFrame {
         get { return myShouldDisplayFrame; }
         set { myShouldDisplayFrame= value; }
@@ -66,14 +51,21 @@ public class DSView {
         get { return myFrameGUIStyle; }
         set { myFrameGUIStyle= value; }
     }
-    public List<DSView> Subviews { get { return mySubviews; }}
-    public Vector2 DisplayRatio {
-        get { return myDisplayRatio; }
-        set { myDisplayRatio= value; OnViewAreaChange(); }
-    }
     public AnchorEnum Anchor {
 		get { return myAnchor; }
-		set { myAnchor= value; OnViewAreaChange(); }
+		set { myAnchor= value; OnViewChange(); }
+	}
+	public Action<DSView,Rect> DisplayDelegate {
+	    get { return myDisplayDelegate; }
+	    set { myDisplayDelegate= value; }
+	}
+	public Func<DSView,Vector2> GetContentSizeDelegate {
+	    get { return myGetContentSizeDelegate; }
+	    set { myGetContentSizeDelegate= value; }
+	}
+	public Action<DSView> OnViewChangeDelegate {
+	    get { return myOnViewChangeDelegate; }
+	    set { myOnViewChangeDelegate= value; }
 	}
 
     // ======================================================================
@@ -88,16 +80,22 @@ public class DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSView(RectOffset margins, bool shouldDisplayFrame= true) {
-        Margins= margins;
-        ShouldDisplayFrame= shouldDisplayFrame;
+    public DSView(RectOffset margins, bool shouldDisplayFrame= true,
+                  Action<DSView,Rect> displayDelegate= null,
+                  Func<DSView,Vector2> getContentSizeDelegate= null,
+                  Action<DSView> onViewChangeDelegate= null) {
+        Margins               = margins;
+        ShouldDisplayFrame    = shouldDisplayFrame;
+        DisplayDelegate       = displayDelegate;
+        GetContentSizeDelegate= getContentSizeDelegate;
+        OnViewChangeDelegate  = onViewChangeDelegate;
     }
     
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public virtual void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
-    public virtual void Display() {
+    public void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
+    public void Display() {
 		DisplayFrame();
 		Rect displayArea= DisplayArea;
 		float x= displayArea.x;
@@ -141,45 +139,14 @@ public class DSView {
 		}
 		DisplayContent(new Rect(x,y,width,height));
     }
-    public virtual void ReloadData() {}
     
-    // ======================================================================
-    // Subview management
-    // ----------------------------------------------------------------------
-    public virtual void AddSubview(DSView subview) {
-        mySubviews.Add(subview);
-    }
-    public virtual bool RemoveSubview(DSView subview) {
-        return mySubviews.Remove(subview);
-    }
-    public void ForEachSubview(Action<DSView> action) {
-        foreach(var sv in mySubviews) {
-            action(sv);
-        }
-    }
-    public bool SearchInSubviews(Func<DSView,bool> fnc) {
-        foreach(var sv in mySubviews) {
-            if(fnc(sv)) return true;
-        }
-        return false;
-    }
-    
-    // ======================================================================
-    // Methods to override to customize view behaviour.
-    // ----------------------------------------------------------------------
-    protected virtual void      OnViewAreaChange()          {}
-    protected virtual Vector2   GetMinimumFrameSize()       { return new Vector2(Margins.horizontal, Margins.vertical); }
-    protected virtual Vector2   GetFullFrameSize()          { return GetMinimumFrameSize(); }
-    protected virtual bool      GetHasHorizontalScroller()  { return false; }
-    protected virtual bool      GetHasVerticalScroller()    { return false; }
-
     // ======================================================================
     // View area management.
     // ----------------------------------------------------------------------
     void ProcessFrameAreaChange() {
         if(myFrameArea.width < MarginsSize.x)  myFrameArea.width = MarginsSize.x;
         if(myFrameArea.height < MarginsSize.y) myFrameArea.height= MarginsSize.y;
-        OnViewAreaChange();    
+        OnViewChange();    
     }
 	void DisplayFrame() {
         if(myShouldDisplayFrame == false || FrameArea.width <= 0 || FrameArea.height <= 0) return;
@@ -189,10 +156,17 @@ public class DSView {
             GUI.Box(FrameArea,"");                    
         }		
 	}
+
+    // ======================================================================
+    // Delegates.
+    // ----------------------------------------------------------------------
 	Vector2 GetContentSize() {
-		return myGetContentSizeDelegate != null ? myGetContentSizeDelegate() : Vector2.zero;
+		return myGetContentSizeDelegate != null ? myGetContentSizeDelegate(this) : Vector2.zero;
 	}
 	void DisplayContent(Rect area) {
-		if(myDisplayDelegate != null) myDisplayDelegate(area);
+		if(myDisplayDelegate != null) myDisplayDelegate(this, area);
+	}
+	void OnViewChange() {
+	    if(myOnViewChangeDelegate != null) myOnViewChangeDelegate(this);
 	}
 }

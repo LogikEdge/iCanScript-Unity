@@ -16,7 +16,7 @@ public class iCS_ClassWizard : EditorWindow {
     DSVerticalLayoutView            MainView                 = null;
 	DSAccordionView					AccordionView            = null;
     DSVerticalLayoutView            LayoutView               = null;
-    DSCellView                      ConstructorView          = null;
+    DSView                          ConstructorView          = null;
 	DSSearchView					SearchView               = null;
     iCS_ClassListController     	ClassListController      = null;
 	iCS_ClassVariablesController	ClassVariablesController = null;
@@ -117,7 +117,7 @@ public class iCS_ClassWizard : EditorWindow {
         ClassListController= new iCS_ClassListController();
         ClassListController.View.DisplayRatio= new Vector2(1f, 0.25f);
 
-        ConstructorView= new DSCellView(GetConstrcutorContentSize, DrawConstructorCell, new RectOffset(0,0,kSpacer,kSpacer), false);
+        ConstructorView= new DSView(new RectOffset(0,0,kSpacer,kSpacer), false, DrawConstructorCell, GetConstrcutorContentSize);
 
 		ClassVariablesController= new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, VariableTitle, myTarget);
 		ClassOperationsController= new iCS_ClassOperationsController(myTarget.RuntimeType, myStorage, MethodTitle, myTarget);
