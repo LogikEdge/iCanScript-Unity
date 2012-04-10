@@ -119,6 +119,14 @@ public static partial class Math3D {
     }
     
 	// ----------------------------------------------------------------------
+    public static bool IsEqual(Rect r1, Rect r2) {
+        return IsEqual(r1.x, r2.x) &&
+               IsEqual(r1.y, r2.y) &&
+               IsEqual(r1.width, r2.width) &&
+               IsEqual(r1.height, r2.height);
+    }
+    
+	// ----------------------------------------------------------------------
     public static bool IsNotEqual(Vector2 v1, Vector2 v2) {
         return !IsEqual(v1, v2);
     }
@@ -131,6 +139,11 @@ public static partial class Math3D {
 	// ----------------------------------------------------------------------
     public static bool IsNotEqual(Vector4 v1, Vector4 v2) {
         return !IsEqual(v1, v2);
+    }
+    
+	// ----------------------------------------------------------------------
+    public static bool IsNotEqual(Rect r1, Rect r2) {
+        return !IsEqual(r1, r2);
     }
     
 	// ----------------------------------------------------------------------

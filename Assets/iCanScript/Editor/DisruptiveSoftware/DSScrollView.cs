@@ -31,7 +31,7 @@ public class DSScrollView : DSView {
     // ======================================================================
     // View behaviour overrides
     // ----------------------------------------------------------------------
-    public override void Display() {
+    public override void Display(DSView parent, Rect displayArea) {
         // Display bounding box and title.
         base.Display();
         myContentSize= GetContentSize();
@@ -39,14 +39,8 @@ public class DSScrollView : DSView {
             DisplayContent();
         GUI.EndScrollView();
     }
-	
-    // ======================================================================
-    // Delegates.
-    // ----------------------------------------------------------------------
-    Vector2 GetContentSize() {
-        return myGetContentSizeDelegate != null ? myGetContentSizeDelegate(this) : Vector2.zero;
+	public virtual Vector2 GetContentSize(DSView parent) {
+        return InvokeGetContentSizeDelegate();
     }
-    void DisplayContent() {
-        if(myDisplayDelegate != null) myDisplayDelegate(this, ContentArea);
-    }
+    
 }

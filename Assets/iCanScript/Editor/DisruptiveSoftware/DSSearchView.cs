@@ -9,8 +9,6 @@ public class DSSearchView : DSView {
     Action<DSSearchView,string>	mySearchAction       = null;
     string 						mySearchString       = "";
 	GUIStyle					mySearchFieldGUIStyle= null;
-	Vector2						myMinimumContentSize;
-	Vector2						myMaximumContentSize;
 	
     // ======================================================================
     // Propreties
@@ -25,7 +23,7 @@ public class DSSearchView : DSView {
 	}
 	public GUIStyle SearchFieldGUIStyle {
 		get { return mySearchFieldGUIStyle; }
-		set { mySearchFieldGUIStyle= value; CalculateContentSize(); }
+		set { mySearchFieldGUIStyle= value; }
 	}
 	
     // ======================================================================
@@ -33,19 +31,14 @@ public class DSSearchView : DSView {
     // ----------------------------------------------------------------------
     public DSSearchView(Action<DSSearchView,string> searchAction,
                         RectOffset margins, bool shouldDisplayFrame= false)
-     : base(margins, shouldDisplayFrame) {
+     : base(margins, shouldDisplayFrame, SearchViewDisplay, null, GetSearchViewSize) {
 		mySearchAction= searchAction;
-		CalculateContentSize();
     }
-    void CalculateContentSize() {
-		myMinimumContentSize= (mySearchFieldGUIStyle ?? GUI.skin.textField).CalcSize(new GUIContent("1234567"));
-		myMaximumContentSize= (mySearchFieldGUIStyle ?? GUI.skin.textField).CalcSize(new GUIContent("12345678901234"));
-	}
 
     // ======================================================================
     // Display
     // ----------------------------------------------------------------------
-    public override void Display() {
+    void SearchViewDisplay(DSView parent, Rect displayArea) {
 		if(mySearchFieldGUIStyle == null) {
 			mySearchString= GUI.TextField(DisplayArea, mySearchString);			
 		} else {
@@ -55,10 +48,8 @@ public class DSSearchView : DSView {
 			if(mySearchAction != null) mySearchAction(this, mySearchString);
 		}
     }
-    protected override Vector2 GetMinimumFrameSize() {
-        return MarginsSize + myMinimumContentSize;
-    }
-    protected override Vector2 GetFullFrameSize() {
-        return MarginsSize + myMaximumContentSize;
+    // ----------------------------------------------------------------------
+    Vector2 GetSearchViewSize(DSView parent) {
+        return mySearchFieldGUIStyle.CalcSize(mySearchString+"AA");
     }
 }
