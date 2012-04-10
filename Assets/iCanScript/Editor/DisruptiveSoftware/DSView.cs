@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class DSView {
+public class DSView : DSViewBase {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
@@ -19,9 +19,6 @@ public class DSView {
     bool                    myShouldDisplayFrame    = true;                     // A frame box is displayed when set to true.
     GUIStyle                myFrameGUIStyle         = null;                     // The style used for the frame box.
 	AnchorEnum	            myAnchor			    = AnchorEnum.Center;		// Frame anchor position.
-	Func<DSView,Vector2>    myGetContentSizeDelegate= null;
-	Action<DSView,Rect>	    myDisplayDelegate       = null;
-    Action<DSView>          myOnViewChangeDelegate  = null;
     
     // ======================================================================
     // Properties
@@ -55,18 +52,6 @@ public class DSView {
 		get { return myAnchor; }
 		set { myAnchor= value; OnViewChange(); }
 	}
-	public Action<DSView,Rect> DisplayDelegate {
-	    get { return myDisplayDelegate; }
-	    set { myDisplayDelegate= value; }
-	}
-	public Func<DSView,Vector2> GetContentSizeDelegate {
-	    get { return myGetContentSizeDelegate; }
-	    set { myGetContentSizeDelegate= value; }
-	}
-	public Action<DSView> OnViewChangeDelegate {
-	    get { return myOnViewChangeDelegate; }
-	    set { myOnViewChangeDelegate= value; }
-	}
 
     // ======================================================================
     // Common view constants
@@ -83,12 +68,10 @@ public class DSView {
     public DSView(RectOffset margins, bool shouldDisplayFrame= true,
                   Action<DSView,Rect> displayDelegate= null,
                   Func<DSView,Vector2> getContentSizeDelegate= null,
-                  Action<DSView> onViewChangeDelegate= null) {
+                  Action<DSView> onViewChangeDelegate= null)
+	: base(displayDelegate, getContentSizeDelegate, onViewChangeDelegate) {
         Margins               = margins;
         ShouldDisplayFrame    = shouldDisplayFrame;
-        DisplayDelegate       = displayDelegate;
-        GetContentSizeDelegate= getContentSizeDelegate;
-        OnViewChangeDelegate  = onViewChangeDelegate;
     }
     
     // ======================================================================
@@ -97,6 +80,9 @@ public class DSView {
     public void Display(Rect frameArea) { FrameArea= frameArea; Display(); }
     public void Display() {
 		DisplayFrame();
+		DisplayContent(ComputeDisplayRect());
+    }
+    protected Rect ComputeDisplayRect() {
 		Rect displayArea= DisplayArea;
 		float x= displayArea.x;
 		float y= displayArea.y;
@@ -137,9 +123,9 @@ public class DSView {
 				}
 			}
 		}
-		DisplayContent(new Rect(x,y,width,height));
-    }
-    
+		return new Rect(x,y,width,height);	
+	}
+	
     // ======================================================================
     // View area management.
     // ----------------------------------------------------------------------
