@@ -13,14 +13,14 @@ public class iCS_ClassWizard : EditorWindow {
     iCS_ReflectionDesc[]            myConstructors  = null;
     int                             myConstructorIdx= -1;
 
-    DSVerticalLayoutView            MainView                 = null;
-	DSAccordionView					AccordionView            = null;
-    DSVerticalLayoutView            LayoutView               = null;
+//    DSVerticalLayoutView            MainView                 = null;
+//	DSAccordionView					AccordionView            = null;
+//    DSVerticalLayoutView            LayoutView               = null;
     DSView                          ConstructorView          = null;
-	DSSearchView					SearchView               = null;
-    iCS_ClassListController     	ClassListController      = null;
-	iCS_ClassVariablesController	ClassVariablesController = null;
-	iCS_ClassOperationsController	ClassOperationsController= null;
+//	DSSearchView					SearchView               = null;
+//    iCS_ClassListController     	ClassListController      = null;
+//	iCS_ClassVariablesController	ClassVariablesController = null;
+//	iCS_ClassOperationsController	ClassOperationsController= null;
 
     // =================================================================================
     // Layout info.
@@ -59,7 +59,7 @@ public class iCS_ClassWizard : EditorWindow {
         if(target == myTarget && storage == myStorage) return;
         myTarget= target;
         myStorage= storage;
-        if(LayoutView != null) LayoutView.Title= new GUIContent(myTarget.Name);
+//        if(LayoutView != null) LayoutView.Title= new GUIContent(myTarget.Name);
 
         // Get and sort all constructors for the given class.
         myConstructors= iCS_DataBase.GetClassConstructors(myTarget.RuntimeType);
@@ -109,33 +109,34 @@ public class iCS_ClassWizard : EditorWindow {
         // Create frame layout object.
         string classTitle= myTarget != null ? myTarget.Name : "Class Wizard";
         GUIContent classWizardTitle= new GUIContent(classTitle);
-		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
+//		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
         
         // Populate frame layout.
-		SearchView= new DSSearchView(OnSearch, new RectOffset(0,0,kSpacer,kSpacer), false);
+//		SearchView= new DSSearchView(OnSearch, new RectOffset(0,0,kSpacer,kSpacer), false);
 		
-        ClassListController= new iCS_ClassListController();
-        ClassListController.View.DisplayRatio= new Vector2(1f, 0.25f);
+//        ClassListController= new iCS_ClassListController();
+//        ClassListController.View.DisplayRatio= new Vector2(1f, 0.25f);
 
-        ConstructorView= new DSView(new RectOffset(0,0,kSpacer,kSpacer), false, DrawConstructorCell, GetConstrcutorContentSize);
+        ConstructorView= new DSView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, DrawConstructorCell, null, GetConstrcutorContentSize);
+//        ConstructorView.Anchor= DSView.AnchorEnum.CenterRight;
 
-		ClassVariablesController= new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, VariableTitle, myTarget);
-		ClassOperationsController= new iCS_ClassOperationsController(myTarget.RuntimeType, myStorage, MethodTitle, myTarget);
+//		ClassVariablesController= new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, VariableTitle, myTarget);
+//		ClassOperationsController= new iCS_ClassOperationsController(myTarget.RuntimeType, myStorage, MethodTitle, myTarget);
 
-        LayoutView.AddSubview(SearchView);
+//        LayoutView.AddSubview(SearchView);
 //        LayoutView.AddSubview(ClassListController.View);
-        LayoutView.AddSubview(ConstructorView);
-		LayoutView.AddSubview(ClassVariablesController.View);
-		LayoutView.AddSubview(ClassOperationsController.View);
+//        LayoutView.AddSubview(ConstructorView);
+//		LayoutView.AddSubview(ClassVariablesController.View);
+//		LayoutView.AddSubview(ClassOperationsController.View);
 
 		// Build accrodion view
-		AccordionView= new DSAccordionView(new RectOffset(0,0,0,0), false);
-		AccordionView.AddSubview(ClassListController.View);
-		AccordionView.AddSubview(ClassVariablesController.View);
-		AccordionView.AddSubview(ClassOperationsController.View);
+//		AccordionView= new DSAccordionView(new RectOffset(0,0,0,0), false);
+//		AccordionView.AddSubview(ClassListController.View);
+//		AccordionView.AddSubview(ClassVariablesController.View);
+//		AccordionView.AddSubview(ClassOperationsController.View);
 
-		MainView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
-		MainView.AddSubview(SearchView);
+//		MainView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
+//		MainView.AddSubview(SearchView);
 //		MainView.AddSubview(AccordionView);
     }
     // ---------------------------------------------------------------------------------
@@ -144,29 +145,28 @@ public class iCS_ClassWizard : EditorWindow {
         if(myTarget == null) return;
         EditorGUIUtility.LookLikeInspector();
 //        LayoutView.Display(new Rect(0,0,position.width, position.height));
-		MainView.Display(new Rect(0,0,position.width, position.height));
+//		MainView.Display(new Rect(0,0,position.width, position.height));
 //		AccordionView.Display(new Rect(0,0,position.width, position.height));
+        ConstructorView.Display(new Rect(0,0,position.width, position.height));
     }
 
     // =================================================================================
     // Constructor selection view
     // ---------------------------------------------------------------------------------
-    Vector2 GetConstrcutorContentSize() {
-        float width= LayoutView.BodyArea.width;
-        float height= LabelHeight;
-        return new Vector2(width, height);
+    Vector2 GetConstrcutorContentSize(DSView view) {
+        return new Vector2(ConstructorTitleSize.x+2f*kSpacer+MaxConstructorWidth, LabelHeight);
     }
-    void DrawConstructorCell(Rect position) {
+    void DrawConstructorCell(DSView view, Rect position) {
         float y= position.y;
         GUI.Label(new Rect(position.x, y, ConstructorTitleSize.x, ConstructorTitleSize.y), ConstructorTitle, EditorStyles.boldLabel);
-        float x= 2f*kSpacer+position.x+ConstructorTitleSize.x;
+        float x= position.x+ConstructorTitleSize.x+2f*kSpacer;
         // Fill-in available constructors.
         string[] instanceOptions= new string[1+myConstructors.Length];
         instanceOptions[0]= "Use input port (this)";
         for(int i= 0; i < myConstructors.Length; ++i) {
             instanceOptions[i+1]= myConstructors[i].FunctionSignatureNoThisNoOutput;
         }
-        float maxWidth= position.width-x;
+        float maxWidth= position.width-(ConstructorTitleSize.x+2f*kSpacer);
         float width= Mathf.Min(maxWidth, MaxConstructorWidth);
         int instanceIdx= myConstructorIdx+1;
         int newIdx= EditorGUI.Popup(new Rect(x, y, width, LabelHeight), instanceIdx, instanceOptions, EditorStyles.toolbarPopup);
@@ -183,10 +183,10 @@ public class iCS_ClassWizard : EditorWindow {
     }
 
 
-    // =================================================================================
-    // View Test
-    // ---------------------------------------------------------------------------------
-	void OnSearch(DSSearchView searchView, string searchString) {
-		ClassListController.Filter(searchString, null, null);
-	}
+//    // =================================================================================
+//    // View Test
+//    // ---------------------------------------------------------------------------------
+//	void OnSearch(DSSearchView searchView, string searchString) {
+//		ClassListController.Filter(searchString, null, null);
+//	}
 }

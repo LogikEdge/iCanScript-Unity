@@ -22,7 +22,7 @@ public class DSView {
 	AnchorEnum	            myAnchor			    = AnchorEnum.TopLeft;		// Frame anchor position.
  	Action<DSView,Rect>     myDisplayDelegate       = null;
     Action<DSView,Rect>     myOnViewChangeDelegate  = null;
-	Func<DSView,Vector2>	myGetContentSizeDelegate= null;
+	Func<DSView,Vector2>	myGetDisplaySizeDelegate= null;
    
     // ======================================================================
     // Properties
@@ -37,28 +37,34 @@ public class DSView {
     }
     public RectOffset Margins {
         get { return myMargins; }
-        set { myMargins= value; ProcessFrameAreaChange(); }
+        set { myMargins= value; }
     }
 	public Vector2 MarginsSize {
 	    get { return new Vector2(Margins.horizontal, Margins.vertical); }
 	} 
     public AnchorEnum Anchor {
 		get { return myAnchor; }
-		set { myAnchor= value; OnViewChange(); }
+		set { myAnchor= value; }
 	}
 	public Action<DSView,Rect> DisplayDelegate {
 	    get { return myDisplayDelegate; }
 	    set { myDisplayDelegate= value; }
 	}
-	public Func<DSView,Vector2> GetContentSizeDelegate {
-	    get { return myGetContentSizeDelegate; }
-	    set { myGetContentSizeDelegate= value; }
+	public Func<DSView,Vector2> GetDisplaySizeDelegate {
+	    get { return myGetDisplaySizeDelegate; }
+	    set { myGetDisplaySizeDelegate= value; }
 	}
 	public Action<DSView,Rect> OnViewChangeDelegate {
 	    get { return myOnViewChangeDelegate; }
 	    set { myOnViewChangeDelegate= value; }
 	}
-
+	public Rect DisplayArea {
+	    get { return myDisplayArea; }
+	}
+    public Rect FrameArea {
+        get { return myFrameArea; }
+    }
+    
     // ======================================================================
     // Common view constants
     // ----------------------------------------------------------------------
@@ -66,21 +72,20 @@ public class DSView {
     public const float   kVerticalSpacer  = 8f;
     public const float   kHorizontalMargin= 10f;
     public const float   kVerticalMargin  = 10f;
-    public const float   kScrollerSize = 16f;
+    public const float   kScrollerSize    = 16f;
 
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
     public DSView(RectOffset margins, bool shouldDisplayFrame= true,
                   Action<DSView,Rect> displayDelegate= null,
-                  Action<DSView> onViewChangeDelegate= null,
-                  Func<DSView,Vector2> getContentSizeDelegate= null)
-	: base(displayDelegate, getContentSizeDelegate, onViewChangeDelegate) {
+                  Action<DSView,Rect> onViewChangeDelegate= null,
+                  Func<DSView,Vector2> getDisplaySizeDelegate= null) {
         Margins               = margins;
         ShouldDisplayFrame    = shouldDisplayFrame;
         DisplayDelegate       = displayDelegate;
         OnViewChangeDelegate  = onViewChangeDelegate;
-        GetContentSizeDelegate= getContentSizeDelegate;
+        GetDisplaySizeDelegate= getDisplaySizeDelegate;
     }
     
 	// ======================================================================
@@ -99,43 +104,44 @@ public class DSView {
                                    frameArea.width-Margins.horizontal,
                                    frameArea.height-Margins.vertical);
         if(Math3D.IsNotEqual(displayArea, myDisplayArea)) {
-			OnViewChange(displayArea);            
+			OnViewChange(parent,displayArea);            
         }
 
         // Display frame and content.
         DisplayFrame();
-		InvokeDisplayDelegate(ComputeDisplayRect());
+		InvokeDisplayDelegate(ComputeDisplayRect(parent));
     }
     public virtual void OnViewChange(DSView parent, Rect displayArea) {
         myDisplayArea= displayArea;
         InvokeDisplayDelegate(displayArea);
     }
-    public virtual Vector2 GetContentSize(DSView parent) {
-        return InvokeGetContentSizeDelegate();
+    public virtual Vector2 GetDisplaySize(DSView parent) {
+        return InvokeGetDisplaySizeDelegate();
     }
     
     // ======================================================================
     // Subview management.
     // ----------------------------------------------------------------------
-	public void AddSubview(DSView subview) {
+	public virtual void AddSubview(DSView subview) {
 	    DisplayDelegate       += subview.Display;
 	    OnViewChangeDelegate  += subview.OnViewChange;
-	    GetContentSizeDelegate+= subview.GetContentSize;
+	    GetDisplaySizeDelegate+= subview.GetDisplaySize;
 	}
-	public void RemoveSubview(DSView subview) {
+	public virtual bool RemoveSubview(DSView subview) {
 	    DisplayDelegate       -= subview.Display;
 	    OnViewChangeDelegate  -= subview.OnViewChange;
-	    GetContentSizeDelegate-= subview.GetContentSize;
+	    GetDisplaySizeDelegate-= subview.GetDisplaySize;
+        return true;
 	}
 	
     // ======================================================================
     // Deleagate functionality.
     // ----------------------------------------------------------------------
-	protected Vector2 InvokeGetContentSizeDelegate() {
-		return myGetContentSizeDelegate != null ? myGetContentSizeDelegate(this) : Vector2.zero;
+	protected Vector2 InvokeGetDisplaySizeDelegate() {
+		return myGetDisplaySizeDelegate != null ? myGetDisplaySizeDelegate(this) : Vector2.zero;
 	}
-	protected void InvokeDisplayContentDelegate(Rect area) {
-		if(myDisplayContentDelegate != null) myDisplayContentDelegate(this, area);
+	protected void InvokeDisplayDelegate(Rect area) {
+		if(myDisplayDelegate != null) myDisplayDelegate(this, area);
 	}
 	protected void InvokeOnViewChangeDelegate(Rect area) {
 	    if(myOnViewChangeDelegate != null) myOnViewChangeDelegate(this, area);
@@ -145,52 +151,52 @@ public class DSView {
     // Frame alignment.
     // ----------------------------------------------------------------------
 	void DisplayFrame() {
-        if(myShouldDisplayFrame == false || FrameArea.width <= 0 || FrameArea.height <= 0) return;
+        if(myShouldDisplayFrame == false || myFrameArea.width <= 0 || myFrameArea.height <= 0) return;
         if(myFrameGUIStyle != null) {
-            GUI.Box(FrameArea,"", myFrameGUIStyle);
+            GUI.Box(myFrameArea,"", myFrameGUIStyle);
         } else {
-            GUI.Box(FrameArea,"");                    
+            GUI.Box(myFrameArea,"");                    
         }		
 	}
     // ----------------------------------------------------------------------
-    protected Rect ComputeDisplayRect() {
-		Vector2 contentSize= GetContentSize();
-        if(Math3D.IsZero(contentSize)) return DisplayArea;
+    protected Rect ComputeDisplayRect(DSView parent) {
+		Vector2 displaySize= GetDisplaySize(parent);
+        if(Math3D.IsZero(displaySize)) return DisplayArea;
 		Rect displayArea= DisplayArea;
 		float x= displayArea.x;
 		float y= displayArea.y;
 		float width= displayArea.width;
 		float height= displayArea.height;
-		if(contentSize.x < displayArea.width) {
-			width= contentSize.x;
+		if(displaySize.x < displayArea.width) {
+			width= displaySize.x;
 			switch(myAnchor) {
 				case AnchorEnum.Center:
 				case AnchorEnum.TopCenter:
 				case AnchorEnum.BottomCenter: {
-					x+= 0.5f*(displayArea.width - contentSize.x);
+					x+= 0.5f*(displayArea.width - displaySize.x);
 					break;
 				}
 				case AnchorEnum.TopRight:
 				case AnchorEnum.CenterRight:
 				case AnchorEnum.BottomRight: {
-					x= displayArea.xMax-contentSize.x;
+					x= displayArea.xMax-displaySize.x;
 					break;
 				}
 			}
 		}
-		if(contentSize.y < displayArea.height) {
-			height= contentSize.y;
+		if(displaySize.y < displayArea.height) {
+			height= displaySize.y;
 			switch(myAnchor) {
 				case AnchorEnum.Center:
 				case AnchorEnum.CenterRight:
 				case AnchorEnum.CenterLeft: {
-					y+= 0.5f*(displayArea.height - contentSize.y);
+					y+= 0.5f*(displayArea.height - displaySize.y);
 					break;
 				}
 				case AnchorEnum.BottomRight:
 				case AnchorEnum.BottomCenter:
 				case AnchorEnum.BottomLeft: {
-					y= displayArea.yMax-contentSize.y;
+					y= displayArea.yMax-displaySize.y;
 					break;
 				}
 			}
