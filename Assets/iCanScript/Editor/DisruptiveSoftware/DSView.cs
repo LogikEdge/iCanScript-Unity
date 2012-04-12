@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class DSView {
+public abstract class DSView {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
@@ -14,19 +14,22 @@ public class DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Rect                    myFrameArea             = new Rect(0,0,0,0);        // Total area to use for display.
-    bool                    myShouldDisplayFrame    = true;                     // A frame box is displayed when set to true.
-    GUIStyle                myFrameGUIStyle         = null;                     // The style used for the frame box.
-    RectOffset              myMargins               = new RectOffset(0,0,0,0);  // Content margins.
-    Rect                    myDisplayArea           = new Rect(0,0,0,0);
-	AnchorEnum	            myAnchor			    = AnchorEnum.TopLeft;		// Frame anchor position.
- 	Action<DSView,Rect>     myDisplayDelegate       = null;
-    Action<DSView,Rect>     myOnViewChangeDelegate  = null;
-	Func<DSView,Vector2>	myGetDisplaySizeDelegate= null;
+    Rect        myFrameArea         = new Rect(0,0,0,0);        // Total area to use for display.
+    bool        myShouldDisplayFrame= true;                     // A frame box is displayed when set to true.
+    GUIStyle    myFrameGUIStyle     = null;                     // The style used for the frame box.
+    RectOffset  myMargins           = new RectOffset(0,0,0,0);  // Content margins.
+    Rect        myDisplayArea       = new Rect(0,0,0,0);
+	AnchorEnum  myAnchor			= AnchorEnum.TopLeft;		// Frame anchor position.
    
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+	public Rect DisplayArea {
+	    get { return myDisplayArea; }
+	}
+    public Rect FrameArea {
+        get { return myFrameArea; }
+    }
     public bool ShouldDisplayFrame {
         get { return myShouldDisplayFrame; }
         set { myShouldDisplayFrame= value; }
@@ -46,24 +49,6 @@ public class DSView {
 		get { return myAnchor; }
 		set { myAnchor= value; }
 	}
-	public Action<DSView,Rect> DisplayDelegate {
-	    get { return myDisplayDelegate; }
-	    set { myDisplayDelegate= value; }
-	}
-	public Func<DSView,Vector2> GetDisplaySizeDelegate {
-	    get { return myGetDisplaySizeDelegate; }
-	    set { myGetDisplaySizeDelegate= value; }
-	}
-	public Action<DSView,Rect> OnViewChangeDelegate {
-	    get { return myOnViewChangeDelegate; }
-	    set { myOnViewChangeDelegate= value; }
-	}
-	public Rect DisplayArea {
-	    get { return myDisplayArea; }
-	}
-    public Rect FrameArea {
-        get { return myFrameArea; }
-    }
     
     // ======================================================================
     // Common view constants
@@ -77,22 +62,15 @@ public class DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSView(RectOffset margins, bool shouldDisplayFrame= true,
-                  Action<DSView,Rect> displayDelegate= null,
-                  Action<DSView,Rect> onViewChangeDelegate= null,
-                  Func<DSView,Vector2> getDisplaySizeDelegate= null) {
-        Margins               = margins;
-        ShouldDisplayFrame    = shouldDisplayFrame;
-        DisplayDelegate       = displayDelegate;
-        OnViewChangeDelegate  = onViewChangeDelegate;
-        GetDisplaySizeDelegate= getDisplaySizeDelegate;
+    public DSView(RectOffset margins, bool shouldDisplayFrame= true) {
+        Margins           = margins;
+        ShouldDisplayFrame= shouldDisplayFrame;
     }
     
 	// ======================================================================
-    // Base functionality.
+    // Base display functionality.
     // ----------------------------------------------------------------------
-	public void Display(Rect frameArea) { Display(null, frameArea); }
-    protected virtual void Display(DSView parent, Rect frameArea) {
+	public void Display(Rect frameArea) { 
         // Don't display if display area is smaller then margins.
         if(frameArea.width < Margins.horizontal) return;
         if(frameArea.height < Margins.vertical) return;
@@ -104,51 +82,14 @@ public class DSView {
                                    frameArea.width-Margins.horizontal,
                                    frameArea.height-Margins.vertical);
         if(Math3D.IsNotEqual(displayArea, myDisplayArea)) {
-			OnViewChange(parent,displayArea);            
+            myDisplayArea= displayArea;            
+			DoOnViewChange(displayArea);            
         }
 
         // Display frame and content.
         DisplayFrame();
-		InvokeDisplayDelegate(ComputeDisplayRect(parent));
+		DoDisplay(ComputeDisplayRect());
     }
-    protected virtual void OnViewChange(DSView parent, Rect displayArea) {
-        myDisplayArea= displayArea;
-        InvokeDisplayDelegate(displayArea);
-    }
-    protected virtual Vector2 GetDisplaySize(DSView parent) {
-        return InvokeGetDisplaySizeDelegate();
-    }
-    
-    // ======================================================================
-    // Subview management.
-    // ----------------------------------------------------------------------
-	public virtual void AddSubview(DSView subview) {
-	    DisplayDelegate       += subview.Display;
-	    OnViewChangeDelegate  += subview.OnViewChange;
-	    GetDisplaySizeDelegate+= subview.GetDisplaySize;
-	}
-	public virtual bool RemoveSubview(DSView subview) {
-	    DisplayDelegate       -= subview.Display;
-	    OnViewChangeDelegate  -= subview.OnViewChange;
-	    GetDisplaySizeDelegate-= subview.GetDisplaySize;
-        return true;
-	}
-	
-    // ======================================================================
-    // Deleagate functionality.
-    // ----------------------------------------------------------------------
-	protected Vector2 InvokeGetDisplaySizeDelegate() {
-		return myGetDisplaySizeDelegate != null ? myGetDisplaySizeDelegate(this) : Vector2.zero;
-	}
-	protected void InvokeDisplayDelegate(Rect area) {
-		if(myDisplayDelegate != null) myDisplayDelegate(this, area);
-	}
-	protected void InvokeOnViewChangeDelegate(Rect area) {
-	    if(myOnViewChangeDelegate != null) myOnViewChangeDelegate(this, area);
-	}
-
-    // ======================================================================
-    // Frame alignment.
     // ----------------------------------------------------------------------
 	void DisplayFrame() {
         if(myShouldDisplayFrame == false || myFrameArea.width <= 0 || myFrameArea.height <= 0) return;
@@ -159,8 +100,8 @@ public class DSView {
         }		
 	}
     // ----------------------------------------------------------------------
-    protected Rect ComputeDisplayRect(DSView parent) {
-		Vector2 displaySize= GetDisplaySize(parent);
+    protected Rect ComputeDisplayRect() {
+		Vector2 displaySize= DoGetDisplaySize(DisplayArea);
         if(Math3D.IsZero(displaySize)) return DisplayArea;
 		Rect displayArea= DisplayArea;
 		float x= displayArea.x;
@@ -203,4 +144,11 @@ public class DSView {
 		}
 		return new Rect(x,y,width,height);	
 	}
+    
+    // ======================================================================
+    // Functions to override to create a concrete view.
+    // ----------------------------------------------------------------------
+    protected abstract void DoDisplay(Rect displayArea);
+    protected abstract void DoOnViewChange(Rect displayArea);
+    protected abstract Vector2 DoGetDisplaySize(Rect displayArea);
 }

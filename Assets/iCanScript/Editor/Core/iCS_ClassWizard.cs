@@ -17,7 +17,7 @@ public class iCS_ClassWizard : EditorWindow {
 //	DSAccordionView					AccordionView            = null;
 //    DSVerticalLayoutView            LayoutView               = null;
     DSView                          ConstructorView          = null;
-//	DSSearchView					SearchView               = null;
+	DSSearchView					SearchView               = null;
 //    iCS_ClassListController     	ClassListController      = null;
 //	iCS_ClassVariablesController	ClassVariablesController = null;
 //	iCS_ClassOperationsController	ClassOperationsController= null;
@@ -112,13 +112,14 @@ public class iCS_ClassWizard : EditorWindow {
 //		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
         
         // Populate frame layout.
-//		SearchView= new DSSearchView(OnSearch, new RectOffset(0,0,kSpacer,kSpacer), false);
+		SearchView= new DSSearchView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, 12, OnSearch);
+		SearchView.Anchor= DSView.AnchorEnum.TopRight;
 		
 //        ClassListController= new iCS_ClassListController();
 //        ClassListController.View.DisplayRatio= new Vector2(1f, 0.25f);
 
-        ConstructorView= new DSView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, DrawConstructorCell, null, GetConstrcutorContentSize);
-//        ConstructorView.Anchor= DSView.AnchorEnum.CenterRight;
+        ConstructorView= new DSViewCell(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, DrawConstructorCell, null, GetConstrcutorContentSize);
+        ConstructorView.Anchor= DSView.AnchorEnum.CenterRight;
 
 //		ClassVariablesController= new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, VariableTitle, myTarget);
 //		ClassOperationsController= new iCS_ClassOperationsController(myTarget.RuntimeType, myStorage, MethodTitle, myTarget);
@@ -148,18 +149,19 @@ public class iCS_ClassWizard : EditorWindow {
 //		MainView.Display(new Rect(0,0,position.width, position.height));
 //		AccordionView.Display(new Rect(0,0,position.width, position.height));
         ConstructorView.Display(new Rect(0,0,position.width, position.height));
+        SearchView.Display(new Rect(0,0,position.width, position.height));
     }
 
     // =================================================================================
     // Constructor selection view
     // ---------------------------------------------------------------------------------
-    Vector2 GetConstrcutorContentSize(DSView view) {
+    Vector2 GetConstrcutorContentSize(DSView view, Rect displayArea) {
         return new Vector2(ConstructorTitleSize.x+2f*kSpacer+MaxConstructorWidth, LabelHeight);
     }
-    void DrawConstructorCell(DSView view, Rect position) {
-        float y= position.y;
-        GUI.Label(new Rect(position.x, y, ConstructorTitleSize.x, ConstructorTitleSize.y), ConstructorTitle, EditorStyles.boldLabel);
-        float x= position.x+ConstructorTitleSize.x+2f*kSpacer;
+    void DrawConstructorCell(DSView view, Rect displayArea) {
+        float y= displayArea.y;
+        GUI.Label(new Rect(displayArea.x, y, ConstructorTitleSize.x, ConstructorTitleSize.y), ConstructorTitle, EditorStyles.boldLabel);
+        float x= displayArea.x+ConstructorTitleSize.x+2f*kSpacer;
         // Fill-in available constructors.
         string[] instanceOptions= new string[1+myConstructors.Length];
         instanceOptions[0]= "Use input port (this)";
@@ -183,10 +185,11 @@ public class iCS_ClassWizard : EditorWindow {
     }
 
 
-//    // =================================================================================
-//    // View Test
-//    // ---------------------------------------------------------------------------------
-//	void OnSearch(DSSearchView searchView, string searchString) {
+    // =================================================================================
+    // View Test
+    // ---------------------------------------------------------------------------------
+	void OnSearch(DSSearchView searchView, string searchString) {
 //		ClassListController.Filter(searchString, null, null);
-//	}
+        Debug.Log("Searching for: "+searchString);
+	}
 }
