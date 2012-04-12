@@ -92,7 +92,7 @@ public class DSView {
     // Base functionality.
     // ----------------------------------------------------------------------
 	public void Display(Rect frameArea) { Display(null, frameArea); }
-    public virtual void Display(DSView parent, Rect frameArea) {
+    protected virtual void Display(DSView parent, Rect frameArea) {
         // Don't display if display area is smaller then margins.
         if(frameArea.width < Margins.horizontal) return;
         if(frameArea.height < Margins.vertical) return;
@@ -111,11 +111,11 @@ public class DSView {
         DisplayFrame();
 		InvokeDisplayDelegate(ComputeDisplayRect(parent));
     }
-    public virtual void OnViewChange(DSView parent, Rect displayArea) {
+    protected virtual void OnViewChange(DSView parent, Rect displayArea) {
         myDisplayArea= displayArea;
         InvokeDisplayDelegate(displayArea);
     }
-    public virtual Vector2 GetDisplaySize(DSView parent) {
+    protected virtual Vector2 GetDisplaySize(DSView parent) {
         return InvokeGetDisplaySizeDelegate();
     }
     
