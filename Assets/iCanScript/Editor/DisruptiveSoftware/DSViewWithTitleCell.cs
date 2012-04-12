@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class DSViewCell : DSView {
+public class DSViewWithTitleCell : DSViewWithTitle {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -25,10 +25,11 @@ public class DSViewCell : DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSViewCell(RectOffset margins, bool shouldDisplayFrame= true,
-                      Action<DSView,Rect> displayDelegate= null,
-                      Func<DSView,Rect,Vector2> getDisplaySizeDelegate= null)
-    : base(margins, shouldDisplayFrame) {
+    public DSViewWithTitleCell(RectOffset margins, bool shouldDisplayFrame,
+                               GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
+                               Action<DSView,Rect> displayDelegate= null,
+                               Func<DSView,Rect,Vector2> getDisplaySizeDelegate= null)
+    : base(margins, shouldDisplayFrame, title, titleAlignment, titleSeperator) {
         DisplayDelegate       = displayDelegate;
         GetDisplaySizeDelegate= getDisplaySizeDelegate;
     }
@@ -36,10 +37,10 @@ public class DSViewCell : DSView {
 	// ======================================================================
     // DSView overrides.
     // ----------------------------------------------------------------------
-    protected override void DoDisplay(Rect displayArea) {
+    protected override void DoViewWithTitleDisplay(Rect displayArea) {
 		if(myDisplayDelegate != null) myDisplayDelegate(this, displayArea);        
     }
-    protected override Vector2 DoGetDisplaySize(Rect displayArea) {
+    protected override Vector2 DoViewWithTitleGetDisplaySize(Rect displayArea) {
 		return myGetDisplaySizeDelegate != null ? myGetDisplaySizeDelegate(this, displayArea) : Vector2.zero;        
     }
 

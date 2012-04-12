@@ -83,13 +83,16 @@ public abstract class DSView {
                                    frameArea.height-Margins.vertical);
         if(Math3D.IsNotEqual(displayArea, myDisplayArea)) {
             myDisplayArea= displayArea;            
-			DoOnViewChange(displayArea);            
         }
 
         // Display frame and content.
         DisplayFrame();
 		DoDisplay(ComputeDisplayRect());
     }
+    public Vector2 GetDisplaySize(Rect displaySize) {
+        return DoGetDisplaySize(displaySize);
+    }
+    
     // ----------------------------------------------------------------------
 	void DisplayFrame() {
         if(myShouldDisplayFrame == false || myFrameArea.width <= 0 || myFrameArea.height <= 0) return;
@@ -101,7 +104,7 @@ public abstract class DSView {
 	}
     // ----------------------------------------------------------------------
     protected Rect ComputeDisplayRect() {
-		Vector2 displaySize= DoGetDisplaySize(DisplayArea);
+		Vector2 displaySize= GetDisplaySize(DisplayArea);
         if(Math3D.IsZero(displaySize)) return DisplayArea;
 		Rect displayArea= DisplayArea;
 		float x= displayArea.x;
@@ -149,6 +152,5 @@ public abstract class DSView {
     // Functions to override to create a concrete view.
     // ----------------------------------------------------------------------
     protected abstract void DoDisplay(Rect displayArea);
-    protected abstract void DoOnViewChange(Rect displayArea);
     protected abstract Vector2 DoGetDisplaySize(Rect displayArea);
 }

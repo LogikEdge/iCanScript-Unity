@@ -1,9 +1,8 @@
 using UnityEngine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 
-public class DSViewCell : DSView {
+public class DSScrollViewCell : DSScrollView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -21,26 +20,25 @@ public class DSViewCell : DSView {
 	    get { return myGetDisplaySizeDelegate; }
 	    set { myGetDisplaySizeDelegate= value; }
 	}
-    
+	
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSViewCell(RectOffset margins, bool shouldDisplayFrame= true,
-                      Action<DSView,Rect> displayDelegate= null,
-                      Func<DSView,Rect,Vector2> getDisplaySizeDelegate= null)
+    public DSScrollViewCell(RectOffset margins, bool shouldDisplayFrame= true,
+                            Action<DSView,Rect> displayDelegate= null,
+                            Func<DSView,Rect,Vector2> getDisplaySizeDelegate= null)
     : base(margins, shouldDisplayFrame) {
         DisplayDelegate       = displayDelegate;
-        GetDisplaySizeDelegate= getDisplaySizeDelegate;
+        GetDisplaySizeDelegate= getDisplaySizeDelegate;        
     }
     
-	// ======================================================================
+    // ======================================================================
     // DSView overrides.
     // ----------------------------------------------------------------------
-    protected override void DoDisplay(Rect displayArea) {
-		if(myDisplayDelegate != null) myDisplayDelegate(this, displayArea);        
+    protected override void DoScrollViewDisplay(Rect displayArea) {
+        if(myDisplayDelegate != null) myDisplayDelegate(this, displayArea);
     }
-    protected override Vector2 DoGetDisplaySize(Rect displayArea) {
-		return myGetDisplaySizeDelegate != null ? myGetDisplaySizeDelegate(this, displayArea) : Vector2.zero;        
+    protected override Vector2 DoScrollViewGetDisplaySize(Rect displayArea) {
+		return myGetDisplaySizeDelegate != null ? myGetDisplaySizeDelegate(this, displayArea) : Vector2.zero;
     }
-
 }

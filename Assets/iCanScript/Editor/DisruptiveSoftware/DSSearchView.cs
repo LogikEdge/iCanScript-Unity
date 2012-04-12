@@ -61,5 +61,4 @@ public class DSSearchView : DSView {
     protected override Vector2 DoGetDisplaySize(Rect displayArea) {
         return mySerachFieldSize;
     }
-    protected override void DoOnViewChange(Rect displayArea) {}
 }

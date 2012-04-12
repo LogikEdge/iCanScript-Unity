@@ -33,16 +33,12 @@ using System.Collections;
 //    // ======================================================================
 //    // Initialization
 //    // ----------------------------------------------------------------------
-//    public DSTableColumn(string identifier, GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-//                         RectOffset margins, bool shouldDisplayFrame= true)
-//    : base(title, titleAlignment, titleSeperator, margins, shouldDisplayFrame) {
+//    public DSTableColumn(RectOffset margins, bool shouldDisplayFrame,
+//                         string identifier, GUIContent title, TextAlignment titleAlignment, bool titleSeperator)
+//    : base(margins, shouldDisplayFrame ,title, titleAlignment, titleSeperator) {
 //        Identifier= identifier;
 //    }
 //    
-//    // ======================================================================
-//    // Display
-//    // ----------------------------------------------------------------------
-//
 //	// ======================================================================
 //    // View method overrides
 //    // ----------------------------------------------------------------------

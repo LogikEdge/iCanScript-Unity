@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-//public class DSTableView : DSViewWithTitle {
+//public class DSTableView : DSScrollView {
 //    // ======================================================================
 //    // Fields
 //    // ----------------------------------------------------------------------
@@ -221,3 +221,4 @@ using System.Collections.Generic;
 //    }
 //    
 //}
+//
