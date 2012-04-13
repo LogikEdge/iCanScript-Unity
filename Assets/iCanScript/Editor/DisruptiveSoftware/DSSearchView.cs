@@ -2,7 +2,7 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-public class DSSearchView : DSView {
+public sealed class DSSearchView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -10,7 +10,8 @@ public class DSSearchView : DSView {
     string 						mySearchString           = "";
 	GUIStyle					mySearchFieldGUIStyle    = null;
 	int                         myNbOfVisibleCharInSearch= 12;
-    Vector2                     mySerachFieldSize        = Vector2.zero;
+    Vector2                     mySearchFieldSize        = Vector2.zero;
+    DSViewCell                  myViewCell               = null;
 	
     // ======================================================================
     // Propreties
@@ -32,8 +33,8 @@ public class DSSearchView : DSView {
     // Initialization
     // ----------------------------------------------------------------------
     public DSSearchView(RectOffset margins, bool shouldDisplayFrame,
-                        int nbOfVisibleCharInSearch, Action<DSSearchView,string> searchAction)
-     : base(margins, shouldDisplayFrame) {
+                        int nbOfVisibleCharInSearch, Action<DSSearchView,string> searchAction) {
+        myViewCell= new DSViewCell(margins, shouldDisplayFrame, DisplaySearchField, GetSearchFieldSize);
 		mySearchAction= searchAction;
         myNbOfVisibleCharInSearch= nbOfVisibleCharInSearch;
         ComputeSearchFieldSize();
@@ -42,13 +43,29 @@ public class DSSearchView : DSView {
         var oneLetterSize= SearchFieldGUIStyle.CalcSize(new GUIContent("A"));
         var twoLetterSize= SearchFieldGUIStyle.CalcSize(new GUIContent("AA"));
         float letterWidth= twoLetterSize.x-oneLetterSize.x;
-        mySerachFieldSize= new Vector2(oneLetterSize.x-letterWidth+myNbOfVisibleCharInSearch*letterWidth, oneLetterSize.y);
+        mySearchFieldSize= new Vector2(oneLetterSize.x-letterWidth+myNbOfVisibleCharInSearch*letterWidth, oneLetterSize.y);
     }
     
     // ======================================================================
-    // DSView overrides.
+    // DSView implementation.
     // ----------------------------------------------------------------------
-    protected override void DoDisplay(Rect displayArea) {
+    public override void Display(Rect frameArea) {
+        myViewCell.Display(frameArea);
+    }
+    public override Vector2 GetSizeToDisplay(Rect displayArea) {
+        return myViewCell.GetSizeToDisplay(displayArea);
+    }
+    public override AnchorEnum GetAnchor() {
+        return myViewCell.Anchor;
+    }
+    public override void SetAnchor(AnchorEnum anchor) {
+        myViewCell.Anchor= anchor;
+    }
+    
+    // ======================================================================
+    // DSSearchView implementation.
+    // ----------------------------------------------------------------------
+    void DisplaySearchField(DSView view, Rect displayArea) {
 		if(mySearchFieldGUIStyle == null) {
 			mySearchString= GUI.TextField(displayArea, mySearchString);			
 		} else {
@@ -56,9 +73,11 @@ public class DSSearchView : DSView {
 		}
 		if(GUI.changed) {
 			if(mySearchAction != null) mySearchAction(this, mySearchString);
-		}
+		}        
     }
-    protected override Vector2 DoGetDisplaySize(Rect displayArea) {
-        return mySerachFieldSize;
+    Vector2 GetSearchFieldSize(DSView view, Rect displayArea) {
+        return mySearchFieldSize;
     }
 }
+
+
