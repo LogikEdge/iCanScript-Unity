@@ -98,9 +98,14 @@ public class DSTitleView : DSView {
         InvokeDisplayDelegate(new Rect(displayArea.x, displayArea.y+titleHeight, displayArea.width, bodyHeight));
     }
     Vector2 MainViewGetSizeToDisplay(DSCellView view, Rect displayArea) {
+        // Adjust display area to remove title area.
+        float titleAreaHeight= TitleAreaHeight();
+        displayArea.y+= titleAreaHeight;
+        displayArea.height-= titleAreaHeight; if(displayArea.height < 0) displayArea.height= 0;
+        // Now compute using content size.
         var contentSize= InvokeGetSizeToDisplayDelegate(displayArea);
         float width= Mathf.Max(contentSize.x, myTitleSize.x);
-        float height= contentSize.y+TitleAreaHeight();
+        float height= contentSize.y+titleAreaHeight;
         return new Vector2(width, height);
     }
     
@@ -123,8 +128,6 @@ public class DSTitleView : DSView {
         }
     }
     Vector2 TitleViewGetSizeToDisplay(DSCellView view, Rect displayArea) {
-        var contentSize= InvokeGetSizeToDisplayDelegate(displayArea);
-        float width= Mathf.Max(contentSize.x, myTitleSize.x);
         return new Vector2(myTitleSize.x, TitleAreaHeight());
     }
 

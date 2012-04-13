@@ -64,8 +64,9 @@ public class DSScrollView : DSView {
 		myContentSize= InvokeGetSizeToDisplayDelegate(displayArea);
         // Add scroller if the needed display size exceeds the display area.
 		var contentSize= myContentSize;        
-        if(displayArea.width < contentSize.x) contentSize.y+= kScrollerSize;
-        if(displayArea.height < contentSize.y) contentSize.x+= kScrollerSize;
+        if(displayArea.width < myContentSize.x) contentSize.y+= kScrollerSize;
+        if(displayArea.height < myContentSize.y) contentSize.x+= kScrollerSize;
+        Debug.Log("ContentSize= "+myContentSize+" DisplayArea= "+displayArea+" ResultingSize= "+contentSize);
         return contentSize;
     }
     

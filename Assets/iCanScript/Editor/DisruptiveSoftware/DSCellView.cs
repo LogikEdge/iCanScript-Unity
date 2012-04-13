@@ -71,14 +71,7 @@ public class DSCellView : DSView {
 
         // Compute available display area.
         myFrameArea= frameArea;
-        Rect displayArea= new Rect(frameArea.x+Margins.left,
-                                   frameArea.y+Margins.top,
-                                   frameArea.width-Margins.horizontal,
-                                   frameArea.height-Margins.vertical);
-        
-        if(Math3D.IsNotEqual(displayArea, myDisplayArea)) {
-            myDisplayArea= displayArea;            
-        }
+        myDisplayArea= FrameToDisplayArea(frameArea, Margins);
 
         // Compute needed display area.
         Rect anchoredDisplayArea= ComputeAnchoredDisplayArea();
@@ -91,8 +84,9 @@ public class DSCellView : DSView {
         DisplayFrame(frameArea);
         InvokeDisplayDelegate(anchoredDisplayArea);
     }
-    public override Vector2 GetSizeToDisplay(Rect displayArea) {
-        return MarginsSize+InvokeGetSizeToDisplayDelegate(displayArea);
+    public override Vector2 GetSizeToDisplay(Rect frameArea) {
+        Rect availableArea= FrameToDisplayArea(frameArea, Margins);
+        return MarginsSize+InvokeGetSizeToDisplayDelegate(availableArea);
     }
     public override AnchorEnum GetAnchor() {
         return myAnchor;
@@ -166,5 +160,25 @@ public class DSCellView : DSView {
     }
     protected Vector2 InvokeGetSizeToDisplayDelegate(Rect displayArea) {
 		return myGetSizeToDisplayDelegate != null ? myGetSizeToDisplayDelegate(this, displayArea) : Vector2.zero;        
+    }
+
+	// ======================================================================
+    // Utilities.
+    // ----------------------------------------------------------------------
+    public static Rect FrameToDisplayArea(Rect frameArea, RectOffset margins) {
+        Rect displayArea= frameArea;
+        displayArea.x+= margins.left;
+        displayArea.y+= margins.top;
+        displayArea.width-= margins.horizontal; if(displayArea.width < 0) displayArea.width= 0;
+        displayArea.height-= margins.vertical; if(displayArea.height < 0) displayArea.height= 0;
+        return displayArea;
+    }
+    public static Rect DisplayToFrameArea(Rect displayArea, RectOffset margins) {
+        Rect frameArea= displayArea;
+        frameArea.x-= margins.left;
+        frameArea.y-= margins.right;
+        frameArea.width+= margins.horizontal;
+        frameArea.height+= margins.vertical;
+        return frameArea;
     }
 }

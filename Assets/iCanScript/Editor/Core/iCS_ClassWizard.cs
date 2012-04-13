@@ -115,7 +115,7 @@ public class iCS_ClassWizard : EditorWindow {
                                    classWizardTitle, DSView.AnchorEnum.Center, true,
                                    TitleViewDisplay, TitleViewGetSizeToDisplay);
         TitleView.Anchor= DSView.AnchorEnum.BottomCenter;
-        ScrollView= new DSScrollView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, ScrollViewDisplay, ScrollViewGetSizeToDisplay);
+        ScrollView= new DSScrollView(new RectOffset(0,0,0,0), true, ScrollViewDisplay, ScrollViewGetSizeToDisplay);
 //		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
         
         // Populate frame layout.

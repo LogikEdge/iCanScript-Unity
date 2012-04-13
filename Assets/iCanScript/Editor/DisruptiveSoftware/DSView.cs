@@ -37,7 +37,7 @@ public abstract class DSView {
     // Functions to override to create a concrete view.
     // ----------------------------------------------------------------------
 	public abstract void        Display(Rect frameArea);
-    public abstract Vector2     GetSizeToDisplay(Rect displayArea);
+    public abstract Vector2     GetSizeToDisplay(Rect frameArea);
     public abstract AnchorEnum  GetAnchor();
     public abstract void        SetAnchor(AnchorEnum anchor);
 }
