@@ -2,45 +2,80 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-//public abstract class DSScrollView : DSView {
-//    // ======================================================================
-//    // Fields
-//    // ----------------------------------------------------------------------
-//    Vector2                     myScrollPosition        = Vector2.zero;
-//    Vector2                     myContentSize           = Vector2.zero;
-//   
-//    // ======================================================================
-//    // Properties
-//    // ----------------------------------------------------------------------
-//	Rect ContentArea { get { return new Rect(0,0,myContentSize.x,myContentSize.y); }}
-//	
-//    // ======================================================================
-//    // Initialization
-//    // ----------------------------------------------------------------------
-//    public DSScrollView(RectOffset margins, bool shouldDisplayFrame= true)
-//    : base(margins, shouldDisplayFrame) {}
-//    
-//    // ======================================================================
-//    // DSView overrides.
-//    // ----------------------------------------------------------------------
-//    protected override void DoDisplay(Rect displayArea) {
-//        myScrollPosition= GUI.BeginScrollView(DisplayArea, myScrollPosition, ContentArea, false, false);
-//            DoScrollViewDisplay(displayArea);
-//        GUI.EndScrollView();
-//    }
-//    protected override Vector2 DoGetDisplaySize(Rect displayArea) {
-//		myContentSize= DoScrollViewGetDisplaySize(displayArea);
-//        // Add scroller if the needed display size exceeds the display area.
-//		var contentSize= myContentSize;        
-//        if(displayArea.width < contentSize.x) contentSize.y+= kScrollerSize;
-//        if(displayArea.height < contentSize.y) contentSize.x+= kScrollerSize;
-//        return contentSize;
-//    }
-//
-//    // ======================================================================
-//    // Functions to override to create a concrete view.
-//    // ----------------------------------------------------------------------
-//    protected abstract void    DoScrollViewDisplay(Rect displayArea);
-//    protected abstract Vector2 DoScrollViewGetDisplaySize(Rect displayArea); 
-//}
-//
+public class DSScrollView : DSView {
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    Vector2                         myScrollPosition          = Vector2.zero;
+    Vector2                         myContentSize             = Vector2.zero;
+    DSCellView                      myMainView                = null;
+ 	Action<DSScrollView,Rect>       myDisplayDelegate         = null;
+	Func<DSScrollView,Rect,Vector2> myGetSizeToDisplayDelegate= null;
+   
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+	Rect ContentArea { get { return new Rect(0,0,myContentSize.x,myContentSize.y); }}
+	public Action<DSScrollView,Rect> DisplayDelegate {
+	    get { return myDisplayDelegate; }
+	    set { myDisplayDelegate= value; }
+	}
+	public Func<DSScrollView,Rect,Vector2> GetSizeToDisplayDelegate {
+	    get { return myGetSizeToDisplayDelegate; }
+	    set { myGetSizeToDisplayDelegate= value; }
+	}
+	
+    // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
+    public DSScrollView(RectOffset margins, bool shouldDisplayFrame,
+                        Action<DSScrollView,Rect> displayDelegate,
+                        Func<DSScrollView,Rect,Vector2> getSizeToDisplayDelegate) {
+        myMainView= new DSCellView(margins, shouldDisplayFrame, MainViewDisplay, MainViewGetSizeToDisplay);
+        myDisplayDelegate= displayDelegate;
+        myGetSizeToDisplayDelegate= getSizeToDisplayDelegate;
+    }
+
+    // ======================================================================
+    // DSView implementation.
+    // ----------------------------------------------------------------------
+    public override void Display(Rect frameArea) {
+        myMainView.Display(frameArea);
+    }
+    public override Vector2 GetSizeToDisplay(Rect displayArea) {
+        return myMainView.GetSizeToDisplay(displayArea);
+    }
+    public override AnchorEnum GetAnchor() {
+        return myMainView.Anchor;
+    }
+    public override void SetAnchor(AnchorEnum anchor) {
+        myMainView.Anchor= anchor;
+    }
+
+    // ======================================================================
+    // MainView implementation.
+    // ----------------------------------------------------------------------
+    void MainViewDisplay(DSCellView view, Rect displayArea) {
+        myScrollPosition= GUI.BeginScrollView(displayArea, myScrollPosition, ContentArea, false, false);
+            InvokeDisplayDelegate(ContentArea);
+        GUI.EndScrollView();
+    }
+    Vector2 MainViewGetSizeToDisplay(DSCellView view, Rect displayArea) {
+		myContentSize= InvokeGetSizeToDisplayDelegate(displayArea);
+        // Add scroller if the needed display size exceeds the display area.
+		var contentSize= myContentSize;        
+        if(displayArea.width < contentSize.x) contentSize.y+= kScrollerSize;
+        if(displayArea.height < contentSize.y) contentSize.x+= kScrollerSize;
+        return contentSize;
+    }
+    
+    // ======================================================================
+    // Delegates.
+    // ----------------------------------------------------------------------
+    protected void InvokeDisplayDelegate(Rect displayArea) {
+    	if(myDisplayDelegate != null) myDisplayDelegate(this, displayArea);        
+    }
+    protected Vector2 InvokeGetSizeToDisplayDelegate(Rect displayArea) {
+    	return myGetSizeToDisplayDelegate != null ? myGetSizeToDisplayDelegate(this, displayArea) : Vector2.zero;        
+    }
+}

@@ -17,6 +17,7 @@ public class iCS_ClassWizard : EditorWindow {
 //	DSAccordionView					AccordionView            = null;
 //    DSVerticalLayoutView            LayoutView               = null;
     DSTitleView                     TitleView= null;
+    DSScrollView                    ScrollView= null;
     DSCellView                      ConstructorView          = null;
 	DSSearchView					SearchView               = null;
 //    iCS_ClassListController     	ClassListController      = null;
@@ -114,6 +115,7 @@ public class iCS_ClassWizard : EditorWindow {
                                    classWizardTitle, DSView.AnchorEnum.Center, true,
                                    TitleViewDisplay, TitleViewGetSizeToDisplay);
         TitleView.Anchor= DSView.AnchorEnum.BottomCenter;
+        ScrollView= new DSScrollView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, ScrollViewDisplay, ScrollViewGetSizeToDisplay);
 //		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
         
         // Populate frame layout.
@@ -162,9 +164,15 @@ public class iCS_ClassWizard : EditorWindow {
     // Constructor selection view
     // ---------------------------------------------------------------------------------
     void TitleViewDisplay(DSTitleView view, Rect displayArea) {
-        ConstructorView.Display(displayArea);
+        ScrollView.Display(displayArea);
     }
     Vector2 TitleViewGetSizeToDisplay(DSTitleView view, Rect displayArea) {
+        return ScrollView.GetSizeToDisplay(displayArea);
+    }
+    void ScrollViewDisplay(DSScrollView view, Rect displayArea) {
+        ConstructorView.Display(displayArea);
+    }
+    Vector2 ScrollViewGetSizeToDisplay(DSScrollView view, Rect displayArea) {
         return ConstructorView.GetSizeToDisplay(displayArea);
     }
     Vector2 GetConstrcutorContentSize(DSView view, Rect displayArea) {
