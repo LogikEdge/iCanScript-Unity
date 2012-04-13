@@ -42,8 +42,8 @@ public class DSScrollView : DSView {
     public override void Display(Rect frameArea) {
         myMainView.Display(frameArea);
     }
-    public override Vector2 GetSizeToDisplay(Rect displayArea) {
-        return myMainView.GetSizeToDisplay(displayArea);
+    public override Vector2 GetSizeToDisplay(Rect frameArea) {
+        return myMainView.GetSizeToDisplay(frameArea);
     }
     public override AnchorEnum GetAnchor() {
         return myMainView.Anchor;
