@@ -69,23 +69,30 @@ public class DSCellView : DSView {
         if(frameArea.width < Margins.horizontal) return;
         if(frameArea.height < Margins.vertical) return;
 
-        // Recompute display area.
+        // Compute available display area.
         myFrameArea= frameArea;
         Rect displayArea= new Rect(frameArea.x+Margins.left,
                                    frameArea.y+Margins.top,
                                    frameArea.width-Margins.horizontal,
                                    frameArea.height-Margins.vertical);
+        
         if(Math3D.IsNotEqual(displayArea, myDisplayArea)) {
             myDisplayArea= displayArea;            
         }
 
-        // Display frame and content.
-        DisplayFrame();
+        // Compute needed display area.
         Rect anchoredDisplayArea= ComputeAnchoredDisplayArea();
+
+        // Display frame border around anchored display area.
+        frameArea.x= anchoredDisplayArea.x-Margins.left;
+        frameArea.y= anchoredDisplayArea.y-Margins.top;
+        frameArea.xMax= anchoredDisplayArea.xMax+Margins.right;
+        frameArea.yMax= anchoredDisplayArea.yMax+Margins.bottom;
+        DisplayFrame(frameArea);
         InvokeDisplayDelegate(anchoredDisplayArea);
     }
-    public override Vector2 GetSizeToDisplay(Rect displaySize) {
-        return MarginsSize+InvokeGetSizeToDisplayDelegate(displaySize);
+    public override Vector2 GetSizeToDisplay(Rect displayArea) {
+        return MarginsSize+InvokeGetSizeToDisplayDelegate(displayArea);
     }
     public override AnchorEnum GetAnchor() {
         return myAnchor;
@@ -97,12 +104,12 @@ public class DSCellView : DSView {
     // ======================================================================
     // DSViewCell display functionality.
     // ----------------------------------------------------------------------
-    void DisplayFrame() {
-        if(myShouldDisplayFrame == false || myFrameArea.width <= 0 || myFrameArea.height <= 0) return;
+    void DisplayFrame(Rect frameArea) {
+        if(myShouldDisplayFrame == false || frameArea.width <= 0 || frameArea.height <= 0) return;
         if(myFrameGUIStyle != null) {
-            GUI.Box(myFrameArea,"", myFrameGUIStyle);
+            GUI.Box(frameArea,"", myFrameGUIStyle);
         } else {
-            GUI.Box(myFrameArea,"");                    
+            GUI.Box(frameArea,"");                    
         }		
     }
     // ----------------------------------------------------------------------

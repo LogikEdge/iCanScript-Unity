@@ -16,6 +16,7 @@ public class iCS_ClassWizard : EditorWindow {
 //    DSVerticalLayoutView            MainView                 = null;
 //	DSAccordionView					AccordionView            = null;
 //    DSVerticalLayoutView            LayoutView               = null;
+    DSTitleView                     TitleView= null;
     DSCellView                      ConstructorView          = null;
 	DSSearchView					SearchView               = null;
 //    iCS_ClassListController     	ClassListController      = null;
@@ -109,11 +110,15 @@ public class iCS_ClassWizard : EditorWindow {
         // Create frame layout object.
         string classTitle= myTarget != null ? myTarget.Name : "Class Wizard";
         GUIContent classWizardTitle= new GUIContent(classTitle);
+        TitleView= new DSTitleView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true,
+                                   classWizardTitle, DSView.AnchorEnum.Center, true,
+                                   TitleViewDisplay, TitleViewGetSizeToDisplay);
+        TitleView.Anchor= DSView.AnchorEnum.Center;
 //		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
         
         // Populate frame layout.
 		SearchView= new DSSearchView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, 12, OnSearch);
-		SearchView.Anchor= DSView.AnchorEnum.TopRight;
+		SearchView.Anchor= DSView.AnchorEnum.Center;
 		
 //        ClassListController= new iCS_ClassListController();
 //        ClassListController.View.DisplayRatio= new Vector2(1f, 0.25f);
@@ -148,13 +153,20 @@ public class iCS_ClassWizard : EditorWindow {
 //        LayoutView.Display(new Rect(0,0,position.width, position.height));
 //		MainView.Display(new Rect(0,0,position.width, position.height));
 //		AccordionView.Display(new Rect(0,0,position.width, position.height));
-        ConstructorView.Display(new Rect(0,0,position.width, position.height));
+        TitleView.Display(new Rect(0,0,position.width, position.height));
+//        ConstructorView.Display(new Rect(0,0,position.width, position.height));
         SearchView.Display(new Rect(0,0,position.width, position.height));
     }
 
     // =================================================================================
     // Constructor selection view
     // ---------------------------------------------------------------------------------
+    void TitleViewDisplay(DSTitleView view, Rect displayArea) {
+        ConstructorView.Display(displayArea);
+    }
+    Vector2 TitleViewGetSizeToDisplay(DSTitleView view, Rect displayArea) {
+        return ConstructorView.GetSizeToDisplay(displayArea);
+    }
     Vector2 GetConstrcutorContentSize(DSView view, Rect displayArea) {
         return new Vector2(ConstructorTitleSize.x+2f*kSpacer+MaxConstructorWidth, LabelHeight);
     }
@@ -168,7 +180,7 @@ public class iCS_ClassWizard : EditorWindow {
         for(int i= 0; i < myConstructors.Length; ++i) {
             instanceOptions[i+1]= myConstructors[i].FunctionSignatureNoThisNoOutput;
         }
-        float maxWidth= position.width-(ConstructorTitleSize.x+2f*kSpacer);
+        float maxWidth= displayArea.width-(ConstructorTitleSize.x+2f*kSpacer);
         float width= Mathf.Min(maxWidth, MaxConstructorWidth);
         int instanceIdx= myConstructorIdx+1;
         int newIdx= EditorGUI.Popup(new Rect(x, y, width, LabelHeight), instanceIdx, instanceOptions, EditorStyles.toolbarPopup);
