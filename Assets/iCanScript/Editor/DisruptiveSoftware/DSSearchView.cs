@@ -11,7 +11,7 @@ public sealed class DSSearchView : DSView {
 	GUIStyle					mySearchFieldGUIStyle    = null;
 	int                         myNbOfVisibleCharInSearch= 12;
     Vector2                     mySearchFieldSize        = Vector2.zero;
-    DSViewCell                  myViewCell               = null;
+    DSCellView                  myCellView               = null;
 	
     // ======================================================================
     // Propreties
@@ -34,7 +34,7 @@ public sealed class DSSearchView : DSView {
     // ----------------------------------------------------------------------
     public DSSearchView(RectOffset margins, bool shouldDisplayFrame,
                         int nbOfVisibleCharInSearch, Action<DSSearchView,string> searchAction) {
-        myViewCell= new DSViewCell(margins, shouldDisplayFrame, DisplaySearchField, GetSearchFieldSize);
+        myCellView= new DSCellView(margins, shouldDisplayFrame, DisplaySearchField, GetSearchFieldSize);
 		mySearchAction= searchAction;
         myNbOfVisibleCharInSearch= nbOfVisibleCharInSearch;
         ComputeSearchFieldSize();
@@ -50,16 +50,16 @@ public sealed class DSSearchView : DSView {
     // DSView implementation.
     // ----------------------------------------------------------------------
     public override void Display(Rect frameArea) {
-        myViewCell.Display(frameArea);
+        myCellView.Display(frameArea);
     }
     public override Vector2 GetSizeToDisplay(Rect displayArea) {
-        return myViewCell.GetSizeToDisplay(displayArea);
+        return myCellView.GetSizeToDisplay(displayArea);
     }
     public override AnchorEnum GetAnchor() {
-        return myViewCell.Anchor;
+        return myCellView.Anchor;
     }
     public override void SetAnchor(AnchorEnum anchor) {
-        myViewCell.Anchor= anchor;
+        myCellView.Anchor= anchor;
     }
     
     // ======================================================================

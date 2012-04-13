@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class DSViewCell : DSView {
+public class DSCellView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -13,8 +13,8 @@ public class DSViewCell : DSView {
     RectOffset                      myMargins                 = new RectOffset(0,0,0,0);  // Content margins.
     Rect                            myDisplayArea             = new Rect(0,0,0,0);
     AnchorEnum                      myAnchor			      = AnchorEnum.TopLeft;		// Frame anchor position.
- 	Action<DSViewCell,Rect>         myDisplayDelegate         = null;
-	Func<DSViewCell,Rect,Vector2>   myGetSizeToDisplayDelegate= null;
+ 	Action<DSCellView,Rect>         myDisplayDelegate         = null;
+	Func<DSCellView,Rect,Vector2>   myGetSizeToDisplayDelegate= null;
    
     // ======================================================================
     // Properties
@@ -40,11 +40,11 @@ public class DSViewCell : DSView {
     public Vector2 MarginsSize {
         get { return new Vector2(Margins.horizontal, Margins.vertical); }
     } 
-	public Action<DSViewCell,Rect> DisplayDelegate {
+	public Action<DSCellView,Rect> DisplayDelegate {
 	    get { return myDisplayDelegate; }
 	    set { myDisplayDelegate= value; }
 	}
-	public Func<DSViewCell,Rect,Vector2> GetSizeToDisplayDelegate {
+	public Func<DSCellView,Rect,Vector2> GetSizeToDisplayDelegate {
 	    get { return myGetSizeToDisplayDelegate; }
 	    set { myGetSizeToDisplayDelegate= value; }
 	}
@@ -52,9 +52,9 @@ public class DSViewCell : DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSViewCell(RectOffset margins, bool shouldDisplayFrame= true,
-                      Action<DSViewCell,Rect> displayDelegate= null,
-                      Func<DSViewCell,Rect,Vector2> getSizeToDisplayDelegate= null) {
+    public DSCellView(RectOffset margins, bool shouldDisplayFrame= true,
+                      Action<DSCellView,Rect> displayDelegate= null,
+                      Func<DSCellView,Rect,Vector2> getSizeToDisplayDelegate= null) {
         Margins                 = margins;
         ShouldDisplayFrame      = shouldDisplayFrame;
         DisplayDelegate         = displayDelegate;
