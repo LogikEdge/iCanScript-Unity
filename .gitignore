@@ -45,3 +45,5 @@ publish/editorFilesToExclude
 publish/editorFiles
 publish/_engineFiles
 publish/_editorFiles
+ProjectSettings/
+Library/EditorUserSettings.asset
