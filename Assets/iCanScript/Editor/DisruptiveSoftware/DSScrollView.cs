@@ -66,7 +66,6 @@ public class DSScrollView : DSView {
 		var contentSize= myContentSize;        
         if(displayArea.width < myContentSize.x) contentSize.y+= kScrollerSize;
         if(displayArea.height < myContentSize.y) contentSize.x+= kScrollerSize;
-        Debug.Log("ContentSize= "+myContentSize+" DisplayArea= "+displayArea+" ResultingSize= "+contentSize);
         return contentSize;
     }
     

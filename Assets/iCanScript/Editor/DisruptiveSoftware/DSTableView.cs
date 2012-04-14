@@ -3,10 +3,11 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-//public class DSTableView : DSScrollView {
-//    // ======================================================================
-//    // Fields
-//    // ----------------------------------------------------------------------
+public class DSTableView : DSView {
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    DSTitleView     myMainView= null;
 //    Vector2                 myScrollPosition         = Vector2.zero;
 //    DSTableViewDataSource   myDataSource             = null;
 //	List<DSTableColumn>		myColumns				 = new List<DSTableColumn>();
@@ -14,21 +15,47 @@ using System.Collections.Generic;
 //	Rect					myColumnsDisplayDataArea;
 //	Rect					myColumnsTotalDataArea;
 //	
-//    // ======================================================================
-//    // Properties
-//    // ----------------------------------------------------------------------
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
 //    public DSTableViewDataSource DataSource {
 //        get { return myDataSource; }
 //        set { myDataSource= value; RecomputeColumnAreas(); }
 //    }
 //	
-//    // ======================================================================
-//    // Initialization
-//    // ----------------------------------------------------------------------
-//    public DSTableView(GUIContent title, TextAlignment titleAlignment, bool titleSeperator,
-//                       RectOffset margins, bool shouldDisplayFrame= true)
-//        : base(title, titleAlignment, titleSeperator, margins, shouldDisplayFrame) {}
-//    
+    // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
+    public DSTableView(RectOffset margins, bool shouldDisplayFrame,
+                       GUIContent title, AnchorEnum titleAlignment, bool titleSeperator) {
+        myMainView= new DSTitleView(margins, shouldDisplayFrame, title, titleAlignment, titleSeperator, MainViewDisplay, MainViewGetSizeToDisplay);
+    }
+    
+    // ======================================================================
+    // DSView implementation.
+    // ----------------------------------------------------------------------
+    public override void Display(Rect frameArea) {
+        myMainView.Display(frameArea);
+    }
+    public override Vector2 GetSizeToDisplay(Rect frameArea) {
+        return myMainView.GetSizeToDisplay(frameArea);
+    }
+    public override AnchorEnum GetAnchor() {
+        return myMainView.Anchor;
+    }
+    public override void SetAnchor(AnchorEnum anchor) {
+        myMainView.Anchor= anchor;
+    }
+
+    // ======================================================================
+    // MainView implementation.
+    // ----------------------------------------------------------------------
+    void MainViewDisplay(DSTitleView view, Rect displayArea) {
+    }
+    Vector2 MainViewGetSizeToDisplay(DSTitleView view, Rect displayArea) {
+        return Vector2.zero;
+    }
+
 //    // ======================================================================
 //    // Column Methods
 //    // ----------------------------------------------------------------------
@@ -220,5 +247,4 @@ using System.Collections.Generic;
 //		return result;
 //    }
 //    
-//}
-//
+}
