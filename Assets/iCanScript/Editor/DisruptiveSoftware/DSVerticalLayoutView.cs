@@ -22,7 +22,7 @@ public class DSVerticalLayoutView : DSView {
     // Initialization
     // ----------------------------------------------------------------------
     public DSVerticalLayoutView(RectOffset margins, bool shouldDisplayFrame= true) {
-        myMainView= new DSCellView(margins, shouldDisplayFrame);
+        myMainView= new DSCellView(margins, shouldDisplayFrame, DisplayVerticalLayout, GetVerticalLayoutSize);
         mySubviews= new List<DSView>();
         mySubviewFrames= new List<Rect>();
     }
@@ -32,9 +32,6 @@ public class DSVerticalLayoutView : DSView {
     // ----------------------------------------------------------------------
     public override void Display(Rect frameArea) {
         myMainView.Display(frameArea);
-        for(int i= 0; i < mySubviews.Count; ++i) {
-            mySubviews[i].Display(mySubviewFrames[i]);
-        }
     }
     public override Vector2 GetSizeToDisplay(Rect frameArea) {
         return myMainView.GetSizeToDisplay(frameArea);
@@ -46,6 +43,24 @@ public class DSVerticalLayoutView : DSView {
         myMainView.Anchor= anchor;
     }
     
+    // ======================================================================
+    // DSVerticalLayoutView implementation.
+    // ----------------------------------------------------------------------
+    void DisplayVerticalLayout(DSView view, Rect displayArea) {
+		Relayout(displayArea);
+        for(int i= 0; i < mySubviews.Count; ++i) {
+            mySubviews[i].Display(mySubviewFrames[i]);
+        }
+    }
+    Vector2 GetVerticalLayoutSize(DSView view, Rect displayArea) {
+		Vector2 size= Vector2.zero;
+		foreach(var subview in mySubviews) {
+            var subviewSize= subview.GetSizeToDisplay(displayArea);			
+			size.x= Mathf.Max(size.x, subviewSize.x);
+			size.y+= subviewSize.y;
+		}
+		return size;
+    }
 
     // ======================================================================
     // Display
@@ -54,49 +69,42 @@ public class DSVerticalLayoutView : DSView {
         // Nothing to recompute if no subviews.
         if(mySubviews.Count < 1) return;
 
-        // Determine height for each subview.
-        bool needAdjustment= true;
-        int maxAdjustments= 5;
+        // Initialize subview height using equal separation of frameArea.
+		bool[] heightAdjusted= new bool[mySubviews.Count];
+		for(int i= 0; i < mySubviews.Count; ++i) {
+			heightAdjusted[i]= false;
+		}
+		
+		// Redistribute height if subview does not need the alotted height.
+        float y;
+		bool readjustmentNeeded;
+        float averageHeight= 0;
+		int nbOfSubviewsToAdjust= mySubviews.Count;
         float remainingHeight= frameArea.height;
-        float subviewHeight= remainingHeight/mySubviews.Count;
-        for(int maxAdjustment= 0; maxAdjustment < 5 && needAdjustment; ++maxAdjustment) {
-            float y= frameArea.y;
-            for(int i= 0; i < mySubviews.Count; ++i) {
-                Rect subviewArea= new Rect(frameArea.x, y, frameArea.width, subviewHeight);
-                var subviewSize= mySubviews[i].GetSizeToDisplay(subviewArea);
-                if(subviewSize.y < subviewHeight) subviewArea.height= subviewSize.y;
-                y= subviewArea.yMax;
-            }
-        }
-//        // Determine minimum & maximum height.
-//		float totalMinHeight= 0;
-//		float totalMaxHeight= 0;
-//		ForEachSubview(
-//            sv=> {
-//    			totalMinHeight+= sv.MinimumFrameSize.y;
-//                totalMaxHeight+= sv.FullFrameSize.y;                
-//            }
-//		);
-//		float totalDeltaHeight= totalMaxHeight-totalMinHeight;
-//		// Compute frame size for each subview.
-//        float remainingHeight= BodyArea.height-totalMinHeight;
-//        if(remainingHeight < 0) remainingHeight= 0;
-//        float y= BodyArea.y;
-//        ForEachSubview(
-//            sv=> {
-//                var minSize= sv.MinimumFrameSize;
-//                var maxSize= sv.FullFrameSize;
-//    		    float delta= remainingHeight*(maxSize.y-minSize.y)/totalDeltaHeight;
-//    		    float height= minSize.y+delta;
-//    		    if(height > maxSize.y) height= maxSize.y;
-//    		    if(sv.DisplayRatio.y != 0 && height > BodyArea.height*sv.DisplayRatio.y) height= BodyArea.height*sv.DisplayRatio.y;
-//    		    if(height < minSize.y) height= minSize.y;
-//    		    remainingHeight-= height- minSize.y;
-//    		    totalDeltaHeight-= maxSize.y-minSize.y;
-//    		    sv.FrameArea= new Rect(BodyArea.x, y, BodyArea.width, height);
-//    		    y+= height;                
-//            }
-//        );
+		do {
+			readjustmentNeeded= false;
+	        y= frameArea.y;
+			if(nbOfSubviewsToAdjust != 0) averageHeight= remainingHeight/nbOfSubviewsToAdjust;
+	        for(int i= 0; i < mySubviews.Count; ++i) {
+				var tmp= mySubviewFrames[i]; tmp.y= y; mySubviewFrames[i]= tmp;
+				if(!heightAdjusted[i]) {
+		            Rect subviewFrame= new Rect(frameArea.x, y, frameArea.width, averageHeight);
+		            var subviewSize= mySubviews[i].GetSizeToDisplay(subviewFrame);
+		            if(subviewSize.y < averageHeight) {
+						subviewFrame.height= subviewSize.y;
+						mySubviewFrames[i]= subviewFrame;
+						remainingHeight-= subviewSize.y; 
+						--nbOfSubviewsToAdjust;
+						heightAdjusted[i]= true;
+						readjustmentNeeded= true;
+						break;
+					} else {
+						mySubviewFrames[i]= subviewFrame;
+					}
+				}
+	            y= mySubviewFrames[i].yMax;
+	        }			
+		} while(readjustmentNeeded);
 	}
 	
 	// ======================================================================

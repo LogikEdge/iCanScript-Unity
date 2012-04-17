@@ -13,7 +13,7 @@ public class iCS_ClassWizard : EditorWindow {
     iCS_ReflectionDesc[]            myConstructors  = null;
     int                             myConstructorIdx= -1;
 
-//    DSVerticalLayoutView            MainView                 = null;
+    DSVerticalLayoutView            MainView                 = null;
 //	DSAccordionView					AccordionView            = null;
 //    DSVerticalLayoutView            LayoutView               = null;
     DSTitleView                     TitleView= null;
@@ -143,8 +143,9 @@ public class iCS_ClassWizard : EditorWindow {
 //		AccordionView.AddSubview(ClassVariablesController.View);
 //		AccordionView.AddSubview(ClassOperationsController.View);
 
-//		MainView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
-//		MainView.AddSubview(SearchView);
+		MainView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), true);
+		MainView.AddSubview(SearchView);
+		MainView.AddSubview(TitleView);
 //		MainView.AddSubview(AccordionView);
     }
     // ---------------------------------------------------------------------------------
@@ -153,11 +154,11 @@ public class iCS_ClassWizard : EditorWindow {
         if(myTarget == null) return;
         EditorGUIUtility.LookLikeInspector();
 //        LayoutView.Display(new Rect(0,0,position.width, position.height));
-//		MainView.Display(new Rect(0,0,position.width, position.height));
+		MainView.Display(new Rect(0,0,position.width, position.height));
 //		AccordionView.Display(new Rect(0,0,position.width, position.height));
-        TitleView.Display(new Rect(0,0,position.width, position.height));
+//        TitleView.Display(new Rect(0,0,position.width, position.height));
 //        ConstructorView.Display(new Rect(0,0,position.width, position.height));
-        SearchView.Display(new Rect(0,0,position.width, position.height));
+//        SearchView.Display(new Rect(0,0,position.width, position.height));
     }
 
     // =================================================================================
