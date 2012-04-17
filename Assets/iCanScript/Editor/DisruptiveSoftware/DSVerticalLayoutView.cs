@@ -2,42 +2,72 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-//public class DSVerticalLayoutView : DSView {
-//    // ======================================================================
-//    // Fields
-//    // ----------------------------------------------------------------------
-//	List<DSView>    mySubviews= null;
-//	
-//    // ======================================================================
-//    // Properties
-//    // ----------------------------------------------------------------------
-//	
-//    // =================================================================================
-//    // Constants
-//    // ---------------------------------------------------------------------------------
-//    
-//    // ======================================================================
-//    // Initialization
-//    // ----------------------------------------------------------------------
-//    public DSVerticalLayoutView(RectOffset margins, bool shouldDisplayFrame= true)
-//    : base(margins, shouldDisplayFrame) {
-//        mySubviews= new List<DSView>();
-//    }
-//    
-//    // ======================================================================
-//    // Display
-//    // ----------------------------------------------------------------------
-//    public override void Display(DSView parent, Rect frameArea) {
-//        // Duisplay bounding box and title.
-//        base.Display();
-//        ForEachSubview(
-//            sv=> {
-//                sv.Display();
-//            }
-//        );
-//    }
-//    // ----------------------------------------------------------------------
-//	void Relayout() {
+public class DSVerticalLayoutView : DSView {
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+	DSCellView      myMainView= null;
+	List<DSView>    mySubviews= null;
+    List<Rect>      mySubviewFrames= null;
+    
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+	
+    // =================================================================================
+    // Constants
+    // ---------------------------------------------------------------------------------
+    
+    // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
+    public DSVerticalLayoutView(RectOffset margins, bool shouldDisplayFrame= true) {
+        myMainView= new DSCellView(margins, shouldDisplayFrame);
+        mySubviews= new List<DSView>();
+        mySubviewFrames= new List<Rect>();
+    }
+    
+    // ======================================================================
+    // DSView implementation.
+    // ----------------------------------------------------------------------
+    public override void Display(Rect frameArea) {
+        myMainView.Display(frameArea);
+        for(int i= 0; i < mySubviews.Count; ++i) {
+            mySubviews[i].Display(mySubviewFrames[i]);
+        }
+    }
+    public override Vector2 GetSizeToDisplay(Rect frameArea) {
+        return myMainView.GetSizeToDisplay(frameArea);
+    }
+    public override AnchorEnum GetAnchor() {
+        return myMainView.Anchor;
+    }
+    public override void SetAnchor(AnchorEnum anchor) {
+        myMainView.Anchor= anchor;
+    }
+    
+
+    // ======================================================================
+    // Display
+    // ----------------------------------------------------------------------
+	void Relayout(Rect frameArea) {
+        // Nothing to recompute if no subviews.
+        if(mySubviews.Count < 1) return;
+
+        // Determine height for each subview.
+        bool needAdjustment= true;
+        int maxAdjustments= 5;
+        float remainingHeight= frameArea.height;
+        float subviewHeight= remainingHeight/mySubviews.Count;
+        for(int maxAdjustment= 0; maxAdjustment < 5 && needAdjustment; ++maxAdjustment) {
+            float y= frameArea.y;
+            for(int i= 0; i < mySubviews.Count; ++i) {
+                Rect subviewArea= new Rect(frameArea.x, y, frameArea.width, subviewHeight);
+                var subviewSize= mySubviews.GetSizeToDisplay(subviewArea);
+                if(subviewSize.y < subviewHeight) subviewArea.height= subviewSize.y;
+                y= subviewArea.yMax;
+            }
+        }
 //        // Determine minimum & maximum height.
 //		float totalMinHeight= 0;
 //		float totalMaxHeight= 0;
@@ -67,50 +97,20 @@ using System.Collections.Generic;
 //    		    y+= height;                
 //            }
 //        );
-//	}
-//	
-//    // ======================================================================
-//    // View dimension change notification.
-//    // ----------------------------------------------------------------------
-//    public override void OnViewChange(DSView parent, Rect displayArea) {
-//		base.OnViewAreaChange(parent, displayArea);
-//		Relayout();
-//	}
-//	
-//	// ======================================================================
-//    // Subview management
-//    // ----------------------------------------------------------------------
-//    public void AddSubview(DSView subview) {
-//        mySubviews.Add(subview);
-//    }
-//    public override bool RemoveSubview(DSView subview) {
-//		return mySubviews.Remove(subview);
-//    }
-//
-//    // ----------------------------------------------------------------------
-//    protected override Vector2 GetMinimumFrameSize() {
-//		Vector2 size= Vector2.zero;
-//		ForEachSubview(
-//			sv=> {
-//				var svSize= sv.MinimumFrameSize;
-//				if(svSize.x > size.x) size.x= svSize.x;
-//				size.y+= svSize.y;
-//			}
-//		);
-//		return size+MarginsSize;
-//	}
-//    // ----------------------------------------------------------------------
-//    protected Vector2 GetFullFrameSize() {
-//		Vector2 size= Vector2.zero;
-//		ForEachSubview(
-//			sv=> {
-//				var svSize= sv.FullFrameSize;
-//				if(svSize.x > size.x) size.x= svSize.x;
-//				size.y+= svSize.y;
-//			}
-//		);
-//		return size+MarginsSize;
-//	}
-//
-//}
-//
+	}
+	
+	// ======================================================================
+    // Subview management
+    // ----------------------------------------------------------------------
+    public void AddSubview(DSView subview) {
+        mySubviews.Add(subview);
+        mySubviewFrames.Add(new Rect(0,0,0,0));
+    }
+    public bool RemoveSubview(DSView subview) {
+		bool result= mySubviews.Remove(subview);
+        if(result) {
+            mySubviewFrames.RemoveAt(mySubviewFrames.Count-1);
+        }
+        return result;
+    }
+}
