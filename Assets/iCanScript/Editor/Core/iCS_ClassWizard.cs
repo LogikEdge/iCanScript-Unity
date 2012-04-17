@@ -111,11 +111,11 @@ public class iCS_ClassWizard : EditorWindow {
         // Create frame layout object.
         string classTitle= myTarget != null ? myTarget.Name : "Class Wizard";
         GUIContent classWizardTitle= new GUIContent(classTitle);
-        TitleView= new DSTitleView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true,
-                                   classWizardTitle, DSView.AnchorEnum.Center, true,
-                                   TitleViewDisplay, TitleViewGetSizeToDisplay);
+		TitleView= new DSTitleView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true, classWizardTitle, DSView.AnchorEnum.Center, true);
         TitleView.Anchor= DSView.AnchorEnum.BottomCenter;
         ScrollView= new DSScrollView(new RectOffset(0,0,0,0), true, ScrollViewDisplay, ScrollViewGetSizeToDisplay);
+		TitleView.AddSubview(ScrollView);
+		
 //		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
         
         // Populate frame layout.
@@ -164,12 +164,6 @@ public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Constructor selection view
     // ---------------------------------------------------------------------------------
-    void TitleViewDisplay(DSTitleView view, Rect displayArea) {
-        ScrollView.Display(displayArea);
-    }
-    Vector2 TitleViewGetSizeToDisplay(DSTitleView view, Rect displayArea) {
-        return ScrollView.GetSizeToDisplay(displayArea);
-    }
     void ScrollViewDisplay(DSScrollView view, Rect displayArea) {
         ConstructorView.Display(displayArea);
     }

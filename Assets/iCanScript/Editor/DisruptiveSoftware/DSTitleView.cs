@@ -54,8 +54,8 @@ public class DSTitleView : DSView {
     // ----------------------------------------------------------------------
     public DSTitleView(RectOffset margins, bool shouldDisplayFrame,
                        GUIContent title, AnchorEnum titleAlignment, bool titleSeperator,
-                       Action<DSTitleView,Rect> displayDelegate= null,
-                       Func<DSTitleView,Rect,Vector2> getSizeToDisplayDelegate= null) {
+                       Action<DSTitleView,Rect> displayDelegate,
+                       Func<DSTitleView,Rect,Vector2> getSizeToDisplayDelegate) {
         // Create subviews
         myMainView    = new DSCellView(margins, shouldDisplayFrame, MainViewDisplay, MainViewGetSizeToDisplay);
         myTitleSubview= new DSCellView(new RectOffset(0,0,0,0), false, TitleViewDisplay, TitleViewGetSizeToDisplay);
@@ -66,7 +66,16 @@ public class DSTitleView : DSView {
         myDisplayDelegate         = displayDelegate;
         myGetSizeToDisplayDelegate= getSizeToDisplayDelegate;        
     }
-    
+    public DSTitleView(RectOffset margins, bool shouldDisplayFrame,
+					   GUIContent title, AnchorEnum titleAlignment, bool titleSeperator)
+	: this(margins, shouldDisplayFrame, title, titleAlignment, titleSeperator, null, null) {}
+	public DSTitleView(RectOffset margins, bool shouldDisplayFrame,
+					   GUIContent title, AnchorEnum titleAlignment, bool titleSeperator,
+					   DSView subview)
+	: this(margins, shouldDisplayFrame, title, titleAlignment, titleSeperator,
+		   (v,f)=> { subview.Display(f); },
+		   (v,f)=> { return subview.GetSizeToDisplay(f); }) {}
+	
     // ======================================================================
     // DSView functionality implementation.
     // ----------------------------------------------------------------------
@@ -147,5 +156,17 @@ public class DSTitleView : DSView {
     protected Vector2 InvokeGetSizeToDisplayDelegate(Rect displayArea) {
     	return myGetSizeToDisplayDelegate != null ? myGetSizeToDisplayDelegate(this, displayArea) : Vector2.zero;        
     }
-    
+
+	// ======================================================================
+    // Subview management
+    // ----------------------------------------------------------------------
+    public void AddSubview(DSView subview) {
+        myDisplayDelegate         = (v,f)=> subview.Display(f);
+        myGetSizeToDisplayDelegate= (v,f)=> subview.GetSizeToDisplay(f);        
+    }
+    public bool RemoveSubview(DSView subview) {
+        myDisplayDelegate         = null;
+        myGetSizeToDisplayDelegate= null;
+        return true;
+    }    
 }
