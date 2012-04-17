@@ -63,7 +63,7 @@ public class DSVerticalLayoutView : DSView {
             float y= frameArea.y;
             for(int i= 0; i < mySubviews.Count; ++i) {
                 Rect subviewArea= new Rect(frameArea.x, y, frameArea.width, subviewHeight);
-                var subviewSize= mySubviews.GetSizeToDisplay(subviewArea);
+                var subviewSize= mySubviews[i].GetSizeToDisplay(subviewArea);
                 if(subviewSize.y < subviewHeight) subviewArea.height= subviewSize.y;
                 y= subviewArea.yMax;
             }
