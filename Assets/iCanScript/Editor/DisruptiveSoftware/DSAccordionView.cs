@@ -2,25 +2,25 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-//public class DSAccordionView : DSView {
-//    // ======================================================================
-//    // Fields
-//    // ----------------------------------------------------------------------
-//	DSVerticalLayoutView	myLayoutView   = null;
-//	DSView				    mySelectionView= null;
-//	GUIContent[]			mySelections   = null;
-//	int						mySelectionIdx = 0;
-//	bool					myHasSelectionChanged= true;
-//	int						mySelectionsPerLine= 1;
-//	
-//    // ======================================================================
-//    // Properties
-//    // ----------------------------------------------------------------------
-//	public int SelectionsPerLine {
-//		get { return mySelectionsPerLine; }
-//		set { mySelectionsPerLine= value < 1 ? 1 : value; }
-//	}
-//	
+public class DSAccordionView : DSView {
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+	DSVerticalLayoutView	myMainView     = null;
+	DSCellView				mySelectionView= null;
+	GUIContent[]			mySelections   = null;
+	int						mySelectionIdx = 0;
+	bool					myHasSelectionChanged= true;
+	int						mySelectionsPerLine= 1;
+	
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+	public int SelectionsPerLine {
+		get { return mySelectionsPerLine; }
+		set { mySelectionsPerLine= value < 1 ? 1 : value; }
+	}
+	
 //    // ======================================================================
 //    // Initialization
 //    // ----------------------------------------------------------------------
@@ -32,6 +32,23 @@ using System.Collections.Generic;
 //		myLayoutView.AddSubview(mySelectionView);
 //	}
 //
+	// ======================================================================
+	// DSView functionality implementation.
+	// ----------------------------------------------------------------------
+	public override void Display(Rect frameArea) { 
+		myMainView.Display(frameArea);
+	}
+	public override Vector2 GetSizeToDisplay(Rect frameArea) {
+		return myMainView.GetSizeToDisplay(frameArea);
+	}
+	public override AnchorEnum GetAnchor() {
+		return myMainView.GetAnchor();
+	}
+	public override void SetAnchor(AnchorEnum anchor) {
+		myMainView.SetAnchor(anchor);
+	}
+
+
 //    // ======================================================================
 //    // Display
 //    // ----------------------------------------------------------------------
@@ -103,4 +120,4 @@ using System.Collections.Generic;
 //			}
 //		}
 //	}
-//}
+}

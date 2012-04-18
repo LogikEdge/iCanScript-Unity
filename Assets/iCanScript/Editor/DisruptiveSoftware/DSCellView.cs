@@ -52,7 +52,7 @@ public class DSCellView : DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSCellView(RectOffset margins, bool shouldDisplayFrame= true,
+    public DSCellView(RectOffset margins, bool shouldDisplayFrame,
                       Action<DSCellView,Rect> displayDelegate= null,
                       Func<DSCellView,Rect,Vector2> getSizeToDisplayDelegate= null) {
         Margins                 = margins;
@@ -60,7 +60,9 @@ public class DSCellView : DSView {
         DisplayDelegate         = displayDelegate;
         GetSizeToDisplayDelegate= getSizeToDisplayDelegate;
     }
-    
+    public DSCellView(RectOffset margins, bool shouldDisplayFrame, DSView subview)
+	: this(margins, shouldDisplayFrame, (v,f)=> subview.Display(f), (v,f)=> subview.GetSizeToDisplay(f)) {}
+			
     // ======================================================================
     // DSView functionality implementation.
     // ----------------------------------------------------------------------
@@ -161,6 +163,19 @@ public class DSCellView : DSView {
     protected Vector2 InvokeGetSizeToDisplayDelegate(Rect displayArea) {
 		return myGetSizeToDisplayDelegate != null ? myGetSizeToDisplayDelegate(this, displayArea) : Vector2.zero;        
     }
+
+	// ======================================================================
+    // Subview management
+    // ----------------------------------------------------------------------
+    public void SetSubview(DSView subview) {
+        myDisplayDelegate         = (v,f)=> subview.Display(f);
+        myGetSizeToDisplayDelegate= (v,f)=> subview.GetSizeToDisplay(f);        
+    }
+    public bool RemoveSubview() {
+        myDisplayDelegate         = null;
+        myGetSizeToDisplayDelegate= null;
+        return true;
+    }    
 
 	// ======================================================================
     // Utilities.

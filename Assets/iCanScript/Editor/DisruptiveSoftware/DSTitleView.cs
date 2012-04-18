@@ -54,8 +54,8 @@ public class DSTitleView : DSView {
     // ----------------------------------------------------------------------
     public DSTitleView(RectOffset margins, bool shouldDisplayFrame,
                        GUIContent title, AnchorEnum titleAlignment, bool titleSeperator,
-                       Action<DSTitleView,Rect> displayDelegate,
-                       Func<DSTitleView,Rect,Vector2> getSizeToDisplayDelegate) {
+                       Action<DSTitleView,Rect> displayDelegate= null,
+                       Func<DSTitleView,Rect,Vector2> getSizeToDisplayDelegate= null) {
         // Create subviews
         myMainView    = new DSCellView(margins, shouldDisplayFrame, MainViewDisplay, MainViewGetSizeToDisplay);
         myTitleSubview= new DSCellView(new RectOffset(0,0,0,0), false, TitleViewDisplay, TitleViewGetSizeToDisplay);
@@ -66,9 +66,6 @@ public class DSTitleView : DSView {
         myDisplayDelegate         = displayDelegate;
         myGetSizeToDisplayDelegate= getSizeToDisplayDelegate;        
     }
-    public DSTitleView(RectOffset margins, bool shouldDisplayFrame,
-					   GUIContent title, AnchorEnum titleAlignment, bool titleSeperator)
-	: this(margins, shouldDisplayFrame, title, titleAlignment, titleSeperator, null, null) {}
 	public DSTitleView(RectOffset margins, bool shouldDisplayFrame,
 					   GUIContent title, AnchorEnum titleAlignment, bool titleSeperator,
 					   DSView subview)
@@ -160,11 +157,11 @@ public class DSTitleView : DSView {
 	// ======================================================================
     // Subview management
     // ----------------------------------------------------------------------
-    public void AddSubview(DSView subview) {
+    public void SetSubview(DSView subview) {
         myDisplayDelegate         = (v,f)=> subview.Display(f);
         myGetSizeToDisplayDelegate= (v,f)=> subview.GetSizeToDisplay(f);        
     }
-    public bool RemoveSubview(DSView subview) {
+    public bool RemoveSubview() {
         myDisplayDelegate         = null;
         myGetSizeToDisplayDelegate= null;
         return true;

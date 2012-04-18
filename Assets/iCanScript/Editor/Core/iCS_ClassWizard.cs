@@ -113,8 +113,8 @@ public class iCS_ClassWizard : EditorWindow {
         GUIContent classWizardTitle= new GUIContent(classTitle);
 		TitleView= new DSTitleView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true, classWizardTitle, DSView.AnchorEnum.Center, true);
         TitleView.Anchor= DSView.AnchorEnum.BottomCenter;
-        ScrollView= new DSScrollView(new RectOffset(0,0,0,0), true, ScrollViewDisplay, ScrollViewGetSizeToDisplay);
-		TitleView.AddSubview(ScrollView);
+        ScrollView= new DSScrollView(new RectOffset(0,0,0,0), true);
+		TitleView.SetSubview(ScrollView);
 		
 //		LayoutView= new DSVerticalLayoutView(classWizardTitle, TextAlignment.Center, false, new RectOffset(0,0,0,0));
         
@@ -127,6 +127,7 @@ public class iCS_ClassWizard : EditorWindow {
 
         ConstructorView= new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, DrawConstructorCell, GetConstrcutorContentSize);
         ConstructorView.Anchor= DSView.AnchorEnum.CenterRight;
+		ScrollView.SetSubview(ConstructorView);
 
 //		ClassVariablesController= new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, VariableTitle, myTarget);
 //		ClassOperationsController= new iCS_ClassOperationsController(myTarget.RuntimeType, myStorage, MethodTitle, myTarget);
@@ -164,12 +165,6 @@ public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Constructor selection view
     // ---------------------------------------------------------------------------------
-    void ScrollViewDisplay(DSScrollView view, Rect displayArea) {
-        ConstructorView.Display(displayArea);
-    }
-    Vector2 ScrollViewGetSizeToDisplay(DSScrollView view, Rect displayArea) {
-        return ConstructorView.GetSizeToDisplay(displayArea);
-    }
     Vector2 GetConstrcutorContentSize(DSView view, Rect displayArea) {
         return new Vector2(ConstructorTitleSize.x+2f*kSpacer+MaxConstructorWidth, LabelHeight);
     }

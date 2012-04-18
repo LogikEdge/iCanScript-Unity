@@ -29,13 +29,15 @@ public class DSScrollView : DSView {
     // Initialization
     // ----------------------------------------------------------------------
     public DSScrollView(RectOffset margins, bool shouldDisplayFrame,
-                        Action<DSScrollView,Rect> displayDelegate,
-                        Func<DSScrollView,Rect,Vector2> getSizeToDisplayDelegate) {
+                        Action<DSScrollView,Rect> displayDelegate= null,
+                        Func<DSScrollView,Rect,Vector2> getSizeToDisplayDelegate= null) {
         myMainView= new DSCellView(margins, shouldDisplayFrame, MainViewDisplay, MainViewGetSizeToDisplay);
         myDisplayDelegate= displayDelegate;
         myGetSizeToDisplayDelegate= getSizeToDisplayDelegate;
     }
-
+	public DSScrollView(RectOffset margins, bool shouldDisplayFrame, DSView subview)
+	: this(margins, shouldDisplayFrame, (v,f)=> subview.Display(f), (v,f)=> subview.GetSizeToDisplay(f)) {}
+		
     // ======================================================================
     // DSView implementation.
     // ----------------------------------------------------------------------
@@ -78,4 +80,17 @@ public class DSScrollView : DSView {
     protected Vector2 InvokeGetSizeToDisplayDelegate(Rect displayArea) {
     	return myGetSizeToDisplayDelegate != null ? myGetSizeToDisplayDelegate(this, displayArea) : Vector2.zero;        
     }
+
+	// ======================================================================
+    // Subview management
+    // ----------------------------------------------------------------------
+    public void SetSubview(DSView subview) {
+        myDisplayDelegate         = (v,f)=> subview.Display(f);
+        myGetSizeToDisplayDelegate= (v,f)=> subview.GetSizeToDisplay(f);        
+    }
+    public bool RemoveSubview() {
+        myDisplayDelegate         = null;
+        myGetSizeToDisplayDelegate= null;
+        return true;
+    }    
 }
