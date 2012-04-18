@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-//public class DSTableColumn : DSViewWithTitle {
+public class DSTableColumn {
 //    // ======================================================================
 //    // Fields
 //    // ----------------------------------------------------------------------
@@ -45,4 +45,4 @@ using System.Collections;
 //    protected Vector2 GetFullFrameSize() {
 //		return new Vector2(DataSize.x+Margins.horizontal, DataSize.y+Margins.vertical+TitleArea.height);
 //    }
-//}
+}

@@ -7,9 +7,11 @@ public class DSTableView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    DSTitleView     myMainView= null;
+    DSTitleView     		myMainView       = null;
+	DSScrollView			myColumnTitleView= null;
+	DSScrollView			myColumnDataView = null;
+    DSTableViewDataSource	myDataSource     = null;
 //    Vector2                 myScrollPosition         = Vector2.zero;
-//    DSTableViewDataSource   myDataSource             = null;
 //	List<DSTableColumn>		myColumns				 = new List<DSTableColumn>();
 //	float[]				    myRowHeights			 = new float[0];
 //	Rect					myColumnsDisplayDataArea;
@@ -28,7 +30,10 @@ public class DSTableView : DSView {
     // ----------------------------------------------------------------------
     public DSTableView(RectOffset margins, bool shouldDisplayFrame,
                        GUIContent title, AnchorEnum titleAlignment, bool titleSeperator) {
-        myMainView= new DSTitleView(margins, shouldDisplayFrame, title, titleAlignment, titleSeperator, MainViewDisplay, MainViewGetSizeToDisplay);
+        myMainView= new DSTitleView(margins, shouldDisplayFrame, title, titleAlignment, titleSeperator);
+		myColumnTitleView= new DSScrollView(new RectOffset(0,0,0,0), true, DisplayColumnTitles, GetColumnTitleSize);
+		myMainView.SetSubview(myColumnTitleView);
+		myColumnDataView= new DSScrollView(new RectOffset(0,0,0,0), true, DisplayColumnData, GetColumnDataSize);
     }
     
     // ======================================================================
@@ -48,14 +53,23 @@ public class DSTableView : DSView {
     }
 
     // ======================================================================
-    // MainView implementation.
+    // Column Title View implementation.
     // ----------------------------------------------------------------------
-    void MainViewDisplay(DSTitleView view, Rect displayArea) {
+    void DisplayColumnTitles(DSScrollView view, Rect displayArea) {
     }
-    Vector2 MainViewGetSizeToDisplay(DSTitleView view, Rect displayArea) {
+    Vector2 GetColumnTitleSize(DSScrollView view, Rect displayArea) {
         return Vector2.zero;
     }
 
+    // ======================================================================
+    // Column Data View implementation.
+    // ----------------------------------------------------------------------
+	void DisplayColumnData(DSScrollView view, Rect displayArea) {
+	}
+	Vector2 GetColumnDataSize(DSScrollView view, Rect displayArea) {
+		return Vector2.zero;
+	}
+	
 //    // ======================================================================
 //    // Column Methods
 //    // ----------------------------------------------------------------------
