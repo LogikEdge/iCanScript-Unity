@@ -44,6 +44,7 @@ public class DSTableView : DSView {
     // DSView implementation.
     // ----------------------------------------------------------------------
     public override void Display(Rect frameArea) {
+		RecomputeColumnAreas();
         myMainView.Display(frameArea);
     }
     public override Vector2 GetSizeToDisplay(Rect frameArea) {
@@ -60,6 +61,18 @@ public class DSTableView : DSView {
     // Column Title View implementation.
     // ----------------------------------------------------------------------
     void DisplayColumnTitles(DSScrollView view, Rect displayArea) {
+		Rect titleArea= displayArea;
+		titleArea.height= Mathf.Min(myColumnTitleSize.y, displayArea.height);
+		foreach(var column in myColumns) {
+			Rect columnTitleArea= titleArea;
+			columnTitleArea.width= column.DataSize.x;
+			if(column.Title != null) {
+				Rect titleDisplayArea= DSCellView.PerformAlignment(columnTitleArea, ColumnTitleGUIStyle.CalcSize(column.Title), column.Anchor);
+				GUI.Label(titleDisplayArea, column.Title, ColumnTitleGUIStyle);				
+			}
+			titleArea.x+= column.DataSize.x;
+			titleArea.width-= column.DataSize.x;
+		}
     }
     Vector2 GetColumnTitleSize(DSScrollView view, Rect displayArea) {
 		float width= myColumnTitleSize.x;
@@ -154,7 +167,7 @@ public class DSTableView : DSView {
 		myRowHeights= new float[nbOfRows]; for(int row= 0; row < nbOfRows; ++row) myRowHeights[row]= 0f;
 		foreach(var tableColumn in myColumns) {
 			// Determine title area height.
-			var titleSize= ColumnTitleGUIStyle.CalcSize(tableColumn.Title);
+			var titleSize= tableColumn.Title != null ? ColumnTitleGUIStyle.CalcSize(tableColumn.Title) : Vector2.zero;
 			if(titleSize.y > maxTitleHeight) maxTitleHeight= titleSize.y;
 			// Determine column data area.
 			float maxCellWidth= titleSize.x;

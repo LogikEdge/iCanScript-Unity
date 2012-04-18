@@ -116,6 +116,7 @@ public class iCS_ClassWizard : EditorWindow {
 		// Build Class list layout view.
 		ClassListLayoutView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), true);
 		ClassListLayoutView.AddSubview(SearchView);
+		ClassListLayoutView.AddSubview(ClassListController.View);
 		ClassListLayoutView.AddSubview(ClassVariablesController.View);
 		ClassListLayoutView.AddSubview(ClassOperationsController.View);
 		
@@ -181,7 +182,6 @@ public class iCS_ClassWizard : EditorWindow {
     // View Test
     // ---------------------------------------------------------------------------------
 	void OnSearch(DSSearchView searchView, string searchString) {
-//		ClassListController.Filter(searchString, null, null);
-        Debug.Log("Searching for: "+searchString);
+		ClassListController.Filter(searchString, null, null);
 	}
 }

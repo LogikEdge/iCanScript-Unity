@@ -112,46 +112,7 @@ public class DSCellView : DSView {
     protected Rect ComputeAnchoredDisplayArea() {
     	Vector2 displaySize= InvokeGetSizeToDisplayDelegate(DisplayArea);
         if(Math3D.IsZero(displaySize)) return DisplayArea;
-    	Rect displayArea= DisplayArea;
-    	float x= displayArea.x;
-    	float y= displayArea.y;
-    	float width= displayArea.width;
-    	float height= displayArea.height;
-    	if(displaySize.x < displayArea.width) {
-    		width= displaySize.x;
-    		switch(myAnchor) {
-    			case AnchorEnum.Center:
-    			case AnchorEnum.TopCenter:
-    			case AnchorEnum.BottomCenter: {
-    				x+= 0.5f*(displayArea.width - displaySize.x);
-    				break;
-    			}
-    			case AnchorEnum.TopRight:
-    			case AnchorEnum.CenterRight:
-    			case AnchorEnum.BottomRight: {
-    				x= displayArea.xMax-displaySize.x;
-    				break;
-    			}
-    		}
-    	}
-    	if(displaySize.y < displayArea.height) {
-    		height= displaySize.y;
-    		switch(myAnchor) {
-    			case AnchorEnum.Center:
-    			case AnchorEnum.CenterRight:
-    			case AnchorEnum.CenterLeft: {
-    				y+= 0.5f*(displayArea.height - displaySize.y);
-    				break;
-    			}
-    			case AnchorEnum.BottomRight:
-    			case AnchorEnum.BottomCenter:
-    			case AnchorEnum.BottomLeft: {
-    				y= displayArea.yMax-displaySize.y;
-    				break;
-    			}
-    		}
-    	}
-    	return new Rect(x,y,width,height);	
+		return PerformAlignment(DisplayArea, displaySize, myAnchor);
     }
 
 	// ======================================================================
@@ -196,4 +157,46 @@ public class DSCellView : DSView {
         frameArea.height+= margins.vertical;
         return frameArea;
     }
+	public static Rect PerformAlignment(Rect displayArea, Vector2 displaySize, AnchorEnum alignment) {
+        if(Math3D.IsZero(displaySize)) return displayArea;
+    	float x= displayArea.x;
+    	float y= displayArea.y;
+    	float width= displayArea.width;
+    	float height= displayArea.height;
+    	if(displaySize.x < displayArea.width) {
+    		width= displaySize.x;
+    		switch(alignment) {
+    			case AnchorEnum.Center:
+    			case AnchorEnum.TopCenter:
+    			case AnchorEnum.BottomCenter: {
+    				x+= 0.5f*(displayArea.width - displaySize.x);
+    				break;
+    			}
+    			case AnchorEnum.TopRight:
+    			case AnchorEnum.CenterRight:
+    			case AnchorEnum.BottomRight: {
+    				x= displayArea.xMax-displaySize.x;
+    				break;
+    			}
+    		}
+    	}
+    	if(displaySize.y < displayArea.height) {
+    		height= displaySize.y;
+    		switch(alignment) {
+    			case AnchorEnum.Center:
+    			case AnchorEnum.CenterRight:
+    			case AnchorEnum.CenterLeft: {
+    				y+= 0.5f*(displayArea.height - displaySize.y);
+    				break;
+    			}
+    			case AnchorEnum.BottomRight:
+    			case AnchorEnum.BottomCenter:
+    			case AnchorEnum.BottomLeft: {
+    				y= displayArea.yMax-displaySize.y;
+    				break;
+    			}
+    		}
+    	}
+    	return new Rect(x,y,width,height);			
+	}
 }
