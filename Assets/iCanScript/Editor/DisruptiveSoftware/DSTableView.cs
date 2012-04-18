@@ -78,6 +78,9 @@ public class DSTableView : DSView {
 		float width= myColumnTitleSize.x;
 		float height= myColumnTitleSize.y+myColumnDataSize.y;
 		if(height > displayArea.height) height= displayArea.height;
+		if(width > displayArea.width && height >= displayArea.height-kScrollerSize) {
+			height= displayArea.height-kScrollerSize;
+		}
         return new Vector2(width, height);
     }
 
