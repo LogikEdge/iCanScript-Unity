@@ -14,7 +14,7 @@ public class iCS_ClassWizard : EditorWindow {
     int                             myConstructorIdx= -1;
 
     DSVerticalLayoutView            MainView                 = null;
-//	DSAccordionView					AccordionView            = null;
+	DSAccordionView					AccordionView            = null;
 //    DSVerticalLayoutView            LayoutView               = null;
     DSTitleView                     TitleView= null;
     DSScrollView                    ScrollView= null;
@@ -138,15 +138,18 @@ public class iCS_ClassWizard : EditorWindow {
 //		LayoutView.AddSubview(ClassVariablesController.View);
 //		LayoutView.AddSubview(ClassOperationsController.View);
 
+		MainView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), true);
+		MainView.AddSubview(SearchView);
+		MainView.AddSubview(TitleView);
+
 		// Build accrodion view
-//		AccordionView= new DSAccordionView(new RectOffset(0,0,0,0), false);
+		AccordionView= new DSAccordionView(new RectOffset(0,0,0,0), false);
+		AccordionView.AddSubview(new GUIContent("Main"), TitleView);
+		AccordionView.AddSubview(new GUIContent("Contructor"), ConstructorView);
 //		AccordionView.AddSubview(ClassListController.View);
 //		AccordionView.AddSubview(ClassVariablesController.View);
 //		AccordionView.AddSubview(ClassOperationsController.View);
 
-		MainView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), true);
-		MainView.AddSubview(SearchView);
-		MainView.AddSubview(TitleView);
 //		MainView.AddSubview(AccordionView);
     }
     // ---------------------------------------------------------------------------------
@@ -155,8 +158,8 @@ public class iCS_ClassWizard : EditorWindow {
         if(myTarget == null) return;
         EditorGUIUtility.LookLikeInspector();
 //        LayoutView.Display(new Rect(0,0,position.width, position.height));
-		MainView.Display(new Rect(0,0,position.width, position.height));
-//		AccordionView.Display(new Rect(0,0,position.width, position.height));
+//		MainView.Display(new Rect(0,0,position.width, position.height));
+		AccordionView.Display(new Rect(0,0,position.width, position.height));
 //        TitleView.Display(new Rect(0,0,position.width, position.height));
 //        ConstructorView.Display(new Rect(0,0,position.width, position.height));
 //        SearchView.Display(new Rect(0,0,position.width, position.height));
