@@ -68,7 +68,7 @@ using System.Collections.Generic;
 //		myTitle= title ?? new GUIContent(kDefaultTitle);
 //		myTarget= target;
 //		
-//		// Common varaibles.
+//		// Common variables.
 //		myCheckBoxSize     = GUI.skin.toggle.CalcSize(new GUIContent(""));                
 //
 //		// Extract fields & properties from class descriptor.

@@ -11,20 +11,27 @@ public class DSTableView : DSView {
 	DSScrollView			myColumnTitleView= null;
 	DSScrollView			myColumnDataView = null;
     DSTableViewDataSource	myDataSource     = null;
+	List<DSTableColumn>		myColumns		 = new List<DSTableColumn>();
+	float[]				    myRowHeights	 = new float[0];
+	Vector2					myColumnTitleSize;
+	Vector2					myColumnDataSize;
+	GUIStyle				myColumnTitleGUIStyle= null;
 //    Vector2                 myScrollPosition         = Vector2.zero;
-//	List<DSTableColumn>		myColumns				 = new List<DSTableColumn>();
-//	float[]				    myRowHeights			 = new float[0];
 //	Rect					myColumnsDisplayDataArea;
 //	Rect					myColumnsTotalDataArea;
 //	
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-//    public DSTableViewDataSource DataSource {
-//        get { return myDataSource; }
-//        set { myDataSource= value; RecomputeColumnAreas(); }
-//    }
-//	
+    public DSTableViewDataSource DataSource {
+        get { return myDataSource; }
+        set { myDataSource= value; RecomputeColumnAreas(); }
+    }
+	public GUIStyle ColumnTitleGUIStyle {
+		get { return myColumnTitleGUIStyle; }
+		set { myColumnTitleGUIStyle= value; }
+	}
+	
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
@@ -70,28 +77,20 @@ public class DSTableView : DSView {
 		return Vector2.zero;
 	}
 	
-//    // ======================================================================
-//    // Column Methods
-//    // ----------------------------------------------------------------------
-//    public DSTableColumn FindTableColumn(string identifier) {
-//        DSTableColumn result= null;
-//        SearchInSubviews(
-//            subview=> {
-//                DSTableColumn tableColumn= subview as DSTableColumn;
-//                if(tableColumn != null && string.Compare(tableColumn.Identifier, identifier) == 0) {
-//                    result= tableColumn;
-//                    return true;
-//                }
-//                return false; 
-//            }
-//        );
-//        return result;
-//    }
-//    // ----------------------------------------------------------------------
-//    public void ReloadData() {
-//		RecomputeColumnAreas();
-//	}
-//	
+    // ======================================================================
+    // Column Methods
+    // ----------------------------------------------------------------------
+    public DSTableColumn FindTableColumn(string identifier) {
+        DSTableColumn result= null;
+		foreach(var tableColumn in myColumns) {
+            if(string.Compare(tableColumn.Identifier, identifier) == 0) {
+                result= tableColumn;
+				break;
+            }			
+		}
+        return result;
+    }
+	
 //    // ======================================================================
 //    // Display
 //    // ----------------------------------------------------------------------
@@ -141,59 +140,38 @@ public class DSTableView : DSView {
 //        GUI.EndScrollView();
 //    }
 //
-//    // ======================================================================
-//    // View dimension change notification.
-//    // ----------------------------------------------------------------------
-//    public override void OnViewChange(DSView parent, Rect displayArea) {
-//		base.OnViewChange(parent, displayArea);
-//		RecomputeColumnAreas();
-//	}
-//    protected override Vector2 GetMinimumFrameSize() {
-//        var baseMinFameSize= base.GetMinimumFrameSize();
-//        float height= baseMinFameSize.y;
-//        if(myColumns.Count >= 1) {
-//            height+= myColumns[0].MinimumFrameSize.y;
-//        }
-//        if(myRowHeights.Length >= 1) {
-//            float maxRowHeight= 0;
-//            foreach(var rh in myRowHeights) {
-//                if(rh > maxRowHeight) maxRowHeight= rh;
-//            }
-//            height+= maxRowHeight;
-//        }
-//        if(myRowHeights.Length >= 2) {
-//            height+= kScrollerSize;
-//        }
-//        return new Vector2(baseMinFameSize.x, height);
-//    }
-//	
-//	void RecomputeColumnAreas() {
-//		// Clear previous column information.
-//		myColumns.Clear();
-//		myRowHeights= new float[0];
-//		if(myDataSource == null) return;
-//		
-//		// Collect table columns & recompute data size.
-//		int nbOfRows= myDataSource.NumberOfRowsInTableView(this);
-//		myRowHeights= new float[nbOfRows]; for(int row= 0; row < nbOfRows; ++row) myRowHeights[row]= 0f;
-//	    ForEachSubview(
-//	        subview=> {
-//	            DSTableColumn tableColumn= subview as DSTableColumn;
-//	            if(tableColumn != null) {
-//	                myColumns.Add(tableColumn);
-//					float maxCellWidth= 0f;
-//					for(int row= 0; row < nbOfRows; ++row) {
-//						var cellSize= myDataSource.DisplaySizeForObjectInTableView(this, tableColumn, row);
-//						if(cellSize.x > maxCellWidth) maxCellWidth= cellSize.x;
-//						if(cellSize.y > myRowHeights[row]) myRowHeights[row]= cellSize.y;
-//					}
-//					tableColumn.DataSize= new Vector2(maxCellWidth, 0);
-//	            }
-//	        }
-//	    );
-//		float dataHeight= 0; foreach(var height in myRowHeights) { dataHeight+= height; }
-//		foreach(var column in myColumns) { var tmp= column.DataSize; tmp.y= dataHeight; column.DataSize= tmp; }
-//
+
+    // ----------------------------------------------------------------------
+	void RecomputeColumnAreas() {
+		// Clear previous column information.
+		myRowHeights= new float[0];
+		if(myDataSource == null) return;
+		
+		// Recompute column data size.
+		float maxTitleHeight= 0;
+		float dataWidth= 0;
+		int nbOfRows= myDataSource.NumberOfRowsInTableView(this);
+		myRowHeights= new float[nbOfRows]; for(int row= 0; row < nbOfRows; ++row) myRowHeights[row]= 0f;
+		foreach(var tableColumn in myColumns) {
+			// Determine title area height.
+			var titleSize= ColumnTitleGUIStyle.CalcSize(tableColumn.Title);
+			if(titleSize.y > maxTitleHeight) maxTitleHeight= titleSize.y;
+			// Determine column data area.
+			float maxCellWidth= titleSize.x;
+			for(int row= 0; row < nbOfRows; ++row) {
+				var cellSize= myDataSource.DisplaySizeForObjectInTableView(this, tableColumn, row);
+				if(cellSize.x > maxCellWidth) maxCellWidth= cellSize.x;
+				if(cellSize.y > myRowHeights[row]) myRowHeights[row]= cellSize.y;
+			}
+			maxCellWidth+= tableColumn.Margins.horizontal;
+			dataWidth+= maxCellWidth;
+			tableColumn.DataSize= new Vector2(maxCellWidth, 0);			
+		}
+		float dataHeight= 0; foreach(var height in myRowHeights) { dataHeight+= height; }
+		foreach(var column in myColumns) { var tmp= column.DataSize; tmp.y= dataHeight; column.DataSize= tmp; }
+		myColumnDataSize= new Vector2(dataWidth, dataHeight);
+		myColumnTitleSize= new Vector2(dataWidth, maxTitleHeight);
+		
 //		// Recompute column frame area.
 //		Rect remainingArea= BodyArea;
 //		for(int i= 0; i < myColumns.Count; ++i) {
@@ -230,8 +208,8 @@ public class DSTableView : DSView {
 //
 //		// Recompute columns display area.
 //		myColumnsDisplayDataArea= Math3D.Intersection(BodyArea, myColumnsTotalDataArea);
-//	}
-//	
+	}
+	
 //	// ======================================================================
 //    // View method overrides
 //    // ----------------------------------------------------------------------
