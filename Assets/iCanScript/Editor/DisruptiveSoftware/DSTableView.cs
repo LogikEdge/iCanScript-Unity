@@ -101,11 +101,11 @@ public class DSTableView : DSView {
 
         // Display scrollbar if needed.
         if(needHorizontalScrollbar) {
-            Rect scrollbarPos= new Rect(displayArea.x, displayArea.yMax-kScrollbarSize, displayArea.width, kScrollbarSize);
+            Rect scrollbarPos= new Rect(titleDisplayArea.x, displayArea.yMax-kScrollbarSize, titleDisplayArea.width, kScrollbarSize);
             myScrollbarPosition.x= GUI.HorizontalScrollbar(scrollbarPos, myScrollbarPosition.x, horizontalScrollbarSize, 0, displayWidth);
         }
         if(needVerticalScrollbar) {
-            Rect scrollbarPos= new Rect(displayArea.xMax-kScrollbarSize, displayArea.y, kScrollbarSize, displayArea.height-myColumnTitleSize.y);
+            Rect scrollbarPos= new Rect(dataDisplayArea.xMax, dataDisplayArea.y, kScrollbarSize, displayArea.height-myColumnTitleSize.y-(needHorizontalScrollbar ? kScrollbarSize : 0));
             myScrollbarPosition.y= GUI.VerticalScrollbar(scrollbarPos, myScrollbarPosition.y, verticalScrollbarSize, 0, dataHeight);
         }
     }
