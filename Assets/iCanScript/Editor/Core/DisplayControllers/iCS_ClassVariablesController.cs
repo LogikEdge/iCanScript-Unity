@@ -97,7 +97,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     	Array.Sort(myVariables, (x,y)=> GetVariableName(x).CompareTo(GetVariableName(y)));
 
 		// Build view
-        myTableView= new DSTableView(new RectOffset(kSpacer,kSpacer,0,kSpacer), true, myTitle, DSView.AnchorEnum.Center, true);
+        myTableView= new DSTableView(new RectOffset(kSpacer,kSpacer,0,kSpacer), true, myTitle, DSView.AnchorEnum.Center, true, true);
         myTableView.DataSource= this;
         DSTableColumn inColumn= new DSTableColumn(kInColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("In"), DSView.AnchorEnum.Center);
         myTableView.AddColumn(inColumn);

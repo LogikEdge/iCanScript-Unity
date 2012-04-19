@@ -15,7 +15,9 @@ public class DSTableView : DSView {
 	Vector2					myColumnTitleSize;
 	Vector2					myColumnDataSize;
 	GUIStyle				myColumnTitleGUIStyle= null;
-
+	bool					myColumnTitleSeperator;
+	bool					myDisplayColumnFrame;
+	
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -24,18 +26,21 @@ public class DSTableView : DSView {
         set { myDataSource= value; RecomputeColumnAreas(); }
     }
 	public GUIStyle ColumnTitleGUIStyle {
-		get { return myColumnTitleGUIStyle ?? EditorStyles.label; }
+		get { return myColumnTitleGUIStyle ?? EditorStyles.boldLabel; }
 		set { myColumnTitleGUIStyle= value; }
 	}
 	
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSTableView(RectOffset margins, bool shouldDisplayFrame,
-                       GUIContent title, AnchorEnum titleAlignment, bool titleSeperator) {
-        myMainView= new DSTitleView(margins, shouldDisplayFrame,
+    public DSTableView(RectOffset margins, bool displayFrame,
+                       GUIContent title, AnchorEnum titleAlignment, bool titleSeperator,
+					   bool displayColumnFrame, bool columnTitleSeperator= true) {
+        myMainView= new DSTitleView(margins, displayFrame,
                                     title, titleAlignment, titleSeperator,
                                     DisplayMainView, GetMainViewDisplaySize);
+		myColumnTitleSeperator= columnTitleSeperator;
+		myDisplayColumnFrame= displayColumnFrame;
     }
     
     // ======================================================================
@@ -90,6 +95,9 @@ public class DSTableView : DSView {
         GUI.BeginGroup(titleDisplayArea);
             DisplayColumnTitles();              
         GUI.EndGroup();
+		if(myColumnTitleSeperator) {
+			GUI.Box(new Rect(titleDisplayArea.x, titleDisplayArea.yMax-2, titleDisplayArea.width, 3), "");
+		}
         // Display column data.
         GUI.BeginGroup(dataDisplayArea);
             DisplayColumnData();
@@ -114,11 +122,19 @@ public class DSTableView : DSView {
     void DisplayColumnTitles() {
         Rect titleArea= new Rect(-myScrollbarPosition.x, 0, myColumnTitleSize.x, myColumnTitleSize.y);
 		foreach(var column in myColumns) {
-			Rect columnTitleArea= titleArea;
-			columnTitleArea.width= column.DataSize.x;
+			Rect titleFrameArea= titleArea;
+			titleFrameArea.width= column.DataSize.x;
+			Rect columnTitleArea= titleFrameArea;
+			columnTitleArea.x+= column.Margins.left;
+			columnTitleArea.width-= column.Margins.horizontal;
+			columnTitleArea.y+= column.Margins.top;
+			columnTitleArea.height-= column.Margins.vertical;
 			if(column.Title != null) {
 				Rect titleDisplayArea= DSCellView.PerformAlignment(columnTitleArea, ColumnTitleGUIStyle.CalcSize(column.Title), column.Anchor);
-				GUI.Label(titleDisplayArea, column.Title, ColumnTitleGUIStyle);				
+				GUI.Label(titleDisplayArea, column.Title, ColumnTitleGUIStyle);
+				if(myDisplayColumnFrame) {
+					GUI.Box(titleFrameArea, "");
+				}			
 			}
 			titleArea.x+= column.DataSize.x;
 			titleArea.width-= column.DataSize.x;
@@ -131,7 +147,7 @@ public class DSTableView : DSView {
         for(int row= 0; row < myRowHeights.Length; ++row) {
             float x= dataArea.x;
             foreach(var column in myColumns) {
-                Rect displayRect= new Rect(x, y, column.DataSize.x, myRowHeights[row]);
+                Rect displayRect= new Rect(x+column.Margins.left, y+column.Margins.top, column.DataSize.x-column.Margins.horizontal, myRowHeights[row]-column.Margins.vertical);
                 Vector2 dataSize= myDataSource.DisplaySizeForObjectInTableView(this, column, row);
                 displayRect= DSCellView.PerformAlignment(displayRect, dataSize, column.Anchor);
 	            myDataSource.DisplayObjectInTableView(this, column, row, displayRect);					
@@ -139,6 +155,13 @@ public class DSTableView : DSView {
             }
             y+= myRowHeights[row];
         }
+		if(myDisplayColumnFrame) {
+            float x= dataArea.x;
+			foreach(var column in myColumns) {
+				GUI.Box(new Rect(x, dataArea.y, column.DataSize.x, dataArea.height), "");
+                x+= column.DataSize.x;				
+			}
+		}
     }
     
     // ======================================================================
@@ -184,7 +207,7 @@ public class DSTableView : DSView {
 		float dataHeight= 0; foreach(var height in myRowHeights) { dataHeight+= height; }
 		foreach(var column in myColumns) { var tmp= column.DataSize; tmp.y= dataHeight; column.DataSize= tmp; }
 		myColumnDataSize= new Vector2(dataWidth, dataHeight);
-		myColumnTitleSize= new Vector2(dataWidth, maxTitleHeight);
+		myColumnTitleSize= new Vector2(dataWidth, maxTitleHeight+(myColumnTitleSeperator ? 3 : 0));
 	}
 	
 	// ======================================================================

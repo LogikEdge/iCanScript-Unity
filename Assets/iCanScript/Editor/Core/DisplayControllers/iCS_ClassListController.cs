@@ -49,7 +49,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
         myFilteredClasses= myClasses;
         
         // Build table view.
-        myTableView= new DSTableView(new RectOffset(kSpacer,kSpacer,0,kSpacer), true, new GUIContent("Classes"), DSView.AnchorEnum.Center, true);
+        myTableView= new DSTableView(new RectOffset(kSpacer,kSpacer,0,kSpacer), true, new GUIContent("Classes"), DSView.AnchorEnum.Center, true, true);
         DSTableColumn classColumn= new DSTableColumn(kClassColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Class"), DSView.AnchorEnum.CenterLeft);
         DSTableColumn packageColumn= new DSTableColumn(kPackageColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Package"), DSView.AnchorEnum.CenterLeft);    
         DSTableColumn companyColumn= new DSTableColumn(kCompanyColumnId, new RectOffset(kSpacer,kSpacer,0,0), new GUIContent("Company"), DSView.AnchorEnum.CenterLeft);

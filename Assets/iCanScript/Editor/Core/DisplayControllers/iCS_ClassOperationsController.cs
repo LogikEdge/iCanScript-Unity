@@ -56,7 +56,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
         }
 
 		// Build view
-        myTableView= new DSTableView(new RectOffset(kSpacer,kSpacer,0,kSpacer), true, myTitle, DSView.AnchorEnum.Center, true);
+        myTableView= new DSTableView(new RectOffset(kSpacer,kSpacer,0,kSpacer), true, myTitle, DSView.AnchorEnum.Center, true, true);
         myTableView.DataSource= this;
 		DSTableColumn operationColumn= new DSTableColumn(kOperationColumnId, new RectOffset(0,0,0,0), null, DSView.AnchorEnum.CenterLeft);
 		myTableView.AddColumn(operationColumn);
