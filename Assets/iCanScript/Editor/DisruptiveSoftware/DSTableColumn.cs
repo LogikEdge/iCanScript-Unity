@@ -2,25 +2,40 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-//public class DSTableColumn : DSViewWithTitle {
-//    // ======================================================================
-//    // Fields
-//    // ----------------------------------------------------------------------
-//    string  myIdentifier= null;
-//    Vector2 myDataSize  = Vector2.zero;
+public class DSTableColumn {
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    string				myIdentifier= null;
+    Vector2				myDataSize  = Vector2.zero;
+	RectOffset			myMargins;
+	DSView.AnchorEnum	myAnchor;
+	GUIContent			myTitle;
 //	float   myWidth     = 0;
 //    
-//    // ======================================================================
-//    // Properties
-//    // ----------------------------------------------------------------------
-//    public string Identifier {
-//        get { return myIdentifier; }
-//        set { myIdentifier= value; }
-//    }
-//    public Vector2 DataSize {
-//        get { return myDataSize; }
-//        set { myDataSize= value; }
-//    }
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+    public string Identifier {
+        get { return myIdentifier; }
+        set { myIdentifier= value; }
+    }
+    public Vector2 DataSize {
+        get { return myDataSize; }
+        set { myDataSize= value; }
+    }
+	public RectOffset Margins {
+		get { return myMargins; }
+		set { myMargins= value; }
+	}
+	public DSView.AnchorEnum Anchor {
+		get { return myAnchor; }
+		set { myAnchor= value; }
+	}
+	public GUIContent Title {
+		get { return myTitle; }
+		set { myTitle= value; }
+	}
 //	public float Width {
 //		get { return myWidth; }
 //		set {
@@ -30,19 +45,20 @@ using System.Collections;
 //		}
 //	}
 //    
-//    // ======================================================================
-//    // Initialization
-//    // ----------------------------------------------------------------------
-//    public DSTableColumn(RectOffset margins, bool shouldDisplayFrame,
-//                         string identifier, GUIContent title, TextAlignment titleAlignment, bool titleSeperator)
-//    : base(margins, shouldDisplayFrame ,title, titleAlignment, titleSeperator) {
-//        Identifier= identifier;
-//    }
-//    
+    // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
+    public DSTableColumn(string identifier, RectOffset margins, GUIContent title, DSView.AnchorEnum columnAlignment) {
+        Identifier= identifier;
+		Title= title;
+		Margins= margins;
+		Anchor= columnAlignment;
+    }
+    
 //	// ======================================================================
 //    // View method overrides
 //    // ----------------------------------------------------------------------
 //    protected Vector2 GetFullFrameSize() {
 //		return new Vector2(DataSize.x+Margins.horizontal, DataSize.y+Margins.vertical+TitleArea.height);
 //    }
-//}
+}
