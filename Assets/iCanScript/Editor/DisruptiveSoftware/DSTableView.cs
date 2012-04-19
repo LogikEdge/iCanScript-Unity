@@ -59,6 +59,15 @@ public class DSTableView : DSView {
     // Main View implementation.
     // ----------------------------------------------------------------------
     void DisplayMainView(DSTitleView view, Rect displayArea) {
+        // Compute piece-part display areas.
+        Rect titleDisplayArea= new Rect(displayArea.x, displayArea.y,
+                                        Mathf.Min(displayArea.width, myColumnTitleSize.x),
+                                        Mathf.Min(displayArea.height, myColumnTitleSize.y));
+        Rect dataDisplayArea= new Rect(displayArea.x, titleDisplayArea.yMax,
+                                       Mathf.Min(displayArea.width, myColumnDataSize.x),
+                                       Mathf.Min(displayArea.height-titleDisplayArea.height, myColumnDataSize.y));
+        if(dataDisplayArea.height < 0) dataDisplayArea.height= 0;
+        
         // Compute scrollbar information.
         bool needHorizontalScrollbar= false;
         bool needVerticalScrollbar= false;
@@ -70,29 +79,30 @@ public class DSTableView : DSView {
         if(myColumnTitleSize.x > displayWidth) {
             needHorizontalScrollbar= true;
             horizontalScrollbarSize= (displayWidth*displayWidth)/myColumnTitleSize.x;
+            dataDisplayArea.height-= kScrollbarSize;
+            if(dataDisplayArea.height < 0) dataDisplayArea.height= 0;
         }
         float dataHeight= displayHeight-myColumnTitleSize.y-(needHorizontalScrollbar ? kScrollbarSize : 0);
         if(myColumnDataSize.y > dataHeight) {
             needVerticalScrollbar= true;
             verticalScrollbarSize= (dataHeight*dataHeight)/myColumnDataSize.y;
+            dataDisplayArea.width-= kScrollbarSize;
+            if(dataDisplayArea.width < 0) dataDisplayArea.width= 0;
         }
 
-        // Display columns.
-        GUI.BeginGroup(displayArea);
-            // Display column titles.
+        // Display column titles.
+        GUI.BeginGroup(titleDisplayArea);
             DisplayColumnTitles();              
-            
-            // Display column data.
-            Rect dataArea= new Rect(0, myColumnTitleSize.y, displayWidth, dataHeight);
-            GUI.BeginGroup(dataArea);
-                DisplayColumnData();
-            GUI.EndGroup();
         GUI.EndGroup();
+        // Display column data.
+        GUI.BeginGroup(dataDisplayArea);
+            DisplayColumnData();
+        GUI.EndGroup();
+
         // Display scrollbar if needed.
         if(needHorizontalScrollbar) {
             Rect scrollbarPos= new Rect(displayArea.x, displayArea.yMax-kScrollbarSize, displayArea.width, kScrollbarSize);
             myScrollbarPosition.x= GUI.HorizontalScrollbar(scrollbarPos, myScrollbarPosition.x, horizontalScrollbarSize, 0, displayWidth);
-            Debug.Log("DisplayArea: "+displayArea+"Scrollbar position: "+myScrollbarPosition);
         }
         if(needVerticalScrollbar) {
             Rect scrollbarPos= new Rect(displayArea.xMax-kScrollbarSize, displayArea.y, kScrollbarSize, displayArea.height-myColumnTitleSize.y);
