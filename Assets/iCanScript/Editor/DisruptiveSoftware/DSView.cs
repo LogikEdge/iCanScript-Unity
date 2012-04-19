@@ -18,7 +18,7 @@ public abstract class DSView {
     public const float   kVerticalSpacer  = 8f;
     public const float   kHorizontalMargin= 10f;
     public const float   kVerticalMargin  = 10f;
-    public const float   kScrollerSize    = 16f;
+    public const float   kScrollbarSize   = 16f;
 
     // ======================================================================
     // Properties

@@ -7,12 +7,11 @@ public class DSTableView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    DSTitleView     		myMainView       = null;
-	DSScrollView			myColumnTitleView= null;
-	DSScrollView			myColumnDataView = null;
-    DSTableViewDataSource	myDataSource     = null;
-	List<DSTableColumn>		myColumns		 = new List<DSTableColumn>();
-	float[]				    myRowHeights	 = new float[0];
+    DSTitleView     		myMainView         = null;
+    Vector2                 myScrollbarPosition= Vector2.zero;
+    DSTableViewDataSource	myDataSource       = null;
+	List<DSTableColumn>		myColumns		   = new List<DSTableColumn>();
+	float[]				    myRowHeights	   = new float[0];
 	Vector2					myColumnTitleSize;
 	Vector2					myColumnDataSize;
 	GUIStyle				myColumnTitleGUIStyle= null;
@@ -34,20 +33,19 @@ public class DSTableView : DSView {
     // ----------------------------------------------------------------------
     public DSTableView(RectOffset margins, bool shouldDisplayFrame,
                        GUIContent title, AnchorEnum titleAlignment, bool titleSeperator) {
-        myMainView= new DSTitleView(margins, shouldDisplayFrame, title, titleAlignment, titleSeperator);
-		myColumnTitleView= new DSScrollView(new RectOffset(0,0,0,0), true, DisplayColumnTitles, GetColumnTitleSize);
-		myMainView.SetSubview(myColumnTitleView);
-		myColumnDataView= new DSScrollView(new RectOffset(0,0,0,0), true, DisplayColumnData, GetColumnDataSize);
+        myMainView= new DSTitleView(margins, shouldDisplayFrame,
+                                    title, titleAlignment, titleSeperator,
+                                    DisplayMainView, GetMainViewDisplaySize);
     }
     
     // ======================================================================
     // DSView implementation.
     // ----------------------------------------------------------------------
     public override void Display(Rect frameArea) {
-		RecomputeColumnAreas();
         myMainView.Display(frameArea);
     }
     public override Vector2 GetSizeToDisplay(Rect frameArea) {
+		RecomputeColumnAreas();
         return myMainView.GetSizeToDisplay(frameArea);
     }
     public override AnchorEnum GetAnchor() {
@@ -58,11 +56,57 @@ public class DSTableView : DSView {
     }
 
     // ======================================================================
-    // Column Title View implementation.
+    // Main View implementation.
     // ----------------------------------------------------------------------
-    void DisplayColumnTitles(DSScrollView view, Rect displayArea) {
-		Rect titleArea= displayArea;
-		titleArea.height= Mathf.Min(myColumnTitleSize.y, displayArea.height);
+    void DisplayMainView(DSTitleView view, Rect displayArea) {
+        // Compute scrollbar information.
+        bool needHorizontalScrollbar= false;
+        bool needVerticalScrollbar= false;
+        float horizontalScrollbarSize= 0;
+        float verticalScrollbarSize= 0;
+        
+        float displayWidth= displayArea.width;
+        float displayHeight= displayArea.height;
+        float titleWidth= myColumnTitleSize.x;
+        if(titleWidth > displayWidth) {
+            needHorizontalScrollbar= true;
+            horizontalScrollbarSize= (displayWidth*displayWidth)/titleWidth;
+        }
+        float dataHeight= displayHeight-myColumnTitleSize.y-(needHorizontalScrollbar ? kScrollbarSize : 0);
+        if(myColumnDataSize.y > dataHeight) {
+            needVerticalScrollbar= true;
+            verticalScrollbarSize= (dataHeight*dataHeight)/myColumnDataSize.y;
+        }
+
+        // Display columns.
+        GUI.BeginGroup(displayArea);
+            // Display column titles.
+            DisplayColumnTitles();              
+            if(needHorizontalScrollbar) {
+                Rect scrollbarPos= new Rect(0, displayHeight-kScrollbarSize, displayWidth, kScrollbarSize);
+                myScrollbarPosition.x= GUI.HorizontalScrollbar(scrollbarPos, myScrollbarPosition.x, horizontalScrollbarSize, 0, displayWidth);
+                Debug.Log("DisplayArea: "+displayArea+"Scrollbar position: "+myScrollbarPosition);
+            }
+            
+            // Display column data.
+            Rect dataArea= new Rect(0, myColumnTitleSize.y, displayWidth, dataHeight);
+            GUI.BeginGroup(dataArea);
+                DisplayColumnData();
+                if(needVerticalScrollbar) {
+                    Rect scrollbarPos= new Rect(displayWidth-kScrollbarSize, 0, kScrollbarSize, dataHeight);
+                    myScrollbarPosition.y= GUI.VerticalScrollbar(scrollbarPos, myScrollbarPosition.y, verticalScrollbarSize, 0, dataHeight);
+                }
+            GUI.EndGroup();
+        GUI.EndGroup();
+    }
+    Vector2 GetMainViewDisplaySize(DSTitleView view, Rect displayArea) {
+        float width= Mathf.Max(myColumnTitleSize.x, myColumnDataSize.x);
+        float height= myColumnTitleSize.y+myColumnDataSize.y;
+        return new Vector2(width, height);
+    }
+    // ----------------------------------------------------------------------
+    void DisplayColumnTitles() {
+        Rect titleArea= new Rect(-myScrollbarPosition.x, 0, myColumnTitleSize.x, myColumnTitleSize.y);
 		foreach(var column in myColumns) {
 			Rect columnTitleArea= titleArea;
 			columnTitleArea.width= column.DataSize.x;
@@ -74,25 +118,23 @@ public class DSTableView : DSView {
 			titleArea.width-= column.DataSize.x;
 		}
     }
-    Vector2 GetColumnTitleSize(DSScrollView view, Rect displayArea) {
-		float width= myColumnTitleSize.x;
-		float height= myColumnTitleSize.y+myColumnDataSize.y;
-		if(height > displayArea.height) height= displayArea.height;
-		if(width > displayArea.width && height >= displayArea.height-kScrollerSize) {
-			height= displayArea.height-kScrollerSize;
-		}
-        return new Vector2(width, height);
-    }
-
-    // ======================================================================
-    // Column Data View implementation.
     // ----------------------------------------------------------------------
-	void DisplayColumnData(DSScrollView view, Rect displayArea) {
-	}
-	Vector2 GetColumnDataSize(DSScrollView view, Rect displayArea) {
-		return myColumnDataSize;
-	}
-	
+    void DisplayColumnData() {
+        Rect dataArea= new Rect(-myScrollbarPosition.x, -myScrollbarPosition.y, myColumnDataSize.x, myColumnDataSize.y);
+        float y= dataArea.y;
+        for(int row= 0; row < myRowHeights.Length; ++row) {
+            float x= dataArea.x;
+            foreach(var column in myColumns) {
+                Rect displayRect= new Rect(x, y, column.DataSize.x, myRowHeights[row]);
+                Vector2 dataSize= myDataSource.DisplaySizeForObjectInTableView(this, column, row);
+                displayRect= DSCellView.PerformAlignment(displayRect, dataSize, column.Anchor);
+	            myDataSource.DisplayObjectInTableView(this, column, row, displayRect);					
+                x+= column.DataSize.x;
+            }
+            y+= myRowHeights[row];
+        }
+    }
+    
     // ======================================================================
     // Column Methods
     // ----------------------------------------------------------------------
@@ -107,56 +149,6 @@ public class DSTableView : DSView {
         return result;
     }
 	
-//    // ======================================================================
-//    // Display
-//    // ----------------------------------------------------------------------
-//    public override void Display(DSView parent, Rect frameArea) {
-//        // Duisplay bounding box and title.
-//        base.Display(parent, frameArea);
-//        if(myDataSource == null) return;
-//        
-//        // Display frame and title of each column.
-//        for(int i= 0; i < myColumns.Count; ++i) {
-//            if(Math3D.IsNotZero(myColumns[i].DisplayArea.width)) {
-//                myColumns[i].Display(myColumns[i].FrameArea);
-//            }
-//        }
-//
-//        // Show column data.
-//		Rect scrollDisplayArea= myColumnsDisplayDataArea;
-//		if(scrollDisplayArea.xMax < BodyArea.xMax) scrollDisplayArea.xMax= BodyArea.xMax;
-//		if(scrollDisplayArea.yMax < BodyArea.yMax) scrollDisplayArea.yMax= BodyArea.yMax;
-//        myScrollPosition= GUI.BeginScrollView(scrollDisplayArea, myScrollPosition, myColumnsTotalDataArea, false, false);
-//		{
-//	        float y= myColumnsTotalDataArea.y;
-//	        for(int row= 0; row < myRowHeights.Length; ++row) {
-//	            foreach(var column in myColumns) {
-//	                Vector2 dataSize= myDataSource.DisplaySizeForObjectInTableView(this, column, row);
-//	                Rect displayRect= new Rect(0, y, dataSize.x, dataSize.y);
-//	                switch(column.TitleAlignment) {
-//	                    case TextAlignment.Left: {
-//	                        displayRect.x= column.DisplayArea.x;
-//	                        break;
-//	                    }
-//	                    case TextAlignment.Right: {
-//	                        displayRect.x= column.DisplayArea.xMax-dataSize.x;
-//	                        break;
-//	                    }
-//	                    case TextAlignment.Center:
-//	                    default: {
-//	                        displayRect.x= column.DisplayArea.x+0.5f*(column.DisplayArea.width-dataSize.x);
-//	                        break;
-//	                    }
-//	                }
-//		            myDataSource.DisplayObjectInTableView(this, column, row, displayRect);					
-//	            }
-//	            y+= myRowHeights[row];
-//	        }
-//		}
-//        GUI.EndScrollView();
-//    }
-//
-
     // ----------------------------------------------------------------------
 	void RecomputeColumnAreas() {
 		// Clear previous column information.
