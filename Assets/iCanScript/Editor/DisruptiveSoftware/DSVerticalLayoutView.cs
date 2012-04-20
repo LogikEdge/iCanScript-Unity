@@ -6,9 +6,9 @@ public class DSVerticalLayoutView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	DSCellView      myMainView= null;
-	List<DSView>    mySubviews= null;
-    List<Rect>      mySubviewFrames= null;
+	DSCellView      	myMainView= null;
+	List<DSCellView>	mySubviews= null;
+    List<Rect>      	mySubviewFrames= null;
     
     // ======================================================================
     // Properties
@@ -23,7 +23,7 @@ public class DSVerticalLayoutView : DSView {
     // ----------------------------------------------------------------------
     public DSVerticalLayoutView(RectOffset margins, bool shouldDisplayFrame= true) {
         myMainView= new DSCellView(margins, shouldDisplayFrame, DisplayVerticalLayout, GetVerticalLayoutSize);
-        mySubviews= new List<DSView>();
+        mySubviews= new List<DSCellView>();
         mySubviewFrames= new List<Rect>();
     }
     
@@ -110,15 +110,22 @@ public class DSVerticalLayoutView : DSView {
 	// ======================================================================
     // Subview management
     // ----------------------------------------------------------------------
-    public void AddSubview(DSView subview) {
-        mySubviews.Add(subview);
+    public void AddSubview(DSView subview, RectOffset margins) {
+		DSCellView container= new DSCellView(margins, false, subview);
+        mySubviews.Add(container);
         mySubviewFrames.Add(new Rect(0,0,0,0));
     }
     public bool RemoveSubview(DSView subview) {
-		bool result= mySubviews.Remove(subview);
-        if(result) {
-            mySubviewFrames.RemoveAt(mySubviewFrames.Count-1);
-        }
-        return result;
+		int idx= -1;
+		for(int i= 0; i < mySubviews.Count; ++i) {
+			if(mySubviews[i].Subview == subview) {
+				idx= i;
+				break;
+			}
+		}
+		if(idx < 0) return false;
+		mySubviews.RemoveAt(idx);
+        mySubviewFrames.RemoveAt(idx);
+        return true;
     }
 }

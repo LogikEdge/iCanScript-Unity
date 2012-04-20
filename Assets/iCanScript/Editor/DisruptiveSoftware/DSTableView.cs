@@ -87,16 +87,27 @@ public class DSTableView : DSView {
         float dataHeight= displayHeight-myColumnTitleSize.y-(needHorizontalScrollbar ? kScrollbarSize : 0);
         if(myColumnDataSize.y > dataHeight) {
             needVerticalScrollbar= true;
-            dataDisplayArea.width-= kScrollbarSize;
+			if(displayArea.width > dataDisplayArea.width) {
+				if(displayArea.width-kScrollbarSize < dataDisplayArea.width) {
+					dataDisplayArea.width= displayArea.width-kScrollbarSize;
+				}
+			} else {
+	            dataDisplayArea.width-= kScrollbarSize;				
+			}
             if(dataDisplayArea.width < 0) dataDisplayArea.width= 0;
         }
 		
         // Display column titles.
+//		Vector2 mousePosition= Event.current.mousePosition;
         GUI.BeginGroup(titleDisplayArea);
+//			Debug.Log("Mouse: "+mousePosition+" GUI: "+GUIUtility.ScreenToGUIPoint(mousePosition));
             DisplayColumnTitles();              
         GUI.EndGroup();
 		if(myColumnTitleSeperator) {
-			GUI.Box(new Rect(titleDisplayArea.x, titleDisplayArea.yMax-2, titleDisplayArea.width, 3), "");
+			GUI.Box(new Rect(displayArea.x, titleDisplayArea.yMax-2, displayArea.width, 3), "");
+			if(myDisplayColumnFrame && displayArea.xMax > titleDisplayArea.xMax) {
+				GUI.Box(new Rect(titleDisplayArea.xMax, titleDisplayArea.y, displayArea.xMax-titleDisplayArea.xMax, titleDisplayArea.height),"");
+			}
 		}
         // Display column data.
         GUI.BeginGroup(dataDisplayArea);
@@ -109,14 +120,17 @@ public class DSTableView : DSView {
             myScrollbarPosition.x= GUI.HorizontalScrollbar(scrollbarPos, myScrollbarPosition.x, dataDisplayArea.width, 0, myColumnTitleSize.x);
         }
         if(needVerticalScrollbar) {
-            Rect scrollbarPos= new Rect(dataDisplayArea.xMax, dataDisplayArea.y, kScrollbarSize, displayArea.height-myColumnTitleSize.y-(needHorizontalScrollbar ? kScrollbarSize : 0));
+            Rect scrollbarPos= new Rect(dataDisplayArea.xMax, dataDisplayArea.y, kScrollbarSize, dataDisplayArea.height);
             myScrollbarPosition.y= GUI.VerticalScrollbar(scrollbarPos, myScrollbarPosition.y, dataDisplayArea.height, 0, myColumnDataSize.y);
         }
     }
     Vector2 GetMainViewDisplaySize(DSTitleView view, Rect displayArea) {
         float width= Mathf.Max(myColumnTitleSize.x, myColumnDataSize.x);
         float height= myColumnTitleSize.y+myColumnDataSize.y;
-        return new Vector2(width, height);
+		if(width > displayArea.width) height+= kScrollbarSize;
+		if(height > displayArea.height) width+= kScrollbarSize;
+		Vector2 displaySize= new Vector2(width, height);
+        return displaySize;
     }
     // ----------------------------------------------------------------------
     void DisplayColumnTitles() {

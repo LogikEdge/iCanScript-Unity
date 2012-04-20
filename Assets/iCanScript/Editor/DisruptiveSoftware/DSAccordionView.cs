@@ -13,6 +13,11 @@ public class DSAccordionView : DSView {
 	int						mySelectionIdx     = 0;
 	int						mySelectionsPerLine= 1;
 	
+    // =================================================================================
+    // Constants
+    // ---------------------------------------------------------------------------------
+    const int   kSpacer= 8;
+    
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -30,7 +35,7 @@ public class DSAccordionView : DSView {
 		
 		myMainView= new DSVerticalLayoutView(margins, shouldDisplayFrame);
 		mySelectionView= new DSCellView(new RectOffset(0,0,0,0), false, DisplaySelection, GetSelectionSize);
-		myMainView.AddSubview(mySelectionView);
+		myMainView.AddSubview(mySelectionView, new RectOffset(0,0,kSpacer,0));
 	}
 
 	// ======================================================================
@@ -125,7 +130,7 @@ public class DSAccordionView : DSView {
     // ----------------------------------------------------------------------
 	void AddSwapableSubview(int idx) {
 		if(idx < mySubviews.Length) {
-			myMainView.AddSubview(mySubviews[idx]);
+			myMainView.AddSubview(mySubviews[idx], new RectOffset(0,0,kSpacer,0));
 		}
 	}
     // ----------------------------------------------------------------------

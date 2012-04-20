@@ -15,6 +15,7 @@ public class DSCellView : DSView {
     AnchorEnum                      myAnchor			      = AnchorEnum.TopLeft;		// Frame anchor position.
  	Action<DSCellView,Rect>         myDisplayDelegate         = null;
 	Func<DSCellView,Rect,Vector2>   myGetSizeToDisplayDelegate= null;
+	DSView							mySubview                 = null;
    
     // ======================================================================
     // Properties
@@ -48,6 +49,10 @@ public class DSCellView : DSView {
 	    get { return myGetSizeToDisplayDelegate; }
 	    set { myGetSizeToDisplayDelegate= value; }
 	}
+	public DSView Subview {
+		get { return mySubview; }
+		set { mySubview= value; }
+	}
     
     // ======================================================================
     // Initialization
@@ -61,7 +66,9 @@ public class DSCellView : DSView {
         GetSizeToDisplayDelegate= getSizeToDisplayDelegate;
     }
     public DSCellView(RectOffset margins, bool shouldDisplayFrame, DSView subview)
-	: this(margins, shouldDisplayFrame, (v,f)=> subview.Display(f), (v,f)=> subview.GetSizeToDisplay(f)) {}
+	: this(margins, shouldDisplayFrame, (v,f)=> subview.Display(f), (v,f)=> subview.GetSizeToDisplay(f)) {
+		mySubview= subview;
+	}
 			
     // ======================================================================
     // DSView functionality implementation.
@@ -129,10 +136,12 @@ public class DSCellView : DSView {
     // Subview management
     // ----------------------------------------------------------------------
     public void SetSubview(DSView subview) {
+		mySubview= subview;
         myDisplayDelegate         = (v,f)=> subview.Display(f);
         myGetSizeToDisplayDelegate= (v,f)=> subview.GetSizeToDisplay(f);        
     }
     public bool RemoveSubview() {
+		mySubview= null;
         myDisplayDelegate         = null;
         myGetSizeToDisplayDelegate= null;
         return true;
