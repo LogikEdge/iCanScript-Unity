@@ -110,8 +110,9 @@ public class DSVerticalLayoutView : DSView {
 	// ======================================================================
     // Subview management
     // ----------------------------------------------------------------------
-    public void AddSubview(DSView subview, RectOffset margins) {
+    public void AddSubview(DSView subview, RectOffset margins, DSView.AnchorEnum alignment= DSView.AnchorEnum.TopLeft) {
 		DSCellView container= new DSCellView(margins, false, subview);
+		container.Anchor= alignment;
         mySubviews.Add(container);
         mySubviewFrames.Add(new Rect(0,0,0,0));
     }

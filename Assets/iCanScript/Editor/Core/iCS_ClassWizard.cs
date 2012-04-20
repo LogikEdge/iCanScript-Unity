@@ -115,16 +115,16 @@ public class iCS_ClassWizard : EditorWindow {
 
 		// Build Class list layout view.
 		ClassListLayoutView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), true);
-		ClassListLayoutView.AddSubview(SearchView, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
-		ClassListLayoutView.AddSubview(ClassListController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
-		ClassListLayoutView.AddSubview(ClassVariablesController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
-		ClassListLayoutView.AddSubview(ClassOperationsController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
+		ClassListLayoutView.AddSubview(SearchView, new RectOffset(kSpacer, kSpacer, 0, kSpacer), DSView.AnchorEnum.Center);
+		ClassListLayoutView.AddSubview(ClassListController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer), DSView.AnchorEnum.Center);
+		ClassListLayoutView.AddSubview(ClassVariablesController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer), DSView.AnchorEnum.Center);
+		ClassListLayoutView.AddSubview(ClassOperationsController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer), DSView.AnchorEnum.Center);
 		
 		// Build class wizard layout view.
 		ClassWizardLayoutView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), true);
 		ClassWizardLayoutView.AddSubview(ConstructorView, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
-		ClassWizardLayoutView.AddSubview(ClassVariablesController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
-		ClassWizardLayoutView.AddSubview(ClassOperationsController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
+		ClassWizardLayoutView.AddSubview(ClassVariablesController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer), DSView.AnchorEnum.Center);
+		ClassWizardLayoutView.AddSubview(ClassOperationsController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer), DSView.AnchorEnum.Center);
 		
 		// Build class wizard title view.
         string classTitle= myTarget != null ? myTarget.Name : "Class Wizard";
