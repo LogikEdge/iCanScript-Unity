@@ -62,6 +62,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
         myTableView.AddColumn(packageColumn);
         myTableView.AddColumn(companyColumn);  
         myTableView.DataSource= this;
+		myTableView.SetSelection(classColumn, 0);
     }
     // ---------------------------------------------------------------------------------
     public void Filter(string classSubstringFilter, string packageSubstringFilter, string companySubstringFilter) {

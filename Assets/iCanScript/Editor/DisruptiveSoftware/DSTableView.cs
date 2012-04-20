@@ -7,14 +7,16 @@ public class DSTableView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    DSTitleView     		myMainView         = null;
-    Vector2                 myScrollbarPosition= Vector2.zero;
-    DSTableViewDataSource	myDataSource       = null;
-	List<DSTableColumn>		myColumns		   = new List<DSTableColumn>();
-	float[]				    myRowHeights	   = new float[0];
+    DSTitleView     		myMainView           = null;
+    Vector2                 myScrollbarPosition  = Vector2.zero;
+    DSTableViewDataSource	myDataSource         = null;
+	List<DSTableColumn>		myColumns		     = new List<DSTableColumn>();
+	float[]				    myRowHeights	     = new float[0];
+	GUIStyle				myColumnTitleGUIStyle= null;
+	DSTableColumn			mySelectedColumn     = null;
+	int						mySelectedRow        = -1;
 	Vector2					myColumnTitleSize;
 	Vector2					myColumnDataSize;
-	GUIStyle				myColumnTitleGUIStyle= null;
 	bool					myColumnTitleSeperator;
 	bool					myDisplayColumnFrame;
 	
@@ -217,16 +219,12 @@ public class DSTableView : DSView {
 							y-= rowHeight;
 						}			
 					}
-					myDataSource.OnMouseDown(this, selectedColumn, selectedRow);
+					if(selectedColumn != mySelectedColumn || selectedRow != mySelectedRow) {
+						mySelectedColumn= selectedColumn;
+						mySelectedRow   = selectedRow;
+						myDataSource.OnMouseDown(this, selectedColumn, selectedRow);						
+					}
 	                Event.current.Use();					
-//					// Debug display.
-//					string name= myMainView.Title.text;
-//					if(titleArea.Contains(mousePosition)) {
-//						Debug.Log("Mouse is inside title of "+name+" on column: "+selectedColumn.Identifier+" on row: "+selectedRow);
-//					}
-//					if(dataArea.Contains(mousePosition)) {
-//						Debug.Log("Mouse is inside data of "+name+" on column: "+selectedColumn.Identifier+" on row: "+selectedRow);
-//					}
 				}
 				break;
 			}
@@ -234,6 +232,11 @@ public class DSTableView : DSView {
 				break;
 			}
         }
+	}
+	public void SetSelection(DSTableColumn column, int row) {
+		mySelectedColumn= column;
+		mySelectedRow   = row;
+		myDataSource.OnMouseDown(this, column, row);
 	}
 	
     // ======================================================================
