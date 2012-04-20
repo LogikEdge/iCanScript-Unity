@@ -105,4 +105,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
         style.fontStyle= fontStyle;
         style.alignment= alignment;
     }
+    // ---------------------------------------------------------------------------------
+	public void OnMouseDown(DSTableView tableView, DSTableColumn tableColumn, int row) {}
+
 }

@@ -115,6 +115,8 @@ public class iCS_ClassListController : DSTableViewDataSource {
             GUI.Label(position, desc.Company, myColumnDataStyle);
         }
     }
+    // ---------------------------------------------------------------------------------
+	public void OnMouseDown(DSTableView tableView, DSTableColumn tableColumn, int row) {}
 
     // =================================================================================
     // Miscelanious

@@ -214,5 +214,8 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
             GUI.Label(position, typeName, labelStyle);                                
         }
     }
+    // ---------------------------------------------------------------------------------
+	public void OnMouseDown(DSTableView tableView, DSTableColumn tableColumn, int row) {}
+	
 
 }

@@ -98,9 +98,7 @@ public class DSTableView : DSView {
         }
 		
         // Display column titles.
-//		Vector2 mousePosition= Event.current.mousePosition;
         GUI.BeginGroup(titleDisplayArea);
-//			Debug.Log("Mouse: "+mousePosition+" GUI: "+GUIUtility.ScreenToGUIPoint(mousePosition));
             DisplayColumnTitles();              
         GUI.EndGroup();
 		if(myColumnTitleSeperator) {
@@ -114,6 +112,9 @@ public class DSTableView : DSView {
             DisplayColumnData();
         GUI.EndGroup();
 
+		// Process mouse events.
+		ProcessMouseEvents(titleDisplayArea, dataDisplayArea);
+		
         // Display scrollbar if needed.
         if(needHorizontalScrollbar) {
             Rect scrollbarPos= new Rect(titleDisplayArea.x, displayArea.yMax-kScrollbarSize, titleDisplayArea.width, kScrollbarSize);
@@ -178,6 +179,63 @@ public class DSTableView : DSView {
 		}
     }
     
+    // ======================================================================
+    // Handle mouse events.
+    // ----------------------------------------------------------------------
+	void ProcessMouseEvents(Rect titleArea, Rect dataArea) {
+		Vector2 mousePosition= Event.current.mousePosition;
+		switch(Event.current.type) {
+            case EventType.ScrollWheel: {
+				if(dataArea.Contains(mousePosition)) {
+	                Vector2 delta= Event.current.delta;
+	                myScrollbarPosition+= 8f*delta;                    
+	                Event.current.Use();					
+				}
+                break;
+            }
+            case EventType.MouseDown: {
+				if(dataArea.Contains(mousePosition) || titleArea.Contains(mousePosition)) {
+					// Determine selected column.
+					float x= mousePosition.x-titleArea.x+myScrollbarPosition.x;
+					DSTableColumn selectedColumn= null;
+					foreach(var c in myColumns) {
+						selectedColumn= c;
+						float columnWidth= selectedColumn.DataSize.x;
+						if(x < columnWidth) break;
+						x-= columnWidth;			
+					}
+					// Determine selected row.
+					int selectedRow= -1;
+					if(dataArea.Contains(mousePosition)) {
+						float y= mousePosition.y-dataArea.y+myScrollbarPosition.y;
+						for(int row= 0; row < myRowHeights.Length; ++row) {
+							float rowHeight= myRowHeights[row];
+							if(y < rowHeight) {
+								selectedRow= row;
+								break;
+							}
+							y-= rowHeight;
+						}			
+					}
+					myDataSource.OnMouseDown(this, selectedColumn, selectedRow);
+	                Event.current.Use();					
+//					// Debug display.
+//					string name= myMainView.Title.text;
+//					if(titleArea.Contains(mousePosition)) {
+//						Debug.Log("Mouse is inside title of "+name+" on column: "+selectedColumn.Identifier+" on row: "+selectedRow);
+//					}
+//					if(dataArea.Contains(mousePosition)) {
+//						Debug.Log("Mouse is inside data of "+name+" on column: "+selectedColumn.Identifier+" on row: "+selectedRow);
+//					}
+				}
+				break;
+			}
+            case EventType.MouseUp: {
+				break;
+			}
+        }
+	}
+	
     // ======================================================================
     // Column Methods
     // ----------------------------------------------------------------------
