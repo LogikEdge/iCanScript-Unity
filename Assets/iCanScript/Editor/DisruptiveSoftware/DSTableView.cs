@@ -207,7 +207,7 @@ public class DSTableView : DSView {
 					// Determine selected row.
 					int selectedRow= -1;
 					if(dataArea.Contains(mousePosition)) {
-						float y= mousePosition.y-dataArea.y+myScrollbarPosition.y;
+						float y= mousePosition.y-dataArea.y+myScrollbarPosition.y-6f;
 						for(int row= 0; row < myRowHeights.Length; ++row) {
 							float rowHeight= myRowHeights[row];
 							if(y < rowHeight) {

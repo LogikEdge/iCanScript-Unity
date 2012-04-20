@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,12 +8,14 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    DSTableView                 myTableView      = null;
-    List<iCS_ReflectionDesc>    myClasses        = null;
-	List<string>				myPackages       = new List<string>();
-	List<string>				myCompanies		 = new List<string>();
-    List<iCS_ReflectionDesc>    myFilteredClasses= null;
-    GUIStyle                    myColumnDataStyle= null;
+    DSTableView                 myTableView       = null;
+    List<iCS_ReflectionDesc>    myClasses         = null;
+	List<string>				myPackages        = new List<string>();
+	List<string>				myCompanies		  = new List<string>();
+    List<iCS_ReflectionDesc>    myFilteredClasses = null;
+    GUIStyle                    myColumnDataStyle = null;
+    Action<Type>                myOnClassSelection= null;
+    int                         mySelectedRow     = 0;
 
     // =================================================================================
     // Constants
@@ -36,7 +39,9 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-	public iCS_ClassListController() {
+	public iCS_ClassListController(Action<Type> onClassSelection= null) {
+        myOnClassSelection= onClassSelection;
+        
         // Default GUI Style.
         if(myColumnDataStyle == null) myColumnDataStyle= EditorStyles.label;
         
@@ -103,6 +108,15 @@ public class iCS_ClassListController : DSTableViewDataSource {
         return Vector2.zero;
     }
     public void DisplayObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row, Rect position) {
+        // Show selected row in reverse color.
+        Color contentColor= GUI.contentColor;
+        if(myOnClassSelection != null && row == mySelectedRow) {
+            Color bkgColor= GUI.contentColor;
+            bkgColor.r= 1f-bkgColor.r;
+            bkgColor.g= 1f-bkgColor.g;
+            bkgColor.b= 1f-bkgColor.b;
+            GUI.contentColor= bkgColor;
+        }
         iCS_ReflectionDesc desc= myFilteredClasses[row];
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kClassColumnId) == 0) {
@@ -114,9 +128,19 @@ public class iCS_ClassListController : DSTableViewDataSource {
         if(string.Compare(columnId, kCompanyColumnId) == 0) {
             GUI.Label(position, desc.Company, myColumnDataStyle);
         }
+        // Restore content color.
+        if(myOnClassSelection != null && row == mySelectedRow) {
+            GUI.contentColor= contentColor;
+        }
     }
     // ---------------------------------------------------------------------------------
-	public void OnMouseDown(DSTableView tableView, DSTableColumn tableColumn, int row) {}
+	public void OnMouseDown(DSTableView tableView, DSTableColumn tableColumn, int row) {
+        mySelectedRow= row;
+        if(myOnClassSelection != null) {
+            iCS_ReflectionDesc desc= myFilteredClasses[row];
+            myOnClassSelection(desc.ClassType);            
+        }
+	}
 
     // =================================================================================
     // Miscelanious

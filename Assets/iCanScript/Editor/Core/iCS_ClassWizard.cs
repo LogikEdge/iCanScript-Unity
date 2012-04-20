@@ -109,7 +109,7 @@ public class iCS_ClassWizard : EditorWindow {
 		SearchView.Anchor= DSView.AnchorEnum.Center;
         ConstructorView= new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, DrawConstructorCell, GetConstrcutorContentSize);
 		
-        ClassListController= new iCS_ClassListController();
+        ClassListController= new iCS_ClassListController(OnClassSelection);
 		ClassVariablesController= new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, VariableTitle, myTarget);
 		ClassOperationsController= new iCS_ClassOperationsController(myTarget.RuntimeType, myStorage, MethodTitle, myTarget);
 
@@ -183,5 +183,8 @@ public class iCS_ClassWizard : EditorWindow {
     // ---------------------------------------------------------------------------------
 	void OnSearch(DSSearchView searchView, string searchString) {
 		ClassListController.Filter(searchString, null, null);
+	}
+	void OnClassSelection(Type classType) {
+	    Debug.Log("Selection class: "+classType.Name);
 	}
 }
