@@ -79,10 +79,6 @@ public class DSTableView : DSView {
         bool needHorizontalScrollbar= false;
         bool needVerticalScrollbar= false;
         
-		if(myRowHeights.Length == 4) {
-			Debug.Log("DataDisplayArea= "+dataDisplayArea); // data Display size is too small by 15 !!!
-		}
-
 		float displayWidth= displayArea.width;
         float displayHeight= displayArea.height;
         if(myColumnTitleSize.x > displayWidth) {
