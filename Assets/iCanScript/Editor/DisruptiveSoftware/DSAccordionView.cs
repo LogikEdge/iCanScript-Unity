@@ -29,7 +29,8 @@ public class DSAccordionView : DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-	public DSAccordionView(RectOffset margins, bool shouldDisplayFrame) {
+	public DSAccordionView(RectOffset margins, bool shouldDisplayFrame, int selectionsPerLine= 1) {
+        mySelectionsPerLine= selectionsPerLine;
 		mySelectionIds= new GUIContent[0];
 		mySubviews= new DSView[0];
 		
@@ -63,13 +64,14 @@ public class DSAccordionView : DSView {
 	// Selection view implementation.
 	// ----------------------------------------------------------------------
 	Vector2 GetSelectionSize(DSCellView view, Rect displaySize) {
-		Vector2 size= Vector2.zero;
+        float width= 0;
+        float height= 0;
 		foreach(var selection in mySelectionIds) {
 			var sSize= GUI.skin.button.CalcSize(selection);
-			if(sSize.x > size.x) size.x= sSize.x;
-			size.y+= sSize.y;
+			if(sSize.x > width) width= sSize.x;
+            if(sSize.y > height) height= sSize.y;
 		}			
-		return size;
+		return new Vector2(width*mySelectionsPerLine, height*((mySelectionsPerLine+mySelectionsPerLine-1)/mySelectionsPerLine));
 	}
 	void DisplaySelection(DSCellView view, Rect position) {
 		if(mySelectionIds.Length < 1) return;

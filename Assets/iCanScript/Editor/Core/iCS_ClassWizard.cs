@@ -133,8 +133,8 @@ public class iCS_ClassWizard : EditorWindow {
 		ClassWizardTitleView.SetSubview(ClassWizardLayoutView);
 		
 		// Build accrodion view.
-		MainView= new DSAccordionView(new RectOffset(0,0,0,0), false);
-		MainView.AddSubview(new GUIContent("Create")      , ClassListLayoutView);
+		MainView= new DSAccordionView(new RectOffset(0,0,0,0), false, 2);
+		MainView.AddSubview(new GUIContent("Create Node") , ClassListLayoutView);
 		MainView.AddSubview(new GUIContent("Class Wizard"), ClassWizardTitleView);
     }
     // ---------------------------------------------------------------------------------
