@@ -219,14 +219,6 @@ public class DSTableView : DSView {
 					}
 					myDataSource.OnMouseDown(this, selectedColumn, selectedRow);
 	                Event.current.Use();					
-//					// Debug display.
-//					string name= myMainView.Title.text;
-//					if(titleArea.Contains(mousePosition)) {
-//						Debug.Log("Mouse is inside title of "+name+" on column: "+selectedColumn.Identifier+" on row: "+selectedRow);
-//					}
-//					if(dataArea.Contains(mousePosition)) {
-//						Debug.Log("Mouse is inside data of "+name+" on column: "+selectedColumn.Identifier+" on row: "+selectedRow);
-//					}
 				}
 				break;
 			}
