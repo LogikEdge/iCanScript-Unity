@@ -15,6 +15,8 @@ public class DSTableView : DSView {
 	GUIStyle				myColumnTitleGUIStyle= null;
 	DSTableColumn			mySelectedColumn     = null;
 	int						mySelectedRow        = -1;
+	float                   myHScrollbarSize     = 0;
+	float                   myVScrollbarSize     = 0;
 	Vector2					myColumnTitleSize;
 	Vector2					myColumnDataSize;
 	bool					myColumnTitleSeperator;
@@ -118,11 +120,14 @@ public class DSTableView : DSView {
 		ProcessMouseEvents(titleDisplayArea, dataDisplayArea);
 		
         // Display scrollbar if needed.
+        myHScrollbarSize= myVScrollbarSize= 0;
         if(needHorizontalScrollbar) {
+            myHScrollbarSize= dataDisplayArea.width;
             Rect scrollbarPos= new Rect(titleDisplayArea.x, displayArea.yMax-kScrollbarSize, titleDisplayArea.width, kScrollbarSize);
             myScrollbarPosition.x= GUI.HorizontalScrollbar(scrollbarPos, myScrollbarPosition.x, dataDisplayArea.width, 0, myColumnTitleSize.x);
         }
         if(needVerticalScrollbar) {
+            myVScrollbarSize= dataDisplayArea.height;
             Rect scrollbarPos= new Rect(dataDisplayArea.xMax, dataDisplayArea.y, kScrollbarSize, dataDisplayArea.height);
             myScrollbarPosition.y= GUI.VerticalScrollbar(scrollbarPos, myScrollbarPosition.y, dataDisplayArea.height, 0, myColumnDataSize.y);
         }
@@ -189,8 +194,18 @@ public class DSTableView : DSView {
 		switch(Event.current.type) {
             case EventType.ScrollWheel: {
 				if(dataArea.Contains(mousePosition)) {
-	                Vector2 delta= Event.current.delta;
-	                myScrollbarPosition+= 8f*delta;                    
+	                Vector2 delta= 8f*Event.current.delta;
+	                if(Math3D.IsZero(myVScrollbarSize)) delta.x= 0;
+	                if(Math3D.IsZero(myHScrollbarSize)) delta.y= 0;
+	                myScrollbarPosition+= delta;                    
+                    if(myScrollbarPosition.x < 0) myScrollbarPosition.x= 0;
+                    if(myScrollbarPosition.y < 0) myScrollbarPosition.y= 0;
+                    if(myScrollbarPosition.x > myColumnDataSize.x-myHScrollbarSize) {
+                        myScrollbarPosition.x= myColumnDataSize.x-myHScrollbarSize;
+                    }
+                    if(myScrollbarPosition.y > myColumnDataSize.y-myVScrollbarSize) {
+                        myScrollbarPosition.y= myColumnDataSize.y-myVScrollbarSize;
+                    }
 	                Event.current.Use();					
 				}
                 break;
