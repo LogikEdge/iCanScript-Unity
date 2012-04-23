@@ -11,14 +11,6 @@ public class DSVerticalLayoutView : DSView {
     List<Rect>      	mySubviewFrames= null;
     
     // ======================================================================
-    // Properties
-    // ----------------------------------------------------------------------
-	
-    // =================================================================================
-    // Constants
-    // ---------------------------------------------------------------------------------
-    
-    // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
     public DSVerticalLayoutView(RectOffset margins, bool shouldDisplayFrame= true) {
@@ -117,6 +109,22 @@ public class DSVerticalLayoutView : DSView {
         mySubviewFrames.Add(new Rect(0,0,0,0));
     }
     public bool RemoveSubview(DSView subview) {
+		int idx= FindIndexOfSubview(subview);
+		if(idx < 0) return false;
+		mySubviews.RemoveAt(idx);
+        mySubviewFrames.RemoveAt(idx);
+        return true;
+    }
+	public bool ReplaceSubview(DSView toRemove, DSView bySubview, RectOffset margins, DSView.AnchorEnum alignment= DSView.AnchorEnum.TopLeft) {
+		int idx= FindIndexOfSubview(toRemove);
+		if(idx < 0) return false;
+		DSCellView container= new DSCellView(margins, false, bySubview);
+		container.Anchor= alignment;
+        mySubviews[idx]= container;
+        mySubviewFrames[idx]= new Rect(0,0,0,0);
+		return true;
+	}
+	int FindIndexOfSubview(DSView subview) {
 		int idx= -1;
 		for(int i= 0; i < mySubviews.Count; ++i) {
 			if(mySubviews[i].Subview == subview) {
@@ -124,9 +132,6 @@ public class DSVerticalLayoutView : DSView {
 				break;
 			}
 		}
-		if(idx < 0) return false;
-		mySubviews.RemoveAt(idx);
-        mySubviewFrames.RemoveAt(idx);
-        return true;
-    }
+		return idx;
+	}
 }

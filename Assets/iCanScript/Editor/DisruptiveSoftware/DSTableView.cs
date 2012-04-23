@@ -110,6 +110,7 @@ public class DSTableView : DSView {
 			}
 		}
         // Display column data.
+		if(myRowHeights.Length == 4) Debug.Log("DataDisplayArea= "+dataDisplayArea); // data Display size is too small by 15 !!!
         GUI.BeginGroup(dataDisplayArea);
             DisplayColumnData();
         GUI.EndGroup();

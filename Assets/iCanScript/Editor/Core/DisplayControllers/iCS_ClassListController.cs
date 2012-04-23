@@ -92,6 +92,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // TableViewDataSource
     // ---------------------------------------------------------------------------------
     public int NumberOfRowsInTableView(DSTableView tableView) {
+//		Debug.Log("#rows= "+myFilteredClasses.Count);
         return myFilteredClasses.Count;
     }
     public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
