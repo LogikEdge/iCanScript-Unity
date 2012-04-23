@@ -21,6 +21,7 @@ public class DSAccordionView : DSView {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+	public DSView View { get { return myMainView; }}
 	public int SelectionsPerLine {
 		get { return mySelectionsPerLine; }
 		set { mySelectionsPerLine= value < 1 ? 1 : value; }

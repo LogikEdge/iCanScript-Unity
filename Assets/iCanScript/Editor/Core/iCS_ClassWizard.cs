@@ -8,26 +8,34 @@ public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    iCS_ClassWizardController       myController= null;
-
+    DSAccordionView             myMainView  = null;
+    iCS_ClassWizardController   myController= null;
+    
+    // =================================================================================
+    // Constants
+    // ---------------------------------------------------------------------------------
+    const int   kSpacer= 8;
+    
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     public void OnActivate(iCS_EditorObject target, iCS_IStorage storage) {
         // Transform invalid activation to a deactivation.
         if(target == null || storage == null) {
-            myController= null;
+            myMainView= null;
             return;
         }
-        if(myController == null ||
+        if(myMainView == null ||
            (myController != null && (myController.Target != target || myController.IStorage != storage))) {
-            myController= new iCS_ClassWizardController(target, storage);            
+               myController= new iCS_ClassWizardController(target, storage);            
+               myMainView= new DSAccordionView(new RectOffset(kSpacer, kSpacer, kSpacer, kSpacer), true);
+               myMainView.AddSubview(new GUIContent("Class Wizard"), myController.View);
         }
         Repaint();
     }
     // ---------------------------------------------------------------------------------
     public void OnDeactivate() {
-        myController= null;
+        myMainView= null;
         Repaint();
     }
 
@@ -38,6 +46,6 @@ public class iCS_ClassWizard : EditorWindow {
         // Wait until window is configured.
         if(myController == null) return;
         EditorGUIUtility.LookLikeInspector();
-        myController.View.Display(new Rect(0,0,position.width, position.height));
+        myMainView.Display(new Rect(0,0,position.width, position.height));
     }
 }
