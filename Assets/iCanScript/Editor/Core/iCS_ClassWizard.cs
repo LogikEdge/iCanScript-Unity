@@ -8,8 +8,10 @@ public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    DSAccordionView             myMainView  = null;
-    iCS_ClassWizardController   myController= null;
+    DSAccordionView             myMainView     = null;
+    iCS_ClassWizardController   myController   = null;
+    DSCellView                  myTreeView     = null;
+    DSCellView                  myInspectorView= null;
     
     // =================================================================================
     // Constants
@@ -27,9 +29,13 @@ public class iCS_ClassWizard : EditorWindow {
         }
         if(myMainView == null ||
            (myController != null && (myController.Target != target || myController.IStorage != storage))) {
-               myController= new iCS_ClassWizardController(target, storage);            
-               myMainView= new DSAccordionView(new RectOffset(kSpacer, kSpacer, kSpacer, kSpacer), true);
-               myMainView.AddSubview(new GUIContent("Class Wizard"), myController.View);
+               myController   = new iCS_ClassWizardController(target, storage);            
+               myTreeView     = new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true);
+               myInspectorView= new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true);
+               myMainView     = new DSAccordionView(new RectOffset(kSpacer, kSpacer, kSpacer, kSpacer), true, 3);
+               myMainView.AddSubview(new GUIContent("Wizard"), myController.View);
+               myMainView.AddSubview(new GUIContent("Inspector"), myInspectorView);
+               myMainView.AddSubview(new GUIContent("Tree View"), myTreeView);
         }
         Repaint();
     }
