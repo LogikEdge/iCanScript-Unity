@@ -72,14 +72,18 @@ public class DSTableView : DSView {
                                         Mathf.Min(displayArea.height, myColumnTitleSize.y));
         Rect dataDisplayArea= new Rect(displayArea.x, titleDisplayArea.yMax,
                                        Mathf.Min(displayArea.width, myColumnDataSize.x),
-                                       Mathf.Min(displayArea.height-titleDisplayArea.height, myColumnDataSize.y));
+                                       displayArea.height-titleDisplayArea.height);
         if(dataDisplayArea.height < 0) dataDisplayArea.height= 0;
         
         // Compute scrollbar information.
         bool needHorizontalScrollbar= false;
         bool needVerticalScrollbar= false;
         
-        float displayWidth= displayArea.width;
+		if(myRowHeights.Length == 4) {
+			Debug.Log("DataDisplayArea= "+dataDisplayArea); // data Display size is too small by 15 !!!
+		}
+
+		float displayWidth= displayArea.width;
         float displayHeight= displayArea.height;
         if(myColumnTitleSize.x > displayWidth) {
             needHorizontalScrollbar= true;
@@ -110,7 +114,6 @@ public class DSTableView : DSView {
 			}
 		}
         // Display column data.
-		if(myRowHeights.Length == 4) Debug.Log("DataDisplayArea= "+dataDisplayArea); // data Display size is too small by 15 !!!
         GUI.BeginGroup(dataDisplayArea);
             DisplayColumnData();
         GUI.EndGroup();
