@@ -38,8 +38,10 @@ public class iCS_ClassWizardController {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-    public DSView   View    { get { return myMainView; }}
-    public bool     IsValid { get { return myTarget != null && myStorage != null; }}
+    public DSView           View        { get { return myMainView; }}
+    public bool             IsValid     { get { return myTarget != null && myStorage != null; }}
+    public iCS_EditorObject Target      { get { return myTarget; }}
+    public iCS_IStorage     IStorage    { get { return myStorage; }}
     
     // ======================================================================
     // Initialization
