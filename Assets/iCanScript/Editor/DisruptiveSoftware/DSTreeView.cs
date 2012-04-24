@@ -34,10 +34,4 @@ public class DSTreeView : DSView {
         myMainView.Anchor= anchor;
     }
 
-    // ======================================================================
-    // Tree structure.
-    // ----------------------------------------------------------------------
-	void SortTree() {
-		Array.Sort(myTreeIds);
-	}
 }
