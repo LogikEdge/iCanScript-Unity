@@ -72,7 +72,7 @@ public class DSAccordionView : DSView {
 			if(sSize.x > width) width= sSize.x;
             if(sSize.y > height) height= sSize.y;
 		}			
-		return new Vector2(width*mySelectionsPerLine, height*((mySelectionsPerLine+mySelectionsPerLine-1)/mySelectionsPerLine));
+		return new Vector2((width+kSpacer)*mySelectionsPerLine, height*((mySelectionsPerLine+mySelectionsPerLine-1)/mySelectionsPerLine));
 	}
 	void DisplaySelection(DSCellView view, Rect position) {
 		if(mySelectionIds.Length < 1) return;

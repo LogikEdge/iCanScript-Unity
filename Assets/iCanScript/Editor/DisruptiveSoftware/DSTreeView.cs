@@ -1,17 +1,22 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 public class DSTreeView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    DSCellView  myMainView= null;
+    DSCellView  myMainView    = null;
+	float		myIndentOffset= 1;
+	int[]		myTreeIds;
+	bool[]		myIsFolded;
     
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSTreeView(RectOffset margin, bool shouldDisplayFrame) {
+    public DSTreeView(RectOffset margin, bool shouldDisplayFrame, float indentOffset= kHorizontalSpacer) {
         myMainView= new DSCellView(margin, shouldDisplayFrame);
+		myIndentOffset= indentOffset;
     }
     
     // ======================================================================
@@ -28,4 +33,11 @@ public class DSTreeView : DSView {
     public override void SetAnchor(AnchorEnum anchor) {
         myMainView.Anchor= anchor;
     }
+
+    // ======================================================================
+    // Tree structure.
+    // ----------------------------------------------------------------------
+	void SortTree() {
+		Array.Sort(myTreeIds);
+	}
 }
