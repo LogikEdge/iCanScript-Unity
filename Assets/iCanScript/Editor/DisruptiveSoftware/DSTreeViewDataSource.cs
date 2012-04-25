@@ -7,6 +7,6 @@ public interface DSTreeViewDataSource {
 	bool	MoveToNextSibling();
 	bool	MoveToFirstChild();
 	Vector2	CurrentObjectDisplaySize();
-	void	DisplayCurrentObject(Rect displayArea);
+	bool	DisplayCurrentObject(Rect displayArea, bool foldout);
 	object	CurrentObjectKey();
 }

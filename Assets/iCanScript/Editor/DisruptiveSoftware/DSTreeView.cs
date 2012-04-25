@@ -34,19 +34,23 @@ public class DSTreeView : DSView {
 		if(!myDataSource.MoveToNext()) return;
 
 		while(true) {
+			// Determine if current object is folded.
+			object key= myDataSource.CurrentObjectKey();
+			bool isFolded= true;
+			if(!myIsFoldedDictionary.TryGetValue(key, out isFolded)) {
+				isFolded= true;
+				myIsFoldedDictionary.Add(key, true);
+			}
+
 			// Consider size of the current object.
 			var currentSize= myDataSource.CurrentObjectDisplaySize();
 			Rect displayArea= new Rect(frameArea.x+indent*myIndentOffset, y, currentSize.x, currentSize.y);
 			y+= currentSize.y;
 			displayArea= Math3D.Intersection(frameArea, displayArea);
 			if(Math3D.IsNotZero(displayArea.width) && Math3D.IsNotZero(displayArea.height)) {
-				myDataSource.DisplayCurrentObject(displayArea);
+				isFolded= myDataSource.DisplayCurrentObject(displayArea, isFolded);
+				myIsFoldedDictionary[key]= isFolded;
 			}
-			
-			// Determine if current object is folded.
-			object key= myDataSource.CurrentObjectKey();
-			bool isFolded= true;
-			myIsFoldedDictionary.TryGetValue(key, out isFolded);
 
 			if(isFolded) {
 				if(!myDataSource.MoveToNextSibling()) {

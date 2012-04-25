@@ -70,9 +70,9 @@ public class iCS_EditorObjectTreeController : DSTreeViewDataSource {
 		var content= new GUIContent(myCursor.Name);
 		return EditorStyles.foldout.CalcSize(content);
 	}
-	public void	DisplayCurrentObject(Rect displayArea) {
-		if(myCursor == null) return;
-		EditorGUI.Foldout(displayArea, false, myCursor.Name);
+	public bool	DisplayCurrentObject(Rect displayArea, bool foldout) {
+		if(myCursor == null) return true;
+		return EditorGUI.Foldout(displayArea, foldout, myCursor.Name);
 	}
 	public object	CurrentObjectKey() {
 		return myCursor;
