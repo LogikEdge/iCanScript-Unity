@@ -8,10 +8,10 @@ public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    DSAccordionView             myMainView     = null;
-    iCS_ClassWizardController   myController   = null;
-    DSTreeView                  myTreeView     = null;
-    DSCellView                  myInspectorView= null;
+    DSAccordionView             	myMainView     = null;
+    iCS_ClassWizardController   	myController   = null;
+    iCS_EditorObjectTreeController	myTreeView     = null;
+    DSCellView                  	myInspectorView= null;
     
     // =================================================================================
     // Constants
@@ -30,12 +30,12 @@ public class iCS_ClassWizard : EditorWindow {
         if(myMainView == null ||
            (myController != null && (myController.Target != target || myController.IStorage != storage))) {
                myController   = new iCS_ClassWizardController(target, storage);            
-               myTreeView     = new DSTreeView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true);
+               myTreeView     = new iCS_EditorObjectTreeController(target, storage);
                myInspectorView= new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true);
                myMainView     = new DSAccordionView(new RectOffset(kSpacer, kSpacer, kSpacer, kSpacer), true, 3);
                myMainView.AddSubview(new GUIContent("Wizard"), myController.View);
                myMainView.AddSubview(new GUIContent("Inspector"), myInspectorView);
-               myMainView.AddSubview(new GUIContent("Tree View"), myTreeView);
+               myMainView.AddSubview(new GUIContent("Tree View"), myTreeView.View);
         }
         Repaint();
     }
@@ -50,7 +50,7 @@ public class iCS_ClassWizard : EditorWindow {
     // ---------------------------------------------------------------------------------
     void OnGUI() {
         // Wait until window is configured.
-        if(myController == null) return;
+        if(myMainView == null) return;
         EditorGUIUtility.LookLikeInspector();
         myMainView.Display(new Rect(0,0,position.width, position.height));
     }
