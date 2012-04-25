@@ -195,8 +195,8 @@ public class DSTableView : DSView {
             case EventType.ScrollWheel: {
 				if(dataArea.Contains(mousePosition)) {
 	                Vector2 delta= 8f*Event.current.delta;
-	                if(Math3D.IsZero(myVScrollbarSize)) delta.x= 0;
-	                if(Math3D.IsZero(myHScrollbarSize)) delta.y= 0;
+	                if(Math3D.IsZero(myVScrollbarSize)) delta.y= 0;
+	                if(Math3D.IsZero(myHScrollbarSize)) delta.x= 0;
 	                myScrollbarPosition+= delta;                    
                     if(myScrollbarPosition.x < 0) myScrollbarPosition.x= 0;
                     if(myScrollbarPosition.y < 0) myScrollbarPosition.y= 0;

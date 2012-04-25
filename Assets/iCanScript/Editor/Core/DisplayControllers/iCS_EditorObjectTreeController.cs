@@ -37,7 +37,6 @@ public class iCS_EditorObjectTreeController : DSTreeViewDataSource {
 		do {
 			myCursor= myStorage.GetParent(myCursor);
 			if(!myStorage.IsChildOf(myCursor, myTarget)) {
-				myCursor= null;
 				return false;
 			}
 		} while(!MoveToNextSibling());
