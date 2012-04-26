@@ -7,7 +7,7 @@ public class iCS_MenuProxy {
 	// iCanScript Editor Window Menu.
 	[MenuItem("Window/iCanScript Editor")]
 	public static void ShowiCanScriptEditor() {
-        iCS_EditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_EditorProxy), false, "iCanScript") as iCS_EditorProxy;
+        iCS_GraphEditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_GraphEditorProxy), false, "iCanScript") as iCS_GraphEditorProxy;
         editorProxy.hideFlags= HideFlags.DontSave;
 	}
 
@@ -49,11 +49,11 @@ public class iCS_MenuProxy {
     [MenuItem("iCanScript/",false,20)]
     [MenuItem("iCanScript/Center Graph _#&f",false,21)]
     public static void CenterGraph() {
-        iCS_EditorProxy.GetEditor().CenterOnRoot();
+        iCS_GraphEditorProxy.GetEditor().CenterOnRoot();
     }
     [MenuItem("iCanScript/Center On Selected _&f",false,22)]
     public static void CenterOnSelected() {
-        iCS_EditorProxy.GetEditor().CenterOnSelected();
+        iCS_GraphEditorProxy.GetEditor().CenterOnSelected();
     }
     // ======================================================================
     // Documentation Access

@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This non-persistante class is used to edit the iCS_Behaviour.
-public class iCS_Editor : EditorWindow {
+public class iCS_GraphEditor : EditorWindow {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------

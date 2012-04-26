@@ -2,10 +2,10 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_EditorProxy : iCS_Editor {
+public class iCS_GraphEditorProxy : iCS_GraphEditor {
     // ----------------------------------------------------------------------
-    public static iCS_Editor GetEditor() {
-        iCS_EditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_EditorProxy), false, "iCanScript") as iCS_EditorProxy;
+    public static iCS_GraphEditor GetEditor() {
+        iCS_GraphEditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_GraphEditorProxy), false, "iCanScript") as iCS_GraphEditorProxy;
         DontDestroyOnLoad(editorProxy);
         editorProxy.hideFlags= HideFlags.DontSave;                    
         // Assure that the components are properly installed.

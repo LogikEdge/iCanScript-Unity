@@ -15,7 +15,7 @@ public class iCS_Inspector : Editor {
     // PROPERTIES
 	// ----------------------------------------------------------------------
     private iCS_IStorage     Storage= null;
-	private iCS_Editor	     Editor = null;
+	private iCS_GraphEditor	 Editor = null;
 	public  iCS_EditorObject SelectedObject {
 	    get { return mySelectedObject; }
 	    set {
@@ -60,7 +60,7 @@ public class iCS_Inspector : Editor {
 	}
 	
 	// ----------------------------------------------------------------------
-    protected virtual iCS_Editor GetEditor() {
+    protected virtual iCS_GraphEditor GetEditor() {
         return null;
     }
 	// ----------------------------------------------------------------------
