@@ -31,7 +31,7 @@ public class iCS_EditorObjectTreeController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public void	Reset() { myCursor= myTarget; }
 	public bool	MoveToNext() {
-		if(myCursor == null) return false;
+		if(myStorage == null) return false;
 		if(MoveToFirstChild()) return true;
 		if(MoveToNextSibling()) return true;
 		do {
@@ -59,18 +59,18 @@ public class iCS_EditorObjectTreeController : DSTreeViewDataSource {
 		);
 	}
 	public bool	MoveToFirstChild() {
-		if(myCursor == null) return false;
+		if(myStorage == null) return false;
 		if(myStorage.NbOfChildren(myCursor) == 0) return false;
 		myStorage.ForEachChild(myCursor, c=> { myCursor= c; return true; });
 		return true;
 	}
 	public Vector2	CurrentObjectDisplaySize() {
-		if(myCursor == null) return Vector2.zero;
+		if(myStorage == null) return Vector2.zero;
 		var content= new GUIContent(myCursor.Name);
 		return EditorStyles.foldout.CalcSize(content);
 	}
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout) {
-		if(myCursor == null) return true;
+		if(myStorage == null) return true;
 		return EditorGUI.Foldout(displayArea, foldout, myCursor.Name);
 	}
 	public object	CurrentObjectKey() {

@@ -197,11 +197,22 @@ public class iCS_GraphEditor : EditorWindow {
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
 	public void Update() {
+		GameObject go= Selection.activeGameObject;
+		if(go != null) {
+			iCS_Storage storage= go.GetComponent<iCS_Storage>();
+			if(storage != null) {
+				if(Storage == null || storage != Storage.Storage) {
+					Debug.Log("Selection is a behaviour: "+Selection.activeGameObject);					
+				}
+			}
+//			if(go.GetComponent<iCS_Library>() != null) {
+//				Debug.Log("Selection is a library: "+Selection.activeGameObject);								
+//			}
+		}
         // Determine repaint rate.
         if(Storage != null) {
             // Repaint window
             if(Storage.IsDirty || Storage.IsAnimationPlaying || AnimatedScrollPosition.IsActive) {
-//                Debug.Log("IsDirty: "+Storage.IsDirty+" AnimationPlaying: "+Storage.IsAnimationPlaying+" ScrollAnimation: "+AnimatedScrollPosition.IsActive);
                 Storage.IsAnimationPlaying= false;
                 Repaint();
             }
