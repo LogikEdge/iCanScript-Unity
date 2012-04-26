@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ClassWizard : EditorWindow {
+public class iCS_ClassWizard : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -21,7 +21,7 @@ public class iCS_ClassWizard : EditorWindow {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    public void OnActivate(iCS_EditorObject target, iCS_IStorage storage) {
+    public override void OnActivate(iCS_EditorObject target, iCS_IStorage storage) {
         // Transform invalid activation to a deactivation.
         if(target == null || storage == null) {
             myMainView= null;
@@ -40,7 +40,7 @@ public class iCS_ClassWizard : EditorWindow {
         Repaint();
     }
     // ---------------------------------------------------------------------------------
-    public void OnDeactivate() {
+    public override void OnDeactivate() {
         myMainView= null;
         Repaint();
     }

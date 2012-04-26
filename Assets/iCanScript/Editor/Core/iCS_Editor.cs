@@ -663,7 +663,7 @@ public class iCS_Editor : EditorWindow {
         if(SelectedObject != null && SelectedObject.IsClassModule) {
             bool hadKeyboardFocus= HasKeyboardFocus;
             ClassWizard= GetClassWizard();
-            ClassWizard.OnActivate(SelectedObject, Storage);
+            iCS_EditorWindowMgr.Activate(SelectedObject, Storage);
             // Keep keyboard focus.
             if(hadKeyboardFocus) Focus();
         }        
@@ -1614,9 +1614,9 @@ public class iCS_Editor : EditorWindow {
     void UpdateClassWizard() {
         if(ClassWizard == null) return;
         if(SelectedObject == null || !SelectedObject.IsClassModule) {
-            ClassWizard.OnDeactivate();
+            iCS_EditorWindowMgr.Deactivate();
         } else {
-            ClassWizard.OnActivate(SelectedObject, Storage);            
+            iCS_EditorWindowMgr.Activate(SelectedObject, Storage);            
         }
     }
 	// ----------------------------------------------------------------------

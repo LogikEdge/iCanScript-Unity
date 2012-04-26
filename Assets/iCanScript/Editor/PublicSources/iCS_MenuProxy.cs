@@ -4,7 +4,7 @@ using System.Collections;
 
 public class iCS_MenuProxy {
     // ======================================================================
-	// iCanScript Window Menu.
+	// iCanScript Editor Window Menu.
 	[MenuItem("Window/iCanScript Editor")]
 	public static void ShowiCanScriptEditor() {
         iCS_EditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_EditorProxy), false, "iCanScript") as iCS_EditorProxy;
