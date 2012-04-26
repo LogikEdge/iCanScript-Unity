@@ -47,3 +47,5 @@ publish/_engineFiles
 publish/_editorFiles
 ProjectSettings/
 Library/EditorUserSettings.asset
+iCanScript.sln
+iCanScript-csharp.sln

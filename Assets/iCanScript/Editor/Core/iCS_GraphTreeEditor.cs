@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_TreeEditor : EditorWindow {
+public class iCS_HierarchyEditor : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -24,12 +24,12 @@ public class iCS_TreeEditor : EditorWindow {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    public void OnActivate(iCS_EditorObject rootObject, iCS_IStorage storage) {
+    public override void OnActivate(iCS_EditorObject rootObject, iCS_IStorage storage) {
 		myRoot= rootObject;
 		myStorage= storage;
 		myNodes= new Dictionary<object, NodeInfo>();
 	}
-	public void OnDeactivate() {
+	public override void OnDeactivate() {
 		myRoot= null;
 		myStorage= null;
 		myNodes= null;

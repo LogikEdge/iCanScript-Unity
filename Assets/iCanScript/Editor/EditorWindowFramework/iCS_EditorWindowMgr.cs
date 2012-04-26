@@ -42,9 +42,16 @@ public static class iCS_EditorWindowMgr {
 
     // ======================================================================
  	// iCanScript ClassWizard Window Menu.
- 	[MenuItem("Window/iCanScript ClassWizard")]
+ 	[MenuItem("Window/iCanScript Wizard")]
  	public static void ShowiCanScriptClassWizard() {
-         iCS_ClassWizardProxy window= EditorWindow.GetWindow(typeof(iCS_ClassWizardProxy), false, "Class Wizard") as iCS_ClassWizardProxy;
+         iCS_ClassWizardProxy window= EditorWindow.GetWindow(typeof(iCS_ClassWizardProxy), false, "iCS Wizard") as iCS_ClassWizardProxy;
+         window.hideFlags= HideFlags.DontSave;
+ 	}
+    // ======================================================================
+ 	// iCanScript Hierarchy Window Menu.
+ 	[MenuItem("Window/iCanScript Hierarchy")]
+ 	public static void ShowiCanScriptHierarchy() {
+         iCS_HierarchyEditorProxy window= EditorWindow.GetWindow(typeof(iCS_HierarchyEditorProxy), false, "iCS Hierarchy") as iCS_HierarchyEditorProxy;
          window.hideFlags= HideFlags.DontSave;
  	}
 }
