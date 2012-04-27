@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_EditorObjectTreeController : DSTreeViewDataSource {
+public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -19,7 +19,7 @@ public class iCS_EditorObjectTreeController : DSTreeViewDataSource {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-	public iCS_EditorObjectTreeController(iCS_EditorObject target, iCS_IStorage storage) {
+	public iCS_ObjectHierarchyController(iCS_EditorObject target, iCS_IStorage storage) {
 		myTarget= target;
 		myStorage= storage;
 		myCursor= target;

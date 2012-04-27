@@ -10,7 +10,7 @@ public class iCS_ClassWizard : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
     DSAccordionView             	myMainView     = null;
     iCS_ClassWizardController   	myController   = null;
-    iCS_EditorObjectTreeController	myTreeView     = null;
+    iCS_ObjectHierarchyController	myTreeView     = null;
     DSCellView                  	myInspectorView= null;
     
     // =================================================================================
@@ -30,7 +30,7 @@ public class iCS_ClassWizard : iCS_EditorWindow {
         if(myMainView == null ||
            (myController != null && (myController.Target != target || myController.IStorage != storage))) {
                myController   = new iCS_ClassWizardController(target, storage);            
-               myTreeView     = new iCS_EditorObjectTreeController(target, storage);
+               myTreeView     = new iCS_ObjectHierarchyController(target, storage);
                myInspectorView= new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true);
                myMainView     = new DSAccordionView(new RectOffset(kSpacer, kSpacer, kSpacer, kSpacer), true, 3);
                myMainView.AddSubview(new GUIContent("Wizard"), myController.View);
