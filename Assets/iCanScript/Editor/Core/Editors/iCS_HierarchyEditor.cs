@@ -17,28 +17,45 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject			myRoot;
-	iCS_IStorage				myStorage;
-	Dictionary<object,NodeInfo>	myNodes;
+	iCS_EditorObject			    myRoot;
+	iCS_IStorage				    myStorage;
+    DSScrollView                    myMainView;
+	iCS_ObjectHierarchyController   myController;
 	
+    // =================================================================================
+    // Initialization.
+    // ---------------------------------------------------------------------------------
+    void OnEnable() {
+        iCS_IStorageMgr.Register(SetStorage);
+    }
+    void OnDisable() {
+        iCS_IStorageMgr.Unregister(SetStorage);
+    }
+    
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     public override void OnActivate(iCS_EditorObject rootObject, iCS_IStorage storage) {
 		myRoot= rootObject;
-		myStorage= storage;
-		myNodes= new Dictionary<object, NodeInfo>();
+        SetStorage(storage);
 	}
 	public override void OnDeactivate() {
 		myRoot= null;
 		myStorage= null;
-		myNodes= null;
 	}
-
+    void SetStorage(iCS_IStorage storage) {
+		myStorage= storage;
+		myRoot= myStorage.EditorObjects[0];
+        myController= new iCS_ObjectHierarchyController(myRoot, myStorage);
+        myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, myController.View);
+    }
+    
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
     void OnGUI() {
+        iCS_IStorageMgr.Update();
 		if(myStorage == null) return;
+		myMainView.Display(new Rect(0,0,position.width,position.height));
 	}
 }
