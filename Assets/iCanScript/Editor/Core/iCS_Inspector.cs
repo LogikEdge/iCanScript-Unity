@@ -44,6 +44,9 @@ public class iCS_Inspector : Editor {
         
         // Create the editor.
         ActivateEditor();
+
+        // Register for iCanScript selection change.
+        iCS_IStorageMgr.Register(SetStorage);
 	}
 	
 	// ----------------------------------------------------------------------
@@ -57,6 +60,13 @@ public class iCS_Inspector : Editor {
 
         // Forget the selected object.
 		mySelectedObject= null;
+
+        // Unregister for iCanScript selection change.
+        iCS_IStorageMgr.Unregister(SetStorage);
+	}
+	// ----------------------------------------------------------------------
+	void SetStorage(iCS_IStorage storage) {
+	    Storage= storage;
 	}
 	
 	// ----------------------------------------------------------------------
@@ -83,8 +93,8 @@ public class iCS_Inspector : Editor {
         if(Editor.Storage == null || Editor.Storage.Storage != realStorage) {
             Editor.Deactivate();
             mySelectedObject= null; 
-            Storage= new iCS_IStorage(realStorage);        
-            Editor.Activate(Storage, this);                        
+//            Storage= new iCS_IStorage(realStorage);        
+//            Editor.Activate(Storage, this);                        
             Editor.SetInspector(this);
         } else {
             Storage= Editor.Storage;

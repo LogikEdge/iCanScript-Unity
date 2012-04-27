@@ -125,6 +125,12 @@ public class iCS_GraphEditor : EditorWindow {
             ourAlreadyParsed= true;
             iCS_Reflection.ParseAppDomain();
         }
+        
+        // Register to receive storage selection changes.
+        iCS_IStorageMgr.Register(SetStorage);
+
+        // Get snapshot for realtime clock.
+        CurrentTime= Time.realtimeSinceStartup;	    
 	}
 
 	// ----------------------------------------------------------------------
@@ -133,18 +139,20 @@ public class iCS_GraphEditor : EditorWindow {
         // Release all worker objects.
         Graphics    = null;
         DynamicMenu = null;
+        // Unregister storage selection notification.
+        iCS_IStorageMgr.Unregister(SetStorage);
     }
     
-    // ----------------------------------------------------------------------
-    // Activates the editor and initializes all Graph shared variables.
-	public void Activate(iCS_IStorage storage, iCS_Inspector inspector) {
-        Storage= storage;
-        Inspector= inspector;
-        // Set the graph root.
-        DisplayRoot= storage.IsValid(0) ? storage[0] : null;
-        // Get snapshot for realtime clock.
-        CurrentTime= Time.realtimeSinceStartup;
-		
+//    // ----------------------------------------------------------------------
+//    // Activates the editor and initializes all Graph shared variables.
+//	public void Activate(iCS_IStorage storage, iCS_Inspector inspector) {
+//        Storage= storage;
+//        Inspector= inspector;
+//        // Set the graph root.
+//        DisplayRoot= storage.IsValid(0) ? storage[0] : null;
+//        // Get snapshot for realtime clock.
+//        CurrentTime= Time.realtimeSinceStartup;
+//		
 //        Debug.Log("AppContentPath: "+EditorApplication.applicationContentsPath);
 //        Debug.Log("AppPath: "+EditorApplication.applicationPath);
 //        if(!iCS_LicenseFile.Exists) {
@@ -159,9 +167,9 @@ public class iCS_GraphEditor : EditorWindow {
 //            iCS_LicenseFile.FillCustomerInformation("Michel Launier", "11-22-33-44-55-66-77-88-99-aa-bb-cc-dd-ee-ff-00", iCS_LicenseFile.LicenseTypeEnum.Pro);            
 //            iCS_LicenseFile.SetUnlockKey(iCS_UnlockKeyGenerator.Pro);            
 //        }
-
-    }
-    
+//
+//    }
+//    
     // ----------------------------------------------------------------------
     public void Deactivate() {
         Inspector      = null;
@@ -176,7 +184,12 @@ public class iCS_GraphEditor : EditorWindow {
     public void SetInspector(iCS_Inspector inspector) {
         Inspector= inspector;
     }
-    
+    // ----------------------------------------------------------------------
+	void SetStorage(iCS_IStorage storage) {
+        Storage= storage;
+        DisplayRoot= storage.IsValid(0) ? storage[0] : null;
+	}
+	
 	// ----------------------------------------------------------------------
     // Assures proper initialization and returns true if editor is ready
     // to execute.
@@ -197,6 +210,9 @@ public class iCS_GraphEditor : EditorWindow {
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
 	public void Update() {
+        // Update storage selection.
+        iCS_IStorageMgr.Update();
+        
 		GameObject go= Selection.activeGameObject;
 		if(go != null) {
 			iCS_Storage storage= go.GetComponent<iCS_Storage>();

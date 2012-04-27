@@ -86,16 +86,16 @@ public class DSTreeView : DSView {
 		if(!myDataSource.MoveToNext()) return size;
 
 		while(true) {
+			// Determine if current object is folded.
+			object key= myDataSource.CurrentObjectKey();
+			bool showChildren= false;
+			myIsFoldedDictionary.TryGetValue(key, out showChildren);
+
 			// Consider size of the current object.
 			var currentSize= myDataSource.CurrentObjectDisplaySize();
 			currentSize.x+= indent*myIndentOffset;
 			if(currentSize.x > size.x) size.x= currentSize.x;
 			size.y+= currentSize.y;
-
-			// Determine if current object is folded.
-			object key= myDataSource.CurrentObjectKey();
-			bool showChildren= false;
-			myIsFoldedDictionary.TryGetValue(key, out showChildren);
 
 			if(!showChildren) {
 				while(!myDataSource.MoveToNextSibling()) {
