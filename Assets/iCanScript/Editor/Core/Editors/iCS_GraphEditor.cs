@@ -185,9 +185,9 @@ public class iCS_GraphEditor : EditorWindow {
         Inspector= inspector;
     }
     // ----------------------------------------------------------------------
-	void SetStorage(iCS_IStorage storage) {
-        Storage= storage;
-        DisplayRoot= storage.IsValid(0) ? storage[0] : null;
+	void SetStorage(iCS_IStorage iStorage) {
+        Storage= iStorage;
+        DisplayRoot= Storage.IsValid(0) ? Storage[0] : null;
 	}
 	
 	// ----------------------------------------------------------------------

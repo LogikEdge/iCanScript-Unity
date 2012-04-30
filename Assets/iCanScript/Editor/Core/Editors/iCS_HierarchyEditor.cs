@@ -43,8 +43,8 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 		myRoot= null;
 		myStorage= null;
 	}
-    void SetStorage(iCS_IStorage storage) {
-		myStorage= storage;
+    void SetStorage(iCS_IStorage iStorage) {
+		myStorage= iStorage;
 		myRoot= myStorage.EditorObjects[0];
         myController= new iCS_ObjectHierarchyController(myRoot, myStorage);
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, myController.View);

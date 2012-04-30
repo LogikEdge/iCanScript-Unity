@@ -76,6 +76,7 @@ public class iCS_Inspector : Editor {
 	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
     void ActivateEditor() {
+        iCS_IStorageMgr.Update();
         iCS_Storage realStorage= target as iCS_Storage;
 		if(realStorage == null) {
 			if(Editor != null) {
@@ -93,8 +94,6 @@ public class iCS_Inspector : Editor {
         if(Editor.Storage == null || Editor.Storage.Storage != realStorage) {
             Editor.Deactivate();
             mySelectedObject= null; 
-//            Storage= new iCS_IStorage(realStorage);        
-//            Editor.Activate(Storage, this);                        
             Editor.SetInspector(this);
         } else {
             Storage= Editor.Storage;

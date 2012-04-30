@@ -9,14 +9,16 @@ public static class iCS_IStorageMgr {
     // Fields
     // ---------------------------------------------------------------------------------
     static GameObject           myGameObject= null;
+    static iCS_Storage          myStorage   = null;
 	static iCS_IStorage 		myIStorage  = null;
 	static Action<iCS_IStorage>	myCallbacks = null;
 	
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-    public static iCS_IStorage IStorage             { get { return myIStorage; }}
     public static GameObject   SelectedGameObject   { get { return myGameObject; }}
+    public static iCS_Storage  Storage              { get { return myStorage; }}
+    public static iCS_IStorage IStorage             { get { return myIStorage; }}
     
     // =================================================================================
     // Selection Update.
@@ -25,9 +27,11 @@ public static class iCS_IStorageMgr {
 		GameObject go= Selection.activeGameObject;
 		if(go == null) return;
 		iCS_Storage storage= go.GetComponent<iCS_Storage>();
+        if(storage == null) return;
 		if(myIStorage == null || myIStorage.Storage != storage) {
-			myIStorage= new iCS_IStorage(storage);
 			myGameObject= go;
+            myStorage= storage;
+			myIStorage= new iCS_IStorage(storage);
 			if(myCallbacks != null) {
 				myCallbacks(myIStorage);
 			}
