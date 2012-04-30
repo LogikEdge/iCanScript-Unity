@@ -49,11 +49,11 @@ public class iCS_MenuProxy {
     [MenuItem("iCanScript/",false,20)]
     [MenuItem("iCanScript/Center Graph _#&f",false,21)]
     public static void CenterGraph() {
-        iCS_GraphEditorProxy.GetEditor().CenterOnRoot();
+        iCS_EditorWindowMgr.GetGraphEditor().CenterOnRoot();
     }
     [MenuItem("iCanScript/Center On Selected _&f",false,22)]
     public static void CenterOnSelected() {
-        iCS_GraphEditorProxy.GetEditor().CenterOnSelected();
+        iCS_EditorWindowMgr.GetGraphEditor().CenterOnSelected();
     }
     // ======================================================================
     // Documentation Access

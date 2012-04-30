@@ -41,17 +41,41 @@ public static class iCS_EditorWindowMgr {
      }
 
     // ======================================================================
- 	// iCanScript ClassWizard Window Menu.
+    public static iCS_GraphEditor GetGraphEditor() {
+        iCS_GraphEditor editor= EditorWindow.GetWindow(typeof(iCS_GraphEditor), false, "iCanScript") as iCS_GraphEditor;
+        EditorWindow.DontDestroyOnLoad(editor);
+        editor.hideFlags= HideFlags.DontSave;                    
+        return editor;        
+    } 
+    public static iCS_ClassWizard GetClassWizardEditor() {
+        iCS_ClassWizard editor= EditorWindow.GetWindow(typeof(iCS_ClassWizard), false, "iCS Wizard") as iCS_ClassWizard;
+        EditorWindow.DontDestroyOnLoad(editor);
+        editor.hideFlags= HideFlags.DontSave;
+        return editor;
+    }
+    public static iCS_HierarchyEditor GetHierarchyEditor() {
+        iCS_HierarchyEditor editor= EditorWindow.GetWindow(typeof(iCS_HierarchyEditor), false, "iCS Hierarchy") as iCS_HierarchyEditor;
+        EditorWindow.DontDestroyOnLoad(editor);
+        editor.hideFlags= HideFlags.DontSave;
+        return editor;
+    }
+    
+    // ======================================================================
+ 	// iCanScript Graph editor Menu.
  	[MenuItem("Window/iCanScript Wizard")]
- 	public static void ShowiCanScriptClassWizard() {
-         iCS_ClassWizardProxy window= EditorWindow.GetWindow(typeof(iCS_ClassWizardProxy), false, "iCS Wizard") as iCS_ClassWizardProxy;
-         window.hideFlags= HideFlags.DontSave;
+ 	public static void MenuGraphEditor() {
+        GetClassWizardEditor();
  	}
     // ======================================================================
- 	// iCanScript Hierarchy Window Menu.
+ 	// iCanScript ClassWizard editor Menu.
+ 	[MenuItem("Window/iCanScript Wizard")]
+ 	public static void MenuClassWizardEditor() {
+        GetClassWizardEditor();
+ 	}
+    // ======================================================================
+ 	// iCanScript Hierarchy editor Menu.
  	[MenuItem("Window/iCanScript Hierarchy")]
- 	public static void ShowiCanScriptHierarchy() {
-         iCS_HierarchyEditorProxy window= EditorWindow.GetWindow(typeof(iCS_HierarchyEditorProxy), false, "iCS Hierarchy") as iCS_HierarchyEditorProxy;
-         window.hideFlags= HideFlags.DontSave;
+ 	public static void MenuHierarchyEditor() {
+        GetHierarchyEditor();
  	}
 }

@@ -74,7 +74,11 @@ public partial class iCS_IStorage {
 	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? GetParent(eObj) : null); }
     // ----------------------------------------------------------------------
     public iCS_EditorObject this[int id] {
-        get { return EditorObjects[id]; }
+        get {
+            if(id < 0 || id >= EditorObjects.Count) return null;
+            iCS_EditorObject eObj= EditorObjects[id];
+            return eObj.InstanceId >= 0 ? eObj : null;
+        }
         set {
             ProcessUndoRedo();
             if(value.InstanceId != id) Debug.LogError("Trying to add EditorObject at wrong index.");

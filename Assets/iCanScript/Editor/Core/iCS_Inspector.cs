@@ -76,28 +76,28 @@ public class iCS_Inspector : Editor {
 	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
     void ActivateEditor() {
+		// Create the graph editor.
+        if(Editor == null) {
+            Editor= iCS_EditorWindowMgr.GetGraphEditor();
+        }
+        Editor.SetInspector(this);
+        // Update selected iCanScript storage.
         iCS_IStorageMgr.Update();
         iCS_Storage realStorage= target as iCS_Storage;
-		if(realStorage == null) {
+		if(realStorage == null || realStorage != iCS_IStorageMgr.Storage) {
 			if(Editor != null) {
 	            Editor.Deactivate();
 	            mySelectedObject= null; 
 			}
 			return;
 		}
-		// Create the graph editor.
-        if(Editor == null) {
-            Editor= GetEditor();
-        }
 
         // Configure the editor with the selected graph.
         if(Editor.Storage == null || Editor.Storage.Storage != realStorage) {
             Editor.Deactivate();
             mySelectedObject= null; 
-            Editor.SetInspector(this);
         } else {
             Storage= Editor.Storage;
-            Editor.SetInspector(this);
         }        
     }
     
