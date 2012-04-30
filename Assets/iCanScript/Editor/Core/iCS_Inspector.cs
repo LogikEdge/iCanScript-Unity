@@ -80,7 +80,6 @@ public class iCS_Inspector : Editor {
         if(Editor == null) {
             Editor= iCS_EditorWindowMgr.GetGraphEditor();
         }
-        Editor.SetInspector(this);
         // Update selected iCanScript storage.
         iCS_IStorageMgr.Update();
         iCS_Storage realStorage= target as iCS_Storage;

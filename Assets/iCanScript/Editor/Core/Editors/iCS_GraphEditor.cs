@@ -13,7 +13,6 @@ public class iCS_GraphEditor : EditorWindow {
     // PROPERTIES
     // ----------------------------------------------------------------------
     iCS_IStorage         myStorage      = null;
-	iCS_Inspector        Inspector      = null;
     iCS_EditorObject     DisplayRoot    = null;
     iCS_DynamicMenu      DynamicMenu    = null;
     iCS_ClassWizard      ClassWizard    = null;
@@ -72,7 +71,6 @@ public class iCS_GraphEditor : EditorWindow {
         set {
             int selectedID= value != null ? value.InstanceId : -1;
             Storage.SelectedObject= selectedID;
-			if(Inspector != null) Inspector.SelectedObject= value;				
 		}
     }
     public iCS_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
@@ -172,7 +170,6 @@ public class iCS_GraphEditor : EditorWindow {
 //    
     // ----------------------------------------------------------------------
     public void Deactivate() {
-        Inspector      = null;
 		DisplayRoot    = null;
 		Storage        = null;
     }
@@ -180,10 +177,6 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     protected virtual iCS_ClassWizard GetClassWizard()  { return GetWindow(typeof(iCS_ClassWizard)) as iCS_ClassWizard; }
     protected virtual void            InvokeInstaller() {}
-    // ----------------------------------------------------------------------
-    public void SetInspector(iCS_Inspector inspector) {
-        Inspector= inspector;
-    }
     // ----------------------------------------------------------------------
 	void SetStorage(iCS_IStorage iStorage) {
         Storage= iStorage;
