@@ -20,7 +20,7 @@ public class iCS_Inspector : Editor {
 	    get {
 	        iCS_EditorObject selectedObject= null;
 	        if(Storage != null) {
-	            selectedObject= Storage[Storage.SelectedObject];
+	            selectedObject= Storage.SelectedObject;
 	        }
 	        if(selectedObject != mySelectedObject) {
                 FoldoutDB.Clear();

@@ -63,15 +63,8 @@ public class iCS_GraphEditor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject SelectedObject {
-        get {
-            int selectedID= Storage.SelectedObject;
-            if(selectedID == -1 || Storage.IsInvalid(selectedID)) return null;
-            return Storage.EditorObjects[selectedID];
-        }
-        set {
-            int selectedID= value != null ? value.InstanceId : -1;
-            Storage.SelectedObject= selectedID;
-		}
+        get { return Storage.SelectedObject; }
+        set { Storage.SelectedObject= value; }
     }
     public iCS_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
 	// ----------------------------------------------------------------------
