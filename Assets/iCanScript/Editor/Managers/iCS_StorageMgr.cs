@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public static class iCS_IStorageMgr {
+public static class iCS_StorageMgr {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------

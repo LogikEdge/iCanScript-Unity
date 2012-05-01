@@ -26,10 +26,10 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // Initialization.
     // ---------------------------------------------------------------------------------
     void OnEnable() {
-        iCS_IStorageMgr.Register(SetStorage);
+        iCS_StorageMgr.Register(SetStorage);
     }
     void OnDisable() {
-        iCS_IStorageMgr.Unregister(SetStorage);
+        iCS_StorageMgr.Unregister(SetStorage);
     }
     
     // =================================================================================
@@ -54,7 +54,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // Display.
     // ---------------------------------------------------------------------------------
     void OnGUI() {
-        iCS_IStorageMgr.Update();
+        iCS_StorageMgr.Update();
 		if(myStorage == null) return;
 		myMainView.Display(new Rect(0,0,position.width,position.height));
 	}

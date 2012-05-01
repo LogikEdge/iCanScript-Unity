@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-public static class iCS_EditorWindowMgr {
+public static class iCS_EditorMgr {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -12,7 +12,7 @@ public static class iCS_EditorWindowMgr {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-    static iCS_EditorWindowMgr() {
+    static iCS_EditorMgr() {
         myWindows= new List<iCS_EditorWindow>();
     }
     

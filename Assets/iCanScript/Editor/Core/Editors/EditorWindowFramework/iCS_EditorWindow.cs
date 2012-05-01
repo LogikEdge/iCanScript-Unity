@@ -8,10 +8,10 @@ public abstract class iCS_EditorWindow : EditorWindow {
     // Initialization
     // ---------------------------------------------------------------------------------
     protected void OnEnable() {
-        iCS_EditorWindowMgr.Add(this);
+        iCS_EditorMgr.Add(this);
     }
     protected void OnDisable() {
-        iCS_EditorWindowMgr.Remove(this);
+        iCS_EditorMgr.Remove(this);
     }
     
     // =================================================================================

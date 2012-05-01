@@ -17,13 +17,16 @@ public class iCS_Inspector : Editor {
     private iCS_IStorage     Storage= null;
 	private iCS_GraphEditor	 Editor = null;
 	public  iCS_EditorObject SelectedObject {
-	    get { return mySelectedObject; }
-	    set {
-            if(mySelectedObject != value) {
+	    get {
+	        iCS_EditorObject selectedObject= null;
+	        if(Storage != null) {
+	            selectedObject= Storage[Storage.SelectedObject];
+	        }
+	        if(selectedObject != mySelectedObject) {
                 FoldoutDB.Clear();
-    	        mySelectedObject= value;
-            }
-	        Repaint();
+	            mySelectedObject= selectedObject;
+	        }
+	        return mySelectedObject;
 	    }
 	}
 	private iCS_EditorObject mySelectedObject= null;
@@ -46,7 +49,7 @@ public class iCS_Inspector : Editor {
         ActivateEditor();
 
         // Register for iCanScript selection change.
-        iCS_IStorageMgr.Register(SetStorage);
+        iCS_StorageMgr.Register(SetStorage);
 	}
 	
 	// ----------------------------------------------------------------------
@@ -62,7 +65,7 @@ public class iCS_Inspector : Editor {
 		mySelectedObject= null;
 
         // Unregister for iCanScript selection change.
-        iCS_IStorageMgr.Unregister(SetStorage);
+        iCS_StorageMgr.Unregister(SetStorage);
 	}
 	// ----------------------------------------------------------------------
 	void SetStorage(iCS_IStorage storage) {
@@ -70,20 +73,17 @@ public class iCS_Inspector : Editor {
 	}
 	
 	// ----------------------------------------------------------------------
-    protected virtual iCS_GraphEditor GetEditor() {
-        return null;
-    }
-	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
     void ActivateEditor() {
+        Debug.Log("Storage= "+((bool)(Storage != null))+" Editor= "+((bool)(Editor != null))+" Selected= "+mySelectedObject.Name);
 		// Create the graph editor.
         if(Editor == null) {
-            Editor= iCS_EditorWindowMgr.GetGraphEditor();
+            Editor= iCS_EditorMgr.GetGraphEditor();
         }
         // Update selected iCanScript storage.
-        iCS_IStorageMgr.Update();
+        iCS_StorageMgr.Update();
         iCS_Storage realStorage= target as iCS_Storage;
-		if(realStorage == null || realStorage != iCS_IStorageMgr.Storage) {
+		if(realStorage == null || realStorage != iCS_StorageMgr.Storage) {
 			if(Editor != null) {
 	            Editor.Deactivate();
 	            mySelectedObject= null; 

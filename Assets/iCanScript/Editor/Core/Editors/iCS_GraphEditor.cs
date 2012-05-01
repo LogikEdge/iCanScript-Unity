@@ -125,7 +125,7 @@ public class iCS_GraphEditor : EditorWindow {
         }
         
         // Register to receive storage selection changes.
-        iCS_IStorageMgr.Register(SetStorage);
+        iCS_StorageMgr.Register(SetStorage);
 
         // Get snapshot for realtime clock.
         CurrentTime= Time.realtimeSinceStartup;	    
@@ -138,7 +138,7 @@ public class iCS_GraphEditor : EditorWindow {
         Graphics    = null;
         DynamicMenu = null;
         // Unregister storage selection notification.
-        iCS_IStorageMgr.Unregister(SetStorage);
+        iCS_StorageMgr.Unregister(SetStorage);
     }
     
 //    // ----------------------------------------------------------------------
@@ -204,7 +204,7 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
 	public void Update() {
         // Update storage selection.
-        iCS_IStorageMgr.Update();
+        iCS_StorageMgr.Update();
         
 		GameObject go= Selection.activeGameObject;
 		if(go != null) {
@@ -683,7 +683,7 @@ public class iCS_GraphEditor : EditorWindow {
         if(SelectedObject != null && SelectedObject.IsClassModule) {
             bool hadKeyboardFocus= HasKeyboardFocus;
             ClassWizard= GetClassWizard();
-            iCS_EditorWindowMgr.Activate(SelectedObject, Storage);
+            iCS_EditorMgr.Activate(SelectedObject, Storage);
             // Keep keyboard focus.
             if(hadKeyboardFocus) Focus();
         }        
@@ -1634,9 +1634,9 @@ public class iCS_GraphEditor : EditorWindow {
     void UpdateClassWizard() {
         if(ClassWizard == null) return;
         if(SelectedObject == null || !SelectedObject.IsClassModule) {
-            iCS_EditorWindowMgr.Deactivate();
+            iCS_EditorMgr.Deactivate();
         } else {
-            iCS_EditorWindowMgr.Activate(SelectedObject, Storage);            
+            iCS_EditorMgr.Activate(SelectedObject, Storage);            
         }
     }
 	// ----------------------------------------------------------------------
