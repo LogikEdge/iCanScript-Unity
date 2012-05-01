@@ -51,9 +51,6 @@ public class iCS_Inspector : Editor {
         
         // Create the editor.
         ActivateEditor();
-
-        // Register for iCanScript selection change.
-        iCS_StorageMgr.Register(SetStorage);
 	}
 	
 	// ----------------------------------------------------------------------
@@ -67,13 +64,6 @@ public class iCS_Inspector : Editor {
 
         // Forget the selected object.
 		mySelectedObject= null;
-
-        // Unregister for iCanScript selection change.
-        iCS_StorageMgr.Unregister(SetStorage);
-	}
-	// ----------------------------------------------------------------------
-	void SetStorage(iCS_IStorage storage) {
-	    myStorage= storage;
 	}
 	
 	// ----------------------------------------------------------------------
@@ -86,27 +76,15 @@ public class iCS_Inspector : Editor {
         // Verify that the target reflects the selected storage.
         iCS_StorageMgr.Update();
         iCS_Storage realStorage= target as iCS_Storage;
-        if(realStorage != iCS_StorageMgr.Storage) {
+        if(realStorage == null || realStorage != iCS_StorageMgr.Storage) {
             myStorage= null;
+			mySelectedObject= null;
             return;
         }
-        
-        // Update selected iCanScript storage.
-		if(realStorage == null || realStorage != iCS_StorageMgr.Storage) {
-			if(myEditor != null) {
-	            myEditor.Deactivate();
-	            mySelectedObject= null; 
-			}
-			return;
-		}
 
         // Configure the editor with the selected graph.
-        if(myEditor.Storage == null || myEditor.Storage.Storage != realStorage) {
-            myEditor.Deactivate();
-            mySelectedObject= null; 
-        } else {
-            myStorage= myEditor.Storage;
-        }        
+		myStorage= iCS_StorageMgr.IStorage;
+		mySelectedObject= myStorage.SelectedObject;
     }
     
 	// ----------------------------------------------------------------------
@@ -115,7 +93,7 @@ public class iCS_Inspector : Editor {
 	{
         // Make certain our graph editor is active.
         ActivateEditor();
-
+		
         // Nothing to show if no storage is selected.
         if(myStorage == null) return;
         
