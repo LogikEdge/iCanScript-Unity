@@ -20,11 +20,11 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
     protected new void OnEnable() {
 		base.OnEnable();
-        iCS_StorageMgr.Register(SetStorage);
+        iCS_StorageMgr.RegisterStorageChangeNotification(SetStorage);
     }
     protected new void OnDisable() {
 		base.OnDisable();
-        iCS_StorageMgr.Unregister(SetStorage);
+        iCS_StorageMgr.UnregisterStorageChangeNotification(SetStorage);
     }
     
     // =================================================================================
@@ -40,6 +40,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 		myStorage= iStorage;
         myController= new iCS_ObjectHierarchyController(myStorage[0], myStorage);
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, myController.View);
+		Repaint();
     }
     
 	// =================================================================================

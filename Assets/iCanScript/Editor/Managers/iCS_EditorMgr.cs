@@ -14,6 +14,7 @@ public static class iCS_EditorMgr {
     // ---------------------------------------------------------------------------------
     static iCS_EditorMgr() {
         myWindows= new List<iCS_EditorWindow>();
+		iCS_StorageMgr.RegisterStorageChangeNotification(OnStorageChange);
     }
     
     // =================================================================================
@@ -30,16 +31,16 @@ public static class iCS_EditorMgr {
     // Event distribution.
     // ---------------------------------------------------------------------------------
     public static void Activate(iCS_EditorObject target, iCS_IStorage storage) {
-        foreach(var window in myWindows) {
-            window.OnActivate(target, storage);
-        }
+		Prelude.forEach(w=> w.OnActivate(target,storage), myWindows);
     }
     public static void Deactivate() {
-        foreach(var window in myWindows) {
-            window.OnDeactivate();
-        }
+		Prelude.forEach(w=> w.OnDeactivate(), myWindows);
      }
-
+	static void OnStorageChange(iCS_IStorage iStorage) {
+		Prelude.forEach(w=> w.OnStorageChange(), myWindows);
+		Prelude.forEach(w=> w.Repaint(), myWindows);
+	}
+	
     // ======================================================================
     public static iCS_GraphEditor GetGraphEditor() {
         iCS_GraphEditor editor= EditorWindow.GetWindow(typeof(iCS_GraphEditor), false, "iCanScript") as iCS_GraphEditor;
