@@ -48,21 +48,14 @@ public class iCS_Inspector : Editor {
 	{
         // The state of the inspector is non-persistant.
         hideFlags= HideFlags.DontSave;
-        
-        // Create the editor.
-        ActivateEditor();
 	}
 	
 	// ----------------------------------------------------------------------
     // Deactivate the edition of the graph.
 	public void OnDisable ()
 	{
-        // Deactivate the editor.
-        if(myEditor != null) {
-            myEditor.Deactivate();
-	    }
-
         // Forget the selected object.
+		myStorage= null;
 		mySelectedObject= null;
 	}
 	

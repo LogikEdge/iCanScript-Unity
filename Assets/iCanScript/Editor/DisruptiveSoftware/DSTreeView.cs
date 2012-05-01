@@ -119,7 +119,6 @@ public class DSTreeView : DSView {
 				}
 			}			
 		}
-        return size;
     }
     // ----------------------------------------------------------------------
     public override AnchorEnum GetAnchor() {

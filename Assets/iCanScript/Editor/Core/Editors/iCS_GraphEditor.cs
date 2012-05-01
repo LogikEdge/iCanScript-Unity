@@ -15,7 +15,6 @@ public class iCS_GraphEditor : EditorWindow {
     iCS_IStorage         myStorage      = null;
     iCS_EditorObject     DisplayRoot    = null;
     iCS_DynamicMenu      DynamicMenu    = null;
-    iCS_ClassWizard      ClassWizard    = null;
     
     // ----------------------------------------------------------------------
     int   RefreshCounter= 0;
@@ -57,24 +56,23 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     iCS_EditorObject StorageRoot {
         get {
-            if(Storage == null || Prelude.length(Storage.EditorObjects) == 0) return null;
-            return Storage.EditorObjects[0];
+            if(myStorage == null || Prelude.length(myStorage.EditorObjects) == 0) return null;
+            return myStorage.EditorObjects[0];
         }
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject SelectedObject {
-        get { return Storage.SelectedObject; }
-        set { Storage.SelectedObject= value; }
+        get { return myStorage.SelectedObject; }
+        set { myStorage.SelectedObject= value; }
     }
-    public iCS_IStorage Storage { get { return myStorage; } set { myStorage= value; }}
 	// ----------------------------------------------------------------------
-    Vector2     ScrollPosition { get { return Storage.ScrollPosition; } set { Storage.ScrollPosition= value; }}
+    Vector2     ScrollPosition { get { return myStorage.ScrollPosition; } set { myStorage.ScrollPosition= value; }}
     float       Scale {
-        get { return Storage.GuiScale; }
+        get { return myStorage.GuiScale; }
         set {
             if(value > 1f) value= 1f;
             if(value < 0.15f) value= 0.15f;
-            Storage.GuiScale= value;
+            myStorage.GuiScale= value;
         }
     }
     Prelude.Animate<Vector2>    AnimatedScrollPosition= new Prelude.Animate<Vector2>();
@@ -117,9 +115,9 @@ public class iCS_GraphEditor : EditorWindow {
             iCS_Reflection.ParseAppDomain();
         }
         
-        // Register to receive storage selection changes.
-        iCS_StorageMgr.Register(SetStorage);
-
+//        // Register to receive storage selection changes.
+//        iCS_StorageMgr.Register(SetStorage);
+//
         // Get snapshot for realtime clock.
         CurrentTime= Time.realtimeSinceStartup;	    
 	}
@@ -130,20 +128,13 @@ public class iCS_GraphEditor : EditorWindow {
         // Release all worker objects.
         Graphics    = null;
         DynamicMenu = null;
-        // Unregister storage selection notification.
-        iCS_StorageMgr.Unregister(SetStorage);
+//        // Unregister storage selection notification.
+//        iCS_StorageMgr.Unregister(SetStorage);
     }
     
 //    // ----------------------------------------------------------------------
 //    // Activates the editor and initializes all Graph shared variables.
-//	public void Activate(iCS_IStorage storage, iCS_Inspector inspector) {
-//        Storage= storage;
-//        Inspector= inspector;
-//        // Set the graph root.
-//        DisplayRoot= storage.IsValid(0) ? storage[0] : null;
-//        // Get snapshot for realtime clock.
-//        CurrentTime= Time.realtimeSinceStartup;
-//		
+//	public void ActivateLicense() {
 //        Debug.Log("AppContentPath: "+EditorApplication.applicationContentsPath);
 //        Debug.Log("AppPath: "+EditorApplication.applicationPath);
 //        if(!iCS_LicenseFile.Exists) {
@@ -161,31 +152,26 @@ public class iCS_GraphEditor : EditorWindow {
 //
 //    }
 //    
-    // ----------------------------------------------------------------------
-    public void Deactivate() {
-		DisplayRoot    = null;
-		Storage        = null;
-    }
 
 	// ----------------------------------------------------------------------
     protected virtual iCS_ClassWizard GetClassWizard()  { return GetWindow(typeof(iCS_ClassWizard)) as iCS_ClassWizard; }
     protected virtual void            InvokeInstaller() {}
-    // ----------------------------------------------------------------------
-	void SetStorage(iCS_IStorage iStorage) {
-        Storage= iStorage;
-        DisplayRoot= Storage.IsValid(0) ? Storage[0] : null;
-	}
+//    // ----------------------------------------------------------------------
+//	void SetStorage(iCS_IStorage iStorage) {
+//        myStorage= iStorage;
+//        DisplayRoot= myStorage.IsValid(0) ? myStorage[0] : null;
+//	}
 	
 	// ----------------------------------------------------------------------
     // Assures proper initialization and returns true if editor is ready
     // to execute.
 	public bool IsInitialized() {
         // Nothing to do if we don't have a Graph to edit...
-		if(Storage == null) { return false; }
+		if(myStorage == null) { return false; }
         
 		// Don't run if graphic sub-system did not initialise.
 		if(iCS_Graphics.IsInitialized == false) {
-            iCS_Graphics.Init(Storage);
+            iCS_Graphics.Init(myStorage);
 			return false;
 		}
         return true;
@@ -198,24 +184,12 @@ public class iCS_GraphEditor : EditorWindow {
 	public void Update() {
         // Update storage selection.
         iCS_StorageMgr.Update();
-        
-		GameObject go= Selection.activeGameObject;
-		if(go != null) {
-			iCS_Storage storage= go.GetComponent<iCS_Storage>();
-			if(storage != null) {
-				if(Storage == null || storage != Storage.Storage) {
-					Debug.Log("Selection is a behaviour: "+Selection.activeGameObject);					
-				}
-			}
-//			if(go.GetComponent<iCS_Library>() != null) {
-//				Debug.Log("Selection is a library: "+Selection.activeGameObject);								
-//			}
-		}
+		myStorage= iCS_StorageMgr.IStorage;
         // Determine repaint rate.
-        if(Storage != null) {
+        if(myStorage != null) {
             // Repaint window
-            if(Storage.IsDirty || Storage.IsAnimationPlaying || AnimatedScrollPosition.IsActive) {
-                Storage.IsAnimationPlaying= false;
+            if(myStorage.IsDirty || myStorage.IsAnimationPlaying || AnimatedScrollPosition.IsActive) {
+                myStorage.IsAnimationPlaying= false;
                 Repaint();
             }
             float refreshFactor= (Application.isPlaying || mouseOverWindow == this ? 8f : 1f);
@@ -225,8 +199,8 @@ public class iCS_GraphEditor : EditorWindow {
                 Repaint();
             }
             // Update DisplayRoot
-            if(DisplayRoot == null && Storage.IsValid(0)) {
-                DisplayRoot= Storage[0];
+            if(DisplayRoot == null && myStorage.IsValid(0)) {
+                DisplayRoot= myStorage[0];
             }
         }
         // Make certain the installer is ran.
@@ -373,17 +347,17 @@ public class iCS_GraphEditor : EditorWindow {
                     if(SelectedObject != null) {
                         // Process fold/unfold/minimize/maximize click.
                         Vector2 mouseGraphPos= MouseGraphPosition;
-                        if(Graphics.IsFoldIconPicked(SelectedObject, mouseGraphPos, Storage)) {
-                            if(Storage.IsFolded(SelectedObject)) {
-                                Storage.RegisterUndo("Unfold");
-                                Storage.Maximize(SelectedObject);
+                        if(Graphics.IsFoldIconPicked(SelectedObject, mouseGraphPos, myStorage)) {
+                            if(myStorage.IsFolded(SelectedObject)) {
+                                myStorage.RegisterUndo("Unfold");
+                                myStorage.Maximize(SelectedObject);
                             } else {
-                                Storage.RegisterUndo("Fold");
-                                Storage.Fold(SelectedObject);
+                                myStorage.RegisterUndo("Fold");
+                                myStorage.Fold(SelectedObject);
                             }
-                        } else if(Graphics.IsMinimizeIconPicked(SelectedObject, mouseGraphPos, Storage)) {
-                            Storage.RegisterUndo("Minimize");
-                            Storage.Minimize(SelectedObject);
+                        } else if(Graphics.IsMinimizeIconPicked(SelectedObject, mouseGraphPos, myStorage)) {
+                            myStorage.RegisterUndo("Minimize");
+                            myStorage.Minimize(SelectedObject);
                         } else {
                             if(SelectedObject == SelectedObjectBeforeMouseDown && mouseUpDeltaTime < 0.25f) {
                                 ProcessNodeDisplayOptionEvent();                                
@@ -398,12 +372,12 @@ public class iCS_GraphEditor : EditorWindow {
                 Vector2 delta= Event.current.delta;
                 if(IsScaleKeyDown) {
                     Vector2 pivot= MouseGraphPosition;
-					float zoomDirection= Storage.Preferences.ControlOptions.InverseZoom ? -1f : 1f;
+					float zoomDirection= myStorage.Preferences.ControlOptions.InverseZoom ? -1f : 1f;
                     Scale= Scale+(delta.y > 0 ? -0.05f : 0.05f)*zoomDirection;
                     Vector2 offset= pivot-ViewportToGraph(MousePosition);
                     ScrollPosition+= offset;
                 } else {
-                    delta*= Storage.Preferences.ControlOptions.ScrollSpeed*(1f/Scale); 
+                    delta*= myStorage.Preferences.ControlOptions.ScrollSpeed*(1f/Scale); 
                     ScrollPosition+= delta;                    
                 }
                 Event.current.Use();                
@@ -431,12 +405,11 @@ public class iCS_GraphEditor : EditorWindow {
 			    if(!HasKeyboardFocus) break;
 				var ev= Event.current;
 				if(ev.keyCode == KeyCode.None) break;
-//				Debug.Log("KeyCode: "+ev.keyCode);
                 switch(ev.keyCode) {
                     // Tree navigation
                     case KeyCode.UpArrow: {
                         if(SelectedObject != null) {
-                            SelectedObject= Storage.GetParent(SelectedObject);
+                            SelectedObject= myStorage.GetParent(SelectedObject);
                             CenterOnSelected();
                         } 
                         Event.current.Use();
@@ -444,19 +417,19 @@ public class iCS_GraphEditor : EditorWindow {
                     }
                     case KeyCode.DownArrow: {
                         if(SelectedObject == null) SelectedObject= DisplayRoot;
-                        SelectedObject= iCS_EditorUtility.GetFirstChild(SelectedObject, Storage);
+                        SelectedObject= iCS_EditorUtility.GetFirstChild(SelectedObject, myStorage);
                         CenterOnSelected();
                         Event.current.Use();
                         break;
                     }
                     case KeyCode.RightArrow: {
-                        SelectedObject= iCS_EditorUtility.GetNextSibling(SelectedObject, Storage);
+                        SelectedObject= iCS_EditorUtility.GetNextSibling(SelectedObject, myStorage);
                         CenterOnSelected();
                         Event.current.Use();
                         break;
                     }
                     case KeyCode.LeftArrow: {
-                        SelectedObject= iCS_EditorUtility.GetPreviousSibling(SelectedObject, Storage);
+                        SelectedObject= iCS_EditorUtility.GetPreviousSibling(SelectedObject, myStorage);
                         CenterOnSelected();
                         Event.current.Use();
                         break;
@@ -526,12 +499,12 @@ public class iCS_GraphEditor : EditorWindow {
                     case KeyCode.Backspace: {
                         if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
                           !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
-                            iCS_EditorObject parent= Storage.GetParent(SelectedObject);
+                            iCS_EditorObject parent= myStorage.GetParent(SelectedObject);
                             if(ev.shift) {
-                                Storage.RegisterUndo("Delete");
-                                Storage.DestroyInstance(SelectedObject.InstanceId);                                                        
+                                myStorage.RegisterUndo("Delete");
+                                myStorage.DestroyInstance(SelectedObject.InstanceId);                                                        
                             } else {
-                                iCS_EditorUtility.DestroyObject(SelectedObject, Storage);
+                                iCS_EditorUtility.DestroyObject(SelectedObject, myStorage);
                             }
                             SelectedObject= parent;
                         }
@@ -544,7 +517,7 @@ public class iCS_GraphEditor : EditorWindow {
                         if(SelectedObject == null) SelectedObject= DisplayRoot;
                         // Don't use mouse position if it is too far from selected node.
                         Vector2 graphPos= ViewportToGraph(MousePosition);
-                        Rect parentRect= Storage.GetPosition(SelectedObject);
+                        Rect parentRect= myStorage.GetPosition(SelectedObject);
                         Vector2 parentOrigin= new Vector2(parentRect.x, parentRect.y);
                         Vector2 parentCenter= Math3D.Middle(parentRect);
                         float radius= Vector2.Distance(parentCenter, parentOrigin);
@@ -555,15 +528,15 @@ public class iCS_GraphEditor : EditorWindow {
                         // Auto-insert on behaviour.
                         if(SelectedObject.IsBehaviour) {
                             iCS_EditorObject newObj= null;
-                            if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.Update, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
-                                Storage.RegisterUndo("Create Update");
-                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.Update);  
-                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.LateUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
-                                Storage.RegisterUndo("Create LateUpdate");
-                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.LateUpdate);                                  
-                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.FixedUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
-                                Storage.RegisterUndo("Create FixedUpdate");
-                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.FixedUpdate);                                  
+                            if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.Update, iCS_ObjectTypeEnum.Module, SelectedObject, myStorage)) {
+                                myStorage.RegisterUndo("Create Update");
+                                newObj= myStorage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.Update);  
+                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.LateUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, myStorage)) {
+                                myStorage.RegisterUndo("Create LateUpdate");
+                                newObj= myStorage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.LateUpdate);                                  
+                            } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.FixedUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, myStorage)) {
+                                myStorage.RegisterUndo("Create FixedUpdate");
+                                newObj= myStorage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.FixedUpdate);                                  
                             }
                             if(newObj != null) {
                                 CenterAt(graphPos);
@@ -578,11 +551,11 @@ public class iCS_GraphEditor : EditorWindow {
                         if(SelectedObject.IsModule) {
                             iCS_EditorObject newObj= null;
                             if(!ev.shift) {
-                                Storage.RegisterUndo("Create Module");
-                                newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, null);                                
+                                myStorage.RegisterUndo("Create Module");
+                                newObj= myStorage.CreateModule(SelectedObject.InstanceId, graphPos, null);                                
                             } else {
-                                Storage.RegisterUndo("Create State Chart");
-                                newObj= Storage.CreateStateChart(SelectedObject.InstanceId, graphPos, null);
+                                myStorage.RegisterUndo("Create State Chart");
+                                newObj= myStorage.CreateStateChart(SelectedObject.InstanceId, graphPos, null);
                             }
                             if(ev.control && newObj != null) {
                                 SelectedObject= newObj;
@@ -592,8 +565,8 @@ public class iCS_GraphEditor : EditorWindow {
                         }
                         // Auto-insert on state chart.
                         if(SelectedObject.IsStateChart) {
-                            Storage.RegisterUndo("Create State");
-                            iCS_EditorObject newObj= Storage.CreateState(SelectedObject.InstanceId, graphPos);
+                            myStorage.RegisterUndo("Create State");
+                            iCS_EditorObject newObj= myStorage.CreateState(SelectedObject.InstanceId, graphPos);
                             if(ev.control && newObj != null) {
                                 SelectedObject= newObj;
                             }
@@ -604,19 +577,19 @@ public class iCS_GraphEditor : EditorWindow {
                         if(SelectedObject.IsState) {
                             iCS_EditorObject newObj= null;
                             if(!ev.shift) {
-                                if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
-                                    Storage.RegisterUndo("Create OnUpdate");
-                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.OnUpdate);  
-                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnEntry, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
-                                    Storage.RegisterUndo("Create OnEntry");
-                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.OnEntry);                                  
-                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnExit, iCS_ObjectTypeEnum.Module, SelectedObject, Storage)) {
-                                    Storage.RegisterUndo("Create OnExit");
-                                    newObj= Storage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.OnExit);                                  
+                                if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnUpdate, iCS_ObjectTypeEnum.Module, SelectedObject, myStorage)) {
+                                    myStorage.RegisterUndo("Create OnUpdate");
+                                    newObj= myStorage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.OnUpdate);  
+                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnEntry, iCS_ObjectTypeEnum.Module, SelectedObject, myStorage)) {
+                                    myStorage.RegisterUndo("Create OnEntry");
+                                    newObj= myStorage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.OnEntry);                                  
+                                } else if(iCS_AllowedChildren.CanAddChildNode(iCS_Strings.OnExit, iCS_ObjectTypeEnum.Module, SelectedObject, myStorage)) {
+                                    myStorage.RegisterUndo("Create OnExit");
+                                    newObj= myStorage.CreateModule(SelectedObject.InstanceId, graphPos, iCS_Strings.OnExit);                                  
                                 }                                
                             } else {
-                                Storage.RegisterUndo("Create State");
-                                newObj= Storage.CreateState(SelectedObject.InstanceId, graphPos);
+                                myStorage.RegisterUndo("Create State");
+                                newObj= myStorage.CreateState(SelectedObject.InstanceId, graphPos);
                             }
                             if(ev.control && newObj != null) {
                                 SelectedObject= newObj;
@@ -630,8 +603,8 @@ public class iCS_GraphEditor : EditorWindow {
                     // Class module shortcuts.
                     case KeyCode.D: {
                         if(SelectedObject.IsClassModule) {
-                            Storage.ClassModuleCreateInputInstanceFields(SelectedObject);
-                            Storage.ClassModuleDestroyOutputInstanceFields(SelectedObject);
+                            myStorage.ClassModuleCreateInputInstanceFields(SelectedObject);
+                            myStorage.ClassModuleDestroyOutputInstanceFields(SelectedObject);
                         }
                         Event.current.Use();
                         break;
@@ -645,18 +618,18 @@ public class iCS_GraphEditor : EditorWindow {
     void ProcessNodeDisplayOptionEvent() {
         if(SelectedObject != null && SelectedObject.IsNode) {
             if(SelectedObject.IsMinimized) {
-                Storage.RegisterUndo("Unfold");
-                Storage.Fold(SelectedObject);
+                myStorage.RegisterUndo("Unfold");
+                myStorage.Fold(SelectedObject);
             } else if(SelectedObject.IsMaximized) {
-                Storage.RegisterUndo("Fold");
-                Storage.Fold(SelectedObject);
+                myStorage.RegisterUndo("Fold");
+                myStorage.Fold(SelectedObject);
             } else {
                 if(IsShiftKeyDown) {
-                    Storage.RegisterUndo("Minimize");
-                    Storage.Minimize(SelectedObject);
+                    myStorage.RegisterUndo("Minimize");
+                    myStorage.Minimize(SelectedObject);
                 } else {
-                    Storage.RegisterUndo("Maximize");
-                    Storage.Maximize(SelectedObject);                                                        
+                    myStorage.RegisterUndo("Maximize");
+                    myStorage.Maximize(SelectedObject);                                                        
                 }
             }
         }        
@@ -668,15 +641,15 @@ public class iCS_GraphEditor : EditorWindow {
             SelectedObject= DisplayRoot;
         }
         ShowClassWizard();
-        DynamicMenu.Update(SelectedObject, Storage, ViewportToGraph(MousePosition), MenuOption == 0);
-        Storage.SetDirty(SelectedObject);                    
+        DynamicMenu.Update(SelectedObject, myStorage, ViewportToGraph(MousePosition), MenuOption == 0);
+        myStorage.SetDirty(SelectedObject);                    
     }
 	// ----------------------------------------------------------------------
     void ShowClassWizard() {
         if(SelectedObject != null && SelectedObject.IsClassModule) {
             bool hadKeyboardFocus= HasKeyboardFocus;
-            ClassWizard= GetClassWizard();
-            iCS_EditorMgr.Activate(SelectedObject, Storage);
+            iCS_EditorMgr.GetClassWizardEditor();
+            iCS_EditorMgr.Activate(SelectedObject, myStorage);
             // Keep keyboard focus.
             if(hadKeyboardFocus) Focus();
         }        
@@ -720,20 +693,20 @@ public class iCS_GraphEditor : EditorWindow {
     
 	// ----------------------------------------------------------------------
     void MakeDataConnectionDrag() {
-        if(DragFixPort != DragOriginalPort) Storage.SetSource(DragOriginalPort, DragFixPort);
-        Storage.SetSource(DragObject, DragOriginalPort);
+        if(DragFixPort != DragOriginalPort) myStorage.SetSource(DragOriginalPort, DragFixPort);
+        myStorage.SetSource(DragObject, DragOriginalPort);
         DragFixPort= DragOriginalPort;
     }
 	// ----------------------------------------------------------------------
     void BreakDataConnectionDrag() {
-        var originalSource= Storage.GetSource(DragOriginalPort);
+        var originalSource= myStorage.GetSource(DragOriginalPort);
         if(originalSource != null && originalSource != DragObject) {
             DragFixPort= originalSource;
-            Storage.SetSource(DragObject, DragFixPort);
-            Storage.SetSource(DragOriginalPort, null);
+            myStorage.SetSource(DragObject, DragFixPort);
+            myStorage.SetSource(DragOriginalPort, null);
         } else {
             if(DragFixPort == DragOriginalPort) {
-                Storage.SetSource(DragFixPort, DragObject);
+                myStorage.SetSource(DragFixPort, DragObject);
             }
         }
     }
@@ -748,9 +721,9 @@ public class iCS_GraphEditor : EditorWindow {
 
         // Port drag.
         iCS_EditorObject port= SelectedObject;
-        if(port != null && port.IsPort && !Storage.IsMinimized(port) && !port.IsTransitionPort) {
-            Storage.RegisterUndo("Port Drag");
-            Storage.CleanupDeadPorts= false;
+        if(port != null && port.IsPort && !myStorage.IsMinimized(port) && !port.IsTransitionPort) {
+            myStorage.RegisterUndo("Port Drag");
+            myStorage.CleanupDeadPorts= false;
             DragType= DragTypeEnum.PortRelocation;
             DragOriginalPort= port;
             DragFixPort= port;
@@ -762,14 +735,14 @@ public class iCS_GraphEditor : EditorWindow {
 
         // Node drag.
         iCS_EditorObject node= SelectedObject;                
-        if(node != null && node.IsNode && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, Storage))) {
+        if(node != null && node.IsNode && (node.IsMinimized || !node.IsState || Graphics.IsNodeTitleBarPicked(node, pos, myStorage))) {
             if(IsCopyKeyDown) {
                 GameObject go= new GameObject(node.Name);
                 go.hideFlags = HideFlags.HideAndDontSave;
                 go.AddComponent("iCS_Library");
                 iCS_Library library= go.GetComponent<iCS_Library>();
                 iCS_IStorage iStorage= new iCS_IStorage(library);
-                iStorage.CopyFrom(node, Storage, null, Vector2.zero);
+                iStorage.CopyFrom(node, myStorage, null, Vector2.zero);
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
                 DragAndDrop.StartDrag(node.Name);
@@ -778,11 +751,11 @@ public class iCS_GraphEditor : EditorWindow {
                 IsDragEnabled= false;
                 DragType= DragTypeEnum.None;
             } else {
-                Storage.RegisterUndo("Node Drag");
+                myStorage.RegisterUndo("Node Drag");
                 node.IsFloating= IsFloatingKeyDown;
                 DragType= DragTypeEnum.NodeDrag;
                 DragObject= node;
-                Rect nodePos= Storage.GetPosition(node);
+                Rect nodePos= myStorage.GetPosition(node);
                 DragStartPosition= new Vector2(nodePos.x, nodePos.y);                                                                    
             }
             return true;
@@ -790,12 +763,12 @@ public class iCS_GraphEditor : EditorWindow {
         
         // New state transition drag.
         if(node != null && node.IsState) {
-            Storage.RegisterUndo("Transition Creation");
+            myStorage.RegisterUndo("Transition Creation");
             DragType= DragTypeEnum.TransitionCreation;
-            iCS_EditorObject outTransition= Storage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutStatePort);
-            iCS_EditorObject inTransition= Storage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-            Storage.SetInitialPosition(outTransition, pos);
-            Storage.SetInitialPosition(inTransition, pos);
+            iCS_EditorObject outTransition= myStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutStatePort);
+            iCS_EditorObject inTransition= myStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
+            myStorage.SetInitialPosition(outTransition, pos);
+            myStorage.SetInitialPosition(inTransition, pos);
             inTransition.Source= outTransition.InstanceId;
             DragFixPort= outTransition;
             DragObject= inTransition;
@@ -824,8 +797,8 @@ public class iCS_GraphEditor : EditorWindow {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
                 iCS_EditorObject node= DragObject;
-                Storage.MoveTo(node, DragStartPosition+delta);
-                Storage.SetDirty(node);                        
+                myStorage.MoveTo(node, DragStartPosition+delta);
+                myStorage.SetDirty(node);                        
                 node.IsFloating= IsFloatingKeyDown;
                 break;
             case DragTypeEnum.PortRelocation: {
@@ -840,12 +813,12 @@ public class iCS_GraphEditor : EditorWindow {
                 DragObject.LocalPosition.y= newLocalPos.y;
                 if(DragObject.IsStatePort) break;
                 // Determine if we should convert to data port connection drag.
-                iCS_EditorObject parent= Storage.GetParentNode(DragOriginalPort);
-                if(!Storage.IsNearParentEdge(DragObject)) {
+                iCS_EditorObject parent= myStorage.GetParentNode(DragOriginalPort);
+                if(!myStorage.IsNearParentEdge(DragObject)) {
 					CreateDragPort();
                 } else {
-                    Storage.PositionOnEdge(DragObject);
-                    Storage.LayoutPorts(parent); 
+                    myStorage.PositionOnEdge(DragObject);
+                    myStorage.LayoutPorts(parent); 
                 }
                 break;
             }
@@ -855,12 +828,12 @@ public class iCS_GraphEditor : EditorWindow {
                 DragObject.LocalPosition.x= newLocalPos.x;
                 DragObject.LocalPosition.y= newLocalPos.y;
                 // Determine if we should go back to port relocation.
-                if(!DragOriginalPort.IsInMuxPort && Storage.IsNearParentEdge(DragObject, DragOriginalPort.Edge)) {
-                    iCS_EditorObject dragObjectSource= Storage.GetSource(DragObject);
+                if(!DragOriginalPort.IsInMuxPort && myStorage.IsNearParentEdge(DragObject, DragOriginalPort.Edge)) {
+                    iCS_EditorObject dragObjectSource= myStorage.GetSource(DragObject);
                     if(dragObjectSource != DragOriginalPort) {
-                        Storage.SetSource(DragOriginalPort, dragObjectSource);
+                        myStorage.SetSource(DragOriginalPort, dragObjectSource);
                     }
-                    Storage.DestroyInstance(DragObject);
+                    myStorage.DestroyInstance(DragObject);
                     DragObject= DragOriginalPort;
                     DragFixPort= DragOriginalPort;
                     DragObject.IsFloating= true;
@@ -869,19 +842,19 @@ public class iCS_GraphEditor : EditorWindow {
                 }
                 // Snap to nearby ports
                 Vector2 mousePosInGraph= ViewportToGraph(MousePosition);
-                iCS_EditorObject closestPort= Storage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
+                iCS_EditorObject closestPort= myStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
-                    Rect closestPortRect= Storage.GetPosition(closestPort);
+                    Rect closestPortRect= myStorage.GetPosition(closestPort);
                     Vector2 closestPortPos= new Vector2(closestPortRect.x, closestPortRect.y);
                     if(Vector2.Distance(closestPortPos, mousePosInGraph) < 4f*iCS_Config.PortRadius) {
-                        Rect parentPos= Storage.GetPosition(Storage.GetParent(DragObject));
+                        Rect parentPos= myStorage.GetPosition(myStorage.GetParent(DragObject));
                         DragObject.LocalPosition.x= closestPortRect.x-parentPos.x;
                         DragObject.LocalPosition.y= closestPortRect.y-parentPos.y;
                     }                    
                 }
                 // Special case for module ports.
                 if(DragOriginalPort.IsModulePort) {
-                    if(Storage.IsInside(Storage.GetParent(DragOriginalPort), mousePosInGraph)) {
+                    if(myStorage.IsInside(myStorage.GetParent(DragOriginalPort), mousePosInGraph)) {
                         if(DragOriginalPort.IsOutputPort) {
                             BreakDataConnectionDrag();
                         } else {
@@ -913,7 +886,7 @@ public class iCS_GraphEditor : EditorWindow {
                 case DragTypeEnum.None: break;
                 case DragTypeEnum.NodeDrag: {
                     iCS_EditorObject node= DragObject;
-                    iCS_EditorObject oldParent= Storage.GetParent(node);
+                    iCS_EditorObject oldParent= myStorage.GetParent(node);
                     if(oldParent != null) {
                         iCS_EditorObject newParent= GetValidParentNodeUnder(node);
                         if(newParent != null) {
@@ -921,9 +894,9 @@ public class iCS_GraphEditor : EditorWindow {
                                 ChangeParent(node, newParent);
                             }
                         } else {
-                            Storage.MoveTo(node, DragStartPosition);
+                            myStorage.MoveTo(node, DragStartPosition);
                         }
-                        Storage.SetDirty(oldParent);                        
+                        myStorage.SetDirty(oldParent);                        
                     }
                     node.IsFloating= false;
                     break;
@@ -931,25 +904,25 @@ public class iCS_GraphEditor : EditorWindow {
                 case DragTypeEnum.PortRelocation:
                     DragObject.IsFloating= false;
                     if(DragObject.IsDataPort) {
-                        Storage.LayoutPorts(Storage.GetParent(DragObject));
+                        myStorage.LayoutPorts(myStorage.GetParent(DragObject));
                         break;
                     }
                     if(DragObject.IsStatePort) {
                         // Get original port state & state chart.
-                        iCS_EditorObject origState= Storage.GetParent(DragObject);
-                        iCS_EditorObject origStateChart= Storage.GetParent(origState);
+                        iCS_EditorObject origState= myStorage.GetParent(DragObject);
+                        iCS_EditorObject origStateChart= myStorage.GetParent(origState);
                         while(origStateChart != null && !origStateChart.IsStateChart) {
-                            origStateChart= Storage.GetParent(origStateChart);
+                            origStateChart= myStorage.GetParent(origStateChart);
                         }
                         // Get new drag port state & state chart.
-                        Rect dragObjRect= Storage.GetPosition(DragObject);
+                        Rect dragObjRect= myStorage.GetPosition(DragObject);
                         Vector2 dragObjPos= new Vector2(dragObjRect.x, dragObjRect.y);
                         iCS_EditorObject newState= GetStateAt(dragObjPos);
                         iCS_EditorObject newStateChart= null;
                         if(newState != null) {
-                            newStateChart= Storage.GetParent(newState);
+                            newStateChart= myStorage.GetParent(newState);
                             while(newStateChart != null && !newStateChart.IsStateChart) {
-                                newStateChart= Storage.GetParent(newStateChart);
+                                newStateChart= myStorage.GetParent(newStateChart);
                             }
                         }
                         // Reset port drag if the port is on the same state.
@@ -961,7 +934,7 @@ public class iCS_GraphEditor : EditorWindow {
                         // Delete transition if the dragged port is not on a valid state.
                         if(newState == null || origStateChart != newStateChart) {
                             if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
-                                Storage.DestroyInstance(DragObject);
+                                myStorage.DestroyInstance(DragObject);
                             } else {
                                 DragObject.LocalPosition.x= DragStartPosition.x;
                                 DragObject.LocalPosition.y= DragStartPosition.y;                                    
@@ -969,15 +942,15 @@ public class iCS_GraphEditor : EditorWindow {
                             break;
                         }
                         // Relocate transition to the new state.
-                        Storage.SetParent(DragObject, newState);
-                        iCS_EditorObject transitionModule= Storage.GetTransitionModule(DragObject);
-                        iCS_EditorObject otherStatePort= DragObject.IsInputPort ? Storage.GetOutStatePort(transitionModule) : Storage.GetInStatePort(transitionModule);
-                        iCS_EditorObject otherState= Storage.GetParent(otherStatePort);
-                        iCS_EditorObject moduleParent= Storage.GetParent(transitionModule);
-                        iCS_EditorObject newModuleParent= Storage.GetTransitionParent(newState, otherState);
+                        myStorage.SetParent(DragObject, newState);
+                        iCS_EditorObject transitionModule= myStorage.GetTransitionModule(DragObject);
+                        iCS_EditorObject otherStatePort= DragObject.IsInputPort ? myStorage.GetOutStatePort(transitionModule) : myStorage.GetInStatePort(transitionModule);
+                        iCS_EditorObject otherState= myStorage.GetParent(otherStatePort);
+                        iCS_EditorObject moduleParent= myStorage.GetParent(transitionModule);
+                        iCS_EditorObject newModuleParent= myStorage.GetTransitionParent(newState, otherState);
                         if(moduleParent != newModuleParent) {
-                            Storage.SetParent(transitionModule, newModuleParent);
-                            Storage.LayoutTransitionModule(transitionModule);
+                            myStorage.SetParent(transitionModule, newModuleParent);
+                            myStorage.LayoutTransitionModule(transitionModule);
                         }
                         break;
                     }
@@ -985,31 +958,31 @@ public class iCS_GraphEditor : EditorWindow {
                 case DragTypeEnum.PortConnection:
                     // Verify for a new connection.
                     if(!VerifyNewDragConnection(DragFixPort, DragObject)) {
-                        bool isNearParent= Storage.IsNearParent(DragObject);
+                        bool isNearParent= myStorage.IsNearParent(DragObject);
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
-                            Rect dragPortPos= Storage.GetPosition(DragObject);
-                            Storage.DestroyInstance(DragObject);
+                            Rect dragPortPos= myStorage.GetPosition(DragObject);
+                            myStorage.DestroyInstance(DragObject);
                             // Verify for disconnection.
                             if(!isNearParent) {
                                 // Let's determine if we want to create a module port.
                                 iCS_EditorObject newPortParent= GetNodeAtMousePosition();
                                 if(newPortParent == null) break;
                                 if(newPortParent.IsModule) {
-                                    iCS_EditorObject portParent= Storage.GetParent(DragFixPort);
-                                    Rect modulePos= Storage.GetPosition(newPortParent);
+                                    iCS_EditorObject portParent= myStorage.GetParent(DragFixPort);
+                                    Rect modulePos= myStorage.GetPosition(newPortParent);
                                     float portSize2= 2f*iCS_Config.PortSize;
                                     if(DragFixPort.IsInputPort) {
                                         if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
-                                            if(Storage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+                                            if(myStorage.IsChildOf(portParent, newPortParent)) {
+                                                iCS_EditorObject newPort= myStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                                                 SetNewDataConnection(DragFixPort, newPort);
                                                 break;
                                             }
                                         }
                                         if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
-                                            if(!Storage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                                            if(!myStorage.IsChildOf(portParent, newPortParent)) {
+                                                iCS_EditorObject newPort= myStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                                                 SetNewDataConnection(DragFixPort, newPort);
                                                 break;                                                
                                             }
@@ -1017,15 +990,15 @@ public class iCS_GraphEditor : EditorWindow {
                                     }
                                     if(DragFixPort.IsOutputPort) {
                                         if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
-                                            if(Storage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+                                            if(myStorage.IsChildOf(portParent, newPortParent)) {
+                                                iCS_EditorObject newPort= myStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                                                 SetNewDataConnection(newPort, DragFixPort);
                                                 break;                                                                                                    
                                             }
                                         }
                                         if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
-                                            if(!Storage.IsChildOf(portParent, newPortParent)) {
-                                                iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+                                            if(!myStorage.IsChildOf(portParent, newPortParent)) {
+                                                iCS_EditorObject newPort= myStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                                                 SetNewDataConnection(newPort, DragFixPort);
                                                 break;
                                             }
@@ -1033,8 +1006,8 @@ public class iCS_GraphEditor : EditorWindow {
                                     }                                    
                                 }
                                 if(DragFixPort.IsOutputPort && (newPortParent.IsState || newPortParent.IsStateChart)) {
-									if(Storage.IsNearNodeEdge(newPortParent, Math3D.ToVector2(dragPortPos), iCS_EditorObject.EdgeEnum.Right)) {
-	                                    iCS_EditorObject newPort= Storage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+									if(myStorage.IsNearNodeEdge(newPortParent, Math3D.ToVector2(dragPortPos), iCS_EditorObject.EdgeEnum.Right)) {
+	                                    iCS_EditorObject newPort= myStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
 	                                    SetNewDataConnection(newPort, DragFixPort);
 									}
                                     break;
@@ -1046,14 +1019,14 @@ public class iCS_GraphEditor : EditorWindow {
                 case DragTypeEnum.TransitionCreation:
                     iCS_EditorObject destState= GetNodeAtMousePosition();
                     if(destState != null && destState.IsState) {
-                        iCS_EditorObject outStatePort= Storage[DragObject.Source];
+                        iCS_EditorObject outStatePort= myStorage[DragObject.Source];
                         outStatePort.IsFloating= false;
-                        Storage.CreateTransition(outStatePort, destState);
+                        myStorage.CreateTransition(outStatePort, destState);
                         DragObject.Source= -1;
-                        Storage.DestroyInstance(DragObject);
+                        myStorage.DestroyInstance(DragObject);
                     } else {
-                        Storage.DestroyInstance(DragObject.Source);
-                        Storage.DestroyInstance(DragObject);
+                        myStorage.DestroyInstance(DragObject.Source);
+                        myStorage.DestroyInstance(DragObject);
                     }
                     break;
             }            
@@ -1071,37 +1044,37 @@ public class iCS_GraphEditor : EditorWindow {
         DragOriginalPort= null;
         DragFixPort     = null;
         IsDragEnabled   = false;
-        Storage.CleanupDeadPorts= true;                    
+        myStorage.CleanupDeadPorts= true;                    
     }
 #endregion User Interaction
     
 	// ----------------------------------------------------------------------
 	void CreateDragPort() {
         // Data port. Create a drag port as appropriate.
-        iCS_EditorObject parent= Storage.GetParentNode(DragOriginalPort);
+        iCS_EditorObject parent= myStorage.GetParentNode(DragOriginalPort);
         DragObject.IsFloating= false;
         if(DragOriginalPort.IsInputPort) {
-            DragObject= Storage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-            iCS_EditorObject prevSource= Storage.GetSource(DragOriginalPort);
+            DragObject= myStorage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+            iCS_EditorObject prevSource= myStorage.GetSource(DragOriginalPort);
             if(prevSource != null) {
                 DragFixPort= prevSource;
-                Storage.SetSource(DragObject, DragFixPort);
-                Storage.SetSource(DragOriginalPort, null);
+                myStorage.SetSource(DragObject, DragFixPort);
+                myStorage.SetSource(DragOriginalPort, null);
                 DragObject.Name= DragFixPort.Name;
             } else {
                 DragFixPort= DragOriginalPort;
-                Storage.SetSource(DragFixPort, DragObject);
+                myStorage.SetSource(DragFixPort, DragObject);
             }                    
         } else {
-            DragObject= Storage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+            DragObject= myStorage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             DragFixPort= DragOriginalPort;
-            Storage.SetSource(DragObject, DragOriginalPort);
+            myStorage.SetSource(DragObject, DragOriginalPort);
         }
         DragType= DragTypeEnum.PortConnection;
-        Rect portPos= Storage.GetPosition(DragOriginalPort);
-        Storage.SetInitialPosition(DragObject, new Vector2(portPos.x, portPos.y));
-        Storage.SetDisplayPosition(DragObject, portPos);
-		Rect parentPos= Storage.GetPosition(parent);
+        Rect portPos= myStorage.GetPosition(DragOriginalPort);
+        myStorage.SetInitialPosition(DragObject, new Vector2(portPos.x, portPos.y));
+        myStorage.SetDisplayPosition(DragObject, portPos);
+		Rect parentPos= myStorage.GetPosition(parent);
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
 			DragStartPosition= Math3D.ToVector2(portPos)-Math3D.ToVector2(parentPos);			
@@ -1114,7 +1087,7 @@ public class iCS_GraphEditor : EditorWindow {
     iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
-		if(SelectedObject != null && newSelected != null && newSelected.IsOutMuxPort && Storage.GetOutMuxPort(SelectedObject) == newSelected) {
+		if(SelectedObject != null && newSelected != null && newSelected.IsOutMuxPort && myStorage.GetOutMuxPort(SelectedObject) == newSelected) {
 			ShouldRotateMuxPort= true;
 			return SelectedObject;
 		}
@@ -1134,19 +1107,19 @@ public class iCS_GraphEditor : EditorWindow {
     // Returns the object at the given mouse position.
     public iCS_EditorObject GetNodeAtMousePosition() {
         Vector2 graphPosition= ViewportToGraph(MousePosition);
-        return Storage.GetNodeAt(graphPosition);
+        return myStorage.GetNodeAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
     public iCS_EditorObject GetObjectAtScreenPosition(Vector2 _screenPos) {
         Vector2 graphPosition= ViewportToGraph(_screenPos);
-        iCS_EditorObject port= Storage.GetPortAt(graphPosition);
+        iCS_EditorObject port= myStorage.GetPortAt(graphPosition);
         if(port != null) {
-            if(Storage.IsMinimized(port)) return Storage.GetParent(port);
+            if(myStorage.IsMinimized(port)) return myStorage.GetParent(port);
             return port;
         }
-        iCS_EditorObject node= Storage.GetNodeAt(graphPosition);                
+        iCS_EditorObject node= myStorage.GetNodeAt(graphPosition);                
         if(node != null) return node;
         return null;
     }
@@ -1154,7 +1127,7 @@ public class iCS_GraphEditor : EditorWindow {
     void RotateSelectedMuxPort() {
 		if(SelectedObject == null || !SelectedObject.IsDataPort) return;
 		if(SelectedObject.IsOutMuxPort) {
-			Storage.ForEachChild(SelectedObject, 
+			myStorage.ForEachChild(SelectedObject, 
 				c=> {
 					if(c.IsDataPort) {
 						SelectedObject= c;
@@ -1165,10 +1138,10 @@ public class iCS_GraphEditor : EditorWindow {
 			);
 			return;
 		}
-		iCS_EditorObject muxPort= Storage.GetParent(SelectedObject);
+		iCS_EditorObject muxPort= myStorage.GetParent(SelectedObject);
 		if(!muxPort.IsDataPort) return;
 		bool takeNext= false;
-		bool found= Storage.ForEachChild(muxPort,
+		bool found= myStorage.ForEachChild(muxPort,
 			c=> {
 				if(takeNext) {
 					SelectedObject= c;
@@ -1184,13 +1157,13 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     bool VerifyNewDragConnection(iCS_EditorObject fixPort, iCS_EditorObject dragPort) {
         // No new connection if no overlapping port found.
-        iCS_EditorObject overlappingPort= Storage.GetOverlappingPort(dragPort);
+        iCS_EditorObject overlappingPort= myStorage.GetOverlappingPort(dragPort);
         if(overlappingPort == null) return false;
 
         // Only data ports can be connected together.
         if(!fixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
         // Destroy drag port since it is not needed anymore.
-        Storage.DestroyInstance(dragPort);
+        myStorage.DestroyInstance(dragPort);
         dragPort= null;
         return VerifyNewConnection(fixPort, overlappingPort);
     }
@@ -1198,8 +1171,8 @@ public class iCS_GraphEditor : EditorWindow {
     bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject overlappingPort) {
         // Only data ports can be connected together.
         if(!fixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
-        iCS_EditorObject portParent= Storage.GetParent(fixPort);
-        iCS_EditorObject overlappingPortParent= Storage.GetParent(overlappingPort);
+        iCS_EditorObject portParent= myStorage.GetParent(fixPort);
+        iCS_EditorObject overlappingPortParent= myStorage.GetParent(overlappingPort);
         if(overlappingPort.IsOutputPort && (overlappingPortParent.IsState || overlappingPortParent.IsStateChart)) {
 			CreateStateMux(fixPort, overlappingPort);
 			return true;
@@ -1209,8 +1182,8 @@ public class iCS_GraphEditor : EditorWindow {
         iCS_EditorObject inPort = null;
         iCS_EditorObject outPort= null;
 
-        bool portIsChildOfOverlapping= Storage.IsChildOf(portParent, overlappingPortParent);
-        bool overlappingIsChildOfPort= Storage.IsChildOf(overlappingPortParent, portParent);
+        bool portIsChildOfOverlapping= myStorage.IsChildOf(portParent, overlappingPortParent);
+        bool overlappingIsChildOfPort= myStorage.IsChildOf(overlappingPortParent, portParent);
         if(portIsChildOfOverlapping || overlappingIsChildOfPort) {
             if(fixPort.IsInputPort && overlappingPort.IsInputPort) {
                 if(portIsChildOfOverlapping) {
@@ -1273,32 +1246,32 @@ public class iCS_GraphEditor : EditorWindow {
 	void CreateStateMux(iCS_EditorObject fixPort, iCS_EditorObject stateMuxPort) {
         iCS_ReflectionDesc conversion= null;
         if(!VerifyConnectionTypes(stateMuxPort, fixPort, out conversion)) return;
-		var source= Storage.GetSource(stateMuxPort);
+		var source= myStorage.GetSource(stateMuxPort);
 		// Simply connect a disconnected mux state port.
-		if(source == null && Storage.NbOfChildren(stateMuxPort, c=> c.IsDataPort) == 0) {
+		if(source == null && myStorage.NbOfChildren(stateMuxPort, c=> c.IsDataPort) == 0) {
 			SetNewDataConnection(stateMuxPort, fixPort, conversion);
 			return;
 		}
 		// Convert source port to child port.
 		if(source != null) {
 			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.OutMuxPort;
-			var firstMuxInput= Storage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
-			Storage.SetSource(firstMuxInput, source);
-			Storage.SetSource(stateMuxPort, null);
+			var firstMuxInput= myStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
+			myStorage.SetSource(firstMuxInput, source);
+			myStorage.SetSource(stateMuxPort, null);
 		}
 		// Create new mux input port.
-		var inMuxPort= Storage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
+		var inMuxPort= myStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
 		SetNewDataConnection(inMuxPort, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc conversion= null) {
-        iCS_EditorObject inNode= Storage.GetParent(inPort);
-        iCS_EditorObject outNode= Storage.GetParent(outPort);
+        iCS_EditorObject inNode= myStorage.GetParent(inPort);
+        iCS_EditorObject outNode= myStorage.GetParent(outPort);
         iCS_EditorObject inParent= GetParentNode(inNode);
         iCS_EditorObject outParent= GetParentNode(outNode);
         // No need to create module ports if both connected nodes are under the same parent.
         if(inParent == outParent || inParent == outNode || inNode == outParent) {
-            Storage.SetSource(inPort, outPort, conversion);
+            myStorage.SetSource(inPort, outPort, conversion);
             return;
         }
         // Create inPort if inParent is not part of the outParent hierarchy.
@@ -1310,8 +1283,8 @@ public class iCS_GraphEditor : EditorWindow {
             }
         }
         if(!inParentSeen && inParent != null) {
-            iCS_EditorObject newPort= Storage.CreatePort(outPort.Name, inParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-            Storage.SetSource(inPort, newPort, conversion);
+            iCS_EditorObject newPort= myStorage.CreatePort(outPort.Name, inParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+            myStorage.SetSource(inPort, newPort, conversion);
             SetNewDataConnection(newPort, outPort);
             return;                       
         }
@@ -1324,46 +1297,46 @@ public class iCS_GraphEditor : EditorWindow {
             }
         }
         if(!outParentSeen && outParent != null) {
-            iCS_EditorObject newPort= Storage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-            Storage.SetSource(newPort, outPort, conversion);
+            iCS_EditorObject newPort= myStorage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+            myStorage.SetSource(newPort, outPort, conversion);
             SetNewDataConnection(inPort, newPort);
             return;                       
         }
         // Should never happen ... just connect the ports.
-        Storage.SetSource(inPort, outPort, conversion);
+        myStorage.SetSource(inPort, outPort, conversion);
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetStateAt(Vector2 point) {
-        iCS_EditorObject node= Storage.GetNodeAt(point);
+        iCS_EditorObject node= myStorage.GetNodeAt(point);
         while(node != null && !node.IsState) {
-            node= Storage.GetNodeAt(point, node);
+            node= myStorage.GetNodeAt(point, node);
         }
         return node;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetStateChartAt(Vector2 point) {
-        iCS_EditorObject node= Storage.GetNodeAt(point);
+        iCS_EditorObject node= myStorage.GetNodeAt(point);
         while(node != null && !node.IsStateChart) {
-            node= Storage.GetNodeAt(point, node);
+            node= myStorage.GetNodeAt(point, node);
         }
         return node;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetParentModule(iCS_EditorObject edObj) {
-        iCS_EditorObject parentModule= Storage.GetParent(edObj);
-        for(; parentModule != null && !parentModule.IsModule; parentModule= Storage.GetParent(parentModule));
+        iCS_EditorObject parentModule= myStorage.GetParent(edObj);
+        for(; parentModule != null && !parentModule.IsModule; parentModule= myStorage.GetParent(parentModule));
         return parentModule;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetParentNode(iCS_EditorObject edObj) {
-        iCS_EditorObject parentNode= Storage.GetParent(edObj);
-        for(; parentNode != null && !parentNode.IsNode; parentNode= Storage.GetParent(parentNode));
+        iCS_EditorObject parentNode= myStorage.GetParent(edObj);
+        for(; parentNode != null && !parentNode.IsNode; parentNode= myStorage.GetParent(parentNode));
         return parentNode;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType, string objName) {
-        iCS_EditorObject newParent= Storage.GetNodeAt(point);
-        if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(objName, objType, newParent, Storage)) {
+        iCS_EditorObject newParent= myStorage.GetNodeAt(point);
+        if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(objName, objType, newParent, myStorage)) {
             newParent= null;
         }
         return newParent;
@@ -1371,33 +1344,33 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetValidParentNodeUnder(iCS_EditorObject node) {
         if(!node.IsNode) return null;
-        Vector2 point= Math3D.Middle(Storage.GetPosition(node));
-        iCS_EditorObject newParent= Storage.GetNodeAt(point, node);
-        if(newParent == Storage.GetParent(node)) return newParent;
-        if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(node.Name, node.ObjectType, newParent, Storage)) {
+        Vector2 point= Math3D.Middle(myStorage.GetPosition(node));
+        iCS_EditorObject newParent= myStorage.GetNodeAt(point, node);
+        if(newParent == myStorage.GetParent(node)) return newParent;
+        if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(node.Name, node.ObjectType, newParent, myStorage)) {
             newParent= null;
         }
         return newParent;
     }
 	// ----------------------------------------------------------------------
     void ChangeParent(iCS_EditorObject node, iCS_EditorObject newParent) {
-        iCS_EditorObject oldParent= Storage.GetParent(node);
+        iCS_EditorObject oldParent= myStorage.GetParent(node);
         if(newParent == null || newParent == oldParent) return;
-        Storage.SetParent(node, newParent);
+        myStorage.SetParent(node, newParent);
 		if(node.IsState) CleanupEntryState(node, oldParent);
         CleanupConnections(node);
     }
 	// ----------------------------------------------------------------------
 	void CleanupEntryState(iCS_EditorObject state, iCS_EditorObject prevParent) {
 		state.IsEntryState= false;
-		iCS_EditorObject newParent= Storage.GetParent(state);
+		iCS_EditorObject newParent= myStorage.GetParent(state);
 		bool anEntryExists= false;
-		Storage.ForEachChild(newParent, child=> { if(child.IsEntryState) anEntryExists= true; });
+		myStorage.ForEachChild(newParent, child=> { if(child.IsEntryState) anEntryExists= true; });
 		if(!anEntryExists) state.IsEntryState= true;
 		anEntryExists= false;
-		Storage.ForEachChild(prevParent, child=> { if(child.IsEntryState) anEntryExists= true; });
+		myStorage.ForEachChild(prevParent, child=> { if(child.IsEntryState) anEntryExists= true; });
 		if(!anEntryExists) {
-			Storage.ForEachChild(prevParent,
+			myStorage.ForEachChild(prevParent,
 				child=> {
 					if(child.IsState) {
 						child.IsEntryState= true;
@@ -1413,41 +1386,41 @@ public class iCS_GraphEditor : EditorWindow {
         switch(node.ObjectType) {
             case iCS_ObjectTypeEnum.StateChart: {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
-                Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
+                myStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;                
             }
             case iCS_ObjectTypeEnum.State: {
                 // Attempt to relocate transition modules.
-                Storage.ForEachChildPort(node,
+                myStorage.ForEachChildPort(node,
                     p=> {
                         if(p.IsStatePort) {
                             iCS_EditorObject transitionModule= null;
                             if(p.IsInStatePort) {
-                                transitionModule= Storage.GetParent(Storage.GetSource(p));
+                                transitionModule= myStorage.GetParent(myStorage.GetSource(p));
                             } else {
-                                iCS_EditorObject[] connectedPorts= Storage.FindConnectedPorts(p);
+                                iCS_EditorObject[] connectedPorts= myStorage.FindConnectedPorts(p);
                                 foreach(var cp in connectedPorts) {
                                     if(cp.IsInTransitionPort) {
-                                        transitionModule= Storage.GetParent(cp);
+                                        transitionModule= myStorage.GetParent(cp);
                                         break;
                                     }
                                 }
                             }
-                            iCS_EditorObject outState= Storage.GetParent(Storage.GetOutStatePort(transitionModule));
-                            iCS_EditorObject inState= Storage.GetParent(Storage.GetInStatePort(transitionModule));
-                            iCS_EditorObject newParent= Storage.GetTransitionParent(inState, outState);
-                            if(newParent != null && newParent != Storage.GetParent(transitionModule)) {
+                            iCS_EditorObject outState= myStorage.GetParent(myStorage.GetOutStatePort(transitionModule));
+                            iCS_EditorObject inState= myStorage.GetParent(myStorage.GetInStatePort(transitionModule));
+                            iCS_EditorObject newParent= myStorage.GetTransitionParent(inState, outState);
+                            if(newParent != null && newParent != myStorage.GetParent(transitionModule)) {
                                 ChangeParent(transitionModule, newParent);
-                                Storage.LayoutTransitionModule(transitionModule);
-                                Storage.SetDirty(Storage.GetParent(node));
+                                myStorage.LayoutTransitionModule(transitionModule);
+                                myStorage.SetDirty(myStorage.GetParent(node));
                             }
                         }
                     }
                 );
                 // Ask our children to cleanup their connections.
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
-                Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
+                myStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;
             }
@@ -1456,7 +1429,7 @@ public class iCS_GraphEditor : EditorWindow {
             case iCS_ObjectTypeEnum.TransitionAction:
             case iCS_ObjectTypeEnum.Module: {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
-                Storage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
+                myStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
                 break;
             }
@@ -1465,7 +1438,7 @@ public class iCS_GraphEditor : EditorWindow {
             case iCS_ObjectTypeEnum.InstanceField:
             case iCS_ObjectTypeEnum.StaticField:
             case iCS_ObjectTypeEnum.TypeCast: {
-                Storage.ForEachChildPort(node,
+                myStorage.ForEachChildPort(node,
                     port=> {
                         if(port.IsInDataPort) {
                             iCS_EditorObject sourcePort= RemoveConnection(port);
@@ -1496,14 +1469,14 @@ public class iCS_GraphEditor : EditorWindow {
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject RemoveConnection(iCS_EditorObject inPort) {
-        iCS_EditorObject sourcePort= Storage.GetDataConnectionSource(inPort);
+        iCS_EditorObject sourcePort= myStorage.GetDataConnectionSource(inPort);
         // Tear down previous connection.
-        iCS_EditorObject tmpPort= Storage.GetSource(inPort);
+        iCS_EditorObject tmpPort= myStorage.GetSource(inPort);
         List<iCS_EditorObject> toDestroy= new List<iCS_EditorObject>();
         while(tmpPort != null && tmpPort != sourcePort) {
-            iCS_EditorObject[] connected= Storage.FindConnectedPorts(tmpPort);
+            iCS_EditorObject[] connected= myStorage.FindConnectedPorts(tmpPort);
             if(connected.Length == 1) {
-                iCS_EditorObject t= Storage.GetSource(tmpPort);
+                iCS_EditorObject t= myStorage.GetSource(tmpPort);
                 toDestroy.Add(tmpPort);
                 tmpPort= t;
             } else {
@@ -1511,7 +1484,7 @@ public class iCS_GraphEditor : EditorWindow {
             }
         }
         foreach(var byebye in toDestroy) {
-            Storage.DestroyInstance(byebye.InstanceId);
+            myStorage.DestroyInstance(byebye.InstanceId);
         }
         return sourcePort;        
     }
@@ -1524,7 +1497,7 @@ public class iCS_GraphEditor : EditorWindow {
     // ----------------------------------------------------------------------
     void FillConnectedInDataPorts(iCS_EditorObject outPort, List<iCS_EditorObject> result) {
         if(outPort == null) return;
-        iCS_EditorObject[] connectedPorts= Storage.FindConnectedPorts(outPort);
+        iCS_EditorObject[] connectedPorts= myStorage.FindConnectedPorts(outPort);
         foreach(var port in connectedPorts) {
             if(port.IsDataPort) {
                 if(port.IsModulePort) {
@@ -1545,8 +1518,8 @@ public class iCS_GraphEditor : EditorWindow {
             EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");
             return;
         }
-        iCS_EditorObject pasted= Storage.CopyFrom(sourceRoot, new iCS_IStorage(sourceStorage), parent, point);
-        Storage.Fold(pasted);
+        iCS_EditorObject pasted= myStorage.CopyFrom(sourceRoot, new iCS_IStorage(sourceStorage), parent, point);
+        myStorage.Fold(pasted);
     }
 
     // ======================================================================
@@ -1561,8 +1534,8 @@ public class iCS_GraphEditor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     public void CenterOn(iCS_EditorObject obj) {
-        if(obj == null || Storage == null) return;
-        CenterAt(Math3D.Middle(Storage.GetPosition(obj)));
+        if(obj == null || myStorage == null) return;
+        CenterAt(Math3D.Middle(myStorage.GetPosition(obj)));
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {
@@ -1578,9 +1551,9 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawGrid() {
         Graphics.DrawGrid(position,
-                          Storage.Preferences.Grid.BackgroundColor,
-                          Storage.Preferences.Grid.GridColor,
-                          Storage.Preferences.Grid.GridSpacing);
+                          myStorage.Preferences.Grid.BackgroundColor,
+                          myStorage.Preferences.Grid.GridColor,
+                          myStorage.Preferences.Grid.GridSpacing);
     }
     
 	// ----------------------------------------------------------------------
@@ -1624,24 +1597,12 @@ public class iCS_GraphEditor : EditorWindow {
 		iCS_ToolbarUtility.Buttons(ref r, 8f, -1, new string[1]{""}, 0, 0);
 	}
 	// ----------------------------------------------------------------------
-    void UpdateClassWizard() {
-        if(ClassWizard == null) return;
-        if(SelectedObject == null || !SelectedObject.IsClassModule) {
-            iCS_EditorMgr.Deactivate();
-        } else {
-            iCS_EditorMgr.Activate(SelectedObject, Storage);            
-        }
-    }
-	// ----------------------------------------------------------------------
 	void DrawGraph () {
         // Ask the storage to update itself.
-        Storage.Update();
+        myStorage.Update();
 
-        // Update class wizard.
-        UpdateClassWizard();
-        
 		// Start graphics
-        Graphics.Begin(UpdateScrollPosition(), Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), Storage);
+        Graphics.Begin(UpdateScrollPosition(), Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), myStorage);
         
         // Draw editor grid.
         DrawGrid();
@@ -1672,17 +1633,17 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawNormalNodes() {
         // Display node starting from the root node.
-        Storage.ForEachRecursiveDepthLast(DisplayRoot,
+        myStorage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
                 if(node.IsNode && !node.IsFloating && !node.IsBehaviour) {
-                	Graphics.DrawNormalNode(node, Storage);                        
+                	Graphics.DrawNormalNode(node, myStorage);                        
                 }
             }
         );
-        Storage.ForEachRecursiveDepthLast(DisplayRoot,
+        myStorage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
                 if(node.IsNode && node.IsFloating && !node.IsBehaviour) {
-                	Graphics.DrawNormalNode(node, Storage);                        
+                	Graphics.DrawNormalNode(node, myStorage);                        
                 }
             }
         );
@@ -1690,17 +1651,17 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawMinimizedNodes() {
         // Display node starting from the root node.
-        Storage.ForEachRecursiveDepthLast(DisplayRoot,
+        myStorage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
                 if(node.IsNode && !node.IsFloating) {
-                	Graphics.DrawMinimizedNode(node, Storage);                        
+                	Graphics.DrawMinimizedNode(node, myStorage);                        
                 }
             }
         );
-        Storage.ForEachRecursiveDepthLast(DisplayRoot,
+        myStorage.ForEachRecursiveDepthLast(DisplayRoot,
             node=> {
                 if(node.IsNode && node.IsFloating) {
-                	Graphics.DrawMinimizedNode(node, Storage);                        
+                	Graphics.DrawMinimizedNode(node, myStorage);                        
                 }
             }
         );
@@ -1709,10 +1670,10 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawConnection(port, Storage); });
+        myStorage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawConnection(port, myStorage); });
 
         // Display ports.
-        Storage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, Storage); });
+        myStorage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, myStorage); });
     }
 
     // ======================================================================
@@ -1722,7 +1683,7 @@ public class iCS_GraphEditor : EditorWindow {
         // Compute the amount of scroll needed.
         var dir= CanScrollInDirection(DetectScrollZone());
         if(Math3D.IsZero(dir)) return;
-        dir*= Storage.Preferences.ControlOptions.EdgeScrollSpeed*DeltaTime;
+        dir*= myStorage.Preferences.ControlOptions.EdgeScrollSpeed*DeltaTime;
 
         // Adjust according to scroll zone.
         switch(DragType) {
@@ -1770,7 +1731,7 @@ public class iCS_GraphEditor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     Vector2 CanScrollInDirection(Vector2 dir) {
-        Rect rootRect= Storage.GetPosition(DisplayRoot);
+        Rect rootRect= myStorage.GetPosition(DisplayRoot);
         var rootCenter= Math3D.Middle(rootRect);
         var topLeftCorner= ViewportToGraph(new Vector2(0, iCS_ToolbarUtility.GetHeight()));
         var bottomRightCorner= ViewportToGraph(new Vector2(position.width, position.height));

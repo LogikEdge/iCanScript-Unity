@@ -7,17 +7,10 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	struct NodeInfo {
-		public NodeInfo(bool isFolded) {
-			IsFolded= isFolded;
-		}
-		public bool IsFolded;	
-	}
 	
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject			    myRoot;
 	iCS_IStorage				    myStorage;
     DSScrollView                    myMainView;
 	iCS_ObjectHierarchyController   myController;
@@ -25,10 +18,12 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // =================================================================================
     // Initialization.
     // ---------------------------------------------------------------------------------
-    void OnEnable() {
+    protected new void OnEnable() {
+		base.OnEnable();
         iCS_StorageMgr.Register(SetStorage);
     }
-    void OnDisable() {
+    protected new void OnDisable() {
+		base.OnDisable();
         iCS_StorageMgr.Unregister(SetStorage);
     }
     
@@ -36,17 +31,14 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     public override void OnActivate(iCS_EditorObject rootObject, iCS_IStorage storage) {
-		myRoot= rootObject;
         SetStorage(storage);
 	}
 	public override void OnDeactivate() {
-		myRoot= null;
 		myStorage= null;
 	}
     void SetStorage(iCS_IStorage iStorage) {
 		myStorage= iStorage;
-		myRoot= myStorage.EditorObjects[0];
-        myController= new iCS_ObjectHierarchyController(myRoot, myStorage);
+        myController= new iCS_ObjectHierarchyController(myStorage[0], myStorage);
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, myController.View);
     }
     
