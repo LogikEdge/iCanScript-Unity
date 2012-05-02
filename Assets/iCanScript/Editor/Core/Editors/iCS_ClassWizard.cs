@@ -21,12 +21,15 @@ public class iCS_ClassWizard : iCS_EditorWindow {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    public override void OnActivate(iCS_EditorObject target, iCS_IStorage storage) {
-        // Transform invalid activation to a deactivation.
-        if(target == null || storage == null) {
-            myMainView= null;
-            return;
-        }
+	public override void OnSelectedObjectChange() {
+		// Deactivate if we don't have an active object.
+		iCS_EditorObject target= iCS_StorageMgr.SelectedObject;
+		iCS_IStorage storage= iCS_StorageMgr.IStorage;
+		if(storage == null || target == null || !target.IsClassModule) {
+			myMainView= null;
+			return;
+		}
+		// Update main view if selection has changed.
         if(myMainView == null ||
            (myController != null && (myController.Target != target || myController.IStorage != storage))) {
                myController   = new iCS_ClassWizardController(target, storage);            
@@ -36,19 +39,16 @@ public class iCS_ClassWizard : iCS_EditorWindow {
                myMainView.AddSubview(new GUIContent("Wizard"), myController.View);
                myMainView.AddSubview(new GUIContent("Inspector"), myInspectorView);
                myMainView.AddSubview(new GUIContent("Tree View"), myTreeView.View);
-        }
-        Repaint();
-    }
-    // ---------------------------------------------------------------------------------
-    public override void OnDeactivate() {
-        myMainView= null;
-        Repaint();
-    }
-
+        }		
+	}
+	
     // =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
     void OnGUI() {
+		// Update storage manager.
+		iCS_StorageMgr.Update();
+		OnSelectedObjectChange();
         // Wait until window is configured.
         if(myMainView == null) return;
         EditorGUIUtility.LookLikeInspector();

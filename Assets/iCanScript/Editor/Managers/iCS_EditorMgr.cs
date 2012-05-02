@@ -30,12 +30,6 @@ public static class iCS_EditorMgr {
     // =================================================================================
     // Event distribution.
     // ---------------------------------------------------------------------------------
-    public static void Activate(iCS_EditorObject target, iCS_IStorage storage) {
-		Prelude.forEach(w=> w.OnActivate(target,storage), myWindows);
-    }
-    public static void Deactivate() {
-		Prelude.forEach(w=> w.OnDeactivate(), myWindows);
-     }
 	static void OnStorageChange(iCS_IStorage iStorage) {
 		Prelude.forEach(w=> w.OnStorageChange(), myWindows);
 		Prelude.forEach(w=> w.Repaint(), myWindows);

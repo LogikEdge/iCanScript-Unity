@@ -26,6 +26,4 @@ public abstract class iCS_EditorWindow : EditorWindow {
     // ---------------------------------------------------------------------------------
 	public virtual  void OnStorageChange()        {}
 	public virtual  void OnSelectedObjectChange() {}		
-    public abstract void OnActivate(iCS_EditorObject target, iCS_IStorage storage);
-    public abstract void OnDeactivate();
 }

@@ -649,7 +649,6 @@ public class iCS_GraphEditor : EditorWindow {
         if(SelectedObject != null && SelectedObject.IsClassModule) {
             bool hadKeyboardFocus= HasKeyboardFocus;
             iCS_EditorMgr.GetClassWizardEditor();
-            iCS_EditorMgr.Activate(SelectedObject, myStorage);
             // Keep keyboard focus.
             if(hadKeyboardFocus) Focus();
         }        
