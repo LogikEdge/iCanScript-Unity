@@ -67,7 +67,7 @@ public class iCS_Inspector : Editor {
             myEditor= iCS_EditorMgr.GetGraphEditor();
         }
         // Verify that the target reflects the selected storage.
-        iCS_StorageMgr.Update();
+        iCS_EditorMgr.Update();
         iCS_Storage realStorage= target as iCS_Storage;
         if(realStorage == null || realStorage != iCS_StorageMgr.Storage) {
             myStorage= null;
