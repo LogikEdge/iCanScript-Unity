@@ -64,7 +64,7 @@ public partial class iCS_IStorage {
     public int                       SelectedObjectId { get { return Storage.SelectedObject; } set { Storage.SelectedObject= value; }}
     public iCS_EditorObject          SelectedObject   { get { return this[SelectedObjectId]; } set { SelectedObjectId= value != null ? value.InstanceId : -1; }}
     // ----------------------------------------------------------------------
-    public bool IsValid(int id)                      { return id >= 0 && id < EditorObjects.Count && this[id].InstanceId != -1; }
+    public bool IsValid(int id)                      { return id >= 0 && id < EditorObjects.Count && this[id] != null && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)                    { return !IsValid(id); }
     public bool IsValid(iCS_EditorObject obj)        { return obj != null && IsValid(obj.InstanceId); }
     public bool IsSourceValid(iCS_EditorObject obj)  { return IsValid(obj.Source); }

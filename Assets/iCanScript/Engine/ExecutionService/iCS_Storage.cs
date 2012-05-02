@@ -7,7 +7,7 @@ using System.Collections.Generic;
 // from this storage class.
 public class iCS_Storage : MonoBehaviour {
     // ======================================================================
-    // Properties
+    // Fields
     // ----------------------------------------------------------------------
                       public iCS_UserPreferences      Preferences   = new iCS_UserPreferences();
     [HideInInspector] public List<iCS_EditorObject>   EditorObjects = new List<iCS_EditorObject>();
@@ -17,10 +17,18 @@ public class iCS_Storage : MonoBehaviour {
 	[HideInInspector] public float  				  GuiScale      = 1f;	
 	[HideInInspector] public int    				  SelectedObject= -1;	
 
+    // ======================================================================
+    // Properties
     // ----------------------------------------------------------------------
     public bool IsValidEditorObject(int id) { return id >= 0 && id < EditorObjects.Count && EditorObjects[id] != null; }
     public bool IsValidUnityObject(int id)  { return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null; }
 
+    // ======================================================================
+    // Initialization
+    // ----------------------------------------------------------------------
+	void OnEnable()  { Debug.Log("Enabling storage"); }
+	void OnDisable() { Debug.Log("Disabling storage"); }
+	
     // ----------------------------------------------------------------------
     public bool IsMuxPortChild(int id)  {
         if(!IsValidEditorObject(id)) return false;
