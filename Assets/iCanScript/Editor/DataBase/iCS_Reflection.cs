@@ -85,7 +85,7 @@ public class iCS_Reflection {
                         // Extract class information.
                         iCS_ClassAttribute classAttribute= classCustomAttribute as iCS_ClassAttribute;
                         string classCompany= classAttribute.Company;
-                        string classPackage= classAttribute.Package ?? iCS_Types.TypeName(classType);
+                        string classPackage= classAttribute.Package;
                         string classToolTip= classAttribute.ToolTip;
                         string classIcon   = classAttribute.Icon;
                         DecodeClassInfo(classType, classCompany, classPackage, classToolTip, classIcon);
