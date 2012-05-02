@@ -214,20 +214,20 @@ public class iCS_ReflectionDesc {
         }
     }
     // ----------------------------------------------------------------------
-    // Returns the function name in the form of "company/package/displayName".
+    // Returns the function name in the form of "company/package/class".
     public string FunctionPath {
         get {
-            string package= Package ?? "";
-            if(Company == null) return package;
-            return Company+"/"+package;
+			string path= "";
+			if(!IsEmptyStr(Company)) path= Company+"/";
+			if(!IsEmptyStr(Package)) path+= Package+"/";
+			path+= TypeName(ClassType);
+			return path;
         }
     }
     // ----------------------------------------------------------------------
-    // Returns the function name in the form of "company/package/displayName".
-    public string FunctionName {
+    // Returns the function name in the form of "company/package/class/displayName".
+    public string FunctionPathAndName {
         get {
-            string path= FunctionPath;
-            if(path == "") return DisplayName;
             return FunctionPath+"/"+DisplayName;
         }
     }
@@ -238,5 +238,7 @@ public class iCS_ReflectionDesc {
     static string TypeName(Type type) {
         return iCS_Types.TypeName(type);
     }
-    
+    static bool IsEmptyStr(string s) {
+		return s == null || s == "";
+	}
 }
