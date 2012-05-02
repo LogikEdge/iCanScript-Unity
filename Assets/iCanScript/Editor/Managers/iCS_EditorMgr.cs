@@ -15,6 +15,7 @@ public static class iCS_EditorMgr {
     static iCS_EditorMgr() {
         myWindows= new List<iCS_EditorWindow>();
 		iCS_StorageMgr.RegisterStorageChangeNotification(OnStorageChange);
+		iCS_StorageMgr.RegisterSelectedObjectChangeNotification(OnSelectedObjectChange);
     }
     
     // =================================================================================
@@ -32,6 +33,10 @@ public static class iCS_EditorMgr {
     // ---------------------------------------------------------------------------------
 	static void OnStorageChange(iCS_IStorage iStorage) {
 		Prelude.forEach(w=> w.OnStorageChange(), myWindows);
+		Prelude.forEach(w=> w.Repaint(), myWindows);
+	}
+	static void OnSelectedObjectChange(iCS_EditorObject changedObject) {
+		Prelude.forEach(w=> w.OnSelectedObjectChange(), myWindows);
 		Prelude.forEach(w=> w.Repaint(), myWindows);
 	}
 	
