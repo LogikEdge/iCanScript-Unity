@@ -14,7 +14,8 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-	public DSView View { get { return myTreeView; }}
+	public DSView 			View 	{ get { return myTreeView; }}
+	public iCS_EditorObject Target	{ get { return myTarget; }}
 	
     // =================================================================================
     // Initialization

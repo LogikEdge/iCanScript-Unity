@@ -8,12 +8,12 @@ using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This non-persistante class is used to edit the iCS_Behaviour.
-public class iCS_GraphEditor : EditorWindow {
+public class iCS_GraphEditor : iCS_EditorWindow {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
     iCS_IStorage         myStorage      = null;
-    iCS_EditorObject     DisplayRoot    = null;
+    iCS_EditorObject     myDisplayRoot  = null;
     iCS_DynamicMenu      DynamicMenu    = null;
     
     // ----------------------------------------------------------------------
@@ -61,7 +61,7 @@ public class iCS_GraphEditor : EditorWindow {
         }
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject SelectedObject {
+    new iCS_EditorObject SelectedObject {
         get { return myStorage.SelectedObject; }
         set { myStorage.SelectedObject= value; }
     }
@@ -156,11 +156,6 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     protected virtual iCS_ClassWizard GetClassWizard()  { return GetWindow(typeof(iCS_ClassWizard)) as iCS_ClassWizard; }
     protected virtual void            InvokeInstaller() {}
-//    // ----------------------------------------------------------------------
-//	void SetStorage(iCS_IStorage iStorage) {
-//        myStorage= iStorage;
-//        DisplayRoot= myStorage.IsValid(0) ? myStorage[0] : null;
-//	}
 	
 	// ----------------------------------------------------------------------
     // Assures proper initialization and returns true if editor is ready
@@ -183,8 +178,9 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
 	public void Update() {
         // Update storage selection.
-        iCS_StorageMgr.Update();
+        iCS_EditorMgr.Update();
 		myStorage= iCS_StorageMgr.IStorage;
+		myDisplayRoot= myStorage != null ? myStorage[0] : null;
         // Determine repaint rate.
         if(myStorage != null) {
             // Repaint window
@@ -199,8 +195,8 @@ public class iCS_GraphEditor : EditorWindow {
                 Repaint();
             }
             // Update DisplayRoot
-            if(DisplayRoot == null && myStorage.IsValid(0)) {
-                DisplayRoot= myStorage[0];
+            if(myDisplayRoot == null && myStorage.IsValid(0)) {
+                myDisplayRoot= myStorage[0];
             }
         }
         // Make certain the installer is ran.
@@ -416,7 +412,7 @@ public class iCS_GraphEditor : EditorWindow {
                         break;
                     }
                     case KeyCode.DownArrow: {
-                        if(SelectedObject == null) SelectedObject= DisplayRoot;
+                        if(SelectedObject == null) SelectedObject= myDisplayRoot;
                         SelectedObject= iCS_EditorUtility.GetFirstChild(SelectedObject, myStorage);
                         CenterOnSelected();
                         Event.current.Use();
@@ -436,7 +432,7 @@ public class iCS_GraphEditor : EditorWindow {
                     }
                     case KeyCode.F: {
                         if(ev.shift) {
-                            CenterOn(DisplayRoot);
+                            CenterOn(myDisplayRoot);
                         } else {
                             CenterOn(SelectedObject);
                         }
@@ -497,7 +493,7 @@ public class iCS_GraphEditor : EditorWindow {
                     // Object deletion
                     case KeyCode.Delete:
                     case KeyCode.Backspace: {
-                        if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
+                        if(SelectedObject != null && SelectedObject != myDisplayRoot && SelectedObject != StorageRoot &&
                           !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
                             iCS_EditorObject parent= myStorage.GetParent(SelectedObject);
                             if(ev.shift) {
@@ -514,7 +510,7 @@ public class iCS_GraphEditor : EditorWindow {
                     // Object creation.
                     case KeyCode.KeypadEnter: // fnc+return on Mac
                     case KeyCode.Insert: {
-                        if(SelectedObject == null) SelectedObject= DisplayRoot;
+                        if(SelectedObject == null) SelectedObject= myDisplayRoot;
                         // Don't use mouse position if it is too far from selected node.
                         Vector2 graphPos= ViewportToGraph(MousePosition);
                         Rect parentRect= myStorage.GetPosition(SelectedObject);
@@ -637,8 +633,8 @@ public class iCS_GraphEditor : EditorWindow {
 
 	// ----------------------------------------------------------------------
     void ShowDynamicMenu() {
-        if(SelectedObject == null && DisplayRoot.IsBehaviour) {
-            SelectedObject= DisplayRoot;
+        if(SelectedObject == null && myDisplayRoot.IsBehaviour) {
+            SelectedObject= myDisplayRoot;
         }
         ShowClassWizard();
         DynamicMenu.Update(SelectedObject, myStorage, ViewportToGraph(MousePosition), MenuOption == 0);
@@ -1525,11 +1521,11 @@ public class iCS_GraphEditor : EditorWindow {
     // Graph Navigation
 	// ----------------------------------------------------------------------
     public void CenterOnRoot() {
-        CenterOn(DisplayRoot);
+        CenterOn(myDisplayRoot);
     }
 	// ----------------------------------------------------------------------
     public void CenterOnSelected() {
-        CenterOn(SelectedObject ?? DisplayRoot);
+        CenterOn(SelectedObject ?? myDisplayRoot);
     }
 	// ----------------------------------------------------------------------
     public void CenterOn(iCS_EditorObject obj) {
@@ -1632,14 +1628,14 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawNormalNodes() {
         // Display node starting from the root node.
-        myStorage.ForEachRecursiveDepthLast(DisplayRoot,
+        myStorage.ForEachRecursiveDepthLast(myDisplayRoot,
             node=> {
                 if(node.IsNode && !node.IsFloating && !node.IsBehaviour) {
                 	Graphics.DrawNormalNode(node, myStorage);                        
                 }
             }
         );
-        myStorage.ForEachRecursiveDepthLast(DisplayRoot,
+        myStorage.ForEachRecursiveDepthLast(myDisplayRoot,
             node=> {
                 if(node.IsNode && node.IsFloating && !node.IsBehaviour) {
                 	Graphics.DrawNormalNode(node, myStorage);                        
@@ -1650,14 +1646,14 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     void DrawMinimizedNodes() {
         // Display node starting from the root node.
-        myStorage.ForEachRecursiveDepthLast(DisplayRoot,
+        myStorage.ForEachRecursiveDepthLast(myDisplayRoot,
             node=> {
                 if(node.IsNode && !node.IsFloating) {
                 	Graphics.DrawMinimizedNode(node, myStorage);                        
                 }
             }
         );
-        myStorage.ForEachRecursiveDepthLast(DisplayRoot,
+        myStorage.ForEachRecursiveDepthLast(myDisplayRoot,
             node=> {
                 if(node.IsNode && node.IsFloating) {
                 	Graphics.DrawMinimizedNode(node, myStorage);                        
@@ -1669,10 +1665,10 @@ public class iCS_GraphEditor : EditorWindow {
 	// ----------------------------------------------------------------------
     private void DrawConnections() {
         // Display all connections.
-        myStorage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawConnection(port, myStorage); });
+        myStorage.ForEachChildRecursive(myDisplayRoot, port=> { if(port.IsPort) Graphics.DrawConnection(port, myStorage); });
 
         // Display ports.
-        myStorage.ForEachChildRecursive(DisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, myStorage); });
+        myStorage.ForEachChildRecursive(myDisplayRoot, port=> { if(port.IsPort) Graphics.DrawPort(port, myStorage); });
     }
 
     // ======================================================================
@@ -1730,7 +1726,7 @@ public class iCS_GraphEditor : EditorWindow {
     }
 	// ----------------------------------------------------------------------
     Vector2 CanScrollInDirection(Vector2 dir) {
-        Rect rootRect= myStorage.GetPosition(DisplayRoot);
+        Rect rootRect= myStorage.GetPosition(myDisplayRoot);
         var rootCenter= Math3D.Middle(rootRect);
         var topLeftCorner= ViewportToGraph(new Vector2(0, iCS_ToolbarUtility.GetHeight()));
         var bottomRightCorner= ViewportToGraph(new Vector2(position.width, position.height));

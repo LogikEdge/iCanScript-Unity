@@ -11,8 +11,6 @@ public static class iCS_StorageMgr {
 	static bool						myIsOutdated				   = true;
 	static iCS_IStorage 		    myIStorage                     = null;
 	static iCS_EditorObject			mySelectedObject			   = null;
-	static Action<iCS_IStorage>	    myStorageChangeCallbacks       = null;
-	static Action<iCS_EditorObject> mySelectedObjectChangeCallBacks= null;
 	
     // =================================================================================
     // Properties
@@ -22,8 +20,23 @@ public static class iCS_StorageMgr {
     public static iCS_EditorObject SelectedObject   	{ get { return IStorage != null ? IStorage.SelectedObject : null; }}
 	public static bool			   IsOutdated			{ get { return myIsOutdated; }}
 	
+	
     // =================================================================================
     // Selection Update.
+    // ---------------------------------------------------------------------------------
+	public static void Update(iCS_IStorage iStorage, Action<iCS_IStorage> notif) {
+		Update();
+		if(myIStorage != iStorage) {
+			notif(myIStorage);
+		}
+	}
+    // ---------------------------------------------------------------------------------
+	public static void Update(iCS_EditorObject eObj, Action<iCS_IStorage, iCS_EditorObject> notif) {
+		Update();
+		if(mySelectedObject != eObj) {
+			notif(myIStorage, mySelectedObject);
+		}
+	}
     // ---------------------------------------------------------------------------------
 	public static void Update() {
 		GameObject go= Selection.activeGameObject;
@@ -35,38 +48,12 @@ public static class iCS_StorageMgr {
 			myIStorage= new iCS_IStorage(storage);
 			mySelectedObject= myIStorage.SelectedObject;
 			myIsOutdated= false;
-			Debug.Log("Storage has changed");
-			if(myStorageChangeCallbacks != null) {
-				myStorageChangeCallbacks(myIStorage);
-			}
-			if(mySelectedObjectChangeCallBacks != null) {
-				mySelectedObjectChangeCallBacks(mySelectedObject);
-			}
 			return;
 		}
 		// Verify for selected object change.
 		if(mySelectedObject != myIStorage.SelectedObject) {
 			mySelectedObject= myIStorage.SelectedObject;
 			myIsOutdated= false;
-			if(mySelectedObjectChangeCallBacks != null) {
-				mySelectedObjectChangeCallBacks(mySelectedObject);
-			}
 		}
-	}
-
-    // =================================================================================
-    // Registration.
-    // ---------------------------------------------------------------------------------
-	public static void RegisterStorageChangeNotification(Action<iCS_IStorage> action) {
-		myStorageChangeCallbacks+= action;
-	}
-	public static void UnregisterStorageChangeNotification(Action<iCS_IStorage> action) {
-		myStorageChangeCallbacks-= action;
-	}
-	public static void RegisterSelectedObjectChangeNotification(Action<iCS_EditorObject> action) {
-		mySelectedObjectChangeCallBacks+= action;
-	}
-	public static void UnregisterSelectedObjectChangeNotification(Action<iCS_EditorObject> action) {
-		mySelectedObjectChangeCallBacks-= action;
 	}
 }

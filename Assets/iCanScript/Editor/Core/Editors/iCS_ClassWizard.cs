@@ -8,13 +8,11 @@ public class iCS_ClassWizard : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	bool							myNeedRebuild  = true;
-	iCS_EditorObject				myTarget       = null;
-	iCS_IStorage					myStorage      = null;
-    DSAccordionView             	myMainView     = null;
-    iCS_ClassWizardController   	myController   = null;
-    iCS_ObjectHierarchyController	myTreeView     = null;
-    DSCellView                  	myInspectorView= null;
+	bool							myNeedsViewUpdate= true;
+    DSAccordionView             	myMainView       = null;
+    iCS_ClassWizardController   	myController     = null;
+    iCS_ObjectHierarchyController	myTreeView       = null;
+    DSCellView                  	myInspectorView  = null;
     
     // =================================================================================
     // Constants
@@ -25,23 +23,19 @@ public class iCS_ClassWizard : iCS_EditorWindow {
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
 	public override void OnSelectedObjectChange() {
-		// Deactivate if we don't have an active object.
-		myTarget= iCS_StorageMgr.SelectedObject;
-		myStorage= iCS_StorageMgr.IStorage;
-		myNeedRebuild= true;
+		myNeedsViewUpdate= true;
 	}
-    // ---------------------------------------------------------------------------------
 	void UpdateView() {
-		myNeedRebuild= false;
-		if(myStorage == null || myTarget == null || !myTarget.IsClassModule) {
+		myNeedsViewUpdate= false;
+		if(IStorage == null || SelectedObject == null || !SelectedObject.IsClassModule) {
 			myMainView= null;
 			return;
 		}
 		// Update main view if selection has changed.
         if(myMainView == null ||
-           (myController != null && (myController.Target != myTarget || myController.IStorage != myStorage))) {
-               myController   = new iCS_ClassWizardController(myTarget, myStorage);            
-               myTreeView     = new iCS_ObjectHierarchyController(myTarget, myStorage);
+           (myController != null && (myController.Target != SelectedObject || myController.IStorage != IStorage))) {
+               myController   = new iCS_ClassWizardController(SelectedObject, IStorage);            
+               myTreeView     = new iCS_ObjectHierarchyController(SelectedObject, IStorage);
                myInspectorView= new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true);
                myMainView     = new DSAccordionView(new RectOffset(kSpacer, kSpacer, kSpacer, kSpacer), true, 3);
                myMainView.AddSubview(new GUIContent("Wizard"), myController.View);
@@ -55,8 +49,8 @@ public class iCS_ClassWizard : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
     void OnGUI() {
 		// Update storage manager.
-		iCS_StorageMgr.Update();
-		if(myNeedRebuild) UpdateView();
+		iCS_EditorMgr.Update();
+		if(myNeedsViewUpdate) UpdateView();
         // Wait until window is configured.
         if(myMainView == null) return;
         EditorGUIUtility.LookLikeInspector();

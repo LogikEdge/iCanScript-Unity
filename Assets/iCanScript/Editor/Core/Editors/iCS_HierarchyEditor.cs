@@ -7,11 +7,6 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	
-    // =================================================================================
-    // Fields
-    // ---------------------------------------------------------------------------------
-	iCS_IStorage				    myStorage;
     DSScrollView                    myMainView;
 	iCS_ObjectHierarchyController   myController;
 	    
@@ -19,8 +14,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
 	public override void OnStorageChange() {
-		myStorage= iCS_StorageMgr.IStorage;
-        myController= new iCS_ObjectHierarchyController(myStorage[0], myStorage);
+        myController= new iCS_ObjectHierarchyController(IStorage[0], IStorage);
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, myController.View);
 		Repaint();
     }
@@ -29,8 +23,8 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // Display.
     // ---------------------------------------------------------------------------------
     void OnGUI() {
-        iCS_StorageMgr.Update();
-		if(myStorage == null) return;
+        iCS_EditorMgr.Update();
+		if(IStorage == null) return;
 		myMainView.Display(new Rect(0,0,position.width,position.height));
 	}
 }

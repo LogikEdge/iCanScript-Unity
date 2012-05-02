@@ -5,11 +5,16 @@ using System.Collections;
 public abstract class iCS_EditorWindow : EditorWindow {
 
     // =================================================================================
+    // Fields
+    // ---------------------------------------------------------------------------------
+	iCS_EditorObject	mySelectedObject= null;
+	iCS_IStorage		myIStorage      = null;
+
+    // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-	public iCS_IStorage IStorage 		   { get { return iCS_StorageMgr.IStorage; }}
-	public iCS_Storage  Storage  		   { get { return iCS_StorageMgr.Storage; }}
-	public iCS_EditorObject SelectedObject { get { return null; }}
+	public iCS_EditorObject SelectedObject { get { return mySelectedObject; } set { mySelectedObject= value; }}
+	public iCS_IStorage 	IStorage 	   { get { return myIStorage; } set { myIStorage= value; }}
 	
     // =================================================================================
     // Initialization
@@ -24,6 +29,6 @@ public abstract class iCS_EditorWindow : EditorWindow {
     // =================================================================================
     // Functions that all editor window must respond to.
     // ---------------------------------------------------------------------------------
-	public virtual  void OnStorageChange()        {}
-	public virtual  void OnSelectedObjectChange() {}		
+	public virtual void OnStorageChange()        {}
+	public virtual void OnSelectedObjectChange() {}		
 }
