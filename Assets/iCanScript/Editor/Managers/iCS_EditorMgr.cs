@@ -7,7 +7,8 @@ public static class iCS_EditorMgr {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    static List<iCS_EditorWindow>   myWindows= null;
+    static List<iCS_EditorWindow>   myWindows       = null;
+	static int						myModificationId= 0;
     
     // =================================================================================
     // Initialization
@@ -33,12 +34,16 @@ public static class iCS_EditorMgr {
 		iCS_StorageMgr.Update();
 		Prelude.filterWith(
 			w=> w.IStorage != iCS_StorageMgr.IStorage,
-			w=> { w.IStorage= iCS_StorageMgr.IStorage; w.OnStorageChange(); },
+			w=> { w.IStorage= iCS_StorageMgr.IStorage; w.OnStorageChange(); w.Repaint(); },
 			myWindows);
 		Prelude.filterWith(
 			w=> w.SelectedObject != iCS_StorageMgr.SelectedObject,
-			w=> { w.SelectedObject= iCS_StorageMgr.SelectedObject; w.OnSelectedObjectChange(); },
+			w=> { w.SelectedObject= iCS_StorageMgr.SelectedObject; w.OnSelectedObjectChange(); w.Repaint(); },
 			myWindows);
+		if(myModificationId != iCS_StorageMgr.IStorage.ModificationId) {
+			myModificationId= iCS_StorageMgr.IStorage.ModificationId;
+			Prelude.forEach(w=> w.Repaint(), myWindows);
+		}
 	}
 	
     // ======================================================================

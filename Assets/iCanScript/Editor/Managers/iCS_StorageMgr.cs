@@ -8,9 +8,9 @@ public static class iCS_StorageMgr {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	static bool						myIsOutdated				   = true;
-	static iCS_IStorage 		    myIStorage                     = null;
-	static iCS_EditorObject			mySelectedObject			   = null;
+	static bool						myIsOutdated	= true;
+	static iCS_IStorage 		    myIStorage      = null;
+	static iCS_EditorObject			mySelectedObject= null;
 	
     // =================================================================================
     // Properties

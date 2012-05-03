@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 public partial class iCS_IStorage {
     // ======================================================================
-    // Properties
+    // Fields
     // ----------------------------------------------------------------------
             bool            myIsDirty         = true;
     public  bool            IsAnimationPlaying= false;
@@ -70,7 +70,8 @@ public partial class iCS_IStorage {
     public bool IsSourceValid(iCS_EditorObject obj)  { return IsValid(obj.Source); }
     public bool IsParentValid(iCS_EditorObject obj)  { return IsValid(obj.ParentId); }
     // ----------------------------------------------------------------------
-    public bool IsDirty { get { ProcessUndoRedo(); return myIsDirty; }}
+    public bool IsDirty        { get { ProcessUndoRedo(); return myIsDirty; }}
+	public int  ModificationId { get { return UndoRedoId; }}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? GetParent(eObj) : null); }
     // ----------------------------------------------------------------------
@@ -207,7 +208,7 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Undo/Redo support
     // ----------------------------------------------------------------------
-    public void RegisterUndo(string message= "uCode") {
+    public void RegisterUndo(string message= "iCanScript") {
         Undo.RegisterUndo(Storage, message);
         Storage.UndoRedoId= ++UndoRedoId;        
         EditorUtility.SetDirty(Storage);

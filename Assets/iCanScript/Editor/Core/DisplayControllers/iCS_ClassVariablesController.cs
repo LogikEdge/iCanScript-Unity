@@ -186,8 +186,10 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
                 if(prevActive != inputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(inputControlPair.IsActive) {
+						myStorage.RegisterUndo("Create "+inputControlPair.Component.DisplayName);
                         myStorage.ClassModuleCreate(myTarget, inputControlPair.Component);
                     } else {
+						myStorage.RegisterUndo("Delete "+inputControlPair.Component.DisplayName);
                         myStorage.ClassModuleDestroy(myTarget, inputControlPair.Component);
                     }                
                 }                					
@@ -199,8 +201,10 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
                 if(prevActive != outputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(outputControlPair.IsActive) {
+						myStorage.RegisterUndo("Create "+inputControlPair.Component.DisplayName);
                         myStorage.ClassModuleCreate(myTarget, outputControlPair.Component);
                     } else {
+						myStorage.RegisterUndo("Delete "+inputControlPair.Component.DisplayName);
                         myStorage.ClassModuleDestroy(myTarget, outputControlPair.Component);
                     }                
 				}

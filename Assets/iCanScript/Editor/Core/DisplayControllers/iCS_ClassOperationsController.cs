@@ -95,8 +95,10 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
         if(GUI.Button(position, myMethods[row].FunctionSignatureNoThis) && myTarget != null && myStorage != null) {
             myIsMethodPresent[row]^= true;
             if(myIsMethodPresent[row]) {
+				myStorage.RegisterUndo("Create "+myMethods[row].DisplayName);
                 myStorage.ClassModuleCreate(myTarget, myMethods[row]);
             } else {
+				myStorage.RegisterUndo("Delete "+myMethods[row].DisplayName);
                 myStorage.ClassModuleDestroy(myTarget, myMethods[row]);
             }
         }
