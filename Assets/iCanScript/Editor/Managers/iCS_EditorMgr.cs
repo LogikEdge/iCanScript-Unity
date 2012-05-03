@@ -40,7 +40,7 @@ public static class iCS_EditorMgr {
 			w=> w.SelectedObject != iCS_StorageMgr.SelectedObject,
 			w=> { w.SelectedObject= iCS_StorageMgr.SelectedObject; w.OnSelectedObjectChange(); w.Repaint(); },
 			myWindows);
-		if(myModificationId != iCS_StorageMgr.IStorage.ModificationId) {
+		if(iCS_StorageMgr.IStorage != null && myModificationId != iCS_StorageMgr.IStorage.ModificationId) {
 			myModificationId= iCS_StorageMgr.IStorage.ModificationId;
 			Prelude.forEach(w=> w.Repaint(), myWindows);
 		}

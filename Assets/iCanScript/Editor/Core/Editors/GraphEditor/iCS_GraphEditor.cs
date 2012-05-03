@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This non-persistante class is used to edit the iCS_Behaviour.
-public class iCS_GraphEditor : iCS_EditorWindow {
+public partial class iCS_GraphEditor : iCS_EditorWindow {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
@@ -649,43 +649,9 @@ public class iCS_GraphEditor : iCS_EditorWindow {
             if(hadKeyboardFocus) Focus();
         }        
     }
-	// ----------------------------------------------------------------------
-    void DragAndDropPerform() {
-        // Show a copy icon on the drag
-        iCS_Storage storage= GetDraggedLibrary();
-        if(storage != null) {
-            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-            DragAndDrop.AcceptDrag();                                                            
-        }        
-    }
-	// ----------------------------------------------------------------------
-    void DragAndDropUpdated() {
-        // Show a copy icon on the drag
-        iCS_Storage storage= GetDraggedLibrary();
-        if(storage != null) {
-            DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-        }        
-    }
-	// ----------------------------------------------------------------------
-    void DragAndDropExited() {
-        iCS_Storage storage= GetDraggedLibrary();
-        if(storage != null) {
-            PasteIntoGraph(ViewportToGraph(MousePosition), storage, storage.EditorObjects[0]);
-        }
-    }
-	// ----------------------------------------------------------------------
-    iCS_Storage GetDraggedLibrary() {
-        UnityEngine.Object[] draggedObjects= DragAndDrop.objectReferences;
-        if(draggedObjects.Length >= 1) {
-            GameObject go= draggedObjects[0] as GameObject;
-            if(go != null) {
-                iCS_Storage storage= go.GetComponent<iCS_Library>();
-                return storage;
-            }
-        }
-        return null;
-    }
+
     
+    // ======================================================================
 	// ----------------------------------------------------------------------
     void MakeDataConnectionDrag() {
         if(DragFixPort != DragOriginalPort) myStorage.SetSource(DragOriginalPort, DragFixPort);

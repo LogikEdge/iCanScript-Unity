@@ -20,10 +20,15 @@ public partial class iCS_IStorage {
     // Initialization
     // ----------------------------------------------------------------------
     public iCS_IStorage(iCS_Storage storage) {
+        Debug.Log("Creating IStorage");
         Init(storage);
+    }
+    ~iCS_IStorage() {
+        Debug.Log("Destroying IStorage");
     }
     public void Init(iCS_Storage storage) {
         if(Storage != storage) {
+            Debug.Log("IStorage being reinitialized");
             myIsDirty= true;
             Storage= storage;
             GenerateEditorData();
