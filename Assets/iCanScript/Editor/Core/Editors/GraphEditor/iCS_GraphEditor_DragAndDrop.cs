@@ -49,16 +49,16 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                     Type portType= eObj.RuntimeType;
                     Type dragObjType= draggedObject.GetType();
                     if(iCS_Types.IsA(portType, dragObjType)) {
-                        myStorage.RegisterUndo("Change port value");
+                        IStorage.RegisterUndo("Change port value");
                         UpdatePortInitialValue(eObj, draggedObject);
                     }
                 } else if(eObj.IsNode) {
                     string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
                     if(newTexture != null) {
                         Debug.Log("Changing node icon: "+iconGUID);
-                        myStorage.RegisterUndo("Change node Icon");
+                        IStorage.RegisterUndo("Change node Icon");
                         eObj.IconGUID= iconGUID;                    
-                        myStorage.Minimize(eObj);
+                        IStorage.Minimize(eObj);
                     }
                 }
                 break;
@@ -71,7 +71,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                     Debug.Log("Dragging "+dragObjType.Name+" unto "+portType.Name);
                     if(iCS_Types.IsA(portType, dragObjType)) {
                         Debug.Log("Set port value accepted.");
-                        myStorage.RegisterUndo("Set port value");
+                        IStorage.RegisterUndo("Set port value");
                         UpdatePortInitialValue(eObj, draggedObject);
                     }
                 }
@@ -123,24 +123,24 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 	// ----------------------------------------------------------------------
     void UpdatePortInitialValue(iCS_EditorObject port, object newValue) {
         UpdateRuntimeValue(port, newValue);
-		myStorage.SetInitialPortValue(port, newValue);
-		myStorage.SetPortValue(port, newValue);
-        myStorage.SetDirty(myStorage.GetParent(port));
+		IStorage.SetInitialPortValue(port, newValue);
+		IStorage.SetPortValue(port, newValue);
+        IStorage.SetDirty(IStorage.GetParent(port));
     }
     // -----------------------------------------------------------------------
     public void UpdateRuntimeValue(iCS_EditorObject port, object newValue) {
         if(!port.IsInDataPort) return;
         if(port.IsModulePort) {
-            iCS_EditorObject[] connectedPorts= myStorage.FindConnectedPorts(port);
+            iCS_EditorObject[] connectedPorts= IStorage.FindConnectedPorts(port);
             foreach(var cp in connectedPorts) {
                 UpdateRuntimeValue(cp, newValue);
             }
             return;
         }
-        iCS_EditorObject parent= myStorage.GetParent(port);
+        iCS_EditorObject parent= IStorage.GetParent(port);
         if(parent == null) return;
         // Get runtime object if it exists.
-        iCS_IParams runtimeObject= myStorage.GetRuntimeObject(parent) as iCS_IParams;
+        iCS_IParams runtimeObject= IStorage.GetRuntimeObject(parent) as iCS_IParams;
         if(runtimeObject == null) return;
         runtimeObject.SetParameter(port.PortIndex, newValue);
     }
