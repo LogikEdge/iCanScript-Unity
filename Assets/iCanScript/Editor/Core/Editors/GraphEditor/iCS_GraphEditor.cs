@@ -19,6 +19,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     // ----------------------------------------------------------------------
     iCS_EditorObject    myDisplayRoot= null;
     iCS_DynamicMenu     myDynamicMenu= null;
+    iCS_Graphics        myGraphics   = null;
     
     // ----------------------------------------------------------------------
     int   myRefreshCounter= 0;
@@ -26,8 +27,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     float myDeltaTime     = 0;
     
     // ----------------------------------------------------------------------
-    iCS_Graphics    myGraphics  = null;
-    Prelude.Animate<Vector2>    AnimatedScrollPosition= new Prelude.Animate<Vector2>();
+    Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
     
     // ----------------------------------------------------------------------
     DragTypeEnum     DragType              = DragTypeEnum.None;
@@ -104,13 +104,15 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     // Prepares the editor for editing a graph.  Note that the graph to edit
     // is not configured at this point.  We must wait for an activate from
     // the graph inspector to know which graph to edit. 
-	public void OnEnable() {        
+	public new void OnEnable() {        
+        base.OnEnable();
+        
 		// Tell Unity we want to be informed of move drag events
 		wantsMouseMove= true;
 
         // Create worker objects.
-        myGraphics        = new iCS_Graphics();
-        myDynamicMenu   = new iCS_DynamicMenu();
+        myGraphics   = new iCS_Graphics();
+        myDynamicMenu= new iCS_DynamicMenu();
 
         // Inspect the assemblies for components.
         if(!ourAlreadyParsed) {
@@ -124,13 +126,16 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 
 	// ----------------------------------------------------------------------
     // Releases all resources used by the iCS_Behaviour editor.
-    public void OnDisable() {
+    public new void OnDisable() {
+        base.OnDisable();
+        
         // Release all worker objects.
-        myGraphics     = null;
+        myGraphics   = null;
         myDynamicMenu= null;
     }
 	// ----------------------------------------------------------------------
     public override void OnStorageChange() {
+        Debug.Log("GraphEditor storage has changed");
         myDisplayRoot= StorageRoot;
 //        myBookmark= null;
     }
@@ -166,7 +171,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         // Determine repaint rate.
         if(IStorage != null) {
             // Repaint window
-            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || AnimatedScrollPosition.IsActive) {
+            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive) {
                 IStorage.IsAnimationPlaying= false;
                 Repaint();
             }
@@ -1103,7 +1108,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
         float deltaTime= distance/3500f;
         if(deltaTime > 0.5f) deltaTime= 0.5f+(0.5f*(deltaTime-0.5f));
-        AnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         ScrollPosition= newScrollPosition;
     }
     // ======================================================================
@@ -1184,9 +1189,9 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 	// ----------------------------------------------------------------------
 	Vector2 UpdateScrollPosition() {
         Vector2 graphicScrollPosition= ScrollPosition;
-        if(AnimatedScrollPosition.IsActive) {
-            AnimatedScrollPosition.Update();
-            graphicScrollPosition= AnimatedScrollPosition.CurrentValue;
+        if(myAnimatedScrollPosition.IsActive) {
+            myAnimatedScrollPosition.Update();
+            graphicScrollPosition= myAnimatedScrollPosition.CurrentValue;
         }
 		return graphicScrollPosition;
 	}

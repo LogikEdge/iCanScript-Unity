@@ -68,9 +68,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                 if(eObj.IsPort) {
                     Type portType= eObj.RuntimeType;
                     Type dragObjType= draggedObject.GetType();
-                    Debug.Log("Dragging "+dragObjType.Name+" unto "+portType.Name);
                     if(iCS_Types.IsA(portType, dragObjType)) {
-                        Debug.Log("Set port value accepted.");
                         IStorage.RegisterUndo("Set port value");
                         UpdatePortInitialValue(eObj, draggedObject);
                     }
