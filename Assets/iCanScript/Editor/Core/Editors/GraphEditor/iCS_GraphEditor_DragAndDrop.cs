@@ -49,14 +49,13 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                     Type portType= eObj.RuntimeType;
                     Type dragObjType= draggedObject.GetType();
                     if(iCS_Types.IsA(portType, dragObjType)) {
-                        IStorage.RegisterUndo("Change port value");
+//                        IStorage.RegisterUndo("Change port value");
                         UpdatePortInitialValue(eObj, draggedObject);
                     }
                 } else if(eObj.IsNode) {
                     string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
                     if(newTexture != null) {
-                        Debug.Log("Changing node icon: "+iconGUID);
-                        IStorage.RegisterUndo("Change node Icon");
+//                        IStorage.RegisterUndo("Change node Icon");
                         eObj.IconGUID= iconGUID;                    
                         IStorage.Minimize(eObj);
                     }
@@ -69,7 +68,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                     Type portType= eObj.RuntimeType;
                     Type dragObjType= draggedObject.GetType();
                     if(iCS_Types.IsA(portType, dragObjType)) {
-                        IStorage.RegisterUndo("Set port value");
+//                        IStorage.RegisterUndo("Set port value");
                         UpdatePortInitialValue(eObj, draggedObject);
                     }
                 }
@@ -124,6 +123,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 		IStorage.SetInitialPortValue(port, newValue);
 		IStorage.SetPortValue(port, newValue);
         IStorage.SetDirty(IStorage.GetParent(port));
+//        EditorUtility.SetDirty(IStorage.Storage.gameObject);
     }
     // -----------------------------------------------------------------------
     public void UpdateRuntimeValue(iCS_EditorObject port, object newValue) {

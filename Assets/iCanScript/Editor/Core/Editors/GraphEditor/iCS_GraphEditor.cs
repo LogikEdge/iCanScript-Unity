@@ -135,7 +135,6 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     }
 	// ----------------------------------------------------------------------
     public override void OnStorageChange() {
-        Debug.Log("GraphEditor storage has changed");
         myDisplayRoot= StorageRoot;
 //        myBookmark= null;
     }

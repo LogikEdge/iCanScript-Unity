@@ -9,6 +9,7 @@ public static class iCS_EditorMgr {
     // ---------------------------------------------------------------------------------
     static List<iCS_EditorWindow>   myWindows       = null;
 	static int						myModificationId= 0;
+	static bool                     myIsPlaying     = false;
     
     // =================================================================================
     // Initialization
@@ -32,18 +33,20 @@ public static class iCS_EditorMgr {
     // ---------------------------------------------------------------------------------
 	public static void Update() {
 		iCS_StorageMgr.Update();
+		bool isPlaying= Application.isPlaying;
 		Prelude.filterWith(
-			w=> w.IStorage != iCS_StorageMgr.IStorage,
+			w=> w.IStorage != iCS_StorageMgr.IStorage || myIsPlaying != isPlaying,
 			w=> { w.IStorage= iCS_StorageMgr.IStorage; w.OnStorageChange(); w.Repaint(); },
 			myWindows);
 		Prelude.filterWith(
-			w=> w.SelectedObject != iCS_StorageMgr.SelectedObject,
+			w=> w.SelectedObject != iCS_StorageMgr.SelectedObject || myIsPlaying != isPlaying,
 			w=> { w.SelectedObject= iCS_StorageMgr.SelectedObject; w.OnSelectedObjectChange(); w.Repaint(); },
 			myWindows);
 		if(iCS_StorageMgr.IStorage != null && myModificationId != iCS_StorageMgr.IStorage.ModificationId) {
 			myModificationId= iCS_StorageMgr.IStorage.ModificationId;
 			Prelude.forEach(w=> w.Repaint(), myWindows);
 		}
+		myIsPlaying= isPlaying;
 	}
 	
     // ======================================================================
