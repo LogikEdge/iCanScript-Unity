@@ -136,7 +136,10 @@ public partial class iCS_IStorage {
         }
 //        Debug.Log("Graph is dirty");
         CleanupNeeded= true;
-        myIsDirty= false;
+        if(myIsDirty) {
+            myIsDirty= false;
+            EditorUtility.SetDirty(Storage);
+        }
 
         // Perform layout of modified nodes.
         ForEachRecursiveDepthLast(EditorObjects[0],
@@ -211,7 +214,6 @@ public partial class iCS_IStorage {
     public void RegisterUndo(string message= "iCanScript") {
         Undo.RegisterUndo(Storage, message);
         Storage.UndoRedoId= ++UndoRedoId;        
-        EditorUtility.SetDirty(Storage);
     }
     // ----------------------------------------------------------------------
     void ProcessUndoRedo() {

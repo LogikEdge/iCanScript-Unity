@@ -123,7 +123,6 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 		IStorage.SetInitialPortValue(port, newValue);
 		IStorage.SetPortValue(port, newValue);
         IStorage.SetDirty(IStorage.GetParent(port));
-//        EditorUtility.SetDirty(IStorage.Storage.gameObject);
     }
     // -----------------------------------------------------------------------
     public void UpdateRuntimeValue(iCS_EditorObject port, object newValue) {
