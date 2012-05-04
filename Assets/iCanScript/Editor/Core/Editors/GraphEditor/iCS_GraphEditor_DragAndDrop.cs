@@ -18,8 +18,11 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     void DragAndDropPerform() {
         // Show a copy icon on the drag
 //        if(GetDraggedObjectType(GetDraggedObject()) != DraggedObjectTypeEnum.Unknown) {
+
+            IStorage.RegisterUndo("DragAndDrop");
+
             DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-            DragAndDrop.AcceptDrag();                                                            
+            DragAndDrop.AcceptDrag();
 //        }        
     }
 	// ----------------------------------------------------------------------
@@ -32,6 +35,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 	// ----------------------------------------------------------------------
     void DragAndDropExited() {
         UnityEngine.Object draggedObject= GetDraggedObject();
+        if(draggedObject == null) return;
         switch(GetDraggedObjectType(draggedObject)) {
             // Paste iCanScript Library into graph.
             case DraggedObjectTypeEnum.Library: {
@@ -49,15 +53,15 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                     Type portType= eObj.RuntimeType;
                     Type dragObjType= draggedObject.GetType();
                     if(iCS_Types.IsA(portType, dragObjType)) {
-//                        IStorage.RegisterUndo("Change port value");
                         UpdatePortInitialValue(eObj, draggedObject);
                     }
                 } else if(eObj.IsNode) {
                     string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
                     if(newTexture != null) {
-//                        IStorage.RegisterUndo("Change node Icon");
                         eObj.IconGUID= iconGUID;                    
                         IStorage.Minimize(eObj);
+                        // Remove data so that we don't get called multiple times (Unity bug !!!).
+                        DragAndDrop.objectReferences= new UnityEngine.Object[0];
                     }
                 }
                 break;
@@ -68,13 +72,13 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                     Type portType= eObj.RuntimeType;
                     Type dragObjType= draggedObject.GetType();
                     if(iCS_Types.IsA(portType, dragObjType)) {
-//                        IStorage.RegisterUndo("Set port value");
                         UpdatePortInitialValue(eObj, draggedObject);
                     }
                 }
                 break;
             }
         }
+        DragAndDrop.PrepareStartDrag();
     }
 
     // ======================================================================
