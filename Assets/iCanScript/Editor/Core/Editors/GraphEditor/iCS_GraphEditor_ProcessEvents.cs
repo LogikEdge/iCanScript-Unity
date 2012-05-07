@@ -1,11 +1,17 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 
 // ===========================================================================
 // Graph editor event processing.
 // ===========================================================================
 public partial class iCS_GraphEditor : iCS_EditorWindow {
+    // ======================================================================
+    // Fields
+	// ----------------------------------------------------------------------
+    Action    GuiDelegates= null;
+    
     // ======================================================================
     // USER INTERACTIONS
 	// ----------------------------------------------------------------------
@@ -93,8 +99,23 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                             IStorage.RegisterUndo("Minimize");
                             IStorage.Minimize(SelectedObject);
                         } else {
-                            if(SelectedObject == SelectedObjectBeforeMouseDown && mouseUpDeltaTime < 0.25f) {
-                                ProcessNodeDisplayOptionEvent();                                
+                            // Fold/Unfold on double click.
+                            if(SelectedObject == SelectedObjectBeforeMouseDown) {
+                                if(mouseUpDeltaTime < 0.25f) {
+                                    ProcessNodeDisplayOptionEvent();
+                                }
+                                else {
+                                    Event.current.Use();
+//                                    iCS_NodeTitlePopup window= ScriptableObject.CreateInstance<iCS_NodeTitlePopup>();
+//                                    var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
+//                                    window.position= new Rect(screenPoint.x, screenPoint.y, window.position.width, window.position.height);
+//                                    window.Init(SelectedObject, IStorage);
+//                                    window.ShowPopup();
+                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.TextField(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), "Fred"); };
+//                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.Slider(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), 0.5f, 0, 1f); };
+//                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.FloatField(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), 0.5f); };
+                                    break;
+                                }
                             }
                         }
                     }                                                
@@ -347,6 +368,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                 break;
 			}
         }
+        if(GuiDelegates != null) GuiDelegates();
     }
 	// ----------------------------------------------------------------------
     void ProcessNodeDisplayOptionEvent() {

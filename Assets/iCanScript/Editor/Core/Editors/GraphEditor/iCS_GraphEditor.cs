@@ -92,6 +92,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         myMousePosition= Event.current.mousePosition;
         if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
 	}
+    Vector2 RealMousePosition  { get { return myMousePosition; }}
     Vector2 MousePosition      { get { return myMousePosition/Scale; } }
     Vector2 MouseGraphPosition { get { return ViewportToGraph(MousePosition); }}
 	Vector2 myMousePosition  = Vector2.zero;
