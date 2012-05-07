@@ -628,7 +628,7 @@ public class iCS_Graphics {
         // Only draw visible data ports.
         if(IsInvisible(port, storage) || IsMinimized(port, storage)) return;
         
-        // Draw port
+        // Get port primary information.
         iCS_EditorObject portParent= storage.GetParent(port);         
         Vector2 center= Math3D.ToVector2(position);
         Type portValueType= port.RuntimeType;
@@ -636,9 +636,13 @@ public class iCS_Graphics {
 		// Determine port colors
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
         Color nodeColor= GetNodeColor(portParent, storage);
-		// Compute port radius
+        // Determine if port is selected.
+        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == storage.GetParent(selectedObject));
+        // Determine if port is a static port (a port that feeds information into the graph).
+        bool isStaticPort= port.IsInDataPort && storage.GetSource(port) == null;
+		// Compute port radius (radius is increased if port is selected).
 		float portRadius= iCS_Config.PortRadius;
-		if(port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == storage.GetParent(selectedObject))) {
+		if(isSelectedPort) {
 			portRadius= 1.67f*iCS_Config.PortRadius;			
 		}
 		object portValue= null;
@@ -648,7 +652,7 @@ public class iCS_Graphics {
 			if(port.IsOutMuxPort) {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
 			} else {
-				if(port.IsInputPort && storage.GetSource(port) == null) {
+				if(isStaticPort) {
 					if(!Application.isPlaying && storage.Preferences.DisplayOptions.EditorPortValues) portValue= storage.GetPortValue(port);
 					if(portValue != null) {
 		            	DrawSquarePort(portCenter, portColor, nodeColor, portRadius);

@@ -111,8 +111,8 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 //                                    window.position= new Rect(screenPoint.x, screenPoint.y, window.position.width, window.position.height);
 //                                    window.Init(SelectedObject, IStorage);
 //                                    window.ShowPopup();
-                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.TextField(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), "Fred"); };
-//                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.Slider(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), 0.5f, 0, 1f); };
+//                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.TextField(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), "Fred"); };
+                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.Slider(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), 0.5f, 0, 1f); };
 //                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.FloatField(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), 0.5f); };
                                     break;
                                 }
