@@ -421,7 +421,11 @@ public partial class iCS_IStorage {
                 iCS_ObjectTypeEnum portType= desc.ParamIsOuts[portIdx] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
                 port= CreatePort(desc.ParamNames[portIdx], id, desc.ParamTypes[portIdx], portType);
                 port.PortIndex= portIdx;
-                SetInitialPortValue(port, desc.ParamInitialValues[portIdx]);
+				object initialPortValue= desc.ParamInitialValues[portIdx];
+				if(initialPortValue == null) {
+					initialPortValue= iCS_Types.DefaultValue(desc.ParamTypes[portIdx]);
+				}
+                SetInitialPortValue(port, initialPortValue);
             }
         }
 		// Create return port.
@@ -456,7 +460,11 @@ public partial class iCS_IStorage {
                 iCS_ObjectTypeEnum portType= desc.ParamIsOuts[portIdx] ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
                 port= CreatePort(desc.ParamNames[portIdx], id, desc.ParamTypes[portIdx], portType);
                 port.PortIndex= portIdx;                
-                SetInitialPortValue(port, desc.ParamInitialValues[portIdx]);
+				object initialPortValue= desc.ParamInitialValues[portIdx];
+				if(initialPortValue == null) {
+					initialPortValue= iCS_Types.DefaultValue(desc.ParamTypes[portIdx]);
+				}
+                SetInitialPortValue(port, initialPortValue);
             }
         }
 		// Create return port.
