@@ -61,4 +61,32 @@ public partial class iCS_IStorage {
 		if(funcBase == null) return;
 		funcBase.SetParameter(port.PortIndex, value);
 	}
+	
+	// ======================================================================
+    // Port value update.
+	// ----------------------------------------------------------------------
+    public void UpdatePortInitialValue(iCS_EditorObject port, object newValue) {
+        UpdateRuntimeValue(port, newValue);
+		SetInitialPortValue(port, newValue);
+		SetPortValue(port, newValue);
+        SetDirty(GetParent(port));
+    }
+    // -----------------------------------------------------------------------
+    public void UpdateRuntimeValue(iCS_EditorObject port, object newValue) {
+        if(!port.IsInDataPort) return;
+        if(port.IsModulePort) {
+            iCS_EditorObject[] connectedPorts= FindConnectedPorts(port);
+            foreach(var cp in connectedPorts) {
+                UpdateRuntimeValue(cp, newValue);
+            }
+            return;
+        }
+        iCS_EditorObject parent= GetParent(port);
+        if(parent == null) return;
+        // Get runtime object if it exists.
+        iCS_IParams runtimeObject= GetRuntimeObject(parent) as iCS_IParams;
+        if(runtimeObject == null) return;
+        runtimeObject.SetParameter(port.PortIndex, newValue);
+    }
+    
 }

@@ -55,7 +55,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
-                    UpdatePortInitialValue(eObj, draggedObject);
+                    IStorage.UpdatePortInitialValue(eObj, draggedObject);
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.objectReferences= new UnityEngine.Object[0];
 					return;
@@ -95,30 +95,4 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         return null;
     }
 
-    // ======================================================================
-    // Port value update.
-	// ----------------------------------------------------------------------
-    void UpdatePortInitialValue(iCS_EditorObject port, object newValue) {
-        UpdateRuntimeValue(port, newValue);
-		IStorage.SetInitialPortValue(port, newValue);
-		IStorage.SetPortValue(port, newValue);
-        IStorage.SetDirty(IStorage.GetParent(port));
-    }
-    // -----------------------------------------------------------------------
-    public void UpdateRuntimeValue(iCS_EditorObject port, object newValue) {
-        if(!port.IsInDataPort) return;
-        if(port.IsModulePort) {
-            iCS_EditorObject[] connectedPorts= IStorage.FindConnectedPorts(port);
-            foreach(var cp in connectedPorts) {
-                UpdateRuntimeValue(cp, newValue);
-            }
-            return;
-        }
-        iCS_EditorObject parent= IStorage.GetParent(port);
-        if(parent == null) return;
-        // Get runtime object if it exists.
-        iCS_IParams runtimeObject= IStorage.GetRuntimeObject(parent) as iCS_IParams;
-        if(runtimeObject == null) return;
-        runtimeObject.SetParameter(port.PortIndex, newValue);
-    }
 }

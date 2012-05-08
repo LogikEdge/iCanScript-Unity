@@ -631,7 +631,7 @@ public class iCS_Graphics {
         // Get port primary information.
         iCS_EditorObject portParent= storage.GetParent(port);         
         Vector2 center= Math3D.ToVector2(position);
-        Type portValueType= port.RuntimeType;
+        Type portValueType= iCS_Types.GetElementType(port.RuntimeType);
         if(portValueType == null) return;
 		// Determine port colors
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
@@ -722,10 +722,28 @@ public class iCS_Graphics {
         valuePos= TranslateAndScale(valuePos);
         GUI.Label(new Rect(labelPos.x, labelPos.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), LabelStyle);
         if(!port.IsFloating) {
+			EditorGUIUtility.LookLikeControls();
     		if(valueAsStr != null) {
     			GUI.Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, ValueStyle);			
-    		}            
-        }
+    		}            				
+			// Bring up port editor for selected static ports.
+			if(isStaticPort && portValue != null && Scale > 0.75f) {
+				EditorGUIUtility.LookLikeControls();
+				if(portValueType == typeof(bool)) {
+					GUI.changed= false;
+					bool newValue= GUI.Toggle(new Rect(labelPos.x+labelSize.x, labelPos.y-2, 16, 16), (bool)portValue, "");					
+					if(GUI.changed) {
+						storage.UpdatePortInitialValue(port, newValue);
+					}
+				} else if(portValueType == typeof(float)) {
+					GUI.changed= false;
+					float newValue= GUI.HorizontalSlider(new Rect(labelPos.x+labelSize.x, labelPos.y-2, 40*Scale, 16), (float)portValue, 0, 1f);
+					if(GUI.changed) {
+						storage.UpdatePortInitialValue(port, newValue);
+					}
+				}
+			}
+       }
     }
 
 	// ----------------------------------------------------------------------

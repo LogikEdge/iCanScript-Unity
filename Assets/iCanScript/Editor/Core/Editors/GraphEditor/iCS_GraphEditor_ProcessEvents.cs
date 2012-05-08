@@ -10,7 +10,8 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-    Action    GuiDelegates= null;
+	iCS_SubEditor		mySubEditor       = null;
+	iCS_EditorObject	myObjectUnderMouse= null;
     
     // ======================================================================
     // USER INTERACTIONS
@@ -20,13 +21,35 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         switch(Event.current.type) {
             case EventType.MouseMove: {
                 switch(Event.current.button) {
-                    case 0: { // Left mouse button
-                        ResetDrag();
-                        break;
-                    }
                     case 2: { // Middle mouse button
                         Vector2 diff= MousePosition-MouseDragStartPosition;
                         ScrollPosition= DragStartPosition-diff;
+                        break;
+                    }
+                    default: {
+                        ResetDrag();
+						iCS_EditorObject objectUnderMouse= GetObjectAtMousePosition();
+						if(objectUnderMouse == myObjectUnderMouse) break;
+						if(mySubEditor != null) {
+							mySubEditor.Close();
+							mySubEditor= null;								
+							myObjectUnderMouse= null;
+						}
+						myObjectUnderMouse= objectUnderMouse;
+						if(myObjectUnderMouse == null) break;
+						if(myObjectUnderMouse.IsNode) {
+                            mySubEditor= ScriptableObject.CreateInstance<iCS_NodeTitlePopup>();
+                            var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
+                            mySubEditor.position= new Rect(screenPoint.x, screenPoint.y, mySubEditor.position.width, mySubEditor.position.height);
+                            mySubEditor.Init(myObjectUnderMouse, IStorage);
+                            mySubEditor.ShowPopup();										
+						} else {
+							mySubEditor= ScriptableObject.CreateInstance<iCS_PortEditor>();
+                            var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
+                            mySubEditor.position= new Rect(screenPoint.x, screenPoint.y, mySubEditor.position.width, mySubEditor.position.height);
+                            mySubEditor.Init(myObjectUnderMouse, IStorage);
+                            mySubEditor.ShowPopup();																				
+						}						
                         break;
                     }
                 }
@@ -106,14 +129,21 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                                 }
                                 else {
                                     Event.current.Use();
-//                                    iCS_NodeTitlePopup window= ScriptableObject.CreateInstance<iCS_NodeTitlePopup>();
-//                                    var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
-//                                    window.position= new Rect(screenPoint.x, screenPoint.y, window.position.width, window.position.height);
-//                                    window.Init(SelectedObject, IStorage);
-//                                    window.ShowPopup();
-//                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.TextField(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), "Fred"); };
-                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.Slider(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), 0.5f, 0, 1f); };
-//                                    GuiDelegates+= ()=> { EditorGUIUtility.LookLikeControls(); EditorGUI.FloatField(new Rect(RealMousePosition.x, RealMousePosition.y, 150, 16), 0.5f); };
+//									if(SelectedObject.IsNode) {
+//										if(mySubEditor != null) mySubEditor.Close();
+//	                                    mySubEditor= ScriptableObject.CreateInstance<iCS_NodeTitlePopup>();
+//	                                    var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
+//	                                    mySubEditor.position= new Rect(screenPoint.x, screenPoint.y, mySubEditor.position.width, mySubEditor.position.height);
+//	                                    mySubEditor.Init(SelectedObject, IStorage);
+//	                                    mySubEditor.ShowPopup();										
+//									} else {
+//										if(mySubEditor != null) mySubEditor.Close();
+//										mySubEditor= ScriptableObject.CreateInstance<iCS_PortEditor>();
+//	                                    var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
+//	                                    mySubEditor.position= new Rect(screenPoint.x, screenPoint.y, mySubEditor.position.width, mySubEditor.position.height);
+//	                                    mySubEditor.Init(SelectedObject, IStorage);
+//	                                    mySubEditor.ShowPopup();																				
+//									}
                                     break;
                                 }
                             }
@@ -368,7 +398,6 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                 break;
 			}
         }
-        if(GuiDelegates != null) GuiDelegates();
     }
 	// ----------------------------------------------------------------------
     void ProcessNodeDisplayOptionEvent() {
