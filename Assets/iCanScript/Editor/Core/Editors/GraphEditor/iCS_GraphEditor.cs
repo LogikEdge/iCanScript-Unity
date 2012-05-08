@@ -137,7 +137,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 	// ----------------------------------------------------------------------
     public override void OnStorageChange() {
         myDisplayRoot= StorageRoot;
-//        myBookmark= null;
+        myBookmark= null;
     }
 
 	// ----------------------------------------------------------------------
@@ -207,8 +207,8 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     
 	// ----------------------------------------------------------------------
 	// User GUI function.
-//    static int frameCount= 0;
-//    static int seconds= 0;
+    static int frameCount= 0;
+    static int seconds= 0;
 	public void OnGUI() {
 		// Don't do start editor if not properly initialized.
 		if( !IsInitialized() ) return;
@@ -217,13 +217,13 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
         myCurrentTime= Time.realtimeSinceStartup;
         
-//        ++frameCount;
-//       	int newTime= (int)Time.realtimeSinceStartup;
-//       	if(newTime != seconds) {
-//       	    seconds= newTime;
-//       	    Debug.Log("GUI calls/seconds: "+frameCount);
-//            frameCount= 0;
-//       	}
+        ++frameCount;
+       	int newTime= (int)Time.realtimeSinceStartup;
+       	if(newTime != seconds) {
+       	    seconds= newTime;
+       	    Debug.Log("GUI calls/seconds: "+frameCount);
+            frameCount= 0;
+       	}
        	
         // Load Editor Skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
