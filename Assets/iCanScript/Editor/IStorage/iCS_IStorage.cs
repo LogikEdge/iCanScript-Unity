@@ -534,7 +534,7 @@ public partial class iCS_IStorage {
         if(IsInvalid(eObj.ParentId)) return true;
         iCS_EditorObject parent= GetParent(eObj);
         if(eObj.IsNode && (parent.IsFolded || parent.IsMinimized)) return false;
-		if(eObj.IsDataPort && parent.IsDataPort) return false;
+		if(eObj.IsDataPort && (parent.IsDataPort || parent.IsMinimized)) return false;
         return IsVisible(parent);
     }
     public bool IsVisible(int id) { return IsInvalid(id) ? false : IsVisible(EditorObjects[id]); }

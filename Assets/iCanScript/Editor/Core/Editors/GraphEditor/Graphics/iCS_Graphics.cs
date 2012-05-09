@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_Graphics {
+public partial class iCS_Graphics {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
@@ -484,78 +484,6 @@ public class iCS_Graphics {
         GUI.Label(labelRect, new GUIContent(title, node.ToolTip), LabelStyle);		
 	}
 	
-    // ======================================================================
-    // Picking functionality
-    // ----------------------------------------------------------------------
-    public bool IsNodeTitleBarPicked(iCS_EditorObject node, Vector2 pick, iCS_IStorage storage) {
-        if(!node.IsNode || storage.IsMinimized(node)) return false;
-        Rect titleRect= GetDisplayPosition(node, storage);
-        titleRect.height= kNodeTitleHeight;
-        return titleRect.Contains(pick);
-    }
-    // ======================================================================
-    // Fold/Unfold icon functionality.
-    // ----------------------------------------------------------------------
-    public bool IsFoldIconPicked(iCS_EditorObject obj, Vector2 mousePos, iCS_IStorage storage) {
-        if(!ShouldDisplayFoldIcon(obj, storage)) return false;
-        Rect foldIconPos= GetFoldIconPosition(obj, storage);
-        return foldIconPos.Contains(mousePos);
-    }
-    bool ShouldDisplayFoldIcon(iCS_EditorObject obj, iCS_IStorage storage) {
-        if(storage.IsMinimized(obj)) return false;
-        return (obj.IsModule || obj.IsStateChart || obj.IsState);
-    }
-    Rect GetFoldIconPosition(iCS_EditorObject obj, iCS_IStorage storage) {
-        Rect objPos= GetDisplayPosition(obj, storage);
-        return new Rect(objPos.x+8, objPos.y, foldedIcon.width, foldedIcon.height);
-    }
-    // ======================================================================
-    // Minimize icon functionality
-    // ----------------------------------------------------------------------
-    public bool IsMinimizeIconPicked(iCS_EditorObject obj, Vector2 mousePos, iCS_IStorage storage) {
-        if(!ShouldDisplayMinimizeIcon(obj, storage)) return false;
-        Rect minimizeIconPos= GetMinimizeIconPosition(obj, storage);
-        return minimizeIconPos.Contains(mousePos);
-    }
-    bool ShouldDisplayMinimizeIcon(iCS_EditorObject obj, iCS_IStorage storage) {
-        return obj.InstanceId != 0 && obj.IsNode && !storage.IsMinimized(obj);
-    }
-    Rect GetMinimizeIconPosition(iCS_EditorObject obj, iCS_IStorage storage) {
-        Rect objPos= GetDisplayPosition(obj, storage);
-        return new Rect(objPos.xMax-4-minimizeIcon.width, objPos.y, minimizeIcon.width, minimizeIcon.height);
-    }
-    // ======================================================================
-    // Maximize icon functionality
-    // ----------------------------------------------------------------------
-    public static Vector2 GetMaximizeIconSize(iCS_EditorObject node, iCS_IStorage storage) {
-        Texture2D icon= null;
-        if(storage.Preferences.Icons.EnableMinimizedIcons && node != null && node.IconGUID != null) {
-            icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
-            if(icon != null) return new Vector2(icon.width, icon.height);
-        }
-        return new Vector2(maximizeIcon.width, maximizeIcon.height);        
-    }
-    // ----------------------------------------------------------------------
-    public Texture2D GetMaximizeIcon(iCS_EditorObject node, iCS_IStorage storage) {
-        Texture2D icon= null;
-        if(storage.Preferences.Icons.EnableMinimizedIcons && node != null && node.IconGUID != null) {
-            icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
-            if(icon != null) return icon;
-        }
-        return GetNodeDefaultMaximizeIcon(node, storage);
-    }
-    // ----------------------------------------------------------------------
-    public bool IsMaximizeIconPicked(iCS_EditorObject obj, Vector2 mousePos, iCS_IStorage storage) {
-        if(!ShouldDisplayMaximizeIcon(obj, storage)) return false;
-        Rect maximizeIconPos= GetMaximizeIconPosition(obj, storage);
-        return maximizeIconPos.Contains(mousePos);
-    }
-    bool ShouldDisplayMaximizeIcon(iCS_EditorObject obj, iCS_IStorage storage) {
-        return obj.InstanceId != 0 && obj.IsNode && storage.IsMinimized(obj);
-    }
-    Rect GetMaximizeIconPosition(iCS_EditorObject obj, iCS_IStorage storage) {
-        return GetDisplayPosition(obj, storage);
-    }
     // ======================================================================
     // Node style functionality
     // ----------------------------------------------------------------------

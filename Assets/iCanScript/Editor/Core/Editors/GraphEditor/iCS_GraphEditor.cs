@@ -669,10 +669,24 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     }
 
 	// ----------------------------------------------------------------------
-    // Returns the object at the given mouse position.
+    // Returns the node at the given mouse position.
     public iCS_EditorObject GetNodeAtMousePosition() {
         Vector2 graphPosition= ViewportToGraph(MousePosition);
         return IStorage.GetNodeAt(graphPosition);
+    }
+
+	// ----------------------------------------------------------------------
+    // Returns the port at the given mouse position.
+    public iCS_EditorObject GetPortAtMousePosition() {
+        Vector2 graphPosition= ViewportToGraph(MousePosition);
+        return IStorage.GetPortAt(graphPosition);
+    }
+
+	// ----------------------------------------------------------------------
+    // Returns the closest port at the given mouse position.
+    public iCS_EditorObject GetClosestPortAtMousePosition() {
+        Vector2 graphPosition= ViewportToGraph(MousePosition);
+        return IStorage.GetClosestPortAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------

@@ -26,8 +26,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject GetPortAt(Vector2 pick, Func<iCS_EditorObject,bool> filter= null) {
         iCS_EditorObject port= GetClosestPortAt(pick, filter);
         if(port == null) return port;
-        Rect tmp= GetPosition(port);
-        Vector2 position= new Vector2(tmp.x, tmp.y);
+        Vector2 position= Math3D.ToVector2(GetPosition(port));
         float distance= Vector2.Distance(position, pick);
         return (distance < 3f*iCS_Config.PortRadius) ? port : null;
     }
@@ -40,8 +39,7 @@ public partial class iCS_IStorage {
         FilterWith(
             port=> port.IsPort && IsVisible(port) && !port.IsFloating && filter(port),
             port=> {
-                Rect tmp= GetPosition(port);
-                Vector2 position= new Vector2(tmp.x, tmp.y);
+                Vector2 position= Math3D.ToVector2(GetPosition(port));
                 float distance= Vector2.Distance(position, pick);
                 if(distance < bestDistance) {
                     bestDistance= distance;
@@ -52,11 +50,5 @@ public partial class iCS_IStorage {
         return bestPort;
     }
     bool GetPortAtDefaultFilter(iCS_EditorObject port) { return true; }
-    // ----------------------------------------------------------------------
-    // Returns true if pick is in the titlebar of the node.
-    public bool IsInTitleBar(iCS_EditorObject node, Vector2 pick) {
-        if(!node.IsNode) return false;
-        return true;
-    }
 
 }
