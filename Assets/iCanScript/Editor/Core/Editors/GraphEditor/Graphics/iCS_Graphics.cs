@@ -247,14 +247,6 @@ public partial class iCS_Graphics {
         Handles.color= Color.white;
         Handles.DrawSolidRectangleWithOutline(vectors, nodeColor, new Color(0.25f, 0.25f, 0.25f));
 	}
-	// ----------------------------------------------------------------------
-    bool ShouldShowLabel() {
-        return Scale >= 0.5f;        
-    }
-	// ----------------------------------------------------------------------
-    bool ShouldShowTitle() {
-        return Scale >= 0.4f;    
-    }
 
     // ======================================================================
     //  INITIALIZATION
@@ -549,17 +541,15 @@ public partial class iCS_Graphics {
     //  PORT
     // ----------------------------------------------------------------------
     public void DrawPort(iCS_EditorObject port, iCS_IStorage storage) {
-        if(port == null || storage == null) return;
-        // Update display position.
-        Rect position= GetDisplayPosition(port, storage);
-
         // Only draw visible data ports.
+        if(port == null || storage == null) return;
         if(IsInvisible(port, storage) || IsMinimized(port, storage)) return;
         
         // Get port primary information.
         iCS_EditorObject portParent= storage.GetParent(port);         
+        Rect position= GetDisplayPosition(port, storage);
         Vector2 center= Math3D.ToVector2(position);
-        Type portValueType= iCS_Types.GetElementType(port.RuntimeType);
+        Type portValueType= GetPortValueType(port);
         if(portValueType == null) return;
 		// Determine port colors
         Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
@@ -613,59 +603,37 @@ public partial class iCS_Graphics {
             GUI_Label(portPos, new GUIContent("", port.ToolTip), LabelStyle);            
         }
         
-        // Show port label.
+        // Don't show port label if it is too small or a state port.
         if(port.IsStatePort) return;        // State transition name is handle by DrawConnection. 
         if(!ShouldShowLabel()) return;      // Don't show label & values if scale does not permit.
-        string name= portValueType.IsArray ? "["+port.Name+"]" : port.Name;
-		string valueAsStr= portValue != null ? GetValueAsString(portValue) : null;
-        Vector2 labelSize= LabelStyle.CalcSize(new GUIContent(name));
-		Vector2 valueSize= (valueAsStr != null && valueAsStr != "") ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;
-		Vector2 valuePos= center;
-		Vector2 labelPos= center;
-        switch(port.Edge) {
-            case iCS_EditorObject.EdgeEnum.Left:
-                labelPos.x+= 1 + iCS_Config.PortSize;
-                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
-				valuePos.x-= 1 + valueSize.x/Scale + iCS_Config.PortSize;
-				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
-                break;
-            case iCS_EditorObject.EdgeEnum.Right:
-                labelPos.x-= 1 + labelSize.x/Scale + iCS_Config.PortSize;
-                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
-				valuePos.x+= 1 + iCS_Config.PortSize;
-				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
-                break;
-            case iCS_EditorObject.EdgeEnum.Top:            
-                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y-= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, storage));
-				valueAsStr= null;
-                break;
-            case iCS_EditorObject.EdgeEnum.Bottom:
-                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y+= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, storage)-0.2f*labelSize.y/Scale;
-				valueAsStr= null;
-                break;
-        }
-        labelPos= TranslateAndScale(labelPos);
-        valuePos= TranslateAndScale(valuePos);
-        GUI.Label(new Rect(labelPos.x, labelPos.y, labelSize.x, labelSize.y), new GUIContent(name, port.ToolTip), LabelStyle);
+
+        // Display port name.
+        string name= GetPortName(port);
+        Rect portNamePos= GetPortNamePosition(port, storage);
+        GUI.Label(portNamePos, new GUIContent(name, port.ToolTip), LabelStyle);
+
+        // Display port value (if applicable).
         if(!port.IsFloating) {
 			EditorGUIUtility.LookLikeControls();
-    		if(valueAsStr != null) {
-    			GUI.Label(new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y), valueAsStr, ValueStyle);			
+            Rect portValuePos= GetPortValuePosition(port, storage);
+    		if(Math3D.IsNotZero(portValuePos.width)) {
+        		string valueAsStr= GetPortValueAsString(port, storage);
+    			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
     		}            				
+
+            // ==> Experimental <==
 			// Bring up port editor for selected static ports.
 			if(isStaticPort && portValue != null && Scale > 0.75f) {
 				EditorGUIUtility.LookLikeControls();
 				if(portValueType == typeof(bool)) {
 					GUI.changed= false;
-					bool newValue= GUI.Toggle(new Rect(labelPos.x+labelSize.x, labelPos.y-2, 16, 16), (bool)portValue, "");					
+					bool newValue= GUI.Toggle(new Rect(portNamePos.xMax, portNamePos.y-2, 16, 16), (bool)portValue, "");					
 					if(GUI.changed) {
 						storage.UpdatePortInitialValue(port, newValue);
 					}
 				} else if(portValueType == typeof(float)) {
 					GUI.changed= false;
-					float newValue= GUI.HorizontalSlider(new Rect(labelPos.x+labelSize.x, labelPos.y-2, 40*Scale, 16), (float)portValue, 0, 1f);
+					float newValue= GUI.HorizontalSlider(new Rect(portNamePos.xMax, portNamePos.y-2, 40*Scale, 16), (float)portValue, 0, 1f);
 					if(GUI.changed) {
 						storage.UpdatePortInitialValue(port, newValue);
 					}
@@ -674,19 +642,6 @@ public partial class iCS_Graphics {
        }
     }
 
-	// ----------------------------------------------------------------------
-    string GetValueAsString(object value) {
-        if(value is bool) return ((bool)value) ? "true" : "false";
-        if(value is float) return ((float)value).ToString();
-        if(value is int) return ((int)value).ToString();
-        if(value is Vector2) return ((Vector2)value).ToString();
-        if(value is Vector3) return ((Vector3)value).ToString();
-        if(value is Vector4) return ((Vector4)value).ToString();
-        if(value is Color) return ((Color)value).ToString();
-        if(value is string) return (string)value;
-        if(value is UnityEngine.Object) return (value as UnityEngine.Object).name;
-        return null;
-    }
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
         Color outlineColor= Color.black;

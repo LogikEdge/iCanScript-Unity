@@ -26,6 +26,7 @@ public partial class iCS_Graphics {
         return true;
     }
     bool ShouldDisplayNodeName(iCS_EditorObject node, iCS_IStorage iStorage) {
+        if(!ShouldShowTitle()) return false;
         if(!node.IsNode) return false;
         if(!IsVisible(node,iStorage)) return false;
         return true;
@@ -36,7 +37,11 @@ public partial class iCS_Graphics {
         */
         return new Rect(0,0,0,0);
     }
-    
+    // ----------------------------------------------------------------------
+    bool ShouldShowTitle() {
+        return Scale >= 0.4f;    
+    }
+	
     // ======================================================================
     // Fold/Unfold icon functionality.
     // ----------------------------------------------------------------------
@@ -107,38 +112,86 @@ public partial class iCS_Graphics {
     // Determines if the pick is within the port name label.
     // ----------------------------------------------------------------------
     public bool IsPortNamePicked(iCS_EditorObject port, Vector2 pick, iCS_IStorage iStorage) {
-        if(!port.IsPort) return false;
-        Vector2 portPos= Math3D.ToVector2(iStorage.GetPosition(port));
-        float halfFontSize= 0.5f*LabelStyle.fontSize;
-        if(pick.y < portPos.y-halfFontSize || pick.y > portPos.y+halfFontSize) return false;
-        if(port.IsOnRightEdge) {
-            return pick.x < portPos.x;
-        }
-        if(port.IsOnLeftEdge) {
-            return pick.x > portPos.x;
-        }
-        return false;
+        if(!ShouldDisplayPortName(port, iStorage)) return false;
+        Rect portNamePos= GetPortNamePosition(port, iStorage);
+        return portNamePos.Contains(pick);
     }
-
+    bool ShouldDisplayPortName(iCS_EditorObject port, iCS_IStorage iStorage) {
+        if(!ShouldShowLabel()) return false;
+        if(!IsVisible(port, iStorage)) return false;
+        return true;        
+    }
+    Rect GetPortNamePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
+        Vector2 labelSize= GetPortNameSize(port);
+		Vector2 labelPos= GetPortCenter(port, iStorage);
+        switch(port.Edge) {
+            case iCS_EditorObject.EdgeEnum.Left:
+                labelPos.x+= 1 + iCS_Config.PortSize;
+                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
+                break;
+            case iCS_EditorObject.EdgeEnum.Right:
+                labelPos.x-= 1 + labelSize.x/Scale + iCS_Config.PortSize;
+                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
+                break;
+            case iCS_EditorObject.EdgeEnum.Top:            
+                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
+                labelPos.y-= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, iStorage));
+                break;
+            case iCS_EditorObject.EdgeEnum.Bottom:
+                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
+                labelPos.y+= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, iStorage)-0.2f*labelSize.y/Scale;
+                break;
+        }
+        var scaledPos= TranslateAndScale(labelPos);
+        return new Rect(scaledPos.x, scaledPos.y, labelSize.x, labelSize.y);	    
+    }
+    // ----------------------------------------------------------------------
+    bool ShouldShowLabel() {
+        return Scale >= 0.5f;        
+    }
+    
     // ======================================================================
     // Determines if the pick is within the port value label.
     // ----------------------------------------------------------------------
     public bool IsPortValuePicked(iCS_EditorObject port, Vector2 pick, iCS_IStorage iStorage) {
-        if(!port.IsPort) return false;
-        Vector2 portPos= Math3D.ToVector2(iStorage.GetPosition(port));
-        float halfFontSize= 0.5f*ValueStyle.fontSize;
-        if(pick.y < portPos.y-halfFontSize || pick.y > portPos.y+halfFontSize) return false;
-        if(port.IsOnRightEdge) {
-            return pick.x > portPos.x;
-        }
-        if(port.IsOnLeftEdge) {
-            return pick.x < portPos.x;
-        }
+        if(!ShouldDisplayPortValue(port, iStorage)) return false;
+        if(!port.IsInputPort) return false;
+        if(iStorage.GetSource(port) != null) return false;
+        Rect portValuePos= GetPortValuePosition(port, iStorage);
+        return portValuePos.Contains(pick);
+    }
+    bool ShouldDisplayPortValue(iCS_EditorObject port, iCS_IStorage iStorage) {
+        if(!port.IsDataPort) return false;
+        if(!ShouldShowLabel()) return false;
+        object portValue= iStorage.GetPortValue(port);
+        if(portValue == null) return false;
+        if(Application.isPlaying && iStorage.Preferences.DisplayOptions.PlayingPortValues) return true;
+        if(!Application.isPlaying && iStorage.Preferences.DisplayOptions.EditorPortValues) return true;
         return false;
     }
-
+	Rect GetPortValuePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
+		Vector2 valueSize= GetPortValueSize(port, iStorage);
+		Vector2 valuePos= GetPortCenter(port, iStorage);
+        switch(port.Edge) {
+            case iCS_EditorObject.EdgeEnum.Left:
+				valuePos.x-= 1 + valueSize.x/Scale + iCS_Config.PortSize;
+				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
+                break;
+            case iCS_EditorObject.EdgeEnum.Right:
+				valuePos.x+= 1 + iCS_Config.PortSize;
+				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
+                break;
+            case iCS_EditorObject.EdgeEnum.Top:            
+                break;
+            case iCS_EditorObject.EdgeEnum.Bottom:
+                break;
+        }
+        var scaledPos= TranslateAndScale(valuePos);
+        return new Rect(scaledPos.x, scaledPos.y, valueSize.x, valueSize.y);	    
+	}
+	
     // ======================================================================
-    // Displays whish element is being picked.
+    // Displays which element is being picked.
     // ----------------------------------------------------------------------
     public void DebugGraphElementPicked(Vector2 pick, iCS_IStorage iStorage) {
         var port= iStorage.GetPortAt(pick);
