@@ -20,22 +20,15 @@ public partial class iCS_Graphics {
     // Fold/Unfold icon functionality.
     // ----------------------------------------------------------------------
     public bool IsNodeNamePicked(iCS_EditorObject node, Vector2 pick, iCS_IStorage iStorage) {
-        if(!IsNodeTitleBarPicked(node, pick, iStorage)) return false;
-        if(IsFoldIconPicked(node, pick, iStorage)) return false;
-        if(IsMinimizeIconPicked(node, pick, iStorage)) return false;
-        return true;
-    }
-    bool ShouldDisplayNodeName(iCS_EditorObject node, iCS_IStorage iStorage) {
-        if(!ShouldShowTitle()) return false;
-        if(!node.IsNode) return false;
-        if(!IsVisible(node,iStorage)) return false;
-        return true;
-    }
-    Rect GetNodeNamePosition(iCS_EditorObject node, iCS_IStorage iStorage) {
-        /*
-            TODO: Return position of title.
-        */
-        return new Rect(0,0,0,0);
+        if(IsMinimized(node, iStorage)) {
+            Rect nodePos= GetNodeNamePosition(node, iStorage);
+            return nodePos.Contains(pick);
+        } else {
+            if(!IsNodeTitleBarPicked(node, pick, iStorage)) return false;
+            if(IsFoldIconPicked(node, pick, iStorage)) return false;
+            if(IsMinimizeIconPicked(node, pick, iStorage)) return false;
+            return true;            
+        }
     }
     // ----------------------------------------------------------------------
     bool ShouldShowTitle() {
@@ -151,6 +144,9 @@ public partial class iCS_Graphics {
                 Debug.Log("Minimize icon of: "+pickedNode.Name+" is being picked");
                 return;
             }
+            /*
+                FIXME: Node names are not picked for minimized nodes.
+            */
             if(IsNodeNamePicked(pickedNode, pick, iStorage)) {
                 Debug.Log("Node name: "+pickedNode.Name+" is being picked");
                 return;
@@ -162,6 +158,9 @@ public partial class iCS_Graphics {
                 Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port name: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 return;
             }
+            /*
+                FIXME: Value is not picked if it apears outside the top most node.
+            */
             if(IsPortValuePicked(closestPort, pick, iStorage)) {
                 Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port value: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 return;

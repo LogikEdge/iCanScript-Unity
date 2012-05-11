@@ -61,7 +61,7 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Drawing staging
 	// ----------------------------------------------------------------------
-    public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj, Vector2 mousePos, iCS_IStorage storage) {
+    public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj, Vector2 mousePos, iCS_IStorage iStorage) {
         Translation= translation;
         Scale= scale;
         ClipingArea= clipingRect;
@@ -69,9 +69,9 @@ public partial class iCS_Graphics {
         selectedObject= selObj;
 
         // Rebuild label style to match user preferences.
-        BuildLabelStyle(storage);
-        BuildTitleStyle(storage);
-        BuildValueStyle(storage);
+        BuildLabelStyle(iStorage);
+        BuildTitleStyle(iStorage);
+        BuildValueStyle(iStorage);
         
         // Set font size according to scale.
         LabelStyle.fontSize= (int)(kLabelFontSize*Scale);
@@ -251,7 +251,7 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  INITIALIZATION
 	// ----------------------------------------------------------------------
-    static public bool Init(iCS_IStorage storage) {
+    static public bool Init(iCS_IStorage iStorage) {
         // Load AA line texture.
         if(lineTexture == null) {
             if(!iCS_TextureCache.GetTexture(iCS_EditorStrings.AALineTexture, out lineTexture)) {
@@ -263,37 +263,37 @@ public partial class iCS_Graphics {
             }            
         }
         // Load folded/unfolded icons.
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.FoldedIcon, out foldedIcon, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.FoldedIcon, out foldedIcon, iStorage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UnfoldedIcon, out unfoldedIcon, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UnfoldedIcon, out unfoldedIcon, iStorage)) {
             IsInitialized= false;
             return IsInitialized;            
         }
         // Load maximize/minimize icon.
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MinimizeIcon, out minimizeIcon, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MinimizeIcon, out minimizeIcon, iStorage)) {
             IsInitialized= false;
             return IsInitialized;
         }
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MaximizeIcon, out maximizeIcon, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MaximizeIcon, out maximizeIcon, iStorage)) {
             IsInitialized= false;
             return IsInitialized;
         }
         // Load line arrow heads.
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon, iStorage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.DownArrowHeadIcon, out downArrowHeadIcon, iStorage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.LeftArrowHeadIcon, out leftArrowHeadIcon, iStorage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon, storage)) {
+        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon, out rightArrowHeadIcon, iStorage)) {
             IsInitialized= false;
             return IsInitialized;
         }        
@@ -302,8 +302,8 @@ public partial class iCS_Graphics {
         return IsInitialized;
     }
     // ----------------------------------------------------------------------
-    void BuildLabelStyle(iCS_IStorage storage) {
-        Color labelColor= storage.Preferences.NodeColors.LabelColor;
+    void BuildLabelStyle(iCS_IStorage iStorage) {
+        Color labelColor= iStorage.Preferences.NodeColors.LabelColor;
         if(LabelStyle == null) LabelStyle= new GUIStyle();
         LabelStyle.normal.textColor= labelColor;
         LabelStyle.hover.textColor= labelColor;
@@ -315,8 +315,8 @@ public partial class iCS_Graphics {
         LabelStyle.onActive.textColor= labelColor;
     }
     // ----------------------------------------------------------------------
-    void BuildTitleStyle(iCS_IStorage storage) {
-        Color titleColor= storage.Preferences.NodeColors.TitleColor;
+    void BuildTitleStyle(iCS_IStorage iStorage) {
+        Color titleColor= iStorage.Preferences.NodeColors.TitleColor;
         if(TitleStyle == null) TitleStyle= new GUIStyle();
         TitleStyle.normal.textColor= titleColor;
         TitleStyle.hover.textColor= titleColor;
@@ -330,8 +330,8 @@ public partial class iCS_Graphics {
         TitleStyle.fontSize= 12;
     }
     // ----------------------------------------------------------------------
-    void BuildValueStyle(iCS_IStorage storage) {
-        Color valueColor= storage.Preferences.NodeColors.ValueColor;
+    void BuildValueStyle(iCS_IStorage iStorage) {
+        Color valueColor= iStorage.Preferences.NodeColors.ValueColor;
         if(ValueStyle == null) ValueStyle= new GUIStyle();
         ValueStyle.normal.textColor= valueColor;
         ValueStyle.hover.textColor= valueColor;
@@ -404,63 +404,63 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  NODE
     // ----------------------------------------------------------------------
-    public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage storage) {        
+    public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
         // Don't draw minimized node.
-        if(IsInvisible(node, storage) || IsMinimized(node, storage)) return;
+        if(IsInvisible(node, iStorage) || IsMinimized(node, iStorage)) return;
         
         // Draw node box.
-        Rect position= GetDisplayPosition(node, storage);
-        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
+        Rect position= GetDisplayPosition(node, iStorage);
+        string title= GetNodeName(node, iStorage);
         // Change background color if node is selected.
-        Color backgroundColor= GetBackgroundColor(node, storage);
+        Color backgroundColor= GetBackgroundColor(node, iStorage);
         bool isMouseOver= position.Contains(MousePosition);
-        GUI_Box(position, new GUIContent(title,node.ToolTip), GetNodeColor(node, storage), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
+        GUI_Box(position, new GUIContent(title,node.ToolTip), GetNodeColor(node, iStorage), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
         EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);
         // Fold/Unfold icon
-        if(ShouldDisplayFoldIcon(node, storage)) {
-            if(storage.IsFolded(node)) {
+        if(ShouldDisplayFoldIcon(node, iStorage)) {
+            if(iStorage.IsFolded(node)) {
                 GUI_DrawTexture(new Rect(position.x+6f, position.y-1f, foldedIcon.width, foldedIcon.height), foldedIcon);                           
             } else {
                 GUI_DrawTexture(new Rect(position.x+6f, position.y-1f, unfoldedIcon.width, unfoldedIcon.height), unfoldedIcon);               
             }            
         }
         // Minimize Icon
-        if(ShouldDisplayMinimizeIcon(node, storage)) {
+        if(ShouldDisplayMinimizeIcon(node, iStorage)) {
             GUI_DrawTexture(new Rect(position.xMax-4-minimizeIcon.width, position.y-1f, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
         }
     }
     // ----------------------------------------------------------------------
-    Color GetBackgroundColor(iCS_EditorObject node, iCS_IStorage storage) {
+    Color GetBackgroundColor(iCS_EditorObject node, iCS_IStorage iStorage) {
         Color backgroundColor= BackgroundColor;
         if(node == selectedObject) {
-            float adj= storage.Preferences.NodeColors.SelectedBrightness;
+            float adj= iStorage.Preferences.NodeColors.SelectedBrightness;
             backgroundColor= new Color(adj*BackgroundColor.r, adj*BackgroundColor.g, adj*BackgroundColor.b);
         }
         return backgroundColor;        
     }
     // ----------------------------------------------------------------------
-    public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage storage) {        
-        if(!IsMinimized(node, storage)) return;
+    public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
+        if(!IsMinimized(node, iStorage)) return;
         
         // Draw minimized node.
-        Rect position= GetDisplayPosition(node, storage);
-        Texture icon= GetMaximizeIcon(node, storage);
+        Rect position= GetDisplayPosition(node, iStorage);
+        Texture icon= GetMaximizeIcon(node, iStorage);
         if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
         if(node.IsTransitionModule) {
-            DrawMinimizedTransitionModule(storage.GetTransitionModuleVector(node), texturePos, Color.white);
+            DrawMinimizedTransitionModule(iStorage.GetTransitionModuleVector(node), texturePos, Color.white);
         } else {
             GUI_DrawTexture(texturePos, icon);                                       
         }
         EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
         GUI_Label(texturePos, new GUIContent("", node.ToolTip), LabelStyle);
-		ShowTitleOver(texturePos, node, storage);
+		ShowTitleOver(texturePos, node, iStorage);
     }
     // ----------------------------------------------------------------------
-	void ShowTitleOver(Rect pos, iCS_EditorObject node, iCS_IStorage storage) {
+	void ShowTitleOver(Rect pos, iCS_EditorObject node, iCS_IStorage iStorage) {
         if(!ShouldShowTitle()) return;
-        string title= ObjectNames.NicifyVariableName(storage.Preferences.HiddenPrefixes.GetName(node.Name));
-        Vector2 labelSize= LabelStyle.CalcSize(new GUIContent(title));
+        string title= GetNodeName(node, iStorage);
+        Vector2 labelSize= GetNodeNameSize(node, iStorage);
 		pos.y-=5f;	// Put title a bit higher.
         pos= TranslateAndScale(pos);
         Rect labelRect= new Rect(0.5f*(pos.x+pos.xMax-labelSize.x), pos.y-labelSize.y, labelSize.x, labelSize.y);
@@ -471,7 +471,7 @@ public partial class iCS_Graphics {
             vectors[2]= new Vector3(labelRect.xMax+2, labelRect.yMax+2, 0);
             vectors[3]= new Vector3(labelRect.x-2, labelRect.yMax+2, 0);
             Handles.color= Color.white;
-            Handles.DrawSolidRectangleWithOutline(vectors, GetBackgroundColor(node, storage), GetNodeColor(node, storage));
+            Handles.DrawSolidRectangleWithOutline(vectors, GetBackgroundColor(node, iStorage), GetNodeColor(node, iStorage));
         }
         GUI.Label(labelRect, new GUIContent(title, node.ToolTip), LabelStyle);		
 	}
@@ -480,51 +480,51 @@ public partial class iCS_Graphics {
     // Node style functionality
     // ----------------------------------------------------------------------
     // Returns the display color of the given node.
-    static Color GetNodeColor(iCS_EditorObject node, iCS_IStorage storage) {
+    static Color GetNodeColor(iCS_EditorObject node, iCS_IStorage iStorage) {
         if(node.IsEntryState) {
-            return storage.Preferences.NodeColors.EntryStateColor;
+            return iStorage.Preferences.NodeColors.EntryStateColor;
         }
         if(node.IsState || node.IsStateChart) {
-            return storage.Preferences.NodeColors.StateColor;
+            return iStorage.Preferences.NodeColors.StateColor;
         }
         if(node.IsClassModule) {
-            return storage.Preferences.NodeColors.ClassColor;
+            return iStorage.Preferences.NodeColors.ClassColor;
         }
         if(node.IsModule) {
-            return storage.Preferences.NodeColors.ModuleColor;
+            return iStorage.Preferences.NodeColors.ModuleColor;
         }
         if(node.IsConstructor) {
-            return storage.Preferences.NodeColors.ConstructorColor;
+            return iStorage.Preferences.NodeColors.ConstructorColor;
         }
         if(node.IsFunction) {
-            return storage.Preferences.NodeColors.FunctionColor;
+            return iStorage.Preferences.NodeColors.FunctionColor;
         }
         return Color.gray;
     }
     // ----------------------------------------------------------------------
     // Returns the maximize icon for the given node.
-    Texture2D GetNodeDefaultMaximizeIcon(iCS_EditorObject node, iCS_IStorage storage) {
+    Texture2D GetNodeDefaultMaximizeIcon(iCS_EditorObject node, iCS_IStorage iStorage) {
         if(node.IsEntryState) {
-            return BuildMaximizeIcon(node, storage, ref EntryStateMaximizeIcon);
+            return BuildMaximizeIcon(node, iStorage, ref EntryStateMaximizeIcon);
         }
         if(node.IsState || node.IsStateChart) {
-            return BuildMaximizeIcon(node, storage, ref StateMaximizeIcon);
+            return BuildMaximizeIcon(node, iStorage, ref StateMaximizeIcon);
         }
         if(node.IsModule) {
-            return BuildMaximizeIcon(node, storage, ref ModuleMaximizeIcon);
+            return BuildMaximizeIcon(node, iStorage, ref ModuleMaximizeIcon);
         }
         if(node.IsConstructor) {
-            return BuildMaximizeIcon(node, storage, ref ConstructionMaximizeIcon);
+            return BuildMaximizeIcon(node, iStorage, ref ConstructionMaximizeIcon);
         }
         if(node.IsFunction) {
-            return BuildMaximizeIcon(node, storage, ref FunctionMaximizeIcon);
+            return BuildMaximizeIcon(node, iStorage, ref FunctionMaximizeIcon);
         }
-        return BuildMaximizeIcon(node, storage, ref DefaultMaximizeIcon);
+        return BuildMaximizeIcon(node, iStorage, ref DefaultMaximizeIcon);
     }
     // ----------------------------------------------------------------------
-    Texture2D BuildMaximizeIcon(iCS_EditorObject node, iCS_IStorage storage, ref Texture2D icon) {
+    Texture2D BuildMaximizeIcon(iCS_EditorObject node, iCS_IStorage iStorage, ref Texture2D icon) {
         if(icon == null) {
-            Color nodeColor= GetNodeColor(node, storage);
+            Color nodeColor= GetNodeColor(node, iStorage);
             icon= new Texture2D(maximizeIcon.width, maximizeIcon.height);
             for(int x= 0; x < maximizeIcon.width; ++x) {
                 for(int y= 0; y < maximizeIcon.height; ++y) {
@@ -711,8 +711,8 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
     static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
-    static float TopBottomLabelOffset(iCS_EditorObject port, iCS_IStorage storage) {
-        float ratio= port.LocalPosition.x/GetDisplayPosition(storage.GetParent(port), storage).width;
+    static float TopBottomLabelOffset(iCS_EditorObject port, iCS_IStorage iStorage) {
+        float ratio= port.LocalPosition.x/GetDisplayPosition(iStorage.GetParent(port), iStorage).width;
         float error= 100f;
         float offset= 0f;
         for(int i= 0; i < portTopBottomRatio.Length; ++i) {
@@ -728,12 +728,12 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(iCS_EditorObject port, iCS_IStorage storage, bool highlight= false, float lineWidth= 1.5f) {
-        iCS_EditorObject portParent= storage.GetParent(port);
-        if(IsVisible(portParent, storage) && storage.IsValid(port.Source)) {
-            iCS_EditorObject source= storage.GetSource(port);
-            iCS_EditorObject sourceParent= storage.GetParent(source);
-            if(IsVisible(sourceParent, storage) && !port.IsOutStatePort) {
+    public void DrawConnection(iCS_EditorObject port, iCS_IStorage iStorage, bool highlight= false, float lineWidth= 1.5f) {
+        iCS_EditorObject portParent= iStorage.GetParent(port);
+        if(IsVisible(portParent, iStorage) && iStorage.IsValid(port.Source)) {
+            iCS_EditorObject source= iStorage.GetSource(port);
+            iCS_EditorObject sourceParent= iStorage.GetParent(source);
+            if(IsVisible(sourceParent, iStorage) && !port.IsOutStatePort) {
                 // Determine if this connection is part of the selected object.
                 float highlightWidth= 2f;
                 Color highlightColor= new Color(0.67f, 0.67f, 0.67f);
@@ -745,8 +745,8 @@ public partial class iCS_Graphics {
                 if(isFloating) {
                     highlight= false;
                 }
-                Color color= storage.Preferences.TypeColors.GetColor(source.RuntimeType);
-                iCS_ConnectionParams cp= new iCS_ConnectionParams(port, GetDisplayPosition(port, storage), source, GetDisplayPosition(source, storage), storage);
+                Color color= iStorage.Preferences.TypeColors.GetColor(source.RuntimeType);
+                iCS_ConnectionParams cp= new iCS_ConnectionParams(port, GetDisplayPosition(port, iStorage), source, GetDisplayPosition(source, iStorage), iStorage);
                 Vector3 startPos= TranslateAndScale(cp.Start);
                 Vector3 endPos= TranslateAndScale(cp.End);
                 Vector3 startTangent= TranslateAndScale(cp.StartTangent);
@@ -788,24 +788,24 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  Utilities
     // ----------------------------------------------------------------------
-    static Rect GetDisplayPosition(iCS_EditorObject edObj, iCS_IStorage storage) {
-        Rect layoutPosition= GetLayoutPosition(edObj, storage);
-        Rect displayPosition= storage.GetDisplayPosition(edObj);
-        if(IsAnimationCompleted(edObj, storage)) {
-            if((GetAnimationRatio(edObj, storage)-1f)*storage.Preferences.ControlOptions.AnimationTime > 0.2f) {  // 200ms
+    static Rect GetDisplayPosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+        Rect layoutPosition= GetLayoutPosition(edObj, iStorage);
+        Rect displayPosition= iStorage.GetDisplayPosition(edObj);
+        if(IsAnimationCompleted(edObj, iStorage)) {
+            if((GetAnimationRatio(edObj, iStorage)-1f)*iStorage.Preferences.ControlOptions.AnimationTime > 0.2f) {  // 200ms
                 if(displayPosition.x != layoutPosition.x || displayPosition.y != layoutPosition.y ||
                    displayPosition.width!= layoutPosition.width || displayPosition.height != layoutPosition.height) {
                        if(!edObj.IsFloating) {
-                           storage.StartAnimTimer(edObj);
+                           iStorage.StartAnimTimer(edObj);
                            return displayPosition;                           
                        }
                    }
             }
-            storage.SetDisplayPosition(edObj, layoutPosition);
+            iStorage.SetDisplayPosition(edObj, layoutPosition);
             return layoutPosition;
         }
-        storage.IsAnimationPlaying= true;
-        float ratio= GetAnimationRatio(edObj, storage);
+        iStorage.IsAnimationPlaying= true;
+        float ratio= GetAnimationRatio(edObj, iStorage);
         displayPosition= Math3D.Lerp(displayPosition, layoutPosition, ratio);
         return displayPosition;
     }
@@ -820,41 +820,41 @@ public partial class iCS_Graphics {
     }
 	// ----------------------------------------------------------------------
 	// Returns the time ratio of the animation between 0 and 1.
-    static float GetAnimationRatio(iCS_EditorObject edObj, iCS_IStorage storage) {
-        float time= storage.Preferences.ControlOptions.AnimationTime;
+    static float GetAnimationRatio(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+        float time= iStorage.Preferences.ControlOptions.AnimationTime;
         float invTime= Math3D.IsZero(time) ? 10000f : 1f/time;
-        return invTime*(storage.GetAnimTime(edObj));        
+        return invTime*(iStorage.GetAnimTime(edObj));        
     }
 	// ----------------------------------------------------------------------
     // Returns true if the animation ratio >= 1.
-    static bool IsAnimationCompleted(iCS_EditorObject edObj, iCS_IStorage storage) {
-        return GetAnimationRatio(edObj, storage) >= 0.99f;
+    static bool IsAnimationCompleted(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+        return GetAnimationRatio(edObj, iStorage) >= 0.99f;
     }
 
    	// ----------------------------------------------------------------------
- 	bool IsMinimized(iCS_EditorObject edObj, iCS_IStorage storage) {
+ 	bool IsMinimized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(edObj.IsNode) {
-            if(IsInvisible(edObj, storage)) return false;
-            Rect position= GetDisplayPosition(edObj, storage);
-            Texture icon= GetMaximizeIcon(edObj, storage);
+            if(IsInvisible(edObj, iStorage)) return false;
+            Rect position= GetDisplayPosition(edObj, iStorage);
+            Texture icon= GetMaximizeIcon(edObj, iStorage);
             return (position.width*position.height <= icon.width*icon.height+1f);
         }
-        return storage.IsMinimized(edObj) && IsAnimationCompleted(edObj, storage);
+        return iStorage.IsMinimized(edObj) && IsAnimationCompleted(edObj, iStorage);
     }
-    static bool IsFolded(iCS_EditorObject edObj, iCS_IStorage storage) {
-        return storage.IsFolded(edObj) && IsAnimationCompleted(edObj, storage);
+    static bool IsFolded(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+        return iStorage.IsFolded(edObj) && IsAnimationCompleted(edObj, iStorage);
     }
-    bool IsInvisible(iCS_EditorObject edObj, iCS_IStorage storage) {
-        return !IsVisible(edObj, storage);
+    bool IsInvisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+        return !IsVisible(edObj, iStorage);
     }
-    bool IsVisible(iCS_EditorObject edObj, iCS_IStorage storage) {
+    bool IsVisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(edObj.IsNode) {
-            Rect position= GetDisplayPosition(edObj, storage);
+            Rect position= GetDisplayPosition(edObj, iStorage);
             return position.width >= 12f && position.height >= 12;  // Invisible if too small.
         }
-        iCS_EditorObject parent= storage.GetParent(edObj);
+        iCS_EditorObject parent= iStorage.GetParent(edObj);
 		if(parent.IsDataPort) return false;
-        return IsVisible(parent, storage) && !IsMinimized(parent, storage);
+        return IsVisible(parent, iStorage) && !IsMinimized(parent, iStorage);
     }
     
 }
