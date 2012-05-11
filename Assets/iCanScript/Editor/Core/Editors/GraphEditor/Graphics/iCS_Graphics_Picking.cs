@@ -116,35 +116,6 @@ public partial class iCS_Graphics {
         Rect portNamePos= GetPortNamePosition(port, iStorage);
         return portNamePos.Contains(pick);
     }
-    bool ShouldDisplayPortName(iCS_EditorObject port, iCS_IStorage iStorage) {
-        if(!ShouldShowLabel()) return false;
-        if(!IsVisible(port, iStorage)) return false;
-        return true;        
-    }
-    Rect GetPortNamePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
-        Vector2 labelSize= GetPortNameSize(port);
-		Vector2 labelPos= GetPortCenter(port, iStorage);
-        switch(port.Edge) {
-            case iCS_EditorObject.EdgeEnum.Left:
-                labelPos.x+= 1 + iCS_Config.PortSize;
-                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
-                break;
-            case iCS_EditorObject.EdgeEnum.Right:
-                labelPos.x-= 1 + labelSize.x/Scale + iCS_Config.PortSize;
-                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
-                break;
-            case iCS_EditorObject.EdgeEnum.Top:            
-                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y-= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, iStorage));
-                break;
-            case iCS_EditorObject.EdgeEnum.Bottom:
-                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y+= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, iStorage)-0.2f*labelSize.y/Scale;
-                break;
-        }
-        var scaledPos= TranslateAndScale(labelPos);
-        return new Rect(scaledPos.x, scaledPos.y, labelSize.x, labelSize.y);	    
-    }
     // ----------------------------------------------------------------------
     bool ShouldShowLabel() {
         return Scale >= 0.5f;        
@@ -160,35 +131,6 @@ public partial class iCS_Graphics {
         Rect portValuePos= GetPortValuePosition(port, iStorage);
         return portValuePos.Contains(pick);
     }
-    bool ShouldDisplayPortValue(iCS_EditorObject port, iCS_IStorage iStorage) {
-        if(!port.IsDataPort) return false;
-        if(!ShouldShowLabel()) return false;
-        object portValue= iStorage.GetPortValue(port);
-        if(portValue == null) return false;
-        if(Application.isPlaying && iStorage.Preferences.DisplayOptions.PlayingPortValues) return true;
-        if(!Application.isPlaying && iStorage.Preferences.DisplayOptions.EditorPortValues) return true;
-        return false;
-    }
-	Rect GetPortValuePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
-		Vector2 valueSize= GetPortValueSize(port, iStorage);
-		Vector2 valuePos= GetPortCenter(port, iStorage);
-        switch(port.Edge) {
-            case iCS_EditorObject.EdgeEnum.Left:
-				valuePos.x-= 1 + valueSize.x/Scale + iCS_Config.PortSize;
-				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
-                break;
-            case iCS_EditorObject.EdgeEnum.Right:
-				valuePos.x+= 1 + iCS_Config.PortSize;
-				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
-                break;
-            case iCS_EditorObject.EdgeEnum.Top:            
-                break;
-            case iCS_EditorObject.EdgeEnum.Bottom:
-                break;
-        }
-        var scaledPos= TranslateAndScale(valuePos);
-        return new Rect(scaledPos.x, scaledPos.y, valueSize.x, valueSize.y);	    
-	}
 	
     // ======================================================================
     // Displays which element is being picked.

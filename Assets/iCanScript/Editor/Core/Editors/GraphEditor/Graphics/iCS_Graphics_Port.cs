@@ -34,8 +34,44 @@ public partial class iCS_Graphics {
         return portValueType.IsArray ? "["+port.Name+"]" : port.Name;
     }
     // ----------------------------------------------------------------------
+    bool ShouldDisplayPortName(iCS_EditorObject port, iCS_IStorage iStorage) {
+        if(!ShouldShowLabel()) return false;
+        if(!IsVisible(port, iStorage)) return false;
+        return true;        
+    }
+    // ----------------------------------------------------------------------
     Vector2 GetPortNameSize(iCS_EditorObject port) {
         return LabelStyle.CalcSize(new GUIContent(GetPortName(port)));
+    }
+    // ----------------------------------------------------------------------
+    Rect GetPortNamePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
+        Vector2 labelSize= GetPortNameSize(port);
+		Vector2 labelPos= GetPortCenter(port, iStorage);
+        switch(port.Edge) {
+            case iCS_EditorObject.EdgeEnum.Left:
+                labelPos.x+= 1 + iCS_Config.PortSize;
+                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
+                break;
+            case iCS_EditorObject.EdgeEnum.Right:
+                labelPos.x-= 1 + labelSize.x/Scale + iCS_Config.PortSize;
+                labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
+                break;
+            case iCS_EditorObject.EdgeEnum.Top:            
+                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
+                labelPos.y-= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, iStorage));
+                break;
+            case iCS_EditorObject.EdgeEnum.Bottom:
+                labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
+                labelPos.y+= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, iStorage)-0.2f*labelSize.y/Scale;
+                break;
+        }
+        return new Rect(labelPos.x, labelPos.y, labelSize.x, labelSize.y);	    
+    }
+    // ----------------------------------------------------------------------
+    Rect GetPortNameGUIPosition(iCS_EditorObject port, iCS_IStorage iStorage) {
+        Rect graphRect= GetPortNamePosition(port, iStorage);
+        var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
+        return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
     }
 
     // ======================================================================
@@ -44,15 +80,55 @@ public partial class iCS_Graphics {
     Type GetPortValueType(iCS_EditorObject port) {
         return iCS_Types.GetElementType(port.RuntimeType);
     }
+    // ----------------------------------------------------------------------
     object GetPortValue(iCS_EditorObject port, iCS_IStorage iStorage) {
         return iStorage.GetPortValue(port);
     }
+    // ----------------------------------------------------------------------
     string GetPortValueAsString(iCS_EditorObject port, iCS_IStorage iStorage) {
         object portValue= GetPortValue(port, iStorage);
         return (portValue != null) ? GetValueAsString(portValue) : null;
     }
+    // ----------------------------------------------------------------------
+    bool ShouldDisplayPortValue(iCS_EditorObject port, iCS_IStorage iStorage) {
+        if(!port.IsDataPort) return false;
+        if(!ShouldShowLabel()) return false;
+        object portValue= iStorage.GetPortValue(port);
+        if(portValue == null) return false;
+        if(Application.isPlaying && iStorage.Preferences.DisplayOptions.PlayingPortValues) return true;
+        if(!Application.isPlaying && iStorage.Preferences.DisplayOptions.EditorPortValues) return true;
+        return false;
+    }
+    // ----------------------------------------------------------------------
     Vector2 GetPortValueSize(iCS_EditorObject port, iCS_IStorage iStorage) {
 		string valueAsStr= GetPortValueAsString(port, iStorage);
 		return (valueAsStr != null && valueAsStr != "") ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
     }
+    // ----------------------------------------------------------------------
+    Rect GetPortValuePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
+		Vector2 valueSize= GetPortValueSize(port, iStorage);
+		Vector2 valuePos= GetPortCenter(port, iStorage);
+        switch(port.Edge) {
+            case iCS_EditorObject.EdgeEnum.Left:
+				valuePos.x-= 1 + valueSize.x/Scale + iCS_Config.PortSize;
+				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
+                break;
+            case iCS_EditorObject.EdgeEnum.Right:
+				valuePos.x+= 1 + iCS_Config.PortSize;
+				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
+                break;
+            case iCS_EditorObject.EdgeEnum.Top:            
+                break;
+            case iCS_EditorObject.EdgeEnum.Bottom:
+                break;
+        }
+        return new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y);	    
+	}
+    // ----------------------------------------------------------------------
+    Rect GetPortValueGUIPosition(iCS_EditorObject port, iCS_IStorage iStorage) {
+        Rect graphRect= GetPortValuePosition(port, iStorage);
+        var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
+        return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
+	}
+	
 }

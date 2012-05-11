@@ -540,105 +540,110 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  PORT
     // ----------------------------------------------------------------------
-    public void DrawPort(iCS_EditorObject port, iCS_IStorage storage) {
+    public void DrawPort(iCS_EditorObject port, iCS_IStorage iStorage) {
         // Only draw visible data ports.
-        if(port == null || storage == null) return;
-        if(IsInvisible(port, storage) || IsMinimized(port, storage)) return;
+        if(port == null || iStorage == null) return;
+        if(IsInvisible(port, iStorage) || IsMinimized(port, iStorage)) return;
         
-        // Get port primary information.
-        iCS_EditorObject portParent= storage.GetParent(port);         
-        Rect position= GetDisplayPosition(port, storage);
-        Vector2 center= Math3D.ToVector2(position);
+        // Get port type information.
         Type portValueType= GetPortValueType(port);
         if(portValueType == null) return;
+
 		// Determine port colors
-        Color portColor= storage.Preferences.TypeColors.GetColor(portValueType);
-        Color nodeColor= GetNodeColor(portParent, storage);
+        Color portColor= iStorage.Preferences.TypeColors.GetColor(portValueType);
+        Color nodeColor= GetNodeColor(iStorage.GetParent(port), iStorage);
+
         // Determine if port is selected.
-        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == storage.GetParent(selectedObject));
+        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == iStorage.GetParent(selectedObject));
+
         // Determine if port is a static port (a port that feeds information into the graph).
-        bool isStaticPort= port.IsInDataPort && storage.GetSource(port) == null;
+        bool isStaticPort= port.IsInDataPort && iStorage.GetSource(port) == null;
+
 		// Compute port radius (radius is increased if port is selected).
 		float portRadius= iCS_Config.PortRadius;
 		if(isSelectedPort) {
 			portRadius= 1.67f*iCS_Config.PortRadius;			
 		}
-		object portValue= null;
+
+        // Draw port icon
+		Vector2 portCenter= GetPortCenter(port, iStorage);
         if(port.IsDataPort) {
-    		if(Application.isPlaying && storage.Preferences.DisplayOptions.PlayingPortValues) portValue= storage.GetPortValue(port);
-			Vector2 portCenter= center;
+            // Data ports.
 			if(port.IsOutMuxPort) {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
 			} else {
 				if(isStaticPort) {
-					if(!Application.isPlaying && storage.Preferences.DisplayOptions.EditorPortValues) portValue= storage.GetPortValue(port);
-					if(portValue != null) {
-		            	DrawSquarePort(portCenter, portColor, nodeColor, portRadius);
-					} else {
-			            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);									
-					}
+		            DrawSquarePort(portCenter, portColor, nodeColor, portRadius);
 				} else {
 	    	    	DrawCircularPort(portCenter, portColor, nodeColor, portRadius);							        
 				}				
 			}
         } else if(port.IsStatePort) {
+            // State ports.
             if(port.IsOutStatePort) {
                 Handles.color= Color.white;
-                Handles.DrawSolidDisc(TranslateAndScale(center), FacingNormal, portRadius*Scale);
+                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);
             }
         } else if(port.IsInTransitionPort || port.IsOutTransitionPort) {
+            // Transition ports.
             Handles.color= Color.white;
-            Handles.DrawSolidDisc(TranslateAndScale(center), FacingNormal, portRadius*Scale);            
+            Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);            
         }
         else {
-            DrawCircularPort(center, portColor, nodeColor, portRadius);
+            // All other types of ports (should not exists).
+            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);
         }
+        
         // Configure move cursor for port.
-        Rect portPos= new Rect(center.x-portRadius*1.5f, center.y-portRadius*1.5f, portRadius*3f, portRadius*3f);
+        Rect portPos= new Rect(portCenter.x-portRadius*1.5f, portCenter.y-portRadius*1.5f, portRadius*3f, portRadius*3f);
         if(!port.IsTransitionPort) {
             EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
         }
         if(!port.IsFloating) {
-            // TO BE VERIFIED.
             GUI_Label(portPos, new GUIContent("", port.ToolTip), LabelStyle);            
         }
         
-        // Don't show port label if it is too small or a state port.
-        if(port.IsStatePort) return;        // State transition name is handle by DrawConnection. 
-        if(!ShouldShowLabel()) return;      // Don't show label & values if scale does not permit.
+        // State transition name is handle by DrawConnection.
+        if(port.IsStatePort) return;         
 
         // Display port name.
+        if(!ShouldDisplayPortName(port, iStorage)) return;
         string name= GetPortName(port);
-        Rect portNamePos= GetPortNamePosition(port, storage);
-        GUI.Label(portNamePos, new GUIContent(name, port.ToolTip), LabelStyle);
+        Rect portNamePos= GetPortNameGUIPosition(port, iStorage);
+        GUI.Label(portNamePos, new GUIContent(name, port.ToolTip), LabelStyle);            
 
         // Display port value (if applicable).
-        if(!port.IsFloating) {
-			EditorGUIUtility.LookLikeControls();
-            Rect portValuePos= GetPortValuePosition(port, storage);
-    		if(Math3D.IsNotZero(portValuePos.width)) {
-        		string valueAsStr= GetPortValueAsString(port, storage);
-    			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
-    		}            				
-
-            // ==> Experimental <==
-			// Bring up port editor for selected static ports.
-			if(isStaticPort && portValue != null && Scale > 0.75f) {
-				EditorGUIUtility.LookLikeControls();
-				if(portValueType == typeof(bool)) {
-					GUI.changed= false;
-					bool newValue= GUI.Toggle(new Rect(portNamePos.xMax, portNamePos.y-2, 16, 16), (bool)portValue, "");					
-					if(GUI.changed) {
-						storage.UpdatePortInitialValue(port, newValue);
-					}
-				} else if(portValueType == typeof(float)) {
-					GUI.changed= false;
-					float newValue= GUI.HorizontalSlider(new Rect(portNamePos.xMax, portNamePos.y-2, 40*Scale, 16), (float)portValue, 0, 1f);
-					if(GUI.changed) {
-						storage.UpdatePortInitialValue(port, newValue);
-					}
-				}
-			}
+        if(ShouldDisplayPortValue(port, iStorage)) {    
+            if(!port.IsFloating) {
+    			EditorGUIUtility.LookLikeControls();
+                Rect portValuePos= GetPortValueGUIPosition(port, iStorage);
+        		if(Math3D.IsNotZero(portValuePos.width)) {
+            		string valueAsStr= GetPortValueAsString(port, iStorage);
+        			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
+        		}            				
+    
+                /*
+                    CHANGED: ==> Experimental <==
+                */
+    			// Bring up port editor for selected static ports.
+                object portValue= GetPortValue(port, iStorage);
+    			if(isStaticPort && portValue != null && Scale > 0.75f) {
+    				EditorGUIUtility.LookLikeControls();
+    				if(portValueType == typeof(bool)) {
+    					GUI.changed= false;
+    					bool newValue= GUI.Toggle(new Rect(portNamePos.xMax, portNamePos.y-2, 16, 16), (bool)portValue, "");					
+    					if(GUI.changed) {
+    						iStorage.UpdatePortInitialValue(port, newValue);
+    					}
+    				} else if(portValueType == typeof(float)) {
+    					GUI.changed= false;
+    					float newValue= GUI.HorizontalSlider(new Rect(portNamePos.xMax, portNamePos.y-2, 40*Scale, 16), (float)portValue, 0, 1f);
+    					if(GUI.changed) {
+    						iStorage.UpdatePortInitialValue(port, newValue);
+    					}
+    				}
+    			}
+           }
        }
     }
 
