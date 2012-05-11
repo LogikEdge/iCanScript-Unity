@@ -809,14 +809,15 @@ public partial class iCS_Graphics {
         displayPosition= Math3D.Lerp(displayPosition, layoutPosition, ratio);
         return displayPosition;
     }
-    static Rect GetLayoutPosition(iCS_EditorObject edObj, iCS_IStorage storage) {
-        if(!storage.IsVisible(edObj)) {
-            iCS_EditorObject parent= storage.GetParent(edObj);
-            for(; !storage.IsVisible(parent); parent= storage.GetParent(parent));
-            Vector2 midPoint= Math3D.Middle(storage.GetPosition(parent));
+   	// ----------------------------------------------------------------------
+    static Rect GetLayoutPosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+        if(!iStorage.IsVisible(edObj)) {
+            iCS_EditorObject parent= iStorage.GetParent(edObj);
+            for(; !iStorage.IsVisible(parent); parent= iStorage.GetParent(parent));
+            Vector2 midPoint= Math3D.Middle(iStorage.GetPosition(parent));
             return new Rect(midPoint.x, midPoint.y, 0, 0);
         }
-        return storage.GetPosition(edObj);
+        return iStorage.GetPosition(edObj);
     }
 	// ----------------------------------------------------------------------
 	// Returns the time ratio of the animation between 0 and 1.
@@ -841,12 +842,15 @@ public partial class iCS_Graphics {
         }
         return iStorage.IsMinimized(edObj) && IsAnimationCompleted(edObj, iStorage);
     }
+   	// ----------------------------------------------------------------------
     static bool IsFolded(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         return iStorage.IsFolded(edObj) && IsAnimationCompleted(edObj, iStorage);
     }
+   	// ----------------------------------------------------------------------
     bool IsInvisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         return !IsVisible(edObj, iStorage);
     }
+   	// ----------------------------------------------------------------------
     bool IsVisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(edObj.IsNode) {
             Rect position= GetDisplayPosition(edObj, iStorage);
