@@ -154,6 +154,7 @@ public partial class iCS_Graphics {
             pickInfo.PickedObject= port;
             pickInfo.PickedType= PickInfo.PickPartEnum.EditorObject;
             pickInfo.PickedPartGraphPosition= iStorage.GetPosition(port);
+            pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
             return pickInfo;
         }
         var pickedNode= iStorage.GetNodeAt(pick);
@@ -163,6 +164,7 @@ public partial class iCS_Graphics {
                 pickInfo.PickedObject= pickedNode;
                 pickInfo.PickedType= PickInfo.PickPartEnum.FoldIcon;
                 pickInfo.PickedPartGraphPosition= GetFoldIconPosition(pickedNode, iStorage);
+                pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
                 return pickInfo;
             }
             if(IsMinimizeIconPicked(pickedNode, pick, iStorage)) {
@@ -170,6 +172,7 @@ public partial class iCS_Graphics {
                 pickInfo.PickedObject= pickedNode;
                 pickInfo.PickedType= PickInfo.PickPartEnum.MinimizeIcon;
                 pickInfo.PickedPartGraphPosition= GetMinimizeIconPosition(pickedNode, iStorage);
+                pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
                 return pickInfo;
             }
             if(IsNodeNamePicked(pickedNode, pick, iStorage)) {
@@ -178,9 +181,9 @@ public partial class iCS_Graphics {
                 pickInfo.PickedType= PickInfo.PickPartEnum.Name;
                 Rect namePos= GetNodeNamePosition(pickedNode, iStorage);
                 float invScale= 1.0f/Scale;
-                namePos.width*= invScale;
-                namePos.height*= invScale;
-                pickInfo.PickedPartGraphPosition= namePos;
+                pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
+                var guiPos= TranslateAndScale(Math3D.ToVector2(namePos));
+                pickInfo.PickedPartGUIPosition= new Rect(guiPos.x, guiPos.y, namePos.width, namePos.height);
                 return pickInfo;
             }
             bool result= iStorage.ForEachChildNode(pickedNode,
@@ -192,9 +195,9 @@ public partial class iCS_Graphics {
                             pickInfo.PickedType= PickInfo.PickPartEnum.Name;
                             Rect namePos= GetNodeNamePosition(pickedNode, iStorage);
                             float invScale= 1.0f/Scale;
-                            namePos.width*= invScale;
-                            namePos.height*= invScale;
-                            pickInfo.PickedPartGraphPosition= namePos;
+                            pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
+                            var guiPos= TranslateAndScale(Math3D.ToVector2(namePos));
+                            pickInfo.PickedPartGUIPosition= new Rect(guiPos.x, guiPos.y, namePos.width, namePos.height);
                             return true;
                         }
                     } 
@@ -211,9 +214,9 @@ public partial class iCS_Graphics {
                 pickInfo.PickedType= PickInfo.PickPartEnum.Name;
                 Rect namePos= GetPortNamePosition(pickedNode, iStorage);
                 float invScale= 1.0f/Scale;
-                namePos.width*= invScale;
-                namePos.height*= invScale;
-                pickInfo.PickedPartGraphPosition= namePos;
+                pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
+                var guiPos= TranslateAndScale(Math3D.ToVector2(namePos));
+                pickInfo.PickedPartGUIPosition= new Rect(guiPos.x, guiPos.y, namePos.width, namePos.height);
                 return pickInfo;
             }
             if(IsPortValuePicked(closestPort, pick, iStorage)) {
@@ -222,9 +225,9 @@ public partial class iCS_Graphics {
                 pickInfo.PickedType= PickInfo.PickPartEnum.Value;
                 Rect namePos= GetPortValuePosition(pickedNode, iStorage);
                 float invScale= 1.0f/Scale;
-                namePos.width*= invScale;
-                namePos.height*= invScale;
-                pickInfo.PickedPartGraphPosition= namePos;
+                pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
+                var guiPos= TranslateAndScale(Math3D.ToVector2(namePos));
+                pickInfo.PickedPartGUIPosition= new Rect(guiPos.x, guiPos.y, namePos.width, namePos.height);
                 return pickInfo;
             }
         }
@@ -233,6 +236,7 @@ public partial class iCS_Graphics {
             pickInfo.PickedObject= port;
             pickInfo.PickedType= PickInfo.PickPartEnum.EditorObject;
             pickInfo.PickedPartGraphPosition= iStorage.GetPosition(pickedNode);
+            pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
             return pickInfo;
         }
         Debug.Log("Nothing is being picked");
