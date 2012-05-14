@@ -9,6 +9,7 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Common port utilities.
     // ----------------------------------------------------------------------
+    // Returns the port center in graph coordinates.
     Vector2 GetPortCenter(iCS_EditorObject port, iCS_IStorage iStorage) {
         return Math3D.ToVector2(GetDisplayPosition(port, iStorage));
     }
@@ -40,10 +41,12 @@ public partial class iCS_Graphics {
         return true;        
     }
     // ----------------------------------------------------------------------
+    // Returns the port name size in GUI scale.
     Vector2 GetPortNameSize(iCS_EditorObject port) {
         return LabelStyle.CalcSize(new GUIContent(GetPortName(port)));
     }
     // ----------------------------------------------------------------------
+    // Returns the port name position in graph coordinate and GUI scale size.
     Rect GetPortNamePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
         Vector2 labelSize= GetPortNameSize(port);
 		Vector2 labelPos= GetPortCenter(port, iStorage);
@@ -68,6 +71,7 @@ public partial class iCS_Graphics {
         return new Rect(labelPos.x, labelPos.y, labelSize.x, labelSize.y);	    
     }
     // ----------------------------------------------------------------------
+    // Returns port name in GUI coordinates and scale.
     Rect GetPortNameGUIPosition(iCS_EditorObject port, iCS_IStorage iStorage) {
         Rect graphRect= GetPortNamePosition(port, iStorage);
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
@@ -100,11 +104,13 @@ public partial class iCS_Graphics {
         return false;
     }
     // ----------------------------------------------------------------------
+    // Returns the port value display size in GUI scale.
     Vector2 GetPortValueSize(iCS_EditorObject port, iCS_IStorage iStorage) {
 		string valueAsStr= GetPortValueAsString(port, iStorage);
 		return (valueAsStr != null && valueAsStr != "") ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
     }
     // ----------------------------------------------------------------------
+    // Returns the port value position in graph coordinate and GUI scale size.
     Rect GetPortValuePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
 		Vector2 valueSize= GetPortValueSize(port, iStorage);
 		Vector2 valuePos= GetPortCenter(port, iStorage);
@@ -125,6 +131,7 @@ public partial class iCS_Graphics {
         return new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y);	    
 	}
     // ----------------------------------------------------------------------
+    // Returns the port value position in GUI coordinates and size.
     Rect GetPortValueGUIPosition(iCS_EditorObject port, iCS_IStorage iStorage) {
         Rect graphRect= GetPortValuePosition(port, iStorage);
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));

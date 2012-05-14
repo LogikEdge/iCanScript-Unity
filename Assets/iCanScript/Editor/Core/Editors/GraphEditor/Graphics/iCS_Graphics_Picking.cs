@@ -22,6 +22,9 @@ public partial class iCS_Graphics {
     public bool IsNodeNamePicked(iCS_EditorObject node, Vector2 pick, iCS_IStorage iStorage) {
         if(IsMinimized(node, iStorage)) {
             Rect nodePos= GetNodeNamePosition(node, iStorage);
+            float invScale= 1.0f/Scale;
+            nodePos.width*= invScale;
+            nodePos.height*= invScale;
             return nodePos.Contains(pick);
         } else {
             if(!IsNodeTitleBarPicked(node, pick, iStorage)) return false;
@@ -107,6 +110,9 @@ public partial class iCS_Graphics {
     public bool IsPortNamePicked(iCS_EditorObject port, Vector2 pick, iCS_IStorage iStorage) {
         if(!ShouldDisplayPortName(port, iStorage)) return false;
         Rect portNamePos= GetPortNamePosition(port, iStorage);
+        float invScale= 1.0f/Scale;
+        portNamePos.width*= invScale;
+        portNamePos.height*= invScale;
         return portNamePos.Contains(pick);
     }
     // ----------------------------------------------------------------------
@@ -122,6 +128,9 @@ public partial class iCS_Graphics {
         if(!port.IsInputPort) return false;
         if(iStorage.GetSource(port) != null) return false;
         Rect portValuePos= GetPortValuePosition(port, iStorage);
+        float invScale= 1.0f/Scale;
+        portValuePos.width*= invScale;
+        portValuePos.height*= invScale;
         return portValuePos.Contains(pick);
     }
 	
@@ -144,13 +153,22 @@ public partial class iCS_Graphics {
                 Debug.Log("Minimize icon of: "+pickedNode.Name+" is being picked");
                 return;
             }
-            /*
-                FIXME: Node names are not picked for minimized nodes.
-            */
             if(IsNodeNamePicked(pickedNode, pick, iStorage)) {
                 Debug.Log("Node name: "+pickedNode.Name+" is being picked");
                 return;
             }
+            bool result= iStorage.ForEachChildNode(pickedNode,
+                c=> {
+                    if(IsMinimized(c, iStorage)) {
+                        if(IsNodeNamePicked(c, pick, iStorage)) {
+                            Debug.Log("Node name: "+c.Name+" is being picked");
+                            return true;
+                        }
+                    } 
+                    return false;
+                }
+            );
+            if(result) return;
         }
         var closestPort= iStorage.GetClosestPortAt(pick);
         if(closestPort != null) {
@@ -158,9 +176,6 @@ public partial class iCS_Graphics {
                 Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port name: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 return;
             }
-            /*
-                FIXME: Value is not picked if it apears outside the top most node.
-            */
             if(IsPortValuePicked(closestPort, pick, iStorage)) {
                 Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port value: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 return;
