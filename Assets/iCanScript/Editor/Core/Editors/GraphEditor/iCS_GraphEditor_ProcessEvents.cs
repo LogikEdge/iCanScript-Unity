@@ -128,7 +128,10 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                                 }
                                 else {
                                     Event.current.Use();
-                                    myGraphics.GetPickInfo(ViewportToGraph(MousePosition), IStorage);
+                                    iCS_PickInfo pickInfo= myGraphics.GetPickInfo(ViewportToGraph(MousePosition), IStorage);
+                                    if(pickInfo != null) {
+                                        Debug.Log("Picking object: "+pickInfo.PickedObject.Name+" part: "+pickInfo.PickedPart+" Graph: "+pickInfo.PickedPartGraphPosition+" GUI: "+pickInfo.PickedPartGUIPosition);
+                                    }
 //									if(SelectedObject.IsNode) {
 //										if(mySubEditor != null) mySubEditor.Close();
 //	                                    mySubEditor= ScriptableObject.CreateInstance<iCS_NodeTitlePopup>();

@@ -142,7 +142,7 @@ public partial class iCS_Graphics {
         pickInfo.PickedPoint= pick;
         var port= iStorage.GetPortAt(pick);
         if(port != null) {
-            Debug.Log("Port: "+port.Name+" is being picked");
+//            Debug.Log("Port: "+port.Name+" is being picked");
             pickInfo.PickedObject= port;
             pickInfo.PickedPart= iCS_PickPartEnum.EditorObject;
             pickInfo.PickedPartGraphPosition= iStorage.GetPosition(port);
@@ -152,7 +152,7 @@ public partial class iCS_Graphics {
         var pickedNode= iStorage.GetNodeAt(pick);
         if(pickedNode != null) {
             if(IsFoldIconPicked(pickedNode, pick, iStorage)) {
-                Debug.Log("Fold icon of: "+pickedNode.Name+" is being picked");
+//                Debug.Log("Fold icon of: "+pickedNode.Name+" is being picked");
                 pickInfo.PickedObject= pickedNode;
                 pickInfo.PickedPart= iCS_PickPartEnum.FoldIcon;
                 pickInfo.PickedPartGraphPosition= GetFoldIconPosition(pickedNode, iStorage);
@@ -160,7 +160,7 @@ public partial class iCS_Graphics {
                 return pickInfo;
             }
             if(IsMinimizeIconPicked(pickedNode, pick, iStorage)) {
-                Debug.Log("Minimize icon of: "+pickedNode.Name+" is being picked");
+//                Debug.Log("Minimize icon of: "+pickedNode.Name+" is being picked");
                 pickInfo.PickedObject= pickedNode;
                 pickInfo.PickedPart= iCS_PickPartEnum.MinimizeIcon;
                 pickInfo.PickedPartGraphPosition= GetMinimizeIconPosition(pickedNode, iStorage);
@@ -168,7 +168,7 @@ public partial class iCS_Graphics {
                 return pickInfo;
             }
             if(IsNodeNamePicked(pickedNode, pick, iStorage)) {
-                Debug.Log("Node name: "+pickedNode.Name+" is being picked");
+//                Debug.Log("Node name: "+pickedNode.Name+" is being picked");
                 pickInfo.PickedObject= pickedNode;
                 pickInfo.PickedPart= iCS_PickPartEnum.Name;
                 Rect namePos= GetNodeNamePosition(pickedNode, iStorage);
@@ -182,7 +182,7 @@ public partial class iCS_Graphics {
                 c=> {
                     if(IsMinimized(c, iStorage)) {
                         if(IsNodeNamePicked(c, pick, iStorage)) {
-                            Debug.Log("Node name: "+c.Name+" is being picked");
+//                            Debug.Log("Node name: "+c.Name+" is being picked");
                             pickInfo.PickedObject= c;
                             pickInfo.PickedPart= iCS_PickPartEnum.Name;
                             Rect namePos= GetNodeNamePosition(pickedNode, iStorage);
@@ -201,7 +201,7 @@ public partial class iCS_Graphics {
         var closestPort= iStorage.GetClosestPortAt(pick);
         if(closestPort != null) {
             if(IsPortNamePicked(closestPort, pick, iStorage)) {
-                Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port name: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
+//                Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port name: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 pickInfo.PickedObject= closestPort;
                 pickInfo.PickedPart= iCS_PickPartEnum.Name;
                 Rect namePos= GetPortNamePosition(pickedNode, iStorage);
@@ -212,11 +212,14 @@ public partial class iCS_Graphics {
                 return pickInfo;
             }
             if(IsPortValuePicked(closestPort, pick, iStorage)) {
-                Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port value: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
+//                Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port value: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 pickInfo.PickedObject= closestPort;
                 pickInfo.PickedPart= iCS_PickPartEnum.Value;
                 Rect namePos= GetPortValuePosition(pickedNode, iStorage);
                 float invScale= 1.0f/Scale;
+                /*
+                    FIXME: Value size is always zero.
+                */
                 pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
                 var guiPos= TranslateAndScale(Math3D.ToVector2(namePos));
                 pickInfo.PickedPartGUIPosition= new Rect(guiPos.x, guiPos.y, namePos.width, namePos.height);
@@ -224,8 +227,8 @@ public partial class iCS_Graphics {
             }
         }
         if(pickedNode != null) {
-            Debug.Log("Node: "+pickedNode.Name+" is being picked");
-            pickInfo.PickedObject= port;
+//            Debug.Log("Node: "+pickedNode.Name+" is being picked");
+            pickInfo.PickedObject= pickedNode;
             pickInfo.PickedPart= iCS_PickPartEnum.EditorObject;
             pickInfo.PickedPartGraphPosition= iStorage.GetPosition(pickedNode);
             pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
