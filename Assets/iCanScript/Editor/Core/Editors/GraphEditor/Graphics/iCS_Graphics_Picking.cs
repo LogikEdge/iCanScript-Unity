@@ -137,22 +137,14 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Displays which element is being picked.
     // ----------------------------------------------------------------------
-    public class PickInfo {
-        public enum PickPartEnum { Unknown, EditorObject, Name, Value, FoldIcon, MinimizeIcon };
-        public iCS_EditorObject    PickedObject= null;
-        public PickPartEnum        PickedType= PickPartEnum.Unknown;
-        public Vector2             PickedPoint= Vector2.zero;
-        public Rect                PickedPartGraphPosition= new Rect(0,0,0,0);
-        public Rect                PickedPartGUIPosition= new Rect(0,0,0,0);
-    }
-    public PickInfo DebugGraphElementPicked(Vector2 pick, iCS_IStorage iStorage) {
-        PickInfo pickInfo= new PickInfo();
+    public iCS_PickInfo GetPickInfo(Vector2 pick, iCS_IStorage iStorage) {
+        iCS_PickInfo pickInfo= new iCS_PickInfo();
         pickInfo.PickedPoint= pick;
         var port= iStorage.GetPortAt(pick);
         if(port != null) {
             Debug.Log("Port: "+port.Name+" is being picked");
             pickInfo.PickedObject= port;
-            pickInfo.PickedType= PickInfo.PickPartEnum.EditorObject;
+            pickInfo.PickedPart= iCS_PickPartEnum.EditorObject;
             pickInfo.PickedPartGraphPosition= iStorage.GetPosition(port);
             pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
             return pickInfo;
@@ -162,7 +154,7 @@ public partial class iCS_Graphics {
             if(IsFoldIconPicked(pickedNode, pick, iStorage)) {
                 Debug.Log("Fold icon of: "+pickedNode.Name+" is being picked");
                 pickInfo.PickedObject= pickedNode;
-                pickInfo.PickedType= PickInfo.PickPartEnum.FoldIcon;
+                pickInfo.PickedPart= iCS_PickPartEnum.FoldIcon;
                 pickInfo.PickedPartGraphPosition= GetFoldIconPosition(pickedNode, iStorage);
                 pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
                 return pickInfo;
@@ -170,7 +162,7 @@ public partial class iCS_Graphics {
             if(IsMinimizeIconPicked(pickedNode, pick, iStorage)) {
                 Debug.Log("Minimize icon of: "+pickedNode.Name+" is being picked");
                 pickInfo.PickedObject= pickedNode;
-                pickInfo.PickedType= PickInfo.PickPartEnum.MinimizeIcon;
+                pickInfo.PickedPart= iCS_PickPartEnum.MinimizeIcon;
                 pickInfo.PickedPartGraphPosition= GetMinimizeIconPosition(pickedNode, iStorage);
                 pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
                 return pickInfo;
@@ -178,7 +170,7 @@ public partial class iCS_Graphics {
             if(IsNodeNamePicked(pickedNode, pick, iStorage)) {
                 Debug.Log("Node name: "+pickedNode.Name+" is being picked");
                 pickInfo.PickedObject= pickedNode;
-                pickInfo.PickedType= PickInfo.PickPartEnum.Name;
+                pickInfo.PickedPart= iCS_PickPartEnum.Name;
                 Rect namePos= GetNodeNamePosition(pickedNode, iStorage);
                 float invScale= 1.0f/Scale;
                 pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
@@ -192,7 +184,7 @@ public partial class iCS_Graphics {
                         if(IsNodeNamePicked(c, pick, iStorage)) {
                             Debug.Log("Node name: "+c.Name+" is being picked");
                             pickInfo.PickedObject= c;
-                            pickInfo.PickedType= PickInfo.PickPartEnum.Name;
+                            pickInfo.PickedPart= iCS_PickPartEnum.Name;
                             Rect namePos= GetNodeNamePosition(pickedNode, iStorage);
                             float invScale= 1.0f/Scale;
                             pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
@@ -211,7 +203,7 @@ public partial class iCS_Graphics {
             if(IsPortNamePicked(closestPort, pick, iStorage)) {
                 Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port name: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 pickInfo.PickedObject= closestPort;
-                pickInfo.PickedType= PickInfo.PickPartEnum.Name;
+                pickInfo.PickedPart= iCS_PickPartEnum.Name;
                 Rect namePos= GetPortNamePosition(pickedNode, iStorage);
                 float invScale= 1.0f/Scale;
                 pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
@@ -222,7 +214,7 @@ public partial class iCS_Graphics {
             if(IsPortValuePicked(closestPort, pick, iStorage)) {
                 Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port value: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 pickInfo.PickedObject= closestPort;
-                pickInfo.PickedType= PickInfo.PickPartEnum.Value;
+                pickInfo.PickedPart= iCS_PickPartEnum.Value;
                 Rect namePos= GetPortValuePosition(pickedNode, iStorage);
                 float invScale= 1.0f/Scale;
                 pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
@@ -234,7 +226,7 @@ public partial class iCS_Graphics {
         if(pickedNode != null) {
             Debug.Log("Node: "+pickedNode.Name+" is being picked");
             pickInfo.PickedObject= port;
-            pickInfo.PickedType= PickInfo.PickPartEnum.EditorObject;
+            pickInfo.PickedPart= iCS_PickPartEnum.EditorObject;
             pickInfo.PickedPartGraphPosition= iStorage.GetPosition(pickedNode);
             pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
             return pickInfo;

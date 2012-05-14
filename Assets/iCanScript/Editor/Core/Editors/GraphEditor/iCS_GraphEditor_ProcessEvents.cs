@@ -128,7 +128,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                                 }
                                 else {
                                     Event.current.Use();
-                                    myGraphics.DebugGraphElementPicked(ViewportToGraph(MousePosition), IStorage);
+                                    myGraphics.GetPickInfo(ViewportToGraph(MousePosition), IStorage);
 //									if(SelectedObject.IsNode) {
 //										if(mySubEditor != null) mySubEditor.Close();
 //	                                    mySubEditor= ScriptableObject.CreateInstance<iCS_NodeTitlePopup>();
