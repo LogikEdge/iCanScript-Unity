@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_NodeTitlePopup : iCS_SubEditor {
+public class iCS_NodeTooltipEditor : iCS_SubEditor {
     // ======================================================================
     // Constants.
 	// ----------------------------------------------------------------------

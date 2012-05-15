@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_PortEditor : iCS_SubEditor {
+public class iCS_PortNameEditor : iCS_SubEditor {
     // ======================================================================
     // Constants.
 	// ----------------------------------------------------------------------
