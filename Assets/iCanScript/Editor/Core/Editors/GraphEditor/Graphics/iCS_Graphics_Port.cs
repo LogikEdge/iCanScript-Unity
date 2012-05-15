@@ -107,7 +107,7 @@ public partial class iCS_Graphics {
     // Returns the port value display size in GUI scale.
     Vector2 GetPortValueSize(iCS_EditorObject port, iCS_IStorage iStorage) {
 		string valueAsStr= GetPortValueAsString(port, iStorage);
-		return (valueAsStr != null && valueAsStr != "") ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
+		return iCS_Strings.IsNotEmpty(valueAsStr) ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
     }
     // ----------------------------------------------------------------------
     // Returns the port value position in graph coordinate and GUI scale size.

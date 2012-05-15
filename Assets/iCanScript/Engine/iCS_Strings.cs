@@ -29,4 +29,7 @@ public class iCS_Strings {
     public const string AddChildMethod   = "AddChild";
     public const string RemoveChildMethod= "RemoveChild";
 
+    // -----------------------------------------------------------------------
+    public static bool IsEmpty(string s)       { return s == null || s ==""; }
+    public static bool IsNotEmpty(string s)    { return !IsEmpty(s); }
 }
