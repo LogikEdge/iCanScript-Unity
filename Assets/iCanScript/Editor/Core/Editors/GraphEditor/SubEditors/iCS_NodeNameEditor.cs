@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_NodeNameEditor : iCS_SubEditor {
+public class iCS_NodeNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Constants.
 	// ----------------------------------------------------------------------
@@ -11,54 +11,58 @@ public class iCS_NodeNameEditor : iCS_SubEditor {
     // ======================================================================
     // Field.
 	// ----------------------------------------------------------------------
-    string	myOriginalName   = null;
-    string  myOriginalTooltip= null;
+    iCS_IStorage        myIStorage       = null;
+    iCS_EditorObject    myTarget         = null;
+    string	            myOriginalName   = null;
+    string              myOriginalTooltip= null;
     
-    public override void Init(iCS_EditorObject target, iCS_IStorage storage) {
-		base.Init(target, storage);
+    public iCS_NodeNameEditor(iCS_EditorObject target, iCS_IStorage iStorage) {
+        myTarget= target;
+        myIStorage= iStorage;
         myOriginalName= myTarget.RawName;
         myOriginalTooltip= myTarget.RawToolTip;
     }
     
-    void OnEnable() {
-        position= new Rect(Screen.width/2, Screen.height/2, 250, 75);
-    }
+//    void OnEnable() {
+//        position= new Rect(Screen.width/2, Screen.height/2, 250, 75);
+//    }
     
-    void OnGUI() {
-        if(myTarget == null || myStorage == null) {
+    public bool Update() {
+        if(myTarget == null || myIStorage == null) {
             Debug.LogWarning("iCanScript: NodeTitlePopup invoked before it is initialized.");
-			Close();
-            return;
+//			Close();
+            return false;
         }
-//        string name= myTarget.RawName;
-//        if(name == null || name == "") name= EmptyStr;
-//        if(myTarget.IsNameEditable) {
-//            name= EditorGUILayout.TextField("Name", name);
-//            if(name != EmptyStr && name != myTarget.RawName) {
-//                myTarget.Name= name;
-//                myStorage.SetDirty(myTarget);
-//            }                    
-//        } else {
-//            EditorGUILayout.LabelField("Name", name);                    
-//        }
-//        // Show object tooltip.
-//        string toolTip= myTarget.RawToolTip;
-//        if(toolTip == null || toolTip == "") toolTip= EmptyStr;
-//        toolTip= EditorGUILayout.TextField("Tooltip", toolTip);
-//        if(toolTip != EmptyStr && toolTip != myTarget.RawToolTip) {
-//            myTarget.ToolTip= toolTip;
-//        }
-//
-//        GUILayout.BeginHorizontal(); {
-//            if(GUILayout.Button("Cancel")) {
-//                myTarget.RawName= myOriginalName;
-//                myTarget.RawToolTip= myOriginalTooltip;
+        string name= myTarget.RawName;
+        if(name == null || name == "") name= EmptyStr;
+        if(myTarget.IsNameEditable) {
+            name= EditorGUILayout.TextField("Name", name);
+            if(name != EmptyStr && name != myTarget.RawName) {
+                myTarget.Name= name;
+                myIStorage.SetDirty(myTarget);
+            }                    
+        } else {
+            EditorGUILayout.LabelField("Name", name);                    
+        }
+        // Show object tooltip.
+        string toolTip= myTarget.RawToolTip;
+        if(toolTip == null || toolTip == "") toolTip= EmptyStr;
+        toolTip= EditorGUILayout.TextField("Tooltip", toolTip);
+        if(toolTip != EmptyStr && toolTip != myTarget.RawToolTip) {
+            myTarget.ToolTip= toolTip;
+        }
+
+        GUILayout.BeginHorizontal(); {
+            if(GUILayout.Button("Cancel")) {
+                myTarget.RawName= myOriginalName;
+                myTarget.RawToolTip= myOriginalTooltip;
 //                Close();
-//            }
-//            if(GUILayout.Button("Save")) {
+            }
+            if(GUILayout.Button("Save")) {
 //                Close();
-//            }
-//        }
-//        GUILayout.EndHorizontal();
+            }
+        }
+        GUILayout.EndHorizontal();
+        return true;
     }
 }

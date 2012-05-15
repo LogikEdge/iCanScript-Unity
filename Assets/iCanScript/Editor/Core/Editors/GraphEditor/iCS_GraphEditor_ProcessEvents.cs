@@ -10,7 +10,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-	iCS_SubEditor		mySubEditor       = null;
+	iCS_ISubEditor		mySubEditor       = null;
 	iCS_EditorObject	myObjectUnderMouse= null;
     
     // ======================================================================

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_PortNameEditor : iCS_SubEditor {
+public class iCS_PortNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Constants.
 	// ----------------------------------------------------------------------
@@ -11,24 +11,27 @@ public class iCS_PortNameEditor : iCS_SubEditor {
     // ======================================================================
     // Field.
 	// ----------------------------------------------------------------------
-    string	myOriginalName   = null;
-    string	myOriginalTooltip= null;
+    iCS_IStorage        myIStorage       = null;
+    iCS_EditorObject    myTarget         = null;
+    string	            myOriginalName   = null;
+    string	            myOriginalTooltip= null;
     
-    public override void Init(iCS_EditorObject target, iCS_IStorage storage) {
-		base.Init(target, storage);
+    public iCS_PortNameEditor(iCS_EditorObject target, iCS_IStorage iStorage) {
+        myIStorage= iStorage;
+        myTarget= target;
         myOriginalName= myTarget.RawName;
         myOriginalTooltip= myTarget.RawToolTip;
     }
     
-    void OnEnable() {
-        position= new Rect(Screen.width/2, Screen.height/2, 250, 75);
-    }
+//    void OnEnable() {
+//        position= new Rect(Screen.width/2, Screen.height/2, 250, 75);
+//    }
     
-    void OnGUI() {
-        if(myTarget == null || myStorage == null) {
+    public bool Update() {
+        if(myTarget == null || myIStorage == null) {
             Debug.LogWarning("iCanScript: Port Editor invoked before it is initialized.");
-			Close();
-            return;
+//			Close();
+            return false;
         }
         string name= myTarget.RawName;
         if(name == null || name == "") name= EmptyStr;
@@ -36,7 +39,7 @@ public class iCS_PortNameEditor : iCS_SubEditor {
             name= EditorGUILayout.TextField("Name", name);
             if(name != EmptyStr && name != myTarget.RawName) {
                 myTarget.Name= name;
-                myStorage.SetDirty(myTarget);
+                myIStorage.SetDirty(myTarget);
             }                    
         } else {
             EditorGUILayout.LabelField("Name", name);                    
@@ -53,12 +56,13 @@ public class iCS_PortNameEditor : iCS_SubEditor {
             if(GUILayout.Button("Cancel")) {
                 myTarget.RawName= myOriginalName;
                 myTarget.RawToolTip= myOriginalTooltip;
-                Close();
+//                Close();
             }
             if(GUILayout.Button("Save")) {
-                Close();
+//                Close();
             }
         }
         GUILayout.EndHorizontal();
+        return true;
     }
 }
