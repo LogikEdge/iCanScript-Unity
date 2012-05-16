@@ -17,6 +17,10 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     // USER INTERACTIONS
 	// ----------------------------------------------------------------------
     void ProcessEvents() {
+		// Update sub editor if active.
+		if(mySubEditor != null) {
+			mySubEditor.Update();
+		}
         // Process window events.
         switch(Event.current.type) {
             case EventType.MouseMove: {
@@ -129,24 +133,15 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                                 else {
                                     Event.current.Use();
                                     iCS_PickInfo pickInfo= myGraphics.GetPickInfo(ViewportToGraph(MousePosition), IStorage);
-                                    if(pickInfo != null) {
-                                        Debug.Log("Picking object: "+pickInfo.PickedObject.Name+" part: "+pickInfo.PickedPart+" Graph: "+pickInfo.PickedPartGraphPosition+" GUI: "+pickInfo.PickedPartGUIPosition);
-                                    }
-//									if(SelectedObject.IsNode) {
-//										if(mySubEditor != null) mySubEditor.Close();
-//	                                    mySubEditor= ScriptableObject.CreateInstance<iCS_NodeTitlePopup>();
-//	                                    var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
-//	                                    mySubEditor.position= new Rect(screenPoint.x, screenPoint.y, mySubEditor.position.width, mySubEditor.position.height);
-//	                                    mySubEditor.Init(SelectedObject, IStorage);
-//	                                    mySubEditor.ShowPopup();										
-//									} else {
-//										if(mySubEditor != null) mySubEditor.Close();
-//										mySubEditor= ScriptableObject.CreateInstance<iCS_PortEditor>();
-//	                                    var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
-//	                                    mySubEditor.position= new Rect(screenPoint.x, screenPoint.y, mySubEditor.position.width, mySubEditor.position.height);
-//	                                    mySubEditor.Init(SelectedObject, IStorage);
-//	                                    mySubEditor.ShowPopup();																				
-//									}
+									if(pickInfo == null) break;
+									if(pickInfo.PickedPart == iCS_PickPartEnum.Name) {
+										if(pickInfo.PickedObject.IsPort) {
+											mySubEditor= new iCS_PortNameEditor(pickInfo.PickedObject, pickInfo.IStorage, myGraphics);											
+										}
+										if(pickInfo.PickedObject.IsNode) {
+											mySubEditor= new iCS_NodeNameEditor(pickInfo.PickedObject, pickInfo.IStorage, myGraphics);
+										}
+									}
                                     break;
                                 }
                             }

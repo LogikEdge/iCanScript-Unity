@@ -74,7 +74,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     float       Scale {
         get { return IStorage.GuiScale; }
         set {
-            if(value > 1f) value= 1f;
+            if(value > 2f) value= 2f;
             if(value < 0.15f) value= 0.15f;
             IStorage.GuiScale= value;
         }
@@ -1158,7 +1158,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         iCS_ToolbarUtility.Label(ref r, new GUIContent(mouseValue), 0, 0, true);
         
 		// Show zoom control at the end of the toolbar.
-        Scale= iCS_ToolbarUtility.Slider(ref r, 120f, Scale, 1f, 0.15f, spacer, spacer, true);
+        Scale= iCS_ToolbarUtility.Slider(ref r, 120f, Scale, 2f, 0.15f, spacer, spacer, true);
         iCS_ToolbarUtility.Label(ref r, new GUIContent("Zoom"), 0, 0, true);
 		
 		// Show current bookmark.

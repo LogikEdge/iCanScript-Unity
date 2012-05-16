@@ -30,6 +30,7 @@ public class iCS_StringEditor : iCS_ISubEditor {
     // Initialization
     // ---------------------------------------------------------------------------------
     public bool Update() {
+		EditorGUIUtility.LookLikeControls();
         GUI.changed= false;
         string newValue= GUI.TextField(myGuiPosition, myValue, myStyle);
         if(GUI.changed) {

@@ -29,15 +29,15 @@ public partial class iCS_Graphics {
     static Texture2D    rightArrowHeadIcon= null;
 	
     // ----------------------------------------------------------------------
-    GUIStyle    LabelStyle              = null;
-    GUIStyle    TitleStyle              = null;
-    GUIStyle    ValueStyle              = null;
-    Texture2D   StateMaximizeIcon       = null;
-    Texture2D   ModuleMaximizeIcon      = null;
-    Texture2D   EntryStateMaximizeIcon  = null;
-    Texture2D   ConstructionMaximizeIcon= null;
-    Texture2D   FunctionMaximizeIcon    = null;
-    Texture2D   DefaultMaximizeIcon     = null;
+    public GUIStyle    LabelStyle              = null;
+    public GUIStyle    TitleStyle              = null;
+    public GUIStyle    ValueStyle              = null;
+    public Texture2D   StateMaximizeIcon       = null;
+    public Texture2D   ModuleMaximizeIcon      = null;
+    public Texture2D   EntryStateMaximizeIcon  = null;
+    public Texture2D   ConstructionMaximizeIcon= null;
+    public Texture2D   FunctionMaximizeIcon    = null;
+    public Texture2D   DefaultMaximizeIcon     = null;
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;

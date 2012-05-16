@@ -4,65 +4,35 @@ using System.Collections;
 
 public class iCS_PortNameEditor : iCS_ISubEditor {
     // ======================================================================
-    // Constants.
-	// ----------------------------------------------------------------------
-    const string EmptyStr= "(empty)";
-    
-    // ======================================================================
     // Field.
 	// ----------------------------------------------------------------------
-    iCS_IStorage        myIStorage       = null;
-    iCS_EditorObject    myTarget         = null;
-    string	            myOriginalName   = null;
-    string	            myOriginalTooltip= null;
-    
-    public iCS_PortNameEditor(iCS_EditorObject target, iCS_IStorage iStorage) {
+    iCS_IStorage        myIStorage= null;
+    iCS_EditorObject    myTarget  = null;
+	iCS_StringEditor	myEditor  = null;
+	iCS_Graphics		myGraphics= null;
+	
+    // ======================================================================
+    // Property.
+	// ----------------------------------------------------------------------
+	Rect 	 Position { get { return myGraphics.GetPortNameGUIPosition(myTarget, myIStorage); }}
+	GUIStyle GuiStyle { get { return myGraphics.LabelStyle; }}
+
+    // ======================================================================
+    // Initialization.
+	// ----------------------------------------------------------------------
+    public iCS_PortNameEditor(iCS_EditorObject target, iCS_IStorage iStorage, iCS_Graphics graphics) {
         myIStorage= iStorage;
         myTarget= target;
-        myOriginalName= myTarget.RawName;
-        myOriginalTooltip= myTarget.RawToolTip;
+		myGraphics= graphics;
+		myEditor= new iCS_StringEditor(Position, myTarget.RawName, GuiStyle);
     }
     
-//    void OnEnable() {
-//        position= new Rect(Screen.width/2, Screen.height/2, 250, 75);
-//    }
-    
     public bool Update() {
-        if(myTarget == null || myIStorage == null) {
-            Debug.LogWarning("iCanScript: Port Editor invoked before it is initialized.");
-//			Close();
-            return false;
-        }
-        string name= myTarget.RawName;
-        if(name == null || name == "") name= EmptyStr;
-        if(myTarget.IsNameEditable) {
-            name= EditorGUILayout.TextField("Name", name);
-            if(name != EmptyStr && name != myTarget.RawName) {
-                myTarget.Name= name;
-                myIStorage.SetDirty(myTarget);
-            }                    
-        } else {
-            EditorGUILayout.LabelField("Name", name);                    
-        }
-        // Show object tooltip.
-        string toolTip= myTarget.RawToolTip;
-        if(toolTip == null || toolTip == "") toolTip= EmptyStr;
-        toolTip= EditorGUILayout.TextField("Tooltip", toolTip);
-        if(toolTip != EmptyStr && toolTip != myTarget.RawToolTip) {
-            myTarget.ToolTip= toolTip;
-        }
-
-        GUILayout.BeginHorizontal(); {
-            if(GUILayout.Button("Cancel")) {
-                myTarget.RawName= myOriginalName;
-                myTarget.RawToolTip= myOriginalTooltip;
-//                Close();
-            }
-            if(GUILayout.Button("Save")) {
-//                Close();
-            }
-        }
-        GUILayout.EndHorizontal();
-        return true;
+		myEditor.GuiPosition= Position;
+		if(myEditor.Update()) {
+			myTarget.Name= myEditor.Value;
+			return true;
+		}
+		return false;
     }
 }

@@ -40,7 +40,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     // Returns the scaled x,y,size.
-    Rect GetNodeNameGUIPosition(iCS_EditorObject port, iCS_IStorage iStorage) {
+    public Rect GetNodeNameGUIPosition(iCS_EditorObject port, iCS_IStorage iStorage) {
         Rect graphRect= GetNodeNamePosition(port, iStorage);
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
