@@ -114,13 +114,18 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                                     Event.current.Use();
                                     iCS_PickInfo pickInfo= myGraphics.GetPickInfo(ViewportToGraph(MousePosition), IStorage);
 									if(pickInfo == null) break;
+									iCS_EditorObject pickedObject= pickInfo.PickedObject;
 									if(pickInfo.PickedPart == iCS_PickPartEnum.Name) {
-										if(pickInfo.PickedObject.IsPort) {
-											mySubEditor= new iCS_PortNameEditor(pickInfo.PickedObject, pickInfo.IStorage, myGraphics);											
-										}
-										if(pickInfo.PickedObject.IsNode) {
-											mySubEditor= new iCS_NodeNameEditor(pickInfo.PickedObject, pickInfo.IStorage, myGraphics);
-										}
+                                        if(pickedObject.IsNameEditable) {
+    										if(pickedObject.IsPort) {
+    											mySubEditor= new iCS_PortNameEditor(pickedObject, pickInfo.IStorage, myGraphics);											
+    										}
+    										if(pickedObject.IsNode) {
+    											mySubEditor= new iCS_NodeNameEditor(pickedObject, pickInfo.IStorage, myGraphics);
+    										}                                            
+                                        } else {
+                                            ShowNotification(new GUIContent("The selected name cannot be changed !!!"));
+                                        }
 									}
                                     break;
                                 }
