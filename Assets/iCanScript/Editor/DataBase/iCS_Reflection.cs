@@ -86,9 +86,9 @@ public class iCS_Reflection {
                         iCS_ClassAttribute classAttribute= classCustomAttribute as iCS_ClassAttribute;
                         string classCompany= classAttribute.Company;
                         string classPackage= classAttribute.Package;
-                        string classToolTip= classAttribute.ToolTip;
+                        string classTooltip= classAttribute.Tooltip;
                         string classIcon   = classAttribute.Icon;
-                        DecodeClassInfo(classType, classCompany, classPackage, classToolTip, classIcon);
+                        DecodeClassInfo(classType, classCompany, classPackage, classTooltip, classIcon);
                     }
                 }
             }
@@ -99,17 +99,17 @@ public class iCS_Reflection {
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------
-    public static void DecodeClassInfo(Type classType, string company, string package, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+    public static void DecodeClassInfo(Type classType, string company, string package, string classTooltip, string classIconPath, bool acceptAllPublic= false) {
         if(classType.IsGenericType) {
             Debug.LogWarning("iCanScript: Generic class not supported yet.  Skiping: "+classType.Name);
             return;
         }
-        DecodeConstructors(classType, company, package, classToolTip, classIconPath, acceptAllPublic);
-        DecodeClassFields(classType, company, package, classToolTip, classIconPath, acceptAllPublic);
-        DecodeFunctionsAndMethods(classType, company, package, classToolTip, classIconPath, acceptAllPublic);
+        DecodeConstructors(classType, company, package, classTooltip, classIconPath, acceptAllPublic);
+        DecodeClassFields(classType, company, package, classTooltip, classIconPath, acceptAllPublic);
+        DecodeFunctionsAndMethods(classType, company, package, classTooltip, classIconPath, acceptAllPublic);
     }
     // ----------------------------------------------------------------------
-    static void DecodeClassFields(Type classType, string company, string package, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+    static void DecodeClassFields(Type classType, string company, string package, string classTooltip, string classIconPath, bool acceptAllPublic= false) {
         // Gather field information.
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerField= false;
@@ -138,9 +138,9 @@ public class iCS_Reflection {
             }
             if(registerField) {
                 if(field.IsStatic) {
-                    DecodeStaticField(company, package, classToolTip, classIconPath, classType, field, direction);
+                    DecodeStaticField(company, package, classTooltip, classIconPath, classType, field, direction);
                 } else {
-                    DecodeInstanceField(company, package, classToolTip, classIconPath, classType, field, direction);
+                    DecodeInstanceField(company, package, classTooltip, classIconPath, classType, field, direction);
                 }                
             }
         }        
@@ -178,12 +178,12 @@ public class iCS_Reflection {
         }
     }
     // ----------------------------------------------------------------------
-    static void DecodeConstructors(Type classType, string company, string package, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+    static void DecodeConstructors(Type classType, string company, string package, string classTooltip, string classIconPath, bool acceptAllPublic= false) {
         foreach(var constructor in classType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
             bool registerMethod= false;
             string displayName= classType.Name;
             string returnName= "";
-            string toolTip= classToolTip;
+            string toolTip= classTooltip;
             string iconPath= classIconPath;
             foreach(var constructorAttribute in constructor.GetCustomAttributes(true)) {
                 if(constructorAttribute is iCS_FunctionAttribute) {                                    
@@ -193,7 +193,7 @@ public class iCS_Reflection {
                         iCS_FunctionAttribute funcAttr= constructorAttribute as iCS_FunctionAttribute;
                         if(funcAttr.Name    != null) displayName= funcAttr.Name; 
                         if(funcAttr.Return  != null) returnName = funcAttr.Return;
-                        if(funcAttr.ToolTip != null) toolTip    = funcAttr.ToolTip;
+                        if(funcAttr.Tooltip != null) toolTip    = funcAttr.Tooltip;
                         if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
                         Debug.LogWarning("iCanScript: Constrcutor of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");                        
@@ -227,12 +227,12 @@ public class iCS_Reflection {
                                     paramIsOut, paramNames, paramTypes, paramDefaults);
     }
     // ----------------------------------------------------------------------
-    static void DecodeFunctionsAndMethods(Type classType, string company, string package, string classToolTip, string classIconPath, bool acceptAllPublic= false) {
+    static void DecodeFunctionsAndMethods(Type classType, string company, string package, string classTooltip, string classIconPath, bool acceptAllPublic= false) {
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerMethod= false;
             string displayName= method.Name;
             string returnName= null;
-            string toolTip= classToolTip;
+            string toolTip= classTooltip;
             string iconPath= classIconPath;
             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
                 if(methodAttribute is iCS_TypeCastAttribute) {
@@ -252,7 +252,7 @@ public class iCS_Reflection {
                         iCS_FunctionAttribute funcAttr= methodAttribute as iCS_FunctionAttribute;
                         if(funcAttr.Name    != null) displayName= funcAttr.Name; 
                         if(funcAttr.Return  != null) returnName = funcAttr.Return;
-                        if(funcAttr.ToolTip != null) toolTip    = funcAttr.ToolTip;
+                        if(funcAttr.Tooltip != null) toolTip    = funcAttr.Tooltip;
                         if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
                         Debug.LogWarning("iCanScript: Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");                        

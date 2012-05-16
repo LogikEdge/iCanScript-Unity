@@ -40,9 +40,14 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     // Returns the scaled x,y,size.
-    public Rect GetNodeNameGUIPosition(iCS_EditorObject port, iCS_IStorage iStorage) {
-        Rect graphRect= GetNodeNamePosition(port, iStorage);
+    public Rect GetNodeNameGUIPosition(iCS_EditorObject node, iCS_IStorage iStorage) {
+        Rect graphRect= GetNodeNamePosition(node, iStorage);
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
     }
+    // ----------------------------------------------------------------------
+    // Returns the scaled x,y,size.
+	string GetNodeTooltip(iCS_EditorObject node) {
+		return node.Tooltip;
+	}
 }

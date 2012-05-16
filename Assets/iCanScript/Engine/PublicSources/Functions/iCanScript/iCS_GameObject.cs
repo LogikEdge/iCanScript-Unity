@@ -4,29 +4,29 @@ using System.Collections;
 [iCS_Class(Company="iCanScript")]
 public static class iCS_GameObject {
     // Global transform attributes
-    [iCS_Function(ToolTip="Returns the global position of the given game object.")]
+    [iCS_Function(Tooltip="Returns the global position of the given game object.")]
     public static Vector3 GetPosition(GameObject gameObject) {
         return gameObject.transform.position;
     }
-    [iCS_Function(ToolTip="Returns the global rotation of the given game object.")]
+    [iCS_Function(Tooltip="Returns the global rotation of the given game object.")]
     public static Quaternion GetRotation(GameObject gameObject) {
         return gameObject.transform.rotation;
     }
-    [iCS_Function(ToolTip="Returns the global scale of the given game object.")]
+    [iCS_Function(Tooltip="Returns the global scale of the given game object.")]
     public static Vector3 GetScale(GameObject gameObject) {
         return gameObject.transform.lossyScale;
     }
 
     // Local transform attributes
-    [iCS_Function(ToolTip="Returns the local position of the given game object.")]
+    [iCS_Function(Tooltip="Returns the local position of the given game object.")]
     public static Vector3 GetLocalPosition(GameObject gameObject) {
         return gameObject.transform.localPosition;
     }
-    [iCS_Function(ToolTip="Returns the local rotation of the given game object.")]
+    [iCS_Function(Tooltip="Returns the local rotation of the given game object.")]
     public static Quaternion GetLocalRotation(GameObject gameObject) {
         return gameObject.transform.localRotation;
     }
-    [iCS_Function(ToolTip="Returns the local scale of the given game object.")]
+    [iCS_Function(Tooltip="Returns the local scale of the given game object.")]
     public static Vector3 GetLocalScale(GameObject gameObject) {
         return gameObject.transform.localScale;
     }

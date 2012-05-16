@@ -22,7 +22,7 @@ public class iCS_EditorObject {
 	public string				 MethodName= null;
 	public int					 NbOfParams= 0;     // Also used for port group
     public string                IconGUID  = null;
-    public string                RawToolTip= null;
+    public string                RawTooltip= null;
 
     // Port specific attributes ---------------------------------------------
     public enum EdgeEnum { None, Top, Bottom, Right, Left };
@@ -65,7 +65,7 @@ public class iCS_EditorObject {
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;
         instance.IconGUID= toClone.IconGUID;
-        instance.RawToolTip= toClone.RawToolTip;
+        instance.RawTooltip= toClone.RawTooltip;
 		// Port
         instance.Edge= toClone.Edge;
         instance.PortIndex= toClone.PortIndex;
@@ -89,7 +89,7 @@ public class iCS_EditorObject {
 		MethodName= null;
 		NbOfParams= 0;
         IconGUID= null;
-        RawToolTip = null;
+        RawTooltip = null;
 		// Port
         Edge= EdgeEnum.None;
         Source= -1;
@@ -173,8 +173,8 @@ public class iCS_EditorObject {
     public bool IsValid         { get { return InstanceId != -1; }}
     public bool IsParentValid   { get { return ParentId != -1; }}
     public bool IsSourceValid   { get { return Source != -1; }}
-    public bool NameEmpty       { get { return RawName == null || RawName == ""; }}
-    public bool ToolTipEmpty    { get { return RawToolTip == null || RawToolTip == ""; }}
+    public bool IsNameEmpty     { get { return RawName == null || RawName == ""; }}
+    public bool IsTooltipEmpty  { get { return RawTooltip == null || RawTooltip == ""; }}
     public Type RuntimeType     { get { return Type.GetType(QualifiedType); }}
     public string TypeName {
         get {
@@ -183,13 +183,13 @@ public class iCS_EditorObject {
     }
     public string Name {
         get {
-            return NameEmpty ? ":"+TypeName : (IsClassModule ? RawName+":"+TypeName : RawName);
+            return IsNameEmpty ? ":"+TypeName : (IsClassModule ? RawName+":"+TypeName : RawName);
         }
         set { RawName= value; }
     }
-    public string ToolTip {
-        get { return ToolTipEmpty ? (NameEmpty ? TypeName : Name+":"+TypeName) : RawToolTip; }
-        set { RawToolTip= value; }
+    public string Tooltip {
+        get { return IsTooltipEmpty ? (IsNameEmpty ? TypeName : Name+":"+TypeName) : RawTooltip; }
+        set { RawTooltip= value; }
     }
     public bool IsOnTopEdge         { get { return Edge == EdgeEnum.Top; }}
     public bool IsOnBottomEdge      { get { return Edge == EdgeEnum.Bottom; }}

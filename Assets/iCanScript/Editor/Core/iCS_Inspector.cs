@@ -129,16 +129,16 @@ public class iCS_Inspector : Editor {
                     EditorGUILayout.LabelField("Name", name);                    
                 }
                 // Show object tooltip.
-                string toolTip= SelectedObject.RawToolTip;
-                if(mySelectedObject.IsOutStatePort) toolTip= myStorage.FindAConnectedPort(SelectedObject).RawToolTip;
+                string toolTip= SelectedObject.RawTooltip;
+                if(mySelectedObject.IsOutStatePort) toolTip= myStorage.FindAConnectedPort(SelectedObject).RawTooltip;
                 if(toolTip == null || toolTip == "") toolTip= EmptyStr;
 				GUI.SetNextControlName("tooltip");
                 toolTip= EditorGUILayout.TextField("Tool Tip", toolTip);
-                if(toolTip != EmptyStr && toolTip != mySelectedObject.RawToolTip) {
-                    SelectedObject.ToolTip= toolTip;
+                if(toolTip != EmptyStr && toolTip != mySelectedObject.RawTooltip) {
+                    SelectedObject.Tooltip= toolTip;
                     if(SelectedObject.IsStatePort) {
-                        if(SelectedObject.IsOutStatePort) myStorage.FindAConnectedPort(SelectedObject).ToolTip= toolTip;
-                        else myStorage.GetSource(SelectedObject).ToolTip= toolTip;
+                        if(SelectedObject.IsOutStatePort) myStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
+                        else myStorage.GetSource(SelectedObject).Tooltip= toolTip;
                     }
                 }
                 // Show inspector specific for each type of component.

@@ -16,7 +16,7 @@ public class iCS_ReflectionDesc {
     public MethodBase           Method = null;
     public FieldInfo            Field= null;
     public bool                 IsGetFieldFlag= true;
-    public string               ToolTip= null;
+    public string               Tooltip= null;
     public string               IconPath= null;
 	public string[]				ParamNames= null;
 	public Type[]				ParamTypes= null;
@@ -42,7 +42,7 @@ public class iCS_ReflectionDesc {
 		Method            = methodBase;
 		Field             = fieldInfo;
 		IsGetFieldFlag    = fieldInfo != null ? (paramTypes.Length == 0) : true;
-        ToolTip           = toolTip;
+        Tooltip           = toolTip;
         IconPath          = iconPath;
 		ParamNames        = paramNames;
 		ParamTypes        = paramTypes;

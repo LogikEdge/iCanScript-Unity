@@ -20,7 +20,7 @@ public class iCS_NodeTooltipEditor : iCS_ISubEditor {
 		myIStorage= iStorage;
 		myTarget= target;
         myOriginalName= myTarget.RawName;
-        myOriginalTooltip= myTarget.RawToolTip;
+        myOriginalTooltip= myTarget.RawTooltip;
     }
     
 //    void OnEnable() {
@@ -45,17 +45,17 @@ public class iCS_NodeTooltipEditor : iCS_ISubEditor {
             EditorGUILayout.LabelField("Name", name);                    
         }
         // Show object tooltip.
-        string toolTip= myTarget.RawToolTip;
-        if(toolTip == null || toolTip == "") toolTip= EmptyStr;
-        toolTip= EditorGUILayout.TextField("Tooltip", toolTip);
-        if(toolTip != EmptyStr && toolTip != myTarget.RawToolTip) {
-            myTarget.ToolTip= toolTip;
+        string tooltip= myTarget.RawTooltip;
+        if(tooltip == null || tooltip == "") tooltip= EmptyStr;
+        tooltip= EditorGUILayout.TextField("Tooltip", tooltip);
+        if(tooltip != EmptyStr && tooltip != myTarget.RawTooltip) {
+            myTarget.Tooltip= tooltip;
         }
 
         GUILayout.BeginHorizontal(); {
             if(GUILayout.Button("Cancel")) {
                 myTarget.RawName= myOriginalName;
-                myTarget.RawToolTip= myOriginalTooltip;
+                myTarget.RawTooltip= myOriginalTooltip;
 //                Close();
             }
             if(GUILayout.Button("Save")) {
