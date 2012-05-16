@@ -29,12 +29,12 @@ public partial class iCS_Graphics {
     Rect GetNodeNamePosition(iCS_EditorObject node, iCS_IStorage iStorage) {
         Vector2 size= GetNodeNameSize(node, iStorage);
         Rect pos= iStorage.GetPosition(node);
-        float x= 0.5f*(pos.x+pos.xMax-size.x);
+        float x= 0.5f*(pos.x+pos.xMax-size.x/Scale);
         float y= pos.y;
         if(IsMinimized(node, iStorage)) {
-            y-= 5f+size.y;
+            y-= 5f+size.y/Scale;
         } else {
-            y+= 0.5f*(kNodeCornerRadius-size.y/Scale);
+			y+= 0.8f*kNodeCornerRadius-0.5f*size.y/Scale;
         }
         return new Rect(x, y, size.x, size.y);
     }
@@ -45,5 +45,4 @@ public partial class iCS_Graphics {
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
     }
-
 }

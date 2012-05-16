@@ -637,7 +637,7 @@ public partial class iCS_Graphics {
     					}
     				} else if(portValueType == typeof(float)) {
     					GUI.changed= false;
-    					float newValue= GUI.HorizontalSlider(new Rect(portNamePos.xMax, portNamePos.y-2, 40*Scale, 16), (float)portValue, 0, 1f);
+    					float newValue= GUI.HorizontalSlider(new Rect(portNamePos.xMax, portNamePos.y-2/Scale, 40*Scale, 16), (float)portValue, 0, 1f);
     					if(GUI.changed) {
     						iStorage.UpdatePortInitialValue(port, newValue);
     					}
