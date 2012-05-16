@@ -35,6 +35,20 @@ public partial class iCS_Graphics {
         return portValueType.IsArray ? "["+port.Name+"]" : port.Name;
     }
     // ----------------------------------------------------------------------
+	string GetPortPath(iCS_EditorObject port, iCS_IStorage iStorage) {
+		iCS_EditorObject parent= iStorage.GetParent(port);
+		string path= parent.Name;
+		for(parent= iStorage.GetParent(parent); parent != null && parent != iStorage[0]; parent= iStorage.GetParent(parent)) {
+			path+= "."+parent.Name;			
+		}
+		return path;
+	}
+    // ----------------------------------------------------------------------
+	// Returns the full path name of the port.
+	string GetPortFullPathName(iCS_EditorObject port, iCS_IStorage iStorage) {
+		return GetPortName(port)+"."+GetPortPath(port,iStorage);
+	}
+    // ----------------------------------------------------------------------
     bool ShouldDisplayPortName(iCS_EditorObject port, iCS_IStorage iStorage) {
         if(!ShouldShowLabel()) return false;
         if(!IsVisible(port, iStorage)) return false;
@@ -136,6 +150,24 @@ public partial class iCS_Graphics {
         Rect graphRect= GetPortValuePosition(port, iStorage);
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
+	}
+	// ----------------------------------------------------------------------
+    // Returns the tooltip for the given port.
+	string GetPortTooltip(iCS_EditorObject port, iCS_IStorage iStorage) {
+		string tooltip= "Name: "+(port.RawName ?? "")+"\n";
+		// Type information
+		Type runtimeType= port.RuntimeType;
+		if(runtimeType != null) tooltip+= "Type: "+iCS_Types.TypeName(runtimeType)+"\n";
+		// Source information.
+		if(port.IsDataPort) {
+			iCS_EditorObject sourcePort= iStorage.GetDataConnectionSource(port);
+			if(sourcePort != null && sourcePort != port) {
+				tooltip+= "Source: "+GetPortFullPathName(sourcePort, iStorage)+"\n";
+			}
+		}
+		// User defined tooltip
+		if(iCS_Strings.IsNotEmpty(port.Tooltip)) tooltip+= port.Tooltip;
+		return tooltip;
 	}
 	
 }

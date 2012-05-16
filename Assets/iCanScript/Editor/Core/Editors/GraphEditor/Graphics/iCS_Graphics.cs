@@ -414,7 +414,7 @@ public partial class iCS_Graphics {
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node, iStorage);
         bool isMouseOver= position.Contains(MousePosition);
-        GUI_Box(position, new GUIContent(title,node.Tooltip), GetNodeColor(node, iStorage), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
+        GUI_Box(position, new GUIContent(title,GetNodeTooltip(node,iStorage)), GetNodeColor(node, iStorage), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
         EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, iStorage)) {
@@ -453,7 +453,7 @@ public partial class iCS_Graphics {
             GUI_DrawTexture(texturePos, icon);                                       
         }
         EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
-        GUI_Label(texturePos, new GUIContent("", node.Tooltip), LabelStyle);
+        GUI_Label(texturePos, new GUIContent("", GetNodeTooltip(node,iStorage)), LabelStyle);
 		ShowTitleOver(texturePos, node, iStorage);
     }
     // ----------------------------------------------------------------------
@@ -595,12 +595,13 @@ public partial class iCS_Graphics {
         }
         
         // Configure move cursor for port.
+		string tooltip= GetPortTooltip(port, iStorage);
         Rect portPos= new Rect(portCenter.x-portRadius*1.5f, portCenter.y-portRadius*1.5f, portRadius*3f, portRadius*3f);
         if(!port.IsTransitionPort) {
             EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
         }
         if(!port.IsFloating) {
-            GUI_Label(portPos, new GUIContent("", port.Tooltip), LabelStyle);            
+            GUI_Label(portPos, new GUIContent("", tooltip), LabelStyle);            
         }
         
         // State transition name is handle by DrawConnection.
@@ -610,7 +611,7 @@ public partial class iCS_Graphics {
         if(!ShouldDisplayPortName(port, iStorage)) return;
         string name= GetPortName(port);
         Rect portNamePos= GetPortNameGUIPosition(port, iStorage);
-        GUI.Label(portNamePos, new GUIContent(name, port.Tooltip), LabelStyle);            
+        GUI.Label(portNamePos, new GUIContent(name, tooltip), LabelStyle);            
 
         // Display port value (if applicable).
         if(ShouldDisplayPortValue(port, iStorage)) {    

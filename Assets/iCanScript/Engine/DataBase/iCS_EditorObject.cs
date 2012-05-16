@@ -183,12 +183,12 @@ public class iCS_EditorObject {
     }
     public string Name {
         get {
-            return IsNameEmpty ? ":"+TypeName : (IsClassModule ? RawName+":"+TypeName : RawName);
+            return IsNameEmpty ? ":"+TypeName : RawName;
         }
         set { RawName= value; }
     }
     public string Tooltip {
-        get { return IsTooltipEmpty ? (IsNameEmpty ? TypeName : Name+":"+TypeName) : RawTooltip; }
+        get { return RawTooltip; }
         set { RawTooltip= value; }
     }
     public bool IsOnTopEdge         { get { return Edge == EdgeEnum.Top; }}

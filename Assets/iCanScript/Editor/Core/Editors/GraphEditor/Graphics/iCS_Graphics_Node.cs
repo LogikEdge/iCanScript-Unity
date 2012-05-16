@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 
 // ==========================================================================
@@ -16,7 +17,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     string GetNodeName(iCS_EditorObject node, iCS_IStorage iStorage) {
         return ObjectNames.NicifyVariableName(iStorage.Preferences.HiddenPrefixes.GetName(node.Name));    
-    }
+    }	
     // ----------------------------------------------------------------------
     // Returns the scaled node name size.
     Vector2 GetNodeNameSize(iCS_EditorObject node, iCS_IStorage iStorage) {
@@ -46,8 +47,22 @@ public partial class iCS_Graphics {
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
     }
     // ----------------------------------------------------------------------
-    // Returns the scaled x,y,size.
-	string GetNodeTooltip(iCS_EditorObject node) {
-		return node.Tooltip;
+    // Returns the tooltip for the given node.
+	string GetNodeTooltip(iCS_EditorObject node, iCS_IStorage iStorage) {
+		string tooltip= "Name: "+(node.RawName ?? "")+"\n";
+		// Type information
+		Type runtimeType= node.RuntimeType;
+		if(runtimeType != null) tooltip+= "Type: "+iCS_Types.TypeName(runtimeType)+"\n";
+		// Number of direct children
+		int nbOfChildren= 0;
+		iStorage.ForEachChildNode(node, c=> ++nbOfChildren);
+		tooltip+= "Children: "+nbOfChildren+"\n";
+		// Number of descendents.
+		nbOfChildren= 0;
+		iStorage.ForEachChildRecursive(node, c=> { if(c.IsNode) ++nbOfChildren; });
+		tooltip+= "Descendents: "+nbOfChildren+"\n";
+		// User defined tooltip
+		if(iCS_Strings.IsNotEmpty(node.Tooltip)) tooltip+= node.Tooltip;
+		return tooltip;
 	}
 }
