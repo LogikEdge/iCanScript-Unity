@@ -152,14 +152,18 @@ public partial class iCS_Graphics {
     }
     
     // ----------------------------------------------------------------------
-    public static void DrawRect(Rect rect, Color fillColor, Color outlineColor) {
+    public static void DrawBox(Rect rect, Color fillColor, Color outlineColor, Color multiplyColor) {
         Vector3[] vectors= new Vector3[4];
         vectors[0]= new Vector3(rect.x, rect.y, 0);
         vectors[1]= new Vector3(rect.xMax, rect.y, 0);
         vectors[2]= new Vector3(rect.xMax, rect.yMax, 0);
         vectors[3]= new Vector3(rect.x, rect.yMax, 0);        
-        Handles.color= Color.white;
+        Handles.color= multiplyColor;
         Handles.DrawSolidRectangleWithOutline(vectors, fillColor, outlineColor);
+    }
+    // ----------------------------------------------------------------------
+    public static void DrawRect(Rect rect, Color fillColor, Color outlineColor) {
+        DrawBox(rect, fillColor, outlineColor, Color.white);
     }
     // ----------------------------------------------------------------------
     void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
@@ -226,7 +230,7 @@ public partial class iCS_Graphics {
 
         // Show title.
         if(!ShouldShowTitle()) return;
-        Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.8f*radius);
+        Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.9f*radius);
         Vector2 titleSize= TitleStyle.CalcSize(content);
         GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, TitleStyle);
     }

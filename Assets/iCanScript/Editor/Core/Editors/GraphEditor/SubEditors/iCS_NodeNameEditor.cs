@@ -24,7 +24,7 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
         myIStorage= iStorage;
         myTarget= target;
 		myGraphics= graphics;
-		myEditor= new iCS_StringEditor(Position, myTarget.RawName, GuiStyle);
+		myEditor= new iCS_StringEditor(Position, graphics.GetNodeName(target, iStorage), GuiStyle);
     }
     
     public bool Update() {

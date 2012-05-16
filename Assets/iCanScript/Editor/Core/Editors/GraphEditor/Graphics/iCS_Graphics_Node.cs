@@ -15,8 +15,8 @@ public partial class iCS_Graphics {
         return true;
     }
     // ----------------------------------------------------------------------
-    string GetNodeName(iCS_EditorObject node, iCS_IStorage iStorage) {
-        return ObjectNames.NicifyVariableName(iStorage.Preferences.HiddenPrefixes.GetName(node.Name));    
+    public string GetNodeName(iCS_EditorObject node, iCS_IStorage iStorage) {
+        return iStorage.Preferences.HiddenPrefixes.GetName(node.Name);    
     }	
     // ----------------------------------------------------------------------
     // Returns the scaled node name size.
@@ -35,7 +35,7 @@ public partial class iCS_Graphics {
         if(IsMinimized(node, iStorage)) {
             y-= 5f+size.y/Scale;
         } else {
-			y+= 0.8f*kNodeCornerRadius-0.5f*size.y/Scale;
+			y+= 0.9f*kNodeCornerRadius-0.5f*size.y/Scale;
         }
         return new Rect(x, y, size.x, size.y);
     }

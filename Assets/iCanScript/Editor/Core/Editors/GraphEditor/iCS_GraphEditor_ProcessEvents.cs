@@ -32,27 +32,6 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                     }
                     default: {
                         ResetDrag();
-//						iCS_EditorObject objectUnderMouse= GetObjectAtMousePosition();
-//						if(mySubEditor != null && objectUnderMouse == myObjectUnderMouse && mySubEditor.Target == objectUnderMouse) break;
-//						if(mySubEditor != null) {
-//							mySubEditor.Close();
-//							break;
-//						}
-//						myObjectUnderMouse= objectUnderMouse;
-//						if(myObjectUnderMouse == null) break;
-//						Debug.Log("Object under cursor= "+myObjectUnderMouse.Name);
-//						if(myObjectUnderMouse.IsNode) {
-//                            var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
-//                            mySubEditor= GetWindowWithRect<iCS_NodeTitlePopup>(new Rect(screenPoint.x, screenPoint.y, 200, 75));
-//                            mySubEditor.Init(myObjectUnderMouse, IStorage);
-////                            mySubEditor.ShowPopup();										
-//						} else {
-//							mySubEditor= ScriptableObject.CreateInstance<iCS_PortEditor>();
-//                            mySubEditor.Init(myObjectUnderMouse, IStorage);
-//                            var screenPoint= GUIUtility.GUIToScreenPoint(RealMousePosition);
-//                            mySubEditor.position= new Rect(screenPoint.x, screenPoint.y, mySubEditor.position.width, mySubEditor.position.height);
-//                            mySubEditor.ShowPopup();																				
-//						}						
                         break;
                     }
                 }
@@ -86,6 +65,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                         if(SelectedObject != null && !SelectedObject.IsBehaviour) {
                             IsDragEnabled= true;                            
                         }
+                        mySubEditor= null;
                         Event.current.Use();
                         break;
                     }
