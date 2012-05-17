@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_NodeNameEditor : iCS_ISubEditor {
+public class iCS_PortValueEditor : iCS_ISubEditor {
     // ======================================================================
     // Field.
 	// ----------------------------------------------------------------------
@@ -14,17 +14,17 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Property.
 	// ----------------------------------------------------------------------
-	Rect 	 Position { get { return myGraphics.GetNodeNameGUIPosition(myTarget, myIStorage); }}
-	GUIStyle GuiStyle { get { return myTarget.IsMinimized ? myGraphics.LabelStyle : myGraphics.TitleStyle; }}
-	
+	Rect 	 Position { get { return myGraphics.GetPortNameGUIPosition(myTarget, myIStorage); }}
+	GUIStyle GuiStyle { get { return myGraphics.LabelStyle; }}
+
     // ======================================================================
     // Initialization.
 	// ----------------------------------------------------------------------
-    public iCS_NodeNameEditor(iCS_EditorObject target, iCS_IStorage iStorage, iCS_Graphics graphics) {
+    public iCS_PortValueEditor(iCS_EditorObject target, iCS_IStorage iStorage, iCS_Graphics graphics) {
         myIStorage= iStorage;
         myTarget= target;
 		myGraphics= graphics;
-		myEditor= new iCS_FieldEditor(Position, graphics.GetNodeName(target, iStorage), iCS_FieldTypeEnum.String, GuiStyle);
+		myEditor= new iCS_FieldEditor(Position, myTarget.RawName, iCS_FieldTypeEnum.String, GuiStyle);
     }
     
     // ======================================================================
@@ -32,7 +32,6 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
 	// ----------------------------------------------------------------------
     public bool Update() {
 		myEditor.Position= Position;
-		myEditor.GuiStyle= GuiStyle;
 		if(myEditor.Update()) {
 			myTarget.Name= myEditor.ValueAsString;
 			return true;

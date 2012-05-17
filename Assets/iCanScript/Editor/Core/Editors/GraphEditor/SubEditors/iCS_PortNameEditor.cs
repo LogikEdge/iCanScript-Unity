@@ -8,7 +8,7 @@ public class iCS_PortNameEditor : iCS_ISubEditor {
 	// ----------------------------------------------------------------------
     iCS_IStorage        myIStorage= null;
     iCS_EditorObject    myTarget  = null;
-	iCS_StringEditor	myEditor  = null;
+	iCS_FieldEditor	    myEditor  = null;
 	iCS_Graphics		myGraphics= null;
 	
     // ======================================================================
@@ -24,13 +24,16 @@ public class iCS_PortNameEditor : iCS_ISubEditor {
         myIStorage= iStorage;
         myTarget= target;
 		myGraphics= graphics;
-		myEditor= new iCS_StringEditor(Position, myTarget.RawName, GuiStyle);
+		myEditor= new iCS_FieldEditor(Position, myTarget.RawName, iCS_FieldTypeEnum.String, GuiStyle);
     }
     
+    // ======================================================================
+    // Update.
+	// ----------------------------------------------------------------------
     public bool Update() {
-		myEditor.GuiPosition= Position;
+		myEditor.Position= Position;
 		if(myEditor.Update()) {
-			myTarget.Name= myEditor.Value;
+			myTarget.Name= myEditor.ValueAsString;
 			return true;
 		}
 		return false;
