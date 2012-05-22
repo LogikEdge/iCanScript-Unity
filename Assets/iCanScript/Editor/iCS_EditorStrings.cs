@@ -23,4 +23,12 @@ public class iCS_EditorStrings {
 	
     // Textures
     public const string AALineTexture        = "iCS_LineTexture.psd";
+
+    // Hierarchy icon tags
+    public const string ModuleHierarchyIcon  = "iCS_ModuleTag.png";
+    public const string ClassHierarchyIcon   = "iCS_ClassTag.png";
+    public const string FunctionHierarchyIcon= "iCS_FunctionTag.png";
+    public const string StateHierarchyIcon   = "iCS_StateTag.png";
+    public const string InPortHierarchyIcon  = "iCS_InPortTag.png";
+    public const string OutPortHierarchyIcon = "iCS_OutPortTag.png";
 }

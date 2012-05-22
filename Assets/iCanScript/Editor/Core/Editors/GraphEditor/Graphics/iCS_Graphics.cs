@@ -571,32 +571,7 @@ public partial class iCS_Graphics {
 
         // Draw port icon
 		Vector2 portCenter= GetPortCenter(port, iStorage);
-        if(port.IsDataPort) {
-            // Data ports.
-			if(port.IsOutMuxPort) {
-				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
-			} else {
-				if(isStaticPort) {
-		            DrawSquarePort(portCenter, portColor, nodeColor, portRadius);
-				} else {
-	    	    	DrawCircularPort(portCenter, portColor, nodeColor, portRadius);							        
-				}				
-			}
-        } else if(port.IsStatePort) {
-            // State ports.
-            if(port.IsOutStatePort) {
-                Handles.color= Color.white;
-                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);
-            }
-        } else if(port.IsInTransitionPort || port.IsOutTransitionPort) {
-            // Transition ports.
-            Handles.color= Color.white;
-            Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);            
-        }
-        else {
-            // All other types of ports (should not exists).
-            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);
-        }
+		DrawPortIcon(port, portCenter, portRadius, portColor, nodeColor, iStorage);
         
         // Configure move cursor for port.
 		string tooltip= GetPortTooltip(port, iStorage);
@@ -640,18 +615,44 @@ public partial class iCS_Graphics {
     					if(GUI.changed) {
     						iStorage.UpdatePortInitialValue(port, newValue);
     					}
-    				} else if(portValueType == typeof(float)) {
-    					GUI.changed= false;
-    					float newValue= GUI.HorizontalSlider(new Rect(portNamePos.xMax, portNamePos.y-2/Scale, 40*Scale, 16), (float)portValue, 0, 1f);
-    					if(GUI.changed) {
-    						iStorage.UpdatePortInitialValue(port, newValue);
-    					}
     				}
     			}
            }
        }
     }
 
+	// ----------------------------------------------------------------------
+    public void DrawPortIcon(iCS_EditorObject port, Vector2 portCenter, float portRadius, Color portColor, Color nodeColor, iCS_IStorage iStorage) {
+        // Determine if port is a static port (a port that feeds information into the graph).
+        bool isStaticPort= port.IsInDataPort && iStorage.GetSource(port) == null;
+        // Draw port icon.
+        if(port.IsDataPort) {
+            // Data ports.
+			if(port.IsOutMuxPort) {
+				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
+			} else {
+				if(isStaticPort) {
+		            DrawSquarePort(portCenter, portColor, nodeColor, portRadius);
+				} else {
+	    	    	DrawCircularPort(portCenter, portColor, nodeColor, portRadius);							        
+				}				
+			}
+        } else if(port.IsStatePort) {
+            // State ports.
+            if(port.IsOutStatePort) {
+                Handles.color= Color.white;
+                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);
+            }
+        } else if(port.IsInTransitionPort || port.IsOutTransitionPort) {
+            // Transition ports.
+            Handles.color= Color.white;
+            Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);            
+        }
+        else {
+            // All other types of ports (should not exists).
+            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);
+        }        
+    }
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
         Color outlineColor= Color.black;

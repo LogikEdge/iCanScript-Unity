@@ -6,10 +6,11 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject	    myTarget  = null;
-	iCS_IStorage		    myStorage = null;
-	iCS_EditorObject		myCursor  = null;
-	DSTreeView				myTreeView= null;
+	iCS_EditorObject	    myTarget    = null;
+	iCS_IStorage		    myStorage   = null;
+	iCS_EditorObject		myCursor    = null;
+	DSTreeView				myTreeView  = null;
+	float                   myFoldOffset= 0;
 	
     // =================================================================================
     // Properties
@@ -25,6 +26,8 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 		myStorage= storage;
 		myCursor= target;
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
+        var emptySize= EditorStyles.foldout.CalcSize(new GUIContent(""));
+		myFoldOffset= emptySize.x;
 	}
 	
 	// =================================================================================
@@ -85,16 +88,46 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public Vector2	CurrentObjectDisplaySize() {
 		if(myStorage == null) return Vector2.zero;
-		var content= new GUIContent(myCursor.Name);
-		return EditorStyles.foldout.CalcSize(content);
+        var nameSize= EditorStyles.label.CalcSize(new GUIContent(myCursor.Name));
+        return new Vector2(myFoldOffset+16.0f+nameSize.x, nameSize.y);
 	}
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout) {
 		if(myStorage == null) return true;
-		return EditorGUI.Foldout(displayArea, foldout, myCursor.Name);
+		bool result= ShouldUseFoldout() ? EditorGUI.Foldout(displayArea, foldout, "") : false;
+        var content= GetContent();
+        var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
+	    GUI.Label(pos, content.image);
+	    GUI.Label(new Rect(pos.x+16.0f, pos.y, pos.width-16.0f, pos.height), content.text);
+		return result;
 	}
     // ---------------------------------------------------------------------------------
 	public object	CurrentObjectKey() {
 		return myCursor;
 	}
+    // ---------------------------------------------------------------------------------
+    GUIContent GetContent() {
+        Texture2D icon= null;
+        if(myCursor.IsFunction) {
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+        } else if(myCursor.IsState || myCursor.IsStateChart) {
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.StateHierarchyIcon, myStorage);                        
+        } else if(myCursor.IsClassModule) {
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ClassHierarchyIcon, myStorage);                            
+        } else if(myCursor.IsNode) {
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ModuleHierarchyIcon, myStorage);            
+        } else if(myCursor.IsDataPort) {
+            if(myCursor.IsInputPort) {
+                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.InPortHierarchyIcon, myStorage);                
+            } else {
+                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.OutPortHierarchyIcon, myStorage);                                    
+            }
+        }
+        return new GUIContent(myCursor.Name, icon); 
+    }
+    // ---------------------------------------------------------------------------------
+    bool ShouldUseFoldout() {
+        if(myStorage == null) return false;
+        return myCursor.IsNode;
+    }
 }
