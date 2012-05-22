@@ -93,9 +93,9 @@ public class iCS_Reflection {
                 }
             }
         }
-//        iCS_UnityClasses.PopulateDataBase();
-//        iCS_NETClasses.PopulateDataBase();
+        // Invoke user installation.
         NeedToRunInstaller= true;
+        iCS_Installer.Install();
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------

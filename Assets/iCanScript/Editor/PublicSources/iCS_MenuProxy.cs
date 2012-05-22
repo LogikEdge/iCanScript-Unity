@@ -7,8 +7,7 @@ public class iCS_MenuProxy {
 	// iCanScript Editor Window Menu.
 	[MenuItem("Window/iCanScript Editor")]
 	public static void ShowiCanScriptEditor() {
-        iCS_GraphEditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_GraphEditorProxy), false, "iCanScript") as iCS_GraphEditorProxy;
-        editorProxy.hideFlags= HideFlags.DontSave;
+        iCS_EditorMgr.GetGraphEditor();
 	}
 
     // ======================================================================
