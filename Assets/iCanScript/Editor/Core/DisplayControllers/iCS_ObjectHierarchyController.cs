@@ -19,6 +19,12 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 	public iCS_EditorObject Target	{ get { return myTarget; }}
 	
     // =================================================================================
+    // Constants
+    // ---------------------------------------------------------------------------------
+    const float kIconWidth= 16.0f;
+    const float kLabelSpacer= 4.0f;
+    
+    // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
 	public iCS_ObjectHierarchyController(iCS_EditorObject target, iCS_IStorage storage) {
@@ -89,7 +95,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 	public Vector2	CurrentObjectDisplaySize() {
 		if(myStorage == null) return Vector2.zero;
         var nameSize= EditorStyles.label.CalcSize(new GUIContent(myCursor.Name));
-        return new Vector2(myFoldOffset+16.0f+nameSize.x, nameSize.y);
+        return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, nameSize.y);
 	}
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout) {
@@ -98,7 +104,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         var content= GetContent();
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
-	    GUI.Label(new Rect(pos.x+16.0f, pos.y, pos.width-16.0f, pos.height), content.text);
+	    GUI.Label(new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y, pos.width-(kIconWidth+kLabelSpacer), pos.height), content.text);
 		return result;
 	}
     // ---------------------------------------------------------------------------------
