@@ -11,6 +11,7 @@ public class DSTreeView : DSView {
     DSCellView  			myMainView          = null;
 	float					myIndentOffset      = kHorizontalSpacer;
     Dictionary<object,bool>	myIsFoldedDictionary= null;
+    Dictionary<object,Rect> myRowInfo           = null;
 
     // ======================================================================
     // Initialization
@@ -20,6 +21,7 @@ public class DSTreeView : DSView {
 		myDataSource= dataSource;
 		myIndentOffset= indentOffset;
 		myIsFoldedDictionary= new Dictionary<object,bool>();
+        myRowInfo= new Dictionary<object,Rect>();
     }
     
     // ======================================================================
@@ -28,6 +30,11 @@ public class DSTreeView : DSView {
     public override void Display(Rect frameArea) { 
 		if(myDataSource == null) return;
 
+        // Process events.
+        ProcessEvents(frameArea);
+        
+        // Display tree.
+        myRowInfo.Clear();
 		float y= frameArea.y;
 		float indent= 0;
 		myDataSource.Reset();
@@ -42,9 +49,10 @@ public class DSTreeView : DSView {
 				myIsFoldedDictionary.Add(key, false);
 			}
 
-			// Consider size of the current object.
+			// Display current object.
 			var currentSize= myDataSource.CurrentObjectDisplaySize();
 			Rect displayArea= new Rect(frameArea.x+indent*myIndentOffset, y, currentSize.x, currentSize.y);
+            myRowInfo.Add(key, displayArea);
 			y+= currentSize.y;
 			displayArea= Math3D.Intersection(frameArea, displayArea);
 			if(Math3D.IsNotZero(displayArea.width) && Math3D.IsNotZero(displayArea.height)) {
@@ -74,7 +82,6 @@ public class DSTreeView : DSView {
 				}
 			}			
 		}
-
     }
     // ----------------------------------------------------------------------
     public override Vector2 GetSizeToDisplay(Rect frameArea) {
@@ -128,5 +135,28 @@ public class DSTreeView : DSView {
     public override void SetAnchor(AnchorEnum anchor) {
         myMainView.Anchor= anchor;
     }
-
+	// ----------------------------------------------------------------------
+    void ProcessEvents(Rect frameArea) {
+     	Vector2 mousePosition= Event.current.mousePosition;
+		switch(Event.current.type) {
+            case EventType.ScrollWheel: {
+                break;
+            }
+            case EventType.MouseDown: {
+                foreach(var keyValue in myRowInfo) {
+                    Rect area= keyValue.Value;
+                    if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
+                        var screenPos= GUIUtility.GUIToScreenPoint(new Vector2(area.x, area.y));
+                        myDataSource.MouseDownOn(keyValue.Key, new Rect(screenPos.x, screenPos.y, area.width, area.height));
+//                        Event.current.Use();
+                        return;
+                    }
+                }
+				break;
+			}
+            case EventType.MouseUp: {
+				break;
+			}
+        }   
+    }
 }

@@ -16,7 +16,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 	public override void OnStorageChange() {
         if(IStorage == null) return;
         myController= new iCS_ObjectHierarchyController(IStorage[0], IStorage);
-        myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, myController.View);
+        myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, myController.View);
 		Repaint();
     }
     
@@ -26,6 +26,25 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     void OnGUI() {
         iCS_EditorMgr.Update();
 		if(IStorage == null) return;
-		myMainView.Display(new Rect(0,0,position.width,position.height));
+        var frameArea= new Rect(0,0,position.width,position.height);
+		myMainView.Display(frameArea);
+//		ProcessEvents(frameArea);
 	}
+	// ----------------------------------------------------------------------
+    void ProcessEvents(Rect frameArea) {
+     	Vector2 mousePosition= Event.current.mousePosition;
+		switch(Event.current.type) {
+            case EventType.ScrollWheel: {
+                break;
+            }
+            case EventType.MouseDown: {
+                myController.MouseDownOn(null, frameArea);
+                Event.current.Use();
+				break;
+			}
+            case EventType.MouseUp: {
+				break;
+			}
+        }   
+    }
 }

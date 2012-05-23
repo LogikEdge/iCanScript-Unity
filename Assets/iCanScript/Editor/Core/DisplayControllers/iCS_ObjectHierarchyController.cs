@@ -11,6 +11,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 	iCS_EditorObject		myCursor    = null;
 	DSTreeView				myTreeView  = null;
 	float                   myFoldOffset= 0;
+	iCS_EditorObject        mySelected  = null;
 	
     // =================================================================================
     // Properties
@@ -96,16 +97,28 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 		if(myStorage == null) return Vector2.zero;
         var nameSize= EditorStyles.label.CalcSize(new GUIContent(myCursor.Name));
         return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, nameSize.y);
+//        return EditorStyles.foldout.CalcSize(new GUIContent(GetContent()));
 	}
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout) {
 		if(myStorage == null) return true;
+        // Show selected outline.
+		if(myCursor == mySelected) {
+		    GUI.Box(displayArea, "");
+		}
 		bool result= ShouldUseFoldout() ? EditorGUI.Foldout(displayArea, foldout, "") : false;
         var content= GetContent();
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
 	    GUI.Label(new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y, pos.width-(kIconWidth+kLabelSpacer), pos.height), content.text);
 		return result;
+//        bool result= false;
+//        if(ShouldUseFoldout()) {
+//            result= EditorGUI.Foldout(displayArea, foldout, GetContent());
+//        } else {
+//            GUI.Label(new Rect(displayArea.x+myFoldOffset, displayArea.y, displayArea.width, displayArea.height), GetContent());
+//        }
+//        return result;
 	}
     // ---------------------------------------------------------------------------------
 	public object	CurrentObjectKey() {
@@ -113,6 +126,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     GUIContent GetContent() {
+        EditorGUIUtility.SetIconSize(new Vector2(16.0f,12.0f));
         Texture2D icon= null;
         if(myCursor.IsFunction) {
             icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
@@ -135,5 +149,20 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     bool ShouldUseFoldout() {
         if(myStorage == null) return false;
         return myCursor.IsNode;
+    }
+    // ---------------------------------------------------------------------------------
+    public void MouseDownOn(object key, Rect screenArea) {
+        if(key == null) {
+            mySelected= null;
+            return;
+        }
+        iCS_EditorObject eObj= key as iCS_EditorObject;
+        mySelected= eObj;
+        FocusGraphOnSelected();
+    }
+    // ---------------------------------------------------------------------------------
+    void FocusGraphOnSelected() {
+        myStorage.SelectedObject= mySelected;
+        iCS_EditorMgr.GetGraphEditor().CenterOnSelected();
     }
 }

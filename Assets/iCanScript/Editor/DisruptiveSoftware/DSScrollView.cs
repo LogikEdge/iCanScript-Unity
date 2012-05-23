@@ -9,6 +9,7 @@ public class DSScrollView : DSView {
     Vector2                         myScrollPosition          = Vector2.zero;
     Vector2                         myContentSize             = Vector2.zero;
     DSCellView                      myMainView                = null;
+    bool                            myUseFullWidth            = true;
  	Action<DSScrollView,Rect>       myDisplayDelegate         = null;
 	Func<DSScrollView,Rect,Vector2> myGetSizeToDisplayDelegate= null;
    
@@ -28,15 +29,16 @@ public class DSScrollView : DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSScrollView(RectOffset margins, bool shouldDisplayFrame,
+    public DSScrollView(RectOffset margins, bool shouldDisplayFrame, bool useFullWidth= true,
                         Action<DSScrollView,Rect> displayDelegate= null,
                         Func<DSScrollView,Rect,Vector2> getSizeToDisplayDelegate= null) {
+        myUseFullWidth= useFullWidth;
         myMainView= new DSCellView(margins, shouldDisplayFrame, MainViewDisplay, MainViewGetSizeToDisplay);
         myDisplayDelegate= displayDelegate;
         myGetSizeToDisplayDelegate= getSizeToDisplayDelegate;
     }
-	public DSScrollView(RectOffset margins, bool shouldDisplayFrame, DSView subview)
-	: this(margins, shouldDisplayFrame, (v,f)=> subview.Display(f), (v,f)=> subview.GetSizeToDisplay(f)) {}
+	public DSScrollView(RectOffset margins, bool shouldDisplayFrame, bool useFullWidth, DSView subview)
+	: this(margins, shouldDisplayFrame, useFullWidth, (v,f)=> subview.Display(f), (v,f)=> subview.GetSizeToDisplay(f)) {}
 		
     // ======================================================================
     // DSView implementation.
@@ -66,8 +68,12 @@ public class DSScrollView : DSView {
 		myContentSize= InvokeGetSizeToDisplayDelegate(displayArea);
         // Add scroller if the needed display size exceeds the display area.
 		var contentSize= myContentSize;        
-        if(displayArea.width < myContentSize.x) contentSize.y+= kScrollbarSize;
-        if(displayArea.height < myContentSize.y) contentSize.x+= kScrollbarSize;
+        if(myContentSize.x > displayArea.width) {
+            contentSize.y+= kScrollbarSize;
+        } else if(myUseFullWidth) {
+            contentSize.x= displayArea.width;
+        }
+        if(myContentSize.y >= displayArea.height) contentSize.x+= kScrollbarSize;
         return contentSize;
     }
     

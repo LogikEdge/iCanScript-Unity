@@ -10,4 +10,5 @@ public interface DSTreeViewDataSource {
 	Vector2	CurrentObjectDisplaySize();
 	bool	DisplayCurrentObject(Rect displayArea, bool foldout);
 	object	CurrentObjectKey();
+	void    MouseDownOn(object key, Rect screenPos);
 }
