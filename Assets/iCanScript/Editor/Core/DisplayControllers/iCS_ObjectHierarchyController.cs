@@ -33,8 +33,6 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 		myStorage= storage;
 		myCursor= target;
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
-        var emptySize= EditorStyles.foldout.CalcSize(new GUIContent(""));
-		myFoldOffset= emptySize.x;
 	}
 	
 	// =================================================================================
@@ -95,6 +93,10 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public Vector2	CurrentObjectDisplaySize() {
 		if(myStorage == null) return Vector2.zero;
+		if(myFoldOffset == 0) {
+            var emptySize= EditorStyles.foldout.CalcSize(new GUIContent(""));
+    		myFoldOffset= emptySize.x;
+		}
         var nameSize= EditorStyles.label.CalcSize(new GUIContent(myCursor.Name));
         return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, nameSize.y);
 //        return EditorStyles.foldout.CalcSize(new GUIContent(GetContent()));
@@ -163,6 +165,6 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void FocusGraphOnSelected() {
         myStorage.SelectedObject= mySelected;
-        iCS_EditorMgr.GetGraphEditor().CenterOnSelected();
+        iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(mySelected);
     }
 }

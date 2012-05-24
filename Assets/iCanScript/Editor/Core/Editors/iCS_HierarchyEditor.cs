@@ -28,7 +28,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 		if(IStorage == null) return;
         var frameArea= new Rect(0,0,position.width,position.height);
 		myMainView.Display(frameArea);
-//		ProcessEvents(frameArea);
+		ProcessEvents(frameArea);
 	}
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {

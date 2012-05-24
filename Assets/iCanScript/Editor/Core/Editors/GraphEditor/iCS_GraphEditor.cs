@@ -1108,13 +1108,32 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         CenterOn(myDisplayRoot);
     }
 	// ----------------------------------------------------------------------
+    public void CenterAndScaleOnRoot() {
+        CenterAndScaleOn(myDisplayRoot);
+    }
+	// ----------------------------------------------------------------------
     public void CenterOnSelected() {
         CenterOn(SelectedObject ?? myDisplayRoot);
+    }
+	// ----------------------------------------------------------------------
+    public void CenterAndScaleOnSelected() {
+        CenterAndScaleOn(SelectedObject ?? myDisplayRoot);
     }
 	// ----------------------------------------------------------------------
     public void CenterOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
         CenterAt(Math3D.Middle(IStorage.GetPosition(obj)));
+    }
+	// ----------------------------------------------------------------------
+    public void CenterAndScaleOn(iCS_EditorObject obj) {
+        if(obj == null || IStorage == null) return;
+        Rect objectArea= IStorage.GetPosition(obj);
+        if(obj.IsNode) {
+            float widthScale= position.width/(1.1f*objectArea.width);
+            float heightScale= position.height/(1.1f*objectArea.height);
+            Scale= Mathf.Min(1.0f, Mathf.Min(widthScale, heightScale));
+        }
+        CenterAt(Math3D.Middle(objectArea));
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {
