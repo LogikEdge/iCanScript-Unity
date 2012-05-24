@@ -28,6 +28,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     
     // ----------------------------------------------------------------------
     Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
+    Prelude.Animate<float>      myAnimatedScale         = new Prelude.Animate<float>();
     
     // ----------------------------------------------------------------------
     DragTypeEnum     DragType              = DragTypeEnum.None;
@@ -45,9 +46,9 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 	bool			 ShouldRotateMuxPort= false;
     
     // ----------------------------------------------------------------------
-    Rect    ClipingArea { get { return new Rect(ScrollPosition.x, ScrollPosition.y, Viewport.width, Viewport.height); }}
+    Rect    ClipingArea    { get { return new Rect(ScrollPosition.x, ScrollPosition.y, Viewport.width, Viewport.height); }}
     Vector2 ViewportCenter { get { return new Vector2(0.5f/Scale*position.width, 0.5f/Scale*position.height); } }
-    Rect    Viewport { get { return new Rect(0,0,position.width/Scale, position.height/Scale); }}
+    Rect    Viewport       { get { return new Rect(0,0,position.width/Scale, position.height/Scale); }}
     Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
@@ -171,7 +172,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         // Determine repaint rate.
         if(IStorage != null) {
             // Repaint window
-            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive) {
+            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
                 IStorage.IsAnimationPlaying= false;
                 Repaint();
             }
@@ -1128,14 +1129,13 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     public void CenterAndScaleOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
         Rect objectArea= IStorage.GetPosition(obj);
+        float newScale= 1.0f;
         if(obj.IsNode) {
             float widthScale= position.width/(1.1f*objectArea.width);
             float heightScale= position.height/(1.1f*objectArea.height);
-            Scale= Mathf.Min(1.0f, Mathf.Min(widthScale, heightScale));
-        } else {
-            Scale= 1.0f;
+            newScale= Mathf.Min(1.0f, Mathf.Min(widthScale, heightScale));
         }
-        CenterAt(Math3D.Middle(objectArea));
+        CenterAtWithScale(Math3D.Middle(objectArea), newScale);
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {
@@ -1146,6 +1146,18 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         if(deltaTime > 0.5f) deltaTime= 0.5f+(0.5f*(deltaTime-0.5f));
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         ScrollPosition= newScrollPosition;
+    }
+	// ----------------------------------------------------------------------
+    public void CenterAtWithScale(Vector2 point, float newScale) {
+        Vector2 newScrollPosition= point-0.5f/newScale*new Vector2(position.width, position.height);
+        float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
+        float deltaTime= distance/3500f;
+        if(deltaTime < IStorage.Preferences.ControlOptions.AnimationTime) deltaTime= IStorage.Preferences.ControlOptions.AnimationTime;
+        if(deltaTime > 0.5f) deltaTime= 0.5f+(0.5f*(deltaTime-0.5f));
+        myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        ScrollPosition= newScrollPosition;
+        myAnimatedScale.Start(Scale, newScale, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
+        Scale= newScale;
     }
     // ======================================================================
     // NODE GRAPH DISPLAY
@@ -1203,7 +1215,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         IStorage.Update();
 
 		// Start graphics
-        myGraphics.Begin(UpdateScrollPosition(), Scale, ClipingArea, SelectedObject, ViewportToGraph(MousePosition), IStorage);
+        myGraphics.Begin(UpdateScrollPosition(), UpdateScale(), ClipingArea, SelectedObject, ViewportToGraph(MousePosition), IStorage);
         
         // Draw editor grid.
         DrawGrid();
@@ -1231,6 +1243,15 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         }
 		return graphicScrollPosition;
 	}
+	// ----------------------------------------------------------------------
+    float UpdateScale() {
+        float scale= Scale;
+        if(myAnimatedScale.IsActive) {
+            myAnimatedScale.Update();
+            scale= myAnimatedScale.CurrentValue;
+        }
+        return scale;
+    }
 	// ----------------------------------------------------------------------
     void DrawNormalNodes() {
         // Display node starting from the root node.
