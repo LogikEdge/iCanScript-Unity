@@ -16,8 +16,9 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-	public DSView 			View 	{ get { return myTreeView; }}
-	public iCS_EditorObject Target	{ get { return myTarget; }}
+	public DSView 			View 	 { get { return myTreeView; }}
+	public iCS_EditorObject Target	 { get { return myTarget; }}
+	public iCS_EditorObject Selected { get { return mySelected; }}
 	
     // =================================================================================
     // Constants
@@ -102,17 +103,20 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 //        return EditorStyles.foldout.CalcSize(new GUIContent(GetContent()));
 	}
     // ---------------------------------------------------------------------------------
-	public bool	DisplayCurrentObject(Rect displayArea, bool foldout) {
+	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
 		if(myStorage == null) return true;
         // Show selected outline.
+        GUIStyle labelStyle= EditorStyles.label;
 		if(myCursor == mySelected) {
-		    GUI.Box(displayArea, "");
+            Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
+            iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
+            labelStyle= EditorStyles.whiteLabel;
 		}
 		bool result= ShouldUseFoldout() ? EditorGUI.Foldout(displayArea, foldout, "") : false;
         var content= GetContent();
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
-	    GUI.Label(new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y, pos.width-(kIconWidth+kLabelSpacer), pos.height), content.text);
+	    GUI.Label(new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y, pos.width-(kIconWidth+kLabelSpacer), pos.height), content.text, labelStyle);
 		return result;
 //        bool result= false;
 //        if(ShouldUseFoldout()) {

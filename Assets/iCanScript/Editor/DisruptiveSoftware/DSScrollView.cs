@@ -66,12 +66,13 @@ public class DSScrollView : DSView {
     }
     Vector2 MainViewGetSizeToDisplay(DSCellView view, Rect displayArea) {
 		myContentSize= InvokeGetSizeToDisplayDelegate(displayArea);
+		if(myUseFullWidth && myContentSize.x < displayArea.width) {
+		    myContentSize.x= displayArea.width;
+		}
         // Add scroller if the needed display size exceeds the display area.
 		var contentSize= myContentSize;        
         if(myContentSize.x > displayArea.width) {
             contentSize.y+= kScrollbarSize;
-        } else if(myUseFullWidth) {
-            contentSize.x= displayArea.width;
         }
         if(myContentSize.y >= displayArea.height) contentSize.x+= kScrollbarSize;
         return contentSize;

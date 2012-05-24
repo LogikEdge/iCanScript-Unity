@@ -56,7 +56,8 @@ public class DSTreeView : DSView {
 			y+= currentSize.y;
 			displayArea= Math3D.Intersection(frameArea, displayArea);
 			if(Math3D.IsNotZero(displayArea.width) && Math3D.IsNotZero(displayArea.height)) {
-				showChildren= myDataSource.DisplayCurrentObject(displayArea, showChildren);
+                var fullArea= new Rect(frameArea.x, displayArea.y, frameArea.width, displayArea.height);
+				showChildren= myDataSource.DisplayCurrentObject(displayArea, showChildren, fullArea);
 				myIsFoldedDictionary[key]= showChildren;
 			}
 
