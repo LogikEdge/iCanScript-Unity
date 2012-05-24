@@ -39,6 +39,9 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                 break;
             }
             case EventType.MouseDown: {
+                /*
+                    FIXME: Should remove selection when clicking outside scroll view.
+                */
 //                myController.MouseDownOn(null, frameArea);
 //                Event.current.Use();
 				break;
