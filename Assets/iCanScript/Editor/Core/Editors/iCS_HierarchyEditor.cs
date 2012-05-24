@@ -29,7 +29,6 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
         var frameArea= new Rect(0,0,position.width,position.height);
 		myMainView.Display(frameArea);
 		ProcessEvents(frameArea);
-//		Debug.Log("Focus: "+((bool)(EditorWindow.focusedWindow == this)));
 	}
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {

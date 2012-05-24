@@ -1132,6 +1132,8 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
             float widthScale= position.width/(1.1f*objectArea.width);
             float heightScale= position.height/(1.1f*objectArea.height);
             Scale= Mathf.Min(1.0f, Mathf.Min(widthScale, heightScale));
+        } else {
+            Scale= 1.0f;
         }
         CenterAt(Math3D.Middle(objectArea));
     }
@@ -1140,6 +1142,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         Vector2 newScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
         float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
         float deltaTime= distance/3500f;
+        if(deltaTime < IStorage.Preferences.ControlOptions.AnimationTime) deltaTime= IStorage.Preferences.ControlOptions.AnimationTime;
         if(deltaTime > 0.5f) deltaTime= 0.5f+(0.5f*(deltaTime-0.5f));
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         ScrollPosition= newScrollPosition;
