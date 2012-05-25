@@ -67,10 +67,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                     }
                     case KeyCode.F: {
                         if(selected != null) {
-                            IStorage.RegisterUndo("Make Visible: "+selected.Name);
-                            iCS_EditorUtility.MakeVisible(selected, IStorage);
-                            iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(selected);
-                            IStorage.SelectedObject= selected;
+                            iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
                         }
                         Event.current.Use();
                         break;

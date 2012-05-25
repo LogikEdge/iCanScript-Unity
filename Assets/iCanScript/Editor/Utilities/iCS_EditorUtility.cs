@@ -75,11 +75,16 @@ public static class iCS_EditorUtility {
         iStorage.RegisterUndo("Removing: "+selectedObject.Name);
         iStorage.DestroyInstance(selectedObject.InstanceId);                        
     }
-
+    
 
     // ======================================================================
     // GUI helpers
 	// ----------------------------------------------------------------------
+    public static void SafeSelectAndMakeVisible(iCS_EditorObject selected, iCS_IStorage iStorage) {
+        iStorage.RegisterUndo("Make Visible: "+selected.Name);
+        iStorage.SelectedObject= selected;        
+        FocusOn(selected, iStorage);
+    }
     public static void MakeVisible(iCS_EditorObject eObj, iCS_IStorage iStorage) {
         if(eObj == null || iStorage == null) return;
         if(eObj.IsNode) {
@@ -98,6 +103,17 @@ public static class iCS_EditorUtility {
             return;            
         }
     }
+	// ----------------------------------------------------------------------
+    public static void SafeFocusOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
+        iStorage.RegisterUndo("Focus on "+eObj.Name);
+        FocusOn(eObj, iStorage);
+    }
+    public static void FocusOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
+        MakeVisible(eObj, iStorage);
+        iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(eObj);        
+    }
+
+
 	// ----------------------------------------------------------------------
 	public static float GetGUIStyleHeight(GUIStyle style) {
 		float height= style.lineHeight+style.border.vertical;

@@ -193,9 +193,9 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                     }
                     case KeyCode.F: {
                         if(ev.shift) {
-                            CenterOn(myDisplayRoot);
+                            iCS_EditorUtility.SafeFocusOn(myDisplayRoot, IStorage);
                         } else {
-                            CenterOn(SelectedObject);
+                            iCS_EditorUtility.SafeFocusOn(SelectedObject, IStorage);
                         }
                         Event.current.Use();
                         break;
