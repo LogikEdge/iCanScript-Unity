@@ -15,7 +15,6 @@ public class iCS_Inspector : Editor {
     // Fields
 	// ----------------------------------------------------------------------
     private iCS_IStorage              myStorage       = null;
-	private iCS_GraphEditor	          myEditor        = null;
 	private iCS_EditorObject          mySelectedObject= null;
 	private Dictionary<string,object> myFoldoutDB     = new Dictionary<string,object>();
 	
@@ -61,11 +60,7 @@ public class iCS_Inspector : Editor {
 	
 	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
-    void ActivateEditor() {
-		// Create the graph editor.
-        if(myEditor == null) {
-            myEditor= iCS_EditorMgr.GetGraphEditor();
-        }
+    void UpdateVariables() {
         // Verify that the target reflects the selected storage.
         iCS_EditorMgr.Update();
         iCS_Storage realStorage= target as iCS_Storage;
@@ -84,8 +79,8 @@ public class iCS_Inspector : Editor {
     // Paint to inspector for the selected object (see editor).
 	public override void OnInspectorGUI ()
 	{
-        // Make certain our graph editor is active.
-        ActivateEditor();
+        // Update all variables we rely on.
+        UpdateVariables();
 		
         // Nothing to show if no storage is selected.
         if(myStorage == null) return;
