@@ -6,21 +6,22 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject	    myTarget       = null;
-	iCS_IStorage		    myStorage      = null;
-	iCS_EditorObject		myCursor       = null;
-	DSTreeView				myTreeView     = null;
-	float                   myFoldOffset   = 0;
-	iCS_EditorObject        mySelected     = null;
-	bool                    myIsNameEditing= false;
+	iCS_EditorObject	    myTarget     = null;
+	iCS_IStorage		    myStorage    = null;
+	iCS_EditorObject		myCursor     = null;
+	DSTreeView				myTreeView   = null;
+	float                   myFoldOffset = 0;
+	iCS_EditorObject        mySelected   = null;
+	bool                    myNameEdition= false;
 	
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-	public DSView 			View 	   { get { return myTreeView; }}
-	public iCS_EditorObject Target	   { get { return myTarget; }}
-	public iCS_EditorObject Selected   { get { return mySelected; } set { mySelected= value; }}
-	public bool             IsSelected { get { return myCursor == mySelected; }}
+	public DSView 			View 	    { get { return myTreeView; }}
+	public iCS_EditorObject Target	    { get { return myTarget; }}
+	public iCS_EditorObject Selected    { get { return mySelected; } set { mySelected= value; }}
+	public bool             IsSelected  { get { return myCursor == mySelected; }}
+	public bool             NameEdition { get { return myNameEdition; } set { myNameEdition= value; }}
 	
     // =================================================================================
     // Constants
@@ -121,7 +122,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
-        if(myIsNameEditing && IsSelected) {
+        if(NameEdition && IsSelected) {
     	    myCursor.Name= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), myCursor.RawName);            
         } else {
     	    GUI.Label(pos, content.text, labelStyle);            
@@ -172,7 +173,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
             return;
         }
         iCS_EditorObject eObj= key as iCS_EditorObject;
-        myIsNameEditing= eObj.IsNameEditable && eObj == mySelected;
+        myNameEdition= eObj.IsNameEditable && eObj == mySelected;
         mySelected= eObj;
         FocusGraphOnSelected();
     }

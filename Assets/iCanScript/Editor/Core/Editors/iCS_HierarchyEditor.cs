@@ -53,11 +53,18 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 				var ev= Event.current;
 				if(ev.keyCode == KeyCode.None) break;
                 switch(ev.keyCode) {
+                    // Delete object under cursor.
                     case KeyCode.Backspace:
                     case KeyCode.Delete: {
                         IStorage.RegisterUndo("Deleting: "+selected.Name);
                         IStorage.DestroyInstance(selected);
                         myController.Selected= null;
+                        ev.Use();
+                        break;
+                    }
+                    // Remove name edition.
+                    case KeyCode.Escape: {
+                        myController.NameEdition= false;
                         ev.Use();
                         break;
                     }

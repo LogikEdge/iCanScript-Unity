@@ -257,12 +257,8 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                         if(SelectedObject != null && SelectedObject != myDisplayRoot && SelectedObject != StorageRoot &&
                           !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
                             iCS_EditorObject parent= IStorage.GetParent(SelectedObject);
-                            if(ev.shift) {
-                                IStorage.RegisterUndo("Delete");
-                                IStorage.DestroyInstance(SelectedObject.InstanceId);                                                        
-                            } else {
-                                iCS_EditorUtility.DestroyObject(SelectedObject, IStorage);
-                            }
+                            IStorage.RegisterUndo("Delete");
+                            IStorage.DestroyInstance(SelectedObject.InstanceId);                                                        
                             SelectedObject= parent;
                         }
                         Event.current.Use();
