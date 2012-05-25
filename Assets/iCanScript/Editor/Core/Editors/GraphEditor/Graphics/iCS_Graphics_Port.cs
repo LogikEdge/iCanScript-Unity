@@ -30,12 +30,12 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Port name utilities.
     // ----------------------------------------------------------------------
-    string GetPortName(iCS_EditorObject port) {
+    static string GetPortName(iCS_EditorObject port) {
         Type portValueType= GetPortValueType(port);
         return portValueType.IsArray ? "["+port.Name+"]" : port.Name;
     }
     // ----------------------------------------------------------------------
-	string GetPortPath(iCS_EditorObject port, iCS_IStorage iStorage) {
+	static string GetPortPath(iCS_EditorObject port, iCS_IStorage iStorage) {
 		iCS_EditorObject parent= iStorage.GetParent(port);
 		string path= parent.Name;
 		for(parent= iStorage.GetParent(parent); parent != null && parent != iStorage[0]; parent= iStorage.GetParent(parent)) {
@@ -45,7 +45,7 @@ public partial class iCS_Graphics {
 	}
     // ----------------------------------------------------------------------
 	// Returns the full path name of the port.
-	string GetPortFullPathName(iCS_EditorObject port, iCS_IStorage iStorage) {
+	static string GetPortFullPathName(iCS_EditorObject port, iCS_IStorage iStorage) {
 		return GetPortName(port)+"."+GetPortPath(port,iStorage);
 	}
     // ----------------------------------------------------------------------
@@ -95,7 +95,7 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Port type utilities.
     // ----------------------------------------------------------------------
-    Type GetPortValueType(iCS_EditorObject port) {
+    static Type GetPortValueType(iCS_EditorObject port) {
         return iCS_Types.GetElementType(port.RuntimeType);
     }
     // ----------------------------------------------------------------------
@@ -153,7 +153,7 @@ public partial class iCS_Graphics {
 	}
 	// ----------------------------------------------------------------------
     // Returns the tooltip for the given port.
-	string GetPortTooltip(iCS_EditorObject port, iCS_IStorage iStorage) {
+	public static string GetPortTooltip(iCS_EditorObject port, iCS_IStorage iStorage) {
 		string tooltip= "Name: "+(port.RawName ?? "")+"\n";
 		// Type information
 		Type runtimeType= port.RuntimeType;

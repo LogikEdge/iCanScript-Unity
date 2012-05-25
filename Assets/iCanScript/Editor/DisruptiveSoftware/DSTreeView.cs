@@ -30,9 +30,6 @@ public class DSTreeView : DSView {
     public override void Display(Rect frameArea) { 
 		if(myDataSource == null) return;
 
-        // Process events.
-        ProcessEvents(frameArea);
-        
         // Display tree.
         myRowInfo.Clear();
 		float y= frameArea.y;
@@ -64,6 +61,7 @@ public class DSTreeView : DSView {
 			if(!showChildren) {
 				while(!myDataSource.MoveToNextSibling()) {
 					if(!myDataSource.MoveToParent()) {
+                        ProcessEvents(frameArea);
 						return;
 					} else {
 						--indent;
@@ -73,6 +71,7 @@ public class DSTreeView : DSView {
 				if(!myDataSource.MoveToFirstChild()) {
 					if(!myDataSource.MoveToNextSibling()) {
 						if(!myDataSource.MoveToNext()) {
+                            ProcessEvents(frameArea);
 							return;
 						} else {
 							--indent;
@@ -147,9 +146,11 @@ public class DSTreeView : DSView {
                 foreach(var keyValue in myRowInfo) {
                     Rect area= keyValue.Value;
                     if(area.y < mousePosition.y && area.yMax > mousePosition.y) {
-                        var screenPos= GUIUtility.GUIToScreenPoint(new Vector2(area.x, area.y));
-                        myDataSource.MouseDownOn(keyValue.Key, new Rect(screenPos.x, screenPos.y, area.width, area.height));
-//                        Event.current.Use();
+                        var mouseInScreenPoint= GUIUtility.GUIToScreenPoint(mousePosition);
+                        var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(area.x, area.y));
+                        var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, area.width, area.height);
+                        myDataSource.MouseDownOn(keyValue.Key, mouseInScreenPoint, areaInScreenPosition);
+                        Event.current.Use();
                         return;
                     }
                 }

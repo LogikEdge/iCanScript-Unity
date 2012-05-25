@@ -112,7 +112,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
             iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
             labelStyle= EditorStyles.whiteLabel;
 		}
-		bool result= ShouldUseFoldout() ? EditorGUI.Foldout(displayArea, foldout, "") : false;
+		bool result= ShouldUseFoldout() ? EditorGUI.Foldout(new Rect(displayArea.x, displayArea.y, myFoldOffset, displayArea.height), foldout, "") : false;
         var content= GetContent();
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
@@ -157,7 +157,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         return myCursor.IsNode;
     }
     // ---------------------------------------------------------------------------------
-    public void MouseDownOn(object key, Rect screenArea) {
+    public void MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea) {
         if(key == null) {
             mySelected= null;
             return;

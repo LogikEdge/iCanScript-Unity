@@ -48,7 +48,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     // Returns the tooltip for the given node.
-	string GetNodeTooltip(iCS_EditorObject node, iCS_IStorage iStorage) {
+	public static string GetNodeTooltip(iCS_EditorObject node, iCS_IStorage iStorage) {
 		string tooltip= "Name: "+(node.RawName ?? "")+"\n";
 		// Type information
 		Type runtimeType= node.RuntimeType;
