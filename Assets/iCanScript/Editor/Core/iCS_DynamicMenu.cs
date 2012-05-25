@@ -598,8 +598,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
-        iStorage.RegisterUndo("Deleting: "+selectedObject.Name);
-        iStorage.DestroyInstance(selectedObject);
+        iCS_EditorUtility.DestroyObject(selectedObject, iStorage);
         Reset();
     }
 	// ----------------------------------------------------------------------
