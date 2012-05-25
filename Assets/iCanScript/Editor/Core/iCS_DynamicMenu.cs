@@ -597,10 +597,10 @@ public class iCS_DynamicMenu {
         return storage.CreateMethod(parent.InstanceId, ProcessMenuPosition, desc);            
     }
 	// ----------------------------------------------------------------------
-    bool DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        bool isDestroyed= iCS_EditorUtility.DestroyObject(selectedObject, storage);
+    void DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
+        iStorage.RegisterUndo("Deleting: "+selectedObject.Name);
+        iStorage.DestroyInstance(selectedObject);
         Reset();
-        return isDestroyed;
     }
 	// ----------------------------------------------------------------------
     bool AsChildNodeWithName(iCS_EditorObject parent, string name, iCS_IStorage storage) {

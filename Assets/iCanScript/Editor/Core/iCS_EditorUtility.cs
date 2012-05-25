@@ -70,14 +70,14 @@ public static class iCS_EditorUtility {
     // Ask the user confirmation to destroy the object.  True is returned
     // if the user has accepted to delete the object; false is returned 
     // otherwise.
-    public static bool DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
-            storage.RegisterUndo("Delete");
-            storage.DestroyInstance(selectedObject.InstanceId);                        
-            return true;
-        }            
-        return false;
-    }
+//    public static bool DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+//        if(EditorUtility.DisplayDialog("Deleting "+selectedObject.ObjectType, "Are you sure you want to remove "+selectedObject.ObjectType+": "+selectedObject.Name, "Delete", "Cancel")) {
+//            storage.RegisterUndo("Delete");
+//            storage.DestroyInstance(selectedObject.InstanceId);                        
+//            return true;
+//        }            
+//        return false;
+//    }
 
     // ======================================================================
     // GUI helpers
