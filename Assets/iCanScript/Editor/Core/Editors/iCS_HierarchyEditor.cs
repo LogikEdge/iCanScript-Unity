@@ -38,11 +38,11 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                 break;
             }
             case EventType.MouseDown: {
-                /*
-                    FIXME: Should remove selection when clicking outside scroll view.
-                */
-//                myController.MouseDownOn(null, frameArea);
-//                Event.current.Use();
+                var mouseInScreenPoint= GUIUtility.GUIToScreenPoint(mousePosition);
+                var areaInScreenPoint= GUIUtility.GUIToScreenPoint(new Vector2(frameArea.x, frameArea.y));
+                var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, frameArea.width, frameArea.height);
+                myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
+                Event.current.Use();
 				break;
 			}
             case EventType.MouseUp: {

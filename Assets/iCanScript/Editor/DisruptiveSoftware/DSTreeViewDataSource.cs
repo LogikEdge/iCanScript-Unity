@@ -3,6 +3,8 @@ using System.Collections;
 
 public interface DSTreeViewDataSource {
 	void	Reset();
+	void    BeginDisplay();
+	void    EndDisplay();
 	bool	MoveToNext();
 	bool	MoveToNextSibling();
 	bool	MoveToFirstChild();

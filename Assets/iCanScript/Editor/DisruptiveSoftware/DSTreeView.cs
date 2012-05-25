@@ -37,6 +37,7 @@ public class DSTreeView : DSView {
 		myDataSource.Reset();
 		if(!myDataSource.MoveToNext()) return;
 
+        myDataSource.BeginDisplay();
 		while(true) {
 			// Determine if current object is folded.
 			object key= myDataSource.CurrentObjectKey();
@@ -62,6 +63,7 @@ public class DSTreeView : DSView {
 				while(!myDataSource.MoveToNextSibling()) {
 					if(!myDataSource.MoveToParent()) {
                         ProcessEvents(frameArea);
+                        myDataSource.EndDisplay();
 						return;
 					} else {
 						--indent;
@@ -71,6 +73,7 @@ public class DSTreeView : DSView {
 				if(!myDataSource.MoveToFirstChild()) {
 					if(!myDataSource.MoveToNextSibling()) {
 						if(!myDataSource.MoveToNext()) {
+                            myDataSource.EndDisplay();
                             ProcessEvents(frameArea);
 							return;
 						} else {

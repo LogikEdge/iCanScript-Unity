@@ -6,19 +6,21 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject	    myTarget    = null;
-	iCS_IStorage		    myStorage   = null;
-	iCS_EditorObject		myCursor    = null;
-	DSTreeView				myTreeView  = null;
-	float                   myFoldOffset= 0;
-	iCS_EditorObject        mySelected  = null;
+	iCS_EditorObject	    myTarget       = null;
+	iCS_IStorage		    myStorage      = null;
+	iCS_EditorObject		myCursor       = null;
+	DSTreeView				myTreeView     = null;
+	float                   myFoldOffset   = 0;
+	iCS_EditorObject        mySelected     = null;
+	bool                    myIsNameEditing= false;
 	
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-	public DSView 			View 	 { get { return myTreeView; }}
-	public iCS_EditorObject Target	 { get { return myTarget; }}
-	public iCS_EditorObject Selected { get { return mySelected; }}
+	public DSView 			View 	   { get { return myTreeView; }}
+	public iCS_EditorObject Target	   { get { return myTarget; }}
+	public iCS_EditorObject Selected   { get { return mySelected; }}
+	public bool             IsSelected { get { return myCursor == mySelected; }}
 	
     // =================================================================================
     // Constants
@@ -40,6 +42,8 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // TreeViewDataSource
     // ---------------------------------------------------------------------------------
 	public void	Reset() { myCursor= myTarget; }
+	public void BeginDisplay() { EditorGUIUtility.LookLikeControls(); }
+	public void EndDisplay() {}
 	public bool	MoveToNext() {
 		if(myStorage == null) return false;
 		if(MoveToFirstChild()) return true;
@@ -107,7 +111,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 		if(myStorage == null) return true;
         // Show selected outline.
         GUIStyle labelStyle= EditorStyles.label;
-		if(myCursor == mySelected) {
+		if(IsSelected) {
             Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
             iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
             labelStyle= EditorStyles.whiteLabel;
@@ -116,7 +120,12 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         var content= GetContent();
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
-	    GUI.Label(new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y, pos.width-(kIconWidth+kLabelSpacer), pos.height), content.text, labelStyle);
+        pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y, pos.width-(kIconWidth+kLabelSpacer), pos.height);
+        if(myIsNameEditing && IsSelected) {
+    	    myCursor.Name= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height), myCursor.RawName);            
+        } else {
+    	    GUI.Label(pos, content.text, labelStyle);            
+        }
 		return result;
 //        bool result= false;
 //        if(ShouldUseFoldout()) {
@@ -163,12 +172,16 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
             return;
         }
         iCS_EditorObject eObj= key as iCS_EditorObject;
+        myIsNameEditing= eObj.IsNameEditable && eObj == mySelected;
         mySelected= eObj;
         FocusGraphOnSelected();
     }
     // ---------------------------------------------------------------------------------
     void FocusGraphOnSelected() {
         myStorage.SelectedObject= mySelected;
+        var myEditor= EditorWindow.focusedWindow;
         iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(mySelected);
+        myEditor.Focus();
+        
     }
 }
