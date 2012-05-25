@@ -33,6 +33,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
      	Vector2 mousePosition= Event.current.mousePosition;
+        var selected= myController.Selected;
 		switch(Event.current.type) {
             case EventType.ScrollWheel: {
                 break;
@@ -47,6 +48,51 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 			}
             case EventType.MouseUp: {
 				break;
+			}
+			case EventType.KeyDown: {
+				var ev= Event.current;
+				if(ev.keyCode == KeyCode.None) break;
+                switch(ev.keyCode) {
+                    case KeyCode.Backspace:
+                    case KeyCode.Delete: {
+                        IStorage.RegisterUndo("Deleting: "+selected.Name);
+                        IStorage.DestroyInstance(selected);
+                        myController.Selected= null;
+                        ev.Use();
+                        break;
+                    }
+                    // Tree navigation
+                    case KeyCode.UpArrow: {
+                        break;
+                    }
+                    case KeyCode.DownArrow: {
+                        break;
+                    }
+                    case KeyCode.F: {
+                        if(selected != null) {
+                            iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(selected);                            
+                        }
+                        Event.current.Use();
+                        break;
+                    }
+                    // Fold/Minimize/Maximize.
+                    case KeyCode.Return: {
+                        break;
+                    }
+                    case KeyCode.H: {  // Show Help
+                        break;
+                    }
+                    // myBookmarks
+                    case KeyCode.B: {  // myBookmark selected object
+                        Event.current.Use();
+                        break;
+                    }
+                    case KeyCode.G: {  // Goto bookmark
+                        Event.current.Use();
+                        break;
+                    }
+                }
+                break;
 			}
         }   
     }

@@ -19,7 +19,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public DSView 			View 	   { get { return myTreeView; }}
 	public iCS_EditorObject Target	   { get { return myTarget; }}
-	public iCS_EditorObject Selected   { get { return mySelected; }}
+	public iCS_EditorObject Selected   { get { return mySelected; } set { mySelected= value; }}
 	public bool             IsSelected { get { return myCursor == mySelected; }}
 	
     // =================================================================================
@@ -120,7 +120,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         var content= GetContent();
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
-        pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);
+        pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
         if(myIsNameEditing && IsSelected) {
     	    myCursor.Name= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), myCursor.RawName);            
         } else {
