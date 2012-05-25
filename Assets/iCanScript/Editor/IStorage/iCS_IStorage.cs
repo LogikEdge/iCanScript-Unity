@@ -544,11 +544,8 @@ public partial class iCS_IStorage {
     public void Fold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
         if(eObj.IsFunction) {
-            if(eObj.IsMinimized) {
-                Maximize(eObj);
-            } else {
-                Minimize(eObj);                
-            }
+            Maximize(eObj);
+            SetDirty(eObj);
             return;
         }
         eObj.Fold();

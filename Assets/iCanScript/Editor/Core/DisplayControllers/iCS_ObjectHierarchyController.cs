@@ -11,7 +11,6 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 	iCS_EditorObject		myCursor     = null;
 	DSTreeView				myTreeView   = null;
 	float                   myFoldOffset = 0;
-	iCS_EditorObject        mySelected   = null;
 	bool                    myNameEdition= false;
 	
     // =================================================================================
@@ -19,8 +18,8 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public DSView 			View 	    { get { return myTreeView; }}
 	public iCS_EditorObject Target	    { get { return myTarget; }}
-	public iCS_EditorObject Selected    { get { return mySelected; } set { mySelected= value; }}
-	public bool             IsSelected  { get { return myCursor == mySelected; }}
+	public iCS_EditorObject Selected    { get { return myStorage.SelectedObject; } set { myStorage.SelectedObject= value; }}
+	public bool             IsSelected  { get { return myCursor == Selected; }}
 	public bool             NameEdition { get { return myNameEdition; } set { myNameEdition= value; }}
 	
     // =================================================================================
@@ -169,19 +168,17 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     public void MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea) {
         if(key == null) {
-            mySelected= null;
             return;
         }
         iCS_EditorObject eObj= key as iCS_EditorObject;
-        myNameEdition= eObj.IsNameEditable && eObj == mySelected;
-        mySelected= eObj;
+        myNameEdition= eObj.IsNameEditable && eObj == Selected;
+        Selected= eObj;
         FocusGraphOnSelected();
     }
     // ---------------------------------------------------------------------------------
     void FocusGraphOnSelected() {
-        myStorage.SelectedObject= mySelected;
         var myEditor= EditorWindow.focusedWindow;
-        iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(mySelected);
+        iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(Selected);
         myEditor.Focus();
         
     }

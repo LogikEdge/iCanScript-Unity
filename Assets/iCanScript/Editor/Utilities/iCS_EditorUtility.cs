@@ -71,13 +71,33 @@ public static class iCS_EditorUtility {
     // Ask the user confirmation to destroy the object.  True is returned
     // if the user has accepted to delete the object; false is returned 
     // otherwise.
-    public static void DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
+    public static void SafeDestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
         iStorage.RegisterUndo("Removing: "+selectedObject.Name);
         iStorage.DestroyInstance(selectedObject.InstanceId);                        
     }
 
+
     // ======================================================================
     // GUI helpers
+	// ----------------------------------------------------------------------
+    public static void MakeVisible(iCS_EditorObject eObj, iCS_IStorage iStorage) {
+        if(eObj == null || iStorage == null) return;
+        if(eObj.IsNode) {
+            for(var parent= iStorage.GetParent(eObj); parent != null && parent.InstanceId != 0; parent= iStorage.GetParent(parent)) {
+                iStorage.Maximize(parent);
+            }            
+            return;
+        }
+        if(eObj.IsPort) {
+            var portParent= iStorage.GetParent(eObj);
+            if(!iStorage.IsVisible(portParent) || iStorage.IsMinimized(portParent)) {
+                Debug.Log("Folding parent");
+                iStorage.Fold(portParent);
+            }
+            MakeVisible(portParent, iStorage);
+            return;            
+        }
+    }
 	// ----------------------------------------------------------------------
 	public static float GetGUIStyleHeight(GUIStyle style) {
 		float height= style.lineHeight+style.border.vertical;

@@ -7,13 +7,12 @@ public abstract class iCS_EditorWindow : EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject	mySelectedObject= null;
 	iCS_IStorage		myIStorage      = null;
 
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-	public iCS_EditorObject SelectedObject { get { return mySelectedObject; } set { mySelectedObject= value; }}
+	public iCS_EditorObject SelectedObject { get { return myIStorage != null ? IStorage.SelectedObject : null; } set { if(IStorage != null) IStorage.SelectedObject= value; }}
 	public iCS_IStorage 	IStorage 	   { get { return myIStorage; } set { myIStorage= value; }}
 	
     // =================================================================================

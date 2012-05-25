@@ -31,6 +31,10 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 		ProcessEvents(frameArea);
 	}
 	// ----------------------------------------------------------------------
+    void OnInspectorUpdate() {
+        Repaint();
+    }
+	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
      	Vector2 mousePosition= Event.current.mousePosition;
         var selected= myController.Selected;
@@ -56,9 +60,19 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                     // Delete object under cursor.
                     case KeyCode.Backspace:
                     case KeyCode.Delete: {
-                        iCS_EditorUtility.DestroyObject(selected, IStorage);
+                        iCS_EditorUtility.SafeDestroyObject(selected, IStorage);
                         myController.Selected= null;
                         ev.Use();
+                        break;
+                    }
+                    case KeyCode.F: {
+                        if(selected != null) {
+                            IStorage.RegisterUndo("Make Visible: "+selected.Name);
+                            iCS_EditorUtility.MakeVisible(selected, IStorage);
+                            iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(selected);
+                            IStorage.SelectedObject= selected;
+                        }
+                        Event.current.Use();
                         break;
                     }
                     // Remove name edition.
@@ -72,13 +86,6 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                         break;
                     }
                     case KeyCode.DownArrow: {
-                        break;
-                    }
-                    case KeyCode.F: {
-                        if(selected != null) {
-                            iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(selected);                            
-                        }
-                        Event.current.Use();
                         break;
                     }
                     // Fold/Minimize/Maximize.
