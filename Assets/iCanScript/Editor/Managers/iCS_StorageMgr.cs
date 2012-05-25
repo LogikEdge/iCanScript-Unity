@@ -8,18 +8,17 @@ public static class iCS_StorageMgr {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    static bool                     myIsPlaying     = false;
-    static bool                     myIsOutdated    = false;
-	static iCS_IStorage 		    myIStorage      = null;
-	static iCS_EditorObject			mySelectedObject= null;
+    static bool             myIsPlaying     = false;
+    static bool             myIsOutdated    = false;
+	static iCS_IStorage 	myIStorage      = null;
+	static iCS_EditorObject mySelectedObject= null;
 	
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-    public static iCS_IStorage     IStorage             { get { return myIStorage; }}
-    public static iCS_Storage      Storage              { get { return IStorage != null ? IStorage.Storage : null; }}
-    public static iCS_EditorObject SelectedObject   	{ get { return IStorage != null ? IStorage.SelectedObject : null; }}
-	
+    public static iCS_IStorage     IStorage         { get { return myIStorage; }}
+    public static iCS_Storage      Storage          { get { return IStorage != null ? IStorage.Storage : null; }}
+    public static iCS_EditorObject SelectedObject   { get { return IStorage != null ? IStorage.SelectedObject : null; } set { if(IStorage != null) IStorage.SelectedObject= value; }}
 	
     // =================================================================================
     // Selection Update.
