@@ -14,4 +14,10 @@ public static partial class Prelude {
         foreach(var obj in lst) if(fnc(obj)) return true;
         return false;
     }
+    // ----------------------------------------------------------------------
+    // until :: (a->bool)->(a->a)->a->a
+    public static A until<A>(Func<A,bool> cond, Func<A,A> fnc, A value) {
+        while(cond(value)) value= fnc(value);
+        return value;
+    }
 }

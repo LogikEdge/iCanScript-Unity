@@ -1,17 +1,21 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 
 public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject	    myTarget     = null;
-	iCS_IStorage		    myStorage    = null;
-	iCS_EditorObject		myCursor     = null;
-	DSTreeView				myTreeView   = null;
-	float                   myFoldOffset = 0;
-	bool                    myNameEdition= false;
+	iCS_EditorObject    myTarget       = null;
+	iCS_IStorage	    myStorage      = null;
+	iCS_EditorObject    myCursor       = null;
+	DSTreeView		    myTreeView     = null;
+	float               myFoldOffset   = 0;
+	bool                myNameEdition  = false;
+	string              myFilterString = null;
+	List<bool>          myFilterFlags  = null;
 	
     // =================================================================================
     // Properties
@@ -35,9 +39,44 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 		myTarget= target;
 		myStorage= storage;
 		myCursor= target;
+		
+        /*
+            FIXME: Filter test.
+        */
+		myFilterString= "joy";
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
 	}
 	
+	// =================================================================================
+    // Filter & reorder.
+    // ---------------------------------------------------------------------------------
+    void BuildFiltered() {
+        // Create filter flag list initilialized to filter out.
+        myFilterFlags= Prelude.map(_=> false, myStorage.EditorObjects);
+        // Create base flags from simple filter.
+        Prelude.forEach(
+            c=> {
+                if(myStorage.IsValid(c) && FilterIn(c)) {
+                    // Indicate that wwe want this object ...
+                    myFilterFlags[c.InstanceId]= true;
+                    // ... and all of its parents ...
+                    Prelude.until(
+                        myStorage.IsValid,
+                        p=> { myFilterFlags[p.InstanceId]= true; return myStorage.GetParent(p); },
+                        myStorage.GetParent(c)
+                    );
+                    // ... as well as all of its children.                    
+                }
+            },
+            myStorage.EditorObjects
+        );
+    }
+    // ---------------------------------------------------------------------------------
+    bool FilterIn(iCS_EditorObject eObj) {
+        if(myFilterString == null) return true;
+        return eObj.Name.ToUpper().IndexOf(myFilterString.ToUpper()) != -1;
+    }
+    
 	// =================================================================================
     // TreeViewDataSource
     // ---------------------------------------------------------------------------------
@@ -65,7 +104,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         if(parent == null) return false;
 		return myStorage.ForEachChild(parent,
 			c=> {
-				if(takeNext) {
+				if(takeNext && FilterIn(c)) {
 					myCursor= c;
 					return true;
 				}
