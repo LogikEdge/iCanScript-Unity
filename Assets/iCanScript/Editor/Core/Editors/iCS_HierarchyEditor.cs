@@ -26,9 +26,17 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     void OnGUI() {
         iCS_EditorMgr.Update();
 		if(IStorage == null) return;
-        var frameArea= new Rect(0,0,position.width,position.height);
+		var toolbarRect= ShowToolbar();
+        var frameArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
 		myMainView.Display(frameArea);
 		ProcessEvents(frameArea);
+	}
+	// ----------------------------------------------------------------------
+	Rect ShowToolbar() {
+		var toolbarRect= iCS_ToolbarUtility.BuildToolbar(position.width);
+		string searchString= myController.SearchString ?? "";
+		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 200.0f, searchString, 0, 0, true);
+		return toolbarRect;
 	}
 	// ----------------------------------------------------------------------
     void OnInspectorUpdate() {
