@@ -17,8 +17,7 @@ public static partial class Prelude {
         int len= length(l1);
         result.Clear();
         if(result.Capacity < len) result.Capacity= len;        
-        for(int i= 0; i < len; ++i)
-            result[i]= fnc(l1[i]);
+		forEach(i=> result.Add(fnc(i)), l1);
         return result;
     }
 

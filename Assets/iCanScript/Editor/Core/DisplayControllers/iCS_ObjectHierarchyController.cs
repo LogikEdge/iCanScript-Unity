@@ -53,17 +53,18 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void BuildFiltered() {
         // Build filter list of object.
-        myFilterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
+//        myFilterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
+        myFilterFlags= Prelude.map(_=> true, myStorage.EditorObjects);
         // Make certain the parents are also filtered in...
-//        for(int i= 0; i < myFilterFlags.Count; ++i) {
-//            if(myFilterFlags[i]) {
-//                Prelude.until(
-//                    myStorage.IsValid,
-//                    id=> { myFilterFlags[id]= true; return myStorage.EditorObjects[id].ParentId; },
-//                    myStorage.EditorObjects[i].ParentId
-//                );
-//            }
-//        }
+        for(int i= 0; i < myFilterFlags.Count; ++i) {
+            if(myFilterFlags[i]) {
+                Prelude.until(
+                    myStorage.IsValid,
+                    id=> { myFilterFlags[id]= true; return myStorage.EditorObjects[id].ParentId; },
+                    myStorage.EditorObjects[i].ParentId
+                );
+            }
+        }
     }
     // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_EditorObject eObj) {
