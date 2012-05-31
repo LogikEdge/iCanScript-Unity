@@ -44,6 +44,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
             FIXME: Filter test.
         */
 		myFilterString= "joy";
+		BuildFiltered();
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
 	}
 	
@@ -51,30 +52,25 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // Filter & reorder.
     // ---------------------------------------------------------------------------------
     void BuildFiltered() {
-        // Create filter flag list initilialized to filter out.
-        myFilterFlags= Prelude.map(_=> false, myStorage.EditorObjects);
-        // Create base flags from simple filter.
-        Prelude.forEach(
-            c=> {
-                if(myStorage.IsValid(c) && FilterIn(c)) {
-                    // Indicate that wwe want this object ...
-                    myFilterFlags[c.InstanceId]= true;
-                    // ... and all of its parents ...
-                    Prelude.until(
-                        myStorage.IsValid,
-                        p=> { myFilterFlags[p.InstanceId]= true; return myStorage.GetParent(p); },
-                        myStorage.GetParent(c)
-                    );
-                    // ... as well as all of its children.                    
-                }
-            },
-            myStorage.EditorObjects
-        );
+        // Build filter list of object.
+        myFilterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
+        // Make certain the parents are also filtered in...
+//        for(int i= 0; i < myFilterFlags.Count; ++i) {
+//            if(myFilterFlags[i]) {
+//                Prelude.until(
+//                    myStorage.IsValid,
+//                    id=> { myFilterFlags[id]= true; return myStorage.EditorObjects[id].ParentId; },
+//                    myStorage.EditorObjects[i].ParentId
+//                );
+//            }
+//        }
     }
     // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_EditorObject eObj) {
+        if(eObj == null || !myStorage.IsValid(eObj)) return false;
         if(myFilterString == null) return true;
-        return eObj.Name.ToUpper().IndexOf(myFilterString.ToUpper()) != -1;
+        if(eObj.Name.ToUpper().IndexOf(myFilterString.ToUpper()) != -1) return true;
+        return FilterIn(myStorage.GetParent(eObj));
     }
     
 	// =================================================================================
