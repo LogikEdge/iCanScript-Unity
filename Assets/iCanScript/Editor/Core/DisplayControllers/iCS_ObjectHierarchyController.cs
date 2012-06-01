@@ -8,14 +8,15 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject    myTarget       = null;
-	iCS_IStorage	    myStorage      = null;
-	iCS_EditorObject    myCursor       = null;
-	DSTreeView		    myTreeView     = null;
-	float               myFoldOffset   = 0;
-	bool                myNameEdition  = false;
-	string              mySearchString = null;
-	List<bool>          myFilterFlags  = null;
+	iCS_EditorObject    			myTarget       = null;
+	iCS_IStorage	    			myStorage      = null;
+	iCS_EditorObject    			myCursor       = null;
+	DSTreeView		    			myTreeView     = null;
+	float               			myFoldOffset   = 0;
+	bool                			myNameEdition  = false;
+	string              			mySearchString = null;
+	List<bool>          			myFilterFlags  = null;
+	Prelude.Tree<iCS_EditorObject>	myTree		   = null;
 	
     // =================================================================================
     // Properties
@@ -25,7 +26,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 	public iCS_EditorObject Selected     { get { return myStorage.SelectedObject; } set { myStorage.SelectedObject= value; }}
 	public bool             IsSelected   { get { return myCursor == Selected; }}
 	public bool             NameEdition  { get { return myNameEdition; } set { myNameEdition= value; }}
-	public string			SearchString { get { return mySearchString; } set { if(mySearchString != value) { mySearchString= value; BuildFiltered(); }}}
+	public string			SearchString { get { return mySearchString; } set { if(mySearchString != value) { mySearchString= value; BuildTree(); }}}
 	
     // =================================================================================
     // Constants
@@ -40,17 +41,17 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 		myTarget= target;
 		myStorage= storage;
 		myCursor= target;
-		BuildFiltered();
+		BuildTree();
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
 	}
 	
 	// =================================================================================
     // Filter & reorder.
     // ---------------------------------------------------------------------------------
-    void BuildFiltered() {
-        // Build filter list of object.
+    void BuildTree() {
+        // Build filter list of object...
         myFilterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
-        // Make certain the parents are also filtered in...
+        // ... make certain the parents are also filtered in !!!
         for(int i= 0; i < myFilterFlags.Count; ++i) {
             if(myFilterFlags[i]) {
                 Prelude.until(
@@ -60,7 +61,22 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
                 );
             }
         }
+		// Build tree and sort it elements.
+		if(!myFilterFlags[0]) {
+			myTree= null;
+			return;
+		}
+		myTree= BuildTreeNode(myStorage.EditorObjects[0]);
     }
+	Prelude.Tree<iCS_EditorObject> BuildTreeNode(iCS_EditorObject nodeRoot) {
+		Prelude.Tree<iCS_EditorObject> tree= new Prelude.Tree<iCS_EditorObject>(nodeRoot);
+		myStorage.ForEachChild(nodeRoot,
+			c=> {
+				if(myFilterFlags[c.InstanceId]) tree.AddChild(BuildTreeNode(c));
+			}
+		);
+		return tree;
+	}
     // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_EditorObject eObj) {
         if(eObj == null || !myStorage.IsValid(eObj)) return false;
