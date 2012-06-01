@@ -48,7 +48,6 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // Filter & reorder.
     // ---------------------------------------------------------------------------------
     void BuildFiltered() {
-		Debug.Log("Rebuilding filter flags");
         // Build filter list of object.
         myFilterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
         // Make certain the parents are also filtered in...
