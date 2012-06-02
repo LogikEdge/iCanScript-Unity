@@ -127,10 +127,15 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public bool	MoveToNextSibling() {
 		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
-		myIterStackNode.Pop();
-		myIterStackChildIdx.Pop();
-		if(myIterStackNode.Count == 0) return false;
-		return MoveToNextChild();
+		if(myIterStackNode.Count == 1) return false;
+		var savedNode= myIterStackNode.Pop();
+		var savedIdx= myIterStackChildIdx.Pop();
+		if(!MoveToNextChild()) {
+			myIterStackNode.Push(savedNode);
+			myIterStackChildIdx.Push(savedIdx);
+			return false;
+		}
+		return true;
 	}
     // ---------------------------------------------------------------------------------
 	public bool MoveToParent() {
