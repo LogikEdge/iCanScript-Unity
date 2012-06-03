@@ -90,9 +90,13 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                     }
                     // Tree navigation
                     case KeyCode.UpArrow: {
+                        myController.SelectPrevious();
+                        ev.Use();
                         break;
                     }
                     case KeyCode.DownArrow: {
+                        myController.SelectNext();
+                        ev.Use();
                         break;
                     }
                     // Fold/Minimize/Maximize.

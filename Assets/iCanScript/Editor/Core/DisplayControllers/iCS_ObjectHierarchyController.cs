@@ -8,14 +8,17 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject    			myTarget       = null;
-	iCS_IStorage	    			myStorage      = null;
-	DSTreeView		    			myTreeView     = null;
-	float               			myFoldOffset   = 0;
-	bool                			myNameEdition  = false;
-	string              			mySearchString = null;
-	Prelude.Tree<iCS_EditorObject>	myTree		   = null;
-
+	iCS_EditorObject    			        myTarget       = null;
+	iCS_IStorage	    			        myStorage      = null;
+	DSTreeView		    			        myTreeView     = null;
+	float               			        myFoldOffset   = 0;
+	bool                			        myNameEdition  = false;
+	string              			        mySearchString = null;
+	Prelude.Tree<iCS_EditorObject>	        myTree		   = null;
+    // Used to move selection up/down
+    iCS_EditorObject                        myLastDisplayed  = null;
+    int                                     myChangeSelection= 0;
+    // Used to iterate through content
 	Stack<Prelude.Tree<iCS_EditorObject>>	myIterStackNode    = null;
 	Stack<int>								myIterStackChildIdx= null;
 	
@@ -200,6 +203,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         } else {
     	    GUI.Label(pos, content.text, labelStyle);            
         }
+        ProcessChangeSelection();
 		return result;
 //        bool result= false;
 //        if(ShouldUseFoldout()) {
@@ -251,10 +255,35 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         FocusGraphOnSelected();
     }
     // ---------------------------------------------------------------------------------
+    public void SelectPrevious() {
+        myChangeSelection= -1;
+    }
+    // ---------------------------------------------------------------------------------
+    public void SelectNext() {
+        myChangeSelection= 1;
+    }
+    // ---------------------------------------------------------------------------------
+    void ProcessChangeSelection() {
+        if(myChangeSelection == -1) {   // Move up
+            if(Selected == IterValue) {
+                Selected= myLastDisplayed;
+                myChangeSelection= 0;
+                FocusGraphOnSelected();                
+            }
+        }
+        if(myChangeSelection == 1) {    // Move down
+            if(Selected == myLastDisplayed) {
+                Selected= IterValue;
+                myChangeSelection= 0;
+                FocusGraphOnSelected();
+            }
+        }
+        myLastDisplayed= IterValue;
+    }
+    // ---------------------------------------------------------------------------------
     void FocusGraphOnSelected() {
         var myEditor= EditorWindow.focusedWindow;
         iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(Selected);
         myEditor.Focus();
-        
     }
 }
