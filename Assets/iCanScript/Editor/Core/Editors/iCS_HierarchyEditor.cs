@@ -56,6 +56,8 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                 var areaInScreenPosition= new Rect(areaInScreenPoint.x, areaInScreenPoint.y, frameArea.width, frameArea.height);
                 myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
                 Event.current.Use();
+                // Move keyboard focus to this window.
+                Focus();
 				break;
 			}
             case EventType.MouseUp: {
