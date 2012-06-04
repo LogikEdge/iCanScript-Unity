@@ -86,16 +86,15 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                         ev.Use();
                         break;
                     }
-                    case KeyCode.F: {
-                        if(selected != null) {
-                            iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
-                        }
-                        Event.current.Use();
-                        break;
-                    }
                     // Remove name edition.
                     case KeyCode.Escape: {
                         myController.NameEdition= false;
+                        ev.Use();
+                        break;
+                    }
+                    // Fold/Unfold toggle
+                    case KeyCode.Return: {
+                        myController.ToggleFoldUnfoldSelected();
                         ev.Use();
                         break;
                     }
@@ -112,18 +111,13 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                         ev.Use();
                         break;
                     }
-                    case 'h': {  // Show Help
-                        break;
-                    }
-                    // myBookmarks
-                    case 'b': {  // myBookmark selected object
+                    case 'f': {
+                        if(selected != null) {
+                            iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
+                        }
                         Event.current.Use();
                         break;
                     }
-                    case 'g': {  // Goto bookmark
-                        Event.current.Use();
-                        break;
-                    }                    
                 }
                 break;
 			}

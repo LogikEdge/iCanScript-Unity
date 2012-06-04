@@ -132,7 +132,6 @@ public class DSTreeView : DSView {
     }
     // ----------------------------------------------------------------------
     public void Fold(object key) {
-        Debug.Log("Folding");
 		bool showChildren;
 		if(myIsFoldedDictionary.TryGetValue(key, out showChildren)) {
             if(showChildren) {
@@ -142,7 +141,6 @@ public class DSTreeView : DSView {
     }
     // ----------------------------------------------------------------------
     public void Unfold(object key) {
-        Debug.Log("Unfolding");
 		bool showChildren;
 		if(!myIsFoldedDictionary.TryGetValue(key, out showChildren)) {
 			myIsFoldedDictionary.Add(key, true);
@@ -151,6 +149,16 @@ public class DSTreeView : DSView {
 		        myIsFoldedDictionary[key]= true;
 		    }
 		}        
+    }
+    // ----------------------------------------------------------------------
+    public void ToggleFoldUnfold(object key) {
+		bool showChildren= false;
+		myIsFoldedDictionary.TryGetValue(key, out showChildren);
+        if(showChildren) {
+            Fold(key);
+        } else {
+            Unfold(key);
+        }
     }
     // ----------------------------------------------------------------------
     public override AnchorEnum GetAnchor() {

@@ -290,10 +290,17 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     }
     // ---------------------------------------------------------------------------------
     public void FoldSelected() {
+        if(Selected == null) return;
         myTreeView.Fold(Selected);
     }
     // ---------------------------------------------------------------------------------
     public void UnfoldSelected() {
+        if(Selected == null) return;
         myTreeView.Unfold(Selected);
+    }
+    // ---------------------------------------------------------------------------------
+    public void ToggleFoldUnfoldSelected() {
+        if(Selected == null) return;
+        myTreeView.ToggleFoldUnfold(Selected);
     }
 }
