@@ -159,6 +159,9 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                 break;
             }
 			case EventType.KeyDown: {
+			    /*
+			     FIXME: use Event.character for all alphanumeric keyboard commands.
+			    */
 			    if(!HasKeyboardFocus) break;
 				var ev= Event.current;
 				if(ev.keyCode == KeyCode.None) break;

@@ -257,10 +257,12 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     public void SelectPrevious() {
         myChangeSelection= -1;
+        NameEdition= false;
     }
     // ---------------------------------------------------------------------------------
     public void SelectNext() {
         myChangeSelection= 1;
+        NameEdition= false;
     }
     // ---------------------------------------------------------------------------------
     void ProcessChangeSelection() {
