@@ -16,7 +16,7 @@ public class iCS_CreateClassController {
 
     DSVerticalLayoutView            myMainView            = null;
 	DSSearchView					mySearchView          = null;
-    DSCellView                      myConstructorView     = null;
+//    DSCellView                      myConstructorView     = null;
     iCS_ClassListController     	myClassListController = null;
 	iCS_ClassVariablesController	myVariablesController = null;
 	iCS_ClassOperationsController	myOperationsController= null;
@@ -82,7 +82,7 @@ public class iCS_CreateClassController {
         // Create children views.
 		mySearchView= new DSSearchView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, 12, OnSearch);
 		mySearchView.Anchor= DSView.AnchorEnum.Center;
-        myConstructorView= new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, DrawConstructorCell, GetConstrcutorContentSize);
+//        myConstructorView= new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), false, DrawConstructorCell, GetConstrcutorContentSize);
 		
         myClassListController= new iCS_ClassListController(OnClassSelection);
 		myVariablesController= new iCS_ClassVariablesController(myTarget.RuntimeType, myStorage, VariableTitle, myTarget);

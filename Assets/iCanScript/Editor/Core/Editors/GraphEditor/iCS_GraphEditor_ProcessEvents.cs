@@ -11,7 +11,6 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     // Fields
 	// ----------------------------------------------------------------------
 	iCS_ISubEditor		mySubEditor       = null;
-	iCS_EditorObject	myObjectUnderMouse= null;
     
     // ======================================================================
     // USER INTERACTIONS

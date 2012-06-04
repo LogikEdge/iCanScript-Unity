@@ -112,6 +112,9 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                         break;
                     }
                     case 'f': {
+                        /*
+                            TODO: Should be able to undo show in graph if it has opened a node.
+                        */
                         if(selected != null) {
                             iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
                         }

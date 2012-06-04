@@ -9,7 +9,6 @@ public static class iCS_StorageMgr {
     // Fields
     // ---------------------------------------------------------------------------------
     static bool             myIsPlaying     = false;
-    static bool             myIsOutdated    = false;
 	static iCS_IStorage 	myIStorage      = null;
 	static iCS_EditorObject mySelectedObject= null;
 	
@@ -40,12 +39,10 @@ public static class iCS_StorageMgr {
 	public static void Update() {
 		GameObject go= Selection.activeGameObject;
 		if(go == null) {
-            myIsOutdated= true;
 		    return;
 		}
 		iCS_Storage storage= go.GetComponent<iCS_Storage>();
         if(storage == null) {
-            myIsOutdated= true;
             return;
         }
 		// Verify for storage change.
@@ -54,13 +51,11 @@ public static class iCS_StorageMgr {
             myIsPlaying= isPlaying;
 			myIStorage= new iCS_IStorage(storage);
 			mySelectedObject= myIStorage.SelectedObject;
-            myIsOutdated= false;
 			return;
 		}
 		// Verify for selected object change.
 		if(mySelectedObject != myIStorage.SelectedObject) {
 			mySelectedObject= myIStorage.SelectedObject;
-            myIsOutdated= false;
 		}
 	}
 }
