@@ -131,6 +131,28 @@ public class DSTreeView : DSView {
 		}
     }
     // ----------------------------------------------------------------------
+    public void Fold(object key) {
+        Debug.Log("Folding");
+		bool showChildren;
+		if(myIsFoldedDictionary.TryGetValue(key, out showChildren)) {
+            if(showChildren) {
+                myIsFoldedDictionary[key]= false;
+            }
+		}
+    }
+    // ----------------------------------------------------------------------
+    public void Unfold(object key) {
+        Debug.Log("Unfolding");
+		bool showChildren;
+		if(!myIsFoldedDictionary.TryGetValue(key, out showChildren)) {
+			myIsFoldedDictionary.Add(key, true);
+		} else {
+		    if(!showChildren) {
+		        myIsFoldedDictionary[key]= true;
+		    }
+		}        
+    }
+    // ----------------------------------------------------------------------
     public override AnchorEnum GetAnchor() {
         return myMainView.Anchor;
     }

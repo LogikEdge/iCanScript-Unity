@@ -286,4 +286,12 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(Selected);
         myEditor.Focus();
     }
+    // ---------------------------------------------------------------------------------
+    public void FoldSelected() {
+        myTreeView.Fold(Selected);
+    }
+    // ---------------------------------------------------------------------------------
+    public void UnfoldSelected() {
+        myTreeView.Unfold(Selected);
+    }
 }

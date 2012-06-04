@@ -65,8 +65,19 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 			}
 			case EventType.KeyDown: {
 				var ev= Event.current;
-				if(ev.keyCode == KeyCode.None) break;
+				if(!ev.isKey) break;
                 switch(ev.keyCode) {
+                    // Tree navigation
+                    case KeyCode.UpArrow: {
+                        myController.SelectPrevious();
+                        ev.Use();
+                        break;
+                    }
+                    case KeyCode.DownArrow: {
+                        myController.SelectNext();
+                        ev.Use();
+                        break;
+                    }
                     // Delete object under cursor.
                     case KeyCode.Backspace:
                     case KeyCode.Delete: {
@@ -88,33 +99,31 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                         ev.Use();
                         break;
                     }
-                    // Tree navigation
-                    case KeyCode.UpArrow: {
-                        myController.SelectPrevious();
+                }
+                switch(ev.character) {
+                    // Fold/Unfold.
+                    case '+': {
+                        myController.UnfoldSelected();
                         ev.Use();
                         break;
                     }
-                    case KeyCode.DownArrow: {
-                        myController.SelectNext();
+                    case '-': {
+                        myController.FoldSelected();
                         ev.Use();
                         break;
                     }
-                    // Fold/Minimize/Maximize.
-                    case KeyCode.Return: {
-                        break;
-                    }
-                    case KeyCode.H: {  // Show Help
+                    case 'h': {  // Show Help
                         break;
                     }
                     // myBookmarks
-                    case KeyCode.B: {  // myBookmark selected object
+                    case 'b': {  // myBookmark selected object
                         Event.current.Use();
                         break;
                     }
-                    case KeyCode.G: {  // Goto bookmark
+                    case 'g': {  // Goto bookmark
                         Event.current.Use();
                         break;
-                    }
+                    }                    
                 }
                 break;
 			}
