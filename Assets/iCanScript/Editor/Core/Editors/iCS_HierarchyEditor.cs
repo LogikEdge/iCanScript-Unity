@@ -16,7 +16,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 	public override void OnStorageChange() {
         if(IStorage == null) return;
         myController= new iCS_ObjectHierarchyController(IStorage[0], IStorage);
-        myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, myController.View);
+        myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
 		Repaint();
     }
     

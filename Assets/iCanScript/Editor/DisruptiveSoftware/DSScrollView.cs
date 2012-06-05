@@ -10,6 +10,7 @@ public class DSScrollView : DSView {
     Vector2                         myContentSize             = Vector2.zero;
     DSCellView                      myMainView                = null;
     bool                            myUseFullWidth            = true;
+    bool                            myUseFullHeight           = true;
  	Action<DSScrollView,Rect>       myDisplayDelegate         = null;
 	Func<DSScrollView,Rect,Vector2> myGetSizeToDisplayDelegate= null;
    
@@ -29,16 +30,17 @@ public class DSScrollView : DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSScrollView(RectOffset margins, bool shouldDisplayFrame, bool useFullWidth= true,
+    public DSScrollView(RectOffset margins, bool shouldDisplayFrame, bool useFullWidth= true, bool useFullHeight= true,
                         Action<DSScrollView,Rect> displayDelegate= null,
                         Func<DSScrollView,Rect,Vector2> getSizeToDisplayDelegate= null) {
         myUseFullWidth= useFullWidth;
+        myUseFullHeight= useFullHeight;
         myMainView= new DSCellView(margins, shouldDisplayFrame, MainViewDisplay, MainViewGetSizeToDisplay);
         myDisplayDelegate= displayDelegate;
         myGetSizeToDisplayDelegate= getSizeToDisplayDelegate;
     }
-	public DSScrollView(RectOffset margins, bool shouldDisplayFrame, bool useFullWidth, DSView subview)
-	: this(margins, shouldDisplayFrame, useFullWidth, (v,f)=> subview.Display(f), (v,f)=> subview.GetSizeToDisplay(f)) {}
+	public DSScrollView(RectOffset margins, bool shouldDisplayFrame, bool useFullWidth, bool useFullHeight, DSView subview)
+	: this(margins, shouldDisplayFrame, useFullWidth, useFullHeight, (v,f)=> subview.Display(f), (v,f)=> subview.GetSizeToDisplay(f)) {}
 		
     // ======================================================================
     // DSView implementation.
@@ -68,6 +70,9 @@ public class DSScrollView : DSView {
 		myContentSize= InvokeGetSizeToDisplayDelegate(displayArea);
 		if(myUseFullWidth && myContentSize.x < displayArea.width) {
 		    myContentSize.x= displayArea.width;
+		}
+		if(myUseFullHeight && myContentSize.y < displayArea.height) {
+		    myContentSize.y= displayArea.height;
 		}
         // Add scroller if the needed display size exceeds the display area.
 		var contentSize= myContentSize;        

@@ -28,6 +28,7 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Menu Items
 	// ----------------------------------------------------------------------
+    const string ShowHierarchyStr= "Show in hierarchy";
     const string DeleteStr= "- Delete";
     const string StartStr= "+ Start";
     const string ModuleStr= "+ Module";
@@ -145,6 +146,7 @@ public class iCS_DynamicMenu {
                 menu= tmp;            
             }            
         }
+        // Show in hierarchy item
         // Delete menu item
         if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionAction) {
             tmp= new MenuContext[menu.Length+2];
@@ -306,6 +308,32 @@ public class iCS_DynamicMenu {
         }
         gMenu.ShowAsContext();
         Reset();
+    }
+	// ----------------------------------------------------------------------
+    int AddStandardMenuTrailer(ref MenuContext[] existingMenu) {
+        int idx= AddSeparatorAndReserveSpaceInMenu(ref existingMenu, 2);
+        existingMenu[idx]= new MenuContext(ShowHierarchyStr);
+        existingMenu[idx+1]= new MenuContext(DeleteStr);
+        return idx+2;
+    }
+	// ----------------------------------------------------------------------
+    int AddSeparatorAndReserveSpaceInMenu(ref MenuContext[] existingMenu, int addedSize) {
+        int idx= ReserveSpaceInMenu(ref existingMenu, addedSize+1);
+        existingMenu[idx]= new MenuContext(SeparatorStr);
+        return idx+1;
+    }
+	// ----------------------------------------------------------------------
+    int ReserveSpaceInMenu(ref MenuContext[] existingMenu, int addedSize) {
+        return ResizeMenu(ref existingMenu, existingMenu.Length+addedSize);
+    }
+	// ----------------------------------------------------------------------
+    int ResizeMenu(ref MenuContext[] existingMenu, int newSize) {
+        int idx= existingMenu.Length;
+        if(idx > newSize) idx= newSize;
+        MenuContext[] newMenu= new MenuContext[newSize];
+        existingMenu.CopyTo(newMenu, 0);
+        existingMenu= newMenu;
+        return idx;
     }
 	// ----------------------------------------------------------------------
     iCS_ReflectionDesc GetReflectionDescFromMenuCommand(MenuContext menuContext) {
