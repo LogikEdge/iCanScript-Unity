@@ -7,15 +7,15 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    DSScrollView                    myMainView;
-	iCS_ObjectHierarchyController   myController;
+    DSScrollView            myMainView;
+	iCS_ProjectController   myController;
 	    
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
 	public override void OnStorageChange() {
         if(IStorage == null) return;
-        myController= new iCS_ObjectHierarchyController(IStorage[0], IStorage);
+        myController= new iCS_ProjectController(IStorage[0], IStorage);
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
 		Repaint();
     }
