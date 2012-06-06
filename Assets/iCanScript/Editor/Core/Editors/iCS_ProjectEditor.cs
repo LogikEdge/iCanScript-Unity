@@ -136,7 +136,6 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
     void CreateInstance(iCS_ProjectController.Node node, iCS_IStorage iStorage) {
         if(node.Type == iCS_ProjectController.NodeTypeEnum.Class) {
-            Debug.Log("Creating class module");
             iStorage.CreateModule(-1, Vector2.zero, node.Name, iCS_ObjectTypeEnum.Module, node.Desc.ClassType);        
             return;
         }

@@ -76,20 +76,23 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 	Prelude.Tree<Node> BuildTreeNode(List<iCS_ReflectionDesc> functions, List<bool> filterFlags) {
         if(functions.Count == 0) return null;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
-        foreach(var desc in functions) {
-            var parentTree= GetParentTree(desc, tree);
-            Node toAdd= null;
-            if(desc.IsField) {
-                toAdd= new Node(NodeTypeEnum.Field, desc.FieldName, desc);
-            } else if(desc.IsProperty) {
-                toAdd= new Node(NodeTypeEnum.Property, desc.PropertyName, desc);
-            } else if(desc.IsConstructor) {
-                toAdd= new Node(NodeTypeEnum.Constructor, iCS_Types.TypeName(desc.ClassType), desc);
-            } else if(desc.IsMethod) {
-                toAdd= new Node(NodeTypeEnum.Method, desc.MethodName, desc);                
-            }
-            if(toAdd != null) {
-                parentTree.AddChild(toAdd);
+        for(int i= 0; i < functions.Count; ++i) {
+            if(filterFlags[i]) {
+                var desc= functions[i];
+                var parentTree= GetParentTree(desc, tree);
+                Node toAdd= null;
+                if(desc.IsField) {
+                    toAdd= new Node(NodeTypeEnum.Field, desc.FieldName, desc);
+                } else if(desc.IsProperty) {
+                    toAdd= new Node(NodeTypeEnum.Property, desc.PropertyName, desc);
+                } else if(desc.IsConstructor) {
+                    toAdd= new Node(NodeTypeEnum.Constructor, iCS_Types.TypeName(desc.ClassType), desc);
+                } else if(desc.IsMethod) {
+                    toAdd= new Node(NodeTypeEnum.Method, desc.MethodName, desc);                
+                }
+                if(toAdd != null) {
+                    parentTree.AddChild(toAdd);
+                }                            
             }
         }
         Sort(tree);
@@ -162,9 +165,10 @@ public class iCS_ProjectController : DSTreeViewDataSource {
     bool FilterIn(iCS_ReflectionDesc desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
-        if(desc.DisplayName.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
-        if(!iCS_Strings.IsEmpty(desc.Package) && desc.Package.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
-        if(!iCS_Strings.IsEmpty(desc.Company) && desc.Company.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
+        string upperSearchStr= mySearchString.ToUpper();
+        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(!iCS_Strings.IsEmpty(desc.Package) && desc.Package.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(!iCS_Strings.IsEmpty(desc.Company) && desc.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     
