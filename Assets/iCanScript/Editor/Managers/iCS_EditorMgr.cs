@@ -93,4 +93,10 @@ public static class iCS_EditorMgr {
  	public static void MenuHierarchyEditor() {
         GetHierarchyEditor();
  	}
+    // ======================================================================
+ 	// iCanScript Project editor Menu.
+ 	[MenuItem("Window/iCanScript Project")]
+ 	public static void MenuProjectEditor() {
+        GetProjectEditor();
+ 	}
 }
