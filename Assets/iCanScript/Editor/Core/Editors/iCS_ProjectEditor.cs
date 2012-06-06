@@ -15,7 +15,7 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
 	public override void OnStorageChange() {
         if(IStorage == null) return;
-        myController= new iCS_ProjectController(IStorage[0], IStorage);
+        myController= new iCS_ProjectController();
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
 		Repaint();
     }
@@ -78,14 +78,6 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
                         ev.Use();
                         break;
                     }
-                    // Delete object under cursor.
-                    case KeyCode.Backspace:
-                    case KeyCode.Delete: {
-                        iCS_EditorUtility.SafeDestroyObject(selected, IStorage);
-                        myController.Selected= null;
-                        ev.Use();
-                        break;
-                    }
                     // Remove name edition.
                     case KeyCode.Escape: {
                         myController.NameEdition= false;
@@ -109,16 +101,6 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
                     case '-': {
                         myController.FoldSelected();
                         ev.Use();
-                        break;
-                    }
-                    case 'f': {
-                        /*
-                            TODO: Should be able to undo show in graph if it has opened a node.
-                        */
-                        if(selected != null) {
-                            iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
-                        }
-                        Event.current.Use();
                         break;
                     }
                 }

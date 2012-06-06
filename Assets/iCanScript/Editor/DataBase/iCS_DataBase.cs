@@ -70,6 +70,10 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     public static List<iCS_ReflectionDesc> BuildExpertMenu() {
+        return AllFunctions();
+    }
+    // ----------------------------------------------------------------------
+    public static List<iCS_ReflectionDesc> AllFunctions() {
         QSort();
         return Functions;
     }

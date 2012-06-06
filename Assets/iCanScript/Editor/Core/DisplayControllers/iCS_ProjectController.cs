@@ -6,35 +6,48 @@ using System.Collections.Generic;
 
 public class iCS_ProjectController : DSTreeViewDataSource {
     // =================================================================================
+    // Types
+    // ---------------------------------------------------------------------------------
+    public enum NodeTypeEnum { Root, Company, Package, Class, Constructor, Field, Property, Method};
+    public class Node {
+        public NodeTypeEnum        Type;
+        public string              Name;
+        public iCS_ReflectionDesc  Desc;
+        public Node(NodeTypeEnum type, string name, iCS_ReflectionDesc desc) {
+            Type= type;
+            Name= name;
+            Desc= desc;
+        }
+    };
+    
+    // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject    			        myTarget       = null;
-	iCS_IStorage	    			        myStorage      = null;
-	DSTreeView		    			        myTreeView     = null;
-	float               			        myFoldOffset   = 0;
-	bool                			        myNameEdition  = false;
-	string              			        mySearchString = null;
-	Prelude.Tree<iCS_EditorObject>	        myTree		   = null;
+    Node                        mySelected     = null;
+	DSTreeView		    		myTreeView     = null;
+	float               		myFoldOffset   = 0;
+	bool                		myNameEdition  = false;
+	string              		mySearchString = null;
+	Prelude.Tree<Node>	        myTree		   = null;
     // Used to move selection up/down
-    iCS_EditorObject                        myLastDisplayed  = null;
-    int                                     myChangeSelection= 0;
+    Node                        myLastDisplayed  = null;
+    int                         myChangeSelection= 0;
     // Used to iterate through content
-	Stack<Prelude.Tree<iCS_EditorObject>>	myIterStackNode    = null;
-	Stack<int>								myIterStackChildIdx= null;
+	Stack<Prelude.Tree<Node>>   myIterStackNode    = null;
+	Stack<int>					myIterStackChildIdx= null;
 	
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-	public DSView 					View 	     { get { return myTreeView; }}
-	public iCS_EditorObject 		Target	     { get { return myTarget; }}
-	public iCS_EditorObject 		Selected     { get { return myStorage.SelectedObject; } set { myStorage.SelectedObject= value; }}
-	public bool             		IsSelected   { get { return IterNode != null ? IterNode.Value == Selected : false; }}
-	public bool             		NameEdition  { get { return myNameEdition; } set { myNameEdition= value; }}
-	public string					SearchString { get { return mySearchString; } set { if(mySearchString != value) { mySearchString= value; BuildTree(); }}}
+	public DSView 		View 	     { get { return myTreeView; }}
+	public Node 		Selected     { get { return mySelected; } set { mySelected= value; }}
+	public bool         IsSelected   { get { return IterNode != null ? IterNode.Value == Selected : false; }}
+	public bool         NameEdition  { get { return myNameEdition; } set { myNameEdition= value; }}
+	public string		SearchString { get { return mySearchString; } set { if(mySearchString != value) { mySearchString= value; BuildTree(); }}}
 
-	Prelude.Tree<iCS_EditorObject>	IterNode	 { get { return myIterStackNode.Count != 0 ? myIterStackNode.Peek() : null; }}
-	int								IterChildIdx { get { return myIterStackChildIdx.Count  != 0 ? myIterStackChildIdx.Peek()  : 0; }}
-	iCS_EditorObject				IterValue	 { get { return IterNode != null ? IterNode.Value : null; }}
+	Prelude.Tree<Node>  IterNode	 { get { return myIterStackNode.Count != 0 ? myIterStackNode.Peek() : null; }}
+	int					IterChildIdx { get { return myIterStackChildIdx.Count  != 0 ? myIterStackChildIdx.Peek()  : 0; }}
+	Node				IterValue	 { get { return IterNode != null ? IterNode.Value : null; }}
 	
     // =================================================================================
     // Constants
@@ -45,12 +58,10 @@ public class iCS_ProjectController : DSTreeViewDataSource {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-	public iCS_ProjectController(iCS_EditorObject target, iCS_IStorage storage) {
-		myTarget= target;
-		myStorage= storage;
+	public iCS_ProjectController() {
 		BuildTree();
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
-		myIterStackNode= new Stack<Prelude.Tree<iCS_EditorObject>>();
+		myIterStackNode= new Stack<Prelude.Tree<Node>>();
 		myIterStackChildIdx = new Stack<int>();
 	}
 	
@@ -59,49 +70,94 @@ public class iCS_ProjectController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void BuildTree() {
         // Build filter list of object...
-        var filterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
-        // ... make certain the parents are also filtered in !!!
-        for(int i= 0; i < filterFlags.Count; ++i) {
-            if(filterFlags[i]) {
-                Prelude.until(
-                    myStorage.IsValid,
-                    id=> { filterFlags[id]= true; return myStorage.EditorObjects[id].ParentId; },
-                    myStorage.EditorObjects[i].ParentId
-                );
+        var allFunctions= iCS_DataBase.AllFunctions();
+        var filterFlags= Prelude.map(o=> FilterIn(o), allFunctions);
+		// Build tree and sort it elements.
+		myTree= BuildTreeNode(allFunctions, filterFlags);
+    }
+	Prelude.Tree<Node> BuildTreeNode(List<iCS_ReflectionDesc> functions, List<bool> filterFlags) {
+        if(functions.Count == 0) return null;
+		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
+        foreach(var desc in functions) {
+            var parentTree= GetParentTree(desc, tree);
+            Node toAdd= null;
+            if(desc.IsField) {
+                toAdd= new Node(NodeTypeEnum.Field, desc.FieldName, desc);
+            } else if(desc.IsProperty) {
+                toAdd= new Node(NodeTypeEnum.Property, desc.PropertyName, desc);
+            } else if(desc.IsConstructor) {
+                toAdd= new Node(NodeTypeEnum.Constructor, iCS_Types.TypeName(desc.ClassType), desc);
+            } else if(desc.IsMethod) {
+                toAdd= new Node(NodeTypeEnum.Method, desc.MethodName, desc);                
+            }
+            if(toAdd != null) {
+                parentTree.AddChild(toAdd);
             }
         }
-		// Build tree and sort it elements.
-		if(!filterFlags[0]) {
-			myTree= null;
-			return;
-		}
-		myTree= BuildTreeNode(myStorage.EditorObjects[0], filterFlags);
-    }
-	Prelude.Tree<iCS_EditorObject> BuildTreeNode(iCS_EditorObject nodeRoot, List<bool> filterFlags) {
-		Prelude.Tree<iCS_EditorObject> tree= new Prelude.Tree<iCS_EditorObject>(nodeRoot);
-		myStorage.ForEachChild(nodeRoot,
-			c=> {
-				if(filterFlags[c.InstanceId]) tree.AddChild(BuildTreeNode(c, filterFlags));
-			}
-		);
-		tree.Sort(SortComparaison);
+//		tree.Sort(SortComparaison);
 		return tree;
 	}
-	int SortComparaison(iCS_EditorObject x, iCS_EditorObject y) {
-		if(x.IsInputPort && !y.IsInputPort) return -1;
-		if(y.IsInputPort && !x.IsInputPort) return 1;
-		if(x.IsOutputPort && !y.IsOutputPort) return -1;
-		if(y.IsOutputPort && !x.IsOutputPort) return 1;
-		if(x.IsClassModule && !y.IsClassModule) return -1;
-		if(y.IsClassModule && !x.IsClassModule) return 1;
+    int FindInTreeChildren(string name, Prelude.Tree<Node> tree) {
+        var children= tree.Children;
+        if(children == null) return -1;
+        for(int i= 0; i < children.Count; ++i) {
+            if(children[i].Value.Name == name) return i;
+        }
+        return -1;
+    }
+    Prelude.Tree<Node> GetParentTree(iCS_ReflectionDesc desc, Prelude.Tree<Node> tree) {
+        if(!iCS_Strings.IsEmpty(desc.Company)) {
+            var idx= FindInTreeChildren(desc.Company, tree);
+            if(idx < 0) {
+                tree.AddChild(new Node(NodeTypeEnum.Company, desc.Company, desc));
+                idx= FindInTreeChildren(desc.Company, tree);
+            }
+            tree= tree.Children[idx];
+        }
+        if(!iCS_Strings.IsEmpty(desc.Package)) {
+            var idx= FindInTreeChildren(desc.Package, tree);
+            if(idx < 0) {
+                tree.AddChild(new Node(NodeTypeEnum.Package, desc.Package, desc));
+                idx= FindInTreeChildren(desc.Package, tree);
+            }
+            tree= tree.Children[idx];            
+        }
+        string className= iCS_Types.TypeName(desc.ClassType);
+        if(!iCS_Strings.IsEmpty(className)) {
+            var idx= FindInTreeChildren(className, tree);
+            if(idx < 0) {
+                tree.AddChild(new Node(NodeTypeEnum.Package, className, desc));
+                idx= FindInTreeChildren(className, tree);
+            }
+            tree= tree.Children[idx];            
+        }
+        return tree;
+    }
+	int SortComparaison(Node x, Node y) {
+        if(x.Type == NodeTypeEnum.Field && y.Type != NodeTypeEnum.Field) return -1;
+        if(x.Type != NodeTypeEnum.Field && y.Type == NodeTypeEnum.Field) return 1;
+        if(x.Type == NodeTypeEnum.Property && y.Type != NodeTypeEnum.Property) return -1;
+        if(x.Type != NodeTypeEnum.Property && y.Type == NodeTypeEnum.Property) return 1;
+        if(x.Type == NodeTypeEnum.Constructor && y.Type != NodeTypeEnum.Constructor) return -1;
+        if(x.Type != NodeTypeEnum.Constructor && y.Type == NodeTypeEnum.Constructor) return 1;
+        if(x.Type == NodeTypeEnum.Method && y.Type != NodeTypeEnum.Method) return -1;
+        if(x.Type != NodeTypeEnum.Method && y.Type == NodeTypeEnum.Method) return 1;
+        if(x.Type == NodeTypeEnum.Class && y.Type != NodeTypeEnum.Class) return -1;
+        if(x.Type != NodeTypeEnum.Class && y.Type == NodeTypeEnum.Class) return 1;
+        if(x.Type == NodeTypeEnum.Package && y.Type != NodeTypeEnum.Package) return -1;
+        if(x.Type != NodeTypeEnum.Package && y.Type == NodeTypeEnum.Package) return 1;
+        if(x.Type == NodeTypeEnum.Company && y.Type != NodeTypeEnum.Company) return -1;
+        if(x.Type != NodeTypeEnum.Company && y.Type == NodeTypeEnum.Company) return 1;
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
-    bool FilterIn(iCS_EditorObject eObj) {
-        if(eObj == null || !myStorage.IsValid(eObj)) return false;
+    bool FilterIn(iCS_ReflectionDesc desc) {
+        if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
-        if(eObj.Name.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
-        return FilterIn(myStorage.GetParent(eObj));
+        if(desc.DisplayName.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
+        if(!iCS_Strings.IsEmpty(desc.Package) && desc.Package.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
+        if(!iCS_Strings.IsEmpty(desc.Company) && desc.Company.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
+        return false;
     }
     
 
@@ -119,7 +175,7 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 	public void BeginDisplay() { EditorGUIUtility.LookLikeControls(); }
 	public void EndDisplay() {}
 	public bool	MoveToNext() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myTree == null || myIterStackNode.Count == 0) return false;
 		if(MoveToFirstChild()) return true;
 		if(MoveToNextSibling()) return true;
 		do {
@@ -129,7 +185,7 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
 	public bool	MoveToNextSibling() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myTree == null || myIterStackNode.Count == 0) return false;
 		if(myIterStackNode.Count == 1) return false;
 		var savedNode= myIterStackNode.Pop();
 		var savedIdx= myIterStackChildIdx.Pop();
@@ -142,14 +198,14 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
 	public bool MoveToParent() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myTree == null || myIterStackNode.Count == 0) return false;
 		myIterStackNode.Pop();
 		myIterStackChildIdx.Pop();
 		return myIterStackNode.Count != 0;
 	}
 	// ---------------------------------------------------------------------------------
 	public bool	MoveToFirstChild() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myTree == null || myIterStackNode.Count == 0) return false;
 		var node= IterNode;
 		if(node == null || node.Children == null) return false;
 		myIterStackChildIdx.Pop();
@@ -161,7 +217,7 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 	}
 	// ---------------------------------------------------------------------------------
 	public bool	MoveToNextChild() {
-		if(myStorage == null || myTree == null || myIterStackNode.Count == 0) return false;
+		if(myTree == null || myIterStackNode.Count == 0) return false;
 		var node= IterNode;
 		if(node == null || node.Children == null) return false;
 		int idx= myIterStackChildIdx.Pop();
@@ -174,7 +230,6 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 
     // ---------------------------------------------------------------------------------
 	public Vector2	CurrentObjectDisplaySize() {
-		if(myStorage == null) return Vector2.zero;
 		if(myFoldOffset == 0) {
             var emptySize= EditorStyles.foldout.CalcSize(new GUIContent(""));
     		myFoldOffset= emptySize.x;
@@ -185,7 +240,6 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
-		if(myStorage == null) return true;
         // Show selected outline.
         GUIStyle labelStyle= EditorStyles.label;
 		if(IsSelected) {
@@ -199,7 +253,7 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
         if(NameEdition && IsSelected) {
-    	    IterValue.Name= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), IterValue.RawName);            
+    	    IterValue.Name= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), IterValue.Name);            
         } else {
     	    GUI.Label(pos, content.text, labelStyle);            
         }
@@ -222,37 +276,36 @@ public class iCS_ProjectController : DSTreeViewDataSource {
         EditorGUIUtility.SetIconSize(new Vector2(16.0f,12.0f));
         Texture2D icon= null;
 		var current= IterValue;
-        if(current.IsFunction) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
-        } else if(current.IsState || current.IsStateChart) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.StateHierarchyIcon, myStorage);                        
-        } else if(current.IsClassModule) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ClassHierarchyIcon, myStorage);                            
-        } else if(current.IsNode) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ModuleHierarchyIcon, myStorage);            
-        } else if(current.IsDataPort) {
-            if(current.IsInputPort) {
-                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.InPortHierarchyIcon, myStorage);                
-            } else {
-                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.OutPortHierarchyIcon, myStorage);                                    
-            }
-        }
+		var nodeType= current.Type;
+//        if(nodeType == NodeTypeEnum.Company) {
+//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+//        } else if(nodeType == NodeTypeEnum.Package) {
+//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ClassHierarchyIcon, myStorage);                            
+//        } else if(nodeType == NodeTypeEnum.Class) {
+//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+//        } else if(nodeType == NodeTypeEnum.Field) {
+//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+//        } else if(nodeType == NodeTypeEnum.Property) {
+//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+//        } else if(nodeType == NodeTypeEnum.Constructor) {
+//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+//        } else if(nodeType == NodeTypeEnum.Method) {
+//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+//        }
         return new GUIContent(current.Name, icon); 
     }
     // ---------------------------------------------------------------------------------
     bool ShouldUseFoldout() {
-        if(myStorage == null) return false;
-        return IterValue.IsNode;
+        return IterValue.Type == NodeTypeEnum.Company || IterValue.Type == NodeTypeEnum.Package || IterValue.Type == NodeTypeEnum.Class;
     }
     // ---------------------------------------------------------------------------------
     public void MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea) {
         if(key == null) {
             return;
         }
-        iCS_EditorObject eObj= key as iCS_EditorObject;
-        myNameEdition= eObj.IsNameEditable && eObj == Selected;
-        Selected= eObj;
-        FocusGraphOnSelected();
+        Node node= key as Node;
+        myNameEdition= node == Selected;
+        Selected= node;
     }
     // ---------------------------------------------------------------------------------
     public void SelectPrevious() {
@@ -270,23 +323,15 @@ public class iCS_ProjectController : DSTreeViewDataSource {
             if(Selected == IterValue) {
                 Selected= myLastDisplayed;
                 myChangeSelection= 0;
-                FocusGraphOnSelected();                
             }
         }
         if(myChangeSelection == 1) {    // Move down
             if(Selected == myLastDisplayed) {
                 Selected= IterValue;
                 myChangeSelection= 0;
-                FocusGraphOnSelected();
             }
         }
         myLastDisplayed= IterValue;
-    }
-    // ---------------------------------------------------------------------------------
-    void FocusGraphOnSelected() {
-        var myEditor= EditorWindow.focusedWindow;
-        iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(Selected);
-        myEditor.Focus();
     }
     // ---------------------------------------------------------------------------------
     public void FoldSelected() {
