@@ -26,7 +26,6 @@ public class iCS_ProjectController : DSTreeViewDataSource {
     Node                        mySelected     = null;
 	DSTreeView		    		myTreeView     = null;
 	float               		myFoldOffset   = 0;
-	bool                		myNameEdition  = false;
 	string              		mySearchString = null;
 	Prelude.Tree<Node>	        myTree		   = null;
     // Used to move selection up/down
@@ -42,7 +41,6 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 	public DSView 		View 	     { get { return myTreeView; }}
 	public Node 		Selected     { get { return mySelected; } set { mySelected= value; }}
 	public bool         IsSelected   { get { return IterNode != null ? IterNode.Value == Selected : false; }}
-	public bool         NameEdition  { get { return myNameEdition; } set { myNameEdition= value; }}
 	public string		SearchString { get { return mySearchString; } set { if(mySearchString != value) { mySearchString= value; BuildTree(); }}}
 
 	Prelude.Tree<Node>  IterNode	 { get { return myIterStackNode.Count != 0 ? myIterStackNode.Peek() : null; }}
@@ -126,7 +124,7 @@ public class iCS_ProjectController : DSTreeViewDataSource {
         if(!iCS_Strings.IsEmpty(className)) {
             var idx= FindInTreeChildren(className, tree);
             if(idx < 0) {
-                tree.AddChild(new Node(NodeTypeEnum.Package, className, desc));
+                tree.AddChild(new Node(NodeTypeEnum.Class, className, desc));
                 idx= FindInTreeChildren(className, tree);
             }
             tree= tree.Children[idx];            
@@ -262,11 +260,7 @@ public class iCS_ProjectController : DSTreeViewDataSource {
         var pos= new Rect(myFoldOffset+displayArea.x, displayArea.y, displayArea.width-myFoldOffset, displayArea.height);
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
-        if(NameEdition && IsSelected) {
-    	    IterValue.Name= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), IterValue.Name);            
-        } else {
-    	    GUI.Label(pos, content.text, labelStyle);            
-        }
+    	GUI.Label(pos, content.text, labelStyle);            
         ProcessChangeSelection();
 		return result;
 //        bool result= false;
@@ -314,18 +308,15 @@ public class iCS_ProjectController : DSTreeViewDataSource {
             return;
         }
         Node node= key as Node;
-        myNameEdition= node == Selected;
         Selected= node;
     }
     // ---------------------------------------------------------------------------------
     public void SelectPrevious() {
         myChangeSelection= -1;
-        NameEdition= false;
     }
     // ---------------------------------------------------------------------------------
     public void SelectNext() {
         myChangeSelection= 1;
-        NameEdition= false;
     }
     // ---------------------------------------------------------------------------------
     void ProcessChangeSelection() {

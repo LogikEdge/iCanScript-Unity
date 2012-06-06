@@ -31,22 +31,34 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
 		myMainView.Display(frameArea);
 		ProcessEvents(frameArea);
 	}
-	// ----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------
 	Rect ShowToolbar() {
 		var toolbarRect= iCS_ToolbarUtility.BuildToolbar(position.width);
 		string searchString= myController.SearchString ?? "";
 		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 200.0f, searchString, 0, 0, true);
 		return toolbarRect;
 	}
-	// ----------------------------------------------------------------------
+    // ---------------------------------------------------------------------------------
     void OnInspectorUpdate() {
         Repaint();
     }
-	// ----------------------------------------------------------------------
+	// =================================================================================
+    // Event processing
+    // ---------------------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
      	Vector2 mousePosition= Event.current.mousePosition;
         var selected= myController.Selected;
 		switch(Event.current.type) {
+            case EventType.MouseDrag: {
+                switch(Event.current.button) {
+                    case 0: { // Left mouse button
+                        StartDragAndDrop(selected);                            
+                        Event.current.Use();
+                        break;
+                    }
+                }
+                break;
+            }
             case EventType.ScrollWheel: {
                 break;
             }
@@ -78,12 +90,6 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
                         ev.Use();
                         break;
                     }
-                    // Remove name edition.
-                    case KeyCode.Escape: {
-                        myController.NameEdition= false;
-                        ev.Use();
-                        break;
-                    }
                     // Fold/Unfold toggle
                     case KeyCode.Return: {
                         myController.ToggleFoldUnfoldSelected();
@@ -107,5 +113,33 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
                 break;
 			}
         }   
+    }
+
+	// =================================================================================
+    // Drag events.
+    // ---------------------------------------------------------------------------------
+    void StartDragAndDrop(iCS_ProjectController.Node node) {
+        if(node == null) return;
+        // Build drag object.
+        GameObject go= new GameObject(node.Name);
+        go.hideFlags = HideFlags.HideAndDontSave;
+        go.AddComponent("iCS_Library");
+        iCS_Library library= go.GetComponent<iCS_Library>();
+        iCS_IStorage iStorage= new iCS_IStorage(library);
+        CreateInstance(node, iStorage);
+        // Fill drag info.
+        DragAndDrop.PrepareStartDrag();
+        DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
+        DragAndDrop.StartDrag(node.Name);
+        iCS_AutoReleasePool.AutoRelease(go, 60f);
+    }
+    // ---------------------------------------------------------------------------------
+    void CreateInstance(iCS_ProjectController.Node node, iCS_IStorage iStorage) {
+        if(node.Type == iCS_ProjectController.NodeTypeEnum.Class) {
+            Debug.Log("Creating class module");
+            iStorage.CreateModule(-1, Vector2.zero, node.Name, iCS_ObjectTypeEnum.Module, node.Desc.ClassType);        
+            return;
+        }
+        iStorage.CreateModule(-1, Vector2.zero, node.Name);        
     }
 }
