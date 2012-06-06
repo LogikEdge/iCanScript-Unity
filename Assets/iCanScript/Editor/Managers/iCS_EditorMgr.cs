@@ -68,6 +68,12 @@ public static class iCS_EditorMgr {
         editor.hideFlags= HideFlags.DontSave;
         return editor;
     }
+    public static iCS_ProjectEditor GetProjectEditor() {
+        iCS_ProjectEditor editor= EditorWindow.GetWindow(typeof(iCS_ProjectEditor), false, "iCS Project") as iCS_ProjectEditor;
+        EditorWindow.DontDestroyOnLoad(editor);
+        editor.hideFlags= HideFlags.DontSave;
+        return editor;
+    }
     
     // ======================================================================
  	// iCanScript Graph editor Menu.
