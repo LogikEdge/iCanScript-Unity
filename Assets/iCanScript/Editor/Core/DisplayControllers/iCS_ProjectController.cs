@@ -94,7 +94,7 @@ public class iCS_ProjectController : DSTreeViewDataSource {
                 parentTree.AddChild(toAdd);
             }
         }
-//		tree.Sort(SortComparaison);
+        Sort(tree);
 		return tree;
 	}
     int FindInTreeChildren(string name, Prelude.Tree<Node> tree) {
@@ -132,6 +132,16 @@ public class iCS_ProjectController : DSTreeViewDataSource {
             tree= tree.Children[idx];            
         }
         return tree;
+    }
+    void Sort(Prelude.Tree<Node> tree) {
+        if(tree == null) return;
+        var children= tree.Children;
+        if(children != null) {
+            tree.Sort(SortComparaison);
+            foreach(var child in children) {
+                Sort(child);
+            }
+        }
     }
 	int SortComparaison(Node x, Node y) {
         if(x.Type == NodeTypeEnum.Field && y.Type != NodeTypeEnum.Field) return -1;
