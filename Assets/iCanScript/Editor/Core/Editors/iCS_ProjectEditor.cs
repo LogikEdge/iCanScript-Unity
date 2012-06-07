@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -135,10 +136,47 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
     }
     // ---------------------------------------------------------------------------------
     void CreateInstance(iCS_ProjectController.Node node, iCS_IStorage iStorage) {
-        if(node.Type == iCS_ProjectController.NodeTypeEnum.Class) {
-            iStorage.CreateModule(-1, Vector2.zero, node.Name, iCS_ObjectTypeEnum.Module, node.Desc.ClassType);        
+        if(node.Type == iCS_ProjectController.NodeTypeEnum.Company) {
+            CreateModule(node.Name, iStorage);        
             return;
         }
-        iStorage.CreateModule(-1, Vector2.zero, node.Name);        
+        if(node.Type == iCS_ProjectController.NodeTypeEnum.Package) {
+            CreateModule(node.Name, iStorage);        
+            return;
+        }
+        if(node.Type == iCS_ProjectController.NodeTypeEnum.Class) {
+            CreateClassModule(node.Desc.ClassType, iStorage);        
+            return;
+        }
+        if(node.Type == iCS_ProjectController.NodeTypeEnum.Field) {
+            CreateMethod(node.Desc, iStorage);        
+            return;
+        }
+        if(node.Type == iCS_ProjectController.NodeTypeEnum.Property) {
+            CreateMethod(node.Desc, iStorage);        
+            return;
+        }
+        if(node.Type == iCS_ProjectController.NodeTypeEnum.Constructor) {
+            CreateMethod(node.Desc, iStorage);        
+            return;
+        }
+        if(node.Type == iCS_ProjectController.NodeTypeEnum.Method) {
+            CreateMethod(node.Desc, iStorage);        
+            return;
+        }
     }
+    // ======================================================================
+    // Creation Utilities
+    // ---------------------------------------------------------------------------------
+    iCS_EditorObject CreateModule(string name, iCS_IStorage iStorage) {
+        return iStorage.CreateModule(-1, Vector2.zero, name);
+    }
+    // ---------------------------------------------------------------------------------
+    iCS_EditorObject CreateClassModule(Type classType, iCS_IStorage iStorage) {
+        return iStorage.CreateModule(-1, Vector2.zero, null, iCS_ObjectTypeEnum.Module, classType);
+    }
+    // ---------------------------------------------------------------------------------
+    iCS_EditorObject CreateMethod(iCS_ReflectionDesc desc, iCS_IStorage iStorage) {
+        return iStorage.CreateMethod(-1, Vector2.zero, desc);            
+    }    
 }
