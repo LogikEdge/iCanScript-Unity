@@ -86,9 +86,9 @@ public class iCS_ProjectController : DSTreeViewDataSource {
                 } else if(desc.IsProperty) {
                     toAdd= new Node(NodeTypeEnum.Property, desc.PropertyName, desc);
                 } else if(desc.IsConstructor) {
-                    toAdd= new Node(NodeTypeEnum.Constructor, iCS_Types.TypeName(desc.ClassType), desc);
+                    toAdd= new Node(NodeTypeEnum.Constructor, desc.FunctionSignature, desc);
                 } else if(desc.IsMethod) {
-                    toAdd= new Node(NodeTypeEnum.Method, desc.MethodName, desc);                
+                    toAdd= new Node(NodeTypeEnum.Method, desc.FunctionSignature, desc);                
                 }
                 if(toAdd != null) {
                     parentTree.AddChild(toAdd);
@@ -285,22 +285,23 @@ public class iCS_ProjectController : DSTreeViewDataSource {
         Texture2D icon= null;
 		var current= IterValue;
 		var nodeType= current.Type;
-//        if(nodeType == NodeTypeEnum.Company) {
+		string name= current.Name;
+        if(nodeType == NodeTypeEnum.Company) {
 //            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
-//        } else if(nodeType == NodeTypeEnum.Package) {
+        } else if(nodeType == NodeTypeEnum.Package) {
 //            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ClassHierarchyIcon, myStorage);                            
-//        } else if(nodeType == NodeTypeEnum.Class) {
+        } else if(nodeType == NodeTypeEnum.Class) {
 //            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
-//        } else if(nodeType == NodeTypeEnum.Field) {
+        } else if(nodeType == NodeTypeEnum.Field) {
 //            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
-//        } else if(nodeType == NodeTypeEnum.Property) {
+        } else if(nodeType == NodeTypeEnum.Property) {
 //            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
-//        } else if(nodeType == NodeTypeEnum.Constructor) {
+        } else if(nodeType == NodeTypeEnum.Constructor) {
 //            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
-//        } else if(nodeType == NodeTypeEnum.Method) {
+        } else if(nodeType == NodeTypeEnum.Method) {
 //            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
-//        }
-        return new GUIContent(current.Name, icon); 
+        }
+        return new GUIContent(name, icon); 
     }
     // ---------------------------------------------------------------------------------
     bool ShouldUseFoldout() {
