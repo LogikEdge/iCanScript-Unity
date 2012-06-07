@@ -275,22 +275,23 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CopyFrom(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_EditorObject destParent, Vector2 initialPos) {
         // Create new EditorObject
-        Rect parentPos= IsValid(destParent) ? GetPosition(destParent) : new Rect(0,0,0,0);
-        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,0,0);
+        Vector2 parentPos= IsValid(destParent) ? Math3D.ToVector2(GetPosition(destParent)) : Vector2.zero;
+        Vector2 sizeOffset= 0.5f*new Vector2(srcObj.LocalPosition.width, srcObj.LocalPosition.height);
+        Vector2 localPos= initialPos-parentPos-sizeOffset;
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
         iCS_EditorObject instance= CopyFrom(srcObj, srcStorage, destParent, localPos, xlat);
         ReconnectCopy(srcObj, srcStorage, xlat);
         SetDisplayPosition(instance, new Rect(initialPos.x, initialPos.y,0,0));
         return instance;
     }
-    iCS_EditorObject CopyFrom(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_EditorObject destParent, Rect localPos, List<Prelude.Tuple<int,int>> xlat) {
+    iCS_EditorObject CopyFrom(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_EditorObject destParent, Vector2 localPos, List<Prelude.Tuple<int,int>> xlat) {
         // Create new EditorObject
         int id= GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         this[id]= iCS_EditorObject.Clone(id, srcObj, destParent, localPos);
         this[id].IconGUID= srcObj.IconGUID;
         srcStorage.ForEachChild(srcObj,
-            child=> CopyFrom(child, srcStorage, this[id], child.LocalPosition, xlat)
+            child=> CopyFrom(child, srcStorage, this[id], Math3D.ToVector2(child.LocalPosition), xlat)
         );
 		if(this[id].IsInDataPort) {
 			LoadInitialPortValueFromArchive(this[id]);

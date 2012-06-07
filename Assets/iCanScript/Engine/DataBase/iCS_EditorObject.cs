@@ -55,8 +55,9 @@ public class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent, Rect localPosition) {
-        iCS_EditorObject instance= new iCS_EditorObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localPosition);
+    public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent, Vector2 localPosition) {
+        Rect localRect= new Rect(localPosition.x, localPosition.y, toClone.LocalPosition.width, toClone.LocalPosition.height);
+        iCS_EditorObject instance= new iCS_EditorObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localRect);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
