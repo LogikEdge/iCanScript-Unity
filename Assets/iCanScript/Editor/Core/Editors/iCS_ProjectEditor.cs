@@ -10,6 +10,7 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
     DSScrollView            myMainView;
 	iCS_ProjectController   myController;
+	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
 	    
     // =================================================================================
     // Activation/Deactivation.
@@ -31,6 +32,11 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
         var frameArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
 		myMainView.Display(frameArea);
 		ProcessEvents(frameArea);
+		// Make new selection visible
+		if(mySelectedAreaCache != myController.SelectedArea) {
+		    mySelectedAreaCache= myController.SelectedArea;
+		    myMainView.MakeVisible(mySelectedAreaCache, frameArea);
+		}
 	}
     // ---------------------------------------------------------------------------------
 	Rect ShowToolbar() {

@@ -59,6 +59,40 @@ public class DSScrollView : DSView {
     }
 
     // ======================================================================
+    // Service.
+    // ----------------------------------------------------------------------
+    public void MakeVisible(Rect area, Rect displayArea) {
+        // Calculate visible area.
+        Rect visibleArea= new Rect(myScrollPosition.x, myScrollPosition.y, displayArea.width, displayArea.height);
+        if(IsHorizontalScrollbarVisble(displayArea)) visibleArea.height-= kScrollbarSize;
+        float topY= area.y;
+        float bottomY= area.yMax;
+        bool isTopVisible= topY > visibleArea.y && topY < visibleArea.yMax;
+        bool isBottomVisible= bottomY > visibleArea.y && bottomY < visibleArea.yMax;
+        if(isTopVisible) {
+            if(isBottomVisible) return;
+            float moveOffset= bottomY-visibleArea.yMax;
+            myScrollPosition.y+= moveOffset;
+            return;
+        }
+        if(isBottomVisible) {
+            myScrollPosition.y= topY;
+            return;
+        }
+        if(Mathf.Abs(topY-visibleArea.y) < Mathf.Abs(topY-visibleArea.yMax)) {
+            myScrollPosition.y= topY;
+        } else {
+            myScrollPosition.y+= bottomY-visibleArea.yMax;
+        }
+    }
+    public bool IsHorizontalScrollbarVisble(Rect displayArea) {
+        return myContentSize.x > displayArea.width;
+    }
+    public bool IsVerticalScrollbarVisible(Rect displayArea) {
+        return myContentSize.y > displayArea.height;
+    }
+    
+    // ======================================================================
     // MainView implementation.
     // ----------------------------------------------------------------------
     void MainViewDisplay(DSCellView view, Rect displayArea) {
@@ -75,6 +109,9 @@ public class DSScrollView : DSView {
 		    myContentSize.y= displayArea.height;
 		}
         // Add scroller if the needed display size exceeds the display area.
+        /*
+            FIXME: The horizontal scroller shows up everytime the vertical scroller shows up even when not nedded.
+        */
 		var contentSize= myContentSize;        
         if(myContentSize.x > displayArea.width) {
             contentSize.y+= kScrollbarSize;
