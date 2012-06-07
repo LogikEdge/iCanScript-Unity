@@ -395,7 +395,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
             SelectedObject= myDisplayRoot;
         }
         ShowClassWizard();
-        myDynamicMenu.Update(SelectedObject, IStorage, ViewportToGraph(MousePosition), MenuOption == 0);
+        myDynamicMenu.Update(SelectedObject, IStorage, ViewportToGraph(MousePosition));
         IStorage.SetDirty(SelectedObject);                    
     }
 	// ----------------------------------------------------------------------

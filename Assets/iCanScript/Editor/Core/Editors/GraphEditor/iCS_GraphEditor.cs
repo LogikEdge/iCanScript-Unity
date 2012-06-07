@@ -52,9 +52,6 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
-    // ----------------------------------------------------------------------
-	static string[] menuOptions= new string[2]{"Normal", "Expert"};
-    int MenuOption= 0;
      
     // ======================================================================
     // Properties
@@ -1203,11 +1200,6 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 		    bookmarkString+= myBookmark.Name;
 		}
 		iCS_ToolbarUtility.Label(ref r, 150f, new GUIContent(bookmarkString),0,0,true);
-		
-		// Editable field test.		
-		iCS_ToolbarUtility.Label(ref r, new GUIContent("Mode:"), 0, 0, false);		
-		MenuOption= iCS_ToolbarUtility.Buttons(ref r, 90f, MenuOption, menuOptions, 0, 0);
-		iCS_ToolbarUtility.Buttons(ref r, 8f, -1, new string[1]{""}, 0, 0);
 	}
 	// ----------------------------------------------------------------------
 	void DrawGraph () {

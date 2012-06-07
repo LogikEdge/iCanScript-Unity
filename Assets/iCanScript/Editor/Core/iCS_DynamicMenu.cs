@@ -23,7 +23,6 @@ public class iCS_DynamicMenu {
     // ----------------------------------------------------------------------
     Vector2 MenuPosition= Vector2.zero;
     Vector2 ProcessMenuPosition= Vector2.zero;
-    bool    IsClassMenu= true;    
     
     // ======================================================================
     // Menu Items
@@ -59,7 +58,7 @@ public class iCS_DynamicMenu {
     }
     
 	// ----------------------------------------------------------------------
-    public void Update(iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 mouseDownPosition, bool isClassMenu) {
+    public void Update(iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 mouseDownPosition) {
         // Update mouse position if not already done.
         if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
 
@@ -69,7 +68,6 @@ public class iCS_DynamicMenu {
             return;
         }
         ProcessMenuPosition= MenuPosition;
-        IsClassMenu= isClassMenu;
         
         // Process the menu state.
         switch(selectedObject.ObjectType) {
@@ -117,36 +115,17 @@ public class iCS_DynamicMenu {
             menu[0]= new MenuContext(ModuleStr);
             menu[1]= new MenuContext(StateChartStr); 
         }
-        if(IsClassMenu) {
-            // Class menu items
-            if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-                List<iCS_ReflectionDesc> classMenu= iCS_DataBase.BuildNormalMenu();
-                tmp= new MenuContext[menu.Length+classMenu.Count+1];
-                menu.CopyTo(tmp, 0);
-                tmp[menu.Length]= new MenuContext(SeparatorStr);
-                for(int i= 0; i < classMenu.Count; ++i) {
-                    if(iCS_Types.IsStaticClass(classMenu[i].ClassType)) {
-                        tmp[i+menu.Length+1]= new MenuContext("+ "+classMenu[i].ToString(), classMenu[i]);                        
-                    } else {
-                        tmp[i+menu.Length+1]= new MenuContext("+ "+classMenu[i].FunctionPath, classMenu[i]);
-                    }
-                }
-                menu= tmp;            
-            }            
-        } else {
-            // Function menu items
-            if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-                List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildExpertMenu();
-                tmp= new MenuContext[menu.Length+functionMenu.Count+1];
-                menu.CopyTo(tmp, 0);
-                tmp[menu.Length]= new MenuContext(SeparatorStr);
-                for(int i= 0; i < functionMenu.Count; ++i) {
-                    tmp[i+menu.Length+1]= new MenuContext("+ "+functionMenu[i].ToString(), functionMenu[i]);
-                }
-                menu= tmp;            
-            }            
-        }
-        // Show in hierarchy item
+        // Function menu items
+        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+            List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildExpertMenu();
+            tmp= new MenuContext[menu.Length+functionMenu.Count+1];
+            menu.CopyTo(tmp, 0);
+            tmp[menu.Length]= new MenuContext(SeparatorStr);
+            for(int i= 0; i < functionMenu.Count; ++i) {
+                tmp[i+menu.Length+1]= new MenuContext("+ "+functionMenu[i].ToString(), functionMenu[i]);
+            }
+            menu= tmp;            
+        }            
         // Delete menu item
         if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionAction) {
             tmp= new MenuContext[menu.Length+2];
@@ -425,14 +404,7 @@ public class iCS_DynamicMenu {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
 				}
-                if(!ShouldCreateClassModule(desc)) {
-                	CreateMethod(context.SelectedObject, context.Storage, desc);                                           
-                } else {
-                    Type classType= desc.ClassType;
-                    if(classType != null) {
-                        CreateClassModule(context.SelectedObject, context.Storage, classType);
-                    }
-                }
+                CreateMethod(context.SelectedObject, context.Storage, desc);                                           
                 break;                
             }
         }
@@ -640,9 +612,4 @@ public class iCS_DynamicMenu {
             }
         );
     }
-	// ----------------------------------------------------------------------
-	bool ShouldCreateClassModule(iCS_ReflectionDesc desc) {
-		if(!IsClassMenu) return false;
-		return !iCS_Types.IsStaticClass(desc.ClassType);
-	}
 }
