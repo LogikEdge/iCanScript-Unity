@@ -280,6 +280,7 @@ public partial class iCS_IStorage {
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
         iCS_EditorObject instance= CopyFrom(srcObj, srcStorage, destParent, localPos, xlat);
         ReconnectCopy(srcObj, srcStorage, xlat);
+        SetDisplayPosition(instance, new Rect(initialPos.x, initialPos.y,0,0));
         return instance;
     }
     iCS_EditorObject CopyFrom(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_EditorObject destParent, Rect localPos, List<Prelude.Tuple<int,int>> xlat) {

@@ -1095,9 +1095,10 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
             EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");
             return;
         }
-        Debug.Log("Pasting at: "+point);
         iCS_EditorObject pasted= IStorage.CopyFrom(sourceRoot, new iCS_IStorage(sourceStorage), parent, point);
-        IStorage.Fold(pasted);
+        if(IStorage.IsMaximized(pasted)) {
+            IStorage.Fold(pasted);            
+        }
     }
 
     // ======================================================================
