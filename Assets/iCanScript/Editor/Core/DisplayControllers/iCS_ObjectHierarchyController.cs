@@ -11,6 +11,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 	iCS_EditorObject    			        myTarget       = null;
 	iCS_IStorage	    			        myStorage      = null;
 	DSTreeView		    			        myTreeView     = null;
+	Rect                                    mySelectedArea = new Rect(0,0,0,0);
 	float               			        myFoldOffset   = 0;
 	bool                			        myNameEdition  = false;
 	string              			        mySearchString = null;
@@ -28,6 +29,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
 	public DSView 					View 	     { get { return myTreeView; }}
 	public iCS_EditorObject 		Target	     { get { return myTarget; }}
 	public iCS_EditorObject 		Selected     { get { return myStorage.SelectedObject; } set { myStorage.SelectedObject= value; }}
+	public Rect                     SelectedArea { get { return mySelectedArea; }}
 	public bool             		IsSelected   { get { return IterNode != null ? IterNode.Value == Selected : false; }}
 	public bool             		NameEdition  { get { return myNameEdition; } set { myNameEdition= value; }}
 	public string					SearchString { get { return mySearchString; } set { if(mySearchString != value) { mySearchString= value; BuildTree(); }}}
@@ -189,6 +191,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         // Show selected outline.
         GUIStyle labelStyle= EditorStyles.label;
 		if(IsSelected) {
+		    mySelectedArea= frameArea;
             Color selectionColor= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector).settings.selectionColor;
             iCS_Graphics.DrawBox(frameArea, selectionColor, selectionColor, new Color(1.0f, 1.0f, 1.0f, 0.65f));
             labelStyle= EditorStyles.whiteLabel;
