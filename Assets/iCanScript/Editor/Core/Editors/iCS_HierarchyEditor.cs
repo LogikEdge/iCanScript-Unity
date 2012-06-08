@@ -10,6 +10,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     DSScrollView            myMainView;
 	iCS_HierarchyController myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
+	int                     myLastFocusId= -1;
 	    
     // =================================================================================
     // Activation/Deactivation.
@@ -122,13 +123,16 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                         break;
                     }
                     case 'f': {
-                        /*
-                            TODO: Should be able to undo show in graph if it has opened a node.
-                        */
-                        if(selected != null) {
-                            iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
+                        if(iCS_EditorUtility.IsCurrentModificationId(myLastFocusId, IStorage)) {
+                            iCS_EditorUtility.UndoIfModificationId(myLastFocusId, IStorage);
+                            myLastFocusId= -1;
+                        } else {
+                            if(selected != null) {
+                                myLastFocusId= iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
+                                Focus();
+                                Event.current.Use();
+                            }                            
                         }
-                        Event.current.Use();
                         break;
                     }
                 }

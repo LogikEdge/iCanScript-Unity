@@ -1127,6 +1127,8 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 	// ----------------------------------------------------------------------
     public void CenterAndScaleOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
+        while(obj != null && !IStorage.IsVisible(obj)) obj= IStorage.GetParent(obj);
+        if(obj == null) return;
         Rect objectArea= IStorage.GetPosition(obj);
         float newScale= 1.0f;
         if(obj.IsNode) {

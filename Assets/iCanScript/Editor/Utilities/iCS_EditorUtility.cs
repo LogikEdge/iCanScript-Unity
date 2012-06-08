@@ -80,10 +80,11 @@ public static class iCS_EditorUtility {
     // ======================================================================
     // GUI helpers
 	// ----------------------------------------------------------------------
-    public static void SafeSelectAndMakeVisible(iCS_EditorObject selected, iCS_IStorage iStorage) {
+    public static int SafeSelectAndMakeVisible(iCS_EditorObject selected, iCS_IStorage iStorage) {
         iStorage.RegisterUndo("Make Visible: "+selected.Name);
         iStorage.SelectedObject= selected;        
         FocusOn(selected, iStorage);
+        return iStorage.ModificationId;
     }
     public static void MakeVisible(iCS_EditorObject eObj, iCS_IStorage iStorage) {
         if(eObj == null || iStorage == null) return;
@@ -112,7 +113,15 @@ public static class iCS_EditorUtility {
         MakeVisible(eObj, iStorage);
         iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(eObj);        
     }
-
+	// ----------------------------------------------------------------------
+    public static bool IsCurrentModificationId(int modificationId, iCS_IStorage iStorage) {
+        return modificationId == iStorage.ModificationId;
+    } 
+    public static void UndoIfModificationId(int modificationId, iCS_IStorage iStorage) {
+        if(IsCurrentModificationId(modificationId, iStorage)) {
+            Undo.PerformUndo();
+        }
+    }
 
 	// ----------------------------------------------------------------------
 	public static float GetGUIStyleHeight(GUIStyle style) {
