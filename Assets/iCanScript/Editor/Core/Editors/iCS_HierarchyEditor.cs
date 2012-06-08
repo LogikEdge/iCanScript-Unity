@@ -11,13 +11,19 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 	iCS_HierarchyController myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
 	int                     myLastFocusId= -1;
+	int                     myModificationId= -1;
 	    
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
 	public override void OnStorageChange() {
         if(IStorage == null) return;
-        myController= new iCS_HierarchyController(IStorage[0], IStorage);
+        myModificationId= IStorage.ModificationId;
+        if(myController == null) {
+            myController= new iCS_HierarchyController(IStorage[0], IStorage);            
+        } else {
+            myController.Init(IStorage[0], IStorage);
+        }
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
 		Repaint();
     }
@@ -51,6 +57,10 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 	}
 	// ----------------------------------------------------------------------
     void OnInspectorUpdate() {
+        // Verify for change within storage.
+        if(IStorage.ModificationId != myModificationId) {
+            OnStorageChange();
+        }
         Repaint();
     }
 	// ----------------------------------------------------------------------
