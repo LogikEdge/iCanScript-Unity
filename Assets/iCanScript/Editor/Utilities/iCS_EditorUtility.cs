@@ -97,7 +97,6 @@ public static class iCS_EditorUtility {
         if(eObj.IsPort) {
             var portParent= iStorage.GetParent(eObj);
             if(!iStorage.IsVisible(portParent) || iStorage.IsMinimized(portParent)) {
-                Debug.Log("Folding parent");
                 iStorage.Fold(portParent);
             }
             MakeVisible(portParent, iStorage);

@@ -48,12 +48,22 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // Initialization
     // ---------------------------------------------------------------------------------
 	public iCS_HierarchyController(iCS_EditorObject target, iCS_IStorage storage) {
+        Init(target, storage);
+	}
+    // ---------------------------------------------------------------------------------
+	public void Init(iCS_EditorObject target, iCS_IStorage storage) {
 		myTarget= target;
 		myStorage= storage;
 		BuildTree();
-		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
-		myIterStackNode= new Stack<Prelude.Tree<iCS_EditorObject>>();
-		myIterStackChildIdx = new Stack<int>();
+		if(myTreeView == null) {
+		    myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
+	    }
+		if(myIterStackNode == null) {
+		    myIterStackNode= new Stack<Prelude.Tree<iCS_EditorObject>>();
+	    }
+		if(myIterStackChildIdx == null) {
+		    myIterStackChildIdx = new Stack<int>();
+	    }
 	}
 	
 	// =================================================================================
