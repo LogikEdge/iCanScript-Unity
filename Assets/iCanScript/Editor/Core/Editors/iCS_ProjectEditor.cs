@@ -42,7 +42,7 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
 	Rect ShowToolbar() {
 		var toolbarRect= iCS_ToolbarUtility.BuildToolbar(position.width);
 		string searchString= myController.SearchString ?? "";
-		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 200.0f, searchString, 0, 0, true);
+		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 120.0f, searchString, 0, 0, true);
 		return toolbarRect;
 	}
     // ---------------------------------------------------------------------------------

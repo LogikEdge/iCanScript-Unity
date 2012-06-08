@@ -7,16 +7,16 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    DSScrollView                    myMainView;
-	iCS_ObjectHierarchyController   myController;
-	Rect                            mySelectedAreaCache= new Rect(0,0,0,0);
+    DSScrollView            myMainView;
+	iCS_HierarchyController myController;
+	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
 	    
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
 	public override void OnStorageChange() {
         if(IStorage == null) return;
-        myController= new iCS_ObjectHierarchyController(IStorage[0], IStorage);
+        myController= new iCS_HierarchyController(IStorage[0], IStorage);
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
 		Repaint();
     }
@@ -45,7 +45,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 	Rect ShowToolbar() {
 		var toolbarRect= iCS_ToolbarUtility.BuildToolbar(position.width);
 		string searchString= myController.SearchString ?? "";
-		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 200.0f, searchString, 0, 0, true);
+		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 120.0f, searchString, 0, 0, true);
 		return toolbarRect;
 	}
 	// ----------------------------------------------------------------------

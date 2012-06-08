@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
+public class iCS_HierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -47,7 +47,7 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-	public iCS_ObjectHierarchyController(iCS_EditorObject target, iCS_IStorage storage) {
+	public iCS_HierarchyController(iCS_EditorObject target, iCS_IStorage storage) {
 		myTarget= target;
 		myStorage= storage;
 		BuildTree();
