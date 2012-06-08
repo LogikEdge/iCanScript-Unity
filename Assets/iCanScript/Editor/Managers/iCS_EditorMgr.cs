@@ -68,8 +68,8 @@ public static class iCS_EditorMgr {
         editor.hideFlags= HideFlags.DontSave;
         return editor;
     }
-    public static iCS_ProjectEditor GetProjectEditor() {
-        iCS_ProjectEditor editor= EditorWindow.GetWindow(typeof(iCS_ProjectEditor), false, "iCS Project") as iCS_ProjectEditor;
+    public static iCS_LibraryEditor GetLibraryEditor() {
+        iCS_LibraryEditor editor= EditorWindow.GetWindow(typeof(iCS_LibraryEditor), false, "iCS Library") as iCS_LibraryEditor;
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
         return editor;
@@ -95,8 +95,8 @@ public static class iCS_EditorMgr {
  	}
     // ======================================================================
  	// iCanScript Project editor Menu.
- 	[MenuItem("Window/iCanScript Project")]
- 	public static void MenuProjectEditor() {
-        GetProjectEditor();
+ 	[MenuItem("Window/iCanScript Library")]
+ 	public static void MenuLibraryEditor() {
+        GetLibraryEditor();
  	}
 }

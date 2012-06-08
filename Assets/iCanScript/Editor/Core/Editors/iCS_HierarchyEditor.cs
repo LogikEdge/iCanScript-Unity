@@ -124,6 +124,9 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                     }
                     case 'f': {
                         if(iCS_EditorUtility.IsCurrentModificationId(myLastFocusId, IStorage)) {
+                            /*
+                                FIXME: Undo creates a null exception error.
+                            */
                             iCS_EditorUtility.UndoIfModificationId(myLastFocusId, IStorage);
                             myLastFocusId= -1;
                         } else {

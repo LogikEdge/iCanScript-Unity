@@ -4,12 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ProjectEditor : iCS_EditorWindow {
+public class iCS_LibraryEditor : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
     DSScrollView            myMainView;
-	iCS_ProjectController   myController;
+	iCS_LibraryController   myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
 	    
     // =================================================================================
@@ -17,7 +17,7 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
 	public override void OnStorageChange() {
         if(IStorage == null) return;
-        myController= new iCS_ProjectController();
+        myController= new iCS_LibraryController(IStorage);
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
 		Repaint();
     }
@@ -125,7 +125,7 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
 	// =================================================================================
     // Drag events.
     // ---------------------------------------------------------------------------------
-    void StartDragAndDrop(iCS_ProjectController.Node node) {
+    void StartDragAndDrop(iCS_LibraryController.Node node) {
         if(node == null) return;
         // Build drag object.
         GameObject go= new GameObject(node.Name);
@@ -141,32 +141,32 @@ public class iCS_ProjectEditor : iCS_EditorWindow {
         iCS_AutoReleasePool.AutoRelease(go, 60f);
     }
     // ---------------------------------------------------------------------------------
-    void CreateInstance(iCS_ProjectController.Node node, iCS_IStorage iStorage) {
-        if(node.Type == iCS_ProjectController.NodeTypeEnum.Company) {
+    void CreateInstance(iCS_LibraryController.Node node, iCS_IStorage iStorage) {
+        if(node.Type == iCS_LibraryController.NodeTypeEnum.Company) {
             CreateModule(node.Name, iStorage);        
             return;
         }
-        if(node.Type == iCS_ProjectController.NodeTypeEnum.Package) {
+        if(node.Type == iCS_LibraryController.NodeTypeEnum.Package) {
             CreateModule(node.Name, iStorage);        
             return;
         }
-        if(node.Type == iCS_ProjectController.NodeTypeEnum.Class) {
+        if(node.Type == iCS_LibraryController.NodeTypeEnum.Class) {
             CreateClassModule(node.Desc.ClassType, iStorage);        
             return;
         }
-        if(node.Type == iCS_ProjectController.NodeTypeEnum.Field) {
+        if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {
             CreateMethod(node.Desc, iStorage);        
             return;
         }
-        if(node.Type == iCS_ProjectController.NodeTypeEnum.Property) {
+        if(node.Type == iCS_LibraryController.NodeTypeEnum.Property) {
             CreateMethod(node.Desc, iStorage);        
             return;
         }
-        if(node.Type == iCS_ProjectController.NodeTypeEnum.Constructor) {
+        if(node.Type == iCS_LibraryController.NodeTypeEnum.Constructor) {
             CreateMethod(node.Desc, iStorage);        
             return;
         }
-        if(node.Type == iCS_ProjectController.NodeTypeEnum.Method) {
+        if(node.Type == iCS_LibraryController.NodeTypeEnum.Method) {
             CreateMethod(node.Desc, iStorage);        
             return;
         }

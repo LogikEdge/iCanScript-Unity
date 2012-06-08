@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ProjectController : DSTreeViewDataSource {
+public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Types
     // ---------------------------------------------------------------------------------
@@ -34,6 +34,10 @@ public class iCS_ProjectController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
+    /*
+        FIXME: Storage should not be necessary for library.
+    */
+	iCS_IStorage	    		myStorage      = null;
     Node                        mySelected     = null;
     Rect                        mySelectedArea = new Rect(0,0,0,0);
 	DSTreeView		    		myTreeView     = null;
@@ -69,7 +73,8 @@ public class iCS_ProjectController : DSTreeViewDataSource {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-	public iCS_ProjectController() {
+	public iCS_LibraryController(iCS_IStorage iStorage) {
+        myStorage= iStorage;
 		BuildTree();
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
 		myIterStackNode= new Stack<Prelude.Tree<Node>>();
@@ -172,6 +177,18 @@ public class iCS_ProjectController : DSTreeViewDataSource {
         if(x.Type != NodeTypeEnum.Package && y.Type == NodeTypeEnum.Package) return 1;
         if(x.Type == NodeTypeEnum.Company && y.Type != NodeTypeEnum.Company) return -1;
         if(x.Type != NodeTypeEnum.Company && y.Type == NodeTypeEnum.Company) return 1;
+        // The types are the same so lets sort according to input/output direction.
+        if(x.Type == NodeTypeEnum.Field) {
+            bool isXGet= x.Desc.IsGetField;
+            bool isYGet= y.Desc.IsGetField;
+            if(isXGet != isYGet) return isXGet ? 1 : -1;
+        }
+        if(x.Type == NodeTypeEnum.Property) {
+            bool isXGet= x.Desc.IsGetProperty;
+            bool isYGet= y.Desc.IsGetProperty;
+            if(isXGet != isYGet) return isXGet ? 1 : -1;
+        }
+        // Everything is the same so lets sort according to the name.
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
@@ -301,19 +318,27 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 		var nodeType= current.Type;
 		string name= current.Name;
         if(nodeType == NodeTypeEnum.Company) {
-//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ModuleHierarchyIcon, myStorage);            
         } else if(nodeType == NodeTypeEnum.Package) {
-//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ClassHierarchyIcon, myStorage);                            
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ModuleHierarchyIcon, myStorage);                            
         } else if(nodeType == NodeTypeEnum.Class) {
-//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ClassHierarchyIcon, myStorage);            
         } else if(nodeType == NodeTypeEnum.Field) {
-//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+            if(current.Desc.IsGetField) {
+                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.OutPortHierarchyIcon, myStorage);            
+            } else {
+                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.InPortHierarchyIcon, myStorage);                            
+            }
         } else if(nodeType == NodeTypeEnum.Property) {
-//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+            if(current.Desc.IsGetProperty) {
+                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.OutPortHierarchyIcon, myStorage);                            
+            } else {
+                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.InPortHierarchyIcon, myStorage);            
+            }
         } else if(nodeType == NodeTypeEnum.Constructor) {
-//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ConstructorHierarchyIcon, myStorage);            
         } else if(nodeType == NodeTypeEnum.Method) {
-//            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
         }
         return new GUIContent(name, icon); 
     }
