@@ -18,6 +18,17 @@ public class iCS_ProjectController : DSTreeViewDataSource {
             Name= name;
             Desc= desc;
         }
+        public override bool Equals(System.Object theOther) {
+            Node other= theOther as Node;
+            if(other == null) return false;
+            if(Type != other.Type) return false;
+            if(Name != other.Name) return false;
+            if(Desc != other.Desc) return false;
+            return true;
+        }
+        public override int GetHashCode() {
+            return Name.GetHashCode();
+        }
     };
     
     // =================================================================================
@@ -42,7 +53,7 @@ public class iCS_ProjectController : DSTreeViewDataSource {
 	public DSView 		View 	     { get { return myTreeView; }}
 	public Node 		Selected     { get { return mySelected; } set { mySelected= value; }}
 	public Rect         SelectedArea { get { return mySelectedArea; }}
-	public bool         IsSelected   { get { return IterNode != null ? IterNode.Value == Selected : false; }}
+	public bool         IsSelected   { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
 	public string		SearchString { get { return mySearchString; } set { if(mySearchString != value) { mySearchString= value; BuildTree(); }}}
 
 	Prelude.Tree<Node>  IterNode	 { get { return myIterStackNode.Count != 0 ? myIterStackNode.Peek() : null; }}
