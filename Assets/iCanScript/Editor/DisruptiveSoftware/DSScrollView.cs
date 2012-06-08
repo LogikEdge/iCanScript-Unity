@@ -6,18 +6,22 @@ public class DSScrollView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Vector2                         myScrollPosition          = Vector2.zero;
-    Vector2                         myContentSize             = Vector2.zero;
-    DSCellView                      myMainView                = null;
-    bool                            myUseFullWidth            = true;
-    bool                            myUseFullHeight           = true;
- 	Action<DSScrollView,Rect>       myDisplayDelegate         = null;
-	Func<DSScrollView,Rect,Vector2> myGetSizeToDisplayDelegate= null;
+    Vector2                         myScrollPosition           = Vector2.zero;
+    Vector2                         myContentSize              = Vector2.zero;
+    Vector2                         myContentSizeWithScrollbars= Vector2.zero;
+    DSCellView                      myMainView                 = null;
+    bool                            myUseFullWidth             = true;
+    bool                            myUseFullHeight            = true;
+    bool                            myIsHScrollbar             = false;
+    bool                            myIsVScrollbar             = false;
+ 	Action<DSScrollView,Rect>       myDisplayDelegate          = null;
+	Func<DSScrollView,Rect,Vector2> myGetSizeToDisplayDelegate = null;
    
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-	Rect ContentArea { get { return new Rect(0,0,myContentSize.x,myContentSize.y); }}
+	Rect ContentArea                { get { return new Rect(0,0,myContentSize.x, myContentSize.y); }}
+	Rect ContentAreaWithScrollbars  { get { return new Rect(0,0,myContentSizeWithScrollbars.x, myContentSizeWithScrollbars.y); }}
 	public Action<DSScrollView,Rect> DisplayDelegate {
 	    get { return myDisplayDelegate; }
 	    set { myDisplayDelegate= value; }
@@ -86,10 +90,10 @@ public class DSScrollView : DSView {
         }
     }
     public bool IsHorizontalScrollbarVisble(Rect displayArea) {
-        return myContentSize.x > displayArea.width;
+        return myIsHScrollbar;
     }
     public bool IsVerticalScrollbarVisible(Rect displayArea) {
-        return myContentSize.y > displayArea.height;
+        return myIsVScrollbar;
     }
     
     // ======================================================================
@@ -97,27 +101,41 @@ public class DSScrollView : DSView {
     // ----------------------------------------------------------------------
     void MainViewDisplay(DSCellView view, Rect displayArea) {
         myScrollPosition= GUI.BeginScrollView(displayArea, myScrollPosition, ContentArea, false, false);
-            InvokeDisplayDelegate(ContentArea);
+            InvokeDisplayDelegate(ContentAreaWithScrollbars);
         GUI.EndScrollView();
     }
     Vector2 MainViewGetSizeToDisplay(DSCellView view, Rect displayArea) {
 		myContentSize= InvokeGetSizeToDisplayDelegate(displayArea);
-		if(myUseFullWidth && myContentSize.x < displayArea.width) {
-		    myContentSize.x= displayArea.width;
+		myIsHScrollbar= false;
+		myIsVScrollbar= false;
+		if(myContentSize.x > displayArea.width) {
+	        myIsHScrollbar= true;
 		}
-		if(myUseFullHeight && myContentSize.y < displayArea.height) {
-		    myContentSize.y= displayArea.height;
+		if(myContentSize.y > displayArea.height) {
+		    myIsVScrollbar= true;
 		}
-        // Add scroller if the needed display size exceeds the display area.
-        /*
-            FIXME: The horizontal scroller shows up everytime the vertical scroller shows up even when not nedded.
-        */
-		var contentSize= myContentSize;        
-        if(myContentSize.x > displayArea.width) {
-            contentSize.y+= kScrollbarSize;
-        }
-        if(myContentSize.y >= displayArea.height) contentSize.x+= kScrollbarSize;
-        return contentSize;
+		if(myIsVScrollbar && myContentSize.x > displayArea.width-kScrollbarSize) {
+		    myIsHScrollbar= true;
+		}
+		if(myIsHScrollbar && myContentSize.y > displayArea.height-kScrollbarSize) {
+		    myIsVScrollbar= true;
+		}
+		if(myIsVScrollbar && myContentSize.x > displayArea.width-kScrollbarSize) {
+		    myIsHScrollbar= true;
+		}
+		if(myIsHScrollbar && myContentSize.y > displayArea.height-kScrollbarSize) {
+		    myIsVScrollbar= true;
+		}
+		myContentSizeWithScrollbars= myContentSize;
+		if(myIsVScrollbar) myContentSizeWithScrollbars.x+= kScrollbarSize;
+		if(myIsHScrollbar) myContentSizeWithScrollbars.y+= kScrollbarSize;
+		if(myUseFullWidth && myContentSizeWithScrollbars.x < displayArea.width) {
+		    myContentSizeWithScrollbars.x= displayArea.width;
+	    }
+		if(myUseFullHeight && myContentSizeWithScrollbars.y < displayArea.height) {
+		    myContentSizeWithScrollbars.y= displayArea.height;
+		}
+        return myContentSizeWithScrollbars;
     }
     
     // ======================================================================

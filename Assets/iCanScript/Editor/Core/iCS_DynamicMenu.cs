@@ -4,6 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+    TODO: Remove library node creation from menu.
+*/
+/*
+    TODO: Add "Show in hierarchy"
+*/
 public class iCS_DynamicMenu {
     internal class MenuContext {
         public string               Command;
