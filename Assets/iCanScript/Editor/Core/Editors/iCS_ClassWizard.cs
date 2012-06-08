@@ -8,7 +8,6 @@ public class iCS_ClassWizard : iCS_EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	bool						myNeedsViewUpdate= true;
     DSAccordionView             myMainView       = null;
     iCS_ClassWizardController   myController     = null;
     iCS_HierarchyController	    myTreeView       = null;
@@ -23,10 +22,8 @@ public class iCS_ClassWizard : iCS_EditorWindow {
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
 	public override void OnSelectedObjectChange() {
-		myNeedsViewUpdate= true;
 	}
 	void UpdateView() {
-		myNeedsViewUpdate= false;
 		if(IStorage == null || SelectedObject == null || !SelectedObject.IsClassModule) {
 			myMainView= null;
 			return;
@@ -50,7 +47,7 @@ public class iCS_ClassWizard : iCS_EditorWindow {
     void OnGUI() {
 		// Update storage manager.
 		iCS_EditorMgr.Update();
-		if(myNeedsViewUpdate) UpdateView();
+		if(myController == null || myController.Target != IStorage.SelectedObject) UpdateView();
         // Wait until window is configured.
         if(myMainView == null) return;
         EditorGUIUtility.LookLikeInspector();
