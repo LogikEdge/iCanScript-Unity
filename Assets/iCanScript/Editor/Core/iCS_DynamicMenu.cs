@@ -113,7 +113,6 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        MenuContext[] tmp= null;
         MenuContext[] menu= new MenuContext[0];
         if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
             // Base menu items
@@ -121,31 +120,30 @@ public class iCS_DynamicMenu {
             menu[0]= new MenuContext(ModuleStr);
             menu[1]= new MenuContext(StateChartStr); 
         }
-        // Function menu items
-        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-            List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildExpertMenu();
-            tmp= new MenuContext[menu.Length+functionMenu.Count+1];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= new MenuContext(SeparatorStr);
-            for(int i= 0; i < functionMenu.Count; ++i) {
-                tmp[i+menu.Length+1]= new MenuContext("+ "+functionMenu[i].ToString(), functionMenu[i]);
-            }
-            menu= tmp;            
-        }            
+//        // Function menu items
+//        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+//            List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildExpertMenu();
+//            tmp= new MenuContext[menu.Length+functionMenu.Count+1];
+//            menu.CopyTo(tmp, 0);
+//            tmp[menu.Length]= new MenuContext(SeparatorStr);
+//            for(int i= 0; i < functionMenu.Count; ++i) {
+//                tmp[i+menu.Length+1]= new MenuContext("+ "+functionMenu[i].ToString(), functionMenu[i]);
+//            }
+//            menu= tmp;            
+//        }            
+        // Show in hierarchy
+        AddShowInHierarchyMenuItem(ref menu);
         // Delete menu item
         if(selectedObject.InstanceId != 0 && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionGuard && selectedObject.ObjectType != iCS_ObjectTypeEnum.TransitionAction) {
-            tmp= new MenuContext[menu.Length+2];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= new MenuContext(SeparatorStr);
-            tmp[menu.Length+1]= new MenuContext(DeleteStr);
-            menu= tmp;
+            AddDeleteMenuItem(ref menu);
         }
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void TransitionModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         MenuContext[] menu= new MenuContext[1];
-        menu[0]= new MenuContext(DeleteStr);
+        menu[0]= new MenuContext(ShowHierarchyStr);
+        AddDeleteMenuItem(ref menu);
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
@@ -155,14 +153,9 @@ public class iCS_DynamicMenu {
             menu= new MenuContext[1];
             menu[0]= new MenuContext(StateStr); 
         }
-        // Delete menu item
-        MenuContext[] tmp= null;
+        AddShowInHierarchyMenuItem(ref menu);
         if(selectedObject.InstanceId != 0) {
-            tmp= new MenuContext[menu.Length+2];
-            menu.CopyTo(tmp, 0);
-            tmp[menu.Length]= new MenuContext(SeparatorStr);
-            tmp[menu.Length+1]= new MenuContext(DeleteStr);
-            menu= tmp;
+            AddDeleteMenuItem(ref menu);
         }
         ShowMenu(menu, selectedObject, storage);
     }
@@ -191,23 +184,19 @@ public class iCS_DynamicMenu {
         } else {
             menu= new MenuContext[0];
         }
-        // Delete menu item.tmp= new string[menu.Length+2];
-        MenuContext[] tmp= null;
-        tmp= new MenuContext[menu.Length+2];
-        menu.CopyTo(tmp, 0);
-        tmp[menu.Length]= new MenuContext(SeparatorStr);
-        tmp[menu.Length+1]= new MenuContext(DeleteStr);
-        menu= tmp;
+        AddShowInHierarchyMenuItem(ref menu);
+        AddDeleteMenuItem(ref menu);
         ShowMenu(menu, selectedObject, storage);
     }
     
 	// ----------------------------------------------------------------------
     void MethodMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+		MenuContext[] menu= new MenuContext[1];
+		menu[0]= new MenuContext(ShowHierarchyStr);
         if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
-			MenuContext[] menu= new MenuContext[1];
-			menu[0]= new MenuContext(DeleteStr);
-            ShowMenu(menu, selectedObject, storage);            
+            AddDeleteMenuItem(ref menu);
         }
+        ShowMenu(menu, selectedObject, storage);            
     }
 	// ----------------------------------------------------------------------
     void PortMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
@@ -246,24 +235,17 @@ public class iCS_DynamicMenu {
                 }
             }
         }
+        if(menu.Length == 0) {
+            menu= new MenuContext[1];
+            menu[0]= new MenuContext(ShowHierarchyStr);
+        } else {
+            AddShowInHierarchyMenuItem(ref menu);            
+        }
         // Allow to delete a port if its parent is a module.
         if(selectedObject.IsStatePort || selectedObject.IsDynamicModulePort || selectedObject.IsEnablePort) {
-            int i= menu.Length;
-            if(i == 0) {
-                menu= new MenuContext[1];
-                menu[0]= new MenuContext(DeleteStr);
-            } else {
-                MenuContext[] tmp= new MenuContext[i+2];
-                menu.CopyTo(tmp, 0);
-                tmp[i]= new MenuContext(SeparatorStr);
-                tmp[i+1]= new MenuContext(DeleteStr);
-                menu= tmp;                
-            }
+            AddDeleteMenuItem(ref menu);
         }
-        // Display menu if not empty.
-        if(menu.Length != 0) {
-            ShowMenu(menu, selectedObject, storage);            
-        }
+        ShowMenu(menu, selectedObject, storage);            
     }
 
     // ======================================================================
@@ -295,21 +277,16 @@ public class iCS_DynamicMenu {
         Reset();
     }
 	// ----------------------------------------------------------------------
-    int AddStandardMenuTrailer(ref MenuContext[] existingMenu) {
-        int idx= AddSeparatorAndReserveSpaceInMenu(ref existingMenu, 2);
-        existingMenu[idx]= new MenuContext(ShowHierarchyStr);
-        existingMenu[idx+1]= new MenuContext(DeleteStr);
-        return idx+2;
-    }
-	// ----------------------------------------------------------------------
-    int AddSeparatorAndReserveSpaceInMenu(ref MenuContext[] existingMenu, int addedSize) {
-        int idx= ReserveSpaceInMenu(ref existingMenu, addedSize+1);
+    void AddDeleteMenuItem(ref MenuContext[] existingMenu) {
+        int idx= ResizeMenu(ref existingMenu, existingMenu.Length+2);
         existingMenu[idx]= new MenuContext(SeparatorStr);
-        return idx+1;
+        existingMenu[idx+1]= new MenuContext(DeleteStr);
     }
 	// ----------------------------------------------------------------------
-    int ReserveSpaceInMenu(ref MenuContext[] existingMenu, int addedSize) {
-        return ResizeMenu(ref existingMenu, existingMenu.Length+addedSize);
+    void AddShowInHierarchyMenuItem(ref MenuContext[] existingMenu) {
+        int idx= ResizeMenu(ref existingMenu, existingMenu.Length+2);
+        existingMenu[idx]= new MenuContext(SeparatorStr);
+        existingMenu[idx+1]= new MenuContext(ShowHierarchyStr);        
     }
 	// ----------------------------------------------------------------------
     int ResizeMenu(ref MenuContext[] existingMenu, int newSize) {
@@ -382,6 +359,7 @@ public class iCS_DynamicMenu {
             case OnEntryStr:                ProcessCreateOnEntryModule(selectedObject, storage); break;
             case OnUpdateStr:               ProcessCreateOnUpdateModule(selectedObject, storage); break;
             case OnExitStr:                 ProcessCreateOnExitModule(selectedObject, storage); break;
+            case ShowHierarchyStr:          ProcessShowInHierarchy(selectedObject, storage); break;
             case DeleteStr:                 ProcessDestroyObject(selectedObject, storage); break;
             case EnablePortStr: {
                 iCS_EditorObject port= storage.CreatePort(iCS_Strings.EnablePort, selectedObject.InstanceId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
@@ -530,6 +508,10 @@ public class iCS_DynamicMenu {
         module.IsNameEditable= false;
         module.Tooltip= "Executes on exit from this state.";
         return module;
+    }
+	// ----------------------------------------------------------------------
+    void ProcessShowInHierarchy(iCS_EditorObject obj, iCS_IStorage iStorage) {
+        iCS_EditorMgr.GetHierarchyEditor().ShowElement(obj);
     }
 	// ----------------------------------------------------------------------
     void ProcessDestroyObject(iCS_EditorObject obj, iCS_IStorage storage) {

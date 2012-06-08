@@ -303,4 +303,13 @@ public class iCS_ObjectHierarchyController : DSTreeViewDataSource {
         if(Selected == null) return;
         myTreeView.ToggleFoldUnfold(Selected);
     }
+    // ---------------------------------------------------------------------------------
+    public void ShowElement(iCS_EditorObject eObj) {
+        if(eObj == null) return;
+        var parent= myStorage.GetParent(eObj);
+        while(parent != null) {
+            myTreeView.Unfold(parent);
+            parent= myStorage.GetParent(parent);
+        }
+    }
 }

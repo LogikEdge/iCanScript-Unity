@@ -32,6 +32,10 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 		ProcessEvents(frameArea);
 	}
 	// ----------------------------------------------------------------------
+    public void ShowElement(iCS_EditorObject eObj) {
+        myController.ShowElement(eObj);
+    }
+	// ----------------------------------------------------------------------
 	Rect ShowToolbar() {
 		var toolbarRect= iCS_ToolbarUtility.BuildToolbar(position.width);
 		string searchString= myController.SearchString ?? "";
