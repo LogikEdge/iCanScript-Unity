@@ -548,20 +548,22 @@ public class iCS_DynamicMenu {
 			Vector2 pos= ProcessMenuPosition;
 			switch(port.Edge) {
 				case iCS_EditorObject.EdgeEnum.Top: {
-					pos.y-= 50;
+					pos.y-= 100;
 					break;
 				}
 				case iCS_EditorObject.EdgeEnum.Bottom: {
-					pos.y+= 50;
+					pos.y+= 100;
 					break;
 				}
 				case iCS_EditorObject.EdgeEnum.Left: {
-					pos.x-= 50;
+					pos.x-= 100;
+                    pos.y-= 20;
 					break;
 				}
 				case iCS_EditorObject.EdgeEnum.Right:
 				default: {
-					pos.x+= 50;
+					pos.x+= 100;
+					pos.y-= 20;
 					break;
 				}
 			}
