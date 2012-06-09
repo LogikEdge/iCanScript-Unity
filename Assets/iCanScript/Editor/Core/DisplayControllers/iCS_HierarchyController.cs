@@ -134,13 +134,6 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
         if(eObj == null || !myStorage.IsValid(eObj)) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         if(eObj.Name.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
-        return FilterIn(myStorage.GetParent(eObj));
-    }
-    // ---------------------------------------------------------------------------------
-    bool FilterInNoParent(iCS_EditorObject eObj) {
-        if(eObj == null || !myStorage.IsValid(eObj)) return false;
-        if(iCS_Strings.IsEmpty(mySearchString)) return true;
-        if(eObj.Name.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
         return false;
     }
     
@@ -374,6 +367,6 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             }            
             if(result) myTreeView.Unfold(tree.Value);
         }
-        return result | FilterInNoParent(tree.Value);
+        return result | FilterIn(tree.Value);
     }
 }
