@@ -182,13 +182,16 @@ public partial class iCS_IStorage {
                         modified= true;						
 					}
 				}
-                if(obj.IsTypeCast) {
-                    if(GetSource(FindInChildren(obj, c=> c.IsInDataPort)) == null ||
-                       FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataPort)) == null) {
-                       DestroyInstanceInternal(obj);
-                       modified= true;
-                    }
-                }                    
+				/*
+					FIXME : It seems that sometimes the typecast is delete before it has time to automatically connect its ports ....
+				*/
+//				if(obj.IsTypeCast) {
+//                    if(GetSource(FindInChildren(obj, c=> c.IsInDataPort)) == null ||
+//                       FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataPort)) == null) {
+//                       DestroyInstanceInternal(obj);
+//                       modified= true;
+//                    }
+//                }                    
             }
         );        
         return modified;

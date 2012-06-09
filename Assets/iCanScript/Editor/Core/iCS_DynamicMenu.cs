@@ -382,7 +382,7 @@ public class iCS_DynamicMenu {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
 				}
-                CreateMethod(context.SelectedObject, context.Storage, desc);                                           
+                CreateMethod(selectedObject, storage, desc);                                           
                 break;                
             }
         }

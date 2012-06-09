@@ -72,7 +72,7 @@ public class iCS_TreeCache {
     // ----------------------------------------------------------------------
     public void CreateInstance(iCS_EditorObject obj) {
         if(obj.InstanceId < TreeCache.Count && TreeCache[obj.InstanceId].IsValid) {
-            Debug.LogError("Trying to create a TreeNode with the same id has an existing TreeNode. (id)=>"+obj.InstanceId);
+            Debug.LogWarning("Trying to create a TreeNode with the same id has an existing TreeNode. (id)=>"+obj.InstanceId);
         }
         // Create slots in the tree cache to hold the new instance.
         while(TreeCache.Count <= obj.InstanceId) TreeCache.Add(new TreeNode());
