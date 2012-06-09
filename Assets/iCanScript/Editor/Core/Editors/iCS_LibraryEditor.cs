@@ -4,6 +4,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+	TODO : Should filter on name, input port type, and output port type.
+*/
 public class iCS_LibraryEditor : iCS_EditorWindow {
     // =================================================================================
     // Fields
