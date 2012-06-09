@@ -22,7 +22,7 @@ public class DSTreeView : DSView {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSTreeView(RectOffset margin, bool shouldDisplayFrame, DSTreeViewDataSource dataSource, int nbOfFoldDictionaries= 1, float indentOffset= kHorizontalSpacer) {
+    public DSTreeView(RectOffset margin, bool shouldDisplayFrame, DSTreeViewDataSource dataSource, float indentOffset= kHorizontalSpacer, int nbOfFoldDictionaries= 1) {
         myMainView= new DSCellView(margin, shouldDisplayFrame);
 		myDataSource= dataSource;
 		myIndentOffset= indentOffset;
@@ -67,14 +67,14 @@ public class DSTreeView : DSView {
         }
     }
     // ----------------------------------------------------------------------
-    public void SwitchDictionaryTo(int id) {
-        if(myActiveDictionary != id && id > 0 && id < myIsFoldedDictionaries.Count) {
+    public void SwitchFoldDictionaryTo(int id) {
+        if(myActiveDictionary != id && id >= 0 && id < myIsFoldedDictionaries.Count) {
             myActiveDictionary= id;
         }
     }
     // ----------------------------------------------------------------------
-    public void CopyActiveDictionaryTo(int id) {
-        if(myActiveDictionary != id && id > 0 && id < myIsFoldedDictionaries.Count) {
+    public void CopyActiveFoldDictionaryTo(int id) {
+        if(myActiveDictionary != id && id >= 0 && id < myIsFoldedDictionaries.Count) {
             myIsFoldedDictionaries[id]= new Dictionary<object,bool>(IsFoldedDictionary);
         }
     }
