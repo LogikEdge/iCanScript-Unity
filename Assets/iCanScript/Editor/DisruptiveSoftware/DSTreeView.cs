@@ -3,30 +3,90 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-/*
-	TODO : Add second fold/unfold database so that we can switch when needed.
-*/
 public class DSTreeView : DSView {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	DSTreeViewDataSource	myDataSource        = null;
-    DSCellView  			myMainView          = null;
-	float					myIndentOffset      = kHorizontalSpacer;
-    Dictionary<object,bool>	myIsFoldedDictionary= null;
-    Dictionary<object,Rect> myRowInfo           = null;
+	DSTreeViewDataSource	        myDataSource          = null;
+    DSCellView  			        myMainView            = null;
+	float					        myIndentOffset        = kHorizontalSpacer;
+    int                             myActiveDictionary    = 0;
+    List<Dictionary<object,bool>>   myIsFoldedDictionaries= null;
+    Dictionary<object,Rect>         myRowInfo             = null;
+
+    // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+    Dictionary<object,bool> IsFoldedDictionary { get { return myIsFoldedDictionaries[myActiveDictionary]; }}
 
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public DSTreeView(RectOffset margin, bool shouldDisplayFrame, DSTreeViewDataSource dataSource, float indentOffset= kHorizontalSpacer) {
+    public DSTreeView(RectOffset margin, bool shouldDisplayFrame, DSTreeViewDataSource dataSource, int nbOfFoldDictionaries= 1, float indentOffset= kHorizontalSpacer) {
         myMainView= new DSCellView(margin, shouldDisplayFrame);
 		myDataSource= dataSource;
 		myIndentOffset= indentOffset;
-		myIsFoldedDictionary= new Dictionary<object,bool>();
+        if(nbOfFoldDictionaries < 1) nbOfFoldDictionaries= 1;
+		myIsFoldedDictionaries= new List<Dictionary<object,bool>>();
+        for(int i= 0; i < nbOfFoldDictionaries; ++i) {
+            myIsFoldedDictionaries.Add(new Dictionary<object,bool>());
+        }
         myRowInfo= new Dictionary<object,Rect>();
     }
     
+    // ======================================================================
+    // Public Services.
+    // ----------------------------------------------------------------------
+    public void Fold(object key) {
+		bool showChildren;
+		if(IsFoldedDictionary.TryGetValue(key, out showChildren)) {
+            if(showChildren) {
+                IsFoldedDictionary[key]= false;
+            }
+		}
+    }
+    // ----------------------------------------------------------------------
+    public void Unfold(object key) {
+		bool showChildren;
+		if(!IsFoldedDictionary.TryGetValue(key, out showChildren)) {
+			IsFoldedDictionary.Add(key, true);
+		} else {
+		    if(!showChildren) {
+		        IsFoldedDictionary[key]= true;
+		    }
+		}        
+    }
+    // ----------------------------------------------------------------------
+    public void ToggleFoldUnfold(object key) {
+		bool showChildren= false;
+		IsFoldedDictionary.TryGetValue(key, out showChildren);
+        if(showChildren) {
+            Fold(key);
+        } else {
+            Unfold(key);
+        }
+    }
+    // ----------------------------------------------------------------------
+    public void SwitchDictionaryTo(int id) {
+        if(myActiveDictionary != id && id > 0 && id < myIsFoldedDictionaries.Count) {
+            myActiveDictionary= id;
+        }
+    }
+    // ----------------------------------------------------------------------
+    public void CopyActiveDictionaryTo(int id) {
+        if(myActiveDictionary != id && id > 0 && id < myIsFoldedDictionaries.Count) {
+            myIsFoldedDictionaries[id]= new Dictionary<object,bool>(IsFoldedDictionary);
+        }
+    }
+    // ----------------------------------------------------------------------
+    public override AnchorEnum GetAnchor() {
+        return myMainView.Anchor;
+    }
+    // ----------------------------------------------------------------------
+    public override void SetAnchor(AnchorEnum anchor) {
+        myMainView.Anchor= anchor;
+    }
+
     // ======================================================================
     // DSView functionality implementation.
     // ----------------------------------------------------------------------
@@ -45,9 +105,9 @@ public class DSTreeView : DSView {
 			// Determine if current object is folded.
 			object key= myDataSource.CurrentObjectKey();
 			bool showChildren= false;
-			if(!myIsFoldedDictionary.TryGetValue(key, out showChildren)) {
+			if(!IsFoldedDictionary.TryGetValue(key, out showChildren)) {
 				showChildren= false;
-				myIsFoldedDictionary.Add(key, false);
+				IsFoldedDictionary.Add(key, false);
 			}
 
 			// Display current object.
@@ -59,7 +119,7 @@ public class DSTreeView : DSView {
 			if(Math3D.IsNotZero(displayArea.width) && Math3D.IsNotZero(displayArea.height)) {
                 var fullArea= new Rect(frameArea.x, displayArea.y, frameArea.width, displayArea.height);
 				showChildren= myDataSource.DisplayCurrentObject(displayArea, showChildren, fullArea);
-				myIsFoldedDictionary[key]= showChildren;
+				IsFoldedDictionary[key]= showChildren;
 			}
 
 			if(!showChildren) {
@@ -102,7 +162,7 @@ public class DSTreeView : DSView {
 			// Determine if current object is folded.
 			object key= myDataSource.CurrentObjectKey();
 			bool showChildren= false;
-			myIsFoldedDictionary.TryGetValue(key, out showChildren);
+			IsFoldedDictionary.TryGetValue(key, out showChildren);
 
 			// Consider size of the current object.
 			var currentSize= myDataSource.CurrentObjectDisplaySize();
@@ -133,44 +193,6 @@ public class DSTreeView : DSView {
 			}			
 		}
     }
-    // ----------------------------------------------------------------------
-    public void Fold(object key) {
-		bool showChildren;
-		if(myIsFoldedDictionary.TryGetValue(key, out showChildren)) {
-            if(showChildren) {
-                myIsFoldedDictionary[key]= false;
-            }
-		}
-    }
-    // ----------------------------------------------------------------------
-    public void Unfold(object key) {
-		bool showChildren;
-		if(!myIsFoldedDictionary.TryGetValue(key, out showChildren)) {
-			myIsFoldedDictionary.Add(key, true);
-		} else {
-		    if(!showChildren) {
-		        myIsFoldedDictionary[key]= true;
-		    }
-		}        
-    }
-    // ----------------------------------------------------------------------
-    public void ToggleFoldUnfold(object key) {
-		bool showChildren= false;
-		myIsFoldedDictionary.TryGetValue(key, out showChildren);
-        if(showChildren) {
-            Fold(key);
-        } else {
-            Unfold(key);
-        }
-    }
-    // ----------------------------------------------------------------------
-    public override AnchorEnum GetAnchor() {
-        return myMainView.Anchor;
-    }
-    // ----------------------------------------------------------------------
-    public override void SetAnchor(AnchorEnum anchor) {
-        myMainView.Anchor= anchor;
-    }
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
      	Vector2 mousePosition= Event.current.mousePosition;
@@ -197,4 +219,5 @@ public class DSTreeView : DSView {
 			}
         }   
     }
+
 }
