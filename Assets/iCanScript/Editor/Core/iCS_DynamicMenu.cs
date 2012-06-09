@@ -194,6 +194,9 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void PortMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
+		/*
+			TODO : Add use as library filter option.
+		*/
         MenuContext[] menu= new MenuContext[0];
         // Allow to publish port if the grand-parent is a module.
         iCS_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
