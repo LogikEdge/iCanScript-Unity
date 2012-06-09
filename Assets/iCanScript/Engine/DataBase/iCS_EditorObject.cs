@@ -4,6 +4,9 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
+/*
+	TODO : Add version information for later conversions.
+*/
 [System.Serializable]
 public class iCS_EditorObject {
     // ======================================================================
