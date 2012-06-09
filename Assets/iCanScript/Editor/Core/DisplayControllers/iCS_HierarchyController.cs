@@ -15,6 +15,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	float               			        myFoldOffset   = 0;
 	bool                			        myNameEdition  = false;
 	string              			        mySearchString = null;
+    int                                     myTreeSize     = 0;
 	Prelude.Tree<iCS_EditorObject>	        myTree		   = null;
     // Used to move selection up/down
     iCS_EditorObject                        myLastDisplayed  = null;
@@ -31,6 +32,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	public iCS_EditorObject 		Selected     { get { return myStorage.SelectedObject; } set { myStorage.SelectedObject= value; }}
 	public Rect                     SelectedArea { get { return mySelectedArea; }}
 	public bool             		IsSelected   { get { return IterNode != null ? IterNode.Value == Selected : false; }}
+    public int                      TreeSize     { get { return myTreeSize; }}
 	public bool             		NameEdition  { get { return myNameEdition; } set { myNameEdition= value; }}
 	public string SearchString {
 	    get { return mySearchString; }
@@ -44,6 +46,9 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
                 }
 	            mySearchString= value;
 	            BuildTree();
+	            if(!iCS_Strings.IsEmpty(mySearchString)) {
+	                ShowAllFiltered();
+	            }
 	        }
 	    }
 	}
@@ -87,8 +92,10 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
         // Build filter list of object...
         var filterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
         // ... make certain the parents are also filtered in !!!
+        myTreeSize= 0;
         for(int i= 0; i < filterFlags.Count; ++i) {
             if(filterFlags[i]) {
+                ++myTreeSize;
                 Prelude.until(
                     myStorage.IsValid,
                     id=> { filterFlags[id]= true; return myStorage.EditorObjects[id].ParentId; },
@@ -128,6 +135,13 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         if(eObj.Name.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
         return FilterIn(myStorage.GetParent(eObj));
+    }
+    // ---------------------------------------------------------------------------------
+    bool FilterInNoParent(iCS_EditorObject eObj) {
+        if(eObj == null || !myStorage.IsValid(eObj)) return false;
+        if(iCS_Strings.IsEmpty(mySearchString)) return true;
+        if(eObj.Name.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
+        return false;
     }
     
 
@@ -338,5 +352,28 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             myTreeView.Unfold(parent);
             parent= myStorage.GetParent(parent);
         }
+    }
+    // ---------------------------------------------------------------------------------
+    public void ShowAllFiltered() {
+        if(myTree == null) return;
+        var children= myTree.Children;
+        if(children == null) return;
+        bool result= false;
+        foreach(var child in children) {
+            result |= ShowAllFilteredFrom(child);
+        }
+        if(result) myTreeView.Unfold(myTree.Value);
+    }
+    bool ShowAllFilteredFrom(Prelude.Tree<iCS_EditorObject> tree) {
+        if(tree == null) return false;
+        bool result= false;
+        var children= tree.Children;
+        if(children != null) {
+            foreach(var child in children) {
+                result |= ShowAllFilteredFrom(child);
+            }            
+            if(result) myTreeView.Unfold(tree.Value);
+        }
+        return result | FilterInNoParent(tree.Value);
     }
 }
