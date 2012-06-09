@@ -32,7 +32,21 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	public Rect                     SelectedArea { get { return mySelectedArea; }}
 	public bool             		IsSelected   { get { return IterNode != null ? IterNode.Value == Selected : false; }}
 	public bool             		NameEdition  { get { return myNameEdition; } set { myNameEdition= value; }}
-	public string					SearchString { get { return mySearchString; } set { if(mySearchString != value) { mySearchString= value; BuildTree(); }}}
+	public string SearchString {
+	    get { return mySearchString; }
+	    set {
+	        if(mySearchString != value) {
+                if(iCS_Strings.IsEmpty(mySearchString)) {
+                    myTreeView.CopyActiveFoldDictionaryTo(1);
+                    myTreeView.SwitchFoldDictionaryTo(1);
+                } else if(iCS_Strings.IsEmpty(value)) {
+                    myTreeView.SwitchFoldDictionaryTo(0);
+                }
+	            mySearchString= value;
+	            BuildTree();
+	        }
+	    }
+	}
 
 	Prelude.Tree<iCS_EditorObject>	IterNode	 { get { return myIterStackNode.Count != 0 ? myIterStackNode.Peek() : null; }}
 	int								IterChildIdx { get { return myIterStackChildIdx.Count  != 0 ? myIterStackChildIdx.Peek()  : 0; }}
@@ -56,7 +70,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 		myStorage= storage;
 		BuildTree();
 		if(myTreeView == null) {
-		    myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16);
+		    myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
 	    }
 		if(myIterStackNode == null) {
 		    myIterStackNode= new Stack<Prelude.Tree<iCS_EditorObject>>();
