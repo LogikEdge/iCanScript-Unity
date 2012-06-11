@@ -2,6 +2,7 @@ using UnityEngine;
 using System;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 
 
 public class iCS_ReflectionDesc {
@@ -189,6 +190,60 @@ public class iCS_ReflectionDesc {
 				signature+=" -> ("+outputStr.Substring(0, outputStr.Length-2)+")";
 			}
 			return signature;
+        }
+    }
+    // ----------------------------------------------------------------------
+    public List<string> InputParameterNames {
+        get {
+            List<string> paramNames= new List<string>();
+            for(int i= 0; i < ParamNames.Length; ++i) {
+    			if(!ParamTypes[i].IsByRef) {
+                    paramNames.Add(ParamNames[i]);
+                }
+            }
+            return paramNames;            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public List<Type> InputParameterTypes {
+        get {
+            List<Type> paramNames= new List<Type>();
+            for(int i= 0; i < ParamNames.Length; ++i) {
+    			if(!ParamTypes[i].IsByRef) {
+                    paramNames.Add(ParamTypes[i]);
+                }
+            }
+            return paramNames;            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public List<string> OutputParameterNames {
+        get {
+            List<string> paramNames= new List<string>();
+            for(int i= 0; i < ParamNames.Length; ++i) {
+    			if(ParamTypes[i].IsByRef) {
+                    paramNames.Add(ParamNames[i]);
+                }
+            }
+            if(ReturnType != null && ReturnType != typeof(void)) {
+                paramNames.Add(ReturnName ?? "out");
+			}
+            return paramNames;            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public List<Type> OutputParameterTypes {
+        get {
+            List<Type> paramNames= new List<Type>();
+            for(int i= 0; i < ParamNames.Length; ++i) {
+    			if(ParamTypes[i].IsByRef) {
+                    paramNames.Add(ParamTypes[i]);
+                }
+            }
+            if(ReturnType != null && ReturnType != typeof(void)) {
+                paramNames.Add(ReturnType);
+			}
+            return paramNames;            
         }
     }
     // ----------------------------------------------------------------------
