@@ -70,6 +70,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 }
 	            mySearchString= value;
 	            BuildTree();
+	            if(!iCS_Strings.IsEmpty(mySearchString)) {
+	                ShowAllFiltered();
+	            }
 	        }
 	    }
 	}
@@ -406,5 +409,28 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     public void ToggleFoldUnfoldSelected() {
         if(Selected == null) return;
         myTreeView.ToggleFoldUnfold(Selected);
+    }
+    // ---------------------------------------------------------------------------------
+    public void ShowAllFiltered() {
+        if(myTree == null) return;
+        var children= myTree.Children;
+        if(children == null) return;
+        bool result= false;
+        foreach(var child in children) {
+            result |= ShowAllFilteredFrom(child);
+        }
+        if(result) myTreeView.Unfold(myTree.Value);
+    }
+    bool ShowAllFilteredFrom(Prelude.Tree<Node> tree) {
+        if(tree == null) return false;
+        bool result= false;
+        var children= tree.Children;
+        if(children != null) {
+            foreach(var child in children) {
+                result |= ShowAllFilteredFrom(child);
+            }            
+            if(result) myTreeView.Unfold(tree.Value);
+        }
+        return result | FilterIn(tree.Value.Desc);
     }
 }
