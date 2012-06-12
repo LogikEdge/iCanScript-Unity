@@ -56,6 +56,9 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 	            Type dragObjType= draggedObject.GetType();
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
                     IStorage.UpdatePortInitialValue(eObj, draggedObject);
+                    /*
+                        TODO: Update node name if the port is "this" and the object is unnamed.
+                    */
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.objectReferences= new UnityEngine.Object[0];
 					return;

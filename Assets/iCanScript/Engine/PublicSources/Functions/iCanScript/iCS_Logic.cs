@@ -29,3 +29,18 @@ public static class iCS_Boolean {
     [iCS_Function] public static bool Xor(bool a, bool b) { return a ^ b; }
     [iCS_Function] public static bool Not(bool a)         { return !a; }    
 }
+
+[iCS_Class]
+public class Toggle {
+    bool    myLastTrigger= false;
+    [iCS_OutPort] public bool   state= false;
+    public bool trigger {
+        [iCS_Function] set {
+            if(value && !myLastTrigger) state^= true;
+            myLastTrigger= value;
+        }
+    }
+    [iCS_Function] public Toggle(bool initialState= false) {
+        state= initialState;
+    }
+}
