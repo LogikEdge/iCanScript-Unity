@@ -8,7 +8,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Types
     // ---------------------------------------------------------------------------------
-    public enum NodeTypeEnum { Root, Company, Package, Class, Constructor, Field, Property, Method};
+    public enum NodeTypeEnum { Root, Company, Package, Class, Constructor, Field, Property, Method, InParameter, OutParameter };
     public class Node {
         public NodeTypeEnum        Type;
         public string              Name;
@@ -104,15 +104,14 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     void BuildTree() {
         // Build filter list of object...
         var allFunctions= iCS_DataBase.AllFunctions();
-        var filterFlags= Prelude.map(o=> FilterIn(o), allFunctions);
 		// Build tree and sort it elements.
-		myTree= BuildTreeNode(allFunctions, filterFlags);
+		myTree= BuildTreeNode(allFunctions);
     }
-	Prelude.Tree<Node> BuildTreeNode(List<iCS_ReflectionDesc> functions, List<bool> filterFlags) {
+	Prelude.Tree<Node> BuildTreeNode(List<iCS_ReflectionDesc> functions) {
         if(functions.Count == 0) return null;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
         for(int i= 0; i < functions.Count; ++i) {
-            if(filterFlags[i]) {
+            if(FilterIn(functions[i])) {
                 var desc= functions[i];
                 var parentTree= GetParentTree(desc, tree);
                 Node toAdd= null;
@@ -127,6 +126,17 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 }
                 if(toAdd != null) {
                     parentTree.AddChild(toAdd);
+//                    var newTree= parentTree.AddChild(toAdd);
+//                    if(desc.IsConstructor || desc.IsMethod) {
+//                        var inputParamNames= desc.InputParameterNames;
+//                        foreach(var ip in inputParamNames) {
+//                            newTree.AddChild(new Node(NodeTypeEnum.InParameter, ip, desc));
+//                        }
+//                        var outputParamNames= desc.OutputParameterNames;
+//                        foreach(var op in outputParamNames) {
+//                            newTree.AddChild(new Node(NodeTypeEnum.OutParameter, op, desc));
+//                        }
+//                    }
                 }                            
             }
         }
@@ -180,6 +190,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         }
     }
 	int SortComparaison(Node x, Node y) {
+        if(x.Type == NodeTypeEnum.InParameter && y.Type != NodeTypeEnum.InParameter) return -1;
+        if(x.Type != NodeTypeEnum.InParameter && y.Type == NodeTypeEnum.InParameter) return 1;
+        if(x.Type == NodeTypeEnum.OutParameter && y.Type != NodeTypeEnum.OutParameter) return -1;
+        if(x.Type != NodeTypeEnum.OutParameter && y.Type == NodeTypeEnum.OutParameter) return 1;
         if(x.Type == NodeTypeEnum.Field && y.Type != NodeTypeEnum.Field) return -1;
         if(x.Type != NodeTypeEnum.Field && y.Type == NodeTypeEnum.Field) return 1;
         if(x.Type == NodeTypeEnum.Property && y.Type != NodeTypeEnum.Property) return -1;
@@ -209,6 +223,30 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
+    bool FilterInCompany(iCS_ReflectionDesc desc) {
+        if(desc == null) return false;
+        if(iCS_Strings.IsEmpty(mySearchString)) return true;
+        string upperSearchStr= mySearchString.ToUpper();
+        if(!iCS_Strings.IsEmpty(desc.Company) && desc.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        return false;
+    }
+    // ---------------------------------------------------------------------------------
+    bool FilterInPackage(iCS_ReflectionDesc desc) {
+        if(desc == null) return false;
+        if(iCS_Strings.IsEmpty(mySearchString)) return true;
+        string upperSearchStr= mySearchString.ToUpper();
+        if(!iCS_Strings.IsEmpty(desc.Package) && desc.Package.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        return false;
+    }
+    // ---------------------------------------------------------------------------------
+    bool FilterInName(iCS_ReflectionDesc desc) {
+        if(desc == null) return false;
+        if(iCS_Strings.IsEmpty(mySearchString)) return true;
+        string upperSearchStr= mySearchString.ToUpper();
+        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        return false;
+    }
+    // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_ReflectionDesc desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
@@ -216,6 +254,14 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         if(!iCS_Strings.IsEmpty(desc.Package) && desc.Package.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         if(!iCS_Strings.IsEmpty(desc.Company) && desc.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        return false;
+    }
+    // ---------------------------------------------------------------------------------
+    bool FilterIn(Node node) {
+        if(node == null) return false;
+        if(iCS_Strings.IsEmpty(mySearchString)) return true;
+        string upperSearchStr= mySearchString.ToUpper();
+        if(node.Name.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     
@@ -356,6 +402,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ConstructorHierarchyIcon, myStorage);            
         } else if(nodeType == NodeTypeEnum.Method) {
             icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+        } else if(nodeType == NodeTypeEnum.InParameter) {
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.InPortHierarchyIcon, myStorage);                        
+        } else if(nodeType == NodeTypeEnum.OutParameter) {
+            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.OutPortHierarchyIcon, myStorage);                                        
         }
         return new GUIContent(name, icon); 
     }
@@ -431,6 +481,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             }            
             if(result) myTreeView.Unfold(tree.Value);
         }
-        return result | FilterIn(tree.Value.Desc);
+        return result | FilterIn(tree.Value);
     }
 }

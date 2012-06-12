@@ -57,6 +57,7 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 	}
 	// ----------------------------------------------------------------------
     void OnInspectorUpdate() {
+        if(IStorage == null) return;
         // Verify for change within storage.
         if(IStorage.ModificationId != myModificationId) {
             OnStorageChange();
