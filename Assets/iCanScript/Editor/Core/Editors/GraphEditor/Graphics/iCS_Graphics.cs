@@ -611,7 +611,12 @@ public partial class iCS_Graphics {
     				EditorGUIUtility.LookLikeControls();
     				if(portValueType == typeof(bool)) {
     					GUI.changed= false;
-    					bool newValue= GUI.Toggle(new Rect(portNamePos.xMax, portNamePos.y-2, 16, 16), (bool)portValue, "");					
+    					Vector2 togglePos= TranslateAndScale(portCenter);
+                        var savedBackgroundColor= GUI.backgroundColor;
+    					GUI.backgroundColor= portColor;
+    					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), (bool)portValue, "");					
+//    					bool newValue= GUI.Toggle(new Rect(portNamePos.xMax, portNamePos.y-2, 16, 16), (bool)portValue, "");					
+                        GUI.backgroundColor= savedBackgroundColor;
     					if(GUI.changed) {
     						iStorage.UpdatePortInitialValue(port, newValue);
     					}
