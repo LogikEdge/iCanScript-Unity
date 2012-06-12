@@ -43,9 +43,6 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     }
 	// ----------------------------------------------------------------------
     void DragAndDropExited() {
-        /*
-            TODO: Should support undo for Drag&Drop.
-        */
         UnityEngine.Object draggedObject= GetDraggedObject();
 		if(draggedObject == null) { return; }
 
@@ -60,9 +57,6 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 		
 	    iCS_EditorObject eObj= GetObjectAtMousePosition();
 		if(eObj != null) {
-		    /*
-		      TODO: Should automatically create class module for a dragged object not on a port.
-		    */
 	        if(eObj.IsInputPort) {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
@@ -97,6 +91,9 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 		            DragAndDrop.objectReferences= new UnityEngine.Object[0];
                     return;
                 }
+                /*
+                    TODO: Should support resource drag&drop.
+                */
 			}
 		}
 		Undo.PerformUndo();
@@ -127,6 +124,9 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         if(thisPort != null) {
             IStorage.UpdatePortInitialValue(thisPort, gameObject);
         }
+        /*
+            TODO: Should construct the full gameobject including its components
+        */
 //        Component[] components= gameObject.GetComponents(typeof(Component));
 //        foreach(var component in components) {
 //            IStorage.CreateModule(parentId, MouseGraphPosition+new Vector2(100,0), component.name, iCS_ObjectTypeEnum.Module, component.GetType());
