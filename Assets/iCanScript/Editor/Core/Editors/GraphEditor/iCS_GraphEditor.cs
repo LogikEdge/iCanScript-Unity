@@ -849,7 +849,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         // No need to create module ports if both connected nodes are under the same parent.
         if(inParent == outParent || inParent == outNode || inNode == outParent) {
             IStorage.SetSource(inPort, outPort, conversion);
-            OptimizeDataConnections(inPort, outPort);
+            IStorage.OptimizeDataConnection(inPort, outPort);
             return;
         }
         // Create inPort if inParent is not part of the outParent hierarchy.
@@ -864,7 +864,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
             iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, inParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             IStorage.SetSource(inPort, newPort, conversion);
             SetNewDataConnection(newPort, outPort);
-            OptimizeDataConnections(inPort, outPort);
+            IStorage.OptimizeDataConnection(inPort, outPort);
             return;                       
         }
         // Create outPort if outParent is not part of the inParent hierarchy.
@@ -879,39 +879,12 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
             iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             IStorage.SetSource(newPort, outPort, conversion);
             SetNewDataConnection(inPort, newPort);
-            OptimizeDataConnections(inPort, outPort);
+            IStorage.OptimizeDataConnection(inPort, outPort);
             return;                       
         }
         // Should never happen ... just connect the ports.
         IStorage.SetSource(inPort, outPort, conversion);
-        OptimizeDataConnections(inPort, outPort);
-    }
-	// ----------------------------------------------------------------------
-    bool OptimizeDataConnections(iCS_EditorObject inPort, iCS_EditorObject outPort) {
-        var source= IStorage.GetSource(inPort);
-        if(source == null) return false;
-        if(source != outPort) {
-            OptimizeDataConnections(source, outPort);
-            return OptimizeDataConnections(inPort, source);
-        }
-        iCS_EditorObject[] allConnections= IStorage.FindConnectedPorts(outPort);
-        List<iCS_EditorObject> portsToReconnect= new List<iCS_EditorObject>();
-        foreach(var p in allConnections) {
-            if(p.Name == inPort.Name && p.ParentId == inPort.ParentId) portsToReconnect.Add(p);
-        }
-        // Do we have someting to optimize.
-        if(portsToReconnect.Count > 1) {
-            foreach(var p in portsToReconnect) {
-                if(p != inPort) {
-                    iCS_EditorObject[] portsToRelocate= IStorage.FindConnectedPorts(p);
-                    foreach(var toRelocate in portsToRelocate) {
-                        IStorage.SetSource(toRelocate, inPort);
-                    }
-                    IStorage.DestroyInstance(p);
-                }
-            }
-        }
-        return false;
+        IStorage.OptimizeDataConnection(inPort, outPort);
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetStateAt(Vector2 point) {
