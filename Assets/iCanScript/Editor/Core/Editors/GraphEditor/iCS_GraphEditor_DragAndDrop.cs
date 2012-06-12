@@ -51,6 +51,9 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 		
 	    iCS_EditorObject eObj= GetObjectAtMousePosition();
 		if(eObj != null) {
+		    /*
+		      TODO: Should automatically create class module for a dragged object not on a port.
+		    */
 	        if(eObj.IsInputPort) {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
