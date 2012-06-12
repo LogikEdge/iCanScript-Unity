@@ -157,4 +157,7 @@ public partial class iCS_IStorage {
         for(int i= 0; i < result.Length; ++i) result[i].PortIndex= i;
 		return result;
 	}
+    public iCS_EditorObject FindThisInputPort(iCS_EditorObject node) {
+        return FindInChildren(node, c=> c.IsInDataPort && c.Name == "this");
+    }
 }

@@ -28,15 +28,24 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 					return;
 				}
 			}
-			if(eObj.IsNode && draggedObject is Texture) {
-		    	DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
-				return;				
+			if(eObj.IsNode) {
+    			if(draggedObject is Texture && eObj.IsMinimized) {
+		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+				    return;				
+                }
+                if(draggedObject is GameObject && eObj.IsModule) {
+		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
+				    return;				                    
+                }
 			}
 		}
     	DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
     }
 	// ----------------------------------------------------------------------
     void DragAndDropExited() {
+        /*
+            TODO: Should support undo for Drag&Drop.
+        */
         UnityEngine.Object draggedObject= GetDraggedObject();
 		if(draggedObject == null) { return; }
 
@@ -67,16 +76,31 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 					return;
 				}
 			}
-			if(eObj.IsNode && draggedObject is Texture) {
-                Texture newTexture= draggedObject as Texture;
-                string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
-                if(newTexture != null) {
-                    eObj.IconGUID= iconGUID;                    
-                    IStorage.Minimize(eObj);
-                    // Remove data so that we don't get called multiple times (Unity bug !!!).
-                    DragAndDrop.objectReferences= new UnityEngine.Object[0];
-				}
-				return;				
+			if(eObj.IsNode) {
+                // Allow change of icon on minimized nodes.
+    			if(draggedObject is Texture && eObj.IsMinimized) {
+                    Texture newTexture= draggedObject as Texture;
+                    string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
+                    if(newTexture != null) {
+                        eObj.IconGUID= iconGUID;                    
+                        IStorage.Minimize(eObj);
+                        // Remove data so that we don't get called multiple times (Unity bug !!!).
+                        DragAndDrop.objectReferences= new UnityEngine.Object[0];
+    				}
+    				return;				
+                }
+                // Allow dropping Unity object in modules.
+                if(eObj.IsModule && draggedObject is GameObject) {
+                    GameObject gameObject= draggedObject as GameObject;
+                    var module= IStorage.CreateModule(eObj.InstanceId, MouseGraphPosition, gameObject.name, iCS_ObjectTypeEnum.Module, gameObject.GetType());
+                    var thisPort= IStorage.FindThisInputPort(module);
+                    if(thisPort != null) {
+                        IStorage.UpdatePortInitialValue(thisPort, draggedObject);
+                    }
+					// Remove data so that we don't get called multiple times (Unity bug !!!).
+		            DragAndDrop.objectReferences= new UnityEngine.Object[0];
+                    return;
+                }
 			}
 		}
 		Undo.PerformUndo();
