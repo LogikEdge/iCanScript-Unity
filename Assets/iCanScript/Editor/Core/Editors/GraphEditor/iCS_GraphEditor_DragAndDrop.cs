@@ -92,11 +92,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
                 // Allow dropping Unity object in modules.
                 if(eObj.IsModule && draggedObject is GameObject) {
                     GameObject gameObject= draggedObject as GameObject;
-                    var module= IStorage.CreateModule(eObj.InstanceId, MouseGraphPosition, gameObject.name, iCS_ObjectTypeEnum.Module, gameObject.GetType());
-                    var thisPort= IStorage.FindThisInputPort(module);
-                    if(thisPort != null) {
-                        IStorage.UpdatePortInitialValue(thisPort, draggedObject);
-                    }
+                    CreateGameObject(eObj.InstanceId, gameObject, MouseGraphPosition);
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.objectReferences= new UnityEngine.Object[0];
                     return;
@@ -124,5 +120,17 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
         }
         return null;
     }
-
+	// ----------------------------------------------------------------------
+    iCS_EditorObject CreateGameObject(int parentId, GameObject gameObject, Vector2 position) {
+        var module= IStorage.CreateModule(parentId, MouseGraphPosition, gameObject.name, iCS_ObjectTypeEnum.Module, gameObject.GetType());
+        var thisPort= IStorage.FindThisInputPort(module);
+        if(thisPort != null) {
+            IStorage.UpdatePortInitialValue(thisPort, gameObject);
+        }
+//        Component[] components= gameObject.GetComponents(typeof(Component));
+//        foreach(var component in components) {
+//            IStorage.CreateModule(parentId, MouseGraphPosition+new Vector2(100,0), component.name, iCS_ObjectTypeEnum.Module, component.GetType());
+//        }
+        return module;
+    }
 }
