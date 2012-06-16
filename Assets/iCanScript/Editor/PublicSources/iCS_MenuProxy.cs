@@ -77,6 +77,6 @@ public class iCS_MenuProxy {
     // Support Access
     [MenuItem("iCanScript/Report a Bug",false,40)]
     public static void ReportBug() {
-        Application.OpenURL("http://www.icanscript.com/Support/ReportBug/index.html");
+        Application.OpenURL("http://www.disruptive-sw.com/Support/customerRequest/");
     }
 }

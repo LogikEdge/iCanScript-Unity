@@ -1,4 +1,5 @@
 using UnityEngine;
+//using System.Management;
 using System.Collections;
 
 // ===========================================================================
@@ -21,5 +22,22 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 //            iCS_LicenseFile.FillCustomerInformation("Michel Launier", "11-22-33-44-55-66-77-88-99-aa-bb-cc-dd-ee-ff-00", iCS_LicenseFile.LicenseTypeEnum.Pro);            
 //            iCS_LicenseFile.SetUnlockKey(iCS_UnlockKeyGenerator.Pro);            
 //        }
+//    }
+
+//    public static string GetCPUID() {
+//        string cpuInfo = string.Empty;
+//        ManagementClass mc = new ManagementClass("win32_processor");
+//        ManagementObjectCollection moc = mc.GetInstances();
+//
+//        foreach (ManagementObject mo in moc)
+//        {
+//             if (cpuInfo == "")
+//             {
+//                  //Get only the first CPU's ID
+//                  cpuInfo = mo.Properties["processorID"].Value.ToString();
+//                  break;
+//             }
+//        }
+//        return cpuInfo;        
 //    }
 }
