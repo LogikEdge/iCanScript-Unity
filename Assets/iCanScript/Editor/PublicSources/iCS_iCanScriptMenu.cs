@@ -1,15 +1,7 @@
 using UnityEngine;
 using UnityEditor;
-using System.Collections;
 
-public class iCS_MenuProxy {
-    // ======================================================================
-	// iCanScript Editor Window Menu.
-	[MenuItem("Window/iCanScript Editor")]
-	public static void ShowiCanScriptEditor() {
-        iCS_EditorMgr.GetGraphEditor();
-	}
-
+public static class iCS_iCanScriptMenu {
     // ======================================================================
 	// Create a behavior to selected game object.
 	[MenuItem("iCanScript/Create Behaviour #&b", false, 1)]
@@ -55,28 +47,34 @@ public class iCS_MenuProxy {
         iCS_EditorMgr.GetGraphEditor().CenterOnSelected();
     }
     // ======================================================================
+    [MenuItem("iCanScript/",false,40)]
+    [MenuItem("iCanScript/Reload Libraries",false,41)]
+    public static void ReloadLibraries() {
+        iCS_Installer.Install();
+    }
+    // ======================================================================
     // Documentation Access
-    [MenuItem("iCanScript/",false,30)]
-    [MenuItem("iCanScript/Documentation/Home Page",false,31)]
+    [MenuItem("iCanScript/",false,50)]
+    [MenuItem("iCanScript/Documentation/Home Page",false,51)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com/index.html");
     }
-    [MenuItem("iCanScript/Documentation/User's Manual",false,32)]
+    [MenuItem("iCanScript/Documentation/User's Manual",false,52)]
     public static void UserManual() {
         Application.OpenURL("http://www.icanscript.com/Documentation/UserManual/index.html");
     }
-    [MenuItem("iCanScript/Documentation/Programmer's Guide",false,33)]
+    [MenuItem("iCanScript/Documentation/Programmer's Guide",false,53)]
     public static void ProgrammerGuide() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ProgrammerGuide/index.html");
     }
-    [MenuItem("iCanScript/Documentation/Release Notes",false,34)]
+    [MenuItem("iCanScript/Documentation/Release Notes",false,54)]
     public static void ReleaseNotes() {
         Application.OpenURL("http://www.icanscript.com/Documentation/ReleaseNotes/index.html");
     }
     // ======================================================================
     // Support Access
-    [MenuItem("iCanScript/Report a Bug",false,40)]
+    [MenuItem("iCanScript/Customer Request",false,60)]
     public static void ReportBug() {
-        Application.OpenURL("http://www.disruptive-sw.com/Support/customerRequest/");
+        Application.OpenURL("http://www.disruptive-sw.com/Support/CustomerRequest/index.php");
     }
 }

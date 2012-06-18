@@ -75,28 +75,4 @@ public static class iCS_EditorMgr {
         return editor;
     }
     
-    // ======================================================================
- 	// iCanScript Graph editor Menu.
- 	[MenuItem("Window/iCanScript Wizard")]
- 	public static void MenuGraphEditor() {
-        GetClassWizardEditor();
- 	}
-    // ======================================================================
- 	// iCanScript ClassWizard editor Menu.
- 	[MenuItem("Window/iCanScript Wizard")]
- 	public static void MenuClassWizardEditor() {
-        GetClassWizardEditor();
- 	}
-    // ======================================================================
- 	// iCanScript Hierarchy editor Menu.
- 	[MenuItem("Window/iCanScript Hierarchy")]
- 	public static void MenuHierarchyEditor() {
-        GetHierarchyEditor();
- 	}
-    // ======================================================================
- 	// iCanScript Project editor Menu.
- 	[MenuItem("Window/iCanScript Library")]
- 	public static void MenuLibraryEditor() {
-        GetLibraryEditor();
- 	}
 }

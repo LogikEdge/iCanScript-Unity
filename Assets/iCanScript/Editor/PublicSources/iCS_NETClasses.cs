@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 using System.IO;
-using System.Collections;
 
 public static class iCS_NETClasses {
     // ----------------------------------------------------------------------

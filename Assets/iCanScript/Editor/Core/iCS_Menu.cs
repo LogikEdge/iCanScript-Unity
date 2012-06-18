@@ -109,29 +109,4 @@ public class iCS_Menu {
 //        iCS_EditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_EditorProxy), false, "iCanScript") as iCS_EditorProxy;
 //        editorProxy.Editor.CenterOnSelected();
     }
-    // ======================================================================
-    // Documentation Access
-    //[MenuItem("iCanScript/",false,30)]
-    //[MenuItem("iCanScript/Documentation/Home Page",false,31)]
-    public static void HomePage() {
-        Application.OpenURL("http://www.icanscript.com/index.html");
-    }
-    //[MenuItem("iCanScript/Documentation/User's Manual",false,32)]
-    public static void UserManual() {
-        Application.OpenURL("http://www.icanscript.com/Documentation/UserManual/index.html");
-    }
-    //[MenuItem("iCanScript/Documentation/Programmer's Guide",false,33)]
-    public static void ProgrammerGuide() {
-        Application.OpenURL("http://www.icanscript.com/Documentation/ProgrammerGuide/index.html");
-    }
-    //[MenuItem("iCanScript/Documentation/Release Notes",false,34)]
-    public static void ReleaseNotes() {
-        Application.OpenURL("http://www.icanscript.com/Documentation/ReleaseNotes/index.html");
-    }
-    // ======================================================================
-    // Support Access
-    //[MenuItem("iCanScript/Report a Bug",false,40)]
-    public static void ReportBug() {
-        Application.OpenURL("http://www.disruptive-sw.com/Support/customerRequest");
-    }
 }

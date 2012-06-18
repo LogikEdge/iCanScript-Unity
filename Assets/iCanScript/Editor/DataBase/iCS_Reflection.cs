@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using System;
 using System.Reflection;
 using System.Collections;
@@ -95,7 +96,8 @@ public class iCS_Reflection {
         }
         // Invoke user installation.
         NeedToRunInstaller= true;
-        iCS_Installer.Install();
+//        iCS_Installer.Install();
+        EditorApplication.ExecuteMenuItem("iCanScript/Reload Libraries");
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------
