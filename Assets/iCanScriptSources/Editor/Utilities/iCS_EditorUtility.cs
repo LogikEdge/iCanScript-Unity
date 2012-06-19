@@ -110,7 +110,8 @@ public static class iCS_EditorUtility {
     }
     public static void FocusOn(iCS_EditorObject eObj, iCS_IStorage iStorage) {
         MakeVisible(eObj, iStorage);
-        iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(eObj);        
+        var graphEditor= iCS_EditorMgr.FindGraphEditor();
+        if(graphEditor != null) graphEditor.CenterAndScaleOn(eObj);        
     }
 	// ----------------------------------------------------------------------
     public static bool IsCurrentModificationId(int modificationId, iCS_IStorage iStorage) {

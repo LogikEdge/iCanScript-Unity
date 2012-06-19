@@ -18,8 +18,6 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    public void OnEnable() {}
-    public void OnDisable() {}
 	public override void OnStorageChange() {
         if(IStorage == null) return;
         myController= new iCS_LibraryController(IStorage);

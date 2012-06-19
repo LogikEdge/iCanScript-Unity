@@ -79,7 +79,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }
 
 	// ----------------------------------------------------------------------
-	bool    HasKeyboardFocus    { get { return focusedWindow == this; }}
+	bool    HasKeyboardFocus    { get { return EditorWindow.focusedWindow == MyWindow; }}
     bool    IsFloatingKeyDown	{ get { return Event.current.control; }}
     bool    IsCopyKeyDown       { get { return Event.current.shift; }}
     bool    IsScaleKeyDown      { get { return Event.current.alt; }}
@@ -103,9 +103,11 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     // Prepares the editor for editing a graph.  Note that the graph to edit
     // is not configured at this point.  We must wait for an activate from
     // the graph inspector to know which graph to edit. 
-	public void OnEnable() {        
+	public new void OnEnable() {        
+        base.OnEnable();
+        
 		// Tell Unity we want to be informed of move drag events
-		wantsMouseMove= true;
+		MyWindow.wantsMouseMove= true;
 
         // Create worker objects.
         myGraphics   = new iCS_Graphics();
@@ -123,7 +125,9 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     // Releases all resources used by the iCS_Behaviour editor.
-    public void OnDisable() {
+    public new void OnDisable() {
+        base.OnDisable();
+        
         // Release all worker objects.
         myGraphics   = null;
         myDynamicMenu= null;
@@ -135,7 +139,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }
 
 	// ----------------------------------------------------------------------
-    iCS_ClassWizard GetClassWizard()  { return iCS_EditorMgr.GetClassWizardEditor(); }
+//    iCS_ClassWizard GetClassWizard()  { return iCS_EditorMgr.GetClassWizardEditor(); }
     protected virtual void            InvokeInstaller() {}
 	
 	// ----------------------------------------------------------------------
@@ -167,13 +171,13 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
             // Repaint window
             if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
                 IStorage.IsAnimationPlaying= false;
-                Repaint();
+                MyWindow.Repaint();
             }
-            float refreshFactor= (Application.isPlaying || mouseOverWindow == this ? 8f : 1f);
+            float refreshFactor= (Application.isPlaying || EditorWindow.mouseOverWindow == MyWindow ? 8f : 1f);
             int newRefreshCounter= (int)(Time.realtimeSinceStartup*refreshFactor);
             if(newRefreshCounter != myRefreshCounter) {
                 myRefreshCounter= newRefreshCounter;
-                Repaint();
+                MyWindow.Repaint();
             }
             // Update DisplayRoot
             if(myDisplayRoot == null && IStorage.IsValid(0)) {
@@ -775,7 +779,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                     outPort= overlappingPort;
                 }                    
             } else {
-                ShowNotification(new GUIContent("Cannot connect nested node ports from input to output !!!"));
+                MyWindow.ShowNotification(new GUIContent("Cannot connect nested node ports from input to output !!!"));
                 return true;
             }
         } else {
@@ -789,7 +793,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
             }
         } else {
             string direction= inPort.IsInputPort ? "input" : "output";
-            ShowNotification(new GUIContent("Cannot connect an "+direction+" port to an "+direction+" port !!!"));
+            MyWindow.ShowNotification(new GUIContent("Cannot connect an "+direction+" port to an "+direction+" port !!!"));
         }
         return true;
     }
@@ -810,7 +814,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 		}
         typeCast= iCS_DataBase.FindTypeCast(outType, inType);
         if(typeCast == null) {
-			ShowNotification(new GUIContent("No automatic type conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
+			MyWindow.ShowNotification(new GUIContent("No automatic type conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
             return false;
         }
         return true;

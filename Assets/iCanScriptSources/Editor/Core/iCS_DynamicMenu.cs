@@ -508,7 +508,8 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void ProcessShowInHierarchy(iCS_EditorObject obj, iCS_IStorage iStorage) {
-        iCS_EditorMgr.GetHierarchyEditor().ShowElement(obj);
+        var editor= iCS_EditorMgr.FindHierarchyEditor();
+        if(editor != null) editor.ShowElement(obj);
     }
 	// ----------------------------------------------------------------------
     void ProcessDestroyObject(iCS_EditorObject obj, iCS_IStorage storage) {

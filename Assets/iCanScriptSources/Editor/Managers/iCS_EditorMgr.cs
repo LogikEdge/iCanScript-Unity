@@ -11,15 +11,11 @@ public static class iCS_EditorMgr {
     class EditorInfo {
         public string           Key                   = null;
         public EditorWindow     Window                = null;
-        public System.Object    Editor                = null;
-        public Action           OnStorageChange       = null;
-        public Action           OnSelectedObjectChange= null;  
-        public EditorInfo(string key, EditorWindow window, System.Object editor, Action onStorageChange, Action onSelectedObjectChange) {
+        public iCS_EditorBase   Editor                = null;
+        public EditorInfo(string key, EditorWindow window, iCS_EditorBase editor) {
             Key= key;
             Window= window;
             Editor= editor;
-            OnStorageChange= onStorageChange;
-            OnSelectedObjectChange= onSelectedObjectChange;
         }
     }
     
@@ -34,14 +30,14 @@ public static class iCS_EditorMgr {
     // Initialization
     // ---------------------------------------------------------------------------------
     static iCS_EditorMgr() {
-        myWindows= new List<EditorInfo>();
+        myEditors= new List<EditorInfo>();
     }
     
     // =================================================================================
     // Window management
     // ---------------------------------------------------------------------------------
-    public static void Add(string key, EditorWindow window, System.Object editor, Action onStorageChange, Action onSelectedObjectChange) {
-        myEditors.Add(new EditorInfo(key, window, editor, onStorageChange, onSelectedObjectChange));
+    public static void Add(string key, EditorWindow window, System.Object editor) {
+        myEditors.Add(new EditorInfo(key, window, editor as iCS_EditorBase));
     }
     public static void Remove(string key) {
         int idx= FindIndexOf(key);
@@ -55,16 +51,16 @@ public static class iCS_EditorMgr {
 		iCS_StorageMgr.Update();
 		bool isPlaying= Application.isPlaying;
 		Prelude.filterWith(
-			w=> w.IStorage != iCS_StorageMgr.IStorage || myIsPlaying != isPlaying,
-			w=> { w.IStorage= iCS_StorageMgr.IStorage; w.OnStorageChange(); w.Editor.Repaint(); },
+			w=> w.Editor.IStorage != iCS_StorageMgr.IStorage || myIsPlaying != isPlaying,
+			w=> { w.Editor.IStorage= iCS_StorageMgr.IStorage; w.Editor.OnStorageChange(); w.Window.Repaint(); },
 			myEditors);
 		Prelude.filterWith(
-			w=> w.SelectedObject != iCS_StorageMgr.SelectedObject || myIsPlaying != isPlaying,
-			w=> { w.SelectedObject= iCS_StorageMgr.SelectedObject; w.OnSelectedObjectChange(); w.Editor.Repaint(); },
+			w=> w.Editor.SelectedObject != iCS_StorageMgr.SelectedObject || myIsPlaying != isPlaying,
+			w=> { w.Editor.SelectedObject= iCS_StorageMgr.SelectedObject; w.Editor.OnSelectedObjectChange(); w.Window.Repaint(); },
 			myEditors);
 		if(iCS_StorageMgr.IStorage != null && myModificationId != iCS_StorageMgr.IStorage.ModificationId) {
 			myModificationId= iCS_StorageMgr.IStorage.ModificationId;
-			Prelude.forEach(w=> w.Editor.Repaint(), myEditors);
+			Prelude.forEach(w=> w.Window.Repaint(), myEditors);
 		}
 		myIsPlaying= isPlaying;
 	}
@@ -74,7 +70,7 @@ public static class iCS_EditorMgr {
     // ---------------------------------------------------------------------------------
     static int FindIndexOf(string key) {
         for(int i= 0; i < myEditors.Count; ++i) {
-            if(myEditors.Key == key) {
+            if(myEditors[i].Key == key) {
                 return i;
             }
         }        
@@ -82,21 +78,41 @@ public static class iCS_EditorMgr {
     }
     
     // ======================================================================
+    public static void ShowGraphEditor() {
+        EditorApplication.ExecuteMenuItem("Window/iCanScript Graph Editor");
+    }
+    public static void ShowClassWizard() {
+        EditorApplication.ExecuteMenuItem("Window/iCanScript Wizard");        
+    }
+    public static void ShowHierarchyEditor() {
+        EditorApplication.ExecuteMenuItem("Window/iCanScript Hierarchy");                
+    }
+    public static void ShowLibraryEditor() {
+        EditorApplication.ExecuteMenuItem("Window/iCanScript Library");                
+    }
+
+    // ======================================================================
+    public static EditorWindow FindWindow(string key) {
+        int idx= FindIndexOf(key);
+        return idx >= 0 ? myEditors[idx].Window : null;        
+    }
+    public static EditorWindow FindWindow(Type type) {
+        return FindWindow(type.Name);
+    }
+    public static EditorWindow FindWindow<T>() {
+        return FindWindow(typeof(T));
+    }
     public static EditorWindow FindGraphEditorWindow() {
-        int idx= FindIndexOf(typeof(iCS_GraphEditor).Name);
-        return idx >= 0 ? myEditors[idx].Window : null;
+        return FindWindow<iCS_GraphEditor>();
     } 
     public static EditorWindow FindClassWizardEditorWindow() {
-        int idx= FindIndexOf(typeof(iCS_GraphEditor).Name);
-        return idx >= 0 ? myEditors[idx].Window : null;
+        return FindWindow<iCS_ClassWizard>();
     }
     public static EditorWindow FindHierarchyEditorWindow() {
-        int idx= FindIndexOf(typeof(iCS_GraphEditor).Name);
-        return idx >= 0 ? myEditors[idx].Window : null;
+        return FindWindow<iCS_HierarchyEditor>();
     }
     public static EditorWindow FindLibraryEditorWindow() {
-        int idx= FindIndexOf(typeof(iCS_GraphEditor).Name);
-        return idx >= 0 ? myEditors[idx].Window : null;
+        return FindWindow<iCS_LibraryEditor>();
     }    
     // ======================================================================
     public static iCS_GraphEditor FindGraphEditor() {

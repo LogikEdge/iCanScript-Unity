@@ -16,18 +16,15 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    public void OnEnable() {}
-    public void OnDisable() {}
 	public override void OnStorageChange() {
-        if(iStorage == null) return;
-        myModificationId= myIStorage.ModificationId;
+        if(IStorage == null) return;
+        myModificationId= IStorage.ModificationId;
         if(myController == null) {
-            myController= new iCS_HierarchyController(myIStorage[0], myIStorage);            
+            myController= new iCS_HierarchyController(IStorage[0], IStorage);            
         } else {
-            myController.Init(myIStorage[0], myIStorage);
+            myController.Init(IStorage[0], IStorage);
         }
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
-		Repaint();
     }
     
 	// =================================================================================
@@ -35,7 +32,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     public override void OnGUI() {
         UpdateMgr();
-		if(myIStorage == null) return;
+		if(IStorage == null) return;
 		var toolbarRect= ShowToolbar();
         var frameArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
 		myMainView.Display(frameArea);
@@ -59,12 +56,11 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
 	}
 	// ----------------------------------------------------------------------
     void OnInspectorUpdate() {
-        if(myIStorage == null) return;
+        if(IStorage == null) return;
         // Verify for change within storage.
-        if(myIStorage.ModificationId != myModificationId) {
+        if(IStorage.ModificationId != myModificationId) {
             OnStorageChange();
         }
-        Repaint();
     }
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
@@ -81,7 +77,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
                 myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
                 Event.current.Use();
                 // Move keyboard focus to this window.
-                Focus();
+                MyWindow.Focus();
 				break;
 			}
             case EventType.MouseUp: {
@@ -136,16 +132,16 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
                         break;
                     }
                     case 'f': {
-                        if(iCS_EditorUtility.IsCurrentModificationId(myLastFocusId, myIStorage)) {
+                        if(iCS_EditorUtility.IsCurrentModificationId(myLastFocusId, IStorage)) {
                             /*
                                 FIXME: Undo creates a null exception error.
                             */
-                            iCS_EditorUtility.UndoIfModificationId(myLastFocusId, myIStorage);
+                            iCS_EditorUtility.UndoIfModificationId(myLastFocusId, IStorage);
                             myLastFocusId= -1;
                         } else {
                             if(selected != null) {
-                                myLastFocusId= iCS_EditorUtility.SafeSelectAndMakeVisible(selected, myIStorage);
-                                Focus();
+                                myLastFocusId= iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
+                                MyWindow.Focus();
                                 Event.current.Use();
                             }                            
                         }

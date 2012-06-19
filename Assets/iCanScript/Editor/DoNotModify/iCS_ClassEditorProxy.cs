@@ -12,12 +12,12 @@ public class iCS_ClassEditorProxy : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
     void OnEnable() {
         myEditor= new iCS_ClassWizard();
-        myEditor.OnEnable();
         Register(myEditor.GetType().Name, myEditor);
+        myEditor.OnEnable();
     }
     void OnDisable() {
-        Unregister(myEditor.GetType().Name);
         myEditor.OnDisable();
+        Unregister(myEditor.GetType().Name);
         myEditor= null;
     }
     
@@ -25,6 +25,6 @@ public class iCS_ClassEditorProxy : iCS_EditorWindow {
     // Display.
     // ---------------------------------------------------------------------------------
     void OnGUI() {
-        myEditor.OnGUI(position, myIStorage);
+        myEditor.OnGUI();
     }
 }

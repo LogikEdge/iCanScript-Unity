@@ -12,27 +12,19 @@ public class iCS_HierarchyEditorProxy : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
     void OnEnable() {
         myEditor= new iCS_HierarchyEditor();
-        myEditor.OnEnable();
         Register(myEditor.GetType().Name, myEditor);
+        myEditor.OnEnable();
     }
     void OnDisable() {
-        Unregister(myEditor.GetType().Name);
         myEditor.OnDisable();
+        Unregister(myEditor.GetType().Name);
         myEditor= null;
-    }
-    
-    // =================================================================================
-    // Internal storage has change.
-    // ---------------------------------------------------------------------------------
-	protected override void OnStorageChange() {
-        myEditor.OnStorageChange(myIStorage);
-        Repaint();
     }
     
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
     void OnGUI() {
-        myEditor.OnGUI(position, myIStorage);
+        myEditor.OnGUI();
     }
 }

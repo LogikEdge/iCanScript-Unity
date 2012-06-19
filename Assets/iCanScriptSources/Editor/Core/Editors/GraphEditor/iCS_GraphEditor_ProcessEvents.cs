@@ -151,7 +151,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                 break;
             }
             case EventType.DragExited: {
-                if(mouseOverWindow == this) {
+                if(EditorWindow.mouseOverWindow == MyWindow) {
                     DragAndDropExited();
                     Event.current.Use();
                 }
@@ -402,9 +402,9 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     void ShowClassWizard() {
         if(SelectedObject != null && SelectedObject.IsClassModule) {
             bool hadKeyboardFocus= HasKeyboardFocus;
-            iCS_EditorMgr.GetClassWizardEditor();
+            iCS_EditorMgr.ShowClassWizard();
             // Keep keyboard focus.
-            if(hadKeyboardFocus) Focus();
+            if(hadKeyboardFocus) MyWindow.Focus();
         }        
     }
 	// ----------------------------------------------------------------------
@@ -420,7 +420,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     					mySubEditor= new iCS_NodeNameEditor(pickedObject, pickInfo.IStorage, myGraphics);
     				}                                            
                 } else {
-                    ShowNotification(new GUIContent("The selected name cannot be changed !!!"));
+                    MyWindow.ShowNotification(new GUIContent("The selected name cannot be changed !!!"));
                 }
                 break;
             }
