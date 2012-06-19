@@ -4,9 +4,9 @@ using UnityEditor;
 public static class iCS_WindowMenu {
     // ======================================================================
 	// iCanScript Graph editor.
-	[MenuItem("Window/iCanScript Graph Editor")]
+	[MenuItem("Window/iCanScript Graph")]
 	public static void MeuGraphEditor() {
-        iCS_GraphEditorProxy editor= EditorWindow.GetWindow(typeof(iCS_GraphEditorProxy), false, "iCS Graph Editor") as iCS_GraphEditorProxy;
+        iCS_GraphEditorProxy editor= EditorWindow.GetWindow(typeof(iCS_GraphEditorProxy), false, "iCS Graph") as iCS_GraphEditorProxy;
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
 	}
