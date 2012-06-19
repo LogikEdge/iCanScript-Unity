@@ -25,6 +25,6 @@ public class iCS_LibraryEditorProxy : iCS_EditorWindow {
     // Display.
     // ---------------------------------------------------------------------------------
     void OnGUI() {
-        myEditor.OnGUI();
+        myEditor.OnGUI(position);
     }
 }

@@ -30,13 +30,8 @@ public class iCS_EditorBase {
     protected void UpdateMgr() {
         iCS_EditorMgr.Update();
     }
-    public void OnStorageChange(iCS_IStorage iStorage) {
-        myIStorage= iStorage;
-        OnStorageChange();
-	}
-	public void OnGUI(Rect _position, iCS_IStorage iStorage) {
+	public void OnGUI(Rect _position) {
         myPosition= _position;
-        myIStorage= iStorage;
         OnGUI();
     }
     

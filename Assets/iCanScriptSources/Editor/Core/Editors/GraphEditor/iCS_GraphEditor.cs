@@ -1169,10 +1169,10 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void DrawGrid() {
         myGraphics.DrawGrid(position,
-                          IStorage.Preferences.Grid.BackgroundColor,
-                          IStorage.Preferences.Grid.GridColor,
-                          IStorage.Preferences.Grid.GridSpacing);
-    }
+                            IStorage.Preferences.Grid.BackgroundColor,
+                            IStorage.Preferences.Grid.GridColor,
+                            IStorage.Preferences.Grid.GridSpacing);
+    }                       
     
 	// ----------------------------------------------------------------------
 	void Heading() {
