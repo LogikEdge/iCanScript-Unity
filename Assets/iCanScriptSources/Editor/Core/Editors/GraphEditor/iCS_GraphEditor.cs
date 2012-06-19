@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This non-persistante class is used to edit the iCS_Behaviour.
-public partial class iCS_GraphEditor : iCS_EditorWindow {
+public partial class iCS_GraphEditor : iCS_EditorBase {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
@@ -103,9 +103,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
     // Prepares the editor for editing a graph.  Note that the graph to edit
     // is not configured at this point.  We must wait for an activate from
     // the graph inspector to know which graph to edit. 
-	public new void OnEnable() {        
-        base.OnEnable();
-        
+	public void OnEnable() {        
 		// Tell Unity we want to be informed of move drag events
 		wantsMouseMove= true;
 
@@ -125,9 +123,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 
 	// ----------------------------------------------------------------------
     // Releases all resources used by the iCS_Behaviour editor.
-    public new void OnDisable() {
-        base.OnDisable();
-        
+    public void OnDisable() {
         // Release all worker objects.
         myGraphics   = null;
         myDynamicMenu= null;
@@ -207,7 +203,7 @@ public partial class iCS_GraphEditor : iCS_EditorWindow {
 	// User GUI function.
 //    static int frameCount= 0;
 //    static int seconds= 0;
-	public void OnGUI() {
+	public override void OnGUI() {
 		// Don't do start editor if not properly initialized.
 		if( !IsInitialized() ) return;
        	

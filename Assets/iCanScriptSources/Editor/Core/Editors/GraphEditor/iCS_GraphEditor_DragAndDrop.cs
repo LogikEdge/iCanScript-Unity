@@ -6,7 +6,7 @@ using System.Collections;
 // ===========================================================================
 // Unity Drag & Drop.
 // ===========================================================================
-public partial class iCS_GraphEditor : iCS_EditorWindow {
+public partial class iCS_GraphEditor : iCS_EditorBase {
     // ======================================================================
     // Respond to Unity drag & drop protocol.
 	// ----------------------------------------------------------------------

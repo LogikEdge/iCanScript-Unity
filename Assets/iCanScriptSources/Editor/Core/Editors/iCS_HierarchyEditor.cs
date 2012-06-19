@@ -3,7 +3,7 @@ using UnityEditor;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_HierarchyEditor : iCS_EditorWindow {
+public class iCS_HierarchyEditor : iCS_EditorBase {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -16,13 +16,15 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
+    public void OnEnable() {}
+    public void OnDisable() {}
 	public override void OnStorageChange() {
-        if(IStorage == null) return;
-        myModificationId= IStorage.ModificationId;
+        if(iStorage == null) return;
+        myModificationId= myIStorage.ModificationId;
         if(myController == null) {
-            myController= new iCS_HierarchyController(IStorage[0], IStorage);            
+            myController= new iCS_HierarchyController(myIStorage[0], myIStorage);            
         } else {
-            myController.Init(IStorage[0], IStorage);
+            myController.Init(myIStorage[0], myIStorage);
         }
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
 		Repaint();
@@ -31,9 +33,9 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    void OnGUI() {
-        iCS_EditorMgr.Update();
-		if(IStorage == null) return;
+    public override void OnGUI() {
+        UpdateMgr();
+		if(myIStorage == null) return;
 		var toolbarRect= ShowToolbar();
         var frameArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
 		myMainView.Display(frameArea);
@@ -57,9 +59,9 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
 	}
 	// ----------------------------------------------------------------------
     void OnInspectorUpdate() {
-        if(IStorage == null) return;
+        if(myIStorage == null) return;
         // Verify for change within storage.
-        if(IStorage.ModificationId != myModificationId) {
+        if(myIStorage.ModificationId != myModificationId) {
             OnStorageChange();
         }
         Repaint();
@@ -134,15 +136,15 @@ public class iCS_HierarchyEditor : iCS_EditorWindow {
                         break;
                     }
                     case 'f': {
-                        if(iCS_EditorUtility.IsCurrentModificationId(myLastFocusId, IStorage)) {
+                        if(iCS_EditorUtility.IsCurrentModificationId(myLastFocusId, myIStorage)) {
                             /*
                                 FIXME: Undo creates a null exception error.
                             */
-                            iCS_EditorUtility.UndoIfModificationId(myLastFocusId, IStorage);
+                            iCS_EditorUtility.UndoIfModificationId(myLastFocusId, myIStorage);
                             myLastFocusId= -1;
                         } else {
                             if(selected != null) {
-                                myLastFocusId= iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
+                                myLastFocusId= iCS_EditorUtility.SafeSelectAndMakeVisible(selected, myIStorage);
                                 Focus();
                                 Event.current.Use();
                             }                            

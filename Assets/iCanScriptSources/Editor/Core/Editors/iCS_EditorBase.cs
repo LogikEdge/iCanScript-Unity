@@ -1,33 +1,40 @@
 using UnityEngine;
-using UnityEditor;
 using System.Collections;
 
-public abstract class iCS_EditorWindow : EditorWindow {
-
+public class iCS_EditorBase {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_IStorage		myIStorage      = null;
-
+	iCS_IStorage		myIStorage= null;
+    Rect                myPosition;
+    
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
 	public iCS_EditorObject SelectedObject { get { return myIStorage != null ? IStorage.SelectedObject : null; } set { if(IStorage != null) IStorage.SelectedObject= value; }}
 	public iCS_IStorage 	IStorage 	   { get { return myIStorage; } set { myIStorage= value; }}
+	public Rect             position       { get { return myPosition; }}
 	
     // =================================================================================
-    // Initialization
+    // Update the editor manager.
     // ---------------------------------------------------------------------------------
-    protected void OnEnable() {
-        iCS_EditorMgr.Add(this);
+    protected void UpdateMgr() {
+        iCS_EditorMgr.Update();
     }
-    protected void OnDisable() {
-        iCS_EditorMgr.Remove(this);
+    public void OnStorageChange(iCS_IStorage iStorage) {
+        myIStorage= iStorage;
+        OnStorageChange();
+	}
+	public void OnGUI(Rect _position, iCS_IStorage iStorage) {
+        myPosition= _position;
+        myIStorage= iStorage;
+        OnGUI();
     }
     
     // =================================================================================
     // Functions that all editor window must respond to.
     // ---------------------------------------------------------------------------------
+    public virtual void OnGUI()                  {}
 	public virtual void OnStorageChange()        {}
-	public virtual void OnSelectedObjectChange() {}		
+	public virtual void OnSelectedObjectChange() {}
 }

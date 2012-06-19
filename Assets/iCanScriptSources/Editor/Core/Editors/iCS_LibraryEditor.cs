@@ -7,29 +7,30 @@ using System.Collections.Generic;
 /*
 	TODO : Should filter on name, input port type, and output port type.
 */
-public class iCS_LibraryEditor : iCS_EditorWindow {
+public class iCS_LibraryEditor : iCS_EditorBase {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
     DSScrollView            myMainView;
 	iCS_LibraryController   myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
-	    
+	
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
+    public void OnEnable() {}
+    public void OnDisable() {}
 	public override void OnStorageChange() {
         if(IStorage == null) return;
         myController= new iCS_LibraryController(IStorage);
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
-		Repaint();
     }
     
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    void OnGUI() {
-        iCS_EditorMgr.Update();
+    public override void OnGUI() {
+        UpdateMgr();
 		if(IStorage == null) return;
 		var toolbarRect= ShowToolbar();
         var frameArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
@@ -48,10 +49,6 @@ public class iCS_LibraryEditor : iCS_EditorWindow {
 		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 120.0f, searchString, 0, 0, true);
 		return toolbarRect;
 	}
-    // ---------------------------------------------------------------------------------
-    void OnInspectorUpdate() {
-        Repaint();
-    }
 	// =================================================================================
     // Event processing
     // ---------------------------------------------------------------------------------
@@ -79,7 +76,10 @@ public class iCS_LibraryEditor : iCS_EditorWindow {
                 myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
                 Event.current.Use();
                 // Move keyboard focus to this window.
-                Focus();
+                /*
+                    FIXME: Must move back the focus here.
+                */
+                //Focus();
 				break;
 			}
             case EventType.MouseUp: {

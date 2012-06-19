@@ -319,7 +319,8 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void FocusGraphOnSelected() {
         var myEditor= EditorWindow.focusedWindow;
-        iCS_EditorMgr.GetGraphEditor().CenterAndScaleOn(Selected);
+        var graphEditor= iCS_EditorMgr.FindGraphEditor();
+        if(graphEditor != null) graphEditor.CenterAndScaleOn(Selected);
         myEditor.Focus();
     }
     // ---------------------------------------------------------------------------------

@@ -6,7 +6,7 @@ using System.Collections;
 // ===========================================================================
 // Graph editor event processing.
 // ===========================================================================
-public partial class iCS_GraphEditor : iCS_EditorWindow {
+public partial class iCS_GraphEditor : iCS_EditorBase {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
