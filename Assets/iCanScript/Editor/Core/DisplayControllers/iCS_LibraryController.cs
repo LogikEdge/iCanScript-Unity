@@ -375,7 +375,10 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     GUIContent GetContent() {
-        EditorGUIUtility.SetIconSize(new Vector2(16.0f,12.0f));
+        /*
+            FIXME: Not accessible on Windows.
+        */
+//        EditorGUIUtility.SetIconSize(new Vector2(16.0f,12.0f));
         Texture2D icon= null;
 		var current= IterValue;
 		var nodeType= current.Type;
