@@ -27,5 +27,8 @@ public class iCS_GraphEditorProxy : iCS_EditorWindow {
     void OnGUI() {
         myEditor.OnGUI(position);
     }
+    void Update() {
+        myEditor.Update();
+    }
 
 }
