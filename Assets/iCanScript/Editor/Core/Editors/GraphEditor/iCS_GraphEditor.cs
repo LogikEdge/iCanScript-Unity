@@ -66,13 +66,16 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         }
     }
 	// ----------------------------------------------------------------------
-    Vector2     ScrollPosition { get { return IStorage.ScrollPosition; } set { IStorage.ScrollPosition= value; }}
+    Vector2     ScrollPosition {
+        get { return IStorage != null ? IStorage.ScrollPosition : Vector2.zero; }
+        set { if(IStorage != null) IStorage.ScrollPosition= value; }
+    }
     float       Scale {
-        get { return IStorage.GuiScale; }
+        get { return IStorage != null ? IStorage.GuiScale : 1.0f; }
         set {
             if(value > 2f) value= 2f;
             if(value < 0.15f) value= 0.15f;
-            IStorage.GuiScale= value;
+            if(IStorage != null) IStorage.GuiScale= value;
         }
     }
 
