@@ -140,7 +140,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     // Assures proper initialization and returns true if editor is ready
     // to execute.
-	public bool IsInitialized() {
+	bool IsInitialized() {
         // Nothing to do if we don't have a Graph to edit...
 		if(IStorage == null) {
             myDisplayRoot= null;
@@ -671,34 +671,34 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
-    public iCS_EditorObject GetObjectAtMousePosition() {
+    iCS_EditorObject GetObjectAtMousePosition() {
         return GetObjectAtScreenPosition(MousePosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the node at the given mouse position.
-    public iCS_EditorObject GetNodeAtMousePosition() {
+    iCS_EditorObject GetNodeAtMousePosition() {
         Vector2 graphPosition= ViewportToGraph(MousePosition);
         return IStorage.GetNodeAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the port at the given mouse position.
-    public iCS_EditorObject GetPortAtMousePosition() {
+    iCS_EditorObject GetPortAtMousePosition() {
         Vector2 graphPosition= ViewportToGraph(MousePosition);
         return IStorage.GetPortAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the closest port at the given mouse position.
-    public iCS_EditorObject GetClosestPortAtMousePosition() {
+    iCS_EditorObject GetClosestPortAtMousePosition() {
         Vector2 graphPosition= ViewportToGraph(MousePosition);
         return IStorage.GetClosestPortAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
-    public iCS_EditorObject GetObjectAtScreenPosition(Vector2 _screenPos) {
+    iCS_EditorObject GetObjectAtScreenPosition(Vector2 _screenPos) {
         Vector2 graphPosition= ViewportToGraph(_screenPos);
         iCS_EditorObject port= IStorage.GetPortAt(graphPosition);
         if(port != null) {
@@ -1153,6 +1153,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {
+        if(IStorage == null) return;
         Vector2 newScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
         float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
         float deltaTime= distance/3500f;
@@ -1163,6 +1164,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     public void CenterAtWithScale(Vector2 point, float newScale) {
+        if(IStorage == null) return;
         Vector2 newScrollPosition= point-0.5f/newScale*new Vector2(position.width, position.height);
         float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
         float deltaTime= distance/3500f;
