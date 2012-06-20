@@ -40,6 +40,4 @@ public class iCS_EditorBase {
     // Functions that all editor window must respond to.
     // ---------------------------------------------------------------------------------
     public virtual void OnGUI()                  {}
-	public virtual void OnStorageChange()        {}
-	public virtual void OnSelectedObjectChange() {}
 }

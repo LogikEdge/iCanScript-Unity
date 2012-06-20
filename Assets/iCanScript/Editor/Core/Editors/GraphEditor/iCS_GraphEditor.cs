@@ -66,11 +66,6 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         }
     }
 	// ----------------------------------------------------------------------
-    new iCS_EditorObject SelectedObject {
-        get { return IStorage.SelectedObject; }
-        set { IStorage.SelectedObject= value; }
-    }
-	// ----------------------------------------------------------------------
     Vector2     ScrollPosition { get { return IStorage.ScrollPosition; } set { IStorage.ScrollPosition= value; }}
     float       Scale {
         get { return IStorage.GuiScale; }
@@ -137,7 +132,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }
 
 	// ----------------------------------------------------------------------
-    void    InvokeInstaller() { EditorApplication.ExecuteMenuItem("iCanScript/Reload Library"); }
+    void    InvokeInstaller() { EditorApplication.ExecuteMenuItem("iCanScript/Reload Libraries"); }
 	
 	// ----------------------------------------------------------------------
     // Assures proper initialization and returns true if editor is ready
