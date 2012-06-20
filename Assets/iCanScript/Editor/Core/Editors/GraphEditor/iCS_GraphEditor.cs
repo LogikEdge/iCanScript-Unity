@@ -113,7 +113,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         // Create worker objects.
         myGraphics   = new iCS_Graphics();
         myDynamicMenu= new iCS_DynamicMenu();
-
+        
         // Inspect the assemblies for components.
         if(!ourAlreadyParsed) {
             ourAlreadyParsed= true;
@@ -163,7 +163,6 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 		}
         return true;
 	}
-
 
     // ======================================================================
     // UPDATE FUNCTIONALITY
