@@ -22,6 +22,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     iCS_EditorObject    myDisplayRoot= null;
     iCS_DynamicMenu     myDynamicMenu= null;
     iCS_Graphics        myGraphics   = null;
+    iCS_IStorage        myPreviousIStorage= null;
     
     // ----------------------------------------------------------------------
     int   myRefreshCounter= 0;
@@ -134,22 +135,28 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         myGraphics   = null;
         myDynamicMenu= null;
     }
-	// ----------------------------------------------------------------------
-    public override void OnStorageChange() {
-        myDisplayRoot= StorageRoot;
-        myBookmark= null;
-    }
 
 	// ----------------------------------------------------------------------
-//    iCS_ClassWizard GetClassWizard()  { return iCS_EditorMgr.GetClassWizardEditor(); }
-    protected virtual void            InvokeInstaller() {}
+    void    InvokeInstaller() { EditorApplication.ExecuteMenuItem("iCanScript/Reload Library"); }
 	
 	// ----------------------------------------------------------------------
     // Assures proper initialization and returns true if editor is ready
     // to execute.
 	public bool IsInitialized() {
         // Nothing to do if we don't have a Graph to edit...
-		if(IStorage == null) { return false; }
+		if(IStorage == null) {
+            myDisplayRoot= null;
+            myBookmark= null;
+            DragType= DragTypeEnum.None;
+		    return false;
+		}
+        if(IStorage != myPreviousIStorage) {
+            myPreviousIStorage= IStorage;
+            myDisplayRoot= StorageRoot;
+            myBookmark= null;
+            DragType= DragTypeEnum.None;
+            return false;            
+        }
         
 		// Don't run if graphic sub-system did not initialise.
 		if(iCS_Graphics.IsInitialized == false) {
@@ -165,9 +172,8 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	public void Update() {
         // Update storage selection.
-        iCS_EditorMgr.Update();
-		IStorage= iCS_StorageMgr.IStorage;
-		myDisplayRoot= IStorage != null ? IStorage[0] : null;
+        UpdateMgr();
+        if(!IsInitialized()) return;
         // Determine repaint rate.
         if(IStorage != null) {
             // Repaint window
@@ -201,16 +207,12 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	}
 	
 	// ----------------------------------------------------------------------
-    public void OnSelectionChanged() {
-        Update();
-    }
-    
-	// ----------------------------------------------------------------------
 	// User GUI function.
 //    static int frameCount= 0;
 //    static int seconds= 0;
 	public override void OnGUI() {
         // Show that we can display because we don't have a behavior or library.
+        UpdateMgr();
         if(IStorage == null) {
             MyWindow.ShowNotification(new GUIContent("No iCanScript component selected !!!"));
             return;
