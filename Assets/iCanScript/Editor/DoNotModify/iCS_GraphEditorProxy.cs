@@ -30,5 +30,8 @@ public class iCS_GraphEditorProxy : iCS_EditorWindow {
     void Update() {
         myEditor.Update();
     }
+    void OnSelectionChange() {
+        myEditor.OnSelectionChange();
+    }
 
 }

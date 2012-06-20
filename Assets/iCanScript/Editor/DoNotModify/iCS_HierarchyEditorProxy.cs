@@ -27,4 +27,8 @@ public class iCS_HierarchyEditorProxy : iCS_EditorWindow {
     void OnGUI() {
         myEditor.OnGUI(position);
     }
+    void OnSelectionChange() {
+        myEditor.OnSelectionChange();
+    }
+
 }

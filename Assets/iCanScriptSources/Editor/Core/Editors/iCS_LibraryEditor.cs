@@ -7,6 +7,9 @@ using System.Collections.Generic;
 /*
 	TODO : Should filter on name, input port type, and output port type.
 */
+/*
+    FIXME: Library should not be dependent on IStorage.
+*/
 public class iCS_LibraryEditor : iCS_EditorBase {
     // =================================================================================
     // Fields
@@ -18,10 +21,25 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
+    public new void OnEnable() {
+        base.OnEnable();
+        OnStorageChange();
+    }
+    public new void OnDisable() {
+        base.OnDisable();
+        myMainView= null;
+        myController= null;
+    }
 	public override void OnStorageChange() {
         if(IStorage == null) return;
         myController= new iCS_LibraryController(IStorage);
         myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
+    }
+    bool IsInitialized() {
+        if(IStorage == null) return false;
+        if(myController == null || myMainView == null) OnStorageChange();
+        if(myController.IStorage != IStorage) OnStorageChange();
+        return true;
     }
     
 	// =================================================================================
@@ -29,7 +47,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     public override void OnGUI() {
         UpdateMgr();
-		if(IStorage == null) return;
+		if(!IsInitialized()) return;
 		var toolbarRect= ShowToolbar();
         var frameArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
 		myMainView.Display(frameArea);

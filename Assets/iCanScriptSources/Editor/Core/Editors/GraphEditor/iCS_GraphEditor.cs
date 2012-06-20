@@ -5,7 +5,9 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
-
+/*
+    TODO: Should show message saying that no ICS script is selected.
+*/
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This non-persistante class is used to edit the iCS_Behaviour.
 public partial class iCS_GraphEditor : iCS_EditorBase {
@@ -208,6 +210,13 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 //    static int frameCount= 0;
 //    static int seconds= 0;
 	public override void OnGUI() {
+        // Show that we can display because we don't have a behavior or library.
+        if(IStorage == null) {
+            MyWindow.ShowNotification(new GUIContent("No iCanScript component selected !!!"));
+            return;
+        } else {
+            MyWindow.RemoveNotification();
+        }
 		// Don't do start editor if not properly initialized.
 		if( !IsInitialized() ) return;
        	

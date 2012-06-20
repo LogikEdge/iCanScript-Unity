@@ -27,4 +27,7 @@ public class iCS_LibraryEditorProxy : iCS_EditorWindow {
     void OnGUI() {
         myEditor.OnGUI(position);
     }
+    void OnSelectionChange() {
+        myEditor.OnSelectionChange();
+    }
 }

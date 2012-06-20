@@ -55,6 +55,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // Properties
     // ---------------------------------------------------------------------------------
 	public DSView 		View 	     { get { return myTreeView; }}
+	public iCS_IStorage IStorage     { get { return myStorage; }}
 	public Node 		Selected     { get { return mySelected; } set { mySelected= value; }}
 	public Rect         SelectedArea { get { return mySelectedArea; }}
 	public bool         IsSelected   { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}

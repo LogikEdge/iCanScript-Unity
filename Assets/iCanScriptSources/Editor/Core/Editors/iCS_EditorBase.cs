@@ -21,8 +21,9 @@ public class iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    public void OnEnable()  { MyWindow= iCS_EditorMgr.FindWindow(this.GetType()); }
-    public void OnDisable() { MyWindow= null; }
+    public void OnEnable()          { MyWindow= iCS_EditorMgr.FindWindow(this.GetType()); }
+    public void OnDisable()         { MyWindow= null; }
+    public void OnSelectionChange() { iCS_EditorMgr.Update(); }
 
     // =================================================================================
     // Update the editor manager.

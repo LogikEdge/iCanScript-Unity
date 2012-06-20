@@ -39,10 +39,12 @@ public static class iCS_StorageMgr {
 	public static void Update() {
 		GameObject go= Selection.activeGameObject;
 		if(go == null) {
+            myIStorage= null;
 		    return;
 		}
 		iCS_Storage storage= go.GetComponent<iCS_Storage>();
         if(storage == null) {
+            myIStorage= null;
             return;
         }
 		// Verify for storage change.
