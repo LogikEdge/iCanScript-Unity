@@ -21,24 +21,12 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    public new void OnEnable() {
-        base.OnEnable();
-        OnStorageChange();
-    }
-    public new void OnDisable() {
-        base.OnDisable();
-        myMainView= null;
-        myController= null;
-    }
-	public override void OnStorageChange() {
-        if(IStorage == null) return;
-        myController= new iCS_LibraryController(IStorage);
-        myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
-    }
     bool IsInitialized() {
         if(IStorage == null) return false;
-        if(myController == null || myMainView == null) OnStorageChange();
-        if(myController.IStorage != IStorage) OnStorageChange();
+        if(myController == null || myMainView == null || myController.IStorage != IStorage) {
+            myController= new iCS_LibraryController(IStorage);
+            myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
+        }
         return true;
     }
     

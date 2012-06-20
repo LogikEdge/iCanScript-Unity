@@ -22,29 +22,19 @@ public static class iCS_StorageMgr {
     // =================================================================================
     // Selection Update.
     // ---------------------------------------------------------------------------------
-	public static void Update(iCS_IStorage iStorage, Action<iCS_IStorage> notif) {
-		Update();
-		if(myIStorage != iStorage) {
-			notif(myIStorage);
-		}
-	}
-    // ---------------------------------------------------------------------------------
-	public static void Update(iCS_EditorObject eObj, Action<iCS_IStorage, iCS_EditorObject> notif) {
-		Update();
-		if(mySelectedObject != eObj) {
-			notif(myIStorage, mySelectedObject);
-		}
-	}
-    // ---------------------------------------------------------------------------------
 	public static void Update() {
 		GameObject go= Selection.activeGameObject;
 		if(go == null) {
             myIStorage= null;
+            mySelectedObject= null;
+            myIsPlaying= Application.isPlaying;
 		    return;
 		}
 		iCS_Storage storage= go.GetComponent<iCS_Storage>();
         if(storage == null) {
             myIStorage= null;
+            mySelectedObject= null;
+            myIsPlaying= Application.isPlaying;
             return;
         }
 		// Verify for storage change.

@@ -1,23 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_ClassEditorProxy : iCS_EditorWindow {
+public class iCS_GraphEditorProxy : iCS_EditorWindow {
     // =================================================================================
     // The editor implementation.
     // ---------------------------------------------------------------------------------
-    iCS_ClassWizard   myEditor  = null;
+    iCS_GraphEditor   myEditor= null;
     
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     void OnEnable() {
-        myEditor= new iCS_ClassWizard();
-        Register(myEditor.GetType().Name, myEditor);
+        myEditor= new iCS_GraphEditor();
+        Register(myEditor);
         myEditor.OnEnable();
     }
     void OnDisable() {
-        myEditor.OnDisable();
-        Unregister(myEditor.GetType().Name);
+        if(myEditor != null) myEditor.OnDisable();
+        Unregister(typeof(iCS_GraphEditor));
         myEditor= null;
     }
     
@@ -27,7 +27,7 @@ public class iCS_ClassEditorProxy : iCS_EditorWindow {
     void OnGUI() {
         myEditor.OnGUI(position);
     }
-    void OnSelectionChange() {
-        myEditor.OnSelectionChange();
+    void Update() {
+        myEditor.Update();
     }
 }

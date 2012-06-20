@@ -1,16 +1,17 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 
 public class iCS_EditorWindow : EditorWindow {
     // =================================================================================
     // Editor registration
     // ---------------------------------------------------------------------------------
-    protected void Register(string key, System.Object editor) {
-        iCS_EditorMgr.Add(key, this, editor);
+    protected void Register(System.Object editor) {
+        iCS_EditorMgr.Add(editor.GetType().Name, this, editor);
     }
-    protected void Unregister(string key) {
-        iCS_EditorMgr.Remove(key);
+    protected void Unregister(Type type) {
+        iCS_EditorMgr.Remove(type.Name);
     }
     // ---------------------------------------------------------------------------------
     // Periodically repaint the library panel.

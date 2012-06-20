@@ -19,18 +19,25 @@ public class iCS_ClassWizard : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-	void UpdateView() {
+    public new void OnDisable() {
+        base.OnDisable();
+        myMainView= null;
+        myController= null;
+    }
+    bool IsInitialized() {
 		if(IStorage == null || SelectedObject == null || !SelectedObject.IsClassModule) {
 			myMainView= null;
-			return;
+			myController= null;
+			return false;
 		}
 		// Update main view if selection has changed.
-        if(myMainView == null ||
+        if(myMainView == null || myController == null ||
            (myController != null && (myController.Target != SelectedObject || myController.IStorage != IStorage))) {
                myController= new iCS_ClassWizardController(SelectedObject, IStorage);            
                myMainView  = new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true, myController.View);
         }		
-	}
+        return true;
+    }
 	
     // =================================================================================
     // Display.
@@ -38,9 +45,8 @@ public class iCS_ClassWizard : iCS_EditorBase {
     public override void OnGUI() {
 		// Update storage manager.
         UpdateMgr();
-		if(myController == null || myController.Target != IStorage.SelectedObject) UpdateView();
         // Wait until window is configured.
-        if(myMainView == null) return;
+        if(!IsInitialized()) return;
         EditorGUIUtility.LookLikeInspector();
         myMainView.Display(new Rect(0,0,position.width, position.height));
     }

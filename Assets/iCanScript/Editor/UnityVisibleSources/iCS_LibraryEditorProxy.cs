@@ -1,23 +1,23 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_HierarchyEditorProxy : iCS_EditorWindow {
+public class iCS_LibraryEditorProxy : iCS_EditorWindow {
     // =================================================================================
     // The editor implementation.
     // ---------------------------------------------------------------------------------
-    iCS_HierarchyEditor   myEditor= null;
+    iCS_LibraryEditor   myEditor= null;
     
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
     void OnEnable() {
-        myEditor= new iCS_HierarchyEditor();
-        Register(myEditor.GetType().Name, myEditor);
+        myEditor= new iCS_LibraryEditor();
+        Register(myEditor);
         myEditor.OnEnable();
     }
     void OnDisable() {
-        myEditor.OnDisable();
-        Unregister(myEditor.GetType().Name);
+        if(myEditor != null) myEditor.OnDisable();
+        Unregister(typeof(iCS_LibraryEditor));
         myEditor= null;
     }
     
@@ -27,8 +27,4 @@ public class iCS_HierarchyEditorProxy : iCS_EditorWindow {
     void OnGUI() {
         myEditor.OnGUI(position);
     }
-    void OnSelectionChange() {
-        myEditor.OnSelectionChange();
-    }
-
 }

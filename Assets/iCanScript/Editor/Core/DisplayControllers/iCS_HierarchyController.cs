@@ -29,6 +29,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
 	public DSView 					View 	     { get { return myTreeView; }}
 	public iCS_EditorObject 		Target	     { get { return myTarget; }}
+	public iCS_IStorage             IStorage     { get { return myStorage; }}
 	public iCS_EditorObject 		Selected     { get { return myStorage.SelectedObject; } set { myStorage.SelectedObject= value; }}
 	public Rect                     SelectedArea { get { return mySelectedArea; }}
 	public bool             		IsSelected   { get { return IterNode != null ? IterNode.Value == Selected : false; }}

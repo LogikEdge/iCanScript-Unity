@@ -23,13 +23,13 @@ public class iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     public void OnEnable()          { MyWindow= iCS_EditorMgr.FindWindow(this.GetType()); }
     public void OnDisable()         { MyWindow= null; }
-    public void OnSelectionChange() { iCS_EditorMgr.Update(); }
 
     // =================================================================================
     // Update the editor manager.
     // ---------------------------------------------------------------------------------
     protected void UpdateMgr() {
         iCS_EditorMgr.Update();
+        myIStorage= iCS_StorageMgr.IStorage;
     }
 	public void OnGUI(Rect _position) {
         myPosition= _position;

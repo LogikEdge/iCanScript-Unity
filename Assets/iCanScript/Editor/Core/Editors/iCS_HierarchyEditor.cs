@@ -16,15 +16,35 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-	public override void OnStorageChange() {
-        if(IStorage == null) return;
-        myModificationId= IStorage.ModificationId;
-        if(myController == null) {
-            myController= new iCS_HierarchyController(IStorage[0], IStorage);            
-        } else {
+    void Init() {
+        myMainView= null;
+        myController= null;
+        mySelectedAreaCache= new Rect(0,0,0,0);
+        myLastFocusId= -1;
+        myModificationId= -1;
+    }
+    public new void OnDisable() {
+        base.OnDisable();
+        Init();
+    }
+    bool IsInitialized() {
+        if(IStorage == null) {
+            Init();
+            return false;
+        }
+        if(myController == null || myController.IStorage != IStorage) {
+            myController= new iCS_HierarchyController(IStorage[0], IStorage);                        
+            myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);            
+            myModificationId= IStorage.ModificationId;
+            return true;
+        }
+        if(myMainView == null) {
+            myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);            
+        }
+        if(myModificationId != IStorage.ModificationId) {
             myController.Init(IStorage[0], IStorage);
         }
-        myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);
+        return true;        
     }
     
 	// =================================================================================
@@ -32,7 +52,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     public override void OnGUI() {
         UpdateMgr();
-		if(IStorage == null) return;
+        if(!IsInitialized()) return;
 		var toolbarRect= ShowToolbar();
         var frameArea= new Rect(0,toolbarRect.height,position.width,position.height-toolbarRect.height);
 		myMainView.Display(frameArea);
@@ -54,14 +74,6 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
 		myController.SearchString= iCS_ToolbarUtility.Search(ref toolbarRect, 120.0f, searchString, 0, 0, true);
 		return toolbarRect;
 	}
-	// ----------------------------------------------------------------------
-    void OnInspectorUpdate() {
-        if(IStorage == null) return;
-        // Verify for change within storage.
-        if(IStorage.ModificationId != myModificationId) {
-            OnStorageChange();
-        }
-    }
 	// ----------------------------------------------------------------------
     void ProcessEvents(Rect frameArea) {
      	Vector2 mousePosition= Event.current.mousePosition;
