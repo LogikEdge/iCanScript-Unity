@@ -13,9 +13,11 @@ public class iCS_Reflection {
     public static bool          NeedToRunInstaller= false;
     
     // ----------------------------------------------------------------------
+    /*
+        TODO: Should remove all types if not used.
+    */
     static void AddToAllTypes(Type type) {
         if(type == null || type.Name.Length <= 0) return;
-//        Debug.Log("Add type: "+type.Name);
         if(type.Name[0] != '<' && iCS_Types.CreateInstanceSupported(type)) {
             AllTypesWithDefaultConstructor.Add(type);
         }
@@ -69,12 +71,18 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     // Scan the application for uCode attributes.
     public static void ParseAppDomain() {
+        // Type used for user installs
+        Type installerType= null;
         // Remove all previously registered functions.
         iCS_DataBase.Clear();
         // Scan the application for functions/methods/conversions to register.
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var classType in assembly.GetTypes()) {
                 AddToAllTypes(classType);
+                if(classType.Name == "iCS_Installer") {
+                    installerType= classType;
+                    continue;
+                }
                 foreach(var classCustomAttribute in classType.GetCustomAttributes(true)) {
                     // Only register classes that have been tagged for uCode.
                     if(classCustomAttribute is iCS_ClassAttribute) {
@@ -96,8 +104,13 @@ public class iCS_Reflection {
         }
         // Invoke user installation.
         NeedToRunInstaller= true;
-//        iCS_Installer.Install();
-//        EditorApplication.ExecuteMenuItem("iCanScript/Reload Libraries");
+        // Run user installer
+        if(installerType != null) {
+            var installMethod= installerType.GetMethod("Install");
+            if(installMethod != null) {
+                installMethod.Invoke(null, null);
+            }
+        }
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------
