@@ -88,8 +88,12 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     
 	// ----------------------------------------------------------------------
 	void UpdateMouse() {
-        myMousePosition= Event.current.mousePosition;
-        if(Event.current.type == EventType.MouseDrag) myMousePosition+= Event.current.delta;
+        var mousePosition= Event.current.mousePosition;
+        if(Event.current.type == EventType.MouseDrag) mousePosition+= Event.current.delta;
+        if(mousePosition.x >= 0 && mousePosition.x < position.width &&
+           mousePosition.y >= 0 && mousePosition.y < position.height) {
+               myMousePosition= mousePosition;
+        }
 	}
     Vector2 RealMousePosition  { get { return myMousePosition; }}
     Vector2 MousePosition      { get { return myMousePosition/Scale; } }

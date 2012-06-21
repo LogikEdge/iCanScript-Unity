@@ -254,7 +254,10 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     GUIContent GetContent() {
-        EditorGUIUtility.SetIconSize(new Vector2(16.0f,12.0f));
+        /*
+            FIXME: Must assure that the display width & height suffises for the icon.
+        */
+//        EditorGUIUtility.SetIconSize(new Vector2(16.0f,12.0f));
         Texture2D icon= null;
 		var current= IterValue;
         if(current.IsFunction) {
