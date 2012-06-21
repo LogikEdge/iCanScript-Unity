@@ -47,7 +47,7 @@ public static class iCS_GuiUtilities {
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
         if(!isReadOnly && isDirty) {
-			storage.UpdatePortInitialValue(port, newPortValue);
+			storage.SetPortValue(port, newPortValue);
         }
     }
 

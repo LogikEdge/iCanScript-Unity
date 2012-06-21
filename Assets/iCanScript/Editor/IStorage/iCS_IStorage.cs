@@ -199,7 +199,7 @@ public partial class iCS_IStorage {
         ForEach(
             obj=> {
                 if(obj.IsInDataPort && obj.Source == -1 && TreeCache[obj.InstanceId].InitialValue != null) {
-                    ArchiveInitialPortValue(obj);
+                    StoreInitialPortValueInArchive(obj);
                 }
                 else {
                     obj.InitialValueArchive= null; 

@@ -58,7 +58,11 @@ public class iCS_Method : iCS_Function {
             myThis= myThisConnection.Value;
         }
         // Execute function
-        if(myThis != null) myReturn= myMethodInfo.Invoke(myThis, myParameters);
+        if(myThis != null) {
+			myReturn= myMethodInfo.Invoke(myThis, myParameters);
+		} else {
+			Debug.LogWarning ("Trying to execute "+myMethodInfo.Name+" without a this...");
+		}
         MarkAsCurrent(frameId);        
     }
 }

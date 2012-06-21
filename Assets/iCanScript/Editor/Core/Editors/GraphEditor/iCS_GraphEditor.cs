@@ -8,6 +8,9 @@ using System.Collections.Generic;
 /*
     TODO: Should show message saying that no ICS script is selected.
 */
+/*
+    TODO: Should show frameId in header bar.
+*/
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This non-persistante class is used to edit the iCS_Behaviour.
 public partial class iCS_GraphEditor : iCS_EditorBase {

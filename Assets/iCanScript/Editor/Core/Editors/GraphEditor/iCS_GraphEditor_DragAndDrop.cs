@@ -61,7 +61,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
-                    IStorage.UpdatePortInitialValue(eObj, draggedObject);
+                    IStorage.SetPortValue(eObj, draggedObject);
                     /*
                         TODO: Update node name if the port is "this" and the object is unnamed.
                     */
@@ -122,7 +122,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         var module= IStorage.CreateModule(parentId, MouseGraphPosition, gameObject.name, iCS_ObjectTypeEnum.Module, gameObject.GetType());
         var thisPort= IStorage.FindThisInputPort(module);
         if(thisPort != null) {
-            IStorage.UpdatePortInitialValue(thisPort, gameObject);
+            IStorage.SetPortValue(thisPort, gameObject);
         }
         /*
             TODO: Should construct the full gameobject including its components

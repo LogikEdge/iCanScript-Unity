@@ -617,7 +617,7 @@ public partial class iCS_Graphics {
     					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), (bool)portValue, "");					
                         GUI.backgroundColor= savedBackgroundColor;
     					if(GUI.changed) {
-    						iStorage.UpdatePortInitialValue(port, newValue);
+    						iStorage.SetPortValue(port, newValue);
     					}
     				}
     			}
