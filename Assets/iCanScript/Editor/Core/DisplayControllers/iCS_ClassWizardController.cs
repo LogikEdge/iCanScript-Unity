@@ -93,14 +93,14 @@ public class iCS_ClassWizardController {
 
 		// Build class wizard layout view.
 		myLayoutView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), true);
-		myLayoutView.AddSubview(myConstructorView, new RectOffset(kSpacer, kSpacer, 0, kSpacer));
-		myLayoutView.AddSubview(myVariablesController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer), DSView.AnchorEnum.Center);
-		myLayoutView.AddSubview(myOperationsController.View, new RectOffset(kSpacer, kSpacer, 0, kSpacer), DSView.AnchorEnum.Center);
+		myLayoutView.AddSubview(myConstructorView, new RectOffset(0, 0, 0, 0));
+		myLayoutView.AddSubview(myVariablesController.View, new RectOffset(0, 0, 0, kSpacer), DSView.AnchorEnum.Center);
+		myLayoutView.AddSubview(myOperationsController.View, new RectOffset(0, 0, 0, 0), DSView.AnchorEnum.Center);
 		
 		// Build class wizard title view.
         string classTitle= myTarget.Name;
         GUIContent classWizardTitle= new GUIContent(classTitle);
-		myMainView= new DSTitleView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true, classWizardTitle, DSView.AnchorEnum.Center, true);
+		myMainView= new DSTitleView(new RectOffset(0,0,0,0), false, classWizardTitle, DSView.AnchorEnum.Center, true);
 		myMainView.SetSubview(myLayoutView);
     }
 

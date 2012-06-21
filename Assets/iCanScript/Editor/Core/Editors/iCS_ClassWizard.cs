@@ -34,7 +34,7 @@ public class iCS_ClassWizard : iCS_EditorBase {
         if(myMainView == null || myController == null ||
            (myController != null && (myController.Target != SelectedObject || myController.IStorage != IStorage))) {
                myController= new iCS_ClassWizardController(SelectedObject, IStorage);            
-               myMainView  = new DSCellView(new RectOffset(kSpacer,kSpacer,kSpacer,kSpacer), true, myController.View);
+               myMainView  = new DSCellView(new RectOffset(0,0,kSpacer,0), true, myController.View);
         }		
         return true;
     }
