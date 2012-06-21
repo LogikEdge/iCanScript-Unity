@@ -135,9 +135,6 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }
 
 	// ----------------------------------------------------------------------
-    void    InvokeInstaller() { EditorApplication.ExecuteMenuItem("iCanScript/Reload Libraries"); }
-	
-	// ----------------------------------------------------------------------
     // Assures proper initialization and returns true if editor is ready
     // to execute.
 	bool IsInitialized() {
@@ -188,16 +185,6 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
             if(myDisplayRoot == null && IStorage.IsValid(0)) {
                 myDisplayRoot= IStorage[0];
             }
-        }
-        // Make certain the installer is ran.
-        if(iCS_Reflection.NeedToRunInstaller) {
-            InvokeInstaller();
-//            StreamWriter stream= new StreamWriter("database.txt");
-//            List<iCS_ReflectionDesc> menu= iCS_DataBase.BuildExpertMenu();
-//            foreach(var desc in menu) {
-//                stream.Write(desc.FunctionPath+"/"+desc.FunctionSignature+"\n");
-//            }
-//            stream.Close();
         }
         // Cleanup objects.
         iCS_AutoReleasePool.Update();
