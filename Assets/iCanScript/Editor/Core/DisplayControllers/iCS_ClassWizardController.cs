@@ -92,7 +92,7 @@ public class iCS_ClassWizardController {
 		myOperationsController= new iCS_ClassOperationsController(myTarget.RuntimeType, myStorage, MethodTitle, myTarget);
 
 		// Build class wizard layout view.
-		myLayoutView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), true);
+		myLayoutView= new DSVerticalLayoutView(new RectOffset(0,0,0,0), false);
 		myLayoutView.AddSubview(myConstructorView, new RectOffset(0, 0, 0, 0));
 		myLayoutView.AddSubview(myVariablesController.View, new RectOffset(0, 0, 0, kSpacer), DSView.AnchorEnum.Center);
 		myLayoutView.AddSubview(myOperationsController.View, new RectOffset(0, 0, 0, 0), DSView.AnchorEnum.Center);

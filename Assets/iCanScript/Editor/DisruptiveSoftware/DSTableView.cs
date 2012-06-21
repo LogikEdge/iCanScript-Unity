@@ -153,10 +153,10 @@ public class DSTableView : DSView {
 			columnTitleArea.height-= column.Margins.vertical;
 			if(column.Title != null) {
 				Rect titleDisplayArea= DSCellView.PerformAlignment(columnTitleArea, ColumnTitleGUIStyle.CalcSize(column.Title), column.Anchor);
-				GUI.Label(titleDisplayArea, column.Title, ColumnTitleGUIStyle);
 				if(myDisplayColumnFrame) {
 					GUI.Box(titleFrameArea, "");
 				}			
+				GUI.Label(titleDisplayArea, column.Title, ColumnTitleGUIStyle);
 			}
 			titleArea.x+= column.DataSize.x;
 			titleArea.width-= column.DataSize.x;
@@ -165,6 +165,15 @@ public class DSTableView : DSView {
     // ----------------------------------------------------------------------
     void DisplayColumnData() {
         Rect dataArea= new Rect(-myScrollbarPosition.x, -myScrollbarPosition.y, myColumnDataSize.x, myColumnDataSize.y);
+        // Display column frames.
+		if(myDisplayColumnFrame) {
+            float x= dataArea.x;
+			foreach(var column in myColumns) {
+				GUI.Box(new Rect(x, dataArea.y, column.DataSize.x, dataArea.height), "");
+                x+= column.DataSize.x;				
+			}
+		}
+        // Display column data.
         float y= dataArea.y;
         for(int row= 0; row < myRowHeights.Length; ++row) {
             float x= dataArea.x;
@@ -177,13 +186,6 @@ public class DSTableView : DSView {
             }
             y+= myRowHeights[row];
         }
-		if(myDisplayColumnFrame) {
-            float x= dataArea.x;
-			foreach(var column in myColumns) {
-				GUI.Box(new Rect(x, dataArea.y, column.DataSize.x, dataArea.height), "");
-                x+= column.DataSize.x;				
-			}
-		}
     }
     
     // ======================================================================
