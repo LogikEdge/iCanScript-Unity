@@ -48,12 +48,12 @@ public static class iCS_iCanScriptMenu {
         iCS_GraphEditor graphEditor= iCS_EditorMgr.FindGraphEditor();
         if(graphEditor != null) graphEditor.CenterOnSelected();
     }
-    // ======================================================================
-    [MenuItem("iCanScript/",false,40)]
-    [MenuItem("iCanScript/Reload Libraries",false,41)]
-    public static void ReloadLibraries() {
-        iCS_Installer.Install();
-    }
+//    // ======================================================================
+//    [MenuItem("iCanScript/",false,40)]
+//    [MenuItem("iCanScript/Reload Libraries",false,41)]
+//    public static void ReloadLibraries() {
+//        iCS_Installer.Install();
+//    }
     // ======================================================================
     // Documentation Access
     [MenuItem("iCanScript/",false,50)]
