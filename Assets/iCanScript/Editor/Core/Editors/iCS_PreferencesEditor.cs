@@ -8,22 +8,6 @@ using System.Collections.Generic;
 //public class iCS_UserPreferences {
 //
 //    [System.Serializable]
-//    public class UserNodeColors {
-//        public float    SelectedBrightness= 1.75f;
-//        public Color    TitleColor        = Color.black;
-//        public Color    LabelColor        = Color.white;
-//        public Color    ValueColor        = new Color(1f,0.8f,0.4f);
-//        public Color    EntryStateColor   = new Color(1f,0.5f,0.25f);
-//        public Color    StateColor        = Color.cyan;
-//        public Color    ModuleColor       = Color.yellow;
-//        public Color    ClassColor        = new Color(1f,0.5f,0f);
-//        public Color    ConstructorColor  = new Color(1f,0.25f,0.5f);
-//        public Color    FunctionColor     = Color.green;
-//        public Color    SelectedColor     = Color.white;            
-//    }
-//    public UserNodeColors   NodeColors= new UserNodeColors();
-//
-//    [System.Serializable]
 //    public class UserTypeColors {
 //        [System.Serializable]
 //        public class UserTypeColor {
@@ -150,68 +134,68 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kGridSpacingKey            = "iCS_GridSpacing";
     // ---------------------------------------------------------------------------------
     // Node Color Constants
-    const float    kSelectedBrightnessGain      = 1.75f;
-    const float    kNodeTitleColor_R            = 0;
-    const float    kNodeTitleColor_G            = 0;
-    const float    kNodeTitleColor_B            = 0;
-    const float    kNodeLabelColor_R            = 1f;
-    const float    kNodeLabelColor_G            = 1f;
-    const float    kNodeLabelColor_B            = 1f;
-    const float    kNodeValueColor_R            = 1f;
-    const float    kNodeValueColor_G            = 0.8f;
-    const float    kNodeValueColor_B            = 0.4f;
-    const float    kEntryStateColor_R           = 1f;
-    const float    kEntryStateColor_G           = 0.5f;
-    const float    kEntryStateColor_B           = 0.25f;
-    const float    kStateColor_R                = 0f;
-    const float    kStateColor_G                = 1f;
-    const float    kStateColor_B                = 1f;
-    const float    kPackageColor_R              = 1f;
-    const float    kPackageColor_G              = 0.92f;
-    const float    kPackageColor_B              = 0.016f;
-    const float    kInstanceColor_R             = 1f;
-    const float    kInstanceColor_G             = 0.5f;
-    const float    kInstanceColor_B             = 0f;
-    const float    kConstructorColor_R          = 1f;
-    const float    kConstructorColor_G          = 0.25f;
-    const float    kConstructorColor_B          = 0.5f;
-    const float    kFunctionColor_R             = 0f;
-    const float    kFunctionColor_G             = 1f;
-    const float    kFunctionColor_B             = 0f;
-    const float    kSelectedBackgroundColor_R   = 1f;            
-    const float    kSelectedBackgroundColor_G   = 1f;            
-    const float    kSelectedBackgroundColor_B   = 1f;            
-    const string   kSelectedBrightnessGainKey   = "iCS_SelectedBrightnessGain";
-    const string   kNodeTitleColor_RKey         = "iCS_NodeTitleColor_R";
-    const string   kNodeTitleColor_GKey         = "iCS_NodeTitleColor_G";
-    const string   kNodeTitleColor_BKey         = "iCS_NodeTitleColor_B";
-    const string   kNodeLabelColor_RKey         = "iCS_NodeLabelColor_R";
-    const string   kNodeLabelColor_GKey         = "iCS_NodeLabelColor_G";
-    const string   kNodeLabelColor_BKey         = "iCS_NodeLabelColor_B";
-    const string   kNodeValueColor_RKey         = "iCS_NodeValueColor_R";
-    const string   kNodeValueColor_GKey         = "iCS_NodeValueColor_G";
-    const string   kNodeValueColor_BKey         = "iCS_NodeValueColor_B";
-    const string   kPackageColor_RKey           = "iCS_PackageColor_R";
-    const string   kPackageColor_GKey           = "iCS_PackageColor_G";
-    const string   kPackageColor_BKey           = "iCS_PackageColor_B";
-    const string   kFunctionColor_RKey          = "iCS_FunctionColor_R";
-    const string   kFunctionColor_GKey          = "iCS_FunctionColor_G";
-    const string   kFunctionColor_BKey          = "iCS_FunctionColor_B";
-    const string   kConstructorColor_RKey       = "iCS_ConstructorColor_R";
-    const string   kConstructorColor_GKey       = "iCS_ConstructorColor_G";
-    const string   kConstructorColor_BKey       = "iCS_ConstructorColor_B";
-    const string   kInstanceColor_RKey          = "iCS_InstanceColor_R";
-    const string   kInstanceColor_GKey          = "iCS_InstanceColor_G";
-    const string   kInstanceColor_BKey          = "iCS_InstanceColor_B";
-    const string   kStateColor_RKey             = "iCS_StateColor_R";
-    const string   kStateColor_GKey             = "iCS_StateColor_G";
-    const string   kStateColor_BKey             = "iCS_StateColor_B";
-    const string   kEntryStateColor_RKey        = "iCS_EntryStateColor_R";
-    const string   kEntryStateColor_GKey        = "iCS_EntryStateColor_G";
-    const string   kEntryStateColor_BKey        = "iCS_EntryStateColor_B";
-    const string   kSelectedBackgroundColor_RKey= "iCS_SelectedBackgroundColor_R";         
-    const string   kSelectedBackgroundColor_GKey= "iCS_SelectedBackgroundColor_G";         
-    const string   kSelectedBackgroundColor_BKey= "iCS_SelectedBackgroundColor_B";         
+    const float    kSelectedBrightnessGain       = 1.75f;
+    const float    kNodeTitleColor_R             = 0;
+    const float    kNodeTitleColor_G             = 0;
+    const float    kNodeTitleColor_B             = 0;
+    const float    kNodeLabelColor_R             = 1f;
+    const float    kNodeLabelColor_G             = 1f;
+    const float    kNodeLabelColor_B             = 1f;
+    const float    kNodeValueColor_R             = 1f;
+    const float    kNodeValueColor_G             = 0.8f;
+    const float    kNodeValueColor_B             = 0.4f;
+    const float    kEntryStateNodeColor_R        = 1f;
+    const float    kEntryStateNodeColor_G        = 0.5f;
+    const float    kEntryStateNodeColor_B        = 0.25f;
+    const float    kStateNodeColor_R             = 0f;
+    const float    kStateNodeColor_G             = 1f;
+    const float    kStateNodeColor_B             = 1f;
+    const float    kPackageNodeColor_R           = 1f;
+    const float    kPackageNodeColor_G           = 0.92f;
+    const float    kPackageNodeColor_B           = 0.016f;
+    const float    kInstanceNodeColor_R          = 1f;
+    const float    kInstanceNodeColor_G          = 0.5f;
+    const float    kInstanceNodeColor_B          = 0f;
+    const float    kConstructorNodeColor_R       = 1f;
+    const float    kConstructorNodeColor_G       = 0.25f;
+    const float    kConstructorNodeColor_B       = 0.5f;
+    const float    kFunctionNodeColor_R          = 0f;
+    const float    kFunctionNodeColor_G          = 1f;
+    const float    kFunctionNodeColor_B          = 0f;
+    const float    kSelectedNodeBackgroundColor_R= 1f;            
+    const float    kSelectedNodeBackgroundColor_G= 1f;            
+    const float    kSelectedNodeBackgroundColor_B= 1f;            
+    const string   kSelectedBrightnessGainKey       = "iCS_SelectedBrightnessGain";
+    const string   kNodeTitleColor_RKey             = "iCS_NodeTitleColor_R";
+    const string   kNodeTitleColor_GKey             = "iCS_NodeTitleColor_G";
+    const string   kNodeTitleColor_BKey             = "iCS_NodeTitleColor_B";
+    const string   kNodeLabelColor_RKey             = "iCS_NodeLabelColor_R";
+    const string   kNodeLabelColor_GKey             = "iCS_NodeLabelColor_G";
+    const string   kNodeLabelColor_BKey             = "iCS_NodeLabelColor_B";
+    const string   kNodeValueColor_RKey             = "iCS_NodeValueColor_R";
+    const string   kNodeValueColor_GKey             = "iCS_NodeValueColor_G";
+    const string   kNodeValueColor_BKey             = "iCS_NodeValueColor_B";
+    const string   kPackageNodeColor_RKey           = "iCS_PackageNodeColor_R";
+    const string   kPackageNodeColor_GKey           = "iCS_PackageNodeColor_G";
+    const string   kPackageNodeColor_BKey           = "iCS_PackageNodeColor_B";
+    const string   kFunctionNodeColor_RKey          = "iCS_FunctionNodeColor_R";
+    const string   kFunctionNodeColor_GKey          = "iCS_FunctionNodeColor_G";
+    const string   kFunctionNodeColor_BKey          = "iCS_FunctionNodeColor_B";
+    const string   kConstructorNodeColor_RKey       = "iCS_ConstructorNodeColor_R";
+    const string   kConstructorNodeColor_GKey       = "iCS_ConstructorNodeColor_G";
+    const string   kConstructorNodeColor_BKey       = "iCS_ConstructorNodeColor_B";
+    const string   kInstanceNodeColor_RKey          = "iCS_InstanceNodeColor_R";
+    const string   kInstanceNodeColor_GKey          = "iCS_InstanceNodeColor_G";
+    const string   kInstanceNodeColor_BKey          = "iCS_InstanceNodeColor_B";
+    const string   kStateNodeColor_RKey             = "iCS_StateNodeColor_R";
+    const string   kStateNodeColor_GKey             = "iCS_StateNodeColor_G";
+    const string   kStateNodeColor_BKey             = "iCS_StateNodeColor_B";
+    const string   kEntryStateNodeColor_RKey        = "iCS_EntryStateNodeColor_R";
+    const string   kEntryStateNodeColor_GKey        = "iCS_EntryStateNodeColor_G";
+    const string   kEntryStateNodeColor_BKey        = "iCS_EntryStateNodeColor_B";
+    const string   kSelectedNodeBackgroundColor_RKey= "iCS_SelectedNodeBackgroundColor_R";         
+    const string   kSelectedNodeBackgroundColor_GKey= "iCS_SelectedNodeBackgroundColor_G";         
+    const string   kSelectedNodeBackgroundColor_BKey= "iCS_SelectedNodeBackgroundColor_B";         
     
     // =================================================================================
     // Fields
@@ -359,95 +343,95 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             EditorPrefs.SetFloat(kNodeValueColor_BKey, value.b);
         }
     }
-    public static Color PackageColor {
+    public static Color PackageNodeColor {
         get {
-            float r= EditorPrefs.GetFloat(kPackageColor_RKey, kPackageColor_R);
-            float g= EditorPrefs.GetFloat(kPackageColor_GKey, kPackageColor_G);
-            float b= EditorPrefs.GetFloat(kPackageColor_BKey, kPackageColor_B);
+            float r= EditorPrefs.GetFloat(kPackageNodeColor_RKey, kPackageNodeColor_R);
+            float g= EditorPrefs.GetFloat(kPackageNodeColor_GKey, kPackageNodeColor_G);
+            float b= EditorPrefs.GetFloat(kPackageNodeColor_BKey, kPackageNodeColor_B);
             return new Color(r,g,b);
         }
         set {
-            EditorPrefs.SetFloat(kPackageColor_RKey, value.r);
-            EditorPrefs.SetFloat(kPackageColor_GKey, value.g);
-            EditorPrefs.SetFloat(kPackageColor_BKey, value.b);
+            EditorPrefs.SetFloat(kPackageNodeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kPackageNodeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kPackageNodeColor_BKey, value.b);
         }
     }
-    public static Color FunctionColor {
+    public static Color FunctionNodeColor {
         get {
-            float r= EditorPrefs.GetFloat(kFunctionColor_RKey, kFunctionColor_R);
-            float g= EditorPrefs.GetFloat(kFunctionColor_GKey, kFunctionColor_G);
-            float b= EditorPrefs.GetFloat(kFunctionColor_BKey, kFunctionColor_B);
+            float r= EditorPrefs.GetFloat(kFunctionNodeColor_RKey, kFunctionNodeColor_R);
+            float g= EditorPrefs.GetFloat(kFunctionNodeColor_GKey, kFunctionNodeColor_G);
+            float b= EditorPrefs.GetFloat(kFunctionNodeColor_BKey, kFunctionNodeColor_B);
             return new Color(r,g,b);
         }
         set {
-            EditorPrefs.SetFloat(kFunctionColor_RKey, value.r);
-            EditorPrefs.SetFloat(kFunctionColor_GKey, value.g);
-            EditorPrefs.SetFloat(kFunctionColor_BKey, value.b);
+            EditorPrefs.SetFloat(kFunctionNodeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kFunctionNodeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kFunctionNodeColor_BKey, value.b);
         }
     }
-    public static Color ConstructorColor {
+    public static Color ConstructorNodeColor {
         get {
-            float r= EditorPrefs.GetFloat(kConstructorColor_RKey, kConstructorColor_R);
-            float g= EditorPrefs.GetFloat(kConstructorColor_GKey, kConstructorColor_G);
-            float b= EditorPrefs.GetFloat(kConstructorColor_BKey, kConstructorColor_B);
+            float r= EditorPrefs.GetFloat(kConstructorNodeColor_RKey, kConstructorNodeColor_R);
+            float g= EditorPrefs.GetFloat(kConstructorNodeColor_GKey, kConstructorNodeColor_G);
+            float b= EditorPrefs.GetFloat(kConstructorNodeColor_BKey, kConstructorNodeColor_B);
             return new Color(r,g,b);
         }
         set {
-            EditorPrefs.SetFloat(kConstructorColor_RKey, value.r);
-            EditorPrefs.SetFloat(kConstructorColor_GKey, value.g);
-            EditorPrefs.SetFloat(kConstructorColor_BKey, value.b);
+            EditorPrefs.SetFloat(kConstructorNodeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kConstructorNodeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kConstructorNodeColor_BKey, value.b);
         }
     }
-    public static Color InstanceColor {
+    public static Color InstanceNodeColor {
         get {
-            float r= EditorPrefs.GetFloat(kInstanceColor_RKey, kInstanceColor_R);
-            float g= EditorPrefs.GetFloat(kInstanceColor_GKey, kInstanceColor_G);
-            float b= EditorPrefs.GetFloat(kInstanceColor_BKey, kInstanceColor_B);
+            float r= EditorPrefs.GetFloat(kInstanceNodeColor_RKey, kInstanceNodeColor_R);
+            float g= EditorPrefs.GetFloat(kInstanceNodeColor_GKey, kInstanceNodeColor_G);
+            float b= EditorPrefs.GetFloat(kInstanceNodeColor_BKey, kInstanceNodeColor_B);
             return new Color(r,g,b);
         }
         set {
-            EditorPrefs.SetFloat(kInstanceColor_RKey, value.r);
-            EditorPrefs.SetFloat(kInstanceColor_GKey, value.g);
-            EditorPrefs.SetFloat(kInstanceColor_BKey, value.b);
+            EditorPrefs.SetFloat(kInstanceNodeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kInstanceNodeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kInstanceNodeColor_BKey, value.b);
         }
     }
-    public static Color StateColor {
+    public static Color StateNodeColor {
         get {
-            float r= EditorPrefs.GetFloat(kStateColor_RKey, kStateColor_R);
-            float g= EditorPrefs.GetFloat(kStateColor_GKey, kStateColor_G);
-            float b= EditorPrefs.GetFloat(kStateColor_BKey, kStateColor_B);
+            float r= EditorPrefs.GetFloat(kStateNodeColor_RKey, kStateNodeColor_R);
+            float g= EditorPrefs.GetFloat(kStateNodeColor_GKey, kStateNodeColor_G);
+            float b= EditorPrefs.GetFloat(kStateNodeColor_BKey, kStateNodeColor_B);
             return new Color(r,g,b);
         }
         set {
-            EditorPrefs.SetFloat(kStateColor_RKey, value.r);
-            EditorPrefs.SetFloat(kStateColor_GKey, value.g);
-            EditorPrefs.SetFloat(kStateColor_BKey, value.b);
+            EditorPrefs.SetFloat(kStateNodeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kStateNodeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kStateNodeColor_BKey, value.b);
         }
     }
-    public static Color EntryStateColor {
+    public static Color EntryStateNodeColor {
         get {
-            float r= EditorPrefs.GetFloat(kEntryStateColor_RKey, kEntryStateColor_R);
-            float g= EditorPrefs.GetFloat(kEntryStateColor_GKey, kEntryStateColor_G);
-            float b= EditorPrefs.GetFloat(kEntryStateColor_BKey, kEntryStateColor_B);
+            float r= EditorPrefs.GetFloat(kEntryStateNodeColor_RKey, kEntryStateNodeColor_R);
+            float g= EditorPrefs.GetFloat(kEntryStateNodeColor_GKey, kEntryStateNodeColor_G);
+            float b= EditorPrefs.GetFloat(kEntryStateNodeColor_BKey, kEntryStateNodeColor_B);
             return new Color(r,g,b);
         }
         set {
-            EditorPrefs.SetFloat(kEntryStateColor_RKey, value.r);
-            EditorPrefs.SetFloat(kEntryStateColor_GKey, value.g);
-            EditorPrefs.SetFloat(kEntryStateColor_BKey, value.b);
+            EditorPrefs.SetFloat(kEntryStateNodeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kEntryStateNodeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kEntryStateNodeColor_BKey, value.b);
         }
     }
-    public static Color SelectedBackgroundColor {
+    public static Color SelectedNodeBackgroundColor {
         get {
-            float r= EditorPrefs.GetFloat(kSelectedBackgroundColor_RKey, kSelectedBackgroundColor_R);
-            float g= EditorPrefs.GetFloat(kSelectedBackgroundColor_GKey, kSelectedBackgroundColor_G);
-            float b= EditorPrefs.GetFloat(kSelectedBackgroundColor_BKey, kSelectedBackgroundColor_B);
+            float r= EditorPrefs.GetFloat(kSelectedNodeBackgroundColor_RKey, kSelectedNodeBackgroundColor_R);
+            float g= EditorPrefs.GetFloat(kSelectedNodeBackgroundColor_GKey, kSelectedNodeBackgroundColor_G);
+            float b= EditorPrefs.GetFloat(kSelectedNodeBackgroundColor_BKey, kSelectedNodeBackgroundColor_B);
             return new Color(r,g,b);
         }
         set {
-            EditorPrefs.SetFloat(kSelectedBackgroundColor_RKey, value.r);
-            EditorPrefs.SetFloat(kSelectedBackgroundColor_GKey, value.g);
-            EditorPrefs.SetFloat(kSelectedBackgroundColor_BKey, value.b);
+            EditorPrefs.SetFloat(kSelectedNodeBackgroundColor_RKey, value.r);
+            EditorPrefs.SetFloat(kSelectedNodeBackgroundColor_GKey, value.g);
+            EditorPrefs.SetFloat(kSelectedNodeBackgroundColor_BKey, value.b);
         }
     }
     
@@ -599,13 +583,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         NodeTitleColor= EditorGUI.ColorField(pos[1], NodeTitleColor);
         NodeLabelColor= EditorGUI.ColorField(pos[2], NodeLabelColor);
         NodeValueColor= EditorGUI.ColorField(pos[3], NodeValueColor);
-        PackageColor= EditorGUI.ColorField(pos[4], PackageColor);
-        FunctionColor= EditorGUI.ColorField(pos[5], FunctionColor);
-        ConstructorColor= EditorGUI.ColorField(pos[6], ConstructorColor);
-        InstanceColor= EditorGUI.ColorField(pos[7], InstanceColor);
-        StateColor= EditorGUI.ColorField(pos[8], StateColor);
-        EntryStateColor= EditorGUI.ColorField(pos[9], EntryStateColor);
-        SelectedBackgroundColor= EditorGUI.ColorField(pos[10], SelectedBackgroundColor);
+        PackageNodeColor= EditorGUI.ColorField(pos[4], PackageNodeColor);
+        FunctionNodeColor= EditorGUI.ColorField(pos[5], FunctionNodeColor);
+        ConstructorNodeColor= EditorGUI.ColorField(pos[6], ConstructorNodeColor);
+        InstanceNodeColor= EditorGUI.ColorField(pos[7], InstanceNodeColor);
+        StateNodeColor= EditorGUI.ColorField(pos[8], StateNodeColor);
+        EntryStateNodeColor= EditorGUI.ColorField(pos[9], EntryStateNodeColor);
+        SelectedNodeBackgroundColor= EditorGUI.ColorField(pos[10], SelectedNodeBackgroundColor);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
@@ -613,13 +597,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             NodeTitleColor= new Color(kNodeTitleColor_R, kNodeTitleColor_G, kNodeTitleColor_B);
             NodeLabelColor= new Color(kNodeLabelColor_R, kNodeLabelColor_G, kNodeLabelColor_B);
             NodeValueColor= new Color(kNodeValueColor_R, kNodeValueColor_G, kNodeValueColor_B);
-            PackageColor= new Color(kPackageColor_R, kPackageColor_G, kPackageColor_B);
-            FunctionColor= new Color(kFunctionColor_R, kFunctionColor_G, kFunctionColor_B);
-            ConstructorColor= new Color(kConstructorColor_R, kConstructorColor_G, kConstructorColor_B);
-            InstanceColor= new Color(kInstanceColor_R, kInstanceColor_G, kInstanceColor_B);
-            StateColor= new Color(kStateColor_R, kStateColor_G, kStateColor_B);
-            EntryStateColor= new Color(kEntryStateColor_R, kEntryStateColor_G, kEntryStateColor_B);
-            SelectedBackgroundColor= new Color(kSelectedBackgroundColor_R, kSelectedBackgroundColor_G, kSelectedBackgroundColor_B);
+            PackageNodeColor= new Color(kPackageNodeColor_R, kPackageNodeColor_G, kPackageNodeColor_B);
+            FunctionNodeColor= new Color(kFunctionNodeColor_R, kFunctionNodeColor_G, kFunctionNodeColor_B);
+            ConstructorNodeColor= new Color(kConstructorNodeColor_R, kConstructorNodeColor_G, kConstructorNodeColor_B);
+            InstanceNodeColor= new Color(kInstanceNodeColor_R, kInstanceNodeColor_G, kInstanceNodeColor_B);
+            StateNodeColor= new Color(kStateNodeColor_R, kStateNodeColor_G, kStateNodeColor_B);
+            EntryStateNodeColor= new Color(kEntryStateNodeColor_R, kEntryStateNodeColor_G, kEntryStateNodeColor_B);
+            SelectedNodeBackgroundColor= new Color(kSelectedNodeBackgroundColor_R, kSelectedNodeBackgroundColor_G, kSelectedNodeBackgroundColor_B);
         }        
     }
     // ---------------------------------------------------------------------------------
