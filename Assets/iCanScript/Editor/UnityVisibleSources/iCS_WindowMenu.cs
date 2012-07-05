@@ -29,9 +29,9 @@ public static class iCS_WindowMenu {
  	}
     // ======================================================================
  	// iCanScript ClassWizard editor Menu.
- 	[MenuItem("Window/iCanScript Wizard")]
- 	public static void MenuClassWizardEditor() {
-        iCS_ClassEditorProxy editor= EditorWindow.GetWindow(typeof(iCS_ClassEditorProxy), false, "iCS Wizard") as iCS_ClassEditorProxy;
+ 	[MenuItem("Window/iCanScript Instance Wizard")]
+ 	public static void MenuInstanceEditor() {
+        iCS_InstanceEditorProxy editor= EditorWindow.GetWindow(typeof(iCS_InstanceEditorProxy), false, "iCS Instance") as iCS_InstanceEditorProxy;
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
  	}

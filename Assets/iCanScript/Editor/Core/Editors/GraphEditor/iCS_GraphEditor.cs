@@ -658,7 +658,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 		}
 		ShouldRotateMuxPort= false;
         SelectedObject= newSelected;
-        ShowClassWizard();
+        ShowInstanceEditor();
         return SelectedObject;
     }
 

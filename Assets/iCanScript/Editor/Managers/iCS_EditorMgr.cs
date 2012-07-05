@@ -65,8 +65,8 @@ public static class iCS_EditorMgr {
     public static void ShowGraphEditor() {
         EditorApplication.ExecuteMenuItem("Window/iCanScript Graph Editor");
     }
-    public static void ShowClassWizard() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript Wizard");        
+    public static void ShowInstanceEditor() {
+        EditorApplication.ExecuteMenuItem("Window/iCanScript Instance Wizard");        
     }
     public static void ShowHierarchyEditor() {
         EditorApplication.ExecuteMenuItem("Window/iCanScript Hierarchy");                
@@ -89,8 +89,8 @@ public static class iCS_EditorMgr {
     public static EditorWindow FindGraphEditorWindow() {
         return FindWindow<iCS_GraphEditor>();
     } 
-    public static EditorWindow FindClassWizardEditorWindow() {
-        return FindWindow<iCS_ClassWizard>();
+    public static EditorWindow FindInstanceEditorWindow() {
+        return FindWindow<iCS_InstanceEditor>();
     }
     public static EditorWindow FindHierarchyEditorWindow() {
         return FindWindow<iCS_HierarchyEditor>();
@@ -103,9 +103,9 @@ public static class iCS_EditorMgr {
         int idx= FindIndexOf(typeof(iCS_GraphEditor).Name);
         return idx >= 0 ? myEditors[idx].Editor as iCS_GraphEditor : null;
     } 
-    public static iCS_ClassWizard FindClassWizardEditor() {
-        int idx= FindIndexOf(typeof(iCS_ClassWizard).Name);
-        return idx >= 0 ? myEditors[idx].Editor as iCS_ClassWizard : null;
+    public static iCS_InstanceEditor FindInstanceEditor() {
+        int idx= FindIndexOf(typeof(iCS_InstanceEditor).Name);
+        return idx >= 0 ? myEditors[idx].Editor as iCS_InstanceEditor : null;
     }
     public static iCS_HierarchyEditor FindHierarchyEditor() {
         int idx= FindIndexOf(typeof(iCS_HierarchyEditor).Name);

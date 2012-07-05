@@ -4,7 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ClassWizardController {
+public class iCS_InstanceController {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ public class iCS_ClassWizardController {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_ClassWizardController(iCS_EditorObject target, iCS_IStorage storage) {
+    public iCS_InstanceController(iCS_EditorObject target, iCS_IStorage storage) {
         // Update main state variables.
         myTarget= target;
         myStorage= storage;
@@ -98,9 +98,9 @@ public class iCS_ClassWizardController {
 		myLayoutView.AddSubview(myOperationsController.View, new RectOffset(0, 0, 0, 0), DSView.AnchorEnum.Center);
 		
 		// Build class wizard title view.
-        string classTitle= myTarget.Name;
-        GUIContent classWizardTitle= new GUIContent(classTitle);
-		myMainView= new DSTitleView(new RectOffset(0,0,0,0), false, classWizardTitle, DSView.AnchorEnum.Center, true);
+        string instanceTitle= myTarget.Name;
+        GUIContent instanceEditorTitle= new GUIContent(instanceTitle);
+		myMainView= new DSTitleView(new RectOffset(0,0,0,0), false, instanceEditorTitle, DSView.AnchorEnum.Center, true);
 		myMainView.SetSubview(myLayoutView);
     }
 

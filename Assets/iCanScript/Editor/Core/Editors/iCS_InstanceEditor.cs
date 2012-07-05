@@ -4,12 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-public class iCS_ClassWizard : iCS_EditorBase {
+public class iCS_InstanceEditor : iCS_EditorBase {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    DSCellView                  myMainView  = null;
-    iCS_ClassWizardController   myController= null;
+    DSCellView              myMainView  = null;
+    iCS_InstanceController  myController= null;
     
     // =================================================================================
     // Constants
@@ -33,7 +33,7 @@ public class iCS_ClassWizard : iCS_EditorBase {
 		// Update main view if selection has changed.
         if(myMainView == null || myController == null ||
            (myController != null && (myController.Target != SelectedObject || myController.IStorage != IStorage))) {
-               myController= new iCS_ClassWizardController(SelectedObject, IStorage);            
+               myController= new iCS_InstanceController(SelectedObject, IStorage);            
                myMainView  = new DSCellView(new RectOffset(0,0,kSpacer,0), true, myController.View);
         }		
         return true;

@@ -394,15 +394,15 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         if(SelectedObject == null && myDisplayRoot.IsBehaviour) {
             SelectedObject= myDisplayRoot;
         }
-        ShowClassWizard();
+        ShowInstanceEditor();
         myDynamicMenu.Update(SelectedObject, IStorage, ViewportToGraph(MousePosition));
         IStorage.SetDirty(SelectedObject);                    
     }
 	// ----------------------------------------------------------------------
-    void ShowClassWizard() {
+    void ShowInstanceEditor() {
         if(SelectedObject != null && SelectedObject.IsClassModule) {
             bool hadKeyboardFocus= HasKeyboardFocus;
-            iCS_EditorMgr.ShowClassWizard();
+            iCS_EditorMgr.ShowInstanceEditor();
             // Keep keyboard focus.
             if(hadKeyboardFocus) MyWindow.Focus();
         }        
