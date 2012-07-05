@@ -12,6 +12,8 @@ public class iCS_PreferencesProxy : iCS_EditorWindow {
     // ---------------------------------------------------------------------------------
     void OnEnable() {
         title= "iCanScript Preferences";
+        minSize= new Vector2(500f, 425f);
+        maxSize= new Vector2(500f, 425f);
         myEditor= new iCS_PreferencesEditor();
         Register(myEditor);
         myEditor.OnEnable();
