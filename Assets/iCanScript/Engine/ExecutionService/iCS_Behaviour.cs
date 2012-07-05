@@ -81,41 +81,32 @@ public sealed class iCS_Behaviour : iCS_Storage {
     void Update() {
         ++myUpdateFrameId;
         if(myUpdateAction != null) {
-            do {        
-                myUpdateAction.Execute(myUpdateFrameId);
-                if(myUpdateAction.IsStalled) {
-//                    Debug.LogWarning("Upadte is STALLED. Attempting to unblock.");
-                    myUpdateAction.ForceExecute(myUpdateFrameId);
-                }                
-            } while(!myUpdateAction.IsCurrent(myUpdateFrameId));
+            RunEvent(myUpdateAction, myUpdateFrameId);
         }
     }
     // Called on evry frame after all Update have been called.
     void LateUpdate() {
         if(myLateUpdateAction != null) {
-            do {
-                myLateUpdateAction.Execute(myUpdateFrameId);                                            
-                if(myLateUpdateAction.IsStalled) {
-//                    Debug.LogWarning("LateUpadte is STALLED. Attempting to unblock.");
-                    myLateUpdateAction.ForceExecute(myUpdateFrameId);
-                }
-            } while(!myLateUpdateAction.IsCurrent(myUpdateFrameId));
+            RunEvent(myLateUpdateAction, myUpdateFrameId);
         }
     }
     // Fix-time update to be used instead of Update
     void FixedUpdate() {
         ++myFixedUpdateFrameId;
         if(myFixedUpdateAction != null) {
-            do {
-                myFixedUpdateAction.Execute(myFixedUpdateFrameId);                                
-                if(myFixedUpdateAction.IsStalled) {
-//                    Debug.LogWarning("FixedUpadte is STALLED. Attempting to unblock.");
-                    myFixedUpdateAction.ForceExecute(myFixedUpdateFrameId);
-                }
-            } while(!myFixedUpdateAction.IsCurrent(myFixedUpdateFrameId));
+            RunEvent(myFixedUpdateAction, myFixedUpdateFrameId);
         }
     }
-
+    // ----------------------------------------------------------------------
+    void RunEvent(iCS_Action action, int frameId) {
+        do {
+            action.Execute(frameId);                                
+            if(action.IsStalled) {
+                action.ForceExecute(frameId);
+            }
+        } while(!action.IsCurrent(frameId));        
+    }
+    
     // ======================================================================
     // Child Management
     // ----------------------------------------------------------------------
