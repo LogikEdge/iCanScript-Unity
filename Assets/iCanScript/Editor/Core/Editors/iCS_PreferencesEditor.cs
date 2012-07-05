@@ -198,30 +198,54 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string   kSelectedNodeBackgroundColor_BKey= "iCS_SelectedNodeBackgroundColor_B";         
     // ---------------------------------------------------------------------------------
     // Type Color Constants
-    const float BoolTypeColor_R      = 1f;
-    const float BoolTypeColor_G      = 0f;
-    const float BoolTypeColor_B      = 0f;
-    const float IntTypeColor_R       = 1f;
-    const float IntTypeColor_G       = 0f;
-    const float IntTypeColor_B       = 1f;
-    const float FloatTypeColor_R     = 0f;
-    const float FloatTypeColor_G     = 1f;
-    const float FloatTypeColor_B     = 1f;
-    const float Vector2TypeColor_R   = 1f;
-    const float Vector2TypeColor_G   = 0.92f;
-    const float Vector2TypeColor_B   = 0.016f;
-    const float Vector3TypeColor_R   = 0f;
-    const float Vector3TypeColor_G   = 1f;
-    const float Vector3TypeColor_B   = 0f;
-    const float Vector4TypeColor_R   = 0f;
-    const float Vector4TypeColor_G   = 0f;
-    const float Vector4TypeColor_B   = 1f;
-    const float StringTypeColor_R    = 1f;
-    const float StringTypeColor_G    = 0f;
-    const float StringTypeColor_B    = 0f;
-    const float GameObjectTypeColor_R= 0f;
-    const float GameObjectTypeColor_G= 0f;
-    const float GameObjectTypeColor_B= 1f;
+    const float  kBoolTypeColor_R      = 1f;
+    const float  kBoolTypeColor_G      = 0f;
+    const float  kBoolTypeColor_B      = 0f;
+    const float  kIntTypeColor_R       = 1f;
+    const float  kIntTypeColor_G       = 0f;
+    const float  kIntTypeColor_B       = 1f;
+    const float  kFloatTypeColor_R     = 0f;
+    const float  kFloatTypeColor_G     = 1f;
+    const float  kFloatTypeColor_B     = 1f;
+    const float  kVector2TypeColor_R   = 1f;
+    const float  kVector2TypeColor_G   = 0.92f;
+    const float  kVector2TypeColor_B   = 0.016f;
+    const float  kVector3TypeColor_R   = 0f;
+    const float  kVector3TypeColor_G   = 1f;
+    const float  kVector3TypeColor_B   = 0f;
+    const float  kVector4TypeColor_R   = 0f;
+    const float  kVector4TypeColor_G   = 0f;
+    const float  kVector4TypeColor_B   = 1f;
+    const float  kStringTypeColor_R    = 1f;
+    const float  kStringTypeColor_G    = 0f;
+    const float  kStringTypeColor_B    = 0f;
+    const float  kGameObjectTypeColor_R= 0f;
+    const float  kGameObjectTypeColor_G= 0f;
+    const float  kGameObjectTypeColor_B= 1f;
+    const string kBoolTypeColor_RKey      = "iCS_BoolTypeColor_R";
+    const string kBoolTypeColor_GKey      = "iCS_BoolTypeColor_G";
+    const string kBoolTypeColor_BKey      = "iCS_BoolTypeColor_B";
+    const string kIntTypeColor_RKey       = "iCS_IntTypeColor_R";
+    const string kIntTypeColor_GKey       = "iCS_IntTypeColor_G";
+    const string kIntTypeColor_BKey       = "iCS_IntTypeColor_B";
+    const string kFloatTypeColor_RKey     = "iCS_FloatTypeColor_R";
+    const string kFloatTypeColor_GKey     = "iCS_FloatTypeColor_G";
+    const string kFloatTypeColor_BKey     = "iCS_FloatTypeColor_B";
+    const string kVector2TypeColor_RKey   = "iCS_Vector2TypeColor_R";
+    const string kVector2TypeColor_GKey   = "iCS_Vector2TypeColor_G";
+    const string kVector2TypeColor_BKey   = "iCS_Vector2TypeColor_B";
+    const string kVector3TypeColor_RKey   = "iCS_Vector3TypeColor_R";
+    const string kVector3TypeColor_GKey   = "iCS_Vector3TypeColor_G";
+    const string kVector3TypeColor_BKey   = "iCS_Vector3TypeColor_B";
+    const string kVector4TypeColor_RKey   = "iCS_Vector4TypeColor_R";
+    const string kVector4TypeColor_GKey   = "iCS_Vector4TypeColor_G";
+    const string kVector4TypeColor_BKey   = "iCS_Vector4TypeColor_B";
+    const string kStringTypeColor_RKey    = "iCS_StringTypeColor_R";
+    const string kStringTypeColor_GKey    = "iCS_StringTypeColor_G";
+    const string kStringTypeColor_BKey    = "iCS_StringTypeColor_B";
+    const string kGameObjectTypeColor_RKey= "iCS_GameObjectTypeColor_R";
+    const string kGameObjectTypeColor_GKey= "iCS_GameObjectTypeColor_G";
+    const string kGameObjectTypeColor_BKey= "iCS_GameObjectTypeColor_B";
     
     // =================================================================================
     // Fields
@@ -460,6 +484,110 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             EditorPrefs.SetFloat(kSelectedNodeBackgroundColor_BKey, value.b);
         }
     }
+    public static Color BoolTypeColor {
+        get {
+            float r= EditorPrefs.GetFloat(kBoolTypeColor_RKey, kBoolTypeColor_R);
+            float g= EditorPrefs.GetFloat(kBoolTypeColor_GKey, kBoolTypeColor_G);
+            float b= EditorPrefs.GetFloat(kBoolTypeColor_BKey, kBoolTypeColor_B);
+            return new Color(r,g,b);
+        }
+        set {
+            EditorPrefs.SetFloat(kBoolTypeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kBoolTypeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kBoolTypeColor_BKey, value.b);
+        }
+    }
+    public static Color IntTypeColor {
+        get {
+            float r= EditorPrefs.GetFloat(kIntTypeColor_RKey, kIntTypeColor_R);
+            float g= EditorPrefs.GetFloat(kIntTypeColor_GKey, kIntTypeColor_G);
+            float b= EditorPrefs.GetFloat(kIntTypeColor_BKey, kIntTypeColor_B);
+            return new Color(r,g,b);
+        }
+        set {
+            EditorPrefs.SetFloat(kIntTypeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kIntTypeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kIntTypeColor_BKey, value.b);
+        }
+    }
+    public static Color FloatTypeColor {
+        get {
+            float r= EditorPrefs.GetFloat(kFloatTypeColor_RKey, kFloatTypeColor_R);
+            float g= EditorPrefs.GetFloat(kFloatTypeColor_GKey, kFloatTypeColor_G);
+            float b= EditorPrefs.GetFloat(kFloatTypeColor_BKey, kFloatTypeColor_B);
+            return new Color(r,g,b);
+        }
+        set {
+            EditorPrefs.SetFloat(kFloatTypeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kFloatTypeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kFloatTypeColor_BKey, value.b);
+        }
+    }
+    public static Color StringTypeColor {
+        get {
+            float r= EditorPrefs.GetFloat(kStringTypeColor_RKey, kStringTypeColor_R);
+            float g= EditorPrefs.GetFloat(kStringTypeColor_GKey, kStringTypeColor_G);
+            float b= EditorPrefs.GetFloat(kStringTypeColor_BKey, kStringTypeColor_B);
+            return new Color(r,g,b);
+        }
+        set {
+            EditorPrefs.SetFloat(kStringTypeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kStringTypeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kStringTypeColor_BKey, value.b);
+        }
+    }
+    public static Color Vector2TypeColor {
+        get {
+            float r= EditorPrefs.GetFloat(kVector2TypeColor_RKey, kVector2TypeColor_R);
+            float g= EditorPrefs.GetFloat(kVector2TypeColor_GKey, kVector2TypeColor_G);
+            float b= EditorPrefs.GetFloat(kVector2TypeColor_BKey, kVector2TypeColor_B);
+            return new Color(r,g,b);
+        }
+        set {
+            EditorPrefs.SetFloat(kVector2TypeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kVector2TypeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kVector2TypeColor_BKey, value.b);
+        }
+    }
+    public static Color Vector3TypeColor {
+        get {
+            float r= EditorPrefs.GetFloat(kVector3TypeColor_RKey, kVector3TypeColor_R);
+            float g= EditorPrefs.GetFloat(kVector3TypeColor_GKey, kVector3TypeColor_G);
+            float b= EditorPrefs.GetFloat(kVector3TypeColor_BKey, kVector3TypeColor_B);
+            return new Color(r,g,b);
+        }
+        set {
+            EditorPrefs.SetFloat(kVector3TypeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kVector3TypeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kVector3TypeColor_BKey, value.b);
+        }
+    }
+    public static Color Vector4TypeColor {
+        get {
+            float r= EditorPrefs.GetFloat(kVector4TypeColor_RKey, kVector4TypeColor_R);
+            float g= EditorPrefs.GetFloat(kVector4TypeColor_GKey, kVector4TypeColor_G);
+            float b= EditorPrefs.GetFloat(kVector4TypeColor_BKey, kVector4TypeColor_B);
+            return new Color(r,g,b);
+        }
+        set {
+            EditorPrefs.SetFloat(kVector4TypeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kVector4TypeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kVector4TypeColor_BKey, value.b);
+        }
+    }
+    public static Color GameObjectTypeColor {
+        get {
+            float r= EditorPrefs.GetFloat(kGameObjectTypeColor_RKey, kGameObjectTypeColor_R);
+            float g= EditorPrefs.GetFloat(kGameObjectTypeColor_GKey, kGameObjectTypeColor_G);
+            float b= EditorPrefs.GetFloat(kGameObjectTypeColor_BKey, kGameObjectTypeColor_B);
+            return new Color(r,g,b);
+        }
+        set {
+            EditorPrefs.SetFloat(kGameObjectTypeColor_RKey, value.r);
+            EditorPrefs.SetFloat(kGameObjectTypeColor_GKey, value.g);
+            EditorPrefs.SetFloat(kGameObjectTypeColor_BKey, value.b);
+        }
+    }
     
     // =================================================================================
     // Activation/Deactivation.
@@ -634,8 +762,45 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     }
     // ---------------------------------------------------------------------------------
     void TypeColors() {
+        // Column 2
+        Rect[] pos= new Rect[8];
+        pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
+        for(int i= 1; i < pos.Length; ++i) {
+            pos[i]= pos[i-1];
+            pos[i].y= pos[i-1].yMax;
+        }
+        GUI.Label(pos[0], "Bool");
+        GUI.Label(pos[1], "Int");
+        GUI.Label(pos[2], "Float");
+        GUI.Label(pos[3], "String");
+        GUI.Label(pos[4], "Vector2");
+        GUI.Label(pos[5], "Vector3");
+        GUI.Label(pos[6], "Vector4");
+        GUI.Label(pos[7], "Game Object");
+
+        // Draw Column 3
+        for(int i= 0; i < pos.Length; ++i) {
+            pos[i].x+= kColumn2Width;
+        }
+        BoolTypeColor= EditorGUI.ColorField(pos[0], BoolTypeColor);
+        IntTypeColor= EditorGUI.ColorField(pos[1], IntTypeColor);
+        FloatTypeColor= EditorGUI.ColorField(pos[2], FloatTypeColor);
+        StringTypeColor= EditorGUI.ColorField(pos[3], StringTypeColor);
+        Vector2TypeColor= EditorGUI.ColorField(pos[4], Vector2TypeColor);
+        Vector3TypeColor= EditorGUI.ColorField(pos[5], Vector3TypeColor);
+        Vector4TypeColor= EditorGUI.ColorField(pos[6], Vector4TypeColor);
+        GameObjectTypeColor= EditorGUI.ColorField(pos[7], GameObjectTypeColor);
+        
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
+            BoolTypeColor= new Color(kBoolTypeColor_R, kBoolTypeColor_G, kBoolTypeColor_B);
+            IntTypeColor= new Color(kIntTypeColor_R, kIntTypeColor_G, kIntTypeColor_B);
+            FloatTypeColor= new Color(kFloatTypeColor_R, kFloatTypeColor_G, kFloatTypeColor_B);
+            StringTypeColor= new Color(kStringTypeColor_R, kStringTypeColor_G, kStringTypeColor_B);
+            Vector2TypeColor= new Color(kVector2TypeColor_R, kVector2TypeColor_G, kVector2TypeColor_B);
+            Vector3TypeColor= new Color(kVector3TypeColor_R, kVector3TypeColor_G, kVector3TypeColor_B);
+            Vector4TypeColor= new Color(kVector4TypeColor_R, kVector4TypeColor_G, kVector4TypeColor_B);
+            GameObjectTypeColor= new Color(kGameObjectTypeColor_R, kGameObjectTypeColor_G, kGameObjectTypeColor_B);
         }        
     }
     // ---------------------------------------------------------------------------------
