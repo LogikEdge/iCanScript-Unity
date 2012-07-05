@@ -63,16 +63,16 @@ public static class iCS_EditorMgr {
     
     // ======================================================================
     public static void ShowGraphEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript Graph Editor");
+        EditorApplication.ExecuteMenuItem("Window/iCanScript/Graph");
     }
     public static void ShowInstanceEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript Instance Wizard");        
+        EditorApplication.ExecuteMenuItem("Window/iCanScript/Instance Wizard");        
     }
     public static void ShowHierarchyEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript Hierarchy");                
+        EditorApplication.ExecuteMenuItem("Window/iCanScript/Hierarchy");                
     }
     public static void ShowLibraryEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript Library");                
+        EditorApplication.ExecuteMenuItem("Window/iCanScript/Library");                
     }
 
     // ======================================================================
