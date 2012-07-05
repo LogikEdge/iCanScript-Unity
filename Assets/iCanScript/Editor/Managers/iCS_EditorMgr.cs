@@ -74,6 +74,9 @@ public static class iCS_EditorMgr {
     public static void ShowLibraryEditor() {
         EditorApplication.ExecuteMenuItem("Window/iCanScript/Library");                
     }
+    public static void ShowPreferences() {
+        EditorApplication.ExecuteMenuItem("Window/iCanScript/Preferences");                
+    }
 
     // ======================================================================
     public static EditorWindow FindWindow(string key) {

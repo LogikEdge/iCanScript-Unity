@@ -4,8 +4,15 @@ using UnityEditor;
 public static class iCS_WindowMenu {
     // ======================================================================
 	// iCanScript Graph editor.
+	[MenuItem("Window/iCanScript/Preferences")]
+	public static void MenuPreferences() {
+        iCS_PreferencesProxy editor= EditorWindow.CreateInstance<iCS_PreferencesProxy>();
+        editor.ShowUtility();
+	}
+    // ======================================================================
+	// iCanScript Graph editor.
 	[MenuItem("Window/iCanScript/Graph")]
-	public static void MeuGraphEditor() {
+	public static void MenuGraphEditor() {
         iCS_GraphEditorProxy editor= EditorWindow.GetWindow(typeof(iCS_GraphEditorProxy), false, "iCS Graph") as iCS_GraphEditorProxy;
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
