@@ -196,6 +196,32 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string   kSelectedNodeBackgroundColor_RKey= "iCS_SelectedNodeBackgroundColor_R";         
     const string   kSelectedNodeBackgroundColor_GKey= "iCS_SelectedNodeBackgroundColor_G";         
     const string   kSelectedNodeBackgroundColor_BKey= "iCS_SelectedNodeBackgroundColor_B";         
+    // ---------------------------------------------------------------------------------
+    // Type Color Constants
+    const float BoolTypeColor_R      = 1f;
+    const float BoolTypeColor_G      = 0f;
+    const float BoolTypeColor_B      = 0f;
+    const float IntTypeColor_R       = 1f;
+    const float IntTypeColor_G       = 0f;
+    const float IntTypeColor_B       = 1f;
+    const float FloatTypeColor_R     = 0f;
+    const float FloatTypeColor_G     = 1f;
+    const float FloatTypeColor_B     = 1f;
+    const float Vector2TypeColor_R   = 1f;
+    const float Vector2TypeColor_G   = 0.92f;
+    const float Vector2TypeColor_B   = 0.016f;
+    const float Vector3TypeColor_R   = 0f;
+    const float Vector3TypeColor_G   = 1f;
+    const float Vector3TypeColor_B   = 0f;
+    const float Vector4TypeColor_R   = 0f;
+    const float Vector4TypeColor_G   = 0f;
+    const float Vector4TypeColor_B   = 1f;
+    const float StringTypeColor_R    = 1f;
+    const float StringTypeColor_G    = 0f;
+    const float StringTypeColor_B    = 0f;
+    const float GameObjectTypeColor_R= 0f;
+    const float GameObjectTypeColor_G= 0f;
+    const float GameObjectTypeColor_B= 1f;
     
     // =================================================================================
     // Fields
