@@ -62,7 +62,17 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // ----------------------------------------------------------------------
     void OnDestroy() {
     }
-    
+    void OnDrawGizmos() {
+        var p= transform.position;
+        Gizmos.DrawIcon(p, iCS_Strings.GizmoIcon);
+        if(renderer != null) {
+            Gizmos.DrawIcon(p, iCS_Strings.GizmoIcon);
+            Gizmos.DrawIcon(p, iCS_Strings.GizmoIcon);
+            Gizmos.DrawIcon(p, iCS_Strings.GizmoIcon);
+            Gizmos.DrawIcon(p, iCS_Strings.GizmoIcon);
+            Gizmos.DrawIcon(p, iCS_Strings.GizmoIcon);
+        }
+     }
     
     // ======================================================================
     // Graph Updates

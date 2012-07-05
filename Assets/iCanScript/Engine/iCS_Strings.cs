@@ -28,6 +28,9 @@ public class iCS_Strings {
     // Reflection methods
     public const string AddChildMethod   = "AddChild";
     public const string RemoveChildMethod= "RemoveChild";
+    
+    // Gizmos
+    public const string GizmoIcon            = "iCanScriptGizmo.png";
 
     // -----------------------------------------------------------------------
     public static bool IsEmpty(string s)       { return s == null || s ==""; }
