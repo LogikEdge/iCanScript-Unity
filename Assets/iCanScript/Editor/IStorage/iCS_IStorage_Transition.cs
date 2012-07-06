@@ -20,7 +20,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject parent= GetTransitionParent(GetParent(inStatePort), GetParent(outStatePort));
         // Create transition module
         iCS_EditorObject transitionModule= CreateModule(parent.InstanceId, portPos, "[false]", iCS_ObjectTypeEnum.TransitionModule);
-        transitionModule.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionModuleIcon, this);
+        transitionModule.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionModuleIcon);
         transitionModule.Tooltip= "Precondition for the transition to trigger.";
         transitionModule.IsNameEditable= false;
         iCS_EditorObject inModulePort=  CreatePort(" ", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
@@ -30,7 +30,7 @@ public partial class iCS_IStorage {
         Minimize(transitionModule);
         // Create guard module
         iCS_EditorObject guard= CreateModule(transitionModule.InstanceId, portPos, "false", iCS_ObjectTypeEnum.TransitionGuard);
-        guard.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionTriggerIcon, this);
+        guard.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionTriggerIcon);
         guard.Tooltip= "The guard function must evaluate to 'true' for the transition to fire.";
         iCS_EditorObject guardPort= CreatePort("trigger", guard.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutStaticModulePort);
         guardPort.IsNameEditable= false;
@@ -38,7 +38,7 @@ public partial class iCS_IStorage {
         Minimize(guard);
         // Create action module
         iCS_EditorObject action= CreateModule(transitionModule.InstanceId, portPos, "NoAction", iCS_ObjectTypeEnum.TransitionAction);
-        action.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon, this);
+        action.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         action.Tooltip= "Action to be execute when the transition is taken.";
         iCS_EditorObject enablePort= CreateEnablePort(action.InstanceId);
         enablePort.IsNameEditable= false;

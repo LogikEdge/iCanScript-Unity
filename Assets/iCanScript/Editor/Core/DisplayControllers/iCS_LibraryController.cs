@@ -385,31 +385,31 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		var nodeType= current.Type;
 		string name= current.Name;
         if(nodeType == NodeTypeEnum.Company) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ModuleHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.Package) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ModuleHierarchyIcon, myStorage);                            
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);                            
         } else if(nodeType == NodeTypeEnum.Class) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ClassHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ClassHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.Field) {
             if(current.Desc.IsGetField) {
-                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.OutPortHierarchyIcon, myStorage);            
+                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.OutPortHierarchyIcon);            
             } else {
-                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.InPortHierarchyIcon, myStorage);                            
+                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.InPortHierarchyIcon);                            
             }
         } else if(nodeType == NodeTypeEnum.Property) {
             if(current.Desc.IsGetProperty) {
-                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.OutPortHierarchyIcon, myStorage);                            
+                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.OutPortHierarchyIcon);                            
             } else {
-                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.InPortHierarchyIcon, myStorage);            
+                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.InPortHierarchyIcon);            
             }
         } else if(nodeType == NodeTypeEnum.Constructor) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ConstructorHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ConstructorHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.Method) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.InParameter) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.InPortHierarchyIcon, myStorage);                        
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.InPortHierarchyIcon);                        
         } else if(nodeType == NodeTypeEnum.OutParameter) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.OutPortHierarchyIcon, myStorage);                                        
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.OutPortHierarchyIcon);                                        
         }
         return new GUIContent(name, icon); 
     }

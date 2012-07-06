@@ -17,20 +17,19 @@ public partial class iCS_IStorage {
             iCS_EditorObject outThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.This, classType, iCS_ObjectTypeEnum.OutStaticModulePort);
             outThisPort.IsNameEditable= false;
         }
-        iCS_UserPreferences.UserClassWizard control= Preferences.ClassWizard;
-        if(control.OutputInstanceVariables)  ClassModuleCreateOutputInstanceFields(module);
-        if(control.InputInstanceVariables)   ClassModuleCreateInputInstanceFields(module);
-        if(control.OutputInstanceProperties) ClassModuleCreateOutputInstanceProperties(module);
-        if(control.InputInstanceProperties)  ClassModuleCreateInputInstanceProperties(module);
-        if(control.OutputClassVariables)     ClassModuleCreateOutputStaticFields(module);
-        if(control.InputClassVariables)      ClassModuleCreateInputStaticFields(module);
-        if(control.OutputClassProperties)    ClassModuleCreateOutputStaticProperties(module);
-        if(control.InputClassProperties)     ClassModuleCreateInputStaticProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutFields)           ClassModuleCreateOutputInstanceFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInFields)            ClassModuleCreateInputInstanceFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutProperties)       ClassModuleCreateOutputInstanceProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInProperties)        ClassModuleCreateInputInstanceProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutStaticFields)     ClassModuleCreateOutputStaticFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInStaticFields)      ClassModuleCreateInputStaticFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutStaticProperties) ClassModuleCreateOutputStaticProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInStaticProperties)  ClassModuleCreateInputStaticProperties(module);
         
         // Use the class Icon if it exists.
         iCS_ReflectionDesc[] components= iCS_DataBase.GetClassComponents(module.RuntimeType);
         if(components.Length != 0) {
-            var iconGUID= iCS_TextureCache.IconPathToGUID(components[0].IconPath, this);
+            var iconGUID= iCS_TextureCache.IconPathToGUID(components[0].IconPath);
             if(iconGUID != null) {
                 module.IconGUID= iconGUID;
             }            

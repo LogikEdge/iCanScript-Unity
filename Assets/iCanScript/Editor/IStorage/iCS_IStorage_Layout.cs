@@ -42,7 +42,7 @@ public partial class iCS_IStorage {
         
         // Minimized nodes are fully collapsed.
         if(node.IsMinimized) {
-            Vector2 iconSize= iCS_Graphics.GetMaximizeIconSize(node, this);
+            Vector2 iconSize= iCS_Graphics.GetMaximizeIconSize(node);
             if(node.LocalPosition.width != iconSize.x || node.LocalPosition.height != iconSize.y) {
                 if(IsValid(node.ParentId)) {
                     if(node.LocalPosition.x == 0) node.LocalPosition.x= 0.5f*GetParent(node).LocalPosition.width;

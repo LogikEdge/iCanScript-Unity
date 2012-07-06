@@ -74,22 +74,22 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Maximize icon functionality
     // ----------------------------------------------------------------------
-    public static Vector2 GetMaximizeIconSize(iCS_EditorObject node, iCS_IStorage iStorage) {
+    public static Vector2 GetMaximizeIconSize(iCS_EditorObject node) {
         Texture2D icon= null;
-        if(iStorage.Preferences.Icons.EnableMinimizedIcons && node != null && node.IconGUID != null) {
+        if(node != null && node.IconGUID != null) {
             icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
             if(icon != null) return new Vector2(icon.width, icon.height);
         }
         return new Vector2(maximizeIcon.width, maximizeIcon.height);        
     }
     // ----------------------------------------------------------------------
-    public Texture2D GetMaximizeIcon(iCS_EditorObject node, iCS_IStorage iStorage) {
+    public Texture2D GetMaximizeIcon(iCS_EditorObject node) {
         Texture2D icon= null;
-        if(iStorage.Preferences.Icons.EnableMinimizedIcons && node != null && node.IconGUID != null) {
+        if(node != null && node.IconGUID != null) {
             icon= iCS_TextureCache.GetIconFromGUID(node.IconGUID);
             if(icon != null) return icon;
         }
-        return GetNodeDefaultMaximizeIcon(node, iStorage);
+        return GetNodeDefaultMaximizeIcon(node);
     }
     // ----------------------------------------------------------------------
     public bool IsMaximizeIconPicked(iCS_EditorObject obj, Vector2 mousePos, iCS_IStorage iStorage) {

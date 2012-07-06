@@ -1150,7 +1150,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         Vector2 newScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
         float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
         float deltaTime= distance/3500f;
-        if(deltaTime < IStorage.Preferences.ControlOptions.AnimationTime) deltaTime= IStorage.Preferences.ControlOptions.AnimationTime;
+        if(deltaTime < iCS_PreferencesEditor.AnimationTime) deltaTime= iCS_PreferencesEditor.AnimationTime;
         if(deltaTime > 0.5f) deltaTime= 0.5f+(0.5f*(deltaTime-0.5f));
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         ScrollPosition= newScrollPosition;
@@ -1161,7 +1161,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         Vector2 newScrollPosition= point-0.5f/newScale*new Vector2(position.width, position.height);
         float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
         float deltaTime= distance/3500f;
-        if(deltaTime < IStorage.Preferences.ControlOptions.AnimationTime) deltaTime= IStorage.Preferences.ControlOptions.AnimationTime;
+        if(deltaTime < iCS_PreferencesEditor.AnimationTime) deltaTime= iCS_PreferencesEditor.AnimationTime;
         if(deltaTime > 0.5f) deltaTime= 0.5f+(0.5f*(deltaTime-0.5f));
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         ScrollPosition= newScrollPosition;
@@ -1173,9 +1173,9 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void DrawGrid() {
         myGraphics.DrawGrid(position,
-                            IStorage.Preferences.Grid.BackgroundColor,
-                            IStorage.Preferences.Grid.GridColor,
-                            IStorage.Preferences.Grid.GridSpacing);
+                            iCS_PreferencesEditor.CanvasBackgroundColor,
+                            iCS_PreferencesEditor.GridColor,
+                            iCS_PreferencesEditor.GridSpacing);
     }                       
     
 	// ----------------------------------------------------------------------
@@ -1219,7 +1219,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         IStorage.Update();
 
 		// Start graphics
-        myGraphics.Begin(UpdateScrollPosition(), UpdateScale(), ClipingArea, SelectedObject, ViewportToGraph(MousePosition), IStorage);
+        myGraphics.Begin(UpdateScrollPosition(), UpdateScale(), ClipingArea, SelectedObject, ViewportToGraph(MousePosition));
         
         // Draw editor grid.
         DrawGrid();
@@ -1309,7 +1309,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         // Compute the amount of scroll needed.
         var dir= CanScrollInDirection(DetectScrollZone());
         if(Math3D.IsZero(dir)) return;
-        dir*= IStorage.Preferences.ControlOptions.EdgeScrollSpeed*myDeltaTime;
+        dir*= iCS_PreferencesEditor.EdgeScrollSpeed*myDeltaTime;
 
         // Adjust according to scroll zone.
         switch(DragType) {

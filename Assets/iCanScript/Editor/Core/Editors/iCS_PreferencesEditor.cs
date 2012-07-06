@@ -670,4 +670,11 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         if(t == typeof(Vector4))    return Vector4TypeColor;
         return DefaultTypeColor;
     }
+    // ---------------------------------------------------------------------------------
+    public static string RemoveProductPrefix(string name) {
+        if(name.StartsWith(iCS_Config.ProductPrefix)) {
+            return name.Substring(iCS_Config.ProductPrefix.Length);
+        }
+        return name;
+    }
 }

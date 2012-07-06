@@ -46,34 +46,27 @@ public static class iCS_TextureCache {
         return GetTextureFromGUID(guid);
     }
     // ----------------------------------------------------------------------
-    public static Texture2D GetIcon(string fileName, iCS_IStorage storage) {
+    public static Texture2D GetIcon(string fileName) {
         // Try with the WarpDrice Icon prefix.
-        string iconPath= iCS_UserPreferences.UserIcons.uCodeIconPath+"/"+fileName;
+        string iconPath= iCS_Config.ResourcePath+"/"+fileName;
         Texture2D icon= GetTexture(iconPath);
         if(icon == null) {
-            // Try with the user definable Icon prefixes.
-            foreach(var path in storage.Preferences.Icons.CustomIconPaths) {
-                icon= GetTexture(path+"/"+fileName);
-                if(icon != null) break;
-            }
             // Try without any prefix.
-            if(icon == null) {
-                icon= GetTexture(fileName);                            
-            }
+            icon= GetTexture(fileName);                            
         }
         return icon;
     }
     // ----------------------------------------------------------------------
-    public static string IconPathToGUID(string fileName, iCS_IStorage storage) {
+    public static string IconPathToGUID(string fileName) {
         if(fileName == null) return null;
-        Texture2D icon= GetIcon(fileName, storage);
+        Texture2D icon= GetIcon(fileName);
         if(icon == null) return null;
         string path= AssetDatabase.GetAssetPath(icon);
         return AssetDatabase.AssetPathToGUID(path);
     }
     // ----------------------------------------------------------------------
-    public static bool GetIcon(string fileName, out Texture2D icon, iCS_IStorage storage) {
-        icon= GetIcon(fileName, storage);
+    public static bool GetIcon(string fileName, out Texture2D icon) {
+        icon= GetIcon(fileName);
         if(icon == null) {
             ResourceMissingError(fileName);            
             return false;

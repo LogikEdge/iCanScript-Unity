@@ -9,7 +9,6 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-                      public iCS_UserPreferences      Preferences   = new iCS_UserPreferences();
     [HideInInspector] public List<iCS_EditorObject>   EditorObjects = new List<iCS_EditorObject>();
     [HideInInspector] public List<Object>             UnityObjects  = new List<Object>();
     [HideInInspector] public int                      UndoRedoId    = 0;

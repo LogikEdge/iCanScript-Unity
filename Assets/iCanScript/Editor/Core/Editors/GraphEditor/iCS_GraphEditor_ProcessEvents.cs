@@ -128,12 +128,12 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                 Vector2 delta= Event.current.delta;
                 if(IsScaleKeyDown) {
                     Vector2 pivot= MouseGraphPosition;
-					float zoomDirection= IStorage.Preferences.ControlOptions.InverseZoom ? -1f : 1f;
+					float zoomDirection= iCS_PreferencesEditor.InverseZoom ? -1f : 1f;
                     Scale= Scale+(delta.y > 0 ? -0.05f : 0.05f)*zoomDirection;
                     Vector2 offset= pivot-ViewportToGraph(MousePosition);
                     ScrollPosition+= offset;
                 } else {
-                    delta*= IStorage.Preferences.ControlOptions.ScrollSpeed*(1f/Scale); 
+                    delta*= iCS_PreferencesEditor.ScrollSpeed*(1f/Scale); 
                     ScrollPosition+= delta;                    
                 }
                 Event.current.Use();                

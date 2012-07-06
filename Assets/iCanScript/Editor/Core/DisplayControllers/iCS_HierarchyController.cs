@@ -261,18 +261,18 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
         Texture2D icon= null;
 		var current= IterValue;
         if(current.IsFunction) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.FunctionHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
         } else if(current.IsState || current.IsStateChart) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.StateHierarchyIcon, myStorage);                        
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.StateHierarchyIcon);                        
         } else if(current.IsClassModule) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ClassHierarchyIcon, myStorage);                            
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ClassHierarchyIcon);                            
         } else if(current.IsNode) {
-            icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.ModuleHierarchyIcon, myStorage);            
+            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);            
         } else if(current.IsDataPort) {
             if(current.IsInputPort) {
-                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.InPortHierarchyIcon, myStorage);                
+                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.InPortHierarchyIcon);                
             } else {
-                icon= iCS_TextureCache.GetIcon(iCS_Config.GuiAssetPath+"/"+iCS_EditorStrings.OutPortHierarchyIcon, myStorage);                                    
+                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.OutPortHierarchyIcon);                                    
             }
         }
         return new GUIContent(current.Name, icon); 

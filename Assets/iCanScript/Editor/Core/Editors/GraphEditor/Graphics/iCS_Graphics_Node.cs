@@ -15,13 +15,13 @@ public partial class iCS_Graphics {
         return true;
     }
     // ----------------------------------------------------------------------
-    public string GetNodeName(iCS_EditorObject node, iCS_IStorage iStorage) {
-        return iStorage.Preferences.HiddenPrefixes.GetName(node.Name);    
+    public string GetNodeName(iCS_EditorObject node) {
+        return iCS_PreferencesEditor.RemoveProductPrefix(node.Name);    
     }	
     // ----------------------------------------------------------------------
     // Returns the scaled node name size.
     Vector2 GetNodeNameSize(iCS_EditorObject node, iCS_IStorage iStorage) {
-        string portName= GetNodeName(node, iStorage);
+        string portName= GetNodeName(node);
         GUIContent content= new GUIContent(portName);
         return IsMinimized(node, iStorage) ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
     }

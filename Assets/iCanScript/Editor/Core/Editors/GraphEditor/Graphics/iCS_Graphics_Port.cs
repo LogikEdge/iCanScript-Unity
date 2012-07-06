@@ -120,8 +120,8 @@ public partial class iCS_Graphics {
         }
         object portValue= iStorage.GetPortValue(port);
         if(portValue == null) return false;
-        if(Application.isPlaying && iStorage.Preferences.DisplayOptions.PlayingPortValues) return true;
-        if(!Application.isPlaying && iStorage.Preferences.DisplayOptions.EditorPortValues) return true;
+        if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) return true;
+        if(!Application.isPlaying) return true;
         return false;
     }
     // ----------------------------------------------------------------------

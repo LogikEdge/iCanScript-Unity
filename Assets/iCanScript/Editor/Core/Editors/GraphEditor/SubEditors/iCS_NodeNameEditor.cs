@@ -24,7 +24,7 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
         myIStorage= iStorage;
         myTarget= target;
 		myGraphics= graphics;
-		myEditor= new iCS_FieldEditor(Position, iStorage.Preferences.HiddenPrefixes.GetName(target.RawName), iCS_FieldTypeEnum.String, GuiStyle);
+		myEditor= new iCS_FieldEditor(Position, iCS_PreferencesEditor.RemoveProductPrefix(target.RawName), iCS_FieldTypeEnum.String, GuiStyle);
     }
     
     // ======================================================================
