@@ -304,7 +304,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             return EditorPrefs.GetFloat(kSelectedBrightnessGainKey, kSelectedBrightnessGain);
         }
         set {
-            if(value < 5.0f) return;
+            if(value < 0.25f) return;
             EditorPrefs.SetFloat(kSelectedBrightnessGainKey, value);
         }
     }
