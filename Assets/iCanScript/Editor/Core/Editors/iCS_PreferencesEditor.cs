@@ -118,49 +118,25 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kPortValueRefreshPeriodKey= "iCS_PortValueRefresh";
     // ---------------------------------------------------------------------------------
     // Canvas Constants
-    const float  kCanvasBackgroundColor_R = 0.169f;
-    const float  kCanvasBackgroundColor_G = 0.188f;
-    const float  kCanvasBackgroundColor_B = 0.243f;
-    const float  kGridColor_R             = 0.25f;
-    const float  kGridColor_G             = 0.25f;
-    const float  kGridColor_B             = 0.25f;
-    const float  kGridSpacing             = 20.0f;
-    const string kCanvasBackgroundColorKey= "iCS_CanvasBackgroundColor";
-    const string kGridColorKey            = "iCS_GridColor";
-    const string kGridSpacingKey          = "iCS_GridSpacing";
+    static  Color   kCanvasBackgroundColor;
+    static  Color   kGridColor;
+    const   float   kGridSpacing             = 20.0f;
+    const   string  kCanvasBackgroundColorKey= "iCS_CanvasBackgroundColor";
+    const   string  kGridColorKey            = "iCS_GridColor";
+    const   string  kGridSpacingKey          = "iCS_GridSpacing";
     // ---------------------------------------------------------------------------------
     // Node Color Constants
-    const float    kSelectedBrightnessGain       = 1.75f;
-    const float    kNodeTitleColor_R             = 0;
-    const float    kNodeTitleColor_G             = 0;
-    const float    kNodeTitleColor_B             = 0;
-    const float    kNodeLabelColor_R             = 1f;
-    const float    kNodeLabelColor_G             = 1f;
-    const float    kNodeLabelColor_B             = 1f;
-    const float    kNodeValueColor_R             = 1f;
-    const float    kNodeValueColor_G             = 0.8f;
-    const float    kNodeValueColor_B             = 0.4f;
-    const float    kEntryStateNodeColor_R        = 1f;
-    const float    kEntryStateNodeColor_G        = 0.5f;
-    const float    kEntryStateNodeColor_B        = 0.25f;
-    const float    kStateNodeColor_R             = 0f;
-    const float    kStateNodeColor_G             = 1f;
-    const float    kStateNodeColor_B             = 1f;
-    const float    kPackageNodeColor_R           = 1f;
-    const float    kPackageNodeColor_G           = 0.92f;
-    const float    kPackageNodeColor_B           = 0.016f;
-    const float    kInstanceNodeColor_R          = 1f;
-    const float    kInstanceNodeColor_G          = 0.5f;
-    const float    kInstanceNodeColor_B          = 0f;
-    const float    kConstructorNodeColor_R       = 1f;
-    const float    kConstructorNodeColor_G       = 0.25f;
-    const float    kConstructorNodeColor_B       = 0.5f;
-    const float    kFunctionNodeColor_R          = 0f;
-    const float    kFunctionNodeColor_G          = 1f;
-    const float    kFunctionNodeColor_B          = 0f;
-    const float    kSelectedNodeBackgroundColor_R= 1f;            
-    const float    kSelectedNodeBackgroundColor_G= 1f;            
-    const float    kSelectedNodeBackgroundColor_B= 1f;            
+    const float    kSelectedBrightnessGain= 1.75f;
+    static Color   kNodeTitleColor;
+    static Color   kNodeLabelColor;
+    static Color   kNodeValueColor;
+    static Color   kEntryStateNodeColor;
+    static Color   kStateNodeColor;
+    static Color   kPackageNodeColor;
+    static Color   kInstanceNodeColor;
+    static Color   kConstructorNodeColor;
+    static Color   kFunctionNodeColor;
+    static Color   kSelectedNodeBackgroundColor;            
     const string   kSelectedBrightnessGainKey     = "iCS_SelectedBrightnessGain";
     const string   kNodeTitleColorKey             = "iCS_NodeTitleColor";
     const string   kNodeLabelColorKey             = "iCS_NodeLabelColor";
@@ -174,33 +150,15 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string   kSelectedNodeBackgroundColorKey= "iCS_SelectedNodeBackgroundColor";         
     // ---------------------------------------------------------------------------------
     // Type Color Constants
-    const float  kBoolTypeColor_R      = 1f;
-    const float  kBoolTypeColor_G      = 0f;
-    const float  kBoolTypeColor_B      = 0f;
-    const float  kIntTypeColor_R       = 1f;
-    const float  kIntTypeColor_G       = 0f;
-    const float  kIntTypeColor_B       = 1f;
-    const float  kFloatTypeColor_R     = 0f;
-    const float  kFloatTypeColor_G     = 1f;
-    const float  kFloatTypeColor_B     = 1f;
-    const float  kVector2TypeColor_R   = 1f;
-    const float  kVector2TypeColor_G   = 0.92f;
-    const float  kVector2TypeColor_B   = 0.016f;
-    const float  kVector3TypeColor_R   = 0f;
-    const float  kVector3TypeColor_G   = 1f;
-    const float  kVector3TypeColor_B   = 0f;
-    const float  kVector4TypeColor_R   = 0f;
-    const float  kVector4TypeColor_G   = 0f;
-    const float  kVector4TypeColor_B   = 1f;
-    const float  kStringTypeColor_R    = 1f;
-    const float  kStringTypeColor_G    = 0f;
-    const float  kStringTypeColor_B    = 0f;
-    const float  kGameObjectTypeColor_R= 0f;
-    const float  kGameObjectTypeColor_G= 0f;
-    const float  kGameObjectTypeColor_B= 1f;
-    const float  kDefaultTypeColor_R   = 1f;
-    const float  kDefaultTypeColor_G   = 1f;
-    const float  kDefaultTypeColor_B   = 1f;
+    static Color kBoolTypeColor;
+    static Color kIntTypeColor;
+    static Color kFloatTypeColor;
+    static Color kVector2TypeColor;
+    static Color kVector3TypeColor;
+    static Color kVector4TypeColor;
+    static Color kStringTypeColor;
+    static Color kGameObjectTypeColor;
+    static Color kDefaultTypeColor;
     const string kBoolTypeColorKey      = "iCS_BoolTypeColor";
     const string kIntTypeColorKey       = "iCS_IntTypeColor";
     const string kFloatTypeColorKey     = "iCS_FloatTypeColor";
@@ -275,20 +233,12 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
     }
     public static Color CanvasBackgroundColor {
-        get {
-            return LoadColor(kCanvasBackgroundColorKey, new Color(kCanvasBackgroundColor_R,kCanvasBackgroundColor_G,kCanvasBackgroundColor_B));
-        }
-        set {
-            SaveColor(kCanvasBackgroundColorKey, value);
-        }
+        get { return LoadColor(kCanvasBackgroundColorKey, kCanvasBackgroundColor); }
+        set { SaveColor(kCanvasBackgroundColorKey, value); }
     }
     public static Color GridColor {
-        get {
-            return LoadColor(kGridColorKey, new Color(kGridColor_R,kGridColor_G,kGridColor_B));
-        }
-        set {
-            SaveColor(kGridColorKey, value);
-        }
+        get { return LoadColor(kGridColorKey, kGridColor); }
+        set { SaveColor(kGridColorKey, value); }
     }
     public static float GridSpacing {
         get {
@@ -309,156 +259,80 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
     }
     public static Color NodeTitleColor {
-        get {
-            return LoadColor(kNodeTitleColorKey, new Color(kNodeTitleColor_R,kNodeTitleColor_G,kNodeTitleColor_B));
-        }
-        set {
-            SaveColor(kNodeTitleColorKey, value);
-        }
+        get { return LoadColor(kNodeTitleColorKey, kNodeTitleColor); }
+        set { SaveColor(kNodeTitleColorKey, value); }
     }
     public static Color NodeLabelColor {
-        get {
-            return LoadColor(kNodeLabelColorKey, new Color(kNodeLabelColor_R,kNodeLabelColor_G,kNodeLabelColor_B));
-        }
-        set {
-            SaveColor(kNodeLabelColorKey, value);
-        }
+        get { return LoadColor(kNodeLabelColorKey, kNodeLabelColor); }
+        set { SaveColor(kNodeLabelColorKey, value); }
     }
     public static Color NodeValueColor {
-        get {
-            return LoadColor(kNodeValueColorKey, new Color(kNodeValueColor_R,kNodeValueColor_G,kNodeValueColor_B));
-        }
-        set {
-            SaveColor(kNodeValueColorKey, value);
-        }
+        get { return LoadColor(kNodeValueColorKey, kNodeValueColor); }
+        set { SaveColor(kNodeValueColorKey, value); }
     }
     public static Color PackageNodeColor {
-        get {
-            return LoadColor(kPackageNodeColorKey, new Color(kPackageNodeColor_R,kPackageNodeColor_G,kPackageNodeColor_B));
-        }
-        set {
-            SaveColor(kPackageNodeColorKey, value);
-        }
+        get { return LoadColor(kPackageNodeColorKey, kPackageNodeColor); }
+        set { SaveColor(kPackageNodeColorKey, value); }
     }
     public static Color FunctionNodeColor {
-        get {
-            return LoadColor(kFunctionNodeColorKey, new Color(kFunctionNodeColor_R,kFunctionNodeColor_G,kFunctionNodeColor_B));
-        }
-        set {
-            SaveColor(kFunctionNodeColorKey, value);
-        }
+        get { return LoadColor(kFunctionNodeColorKey, kFunctionNodeColor); }
+        set { SaveColor(kFunctionNodeColorKey, value); }
     }
     public static Color ConstructorNodeColor {
-        get {
-            return LoadColor(kConstructorNodeColorKey, new Color(kConstructorNodeColor_R,kConstructorNodeColor_G,kConstructorNodeColor_B));
-        }
-        set {
-            SaveColor(kConstructorNodeColorKey, value);
-        }
+        get { return LoadColor(kConstructorNodeColorKey, kConstructorNodeColor); }
+        set { SaveColor(kConstructorNodeColorKey, value); }
     }
     public static Color InstanceNodeColor {
-        get {
-            return LoadColor(kInstanceNodeColorKey, new Color(kInstanceNodeColor_R,kInstanceNodeColor_G,kInstanceNodeColor_B));
-        }
-        set {
-            SaveColor(kInstanceNodeColorKey, value);
-        }
+        get { return LoadColor(kInstanceNodeColorKey, kInstanceNodeColor); }
+        set { SaveColor(kInstanceNodeColorKey, value); }
     }
     public static Color StateNodeColor {
-        get {
-            return LoadColor(kStateNodeColorKey, new Color(kStateNodeColor_R,kStateNodeColor_G,kStateNodeColor_B));
-        }
-        set {
-            SaveColor(kStateNodeColorKey, value);
-        }
+        get { return LoadColor(kStateNodeColorKey, kStateNodeColor); }
+        set { SaveColor(kStateNodeColorKey, value); }
     }
     public static Color EntryStateNodeColor {
-        get {
-            return LoadColor(kEntryStateNodeColorKey, new Color(kEntryStateNodeColor_R,kEntryStateNodeColor_G,kEntryStateNodeColor_B));
-        }
-        set {
-            SaveColor(kEntryStateNodeColorKey, value);
-        }
+        get { return LoadColor(kEntryStateNodeColorKey, kEntryStateNodeColor); }
+        set { SaveColor(kEntryStateNodeColorKey, value); }
     }
     public static Color SelectedNodeBackgroundColor {
-        get {
-            return LoadColor(kSelectedNodeBackgroundColorKey, new Color(kSelectedNodeBackgroundColor_R,kSelectedNodeBackgroundColor_G,kSelectedNodeBackgroundColor_B));
-        }
-        set {
-            SaveColor(kSelectedNodeBackgroundColorKey, value);
-        }
+        get { return LoadColor(kSelectedNodeBackgroundColorKey, kSelectedNodeBackgroundColor); }
+        set { SaveColor(kSelectedNodeBackgroundColorKey, value); }
     }
     public static Color BoolTypeColor {
-        get {
-            return LoadColor(kBoolTypeColorKey, new Color(kBoolTypeColor_R,kBoolTypeColor_G,kBoolTypeColor_B));
-        }
-        set {
-            SaveColor(kBoolTypeColorKey, value);
-        }
+        get { return LoadColor(kBoolTypeColorKey, kBoolTypeColor); }
+        set { SaveColor(kBoolTypeColorKey, value); }
     }
     public static Color IntTypeColor {
-        get {
-            return LoadColor(kIntTypeColorKey, new Color(kIntTypeColor_R,kIntTypeColor_G,kIntTypeColor_B));
-        }
-        set {
-            SaveColor(kIntTypeColorKey, value);
-        }
+        get { return LoadColor(kIntTypeColorKey, kIntTypeColor); }
+        set { SaveColor(kIntTypeColorKey, value); }
     }
     public static Color FloatTypeColor {
-        get {
-            return LoadColor(kFloatTypeColorKey, new Color(kFloatTypeColor_R,kFloatTypeColor_G,kFloatTypeColor_B));
-        }
-        set {
-            SaveColor(kFloatTypeColorKey, value);
-        }
+        get { return LoadColor(kFloatTypeColorKey, kFloatTypeColor); }
+        set { SaveColor(kFloatTypeColorKey, value); }
     }
     public static Color StringTypeColor {
-        get {
-            return LoadColor(kStringTypeColorKey, new Color(kStringTypeColor_R,kStringTypeColor_G,kStringTypeColor_B));
-        }
-        set {
-            SaveColor(kStringTypeColorKey, value);
-        }
+        get { return LoadColor(kStringTypeColorKey, kStringTypeColor);} 
+        set { SaveColor(kStringTypeColorKey, value); }
     }
     public static Color Vector2TypeColor {
-        get {
-            return LoadColor(kVector2TypeColorKey, new Color(kVector2TypeColor_R,kVector2TypeColor_G,kVector2TypeColor_B));
-        }
-        set {
-            SaveColor(kVector2TypeColorKey, value);
-        }
+        get { return LoadColor(kVector2TypeColorKey, kVector2TypeColor); }
+        set { SaveColor(kVector2TypeColorKey, value); }
     }
     public static Color Vector3TypeColor {
-        get {
-            return LoadColor(kVector3TypeColorKey, new Color(kVector3TypeColor_R,kVector3TypeColor_G,kVector3TypeColor_B));
-        }
-        set {
-            SaveColor(kVector3TypeColorKey, value);
-        }
+        get { return LoadColor(kVector3TypeColorKey, kVector3TypeColor); }
+        set { SaveColor(kVector3TypeColorKey, value); }
     }
     public static Color Vector4TypeColor {
-        get {
-            return LoadColor(kVector4TypeColorKey, new Color(kVector4TypeColor_R,kVector4TypeColor_G,kVector4TypeColor_B));
-        }
-        set {
-            SaveColor(kVector4TypeColorKey, value);
-        }
+        get { return LoadColor(kVector4TypeColorKey, kVector4TypeColor); }
+        set { SaveColor(kVector4TypeColorKey, value); }
     }
     public static Color GameObjectTypeColor {
-        get {
-            return LoadColor(kGameObjectTypeColorKey, new Color(kGameObjectTypeColor_R, kGameObjectTypeColor_G, kGameObjectTypeColor_B));
-        }
-        set {
-            SaveColor(kGameObjectTypeColorKey, value);
-        }
+        get { return LoadColor(kGameObjectTypeColorKey, kGameObjectTypeColor); }
+        set { SaveColor(kGameObjectTypeColorKey, value); }
     }
     public static Color DefaultTypeColor {
-        get {
-            return LoadColor(kDefaultTypeColorKey, new Color(kDefaultTypeColor_R, kDefaultTypeColor_G, kDefaultTypeColor_B));
-        }
-        set {
-            SaveColor(kDefaultTypeColorKey, value);
-        }
+        get { return LoadColor(kDefaultTypeColorKey, kDefaultTypeColor); }
+        set { SaveColor(kDefaultTypeColorKey, value); }
     }
     
 	// =================================================================================
@@ -481,6 +355,34 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
+    static iCS_PreferencesEditor() {
+        // Canvas colors
+        kCanvasBackgroundColor= new Color(0.169f, 0.188f, 0.243f);
+        kGridColor            = new Color(0.25f, 0.25f, 0.25f);
+        
+        // Node colors
+        kNodeTitleColor             = Color.black;
+        kNodeLabelColor             = Color.white;
+        kNodeValueColor             = new Color(1f, 0.8f, 0.4f);
+        kEntryStateNodeColor        = new Color(1f, 0.5f, 0.25f);
+        kStateNodeColor             = Color.cyan;
+        kPackageNodeColor           = Color.yellow;
+        kInstanceNodeColor          = new Color(1f, 0.5f, 0f);
+        kConstructorNodeColor       = new Color(1f, 0.25f, 0.5f);
+        kFunctionNodeColor          = Color.green;
+        kSelectedNodeBackgroundColor= Color.white;
+        
+        // Type colors
+        kBoolTypeColor      = Color.red;
+        kIntTypeColor       = Color.magenta;
+        kFloatTypeColor     = Color.cyan;
+        kVector2TypeColor   = Color.yellow;
+        kVector3TypeColor   = Color.green;
+        kVector4TypeColor   = Color.blue;
+        kStringTypeColor    = Color.red;
+        kGameObjectTypeColor= Color.blue;
+        kDefaultTypeColor   = Color.white;
+    }
     public new void OnEnable() {
         base.OnEnable();
         MyWindow.title= "iCanScript Preferences";
@@ -597,8 +499,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             GridSpacing= kGridSpacing;
-            GridColor= new Color(kGridColor_R, kGridColor_G, kGridColor_B);
-            CanvasBackgroundColor= new Color(kCanvasBackgroundColor_R, kCanvasBackgroundColor_G, kCanvasBackgroundColor_B);
+            GridColor= kGridColor;
+            CanvasBackgroundColor= kCanvasBackgroundColor;
         }        
     }
     // ---------------------------------------------------------------------------------
@@ -641,16 +543,16 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             SelectedBrightnessGain= kSelectedBrightnessGain;
-            NodeTitleColor= new Color(kNodeTitleColor_R, kNodeTitleColor_G, kNodeTitleColor_B);
-            NodeLabelColor= new Color(kNodeLabelColor_R, kNodeLabelColor_G, kNodeLabelColor_B);
-            NodeValueColor= new Color(kNodeValueColor_R, kNodeValueColor_G, kNodeValueColor_B);
-            PackageNodeColor= new Color(kPackageNodeColor_R, kPackageNodeColor_G, kPackageNodeColor_B);
-            FunctionNodeColor= new Color(kFunctionNodeColor_R, kFunctionNodeColor_G, kFunctionNodeColor_B);
-            ConstructorNodeColor= new Color(kConstructorNodeColor_R, kConstructorNodeColor_G, kConstructorNodeColor_B);
-            InstanceNodeColor= new Color(kInstanceNodeColor_R, kInstanceNodeColor_G, kInstanceNodeColor_B);
-            StateNodeColor= new Color(kStateNodeColor_R, kStateNodeColor_G, kStateNodeColor_B);
-            EntryStateNodeColor= new Color(kEntryStateNodeColor_R, kEntryStateNodeColor_G, kEntryStateNodeColor_B);
-            SelectedNodeBackgroundColor= new Color(kSelectedNodeBackgroundColor_R, kSelectedNodeBackgroundColor_G, kSelectedNodeBackgroundColor_B);
+            NodeTitleColor= kNodeTitleColor;
+            NodeLabelColor= kNodeLabelColor;
+            NodeValueColor= kNodeValueColor;
+            PackageNodeColor= kPackageNodeColor;
+            FunctionNodeColor= kFunctionNodeColor;
+            ConstructorNodeColor= kConstructorNodeColor;
+            InstanceNodeColor= kInstanceNodeColor;
+            StateNodeColor= kStateNodeColor;
+            EntryStateNodeColor= kEntryStateNodeColor;
+            SelectedNodeBackgroundColor= kSelectedNodeBackgroundColor;
         }        
     }
     // ---------------------------------------------------------------------------------
@@ -688,15 +590,15 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-            BoolTypeColor= new Color(kBoolTypeColor_R, kBoolTypeColor_G, kBoolTypeColor_B);
-            IntTypeColor= new Color(kIntTypeColor_R, kIntTypeColor_G, kIntTypeColor_B);
-            FloatTypeColor= new Color(kFloatTypeColor_R, kFloatTypeColor_G, kFloatTypeColor_B);
-            StringTypeColor= new Color(kStringTypeColor_R, kStringTypeColor_G, kStringTypeColor_B);
-            Vector2TypeColor= new Color(kVector2TypeColor_R, kVector2TypeColor_G, kVector2TypeColor_B);
-            Vector3TypeColor= new Color(kVector3TypeColor_R, kVector3TypeColor_G, kVector3TypeColor_B);
-            Vector4TypeColor= new Color(kVector4TypeColor_R, kVector4TypeColor_G, kVector4TypeColor_B);
-            GameObjectTypeColor= new Color(kGameObjectTypeColor_R, kGameObjectTypeColor_G, kGameObjectTypeColor_B);
-            DefaultTypeColor= new Color(kDefaultTypeColor_R, kDefaultTypeColor_G, kDefaultTypeColor_B);
+            BoolTypeColor      = kBoolTypeColor;
+            IntTypeColor       = kIntTypeColor;
+            FloatTypeColor     = kFloatTypeColor;
+            StringTypeColor    = kStringTypeColor;
+            Vector2TypeColor   = kVector2TypeColor;
+            Vector3TypeColor   = kVector3TypeColor;
+            Vector4TypeColor   = kVector4TypeColor;
+            GameObjectTypeColor= kGameObjectTypeColor;
+            DefaultTypeColor   = kDefaultTypeColor;
         }        
     }
     // ---------------------------------------------------------------------------------
