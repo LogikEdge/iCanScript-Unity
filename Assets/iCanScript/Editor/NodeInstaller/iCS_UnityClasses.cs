@@ -89,7 +89,7 @@ public static class iCS_UnityClasses {
                     DecodeUnityClassInfo(typeof(Light));        
                     DecodeUnityClassInfo(typeof(MonoBehaviour));        
 //        DecodeUnityClassInfo(typeof(Terrain));        // This is a special behaviour (not supported yet)
-                    DecodeUnityClassInfo(typeof(NavMeshAgent));        
+//                    DecodeUnityClassInfo(typeof(NavMeshAgent));        
                     DecodeUnityClassInfo(typeof(NetworkView));        
                     DecodeUnityClassInfo(typeof(Projector));        
                     DecodeUnityClassInfo(typeof(Skybox));        
@@ -110,8 +110,8 @@ public static class iCS_UnityClasses {
                     DecodeUnityClassInfo(typeof(FixedJoint));        
                     DecodeUnityClassInfo(typeof(HingeJoint));        
                     DecodeUnityClassInfo(typeof(SpringJoint));        
-                DecodeUnityClassInfo(typeof(LODGroup));        
-                DecodeUnityClassInfo(typeof(LightProbeGroup));        
+//                DecodeUnityClassInfo(typeof(LODGroup));        
+//                DecodeUnityClassInfo(typeof(LightProbeGroup));        
                 DecodeUnityClassInfo(typeof(MeshFilter));        
                 DecodeUnityClassInfo(typeof(OcclusionArea));        
                 DecodeUnityClassInfo(typeof(ParticleAnimator));        
@@ -130,11 +130,11 @@ public static class iCS_UnityClasses {
             DecodeUnityClassInfo(typeof(Flare));        
             DecodeUnityClassInfo(typeof(Font));        
             DecodeUnityClassInfo(typeof(GameObject));        
-            DecodeUnityClassInfo(typeof(LightProbes));        
+//            DecodeUnityClassInfo(typeof(LightProbes));        
             DecodeUnityClassInfo(typeof(Material));        
                 DecodeUnityClassInfo(typeof(ProceduralMaterial));        
             DecodeUnityClassInfo(typeof(Mesh));        
-            DecodeUnityClassInfo(typeof(NavMesh));        
+//            DecodeUnityClassInfo(typeof(NavMesh));        
             DecodeUnityClassInfo(typeof(PhysicMaterial));        
             DecodeUnityClassInfo(typeof(QualitySettings));        
             DecodeUnityClassInfo(typeof(ScriptableObject));        
@@ -147,9 +147,9 @@ public static class iCS_UnityClasses {
                 DecodeUnityClassInfo(typeof(MovieTexture));        
                 DecodeUnityClassInfo(typeof(RenderTexture));        
                 DecodeUnityClassInfo(typeof(Texture2D));        
-                DecodeUnityClassInfo(typeof(WebCamTexture));        
-            DecodeUnityClassInfo(typeof(OffMeshLinkData));
-            DecodeUnityClassInfo(typeof(ParticleSystem.Particle));
+//                DecodeUnityClassInfo(typeof(WebCamTexture));        
+//            DecodeUnityClassInfo(typeof(OffMeshLinkData));
+//            DecodeUnityClassInfo(typeof(ParticleSystem.Particle));
             DecodeUnityClassInfo(typeof(Particle));
 //            DecodeUnityClassInfo(typeof(Path));
             DecodeUnityClassInfo(typeof(Physics));
@@ -166,8 +166,10 @@ public static class iCS_UnityClasses {
             DecodeUnityClassInfo(typeof(RaycastHit));
             DecodeUnityClassInfo(typeof(RectOffset));
             DecodeUnityClassInfo(typeof(Rect));
+#if UNITY_IPHONE
             DecodeUnityClassInfo(typeof(RemoteNotification));
-            DecodeUnityClassInfo(typeof(RenderBuffer));
+#endif
+//            DecodeUnityClassInfo(typeof(RenderBuffer));
             DecodeUnityClassInfo(typeof(RenderSettings));
             DecodeUnityClassInfo(typeof(Resolution));
             DecodeUnityClassInfo(typeof(Resources));
