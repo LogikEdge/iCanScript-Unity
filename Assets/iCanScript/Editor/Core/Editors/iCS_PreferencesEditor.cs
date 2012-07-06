@@ -1,79 +1,12 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 
 //[System.Serializable]
 //public class iCS_UserPreferences {
-//
-//    [System.Serializable]
-//    public class UserTypeColors {
-//        [System.Serializable]
-//        public class UserTypeColor {
-//            public string  TypeName;
-//            public Color   TypeColor;
-//            public UserTypeColor(Type type, Color color) {
-//                TypeName= type.Name;
-//                TypeColor= color;
-//            }
-//        }
-//        public UserTypeColor    BoolType      = new UserTypeColor(typeof(bool),       Color.red);
-//        public UserTypeColor    IntType       = new UserTypeColor(typeof(int),        Color.magenta);
-//        public UserTypeColor    FloatType     = new UserTypeColor(typeof(float),      Color.cyan);
-//        public UserTypeColor    Vector2Type   = new UserTypeColor(typeof(Vector2),    Color.yellow);
-//        public UserTypeColor    Vector3Type   = new UserTypeColor(typeof(Vector3),    Color.green);
-//        public UserTypeColor    Vector4Type   = new UserTypeColor(typeof(Vector4),    Color.blue);
-//        public UserTypeColor    StringType    = new UserTypeColor(typeof(string),     Color.red);
-//        public UserTypeColor    GameObjectType= new UserTypeColor(typeof(GameObject), Color.blue);
-//        public UserTypeColor[]  CustomColors  = new UserTypeColor[0];
-//
-//        public Color GetColor(Type t) {
-//            if(t == null) return Color.white;
-//            string typeName= t.HasElementType ? t.GetElementType().Name : t.Name;
-//            if(typeName == BoolType.TypeName)       return BoolType.TypeColor;
-//            if(typeName == IntType.TypeName)        return IntType.TypeColor;
-//            if(typeName == FloatType.TypeName)      return FloatType.TypeColor;
-//            if(typeName == Vector2Type.TypeName)    return Vector2Type.TypeColor;
-//            if(typeName == Vector3Type.TypeName)    return Vector3Type.TypeColor;
-//            if(typeName == Vector4Type.TypeName)    return Vector4Type.TypeColor;
-//            if(typeName == StringType.TypeName)     return StringType.TypeColor;
-//            if(typeName == GameObjectType.TypeName) return GameObjectType.TypeColor;
-//            foreach(var tc in CustomColors) {
-//                if(typeName == tc.TypeName) return tc.TypeColor;
-//            }
-//            return Color.white;
-//        }
-//    }
-//    public UserTypeColors   TypeColors= new UserTypeColors();
-//
-//    [System.Serializable]
-//    public class UserHiddenPrefixes {
-//        public const string uCodePrefix= iCS_Config.ProductPrefix;
-//        public string[]     CustomPrefixes= new string[0]; 
-//
-//        public string GetTypeName(Type t)  { return GetName(t.Name); }
-//        public string GetName(string name) {
-//            int prefixLen= uCodePrefix.Length;
-//            int nameLen= name.Length;
-//            if(nameLen > prefixLen && name.Substring(0, prefixLen) == uCodePrefix) return name.Substring(prefixLen, nameLen-prefixLen);
-//            foreach(var prefix in CustomPrefixes) {
-//                prefixLen= prefix.Length;
-//                if(nameLen > prefixLen && name.Substring(0, prefixLen) == prefix) return name.Substring(prefixLen, name.Length-prefixLen);                
-//            }
-//            return name;
-//        }
-//    }
-//    public UserHiddenPrefixes   HiddenPrefixes= new UserHiddenPrefixes();
-//
-//    [System.Serializable]
-//    public class UserIcons {
-//        public bool         EnableMinimizedIcons= true;
-//        public const string uCodeIconPath= iCS_Config.GuiAssetPath;
-//        public string[]     CustomIconPaths= new string[0];
-//    }
-//    public UserIcons     Icons= new UserIcons();
-//    
 //    [System.Serializable]
 //    public class UserClassWizard {
 //        public bool OutputInstanceVariables = true;
@@ -98,7 +31,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const float kTitleHeight = 40.0f;
     const float kColumn1Width= 120.0f;
     const float kColumn2Width= 180.0f;
-    const float kColumn3Width= 120.0f;
+    const float kColumn3Width= 180.0f;
     const float kColumn1X    = 0;
     const float kColumn2X    = kColumn1X+kColumn1Width;
     const float kColumn3X    = kColumn2X+kColumn2Width;
@@ -168,12 +101,34 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kStringTypeColorKey    = "iCS_StringTypeColor";
     const string kGameObjectTypeColorKey= "iCS_GameObjectTypeColor";
     const string kDefaultTypeColorKey   = "iCS_DefaultTypeColor";
-    
+    // ---------------------------------------------------------------------------------
+    // Instance Node Config Constants
+    const bool   kInstanceAutocreateInThis             = true;
+    const bool   kInstanceAutocreateOutThis            = false;
+    const bool   kInstanceAutocreateInFields           = false;
+    const bool   kInstanceAutocreateOutFields          = false;
+    const bool   kInstanceAutocreateInStaticFields     = false;
+    const bool   kInstanceAutocreateOutStaticFields    = false;
+    const bool   kInstanceAutocreateInProperties       = false;
+    const bool   kInstanceAutocreateOutProperties      = false;
+    const bool   kInstanceAutocreateInStaticProperties = false;
+    const bool   kInstanceAutocreateOutStaticProperties= false;
+    const string kInstanceAutocreateInThisKey             = "iCS_InstanceAutocreateInThis";
+    const string kInstanceAutocreateOutThisKey            = "iCS_InstanceAutocreateOutThis"; 
+    const string kInstanceAutocreateInFieldsKey           = "iCS_InstanceAutocreateInFields"; 
+    const string kInstanceAutocreateOutFieldsKey          = "iCS_InstanceAutocreateOutFields"; 
+    const string kInstanceAutocreateInStaticFieldsKey     = "iCS_InstanceAutocreateInStaticFields";
+    const string kInstanceAutocreateOutStaticFieldsKey    = "iCS_InstanceAutocreateOutStaticFields";
+    const string kInstanceAutocreateInPropertiesKey       = "iCS_InstanceAutocreateInProperties";
+    const string kInstanceAutocreateOutPropertiesKey      = "iCS_InstanceAutocreateOutProperties"; 
+    const string kInstanceAutocreateInStaticPropertiesKey = "iCS_InstanceAutocreateInStaticProperties";
+    const string kInstanceAutocreateOutStaticPropertiesKey= "iCS_InstanceAutocreateOutStaticProperties";
+
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
 	int         selGridId= 0;
-	string[]    selGridStrings= new string[]{"Display Options", "Canvas", "Node Colors", "Type Colors", "Hidden Prefixes", "Icons", "Instance Wizard"};
+	string[]    selGridStrings= new string[]{"Display Options", "Canvas", "Node Colors", "Type Colors", "Instance Wizard"};
 	GUIStyle    titleStyle= null;
 	GUIStyle    selectionStyle= null;
 	
@@ -334,6 +289,46 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         get { return LoadColor(kDefaultTypeColorKey, kDefaultTypeColor); }
         set { SaveColor(kDefaultTypeColorKey, value); }
     }
+    public static bool InstanceAutocreateInThis {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateInThisKey, kInstanceAutocreateInThis); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateInThisKey, value); }        
+    }
+    public static bool InstanceAutocreateOutThis {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateOutThisKey, kInstanceAutocreateOutThis); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutThisKey, value); }        
+    }
+    public static bool InstanceAutocreateInFields {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateInFieldsKey, kInstanceAutocreateInFields); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateInFieldsKey, value); }        
+    }
+    public static bool InstanceAutocreateOutFields {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateOutFieldsKey, kInstanceAutocreateOutFields); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutFieldsKey, value); }        
+    }
+    public static bool InstanceAutocreateInStaticFields {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateInStaticFieldsKey, kInstanceAutocreateInStaticFields); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateInStaticFieldsKey, value); }        
+    }
+    public static bool InstanceAutocreateOutStaticFields {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateOutStaticFieldsKey, kInstanceAutocreateOutStaticFields); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutStaticFieldsKey, value); }        
+    }
+    public static bool InstanceAutocreateInProperties {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateInPropertiesKey, kInstanceAutocreateInProperties); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateInPropertiesKey, value); }        
+    }
+    public static bool InstanceAutocreateOutProperties {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateOutPropertiesKey, kInstanceAutocreateOutProperties); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutPropertiesKey, value); }        
+    }
+    public static bool InstanceAutocreateInStaticProperties {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateInStaticPropertiesKey, kInstanceAutocreateInStaticProperties); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateInStaticPropertiesKey, value); }        
+    }
+    public static bool InstanceAutocreateOutStaticProperties {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateOutStaticPropertiesKey, kInstanceAutocreateOutStaticProperties); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutStaticPropertiesKey, value); }        
+    }
     
 	// =================================================================================
     // Storage Utilities
@@ -423,9 +418,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             case 1: Canvas(); break;
             case 2: NodeColors(); break;
             case 3: TypeColors(); break;
-            case 4: HiddenPrefixes(); break;
-            case 5: Icons(); break;
-            case 6: InstanceWizard(); break;
+            case 4: InstanceWizard(); break;
             default: break;
         }
 	}
@@ -457,6 +450,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
+            pos[i].width= kColumn3Width;
         }
         AnimationTime= EditorGUI.FloatField(pos[0], AnimationTime);
         ScrollSpeed= EditorGUI.FloatField(pos[1], ScrollSpeed);
@@ -491,6 +485,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
+            pos[i].width= kColumn3Width;
         }
         GridSpacing= EditorGUI.FloatField(pos[0], GridSpacing);
         GridColor= EditorGUI.ColorField(pos[1], GridColor);
@@ -527,6 +522,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
+            pos[i].width= kColumn3Width;
         }
         SelectedBrightnessGain= EditorGUI.FloatField(pos[0], SelectedBrightnessGain);
         NodeTitleColor= EditorGUI.ColorField(pos[1], NodeTitleColor);
@@ -577,6 +573,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= kColumn2Width;
+            pos[i].width= kColumn3Width;
         }
         BoolTypeColor= EditorGUI.ColorField(pos[0], BoolTypeColor);
         IntTypeColor= EditorGUI.ColorField(pos[1], IntTypeColor);
@@ -602,21 +599,75 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }        
     }
     // ---------------------------------------------------------------------------------
-    void HiddenPrefixes() {
+    void InstanceWizard() {
+        // Header
+        Rect p= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
+        GUI.Label(p, "Auto-Creation", EditorStyles.boldLabel);
+        Rect p2= new Rect(kColumn3X+kMargin, p.y, 0.5f*kColumn3Width, 20f);
+        GUI.Label(p2, "In", EditorStyles.boldLabel);
+        p2.x+= 40f;
+        GUI.Label(p2, "Out", EditorStyles.boldLabel);
+        
+        // Column 2
+        Rect[] pos= new Rect[5];
+        pos[0]= new Rect(p.x, p.yMax, p.width, p.height);
+        for(int i= 1; i < pos.Length; ++i) {
+            pos[i]= pos[i-1];
+            pos[i].y= pos[i-1].yMax;
+        }
+        GUI.Label(pos[0], "this");
+        GUI.Label(pos[1], "Instance Fields");
+        GUI.Label(pos[2], "Class Fields");
+        GUI.Label(pos[3], "Instance Properties");
+        GUI.Label(pos[4], "Class Properties");
+        
+        // Draw Column 3
+        for(int i= 0; i < pos.Length; ++i) {
+            pos[i].x+= kColumn2Width;
+            pos[i].width= 40f;
+        }
+        InstanceAutocreateInThis            = EditorGUI.Toggle(pos[0], InstanceAutocreateInThis);
+        InstanceAutocreateInFields          = EditorGUI.Toggle(pos[1], InstanceAutocreateInFields);
+        InstanceAutocreateInStaticFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateInStaticFields);
+        InstanceAutocreateInProperties      = EditorGUI.Toggle(pos[3], InstanceAutocreateInProperties);
+        InstanceAutocreateInStaticProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateInStaticProperties);
+        for(int i= 0; i < pos.Length; ++i) {
+            pos[i].x+= 45f;
+        }
+        InstanceAutocreateOutThis            = EditorGUI.Toggle(pos[0], InstanceAutocreateOutThis);
+        InstanceAutocreateOutFields          = EditorGUI.Toggle(pos[1], InstanceAutocreateOutFields);
+        InstanceAutocreateOutStaticFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateOutStaticFields);
+        InstanceAutocreateOutProperties      = EditorGUI.Toggle(pos[3], InstanceAutocreateOutProperties);
+        InstanceAutocreateOutStaticProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateOutStaticProperties);
+        
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-        }         
-    }
-    // ---------------------------------------------------------------------------------
-    void Icons() {
-        // Reset Button
-        if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
+            InstanceAutocreateInThis            = kInstanceAutocreateInThis;
+            InstanceAutocreateInFields          = kInstanceAutocreateInFields;
+            InstanceAutocreateInStaticFields    = kInstanceAutocreateInStaticFields;
+            InstanceAutocreateInProperties      = kInstanceAutocreateInProperties;
+            InstanceAutocreateInStaticProperties= kInstanceAutocreateInStaticProperties;
+            InstanceAutocreateOutThis            = kInstanceAutocreateOutThis;
+            InstanceAutocreateOutFields          = kInstanceAutocreateOutFields;
+            InstanceAutocreateOutStaticFields    = kInstanceAutocreateOutStaticFields;
+            InstanceAutocreateOutProperties      = kInstanceAutocreateOutProperties;
+            InstanceAutocreateOutStaticProperties= kInstanceAutocreateOutStaticProperties;
         }        
     }
+
+	// =================================================================================
+    // Helpers.
     // ---------------------------------------------------------------------------------
-    void InstanceWizard() {
-        // Reset Button
-        if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-        }                
+    public static Color GetTypeColor(Type type) {
+        Type t= iCS_Types.GetElementType(type);
+        if(t == typeof(bool))       return BoolTypeColor;
+        if(t == typeof(int))        return IntTypeColor;
+        if(t == typeof(float))      return FloatTypeColor;
+        if(t == typeof(string))     return StringTypeColor;
+        if(t == typeof(GameObject)) return GameObjectTypeColor;
+        if(t == typeof(Vector2))    return Vector2TypeColor;
+        if(t == typeof(Vector3))    return Vector3TypeColor;
+        if(t == typeof(Vector4))    return Vector4TypeColor;
+        return DefaultTypeColor;
     }
 }
