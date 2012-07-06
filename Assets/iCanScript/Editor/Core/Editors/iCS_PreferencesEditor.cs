@@ -592,6 +592,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
+    public new void OnEnable() {
+        base.OnEnable();
+        MyWindow.title= "iCanScript Preferences";
+        MyWindow.minSize= new Vector2(500f, 425f);
+        MyWindow.maxSize= new Vector2(500f, 425f);
+    }
+
     void Initialize() {
         if(titleStyle == null) {
             titleStyle= new GUIStyle(EditorStyles.largeLabel);                    
@@ -602,9 +609,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             selectionStyle= new GUIStyle(EditorStyles.label);
             selectionStyle.alignment= TextAnchor.MiddleRight;
             selectionStyle.padding= new RectOffset(10,10,0,0);
-            selectionStyle.active.textColor= Color.white;
-            selectionStyle.hover.textColor= Color.blue;
-            selectionStyle.onHover.textColor= Color.blue;
         }
     }
     
