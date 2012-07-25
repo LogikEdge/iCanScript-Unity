@@ -65,7 +65,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject          SelectedObject   { get { return this[SelectedObjectId]; } set { SelectedObjectId= value != null ? value.InstanceId : -1; }}
     // ----------------------------------------------------------------------
     public bool IsBehaviour         { get { return IsValid(0) && EditorObjects[0].IsBehaviour; }}
-    public bool IsBehaviourEmpty    {
+    public bool IsEmptyBehaviour    {
         get {
             if(!IsBehaviour) return false;
             for(int i= 1; i < EditorObjects.Count; ++i) {
