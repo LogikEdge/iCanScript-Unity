@@ -170,7 +170,7 @@ public class iCS_DataBase {
                     }
                 }
                 for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
-                    if(func.ParamIsOuts[j] == false) {
+                    if(func.ParamDirs[j] != iCS_ParamDirectionEnum.Out) {
 						if(func.ParamTypes[j] == inputType) {
 //                        if(iCS_Types.IsA(func.ParamTypes[j], inputType)) {
                             shouldInclude= true;
@@ -191,7 +191,7 @@ public class iCS_DataBase {
                 }
                 if(func.ReturnType == outputType) shouldInclude= true;
                 for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
-                    if(func.ParamIsOuts[j]) {
+                    if(func.ParamDirs[j] != iCS_ParamDirectionEnum.In) {
                         if(outputType == func.ParamTypes[j]) {
 //                        if(iCS_Types.IsA(outputType, func.ParamTypes[j])) {
                             shouldInclude= true;
@@ -248,51 +248,51 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     public static void AddConstructor(string company, string package, string displayName, string toolTip, string iconPath,
                                       Type classType, ConstructorInfo constructorInfo,
-                                      bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
+                                      iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
         Add(company, package, displayName, toolTip, iconPath,
             iCS_ObjectTypeEnum.Constructor, classType, constructorInfo, null,
-            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            paramDirs, paramNames, paramTypes, paramDefaults,
             null);
     }
     // ----------------------------------------------------------------------
     public static void AddStaticField(string company, string package, string displayName, string toolTip, string iconPath,
                                       Type classType, FieldInfo fieldInfo,
-                                      bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                      iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                       string retName) {
         Add(company, package, displayName, toolTip, iconPath,
             iCS_ObjectTypeEnum.StaticField, classType, null, fieldInfo,
-            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            paramDirs, paramNames, paramTypes, paramDefaults,
             retName);
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceField(string company, string package, string displayName, string toolTip, string iconPath,
                                         Type classType, FieldInfo fieldInfo,
-                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                        iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                         string retName) {
         Add(company, package, displayName, toolTip, iconPath,
             iCS_ObjectTypeEnum.InstanceField, classType, null, fieldInfo,
-            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            paramDirs, paramNames, paramTypes, paramDefaults,
             retName);
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath,
                                          Type classType, MethodInfo methodInfo,
-                                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                         iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                          string retName) {
         Add(company, package, displayName, toolTip, iconPath,
             iCS_ObjectTypeEnum.InstanceMethod, classType, methodInfo, null,
-            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            paramDirs, paramNames, paramTypes, paramDefaults,
             retName);
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
     public static void AddStaticMethod(string company, string package, string displayName, string toolTip, string iconPath,
                                        Type classType, MethodInfo methodInfo,
-                                       bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                       iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                        string retName) {
         Add(company, package, displayName, toolTip, iconPath,
             iCS_ObjectTypeEnum.StaticMethod, classType, methodInfo, null,
-            paramIsOuts, paramNames, paramTypes, paramDefaults,
+            paramDirs, paramNames, paramTypes, paramDefaults,
             retName);
     }
     // ----------------------------------------------------------------------
@@ -313,18 +313,18 @@ public class iCS_DataBase {
         string toTypeNameUpper= Char.ToUpper(toTypeName[0])+toTypeName.Substring(1);
         Add(company, package, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
             iCS_ObjectTypeEnum.TypeCast, classType, methodInfo, null,
-            new bool[1]{false}, new string[1]{fromTypeName}, new Type[1]{fromType}, new object[1]{null},
+            new iCS_ParamDirectionEnum[1]{iCS_ParamDirectionEnum.In}, new string[1]{fromTypeName}, new Type[1]{fromType}, new object[1]{null},
             toTypeName);        
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.
     public static iCS_ReflectionInfo Add(string company, string package, string displayName, string toolTip, string iconPath,
                                         iCS_ObjectTypeEnum objType, Type classType, MethodBase methodInfo, FieldInfo fieldInfo,
-                                        bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                        iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                         string retName) {
         iCS_ReflectionInfo fd= new iCS_ReflectionInfo(company, package, displayName, toolTip, iconPath,
                                                       objType, classType, methodInfo, fieldInfo,
-                                                      paramIsOuts, paramNames, paramTypes, paramDefaults,
+                                                      paramDirs, paramNames, paramTypes, paramDefaults,
                                                       retName);
         Functions.Add(fd);
         IsSorted= false;

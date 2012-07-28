@@ -16,12 +16,12 @@ public class iCS_FieldInfo : iCS_ReflectionInfo {
     public iCS_FieldInfo(string company, string package, string name,
                          string toolTip, string iconPath,
                          iCS_ObjectTypeEnum objType, Type classType, FieldInfo fieldInfo,
-                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
+                         iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                          string returnName)
     : base(company, package, name,
            toolTip, iconPath,
            objType, classType, null, fieldInfo,
-           paramIsOuts, paramNames, paramTypes, paramDefaultValues,
+           paramDirs, paramNames, paramTypes, paramDefaultValues,
            returnName) {
 //        Field     = fieldInfo;
 //        IsGetField= fieldInfo != null ? (paramTypes.Length == 0) : true;       
