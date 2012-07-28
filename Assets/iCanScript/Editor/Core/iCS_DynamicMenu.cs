@@ -322,6 +322,7 @@ public class iCS_DynamicMenu {
                 if(name == childName) {
                     string toolTip= iCS_AllowedChildren.BehaviourChildTooltips[i];
                     ProcessCreateModuleWithUnchangableName(childName, selectedObject, storage, toolTip);
+					Debug.Log("Processing menu");
                     return;
                 }
             }

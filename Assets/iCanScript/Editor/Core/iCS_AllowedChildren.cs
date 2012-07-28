@@ -152,4 +152,14 @@ public static class iCS_AllowedChildren {
         }
         return false;
     }
+
+    // ----------------------------------------------------------------------
+	public static string TooltipForBehaviourChild(string name) {
+		for(int i= 0; i < BehaviourChildNames.Length; ++i) {
+			if(name == BehaviourChildNames[i]) {
+				return BehaviourChildTooltips[i];
+			}
+		}
+		return null;
+	}
 }

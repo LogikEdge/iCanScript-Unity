@@ -1096,12 +1096,33 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void PasteIntoGraph(Vector2 point, iCS_Storage sourceStorage, iCS_EditorObject sourceRoot) {
         if(sourceRoot == null) return;
-        iCS_EditorObject parent= GetValidParentNodeUnder(point, sourceRoot.ObjectType, sourceRoot.Name);
-        if(parent == null) {
-            EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");
-            return;
+        iCS_EditorObject validParent= GetValidParentNodeUnder(point, sourceRoot.ObjectType, sourceRoot.Name);
+        if(validParent == null) {
+			var node= IStorage.GetNodeAt(point);
+			if(node == null && IStorage.IsEmptyBehaviour) {
+				int option= EditorUtility.DisplayDialogComplex("Behaviour event required !", "Unity behaviour requires that nodes be added to a predefined event.  Use the buttons below to create the event type for your node.","Create Update", "More events...","Create OnGUI");
+				switch(option) {
+					case 0:
+						validParent= IStorage.CreateModule(0, point, iCS_Strings.Update);
+						validParent.Tooltip= iCS_AllowedChildren.TooltipForBehaviourChild(iCS_Strings.Update);
+						break;
+					case 1:
+						MyWindow.ShowNotification(new GUIContent("Please use right mouse click on canvas to create behaviour event type before adding new object."));
+						SelectedObject= IStorage.EditorObjects[0];
+						myDynamicMenu.Update(SelectedObject, IStorage, point);
+						IStorage.SetDirty(SelectedObject);
+						return;
+					case 2:
+						validParent= IStorage.CreateModule(0, point, iCS_Strings.OnGUI);
+						validParent.Tooltip= iCS_AllowedChildren.TooltipForBehaviourChild(iCS_Strings.OnGUI);
+						break;
+				}
+			} else {
+	            EditorUtility.DisplayDialog("Operation Aborted", "Unable to find a suitable parent to paste into !!!", "Cancel");				
+				return;
+			}
         }
-        iCS_EditorObject pasted= IStorage.CopyFrom(sourceRoot, new iCS_IStorage(sourceStorage), parent, point);
+        iCS_EditorObject pasted= IStorage.CopyFrom(sourceRoot, new iCS_IStorage(sourceStorage), validParent, point);
         if(IStorage.IsMaximized(pasted)) {
             IStorage.Fold(pasted);            
         }
