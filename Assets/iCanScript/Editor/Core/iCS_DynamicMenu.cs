@@ -9,9 +9,9 @@ public class iCS_DynamicMenu {
         public string               Command;
         public iCS_EditorObject     SelectedObject;
         public iCS_IStorage         Storage;
-        public iCS_ReflectionDesc   Descriptor;
-        public MenuContext(string command, iCS_ReflectionDesc descriptor= null) : this(command, descriptor, null, null) {}
-        public MenuContext(string command, iCS_ReflectionDesc descriptor, iCS_EditorObject selected, iCS_IStorage storage) {
+        public iCS_ReflectionInfo   Descriptor;
+        public MenuContext(string command, iCS_ReflectionInfo descriptor= null) : this(command, descriptor, null, null) {}
+        public MenuContext(string command, iCS_ReflectionInfo descriptor, iCS_EditorObject selected, iCS_IStorage storage) {
             Command= command;
             SelectedObject= selected;
             Storage= storage;
@@ -116,7 +116,7 @@ public class iCS_DynamicMenu {
         }
 //        // Function menu items
 //        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
-//            List<iCS_ReflectionDesc> functionMenu= iCS_DataBase.BuildExpertMenu();
+//            List<iCS_ReflectionInfo> functionMenu= iCS_DataBase.BuildExpertMenu();
 //            tmp= new MenuContext[menu.Length+functionMenu.Count+1];
 //            menu.CopyTo(tmp, 0);
 //            tmp[menu.Length]= new MenuContext(SeparatorStr);
@@ -209,7 +209,7 @@ public class iCS_DynamicMenu {
         }
         // Get compatible functions.
         if(selectedObject.IsDataPort) {
-            List<iCS_ReflectionDesc> functionMenu= null;
+            List<iCS_ReflectionInfo> functionMenu= null;
             if(selectedObject.IsInputPort) {
                 functionMenu= iCS_DataBase.BuildMenu(null, selectedObject.RuntimeType);
             } else {
@@ -295,7 +295,7 @@ public class iCS_DynamicMenu {
         return idx;
     }
 	// ----------------------------------------------------------------------
-    iCS_ReflectionDesc GetReflectionDescFromMenuCommand(MenuContext menuContext) {
+    iCS_ReflectionInfo GetReflectionDescFromMenuCommand(MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
         return iCS_DataBase.GetDescriptor(menuCommand);
     }
@@ -381,7 +381,7 @@ public class iCS_DynamicMenu {
                 break;                
             }
             default: {
-				iCS_ReflectionDesc desc= context.Descriptor;
+				iCS_ReflectionInfo desc= context.Descriptor;
 				if(desc == null) {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
@@ -541,7 +541,7 @@ public class iCS_DynamicMenu {
         return storage.CreateState(parent.InstanceId, ProcessMenuPosition, name);
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, iCS_ReflectionDesc desc) {
+    iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, iCS_ReflectionInfo desc) {
         if(parent.IsPort) {
             iCS_EditorObject port= parent;
             parent= storage.GetParent(port);

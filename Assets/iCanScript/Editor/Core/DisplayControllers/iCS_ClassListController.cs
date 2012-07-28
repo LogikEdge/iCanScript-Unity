@@ -9,10 +9,10 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // Fields
     // ---------------------------------------------------------------------------------
     DSTableView                 myTableView       = null;
-    List<iCS_ReflectionDesc>    myClasses         = null;
+    List<iCS_ReflectionInfo>    myClasses         = null;
 	List<string>				myPackages        = new List<string>();
 	List<string>				myCompanies		  = new List<string>();
-    List<iCS_ReflectionDesc>    myFilteredClasses = null;
+    List<iCS_ReflectionInfo>    myFilteredClasses = null;
     GUIStyle                    myColumnDataStyle = null;
     Action<Type>                myOnClassSelection= null;
     int                         mySelectedRow     = 0;
@@ -96,7 +96,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
         return myFilteredClasses.Count;
     }
     public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
-        iCS_ReflectionDesc desc= myFilteredClasses[row];
+        iCS_ReflectionInfo desc= myFilteredClasses[row];
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kClassColumnId) == 0) {
             return myColumnDataStyle.CalcSize(new GUIContent(desc.ClassType.Name));
@@ -119,7 +119,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
             bkgColor.b= 1f-bkgColor.b;
             GUI.contentColor= bkgColor;
         }
-        iCS_ReflectionDesc desc= myFilteredClasses[row];
+        iCS_ReflectionInfo desc= myFilteredClasses[row];
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kClassColumnId) == 0) {
             GUI.Label(position, desc.ClassType.Name, myColumnDataStyle);
@@ -139,7 +139,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
 	public void OnMouseDown(DSTableView tableView, DSTableColumn tableColumn, int row) {
         mySelectedRow= row;
         if(myOnClassSelection != null) {
-            iCS_ReflectionDesc desc= myFilteredClasses[row];
+            iCS_ReflectionInfo desc= myFilteredClasses[row];
             myOnClassSelection(desc.ClassType);            
         }
 	}

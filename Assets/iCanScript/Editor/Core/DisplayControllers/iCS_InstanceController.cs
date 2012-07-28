@@ -10,7 +10,7 @@ public class iCS_InstanceController {
     // ---------------------------------------------------------------------------------
     iCS_EditorObject                myTarget             = null;
     iCS_IStorage                    myStorage            = null;
-    iCS_ReflectionDesc[]            myConstructors       = null;
+    iCS_ReflectionInfo[]            myConstructors       = null;
     int                             myConstructorIdx     = -1;
     float                           myMaxConstructorWidth= 0f;
 

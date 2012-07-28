@@ -9,9 +9,9 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     // Types
     // ---------------------------------------------------------------------------------
     class ControlPair {
-        public iCS_ReflectionDesc  Component= null;
+        public iCS_ReflectionInfo  Component= null;
         public bool                IsActive= false;
-        public ControlPair(iCS_ReflectionDesc component, bool isActive= false) {
+        public ControlPair(iCS_ReflectionInfo component, bool isActive= false) {
             Component= component;
             IsActive= isActive;
         }
@@ -19,7 +19,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     class VariablePair {
         public ControlPair InputControlPair= null;
         public ControlPair OutputControlPair= null;
-        public VariablePair(iCS_ReflectionDesc inputComponent, bool inputActive, iCS_ReflectionDesc outputComponent, bool outputActive) {
+        public VariablePair(iCS_ReflectionInfo inputComponent, bool inputActive, iCS_ReflectionInfo outputComponent, bool outputActive) {
             InputControlPair= new ControlPair(inputComponent, inputActive);
             OutputControlPair= new ControlPair(outputComponent, outputActive);
         }
@@ -118,12 +118,12 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 	Type GetVariableType(VariablePair pair) {
 		return GetAComponent(pair).VariableType;
 	}
-    iCS_ReflectionDesc GetAComponent(VariablePair pair) {
+    iCS_ReflectionInfo GetAComponent(VariablePair pair) {
         return pair.InputControlPair.Component ?? pair.OutputControlPair.Component; 
     }
     VariablePair GetVariablePair(string name, List<VariablePair> lst) {
         foreach(var pair in lst) {
-            iCS_ReflectionDesc inputComponent= pair.InputControlPair.Component;
+            iCS_ReflectionInfo inputComponent= pair.InputControlPair.Component;
             if(inputComponent != null) {
                 if(inputComponent.IsField) {
                     if(inputComponent.FieldName == name) return pair;
@@ -131,7 +131,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                     if(inputComponent.PropertyName == name) return pair;
                 }
             }
-            iCS_ReflectionDesc outputComponent= pair.OutputControlPair.Component;
+            iCS_ReflectionInfo outputComponent= pair.OutputControlPair.Component;
             if(outputComponent != null) {
                 if(outputComponent.IsField) {
                     if(outputComponent.FieldName == name) return pair;

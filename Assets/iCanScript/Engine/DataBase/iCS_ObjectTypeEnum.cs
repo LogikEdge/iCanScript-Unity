@@ -4,7 +4,7 @@ using System.Collections;
 [System.Serializable]
 public enum iCS_ObjectTypeEnum {
     // Structural nodes
-    Behaviour= 0, Module, StateChart, State,
+    Behaviour= 0, Module, StateChart, State, Event,
 
     // Function nodes
     Constructor=100,

@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class iCS_ReflectionDesc {
+public class iCS_ReflectionInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -14,22 +14,22 @@ public class iCS_ReflectionDesc {
     public string               Package    = "(no package)";
     public string               DisplayName= null;
     public Type                 ClassType  = null;
-    public MethodBase           Method = null;
-    public FieldInfo            Field= null;
-    public bool                 IsGetFieldFlag= true;
-    public string               Tooltip= null;
-    public string               IconPath= null;
-	public string[]				ParamNames= null;
-	public Type[]				ParamTypes= null;
+    public string               Tooltip    = null;
+    public string               IconPath   = null;
+	public string[]				ParamNames = null;
+	public Type[]				ParamTypes = null;
 	public bool[]				ParamIsOuts= null;
-	public string				ReturnName= null;
 	public object[]				ParamInitialValues= null;
+	public string				ReturnName = null;
+    public MethodBase           Method     = null;
+    public FieldInfo            Field      = null;
+    public bool                 IsGetFieldFlag= true;
 
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ReflectionDesc(string company, string package, string name,
+    public iCS_ReflectionInfo(string company, string package, string name,
                               string toolTip, string iconPath,
                               iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase, FieldInfo fieldInfo,
                               bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,

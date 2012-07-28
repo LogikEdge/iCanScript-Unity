@@ -12,8 +12,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     public class Node {
         public NodeTypeEnum        Type;
         public string              Name;
-        public iCS_ReflectionDesc  Desc;
-        public Node(NodeTypeEnum type, string name, iCS_ReflectionDesc desc) {
+        public iCS_ReflectionInfo  Desc;
+        public Node(NodeTypeEnum type, string name, iCS_ReflectionInfo desc) {
             Type= type;
             Name= name;
             Desc= desc;
@@ -102,7 +102,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		// Build tree and sort it elements.
 		myTree= BuildTreeNode(allFunctions);
     }
-	Prelude.Tree<Node> BuildTreeNode(List<iCS_ReflectionDesc> functions) {
+	Prelude.Tree<Node> BuildTreeNode(List<iCS_ReflectionInfo> functions) {
         if(functions.Count == 0) return null;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
         for(int i= 0; i < functions.Count; ++i) {
@@ -146,7 +146,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         }
         return -1;
     }
-    Prelude.Tree<Node> GetParentTree(iCS_ReflectionDesc desc, Prelude.Tree<Node> tree) {
+    Prelude.Tree<Node> GetParentTree(iCS_ReflectionInfo desc, Prelude.Tree<Node> tree) {
         if(!iCS_Strings.IsEmpty(desc.Company)) {
             var idx= FindInTreeChildren(desc.Company, tree);
             if(idx < 0) {
@@ -218,7 +218,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
-    bool FilterInCompany(iCS_ReflectionDesc desc) {
+    bool FilterInCompany(iCS_ReflectionInfo desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();
@@ -226,7 +226,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterInPackage(iCS_ReflectionDesc desc) {
+    bool FilterInPackage(iCS_ReflectionInfo desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();
@@ -234,7 +234,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterInName(iCS_ReflectionDesc desc) {
+    bool FilterInName(iCS_ReflectionInfo desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();
@@ -242,7 +242,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterIn(iCS_ReflectionDesc desc) {
+    bool FilterIn(iCS_ReflectionInfo desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();

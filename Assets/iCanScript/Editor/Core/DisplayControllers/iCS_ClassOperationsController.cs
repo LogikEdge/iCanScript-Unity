@@ -13,7 +13,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
 	iCS_IStorage		    myStorage        = null;
     GUIContent    		    myTitle          = null;
     DSTableView			    myTableView      = null;
-	iCS_ReflectionDesc[]    myMethods        = null;
+	iCS_ReflectionInfo[]    myMethods        = null;
 	bool[]                  myIsMethodPresent= null;
     
     // =================================================================================

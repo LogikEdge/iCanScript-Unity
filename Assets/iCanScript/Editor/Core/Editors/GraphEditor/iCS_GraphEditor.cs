@@ -789,7 +789,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
             outPort= overlappingPort.IsOutputPort ? overlappingPort : fixPort;
         }
         if(inPort != outPort) {
-            iCS_ReflectionDesc conversion= null;
+            iCS_ReflectionInfo conversion= null;
             if(VerifyConnectionTypes(inPort, outPort, out conversion)) {
                 SetNewDataConnection(inPort, outPort, conversion);                
             }
@@ -800,7 +800,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         return true;
     }
 	// ----------------------------------------------------------------------
-    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out iCS_ReflectionDesc typeCast) {
+    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out iCS_ReflectionInfo typeCast) {
         typeCast= null;
 		Type inType= inPort.RuntimeType;
 		Type outType= outPort.RuntimeType;
@@ -823,7 +823,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
 	void CreateStateMux(iCS_EditorObject fixPort, iCS_EditorObject stateMuxPort) {
-        iCS_ReflectionDesc conversion= null;
+        iCS_ReflectionInfo conversion= null;
         if(!VerifyConnectionTypes(stateMuxPort, fixPort, out conversion)) return;
 		var source= IStorage.GetSource(stateMuxPort);
 		// Simply connect a disconnected mux state port.
@@ -843,7 +843,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 		SetNewDataConnection(inMuxPort, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------
-    void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionDesc conversion= null) {
+    void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo conversion= null) {
 		iCS_EditorObject inNode= IStorage.GetParent(inPort);
         iCS_EditorObject outNode= IStorage.GetParent(outPort);
         iCS_EditorObject inParent= GetParentNode(inNode);

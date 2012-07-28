@@ -185,7 +185,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         return iStorage.CreateModule(-1, Vector2.zero, null, iCS_ObjectTypeEnum.Module, classType);
     }
     // ---------------------------------------------------------------------------------
-    iCS_EditorObject CreateMethod(iCS_ReflectionDesc desc, iCS_IStorage iStorage) {
+    iCS_EditorObject CreateMethod(iCS_ReflectionInfo desc, iCS_IStorage iStorage) {
         return iStorage.CreateMethod(-1, Vector2.zero, desc);            
     }    
 }

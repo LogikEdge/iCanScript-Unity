@@ -8,7 +8,7 @@ public class iCS_DataBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public static List<iCS_ReflectionDesc>  Functions   = new List<iCS_ReflectionDesc>();
+    public static List<iCS_ReflectionInfo>  Functions   = new List<iCS_ReflectionInfo>();
     public static bool                      IsSorted    = false;
     
     // ======================================================================
@@ -27,7 +27,7 @@ public class iCS_DataBase {
                 ++cmpCnt;
                 if(CompareFunctionNames(Functions[i], Functions[j]) > 0) {
                     ++reorderCnt;
-                    iCS_ReflectionDesc tmp= Functions[i];
+                    iCS_ReflectionInfo tmp= Functions[i];
                     Functions[i]= Functions[j];
                     Functions[j]= tmp;
                     int k= i-step;
@@ -52,7 +52,7 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     // Returns 0 if equal, negative if first is smaller and
     // positive if first is greather.
-    public static int CompareFunctionNames(iCS_ReflectionDesc d1, iCS_ReflectionDesc d2) {
+    public static int CompareFunctionNames(iCS_ReflectionInfo d1, iCS_ReflectionInfo d2) {
         if(d1.Company == null && d2.Company != null) return -1;
         if(d1.Company != null && d2.Company == null) return 1;
         int result;
@@ -69,18 +69,18 @@ public class iCS_DataBase {
         return d1.DisplayName.CompareTo(d2.DisplayName);
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_ReflectionDesc> BuildExpertMenu() {
+    public static List<iCS_ReflectionInfo> BuildExpertMenu() {
         return AllFunctions();
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_ReflectionDesc> AllFunctions() {
+    public static List<iCS_ReflectionInfo> AllFunctions() {
         QSort();
         return Functions;
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_ReflectionDesc> BuildNormalMenu() {
+    public static List<iCS_ReflectionInfo> BuildNormalMenu() {
         QSort();
-        List<iCS_ReflectionDesc> menu= new List<iCS_ReflectionDesc>();
+        List<iCS_ReflectionInfo> menu= new List<iCS_ReflectionInfo>();
         foreach(var desc in Functions) {
             Type classType= desc.ClassType;
             if(iCS_Types.IsStaticClass(classType)) {
@@ -102,9 +102,9 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns one descriptor per class
-    public static List<iCS_ReflectionDesc> GetClasses() {
+    public static List<iCS_ReflectionInfo> GetClasses() {
         QSort();
-        List<iCS_ReflectionDesc> classes= new List<iCS_ReflectionDesc>();
+        List<iCS_ReflectionInfo> classes= new List<iCS_ReflectionInfo>();
         foreach(var desc in Functions) {
             Type classType= desc.ClassType;
             bool found= false;
@@ -122,8 +122,8 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns all components of the given class.
-    public static iCS_ReflectionDesc[] GetClassComponents(Type classType) {
-        List<iCS_ReflectionDesc> components= new List<iCS_ReflectionDesc>();
+    public static iCS_ReflectionInfo[] GetClassComponents(Type classType) {
+        List<iCS_ReflectionInfo> components= new List<iCS_ReflectionInfo>();
         foreach(var desc in Functions) {
             if(desc.ClassType == classType) {
                 components.Add(desc);
@@ -132,29 +132,29 @@ public class iCS_DataBase {
         return components.ToArray();
     }
     // ----------------------------------------------------------------------
-	public static iCS_ReflectionDesc[] GetClassConstructors(Type classType) {
+	public static iCS_ReflectionInfo[] GetClassConstructors(Type classType) {
 		return Prelude.filter(c=> c.IsConstructor, GetClassComponents(classType));
 	}
     // ----------------------------------------------------------------------
-	public static iCS_ReflectionDesc[] GetClassFields(Type classType) {
+	public static iCS_ReflectionInfo[] GetClassFields(Type classType) {
 		return Prelude.filter(c=> c.IsField, GetClassComponents(classType));
 	}
     // ----------------------------------------------------------------------
-	public static iCS_ReflectionDesc[] GetClassProperties(Type classType) {
+	public static iCS_ReflectionInfo[] GetClassProperties(Type classType) {
 		return Prelude.filter(c=> c.IsProperty, GetClassComponents(classType));
 	}
     // ----------------------------------------------------------------------
-	public static iCS_ReflectionDesc[] GetClassVariables(Type classType) {
+	public static iCS_ReflectionInfo[] GetClassVariables(Type classType) {
 		return Prelude.filter(c=> c.IsField || c.IsProperty, GetClassComponents(classType));
 	}
     // ----------------------------------------------------------------------
-	public static iCS_ReflectionDesc[] GetClassMethods(Type classType) {
+	public static iCS_ReflectionInfo[] GetClassMethods(Type classType) {
 		return Prelude.filter(c=> !(c.IsConstructor || c.IsField || c.IsProperty), GetClassComponents(classType));
 	}
     // ----------------------------------------------------------------------
-    public static List<iCS_ReflectionDesc> BuildMenu(Type inputType, Type outputType) {
+    public static List<iCS_ReflectionInfo> BuildMenu(Type inputType, Type outputType) {
         QSort();
-        List<iCS_ReflectionDesc> menu= new List<iCS_ReflectionDesc>();
+        List<iCS_ReflectionInfo> menu= new List<iCS_ReflectionInfo>();
         for(int i= 0; i < Functions.Count; ++i) {
             // Filter functions according to input or output filter.
             bool shouldInclude= false;
@@ -207,7 +207,7 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns the descriptor associated with the given company/package/function.
-    public static iCS_ReflectionDesc GetDescriptor(string pathAndSignature) {
+    public static iCS_ReflectionInfo GetDescriptor(string pathAndSignature) {
         foreach(var desc in Functions) {
             if(desc.ToString() == pathAndSignature) return desc;
         }
@@ -223,7 +223,7 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Finds a conversion that matches the given from/to types.
-    public static iCS_ReflectionDesc FindTypeCast(Type fromType, Type toType) {
+    public static iCS_ReflectionInfo FindTypeCast(Type fromType, Type toType) {
         foreach(var desc in Functions) {
             if(IsTypeCast(desc)) {
                 if(iCS_Types.CanBeConnectedWithoutConversion(fromType, desc.ParamTypes[0]) &&
@@ -234,7 +234,7 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Returns true if the given desc is a conversion function.
-    public static bool IsTypeCast(iCS_ReflectionDesc desc) {
+    public static bool IsTypeCast(iCS_ReflectionInfo desc) {
         return desc.ObjectType == iCS_ObjectTypeEnum.TypeCast;
     }
     
@@ -318,11 +318,11 @@ public class iCS_DataBase {
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.
-    public static iCS_ReflectionDesc Add(string company, string package, string displayName, string toolTip, string iconPath,
+    public static iCS_ReflectionInfo Add(string company, string package, string displayName, string toolTip, string iconPath,
                                         iCS_ObjectTypeEnum objType, Type classType, MethodBase methodInfo, FieldInfo fieldInfo,
                                         bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
                                         string retName) {
-        iCS_ReflectionDesc fd= new iCS_ReflectionDesc(company, package, displayName, toolTip, iconPath,
+        iCS_ReflectionInfo fd= new iCS_ReflectionInfo(company, package, displayName, toolTip, iconPath,
                                                       objType, classType, methodInfo, fieldInfo,
                                                       paramIsOuts, paramNames, paramTypes, paramDefaults,
                                                       retName);
