@@ -4,14 +4,25 @@ using System.Reflection;
 using System.Collections;
 
 public class iCS_MethodInfo : iCS_ReflectionInfo {
-    public iCS_MethodInfo(string company, string package, string name,
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+//    public MethodBase   Method= null;
+
+    // ======================================================================
+    // Creation/Destruction
+    // ----------------------------------------------------------------------
+    public iCS_MethodInfo(string company, string package, string _name,
                           string toolTip, string iconPath,
-                          iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase, FieldInfo fieldInfo,
+                          iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase,
                           bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                           string returnName)
-    : base(company, package, name,
+    : base(company, package, _name,
            toolTip, iconPath,
-           objType, classType, methodBase, fieldInfo,
+           objType, classType, methodBase, null,
            paramIsOuts, paramNames, paramTypes, paramDefaultValues,
-           returnName) {}
+           returnName) {
+        
+//        Method= methodBase;
+    }
 }

@@ -232,10 +232,10 @@ public class iCS_Reflection {
     static void DecodeConstructor(string company, string package, string displayName, string toolTip, string iconPath, Type classType, ConstructorInfo constructor, string retName) {
         // Parse parameters.
         if(!AreAllParamTypesSupported(constructor)) return;
-        Type[]   paramTypes   = ParseParameterTypes(constructor);
-        string[] paramNames   = ParseParameterNames(constructor);
-        bool[]   paramIsOut   = ParseParameterIsOuts(constructor);
-        object[] paramDefaults= ParseParameterDefaults(constructor);
+        Type[]                   paramTypes   = ParseParameterTypes(constructor);
+        string[]                 paramNames   = ParseParameterNames(constructor);
+        iCS_ParamDirectionEnum[] paramIsOut   = ParseParameterIsOuts(constructor);
+        object[]                 paramDefaults= ParseParameterDefaults(constructor);
 
         iCS_DataBase.AddConstructor(company, package, iCS_Types.RemoveProductPrefix(displayName), toolTip, iconPath,
                                     classType, constructor,
@@ -359,13 +359,17 @@ public class iCS_Reflection {
         return paramTypes;
     }
     // ----------------------------------------------------------------------
-    static bool[] ParseParameterIsOuts(MethodBase method) {
+    static iCS_ParamDirectionEnum[] ParseParameterIsOuts(MethodBase method) {
         ParameterInfo[] parameters= method.GetParameters();
-        bool[]   paramIsOuts= new bool[parameters.Length];
+        iCS_ParamDirectionEnum[]   paramDirs= new iCS_ParamDirectionEnum[parameters.Length];
         for(int i= 0; i < parameters.Length; ++i) {
-            paramIsOuts[i]= parameters[i].IsOut;
+            if(parameters[i].IsOut) {
+                paramDirs[i]= parameters[i].IsIn ? iCS_ParamDirectionEnum.InOut : iCS_ParamDirectionEnum.Out;
+            } else {
+                paramDirs[i]= iCS_ParamDirectionEnum.In;
+            }
         }
-        return paramIsOuts;
+        return paramDirs;
     }
     // ----------------------------------------------------------------------
     static object[] ParseParameterDefaults(MethodBase method) {

@@ -9,21 +9,21 @@ public class iCS_ReflectionInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public iCS_ObjectTypeEnum   ObjectType = iCS_ObjectTypeEnum.Unknown;
-    public string               Company    = "(no company)";
-    public string               Package    = "(no package)";
-    public string               DisplayName= null;
-    public Type                 ClassType  = null;
-    public string               Tooltip    = null;
-    public string               IconPath   = null;
-	public string[]				ParamNames = null;
-	public Type[]				ParamTypes = null;
-	public bool[]				ParamIsOuts= null;
-	public object[]				ParamInitialValues= null;
-	public string				ReturnName = null;
-    public MethodBase           Method     = null;
-    public FieldInfo            Field      = null;
-    public bool                 IsGetFieldFlag= true;
+    public iCS_ObjectTypeEnum       ObjectType        = iCS_ObjectTypeEnum.Unknown;
+    public string                   Company           = "(no company)";
+    public string                   Package           = "(no package)";
+    public string                   DisplayName       = null;
+    public Type                     ClassType         = null;
+    public string                   Tooltip           = null;
+    public string                   IconPath          = null;
+	public string[]				    ParamNames        = null;
+	public Type[]				    ParamTypes        = null;
+	public iCS_ParamDirectionEnum[] ParamDirs         = null;
+	public object[]				    ParamInitialValues= null;
+	public string				    ReturnName        = null;
+    public MethodBase               Method            = null;
+    public FieldInfo                Field             = null;
+    public bool                     IsGetFieldFlag    = true;
 
 
     // ======================================================================
@@ -32,7 +32,7 @@ public class iCS_ReflectionInfo {
     public iCS_ReflectionInfo(string company, string package, string name,
                               string toolTip, string iconPath,
                               iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase, FieldInfo fieldInfo,
-                              bool[] paramIsOuts, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
+                              iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                               string returnName) {
         // Editor object information.
 		ObjectType        = objType;
@@ -47,7 +47,7 @@ public class iCS_ReflectionInfo {
         IconPath          = iconPath;
 		ParamNames        = paramNames;
 		ParamTypes        = paramTypes;
-		ParamIsOuts       = paramIsOuts;
+		ParamDirs         = paramDirs;
 		ReturnName        = returnName ?? (Method != null && Method.IsConstructor ? "this" : iCS_Types.TypeName(ReturnType));
 		ParamInitialValues= paramDefaultValues;
 		

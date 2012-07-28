@@ -4,13 +4,13 @@ using System.Collections;
 [System.Serializable]
 public enum iCS_ObjectTypeEnum {
     // Structural nodes
-    Behaviour= 0, Module, StateChart, State, Event,
+    Behaviour= 0, Module, StateChart, State,
 
     // Function nodes
     Constructor=100,
     InstanceMethod, StaticMethod, 
     InstanceField, StaticField,
-    TypeCast,
+    TypeCast, Event,
 
     // Transition nodes
     TransitionModule=200, TransitionGuard, TransitionAction,
