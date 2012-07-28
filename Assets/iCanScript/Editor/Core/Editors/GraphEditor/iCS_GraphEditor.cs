@@ -1100,11 +1100,10 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         if(validParent == null) {
 			var node= IStorage.GetNodeAt(point);
 			if(node == null && IStorage.IsEmptyBehaviour) {
-				int option= EditorUtility.DisplayDialogComplex("Behaviour event required !", "Unity behaviour requires that nodes be added to a predefined event.  Use the buttons below to create the event type for your node.","Create Update", "More events...","Create OnGUI");
+				int option= EditorUtility.DisplayDialogComplex("Behaviour event required !", "Unity behaviour requires that nodes be added to a predefined event.  Use the buttons below to create the desired event type for your node.","Create Update", "More events...","Create OnGUI");
 				switch(option) {
 					case 0:
-						validParent= IStorage.CreateModule(0, point, iCS_Strings.Update);
-						validParent.Tooltip= iCS_AllowedChildren.TooltipForBehaviourChild(iCS_Strings.Update);
+						validParent= AutoCreateBehaviourEvent(iCS_Strings.Update, point);
 						break;
 					case 1:
 						MyWindow.ShowNotification(new GUIContent("Please use right mouse click on canvas to create behaviour event type before adding new object."));
@@ -1113,8 +1112,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 						IStorage.SetDirty(SelectedObject);
 						return;
 					case 2:
-						validParent= IStorage.CreateModule(0, point, iCS_Strings.OnGUI);
-						validParent.Tooltip= iCS_AllowedChildren.TooltipForBehaviourChild(iCS_Strings.OnGUI);
+						validParent= AutoCreateBehaviourEvent(iCS_Strings.OnGUI, point);
 						break;
 				}
 			} else {
@@ -1126,6 +1124,12 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         if(IStorage.IsMaximized(pasted)) {
             IStorage.Fold(pasted);            
         }
+    }
+    iCS_EditorObject AutoCreateBehaviourEvent(string eventName, Vector2 point) {
+		var validParent= IStorage.CreateModule(0, point, iCS_Strings.Update);
+		validParent.Tooltip= iCS_AllowedChildren.TooltipForBehaviourChild(iCS_Strings.Update);
+        IStorage.Maximize(validParent);
+        return validParent;
     }
 
     // ======================================================================
