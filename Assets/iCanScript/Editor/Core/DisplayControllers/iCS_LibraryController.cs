@@ -34,10 +34,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    /*
-        FIXME: Storage should not be necessary for library.
-    */
-	iCS_IStorage	    		myStorage      = null;
     Node                        mySelected     = null;
     Rect                        mySelectedArea = new Rect(0,0,0,0);
 	DSTreeView		    		myTreeView     = null;
@@ -55,7 +51,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // Properties
     // ---------------------------------------------------------------------------------
 	public DSView 		View 	     { get { return myTreeView; }}
-	public iCS_IStorage IStorage     { get { return myStorage; }}
 	public Node 		Selected     { get { return mySelected; } set { mySelected= value; }}
 	public Rect         SelectedArea { get { return mySelectedArea; }}
 	public bool         IsSelected   { get { return IterNode != null ? IterNode.Value.Equals(Selected) : false; }}
@@ -91,8 +86,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
-	public iCS_LibraryController(iCS_IStorage iStorage) {
-        myStorage= iStorage;
+	public iCS_LibraryController() {
 		BuildTree();
 		myTreeView = new DSTreeView(new RectOffset(0,0,0,0), false, this, 16, 2);
 		myIterStackNode= new Stack<Prelude.Tree<Node>>();
@@ -342,7 +336,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		}
         var nameSize= EditorStyles.label.CalcSize(new GUIContent(IterValue.Name));
         return new Vector2(myFoldOffset+kIconWidth+kLabelSpacer+nameSize.x, nameSize.y);
-//        return EditorStyles.foldout.CalcSize(new GUIContent(GetContent()));
 	}
     // ---------------------------------------------------------------------------------
 	public bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea) {
@@ -362,13 +355,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     	GUI.Label(pos, content.text, labelStyle);            
         ProcessChangeSelection();
 		return result;
-//        bool result= false;
-//        if(ShouldUseFoldout()) {
-//            result= EditorGUI.Foldout(displayArea, foldout, GetContent());
-//        } else {
-//            GUI.Label(new Rect(displayArea.x+myFoldOffset, displayArea.y, displayArea.width, displayArea.height), GetContent());
-//        }
-//        return result;
 	}
     // ---------------------------------------------------------------------------------
 	public object	CurrentObjectKey() {
