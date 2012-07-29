@@ -317,10 +317,10 @@ public class iCS_DataBase {
         string toTypeName= iCS_Types.TypeName(toType);
         string toTypeNameUpper= Char.ToUpper(toTypeName[0])+toTypeName.Substring(1);
 
-        var record= new iCS_MethodInfo(company, package, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
-                                       iCS_ObjectTypeEnum.TypeCast, classType, methodInfo,
-                                       new iCS_ParamDirectionEnum[1]{iCS_ParamDirectionEnum.In}, new string[1]{fromTypeName}, new Type[1]{fromType}, new object[1]{null},
-                                       toTypeName);        
+        var record= new iCS_TypeCastInfo(company, package, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
+                                         iCS_ObjectTypeEnum.TypeCast, classType, methodInfo,
+                                         new iCS_ParamDirectionEnum[1]{iCS_ParamDirectionEnum.In}, new string[1]{fromTypeName}, new Type[1]{fromType}, new object[1]{null},
+                                         toTypeName);        
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
