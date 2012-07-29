@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public class iCS_ReflectionInfo {
+public abstract class iCS_ReflectionInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
@@ -66,6 +66,7 @@ public class iCS_ReflectionInfo {
     public bool IsConstructor         { get { return IsMethod && Method.IsConstructor; }}
     public bool IsMethod              { get { return Method != null; }}
     public bool IsField               { get { return Field != null; }}
+    public bool IsEvent               { get { return Method == null && Field == null; }}
     public bool IsInstanceField       { get { return ObjectType == iCS_ObjectTypeEnum.InstanceField; }}
     public bool IsStaticField         { get { return ObjectType == iCS_ObjectTypeEnum.StaticField; }}
     public bool IsGetField            { get { return IsField && IsGetFieldFlag; }}
@@ -97,20 +98,8 @@ public class iCS_ReflectionInfo {
     public Type FieldType    { get { return Field.FieldType; }}
     public Type PropertyType { get { return IsGetProperty ? ReturnType : ParamTypes[0]; }}
 	public Type VariableType { get { return IsField ? FieldType : PropertyType; }}
-    public Type ReturnType {
-        get {
-            if(Method != null) {
-                if(Method.IsConstructor) return ClassType;
-                MethodInfo methodInfo= Method as MethodInfo;
-                if(methodInfo == null) return typeof(void);
-                return methodInfo.ReturnType;
-            }
-            if(Field != null) {
-                return IsGetField ? Field.FieldType : typeof(void);
-            }
-            return typeof(void);                    
-        }
-    }
+    public Type ReturnType   { get { return GetReturnType(); }}
+    public abstract Type GetReturnType();
     // ----------------------------------------------------------------------
     public string FunctionSignature {
         get {

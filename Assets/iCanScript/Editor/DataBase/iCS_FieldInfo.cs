@@ -26,4 +26,12 @@ public class iCS_FieldInfo : iCS_ReflectionInfo {
 //        Field     = fieldInfo;
 //        IsGetField= fieldInfo != null ? (paramTypes.Length == 0) : true;       
     }
+
+    // ======================================================================
+    // Specialized methods
+    // ----------------------------------------------------------------------
+    public override Type GetReturnType() {
+        return IsGetField ? Field.FieldType : typeof(void);
+    } 
+
 }

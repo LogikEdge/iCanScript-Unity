@@ -25,4 +25,11 @@ public class iCS_ConstructorInfo : iCS_ReflectionInfo {
 
 //        Method= methodBase;
     }
+
+    // ======================================================================
+    // Specialized methods
+    // ----------------------------------------------------------------------
+    public override Type GetReturnType() {
+        return ClassType;
+    } 
 }

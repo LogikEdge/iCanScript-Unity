@@ -5,17 +5,31 @@ using System.Collections;
 
 public class iCS_EventInfo : iCS_ReflectionInfo {
     // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    Type myReturnType= null;
+    
+    // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_EventInfo(string company, string package, string name,
                          string toolTip, string iconPath,
-                         iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase, FieldInfo fieldInfo,
+                         Type classType,
                          iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
-                         string returnName)
-    : base(objType, company, package, name,
+                         string returnName, Type returnType)
+    : base(iCS_ObjectTypeEnum.Event, company, package, name,
            toolTip, iconPath,
-           classType, methodBase, fieldInfo,
+           classType, null, null,
            paramDirs, paramNames, paramTypes, paramDefaultValues,
-           returnName) {}
+           returnName) {
+        myReturnType= returnType;
+    }
+
+    // ======================================================================
+    // Specialized methods
+    // ----------------------------------------------------------------------
+    public override Type GetReturnType() {
+        return myReturnType;
+    } 
 
 }

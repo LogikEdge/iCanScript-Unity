@@ -25,4 +25,13 @@ public class iCS_MethodInfo : iCS_ReflectionInfo {
         
 //        Method= methodBase;
     }
+
+    // ======================================================================
+    // Specialized methods
+    // ----------------------------------------------------------------------
+    public override Type GetReturnType() {
+        MethodInfo methodInfo= Method as MethodInfo;
+        return methodInfo == null ? typeof(void) : methodInfo.ReturnType;
+    } 
+
 }
