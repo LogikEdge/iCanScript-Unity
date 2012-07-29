@@ -249,10 +249,10 @@ public class iCS_DataBase {
     public static void AddConstructor(string company, string package, string displayName, string toolTip, string iconPath,
                                       Type classType, ConstructorInfo constructorInfo,
                                       iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
-        var record= new iCS_MethodInfo(company, package, displayName, toolTip, iconPath,
-                                       iCS_ObjectTypeEnum.Constructor, classType, constructorInfo,
-                                       paramDirs, paramNames, paramTypes, paramDefaults,
-                                       null);
+        var record= new iCS_ConstructorInfo(company, package, displayName, toolTip, iconPath,
+                                            classType, constructorInfo,
+                                            paramDirs, paramNames, paramTypes, paramDefaults,
+                                            null);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
@@ -318,7 +318,7 @@ public class iCS_DataBase {
         string toTypeNameUpper= Char.ToUpper(toTypeName[0])+toTypeName.Substring(1);
 
         var record= new iCS_TypeCastInfo(company, package, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
-                                         iCS_ObjectTypeEnum.TypeCast, classType, methodInfo,
+                                         classType, methodInfo,
                                          new iCS_ParamDirectionEnum[1]{iCS_ParamDirectionEnum.In}, new string[1]{fromTypeName}, new Type[1]{fromType}, new object[1]{null},
                                          toTypeName);        
 		AddDataBaseRecord(record);

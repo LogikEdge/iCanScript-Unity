@@ -14,12 +14,12 @@ public class iCS_TypeCastInfo : iCS_ReflectionInfo {
     // ----------------------------------------------------------------------
     public iCS_TypeCastInfo(string company, string package, string _name,
                             string toolTip, string iconPath,
-                            iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase,
+                            Type classType, MethodBase methodBase,
                             iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                             string returnName)
-    : base(company, package, _name,
+    : base(iCS_ObjectTypeEnum.TypeCast, company, package, _name,
            toolTip, iconPath,
-           objType, classType, methodBase, null,
+           classType, methodBase, null,
            paramDirs, paramNames, paramTypes, paramDefaultValues,
            returnName) {
 

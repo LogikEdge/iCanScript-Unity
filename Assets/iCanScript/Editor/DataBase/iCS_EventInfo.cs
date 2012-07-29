@@ -12,9 +12,9 @@ public class iCS_EventInfo : iCS_ReflectionInfo {
                          iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase, FieldInfo fieldInfo,
                          iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                          string returnName)
-    : base(company, package, name,
+    : base(objType, company, package, name,
            toolTip, iconPath,
-           objType, classType, methodBase, fieldInfo,
+           classType, methodBase, fieldInfo,
            paramDirs, paramNames, paramTypes, paramDefaultValues,
            returnName) {}
 

@@ -29,9 +29,9 @@ public class iCS_ReflectionInfo {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ReflectionInfo(string company, string package, string name,
+    public iCS_ReflectionInfo(iCS_ObjectTypeEnum objType, string company, string package, string name,
                               string toolTip, string iconPath,
-                              iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase, FieldInfo fieldInfo,
+                              Type classType, MethodBase methodBase, FieldInfo fieldInfo,
                               iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                               string returnName) {
         // Editor object information.

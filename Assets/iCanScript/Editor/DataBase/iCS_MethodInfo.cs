@@ -17,9 +17,9 @@ public class iCS_MethodInfo : iCS_ReflectionInfo {
                           iCS_ObjectTypeEnum objType, Type classType, MethodBase methodBase,
                           iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                           string returnName)
-    : base(company, package, _name,
+    : base(objType, company, package, _name,
            toolTip, iconPath,
-           objType, classType, methodBase, null,
+           classType, methodBase, null,
            paramDirs, paramNames, paramTypes, paramDefaultValues,
            returnName) {
         

@@ -18,9 +18,9 @@ public class iCS_FieldInfo : iCS_ReflectionInfo {
                          iCS_ObjectTypeEnum objType, Type classType, FieldInfo fieldInfo,
                          iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                          string returnName)
-    : base(company, package, name,
+    : base(objType, company, package, name,
            toolTip, iconPath,
-           objType, classType, null, fieldInfo,
+           classType, null, fieldInfo,
            paramDirs, paramNames, paramTypes, paramDefaultValues,
            returnName) {
 //        Field     = fieldInfo;
