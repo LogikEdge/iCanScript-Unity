@@ -283,6 +283,6 @@ public abstract class iCS_ReflectionInfo {
         return iCS_Types.TypeName(type);
     }
     static bool IsEmptyStr(string s) {
-		return s == null || s == "";
+		return iCS_Strings.IsEmpty(s);
 	}
 }

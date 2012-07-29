@@ -32,4 +32,7 @@ public class iCS_ConstructorInfo : iCS_ReflectionInfo {
     public override Type GetReturnType() {
         return ClassType;
     } 
+    public string GetDisplayName() {
+        return iCS_Types.TypeName(ClassType);
+    }
 }

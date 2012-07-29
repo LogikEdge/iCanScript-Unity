@@ -7,7 +7,8 @@ public class iCS_EventInfo : iCS_ReflectionInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    Type myReturnType= null;
+    string  myDisplayName= null;
+    Type    myReturnType= null;
     
     // ======================================================================
     // Creation/Destruction
@@ -22,6 +23,7 @@ public class iCS_EventInfo : iCS_ReflectionInfo {
            classType, null, null,
            paramDirs, paramNames, paramTypes, paramDefaultValues,
            returnName) {
+        myDisplayName= name;
         myReturnType= returnType;
     }
 
@@ -31,5 +33,8 @@ public class iCS_EventInfo : iCS_ReflectionInfo {
     public override Type GetReturnType() {
         return myReturnType;
     } 
+    public string GetDisplayName() {
+        return myDisplayName;
+    }
 
 }
