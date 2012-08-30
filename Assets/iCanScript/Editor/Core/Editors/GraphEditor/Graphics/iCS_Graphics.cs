@@ -177,7 +177,7 @@ public partial class iCS_Graphics {
         
         // Show shadow.
         Vector3[] vectors= new Vector3[4];
-        for(float i= 5f; i > 0; i-=1.25f) {
+        for(float i= 5f; i > 0; i-=1.67f) {
             Handles.color= shadowColor;
             Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.y+radius), FacingNormal, new Vector3(1f,0,0), 90f, radius);
             Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.yMax-radius), FacingNormal, new Vector3(0,1f,0), 90f, radius);
