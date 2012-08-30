@@ -60,7 +60,7 @@ public partial class iCS_Graphics {
     public static readonly Vector2 LeftDirection   = new Vector2(-1,0);
     public static readonly Vector3 FacingNormal    = new Vector3(0,0,-1);
 	       static readonly Color   BackgroundColor = new Color(0.24f, 0.27f, 0.32f);
-	       static readonly Color   BlackShadowColor= new Color(0,0,0,0.125f);
+	       static readonly Color   BlackShadowColor= new Color(0,0,0,0.25f);
 	       static readonly Color   WhiteShadowColor= new Color(1f,1f,1f,0.125f);
         
     // ======================================================================
@@ -177,7 +177,7 @@ public partial class iCS_Graphics {
         
         // Show shadow.
         Vector3[] vectors= new Vector3[4];
-        for(int i= 4; i > 0; --i) {
+        for(float i= 5f; i > 0; i-=1.25f) {
             Handles.color= shadowColor;
             Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.y+radius), FacingNormal, new Vector3(1f,0,0), 90f, radius);
             Handles.DrawSolidArc(new Vector3(i+r.xMax-radius, i+r.yMax-radius), FacingNormal, new Vector3(0,1f,0), 90f, radius);
