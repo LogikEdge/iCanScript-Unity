@@ -418,8 +418,11 @@ public partial class iCS_Graphics {
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
-        GUI_Box(position, new GUIContent(title,GetNodeTooltip(node,iStorage)), GetNodeColor(node), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
-        EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);
+        string tooltip= isMouseOver ? GetNodeTooltip(node,iStorage) : null;
+        GUI_Box(position, new GUIContent(title, tooltip), GetNodeColor(node), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
+        if(isMouseOver) {
+            EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
+        }
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node, iStorage)) {
             if(iStorage.IsFolded(node)) {
@@ -429,9 +432,7 @@ public partial class iCS_Graphics {
             }            
         }
         // Minimize Icon
-        if(ShouldDisplayMinimizeIcon(node, iStorage)) {
-            GUI_DrawTexture(new Rect(position.xMax-4-minimizeIcon.width, position.y-1f, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
-        }
+        GUI_DrawTexture(new Rect(position.xMax-4-minimizeIcon.width, position.y-1f, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
     }
     // ----------------------------------------------------------------------
     Color GetBackgroundColor(iCS_EditorObject node) {
@@ -456,8 +457,10 @@ public partial class iCS_Graphics {
         } else {
             GUI_DrawTexture(texturePos, icon);                                       
         }
-        EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
-        GUI_Label(texturePos, new GUIContent("", GetNodeTooltip(node,iStorage)), LabelStyle);
+        if(texturePos.Contains(MousePosition)) {
+            EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
+            GUI_Label(texturePos, new GUIContent("", GetNodeTooltip(node,iStorage)), LabelStyle);            
+        }
 		ShowTitleOver(texturePos, node, iStorage);
     }
     // ----------------------------------------------------------------------

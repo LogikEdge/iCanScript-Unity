@@ -1,3 +1,5 @@
+//#define SHOW_FRAME_COUNT
+
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -199,8 +201,10 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	
 	// ----------------------------------------------------------------------
 	// User GUI function.
-//    static int frameCount= 0;
-//    static int seconds= 0;
+#if SHOW_FRAME_COUNT
+    static int frameCount= 0;
+    static int seconds= 0;
+#endif
 	public override void OnGUI() {
         // Show that we can display because we don't have a behavior or library.
         UpdateMgr();
@@ -217,13 +221,15 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
         myCurrentTime= Time.realtimeSinceStartup;
         
-//        ++frameCount;
-//       	int newTime= (int)Time.realtimeSinceStartup;
-//       	if(newTime != seconds) {
-//       	    seconds= newTime;
-//       	    Debug.Log("GUI calls/seconds: "+frameCount);
-//            frameCount= 0;
-//       	}
+#if SHOW_FRAME_COUNT
+        ++frameCount;
+       	int newTime= (int)Time.realtimeSinceStartup;
+       	if(newTime != seconds) {
+       	    seconds= newTime;
+       	    Debug.Log("GUI calls/seconds: "+frameCount);
+            frameCount= 0;
+       	}
+#endif
        	
         // Load Editor Skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
