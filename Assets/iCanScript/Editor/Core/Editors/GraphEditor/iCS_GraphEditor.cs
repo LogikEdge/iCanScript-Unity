@@ -8,9 +8,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*
-    TODO: Should show message saying that no ICS script is selected.
-*/
-/*
     TODO: Should show frameId in header bar.
 */
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -30,6 +27,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     iCS_IStorage        myPreviousIStorage= null;
     
     // ----------------------------------------------------------------------
+    int   myUpdateCounter = 0;
     int   myRefreshCounter= 0;
     float myCurrentTime   = 0;
     float myDeltaTime     = 0;
@@ -174,6 +172,12 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
 	public void Update() {
+        // Perform 30 update per seconds.
+        myCurrentTime= Time.realtimeSinceStartup;
+        int newUpdateCounter= (int)(myCurrentTime*30.0f);
+        if(newUpdateCounter == myUpdateCounter) return;
+        myUpdateCounter= newUpdateCounter;
+        
         // Update storage selection.
         UpdateMgr();
         if(!IsInitialized()) return;
@@ -185,7 +189,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                 MyWindow.Repaint();
             }
             float refreshFactor= (Application.isPlaying || EditorWindow.mouseOverWindow == MyWindow ? 8f : 1f);
-            int newRefreshCounter= (int)(Time.realtimeSinceStartup*refreshFactor);
+            int newRefreshCounter= (int)(myCurrentTime*refreshFactor);
             if(newRefreshCounter != myRefreshCounter) {
                 myRefreshCounter= newRefreshCounter;
                 MyWindow.Repaint();
@@ -220,7 +224,8 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         // Update GUI time.
         myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
         myCurrentTime= Time.realtimeSinceStartup;
-        
+
+//        Debug.Log("OnGUI: "+Time.realtimeSinceStartup);
 #if SHOW_FRAME_COUNT
         ++frameCount;
        	int newTime= (int)Time.realtimeSinceStartup;

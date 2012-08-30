@@ -1,3 +1,8 @@
+/*
+    TODO: re-examine tooltip implementation since the current one triples the frame rate.
+*/
+//#define SHOW_TOOLTIP
+
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -418,7 +423,11 @@ public partial class iCS_Graphics {
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
         bool isMouseOver= position.Contains(MousePosition);
+#if SHOW_TOOLTIP
         string tooltip= isMouseOver ? GetNodeTooltip(node,iStorage) : null;
+#else
+        string tooltip= null;
+#endif
         GUI_Box(position, new GUIContent(title, tooltip), GetNodeColor(node), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
         if(isMouseOver) {
             EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
@@ -449,8 +458,8 @@ public partial class iCS_Graphics {
         
         // Draw minimized node.
         Rect position= GetDisplayPosition(node, iStorage);
-        Texture icon= GetMaximizeIcon(node);
         if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
+        Texture icon= GetMaximizeIcon(node);
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
         if(node.IsTransitionModule) {
             DrawMinimizedTransitionModule(iStorage.GetTransitionModuleVector(node), texturePos, Color.white);
@@ -459,7 +468,9 @@ public partial class iCS_Graphics {
         }
         if(texturePos.Contains(MousePosition)) {
             EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
+#if SHOW_TOOLTIP
             GUI_Label(texturePos, new GUIContent("", GetNodeTooltip(node,iStorage)), LabelStyle);            
+#endif
         }
 		ShowTitleOver(texturePos, node, iStorage);
     }

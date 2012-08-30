@@ -13,9 +13,4 @@ public class iCS_EditorWindow : EditorWindow {
     protected void Unregister(Type type) {
         iCS_EditorMgr.Remove(type.Name);
     }
-    // ---------------------------------------------------------------------------------
-    // Periodically repaint the library panel.
-    void OnInspectorUpdate() {
-        Repaint();
-    }
 }

@@ -57,10 +57,6 @@ public partial class iCS_Graphics {
 		int nbOfChildren= 0;
 		iStorage.ForEachChildNode(node, c=> ++nbOfChildren);
 		tooltip+= "Child nodes: "+nbOfChildren+"\n";
-		// Number of descendents.
-		nbOfChildren= 0;
-		iStorage.ForEachChildRecursive(node, c=> { if(c.IsNode) ++nbOfChildren; });
-		tooltip+= "Total nodes: "+nbOfChildren+"\n";
 		// User defined tooltip
 		if(iCS_Strings.IsNotEmpty(node.Tooltip)) tooltip+= node.Tooltip;
 		return tooltip;
