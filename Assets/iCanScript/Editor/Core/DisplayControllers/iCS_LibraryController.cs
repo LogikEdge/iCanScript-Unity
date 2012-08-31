@@ -66,7 +66,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 }
 	            mySearchString= value;
 	            BuildTree();
-	            if(!iCS_Strings.IsEmpty(mySearchString)) {
+	            if(!iCS_Strings.IsEmpty(mySearchString) && mySearchString.Length != 1) {
 	                ShowAllFiltered();
 	            }
 	        }
