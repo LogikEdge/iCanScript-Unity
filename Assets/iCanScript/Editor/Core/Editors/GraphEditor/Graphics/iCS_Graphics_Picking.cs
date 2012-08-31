@@ -119,6 +119,10 @@ public partial class iCS_Graphics {
     bool ShouldShowLabel() {
         return Scale >= 0.5f;        
     }
+    // ----------------------------------------------------------------------
+    bool ShouldShowPort() {
+        return Scale >= 0.45f;        
+    }
     
     // ======================================================================
     // Determines if the pick is within the port value label.

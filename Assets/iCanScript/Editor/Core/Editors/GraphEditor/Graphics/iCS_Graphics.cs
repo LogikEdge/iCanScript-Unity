@@ -561,6 +561,9 @@ public partial class iCS_Graphics {
     //  PORT
     // ----------------------------------------------------------------------
     public void DrawPort(iCS_EditorObject port, iCS_IStorage iStorage) {
+        // Don't show port if too small
+        if(!ShouldShowPort()) return;
+        
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
         if(IsInvisible(port, iStorage) || IsMinimized(port, iStorage)) return;
