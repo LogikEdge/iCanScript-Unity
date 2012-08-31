@@ -2,6 +2,7 @@
     TODO: re-examine tooltip implementation since the current one triples the frame rate.
 */
 //#define SHOW_TOOLTIP
+#define SHOW_PORT_OUTLINE
 
 using UnityEngine;
 using UnityEditor;
@@ -588,13 +589,15 @@ public partial class iCS_Graphics {
 		DrawPortIcon(port, portCenter, portRadius, portColor, nodeColor, iStorage);
         
         // Configure move cursor for port.
-		string tooltip= GetPortTooltip(port, iStorage);
         Rect portPos= new Rect(portCenter.x-portRadius*1.5f, portCenter.y-portRadius*1.5f, portRadius*3f, portRadius*3f);
-        if(!port.IsTransitionPort) {
-            EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
-        }
-        if(!port.IsFloating) {
-            GUI_Label(portPos, new GUIContent("", tooltip), LabelStyle);            
+        if(portPos.Contains(MousePosition)) {
+            if(!port.IsTransitionPort) {
+                EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
+            }
+            if(!port.IsFloating) {
+        		string tooltip= GetPortTooltip(port, iStorage);
+                GUI_Label(portPos, new GUIContent("", tooltip), LabelStyle);            
+            }            
         }
         
         // State transition name is handle by DrawConnection.
@@ -604,7 +607,7 @@ public partial class iCS_Graphics {
         if(!ShouldDisplayPortName(port, iStorage)) return;
         string name= GetPortName(port);
         Rect portNamePos= GetPortNameGUIPosition(port, iStorage);
-        GUI.Label(portNamePos, new GUIContent(name, tooltip), LabelStyle);            
+        GUI.Label(portNamePos, name, LabelStyle);                        
 
         // Display port value (if applicable).
         if(ShouldDisplayPortValue(port, iStorage)) {    
@@ -677,9 +680,15 @@ public partial class iCS_Graphics {
         Vector3 center= TranslateAndScale(_center);
         radius*= Scale;
         Handles.color= _borderColor;
+#if SHOW_PORT_OUTLINE
         Handles.DrawSolidDisc(center, FacingNormal, radius*1.85f);
+#endif
         Handles.color= outlineColor;
+#if SHOW_PORT_OUTLINE
         Handles.DrawSolidDisc(center, FacingNormal, radius*1.5f);
+#else
+        Handles.DrawSolidDisc(center, FacingNormal, radius*1.85f);
+#endif
         Handles.color= _fillColor;
         Handles.DrawSolidDisc(center, FacingNormal, radius);
     }
@@ -692,12 +701,21 @@ public partial class iCS_Graphics {
         Vector3[] vectors= new Vector3[4];
         float delta= radius*1.35f;
 
+#if SHOW_PORT_OUTLINE
         vectors[0]= new Vector3(center.x-delta, center.y-delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
         vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
         vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
         Handles.color= Color.white;
 		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, _borderColor);
+#else
+        vectors[0]= new Vector3(center.x-delta*1.1f, center.y-delta*1.1f, 0);
+        vectors[1]= new Vector3(center.x-delta*1.1f, center.y+delta*1.1f, 0);
+        vectors[2]= new Vector3(center.x+delta*1.1f, center.y+delta*1.1f, 0);
+        vectors[3]= new Vector3(center.x+delta*1.1f, center.y-delta*1.1f, 0);
+        Handles.color= Color.white;
+		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
+#endif
 
         delta= radius*0.67f;
         vectors[0]= new Vector3(center.x-delta, center.y-delta, 0);

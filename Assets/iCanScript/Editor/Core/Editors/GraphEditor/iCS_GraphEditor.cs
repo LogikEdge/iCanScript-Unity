@@ -1,4 +1,4 @@
-//#define SHOW_FRAME_COUNT
+#define SHOW_FRAME_COUNT
 
 using UnityEngine;
 using UnityEditor;
