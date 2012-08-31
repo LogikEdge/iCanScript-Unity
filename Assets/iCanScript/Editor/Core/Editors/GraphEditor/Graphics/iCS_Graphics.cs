@@ -98,7 +98,7 @@ public partial class iCS_Graphics {
         return false;
     }
 	// ----------------------------------------------------------------------
-    bool IsVisble(Rect r) {
+    bool IsVisible(Rect r) {
         Rect intersection= Clip(r);
         return Math3D.IsNotZero(intersection.width);        
     }
@@ -418,8 +418,10 @@ public partial class iCS_Graphics {
         // Don't draw minimized node.
         if(IsInvisible(node, iStorage) || IsMinimized(node, iStorage)) return;
         
-        // Draw node box.
+        // Draw node box (if visible).
         Rect position= GetDisplayPosition(node, iStorage);
+        if(!IsVisible(position)) return;
+        
         string title= GetNodeName(node);
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
@@ -457,9 +459,11 @@ public partial class iCS_Graphics {
     public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
         if(!IsMinimized(node, iStorage)) return;
         
-        // Draw minimized node.
+        // Draw minimized node (if visible).
         Rect position= GetDisplayPosition(node, iStorage);
+        if(!IsVisible(position)) return;
         if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
+
         Texture icon= GetMaximizeIcon(node);
         Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
         if(node.IsTransitionModule) {
@@ -564,28 +568,30 @@ public partial class iCS_Graphics {
         if(port == null || iStorage == null) return;
         if(IsInvisible(port, iStorage) || IsMinimized(port, iStorage)) return;
         
+        // Determine if port is selected.
+        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == iStorage.GetParent(selectedObject));
+
+		// Compute port radius (radius is increased if port is selected).
+		Vector2 portCenter= GetPortCenter(port, iStorage);
+		float portRadius= iCS_Config.PortRadius;
+		if(isSelectedPort) {
+			portRadius= 1.67f*iCS_Config.PortRadius;			
+		}
+        // Clip port if ooutside view area.
+        if(!IsVisible(portCenter, portRadius*5f)) return;
+        
         // Get port type information.
         Type portValueType= GetPortValueType(port);
         if(portValueType == null) return;
+
+        // Determine if port is a static port (a port that feeds information into the graph).
+        bool isStaticPort= port.IsInDataPort && iStorage.GetSource(port) == null;
 
 		// Determine port colors
         Color portColor= iCS_PreferencesEditor.GetTypeColor(portValueType);
         Color nodeColor= GetNodeColor(iStorage.GetParent(port));
 
-        // Determine if port is selected.
-        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == iStorage.GetParent(selectedObject));
-
-        // Determine if port is a static port (a port that feeds information into the graph).
-        bool isStaticPort= port.IsInDataPort && iStorage.GetSource(port) == null;
-
-		// Compute port radius (radius is increased if port is selected).
-		float portRadius= iCS_Config.PortRadius;
-		if(isSelectedPort) {
-			portRadius= 1.67f*iCS_Config.PortRadius;			
-		}
-
         // Draw port icon
-		Vector2 portCenter= GetPortCenter(port, iStorage);
 		DrawPortIcon(port, portCenter, portRadius, portColor, nodeColor, iStorage);
         
         // Configure move cursor for port.
