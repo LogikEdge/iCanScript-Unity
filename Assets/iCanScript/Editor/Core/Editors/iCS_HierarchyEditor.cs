@@ -65,7 +65,11 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
 	}
 	// ----------------------------------------------------------------------
     public void ShowElement(iCS_EditorObject eObj) {
+        if(!IsInitialized()) return;
         myController.ShowElement(eObj);
+        if(MyWindow != null) {
+            MyWindow.Repaint();            
+        }
     }
 	// ----------------------------------------------------------------------
 	Rect ShowToolbar() {
