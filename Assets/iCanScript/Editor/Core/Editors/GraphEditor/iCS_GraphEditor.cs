@@ -1261,9 +1261,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         DrawGrid();
         
         // Draw nodes and their connections.
-    	DrawNormalNodes();
-        DrawConnections();
-        DrawMinimizedNodes();           
+        DisplayGraphNodes();
 
         myGraphics.End();
 
@@ -1291,51 +1289,6 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
             scale= myAnimatedScale.CurrentValue;
         }
         return scale;
-    }
-	// ----------------------------------------------------------------------
-    void DrawNormalNodes() {
-        // Display node starting from the root node.
-        IStorage.ForEachRecursiveDepthLast(myDisplayRoot,
-            node=> {
-                if(node.IsNode && !node.IsFloating && !node.IsBehaviour) {
-                	myGraphics.DrawNormalNode(node, IStorage);                        
-                }
-            }
-        );
-        IStorage.ForEachRecursiveDepthLast(myDisplayRoot,
-            node=> {
-                if(node.IsNode && node.IsFloating && !node.IsBehaviour) {
-                	myGraphics.DrawNormalNode(node, IStorage);                        
-                }
-            }
-        );
-    }	
-	// ----------------------------------------------------------------------
-    void DrawMinimizedNodes() {
-        // Display node starting from the root node.
-        IStorage.ForEachRecursiveDepthLast(myDisplayRoot,
-            node=> {
-                if(node.IsNode && !node.IsFloating) {
-                	myGraphics.DrawMinimizedNode(node, IStorage);                        
-                }
-            }
-        );
-        IStorage.ForEachRecursiveDepthLast(myDisplayRoot,
-            node=> {
-                if(node.IsNode && node.IsFloating) {
-                	myGraphics.DrawMinimizedNode(node, IStorage);                        
-                }
-            }
-        );
-    }	
-	
-	// ----------------------------------------------------------------------
-    private void DrawConnections() {
-        // Display all connections.
-        IStorage.ForEachChildRecursive(myDisplayRoot, port=> { if(port.IsPort) myGraphics.DrawConnection(port, IStorage); });
-
-        // Display ports.
-        IStorage.ForEachChildRecursive(myDisplayRoot, port=> { if(port.IsPort) myGraphics.DrawPort(port, IStorage); });
     }
 
     // ======================================================================
