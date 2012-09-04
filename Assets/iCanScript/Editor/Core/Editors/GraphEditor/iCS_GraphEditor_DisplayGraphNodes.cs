@@ -82,11 +82,11 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                     myGraphics.DrawPort(child, IStorage);
                 }
                 if(child.IsNode) {
-                    if(child.IsMinimized) {
-                        if(child.IsFloating && floatingRootNode == null) floatingRootNode= child;
-                        myGraphics.DrawMinimizedNode(child, IStorage);
-                    }
                     if(IStorage.IsVisible(child)) {
+                        if(child.IsMinimized) {
+                            if(child.IsFloating && floatingRootNode == null) floatingRootNode= child;
+                            myGraphics.DrawMinimizedNode(child, IStorage);
+                        }
                         DisplayPortsAndMinimizedNodes(child);
                     }                        
                 }
