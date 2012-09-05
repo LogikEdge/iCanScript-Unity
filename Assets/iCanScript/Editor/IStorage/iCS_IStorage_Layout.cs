@@ -156,27 +156,6 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public void SetLayoutPosition(iCS_EditorObject node, Rect _newPos) {
-        // Adjust node size.
-        Rect position= GetLayoutPosition(node);
-        node.LocalPosition.width = _newPos.width;
-        node.LocalPosition.height= _newPos.height;
-        // Reposition node.
-        if(!IsValid(node.ParentId)) {
-            node.LocalPosition.x= _newPos.x;
-            node.LocalPosition.y= _newPos.y;            
-        }
-        else {
-            Rect deltaMove= new Rect(_newPos.xMin-position.xMin, _newPos.yMin-position.yMin, _newPos.width-position.width, _newPos.height-position.height);
-            node.LocalPosition.x+= deltaMove.x;
-            node.LocalPosition.y+= deltaMove.y;
-            float separationX= Math3D.IsNotZero(deltaMove.x) ? deltaMove.x : deltaMove.width;
-            float separationY= Math3D.IsNotZero(deltaMove.y) ? deltaMove.y : deltaMove.height;
-            var separationVector= new Vector2(separationX, separationY);
-            LayoutParent(node, separationVector);
-        }
-    }    
-    // ----------------------------------------------------------------------
     Vector2 GetTopLeftCorner(iCS_EditorObject node)     {
         Rect position= GetLayoutPosition(node);
         return new Vector2(position.xMin, position.yMin);

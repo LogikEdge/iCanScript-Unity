@@ -4,19 +4,6 @@ using System.Collections;
 
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
-    // Returns the absolute position of the given object.
-    public Rect GetLayoutPosition(iCS_EditorObject eObj) {
-        return Storage.GetPosition(eObj);
-    }
-    public Rect GetLayoutPosition(int id) {
-        return GetLayoutPosition(EditorObjects[id]);
-    }
-    // ----------------------------------------------------------------------
-    // Returns the local position of the given object.
-    public Rect GetLocalPosition(iCS_EditorObject eObj) {
-        return eObj.LocalPosition;
-    }
-    // ----------------------------------------------------------------------
     // Returns true if the given point is inside the node coordinates.
     public bool IsInside(iCS_EditorObject node, Vector2 point) {
         // Extend the node range to include the ports.
