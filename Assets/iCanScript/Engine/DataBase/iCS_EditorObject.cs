@@ -107,13 +107,13 @@ public class iCS_EditorObject {
     
     // ----------------------------------------------------------------------
     // Display Option Accessor
-    public bool IsMaximized         { get { return iCS_DisplayOption.IsMaximized(this); }}
-    public bool IsMinimized         { get { return iCS_DisplayOption.IsMinimized(this); }}
-    public bool IsFolded            { get { return iCS_DisplayOption.IsFolded(this); }}
-    public void Fold()              { iCS_DisplayOption.Fold(this); }
+    public bool IsMaximized         { get { return iCS_DisplayOption.IsMaximized(DisplayOption); }}
+    public bool IsMinimized         { get { return iCS_DisplayOption.IsMinimized(DisplayOption); }}
+    public bool IsFolded            { get { return iCS_DisplayOption.IsFolded(DisplayOption); }}
+    public void Fold()              { iCS_DisplayOption.SetFolded(ref DisplayOption); }
     public void Unfold()            { Maximize(); }
-    public void Maximize()          { iCS_DisplayOption.Maximize(this); }
-    public void Minimize()          { iCS_DisplayOption.Minimize(this); }
+    public void Maximize()          { iCS_DisplayOption.SetMaximized(ref DisplayOption); }
+    public void Minimize()          { iCS_DisplayOption.SetMinimized(ref DisplayOption); }
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode                  { get { return iCS_ObjectType.IsNode(this); }}

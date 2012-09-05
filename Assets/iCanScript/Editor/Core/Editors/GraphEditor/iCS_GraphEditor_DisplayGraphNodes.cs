@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/*
+    FIXME: Resolve difference between visual minimized and graph minimize and the likes.
+*/
 public partial class iCS_GraphEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
