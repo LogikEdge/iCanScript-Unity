@@ -114,8 +114,8 @@ public partial class iCS_Graphics {
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if(port.IsInputPort && port.Source != -1) {
             var sourcePort= iStorage.GetSource(port);
-            var sourceCenter= Math3D.ToVector2(iStorage.GetPosition(sourcePort));
-            var portCenter= Math3D.ToVector2(iStorage.GetPosition(port));
+            var sourceCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(sourcePort));
+            var portCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(port));
             if(Vector2.Distance(portCenter, sourceCenter) < 200.0f) return false;
         }
         object portValue= iStorage.GetPortValue(port);

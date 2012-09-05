@@ -2,10 +2,14 @@ using UnityEngine;
 using System.Collections;
 
 public partial class iCS_IStorage {
-    public bool IsDisplayMinimized(iCS_EditorObject eObj) { return IsMinimized(eObj); }
-    public bool IsDisplayMaximized(iCS_EditorObject eObj) { return IsMaximized(eObj); }
-    public bool IsDisplayFolded(iCS_EditorObject eObj)    { return IsFolded(eObj); }
-    public bool IsDisplayVisible(iCS_EditorObject eObj)   { return IsVisible(eObj); }
+    public bool IsMinimizedOnDisplay(iCS_EditorObject eObj) { return IsMinimized(eObj); }
+    public bool IsMaximizedOnDisplay(iCS_EditorObject eObj) { return IsMaximized(eObj); }
+    public bool IsFoldedOnDisplay(iCS_EditorObject eObj)    { return IsFolded(eObj); }
+    public bool IsVisibleOnDisplay(iCS_EditorObject eObj)   { return IsVisible(eObj); }
+    public bool IsMinimizedInLayout(iCS_EditorObject eObj)  { return IsMinimized(eObj); }
+    public bool IsMaximizedInLayout(iCS_EditorObject eObj)  { return IsMaximized(eObj); }
+    public bool IsFoldedInLayout(iCS_EditorObject eObj)     { return IsFolded(eObj); }
+    public bool IsVisibleInLayout(iCS_EditorObject eObj)    { return IsVisible(eObj); }
     
     // ======================================================================
     // Display Options

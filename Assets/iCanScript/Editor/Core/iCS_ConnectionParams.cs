@@ -38,15 +38,15 @@ public class iCS_ConnectionParams {
         Center= BezierCenter(Start, End, StartTangent, EndTangent);
     }
     // ----------------------------------------------------------------------
-    public iCS_ConnectionParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, storage.GetPosition(port), source, storage.GetPosition(source), storage) {}
+    public iCS_ConnectionParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, storage.GetLayoutPosition(port), source, storage.GetLayoutPosition(source), storage) {}
     // ----------------------------------------------------------------------
     public iCS_ConnectionParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, storage.GetSource(port), storage) {}
     // ----------------------------------------------------------------------
     static Vector2 ConnectionDirectionFromTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         Vector2 direction;
         if(port.IsFloating || to.IsFloating) {
-            Vector2 fromPos= Math3D.Middle(storage.GetPosition(port));
-            Vector2 toPos= Math3D.Middle(storage.GetPosition(to));
+            Vector2 fromPos= Math3D.Middle(storage.GetLayoutPosition(port));
+            Vector2 toPos= Math3D.Middle(storage.GetLayoutPosition(to));
             return GetBestDirectionFrom((toPos-fromPos).normalized);
         } else {
             if(port.IsOutTransitionPort && storage.GetParent(port).IsMinimized) {

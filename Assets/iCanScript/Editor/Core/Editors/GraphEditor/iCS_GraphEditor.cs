@@ -331,7 +331,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                 node.IsFloating= IsFloatingKeyDown;
                 DragType= DragTypeEnum.NodeDrag;
                 DragObject= node;
-                Rect nodePos= IStorage.GetPosition(node);
+                Rect nodePos= IStorage.GetLayoutPosition(node);
                 DragStartPosition= new Vector2(nodePos.x, nodePos.y);                                                                    
             }
             return true;
@@ -420,10 +420,10 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                 Vector2 mousePosInGraph= ViewportToGraph(MousePosition);
                 iCS_EditorObject closestPort= IStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
-                    Rect closestPortRect= IStorage.GetPosition(closestPort);
+                    Rect closestPortRect= IStorage.GetLayoutPosition(closestPort);
                     Vector2 closestPortPos= new Vector2(closestPortRect.x, closestPortRect.y);
                     if(Vector2.Distance(closestPortPos, mousePosInGraph) < 4f*iCS_Config.PortRadius) {
-                        Rect parentPos= IStorage.GetPosition(IStorage.GetParent(DragObject));
+                        Rect parentPos= IStorage.GetLayoutPosition(IStorage.GetParent(DragObject));
                         DragObject.LocalPosition.x= closestPortRect.x-parentPos.x;
                         DragObject.LocalPosition.y= closestPortRect.y-parentPos.y;
                     }                    
@@ -491,7 +491,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                             origStateChart= IStorage.GetParent(origStateChart);
                         }
                         // Get new drag port state & state chart.
-                        Rect dragObjRect= IStorage.GetPosition(DragObject);
+                        Rect dragObjRect= IStorage.GetLayoutPosition(DragObject);
                         Vector2 dragObjPos= new Vector2(dragObjRect.x, dragObjRect.y);
                         iCS_EditorObject newState= GetStateAt(dragObjPos);
                         iCS_EditorObject newStateChart= null;
@@ -537,7 +537,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                         bool isNearParent= IStorage.IsNearParent(DragObject);
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
-                            Rect dragPortPos= IStorage.GetPosition(DragObject);
+                            Rect dragPortPos= IStorage.GetLayoutPosition(DragObject);
                             IStorage.DestroyInstance(DragObject);
                             // Verify for disconnection.
                             if(!isNearParent) {
@@ -546,7 +546,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                                 if(newPortParent == null) break;
                                 if(newPortParent.IsModule) {
                                     iCS_EditorObject portParent= IStorage.GetParent(DragFixPort);
-                                    Rect modulePos= IStorage.GetPosition(newPortParent);
+                                    Rect modulePos= IStorage.GetLayoutPosition(newPortParent);
                                     float portSize2= 2f*iCS_Config.PortSize;
                                     if(DragFixPort.IsInputPort) {
                                         if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
@@ -647,10 +647,10 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
             IStorage.SetSource(DragObject, DragOriginalPort);
         }
         DragType= DragTypeEnum.PortConnection;
-        Rect portPos= IStorage.GetPosition(DragOriginalPort);
+        Rect portPos= IStorage.GetLayoutPosition(DragOriginalPort);
         IStorage.SetInitialPosition(DragObject, new Vector2(portPos.x, portPos.y));
         IStorage.SetDisplayPosition(DragObject, portPos);
-		Rect parentPos= IStorage.GetPosition(parent);
+		Rect parentPos= IStorage.GetLayoutPosition(parent);
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
 			DragStartPosition= Math3D.ToVector2(portPos)-Math3D.ToVector2(parentPos);			
@@ -938,7 +938,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetValidParentNodeUnder(iCS_EditorObject node) {
         if(!node.IsNode) return null;
-        Vector2 point= Math3D.Middle(IStorage.GetPosition(node));
+        Vector2 point= Math3D.Middle(IStorage.GetLayoutPosition(node));
         iCS_EditorObject newParent= IStorage.GetNodeAt(point, node);
         if(newParent == IStorage.GetParent(node)) return newParent;
         if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(node.Name, node.ObjectType, newParent, IStorage)) {
@@ -1164,14 +1164,14 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void CenterOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
-        CenterAt(Math3D.Middle(IStorage.GetPosition(obj)));
+        CenterAt(Math3D.Middle(IStorage.GetLayoutPosition(obj)));
     }
 	// ----------------------------------------------------------------------
     public void CenterAndScaleOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
         while(obj != null && !IStorage.IsVisible(obj)) obj= IStorage.GetParent(obj);
         if(obj == null) return;
-        Rect objectArea= IStorage.GetPosition(obj);
+        Rect objectArea= IStorage.GetLayoutPosition(obj);
         float newScale= 1.0f;
         if(obj.IsNode) {
             float widthScale= position.width/(1.1f*objectArea.width);
@@ -1346,7 +1346,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     Vector2 CanScrollInDirection(Vector2 dir) {
-        Rect rootRect= IStorage.GetPosition(myDisplayRoot);
+        Rect rootRect= IStorage.GetLayoutPosition(myDisplayRoot);
         var rootCenter= Math3D.Middle(rootRect);
         var topLeftCorner= ViewportToGraph(new Vector2(0, iCS_ToolbarUtility.GetHeight()));
         var bottomRightCorner= ViewportToGraph(new Vector2(position.width, position.height));

@@ -271,7 +271,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
                         if(SelectedObject == null) SelectedObject= myDisplayRoot;
                         // Don't use mouse position if it is too far from selected node.
                         Vector2 graphPos= ViewportToGraph(MousePosition);
-                        Rect parentRect= IStorage.GetPosition(SelectedObject);
+                        Rect parentRect= IStorage.GetLayoutPosition(SelectedObject);
                         Vector2 parentOrigin= new Vector2(parentRect.x, parentRect.y);
                         Vector2 parentCenter= Math3D.Middle(parentRect);
                         float radius= Vector2.Distance(parentCenter, parentOrigin);

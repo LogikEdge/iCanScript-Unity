@@ -877,10 +877,10 @@ public partial class iCS_Graphics {
         if(!iStorage.IsVisible(edObj)) {
             iCS_EditorObject parent= iStorage.GetParent(edObj);
             for(; !iStorage.IsVisible(parent); parent= iStorage.GetParent(parent));
-            Vector2 midPoint= Math3D.Middle(iStorage.GetPosition(parent));
+            Vector2 midPoint= Math3D.Middle(iStorage.GetLayoutPosition(parent));
             return new Rect(midPoint.x, midPoint.y, 0, 0);
         }
-        return iStorage.GetPosition(edObj);
+        return iStorage.GetLayoutPosition(edObj);
     }
 	// ----------------------------------------------------------------------
 	// Returns the time ratio of the animation between 0 and 1.

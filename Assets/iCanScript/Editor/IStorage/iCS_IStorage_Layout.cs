@@ -11,7 +11,7 @@ public partial class iCS_IStorage {
     // Moves the node without changing its size.
     public void SetInitialPosition(iCS_EditorObject obj, Vector2 initialPosition) {
         if(IsValid(obj.ParentId)) {
-            Rect position= GetPosition(EditorObjects[obj.ParentId]);
+            Rect position= GetLayoutPosition(EditorObjects[obj.ParentId]);
             obj.LocalPosition.x= initialPosition.x - position.x;
             obj.LocalPosition.y= initialPosition.y - position.y;            
         }
@@ -73,7 +73,7 @@ public partial class iCS_IStorage {
         float width       = 2.0f*iCS_Config.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childrenGlobalRect.width);
 
         // Process case without child nodes
-        Rect globalPosition= GetPosition(node);
+        Rect globalPosition= GetLayoutPosition(node);
         if(Math3D.IsZero(childrenGlobalRect.width) || Math3D.IsZero(childrenGlobalRect.height)) {
             // Compute needed height.
             iCS_EditorObject[] leftPorts= GetLeftPorts(node);
@@ -86,7 +86,7 @@ public partial class iCS_IStorage {
                 float deltaWidth = width - globalPosition.width;
                 float deltaHeight= height - globalPosition.height;
                 Rect newPos= new Rect(globalPosition.xMin-0.5f*deltaWidth, globalPosition.yMin-0.5f*deltaHeight, width, height);
-                SetPosition(node, newPos);
+                SetLayoutPosition(node, newPos);
             }
         }
         // Process case with child nodes.
@@ -123,7 +123,7 @@ public partial class iCS_IStorage {
             }
             if(Math3D.IsNotEqual(globalPosition.x, neededNodeGlobalX) || Math3D.IsNotEqual(globalPosition.y, neededNodeGlobalY) ||
                Math3D.IsNotEqual(globalPosition.width, width) || Math3D.IsNotEqual(globalPosition.height, height)) {
-                SetPosition(node, newPos);
+                SetLayoutPosition(node, newPos);
             }
         }
 
@@ -133,7 +133,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
     public void MoveTo(iCS_EditorObject node, Vector2 _newPos) {
-        Rect position = GetPosition(node);
+        Rect position = GetLayoutPosition(node);
         var delta= new Vector2(_newPos.x - position.x, _newPos.y - position.y);
         DeltaMove(node, delta);
     }
@@ -156,9 +156,9 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public void SetPosition(iCS_EditorObject node, Rect _newPos) {
+    public void SetLayoutPosition(iCS_EditorObject node, Rect _newPos) {
         // Adjust node size.
-        Rect position= GetPosition(node);
+        Rect position= GetLayoutPosition(node);
         node.LocalPosition.width = _newPos.width;
         node.LocalPosition.height= _newPos.height;
         // Reposition node.
@@ -178,19 +178,19 @@ public partial class iCS_IStorage {
     }    
     // ----------------------------------------------------------------------
     Vector2 GetTopLeftCorner(iCS_EditorObject node)     {
-        Rect position= GetPosition(node);
+        Rect position= GetLayoutPosition(node);
         return new Vector2(position.xMin, position.yMin);
     }
     Vector2 GetTopRightCorner(iCS_EditorObject node)    {
-        Rect position= GetPosition(node);
+        Rect position= GetLayoutPosition(node);
         return new Vector2(position.xMax, position.yMin);
     }
     Vector2 GetBottomLeftCorner(iCS_EditorObject node)  {
-        Rect position= GetPosition(node);
+        Rect position= GetLayoutPosition(node);
         return new Vector2(position.xMin, position.yMax);
     }
     Vector2 GetBottomRightCorner(iCS_EditorObject node) {
-        Rect position= GetPosition(node);
+        Rect position= GetLayoutPosition(node);
         return new Vector2(position.xMax, position.yMax);
     }
     // ----------------------------------------------------------------------
@@ -226,7 +226,7 @@ public partial class iCS_IStorage {
         ForEachChild(node,
             (child)=> {
                 if(child.IsNode && IsVisible(child) && !child.IsFloating) {
-                    var childPos= GetPosition(child);
+                    var childPos= GetLayoutPosition(child);
                     if(Math3D.IsZero(childrenRect.width)) {
                         childrenRect= childPos;
                     } else {
@@ -286,7 +286,7 @@ public partial class iCS_IStorage {
         }
 
         // Relayout top ports.
-        Rect position= GetPosition(node);        
+        Rect position= GetLayoutPosition(node);        
         iCS_EditorObject[] ports= SortTopPorts(node);
         if(ports.Length != 0) {
             float xStep= position.width / ports.Length;
@@ -358,40 +358,40 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject[] SortTopPorts(iCS_EditorObject node) {
-        Rect nodePos= GetPosition(node);
+        Rect nodePos= GetLayoutPosition(node);
         float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
         iCS_EditorObject[] ports= GetTopPorts(node);
-        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
+        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetLayoutPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? cp.y : -cp.y, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject[] SortBottomPorts(iCS_EditorObject node) {
-        Rect nodePos= GetPosition(node);
+        Rect nodePos= GetLayoutPosition(node);
         float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
         iCS_EditorObject[] ports= GetBottomPorts(node);
-        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
+        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetLayoutPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? -cp.y : cp.y, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject[] SortLeftPorts(iCS_EditorObject node) {
-        Rect nodePos= GetPosition(node);
+        Rect nodePos= GetLayoutPosition(node);
         float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
         iCS_EditorObject[] ports= GetLeftPorts(node);                             
-        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
+        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetLayoutPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? cp.x : -cp.x, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject[] SortRightPorts(iCS_EditorObject node) {
-        Rect nodePos= GetPosition(node);
+        Rect nodePos= GetLayoutPosition(node);
         float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
         iCS_EditorObject[] ports= GetRightPorts(node);
-        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetPosition(p)), ports);
+        Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetLayoutPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? -cp.x : cp.x, connectedPos);
         return SortPorts(ports, firstKeys, secondKeys);
@@ -543,7 +543,7 @@ public partial class iCS_IStorage {
         if(!DoesCollideWithGutter(node, otherNode)) return false;
 
         // Compute penetration.
-        Vector2 penetration= GetSeperationVector(node, GetPosition(otherNode));
+        Vector2 penetration= GetSeperationVector(node, GetLayoutPosition(otherNode));
 		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) return false;
 
 		// Seperate using the known movement.
@@ -567,13 +567,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns if the given rectangle collides with the node.
     public bool DoesCollide(iCS_EditorObject node, iCS_EditorObject otherNode) {
-        return Math3D.DoesCollide(GetPosition(node), GetPosition(otherNode));
+        return Math3D.DoesCollide(GetLayoutPosition(node), GetLayoutPosition(otherNode));
     }
 
     // ----------------------------------------------------------------------
     // Returns if the given rectangle collides with the node.
     public bool DoesCollideWithGutter(iCS_EditorObject node, iCS_EditorObject otherNode) {
-        return Math3D.DoesCollide(RectWithGutter(GetPosition(node)), GetPosition(otherNode));
+        return Math3D.DoesCollide(RectWithGutter(GetLayoutPosition(node)), GetLayoutPosition(otherNode));
     }
 
     // ----------------------------------------------------------------------
@@ -586,7 +586,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	// Returns the seperation vector of two colliding nodes.
 	Vector2 GetSeperationVector(iCS_EditorObject node, Rect _rect) {
-        Rect myRect= RectWithGutter(GetPosition(node));
+        Rect myRect= RectWithGutter(GetLayoutPosition(node));
         Rect otherRect= _rect;
         float xMin= Mathf.Min(myRect.xMin, otherRect.xMin);
         float yMin= Mathf.Min(myRect.yMin, otherRect.yMin);
@@ -644,8 +644,8 @@ public partial class iCS_IStorage {
         iCS_EditorObject p1Parent= GetParent(p1);
         iCS_EditorObject p2Parent= GetParent(p2);
         // Verify connection between nested nodes.
-        Rect parent1Rect= GetPosition(p1Parent);
-        Rect parent2Rect= GetPosition(p2Parent);
+        Rect parent1Rect= GetLayoutPosition(p1Parent);
+        Rect parent2Rect= GetLayoutPosition(p2Parent);
         // Nested
         if(IsChildOf(p1Parent, p2Parent) ||
            IsChildOf(p2Parent, p1Parent)) {               
@@ -664,8 +664,8 @@ public partial class iCS_IStorage {
                 pPort= p1;
                 cPort= p2;
             }
-            Rect parentPos= GetPosition(parent);
-            Rect childPos = GetPosition(child);
+            Rect parentPos= GetLayoutPosition(parent);
+            Rect childPos = GetLayoutPosition(child);
             Rect childLocalPos= new Rect(childPos.x-parentPos.x, childPos.y-parentPos.y, childPos.width, childPos.height);
             float dx= parentPos.width-childLocalPos.xMax;
             float dy= parentPos.height-childLocalPos.yMax;
@@ -784,8 +784,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void PositionOnEdge(iCS_EditorObject port) {
         var parent= GetParent(port);
-        var parentPos= GetPosition(parent);
-        switch(GetClosestEdge(parent, Math3D.ToVector2(GetPosition(port)))) {
+        var parentPos= GetLayoutPosition(parent);
+        switch(GetClosestEdge(parent, Math3D.ToVector2(GetLayoutPosition(port)))) {
             case iCS_EditorObject.EdgeEnum.Top:      port.LocalPosition.y= 0; break; 
             case iCS_EditorObject.EdgeEnum.Bottom:   port.LocalPosition.y= parentPos.height; break;
             case iCS_EditorObject.EdgeEnum.Left:     port.LocalPosition.x= 0; break;
@@ -795,12 +795,12 @@ public partial class iCS_IStorage {
 	// ----------------------------------------------------------------------
     public iCS_EditorObject GetOverlappingPort(iCS_EditorObject port) {
         iCS_EditorObject foundPort= null;
-        Rect tmp= GetPosition(port);
+        Rect tmp= GetLayoutPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
         FilterWith(
             p=> p.IsPort && p != port && IsVisible(p),
             p=> {
-                tmp= GetPosition(p);
+                tmp= GetLayoutPosition(p);
                 Vector2 pPos= new Vector2(tmp.x, tmp.y);
                 float distance= Vector2.Distance(pPos, position);
                 if(distance <= 1.5*iCS_Config.PortSize) {

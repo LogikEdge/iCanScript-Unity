@@ -40,7 +40,7 @@ public partial class iCS_IStorage {
         TreeCache= new iCS_TreeCache();
         ForEach(obj=> TreeCache.CreateInstance(obj));
         if(IsValid(0)) {
-            Vector2 graphCenter= Math3D.Middle(GetPosition(EditorObjects[0]));
+            Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
             ForEach(obj=> {
 		        // Initialize display position.
                 TreeCache[obj.InstanceId].DisplayPosition= new Rect(graphCenter.x,graphCenter.y,0,0);
@@ -124,13 +124,13 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {
-        Rect pos= GetPosition(edObj);
+        Rect pos= GetLayoutPosition(edObj);
         iCS_EditorObject oldParent= GetParent(edObj);
         edObj.ParentId= newParent.InstanceId;
         TreeCache.UpdateInstance(oldParent);
         TreeCache.UpdateInstance(newParent);
         TreeCache.UpdateInstance(edObj);
-        SetPosition(edObj, pos);
+        SetLayoutPosition(edObj, pos);
         SetDirty(edObj);
         SetDirty(oldParent);
         SetDirty(newParent);
@@ -249,7 +249,7 @@ public partial class iCS_IStorage {
             if(Math3D.IsZero(displayPos.width) && Math3D.IsZero(displayPos.x)) {
                 iCS_EditorObject posObj= EditorObjects[i];
                 if(posObj.IsPort) posObj= GetParent(posObj);
-                Vector2 center= Math3D.Middle(GetPosition(posObj));
+                Vector2 center= Math3D.Middle(GetLayoutPosition(posObj));
                 displayPos.x= center.x;
                 displayPos.y= center.y;
             }
@@ -286,7 +286,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CopyFrom(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_EditorObject destParent, Vector2 initialPos) {
         // Create new EditorObject
-        Vector2 parentPos= IsValid(destParent) ? Math3D.ToVector2(GetPosition(destParent)) : Vector2.zero;
+        Vector2 parentPos= IsValid(destParent) ? Math3D.ToVector2(GetLayoutPosition(destParent)) : Vector2.zero;
         Vector2 sizeOffset= 0.5f*new Vector2(srcObj.LocalPosition.width, srcObj.LocalPosition.height);
         Vector2 localPos= initialPos-parentPos-sizeOffset;
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
@@ -351,7 +351,7 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
-        Rect parentPos= IsValid(parentId) ? GetPosition(parentId) : new Rect(0,0,16,16);
+        Rect parentPos= IsValid(parentId) ? GetLayoutPosition(parentId) : new Rect(0,0,16,16);
         Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,16,16);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
@@ -369,7 +369,7 @@ public partial class iCS_IStorage {
         Rect localPos= PositionNewNodeInParent(parentId, initialPos);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos);
-        var center= Math3D.Middle(GetPosition(this[id]));
+        var center= Math3D.Middle(GetLayoutPosition(this[id]));
         TreeCache[id].DisplayPosition= new Rect(center.x,center.y,0,0);
 		SetDirty(this[id]);
         // Automatically create entry state.
@@ -515,7 +515,7 @@ public partial class iCS_IStorage {
             }
         }
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
-        Rect parentPos= GetPosition(GetParent(port));
+        Rect parentPos= GetLayoutPosition(GetParent(port));
         TreeCache[id].DisplayPosition= new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0);
 		SetDirty(this[id]);
         return EditorObjects[id];        
@@ -527,7 +527,7 @@ public partial class iCS_IStorage {
         var size= icon != null ? new Vector2(icon.width, icon.height) : iCS_Graphics.GetMaximizeIconSize(null);
         if(IsValid(parentId)) {
             iCS_EditorObject parent= EditorObjects[parentId];
-            var parentRect= GetPosition(parent);
+            var parentRect= GetLayoutPosition(parent);
             if(parentRect.Contains(initialPos)) {
                 localPos= new Rect(initialPos.x-parentRect.x, initialPos.y-parentRect.y,size.x,size.y);
             } else {
@@ -553,8 +553,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo convDesc) {
         if(convDesc == null) { SetSource(inPort, outPort); return; }
-        Rect inPos= GetPosition(inPort);
-        Rect outPos= GetPosition(outPort);
+        Rect inPos= GetLayoutPosition(inPort);
+        Rect outPos= GetLayoutPosition(outPort);
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= GetParent(inPort).ParentId;
         iCS_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);

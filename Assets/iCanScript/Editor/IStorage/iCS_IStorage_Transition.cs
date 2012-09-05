@@ -6,7 +6,7 @@ public partial class iCS_IStorage {
     // Creation methods
     // ----------------------------------------------------------------------
     public void CreateTransition(iCS_EditorObject outStatePort, iCS_EditorObject destState) {
-        Rect portRect= GetPosition(destState);
+        Rect portRect= GetLayoutPosition(destState);
         Vector2 portPos= Math3D.ToVector2(portRect);
         outStatePort.IsNameEditable= false;
 //        iCS_EditorObject parent= GetParent(GetParent(outStatePort));
@@ -215,7 +215,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public Rect ProposeTransitionModulePosition(iCS_EditorObject module) {
-        Rect nodePos= GetPosition(module);
+        Rect nodePos= GetLayoutPosition(module);
         iCS_EditorObject inStatePort= GetInStatePort(module);
         iCS_EditorObject outStatePort= GetOutStatePort(module);
         if(inStatePort != null) {
@@ -247,7 +247,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void LayoutTransitionModule(iCS_EditorObject module) {
         GetTransitionName(module);
-        SetPosition(module, ProposeTransitionModulePosition(module));                    
+        SetLayoutPosition(module, ProposeTransitionModulePosition(module));                    
     }
     // ----------------------------------------------------------------------
     public Vector2 GetTransitionModuleVector(iCS_EditorObject module) {
@@ -255,10 +255,10 @@ public partial class iCS_IStorage {
         iCS_EditorObject outStatePort     = GetOutStatePort(module);
         iCS_EditorObject inTransitionPort = GetInTransitionPort(module);
         iCS_EditorObject outTransitionPort= GetOutTransitionPort(module);
-        var inStatePos= Math3D.ToVector2(GetPosition(inStatePort));
-        var outStatePos= Math3D.ToVector2(GetPosition(outStatePort));
-        var inTransitionPos= Math3D.ToVector2(GetPosition(inTransitionPort));
-        var outTransitionPos= Math3D.ToVector2(GetPosition(outTransitionPort));
+        var inStatePos= Math3D.ToVector2(GetLayoutPosition(inStatePort));
+        var outStatePos= Math3D.ToVector2(GetLayoutPosition(outStatePort));
+        var inTransitionPos= Math3D.ToVector2(GetLayoutPosition(inTransitionPort));
+        var outTransitionPos= Math3D.ToVector2(GetLayoutPosition(outTransitionPort));
         Vector2 dir= ((inStatePos-outTransitionPos).normalized+(inTransitionPos-outStatePos).normalized).normalized;
         return dir;
     }
