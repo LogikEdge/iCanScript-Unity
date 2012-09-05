@@ -2,6 +2,11 @@ using UnityEngine;
 using System.Collections;
 
 public partial class iCS_IStorage {
+    public bool IsDisplayMinimized(iCS_EditorObject eObj) { return IsMinimized(eObj); }
+    public bool IsDisplayMaximized(iCS_EditorObject eObj) { return IsMaximized(eObj); }
+    public bool IsDisplayFolded(iCS_EditorObject eObj)    { return IsFolded(eObj); }
+    public bool IsDisplayVisible(iCS_EditorObject eObj)   { return IsVisible(eObj); }
+    
     // ======================================================================
     // Display Options
     // ----------------------------------------------------------------------
