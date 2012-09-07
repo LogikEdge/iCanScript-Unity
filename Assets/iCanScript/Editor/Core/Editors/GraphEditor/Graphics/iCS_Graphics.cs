@@ -904,8 +904,8 @@ public partial class iCS_Graphics {
         if(edObj.IsNode) {
             if(IsInvisible(edObj, iStorage)) return false;
             Rect position= GetDisplayPosition(edObj, iStorage);
-            Texture icon= GetMaximizeIcon(edObj);
-            return (position.width*position.height <= icon.width*icon.height+1f);
+            Vector2 iconSize= GetMaximizeIconSize(edObj);
+            return (position.width*position.height <= iconSize.x*iconSize.y+1f);
         }
         return iStorage.IsMinimized(edObj) && IsAnimationCompleted(edObj, iStorage);
     }
