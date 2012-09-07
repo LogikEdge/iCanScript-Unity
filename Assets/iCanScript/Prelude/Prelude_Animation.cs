@@ -59,6 +59,11 @@ public static partial class Prelude {
         public void Reset() {
             myTimeRatio.Reset();
         }
+        public void Reset(T value) {
+            myTimeRatio.Reset();
+            myTargetValue= value;
+            myCurrentValue= value;
+        }
     
         public void Update() {
             if(myTimeRatio.IsActive) {
