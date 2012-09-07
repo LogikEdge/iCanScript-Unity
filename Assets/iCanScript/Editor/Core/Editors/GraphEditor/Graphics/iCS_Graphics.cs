@@ -571,7 +571,8 @@ public partial class iCS_Graphics {
         
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
-        if(IsInvisible(port, iStorage) || IsMinimized(port, iStorage)) return;
+//        if(IsInvisible(port, iStorage) || IsMinimized(port, iStorage)) return;
+        if(IsInvisible(port, iStorage)) return;
         
         // Don't display if outside clipping area.
 		Vector2 portCenter= GetPortCenter(port, iStorage);
@@ -860,16 +861,15 @@ public partial class iCS_Graphics {
 		var animation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
         Rect visiblePosition= iStorage.GetVisiblePosition(edObj);
 		// Restart animation if a change in the graph occured.
-		if(Math3D.IsNotEqual(animation.TargetValue, visiblePosition)) {
-			if(!edObj.IsFloating) {
-				var timeRatio= iStorage.AnimationTimeRatio;
-				if(timeRatio.IsElapsed) {
-					timeRatio.Start(iCS_PreferencesEditor.AnimationTime);					
-				}
-				animation.Start(animation.CurrentValue, visiblePosition, timeRatio, (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-				return animation.CurrentValue;
+		if(ShouldStartAnimation(animation.TargetValue, visiblePosition)) {
+			if(edObj.IsFloating) return visiblePosition;
+			var timeRatio= iStorage.AnimationTimeRatio;
+			if(timeRatio.IsElapsed) {
+				timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+//				Debug.Log("Restarting animation: "+edObj.Name+" "+visiblePosition+animation.TargetValue);					
 			}
-			return visiblePosition;
+			animation.Start(animation.CurrentValue, visiblePosition, timeRatio, (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+			return animation.CurrentValue;
 		}				
 		// Update the animation.
 		if(animation.IsActive) {
@@ -879,6 +879,10 @@ public partial class iCS_Graphics {
 		animation.Reset(visiblePosition);
 		return visiblePosition;
     }
+	// ----------------------------------------------------------------------
+	static bool ShouldStartAnimation(Rect r1, Rect r2) {
+		return 1f < Mathf.Abs(r1.x-r2.x)+Mathf.Abs(r1.y-r2.y)+Mathf.Abs(r1.width-r2.width)+Mathf.Abs(r1.height-r2.height);
+	}
 	// ----------------------------------------------------------------------
 	static iCS_EditorObject GetParentNodeWithSmallestDisplayArea(iCS_EditorObject eObj, iCS_IStorage iStorage) {
 		iCS_EditorObject smallestParent= null;

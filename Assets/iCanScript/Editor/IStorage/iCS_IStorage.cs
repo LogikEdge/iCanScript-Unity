@@ -169,9 +169,6 @@ public partial class iCS_IStorage {
         bool modified= false;
         ForEach(
             obj=> {
-				// Update visible & display position
-				GetEditorObjectCache(obj).VisiblePosition= GetVisiblePosition(obj);
-				
                 // Cleanup disconnected dynamic state or module ports.
 				var parent= GetParent(obj);
                 if(CleanupDeadPorts) {

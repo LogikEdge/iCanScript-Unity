@@ -50,13 +50,14 @@ public partial class iCS_IStorage {
     
    	// ----------------------------------------------------------------------
     public Rect GetVisiblePosition(iCS_EditorObject edObj) {
-		if(!IsVisible(edObj)) {
-			var parent= GetParent(edObj);
-			for(; parent != null && !IsVisible(parent); parent= GetParent(parent));
-			if(parent != null) {
-	            Vector2 midPoint= Math3D.Middle(GetLayoutPosition(parent));
-	            return new Rect(midPoint.x, midPoint.y, 0, 0);							
-			} 
+		// Return the layout position if the object is visible.
+		if(IsVisible(edObj)) return GetLayoutPosition(edObj);
+		// Return the center of the most visible parent if not visible.
+		var parent= GetParent(edObj);
+		for(; parent != null && !IsVisible(parent); parent= GetParent(parent));
+		if(parent != null) {
+            Vector2 midPoint= Math3D.Middle(GetLayoutPosition(parent));
+            return new Rect(midPoint.x, midPoint.y, 0, 0);							
 		}
 		return GetLayoutPosition(edObj);
     }
