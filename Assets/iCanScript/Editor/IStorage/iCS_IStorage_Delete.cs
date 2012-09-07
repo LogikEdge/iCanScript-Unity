@@ -36,7 +36,7 @@ public partial class iCS_IStorage {
 		if(myDestroyQueue.Contains(toDestroy)) return;
 		// Schedule all children to be destroyed first.
 		int id= toDestroy.InstanceId;
-		TreeCache.ForEachChild(id, child=> ScheduleDestroyInstance(EditorObjects[child]));
+		StorageCache.ForEachChild(id, child=> ScheduleDestroyInstance(EditorObjects[child]));
 		// Add the object to the destroy queue.
 		myDestroyQueue.Add(toDestroy);
 		// Detroy the transition as a single block.
@@ -62,7 +62,7 @@ public partial class iCS_IStorage {
         // Set the parent dirty to force a relayout.
         if(IsValid(toDestroy.ParentId)) SetDirty(parent);
 		// Destroy instance.
-		TreeCache.DestroyInstance(toDestroy.InstanceId);
+		StorageCache.DestroyInstance(toDestroy.InstanceId);
 		toDestroy.Reset();
         // Reconfigure parent state if the object removed is an entry state.
         if(isEntryState) {

@@ -10,15 +10,15 @@ public partial class iCS_IStorage {
 		if(!port.IsInDataPort) return;
 		if(port.Source != -1) return;
 		if(iCS_Strings.IsEmpty(port.InitialValueArchive)) {
-			TreeCache[port.InstanceId].InitialValue= null;
+			StorageCache[port.InstanceId].InitialValue= null;
 			return;
 		}
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
-		TreeCache[port.InstanceId].InitialValue= coder.DecodeObjectForKey("InitialValue", Storage);
+		StorageCache[port.InstanceId].InitialValue= coder.DecodeObjectForKey("InitialValue", Storage);
 	}
     // ----------------------------------------------------------------------
     public void StoreInitialPortValueInArchive(iCS_EditorObject port) {
-        var cache= TreeCache[port.InstanceId];
+        var cache= StorageCache[port.InstanceId];
         if(cache.InitialValue == null) {
             port.InitialValueArchive= null;
             return;
@@ -31,13 +31,13 @@ public partial class iCS_IStorage {
 	public object GetInitialPortValue(iCS_EditorObject port) {
 		if(!port.IsInDataPort) return null;
 		if(port.Source != -1) return null;
-		return TreeCache[port.InstanceId].InitialValue;
+		return StorageCache[port.InstanceId].InitialValue;
 	}
     // ----------------------------------------------------------------------
 	public void SetInitialPortValue(iCS_EditorObject port, object value) {
 		if(!port.IsInDataPort) return;
 		if(port.Source != -1) return;
-		TreeCache[port.InstanceId].InitialValue= value;
+		StorageCache[port.InstanceId].InitialValue= value;
         StoreInitialPortValueInArchive(port);
 	}
 

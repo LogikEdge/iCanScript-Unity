@@ -15,7 +15,7 @@ public partial class iCS_IStorage {
     }
 	public int NbOfChildren(iCS_EditorObject parent) {
 		if(!IsValid(parent)) return 0;
-		return TreeCache[parent.InstanceId].Children.Count;
+		return StorageCache[parent.InstanceId].Children.Count;
 	}
 	public int NbOfChildren(iCS_EditorObject parent, Func<iCS_EditorObject, bool> filter) {
 		if(!IsValid(parent)) return 0;
@@ -26,19 +26,19 @@ public partial class iCS_IStorage {
     public void ForEachChild(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            TreeCache.ForEachChild(id=> fnc(EditorObjects[id]));            
+            StorageCache.ForEachChild(id=> fnc(EditorObjects[id]));            
         }
         else {
-            TreeCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
+            StorageCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
         }
     }
     public bool ForEachChild(iCS_EditorObject parent, Func<iCS_EditorObject,bool> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            return TreeCache.ForEachChild(id=> fnc(EditorObjects[id]));            
+            return StorageCache.ForEachChild(id=> fnc(EditorObjects[id]));            
         }
         else {
-            return TreeCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
+            return StorageCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
         }
     }
     public void ForEach(Action<iCS_EditorObject> fnc) {
@@ -51,17 +51,17 @@ public partial class iCS_IStorage {
     public void ForEachRecursiveDepthLast(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            TreeCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));                                
+            StorageCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));                                
         } else {
-            TreeCache.ForEachRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
+            StorageCache.ForEachRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
         }
     }
     public void ForEachRecursiveDepthFirst(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            TreeCache.ForEachRecursiveDepthFirst(id => fnc(EditorObjects[id]));        
+            StorageCache.ForEachRecursiveDepthFirst(id => fnc(EditorObjects[id]));        
         } else {
-            TreeCache.ForEachRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
+            StorageCache.ForEachRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
         }
     }
     public void ForEachChildRecursive(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
@@ -70,17 +70,17 @@ public partial class iCS_IStorage {
     public void ForEachChildRecursiveDepthLast(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            TreeCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));        
+            StorageCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));        
         } else {
-            TreeCache.ForEachChildRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
+            StorageCache.ForEachChildRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
         }
     }
     public void ForEachChildRecursiveDepthFirst(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            TreeCache.ForEachRecursiveDepthFirst(id=> fnc(EditorObjects[id]));                    
+            StorageCache.ForEachRecursiveDepthFirst(id=> fnc(EditorObjects[id]));                    
         } else {
-            TreeCache.ForEachChildRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));        
+            StorageCache.ForEachChildRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));        
         }
     }
     // ----------------------------------------------------------------------

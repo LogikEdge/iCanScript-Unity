@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+/*
+    TODO: Cleanup Get/SetDisplayPosition.
+*/
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns the absolute position of the given object.
@@ -16,7 +19,7 @@ public partial class iCS_IStorage {
 
     // ----------------------------------------------------------------------
     // Returns the local position of the given object.
-    public Rect GetLocalPosition(iCS_EditorObject eObj) {
+    public Rect GetLayoutLocalPosition(iCS_EditorObject eObj) {
         return eObj.LocalPosition;
     }
     // ----------------------------------------------------------------------
@@ -40,5 +43,34 @@ public partial class iCS_IStorage {
             LayoutParent(node, separationVector);
         }
     }    
-
+    // ----------------------------------------------------------------------
+    public void SetLayoutLocalPosition(iCS_EditorObject eObj, Rect newLocalPos) {
+        eObj.LocalPosition= newLocalPos;
+    }
+    
+//    // ----------------------------------------------------------------------
+//    public Rect GetDisplayPosition(iCS_EditorObject eObj) {
+//        var cache= StorageCache[eObj.InstanceId];
+//        var layoutPos= GetLayoutPosition(eObj);
+//        if(cache.DisplayPosition.IsActive) {
+//            if(Math3D.IsNotEqual(layoutPos, cache.DisplayPosition.TargetValue)) {
+//                cache.DisplayPosition.TargetValue= layoutPos;
+//            }
+//            cache.DisplayPosition.Update();
+//            return cache.DisplayPosition.CurrentValue;
+//        }
+//        SetDisplayOptionBeforeAnimation(eObj, eObj.DisplayOption);
+//        return layoutPos;
+//    }
+//    // ----------------------------------------------------------------------
+//    public void SetDisplayPosition(iCS_EditorObject eObj, Rect newPos, bool performAnimation) {
+//        var cache= StorageCache[eObj.InstanceId];
+//        if(performAnimation) {
+//            var currentPos= cache.DisplayPosition.CurrentValue;
+//            var animTime  = iCS_PreferencesEditor.AnimationTime;
+//            cache.DisplayPosition.Start(currentPos, newPos, animTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));            
+//        } else {
+//            cache.DisplayPosition.Reset(newPos);
+//        }
+//    }
 }

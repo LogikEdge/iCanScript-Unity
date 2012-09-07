@@ -330,10 +330,10 @@ public partial class iCS_IStorage {
 
     // ----------------------------------------------------------------------
     bool AreChildrenInSameOrder(iCS_EditorObject node, iCS_EditorObject[] orderedChildren) {
-        return TreeCache[node.InstanceId].AreChildrenInSameOrder(Prelude.map(c=> c.InstanceId, orderedChildren));
+        return StorageCache[node.InstanceId].AreChildrenInSameOrder(Prelude.map(c=> c.InstanceId, orderedChildren));
     }
     void ReorderChildren(iCS_EditorObject node, iCS_EditorObject[] orderedChildren) {
-        TreeCache[node.InstanceId].ReorderChildren(Prelude.map(c=> c.InstanceId, orderedChildren));
+        StorageCache[node.InstanceId].ReorderChildren(Prelude.map(c=> c.InstanceId, orderedChildren));
     }
     // ----------------------------------------------------------------------
     iCS_EditorObject[] SortTopPorts(iCS_EditorObject node) {
