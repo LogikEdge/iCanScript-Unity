@@ -45,7 +45,7 @@ public partial class iCS_IStorage {
             Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
             ForEach(obj=> {
 		        // Initialize display position.
-                StorageCache[obj.InstanceId].DisplayPosition= new Rect(graphCenter.x,graphCenter.y,0,0);
+                StorageCache[obj.InstanceId].AnimatedPosition.Reset(new Rect(graphCenter.x,graphCenter.y,0,0));
 				// Initialize initial port values.
 				if(obj.IsInDataPort) {
 					LoadInitialPortValueFromArchive(obj);
@@ -110,10 +110,8 @@ public partial class iCS_IStorage {
 	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= GetParent(obj); while(parent != null && !parent.IsNode) parent= GetParent(parent); return parent; }
     public iCS_EditorObject      GetSource(iCS_EditorObject obj)            { return Storage.GetSource(obj); }
 	public iCS_EditorObjectCache GetEditorObjectCache(iCS_EditorObject obj) { return IsValid(obj) ? StorageCache[obj.InstanceId] : null; }
-//    public float           GetAnimTime(iCS_EditorObject obj)        { return IsValid(obj) ? Time.realtimeSinceStartup-StorageCache[obj.InstanceId].AnimationTime : 0; }
-//    public void            StartAnimTimer(iCS_EditorObject obj)     { if(IsValid(obj)) StorageCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }
-    public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? StorageCache[obj.InstanceId].DisplayPosition : default(Rect); }
-    public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) StorageCache[obj.InstanceId].DisplayPosition= pos; }
+    public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? StorageCache[obj.InstanceId].AnimatedPosition.CurrentValue : default(Rect); }
+    public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) StorageCache[obj.InstanceId].AnimatedPosition.Reset(pos); }
 	public P.TimeRatio	AnimationTimeRatio { get { return myAnimationTimeRatio; }}
     // ----------------------------------------------------------------------
     public object          GetRuntimeObject(iCS_EditorObject obj) {
@@ -360,7 +358,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
-        StorageCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+        SetDisplayPosition(this[id], new Rect(initialPos.x,initialPos.y,0,0));
         if(this[id].IsClassModule) ClassModuleCompleteCreation(this[id]);
 		SetDirty(this[id]);
         return this[id];
@@ -374,7 +372,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos);
         var center= Math3D.Middle(GetLayoutPosition(this[id]));
-        StorageCache[id].DisplayPosition= new Rect(center.x,center.y,0,0);
+        SetDisplayPosition(this[id], new Rect(center.x,center.y,0,0));
 		SetDirty(this[id]);
         // Automatically create entry state.
         CreateState(this[id].InstanceId, Vector2.zero, "EntryState");
@@ -393,7 +391,7 @@ public partial class iCS_IStorage {
         Rect localPos= PositionNewNodeInParent(parentId, initialPos);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos);
-        StorageCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+        SetDisplayPosition(this[id], new Rect(initialPos.x,initialPos.y,0,0));
         // Set first state as the default entry state.
         this[id].IsRawEntryState= !ForEachChild(parent,
             child=> {
@@ -451,7 +449,7 @@ public partial class iCS_IStorage {
             port.PortIndex= portIdx;			
 		}
         
-        StorageCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+        SetDisplayPosition(this[id], new Rect(initialPos.x,initialPos.y,0,0));
 		SetDirty(this[id]);
         return this[id];
     }
@@ -497,7 +495,7 @@ public partial class iCS_IStorage {
         port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.OutFunctionPort);
         port.PortIndex= portIdx;			
 
-        StorageCache[id].DisplayPosition= new Rect(initialPos.x,initialPos.y,0,0);
+        SetDisplayPosition(this[id], new Rect(initialPos.x,initialPos.y,0,0));
 		SetDirty(this[id]);
         return this[id];
     }
@@ -520,7 +518,7 @@ public partial class iCS_IStorage {
         }
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
         Rect parentPos= GetLayoutPosition(GetParent(port));
-        StorageCache[id].DisplayPosition= new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0);
+        SetDisplayPosition(this[id], new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0));
 		SetDirty(this[id]);
         return EditorObjects[id];        
     }

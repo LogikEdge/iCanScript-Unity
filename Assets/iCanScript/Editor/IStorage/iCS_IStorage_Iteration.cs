@@ -160,4 +160,10 @@ public partial class iCS_IStorage {
     public iCS_EditorObject FindThisInputPort(iCS_EditorObject node) {
         return FindInChildren(node, c=> c.IsInDataPort && c.Name == "this");
     }
+	public iCS_EditorObject FindParentNode(iCS_EditorObject child) {
+		if(!IsValid(child)) return null;
+		var parent= GetParent(child);
+		for(; parent != null && !parent.IsNode; parent= GetParent(parent));
+		return parent;
+	}
 }

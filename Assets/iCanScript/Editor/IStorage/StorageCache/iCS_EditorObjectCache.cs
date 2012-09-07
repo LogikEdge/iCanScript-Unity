@@ -12,8 +12,6 @@ public class iCS_EditorObjectCache {
     public List<int>        Children= new List<int>();
 	public object		    InitialValue= null;
 	// Graph Animation
-    public Rect             DisplayPosition;
-    public float            AnimationTime= 0;
 	public P.Animate<Rect>	AnimatedPosition= new P.Animate<Rect>();
 	
     // ======================================================================
@@ -24,8 +22,8 @@ public class iCS_EditorObjectCache {
         IsValid= false;
         ParentId= -1;
         Children.Clear();
-		AnimationTime= 0;
 		InitialValue= null;
+		AnimatedPosition.Reset();
     }
     public void AddChild(int id, iCS_EditorObjectCache toAdd) {
         if(Prelude.elem(id, Children.ToArray())) return;

@@ -1,4 +1,4 @@
-#define SHOW_FRAME_COUNT
+//#define SHOW_FRAME_COUNT
 
 using UnityEngine;
 using UnityEditor;
@@ -648,7 +648,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         DragType= DragTypeEnum.PortConnection;
         Rect portPos= IStorage.GetLayoutPosition(DragOriginalPort);
         IStorage.SetInitialPosition(DragObject, new Vector2(portPos.x, portPos.y));
-        IStorage.SetDisplayPosition(DragObject, portPos);
+		IStorage.GetEditorObjectCache(DragObject).AnimatedPosition.Reset(portPos);
 		Rect parentPos= IStorage.GetLayoutPosition(parent);
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
