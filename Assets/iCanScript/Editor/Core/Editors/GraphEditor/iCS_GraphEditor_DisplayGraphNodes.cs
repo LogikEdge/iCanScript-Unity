@@ -26,52 +26,69 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }	
 	// ----------------------------------------------------------------------
     iCS_EditorObject DrawNonFloatingNormalNode(iCS_EditorObject rootNode, iCS_EditorObject floatingRootNode= null) {
-        IStorage.ForEachChildNode(rootNode,
+        IStorage.ForEachRecursiveDepthLast(rootNode,
             node=> {
-                if(!node.IsMinimized) {
+                if(node.IsNode) {
                     if(node.IsFloating && floatingRootNode == null) {
                         floatingRootNode= node;
                     } else {
                         myGraphics.DrawNormalNode(node, IStorage);
-                        if(node.IsMaximized) {
-                            floatingRootNode= DrawNonFloatingNormalNode(node, floatingRootNode);
-                        }                                            
                     }
                 }
             }
         );
+//        IStorage.ForEachChildNode(rootNode,
+//            node=> {
+//                if(!node.IsMinimized) {
+//                    if(node.IsFloating && floatingRootNode == null) {
+//                        floatingRootNode= node;
+//                    } else {
+//                        myGraphics.DrawNormalNode(node, IStorage);
+//                        if(node.IsMaximized) {
+//                            floatingRootNode= DrawNonFloatingNormalNode(node, floatingRootNode);
+//                        }                                            
+//                    }
+//                }
+//            }
+//        );
         return floatingRootNode;
     }
 	// ----------------------------------------------------------------------
     void DrawFloatingNormalNode(iCS_EditorObject rootNode) {
-        IStorage.ForEachChildNode(rootNode,
-            node=> {
-                if(!node.IsMinimized) {
-                    if(node.IsFloating) {
-                        myGraphics.DrawNormalNode(node, IStorage);
-                        if(node.IsMaximized) {
-                            DrawNonFloatingNormalNode(node);
-                        }
-                    }
-                }
-            }
+        IStorage.ForEachRecursiveDepthLast(rootNode,
+            node=> { if(node.IsNode) myGraphics.DrawNormalNode(node, IStorage); }
         );
+//        IStorage.ForEachChildNode(rootNode,
+//            node=> {
+//                if(!node.IsMinimized) {
+//                    if(node.IsFloating) {
+//                        myGraphics.DrawNormalNode(node, IStorage);
+//                        if(node.IsMaximized) {
+//                            DrawNonFloatingNormalNode(node);
+//                        }
+//                    }
+//                }
+//            }
+//        );
     }
 
     // ======================================================================
     // Connections
 	// ----------------------------------------------------------------------
     void DisplayConnections(iCS_EditorObject rootNode) {
-        IStorage.ForEachChild(rootNode,
-            child=> {
-                if(child.IsPort && IStorage.GetSource(child) != null) {
-                    myGraphics.DrawConnection(child, IStorage);
-                }
-                if(child.IsNode && IStorage.IsVisible(child)) {
-                    DisplayConnections(child);
-                }                    
-            }
+        IStorage.ForEachRecursiveDepthLast(rootNode,
+            child=> { if(child.IsPort) myGraphics.DrawConnection(child, IStorage); }
         );
+//        IStorage.ForEachChild(rootNode,
+//            child=> {
+//                if(child.IsPort && IStorage.GetSource(child) != null) {
+//                    myGraphics.DrawConnection(child, IStorage);
+//                }
+//                if(child.IsNode && IStorage.IsVisible(child)) {
+//                    DisplayConnections(child);
+//                }                    
+//            }
+//        );
     }
 
     // ======================================================================
@@ -79,22 +96,36 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void DisplayPortsAndMinimizedNodes(iCS_EditorObject rootNode) {
         iCS_EditorObject floatingRootNode= null;
-        IStorage.ForEachChild(rootNode,
+        IStorage.ForEachRecursiveDepthLast(rootNode,
             child=> {
                 if(child.IsPort) {
                     myGraphics.DrawPort(child, IStorage);
                 }
                 if(child.IsNode) {
-                    if(IStorage.IsVisible(child)) {
-                        if(child.IsMinimized) {
-                            if(child.IsFloating && floatingRootNode == null) floatingRootNode= child;
-                            myGraphics.DrawMinimizedNode(child, IStorage);
-                        }
-                        DisplayPortsAndMinimizedNodes(child);
-                    }                        
+                    if(child.IsFloating && floatingRootNode == null) {
+                        floatingRootNode= child;
+                    } else {
+                        myGraphics.DrawMinimizedNode(child, IStorage);
+                    }
                 }
             }
         );
+//        IStorage.ForEachChild(rootNode,
+//            child=> {
+//                if(child.IsPort) {
+//                    myGraphics.DrawPort(child, IStorage);
+//                }
+//                if(child.IsNode) {
+//                    if(IStorage.IsVisible(child)) {
+//                        if(child.IsMinimized) {
+//                            if(child.IsFloating && floatingRootNode == null) floatingRootNode= child;
+//                            myGraphics.DrawMinimizedNode(child, IStorage);
+//                        }
+//                        DisplayPortsAndMinimizedNodes(child);
+//                    }                        
+//                }
+//            }
+//        );
         if(floatingRootNode != null) {
             myGraphics.DrawMinimizedNode(floatingRootNode, IStorage);
         }        
