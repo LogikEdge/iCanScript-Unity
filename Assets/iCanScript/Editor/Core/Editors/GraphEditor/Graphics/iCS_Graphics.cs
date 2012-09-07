@@ -886,24 +886,18 @@ public partial class iCS_Graphics {
     }
    	// ----------------------------------------------------------------------
     static Rect GetVisiblePosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-		// Visible position is the layout position for the root node.
-		var parentNode= iStorage.GetParentNode(edObj);
-		if(parentNode == null) return iStorage.GetLayoutPosition(edObj);
-
-		var animation= iStorage.GetEditorObjectCache(parentNode).AnimatedPosition;
-		float displayArea= animation.CurrentValue.width*animation.CurrentValue.height;
-		if(Math3D.IsZero(displayArea)) return animation.CurrentValue;
-		
-		if(!animation.IsActive) return iStorage.GetLayoutPosition(edObj);
-		float targetArea= animation.TargetValue.width*animation.TargetValue.height;
-		if(targetArea < displayArea) {
-            Vector2 midPoint= Math3D.Middle(iStorage.GetLayoutPosition(parentNode));
-            return new Rect(midPoint.x, midPoint.y, 0, 0);			
+		if(!iStorage.IsVisible(edObj)) {
+			var parent= iStorage.GetParent(edObj);
+			for(; parent != null && !iStorage.IsVisible(parent); parent= iStorage.GetParent(parent));
+			if(parent != null) {
+	            Vector2 midPoint= Math3D.Middle(iStorage.GetLayoutPosition(parent));
+	            return new Rect(midPoint.x, midPoint.y, 0, 0);							
+			} 
 		}
 		return iStorage.GetLayoutPosition(edObj);
     }
 	// ----------------------------------------------------------------------
-	iCS_EditorObject GetParentNodeWithSmallestDisplayArea(iCS_EditorObject eObj, iCS_IStorage iStorage) {
+	static iCS_EditorObject GetParentNodeWithSmallestDisplayArea(iCS_EditorObject eObj, iCS_IStorage iStorage) {
 		iCS_EditorObject smallestParent= null;
 		float smallestArea= Mathf.Infinity;
 		var parent= iStorage.GetParent(eObj);
@@ -940,11 +934,14 @@ public partial class iCS_Graphics {
         return iStorage.IsFolded(edObj) && IsAnimationCompleted(edObj, iStorage);
     }
    	// ----------------------------------------------------------------------
-    bool IsInvisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+    static bool IsInvisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         return !IsVisible(edObj, iStorage);
     }
    	// ----------------------------------------------------------------------
-    bool IsVisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+    static bool IsVisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+		// Just return the layout value if no animation is running.
+		if(!iStorage.IsAnimationPlaying) return iStorage.IsVisible(edObj);
+		
 		// Root node is always visible.
 		var smallestParent= GetParentNodeWithSmallestDisplayArea(edObj, iStorage);
 		if(smallestParent == null) return true;
@@ -963,7 +960,7 @@ public partial class iCS_Graphics {
 		if(edObj.IsPort) return true;
 		
 		// Child nodes are visible if parent is maximized.
-		if(parent.IsMaximized) return true;
+		if(iStorage.IsMaximized(parent)) return true;
 		
 		// Child nodes are also visible when transitioning from maximized to folded.
 		if(animation.IsActive) {
