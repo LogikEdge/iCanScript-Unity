@@ -1,18 +1,20 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using P=Prelude;
 
 public class iCS_EditorObjectCache {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public bool         IsValid= false;
-    public int          ParentId= -1;
-    public List<int>    Children= new List<int>();
-    public Rect         DisplayPosition;
-    public float        AnimationTime= 0;
-	public object		InitialValue= null;
+    public bool             IsValid= false;
+    public int              ParentId= -1;
+    public List<int>        Children= new List<int>();
+	public object		    InitialValue= null;
+	// Graph Animation
+    public Rect             DisplayPosition;
+    public float            AnimationTime= 0;
+	public P.Animate<Rect>	AnimatedPosition= new P.Animate<Rect>();
 	
     // ======================================================================
     // Operations

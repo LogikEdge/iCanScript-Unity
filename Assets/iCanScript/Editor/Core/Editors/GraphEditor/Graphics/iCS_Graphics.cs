@@ -9,6 +9,7 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using P= Prelude;
 
 public partial class iCS_Graphics {
     // ======================================================================
@@ -84,7 +85,12 @@ public partial class iCS_Graphics {
         TitleStyle.fontSize= (int)(kTitleFontSize*Scale);
         ValueStyle.fontSize= (int)(kLabelFontSize*Scale);        
     }
-    public void End() {
+    public void End(iCS_IStorage iStorage) {
+		var timeRatio= iStorage.AnimationTimeRatio;
+		if(timeRatio.IsActive && timeRatio.IsElapsed) {
+			timeRatio.Reset();
+			iStorage.IsAnimationPlaying= false;
+		}
     }
     
     // ======================================================================
@@ -852,47 +858,45 @@ public partial class iCS_Graphics {
     //  Utilities
     // ----------------------------------------------------------------------
     static Rect GetDisplayPosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+		var animation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
         Rect layoutPosition= GetLayoutPosition(edObj, iStorage);
-        Rect displayPosition= iStorage.GetDisplayPosition(edObj);
-        if(IsAnimationCompleted(edObj, iStorage)) {
-            if((GetAnimationRatio(edObj, iStorage)-1f)*iCS_PreferencesEditor.AnimationTime > 0.2f) {  // 200ms
-                if(displayPosition.x != layoutPosition.x || displayPosition.y != layoutPosition.y ||
-                   displayPosition.width!= layoutPosition.width || displayPosition.height != layoutPosition.height) {
-                       if(!edObj.IsFloating) {
-                           iStorage.StartAnimTimer(edObj);
-                           return displayPosition;                           
-                       }
-                   }
-            }
-            iStorage.SetDisplayPosition(edObj, layoutPosition);
-            return layoutPosition;
-        }
-        iStorage.IsAnimationPlaying= true;
-        float ratio= GetAnimationRatio(edObj, iStorage);
-        displayPosition= Math3D.Lerp(displayPosition, layoutPosition, ratio);
-        return displayPosition;
+		// Restart animation if a change in the graph occured.
+		if(Math3D.IsNotEqual(animation.TargetValue, layoutPosition)) {
+			if(!edObj.IsFloating) {
+				var timeRatio= iStorage.AnimationTimeRatio;
+				if(timeRatio.IsElapsed) {
+					timeRatio.Start(iCS_PreferencesEditor.AnimationTime);					
+				}
+				animation.Start(animation.CurrentValue, layoutPosition, timeRatio, (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+		        iStorage.IsAnimationPlaying= true;
+				return animation.CurrentValue;
+			}
+			return layoutPosition;
+		}				
+		// Update the animation.
+		if(animation.IsActive) {
+			animation.Update();
+			return animation.CurrentValue;
+		}
+		animation.Reset(layoutPosition);
+		return layoutPosition;
     }
    	// ----------------------------------------------------------------------
     static Rect GetLayoutPosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+		// Handle disapearing nodes.
         if(!iStorage.IsVisible(edObj)) {
             iCS_EditorObject parent= iStorage.GetParent(edObj);
             for(; !iStorage.IsVisible(parent); parent= iStorage.GetParent(parent));
             Vector2 midPoint= Math3D.Middle(iStorage.GetLayoutPosition(parent));
             return new Rect(midPoint.x, midPoint.y, 0, 0);
         }
+		// Handle normal nodes.
         return iStorage.GetLayoutPosition(edObj);
-    }
-	// ----------------------------------------------------------------------
-	// Returns the time ratio of the animation between 0 and 1.
-    static float GetAnimationRatio(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-        float time= iCS_PreferencesEditor.AnimationTime;
-        float invTime= Math3D.IsZero(time) ? 10000f : 1f/time;
-        return invTime*(iStorage.GetAnimTime(edObj));        
     }
 	// ----------------------------------------------------------------------
     // Returns true if the animation ratio >= 1.
     static bool IsAnimationCompleted(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-        return GetAnimationRatio(edObj, iStorage) >= 0.99f;
+		return !iStorage.AnimationTimeRatio.IsActive;
     }
 
    	// ----------------------------------------------------------------------

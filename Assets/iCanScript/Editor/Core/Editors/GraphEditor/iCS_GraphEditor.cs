@@ -1,4 +1,4 @@
-//#define SHOW_FRAME_COUNT
+#define SHOW_FRAME_COUNT
 
 using UnityEngine;
 using UnityEditor;
@@ -185,7 +185,6 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         if(IStorage != null) {
             // Repaint window
             if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
-                IStorage.IsAnimationPlaying= false;
                 MyWindow.Repaint();
             }
             float refreshFactor= (Application.isPlaying || EditorWindow.mouseOverWindow == MyWindow ? 8f : 1f);
@@ -1263,7 +1262,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
         // Draw nodes and their connections.
         DisplayGraphNodes();
 
-        myGraphics.End();
+        myGraphics.End(IStorage);
 
         // Show scroll zone (is applicable).
         if(IsDragStarted) DrawScrollZone();

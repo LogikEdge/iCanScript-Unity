@@ -3,18 +3,20 @@ using UnityEditor;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using P= Prelude;
 
 public partial class iCS_IStorage {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-            bool                myIsDirty         = true;
-    public  bool                IsAnimationPlaying= false;
-    public  iCS_Storage         Storage           = null;
-            iCS_IStorageCache   StorageCache      = null;
-            int                 UndoRedoId        = 0;
-            bool                CleanupNeeded     = true;
-    public  bool                CleanupDeadPorts  = true;
+            bool                myIsDirty           = true;
+    public  bool                IsAnimationPlaying  = false;
+    public  iCS_Storage         Storage             = null;
+            iCS_IStorageCache   StorageCache        = null;
+            int                 UndoRedoId          = 0;
+            bool                CleanupNeeded       = true;
+    public  bool                CleanupDeadPorts    = true;
+			P.TimeRatio			myAnimationTimeRatio= new P.TimeRatio();
     
     // ======================================================================
     // Initialization
@@ -104,13 +106,15 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetParent(iCS_EditorObject obj)         { return Storage.GetParent(obj); }
-	public iCS_EditorObject GetParentNode(iCS_EditorObject obj)		{ var parent= GetParent(obj); while(parent != null && !parent.IsNode) parent= GetParent(parent); return parent; }
-    public iCS_EditorObject GetSource(iCS_EditorObject obj)         { return Storage.GetSource(obj); }
-    public float           GetAnimTime(iCS_EditorObject obj)        { return IsValid(obj) ? Time.realtimeSinceStartup-StorageCache[obj.InstanceId].AnimationTime : 0; }
-    public void            StartAnimTimer(iCS_EditorObject obj)     { if(IsValid(obj)) StorageCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }
+    public iCS_EditorObject      GetParent(iCS_EditorObject obj)            { return Storage.GetParent(obj); }
+	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= GetParent(obj); while(parent != null && !parent.IsNode) parent= GetParent(parent); return parent; }
+    public iCS_EditorObject      GetSource(iCS_EditorObject obj)            { return Storage.GetSource(obj); }
+	public iCS_EditorObjectCache GetEditorObjectCache(iCS_EditorObject obj) { return IsValid(obj) ? StorageCache[obj.InstanceId] : null; }
+//    public float           GetAnimTime(iCS_EditorObject obj)        { return IsValid(obj) ? Time.realtimeSinceStartup-StorageCache[obj.InstanceId].AnimationTime : 0; }
+//    public void            StartAnimTimer(iCS_EditorObject obj)     { if(IsValid(obj)) StorageCache[obj.InstanceId].AnimationTime= Time.realtimeSinceStartup; }
     public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? StorageCache[obj.InstanceId].DisplayPosition : default(Rect); }
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) StorageCache[obj.InstanceId].DisplayPosition= pos; }
+	public P.TimeRatio	AnimationTimeRatio { get { return myAnimationTimeRatio; }}
     // ----------------------------------------------------------------------
     public object          GetRuntimeObject(iCS_EditorObject obj) {
         iCS_Behaviour bh= Storage as iCS_Behaviour;
