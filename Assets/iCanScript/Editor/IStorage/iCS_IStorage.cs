@@ -10,7 +10,6 @@ public partial class iCS_IStorage {
     // Fields
     // ----------------------------------------------------------------------
             bool                myIsDirty           = true;
-    public  bool                IsAnimationPlaying  = false;
     public  iCS_Storage         Storage             = null;
             iCS_IStorageCache   StorageCache        = null;
             int                 UndoRedoId          = 0;
@@ -83,8 +82,9 @@ public partial class iCS_IStorage {
     public bool IsSourceValid(iCS_EditorObject obj)  { return IsValid(obj.Source); }
     public bool IsParentValid(iCS_EditorObject obj)  { return IsValid(obj.ParentId); }
     // ----------------------------------------------------------------------
-    public bool IsDirty        { get { ProcessUndoRedo(); return myIsDirty; }}
-	public int  ModificationId { get { return UndoRedoId; }}
+    public bool IsDirty            { get { ProcessUndoRedo(); return myIsDirty; }}
+	public int  ModificationId     { get { return UndoRedoId; }}
+	public bool IsAnimationPlaying { get { return myAnimationTimeRatio.IsActive; }}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? GetParent(eObj) : null); }
     // ----------------------------------------------------------------------
@@ -169,6 +169,9 @@ public partial class iCS_IStorage {
         bool modified= false;
         ForEach(
             obj=> {
+				// Update visible & display position
+				GetEditorObjectCache(obj).VisiblePosition= GetVisiblePosition(obj);
+				
                 // Cleanup disconnected dynamic state or module ports.
 				var parent= GetParent(obj);
                 if(CleanupDeadPorts) {

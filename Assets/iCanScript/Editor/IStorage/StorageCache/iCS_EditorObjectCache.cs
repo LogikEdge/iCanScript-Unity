@@ -7,11 +7,12 @@ public class iCS_EditorObjectCache {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public bool             IsValid= false;
-    public int              ParentId= -1;
-    public List<int>        Children= new List<int>();
+    public bool             IsValid     = false;
+    public int              ParentId    = -1;
+    public List<int>        Children    = new List<int>();
 	public object		    InitialValue= null;
 	// Graph Animation
+	public Rect				VisiblePosition = new Rect(0,0,0,0);					
 	public P.Animate<Rect>	AnimatedPosition= new P.Animate<Rect>();
 	
     // ======================================================================

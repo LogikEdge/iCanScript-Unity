@@ -48,29 +48,16 @@ public partial class iCS_IStorage {
         eObj.LocalPosition= newLocalPos;
     }
     
-//    // ----------------------------------------------------------------------
-//    public Rect GetDisplayPosition(iCS_EditorObject eObj) {
-//        var cache= StorageCache[eObj.InstanceId];
-//        var layoutPos= GetLayoutPosition(eObj);
-//        if(cache.DisplayPosition.IsActive) {
-//            if(Math3D.IsNotEqual(layoutPos, cache.DisplayPosition.TargetValue)) {
-//                cache.DisplayPosition.TargetValue= layoutPos;
-//            }
-//            cache.DisplayPosition.Update();
-//            return cache.DisplayPosition.CurrentValue;
-//        }
-//        SetDisplayOptionBeforeAnimation(eObj, eObj.DisplayOption);
-//        return layoutPos;
-//    }
-//    // ----------------------------------------------------------------------
-//    public void SetDisplayPosition(iCS_EditorObject eObj, Rect newPos, bool performAnimation) {
-//        var cache= StorageCache[eObj.InstanceId];
-//        if(performAnimation) {
-//            var currentPos= cache.DisplayPosition.CurrentValue;
-//            var animTime  = iCS_PreferencesEditor.AnimationTime;
-//            cache.DisplayPosition.Start(currentPos, newPos, animTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));            
-//        } else {
-//            cache.DisplayPosition.Reset(newPos);
-//        }
-//    }
+   	// ----------------------------------------------------------------------
+    public Rect GetVisiblePosition(iCS_EditorObject edObj) {
+		if(!IsVisible(edObj)) {
+			var parent= GetParent(edObj);
+			for(; parent != null && !IsVisible(parent); parent= GetParent(parent));
+			if(parent != null) {
+	            Vector2 midPoint= Math3D.Middle(GetLayoutPosition(parent));
+	            return new Rect(midPoint.x, midPoint.y, 0, 0);							
+			} 
+		}
+		return GetLayoutPosition(edObj);
+    }
 }

@@ -89,7 +89,6 @@ public partial class iCS_Graphics {
 		var timeRatio= iStorage.AnimationTimeRatio;
 		if(timeRatio.IsActive && timeRatio.IsElapsed) {
 			timeRatio.Reset();
-			iStorage.IsAnimationPlaying= false;
 		}
     }
     
@@ -857,12 +856,9 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  Utilities
     // ----------------------------------------------------------------------
-/*
-	FIXME : Restarting the timeRatio restarts all animations.
-*/
     static Rect GetDisplayPosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
 		var animation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
-        Rect visiblePosition= GetVisiblePosition(edObj, iStorage);
+        Rect visiblePosition= iStorage.GetVisiblePosition(edObj);
 		// Restart animation if a change in the graph occured.
 		if(Math3D.IsNotEqual(animation.TargetValue, visiblePosition)) {
 			if(!edObj.IsFloating) {
@@ -871,7 +867,6 @@ public partial class iCS_Graphics {
 					timeRatio.Start(iCS_PreferencesEditor.AnimationTime);					
 				}
 				animation.Start(animation.CurrentValue, visiblePosition, timeRatio, (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-		        iStorage.IsAnimationPlaying= true;
 				return animation.CurrentValue;
 			}
 			return visiblePosition;
@@ -883,18 +878,6 @@ public partial class iCS_Graphics {
 		}
 		animation.Reset(visiblePosition);
 		return visiblePosition;
-    }
-   	// ----------------------------------------------------------------------
-    static Rect GetVisiblePosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-		if(!iStorage.IsVisible(edObj)) {
-			var parent= iStorage.GetParent(edObj);
-			for(; parent != null && !iStorage.IsVisible(parent); parent= iStorage.GetParent(parent));
-			if(parent != null) {
-	            Vector2 midPoint= Math3D.Middle(iStorage.GetLayoutPosition(parent));
-	            return new Rect(midPoint.x, midPoint.y, 0, 0);							
-			} 
-		}
-		return iStorage.GetLayoutPosition(edObj);
     }
 	// ----------------------------------------------------------------------
 	static iCS_EditorObject GetParentNodeWithSmallestDisplayArea(iCS_EditorObject eObj, iCS_IStorage iStorage) {
