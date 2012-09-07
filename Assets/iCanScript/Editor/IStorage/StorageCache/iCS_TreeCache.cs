@@ -9,7 +9,7 @@ public class iCS_TreeCache {
     // ======================================================================
     // Child Classes
     // ----------------------------------------------------------------------
-    public class TreeNode {
+    public class iCS_EditorObjectCache {
         public bool         IsValid= false;
         public int          ParentId= -1;
         public List<int>    Children= new List<int>();
@@ -17,7 +17,7 @@ public class iCS_TreeCache {
         public float        AnimationTime= 0;
 		public object		InitialValue= null;
 		
-        public TreeNode()  { Reset(); }
+        public iCS_EditorObjectCache()  { Reset(); }
         public void Reset() {
             IsValid= false;
             ParentId= -1;
@@ -25,11 +25,11 @@ public class iCS_TreeCache {
 			AnimationTime= 0;
 			InitialValue= null;
         }
-        public void AddChild(int id, TreeNode toAdd) {
+        public void AddChild(int id, iCS_EditorObjectCache toAdd) {
             if(Prelude.elem(id, Children.ToArray())) return;
             Children.Add(id);
         }
-        public void RemoveChild(int id, TreeNode toDelete) {
+        public void RemoveChild(int id, iCS_EditorObjectCache toDelete) {
             for(int i= 0; i < Children.Count; ++i) {
                 if(Children[i] == id) {
                     Children.RemoveAt(i);
@@ -58,12 +58,12 @@ public class iCS_TreeCache {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public List<TreeNode>   TreeCache= new List<TreeNode>();
+    public List<iCS_EditorObjectCache>   TreeCache= new List<iCS_EditorObjectCache>();
 
     // ======================================================================
     // Tree Cach Containement Functionality
     // ----------------------------------------------------------------------
-    public TreeNode this[int i] {
+    public iCS_EditorObjectCache this[int i] {
         get { return TreeCache[i]; }
     }
     // ----------------------------------------------------------------------
@@ -75,7 +75,7 @@ public class iCS_TreeCache {
             Debug.LogWarning("Trying to create a TreeNode with the same id has an existing TreeNode. (id)=>"+obj.InstanceId);
         }
         // Create slots in the tree cache to hold the new instance.
-        while(TreeCache.Count <= obj.InstanceId) TreeCache.Add(new TreeNode());
+        while(TreeCache.Count <= obj.InstanceId) TreeCache.Add(new iCS_EditorObjectCache());
         UpdateInstance(obj);
     }
     public void UpdateInstance(iCS_EditorObject obj) {
@@ -88,7 +88,7 @@ public class iCS_TreeCache {
         }
         
         // Remove link to parent if parent has changed.
-        TreeNode node= TreeCache[id];
+        var node= TreeCache[id];
         if(node.ParentId != parentId && IsValid(node.ParentId)) {
             TreeCache[node.ParentId].RemoveChild(id, node);
         }
@@ -111,7 +111,7 @@ public class iCS_TreeCache {
         if(IsInvalid(id)) return;
         
         // Remove from parent.
-        TreeNode nd= TreeCache[id];
+        var nd= TreeCache[id];
         if(IsValid(nd.ParentId)) {
             TreeCache[nd.ParentId].RemoveChild(id, nd);
         }
@@ -136,14 +136,14 @@ public class iCS_TreeCache {
     }
     public void ForEachChild(int id, Action<int> fnc) {
         if(IsInvalid(id)) return;
-        TreeNode nd= TreeCache[id];
+        var nd= TreeCache[id];
         foreach(var child in nd.Children) {
             if(TreeCache[id].IsValid) fnc(child);
         }
     }
     public bool ForEachChild(int id, Func<int,bool> fnc) {
         if(IsInvalid(id)) return false;
-        TreeNode nd= TreeCache[id];
+        var nd= TreeCache[id];
         foreach(var child in nd.Children) {
             if(TreeCache[id].IsValid) {
                 if(fnc(child)) return true;
@@ -165,7 +165,7 @@ public class iCS_TreeCache {
         if(IsInvalid(id)) return;
 
         // First iterate through all children ...
-        TreeNode nd= TreeCache[id];
+        var nd= TreeCache[id];
         foreach(var child in nd.Children) {
             ForEachRecursiveDepthFirst(child, fnc);
         }
@@ -187,7 +187,7 @@ public class iCS_TreeCache {
         // First this node ...
         fnc(id);
         // ... then iterate through all children.
-        TreeNode nd= TreeCache[id];
+        var nd= TreeCache[id];
         foreach(var child in nd.Children) {
             ForEachRecursiveDepthLast(child, fnc);
         }
@@ -197,7 +197,7 @@ public class iCS_TreeCache {
         // Nothing to do if the id is invalid.
         if(IsInvalid(id)) return;
         // Don't use the id it is has been removed.
-        TreeNode nd= TreeCache[id];        
+        var nd= TreeCache[id];        
         // Iterate through all children ...
         foreach(var child in nd.Children) {
             ForEachRecursiveDepthFirst(child, fnc);
@@ -207,7 +207,7 @@ public class iCS_TreeCache {
         // Nothing to do if the id is invalid
         if(IsInvalid(id)) return;
         // Don't use the id it is has been removed.
-        TreeNode nd= TreeCache[id];        
+        var nd= TreeCache[id];        
         // Iterate through all children.
         foreach(var child in nd.Children) {
             ForEachRecursiveDepthLast(child, fnc);

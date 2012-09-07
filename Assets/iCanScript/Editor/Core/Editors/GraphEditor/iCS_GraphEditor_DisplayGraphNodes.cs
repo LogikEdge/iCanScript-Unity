@@ -4,6 +4,9 @@ using System.Collections;
 /*
     FIXME: Resolve difference between visual minimized and graph minimize and the likes.
 */
+/*
+    FIXME: Cleanup conditional tree descent VS full tree descent when drawing graph.
+*/
 public partial class iCS_GraphEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
