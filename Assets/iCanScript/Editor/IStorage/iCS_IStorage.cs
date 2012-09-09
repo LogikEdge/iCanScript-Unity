@@ -142,27 +142,33 @@ public partial class iCS_IStorage {
     // Storage Update
     // ----------------------------------------------------------------------
     public void Update() {
+        // Processing any changed caused by Undo/Redo
         ProcessUndoRedo();
-        if(!myIsDirty) {
-            if(CleanupNeeded) CleanupNeeded= Cleanup();
+        
+        // Perform layout if one or more objects has changed.
+        if(myIsDirty) {
+            // Tell Unity that our storage has changed.
+            EditorUtility.SetDirty(Storage);
+            // Prepare for cleanup after storage change.
+            CleanupNeeded= true;
+            myIsDirty= false;
+
+            // Perform layout of modified nodes.
+            ForEachRecursiveDepthLast(EditorObjects[0],
+                obj=> {
+                    if(obj.IsDirty) {
+                        //Debug.Log(obj.Name+" is dirty");
+                        Layout(obj);
+                    }
+                }
+            );
             return;
         }
-//        Debug.Log("Graph is dirty");
-        CleanupNeeded= true;
-        if(myIsDirty) {
-            myIsDirty= false;
-            EditorUtility.SetDirty(Storage);
-        }
 
-        // Perform layout of modified nodes.
-        ForEachRecursiveDepthLast(EditorObjects[0],
-            obj=> {
-                if(obj.IsDirty) {
-//                    Debug.Log(obj.Name+" is dirty");
-                    Layout(obj);
-                }
-            }
-        );
+        // Objects & Layout are now stable so perform any needed cleanup.
+        if(CleanupNeeded) {
+            CleanupNeeded= Cleanup();
+        }
     }
     // ----------------------------------------------------------------------
     public bool Cleanup() {
