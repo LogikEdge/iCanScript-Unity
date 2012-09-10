@@ -150,7 +150,7 @@ public partial class iCS_IStorage {
         ProcessUndoRedo();
         
         // Update display if animation is disabled.
-        if(!AnimateLayout) {
+        if(!AnimateLayout || (!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive)) {
             ForEach(
                 obj=> {
                     var animation= GetEditorObjectCache(obj).AnimatedPosition;
