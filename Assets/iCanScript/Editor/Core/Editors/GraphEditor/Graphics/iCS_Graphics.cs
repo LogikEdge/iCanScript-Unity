@@ -859,8 +859,7 @@ public partial class iCS_Graphics {
     //  Utilities
     // ----------------------------------------------------------------------
     static Rect GetDisplayPosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-		var animation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
-		return animation.CurrentValue;
+		return iStorage.GetDisplayPosition(edObj);
     }
    	// ----------------------------------------------------------------------
  	bool IsMinimized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
@@ -885,12 +884,5 @@ public partial class iCS_Graphics {
 		var parentAnimation= iStorage.GetEditorObjectCache(parentNode).AnimatedPosition;
         float parentArea= parentAnimation.CurrentValue.width*parentAnimation.CurrentValue.height;
         return parentArea > kIconicArea+1f;  // Parent is visible and not iconic.
-    }
-   	// ----------------------------------------------------------------------
-    static bool IsIconic(iCS_EditorObject eObj, iCS_IStorage iStorage) {
-        if(!eObj.IsNode) return false;
-		var animation= iStorage.GetEditorObjectCache(eObj).AnimatedPosition;
-        float area= animation.CurrentValue.width*animation.CurrentValue.height;
-        return area < kIconicArea+1f;  // Parent is visible and not iconic.
     }
 }

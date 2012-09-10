@@ -183,7 +183,7 @@ public partial class iCS_IStorage {
         }
 
         // Graph is now stable.  Recompute animation target if needed.
-        if(AnimationNeeded) {
+        if(AnimationNeeded && AnimateLayout) {
             ForEach(
                 obj=> {
                     Rect target= GetAnimationTarget(obj);
@@ -200,9 +200,9 @@ public partial class iCS_IStorage {
 
         // Animate position.
         if(myAnimationTimeRatio.IsActive) {
-//            if(myAnimationTimeRatio.IsElapsed) {
-//                myAnimationTimeRatio.Reset();
-//            }
+            if(myAnimationTimeRatio.IsElapsed) {
+                myAnimationTimeRatio.Reset();
+            }
             ForEach(
                 obj=> {
                     var animation= GetEditorObjectCache(obj).AnimatedPosition;
