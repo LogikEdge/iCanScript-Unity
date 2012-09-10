@@ -6,6 +6,11 @@ using System.Collections.Generic;
 
 public partial class iCS_IStorage {
     // ======================================================================
+    // Constants
+    // ----------------------------------------------------------------------
+    const float kLayoutEpsilon= 0.01f;
+    
+    // ======================================================================
     // Node Layout
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
@@ -117,18 +122,23 @@ public partial class iCS_IStorage {
                 if(Math3D.IsNotZero(diff)) {
                     newPos.x+= diff.x;
                     newPos.y+= diff.y;
-                    neededNodeGlobalX+= diff.x;
-                    neededNodeGlobalY+= diff.y;
                 }
             }
-            if(Math3D.IsNotEqual(globalPosition.x, neededNodeGlobalX) || Math3D.IsNotEqual(globalPosition.y, neededNodeGlobalY) ||
-               Math3D.IsNotEqual(globalPosition.width, width) || Math3D.IsNotEqual(globalPosition.height, height)) {
+            if(!IsSamePosition(globalPosition, newPos)) {
                 SetLayoutPosition(node, newPos);
             }
         }
 
         // Layout child ports
         LayoutPorts(node);
+    }
+    // ----------------------------------------------------------------------
+    // Determine if position are the same.
+    public bool IsSamePosition(Rect r1, Rect r2) {
+        return Math3D.IsWithin(r1.x, r2.x-kLayoutEpsilon, r2.x+kLayoutEpsilon) &&
+               Math3D.IsWithin(r1.y, r2.y-kLayoutEpsilon, r2.y+kLayoutEpsilon) &&
+               Math3D.IsWithin(r1.width, r2.width-kLayoutEpsilon, r2.width+kLayoutEpsilon) &&
+               Math3D.IsWithin(r1.height, r2.height-kLayoutEpsilon, r2.height+kLayoutEpsilon);
     }
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
@@ -140,7 +150,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Moves the node without changing its size.
     public void DeltaMove(iCS_EditorObject node, Vector2 _delta) {
-//        Debug.Log("Need to compute ratios for children of: "+GetParent(node).Name ?? "Universe");
         // Move the node
         DeltaMoveInternal(node, _delta);
         // Resolve collision between siblings.

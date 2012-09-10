@@ -16,6 +16,7 @@ public partial class iCS_Graphics {
     // Constants
     // ----------------------------------------------------------------------
     const float kMinimizeSize    = 32f;
+    const float kIconicArea      = kMinimizeSize*kMinimizeSize;
     const float kNodeCornerRadius= 8f;
     const float kNodeTitleHeight = 2f*kNodeCornerRadius;
     const int   kLabelFontSize   = 11;
@@ -859,47 +860,8 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     static Rect GetDisplayPosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
 		var animation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
-        Rect visiblePosition= iStorage.GetVisiblePosition(edObj);
-		// Restart animation if a change in the graph occured.
-		if(ShouldStartAnimation(animation.TargetValue, visiblePosition)) {
-			if(edObj.IsFloating) return visiblePosition;
-			var timeRatio= iStorage.AnimationTimeRatio;
-			if(timeRatio.IsElapsed) {
-				timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-//				Debug.Log("Restarting animation: "+edObj.Name+" "+visiblePosition+animation.TargetValue);					
-			}
-			animation.Start(animation.CurrentValue, visiblePosition, timeRatio, (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-			return animation.CurrentValue;
-		}				
-		// Update the animation.
-		if(animation.IsActive) {
-			animation.Update();
-			return animation.CurrentValue;
-		}
-		animation.Reset(visiblePosition);
-		return visiblePosition;
+		return animation.CurrentValue;
     }
-	// ----------------------------------------------------------------------
-	static bool ShouldStartAnimation(Rect r1, Rect r2) {
-		return 1f < Mathf.Abs(r1.x-r2.x)+Mathf.Abs(r1.y-r2.y)+Mathf.Abs(r1.width-r2.width)+Mathf.Abs(r1.height-r2.height);
-	}
-	// ----------------------------------------------------------------------
-	static iCS_EditorObject GetParentNodeWithSmallestDisplayArea(iCS_EditorObject eObj, iCS_IStorage iStorage) {
-		iCS_EditorObject smallestParent= null;
-		float smallestArea= Mathf.Infinity;
-		var parent= iStorage.GetParent(eObj);
-		for(; parent != null; parent= iStorage.GetParent(parent)) {
-			if(parent.IsNode) {
-				var parentPos= iStorage.GetDisplayPosition(parent);
-				float area= parentPos.width*parentPos.height;
-				if(Math3D.IsSmallerOrEqual(area, smallestArea)) {
-					smallestParent= parent;
-					smallestArea= area;
-				}
-			}
-		}
-		return smallestParent;
-	}
 	// ----------------------------------------------------------------------
     // Returns true if the animation ratio >= 1.
     static bool IsAnimationCompleted(iCS_EditorObject edObj, iCS_IStorage iStorage) {
@@ -908,13 +870,10 @@ public partial class iCS_Graphics {
 
    	// ----------------------------------------------------------------------
  	bool IsMinimized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-        if(edObj.IsNode) {
-            if(IsInvisible(edObj, iStorage)) return false;
-            Rect position= GetDisplayPosition(edObj, iStorage);
-            Vector2 iconSize= GetMaximizeIconSize(edObj);
-            return (position.width*position.height <= iconSize.x*iconSize.y+1f);
-        }
-        return iStorage.IsMinimized(edObj) && IsAnimationCompleted(edObj, iStorage);
+        if(!edObj.IsNode) return false;
+		var nodeAnimation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
+        float area= nodeAnimation.CurrentValue.width*nodeAnimation.CurrentValue.height;
+        return (area <= kIconicArea+1f);
     }
    	// ----------------------------------------------------------------------
     static bool IsFolded(iCS_EditorObject edObj, iCS_IStorage iStorage) {
@@ -926,38 +885,22 @@ public partial class iCS_Graphics {
     }
    	// ----------------------------------------------------------------------
     static bool IsVisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-		// Just return the layout value if no animation is running.
-		if(!iStorage.IsAnimationPlaying) return iStorage.IsVisible(edObj);
-		
-		// Root node is always visible.
-		var smallestParent= GetParentNodeWithSmallestDisplayArea(edObj, iStorage);
-		if(smallestParent == null) return true;
-
-		// Don't show child if parent node is iconic or smaller.
-		var animation= iStorage.GetEditorObjectCache(smallestParent).AnimatedPosition;
-		var smallestParentPos= animation.CurrentValue;
-		float smallestParentArea= smallestParentPos.width*smallestParentPos.height;
-		if(Math3D.IsSmallerOrEqual(smallestParentArea, 32f*32f)) return false;
-		
-		// Don't show if my parent is not the smallest parent.
-        iCS_EditorObject parent= iStorage.GetParent(edObj);
-		if(parent != smallestParent) return false;
-		
-		// Ports are always visible on folded/maximized parents.
-		if(edObj.IsPort) return true;
-		
-		// Child nodes are visible if parent is maximized.
-		if(iStorage.IsMaximized(parent)) return true;
-		
-		// Child nodes are also visible when transitioning from maximized to folded.
-		if(animation.IsActive) {
-			if(parent.IsFolded) {
-				float targetArea= animation.TargetValue.width*animation.TargetValue.height;
-				return targetArea < smallestParentArea;
-			}
-		}
-
-        return false;
+        if(edObj.IsNode) {
+    		var nodeAnimation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
+            float area= nodeAnimation.CurrentValue.width*nodeAnimation.CurrentValue.height;
+            return Math3D.IsNotZero(area);            
+        }
+        var parentNode= iStorage.GetParentNode(edObj);
+        if(parentNode == null) return false;
+		var parentAnimation= iStorage.GetEditorObjectCache(parentNode).AnimatedPosition;
+        float parentArea= parentAnimation.CurrentValue.width*parentAnimation.CurrentValue.height;
+        return parentArea > kIconicArea+1f;  // Parent is visible and not iconic.
     }
-    
+   	// ----------------------------------------------------------------------
+    static bool IsIconic(iCS_EditorObject eObj, iCS_IStorage iStorage) {
+        if(!eObj.IsNode) return false;
+		var animation= iStorage.GetEditorObjectCache(eObj).AnimatedPosition;
+        float area= animation.CurrentValue.width*animation.CurrentValue.height;
+        return area < kIconicArea+1f;  // Parent is visible and not iconic.
+    }
 }

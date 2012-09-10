@@ -1,3 +1,5 @@
+#define DEBUG
+
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -10,10 +12,12 @@ public partial class iCS_IStorage {
     // Fields
     // ----------------------------------------------------------------------
             bool                myIsDirty           = true;
+            bool                CleanupNeeded       = true;
+            bool                AnimationNeeded     = true;
+    public  bool                AnimateLayout       = true;
     public  iCS_Storage         Storage             = null;
             iCS_IStorageCache   StorageCache        = null;
             int                 UndoRedoId          = 0;
-            bool                CleanupNeeded       = true;
     public  bool                CleanupDeadPorts    = true;
 			P.TimeRatio			myAnimationTimeRatio= new P.TimeRatio();
     
@@ -145,19 +149,30 @@ public partial class iCS_IStorage {
         // Processing any changed caused by Undo/Redo
         ProcessUndoRedo();
         
+        // Update display if animation is disabled.
+        if(!AnimateLayout) {
+            ForEach(
+                obj=> {
+                    var animation= GetEditorObjectCache(obj).AnimatedPosition;
+                    animation.Reset(GetAnimationTarget(obj));                    
+                }
+            );
+        }
+        
         // Perform layout if one or more objects has changed.
         if(myIsDirty) {
             // Tell Unity that our storage has changed.
             EditorUtility.SetDirty(Storage);
             // Prepare for cleanup after storage change.
             CleanupNeeded= true;
+            AnimationNeeded= true;
             myIsDirty= false;
 
             // Perform layout of modified nodes.
             ForEachRecursiveDepthLast(EditorObjects[0],
                 obj=> {
                     if(obj.IsDirty) {
-                        //Debug.Log(obj.Name+" is dirty");
+//                        Debug.Log(obj.Name+" is dirty");
                         Layout(obj);
                     }
                 }
@@ -165,10 +180,77 @@ public partial class iCS_IStorage {
             return;
         }
 
-        // Objects & Layout are now stable so perform any needed cleanup.
+        // Graph is now stable.  Recompute animation target if needed.
+        if(AnimationNeeded) {
+            ForEach(
+                obj=> {
+                    Rect target= GetAnimationTarget(obj);
+                    var animation= GetEditorObjectCache(obj).AnimatedPosition;
+                    animation.Start(animation.CurrentValue,
+                                    target,
+                                    myAnimationTimeRatio,
+                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+                }
+            );
+            myAnimationTimeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+            AnimationNeeded= false;
+        }
+
+        // Animate position.
+        if(myAnimationTimeRatio.IsActive) {
+            if(myAnimationTimeRatio.IsElapsed) {
+                myAnimationTimeRatio.Reset();
+            }
+            ForEach(
+                obj=> {
+                    var animation= GetEditorObjectCache(obj).AnimatedPosition;
+                    if(myAnimationTimeRatio.IsActive) {
+                        animation.Update();                        
+                    } else {
+                        animation.Reset(animation.TargetValue);
+                    }
+                }
+            );
+        }
+
+        // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {
             CleanupNeeded= Cleanup();
         }
+        
+#if DEBUG
+        // Validate that animation has been properly applied.
+        ForEach(
+            obj=> {
+                var animation= GetEditorObjectCache(obj).AnimatedPosition;
+                if(IsVisible(obj)) {
+                    if(Math3D.IsNotEqual(GetLayoutPosition(obj), animation.TargetValue)) {
+                        Debug.Log("Animation was not properly applied for: "+obj.Name);                        
+                    }
+                } else {
+                    float area= animation.TargetValue.width*animation.TargetValue.height;
+                    if(Math3D.IsNotZero(area)) {
+                        Debug.Log("Animation was not properly applied for: "+obj.Name);
+                    }
+                }
+            }
+        );
+#endif
+
+    }
+    // ----------------------------------------------------------------------
+    Rect GetAnimationTarget(iCS_EditorObject eObj) {
+        Rect target;
+        if(IsVisible(eObj)) {
+            target= GetLayoutPosition(eObj);
+        } else {
+            // Find first visible parent.
+            var visibleParent= GetParent(eObj);
+            for(; visibleParent != null && !IsVisible(visibleParent); visibleParent= GetParent(visibleParent));
+            Vector2 center= Math3D.Middle(GetLayoutPosition(visibleParent ?? eObj));
+            target= new Rect(center.x, center.y, 0, 0);
+        }
+        return target;
     }
     // ----------------------------------------------------------------------
     public bool Cleanup() {

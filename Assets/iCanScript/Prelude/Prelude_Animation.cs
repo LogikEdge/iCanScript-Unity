@@ -32,9 +32,6 @@ public static partial class Prelude {
         }
     }
 
-/*
-	TODO : Allow for shared time ratio in animation (for synchronized animations).
-*/
     // ----------------------------------------------------------------------
     // Class used to a value between start and target values.
     public class Animate<T> {

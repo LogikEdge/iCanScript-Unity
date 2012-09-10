@@ -37,12 +37,12 @@ public static partial class Math3D {
 
     // ----------------------------------------------------------------------
     public static bool IsZero(float a) {
-        return IsEqual(a,0);
+        return IsEqual(a,0f);
     }
 	
     // ----------------------------------------------------------------------
     public static bool IsNotZero(float a) {
-        return !IsEqual(a,0);
+        return !IsEqual(a,0f);
     }
 	
     // ----------------------------------------------------------------------
