@@ -862,22 +862,12 @@ public partial class iCS_Graphics {
 		var animation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
 		return animation.CurrentValue;
     }
-	// ----------------------------------------------------------------------
-    // Returns true if the animation ratio >= 1.
-    static bool IsAnimationCompleted(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-		return !iStorage.GetEditorObjectCache(edObj).AnimatedPosition.IsActive;
-    }
-
    	// ----------------------------------------------------------------------
  	bool IsMinimized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(!edObj.IsNode) return false;
 		var nodeAnimation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
         float area= nodeAnimation.CurrentValue.width*nodeAnimation.CurrentValue.height;
         return (area <= kIconicArea+1f);
-    }
-   	// ----------------------------------------------------------------------
-    static bool IsFolded(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-        return iStorage.IsFolded(edObj) && IsAnimationCompleted(edObj, iStorage);
     }
    	// ----------------------------------------------------------------------
     static bool IsInvisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
@@ -888,7 +878,7 @@ public partial class iCS_Graphics {
         if(edObj.IsNode) {
     		var nodeAnimation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
             float area= nodeAnimation.CurrentValue.width*nodeAnimation.CurrentValue.height;
-            return Math3D.IsNotZero(area);            
+            return Math3D.IsGreater(area, 0.1f);            
         }
         var parentNode= iStorage.GetParentNode(edObj);
         if(parentNode == null) return false;
