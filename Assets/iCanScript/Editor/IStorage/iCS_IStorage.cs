@@ -148,7 +148,9 @@ public partial class iCS_IStorage {
     public void Update() {
         // Processing any changed caused by Undo/Redo
         ProcessUndoRedo();
-        
+/*
+	TODO: Optimize update.
+*/        
         // Update display if animation is disabled.
         if(!AnimateLayout || (!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive)) {
             ForEach(

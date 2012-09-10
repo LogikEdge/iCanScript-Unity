@@ -92,7 +92,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	void UpdateMouse() {
         var mousePosition= Event.current.mousePosition;
-        if(Event.current.type == EventType.MouseDrag) mousePosition+= Event.current.delta;
+//        if(Event.current.type == EventType.MouseDrag) mousePosition+= Event.current.delta;
         if(mousePosition.x >= 0 && mousePosition.x < position.width &&
            mousePosition.y >= 0 && mousePosition.y < position.height) {
                myMousePosition= mousePosition;
