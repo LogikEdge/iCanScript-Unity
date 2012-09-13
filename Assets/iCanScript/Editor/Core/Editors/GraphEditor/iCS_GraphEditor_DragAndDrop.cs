@@ -8,12 +8,20 @@ using System.Collections;
 // ===========================================================================
 public partial class iCS_GraphEditor : iCS_EditorBase {
     // ======================================================================
+    // Fileds
+	// ----------------------------------------------------------------------
+	UnityEngine.Object myDraggedObject= null;
+	
+    // ======================================================================
     // Respond to Unity drag & drop protocol.
 	// ----------------------------------------------------------------------
     void DragAndDropPerform() {
-        IStorage.RegisterUndo("DragAndDrop");			
-        DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
-        DragAndDrop.AcceptDrag();
+		myDraggedObject= GetDraggedObject();
+		if(myDraggedObject != null) {
+	        IStorage.RegisterUndo("DragAndDrop");			
+	        DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
+	        DragAndDrop.AcceptDrag();			
+		}
     }
 	// ----------------------------------------------------------------------
     void DragAndDropUpdated() {
@@ -43,9 +51,10 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void DragAndDropExited() {
-        UnityEngine.Object draggedObject= GetDraggedObject();
+        UnityEngine.Object draggedObject= myDraggedObject;
 		if(draggedObject == null) { return; }
-
+		myDraggedObject= null;
+		
 		// Copy/Paste library from prefab
         iCS_Storage storage= GetDraggedLibrary(draggedObject);
 		if(storage != null) {
