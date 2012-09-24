@@ -12,7 +12,7 @@ using System.Collections.Generic;
 */
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This non-persistante class is used to edit the iCS_Behaviour.
-public partial class iCS_GraphEditor : iCS_EditorBase {
+public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------

@@ -7,7 +7,7 @@ using System.Collections;
 /*
     FIXME: Cleanup conditional tree descent VS full tree descent when drawing graph.
 */
-public partial class iCS_GraphEditor : iCS_EditorBase {
+public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     void DisplayGraphNodes() {

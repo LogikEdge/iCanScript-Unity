@@ -5,7 +5,7 @@ using System.Collections;
 // ===========================================================================
 // User license verification
 // ===========================================================================
-public partial class iCS_GraphEditor : iCS_EditorBase {
+public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
 //	public void ActivateLicense() {
 //        Debug.Log("AppContentPath: "+EditorApplication.applicationContentsPath);

@@ -11,9 +11,9 @@ public static class iCS_WindowMenu {
 	}
     // ======================================================================
 	// iCanScript Graph editor.
-	[MenuItem("Window/iCanScript/Graph")]
+	[MenuItem("Window/iCanScript/Visual Editor")]
 	public static void MenuGraphEditor() {
-        iCS_GraphEditorProxy editor= EditorWindow.GetWindow(typeof(iCS_GraphEditorProxy), false, "iCS Graph") as iCS_GraphEditorProxy;
+        iCS_VisualEditorProxy editor= EditorWindow.GetWindow(typeof(iCS_VisualEditorProxy), false, "Visual Editor") as iCS_VisualEditorProxy;
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
 	}

@@ -62,8 +62,8 @@ public static class iCS_EditorMgr {
     }
     
     // ======================================================================
-    public static void ShowGraphEditor() {
-        EditorApplication.ExecuteMenuItem("Window/iCanScript/Graph");
+    public static void ShowVisualEditor() {
+        EditorApplication.ExecuteMenuItem("Window/iCanScript/Visual Editor");
     }
     public static void ShowInstanceEditor() {
         EditorApplication.ExecuteMenuItem("Window/iCanScript/Instance Wizard");        
@@ -90,7 +90,7 @@ public static class iCS_EditorMgr {
         return FindWindow(typeof(T));
     }
     public static EditorWindow FindGraphEditorWindow() {
-        return FindWindow<iCS_GraphEditor>();
+        return FindWindow<iCS_VisualEditor>();
     } 
     public static EditorWindow FindInstanceEditorWindow() {
         return FindWindow<iCS_InstanceEditor>();
@@ -102,9 +102,9 @@ public static class iCS_EditorMgr {
         return FindWindow<iCS_LibraryEditor>();
     }    
     // ======================================================================
-    public static iCS_GraphEditor FindGraphEditor() {
-        int idx= FindIndexOf(typeof(iCS_GraphEditor).Name);
-        return idx >= 0 ? myEditors[idx].Editor as iCS_GraphEditor : null;
+    public static iCS_VisualEditor FindGraphEditor() {
+        int idx= FindIndexOf(typeof(iCS_VisualEditor).Name);
+        return idx >= 0 ? myEditors[idx].Editor as iCS_VisualEditor : null;
     } 
     public static iCS_InstanceEditor FindInstanceEditor() {
         int idx= FindIndexOf(typeof(iCS_InstanceEditor).Name);
