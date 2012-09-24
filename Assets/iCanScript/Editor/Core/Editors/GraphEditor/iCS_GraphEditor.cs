@@ -165,6 +165,7 @@ public partial class iCS_GraphEditor : iCS_EditorBase {
             iCS_Graphics.Init(IStorage);
 			return false;
 		}
+        iCS_InstallerMgr.InstallGizmo();
         return true;
 	}
 
