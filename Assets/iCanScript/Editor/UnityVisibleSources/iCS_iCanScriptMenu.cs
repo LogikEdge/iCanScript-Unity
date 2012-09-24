@@ -59,24 +59,24 @@ public static class iCS_iCanScriptMenu {
     [MenuItem("iCanScript/",false,50)]
     [MenuItem("iCanScript/Documentation/Home Page",false,51)]
     public static void HomePage() {
-        Application.OpenURL("http://www.icanscript.com/index.html");
+        Application.OpenURL("http://www.icanscript.com");
     }
     [MenuItem("iCanScript/Documentation/User's Manual",false,52)]
     public static void UserManual() {
-        Application.OpenURL("http://www.icanscript.com/Documentation/UserManual/index.html");
+        Application.OpenURL("http://www.icanscript.com/user_manual");
     }
     [MenuItem("iCanScript/Documentation/Programmer's Guide",false,53)]
     public static void ProgrammerGuide() {
-        Application.OpenURL("http://www.icanscript.com/Documentation/ProgrammerGuide/index.html");
+        Application.OpenURL("http://www.icanscript.com/user_manual/programmer_guide");
     }
     [MenuItem("iCanScript/Documentation/Release Notes",false,54)]
     public static void ReleaseNotes() {
-        Application.OpenURL("http://www.icanscript.com/Documentation/ReleaseNotes/index.html");
+        Application.OpenURL("http://www.icanscript.com/support/release_notes");
     }
     // ======================================================================
     // Support Access
     [MenuItem("iCanScript/Customer Request",false,60)]
     public static void ReportBug() {
-        Application.OpenURL("http://www.disruptive-sw.com/Support/CustomerRequest/index.php");
+        Application.OpenURL("http://www.disruptive-sw.com/support/customer_request");
     }
 }
