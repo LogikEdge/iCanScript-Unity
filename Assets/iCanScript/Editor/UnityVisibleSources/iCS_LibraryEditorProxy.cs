@@ -27,9 +27,4 @@ public class iCS_LibraryEditorProxy : iCS_EditorWindow {
     void OnGUI() {
         myEditor.OnGUI(position);
     }
-    // ---------------------------------------------------------------------------------
-    // Periodically repaint the library panel.
-    void OnInspectorUpdate() {
-        Repaint();
-    }
 }
