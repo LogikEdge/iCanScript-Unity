@@ -13,13 +13,14 @@ public static class iCS_PortIcons {
 	static Texture2D	mySelectedSquarePortTemplate  = null;
 	
     // ----------------------------------------------------------------------
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	myCircularPortIcons= null;
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySquarePortIcons  = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	myCircularPortIcons        = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySquarePortIcons          = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedCircularPortIcons= null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedSquarePortIcons  = null;
 
 	// ----------------------------------------------------------------------
     //  Build template for all port icons
 	public static void BuildPortIconTemplates(float scale) {
-//		Debug.Log("Rebuilding port icons: "+scale);
 		BuildCircularPortTemplates(scale);
 		BuildSquarePortTemplates(scale);
 		FlushCachedIcons();
@@ -70,8 +71,8 @@ public static class iCS_PortIcons {
 				template.SetPixel(i,j,Color.clear);
 			}
 		}
-		float mx= 0.5f*myCircularPortTemplate.width;
-		float my= 0.5f*myCircularPortTemplate.height;
+		float mx= 0.5f*template.width;
+		float my= 0.5f*template.height;
         float steps= 360f/(4f*Mathf.PI*radius);
         for(float angle= 0f; angle < 360f; angle+= steps) {
 			float rad= angle*Mathf.Deg2Rad;
@@ -106,6 +107,18 @@ public static class iCS_PortIcons {
 	// Returns a texture representing the requested square port icon.
 	public static Texture2D GetSquarePortIcon(Color nodeColor, Color typeColor) {
 		return GetPortIcon(nodeColor, typeColor, ref mySquarePortIcons, ref mySquarePortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested circular port icon.
+	public static Texture2D GetSelectedCircularPortIcon(Color nodeColor, Color typeColor) {
+		return GetPortIcon(nodeColor, typeColor,
+			               ref mySelectedCircularPortIcons, ref mySelectedCircularPortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested square port icon.
+	public static Texture2D GetSelectedSquarePortIcon(Color nodeColor, Color typeColor) {
+		return GetPortIcon(nodeColor, typeColor,
+			               ref mySelectedSquarePortIcons, ref mySelectedSquarePortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
@@ -151,6 +164,8 @@ public static class iCS_PortIcons {
 	static void FlushCachedIcons() {
 		FlushCachedIcons(ref myCircularPortIcons);
 		FlushCachedIcons(ref mySquarePortIcons);
+		FlushCachedIcons(ref mySelectedSquarePortIcons);
+		FlushCachedIcons(ref mySelectedCircularPortIcons);
 	}
 	// ----------------------------------------------------------------------
 	static void FlushCachedIcons(ref Dictionary<Color,Dictionary<Color,Texture2D>> iconSet) {

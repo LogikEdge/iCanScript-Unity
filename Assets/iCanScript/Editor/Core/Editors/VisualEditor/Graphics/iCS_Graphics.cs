@@ -2,8 +2,6 @@
     TODO: re-examine tooltip implementation since the current one triples the frame rate.
 */
 //#define SHOW_TOOLTIP
-#define SHOW_PORT_OUTLINE
-#define USE_PORT_ICON
 
 using UnityEngine;
 using UnityEditor;
@@ -602,7 +600,7 @@ public partial class iCS_Graphics {
         Color nodeColor= GetNodeColor(iStorage.GetParent(port));
 
         // Draw port icon
-		DrawPortIcon(port, portCenter, portRadius, portColor, nodeColor, iStorage);
+		DrawPortIcon(port, portCenter, isSelectedPort, portColor, nodeColor, portRadius, iStorage);
 
         // Configure move cursor for port.
         Rect portPos= new Rect(portCenter.x-portRadius*1.5f, portCenter.y-portRadius*1.5f, portRadius*3f, portRadius*3f);
@@ -662,7 +660,7 @@ public partial class iCS_Graphics {
     }
 
 	// ----------------------------------------------------------------------
-    public void DrawPortIcon(iCS_EditorObject port, Vector2 portCenter, float portRadius, Color portColor, Color nodeColor, iCS_IStorage iStorage) {
+    public void DrawPortIcon(iCS_EditorObject port, Vector2 portCenter, bool isSelected, Color portColor, Color nodeColor, float portRadius, iCS_IStorage iStorage) {
         // Determine if port is a static port (a port that feeds information into the graph).
         bool isStaticPort= port.IsInDataPort && iStorage.GetSource(port) == null;
         // Draw port icon.
@@ -672,9 +670,9 @@ public partial class iCS_Graphics {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
 			} else {
 				if(isStaticPort) {
-		            DrawSquarePort(portCenter, portColor, nodeColor, portRadius);
+		            DrawSquarePort(portCenter, portColor, nodeColor, isSelected);
 				} else {
-	    	    	DrawCircularPort(portCenter, portColor, nodeColor, portRadius);							        
+	    	    	DrawCircularPort(portCenter, portColor, nodeColor, isSelected);							        
 				}				
 			}
         } else if(port.IsStatePort) {
@@ -690,80 +688,31 @@ public partial class iCS_Graphics {
         }
         else {
             // All other types of ports (should not exists).
-            DrawCircularPort(portCenter, portColor, nodeColor, portRadius);
+            DrawCircularPort(portCenter, portColor, nodeColor, isSelected);
         }        
     }
 	// ----------------------------------------------------------------------
-    void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-#if USE_PORT_ICON
+    void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= iCS_PortIcons.GetCircularPortIcon(_borderColor, _fillColor);
+		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedCircularPortIcon(_borderColor, _fillColor) :
+		                                 iCS_PortIcons.GetCircularPortIcon(_borderColor, _fillColor);
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
 						   portIcon.width,
 						   portIcon.height);
 		GUI.DrawTexture(pos, portIcon);
-#else
-        Color outlineColor= Color.black;
-        Vector3 center= TranslateAndScale(_center);
-        radius*= Scale;
-        Handles.color= _borderColor;
-#if SHOW_PORT_OUTLINE
-        Handles.DrawSolidDisc(center, FacingNormal, radius*1.85f);
-#endif
-        Handles.color= outlineColor;
-#if SHOW_PORT_OUTLINE
-        Handles.DrawSolidDisc(center, FacingNormal, radius*1.5f);
-#else
-        Handles.DrawSolidDisc(center, FacingNormal, radius*1.85f);
-#endif
-        Handles.color= _fillColor;
-        Handles.DrawSolidDisc(center, FacingNormal, radius);
-#endif
     }
 
 	// ----------------------------------------------------------------------
-    void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
-#if USE_PORT_ICON
+    void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= iCS_PortIcons.GetSquarePortIcon(_borderColor, _fillColor);
+		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedSquarePortIcon(_borderColor, _fillColor) :
+		                                 iCS_PortIcons.GetSquarePortIcon(_borderColor, _fillColor);
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
 						   portIcon.width,
 						   portIcon.height);
 		GUI.DrawTexture(pos, portIcon);
-#else
-
-        Color backgroundColor= Color.black;
-        radius*= Scale;
-        Vector3 center= TranslateAndScale(_center);
-        Vector3[] vectors= new Vector3[4];
-        float delta= radius*1.35f;
-
-#if SHOW_PORT_OUTLINE
-        vectors[0]= new Vector3(center.x-delta, center.y-delta, 0);
-        vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
-        vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
-        vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
-        Handles.color= Color.white;
-		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, _borderColor);
-#else
-        vectors[0]= new Vector3(center.x-delta*1.1f, center.y-delta*1.1f, 0);
-        vectors[1]= new Vector3(center.x-delta*1.1f, center.y+delta*1.1f, 0);
-        vectors[2]= new Vector3(center.x+delta*1.1f, center.y+delta*1.1f, 0);
-        vectors[3]= new Vector3(center.x+delta*1.1f, center.y-delta*1.1f, 0);
-        Handles.color= Color.white;
-		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, new Color(0,0,0,0));
-#endif
-
-        delta= radius*0.67f;
-        vectors[0]= new Vector3(center.x-delta, center.y-delta, 0);
-        vectors[1]= new Vector3(center.x-delta, center.y+delta, 0);
-        vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
-        vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
-        Handles.color= Color.white;
-        Handles.DrawSolidRectangleWithOutline(vectors, _fillColor, _fillColor);
-#endif
     }
 
 	// ----------------------------------------------------------------------
