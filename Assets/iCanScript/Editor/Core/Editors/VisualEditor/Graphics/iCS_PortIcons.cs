@@ -7,9 +7,11 @@ public static class iCS_PortIcons {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-	static Texture2D	myCircularPortIconTemplate= null;
-	static Texture2D	mySquarePortIconTemplate  = null;
-
+	static Texture2D	myCircularPortTemplate        = null;
+	static Texture2D	mySquarePortTemplate  		  = null;
+	static Texture2D	mySelectedCircularPortTemplate= null;
+	static Texture2D	mySelectedSquarePortTemplate  = null;
+	
     // ----------------------------------------------------------------------
 	static Dictionary<Color,Dictionary<Color,Texture2D>>	myCircularPortIcons= null;
 	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySquarePortIcons  = null;
@@ -18,48 +20,58 @@ public static class iCS_PortIcons {
     //  Build template for all port icons
 	public static void BuildPortIconTemplates(float scale) {
 //		Debug.Log("Rebuilding port icons: "+scale);
-		BuildCircularPortIconTemplates(scale);
-		BuildSquarePortIconTemplates(scale);
+		BuildCircularPortTemplates(scale);
+		BuildSquarePortTemplates(scale);
 		FlushCachedIcons();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildSquarePortIconTemplates(float scale) {
+	static void BuildSquarePortTemplates(float scale) {
         float len= scale*iCS_Config.PortRadius*3.7f;
+		BuildSquarePortTemplates(len, ref mySquarePortTemplate);
+		BuildSquarePortTemplates(1.67f*len, ref mySelectedSquarePortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	static void BuildSquarePortTemplates(float len, ref Texture2D template) {
 		float margin= len*0.3f;
 		
 		// Create texture.
 		int lenInt= (int)(len+1f);
 		int marginInt= (int)(margin);
 		int topMarginInt= (int)(len-margin);
-		mySquarePortIconTemplate= new Texture2D(lenInt, lenInt);
+		template= new Texture2D(lenInt, lenInt);
 		for(int x= 0; x < lenInt; ++x) {
 			for(int y= 0; y < lenInt; ++y) {
 				if(x == 0 || y == 0 || x == lenInt-1 || y == lenInt-1) {
-					mySquarePortIconTemplate.SetPixel(x,y,Color.red);
+					template.SetPixel(x,y,Color.red);
 				} else  if(x < marginInt || x > topMarginInt || y < marginInt || y > topMarginInt) {
-					mySquarePortIconTemplate.SetPixel(x,y,Color.black);
+					template.SetPixel(x,y,Color.black);
 				} else {
-					mySquarePortIconTemplate.SetPixel(x,y,Color.blue);					
+					template.SetPixel(x,y,Color.blue);					
 				}
 			}
 		}
-		mySquarePortIconTemplate.Apply();
+		template.Apply();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildCircularPortIconTemplates(float scale) {
+	static void BuildCircularPortTemplates(float scale) {
         float radius= scale*iCS_Config.PortRadius*1.85f;
+		BuildCircularPortTemplates(radius, ref myCircularPortTemplate);
+		BuildCircularPortTemplates(1.67f*radius, ref mySelectedCircularPortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	static void BuildCircularPortTemplates(float radius, ref Texture2D template) {
 		float innerRadius= 0.6f*radius;
 		// Create texture.
 		int widthInt= (int)(2f*radius+2f);
 		int heightInt= (int)(2f*radius+2f);
-		myCircularPortIconTemplate= new Texture2D(widthInt, heightInt);
+		template= new Texture2D(widthInt, heightInt);
 		for(int i= 0; i < widthInt; ++i) {
 			for(int j= 0; j < heightInt; ++j) {
-				myCircularPortIconTemplate.SetPixel(i,j,Color.clear);
+				template.SetPixel(i,j,Color.clear);
 			}
 		}
-		float mx= 0.5f*myCircularPortIconTemplate.width;
-		float my= 0.5f*myCircularPortIconTemplate.height;
+		float mx= 0.5f*myCircularPortTemplate.width;
+		float my= 0.5f*myCircularPortTemplate.height;
         float steps= 360f/(4f*Mathf.PI*radius);
         for(float angle= 0f; angle < 360f; angle+= steps) {
 			float rad= angle*Mathf.Deg2Rad;
@@ -71,29 +83,29 @@ public static class iCS_PortIcons {
 			for(r= 0f; r < innerRadius; r+=0.9f) {
 				x= (int)(mx+r*c);
 				y= (int)(my+r*s);
-				myCircularPortIconTemplate.SetPixel(x,y,Color.blue);
+				template.SetPixel(x,y,Color.blue);
 			}
 			for(; r < radius; r+= 0.9f) {
 				x= (int)(mx+r*c);
 				y= (int)(my+r*s);				
-				myCircularPortIconTemplate.SetPixel(x,y,Color.black);
+				template.SetPixel(x,y,Color.black);
 			}
 			x= (int)(mx+radius*c);
 			y= (int)(my+radius*s);
-			myCircularPortIconTemplate.SetPixel(x,y,Color.red); 
+			template.SetPixel(x,y,Color.red); 
 		}
-		myCircularPortIconTemplate.Apply();
+		template.Apply();
 	}
 
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
 	public static Texture2D GetCircularPortIcon(Color nodeColor, Color typeColor) {
-		return GetPortIcon(nodeColor, typeColor, ref myCircularPortIcons, ref myCircularPortIconTemplate);
+		return GetPortIcon(nodeColor, typeColor, ref myCircularPortIcons, ref myCircularPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested square port icon.
 	public static Texture2D GetSquarePortIcon(Color nodeColor, Color typeColor) {
-		return GetPortIcon(nodeColor, typeColor, ref mySquarePortIcons, ref mySquarePortIconTemplate);
+		return GetPortIcon(nodeColor, typeColor, ref mySquarePortIcons, ref mySquarePortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.

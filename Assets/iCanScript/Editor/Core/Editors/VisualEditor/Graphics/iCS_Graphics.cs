@@ -3,7 +3,7 @@
 */
 //#define SHOW_TOOLTIP
 #define SHOW_PORT_OUTLINE
-//#define USE_PORT_ICON
+#define USE_PORT_ICON
 
 using UnityEngine;
 using UnityEditor;
