@@ -63,11 +63,11 @@ public static class iCS_iCanScriptMenu {
     }
     [MenuItem("iCanScript/Documentation/User's Manual",false,52)]
     public static void UserManual() {
-        Application.OpenURL("http://www.icanscript.com/user_manual");
+        Application.OpenURL("http://www.icanscript.com/documentation/user_guide");
     }
     [MenuItem("iCanScript/Documentation/Programmer's Guide",false,53)]
     public static void ProgrammerGuide() {
-        Application.OpenURL("http://www.icanscript.com/user_manual/programmer_guide");
+        Application.OpenURL("http://www.icanscript.com/documentation/programmer_guide");
     }
     [MenuItem("iCanScript/Documentation/Release Notes",false,54)]
     public static void ReleaseNotes() {
