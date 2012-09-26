@@ -1275,6 +1275,35 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 		// Show header
 		Heading();
+		
+		
+		/*
+		  CHANGED: Test draw circle.
+		*/
+        Color nodeColor= Color.cyan;
+        Color typeColor= Color.red;
+        float radius= Scale*iCS_Config.PortRadius*1.85f;
+        float x= 0.5f*position.width;
+        float y= 0.5f*position.height;
+        float steps= 360f/(4f*Mathf.PI*radius);
+        for(float angle= 0f; angle < 360f; angle+= steps) {
+            float s= Mathf.Sin(angle*Mathf.Deg2Rad);
+            float c= Mathf.Cos(angle*Mathf.Deg2Rad);
+            Vector3 p1= new Vector3(x, y, 0);
+            Vector3 p2= new Vector3(x+c*(radius-(0.4f*radius)), y+s*(radius-(0.4f*radius)), 0);
+            Handles.color= typeColor;
+            Handles.DrawLine(p1,p2);
+
+            p1= new Vector3(x+c*(radius-(0.4f*radius)), y+s*(radius-(0.4f*radius)), 0);
+            p2= new Vector3(x+c*(radius-1f), y+s*(radius-1f), 0);
+            Handles.color= Color.black;
+            Handles.DrawLine(p1,p2);
+
+            p1= new Vector3(x+c*(radius-1f), y+s*(radius-1f), 0);
+            p2= new Vector3(x+c*(radius+0.0f), y+s*(radius+0.0f), 0);
+            Handles.color= nodeColor;
+            Handles.DrawLine(p1,p2);
+        }
 	}
 
 	// ----------------------------------------------------------------------
