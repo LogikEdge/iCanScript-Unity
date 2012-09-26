@@ -1280,12 +1280,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		/*
 		  CHANGED: Test draw circle.
 		*/
+        float radius= Scale*iCS_Config.PortRadius*1.85f;
+		// Create texture.
+		int widthInt= (int)(radius+2f);
+		int heightInt= (int)(radius+2f);
+		Texture2D texture= new Texture2D(widthInt, heightInt);
+		for(int i= 0; i < widthInt; ++i) {
+			for(int j= 0; j < heightInt; ++j) {
+				texture.SetPixel(i,j,Color.clear);
+			}
+		}
         Color nodeColor= Color.cyan;
         Color typeColor= Color.red;
-        float radius= Scale*iCS_Config.PortRadius*1.85f;
+        float steps= 360f/(4f*Mathf.PI*radius);
+		texture.Apply();
+
         float x= 0.5f*position.width;
         float y= 0.5f*position.height;
-        float steps= 360f/(4f*Mathf.PI*radius);
         for(float angle= 0f; angle < 360f; angle+= steps) {
             float s= Mathf.Sin(angle*Mathf.Deg2Rad);
             float c= Mathf.Cos(angle*Mathf.Deg2Rad);
@@ -1304,6 +1315,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             Handles.color= nodeColor;
             Handles.DrawLine(p1,p2);
         }
+		Texture2D.DestroyImmediate(texture);
 	}
 
 	// ----------------------------------------------------------------------
