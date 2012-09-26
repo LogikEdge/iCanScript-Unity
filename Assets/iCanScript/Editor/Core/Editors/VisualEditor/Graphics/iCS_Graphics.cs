@@ -3,7 +3,7 @@
 */
 //#define SHOW_TOOLTIP
 #define SHOW_PORT_OUTLINE
-#define USE_PORT_ICON
+//#define USE_PORT_ICON
 
 using UnityEngine;
 using UnityEditor;
@@ -73,7 +73,7 @@ public partial class iCS_Graphics {
     public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj, Vector2 mousePos) {
         Translation= translation;
 		if(Math3D.IsNotEqual(Scale, scale)) {
-			BuildPortIconTemplates(scale);
+			iCS_PortIcons.BuildPortIconTemplates(scale);
 		}
         Scale= scale;
         ClipingArea= clipingRect;
@@ -697,7 +697,7 @@ public partial class iCS_Graphics {
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
 #if USE_PORT_ICON
 		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= GetCircularPortIcon(_borderColor, _fillColor);
+		Texture2D portIcon= iCS_PortIcons.GetCircularPortIcon(_borderColor, _fillColor);
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
 						   portIcon.width,
@@ -726,7 +726,7 @@ public partial class iCS_Graphics {
     void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
 #if USE_PORT_ICON
 		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= GetSquarePortIcon(_borderColor, _fillColor);
+		Texture2D portIcon= iCS_PortIcons.GetSquarePortIcon(_borderColor, _fillColor);
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
 						   portIcon.width,

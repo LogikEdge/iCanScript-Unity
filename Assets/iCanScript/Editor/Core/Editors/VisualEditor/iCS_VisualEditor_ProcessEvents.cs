@@ -129,7 +129,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(IsScaleKeyDown) {
                     Vector2 pivot= MouseGraphPosition;
 					float zoomDirection= iCS_PreferencesEditor.InverseZoom ? -1f : 1f;
-                    Scale= Scale+(delta.y > 0 ? -0.05f : 0.05f)*zoomDirection;
+                    Scale= Scale+(delta.y > 0 ? -0.01f : 0.01f)*zoomDirection;
                     Vector2 offset= pivot-ViewportToGraph(MousePosition);
                     ScrollPosition+= offset;
                 } else {

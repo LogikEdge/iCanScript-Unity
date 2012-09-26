@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-public partial class iCS_Graphics {
+public static class iCS_PortIcons {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
@@ -16,7 +16,7 @@ public partial class iCS_Graphics {
 
 	// ----------------------------------------------------------------------
     //  Build template for all port icons
-	static void BuildPortIconTemplates(float scale) {
+	public static void BuildPortIconTemplates(float scale) {
 //		Debug.Log("Rebuilding port icons: "+scale);
 		BuildCircularPortIconTemplates(scale);
 		BuildSquarePortIconTemplates(scale);
@@ -87,12 +87,12 @@ public partial class iCS_Graphics {
 
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
-	static Texture2D GetCircularPortIcon(Color nodeColor, Color typeColor) {
+	public static Texture2D GetCircularPortIcon(Color nodeColor, Color typeColor) {
 		return GetPortIcon(nodeColor, typeColor, ref myCircularPortIcons, ref myCircularPortIconTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested square port icon.
-	static Texture2D GetSquarePortIcon(Color nodeColor, Color typeColor) {
+	public static Texture2D GetSquarePortIcon(Color nodeColor, Color typeColor) {
 		return GetPortIcon(nodeColor, typeColor, ref mySquarePortIcons, ref mySquarePortIconTemplate);
 	}
 	// ----------------------------------------------------------------------
@@ -111,7 +111,8 @@ public partial class iCS_Graphics {
 			iconSet[nodeColor]= dict;
 		}
 		if(dict.ContainsKey(typeColor)) {
-			return dict[typeColor];
+			var existingIcon= dict[typeColor];
+			if(existingIcon != null) return existingIcon;
 		}
 		int width= iconTemplate.width;
 		int height= iconTemplate.height;
@@ -129,6 +130,7 @@ public partial class iCS_Graphics {
 			}
 		}
 		icon.Apply();
+		icon.hideFlags= HideFlags.DontSave;
 		dict[typeColor]= icon;
 		return icon;
 	}
