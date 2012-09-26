@@ -3,6 +3,7 @@
 */
 //#define SHOW_TOOLTIP
 #define SHOW_PORT_OUTLINE
+#define USE_PORT_ICON
 
 using UnityEngine;
 using UnityEditor;
@@ -49,7 +50,7 @@ public partial class iCS_Graphics {
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
-    float            Scale= 1f;
+    float            Scale= 0f;
     Vector2          Translation= Vector2.zero;
     Rect             ClipingArea= new Rect(0,0,0,0);
     Vector2          MousePosition= Vector2.zero;
@@ -71,6 +72,9 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     public void Begin(Vector2 translation, float scale, Rect clipingRect, iCS_EditorObject selObj, Vector2 mousePos) {
         Translation= translation;
+		if(Math3D.IsNotEqual(Scale, scale)) {
+			BuildPortIconTemplates(scale);
+		}
         Scale= scale;
         ClipingArea= clipingRect;
         MousePosition= mousePos;
@@ -691,6 +695,15 @@ public partial class iCS_Graphics {
     }
 	// ----------------------------------------------------------------------
     void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
+#if USE_PORT_ICON
+		Vector3 center= TranslateAndScale(_center);
+		Texture2D portIcon= GetCircularPortIcon(_borderColor, _fillColor);
+		Rect pos= new Rect(center.x-0.5f*portIcon.width,
+						   center.y-0.5f*portIcon.height,
+						   portIcon.width,
+						   portIcon.height);
+		GUI.DrawTexture(pos, portIcon);
+#else
         Color outlineColor= Color.black;
         Vector3 center= TranslateAndScale(_center);
         radius*= Scale;
@@ -706,10 +719,21 @@ public partial class iCS_Graphics {
 #endif
         Handles.color= _fillColor;
         Handles.DrawSolidDisc(center, FacingNormal, radius);
+#endif
     }
 
 	// ----------------------------------------------------------------------
     void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
+#if USE_PORT_ICON
+		Vector3 center= TranslateAndScale(_center);
+		Texture2D portIcon= GetSquarePortIcon(_borderColor, _fillColor);
+		Rect pos= new Rect(center.x-0.5f*portIcon.width,
+						   center.y-0.5f*portIcon.height,
+						   portIcon.width,
+						   portIcon.height);
+		GUI.DrawTexture(pos, portIcon);
+#else
+
         Color backgroundColor= Color.black;
         radius*= Scale;
         Vector3 center= TranslateAndScale(_center);
@@ -739,6 +763,7 @@ public partial class iCS_Graphics {
         vectors[3]= new Vector3(center.x+delta, center.y-delta, 0);
         Handles.color= Color.white;
         Handles.DrawSolidRectangleWithOutline(vectors, _fillColor, _fillColor);
+#endif
     }
 
 	// ----------------------------------------------------------------------
