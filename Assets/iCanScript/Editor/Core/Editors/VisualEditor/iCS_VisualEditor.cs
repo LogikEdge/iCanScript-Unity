@@ -57,6 +57,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     Vector2 ViewportCenter { get { return new Vector2(0.5f/Scale*position.width, 0.5f/Scale*position.height); } }
     Rect    Viewport       { get { return new Rect(0,0,position.width/Scale, position.height/Scale); }}
     Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
+    
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
      
@@ -1246,8 +1247,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //		EditorStyles.toolbarTextField.contentOffset= test;
 		
 		// Show zoom control at the end of the toolbar.
-        Scale= iCS_ToolbarUtility.Slider(ref r, 120f, Scale, 2f, 0.15f, spacer, spacer, true);
+        float newScale= iCS_ToolbarUtility.Slider(ref r, 120f, Scale, 2f, 0.15f, spacer, spacer, true);
         iCS_ToolbarUtility.Label(ref r, new GUIContent("Zoom"), 0, 0, true);
+		if(Math3D.IsNotEqual(newScale, Scale)) {
+            Vector2 pivot= ViewportToGraph(ViewportCenter);
+            CenterAtWithScale(pivot, newScale);
+		}
 		
 		// Show current bookmark.
 		string bookmarkString= "myBookmark: ";
