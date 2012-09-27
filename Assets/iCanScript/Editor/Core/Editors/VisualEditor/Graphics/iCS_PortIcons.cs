@@ -33,8 +33,10 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	static void BuildSquarePortTemplates(float len, ref Texture2D template) {
-		float margin= len*0.3f;
-		
+        // Remove previous template.
+        if(template != null) Texture2D.DestroyImmediate(template);
+        // Build new template.
+		float margin= len*0.3f;		
 		// Create texture.
 		int lenInt= (int)(len+1f);
 		int marginInt= (int)(margin);
@@ -51,6 +53,7 @@ public static class iCS_PortIcons {
 				}
 			}
 		}
+		template.hideFlags= HideFlags.DontSave;
 		template.Apply();
 	}
 	// ----------------------------------------------------------------------
@@ -61,6 +64,9 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	static void BuildCircularPortTemplates(float radius, ref Texture2D template) {
+        // Remove previous template.
+        if(template != null) Texture2D.DestroyImmediate(template);
+        // Build new template.
 		float innerRadius= 0.6f*radius;
 		// Create texture.
 		int widthInt= (int)(2f*radius+2f);
@@ -95,6 +101,7 @@ public static class iCS_PortIcons {
 			y= (int)(my+radius*s);
 			template.SetPixel(x,y,Color.red); 
 		}
+		template.hideFlags= HideFlags.DontSave;
 		template.Apply();
 	}
 

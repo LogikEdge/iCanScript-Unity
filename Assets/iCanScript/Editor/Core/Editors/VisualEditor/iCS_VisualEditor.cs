@@ -192,8 +192,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             } else if(myNeedAnotherRefresh) {
                 MyWindow.Repaint();
                 myNeedAnotherRefresh= false;                    
-            } else if(Application.isPlaying) {
-                float refreshFactor= 4f;
+            } else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
+                float period= iCS_PreferencesEditor.PortValueRefreshPeriod;
+                if(period < 0.03f) period= 0.03f;
+                float refreshFactor= 1f/period;
                 int newRefreshCounter= (int)(myCurrentTime*refreshFactor);
                 if(newRefreshCounter != myRefreshCounter) {
                     myRefreshCounter= newRefreshCounter;

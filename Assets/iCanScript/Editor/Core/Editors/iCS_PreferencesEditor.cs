@@ -5,24 +5,6 @@ using System.Collections;
 using System.Collections.Generic;
 
 
-//[System.Serializable]
-//public class iCS_UserPreferences {
-//    [System.Serializable]
-//    public class UserClassWizard {
-//        public bool OutputInstanceVariables = true;
-//        public bool OutputClassVariables    = false;
-//        public bool OutputInstanceProperties= false;
-//        public bool OutputClassProperties   = false;
-//        public bool InputInstanceVariables  = false;
-//        public bool InputClassVariables     = false;
-//        public bool InputInstanceProperties = false;
-//        public bool InputClassProperties    = false;
-//    }
-//    public UserClassWizard    ClassWizard= new UserClassWizard();
-//
-//}
-//
-
 public class iCS_PreferencesEditor : iCS_EditorBase {
     // =================================================================================
     // Constants
@@ -46,7 +28,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kEdgeScrollSpeedKey       = "iCS_EdgeScrollSpeed";
     const string kInverseZoomKey           = "iCS_InverseZoom";
     const bool   kShowRuntimePortValue     = true;
-    const float  kPortValueRefreshPeriod   = 0.25f;
+    const float  kPortValueRefreshPeriod   = 0.05f;
     const string kShowRuntimePortValueKey  = "iCS_ShowRuntimePortValue";
     const string kPortValueRefreshPeriodKey= "iCS_PortValueRefresh";
     // ---------------------------------------------------------------------------------
@@ -440,12 +422,12 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;            
         }
-        GUI.Label(pos[0], "Animation Time");
+        GUI.Label(pos[0], "Animation Time (seconds)");
         GUI.Label(pos[1], "Scroll Speed");
-        GUI.Label(pos[2], "Edge Scroll Speed");
+        GUI.Label(pos[2], "Edge Scroll Speed (pixels)");
         GUI.Label(pos[3], "Inverse Zoom");
         GUI.Label(pos[4], "Show Runtime Values");
-        GUI.Label(pos[5], "Refresh Period");
+        GUI.Label(pos[5], "Refresh Period (seconds)");
         
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
