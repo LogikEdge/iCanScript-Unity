@@ -1245,10 +1245,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //		test.y=2f;
 //		EditorStyles.toolbarTextField.contentOffset= test;
 		
-        // Show mouse coordinates.
-        string mouseValue= ViewportToGraph(MousePosition).ToString();
-        iCS_ToolbarUtility.Label(ref r, new GUIContent(mouseValue), 0, 0, true);
-        
 		// Show zoom control at the end of the toolbar.
         Scale= iCS_ToolbarUtility.Slider(ref r, 120f, Scale, 2f, 0.15f, spacer, spacer, true);
         iCS_ToolbarUtility.Label(ref r, new GUIContent("Zoom"), 0, 0, true);
