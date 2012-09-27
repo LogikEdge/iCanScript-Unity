@@ -1,4 +1,5 @@
 //#define SHOW_FRAME_COUNT
+#define SHOW_FRAME_TIME
 
 using UnityEngine;
 using UnityEditor;
@@ -215,8 +216,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	// User GUI function.
 #if SHOW_FRAME_COUNT
-    static int frameCount= 0;
-    static int seconds= 0;
+	float	myAverageFrameRate= 0f;
+#endif
+#if SHOW_FRAME_TIME
+	float myAverageFrameTime= 0f;
+	float myMaxFrameTime= 0f;
 #endif
 	public override void OnGUI() {
         // Show that we can display because we don't have a behavior or library.
@@ -236,12 +240,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 //        Debug.Log("OnGUI: "+Time.realtimeSinceStartup);
 #if SHOW_FRAME_COUNT
-        ++frameCount;
-       	int newTime= (int)Time.realtimeSinceStartup;
-       	if(newTime != seconds) {
-       	    seconds= newTime;
-       	    Debug.Log("GUI calls/seconds: "+frameCount);
-            frameCount= 0;
+		myAverageFrameRate= (myAverageFrameRate*9f+myDeltaTime)/10f;
+       	if(Math3D.IsNotZero(myAverageFrameRate)) {
+       	    Debug.Log("VisualEditor: frame rate: "+1f/myAverageFrameRate);
        	}
 #endif
        	
@@ -259,6 +260,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 		// Process scroll zone.
 		ProcessScrollZone();
+		
+#if SHOW_FRAME_TIME
+		float frameTime= Time.realtimeSinceStartup- myCurrentTime;
+		if(frameTime > myMaxFrameTime) myMaxFrameTime= frameTime;
+		myAverageFrameTime= (myAverageFrameTime*9f+frameTime)/10f;
+		Debug.Log("VisualEditor: frame time: "+myAverageFrameTime+" max frame time: "+myMaxFrameTime);
+#endif		
 	}
 
     // ======================================================================
