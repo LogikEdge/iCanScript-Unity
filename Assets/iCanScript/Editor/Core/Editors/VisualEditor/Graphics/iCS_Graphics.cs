@@ -72,6 +72,7 @@ public partial class iCS_Graphics {
         Translation= translation;
 		if(Math3D.IsNotEqual(Scale, scale)) {
 			iCS_PortIcons.BuildPortIconTemplates(scale);
+			iCS_NodeTextures.BuildNodeTemplate(scale);
 		}
         Scale= scale;
         ClipingArea= clipingRect;

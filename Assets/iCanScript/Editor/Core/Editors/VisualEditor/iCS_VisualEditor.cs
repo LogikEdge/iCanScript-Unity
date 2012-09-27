@@ -1,9 +1,10 @@
 //#define SHOW_FRAME_COUNT
-#define SHOW_FRAME_TIME
+//#define SHOW_FRAME_TIME
 
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Threading;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
@@ -1291,11 +1292,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(IsDragStarted) DrawScrollZone();
 
 		// Show header
-		Heading();
+		Heading();	
 		
-		
+		Texture2D nodeTexture= iCS_NodeTextures.GetNodeTexture(Color.green, Color.grey, Color.black);
+		GUI.DrawTexture(new Rect(0.5f*(position.width-nodeTexture.width), 0.5f*(position.height-nodeTexture.height), nodeTexture.width, nodeTexture.height), nodeTexture);	
 	}
-
+	
 	// ----------------------------------------------------------------------
 	Vector2 UpdateScrollPosition() {
         Vector2 graphicScrollPosition= ScrollPosition;
