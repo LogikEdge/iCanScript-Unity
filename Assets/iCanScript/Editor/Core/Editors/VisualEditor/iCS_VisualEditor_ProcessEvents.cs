@@ -34,6 +34,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         break;
                     }
                 }
+                Event.current.Use();
                 break;
             }
             case EventType.MouseDrag: {

@@ -27,10 +27,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_IStorage        myPreviousIStorage= null;
     
     // ----------------------------------------------------------------------
-    int   myUpdateCounter = 0;
-    int   myRefreshCounter= 0;
-    float myCurrentTime   = 0;
-    float myDeltaTime     = 0;
+    int   myUpdateCounter     = 0;
+    int   myRefreshCounter    = 0;
+    float myCurrentTime       = 0;
+    float myDeltaTime         = 0;
+    bool  myNeedAnotherRefresh= true;
     
     // ----------------------------------------------------------------------
     Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
@@ -173,9 +174,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
 	public void Update() {
-        // Perform 30 update per seconds.
+        // Perform 15 update per seconds.
         myCurrentTime= Time.realtimeSinceStartup;
-        int newUpdateCounter= (int)(myCurrentTime*30.0f);
+        int newUpdateCounter= (int)(myCurrentTime*15.0f);
         if(newUpdateCounter == myUpdateCounter) return;
         myUpdateCounter= newUpdateCounter;
         
@@ -187,12 +188,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Repaint window
             if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
                 MyWindow.Repaint();
-            }
-            float refreshFactor= (Application.isPlaying || EditorWindow.mouseOverWindow == MyWindow ? 8f : 1f);
-            int newRefreshCounter= (int)(myCurrentTime*refreshFactor);
-            if(newRefreshCounter != myRefreshCounter) {
-                myRefreshCounter= newRefreshCounter;
+                myNeedAnotherRefresh= true;
+            } else if(myNeedAnotherRefresh) {
                 MyWindow.Repaint();
+                myNeedAnotherRefresh= false;                    
+            } else if(Application.isPlaying) {
+                float refreshFactor= 4f;
+                int newRefreshCounter= (int)(myCurrentTime*refreshFactor);
+                if(newRefreshCounter != myRefreshCounter) {
+                    myRefreshCounter= newRefreshCounter;
+                    MyWindow.Repaint();
+                }                
             }
             // Update DisplayRoot
             if(myDisplayRoot == null && IStorage.IsValid(0)) {
