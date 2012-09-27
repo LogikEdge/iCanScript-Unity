@@ -1294,8 +1294,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Show header
 		Heading();	
 		
-		Texture2D nodeTexture= iCS_NodeTextures.GetNodeTexture(Color.green, Color.grey, Color.black);
-		GUI.DrawTexture(new Rect(0.5f*(position.width-nodeTexture.width), 0.5f*(position.height-nodeTexture.height), nodeTexture.width, nodeTexture.height), nodeTexture);	
+		Color shadowColor= Color.black;
+		Texture2D nodeTexture= iCS_NodeTextures.GetNodeTexture(Color.green, new Color(0.24f, 0.27f, 0.32f), shadowColor);
+		int tileSize= nodeTexture.width/3;
+		Rect tilePos= new Rect(0,0,tileSize,tileSize);
+		Rect screenPos= new Rect(0.5f*(position.width-nodeTexture.width), 0.5f*(position.height-nodeTexture.height), tileSize, tileSize);
+		GUI.DrawTextureWithTexCoords(screenPos, nodeTexture, tilePos);
+//		GUI.DrawTexture(new Rect(0.5f*(position.width-nodeTexture.width), 0.5f*(position.height-nodeTexture.height), nodeTexture.width, nodeTexture.height), nodeTexture);
 	}
 	
 	// ----------------------------------------------------------------------

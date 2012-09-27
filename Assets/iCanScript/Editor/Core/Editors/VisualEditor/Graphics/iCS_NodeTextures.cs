@@ -8,7 +8,7 @@ public static class iCS_NodeTextures {
     // ----------------------------------------------------------------------
     const float kNodeCornerRadius= 8f;
     const float kNodeTitleHeight = 2f*kNodeCornerRadius;
-	const float kShadowAlpha     = 0.35f;
+	const float kShadowAlpha     = 0.4f;
 
     // ======================================================================
     // PROPERTIES
@@ -45,7 +45,7 @@ public static class iCS_NodeTextures {
 					texture.SetPixel(x,y,backColor);
 				} else if(pixel.r != 0) {
 					Color sc= shadowColor;
-					sc.a= pixel.a;
+					sc.a= pixel.a*shadowColor.a;
 					texture.SetPixel(x,y,sc);
 				} else {
 					texture.SetPixel(x,y,pixel);
@@ -60,12 +60,14 @@ public static class iCS_NodeTextures {
     // ----------------------------------------------------------------------
 	// Creates a node template tiled texture
 	public static void BuildNodeTemplate(float scale) {
+		// Flush all cached textures.
+		FlushCachedTextures();
+		
         float radius= kNodeCornerRadius*scale;
 
 		int radiusInt    = (int)(radius+0.5f);
 		int extraTitleheightInt= (int)(0.75f*radius+0.5f);
 		int shadowSizeInt= 5;
-		if(shadowSizeInt == 0) shadowSizeInt= 1;
 		int cornerOffset= shadowSizeInt+radiusInt;
 		int tileSize= radiusInt+extraTitleheightInt+shadowSizeInt;
 		int textureSize= 3*tileSize;
@@ -77,10 +79,15 @@ public static class iCS_NodeTextures {
 		}
 		// Draw shadow
 		int farCornerOffset= textureSize-cornerOffset-1;
-		float alpha= kShadowAlpha;
-		for(int i= shadowSizeInt; i > 0; --i, alpha= kShadowAlpha+(1f-kShadowAlpha)*alpha) {
+		float alpha= 0.4f;
+		float alphaDelta= 0.06f;
+		for(int i= shadowSizeInt; i > 0; --i, alpha+= alphaDelta, alphaDelta+=0.06f) {
 			Color c= Color.red;
 			c.a= alpha;
+//		float alpha= kShadowAlpha;
+//		for(int i= shadowSizeInt; i > 0; --i, alpha= kShadowAlpha+(1f-kShadowAlpha)*alpha) {
+//			Color c= Color.red;
+//			c.a= alpha;
 			DrawArc(radiusInt, c, c, farCornerOffset+i, farCornerOffset-i,  1,  1, ref myNodeTemplate);
 			DrawArc(radiusInt, c, c, farCornerOffset+i, cornerOffset-i   ,  1, -1, ref myNodeTemplate);
 			DrawArc(radiusInt, c, c, cornerOffset+i   , cornerOffset-i   , -1, -1, ref myNodeTemplate);			
@@ -153,5 +160,17 @@ public static class iCS_NodeTextures {
 			int dyi= (int)(dy+0.5f)*ys;
 			texture.SetPixel(cx+dxi,cy+dyi,borderColor); 
 		}		
+	}
+	
+	// ----------------------------------------------------------------------
+	static void FlushCachedTextures() {
+		if(myNodeTextures == null) return;
+		foreach(var backDir in myNodeTextures) {
+			foreach(var shadowDir in backDir.Value) {
+				foreach(var pair in shadowDir.Value) {
+					if(pair.Value != null) Texture2D.DestroyImmediate(pair.Value);
+				}
+			}
+		}
 	}
 }
