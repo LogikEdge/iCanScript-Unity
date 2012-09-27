@@ -27,8 +27,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kScrollSpeedKey           = "iCS_ScrollSpeed";
     const string kEdgeScrollSpeedKey       = "iCS_EdgeScrollSpeed";
     const string kInverseZoomKey           = "iCS_InverseZoom";
-    const bool   kShowRuntimePortValue     = true;
-    const float  kPortValueRefreshPeriod   = 0.05f;
+    const bool   kShowRuntimePortValue     = false;
+    const float  kPortValueRefreshPeriod   = 0.1f;
     const string kShowRuntimePortValueKey  = "iCS_ShowRuntimePortValue";
     const string kPortValueRefreshPeriodKey= "iCS_PortValueRefresh";
     // ---------------------------------------------------------------------------------
