@@ -203,8 +203,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(newRefreshCounter != myRefreshCounter) {
                     myRefreshCounter= newRefreshCounter;
                     MyWindow.Repaint();
-                }                
+                }
             }
+			/*
+				CHANGED To be removed
+			*/                
+							else {
+			                    MyWindow.Repaint();					
+							}
+
             // Update DisplayRoot
             if(myDisplayRoot == null && IStorage.IsValid(0)) {
                 myDisplayRoot= IStorage[0];

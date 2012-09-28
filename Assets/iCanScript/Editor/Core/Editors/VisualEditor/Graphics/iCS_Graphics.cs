@@ -177,51 +177,6 @@ public partial class iCS_Graphics {
         DrawBox(rect, fillColor, outlineColor, Color.white);
     }
 
-	// ----------------------------------------------------------------------
-	void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
-		// Reajust screen position for fix size shadow.
-		float shadowSize= iCS_Config.NodeShadowSize;
-		float shadowSize2= 2f*shadowSize;
-		Rect screenPos= new Rect(r.x-shadowSize, r.y-shadowSize, r.width+shadowSize2, r.height+shadowSize2);
-
-		// Get texture.
-		Texture2D nodeTexture= iCS_NodeTextures.GetNodeTexture(nodeColor, backgroundColor, shadowColor);
-		float tileRatio= 1f/3f; 
-		float tilePos2 = 2f/3f;
-		int tileSize= (int)(nodeTexture.width*tileRatio+0.1f);
-		int tileSize2= 2*tileSize;
-		
-		float middleWidth = screenPos.width -tileSize2;
-		float middleHeight= screenPos.height-tileSize2;
-
-		Rect pos= new Rect(screenPos.x, screenPos.y, tileSize, tileSize);
-		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(0, tilePos2, tileRatio, tileRatio));
-		pos= new Rect(pos.xMax, pos.y, middleWidth, tileSize);
-		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tileRatio,tilePos2,tileRatio,tileRatio));
-		pos= new Rect(pos.xMax, pos.y, tileSize, tileSize);
-		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tilePos2,tilePos2,tileRatio,tileRatio));
-		if(middleHeight > 0f) {
-			pos= new Rect(screenPos.x, pos.yMax,tileSize,middleHeight);
-			GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(0,tileRatio,tileRatio,tileRatio));
-			pos= new Rect(pos.xMax, pos.y, middleWidth, middleHeight);
-			GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tileRatio,tileRatio,tileRatio,tileRatio));
-			pos= new Rect(pos.xMax, pos.y, tileSize, middleHeight);
-			GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tilePos2,tileRatio,tileRatio,tileRatio));			
-		}
-
-		pos= new Rect(screenPos.x, pos.yMax,tileSize, tileSize);
-		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(0,0,tileRatio,tileRatio));
-		pos= new Rect(pos.xMax, pos.y, middleWidth, tileSize);
-		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tileRatio,0,tileRatio,tileRatio));
-		pos= new Rect(pos.xMax, pos.y, tileSize, tileSize);
-		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tilePos2,0,tileRatio,tileRatio));
-
-        // Show title.
-        if(!ShouldShowTitle()) return;
-        Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.5f*(tileSize-shadowSize));
-        Vector2 titleSize= TitleStyle.CalcSize(content);
-        GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, TitleStyle);
-	}
     // ----------------------------------------------------------------------
     void DrawMinimizedTransitionModule(Vector2 dir, Rect r, Color nodeColor) {
         r= TranslateAndScale(r);
