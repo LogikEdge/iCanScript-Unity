@@ -67,7 +67,7 @@ public static class iCS_NodeTextures {
 
 		int radiusInt    = (int)(radius+0.5f);
 		int extraTitleheightInt= (int)(0.75f*radius+0.5f);
-		int shadowSizeInt= 5;
+		int shadowSizeInt= (int)iCS_Config.NodeShadowSize;
 		int cornerOffset= shadowSizeInt+radiusInt;
 		int tileSize= radiusInt+extraTitleheightInt+shadowSizeInt;
 		int textureSize= 3*tileSize;

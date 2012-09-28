@@ -1,3 +1,6 @@
+//#define NEW_TEMPLATE
+#define ANTI_ALIAS
+
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -66,45 +69,90 @@ public static class iCS_PortIcons {
 	static void BuildCircularPortTemplates(float radius, ref Texture2D template) {
         // Remove previous template.
         if(template != null) Texture2D.DestroyImmediate(template);
-        // Build new template.
-		float innerRadius= 0.6f*radius;
 		// Create texture.
 		int widthInt= (int)(2f*radius+2f);
 		int heightInt= (int)(2f*radius+2f);
 		template= new Texture2D(widthInt, heightInt);
-		for(int i= 0; i < widthInt; ++i) {
-			for(int j= 0; j < heightInt; ++j) {
-				template.SetPixel(i,j,Color.clear);
-			}
-		}
-		float mx= 0.5f*template.width;
-		float my= 0.5f*template.height;
-        float steps= 360f/(4f*Mathf.PI*radius);
-        for(float angle= 0f; angle < 360f; angle+= steps) {
-			float rad= angle*Mathf.Deg2Rad;
-            float s= Mathf.Sin(rad);
-            float c= Mathf.Cos(rad);
-			int x;
-			int y;
-			float r;
-			for(r= 0f; r < innerRadius; r+=0.9f) {
-				x= (int)(mx+r*c);
-				y= (int)(my+r*s);
-				template.SetPixel(x,y,Color.blue);
-			}
-			for(; r < radius; r+= 0.9f) {
-				x= (int)(mx+r*c);
-				y= (int)(my+r*s);				
-				template.SetPixel(x,y,Color.black);
-			}
-			x= (int)(mx+radius*c);
-			y= (int)(my+radius*s);
-			template.SetPixel(x,y,Color.red); 
-		}
+		// Build port template.
+		BuildCircularPortTemplate(radius, Color.red, Color.blue, ref template);
 		template.hideFlags= HideFlags.DontSave;
 		template.Apply();
 	}
-
+	// ----------------------------------------------------------------------
+	static void BuildCircularPortTemplate(float radius, Color ringColor, Color fillColor, ref Texture2D texture) {
+		float ringWidth= 1f;
+		float fillRatio= 0.5f;
+		float outterRingRadius= radius+0.5f*ringWidth;
+		float innerRingRadius= radius-0.5f*ringWidth;
+		float fillRadius= fillRatio*radius;
+		float outterFillRadius= fillRadius+0.5f*ringWidth;
+		float innerFillRadius= fillRadius-0.5f*ringWidth;
+		float cx= 0.5f*texture.width;
+		float cy= 0.5f*texture.height;
+		
+		float outterRingRadius2= outterRingRadius*outterRingRadius;
+		float innerRingRadius2= innerRingRadius*innerRingRadius;
+		float outterFillRadius2= outterFillRadius*outterFillRadius;
+		float innerFillRadius2= innerFillRadius*innerFillRadius;
+		for(int x= 0; x < texture.width; ++x) {
+			for(int y= 0; y < texture.height; ++y) {
+				float rx= (float)x;
+				float ry= (float)y;
+				float ci= rx-cx;
+				float cj= ry-cy;
+				float r2= ci*ci+cj*cj;
+				if(r2 > outterRingRadius2) {
+					texture.SetPixel(x,y,Color.clear);
+				} else if(r2 > innerRingRadius2) {
+#if ANTI_ALIAS
+					float r= Mathf.Sqrt(r2);
+					if(r > radius) {
+						float ratio= (ringWidth-2f*(r-radius))/ringWidth;
+						Color c= Color.clear;
+						c.r= ringColor.r;
+						c.g= ringColor.g;
+						c.b= ringColor.b;
+						c.a= ratio*ringColor.a;
+						texture.SetPixel(x,y,c);
+					} else {
+						float ratio= (ringWidth-2f*(radius-r))/ringWidth;
+						Color c= Color.clear;
+						c.r= ratio*ringColor.r+(1f-ratio)*Color.black.r;
+						c.g= ratio*ringColor.g+(1f-ratio)*Color.black.g;
+						c.b= ratio*ringColor.b+(1f-ratio)*Color.black.b;
+						c.a= 1f;
+						texture.SetPixel(x,y,c);						
+					}
+#else					
+					texture.SetPixel(x,y,ringColor);
+#endif
+				} else if(r2 > outterFillRadius2) {
+					texture.SetPixel(x,y,Color.black);
+				} else if(r2 > innerFillRadius2) {
+#if ANTI_ALIAS
+					float r= Mathf.Sqrt(r2);
+					if(r > radius) {
+						float ratio= (ringWidth-2f*(r-fillRadius))/ringWidth;
+						Color c= Color.clear;
+						c.r= ratio*fillColor.r+(1f-ratio)*Color.black.r;
+						c.g= ratio*fillColor.g+(1f-ratio)*Color.black.g;
+						c.b= ratio*fillColor.b+(1f-ratio)*Color.black.b;
+						c.a= 1f;
+						texture.SetPixel(x,y,c);
+					} else {
+						texture.SetPixel(x,y,fillColor);						
+					}
+#else
+					texture.SetPixel(x,y,fillColor);
+#endif
+				} else {
+					texture.SetPixel(x,y,fillColor);
+				}
+			}
+		}
+		
+	}
+	
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
 	public static Texture2D GetCircularPortIcon(Color nodeColor, Color typeColor) {
@@ -182,6 +230,5 @@ public static class iCS_PortIcons {
 				Texture2D.DestroyImmediate(pair.Value);
 			}
 		}
-		iconSet= null;
 	}
 }

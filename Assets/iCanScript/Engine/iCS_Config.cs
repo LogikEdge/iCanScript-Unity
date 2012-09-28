@@ -49,7 +49,9 @@ public class iCS_Config {
     public const  float PortSize= 2.0f * PortRadius;
     public static float MinimumPortSeparation { get { return GetPortLabelHeight("A"); }}
 
-
+    // ----------------------------------------------------------------------
+	public const float NodeShadowSize= 5.0f;
+	
     // ======================================================================
     // Node info.
     public static Vector2 GetNodeSize(string _label) {
