@@ -1,6 +1,3 @@
-//#define NEW_TEMPLATE
-#define ANTI_ALIAS
-
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,15 +69,15 @@ public static class iCS_PortIcons {
 		// Create texture.
 		int widthInt= (int)(2f*radius+2f);
 		int heightInt= (int)(2f*radius+2f);
-		template= new Texture2D(widthInt, heightInt);
+		template= new Texture2D(widthInt, heightInt, TextureFormat.ARGB32, false);
 		// Build port template.
-		BuildCircularPortTemplate(radius, Color.red, Color.blue, ref template);
+		BuildCircularPortTemplate(radius, ref template);
 		template.hideFlags= HideFlags.DontSave;
 		template.Apply();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildCircularPortTemplate(float radius, Color ringColor, Color fillColor, ref Texture2D texture) {
-		float ringWidth= 1f;
+	static void BuildCircularPortTemplate(float radius, ref Texture2D texture) {
+		float ringWidth= 2f;
 		float fillRatio= 0.5f;
 		float outterRingRadius= radius+0.5f*ringWidth;
 		float innerRingRadius= radius-0.5f*ringWidth;
@@ -104,49 +101,34 @@ public static class iCS_PortIcons {
 				if(r2 > outterRingRadius2) {
 					texture.SetPixel(x,y,Color.clear);
 				} else if(r2 > innerRingRadius2) {
-#if ANTI_ALIAS
 					float r= Mathf.Sqrt(r2);
 					if(r > radius) {
 						float ratio= (ringWidth-2f*(r-radius))/ringWidth;
-						Color c= Color.clear;
-						c.r= ringColor.r;
-						c.g= ringColor.g;
-						c.b= ringColor.b;
-						c.a= ratio*ringColor.a;
+						Color c= Color.red;
+						c.a= ratio;
 						texture.SetPixel(x,y,c);
 					} else {
 						float ratio= (ringWidth-2f*(radius-r))/ringWidth;
-						Color c= Color.clear;
-						c.r= ratio*ringColor.r+(1f-ratio)*Color.black.r;
-						c.g= ratio*ringColor.g+(1f-ratio)*Color.black.g;
-						c.b= ratio*ringColor.b+(1f-ratio)*Color.black.b;
-						c.a= 1f;
+						Color c= Color.black;
+						c.r= ratio;
+						c.g= (1f-ratio);
 						texture.SetPixel(x,y,c);						
 					}
-#else					
-					texture.SetPixel(x,y,ringColor);
-#endif
 				} else if(r2 > outterFillRadius2) {
-					texture.SetPixel(x,y,Color.black);
+					texture.SetPixel(x,y,Color.green);
 				} else if(r2 > innerFillRadius2) {
-#if ANTI_ALIAS
 					float r= Mathf.Sqrt(r2);
-					if(r > radius) {
+					if(r > fillRadius) {
 						float ratio= (ringWidth-2f*(r-fillRadius))/ringWidth;
-						Color c= Color.clear;
-						c.r= ratio*fillColor.r+(1f-ratio)*Color.black.r;
-						c.g= ratio*fillColor.g+(1f-ratio)*Color.black.g;
-						c.b= ratio*fillColor.b+(1f-ratio)*Color.black.b;
-						c.a= 1f;
+						Color c= Color.black;
+						c.g= (1f-ratio);
+						c.b= ratio;
 						texture.SetPixel(x,y,c);
 					} else {
-						texture.SetPixel(x,y,fillColor);						
+						texture.SetPixel(x,y,Color.blue);						
 					}
-#else
-					texture.SetPixel(x,y,fillColor);
-#endif
 				} else {
-					texture.SetPixel(x,y,fillColor);
+					texture.SetPixel(x,y,Color.blue);
 				}
 			}
 		}
@@ -200,12 +182,20 @@ public static class iCS_PortIcons {
 		for(int x= 0; x < width; ++x) {
 			for(int y= 0; y < height; ++y) {
 				Color pixel= iconTemplate.GetPixel(x,y);
-				if(pixel.r != 0) {
-					icon.SetPixel(x,y,nodeColor);
-				} else if(pixel.b != 0) {
-					icon.SetPixel(x,y, typeColor);
+				float totalChannels= pixel.r+pixel.g+pixel.b;
+				if(totalChannels == 0) {
+					icon.SetPixel(x,y, pixel);					
 				} else {
-					icon.SetPixel(x,y, pixel);
+					// Anti-Aliasing fill.
+					float nodeColorRatio= pixel.r/totalChannels;
+					float fillColorRatio= pixel.g/totalChannels;
+					float typeColorRatio= pixel.b/totalChannels;
+					Color c;
+					c.r= nodeColorRatio*nodeColor.r+typeColorRatio*typeColor.r+fillColorRatio*Color.black.r;
+					c.g= nodeColorRatio*nodeColor.g+typeColorRatio*typeColor.g+fillColorRatio*Color.black.g;
+					c.b= nodeColorRatio*nodeColor.b+typeColorRatio*typeColor.b+fillColorRatio*Color.black.b;
+					c.a= pixel.a;
+					icon.SetPixel(x,y, c);					
 				}
 			}
 		}
