@@ -1,5 +1,3 @@
-#define NEW_CORNERS
-
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,7 +13,9 @@ public static class iCS_NodeTextures {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-	static Texture2D	myNodeTemplate   = null;
+	static int			myRadius          = 0;
+	static int			myExtraTitleHeight= 0;
+	static Texture2D	myNodeTemplate    = null;
 
     // ----------------------------------------------------------------------
 	static Dictionary<Color,Dictionary<Color,Dictionary<Color,Texture2D>>>	myNodeTextures= null;
@@ -41,7 +41,6 @@ public static class iCS_NodeTextures {
 		for(int x= 0; x < myNodeTemplate.width; ++x) {
 			for(int y= 0; y < myNodeTemplate.height; ++y) {
 				Color pixel= myNodeTemplate.GetPixel(x,y);
-#if NEW_CORNERS
 				float totalChannels= pixel.g+pixel.b+pixel.r;
 				if(totalChannels == 0) {
 					texture.SetPixel(x,y, pixel);					
@@ -57,19 +56,6 @@ public static class iCS_NodeTextures {
 					c.a= pixel.a;
 					texture.SetPixel(x,y, c);					
 				}					
-#else
-				if(pixel.g != 0) {
-					texture.SetPixel(x,y,nodeColor);
-				} else if(pixel.b != 0) {
-					texture.SetPixel(x,y,backColor);
-				} else if(pixel.r != 0) {
-					Color sc= shadowColor;
-					sc.a= pixel.a*shadowColor.a;
-					texture.SetPixel(x,y,sc);
-				} else {
-					texture.SetPixel(x,y,pixel);
-				}
-#endif
 			}
 		}
 		texture.Apply();
@@ -80,13 +66,20 @@ public static class iCS_NodeTextures {
     // ----------------------------------------------------------------------
 	// Creates a node template tiled texture
 	public static void BuildNodeTemplate(float scale) {
+        float radius= kNodeCornerRadius*scale;
+		int radiusInt    = (int)(radius+0.5f);
+		int extraTitleheightInt= (int)(0.75f*radius+0.5f);
+
+		// We don't need to rebuild node textures if nothing has changed.
+		if(radiusInt == myRadius && extraTitleheightInt == myExtraTitleHeight) {
+			return;
+		}
+		myRadius= radiusInt;
+		myExtraTitleHeight= extraTitleheightInt;
+		
 		// Flush all cached textures.
 		FlushCachedTextures();
 		
-        float radius= kNodeCornerRadius*scale;
-
-		int radiusInt    = (int)(radius+0.5f);
-		int extraTitleheightInt= (int)(0.75f*radius+0.5f);
 		int shadowSizeInt= (int)iCS_Config.NodeShadowSize;
 		int cornerOffset= shadowSizeInt+radiusInt;
 		int tileSize= radiusInt+extraTitleheightInt+shadowSizeInt;
@@ -166,7 +159,6 @@ public static class iCS_NodeTextures {
 						int xs, int ys,
 						ref Texture2D texture,
 						bool alphaBlend= true) {
-#if NEW_CORNERS
 		float ringWidth= 2f;
 		float outterRingRadius= radius+0.5f*ringWidth;
 		float innerRingRadius= radius-0.5f*ringWidth;
@@ -180,9 +172,7 @@ public static class iCS_NodeTextures {
 				float ry= (float)y;
 				float r2= rx*rx+ry*ry;
 				if(r2 > outterRingRadius2) {
-//					if(!alphaBlend) {
-//						texture.SetPixel(cx+x*xs,cy+y*ys,Color.clear);						
-//					}
+					// Don't draw if outside corner.
 				} else if(r2 > innerRingRadius2) {
 					float r= Mathf.Sqrt(r2);
 					if(r > radius) {
@@ -214,25 +204,6 @@ public static class iCS_NodeTextures {
 				}
 			}
 		}
-#else
-        float steps= 360f/(4f*Mathf.PI*radius);
-        for(float angle= 0f; angle < 90f; angle+= steps) {
-			float rad= angle*Mathf.Deg2Rad;
-            float s= Mathf.Sin(rad);
-            float c= Mathf.Cos(rad);
-			for(float r= 0f; r < radius; r+=0.9f) {
-				int x= (int)(r*c+0.5f)*xs;
-				int y= (int)(r*s+0.5f)*ys;
-				texture.SetPixel(cx+x,cy+y,fillColor);
-			}
-
-            float dx= radius*c;
-            float dy= radius*s;
-			int dxi= (int)(dx+0.5f)*xs;
-			int dyi= (int)(dy+0.5f)*ys;
-			texture.SetPixel(cx+dxi,cy+dyi,borderColor); 
-		}		
-#endif
 	}
 	
 	// ----------------------------------------------------------------------

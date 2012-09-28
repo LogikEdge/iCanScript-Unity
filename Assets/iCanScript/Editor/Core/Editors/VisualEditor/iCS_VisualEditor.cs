@@ -205,12 +205,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     MyWindow.Repaint();
                 }
             }
-			/*
-				CHANGED To be removed
-			*/                
-							else {
-			                    MyWindow.Repaint();					
-							}
+//			/*
+//				CHANGED To be removed
+//			*/                
+//							else {
+//			                    MyWindow.Repaint();					
+//							}
 
             // Update DisplayRoot
             if(myDisplayRoot == null && IStorage.IsValid(0)) {
