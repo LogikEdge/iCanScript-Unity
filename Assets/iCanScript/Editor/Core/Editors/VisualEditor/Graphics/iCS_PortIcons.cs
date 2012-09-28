@@ -7,6 +7,7 @@ public static class iCS_PortIcons {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
+	static float		myScale						  = 0f;
 	static Texture2D	myCircularPortTemplate        = null;
 	static Texture2D	mySquarePortTemplate  		  = null;
 	static Texture2D	mySelectedCircularPortTemplate= null;
@@ -21,26 +22,28 @@ public static class iCS_PortIcons {
 	// ----------------------------------------------------------------------
     //  Build template for all port icons
 	public static void BuildPortIconTemplates(float scale) {
+		if(Math3D.IsEqual(scale, myScale)) return;
 		BuildCircularPortTemplates(scale);
 		BuildSquarePortTemplates(scale);
+		myScale= scale;
 		FlushCachedIcons();
 	}
 	// ----------------------------------------------------------------------
 	static void BuildSquarePortTemplates(float scale) {
         float len= scale*iCS_Config.PortRadius*3.7f;
-		BuildSquarePortTemplates(len, ref mySquarePortTemplate);
-		BuildSquarePortTemplates(1.67f*len, ref mySelectedSquarePortTemplate);
+		BuildSquarePortTemplate(len, ref mySquarePortTemplate);
+		BuildSquarePortTemplate(1.67f*len, ref mySelectedSquarePortTemplate);
 	}
 	// ----------------------------------------------------------------------
-	static void BuildSquarePortTemplates(float len, ref Texture2D template) {
-        // Remove previous template.
-        if(template != null) Texture2D.DestroyImmediate(template);
+	static void BuildSquarePortTemplate(float len, ref Texture2D template) {
         // Build new template.
 		float margin= len*0.3f;		
 		// Create texture.
 		int lenInt= (int)(len+1f);
 		int marginInt= (int)(margin);
 		int topMarginInt= (int)(len-margin);
+        // Remove previous template.
+        if(template != null) Texture2D.DestroyImmediate(template);
 		template= new Texture2D(lenInt, lenInt);
 		for(int x= 0; x < lenInt; ++x) {
 			for(int y= 0; y < lenInt; ++y) {
@@ -59,24 +62,24 @@ public static class iCS_PortIcons {
 	// ----------------------------------------------------------------------
 	static void BuildCircularPortTemplates(float scale) {
         float radius= scale*iCS_Config.PortRadius*1.85f;
-		BuildCircularPortTemplates(radius, ref myCircularPortTemplate);
-		BuildCircularPortTemplates(1.67f*radius, ref mySelectedCircularPortTemplate);
+		BuildCircularPortTemplate(radius, ref myCircularPortTemplate);
+		BuildCircularPortTemplate(1.67f*radius, ref mySelectedCircularPortTemplate);
 	}
 	// ----------------------------------------------------------------------
-	static void BuildCircularPortTemplates(float radius, ref Texture2D template) {
+	static void BuildCircularPortTemplate(float radius, ref Texture2D template) {
         // Remove previous template.
         if(template != null) Texture2D.DestroyImmediate(template);
 		// Create texture.
-		int widthInt= (int)(2f*radius+2f);
-		int heightInt= (int)(2f*radius+2f);
+		int widthInt= (int)(2f*radius+3f);
+		int heightInt= (int)(2f*radius+3f);
 		template= new Texture2D(widthInt, heightInt, TextureFormat.ARGB32, false);
-		// Build port template.
-		BuildCircularPortTemplate(radius, ref template);
+		BuildCircularPortTemplateImp(radius, ref template);
+		// Finalize texture.
 		template.hideFlags= HideFlags.DontSave;
 		template.Apply();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildCircularPortTemplate(float radius, ref Texture2D texture) {
+	static void BuildCircularPortTemplateImp(float radius, ref Texture2D texture) {
 		float ringWidth= 2f;
 		float fillRatio= 0.5f;
 		float outterRingRadius= radius+0.5f*ringWidth;
