@@ -1293,14 +1293,46 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 		// Show header
 		Heading();	
-		
+
+		DrawNode(100f*Scale,75f*Scale);
+	}
+	// ----------------------------------------------------------------------
+	void DrawNode(float width, float height) {
+		width+= 10f;   // Compensate for shadow margins.
+		height+= 10f;
+		// Get texture.
 		Color shadowColor= Color.black;
 		Texture2D nodeTexture= iCS_NodeTextures.GetNodeTexture(Color.green, new Color(0.24f, 0.27f, 0.32f), shadowColor);
-		int tileSize= nodeTexture.width/3;
-		Rect tilePos= new Rect(0,0,tileSize,tileSize);
-		Rect screenPos= new Rect(0.5f*(position.width-nodeTexture.width), 0.5f*(position.height-nodeTexture.height), tileSize, tileSize);
-		GUI.DrawTextureWithTexCoords(screenPos, nodeTexture, tilePos);
-//		GUI.DrawTexture(new Rect(0.5f*(position.width-nodeTexture.width), 0.5f*(position.height-nodeTexture.height), nodeTexture.width, nodeTexture.height), nodeTexture);
+		
+		// Determine tile size.
+		float tileRatio= 1f/3f; 
+		float tilePos2 = 2f/3f;
+		int tileSize= (int)(nodeTexture.width*tileRatio+0.1f);
+
+		float middleWidth= width-2f*tileSize;
+		float middleHeight= height-2f*tileSize;
+
+		Rect screenPos= new Rect(0.5f*position.width, 0.5f*position.height, tileSize, tileSize);
+		GUI.DrawTextureWithTexCoords(screenPos, nodeTexture, new Rect(0, tilePos2, tileRatio, tileRatio));
+		Rect pos= new Rect(screenPos.xMax,screenPos.y, middleWidth, tileSize);
+		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tileRatio,tilePos2,tileRatio,tileRatio));
+		pos= new Rect(pos.xMax,screenPos.y, tileSize, tileSize);
+		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tilePos2,tilePos2,tileRatio,tileRatio));
+		if(middleHeight > 0f) {
+			pos= new Rect(screenPos.x, pos.yMax,tileSize,middleHeight);
+			GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(0,tileRatio,tileRatio,tileRatio));
+			pos= new Rect(pos.xMax, pos.y, middleWidth, middleHeight);
+			GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tileRatio,tileRatio,tileRatio,tileRatio));
+			pos= new Rect(pos.xMax, pos.y, tileSize, middleHeight);
+			GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tilePos2,tileRatio,tileRatio,tileRatio));			
+		}
+
+		pos= new Rect(screenPos.x,pos.yMax,tileSize,tileSize);
+		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(0,0,tileRatio,tileRatio));
+		pos= new Rect(pos.xMax,pos.y,middleWidth,tileSize);
+		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tileRatio,0,tileRatio,tileRatio));
+		pos= new Rect(pos.xMax, pos.y, tileSize, tileSize);
+		GUI.DrawTextureWithTexCoords(pos, nodeTexture, new Rect(tilePos2,0,tileRatio,tileRatio));
 	}
 	
 	// ----------------------------------------------------------------------
