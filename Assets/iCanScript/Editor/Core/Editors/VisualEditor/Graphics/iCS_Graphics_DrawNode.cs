@@ -12,9 +12,9 @@ public partial class iCS_Graphics {
 	static Rect  kTopLeftTileCoord    = new Rect(kTilePos0, kTilePos2, kTileRatio, kTileRatio);
 	static Rect  kTopMidTileCoord     = new Rect(kTilePos1, kTilePos2, kTileRatio, kTileRatio);
 	static Rect  kTopRightTileCoord   = new Rect(kTilePos2, kTilePos2, kTileRatio, kTileRatio);
-	static Rect  kMidLeftTileCoord    = new Rect(kTilePos0, kTilePos1, kTileRatio, kTileRatio);
-	static Rect  kMidMidTileCoord     = new Rect(kTilePos1, kTilePos1, kTileRatio, kTileRatio);
-	static Rect  kMidRightTileCoord   = new Rect(kTilePos2, kTilePos1, kTileRatio, kTileRatio);
+	static Rect  kMidLeftTileCoord    = new Rect(kTilePos0, kTilePos1, kTileRatio, kTileRatio-0.01f);
+	static Rect  kMidMidTileCoord     = new Rect(kTilePos1, kTilePos1, kTileRatio, kTileRatio-0.01f);
+	static Rect  kMidRightTileCoord   = new Rect(kTilePos2, kTilePos1, kTileRatio, kTileRatio-0.01f);
 	static Rect  kBottomLeftTileCoord = new Rect(kTilePos0, kTilePos0, kTileRatio, kTileRatio);
 	static Rect  kBottomMidTileCoord  = new Rect(kTilePos1, kTilePos0, kTileRatio, kTileRatio);
 	static Rect  kBottomRightTileCoord= new Rect(kTilePos2, kTilePos0, kTileRatio, kTileRatio);
