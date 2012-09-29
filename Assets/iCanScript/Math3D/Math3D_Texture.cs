@@ -25,6 +25,10 @@ public static partial class Math3D {
     }
 
 	// ----------------------------------------------------------------------
+    public static void AlphaBlend(Texture2D src, ref Texture2D dst) {
+        AlphaBlend(0, 0, src, 0, 0, ref dst, dst.width, dst.height);
+    }
+	// ----------------------------------------------------------------------
     public static void AlphaBlend(int sx, int sy, Texture2D src, int dx, int dy, ref Texture2D dst, int width, int height) {
         if(src.width-sx < width) width= src.width-sx;
         if(dst.width-dx < width) width= dst.width-dx;
