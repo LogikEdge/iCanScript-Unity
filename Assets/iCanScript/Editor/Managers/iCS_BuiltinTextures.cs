@@ -49,15 +49,8 @@ public static class iCS_BuiltinTextures {
             myOutPortIcon.SetPixel(radiusInt+x, lineHeight, typeColor);
         }
         int inOffset= kPortIconWidth-kPortIconHeight;
-        for(int x= 0; x < portIcon.width; ++x) {
-            for(int y= 0; y < portIcon.height; ++y) {
-                Color srcPixel= portIcon.GetPixel(x,y);
-                Color dstPixel= myInPortIcon.GetPixel(inOffset+x,y);
-                myInPortIcon.SetPixel(inOffset+x, y, Math3D.AlphaBlend(srcPixel, dstPixel));
-                dstPixel= myOutPortIcon.GetPixel(x,y);
-                myOutPortIcon.SetPixel(x,y, Math3D.AlphaBlend(srcPixel, dstPixel));
-            }
-        }
+        Math3D.AlphaBlend(0, 0, portIcon, inOffset, 0, ref myInPortIcon,  portIcon.width, portIcon.height);
+        Math3D.AlphaBlend(0, 0, portIcon, 0,        0, ref myOutPortIcon, portIcon.width, portIcon.height);
         myInPortIcon.Apply();
         myOutPortIcon.Apply();
         myInPortIcon.hideFlags= HideFlags.DontSave;
