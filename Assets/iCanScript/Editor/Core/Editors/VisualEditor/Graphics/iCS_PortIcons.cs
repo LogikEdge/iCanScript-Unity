@@ -79,7 +79,7 @@ public static class iCS_PortIcons {
 		template.Apply();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildCircularPortTemplateImp(float radius, ref Texture2D texture) {
+	public static void BuildCircularPortTemplateImp(float radius, ref Texture2D texture) {
 		float ringWidth= 2f;
 		float fillRatio= 0.5f;
 		float outterRingRadius= radius+0.5f*ringWidth;
@@ -179,6 +179,12 @@ public static class iCS_PortIcons {
 			var existingIcon= dict[typeColor];
 			if(existingIcon != null) return existingIcon;
 		}
+		Texture2D icon= BuildPortIcon(nodeColor, typeColor, iconTemplate);
+		dict[typeColor]= icon;
+		return icon;
+	}
+	// ----------------------------------------------------------------------
+    public static Texture2D BuildPortIcon(Color nodeColor, Color typeColor, Texture2D iconTemplate) {
 		int width= iconTemplate.width;
 		int height= iconTemplate.height;
 		Texture2D icon= new Texture2D(width, height);
@@ -204,9 +210,9 @@ public static class iCS_PortIcons {
 		}
 		icon.Apply();
 		icon.hideFlags= HideFlags.DontSave;
-		dict[typeColor]= icon;
-		return icon;
-	}
+		return icon;        
+    }
+    
 	// ----------------------------------------------------------------------
 	// Flush cached icons.
 	static void FlushCachedIcons() {

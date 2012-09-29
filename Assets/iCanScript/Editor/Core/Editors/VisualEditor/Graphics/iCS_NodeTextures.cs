@@ -85,11 +85,7 @@ public static class iCS_NodeTextures {
 		int tileSize= radiusInt+extraTitleheightInt+shadowSizeInt;
 		int textureSize= 3*tileSize;
 		myNodeTemplate= new Texture2D(textureSize,textureSize);
-		for(int i= 0; i < textureSize; ++i) {
-			for(int j= 0; j < textureSize; ++j) {
-				myNodeTemplate.SetPixel(i,j,Color.clear);
-			}
-		}
+        Math3D.Clear(ref myNodeTemplate);
 		// Draw shadow
 		int farCornerOffset= textureSize-cornerOffset-1;
 		int farSideOffset= textureSize-shadowSizeInt-1;

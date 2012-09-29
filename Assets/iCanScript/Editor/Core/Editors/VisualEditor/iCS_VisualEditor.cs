@@ -1299,7 +1299,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(IsDragStarted) DrawScrollZone();
 
 		// Show header
-		Heading();	
+		Heading();			
+        
+//        Texture2D test= iCS_PortIcons.GetCircularPortIcon(Color.red, Color.green);
+//        GUI.DrawTexture(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, test.width, test.height), test); 
+
+//        Texture2D test= new Texture2D(100, 100, TextureFormat.ARGB32, false);
+//        test.ReadPixels(new Rect(RealMousePosition.x-50f,position.height-RealMousePosition.y-50f,100,100),0,0,false);
+//        test.Apply();
+//		GUI.DrawTexture(new Rect(RealMousePosition.x-75f,RealMousePosition.y-75f,150,150), test);
 	}
 	
 	// ----------------------------------------------------------------------

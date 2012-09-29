@@ -30,9 +30,5 @@ public class iCS_EditorStrings {
     public const string ClassHierarchyIcon      = "iCS_ClassTag.png";
     public const string FunctionHierarchyIcon   = "iCS_FunctionTag.png";
     public const string StateHierarchyIcon      = "iCS_StateTag.png";
-    public const string InPortHierarchyIcon     = "iCS_InPortTag.png";
-    public const string OutPortHierarchyIcon    = "iCS_OutPortTag.png";
-    public const string InPropertyHierarchyIcon = "iCS_InPropertyTag.png";
-    public const string OutPropertyHierarchyIcon= "iCS_OutPropertyTag.png";
     public const string ConstructorHierarchyIcon= "iCS_ConstructorTag.png";
 }

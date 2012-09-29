@@ -46,7 +46,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // Used to iterate through content
 	Stack<Prelude.Tree<Node>>   myIterStackNode    = null;
 	Stack<int>					myIterStackChildIdx= null;
-	
+
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
@@ -80,8 +80,9 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
-    const float kIconWidth= 16.0f;
-    const float kLabelSpacer= 4.0f;
+    const int   kIconWidth  = 16;
+    const int   kIconHeight = 12;
+    const float kLabelSpacer= 4f;
     
     // =================================================================================
     // Initialization
@@ -378,24 +379,24 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ClassHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.Field) {
             if(current.Desc.IsGetField) {
-                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.OutPortHierarchyIcon);            
+                icon= iCS_BuiltinTextures.OutPortIcon;
             } else {
-                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.InPortHierarchyIcon);                            
+                icon= iCS_BuiltinTextures.InPortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Property) {
             if(current.Desc.IsGetProperty) {
-                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.OutPortHierarchyIcon);                            
+                icon= iCS_BuiltinTextures.OutPortIcon;
             } else {
-                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.InPortHierarchyIcon);            
+                icon= iCS_BuiltinTextures.InPortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Constructor) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ConstructorHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.Method) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.InParameter) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.InPortHierarchyIcon);                        
+            icon= iCS_BuiltinTextures.InPortIcon;
         } else if(nodeType == NodeTypeEnum.OutParameter) {
-            icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.OutPortHierarchyIcon);                                        
+            icon= iCS_BuiltinTextures.OutPortIcon;
         }
         return new GUIContent(name, icon); 
     }

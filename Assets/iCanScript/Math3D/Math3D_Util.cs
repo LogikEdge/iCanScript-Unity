@@ -203,15 +203,4 @@ public static partial class Math3D {
         return new Rect(xMin, yMin, xMax-xMin, yMax-yMin);
     }
 
-    // ======================================================================
-    // Color Blend
-	// ----------------------------------------------------------------------
-    public static Color AlphaBlend(Color src, Color dst) {
-        float keepAlpha= 1f-src.a;
-        float outAlpha= src.a + dst.a*keepAlpha;
-        if(IsZero(outAlpha)) return Color.clear;
-        float srcBlend= src.a/outAlpha;
-        float dstBlend= dst.a*keepAlpha/outAlpha;
-        return new Color(src.r*srcBlend+dst.r*dstBlend, src.g*srcBlend+dst.g*dstBlend, src.b*srcBlend+dst.b*dstBlend, outAlpha);
-    }
 }
