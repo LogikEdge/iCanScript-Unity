@@ -11,24 +11,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     void DisplayGraphNodes() {
-        DisplayNormalNodes();
+        var floatingNormalNode= DisplayNonFloatingNormalNode(myDisplayRoot);
         DisplayConnections(myDisplayRoot);
         DisplayPortsAndMinimizedNodes(myDisplayRoot);
+        // Display floating nodes.
+        if(floatingNormalNode != null) {
+            DisplayFloatingNormalNode(floatingNormalNode);            
+        }
     }
     
     // ======================================================================
     // Normal nodes
 	// ----------------------------------------------------------------------
-    void DisplayNormalNodes() {
-        // Display non floating nodes first.
-        var floatingNodeRoot= DrawNonFloatingNormalNode(myDisplayRoot);
-        // Display floating nodes.
-        if(floatingNodeRoot != null) {
-            DrawNonFloatingNormalNode(floatingNodeRoot);            
-        }
-    }	
-	// ----------------------------------------------------------------------
-    iCS_EditorObject DrawNonFloatingNormalNode(iCS_EditorObject rootNode, iCS_EditorObject floatingRootNode= null) {
+    iCS_EditorObject DisplayNonFloatingNormalNode(iCS_EditorObject rootNode, iCS_EditorObject floatingRootNode= null) {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             node=> {
                 if(node.IsNode) {
@@ -57,9 +52,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return floatingRootNode;
     }
 	// ----------------------------------------------------------------------
-    void DrawFloatingNormalNode(iCS_EditorObject rootNode) {
+    void DisplayFloatingNormalNode(iCS_EditorObject rootNode) {
         IStorage.ForEachRecursiveDepthLast(rootNode,
-            node=> { if(node.IsNode) myGraphics.DrawNormalNode(node, IStorage); }
+            child=> {
+                if(child.IsNode) myGraphics.DrawNormalNode(child, IStorage);
+                if(child.IsPort) myGraphics.DrawPort(child, IStorage);
+            }
         );
 //        IStorage.ForEachChildNode(rootNode,
 //            node=> {
