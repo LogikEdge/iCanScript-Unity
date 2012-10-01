@@ -377,7 +377,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             break;
                         }
                     }
-                    break;
+        			return false;
     			}
             }
         }

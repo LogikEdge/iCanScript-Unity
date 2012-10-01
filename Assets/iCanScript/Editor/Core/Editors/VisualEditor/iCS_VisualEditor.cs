@@ -29,11 +29,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_IStorage        myPreviousIStorage= null;
     
     // ----------------------------------------------------------------------
-    int   myUpdateCounter     = 0;
-    int   myRefreshCounter    = 0;
-    float myCurrentTime       = 0;
-    float myDeltaTime         = 0;
-    bool  myNeedAnotherRepaint= true;
+    int   myUpdateCounter = 0;
+    int   myRefreshCounter= 0;
+    float myCurrentTime   = 0;
+    float myDeltaTime     = 0;
+    bool  myNeedRepaint   = true; 
     
     // ----------------------------------------------------------------------
     Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
@@ -202,10 +202,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Repaint window
             if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
                 MyWindow.Repaint();
-                myNeedAnotherRepaint= true;
-            } else if(myNeedAnotherRepaint) {
+                myNeedRepaint= true;
+            } else if(myNeedRepaint) {
                 MyWindow.Repaint();
-                myNeedAnotherRepaint= false;                    
+                myNeedRepaint= false;                    
             } else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
                 float period= iCS_PreferencesEditor.PortValueRefreshPeriod;
                 if(period < 0.03f) period= 0.03f;
@@ -269,7 +269,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		
         // Process user inputs.  False is return if graph should not be drawn.
         if(!ProcessEvents()) {
-            myNeedAnotherRepaint= true;
+            myNeedRepaint= true;
             return;
         }
 
