@@ -276,11 +276,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(Event.current.type == EventType.Repaint) {
             // Draw Graph.
             DrawGraph();
-
-    		// Process scroll zone.
-    		ProcessScrollZone();                        
         }
-		
+
+		// Process scroll zone.
+		ProcessScrollZone();                        
+	
 #if SHOW_FRAME_COUNT
 		myAverageFrameRate= (myAverageFrameRate*9f+myDeltaTime)/10f;
        	if(Math3D.IsNotZero(myAverageFrameRate) && myFrameRateLastDisplay != (int)myCurrentTime) {
@@ -941,121 +941,4 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return scale;
     }
 
-    // ======================================================================
-    // SCROLL ZONE
-	// ----------------------------------------------------------------------
-    void ProcessScrollZone() {
-        // Compute the amount of scroll needed.
-        var dir= CanScrollInDirection(DetectScrollZone());
-        if(Math3D.IsZero(dir)) return;
-        dir*= iCS_PreferencesEditor.EdgeScrollSpeed*myDeltaTime;
-
-        // Adjust according to scroll zone.
-        switch(DragType) {
-            case DragTypeEnum.PortConnection:
-            case DragTypeEnum.TransitionCreation: {
-                MouseDragStartPosition-= dir;
-                ScrollPosition= ScrollPosition+dir;
-                ProcessDrag();
-                break;
-            }
-            default: break;
-        }
-    }
-	// ----------------------------------------------------------------------
-    void DrawScrollZone() {
-        var dir= CanScrollInDirection(DetectScrollZone());
-        if(Math3D.IsZero(dir)) return;
-        ShowScrollButton(dir);
-    }
-	// ----------------------------------------------------------------------
-    bool IsInScrollZone() {
-        return Math3D.IsNotZero(DetectScrollZone());
-    }
-	// ----------------------------------------------------------------------
-    const float scrollButtonSize=24f;
-    Vector2 DetectScrollZone() {
-        Vector2 direction= Vector2.zero;
-        float headerHeight= iCS_ToolbarUtility.GetHeight();
-        Rect rect= new Rect(0,headerHeight,position.width,position.height-headerHeight);
-        if(!rect.Contains(MousePosition)) return direction;
-        if(position.width < 3f*scrollButtonSize || position.height < 3f*scrollButtonSize) return direction;
-        if(MousePosition.x < scrollButtonSize) {
-            direction.x= -(scrollButtonSize-MousePosition.x)/scrollButtonSize;
-        }
-        if(MousePosition.x > position.width-scrollButtonSize) {
-            direction.x= (MousePosition.x-position.width+scrollButtonSize)/scrollButtonSize;
-        }
-        if(MousePosition.y < scrollButtonSize+headerHeight) {
-            direction.y= -(scrollButtonSize+headerHeight-MousePosition.y)/scrollButtonSize;
-        }
-        if(MousePosition.y > position.height-scrollButtonSize) {
-            direction.y= (MousePosition.y-position.height+scrollButtonSize)/scrollButtonSize;
-        }
-        return direction;        
-    }
-	// ----------------------------------------------------------------------
-    Vector2 CanScrollInDirection(Vector2 dir) {
-        Rect rootRect= IStorage.GetLayoutPosition(myDisplayRoot);
-        var rootCenter= Math3D.Middle(rootRect);
-        var topLeftCorner= ViewportToGraph(new Vector2(0, iCS_ToolbarUtility.GetHeight()));
-        var bottomRightCorner= ViewportToGraph(new Vector2(position.width, position.height));
-        if(Math3D.IsSmaller(dir.x, 0f)) {
-            if(!rootRect.Contains(new Vector2(topLeftCorner.x, rootCenter.y))) {
-                dir.x= 0f;
-            }
-        }
-        if(Math3D.IsGreater(dir.x,0f)) {
-            if(!rootRect.Contains(new Vector2(bottomRightCorner.x, rootCenter.y))) {
-                dir.x= 0f;
-            }
-        }
-        if(Math3D.IsSmaller(dir.y, 0f)) {
-            if(!rootRect.Contains(new Vector2(rootCenter.x, topLeftCorner.y))) {
-                dir.y= 0f;
-            }
-        }
-        if(Math3D.IsGreater(dir.y,0f)) {
-            if(!rootRect.Contains(new Vector2(rootCenter.x, bottomRightCorner.y))) {
-                dir.y= 0f;
-            }
-        }
-        return dir;
-    }
-	// ----------------------------------------------------------------------
-    void ShowScrollButton(Vector2 direction) {
-        if(Math3D.IsZero(direction)) return;
-        float headerHeight= iCS_ToolbarUtility.GetHeight();
-        Rect rect= new Rect(0,headerHeight,position.width,position.height-headerHeight);
-        if(Math3D.IsSmaller(direction.x, 0f)) {
-            rect= Math3D.Intersection(rect, new Rect(0, 0, scrollButtonSize, position.height-1f));            
-        }
-        if(Math3D.IsGreater(direction.x, 0f)) {
-            rect= Math3D.Intersection(rect, new Rect(position.width-scrollButtonSize, 0, scrollButtonSize-2f, position.height-1f));            
-        }
-        if(Math3D.IsSmaller(direction.y, 0f)) {
-            rect= Math3D.Intersection(rect, new Rect(0, headerHeight, position.width-2f, scrollButtonSize-1f));
-        }
-        if(Math3D.IsGreater(direction.y, 0f)) {
-            rect= Math3D.Intersection(rect, new Rect(0, position.height-scrollButtonSize, position.width-2f, scrollButtonSize-1f));
-        }
-        Color backgroundColor= new Color(1f,1f,1f,0.06f);
-        iCS_Graphics.DrawRect(rect, backgroundColor, backgroundColor);
-        // Draw arrow head
-        direction.Normalize();
-        Vector3[] tv= new Vector3[4];
-        tv[0]= 0.4f*scrollButtonSize * direction;            
-        Quaternion q1= Quaternion.AngleAxis(90f, Vector3.forward);
-        tv[1]= q1*tv[0];
-        Quaternion q2= Quaternion.AngleAxis(270f, Vector3.forward);
-        tv[2]= q2*tv[0];
-        tv[3]= tv[0];
-        var center= Math3D.Middle(rect);
-        for(int i= 0; i < 4; ++i) {
-            tv[i].x+= center.x-0.2f*scrollButtonSize*direction.x;
-            tv[i].y+= center.y-0.2f*scrollButtonSize*direction.y;
-        }
-        Color arrowColor= new Color(1f,1f,1f,0.5f);
-        Handles.DrawSolidRectangleWithOutline(tv, arrowColor, arrowColor);
-    }
 }
