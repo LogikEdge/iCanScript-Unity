@@ -16,11 +16,6 @@ using System.Collections.Generic;
 // This non-persistante class is used to edit the iCS_Behaviour.
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
-    // Types
-    // ----------------------------------------------------------------------
-    enum DragTypeEnum { None, PortConnection, PortRelocation, NodeDrag, TransitionCreation };
-
-    // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
     iCS_EditorObject    myDisplayRoot= null;

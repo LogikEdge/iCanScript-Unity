@@ -4,6 +4,11 @@ using System.Collections;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
+    // Types
+    // ----------------------------------------------------------------------
+    enum DragTypeEnum { None, PortConnection, PortRelocation, NodeDrag, TransitionCreation };
+
+    // ======================================================================
 	// ----------------------------------------------------------------------
     void MakeDataConnectionDrag() {
         if(DragFixPort != DragOriginalPort) IStorage.SetSource(DragOriginalPort, DragFixPort);
