@@ -2,13 +2,42 @@ using UnityEngine;
 using System.Collections;
 
 /*
-    FIXME: Resolve difference between visual minimized and graph minimize and the likes.
-*/
-/*
     FIXME: Cleanup conditional tree descent VS full tree descent when drawing graph.
 */
 public partial class iCS_VisualEditor : iCS_EditorBase {
+    // ======================================================================
+    // NODE GRAPH DISPLAY
+	// ----------------------------------------------------------------------
+	void DrawGraph () {
+        // Ask the storage to update itself.
+        IStorage.Update();
 
+		// Start graphics
+        myGraphics.Begin(UpdateScrollPosition(), UpdateScale(), ClipingArea, SelectedObject, GraphMousePosition);
+        
+        // Draw editor grid.
+        DrawGrid();
+        
+        // Draw nodes and their connections.
+        DisplayGraphNodes();
+
+        myGraphics.End(IStorage);
+
+        // Show scroll zone (is applicable).
+        if(IsDragStarted) DrawScrollZone();
+
+		// Show header
+		Heading();			
+	}
+	
+	// ----------------------------------------------------------------------
+    void DrawGrid() {
+        myGraphics.DrawGrid(position,
+                            iCS_PreferencesEditor.CanvasBackgroundColor,
+                            iCS_PreferencesEditor.GridColor,
+                            iCS_PreferencesEditor.GridSpacing);
+    }                       
+    
 	// ----------------------------------------------------------------------
     void DisplayGraphNodes() {
         var floatingNormalNode= DisplayNonFloatingNormalNode(myDisplayRoot);
@@ -130,5 +159,26 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(floatingRootNode != null) {
             myGraphics.DrawMinimizedNode(floatingRootNode, IStorage);
         }        
+    }
+
+	// ======================================================================
+	// Graph animation processing
+	// ----------------------------------------------------------------------
+	Vector2 UpdateScrollPosition() {
+        Vector2 graphicScrollPosition= ScrollPosition;
+        if(myAnimatedScrollPosition.IsActive) {
+            myAnimatedScrollPosition.Update();
+            graphicScrollPosition= myAnimatedScrollPosition.CurrentValue;
+        }
+		return graphicScrollPosition;
+	}
+	// ----------------------------------------------------------------------
+    float UpdateScale() {
+        float scale= Scale;
+        if(myAnimatedScale.IsActive) {
+            myAnimatedScale.Update();
+            scale= myAnimatedScale.CurrentValue;
+        }
+        return scale;
     }
 }
