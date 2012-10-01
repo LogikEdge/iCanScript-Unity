@@ -109,7 +109,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!StartDrag()) return;
 
         // Compute new object position.
-        Vector2 delta= MousePosition - MouseDragStartPosition;
+        Vector2 delta= ViewportMousePosition - MouseDragStartPosition;
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
@@ -158,7 +158,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     break;
                 }
                 // Snap to nearby ports
-                Vector2 mousePosInGraph= ViewportToGraph(MousePosition);
+                Vector2 mousePosInGraph= GraphMousePosition;
                 iCS_EditorObject closestPort= IStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
                     Rect closestPortRect= IStorage.GetLayoutPosition(closestPort);

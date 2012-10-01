@@ -58,7 +58,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Copy/Paste library from prefab
         iCS_Storage storage= GetDraggedLibrary(draggedObject);
 		if(storage != null) {
-            PasteIntoGraph(ViewportToGraph(MousePosition), storage, storage.EditorObjects[0]);
+            PasteIntoGraph(GraphMousePosition, storage, storage.EditorObjects[0]);
 			// Remove data so that we don't get called multiple times (Unity bug !!!).
             DragAndDrop.objectReferences= new UnityEngine.Object[0];
 			return;
@@ -95,7 +95,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Allow dropping Unity object in modules.
                 if(eObj.IsModule && draggedObject is GameObject) {
                     GameObject gameObject= draggedObject as GameObject;
-                    CreateGameObject(eObj.InstanceId, gameObject, MouseGraphPosition);
+                    CreateGameObject(eObj.InstanceId, gameObject, GraphMousePosition);
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
 		            DragAndDrop.objectReferences= new UnityEngine.Object[0];
                     return;
@@ -128,7 +128,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateGameObject(int parentId, GameObject gameObject, Vector2 position) {
-        var module= IStorage.CreateModule(parentId, MouseGraphPosition, gameObject.name, iCS_ObjectTypeEnum.Module, gameObject.GetType());
+        var module= IStorage.CreateModule(parentId, GraphMousePosition, gameObject.name, iCS_ObjectTypeEnum.Module, gameObject.GetType());
         var thisPort= IStorage.FindThisInputPort(module);
         if(thisPort != null) {
             IStorage.SetPortValue(thisPort, gameObject);
@@ -138,7 +138,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         */
 //        Component[] components= gameObject.GetComponents(typeof(Component));
 //        foreach(var component in components) {
-//            IStorage.CreateModule(parentId, MouseGraphPosition+new Vector2(100,0), component.name, iCS_ObjectTypeEnum.Module, component.GetType());
+//            IStorage.CreateModule(parentId, GraphMousePosition+new Vector2(100,0), component.name, iCS_ObjectTypeEnum.Module, component.GetType());
 //        }
         return module;
     }

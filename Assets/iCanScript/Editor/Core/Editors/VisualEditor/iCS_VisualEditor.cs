@@ -105,21 +105,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool    IsScaleKeyDown      { get { return Event.current.alt; }}
     bool    IsShiftKeyDown      { get { return Event.current.shift; }}
     
-	// ----------------------------------------------------------------------
-	void UpdateMouse() {
-        var mousePosition= Event.current.mousePosition;
-        if(mousePosition.x >= 0 && mousePosition.x < position.width &&
-           mousePosition.y >= 0 && mousePosition.y < position.height) {
-               myMousePosition= mousePosition;
-        }
-	}
-    Vector2 RealMousePosition  { get { return myMousePosition; }}
-    Vector2 MousePosition      { get { return myMousePosition/Scale; } }
-    Vector2 MouseGraphPosition { get { return ViewportToGraph(MousePosition); }}
-	Vector2 myMousePosition  = Vector2.zero;
-	Vector2 MouseDownPosition= Vector2.zero;
-	float   MouseUpTime      = 0f;
-	
     // ======================================================================
     // INITIALIZATION
 	// ----------------------------------------------------------------------
@@ -326,27 +311,27 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     // Returns the object at the given mouse position.
     iCS_EditorObject GetObjectAtMousePosition() {
-        return GetObjectAtScreenPosition(MousePosition);
+        return GetObjectAtScreenPosition(ViewportMousePosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the node at the given mouse position.
     iCS_EditorObject GetNodeAtMousePosition() {
-        Vector2 graphPosition= ViewportToGraph(MousePosition);
+        Vector2 graphPosition= ViewportToGraph(ViewportMousePosition);
         return IStorage.GetNodeAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the port at the given mouse position.
     iCS_EditorObject GetPortAtMousePosition() {
-        Vector2 graphPosition= ViewportToGraph(MousePosition);
+        Vector2 graphPosition= ViewportToGraph(ViewportMousePosition);
         return IStorage.GetPortAt(graphPosition);
     }
 
 	// ----------------------------------------------------------------------
     // Returns the closest port at the given mouse position.
     iCS_EditorObject GetClosestPortAtMousePosition() {
-        Vector2 graphPosition= ViewportToGraph(MousePosition);
+        Vector2 graphPosition= ViewportToGraph(ViewportMousePosition);
         return IStorage.GetClosestPortAt(graphPosition);
     }
 
@@ -905,7 +890,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.Update();
 
 		// Start graphics
-        myGraphics.Begin(UpdateScrollPosition(), UpdateScale(), ClipingArea, SelectedObject, ViewportToGraph(MousePosition));
+        myGraphics.Begin(UpdateScrollPosition(), UpdateScale(), ClipingArea, SelectedObject, GraphMousePosition);
         
         // Draw editor grid.
         DrawGrid();

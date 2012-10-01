@@ -80,7 +80,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void MouseMoveEvent() {
         switch(Event.current.button) {
             case 2: { // Middle mouse button
-                Vector2 diff= MousePosition-MouseDragStartPosition;
+                Vector2 diff= ViewportMousePosition-MouseDragStartPosition;
                 ScrollPosition= DragStartPosition-diff;
                 break;
             }
@@ -98,7 +98,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case 2: { // Middle mouse button
-                Vector2 diff= MousePosition-MouseDragStartPosition;
+                Vector2 diff= ViewportMousePosition-MouseDragStartPosition;
                 ScrollPosition= DragStartPosition-diff;
                 break;
             }
@@ -109,7 +109,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void MouseDownEvent() {
-		MouseDownPosition= MousePosition;
+		MouseDownPosition= ViewportMousePosition;
         // Update the selected object.
         SelectedObjectBeforeMouseDown= SelectedObject;
         DetermineSelectedObject();
@@ -126,7 +126,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case 2: { // Middle mouse button
-                MouseDragStartPosition= MousePosition;
+                MouseDragStartPosition= ViewportMousePosition;
                 DragStartPosition= ScrollPosition;
                 break;
             }
@@ -142,7 +142,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(ShouldRotateMuxPort) RotateSelectedMuxPort();
             if(SelectedObject != null) {
                 // Process fold/unfold/minimize/maximize click.
-                Vector2 mouseGraphPos= MouseGraphPosition;
+                Vector2 mouseGraphPos= GraphMousePosition;
                 if(myGraphics.IsFoldIconPicked(SelectedObject, mouseGraphPos, IStorage)) {
                     if(IStorage.IsFolded(SelectedObject)) {
                         IStorage.RegisterUndo("Unfold");
@@ -162,7 +162,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                         else {
                             Event.current.Use();
-                            iCS_PickInfo pickInfo= myGraphics.GetPickInfo(ViewportToGraph(MousePosition), IStorage);
+                            iCS_PickInfo pickInfo= myGraphics.GetPickInfo(GraphMousePosition, IStorage);
 							if(pickInfo != null) {
 							    ProcessPicking(pickInfo);
 							}
@@ -176,11 +176,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ScrollWheelEvent() {
         Vector2 delta= Event.current.delta;
         if(IsScaleKeyDown) {
-            Vector2 pivot= MouseGraphPosition;
+            Vector2 pivot= GraphMousePosition;
 			float zoomDirection= iCS_PreferencesEditor.InverseZoom ? -1f : 1f;
 			float scaleDelta= Scale*0.09f*iCS_PreferencesEditor.ZoomSpeed;
             Scale= Scale+(delta.y > 0 ? -scaleDelta : scaleDelta)*zoomDirection;
-            Vector2 offset= pivot-ViewportToGraph(MousePosition);
+            Vector2 offset= pivot-GraphMousePosition;
             ScrollPosition+= offset;
         } else {
             delta*= iCS_PreferencesEditor.ScrollSpeed*(1f/Scale); 
@@ -301,7 +301,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case KeyCode.Insert: {
                 if(SelectedObject == null) SelectedObject= myDisplayRoot;
                 // Don't use mouse position if it is too far from selected node.
-                Vector2 graphPos= ViewportToGraph(MousePosition);
+                Vector2 graphPos= GraphMousePosition;
                 Rect parentRect= IStorage.GetLayoutPosition(SelectedObject);
                 Vector2 parentOrigin= new Vector2(parentRect.x, parentRect.y);
                 Vector2 parentCenter= Math3D.Middle(parentRect);
@@ -425,7 +425,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             SelectedObject= myDisplayRoot;
         }
         ShowInstanceEditor();
-        myDynamicMenu.Update(SelectedObject, IStorage, ViewportToGraph(MousePosition));
+        myDynamicMenu.Update(SelectedObject, IStorage, GraphMousePosition);
         IStorage.SetDirty(SelectedObject);                    
     }
 	// ----------------------------------------------------------------------

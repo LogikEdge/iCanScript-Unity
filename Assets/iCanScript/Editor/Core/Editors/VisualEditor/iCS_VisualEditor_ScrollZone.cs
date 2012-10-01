@@ -41,19 +41,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Vector2 direction= Vector2.zero;
         float headerHeight= iCS_ToolbarUtility.GetHeight();
         Rect rect= new Rect(0,headerHeight,position.width,position.height-headerHeight);
-        if(!rect.Contains(RealMousePosition)) return direction;
+        if(!rect.Contains(WindowMousePosition)) return direction;
         if(position.width < 3f*scrollButtonSize || position.height < 3f*scrollButtonSize) return direction;
-        if(RealMousePosition.x < scrollButtonSize) {
-            direction.x= -(scrollButtonSize-RealMousePosition.x)/scrollButtonSize;
+        if(WindowMousePosition.x < scrollButtonSize) {
+            direction.x= -(scrollButtonSize-WindowMousePosition.x)/scrollButtonSize;
         }
-        if(RealMousePosition.x > position.width-scrollButtonSize) {
-            direction.x= (RealMousePosition.x-position.width+scrollButtonSize)/scrollButtonSize;
+        if(WindowMousePosition.x > position.width-scrollButtonSize) {
+            direction.x= (WindowMousePosition.x-position.width+scrollButtonSize)/scrollButtonSize;
         }
-        if(RealMousePosition.y < scrollButtonSize+headerHeight) {
-            direction.y= -(scrollButtonSize+headerHeight-RealMousePosition.y)/scrollButtonSize;
+        if(WindowMousePosition.y < scrollButtonSize+headerHeight) {
+            direction.y= -(scrollButtonSize+headerHeight-WindowMousePosition.y)/scrollButtonSize;
         }
-        if(RealMousePosition.y > position.height-scrollButtonSize) {
-            direction.y= (RealMousePosition.y-position.height+scrollButtonSize)/scrollButtonSize;
+        if(WindowMousePosition.y > position.height-scrollButtonSize) {
+            direction.y= (WindowMousePosition.y-position.height+scrollButtonSize)/scrollButtonSize;
         }
         return direction;        
     }
