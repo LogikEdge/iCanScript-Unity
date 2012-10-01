@@ -23,10 +23,12 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const float  kScrollSpeed              = 3.0f;
     const float  kEdgeScrollSpeed          = 400.0f;
     const bool   kInverseZoom              = false;
+    const float  kZoomSpeed                = 1.0f;
     const string kAnimationTimeKey         = "iCS_AnimationTime";
     const string kScrollSpeedKey           = "iCS_ScrollSpeed";
     const string kEdgeScrollSpeedKey       = "iCS_EdgeScrollSpeed";
     const string kInverseZoomKey           = "iCS_InverseZoom";
+    const string kZoomSpeedKey             = "iCS_ZoomSpeed";
     const bool   kShowRuntimePortValue     = false;
     const float  kPortValueRefreshPeriod   = 0.1f;
     const string kShowRuntimePortValueKey  = "iCS_ShowRuntimePortValue";
@@ -150,6 +152,15 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
         set {
             EditorPrefs.SetBool(kInverseZoomKey, value);
+        }
+    }
+    public static float ZoomSpeed {
+        get {
+            return EditorPrefs.GetFloat(kZoomSpeedKey, kZoomSpeed);
+        }
+        set {
+            if(value < 0.1f || value >5.0f) return;
+            EditorPrefs.SetFloat(kZoomSpeedKey, value);
         }
     }
     public static bool ShowRuntimePortValue {
@@ -409,16 +420,16 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Draw column 2
         Rect p= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
         GUI.Label(p, "Animation Controls", EditorStyles.boldLabel);
-        Rect[] pos= new Rect[6];
+        Rect[] pos= new Rect[7];
         pos[0]= new Rect(p.x, p.yMax, p.width, p.height);
-        for(int i= 1; i < 5; ++i) {
+        for(int i= 1; i < 6; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
-        pos[4].y+= pos[3].height;
-        GUI.Label(pos[4], "Port Values", EditorStyles.boldLabel);
-        pos[4].y+= pos[4].height;
-        for(int i= 5; i < pos.Length; ++i) {
+        pos[5].y+= pos[4].height;
+        GUI.Label(pos[5], "Port Values", EditorStyles.boldLabel);
+        pos[5].y+= pos[5].height;
+        for(int i= 6; i < pos.Length; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;            
         }
@@ -426,8 +437,9 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUI.Label(pos[1], "Scroll Speed");
         GUI.Label(pos[2], "Edge Scroll Speed (pixels)");
         GUI.Label(pos[3], "Inverse Zoom");
-        GUI.Label(pos[4], "Show Runtime Values");
-        GUI.Label(pos[5], "Refresh Period (seconds)");
+        GUI.Label(pos[4], "Zoom Speed");
+        GUI.Label(pos[5], "Show Runtime Values");
+        GUI.Label(pos[6], "Refresh Period (seconds)");
         
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
@@ -438,8 +450,9 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         ScrollSpeed= EditorGUI.FloatField(pos[1], ScrollSpeed);
         EdgeScrollSpeed= EditorGUI.FloatField(pos[2], EdgeScrollSpeed);
         InverseZoom= EditorGUI.Toggle(pos[3], InverseZoom);
-        ShowRuntimePortValue= EditorGUI.Toggle(pos[4], ShowRuntimePortValue);
-        PortValueRefreshPeriod= EditorGUI.FloatField(pos[5], PortValueRefreshPeriod);
+        ZoomSpeed= EditorGUI.FloatField(pos[4], ZoomSpeed);
+        ShowRuntimePortValue= EditorGUI.Toggle(pos[5], ShowRuntimePortValue);
+        PortValueRefreshPeriod= EditorGUI.FloatField(pos[6], PortValueRefreshPeriod);
 
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
@@ -447,6 +460,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             ScrollSpeed           = kScrollSpeed;
             EdgeScrollSpeed       = kEdgeScrollSpeed;
             InverseZoom           = kInverseZoom;
+            ZoomSpeed             = kZoomSpeed;
             ShowRuntimePortValue  = kShowRuntimePortValue;
             PortValueRefreshPeriod= kPortValueRefreshPeriod;            
         }
