@@ -42,4 +42,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(node != null) return node;
         return null;
     }
+	// ----------------------------------------------------------------------
+	// Returns the state at the given position.
+    iCS_EditorObject GetStateAt(Vector2 point) {
+        iCS_EditorObject node= IStorage.GetNodeAt(point);
+        while(node != null && !node.IsState) {
+            node= IStorage.GetNodeAt(point, node);
+        }
+        return node;
+    }
+	// ----------------------------------------------------------------------
+	// Returns the state chart at the given position.
+    iCS_EditorObject GetStateChartAt(Vector2 point) {
+        iCS_EditorObject node= IStorage.GetNodeAt(point);
+        while(node != null && !node.IsStateChart) {
+            node= IStorage.GetNodeAt(point, node);
+        }
+        return node;
+    }
+
 }

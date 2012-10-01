@@ -3,6 +3,15 @@ using UnityEditor;
 using System.Collections;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
+	// ======================================================================
+	// Properties
+	// ----------------------------------------------------------------------
+	bool    HasKeyboardFocus    { get { return EditorWindow.focusedWindow == MyWindow; }}
+    bool    IsFloatingKeyDown	{ get { return Event.current.control; }}
+    bool    IsCopyKeyDown       { get { return Event.current.shift; }}
+    bool    IsScaleKeyDown      { get { return Event.current.alt; }}
+    bool    IsShiftKeyDown      { get { return Event.current.shift; }}
+    
 	// ----------------------------------------------------------------------
     void KeyDownEvent() {
 	    /*

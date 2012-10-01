@@ -93,77 +93,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
 
-	// ----------------------------------------------------------------------
-	bool    HasKeyboardFocus    { get { return EditorWindow.focusedWindow == MyWindow; }}
-    bool    IsFloatingKeyDown	{ get { return Event.current.control; }}
-    bool    IsCopyKeyDown       { get { return Event.current.shift; }}
-    bool    IsScaleKeyDown      { get { return Event.current.alt; }}
-    bool    IsShiftKeyDown      { get { return Event.current.shift; }}
-    
-    // ======================================================================
-    // INITIALIZATION
-	// ----------------------------------------------------------------------
-    // Prepares the editor for editing a graph.  Note that the graph to edit
-    // is not configured at this point.  We must wait for an activate from
-    // the graph inspector to know which graph to edit. 
-	public new void OnEnable() {        
-        base.OnEnable();
-        
-		// Tell Unity we want to be informed of move drag events
-		MyWindow.wantsMouseMove= true;
-
-        // Create worker objects.
-        myGraphics   = new iCS_Graphics();
-        myDynamicMenu= new iCS_DynamicMenu();
-        
-        // Inspect the assemblies for components.
-        if(!ourAlreadyParsed) {
-            ourAlreadyParsed= true;
-            iCS_Reflection.ParseAppDomain();
-        }
-        
-        // Get snapshot for realtime clock.
-        myCurrentTime= Time.realtimeSinceStartup;	    
-	}
-
-	// ----------------------------------------------------------------------
-    // Releases all resources used by the iCS_Behaviour editor.
-    public new void OnDisable() {
-        base.OnDisable();
-        
-        // Release all worker objects.
-        myGraphics   = null;
-        myDynamicMenu= null;
-    }
-
-	// ----------------------------------------------------------------------
-    // Assures proper initialization and returns true if editor is ready
-    // to execute.
-	bool IsInitialized() {
-        // Nothing to do if we don't have a Graph to edit...
-		if(IStorage == null) {
-            myDisplayRoot= null;
-            myBookmark= null;
-            DragType= DragTypeEnum.None;
-		    return false;
-		}
-        if(IStorage != myPreviousIStorage) {
-            myPreviousIStorage= IStorage;
-            myDisplayRoot= StorageRoot;
-            myBookmark= null;
-            DragType= DragTypeEnum.None;
-            return false;            
-        }
-        
-		// Don't run if graphic sub-system did not initialise.
-		if(iCS_Graphics.IsInitialized == false) {
-            iCS_Graphics.Init(IStorage);
-			return false;
-		}
-        iCS_InstallerMgr.InstallGizmo();
-        return true;
-	}
-
     // ======================================================================
     // UPDATE FUNCTIONALITY
 	// ----------------------------------------------------------------------
@@ -276,18 +205,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 #endif		
 	}
 
-    // ======================================================================
-    // EDITOR WINDOW MAIN LAYOUT
-	// ----------------------------------------------------------------------
-    float UsableWindowWidth() {
-        return position.width-2*iCS_Config.EditorWindowGutterSize;
-    }
-    
-	// ----------------------------------------------------------------------
-    float UsableWindowHeight() {
-        return position.height-2*iCS_Config.EditorWindowGutterSize+iCS_Config.EditorWindowToolbarHeight;
-    }
-    
 	// ----------------------------------------------------------------------
     // Manages the object selection.
     iCS_EditorObject DetermineSelectedObject() {
@@ -488,22 +405,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Should never happen ... just connect the ports.
         IStorage.SetSource(inPort, outPort, conversion);
         IStorage.OptimizeDataConnection(inPort, outPort);
-    }
-	// ----------------------------------------------------------------------
-    iCS_EditorObject GetStateAt(Vector2 point) {
-        iCS_EditorObject node= IStorage.GetNodeAt(point);
-        while(node != null && !node.IsState) {
-            node= IStorage.GetNodeAt(point, node);
-        }
-        return node;
-    }
-	// ----------------------------------------------------------------------
-    iCS_EditorObject GetStateChartAt(Vector2 point) {
-        iCS_EditorObject node= IStorage.GetNodeAt(point);
-        while(node != null && !node.IsStateChart) {
-            node= IStorage.GetNodeAt(point, node);
-        }
-        return node;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetParentModule(iCS_EditorObject edObj) {
