@@ -33,7 +33,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     int   myRefreshCounter    = 0;
     float myCurrentTime       = 0;
     float myDeltaTime         = 0;
-    bool  myNeedAnotherRefresh= true;
+    bool  myNeedAnotherRepaint= true;
     
     // ----------------------------------------------------------------------
     Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
@@ -59,6 +59,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     Vector2 ViewportCenter { get { return new Vector2(0.5f/Scale*position.width, 0.5f/Scale*position.height); } }
     Rect    Viewport       { get { return new Rect(0,0,position.width/Scale, position.height/Scale); }}
     Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
+    Rect    GraphArea {
+        get {
+            float headerHeight= iCS_ToolbarUtility.GetHeight();
+            return new Rect(position.x, position.y+headerHeight, position.width, position.height-headerHeight);
+            }
+    }
+    Rect    HeaderArea {
+        get {
+            float headerHeight= iCS_ToolbarUtility.GetHeight();
+            return new Rect(position.x, position.y, position.width, headerHeight);
+            }    
+    }
     
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
@@ -96,7 +108,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	void UpdateMouse() {
         var mousePosition= Event.current.mousePosition;
-//        if(Event.current.type == EventType.MouseDrag) mousePosition+= Event.current.delta;
         if(mousePosition.x >= 0 && mousePosition.x < position.width &&
            mousePosition.y >= 0 && mousePosition.y < position.height) {
                myMousePosition= mousePosition;
@@ -178,8 +189,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	public void Update() {
         // Perform 15 update per seconds.
-        myCurrentTime= Time.realtimeSinceStartup;
-        int newUpdateCounter= (int)(myCurrentTime*15.0f);
+        float currentTime= Time.realtimeSinceStartup;
+        int newUpdateCounter= (int)(currentTime*15f);
         if(newUpdateCounter == myUpdateCounter) return;
         myUpdateCounter= newUpdateCounter;
         
@@ -191,15 +202,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Repaint window
             if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
                 MyWindow.Repaint();
-                myNeedAnotherRefresh= true;
-            } else if(myNeedAnotherRefresh) {
+                myNeedAnotherRepaint= true;
+            } else if(myNeedAnotherRepaint) {
                 MyWindow.Repaint();
-                myNeedAnotherRefresh= false;                    
+                myNeedAnotherRepaint= false;                    
             } else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
                 float period= iCS_PreferencesEditor.PortValueRefreshPeriod;
                 if(period < 0.03f) period= 0.03f;
                 float refreshFactor= 1f/period;
-                int newRefreshCounter= (int)(myCurrentTime*refreshFactor);
+                int newRefreshCounter= (int)(currentTime*refreshFactor);
                 if(newRefreshCounter != myRefreshCounter) {
                     myRefreshCounter= newRefreshCounter;
                     MyWindow.Repaint();
@@ -225,20 +236,24 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// User GUI function.
 #if SHOW_FRAME_COUNT
 	float	myAverageFrameRate= 0f;
+	int     myFrameRateLastDisplay= 0;
 #endif
 #if SHOW_FRAME_TIME
 	float myAverageFrameTime= 0f;
 	float myMaxFrameTime= 0f;
 #endif
 	public override void OnGUI() {
-        // Show that we can display because we don't have a behavior or library.
-        UpdateMgr();
-        if(IStorage == null) {
-            MyWindow.ShowNotification(new GUIContent("No iCanScript component selected !!!"));
-            return;
-        } else {
-            MyWindow.RemoveNotification();
-        }
+       	if(Event.current.type == EventType.Layout) {
+            // Show that we can display because we don't have a behavior or library.
+            UpdateMgr();
+            if(IStorage == null) {
+                MyWindow.ShowNotification(new GUIContent("No iCanScript component selected !!!"));
+                return;
+            } else {
+                MyWindow.RemoveNotification();
+            }
+            return;       	    
+       	}
 		// Don't do start editor if not properly initialized.
 		if( !IsInitialized() ) return;
        	
@@ -246,29 +261,33 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
         myCurrentTime= Time.realtimeSinceStartup;
 
-//        Debug.Log("OnGUI: "+Time.realtimeSinceStartup);
-#if SHOW_FRAME_COUNT
-		myAverageFrameRate= (myAverageFrameRate*9f+myDeltaTime)/10f;
-       	if(Math3D.IsNotZero(myAverageFrameRate)) {
-       	    Debug.Log("VisualEditor: frame rate: "+1f/myAverageFrameRate);
-       	}
-#endif
-       	
         // Load Editor Skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
 		// Update mouse info.
 		UpdateMouse();
 		
-        // Draw Graph.
-        DrawGraph();
+        // Process user inputs.  False is return if graph should not be drawn.
+        if(!ProcessEvents()) {
+            myNeedAnotherRepaint= true;
+            return;
+        }
 
-        // Process user inputs
-        ProcessEvents();
+        if(Event.current.type == EventType.Repaint) {
+            // Draw Graph.
+            DrawGraph();
 
-		// Process scroll zone.
-		ProcessScrollZone();
+    		// Process scroll zone.
+    		ProcessScrollZone();                        
+        }
 		
+#if SHOW_FRAME_COUNT
+		myAverageFrameRate= (myAverageFrameRate*9f+myDeltaTime)/10f;
+       	if(Math3D.IsNotZero(myAverageFrameRate) && myFrameRateLastDisplay != (int)myCurrentTime) {
+            myFrameRateLastDisplay= (int)myCurrentTime;
+       	    Debug.Log("VisualEditor: frame rate: "+1f/myAverageFrameRate);
+       	}
+#endif            
 #if SHOW_FRAME_TIME
 		float frameTime= Time.realtimeSinceStartup- myCurrentTime;
 		if(frameTime > myMaxFrameTime) myMaxFrameTime= frameTime;
@@ -1300,14 +1319,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 		// Show header
 		Heading();			
-        
-//        Texture2D test= iCS_PortIcons.GetCircularPortIcon(Color.red, Color.green);
-//        GUI.DrawTexture(new Rect(Event.current.mousePosition.x, Event.current.mousePosition.y, test.width, test.height), test); 
-
-//        Texture2D test= new Texture2D(100, 100, TextureFormat.ARGB32, false);
-//        test.ReadPixels(new Rect(RealMousePosition.x-50f,position.height-RealMousePosition.y-50f,100,100),0,0,false);
-//        test.Apply();
-//		GUI.DrawTexture(new Rect(RealMousePosition.x-75f,RealMousePosition.y-75f,150,150), test);
 	}
 	
 	// ----------------------------------------------------------------------

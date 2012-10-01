@@ -15,11 +15,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // USER INTERACTIONS
 	// ----------------------------------------------------------------------
-    void ProcessEvents() {
+    // Processes all events.  Returns true if visual editor should be drawn
+    // or false if processing should stop.
+    bool ProcessEvents() {
 		// Update sub editor if active.
 		if(mySubEditor != null) {
 			mySubEditor.Update();
 		}
+        
+//        Debug.Log("EventType= "+Event.current.type);
         // Process window events.
         bool needToProcessEvents= true;
         while(needToProcessEvents) {
@@ -37,9 +41,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             break;
                         }
                     }
-                    needToProcessEvents= true;
-                    Event.current.Use();
-                    break;
+                    Event.current.Use();                        
+                    return false;
                 }
                 case EventType.MouseDrag: {
                     switch(Event.current.button) {
@@ -378,6 +381,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     			}
             }
         }
+        return true;
     }
 	// ----------------------------------------------------------------------
     void ProcessNodeDisplayOptionEvent() {
