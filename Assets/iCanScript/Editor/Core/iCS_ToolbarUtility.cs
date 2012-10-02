@@ -129,7 +129,7 @@ public static class iCS_ToolbarUtility {
         float offset= 0.5f*(r.height-contentSize.y);
         r.y+= offset;
         r.height-= offset;
-		return EditorGUI.Toggle(r, value);
+		return GUI.Toggle(r, value, "");
     }
 	// ----------------------------------------------------------------------
     public static void Separator(ref Rect toolbarRect, bool isRightJustified= false) {

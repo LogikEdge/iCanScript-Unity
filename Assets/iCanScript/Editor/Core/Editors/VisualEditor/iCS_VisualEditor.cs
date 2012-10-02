@@ -67,50 +67,50 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Periodic Update
 	// ----------------------------------------------------------------------
 	public void Update() {
-//        // Don't run update faster then requested.
-//        float currentTime= Time.realtimeSinceStartup;
-//        int newUpdateCounter= (int)(currentTime*kUpdateRate);
-//        if(newUpdateCounter == myUpdateCounter) return;
-//        myUpdateCounter= newUpdateCounter;
-//        
-//        // Abort if our environment is not initialized.
-//        if(!IsInitialized()) return;
-//        
-//        // Determine repaint rate.
-//        if(IStorage != null) {
-//            // Update DisplayRoot
-//            if(myDisplayRoot == null && IStorage.IsValid(0)) {
-//                myDisplayRoot= IStorage[0];
-//            }            
-//            
-//            // Repaint visual editor if it has changed
-//            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
-//                MyWindow.Repaint();
-//                myNeedRepaint= true;
-//            }
-//            // Repaint on request.
-//            else if(myNeedRepaint) {
-//                MyWindow.Repaint();
-//                myNeedRepaint= false;                    
-//            }
-//            // Repaint if game is running.
-//            else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
-//                float period= iCS_PreferencesEditor.PortValueRefreshPeriod;
-//                if(period < 0.1f) period= 0.1f;
-//                float refreshFactor= 1f/period;
-//                int newRefreshCounter= (int)(currentTime*refreshFactor);
-//                if(newRefreshCounter != myRefreshCounter) {
-//                    myRefreshCounter= newRefreshCounter;
-//                    MyWindow.Repaint();
-//                }
-//            }
-//#if FORCE_REPAINT
-//            else {
-//                MyWindow.Repaint();					
-//            }
-//#endif
-//        }
-//
+        // Don't run update faster then requested.
+        float currentTime= Time.realtimeSinceStartup;
+        int newUpdateCounter= (int)(currentTime*kUpdateRate);
+        if(newUpdateCounter == myUpdateCounter) return;
+        myUpdateCounter= newUpdateCounter;
+        
+        // Abort if our environment is not initialized.
+        if(!IsInitialized()) return;
+        
+        // Determine repaint rate.
+        if(IStorage != null) {
+            // Update DisplayRoot
+            if(myDisplayRoot == null && IStorage.IsValid(0)) {
+                myDisplayRoot= IStorage[0];
+            }            
+            
+            // Repaint visual editor if it has changed
+            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
+                MyWindow.Repaint();
+                myNeedRepaint= true;
+            }
+            // Repaint on request.
+            else if(myNeedRepaint) {
+                MyWindow.Repaint();
+                myNeedRepaint= false;                    
+            }
+            // Repaint if game is running.
+            else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
+                float period= iCS_PreferencesEditor.PortValueRefreshPeriod;
+                if(period < 0.1f) period= 0.1f;
+                float refreshFactor= 1f/period;
+                int newRefreshCounter= (int)(currentTime*refreshFactor);
+                if(newRefreshCounter != myRefreshCounter) {
+                    myRefreshCounter= newRefreshCounter;
+                    MyWindow.Repaint();
+                }
+            }
+#if FORCE_REPAINT
+            else {
+                MyWindow.Repaint();					
+            }
+#endif
+        }
+
         // Cleanup memory pool.
         iCS_AutoReleasePool.Update();
 	}
@@ -152,7 +152,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 
        // Process all visual editor events including Repaint.
-       Debug.Log("Event: "+Event.current.type);
        if(IsMouseInToolbar && Event.current.type != EventType.Repaint) {
            Toolbar();
        } else {
@@ -175,7 +174,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case EventType.Repaint: {
                 // Draw Graph.
                 DrawGraph();
-                Event.current.Use();                        
+//                Event.current.Use();  // Unity will repeat this event if it is used ???                        
                 break;                
             }
             case EventType.Layout: {

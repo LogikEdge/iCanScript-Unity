@@ -19,14 +19,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         bool showRuntime= iCS_PreferencesEditor.ShowRuntimePortValue;
         bool newShowRuntime= iCS_ToolbarUtility.Toggle(ref r, showRuntime, spacer, spacer);
         if(newShowRuntime != showRuntime) {
-            Debug.Log("Changing runtime to: "+showRuntime);
             iCS_PreferencesEditor.ShowRuntimePortValue= newShowRuntime;
         }
         iCS_ToolbarUtility.MiniLabel(ref r, "Runtime Values", 0,0);
-        float refreshSpeed= iCS_PreferencesEditor.PortValueRefreshPeriod;
-        float newRefreshSpeed= iCS_ToolbarUtility.Slider(ref r, 120f, refreshSpeed, 0.1f, 2f, spacer, spacer);
+        float refreshSpeed= Mathf.Sqrt(iCS_PreferencesEditor.PortValueRefreshPeriod);
+        float newRefreshSpeed= iCS_ToolbarUtility.Slider(ref r, 120f, refreshSpeed, 0.3162f, 1.414f, spacer, spacer);
         if(newRefreshSpeed != refreshSpeed) {
-            iCS_PreferencesEditor.PortValueRefreshPeriod= newRefreshSpeed;
+            iCS_PreferencesEditor.PortValueRefreshPeriod= newRefreshSpeed*newRefreshSpeed;
         }
         iCS_ToolbarUtility.Separator(ref r);
         
