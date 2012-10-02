@@ -128,23 +128,44 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
 	// ----------------------------------------------------------------------
     void ProcessNodeDisplayOptionEvent() {
-        if(SelectedObject != null && SelectedObject.IsNode) {
-            if(SelectedObject.IsMinimized) {
-                IStorage.RegisterUndo("Unfold");
-                IStorage.Fold(SelectedObject);
-            } else if(SelectedObject.IsMaximized) {
-                IStorage.RegisterUndo("Fold");
-                IStorage.Fold(SelectedObject);
-            } else {
-                if(IsShiftKeyDown) {
-                    IStorage.RegisterUndo("Minimize");
-                    IStorage.Minimize(SelectedObject);
-                } else {
-                    IStorage.RegisterUndo("Maximize");
-                    IStorage.Maximize(SelectedObject);                                                        
-                }
+        if(SelectedObject == null || !SelectedObject.IsNode) return;
+        if(SelectedObject.IsFunction) {
+            if(SelectedObject.IsMinimized && !IsShiftKeyDown) {
+                IStorage.RegisterUndo("Maximize");
+                IStorage.Maximize(SelectedObject);                                                                            
+            } else if(SelectedObject.IsMaximized && IsShiftKeyDown) {
+                IStorage.RegisterUndo("Minimize");
+                IStorage.Minimize(SelectedObject);                    
             }
-        }        
+        } else {
+            if(IsShiftKeyDown) {
+                if(SelectedObject.IsMaximized) {
+                    if(IsControlKeyDown) {
+                        IStorage.RegisterUndo("Minimize");
+                        IStorage.Minimize(SelectedObject);                                                
+                    } else {
+                        IStorage.RegisterUndo("Fold");
+                        IStorage.Fold(SelectedObject);                                                                    
+                    }
+                } else if(SelectedObject.IsFolded) {
+                    IStorage.RegisterUndo("Minimize");
+                    IStorage.Minimize(SelectedObject);                        
+                }
+            } else {
+                if(SelectedObject.IsMinimized) {
+                    if(IsControlKeyDown) {
+                        IStorage.RegisterUndo("Maximize");
+                        IStorage.Maximize(SelectedObject);                                                                                                    
+                    } else {
+                        IStorage.RegisterUndo("Unfold");
+                        IStorage.Fold(SelectedObject);                                            
+                    }
+                } else if(SelectedObject.IsFolded) {
+                    IStorage.RegisterUndo("Maximize");
+                    IStorage.Maximize(SelectedObject);                                                                            
+                }                    
+            }
+        }
     }
 
 	// ----------------------------------------------------------------------

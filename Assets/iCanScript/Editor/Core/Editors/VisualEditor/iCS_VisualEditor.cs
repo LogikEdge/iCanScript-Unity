@@ -60,7 +60,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Force a repaint on selection change.
 	// ----------------------------------------------------------------------
     public void OnSelectionChange() {
-        MyWindow.Repaint();
         myNeedRepaint= true;
     }
     
