@@ -3,7 +3,12 @@ using System.Collections;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
-    // INITIALIZATION
+    // Properties.
+	// ----------------------------------------------------------------------
+    iCS_IStorage    myPreviousIStorage= null;
+
+    // ======================================================================
+    // Initialization
 	// ----------------------------------------------------------------------
     // Prepares the editor for editing a graph.  Note that the graph to edit
     // is not configured at this point.  We must wait for an activate from

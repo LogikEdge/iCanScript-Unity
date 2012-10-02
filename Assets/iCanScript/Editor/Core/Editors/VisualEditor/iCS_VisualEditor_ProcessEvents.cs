@@ -15,68 +15,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // USER INTERACTIONS
 	// ----------------------------------------------------------------------
-    // Processes all events.  Returns true if visual editor should be drawn
-    // or false if processing should stop.
-    bool ProcessEvents() {
-		// Update sub editor if active.
-		if(mySubEditor != null) {
-			mySubEditor.Update();
-		}
-        
-//        Debug.Log("EventType= "+Event.current.type);
-        // Process window events.
-        switch(Event.current.type) {
-            case EventType.MouseMove: {
-                MouseMoveEvent();
-                Event.current.Use();                        
-                return false;
-            }
-            case EventType.MouseDrag: {
-                MouseDragEvent();
-                Event.current.Use();
-                break;
-            }
-            case EventType.MouseDown: {
-                MouseDownEvent();
-                Event.current.Use();
-                break;
-            }
-            case EventType.MouseUp: {
-                MouseUpEvent();
-                Event.current.Use();
-                break;
-            }
-            case EventType.ScrollWheel: {
-                ScrollWheelEvent();
-                Event.current.Use();                
-                break;
-            }
-            // Unity DragAndDrop events.
-            case EventType.DragPerform: {
-                DragAndDropPerform();
-                Event.current.Use();                
-                break;
-            }
-            case EventType.DragUpdated: {
-                DragAndDropUpdated();
-                Event.current.Use();            
-                break;
-            }
-            case EventType.DragExited: {
-                if(EditorWindow.mouseOverWindow == MyWindow) {
-                    DragAndDropExited();
-                    Event.current.Use();
-                }
-                break;
-            }
-			case EventType.KeyDown: {
-                KeyDownEvent();
-    			return false;
-			}
-        }
-        return true;
-    }
-	// ----------------------------------------------------------------------
     void MouseMoveEvent() {
         switch(Event.current.button) {
             case 2: { // Middle mouse button

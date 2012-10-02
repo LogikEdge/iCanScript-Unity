@@ -9,11 +9,6 @@ using System.IO;
 using System.Collections;
 using System.Collections.Generic;
 
-/*
-    TODO: Should show frameId in header bar.
-*/
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// This non-persistante class is used to edit the iCS_Behaviour.
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties
@@ -21,7 +16,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_EditorObject    myDisplayRoot= null;
     iCS_DynamicMenu     myDynamicMenu= null;
     iCS_Graphics        myGraphics   = null;
-    iCS_IStorage        myPreviousIStorage= null;
     
     // ----------------------------------------------------------------------
     int   myUpdateCounter = 0;
@@ -31,44 +25,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool  myNeedRepaint   = true; 
     
     // ----------------------------------------------------------------------
-    Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
-    Prelude.Animate<float>      myAnimatedScale         = new Prelude.Animate<float>();
-    
-    // ----------------------------------------------------------------------
-    DragTypeEnum     DragType              = DragTypeEnum.None;
-    iCS_EditorObject DragObject            = null;
-    iCS_EditorObject DragFixPort           = null;
-    iCS_EditorObject DragOriginalPort      = null;
-    Vector2          MouseDragStartPosition= Vector2.zero;
-    Vector2          DragStartPosition     = Vector2.zero;
-    bool             IsDragEnabled         = false;
-    bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
+    static bool	ourAlreadyParsed  = false;
 
     // ----------------------------------------------------------------------
-    iCS_EditorObject SelectedObjectBeforeMouseDown= null;
-    iCS_EditorObject myBookmark= null;
-	bool			 ShouldRotateMuxPort= false;
-    
-    // ----------------------------------------------------------------------
-    Rect    ClipingArea    { get { return new Rect(ScrollPosition.x, ScrollPosition.y, Viewport.width, Viewport.height); }}
-    Vector2 ViewportCenter { get { return new Vector2(0.5f/Scale*position.width, 0.5f/Scale*position.height); } }
-    Rect    Viewport       { get { return new Rect(0,0,position.width/Scale, position.height/Scale); }}
-    Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
-    Rect    GraphArea {
-        get {
-            float headerHeight= iCS_ToolbarUtility.GetHeight();
-            return new Rect(position.x, position.y+headerHeight, position.width, position.height-headerHeight);
-            }
-    }
-    Rect    HeaderArea {
-        get {
-            float headerHeight= iCS_ToolbarUtility.GetHeight();
-            return new Rect(position.x, position.y, position.width, headerHeight);
-            }    
-    }
-    
-    // ----------------------------------------------------------------------
-    static bool	ourAlreadyParsed  = false;
+    // Debug properties.
+#if SHOW_FRAME_COUNT
+	float	myAverageFrameRate= 0f;
+	int     myFrameRateLastDisplay= 0;
+#endif
+#if SHOW_FRAME_TIME
+	float myAverageFrameTime= 0f;
+	float myMaxFrameTime= 0f;
+#endif
      
     // ======================================================================
     // Properties
@@ -77,19 +45,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         get {
             if(IStorage == null || Prelude.length(IStorage.EditorObjects) == 0) return null;
             return IStorage.EditorObjects[0];
-        }
-    }
-	// ----------------------------------------------------------------------
-    Vector2     ScrollPosition {
-        get { return IStorage != null ? IStorage.ScrollPosition : Vector2.zero; }
-        set { if(IStorage != null) IStorage.ScrollPosition= value; }
-    }
-    float       Scale {
-        get { return IStorage != null ? IStorage.GuiScale : 1.0f; }
-        set {
-            if(value > 2f) value= 2f;
-            if(value < 0.15f) value= 0.15f;
-            if(IStorage != null) IStorage.GuiScale= value;
         }
     }
 
@@ -143,14 +98,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	
 	// ----------------------------------------------------------------------
 	// User GUI function.
-#if SHOW_FRAME_COUNT
-	float	myAverageFrameRate= 0f;
-	int     myFrameRateLastDisplay= 0;
-#endif
-#if SHOW_FRAME_TIME
-	float myAverageFrameTime= 0f;
-	float myMaxFrameTime= 0f;
-#endif
 	public override void OnGUI() {
        	if(Event.current.type == EventType.Layout) {
             // Show that we can display because we don't have a behavior or library.
@@ -190,6 +137,77 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Process scroll zone.
 		ProcessScrollZone();                        
 	
+        // Debug information.
+        FrameRateDebugInfo();
+	}
+
+	// ----------------------------------------------------------------------
+    // Processes all events.  Returns true if visual editor should be drawn
+    // or false if processing should stop.
+    bool ProcessEvents() {
+		// Update sub editor if active.
+		if(mySubEditor != null) {
+			mySubEditor.Update();
+		}
+
+//        Debug.Log("EventType= "+Event.current.type);
+        // Process window events.
+        switch(Event.current.type) {
+            case EventType.MouseMove: {
+                MouseMoveEvent();
+                Event.current.Use();                        
+                return false;
+            }
+            case EventType.MouseDrag: {
+                MouseDragEvent();
+                Event.current.Use();
+                break;
+            }
+            case EventType.MouseDown: {
+                MouseDownEvent();
+                Event.current.Use();
+                break;
+            }
+            case EventType.MouseUp: {
+                MouseUpEvent();
+                Event.current.Use();
+                break;
+            }
+            case EventType.ScrollWheel: {
+                ScrollWheelEvent();
+                Event.current.Use();                
+                break;
+            }
+            // Unity DragAndDrop events.
+            case EventType.DragPerform: {
+                DragAndDropPerform();
+                Event.current.Use();                
+                break;
+            }
+            case EventType.DragUpdated: {
+                DragAndDropUpdated();
+                Event.current.Use();            
+                break;
+            }
+            case EventType.DragExited: {
+                if(EditorWindow.mouseOverWindow == MyWindow) {
+                    DragAndDropExited();
+                    Event.current.Use();
+                }
+                break;
+            }
+			case EventType.KeyDown: {
+                KeyDownEvent();
+    			return false;
+			}
+        }
+        return true;
+    }
+    
+    // ======================================================================
+    // Debug information.
+    // ----------------------------------------------------------------------
+	void FrameRateDebugInfo() {
 #if SHOW_FRAME_COUNT
 		myAverageFrameRate= (myAverageFrameRate*9f+myDeltaTime)/10f;
        	if(Math3D.IsNotZero(myAverageFrameRate) && myFrameRateLastDisplay != (int)myCurrentTime) {
@@ -202,44 +220,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(frameTime > myMaxFrameTime) myMaxFrameTime= frameTime;
 		myAverageFrameTime= (myAverageFrameTime*9f+frameTime)/10f;
 		Debug.Log("VisualEditor: frame time: "+myAverageFrameTime+" max frame time: "+myMaxFrameTime);
-#endif		
-	}
-
-    // ======================================================================
-    // Graph Navigation
-	// ----------------------------------------------------------------------
-	void Heading() {
-		// Build standard toolbar at top of editor window.
-		Rect r= iCS_ToolbarUtility.BuildToolbar(position.width, -1f);
-
-		// Insert an initial spacer.
-		float spacer= 8f;
-		r.x+= spacer;
-		r.width-= spacer;
-		
-//        // Adjust toolbar styles
-//		Vector2 test= EditorStyles.toolbar.contentOffset;
-//		test.y=3f;
-//		EditorStyles.toolbar.contentOffset= test;
-//		test= EditorStyles.toolbarTextField.contentOffset;
-//		test.y=2f;
-//		EditorStyles.toolbarTextField.contentOffset= test;
-		
-		// Show zoom control at the end of the toolbar.
-        float newScale= iCS_ToolbarUtility.Slider(ref r, 120f, Scale, 2f, 0.15f, spacer, spacer, true);
-        iCS_ToolbarUtility.Label(ref r, new GUIContent("Zoom"), 0, 0, true);
-		if(Math3D.IsNotEqual(newScale, Scale)) {
-            Vector2 pivot= ViewportToGraph(ViewportCenter);
-            CenterAtWithScale(pivot, newScale);
-		}
-		
-		// Show current bookmark.
-		string bookmarkString= "myBookmark: ";
-		if(myBookmark == null) {
-		    bookmarkString+= "(empty)";
-		} else {
-		    bookmarkString+= myBookmark.Name;
-		}
-		iCS_ToolbarUtility.Label(ref r, 150f, new GUIContent(bookmarkString),0,0,true);
+#endif			    
 	}
 }

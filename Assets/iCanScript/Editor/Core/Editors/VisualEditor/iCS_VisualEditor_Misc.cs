@@ -5,6 +5,15 @@ using System.Collections;
 using System.Collections.Generic;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
+    // ======================================================================
+    // Properties.
+    // ----------------------------------------------------------------------
+    iCS_EditorObject SelectedObjectBeforeMouseDown= null;
+    iCS_EditorObject myBookmark= null;
+	bool			 ShouldRotateMuxPort= false;
+    
+
+    // ======================================================================
 	// ----------------------------------------------------------------------
     // Manages the object selection.
     iCS_EditorObject DetermineSelectedObject() {

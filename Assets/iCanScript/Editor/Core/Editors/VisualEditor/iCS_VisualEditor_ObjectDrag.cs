@@ -8,7 +8,22 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     enum DragTypeEnum { None, PortConnection, PortRelocation, NodeDrag, TransitionCreation };
 
+
     // ======================================================================
+    // Fields.
+    // ----------------------------------------------------------------------
+    DragTypeEnum     DragType              = DragTypeEnum.None;
+    iCS_EditorObject DragObject            = null;
+    iCS_EditorObject DragFixPort           = null;
+    iCS_EditorObject DragOriginalPort      = null;
+    Vector2          MouseDragStartPosition= Vector2.zero;
+    Vector2          DragStartPosition     = Vector2.zero;
+    bool             IsDragEnabled         = false;
+    bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
+
+
+    // ======================================================================
+    // Functions.
 	// ----------------------------------------------------------------------
     void MakeDataConnectionDrag() {
         if(DragFixPort != DragOriginalPort) IStorage.SetSource(DragOriginalPort, DragFixPort);

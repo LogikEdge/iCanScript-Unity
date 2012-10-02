@@ -6,7 +6,31 @@ using System.Collections;
 */
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
-    // NODE GRAPH DISPLAY
+    // Fields.
+    // ----------------------------------------------------------------------
+    Prelude.Animate<Vector2>    myAnimatedScrollPosition= new Prelude.Animate<Vector2>();
+    Prelude.Animate<float>      myAnimatedScale         = new Prelude.Animate<float>();
+
+
+    // ======================================================================
+    // Properties.
+	// ----------------------------------------------------------------------
+    Vector2     ScrollPosition {
+        get { return IStorage != null ? IStorage.ScrollPosition : Vector2.zero; }
+        set { if(IStorage != null) IStorage.ScrollPosition= value; }
+    }
+    float       Scale {
+        get { return IStorage != null ? IStorage.GuiScale : 1.0f; }
+        set {
+            if(value > 2f) value= 2f;
+            if(value < 0.15f) value= 0.15f;
+            if(IStorage != null) IStorage.GuiScale= value;
+        }
+    }
+    
+    
+    // ======================================================================
+    // Node graph display.
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
         // Ask the storage to update itself.
@@ -26,8 +50,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Show scroll zone (is applicable).
         if(IsDragStarted) DrawScrollZone();
 
-		// Show header
-		Heading();			
+		// Show toolbar
+		Toolbar();			
 	}
 	
 	// ----------------------------------------------------------------------
