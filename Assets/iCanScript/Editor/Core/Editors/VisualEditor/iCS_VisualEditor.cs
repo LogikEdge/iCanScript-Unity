@@ -1,4 +1,4 @@
-//#define SHOW_FRAME_COUNT
+//#define SHOW_FRAME_RATE
 //#define SHOW_FRAME_TIME
 //#define FORCE_REPAINT
 
@@ -36,7 +36,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
     // ----------------------------------------------------------------------
     // Debug properties.
-#if SHOW_FRAME_COUNT
+#if SHOW_FRAME_RATE
 	float	myAverageFrameRate= 0f;
 	int     myFrameRateLastDisplay= 0;
 #endif
@@ -67,50 +67,50 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Periodic Update
 	// ----------------------------------------------------------------------
 	public void Update() {
-        // Don't run update faster then requested.
-        float currentTime= Time.realtimeSinceStartup;
-        int newUpdateCounter= (int)(currentTime*kUpdateRate);
-        if(newUpdateCounter == myUpdateCounter) return;
-        myUpdateCounter= newUpdateCounter;
-        
-        // Abort if our environment is not initialized.
-        if(!IsInitialized()) return;
-        
-        // Determine repaint rate.
-        if(IStorage != null) {
-            // Update DisplayRoot
-            if(myDisplayRoot == null && IStorage.IsValid(0)) {
-                myDisplayRoot= IStorage[0];
-            }            
-            
-            // Repaint visual editor if it has changed
-            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
-                MyWindow.Repaint();
-                myNeedRepaint= true;
-            }
-            // Repaint on request.
-            else if(myNeedRepaint) {
-                MyWindow.Repaint();
-                myNeedRepaint= false;                    
-            }
-            // Repaint if game is running.
-            else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
-                float period= iCS_PreferencesEditor.PortValueRefreshPeriod;
-                if(period < 0.03f) period= 0.03f;
-                float refreshFactor= 1f/period;
-                int newRefreshCounter= (int)(currentTime*refreshFactor);
-                if(newRefreshCounter != myRefreshCounter) {
-                    myRefreshCounter= newRefreshCounter;
-                    MyWindow.Repaint();
-                }
-            }
-#if FORCE_REPAINT
-            else {
-                MyWindow.Repaint();					
-            }
-#endif
-        }
-
+//        // Don't run update faster then requested.
+//        float currentTime= Time.realtimeSinceStartup;
+//        int newUpdateCounter= (int)(currentTime*kUpdateRate);
+//        if(newUpdateCounter == myUpdateCounter) return;
+//        myUpdateCounter= newUpdateCounter;
+//        
+//        // Abort if our environment is not initialized.
+//        if(!IsInitialized()) return;
+//        
+//        // Determine repaint rate.
+//        if(IStorage != null) {
+//            // Update DisplayRoot
+//            if(myDisplayRoot == null && IStorage.IsValid(0)) {
+//                myDisplayRoot= IStorage[0];
+//            }            
+//            
+//            // Repaint visual editor if it has changed
+//            if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
+//                MyWindow.Repaint();
+//                myNeedRepaint= true;
+//            }
+//            // Repaint on request.
+//            else if(myNeedRepaint) {
+//                MyWindow.Repaint();
+//                myNeedRepaint= false;                    
+//            }
+//            // Repaint if game is running.
+//            else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
+//                float period= iCS_PreferencesEditor.PortValueRefreshPeriod;
+//                if(period < 0.1f) period= 0.1f;
+//                float refreshFactor= 1f/period;
+//                int newRefreshCounter= (int)(currentTime*refreshFactor);
+//                if(newRefreshCounter != myRefreshCounter) {
+//                    myRefreshCounter= newRefreshCounter;
+//                    MyWindow.Repaint();
+//                }
+//            }
+//#if FORCE_REPAINT
+//            else {
+//                MyWindow.Repaint();					
+//            }
+//#endif
+//        }
+//
         // Cleanup memory pool.
         iCS_AutoReleasePool.Update();
 	}
@@ -133,7 +133,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Remove any previously shown notification.
         if(myNotificationShown) {
             MyWindow.RemoveNotification();
-
+            myNotificationShown= false;
         }
        	
         // Update GUI time.
@@ -152,6 +152,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 
        // Process all visual editor events including Repaint.
+       Debug.Log("Event: "+Event.current.type);
        if(IsMouseInToolbar && Event.current.type != EventType.Repaint) {
            Toolbar();
        } else {
@@ -162,7 +163,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		ProcessScrollZone();                        
 	
         // Debug information.
-#if SHOW_FRAME_COUNT || SHOW_FRAME_TIME
+#if SHOW_FRAME_RATE || SHOW_FRAME_TIME
         FrameRateDebugInfo();
 #endif
 	}
@@ -176,6 +177,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 DrawGraph();
                 Event.current.Use();                        
                 break;                
+            }
+            case EventType.Layout: {
+                Event.current.Use();                        
+                break;
             }
             case EventType.MouseMove: {
                 MouseMoveEvent();
@@ -232,9 +237,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Debug information.
     // ----------------------------------------------------------------------
-#if SHOW_FRAME_COUNT || SHOW_FRAME_TIME
+#if SHOW_FRAME_RATE || SHOW_FRAME_TIME
 	void FrameRateDebugInfo() {
-#if SHOW_FRAME_COUNT
+#if SHOW_FRAME_RATE
 		myAverageFrameRate= (myAverageFrameRate*9f+myDeltaTime)/10f;
        	if(Math3D.IsNotZero(myAverageFrameRate) && myFrameRateLastDisplay != (int)myCurrentTime) {
             myFrameRateLastDisplay= (int)myCurrentTime;

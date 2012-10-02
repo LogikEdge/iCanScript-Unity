@@ -38,29 +38,52 @@ public static class iCS_ToolbarUtility {
 	} 
 
 	// ----------------------------------------------------------------------
-    public static void Label(ref Rect toolbarRect, GUIContent content, float leftMargin, float rightMargin, bool isRightJustified= false) {
-		var contentSize= EditorStyles.toolbar.CalcSize(content);
+    public static void MiniLabel(ref Rect toolbarRect, string label, float leftMargin, float rightMargin, bool isRightJustified= false) {
+        MiniLabel(ref toolbarRect, new GUIContent(label), leftMargin, rightMargin, isRightJustified);
+	}
+	// ----------------------------------------------------------------------
+    public static void MiniLabel(ref Rect toolbarRect, GUIContent content, float leftMargin, float rightMargin, bool isRightJustified= false) {
+		var contentSize= EditorStyles.miniLabel.CalcSize(content);
 		Rect r= ReserveArea(ref toolbarRect, contentSize.x, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return;
-		GUI.Label(r, content, EditorStyles.toolbar);        
+        float offset= 0.5f*(r.height-contentSize.y);
+        r.y+= offset;
+        r.height-= offset;
+		GUI.Label(r, content, EditorStyles.miniLabel);        
     }
 	// ----------------------------------------------------------------------
-    public static void Label(ref Rect toolbarRect, float width, GUIContent content, float leftMargin, float rightMargin, bool isRightJustified= false) {
+    public static void MiniLabel(ref Rect toolbarRect, float width, string label, float leftMargin, float rightMargin, bool isRightJustified= false) {
+        MiniLabel(ref toolbarRect, width, new GUIContent(label), leftMargin, rightMargin, isRightJustified);
+    }
+	// ----------------------------------------------------------------------
+    public static void MiniLabel(ref Rect toolbarRect, float width, GUIContent content, float leftMargin, float rightMargin, bool isRightJustified= false) {
+		var contentSize= EditorStyles.miniLabel.CalcSize(content);
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return;
-		GUI.Label(r, content, EditorStyles.toolbar);        
+        float offset= 0.5f*(r.height-contentSize.y);
+        r.y+= offset;
+        r.height-= offset;
+		GUI.Label(r, content, EditorStyles.miniLabel);        
     }
 	// ----------------------------------------------------------------------
     public static float Slider(ref Rect toolbarRect, float width, float value, float leftValue, float rightValue, float rightMargin, float leftMargin, bool isRightJustified= false) {
+		var contentSize= GUI.skin.horizontalSlider.CalcSize(new GUIContent());
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
+        float offset= 0.5f*(r.height-contentSize.y);
+        r.y+= offset;
+        r.height-= offset;
         return GUI.HorizontalSlider(r, value, leftValue, rightValue);
     }
 	// ----------------------------------------------------------------------
     public static string Text(ref Rect toolbarRect, float width, string value, float leftMargin, float rightMargin, bool isRightJustified= false) {
+        GUIContent content= new GUIContent(value);
+		var contentSize= EditorStyles.toolbarTextField.CalcSize(content);
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
-        r.y+= 2f;
+        float offset= 0.5f*(r.height-contentSize.y);
+        r.y+= offset;
+        r.height-= offset;
         return GUI.TextField(r, value, EditorStyles.toolbarTextField);
     }
 	// ----------------------------------------------------------------------
@@ -96,5 +119,21 @@ public static class iCS_ToolbarUtility {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return index;
         return EditorGUI.Popup(r, content, index, options, EditorStyles.toolbarDropDown);
+    }
+	// ----------------------------------------------------------------------
+    public static bool Toggle(ref Rect toolbarRect, bool value, float leftMargin, float rightMargin, bool isRightJustified= false) {
+        GUIContent content= new GUIContent();
+        var contentSize= GUI.skin.toggle.CalcSize(content);
+		Rect r= ReserveArea(ref toolbarRect, contentSize.x, leftMargin, rightMargin, isRightJustified);
+        if(r.width < 1f) return value;
+        float offset= 0.5f*(r.height-contentSize.y);
+        r.y+= offset;
+        r.height-= offset;
+		return EditorGUI.Toggle(r, value);
+    }
+	// ----------------------------------------------------------------------
+    public static void Separator(ref Rect toolbarRect, bool isRightJustified= false) {
+        Rect r= ReserveArea(ref toolbarRect, 2, 0, 0, isRightJustified);
+        GUI.Box(r, "", EditorStyles.toolbarButton);
     }
 }

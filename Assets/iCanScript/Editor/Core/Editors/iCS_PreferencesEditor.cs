@@ -176,7 +176,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             return EditorPrefs.GetFloat(kPortValueRefreshPeriodKey, kPortValueRefreshPeriod);
         }
         set {
-            if(value < 0) return;
+            if(value < 0.1f) value= 0.1f;
+            if(value > 2.0f) value= 2.0f;
             EditorPrefs.SetFloat(kPortValueRefreshPeriodKey, value);
         }
     }
