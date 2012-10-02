@@ -152,7 +152,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 
        // Process all visual editor events including Repaint.
-        ProcessEvents();
+       if(IsMouseInToolbar && Event.current.type != EventType.Repaint) {
+           Toolbar();
+       } else {
+           ProcessEvents();           
+       }
 
 		// Process scroll zone.
 		ProcessScrollZone();                        
@@ -170,6 +174,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case EventType.Repaint: {
                 // Draw Graph.
                 DrawGraph();
+                Event.current.Use();                        
                 break;                
             }
             case EventType.MouseMove: {
