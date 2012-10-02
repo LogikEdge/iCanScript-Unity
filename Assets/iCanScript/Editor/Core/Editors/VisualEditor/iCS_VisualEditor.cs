@@ -24,11 +24,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_Graphics        myGraphics   = null;
     
     // ----------------------------------------------------------------------
-    int   myUpdateCounter = 0;
-    int   myRefreshCounter= 0;
-    float myCurrentTime   = 0;
-    float myDeltaTime     = 0;
-    bool  myNeedRepaint   = true; 
+    int   myUpdateCounter    = 0;
+    int   myRefreshCounter   = 0;
+    float myCurrentTime      = 0;
+    float myDeltaTime        = 0;
+    bool  myNeedRepaint      = true;
+    bool  myNotificationShown= false; 
     
     // ----------------------------------------------------------------------
     static bool	ourAlreadyParsed  = false;
@@ -121,41 +122,38 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	public override void OnGUI() {
         // Attempt to initialize environment (if not already done).
         bool isInit= IsInitialized();
-        
-        // Show that we can display because we don't have a behavior or library.
-       	if(Event.current.type == EventType.Layout) {
-            if(IStorage == null) {
-                MyWindow.ShowNotification(new GUIContent("No iCanScript component selected !!!"));
-                return;
-            } else {
-                MyWindow.RemoveNotification();
-            }
-            return;       	    
-       	}
 
-		// Don't do start editor if not properly initialized.
-		if( !isInit ) return;
+		// Nothing to be drawn until we are fully initialized.
+        if(!isInit || IStorage == null) {
+            // Tell the user that we can display without a behavior or library.
+            MyWindow.ShowNotification(new GUIContent("No iCanScript component selected !!!"));
+            myNotificationShown= true;
+            return;            
+        }
+
+        // Remove any previously shown notification.
+        if(myNotificationShown) {
+            MyWindow.RemoveNotification();
+
+        }
        	
         // Update GUI time.
         myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
         myCurrentTime= Time.realtimeSinceStartup;
 
-        // Load Editor Skin.
-        GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
-        
 		// Update mouse info.
 		UpdateMouse();
 		
-        // Process user inputs.  False is return if graph should not be drawn.
-        if(!ProcessEvents()) {
-            myNeedRepaint= true;
-            return;
-        }
+        // Load Editor Skin.
+        GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
+        
+		// Update sub editor if active.
+		if(mySubEditor != null) {
+			mySubEditor.Update();
+		}
 
-        if(Event.current.type == EventType.Repaint) {
-            // Draw Graph.
-            DrawGraph();
-        }
+       // Process all visual editor events including Repaint.
+        ProcessEvents();
 
 		// Process scroll zone.
 		ProcessScrollZone();                        
@@ -167,21 +165,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 	// ----------------------------------------------------------------------
-    // Processes all events.  Returns true if visual editor should be drawn
-    // or false if processing should stop.
-    bool ProcessEvents() {
-		// Update sub editor if active.
-		if(mySubEditor != null) {
-			mySubEditor.Update();
-		}
-
-//        Debug.Log("EventType= "+Event.current.type);
-        // Process window events.
+    // Processes all events.
+    void ProcessEvents() {
         switch(Event.current.type) {
+            case EventType.Repaint: {
+                // Draw Graph.
+                DrawGraph();
+                break;                
+            }
             case EventType.MouseMove: {
                 MouseMoveEvent();
                 Event.current.Use();                        
-                return false;
+                break;
             }
             case EventType.MouseDrag: {
                 MouseDragEvent();
@@ -196,6 +191,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case EventType.MouseUp: {
                 MouseUpEvent();
                 Event.current.Use();
+                myNeedRepaint= true;
                 break;
             }
             case EventType.ScrollWheel: {
@@ -223,10 +219,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
 			case EventType.KeyDown: {
                 KeyDownEvent();
-    			return false;
+                myNeedRepaint= true;
+    			break;
 			}
         }
-        return true;
     }
     
     // ======================================================================
