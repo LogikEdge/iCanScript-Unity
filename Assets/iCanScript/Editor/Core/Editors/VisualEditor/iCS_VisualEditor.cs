@@ -1,5 +1,6 @@
 //#define SHOW_FRAME_COUNT
 //#define SHOW_FRAME_TIME
+//#define FORCE_REPAINT
 
 using UnityEngine;
 using UnityEditor;
@@ -10,6 +11,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
+    // ======================================================================
+    // Constants
+    // ----------------------------------------------------------------------
+    const float kUpdateRate= 15f;   // time/seconds.
+    
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -38,6 +44,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	float myMaxFrameTime= 0f;
 #endif
      
+
     // ======================================================================
     // Properties
 	// ----------------------------------------------------------------------
@@ -49,28 +56,45 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 
     // ======================================================================
-    // UPDATE FUNCTIONALITY
+    // Force a repaint on selection change.
+	// ----------------------------------------------------------------------
+    public void OnSelectionChange() {
+        MyWindow.Repaint();
+        myNeedRepaint= true;
+    }
+    
+    // ======================================================================
+    // Periodic Update
 	// ----------------------------------------------------------------------
 	public void Update() {
-        // Perform 15 update per seconds.
+        // Don't run update faster then requested.
         float currentTime= Time.realtimeSinceStartup;
-        int newUpdateCounter= (int)(currentTime*15f);
+        int newUpdateCounter= (int)(currentTime*kUpdateRate);
         if(newUpdateCounter == myUpdateCounter) return;
         myUpdateCounter= newUpdateCounter;
         
-        // Update storage selection.
-        UpdateMgr();
+        // Abort if our environment is not initialized.
         if(!IsInitialized()) return;
+        
         // Determine repaint rate.
         if(IStorage != null) {
-            // Repaint window
+            // Update DisplayRoot
+            if(myDisplayRoot == null && IStorage.IsValid(0)) {
+                myDisplayRoot= IStorage[0];
+            }            
+            
+            // Repaint visual editor if it has changed
             if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
                 MyWindow.Repaint();
                 myNeedRepaint= true;
-            } else if(myNeedRepaint) {
+            }
+            // Repaint on request.
+            else if(myNeedRepaint) {
                 MyWindow.Repaint();
                 myNeedRepaint= false;                    
-            } else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
+            }
+            // Repaint if game is running.
+            else if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) {
                 float period= iCS_PreferencesEditor.PortValueRefreshPeriod;
                 if(period < 0.03f) period= 0.03f;
                 float refreshFactor= 1f/period;
@@ -80,28 +104,26 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     MyWindow.Repaint();
                 }
             }
-//			/*
-//				CHANGED To be removed
-//			*/                
-//							else {
-//			                    MyWindow.Repaint();					
-//							}
-
-            // Update DisplayRoot
-            if(myDisplayRoot == null && IStorage.IsValid(0)) {
-                myDisplayRoot= IStorage[0];
+#if FORCE_REPAINT
+            else {
+                MyWindow.Repaint();					
             }
+#endif
         }
-        // Cleanup objects.
+
+        // Cleanup memory pool.
         iCS_AutoReleasePool.Update();
 	}
 	
+    // ======================================================================
+	// Handles all event messages.
 	// ----------------------------------------------------------------------
-	// User GUI function.
 	public override void OnGUI() {
+        // Attempt to initialize environment (if not already done).
+        bool isInit= IsInitialized();
+        
+        // Show that we can display because we don't have a behavior or library.
        	if(Event.current.type == EventType.Layout) {
-            // Show that we can display because we don't have a behavior or library.
-            UpdateMgr();
             if(IStorage == null) {
                 MyWindow.ShowNotification(new GUIContent("No iCanScript component selected !!!"));
                 return;
@@ -110,8 +132,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             return;       	    
        	}
+
 		// Don't do start editor if not properly initialized.
-		if( !IsInitialized() ) return;
+		if( !isInit ) return;
        	
         // Update GUI time.
         myDeltaTime= Time.realtimeSinceStartup-myCurrentTime;
@@ -138,7 +161,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		ProcessScrollZone();                        
 	
         // Debug information.
+#if SHOW_FRAME_COUNT || SHOW_FRAME_TIME
         FrameRateDebugInfo();
+#endif
 	}
 
 	// ----------------------------------------------------------------------
@@ -207,6 +232,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Debug information.
     // ----------------------------------------------------------------------
+#if SHOW_FRAME_COUNT || SHOW_FRAME_TIME
 	void FrameRateDebugInfo() {
 #if SHOW_FRAME_COUNT
 		myAverageFrameRate= (myAverageFrameRate*9f+myDeltaTime)/10f;
@@ -222,4 +248,5 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		Debug.Log("VisualEditor: frame time: "+myAverageFrameTime+" max frame time: "+myMaxFrameTime);
 #endif			    
 	}
+#endif
 }

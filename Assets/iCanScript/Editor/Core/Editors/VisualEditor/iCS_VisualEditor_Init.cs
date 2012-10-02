@@ -48,6 +48,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // to execute.
 	bool IsInitialized() {
         // Nothing to do if we don't have a Graph to edit...
+        UpdateMgr();
 		if(IStorage == null) {
             myDisplayRoot= null;
             myBookmark= null;

@@ -30,4 +30,7 @@ public class iCS_VisualEditorProxy : iCS_EditorWindow {
     void Update() {
         myEditor.Update();
     }
+    void OnSelectionChange() {
+        myEditor.OnSelectionChange();
+    }
 }
