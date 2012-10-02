@@ -136,10 +136,12 @@ public partial class iCS_Graphics {
     void GUI_Box(Rect pos, GUIContent content, Color nodeColor, Color backgroundColor, Color shadowColor) {
         Rect adjPos= TranslateAndScale(pos);
         DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, content);
+#if SHOW_TOOLTIP
         string tooltip= content.tooltip;
         if(tooltip != null && tooltip != "") {
             GUI.Label(adjPos, new GUIContent("", tooltip), LabelStyle);
         }
+#endif
     }
     // ----------------------------------------------------------------------
     void GUI_DrawTexture(Rect pos, Texture texture) {
@@ -542,8 +544,10 @@ public partial class iCS_Graphics {
                 EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            
             }
             if(!port.IsFloating) {
+#if SHOW_TOOLTIP
         		string tooltip= GetPortTooltip(port, iStorage);
                 GUI_Label(portPos, new GUIContent("", tooltip), LabelStyle);            
+#endif
             }            
         }            
         
