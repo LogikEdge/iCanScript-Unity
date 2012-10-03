@@ -43,14 +43,21 @@ public partial class iCS_Graphics {
 		pos.width= tileSize;
 		GUI.DrawTextureWithTexCoords(pos, nodeTexture, kTopRightTileCoord);
 		if(middleHeight > 0f) {
-			pos= new Rect(screenPos.x, pos.yMax,tileSize,middleHeight);
-			GUI.DrawTextureWithTexCoords(pos, nodeTexture, kMidLeftTileCoord);
+            float heightRatio= middleHeight >= tileSize ? kTileRatio-0.01f : middleHeight/(3f*tileSize);
+    		pos= new Rect(screenPos.x, pos.yMax,tileSize,middleHeight);
+            Rect coord= kMidLeftTileCoord;
+            coord.height= heightRatio;
+    		GUI.DrawTextureWithTexCoords(pos, nodeTexture, coord);                
 			pos.x= pos.xMax;
 			pos.width= middleWidth;
-			GUI.DrawTextureWithTexCoords(pos, nodeTexture, kMidMidTileCoord);
+            coord= kMidMidTileCoord;
+            coord.height= heightRatio;
+			GUI.DrawTextureWithTexCoords(pos, nodeTexture, coord);
 			pos.x= pos.xMax;
 			pos.width= tileSize;
-			GUI.DrawTextureWithTexCoords(pos, nodeTexture, kMidRightTileCoord);			
+            coord= kMidRightTileCoord;
+            coord.height= heightRatio;
+			GUI.DrawTextureWithTexCoords(pos, nodeTexture, coord);			
 		}
 
 		pos= new Rect(screenPos.x, pos.yMax, tileSize, tileSize);
