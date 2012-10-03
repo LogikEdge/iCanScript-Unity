@@ -399,13 +399,16 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         Initialize();
         
         float gridHeight= 20*selGridStrings.Length;
-        GUI.Box(new Rect(0,0,kColumn1Width,position.height),"");
+        Rect column1Rect= new Rect(0,0,kColumn1Width,position.height);
+        GUI.Box(column1Rect,"");
         selGridId= GUI.SelectionGrid(new Rect(0,kMargin+kTitleHeight,kColumn1Width,gridHeight), selGridId, selGridStrings, 1, selectionStyle);
+
         // Show title
         if(selGridId >= 0 && selGridId < selGridStrings.Length) {
             string title= selGridStrings[selGridId];            
             GUI.Label(new Rect(kColumn2X+1.5f*kMargin,kMargin, kColumn2Width+kColumn3Width, kTitleHeight), title, titleStyle);
         }
+
         // Execute option specific panel.
         switch(selGridId) {
             case 0: DisplayOptions(); break;
@@ -415,6 +418,21 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             case 4: InstanceWizard(); break;
             default: break;
         }
+
+        // Show iCanScript version information.
+        string version= iCS_Config.Version;
+        string versionLabel= iCS_Config.VersionLabel;
+        GUIContent versionContent= new GUIContent(version);
+        Vector2 versionSize= GUI.skin.label.CalcSize(versionContent);
+        float x= column1Rect.x+0.5f*(column1Rect.width-versionSize.x);
+        float y= column1Rect.yMax-2f*versionSize.y;
+        Rect pos= new Rect(x, y, versionSize.x, versionSize.y);
+        GUI.Label(pos, versionContent);
+        pos.y+= versionSize.y;
+        versionContent= new GUIContent(versionLabel);
+        versionSize= GUI.skin.label.CalcSize(versionContent);        
+        pos.x= column1Rect.x+0.5f*(column1Rect.width-versionSize.x);
+        GUI.Label(pos, versionContent);
 	}
     // ---------------------------------------------------------------------------------
     void DisplayOptions() {
