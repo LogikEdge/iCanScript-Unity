@@ -226,7 +226,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     iCS_EditorObject node= DragObject;
                     iCS_EditorObject oldParent= IStorage.GetParent(node);
                     if(oldParent != null) {
-                        iCS_EditorObject newParent= GetValidParentNodeUnder(node);
+                        iCS_EditorObject newParent= GetValidParentNodeUnder(GraphMousePosition, node);
                         if(newParent != null) {
                             if(newParent != oldParent) {
                                 ChangeParent(node, newParent);

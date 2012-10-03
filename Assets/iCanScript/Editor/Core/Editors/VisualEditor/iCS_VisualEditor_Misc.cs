@@ -236,10 +236,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return newParent;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject GetValidParentNodeUnder(iCS_EditorObject node) {
+    iCS_EditorObject GetValidParentNodeUnder(Vector2 graphPos, iCS_EditorObject node) {
         if(!node.IsNode) return null;
-        Vector2 point= Math3D.Middle(IStorage.GetLayoutPosition(node));
-        iCS_EditorObject newParent= IStorage.GetNodeAt(point, node);
+        iCS_EditorObject newParent= IStorage.GetNodeAt(graphPos, node);
         if(newParent == IStorage.GetParent(node)) return newParent;
         if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(node.Name, node.ObjectType, newParent, IStorage)) {
             newParent= null;
