@@ -79,8 +79,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 Event.current.Use();
                 break;
             }
-            // myBookmarks
-            case KeyCode.B: {  // myBookmark selected object
+            // Bookmarks
+            case KeyCode.B: {  // Bookmark selected object
                 if(SelectedObject != null) {
                     myBookmark= SelectedObject;                            
                 }
@@ -214,15 +214,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     }
                     Event.current.Use();
                     break;
-                }
-                Event.current.Use();
-                break;
-            }
-            // Class module shortcuts.
-            case KeyCode.D: {
-                if(SelectedObject.IsClassModule) {
-                    IStorage.ClassModuleCreateInputInstanceFields(SelectedObject);
-                    IStorage.ClassModuleDestroyOutputInstanceFields(SelectedObject);
                 }
                 Event.current.Use();
                 break;
