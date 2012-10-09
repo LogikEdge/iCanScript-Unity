@@ -53,9 +53,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.F: {
                 if(ev.shift) {
-                    iCS_EditorUtility.SafeFocusOn(myDisplayRoot, IStorage);
+                    var selected= myDisplayRoot;
+                    if(selected != null) {
+                        iCS_EditorUtility.SafeFocusOn(myDisplayRoot, IStorage);                        
+                    }
                 } else {
-                    iCS_EditorUtility.SafeFocusOn(SelectedObject, IStorage);
+                    var selected= SelectedObject;
+                    if(selected != null) {
+                        iCS_EditorUtility.SafeFocusOn(SelectedObject, IStorage);                        
+                    }
                 }
                 Event.current.Use();
                 break;
