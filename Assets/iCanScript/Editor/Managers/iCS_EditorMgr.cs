@@ -89,7 +89,7 @@ public static class iCS_EditorMgr {
     public static EditorWindow FindWindow<T>() {
         return FindWindow(typeof(T));
     }
-    public static EditorWindow FindGraphEditorWindow() {
+    public static EditorWindow FindVisualEditorWindow() {
         return FindWindow<iCS_VisualEditor>();
     } 
     public static EditorWindow FindInstanceEditorWindow() {
@@ -102,7 +102,7 @@ public static class iCS_EditorMgr {
         return FindWindow<iCS_LibraryEditor>();
     }    
     // ======================================================================
-    public static iCS_VisualEditor FindGraphEditor() {
+    public static iCS_VisualEditor FindVisualEditor() {
         int idx= FindIndexOf(typeof(iCS_VisualEditor).Name);
         return idx >= 0 ? myEditors[idx].Editor as iCS_VisualEditor : null;
     } 

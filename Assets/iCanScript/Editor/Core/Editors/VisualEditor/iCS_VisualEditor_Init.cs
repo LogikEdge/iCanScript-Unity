@@ -60,13 +60,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             myDisplayRoot= StorageRoot;
             myBookmark= null;
             DragType= DragTypeEnum.None;
-            return false;            
         }
         
 		// Don't run if graphic sub-system did not initialise.
 		if(iCS_Graphics.IsInitialized == false) {
             iCS_Graphics.Init(IStorage);
-			return false;
 		}
         iCS_InstallerMgr.InstallGizmo();
         return true;

@@ -20,11 +20,9 @@ public class iCS_Menu {
 	//[MenuItem("iCanScript/Create Behaviour #&b", true, 1)]
 	public static bool ValidateCreateBehaviour() {
         // Validate add behaviour
-		if(Selection.activeTransform != null) {
-			iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
-			return storage == null;
-		}
-		return false;
+		if(Selection.activeTransform == null) return false;
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
+		return storage == null;
 	}
 
     // ======================================================================
@@ -43,11 +41,9 @@ public class iCS_Menu {
 	}
 	//[MenuItem("iCanScript/Create Module Library", true, 2)]
 	public static bool ValidateCreateModuleLibrary() {
-		if(Selection.activeTransform != null) {
-			iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
-			return storage == null;
-		}
-		return false;
+		if(Selection.activeTransform == null) return false;
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Storage>();
+		return storage == null;
 	}
 
     // ======================================================================
@@ -101,12 +97,12 @@ public class iCS_Menu {
     //[MenuItem("iCanScript/",false,20)]
     //[MenuItem("iCanScript/Center Graph _#&f",false,21)]
     public static void CenterGraph() {
-//        iCS_EditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_EditorProxy), false, "iCanScript") as iCS_EditorProxy;
-//        editorProxy.Editor.CenterOnRoot();
+        iCS_VisualEditor graphEditor= iCS_EditorMgr.FindVisualEditor();
+        if(graphEditor != null) graphEditor.CenterOnRoot();
     }
     //[MenuItem("iCanScript/Center On Selected _&f",false,22)]
     public static void CenterOnSelected() {
-//        iCS_EditorProxy editorProxy= EditorWindow.GetWindow(typeof(iCS_EditorProxy), false, "iCanScript") as iCS_EditorProxy;
-//        editorProxy.Editor.CenterOnSelected();
+        iCS_VisualEditor graphEditor= iCS_EditorMgr.FindVisualEditor();
+        if(graphEditor != null) graphEditor.CenterOnSelected();
     }
 }

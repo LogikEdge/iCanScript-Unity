@@ -11,7 +11,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
 	// ----------------------------------------------------------------------
-    Vector2 ViewportCenter {
+    public Vector2 ViewportCenter {
         get {
             return new Vector2(0.5f/Scale*position.width, 0.5f/Scale*position.height);
         }
@@ -23,7 +23,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
 	// ----------------------------------------------------------------------
-    Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
+    public Vector2 ViewportToGraph(Vector2 v) { return v+ScrollPosition; }
 	// ----------------------------------------------------------------------
     Rect GraphArea {
         get {

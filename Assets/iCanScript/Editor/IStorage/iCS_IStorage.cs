@@ -433,8 +433,10 @@ public partial class iCS_IStorage {
         if(id != 0) {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
+        // Determine best initial position.
+        Rect initialPos= VisualEditorCenter();
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, new Rect(0,0,16,16));
+        this[id]= new iCS_EditorObject(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, initialPos);
 		SetDirty(this[id]);
         return this[id];
     }
@@ -444,12 +446,12 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
-        Rect parentPos= IsValid(parentId) ? GetLayoutPosition(parentId) : new Rect(0,0,16,16);
-        Rect localPos= new Rect(initialPos.x-parentPos.x, initialPos.y-parentPos.y,16,16);
+        Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
+        var center= Math3D.Middle(GetLayoutPosition(this[id]));
+        SetDisplayPosition(this[id], new Rect(center.x,center.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
-        SetDisplayPosition(this[id], new Rect(initialPos.x,initialPos.y,0,0));
         if(this[id].IsClassModule) ClassModuleCompleteCreation(this[id]);
 		SetDirty(this[id]);
         return this[id];
@@ -459,7 +461,7 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
-        Rect localPos= PositionNewNodeInParent(parentId, initialPos);
+        Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos);
         var center= Math3D.Middle(GetLayoutPosition(this[id]));
@@ -479,7 +481,7 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Calcute the desired screen position of the new object.
-        Rect localPos= PositionNewNodeInParent(parentId, initialPos);
+        Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos);
         SetDisplayPosition(this[id], new Rect(initialPos.x,initialPos.y,0,0));
@@ -515,7 +517,7 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Calcute the desired screen position of the new object.
-        Rect localPos= PositionNewNodeInParent(parentId, initialPos, iconGUID);
+        Rect localPos= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
         this[id].IconGUID= iconGUID;
@@ -554,7 +556,7 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Calcute the desired screen position of the new object.
-        Rect localPos= PositionNewNodeInParent(parentId, initialPos, iconGUID);
+        Rect localPos= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create new EditorObject
         this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
         this[id].IconGUID= iconGUID;
@@ -614,10 +616,10 @@ public partial class iCS_IStorage {
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
-    Rect PositionNewNodeInParent(int parentId, Vector2 initialPos, string iconGUID= null) {
+    Rect PositionNewNodeInParent(Vector2 initialPos, int parentId, string iconGUID= null) {
         Rect localPos;
         Texture2D icon= iCS_TextureCache.GetTextureFromGUID(iconGUID);
-        var size= icon != null ? new Vector2(icon.width, icon.height) : iCS_Graphics.GetMaximizeIconSize(null);
+        var size= icon != null ? new Vector2(icon.width, icon.height) : iCS_Graphics.GetMaximizeIconSize(null);            
         if(IsValid(parentId)) {
             iCS_EditorObject parent= EditorObjects[parentId];
             var parentRect= GetLayoutPosition(parent);
@@ -629,10 +631,22 @@ public partial class iCS_IStorage {
                 parent.LocalPosition.height+= 2f*iCS_Config.GutterSize+size.y;                
             }
         } else {
-            localPos= new Rect(initialPos.x,initialPos.y,size.x,size.y);
+            localPos= VisualEditorCenter();
         }        
         return localPos;
     }
+    // ----------------------------------------------------------------------
+    Rect VisualEditorCenter() {
+        Rect initialPos= new Rect(0,0,16,16);
+        iCS_VisualEditor editor= iCS_EditorMgr.FindVisualEditor();
+        if(editor != null) {
+            Vector2 center= editor.ViewportToGraph(editor.ViewportCenter);
+            initialPos.x= center.x-8f;
+            initialPos.y= center.y-8f;
+        }
+        return initialPos;        
+    }
+    
     // ======================================================================
     // Port Connectivity
     // ----------------------------------------------------------------------

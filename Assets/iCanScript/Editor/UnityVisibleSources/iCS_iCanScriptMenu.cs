@@ -40,13 +40,11 @@ public static class iCS_iCanScriptMenu {
     [MenuItem("iCanScript/",false,20)]
     [MenuItem("iCanScript/Center Graph _#&f",false,21)]
     public static void CenterGraph() {
-        iCS_VisualEditor graphEditor= iCS_EditorMgr.FindGraphEditor();
-        if(graphEditor != null) graphEditor.CenterOnRoot();
+        iCS_Menu.CenterGraph();
     }
     [MenuItem("iCanScript/Center On Selected _&f",false,22)]
     public static void CenterOnSelected() {
-        iCS_VisualEditor graphEditor= iCS_EditorMgr.FindGraphEditor();
-        if(graphEditor != null) graphEditor.CenterOnSelected();
+        iCS_Menu.CenterOnSelected();
     }
 //    // ======================================================================
 //    [MenuItem("iCanScript/",false,40)]

@@ -5,7 +5,7 @@ using System.Collections;
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void CenterOnRoot() {
-        CenterOn(myDisplayRoot);
+        CenterOn(myDisplayRoot);            
     }
 	// ----------------------------------------------------------------------
     public void CenterAndScaleOnRoot() {
