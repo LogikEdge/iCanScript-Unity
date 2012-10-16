@@ -50,8 +50,17 @@ public partial class iCS_Graphics {
 	}
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortName(iCS_EditorObject port, iCS_IStorage iStorage) {
+        if(port.IsInMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         if(!IsVisible(port, iStorage)) return false;
+        // Declutter graph by not displaying port name if it's an input and very close to the output.
+        if(port.IsInputPort && port.Source != -1) {
+            var sourcePort= iStorage.GetSource(port);
+            var sourceCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(sourcePort));
+            var portCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(port));
+            var distance= Vector2.Distance(portCenter, sourceCenter);
+            if(distance < 200.0f) return false;
+        }
         return true;        
     }
     // ----------------------------------------------------------------------
@@ -109,14 +118,15 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortValue(iCS_EditorObject port, iCS_IStorage iStorage) {
-        if(!port.IsDataPort) return false;
+        if(!port.IsDataPort || port.IsInMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if(port.IsInputPort && port.Source != -1) {
             var sourcePort= iStorage.GetSource(port);
             var sourceCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(sourcePort));
             var portCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(port));
-            if(Vector2.Distance(portCenter, sourceCenter) < 200.0f) return false;
+            var distance= Vector2.Distance(portCenter, sourceCenter);
+            if(distance < 200.0f) return false;
         }
         object portValue= iStorage.GetPortValue(port);
         if(portValue == null) return false;

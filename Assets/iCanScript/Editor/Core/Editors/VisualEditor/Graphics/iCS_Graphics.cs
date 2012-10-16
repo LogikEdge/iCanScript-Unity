@@ -602,6 +602,8 @@ public partial class iCS_Graphics {
         bool isStaticPort= port.IsInDataPort && iStorage.GetSource(port) == null;
         // Draw port icon.
         if(port.IsDataPort) {
+            // Don't display mux input ports.
+            if(port.IsInMuxPort) return;
             // Data ports.
 			if(port.IsOutMuxPort) {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
@@ -658,7 +660,7 @@ public partial class iCS_Graphics {
         radius*= Scale;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
-        float delta= radius*1.35f;
+        float delta= radius*1.75f;
 
         vectors[0]= new Vector3(center.x-delta, center.y-2f*delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+2f*delta, 0);
