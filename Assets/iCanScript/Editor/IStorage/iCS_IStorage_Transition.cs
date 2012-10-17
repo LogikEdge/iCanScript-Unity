@@ -45,6 +45,11 @@ public partial class iCS_IStorage {
         // Update port names
         UpdatePortNames(fromStatePort, toStatePort);
         // Set initial transition module position.
+        var transitionIcon= iCS_TextureCache.GetTextureFromGUID(transitionModule.IconGUID);
+        transitionModule.LocalPosition.width= transitionIcon.width;
+        transitionModule.LocalPosition.height= transitionIcon.height;
+        inModulePort.LocalPosition.x= outModulePort.LocalPosition.x= 0.5f*transitionIcon.width;
+        inModulePort.LocalPosition.y= outModulePort.LocalPosition.y= 0.5f*transitionIcon.height;
         LayoutTransitionModule(transitionModule);
     }
     // ----------------------------------------------------------------------
@@ -236,11 +241,11 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public Rect ProposeTransitionModulePosition(iCS_EditorObject module) {
         Rect nodePos= GetLayoutPosition(module);
-        iCS_EditorObject inStatePort= GetToStatePort(module);
-        iCS_EditorObject outStatePort= GetFromStatePort(module);
-        if(inStatePort != null) {
+        iCS_EditorObject fromStatePort= GetFromStatePort(module);
+        iCS_EditorObject toStatePort= GetToStatePort(module);
+        if(toStatePort != null) {
             iCS_EditorObject parent= GetParent(module);
-            iCS_ConnectionParams cp= new iCS_ConnectionParams(inStatePort, outStatePort, this);
+            iCS_ConnectionParams cp= new iCS_ConnectionParams(toStatePort, fromStatePort, this);
             Vector2 distance= cp.End-cp.Start;
             Vector2 delta= 0.5f*iCS_Config.GutterSize*(distance).normalized;
             int steps= (int)(distance.magnitude/delta.magnitude);
