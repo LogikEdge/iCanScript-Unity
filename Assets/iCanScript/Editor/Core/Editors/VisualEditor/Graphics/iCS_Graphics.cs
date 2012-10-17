@@ -620,10 +620,12 @@ public partial class iCS_Graphics {
                 Handles.color= Color.white;
                 Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);
             }
-        } else if(port.IsInTransitionPort || port.IsOutTransitionPort) {
+        } else if(port.IsTransitionPort) {
             // Transition ports.
-            Handles.color= Color.white;
-            Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);            
+            if(port.IsOutTransitionPort) {
+                Handles.color= Color.white;
+                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);                            
+            }
         }
         else {
             // All other types of ports (should not exists).
@@ -748,7 +750,7 @@ public partial class iCS_Graphics {
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                    
         }
         // Show transition name for state connections.
-        if(port.IsInStatePort) {
+        if(port.IsInStatePort || port.IsInTransitionPort) {
             // Show transition input port.
             Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
             tangent.Normalize();
