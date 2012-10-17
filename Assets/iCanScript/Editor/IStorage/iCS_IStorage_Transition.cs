@@ -5,47 +5,47 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Creation methods
     // ----------------------------------------------------------------------
-    public void CreateTransition(iCS_EditorObject exitStatePort, iCS_EditorObject destState) {
-        Vector2 startPortPos= Math3D.ToVector2(GetLayoutPosition(exitStatePort));
-        Rect portRect= GetLayoutPosition(destState);
-        Vector2 portPos= Math3D.ToVector2(portRect);
-        exitStatePort.IsNameEditable= false;
+    public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState) {
+        Vector2 fromStatePortPos= Math3D.ToVector2(GetLayoutPosition(fromStatePort));
+        Vector2 toStatePortPos  = Math3D.ToVector2(GetLayoutPosition(toState));
         // Create inStatePort
-        iCS_EditorObject inStatePort= CreatePort("", destState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-        SetInitialPosition(inStatePort, portPos);
-        SetSource(inStatePort, exitStatePort);
-        UpdatePortEdges(inStatePort, exitStatePort);        
-        inStatePort.IsNameEditable= false;
-        // Update port names
-        UpdatePortNames(exitStatePort, inStatePort);
+        iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
+        SetInitialPosition(toStatePort, toStatePortPos);
+        SetSource(toStatePort, fromStatePort);
+        UpdatePortEdges(toStatePort, fromStatePort);        
         // Determine transition parent
-        iCS_EditorObject parent= GetTransitionParent(GetParent(inStatePort), GetParent(exitStatePort));
+        iCS_EditorObject transitionParent= GetTransitionParent(GetParent(toStatePort), GetParent(fromStatePort));
         // Create transition module
-        iCS_EditorObject transitionModule= CreateModule(parent.InstanceId, 0.5f*(startPortPos+portPos), "[false]", iCS_ObjectTypeEnum.TransitionModule);
+        var transitionModulePos= 0.5f*(fromStatePortPos+toStatePortPos);
+        iCS_EditorObject transitionModule= CreateModule(transitionParent.InstanceId, transitionModulePos, "[false]", iCS_ObjectTypeEnum.TransitionModule);
         transitionModule.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionModuleIcon);
         transitionModule.Tooltip= "Precondition for the transition to trigger.";
         transitionModule.IsNameEditable= false;
         iCS_EditorObject inModulePort=  CreatePort(" ", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.InTransitionPort);
         iCS_EditorObject outModulePort= CreatePort(" ", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
-        SetSource(inModulePort, exitStatePort);
-        SetSource(inStatePort, outModulePort);
+        SetSource(inModulePort, fromStatePort);
+        SetSource(toStatePort, outModulePort);
         Minimize(transitionModule);
         // Create guard module
-        iCS_EditorObject guard= CreateModule(transitionModule.InstanceId, portPos, "false", iCS_ObjectTypeEnum.TransitionGuard);
+        iCS_EditorObject guard= CreateModule(transitionModule.InstanceId, transitionModulePos, "false", iCS_ObjectTypeEnum.TransitionGuard);
         guard.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionTriggerIcon);
         guard.Tooltip= "The guard function must evaluate to 'true' for the transition to fire.";
         iCS_EditorObject guardPort= CreatePort("trigger", guard.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutStaticModulePort);
         guardPort.IsNameEditable= false;
-        SetSource(exitStatePort, guardPort);
+        SetSource(fromStatePort, guardPort);
         Minimize(guard);
         // Create action module
-        iCS_EditorObject action= CreateModule(transitionModule.InstanceId, portPos, "NoAction", iCS_ObjectTypeEnum.TransitionAction);
+        iCS_EditorObject action= CreateModule(transitionModule.InstanceId, transitionModulePos, "NoAction", iCS_ObjectTypeEnum.TransitionAction);
         action.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         action.Tooltip= "Action to be execute when the transition is taken.";
         iCS_EditorObject enablePort= CreateEnablePort(action.InstanceId);
         enablePort.IsNameEditable= false;
         SetSource(enablePort, guardPort);
         Minimize(action);
+        // Update port names
+        UpdatePortNames(fromStatePort, toStatePort);
+        fromStatePort.IsNameEditable= false;
+        toStatePort.IsNameEditable= false;
         // Set initial transition module position.
         LayoutTransitionModule(transitionModule);
     }
@@ -79,7 +79,7 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Transition helpers.
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetOutStatePort(iCS_EditorObject transitionObject) {
+    public iCS_EditorObject GetFromStatePort(iCS_EditorObject transitionObject) {
         if(transitionObject.IsOutStatePort) return transitionObject;
         if(transitionObject.IsInStatePort) {
             do {
@@ -123,9 +123,9 @@ public partial class iCS_IStorage {
         return null;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetInStatePort(iCS_EditorObject outStatePort) {
+    public iCS_EditorObject GetToStatePort(iCS_EditorObject outStatePort) {
         if(outStatePort.IsInStatePort) return outStatePort;
-        outStatePort= GetOutStatePort(outStatePort);
+        outStatePort= GetFromStatePort(outStatePort);
         if(outStatePort == null) return null; 
         // Find transition module.
         iCS_EditorObject[] connectedPorts= FindConnectedPorts(outStatePort);
@@ -186,7 +186,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject GetTransitionModule(iCS_EditorObject statePort) {
 		if(statePort == null) return null;
         // Get the outStatePort
-        statePort= GetOutStatePort(statePort);
+        statePort= GetFromStatePort(statePort);
 		if(statePort == null) return null;
         return GetParent(GetParent(GetSource(statePort)));
     }
@@ -227,8 +227,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public Rect ProposeTransitionModulePosition(iCS_EditorObject module) {
         Rect nodePos= GetLayoutPosition(module);
-        iCS_EditorObject inStatePort= GetInStatePort(module);
-        iCS_EditorObject outStatePort= GetOutStatePort(module);
+        iCS_EditorObject inStatePort= GetToStatePort(module);
+        iCS_EditorObject outStatePort= GetFromStatePort(module);
         if(inStatePort != null) {
             iCS_EditorObject parent= GetParent(module);
             iCS_ConnectionParams cp= new iCS_ConnectionParams(inStatePort, outStatePort, this);
@@ -262,8 +262,8 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public Vector2 GetTransitionModuleVector(iCS_EditorObject module) {
-        iCS_EditorObject inStatePort      = GetInStatePort(module);
-        iCS_EditorObject outStatePort     = GetOutStatePort(module);
+        iCS_EditorObject inStatePort      = GetToStatePort(module);
+        iCS_EditorObject outStatePort     = GetFromStatePort(module);
         iCS_EditorObject inTransitionPort = GetInTransitionPort(module);
         iCS_EditorObject outTransitionPort= GetOutTransitionPort(module);
         var inStatePos= Math3D.ToVector2(GetLayoutPosition(inStatePort));

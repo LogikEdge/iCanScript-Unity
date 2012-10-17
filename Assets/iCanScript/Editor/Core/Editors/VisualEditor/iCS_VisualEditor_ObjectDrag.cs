@@ -282,7 +282,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         // Relocate transition to the new state.
                         IStorage.SetParent(DragObject, newState);
                         iCS_EditorObject transitionModule= IStorage.GetTransitionModule(DragObject);
-                        iCS_EditorObject otherStatePort= DragObject.IsInputPort ? IStorage.GetOutStatePort(transitionModule) : IStorage.GetInStatePort(transitionModule);
+                        iCS_EditorObject otherStatePort= DragObject.IsInputPort ? IStorage.GetFromStatePort(transitionModule) : IStorage.GetToStatePort(transitionModule);
                         iCS_EditorObject otherState= IStorage.GetParent(otherStatePort);
                         iCS_EditorObject moduleParent= IStorage.GetParent(transitionModule);
                         iCS_EditorObject newModuleParent= IStorage.GetTransitionParent(newState, otherState);

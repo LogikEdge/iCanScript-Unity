@@ -300,8 +300,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                     }
                                 }
                             }
-                            iCS_EditorObject outState= IStorage.GetParent(IStorage.GetOutStatePort(transitionModule));
-                            iCS_EditorObject inState= IStorage.GetParent(IStorage.GetInStatePort(transitionModule));
+                            iCS_EditorObject outState= IStorage.GetParent(IStorage.GetFromStatePort(transitionModule));
+                            iCS_EditorObject inState= IStorage.GetParent(IStorage.GetToStatePort(transitionModule));
                             iCS_EditorObject newParent= IStorage.GetTransitionParent(inState, outState);
                             if(newParent != null && newParent != IStorage.GetParent(transitionModule)) {
                                 ChangeParent(transitionModule, newParent);
