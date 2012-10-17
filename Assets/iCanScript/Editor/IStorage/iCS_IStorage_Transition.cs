@@ -6,6 +6,7 @@ public partial class iCS_IStorage {
     // Creation methods
     // ----------------------------------------------------------------------
     public void CreateTransition(iCS_EditorObject outStatePort, iCS_EditorObject destState) {
+        Vector2 startPortPos= Math3D.ToVector2(GetLayoutPosition(outStatePort));
         Rect portRect= GetLayoutPosition(destState);
         Vector2 portPos= Math3D.ToVector2(portRect);
         outStatePort.IsNameEditable= false;
@@ -19,7 +20,7 @@ public partial class iCS_IStorage {
         // Determine transition parent
         iCS_EditorObject parent= GetTransitionParent(GetParent(inStatePort), GetParent(outStatePort));
         // Create transition module
-        iCS_EditorObject transitionModule= CreateModule(parent.InstanceId, portPos, "[false]", iCS_ObjectTypeEnum.TransitionModule);
+        iCS_EditorObject transitionModule= CreateModule(parent.InstanceId, 0.5f*(startPortPos+portPos), "[false]", iCS_ObjectTypeEnum.TransitionModule);
         transitionModule.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionModuleIcon);
         transitionModule.Tooltip= "Precondition for the transition to trigger.";
         transitionModule.IsNameEditable= false;
