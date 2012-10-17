@@ -51,12 +51,12 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     // Updates the port names of a transition.
-    public void UpdatePortNames(iCS_EditorObject startPort, iCS_EditorObject endPort) {
-        var startParent= GetParent(startPort);
-        var endParent  = GetParent(endPort);
-        string portName= startParent.Name+"->"+endParent.Name;
-        startPort.Name= portName;
-        endPort.Name  = portName;
+    public void UpdatePortNames(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
+        var fromParent= GetParent(fromStatePort);
+        var toParent  = GetParent(toStatePort);
+        string portName= fromParent.Name+"->"+toParent.Name;
+        fromStatePort.Name= portName;
+        toStatePort.Name  = portName;
     }
     // ----------------------------------------------------------------------
     // Returns the common parent of given states.
