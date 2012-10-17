@@ -44,36 +44,45 @@ public partial class iCS_IStorage {
         Minimize(action);
         // Update port names
         UpdatePortNames(fromStatePort, toStatePort);
-        fromStatePort.IsNameEditable= false;
-        toStatePort.IsNameEditable= false;
         // Set initial transition module position.
         LayoutTransitionModule(transitionModule);
     }
     // ----------------------------------------------------------------------
     // Updates the port names of a transition.
     public void UpdatePortNames(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
+        // State ports
         var fromParent= GetParent(fromStatePort);
         var toParent  = GetParent(toStatePort);
-        string portName= fromParent.Name+"->"+toParent.Name;
-        fromStatePort.Name= portName;
-        toStatePort.Name  = portName;
+        string statePortName= fromParent.Name+"->"+toParent.Name;
+        fromStatePort.Name= statePortName;
+        toStatePort.Name  = statePortName;
+        fromStatePort.IsNameEditable= false;
+        toStatePort.IsNameEditable= false;
+        // Transition module ports.
+        var transitionModule = GetTransitionModule(fromStatePort);
+        var inTransitionPort = GetInTransitionPort(transitionModule);
+        var outTransitionPort= GetOutTransitionPort(transitionModule);
+        inTransitionPort.Name= fromParent.Name+"->"+transitionModule.Name;
+        outTransitionPort.Name= transitionModule.Name+"->"+toParent.Name;
+        inTransitionPort.IsNameEditable= false;
+        outTransitionPort.IsNameEditable= false;
     }
     // ----------------------------------------------------------------------
     // Returns the common parent of given states.
-    public iCS_EditorObject GetTransitionParent(iCS_EditorObject inState, iCS_EditorObject outState) {
+    public iCS_EditorObject GetTransitionParent(iCS_EditorObject toState, iCS_EditorObject fromState) {
         bool parentFound= false;
-        iCS_EditorObject parent= null;
-        for(parent= outState; parent != null; parent= GetParent(parent)) {
-            iCS_EditorObject inParent= null;
-            for(inParent= inState; inParent != null; inParent= GetParent(inParent)) {
-                if(parent == inParent) {
+        iCS_EditorObject fromParent= null;
+        for(fromParent= fromState; fromParent != null; fromParent= GetParent(fromParent)) {
+            iCS_EditorObject toParent= null;
+            for(toParent= toState; toParent != null; toParent= GetParent(toParent)) {
+                if(fromParent == toParent) {
                     parentFound= true;
                     break;
                 }
             }
             if(parentFound) break;
         }
-        return parent;        
+        return fromParent;        
     }
     
     // ======================================================================
