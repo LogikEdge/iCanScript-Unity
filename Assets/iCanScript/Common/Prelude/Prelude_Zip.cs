@@ -7,7 +7,7 @@ public static partial class Prelude {
     // ----------------------------------------------------------------------
     // zipWith :: (f a->b->r)->[a]->[b]->[r]
     public static R[] zipWith_<A,B,R>(R[] result, System.Func<A,B,R> fnc, A[] l1, B[] l2) {
-        int len= Inf.Min(length(l1), length(l2));
+        int len= Math3D.Min(length(l1), length(l2));
         if(length(result) != len) result= new R[len];
         for(int i= 0; i < len; ++i) {
             result[i]= fnc(l1[i], l2[i]);
@@ -15,7 +15,7 @@ public static partial class Prelude {
         return result;
     }
     public static List<R> zipWith_<A,B,R>(List<R> result, System.Func<A,B,R> fnc, List<A> l1, List<B> l2) {
-        int len= Inf.Min(length(l1), length(l2));
+        int len= Math3D.Min(length(l1), length(l2));
         result.Clear();
         if(result.Capacity < len) result.Capacity= len;
         for(int i= 0; i < len; ++i) {
@@ -24,7 +24,7 @@ public static partial class Prelude {
         return result;
     }
     public static R[] zipWith<A,B,R>(System.Func<A,B,R> fnc, A[] l1, B[] l2) {
-        int len= Inf.Min(length(l1), length(l2));
+        int len= Math3D.Min(length(l1), length(l2));
         R[] result= new R[len];
         for(int i= 0; i < len; ++i) {
             result[i]= fnc(l1[i], l2[i]);
@@ -45,7 +45,7 @@ public static partial class Prelude {
     // ----------------------------------------------------------------------
     // zipWith :: (f a->b->c->r)->[a]->[b]->[c]->[r]
     public static R[] zipWith_<A,B,C,R>(R[] result, System.Func<A,B,C,R> fnc, A[] l1, B[] l2, C[] l3) {
-        int len= Inf.Min(length(l1), length(l2), length(l3));
+        int len= Math3D.Min(length(l1), length(l2), length(l3));
         if(length(result) != len) result= new R[len];
         for(int i= 0; i < len; ++i) {
             result[i]= fnc(l1[i], l2[i], l3[i]);
@@ -53,7 +53,7 @@ public static partial class Prelude {
         return result;
     }
     public static List<R> zipWith_<A,B,C,R>(List<R> result, System.Func<A,B,C,R> fnc, List<A> l1, List<B> l2, List<C> l3) {
-        int len= Inf.Min(length(l1), length(l2), length(l3));
+        int len= Math3D.Min(length(l1), length(l2), length(l3));
         result.Clear();
         if(result.Capacity < len) result.Capacity= len;
         for(int i= 0; i < len; ++i) {
@@ -62,7 +62,7 @@ public static partial class Prelude {
         return result;
     }
     public static R[] zipWith<A,B,C,R>(System.Func<A,B,C,R> fnc, A[] l1, B[] l2, C[] l3) {
-        int len= Inf.Min(length(l1), length(l2), length(l3));
+        int len= Math3D.Min(length(l1), length(l2), length(l3));
         R[] result= new R[len];
         for(int i= 0; i < len; ++i) {
             result[i]= fnc(l1[i], l2[i], l3[i]);
@@ -83,7 +83,7 @@ public static partial class Prelude {
     // ----------------------------------------------------------------------
     // zipWith :: (f a->b->c->d->r)->[a]->[b]->[c]->[d]->[r]
     public static R[] zipWith_<A,B,C,D,R>(R[] result, System.Func<A,B,C,D,R> fnc, A[] l1, B[] l2, C[] l3, D[] l4) {
-        int len= Inf.Min(length(l1), length(l2), length(l3), length(l4));
+        int len= Math3D.Min(length(l1), length(l2), length(l3), length(l4));
         if(length(result) != len) result= new R[len];
         for(int i= 0; i < len; ++i) {
             fnc(l1[i], l2[i], l3[i], l4[i]);
@@ -91,7 +91,7 @@ public static partial class Prelude {
         return result;
     }
     public static List<R> zipWith_<A,B,C,D,R>(List<R> result, System.Func<A,B,C,D,R> fnc, List<A> l1, List<B> l2, List<C> l3, List<D> l4) {
-        int len= Inf.Min(length(l1), length(l2), length(l3), length(l4));
+        int len= Math3D.Min(length(l1), length(l2), length(l3), length(l4));
         result.Clear();
         if(result.Capacity < len) result.Capacity= len;
         for(int i= 0; i < len; ++i) {
@@ -100,7 +100,7 @@ public static partial class Prelude {
         return result;
     }
     public static R[] zipWith<A,B,C,D,R>(System.Func<A,B,C,D,R> fnc, A[] l1, B[] l2, C[] l3, D[] l4) {
-        int end= Inf.Min(length(l1), length(l2), length(l3), length(l4));
+        int end= Math3D.Min(length(l1), length(l2), length(l3), length(l4));
         R[] result= new R[end];
         for(int i= 0; i < end; ++i) {
             fnc(l1[i], l2[i], l3[i], l4[i]);
@@ -108,7 +108,7 @@ public static partial class Prelude {
         return result;
     }
     public static List<R> zipWith<A,B,C,D,R>(System.Func<A,B,C,D,R> fnc, List<A> l1, List<B> l2, List<C> l3, List<D> l4) {
-        int end= Inf.Min(length(l1), length(l2), length(l3), length(l4));
+        int end= Math3D.Min(length(l1), length(l2), length(l3), length(l4));
         List<R> result= new List<R>();
         for(int i= 0; i < end; ++i) {
             result.Add(fnc(l1[i], l2[i], l3[i], l4[i]));

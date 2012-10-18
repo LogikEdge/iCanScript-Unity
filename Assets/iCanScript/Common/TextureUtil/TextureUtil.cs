@@ -1,7 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public static partial class Math3D {
+public static partial class TextureUtil {
+    // ======================================================================
+    // Texture fill.
 	// ----------------------------------------------------------------------
     // Clears the given texture.
     public static void Clear(ref Texture2D texture) {
@@ -11,6 +13,50 @@ public static partial class Math3D {
             }
         }
     }
+	// ----------------------------------------------------------------------
+    // Draw a circle in a texture.
+    public static void Circle(float radius,
+                              Color borderColor, Color fillColor,
+                              ref Texture2D texture, Vector2 center,
+                              float borderWidth= 2f) {
+		float outterRingRadius= radius+0.5f*borderWidth;
+		float innerRingRadius= radius-0.5f*borderWidth;
+		float outterRingRadius2= outterRingRadius*outterRingRadius;
+		float innerRingRadius2= innerRingRadius*innerRingRadius;
+
+		for(int x= 0; x < texture.width; ++x) {
+			for(int y= 0; y < texture.height; ++y) {
+				float rx= (float)x-center.x;
+				float ry= (float)y-center.y;
+				float r2= rx*rx+ry*ry;
+				if(r2 > outterRingRadius2) {
+					// Don't draw if outside corner.
+				} else if(r2 > innerRingRadius2) {
+					float r= Mathf.Sqrt(r2);
+					if(r > radius) {
+						float ratio= (borderWidth-2f*(r-radius))/borderWidth;
+						Color c= borderColor;
+						c.a= ratio*borderColor.a;
+						c= TextureUtil.AlphaBlend(c, texture.GetPixel(x,y));							
+						texture.SetPixel(x,y,c);							
+					} else {
+						float ratio= (borderWidth-2f*(radius-r))/borderWidth;
+						Color c;
+						c.r= ratio*borderColor.r+(1f-ratio)*fillColor.r;
+						c.g= ratio*borderColor.g+(1f-ratio)*fillColor.g;
+						c.b= ratio*borderColor.b+(1f-ratio)*fillColor.b;
+						c.a= ratio*borderColor.a+(1f-ratio)*fillColor.a;
+						c= TextureUtil.AlphaBlend(c, texture.GetPixel(x,y));														
+						texture.SetPixel(x,y,c);						
+					}
+				} else {
+					Color c= fillColor;
+					c= TextureUtil.AlphaBlend(c, texture.GetPixel(x,y));														
+					texture.SetPixel(x,y,c);
+				}
+			}
+		}
+    }
     
     // ======================================================================
     // Color Blend
@@ -18,7 +64,7 @@ public static partial class Math3D {
     public static Color AlphaBlend(Color src, Color dst) {
         float keepAlpha= 1f-src.a;
         float outAlpha= src.a + dst.a*keepAlpha;
-        if(IsZero(outAlpha)) return Color.clear;
+        if(Math3D.IsZero(outAlpha)) return Color.clear;
         float srcBlend= src.a/outAlpha;
         float dstBlend= dst.a*keepAlpha/outAlpha;
         return new Color(src.r*srcBlend+dst.r*dstBlend, src.g*srcBlend+dst.g*dstBlend, src.b*srcBlend+dst.b*dstBlend, outAlpha);

@@ -274,6 +274,12 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             } else {
                 icon= iCS_BuiltinTextures.OutPortIcon;                                    
             }
+        } else if(current.IsStatePort || current.IsTransitionPort) {
+            if(current.IsInTransitionPort || current.IsInStatePort) {
+                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon);
+            } else {
+                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.LeftArrowHeadIcon);                
+            }
         }
         return new GUIContent(current.Name, icon); 
     }

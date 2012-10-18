@@ -2,69 +2,68 @@ using UnityEngine;
 using System.Collections;
 
 public static partial class Math3D {
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// Min / Max Utilities.
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    public static int Min(int a, int b) { return a < b ? a : b; }
+    public static int Max(int a, int b) { return a > b ? a : b; }
+    public static int Min(int a, int b, int c) { return a < b ? (a < c ? a : c) : (b < c ? b : c); }
+    public static int Max(int a, int b, int c) { return a > b ? (a > c ? a : c) : (b > c ? b : c); }
+    public static int Min(int a, int b, int c, int d) { return Min(a, Min(b,c,d)); }
+    public static int Max(int a, int b, int c, int d) { return Max(a, Max(b,c,d)); }
+    public static int Min(int a, int b, int c, int d, int e) { return Min(a, Min(b,c,d), e); }
+    public static int Max(int a, int b, int c, int d, int e) { return Max(a, Max(b,c,d), e); }
 
-    // ======================================================================
-    // Float functionality using Epsilon.
-    // ----------------------------------------------------------------------
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+// Float conditional statement using Epsilon.
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public static bool IsEqual(float a, float b) {
         return Mathf.Abs(a-b) < Mathf.Epsilon;
-    } 
-    
+    }  
     // ----------------------------------------------------------------------
     public static bool IsNotEqual(float a, float b) {
         return !IsEqual(a,b);
     }
-
     // ----------------------------------------------------------------------
     public static bool IsSmaller(float a, float b) {
         return (a + Mathf.Epsilon) < b;
     }
-
     // ----------------------------------------------------------------------
     public static bool IsSmallerOrEqual(float a, float b) {
         return (a - Mathf.Epsilon) < b;
     }
-
     // ----------------------------------------------------------------------
     public static bool IsGreater(float a, float b) {
         return (a - Mathf.Epsilon) > b;
     }
-
     // ----------------------------------------------------------------------
     public static bool IsGreaterOrEqual(float a, float b) {
         return (a + Mathf.Epsilon) > b;
     }
-
     // ----------------------------------------------------------------------
     public static bool IsZero(float a) {
         return IsEqual(a,0f);
     }
-	
     // ----------------------------------------------------------------------
     public static bool IsNotZero(float a) {
         return !IsEqual(a,0f);
     }
-	
     // ----------------------------------------------------------------------
     public static bool IsWithin(float a, float low, float high) {
         return IsGreater(a, low) && IsSmaller(a, high);
     }
-
     // ----------------------------------------------------------------------
     public static bool IsWithinOrEqual(float a, float low, float high) {
         return IsGreaterOrEqual(a, low) && IsSmallerOrEqual(a, high);
     }
-
     // ----------------------------------------------------------------------
     public static bool IsOutside(float a, float low, float high) {
         return IsSmaller(a, low) || IsGreater(a, high);
     }
-    
     // ----------------------------------------------------------------------
     public static bool IsOutsideOrEqualWithEpsilon(float a, float low, float high) {
         return IsSmallerOrEqual(a, low) || IsGreaterOrEqual(a, high);
     }
-    
     
     // ======================================================================
     // SIMPLE VECTOR FUNCTIONS
