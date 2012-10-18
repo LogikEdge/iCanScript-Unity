@@ -278,7 +278,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             if(current.IsInTransitionPort || current.IsInStatePort) {
                 icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.RightArrowHeadIcon);
             } else {
-                icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.LeftArrowHeadIcon);                
+                icon= iCS_BuiltinTextures.OutTransitionPortIcon;                
             }
         }
         return new GUIContent(current.Name, icon); 

@@ -7,35 +7,35 @@ public static class iCS_PortIcons {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-	static float		myScale						  = 0f;
-	static Texture2D	myCircularPortTemplate        = null;
-	static Texture2D	mySquarePortTemplate  		  = null;
-	static Texture2D	mySelectedCircularPortTemplate= null;
-	static Texture2D	mySelectedSquarePortTemplate  = null;
+	static float		myScale					   = 0f;
+	static Texture2D	myDataPortTemplate         = null;
+	static Texture2D	myValuePortTemplate  	   = null;
+	static Texture2D	mySelectedDataPortTemplate = null;
+	static Texture2D	mySelectedValuePortTemplate= null;
 	
     // ----------------------------------------------------------------------
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	myCircularPortIcons        = null;
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySquarePortIcons          = null;
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedCircularPortIcons= null;
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedSquarePortIcons  = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	myDataPortIcons         = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	myValuePortIcons        = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedDataPortIcons = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedValuePortIcons= null;
 
 	// ----------------------------------------------------------------------
     //  Build template for all port icons
 	public static void BuildPortIconTemplates(float scale) {
 		if(Math3D.IsEqual(scale, myScale)) return;
-		BuildCircularPortTemplates(scale);
-		BuildSquarePortTemplates(scale);
+		BuildDataPortTemplates(scale);
+		BuildValuePortTemplates(scale);
 		myScale= scale;
 		FlushCachedIcons();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildSquarePortTemplates(float scale) {
+	static void BuildValuePortTemplates(float scale) {
         float len= scale*iCS_Config.PortRadius*3.7f;
-		BuildSquarePortTemplate(len, ref mySquarePortTemplate);
-		BuildSquarePortTemplate(1.67f*len, ref mySelectedSquarePortTemplate);
+		BuildValuePortTemplate(len, ref myValuePortTemplate);
+		BuildValuePortTemplate(1.67f*len, ref mySelectedValuePortTemplate);
 	}
 	// ----------------------------------------------------------------------
-	static void BuildSquarePortTemplate(float len, ref Texture2D template) {
+	static void BuildValuePortTemplate(float len, ref Texture2D template) {
         // Build new template.
 		float margin= len*0.3f;		
 		// Create texture.
@@ -60,26 +60,26 @@ public static class iCS_PortIcons {
 		template.Apply();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildCircularPortTemplates(float scale) {
+	static void BuildDataPortTemplates(float scale) {
         float radius= scale*iCS_Config.PortRadius*1.85f;
-		BuildCircularPortTemplate(radius, ref myCircularPortTemplate);
-		BuildCircularPortTemplate(1.67f*radius, ref mySelectedCircularPortTemplate);
+		BuildDataPortTemplate(radius, ref myDataPortTemplate);
+		BuildDataPortTemplate(1.67f*radius, ref mySelectedDataPortTemplate);
 	}
 	// ----------------------------------------------------------------------
-	static void BuildCircularPortTemplate(float radius, ref Texture2D template) {
+	static void BuildDataPortTemplate(float radius, ref Texture2D template) {
         // Remove previous template.
         if(template != null) Texture2D.DestroyImmediate(template);
 		// Create texture.
 		int widthInt= (int)(2f*radius+3f);
 		int heightInt= (int)(2f*radius+3f);
 		template= new Texture2D(widthInt, heightInt, TextureFormat.ARGB32, false);
-		BuildCircularPortTemplateImp(radius, ref template);
+		BuildDataPortTemplateImp(radius, ref template);
 		// Finalize texture.
 		template.hideFlags= HideFlags.DontSave;
 		template.Apply();
 	}
 	// ----------------------------------------------------------------------
-	public static void BuildCircularPortTemplateImp(float radius, ref Texture2D texture) {
+	public static void BuildDataPortTemplateImp(float radius, ref Texture2D texture) {
 		float ringWidth= 2f;
 		float fillRatio= 0.5f;
 		float outterRingRadius= radius+0.5f*ringWidth;
@@ -141,24 +141,24 @@ public static class iCS_PortIcons {
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
 	public static Texture2D GetCircularPortIcon(Color nodeColor, Color typeColor) {
-		return GetPortIcon(nodeColor, typeColor, ref myCircularPortIcons, ref myCircularPortTemplate);
+		return GetPortIcon(nodeColor, typeColor, ref myDataPortIcons, ref myDataPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested square port icon.
 	public static Texture2D GetSquarePortIcon(Color nodeColor, Color typeColor) {
-		return GetPortIcon(nodeColor, typeColor, ref mySquarePortIcons, ref mySquarePortTemplate);
+		return GetPortIcon(nodeColor, typeColor, ref myValuePortIcons, ref myValuePortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
 	public static Texture2D GetSelectedCircularPortIcon(Color nodeColor, Color typeColor) {
 		return GetPortIcon(nodeColor, typeColor,
-			               ref mySelectedCircularPortIcons, ref mySelectedCircularPortTemplate);
+			               ref mySelectedDataPortIcons, ref mySelectedDataPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested square port icon.
 	public static Texture2D GetSelectedSquarePortIcon(Color nodeColor, Color typeColor) {
 		return GetPortIcon(nodeColor, typeColor,
-			               ref mySelectedSquarePortIcons, ref mySelectedSquarePortTemplate);
+			               ref mySelectedValuePortIcons, ref mySelectedValuePortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
@@ -179,12 +179,12 @@ public static class iCS_PortIcons {
 			var existingIcon= dict[typeColor];
 			if(existingIcon != null) return existingIcon;
 		}
-		Texture2D icon= BuildPortIcon(nodeColor, typeColor, iconTemplate);
+		Texture2D icon= BuildDataPortIcon(nodeColor, typeColor, iconTemplate);
 		dict[typeColor]= icon;
 		return icon;
 	}
 	// ----------------------------------------------------------------------
-    public static Texture2D BuildPortIcon(Color nodeColor, Color typeColor, Texture2D iconTemplate) {
+    public static Texture2D BuildDataPortIcon(Color nodeColor, Color typeColor, Texture2D iconTemplate) {
 		int width= iconTemplate.width;
 		int height= iconTemplate.height;
 		Texture2D icon= new Texture2D(width, height);
@@ -216,10 +216,10 @@ public static class iCS_PortIcons {
 	// ----------------------------------------------------------------------
 	// Flush cached icons.
 	static void FlushCachedIcons() {
-		FlushCachedIcons(ref myCircularPortIcons);
-		FlushCachedIcons(ref mySquarePortIcons);
-		FlushCachedIcons(ref mySelectedSquarePortIcons);
-		FlushCachedIcons(ref mySelectedCircularPortIcons);
+		FlushCachedIcons(ref myDataPortIcons);
+		FlushCachedIcons(ref myValuePortIcons);
+		FlushCachedIcons(ref mySelectedDataPortIcons);
+		FlushCachedIcons(ref mySelectedValuePortIcons);
 	}
 	// ----------------------------------------------------------------------
 	static void FlushCachedIcons(ref Dictionary<Color,Dictionary<Color,Texture2D>> iconSet) {

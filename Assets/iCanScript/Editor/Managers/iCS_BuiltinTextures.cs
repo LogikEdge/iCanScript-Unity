@@ -7,8 +7,8 @@ public static class iCS_BuiltinTextures {
     // ---------------------------------------------------------------------------------
     public static Texture2D InPortIcon          { get { return myInDataPortIcon; }}
     public static Texture2D OutPortIcon         { get { return myOutDataPortIcon; }}
-    public static Texture2D InTransitionIcon    { get { return myInTransitionPortIcon; }}
-    public static Texture2D OutTransitionIcon   { get { return myOutTransitionPortIcon; }}
+    public static Texture2D InTransitionPortIcon    { get { return myInTransitionPortIcon; }}
+    public static Texture2D OutTransitionPortIcon   { get { return myOutTransitionPortIcon; }}
 
 
     // =================================================================================
@@ -30,14 +30,15 @@ public static class iCS_BuiltinTextures {
     // ---------------------------------------------------------------------------------
     static iCS_BuiltinTextures() {
         BuildPortIcons(Color.green, Color.red);
+        BuildTransitionIcons();
     }
     
     // ---------------------------------------------------------------------------------
 	static void BuildPortIcons(Color nodeColor, Color typeColor) {
 		Texture2D portTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
 		float radius= 0.5f*(kPortIconHeight-3f);
-        iCS_PortIcons.BuildCircularPortTemplateImp(radius, ref portTemplate);
-        Texture2D portIcon= iCS_PortIcons.BuildPortIcon(nodeColor, typeColor, portTemplate);
+        iCS_PortIcons.BuildDataPortTemplateImp(radius, ref portTemplate);
+        Texture2D portIcon= iCS_PortIcons.BuildDataPortIcon(nodeColor, typeColor, portTemplate);
 
         myInDataPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         myOutDataPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
@@ -54,6 +55,8 @@ public static class iCS_BuiltinTextures {
         int inOffset= kPortIconWidth-kPortIconHeight;
         TextureUtil.AlphaBlend(0, 0, portIcon, inOffset, 0, ref myInDataPortIcon,  portIcon.width, portIcon.height);
         TextureUtil.AlphaBlend(0, 0, portIcon, 0,        0, ref myOutDataPortIcon, portIcon.width, portIcon.height);
+
+        // Finalize icons.
         myInDataPortIcon.Apply();
         myOutDataPortIcon.Apply();
         myInDataPortIcon.hideFlags= HideFlags.DontSave;
@@ -68,9 +71,22 @@ public static class iCS_BuiltinTextures {
         // Create textures.
         myInTransitionPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         myOutTransitionPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
+        TextureUtil.Clear(ref myInTransitionPortIcon);
+        TextureUtil.Clear(ref myOutTransitionPortIcon);
+        
+        // Build out transition port.
+        float halfHeight= 0.5f*kPortIconHeight;
+        float radius= halfHeight-1.5f;
+		TextureUtil.Circle(radius, Color.white, Color.white, ref myOutTransitionPortIcon, new Vector2(halfHeight, halfHeight));
 
-        float radius= 0.5f*(kPortIconHeight-3f);
+        // Add horizontal line.
+		int halfHeightInt= (int)halfHeight;
+		for(int x= halfHeightInt; x < kPortIconWidth; ++x) {
+		    myOutTransitionPortIcon.SetPixel(x, halfHeightInt, Color.white);
+            myInTransitionPortIcon.SetPixel(x-halfHeightInt, halfHeightInt, Color.white);
+		}
 		
+        // Finalize icons.
         myInTransitionPortIcon.Apply();
         myOutTransitionPortIcon.Apply();
         myInTransitionPortIcon.hideFlags= HideFlags.DontSave;
