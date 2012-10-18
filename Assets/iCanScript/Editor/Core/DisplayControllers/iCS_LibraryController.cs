@@ -379,24 +379,24 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ClassHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.Field) {
             if(current.Desc.IsGetField) {
-                icon= iCS_BuiltinTextures.OutPortIcon;
+                icon= iCS_BuiltinTextures.OutDataPortIcon;
             } else {
-                icon= iCS_BuiltinTextures.InPortIcon;
+                icon= iCS_BuiltinTextures.InValuePortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Property) {
             if(current.Desc.IsGetProperty) {
-                icon= iCS_BuiltinTextures.OutPortIcon;
+                icon= iCS_BuiltinTextures.OutDataPortIcon;
             } else {
-                icon= iCS_BuiltinTextures.InPortIcon;
+                icon= iCS_BuiltinTextures.InValuePortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Constructor) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ConstructorHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.Method) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.InParameter) {
-            icon= iCS_BuiltinTextures.InPortIcon;
+            icon= iCS_BuiltinTextures.InValuePortIcon;
         } else if(nodeType == NodeTypeEnum.OutParameter) {
-            icon= iCS_BuiltinTextures.OutPortIcon;
+            icon= iCS_BuiltinTextures.OutDataPortIcon;
         }
         return new GUIContent(name, icon); 
     }

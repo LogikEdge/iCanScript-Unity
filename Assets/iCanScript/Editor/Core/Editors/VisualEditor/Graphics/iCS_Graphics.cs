@@ -609,9 +609,9 @@ public partial class iCS_Graphics {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
 			} else {
 				if(isStaticPort) {
-		            DrawSquarePort(portCenter, portColor, nodeColor, isSelected);
+		            DrawValuePort(portCenter, portColor, nodeColor, isSelected);
 				} else {
-	    	    	DrawCircularPort(portCenter, portColor, nodeColor, isSelected);							        
+	    	    	DrawDataPort(portCenter, portColor, nodeColor, isSelected);							        
 				}				
 			}
         } else if(port.IsStatePort) {
@@ -629,14 +629,14 @@ public partial class iCS_Graphics {
         }
         else {
             // All other types of ports (should not exists).
-            DrawCircularPort(portCenter, portColor, nodeColor, isSelected);
+            DrawDataPort(portCenter, portColor, nodeColor, isSelected);
         }        
     }
 	// ----------------------------------------------------------------------
-    void DrawCircularPort(Vector3 _center, Color _fillColor, Color _borderColor, bool isSelected) {
+    void DrawDataPort(Vector3 _center, Color _fillColor, Color _borderColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedCircularPortIcon(_borderColor, _fillColor) :
-		                                 iCS_PortIcons.GetCircularPortIcon(_borderColor, _fillColor);
+		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedDataPortIcon(_borderColor, _fillColor) :
+		                                 iCS_PortIcons.GetDataPortIcon(_borderColor, _fillColor);
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
 						   portIcon.width,
@@ -645,10 +645,10 @@ public partial class iCS_Graphics {
     }
 
 	// ----------------------------------------------------------------------
-    void DrawSquarePort(Vector3 _center, Color _fillColor, Color _borderColor, bool isSelected) {
+    void DrawValuePort(Vector3 _center, Color _fillColor, Color _borderColor, bool isSelected) {
 		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedSquarePortIcon(_borderColor, _fillColor) :
-		                                 iCS_PortIcons.GetSquarePortIcon(_borderColor, _fillColor);
+		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedValuePortIcon(_borderColor, _fillColor) :
+		                                 iCS_PortIcons.GetValuePortIcon(_borderColor, _fillColor);
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
 						   portIcon.width,

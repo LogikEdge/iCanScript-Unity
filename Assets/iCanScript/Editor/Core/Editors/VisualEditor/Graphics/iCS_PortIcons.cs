@@ -35,7 +35,7 @@ public static class iCS_PortIcons {
 		BuildValuePortTemplate(1.67f*len, ref mySelectedValuePortTemplate);
 	}
 	// ----------------------------------------------------------------------
-	static void BuildValuePortTemplate(float len, ref Texture2D template) {
+	public static void BuildValuePortTemplate(float len, ref Texture2D template) {
         // Build new template.
 		float margin= len*0.3f;		
 		// Create texture.
@@ -140,23 +140,23 @@ public static class iCS_PortIcons {
 	
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
-	public static Texture2D GetCircularPortIcon(Color nodeColor, Color typeColor) {
+	public static Texture2D GetDataPortIcon(Color nodeColor, Color typeColor) {
 		return GetPortIcon(nodeColor, typeColor, ref myDataPortIcons, ref myDataPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested square port icon.
-	public static Texture2D GetSquarePortIcon(Color nodeColor, Color typeColor) {
+	public static Texture2D GetValuePortIcon(Color nodeColor, Color typeColor) {
 		return GetPortIcon(nodeColor, typeColor, ref myValuePortIcons, ref myValuePortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
-	public static Texture2D GetSelectedCircularPortIcon(Color nodeColor, Color typeColor) {
+	public static Texture2D GetSelectedDataPortIcon(Color nodeColor, Color typeColor) {
 		return GetPortIcon(nodeColor, typeColor,
 			               ref mySelectedDataPortIcons, ref mySelectedDataPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested square port icon.
-	public static Texture2D GetSelectedSquarePortIcon(Color nodeColor, Color typeColor) {
+	public static Texture2D GetSelectedValuePortIcon(Color nodeColor, Color typeColor) {
 		return GetPortIcon(nodeColor, typeColor,
 			               ref mySelectedValuePortIcons, ref mySelectedValuePortTemplate);
 	}
@@ -179,12 +179,12 @@ public static class iCS_PortIcons {
 			var existingIcon= dict[typeColor];
 			if(existingIcon != null) return existingIcon;
 		}
-		Texture2D icon= BuildDataPortIcon(nodeColor, typeColor, iconTemplate);
+		Texture2D icon= BuildPortIcon(nodeColor, typeColor, iconTemplate);
 		dict[typeColor]= icon;
 		return icon;
 	}
 	// ----------------------------------------------------------------------
-    public static Texture2D BuildDataPortIcon(Color nodeColor, Color typeColor, Texture2D iconTemplate) {
+    public static Texture2D BuildPortIcon(Color nodeColor, Color typeColor, Texture2D iconTemplate) {
 		int width= iconTemplate.width;
 		int height= iconTemplate.height;
 		Texture2D icon= new Texture2D(width, height);
