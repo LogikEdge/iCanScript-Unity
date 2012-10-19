@@ -221,10 +221,7 @@ public partial class iCS_Graphics {
             return IsInitialized;            
         }
         // Load maximize/minimize icon.
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MinimizeIcon, out minimizeIcon)) {
-            IsInitialized= false;
-            return IsInitialized;
-        }
+        minimizeIcon= iCS_BuiltinTextures.MinimizeIcon;
         if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MaximizeIcon, out maximizeIcon)) {
             IsInitialized= false;
             return IsInitialized;
@@ -383,7 +380,7 @@ public partial class iCS_Graphics {
             }            
         }
         // Minimize Icon
-        GUI_DrawTexture(new Rect(position.xMax-4-minimizeIcon.width, position.y-1f, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
+        GUI_DrawTexture(new Rect(position.xMax-2-minimizeIcon.width, position.y, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
     }
     // ----------------------------------------------------------------------
     Color GetBackgroundColor(iCS_EditorObject node) {

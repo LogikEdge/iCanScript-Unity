@@ -10,13 +10,14 @@ public static class iCS_BuiltinTextures {
     public static Texture2D InValuePortIcon         { get { return myInValuePortIcon; }}
     public static Texture2D InTransitionPortIcon    { get { return myInTransitionPortIcon; }}
     public static Texture2D OutTransitionPortIcon   { get { return myOutTransitionPortIcon; }}
-
+    public static Texture2D MinimizeIcon            { get { return myMinimizeIcon; }}
 
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
-    const int   kPortIconWidth  = 16;
-    const int   kPortIconHeight = 12;
+    const int   kPortIconWidth   = 16;
+    const int   kPortIconHeight  = 12;
+    const int   kMinimizeIconSize= 16;
 
     // =================================================================================
     // Fields
@@ -26,6 +27,7 @@ public static class iCS_BuiltinTextures {
 	static Texture2D    myInValuePortIcon;
 	static Texture2D    myInTransitionPortIcon;
 	static Texture2D    myOutTransitionPortIcon;
+	static Texture2D    myMinimizeIcon;
 
     // =================================================================================
     // Constrcutor
@@ -34,6 +36,7 @@ public static class iCS_BuiltinTextures {
         BuildDataPortIcons(Color.green, Color.red);
         BuildValuePortIcons(Color.green, Color.red);
         BuildTransitionPortIcons();
+        BuildMinimizeIcon();
     }
     
     // ---------------------------------------------------------------------------------
@@ -119,5 +122,25 @@ public static class iCS_BuiltinTextures {
         myOutTransitionPortIcon.Apply();
         myInTransitionPortIcon.hideFlags= HideFlags.DontSave;
         myOutTransitionPortIcon.hideFlags= HideFlags.DontSave;
+    }
+
+    // ---------------------------------------------------------------------------------
+    static void BuildMinimizeIcon() {
+        // Allocate icon.
+        myMinimizeIcon= new Texture2D(kMinimizeIconSize, kMinimizeIconSize);
+        TextureUtil.Clear(ref myMinimizeIcon);
+        // Draw minimize icon.
+        float halfSize= 0.5f*kMinimizeIconSize;
+        TextureUtil.Circle(halfSize-2.5f,
+                           Color.black, new Color(0,0,0,0.25f),
+                           ref myMinimizeIcon, new Vector2(halfSize, halfSize+0.5f));
+        int halfSizeInt= (int)halfSize;
+        for(int x= kMinimizeIconSize/3; x <= (kMinimizeIconSize*2)/3+1; ++x) {
+            myMinimizeIcon.SetPixel(x, halfSizeInt, Color.black);
+            myMinimizeIcon.SetPixel(x, halfSizeInt+1, Color.black);
+        }
+        // Finalize icons.
+        myMinimizeIcon.Apply();
+        myMinimizeIcon.hideFlags= HideFlags.DontSave;
     }
 }

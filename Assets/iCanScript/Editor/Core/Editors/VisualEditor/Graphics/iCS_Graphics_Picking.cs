@@ -68,7 +68,7 @@ public partial class iCS_Graphics {
     }
     Rect GetMinimizeIconPosition(iCS_EditorObject node, iCS_IStorage iStorage) {
         Rect objPos= GetDisplayPosition(node, iStorage);
-        return new Rect(objPos.xMax-4-minimizeIcon.width, objPos.y, minimizeIcon.width, minimizeIcon.height);
+        return new Rect(objPos.xMax-2-minimizeIcon.width, objPos.y, minimizeIcon.width, minimizeIcon.height);
     }
 
     // ======================================================================
