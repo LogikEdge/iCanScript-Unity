@@ -62,25 +62,26 @@ public static class iCS_PortIcons {
 	// ----------------------------------------------------------------------
 	static void BuildDataPortTemplates(float scale) {
         float radius= scale*iCS_Config.PortRadius*1.85f;
-		BuildDataPortTemplate(radius, ref myDataPortTemplate);
-		BuildDataPortTemplate(1.67f*radius, ref mySelectedDataPortTemplate);
+        float ringWidth= 2f*(scale > 1f ? 1f+0.5f*(scale-1f) : 1f);
+		BuildDataPortTemplate(radius, ref myDataPortTemplate, ringWidth);
+		BuildDataPortTemplate(1.67f*radius, ref mySelectedDataPortTemplate, ringWidth);
 	}
 	// ----------------------------------------------------------------------
-	static void BuildDataPortTemplate(float radius, ref Texture2D template) {
+	static void BuildDataPortTemplate(float radius, ref Texture2D template, float ringWidth= 2f) {
         // Remove previous template.
         if(template != null) Texture2D.DestroyImmediate(template);
 		// Create texture.
 		int widthInt= (int)(2f*radius+3f);
 		int heightInt= (int)(2f*radius+3f);
 		template= new Texture2D(widthInt, heightInt, TextureFormat.ARGB32, false);
-		BuildDataPortTemplateImp(radius, ref template);
+		BuildDataPortTemplateImp(radius, ref template, ringWidth);
 		// Finalize texture.
 		template.hideFlags= HideFlags.DontSave;
 		template.Apply();
 	}
 	// ----------------------------------------------------------------------
-	public static void BuildDataPortTemplateImp(float radius, ref Texture2D texture) {
-		float ringWidth= 2f;
+	public static void BuildDataPortTemplateImp(float radius, ref Texture2D texture, float ringWidth= 2f) {
+        if(ringWidth < 2f) ringWidth= 2f;
 		float fillRatio= 0.5f;
 		float outterRingRadius= radius+0.5f*ringWidth;
 		float innerRingRadius= radius-0.5f*ringWidth;

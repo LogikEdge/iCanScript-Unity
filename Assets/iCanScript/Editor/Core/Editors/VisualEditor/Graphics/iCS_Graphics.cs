@@ -28,7 +28,6 @@ public partial class iCS_Graphics {
     static Texture2D    lineTexture       = null;
     static Texture2D    foldedIcon        = null;
     static Texture2D    unfoldedIcon      = null;
-    static Texture2D    minimizeIcon      = null;
     static Texture2D    maximizeIcon      = null;
     static Texture2D    upArrowHeadIcon   = null;
     static Texture2D    downArrowHeadIcon = null;
@@ -48,7 +47,7 @@ public partial class iCS_Graphics {
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
-    float            Scale= 0f;
+    float            Scale= 1f;
     Vector2          Translation= Vector2.zero;
     Rect             ClipingArea= new Rect(0,0,0,0);
     Vector2          MousePosition= Vector2.zero;
@@ -221,11 +220,11 @@ public partial class iCS_Graphics {
             return IsInitialized;            
         }
         // Load maximize/minimize icon.
-        minimizeIcon= iCS_BuiltinTextures.MinimizeIcon;
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MaximizeIcon, out maximizeIcon)) {
-            IsInitialized= false;
-            return IsInitialized;
-        }
+        maximizeIcon= iCS_BuiltinTextures.MaximizeIcon(1f);
+//        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MaximizeIcon, out maximizeIcon)) {
+//            IsInitialized= false;
+//            return IsInitialized;
+//        }
         // Load line arrow heads.
         if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon)) {
             IsInitialized= false;
@@ -380,7 +379,8 @@ public partial class iCS_Graphics {
             }            
         }
         // Minimize Icon
-        GUI_DrawTexture(new Rect(position.xMax-2-minimizeIcon.width, position.y, minimizeIcon.width, minimizeIcon.height), minimizeIcon);
+        var minimizeIcon= iCS_BuiltinTextures.MinimizeIcon(Scale);
+        GUI_DrawTexture(new Rect(position.xMax-2-/*minimizeIcon.width*/16, position.y-0.5f, /*minimizeIcon.width*/16, /*minimizeIcon.height*/16), minimizeIcon);
     }
     // ----------------------------------------------------------------------
     Color GetBackgroundColor(iCS_EditorObject node) {
