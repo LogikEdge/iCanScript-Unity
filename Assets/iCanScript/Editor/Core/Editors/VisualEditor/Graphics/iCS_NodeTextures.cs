@@ -20,6 +20,13 @@ public static class iCS_NodeTextures {
     // ----------------------------------------------------------------------
 	static Dictionary<Color,Dictionary<Color,Dictionary<Color,Texture2D>>>	myNodeTextures= null;
 	
+    // ======================================================================
+    // Constructor
+    // ----------------------------------------------------------------------
+    static iCS_NodeTextures() {
+        BuildNodeTemplate(1.0f);
+    }
+    
     // ----------------------------------------------------------------------
 	public static Texture2D GetNodeTexture(Color nodeColor, Color backColor, Color shadowColor) {
 		if(myNodeTextures == null) {
