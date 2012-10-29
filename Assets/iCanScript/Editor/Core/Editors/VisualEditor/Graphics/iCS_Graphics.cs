@@ -14,6 +14,7 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
+    const float kInitScale       = 1f;
     const float kMinimizeSize    = 32f;
     const float kIconicArea      = kMinimizeSize*kMinimizeSize;
     const float kNodeCornerRadius= 8f;
@@ -47,7 +48,7 @@ public partial class iCS_Graphics {
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
-    float            Scale= 1f;
+    float            Scale= kInitScale;
     Vector2          Translation= Vector2.zero;
     Rect             ClipingArea= new Rect(0,0,0,0);
     Vector2          MousePosition= Vector2.zero;
@@ -63,7 +64,7 @@ public partial class iCS_Graphics {
 	       static readonly Color   BackgroundColor = new Color(0.24f, 0.27f, 0.32f);
 	       static readonly Color   BlackShadowColor= new Color(0,0,0,0.25f);
 	       static readonly Color   WhiteShadowColor= new Color(1f,1f,1f,0.125f);
-        
+           
     // ======================================================================
     // Drawing staging
 	// ----------------------------------------------------------------------
@@ -200,6 +201,9 @@ public partial class iCS_Graphics {
     //  INITIALIZATION
 	// ----------------------------------------------------------------------
     static public bool Init(iCS_IStorage iStorage) {
+        // Build texture temaples.
+        iCS_PortIcons.BuildPortIconTemplates(kInitScale);
+		iCS_NodeTextures.BuildNodeTemplate(kInitScale);
         // Load AA line texture.
         if(lineTexture == null) {
             if(!iCS_TextureCache.GetTexture(iCS_EditorStrings.AALineTexture, out lineTexture)) {
@@ -221,10 +225,6 @@ public partial class iCS_Graphics {
         }
         // Load maximize/minimize icon.
         maximizeIcon= iCS_BuiltinTextures.MaximizeIcon(1f);
-//        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.MaximizeIcon, out maximizeIcon)) {
-//            IsInitialized= false;
-//            return IsInitialized;
-//        }
         // Load line arrow heads.
         if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UpArrowHeadIcon, out upArrowHeadIcon)) {
             IsInitialized= false;
@@ -576,15 +576,22 @@ public partial class iCS_Graphics {
     			// Bring up port editor for selected static ports.
                 object portValue= GetPortValue(port, iStorage);
     			if(isStaticPort && portValue != null && Scale > 0.75f) {
+    			    Debug.Log("Experimental");
     				EditorGUIUtility.LookLikeControls();
     				if(portValueType == typeof(bool)) {
+    				    Debug.Log("Type is bool");
     					Vector2 togglePos= TranslateAndScale(portCenter);
                         var savedBackgroundColor= GUI.backgroundColor;
     					GUI.backgroundColor= portColor;
     					GUI.changed= false;
-    					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), (bool)portValue, "");					
+                        bool currentValue= (bool)portValue;
+    					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), currentValue, "");					
                         GUI.backgroundColor= savedBackgroundColor;
+                        if(newValue != currentValue) {
+                            Debug.Log("new value= "+newValue);                            
+                        }
     					if(GUI.changed) {
+    					    Debug.Log("GUI changed");
     						iStorage.SetPortValue(port, newValue);
     					}
     				}

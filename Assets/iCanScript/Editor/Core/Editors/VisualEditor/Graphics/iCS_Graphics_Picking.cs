@@ -235,7 +235,6 @@ public partial class iCS_Graphics {
             pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
             return pickInfo;
         }
-        Debug.Log("Nothing is being picked");
         return null;
     }
     // ======================================================================
