@@ -353,7 +353,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         kNodeTitleColor             = Color.black;
         kNodeLabelColor             = Color.white;
         kNodeValueColor             = new Color(1f, 0.8f, 0.4f);
-        kEntryStateNodeColor        = new Color(1f, 0.5f, 0.25f);
+        kEntryStateNodeColor        = new Color(1f, 0.8f, 0.4f);
         kStateNodeColor             = Color.cyan;
         kPackageNodeColor           = Color.yellow;
         kInstanceNodeColor          = new Color(1f, 0.5f, 0f);
