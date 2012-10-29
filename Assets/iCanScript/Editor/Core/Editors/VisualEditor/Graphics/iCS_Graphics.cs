@@ -576,10 +576,8 @@ public partial class iCS_Graphics {
     			// Bring up port editor for selected static ports.
                 object portValue= GetPortValue(port, iStorage);
     			if(isStaticPort && portValue != null && Scale > 0.75f) {
-    			    Debug.Log("Experimental");
     				EditorGUIUtility.LookLikeControls();
     				if(portValueType == typeof(bool)) {
-    				    Debug.Log("Type is bool");
     					Vector2 togglePos= TranslateAndScale(portCenter);
                         var savedBackgroundColor= GUI.backgroundColor;
     					GUI.backgroundColor= portColor;
@@ -587,11 +585,7 @@ public partial class iCS_Graphics {
                         bool currentValue= (bool)portValue;
     					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), currentValue, "");					
                         GUI.backgroundColor= savedBackgroundColor;
-                        if(newValue != currentValue) {
-                            Debug.Log("new value= "+newValue);                            
-                        }
     					if(GUI.changed) {
-    					    Debug.Log("GUI changed");
     						iStorage.SetPortValue(port, newValue);
     					}
     				}
