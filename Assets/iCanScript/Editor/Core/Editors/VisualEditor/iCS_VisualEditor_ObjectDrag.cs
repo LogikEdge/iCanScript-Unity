@@ -263,10 +263,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 newStateChart= IStorage.GetParent(newStateChart);
                             }
                         }
-                        // Reset port drag if the port is on the same state.
+                        // Relocate dragged port if on the same state.
                         if(origState == newState) {
-                            DragObject.LocalPosition.x= DragStartPosition.x;
-                            DragObject.LocalPosition.y= DragStartPosition.y;
+                            IStorage.SetDirty(DragObject);
+//                            DragObject.LocalPosition.x= DragStartPosition.x;
+//                            DragObject.LocalPosition.y= DragStartPosition.y;
                             break;
                         }
                         // Delete transition if the dragged port is not on a valid state.

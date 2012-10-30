@@ -62,7 +62,7 @@ public partial class iCS_IStorage {
             return;
         }
 
-        // Refresh children that have not yet perfromed a layout.
+        // Refresh children that have not yet performed a layout.
         ForEachChild(node, c=> { if(c.LocalPosition.x == 0 && c.LocalPosition.y == 0) SetDirty(c); });
         
         // Resolve collision on children.
@@ -615,7 +615,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void UpdatePortEdges(iCS_EditorObject p1, iCS_EditorObject p2) {
         // Don't update port edges for a transition bridge.  Leave the update
-        // to the corresponding data connection & transition connection.
+        // do the corresponding data connection & transition connection.
         iCS_EditorObject.EdgeEnum p1Edge= p1.Edge;
         iCS_EditorObject.EdgeEnum p2Edge= p2.Edge;
         UpdatePortEdgesInternal(p1, p2);
@@ -629,135 +629,11 @@ public partial class iCS_IStorage {
         UpdatePortEdgeHardConstraints(p1);
         UpdatePortEdgeHardConstraints(p2);
         if(p1.Edge != iCS_EditorObject.EdgeEnum.None && p2.Edge != iCS_EditorObject.EdgeEnum.None) return;
-        iCS_EditorObject p1Parent= GetParent(p1);
-        iCS_EditorObject p2Parent= GetParent(p2);
-        // Verify connection between nested nodes.
-        Rect parent1Rect= GetLayoutPosition(p1Parent);
-        Rect parent2Rect= GetLayoutPosition(p2Parent);
-        // Nested
-        if(IsChildOf(p1Parent, p2Parent) ||
-           IsChildOf(p2Parent, p1Parent)) {               
-            iCS_EditorObject parent= null;
-            iCS_EditorObject child= null;
-            iCS_EditorObject pPort= null;
-            iCS_EditorObject cPort= null;
-            if(IsChildOf(p1Parent, p2Parent)) {
-                parent= p2Parent;
-                child= p1Parent;
-                pPort= p2;
-                cPort= p1;
-            } else {
-                parent= p1Parent;
-                child= p2Parent;
-                pPort= p1;
-                cPort= p2;
-            }
-            Rect parentPos= GetLayoutPosition(parent);
-            Rect childPos = GetLayoutPosition(child);
-            Rect childLocalPos= new Rect(childPos.x-parentPos.x, childPos.y-parentPos.y, childPos.width, childPos.height);
-            float dx= parentPos.width-childLocalPos.xMax;
-            float dy= parentPos.height-childLocalPos.yMax;
-            if(childLocalPos.x < childLocalPos.y) {
-                if(dx < dy) {
-                    if(childLocalPos.x < dx) {
-                        pPort.Edge= iCS_EditorObject.EdgeEnum.Left;
-                        cPort.Edge= iCS_EditorObject.EdgeEnum.Left;
-                    } else {
-                        pPort.Edge= iCS_EditorObject.EdgeEnum.Right;
-                        cPort.Edge= iCS_EditorObject.EdgeEnum.Right;                        
-                    }
-                } else {
-                    if(childLocalPos.x < dy) {
-                        pPort.Edge= iCS_EditorObject.EdgeEnum.Left;
-                        cPort.Edge= iCS_EditorObject.EdgeEnum.Left;                        
-                    } else {
-                        pPort.Edge= iCS_EditorObject.EdgeEnum.Bottom;
-                        cPort.Edge= iCS_EditorObject.EdgeEnum.Bottom;                        
-                    }
-                }
-            } else {
-                if(dx < dy) {
-                    if(childLocalPos.y < dx) {
-                        pPort.Edge= iCS_EditorObject.EdgeEnum.Top;
-                        cPort.Edge= iCS_EditorObject.EdgeEnum.Top;
-                    } else {
-                        pPort.Edge= iCS_EditorObject.EdgeEnum.Right;
-                        cPort.Edge= iCS_EditorObject.EdgeEnum.Right;                        
-                    }
-                } else {
-                    if(childLocalPos.y < dy) {
-                        pPort.Edge= iCS_EditorObject.EdgeEnum.Top;
-                        cPort.Edge= iCS_EditorObject.EdgeEnum.Top;                        
-                    } else {
-                        pPort.Edge= iCS_EditorObject.EdgeEnum.Bottom;
-                        cPort.Edge= iCS_EditorObject.EdgeEnum.Bottom;                        
-                    }
-                }                
-            }
-            return;
-        }
-        // Horizontal
-        if(parent1Rect.xMin <= parent2Rect.xMin && parent1Rect.xMax > parent2Rect.xMin ||
-           parent2Rect.xMin <= parent1Rect.xMin && parent2Rect.xMax > parent1Rect.xMin) {
-            if(parent1Rect.yMin < parent2Rect.yMin) {
-                p1.Edge= iCS_EditorObject.EdgeEnum.Bottom;
-                p2.Edge= iCS_EditorObject.EdgeEnum.Top;
-            } else {
-                p1.Edge= iCS_EditorObject.EdgeEnum.Top;
-                p2.Edge= iCS_EditorObject.EdgeEnum.Bottom;                
-            }
-            return;
-        }
-        // Vertical
-        if(parent1Rect.yMin <= parent2Rect.yMin && parent1Rect.yMax > parent2Rect.yMin ||
-           parent2Rect.yMin <= parent1Rect.yMin && parent2Rect.yMax > parent1Rect.yMin) {
-            if(parent1Rect.xMin < parent2Rect.xMin) {
-                p1.Edge= iCS_EditorObject.EdgeEnum.Right;
-                p2.Edge= iCS_EditorObject.EdgeEnum.Left;
-            } else {
-                p1.Edge= iCS_EditorObject.EdgeEnum.Left;
-                p2.Edge= iCS_EditorObject.EdgeEnum.Right;                
-            }
-            return;
-        }
-        // Diagonal
-        if(parent1Rect.xMin < parent2Rect.xMin) {
-            if(parent1Rect.yMin < parent2Rect.yMin) {
-                if(p1.Source == p2.InstanceId) {
-                    p1.Edge= iCS_EditorObject.EdgeEnum.Bottom;
-                    p2.Edge= iCS_EditorObject.EdgeEnum.Left;
-                } else {
-                    p1.Edge= iCS_EditorObject.EdgeEnum.Right;
-                    p2.Edge= iCS_EditorObject.EdgeEnum.Top;                    
-                }
-            } else {
-                if(p1.Source == p2.InstanceId) {
-                    p1.Edge= iCS_EditorObject.EdgeEnum.Right;
-                    p2.Edge= iCS_EditorObject.EdgeEnum.Bottom;
-                } else {
-                    p1.Edge= iCS_EditorObject.EdgeEnum.Top;
-                    p2.Edge= iCS_EditorObject.EdgeEnum.Left;                    
-                }                
-            }
-            return;
-        }
-        if(parent1Rect.yMin < parent2Rect.yMin) {
-            if(p1.Source == p2.InstanceId) {
-                p1.Edge= iCS_EditorObject.EdgeEnum.Left;
-                p2.Edge= iCS_EditorObject.EdgeEnum.Top;
-            } else {
-                p1.Edge= iCS_EditorObject.EdgeEnum.Bottom;
-                p2.Edge= iCS_EditorObject.EdgeEnum.Right;                    
-            }
-        } else {
-            if(p1.Source == p2.InstanceId) {
-                p1.Edge= iCS_EditorObject.EdgeEnum.Top;
-                p2.Edge= iCS_EditorObject.EdgeEnum.Right;
-            } else {
-                p1.Edge= iCS_EditorObject.EdgeEnum.Left;
-                p2.Edge= iCS_EditorObject.EdgeEnum.Bottom;                    
-            }            
-        }
+
+        // Selected closest edge.
+        p1.Edge= GetClosestEdge(GetParent(p1), Math3D.ToVector2(GetLayoutPosition(p1)));
+        p2.Edge= GetClosestEdge(GetParent(p2), Math3D.ToVector2(GetLayoutPosition(p2)));
+        return;
     }
     void UpdatePortEdgeHardConstraints(iCS_EditorObject port) {
         if(port.IsEnablePort) {
