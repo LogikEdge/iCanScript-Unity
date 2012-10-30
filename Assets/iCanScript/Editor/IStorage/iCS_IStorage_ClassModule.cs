@@ -218,7 +218,7 @@ public partial class iCS_IStorage {
         return result;
     }
     // ----------------------------------------------------------------------
-    iCS_EditorObject ClassModuleGetInputThisPort(iCS_EditorObject module) {
+    public iCS_EditorObject ClassModuleGetInputThisPort(iCS_EditorObject module) {
         iCS_EditorObject thisPort= ClassModuleGetPort(module, iCS_Strings.This, iCS_ObjectTypeEnum.InStaticModulePort);
         if(thisPort == null) {
             iCS_EditorObject constructor= ClassModuleGetConstructor(module);

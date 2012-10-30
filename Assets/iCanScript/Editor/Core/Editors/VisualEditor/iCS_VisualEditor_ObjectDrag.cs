@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections;
 
 public partial class iCS_VisualEditor : iCS_EditorBase {
@@ -243,8 +244,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     DragObject.IsFloating= false;
                     if(DragObject.IsDataPort) {
                         IStorage.LayoutPorts(IStorage.GetParent(DragObject));
+                        // Verify for autocreation of instance node
                         break;
-                    }
+                    }                    
                     if(DragObject.IsStatePort) {
                         // Get original port state & state chart.
                         iCS_EditorObject origState= IStorage.GetParent(DragObject);
@@ -294,7 +296,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         break;
                     }
                     break;
-                case DragTypeEnum.PortConnection:
+                case DragTypeEnum.PortConnection:                
                     // Verify for a new connection.
                     if(!VerifyNewDragConnection(DragFixPort, DragObject)) {
                         bool isNearParent= IStorage.IsNearParent(DragObject);
@@ -342,7 +344,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                                 break;
                                             }
                                         }
-                                    }                                    
+                                    }
+                                    // Determine if we need to create an instance node.
+                                    AutocreateInstanceNode(DragFixPort, dragPortPos, newPortParent);                                    
                                 }
                                 if(DragFixPort.IsOutputPort && (newPortParent.IsState || newPortParent.IsStateChart)) {
 									if(IStorage.IsNearNodeEdge(newPortParent, Math3D.ToVector2(dragPortPos), iCS_EditorObject.EdgeEnum.Right)) {
@@ -419,4 +423,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
         DragObject.IsFloating= true;		
 	}
+
+	// ----------------------------------------------------------------------
+    void AutocreateInstanceNode(iCS_EditorObject dragPort, Rect pos, iCS_EditorObject newParent) {
+        Type instanceType= dragPort.RuntimeType;
+        if(iCS_Types.IsStaticClass(instanceType)) return;
+        var instance= IStorage.CreateModule(newParent.InstanceId, Math3D.ToVector2(pos), "", iCS_ObjectTypeEnum.Module, instanceType);
+        var thisPort= IStorage.ClassModuleGetInputThisPort(instance);
+        IStorage.SetSource(thisPort, dragPort);
+    }
 }

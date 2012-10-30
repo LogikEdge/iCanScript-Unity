@@ -25,12 +25,12 @@ public static partial class Prelude {
 	    // =================================================================================
 	    // Child management.
 	    // ---------------------------------------------------------------------------------
-		public void AddChild(T childValue)	{
-			AddChild(new Tree<T>(childValue));
-		}
 		public void AddChild(Tree<T> node) {
 			if(myChildren == null) myChildren= new List<Tree<T>>();
 			myChildren.Add(node);			
+		}
+		public void AddChild(T childValue)	{
+			AddChild(new Tree<T>(childValue));
 		}
 		public bool RemoveChild(T childValue) {
 			if(myChildren == null) return false;

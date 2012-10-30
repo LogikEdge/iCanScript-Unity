@@ -109,13 +109,15 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 			myTree= null;
 			return;
 		}
-		myTree= BuildTreeNode(myStorage.EditorObjects[0], filterFlags);
+        var rootNode= myStorage.EditorObjects[0];
+		myTree= BuildTreeNode(rootNode, filterFlags);
     }
 	Prelude.Tree<iCS_EditorObject> BuildTreeNode(iCS_EditorObject nodeRoot, List<bool> filterFlags) {
 		Prelude.Tree<iCS_EditorObject> tree= new Prelude.Tree<iCS_EditorObject>(nodeRoot);
 		myStorage.ForEachChild(nodeRoot,
 			c=> {
-				if(filterFlags[c.InstanceId]) tree.AddChild(BuildTreeNode(c, filterFlags));
+				Prelude.Tree<iCS_EditorObject> newNode= BuildTreeNode(c, filterFlags);
+				if(filterFlags[c.InstanceId]) tree.AddChild(newNode);
 			}
 		);
 		tree.Sort(SortComparaison);

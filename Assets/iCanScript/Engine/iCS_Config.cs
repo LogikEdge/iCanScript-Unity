@@ -3,8 +3,8 @@ using System.Collections;
 
 public class iCS_Config {
     // ----------------------------------------------------------------------
-    public const string Version= "Version 0.8.5";
-    public const string VersionLabel= "(Beta #5)";
+    public const string Version= "Version 0.8.6";
+    public const string VersionLabel= "(Beta #6)";
     public const string ProductName= "iCanScript";
     public const string ProductAcronym= "iCS";
 	public const string EditorPath= "Assets/"+ProductName+"/Editor";
