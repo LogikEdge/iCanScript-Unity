@@ -88,7 +88,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     // Instance Node Config Constants
     const bool   kInstanceAutocreateInThis             = true;
-    const bool   kInstanceAutocreateOutThis            = false;
     const bool   kInstanceAutocreateInFields           = false;
     const bool   kInstanceAutocreateOutFields          = false;
     const bool   kInstanceAutocreateInStaticFields     = false;
@@ -98,7 +97,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const bool   kInstanceAutocreateInStaticProperties = false;
     const bool   kInstanceAutocreateOutStaticProperties= false;
     const string kInstanceAutocreateInThisKey             = "iCS_InstanceAutocreateInThis";
-    const string kInstanceAutocreateOutThisKey            = "iCS_InstanceAutocreateOutThis"; 
     const string kInstanceAutocreateInFieldsKey           = "iCS_InstanceAutocreateInFields"; 
     const string kInstanceAutocreateOutFieldsKey          = "iCS_InstanceAutocreateOutFields"; 
     const string kInstanceAutocreateInStaticFieldsKey     = "iCS_InstanceAutocreateInStaticFields";
@@ -286,10 +284,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     public static bool InstanceAutocreateInThis {
         get { return EditorPrefs.GetBool(kInstanceAutocreateInThisKey, kInstanceAutocreateInThis); }
         set { EditorPrefs.SetBool(kInstanceAutocreateInThisKey, value); }        
-    }
-    public static bool InstanceAutocreateOutThis {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateOutThisKey, kInstanceAutocreateOutThis); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutThisKey, value); }        
     }
     public static bool InstanceAutocreateInFields {
         get { return EditorPrefs.GetBool(kInstanceAutocreateInFieldsKey, kInstanceAutocreateInFields); }
@@ -649,7 +643,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= 45f;
         }
-        InstanceAutocreateOutThis            = EditorGUI.Toggle(pos[0], InstanceAutocreateOutThis);
         InstanceAutocreateOutFields          = EditorGUI.Toggle(pos[1], InstanceAutocreateOutFields);
         InstanceAutocreateOutStaticFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateOutStaticFields);
         InstanceAutocreateOutProperties      = EditorGUI.Toggle(pos[3], InstanceAutocreateOutProperties);
@@ -662,7 +655,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             InstanceAutocreateInStaticFields    = kInstanceAutocreateInStaticFields;
             InstanceAutocreateInProperties      = kInstanceAutocreateInProperties;
             InstanceAutocreateInStaticProperties= kInstanceAutocreateInStaticProperties;
-            InstanceAutocreateOutThis            = kInstanceAutocreateOutThis;
             InstanceAutocreateOutFields          = kInstanceAutocreateOutFields;
             InstanceAutocreateOutStaticFields    = kInstanceAutocreateOutStaticFields;
             InstanceAutocreateOutProperties      = kInstanceAutocreateOutProperties;

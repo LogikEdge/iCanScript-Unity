@@ -14,8 +14,6 @@ public partial class iCS_IStorage {
         if(!iCS_Types.IsStaticClass(classType)) {
             iCS_EditorObject inThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.This, classType, iCS_ObjectTypeEnum.InStaticModulePort);
             inThisPort.IsNameEditable= false;
-            iCS_EditorObject outThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.This, classType, iCS_ObjectTypeEnum.OutStaticModulePort);
-            outThisPort.IsNameEditable= false;
         }
         if(iCS_PreferencesEditor.InstanceAutocreateOutFields)           ClassModuleCreateOutputInstanceFields(module);
         if(iCS_PreferencesEditor.InstanceAutocreateInFields)            ClassModuleCreateInputInstanceFields(module);
