@@ -90,6 +90,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // Filter & reorder.
     // ---------------------------------------------------------------------------------
     void BuildTree() {
+        Debug.Log("Building Hierarchy Tree");
         // Build filter list of object...
         var filterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
         // ... make certain the parents are also filtered in !!!
@@ -236,7 +237,14 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
         if(NameEdition && IsSelected) {
+            GUI.SetNextControlName("iCS_Hierarchy_NameChange");
     	    string newName= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), IterValue.RawName);            
+            if(iCS_InputMgr.IsGUI("iCS_Hierarchy_NameChange")) {
+                if(iCS_InputMgr.IsEscape || iCS_InputMgr.IsReturn) {
+                    NameEdition= false;
+                    Event.current.Use();
+                }
+            }
             if(newName != IterValue.RawName) {
                 IterValue.Name= newName;
                 IStorage.SetDirty(IterValue);

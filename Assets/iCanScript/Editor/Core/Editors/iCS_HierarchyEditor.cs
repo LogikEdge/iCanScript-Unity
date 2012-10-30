@@ -125,12 +125,6 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
                         ev.Use();
                         break;
                     }
-                    // Remove name edition.
-                    case KeyCode.Escape: {
-                        myController.NameEdition= false;
-                        ev.Use();
-                        break;
-                    }
                     // Fold/Unfold toggle
                     case KeyCode.Return: {
                         myController.ToggleFoldUnfoldSelected();
