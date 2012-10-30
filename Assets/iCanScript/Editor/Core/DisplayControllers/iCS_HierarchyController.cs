@@ -234,7 +234,11 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
         if(NameEdition && IsSelected) {
-    	    IterValue.Name= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), IterValue.RawName);            
+    	    string newName= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), IterValue.RawName);            
+            if(newName != IterValue.RawName) {
+                IterValue.Name= newName;
+                IStorage.SetDirty(IterValue);
+            }
         } else {
     	    GUI.Label(pos, content.text, labelStyle);            
         }

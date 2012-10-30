@@ -126,8 +126,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetDirty(iCS_EditorObject obj) {
         myIsDirty= true;
-        if(obj.IsPort) { GetParent(obj).IsDirty= true; }
         obj.IsDirty= true;        
+        if(obj.IsPort)            { GetParent(obj).IsDirty= true; }
+        if(obj.IsTransitionGuard) { GetParent(obj).IsDirty= true; }
     }
     // ----------------------------------------------------------------------
     public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {

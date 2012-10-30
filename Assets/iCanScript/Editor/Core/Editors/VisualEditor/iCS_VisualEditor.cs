@@ -169,7 +169,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     // Processes all events.
-    static int eventId= 0;
     void ProcessEvents() {
         switch(Event.current.type) {
             case EventType.Repaint: {
