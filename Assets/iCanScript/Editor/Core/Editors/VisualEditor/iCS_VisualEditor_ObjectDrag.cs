@@ -348,7 +348,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         }
                                     }
                                     // Determine if we need to create an instance node.
-                                    AutocreateInstanceNode(DragFixPort, dragPortPos, newPortParent);                                    
+                                    AutocreateInstanceNode(dragPortPos, newPortParent);                                    
                                 }
                                 if(DragFixPort.IsOutputPort && (newPortParent.IsState || newPortParent.IsStateChart)) {
 									if(IStorage.IsNearNodeEdge(newPortParent, Math3D.ToVector2(dragPortPos), iCS_EditorObject.EdgeEnum.Right)) {
@@ -427,9 +427,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 	// ----------------------------------------------------------------------
-    void AutocreateInstanceNode(iCS_EditorObject dragPort, Rect pos, iCS_EditorObject newParent) {
+    void AutocreateInstanceNode(Rect pos, iCS_EditorObject newParent) {
+        var dragPort= DragFixPort;
         Type instanceType= dragPort.RuntimeType;
         if(iCS_Types.IsStaticClass(instanceType)) return;
+        if(DragOriginalPort != DragFixPort) return;
         var instance= IStorage.CreateModule(newParent.InstanceId, Math3D.ToVector2(pos), "", iCS_ObjectTypeEnum.Module, instanceType);
         var thisPort= IStorage.ClassModuleGetInputThisPort(instance);
         IStorage.SetSource(thisPort, dragPort);
