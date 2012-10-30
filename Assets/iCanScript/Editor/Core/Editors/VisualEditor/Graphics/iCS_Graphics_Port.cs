@@ -56,6 +56,7 @@ public partial class iCS_Graphics {
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if(port.IsInputPort && port.Source != -1) {
             var sourcePort= iStorage.GetSource(port);
+            if(sourcePort.Name != port.Name) return true;
             var sourceCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(sourcePort));
             var portCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(port));
             var distance= Vector2.Distance(portCenter, sourceCenter);
