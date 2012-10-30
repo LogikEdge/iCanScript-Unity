@@ -549,7 +549,7 @@ public partial class iCS_Graphics {
         }            
         
         // State transition name is handle by DrawConnection.
-        if(port.IsStatePort) return;         
+        if(port.IsStatePort || port.IsTransitionPort) return;         
 
         // Determine if port is a static port (a port that feeds information into the graph).
         bool isStaticPort= port.IsInDataPort && iStorage.GetSource(port) == null;

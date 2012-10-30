@@ -51,6 +51,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortName(iCS_EditorObject port, iCS_IStorage iStorage) {
         if(port.IsInMuxPort) return false;
+        if(port.IsStatePort || port.IsTransitionPort) return false;
         if(!ShouldShowLabel()) return false;
         if(!IsVisible(port, iStorage)) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.

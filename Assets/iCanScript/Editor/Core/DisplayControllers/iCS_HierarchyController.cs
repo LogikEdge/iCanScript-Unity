@@ -239,8 +239,15 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
         if(NameEdition && IsSelected) {
             ProcessNameChange(pos, frameArea);
-        } else {
+        } else {            
+            var savedColor= GUI.color;
+            if(!IterValue.IsNameEditable) {
+                labelStyle= EditorStyles.boldLabel;
+                pos.width= pos.width*1.1f;
+                GUI.color= new Color(1f, 0.8f, 0.4f);
+            }
     	    GUI.Label(pos, content.text, labelStyle);            
+            GUI.color= savedColor;
         }
         ProcessChangeSelection();
 		return result;
@@ -314,9 +321,16 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             return;
         }
         iCS_EditorObject eObj= key as iCS_EditorObject;
-        if(!myNameEdition && eObj.IsNameEditable && eObj == Selected) {
-            myNameEdition= true;
-            myNameBeforeEdition= eObj.RawName;
+        if(!myNameEdition && eObj == Selected) {
+            if(eObj.IsNameEditable) {
+                myNameEdition= true;
+                myNameBeforeEdition= eObj.RawName;
+            } else {       
+                myNameEdition= false;    
+                EditorWindow.focusedWindow.ShowNotification(new GUIContent("The selected name cannot be changed !!!"));            
+            }
+        } else {
+            myNameEdition= false;
         }
         Selected= eObj;
         FocusGraphOnSelected();
