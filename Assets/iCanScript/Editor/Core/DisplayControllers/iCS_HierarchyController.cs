@@ -8,15 +8,16 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	iCS_EditorObject    			        myTarget       = null;
-	iCS_IStorage	    			        myStorage      = null;
-	DSTreeView		    			        myTreeView     = null;
-	Rect                                    mySelectedArea = new Rect(0,0,0,0);
-	float               			        myFoldOffset   = 0;
-	bool                			        myNameEdition  = false;
-	string              			        mySearchString = null;
-    int                                     myTreeSize     = 0;
-	Prelude.Tree<iCS_EditorObject>	        myTree		   = null;
+	iCS_EditorObject    			        myTarget           = null;
+	iCS_IStorage	    			        myStorage          = null;
+	DSTreeView		    			        myTreeView         = null;
+	Rect                                    mySelectedArea     = new Rect(0,0,0,0);
+	float               			        myFoldOffset       = 0;
+	bool                			        myNameEdition      = false;
+	string                                  myNameBeforeEdition= null;
+	string              			        mySearchString     = null;
+    int                                     myTreeSize         = 0;
+	Prelude.Tree<iCS_EditorObject>	        myTree		       = null;
     // Used to move selection up/down
     iCS_EditorObject                        myLastDisplayed  = null;
     int                                     myChangeSelection= 0;
@@ -237,31 +238,32 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	    GUI.Label(pos, content.image);
         pos= new Rect(pos.x+kIconWidth+kLabelSpacer, pos.y-1f, pos.width-(kIconWidth+kLabelSpacer), pos.height);  // Move label up a bit.
         if(NameEdition && IsSelected) {
-            GUI.SetNextControlName("iCS_Hierarchy_NameChange");
-    	    string newName= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), IterValue.RawName);            
-            if(iCS_InputMgr.IsGUI("iCS_Hierarchy_NameChange")) {
-                if(iCS_InputMgr.IsEscape || iCS_InputMgr.IsReturn) {
-                    NameEdition= false;
-                    Event.current.Use();
-                }
-            }
-            if(newName != IterValue.RawName) {
-                IterValue.Name= newName;
-                IStorage.SetDirty(IterValue);
-            }
+            ProcessNameChange(pos, frameArea);
         } else {
     	    GUI.Label(pos, content.text, labelStyle);            
         }
         ProcessChangeSelection();
 		return result;
-//        bool result= false;
-//        if(ShouldUseFoldout()) {
-//            result= EditorGUI.Foldout(displayArea, foldout, GetContent());
-//        } else {
-//            GUI.Label(new Rect(displayArea.x+myFoldOffset, displayArea.y, displayArea.width, displayArea.height), GetContent());
-//        }
-//        return result;
 	}
+    // ---------------------------------------------------------------------------------
+    void ProcessNameChange(Rect pos, Rect frameArea) {
+        GUI.SetNextControlName("iCS_Hierarchy_NameChange");
+	    string newName= GUI.TextField(new Rect(pos.x, pos.y, frameArea.xMax-pos.x, pos.height+2.0f), IterValue.RawName);            
+        if(iCS_InputMgr.IsGUI("iCS_Hierarchy_NameChange")) {
+            bool isEscape= iCS_InputMgr.IsEscape;
+            if(isEscape) {
+                newName= myNameBeforeEdition;
+            }
+            if(isEscape || iCS_InputMgr.IsReturn) {
+                NameEdition= false;
+                Event.current.Use();
+            }
+        }
+        if(newName != IterValue.RawName) {
+            IterValue.Name= newName;
+            IStorage.SetDirty(IterValue);
+        }        
+    }
     // ---------------------------------------------------------------------------------
 	public object	CurrentObjectKey() {
 		return IterValue;
@@ -312,7 +314,10 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             return;
         }
         iCS_EditorObject eObj= key as iCS_EditorObject;
-        myNameEdition= eObj.IsNameEditable && eObj == Selected;
+        if(!myNameEdition && eObj.IsNameEditable && eObj == Selected) {
+            myNameEdition= true;
+            myNameBeforeEdition= eObj.RawName;
+        }
         Selected= eObj;
         FocusGraphOnSelected();
     }
