@@ -243,7 +243,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             var savedColor= GUI.color;
             if(!IterValue.IsNameEditable) {
                 labelStyle= EditorStyles.boldLabel;
-                pos.width= pos.width*1.1f;
+                pos.width= pos.width*1.2f;
                 GUI.color= new Color(1f, 0.8f, 0.4f);
             }
     	    GUI.Label(pos, content.text, labelStyle);            
