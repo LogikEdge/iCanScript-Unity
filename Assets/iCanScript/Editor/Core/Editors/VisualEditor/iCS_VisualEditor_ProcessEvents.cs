@@ -18,8 +18,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void MouseMoveEvent() {
         switch(Event.current.button) {
             case 2: { // Middle mouse button
-                Vector2 diff= ViewportMousePosition-MouseDragStartPosition;
-                ScrollPosition= DragStartPosition-diff;
+                UpdateViewportPanning();
                 break;
             }
             default: {
@@ -32,12 +31,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void MouseDragEvent() {
         switch(Event.current.button) {
             case 0: { // Left mouse button
-                ProcessDrag();                            
+                if(IsDragEnabled) {
+                    ProcessDrag();                                                
+                } else {
+                    UpdateViewportPanning();
+                }
                 break;
             }
             case 2: { // Middle mouse button
-                Vector2 diff= ViewportMousePosition-MouseDragStartPosition;
-                ScrollPosition= DragStartPosition-diff;
+                UpdateViewportPanning();
                 break;
             }
 			default: {
@@ -48,6 +50,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void MouseDownEvent() {
 		MouseDownPosition= ViewportMousePosition;
+        // Keep a copy of the scroll position.
+        MouseDragStartPosition= ViewportMousePosition;
+        DragStartPosition= ScrollPosition;
         // Update the selected object.
         SelectedObjectBeforeMouseDown= SelectedObject;
         DetermineSelectedObject();
@@ -64,8 +69,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case 2: { // Middle mouse button
-                MouseDragStartPosition= ViewportMousePosition;
-                DragStartPosition= ScrollPosition;
+                // Mainly used for panning the viewport.
                 break;
             }
         }        
@@ -209,5 +213,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
         }
+    }
+	// ----------------------------------------------------------------------
+    void UpdateViewportPanning() {
+        Vector2 diff= ViewportMousePosition-MouseDragStartPosition;
+        ScrollPosition= DragStartPosition-diff;        
     }
 }

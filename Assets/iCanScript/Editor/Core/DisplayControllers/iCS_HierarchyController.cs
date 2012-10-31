@@ -91,7 +91,6 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // Filter & reorder.
     // ---------------------------------------------------------------------------------
     void BuildTree() {
-        Debug.Log("Building Hierarchy Tree");
         // Build filter list of object...
         var filterFlags= Prelude.map(o=> FilterIn(o), myStorage.EditorObjects);
         // ... make certain the parents are also filtered in !!!
