@@ -257,87 +257,8 @@ public partial class iCS_IStorage {
     }
 
 
-//    // ======================================================================
-//    // Port Layout
-//    // ----------------------------------------------------------------------
-//    // Recomputes the port position.
-//    public void LayoutPorts(iCS_EditorObject node) {
-//        // Update all port edges.
-//        ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort, port=> UpdatePortEdge(port)));
-//        
-//        // Special case for minimized nodes.
-//        if(node.IsMinimized) {
-//            float cx= 0.5f*node.LocalPosition.width;
-//            float cy= 0.5f*node.LocalPosition.height;
-//            ForEachChild(node, child=> ExecuteIf(child, p=> p.IsPort, port=> { port.LocalPosition.x= cx; port.LocalPosition.y= cy; }));
-//            return;
-//        }
-//
-//        // Relayout top ports.
-//        Rect position= GetLayoutPosition(node);        
-//        iCS_EditorObject[] ports= SortTopPorts(node);
-//        if(ports.Length != 0) {
-//            float xStep= position.width / ports.Length;
-//            for(int i= 0; i < ports.Length; ++i) {
-//                if(!ports[i].IsFloating) {
-//                    ports[i].LocalPosition.x= (i+0.5f) * xStep;
-//                    ports[i].LocalPosition.y= 0;                    
-//                }
-//            }
-//            if(!AreChildrenInSameOrder(node, ports)) {
-//                ReorderChildren(node, ports);
-//            }            
-//        }
-//
-//        // Relayout bottom ports.
-//        ports= SortBottomPorts(node);
-//        if(ports.Length != 0) {
-//            float xStep= position.width / ports.Length;
-//            for(int i= 0; i < ports.Length; ++i) {
-//                if(!ports[i].IsFloating) {
-//                    ports[i].LocalPosition.x= (i+0.5f) * xStep;
-//                    ports[i].LocalPosition.y= position.height;                
-//                }
-//            }            
-//            if(!AreChildrenInSameOrder(node, ports)) {
-//                ReorderChildren(node, ports);
-//            }            
-//        }
-//
-//        // Relayout left ports.
-//        ports= SortLeftPorts(node);
-//        if(ports.Length != 0) {
-//            float topOffset= iCS_Config.NodeTitleHeight-2;
-//            float yStep= (position.height-topOffset) / ports.Length;
-//            for(int i= 0; i < ports.Length; ++i) {
-//                if(!ports[i].IsFloating) {
-//                    ports[i].LocalPosition.x= 0;
-//                    ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
-//                }
-//            }
-//            if(!AreChildrenInSameOrder(node, ports)) {
-//                ReorderChildren(node, ports);
-//            }            
-//        }
-//
-//        // Relayout right ports.
-//        ports= SortRightPorts(node);
-//        if(ports.Length != 0) {
-//            float topOffset= iCS_Config.NodeTitleHeight-2;
-//            float yStep= (position.height-topOffset) / ports.Length;
-//            for(int i= 0; i < ports.Length; ++i) {
-//                if(!ports[i].IsFloating) {
-//                    ports[i].LocalPosition.x= position.width;
-//                    ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;
-//                }
-//            }
-//            if(!AreChildrenInSameOrder(node, ports)) {
-//                ReorderChildren(node, ports);
-//            }            
-//        }        
-//    }
-
-
+    // ======================================================================
+    // Port Layout
     // ----------------------------------------------------------------------
     bool AreChildrenInSameOrder(iCS_EditorObject node, iCS_EditorObject[] orderedChildren) {
         return StorageCache[node.InstanceId].AreChildrenInSameOrder(Prelude.map(c=> c.InstanceId, orderedChildren));
@@ -448,7 +369,16 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     bool IsPortOnParent(iCS_EditorObject port) {
-        return !port.IsFloating;
+        if(!port.IsFloating) return true;
+        if(port.IsDataPort) {
+            return IsNearNodeEdge(GetParent(port), Math3D.ToVector2(GetLayoutPosition(port)), port.Edge);
+        }
+        if(port.IsStatePort) {
+            var parent= GetParent(port);
+            var bestEdge= GetClosestEdge(parent, port);
+            return IsNearNodeEdge(parent, Math3D.ToVector2(GetLayoutPosition(port)), bestEdge);
+        }
+        return false;
     }
     // ----------------------------------------------------------------------
     // Returns the number of ports on the top edge.
@@ -624,7 +554,7 @@ public partial class iCS_IStorage {
             port.Edge= GetClosestEdge(GetParent(port), port);            
         }
         // Set dirty flag if port edge has changed.
-        CleanupPortPositionOnEdge(port);
+        if(!port.IsFloating) CleanupPortPositionOnEdge(port);
         if(port.Edge != edgeBeforeUpdate) SetDirty(port);
     }
     // ----------------------------------------------------------------------
@@ -656,7 +586,6 @@ public partial class iCS_IStorage {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    CleanupPortPositionOnEdge(ports[i]);
                     ports[i].LocalPosition.x= (i+0.5f) * xStep;
                     ports[i].LocalPosition.y= 0;                    
                 }
@@ -672,7 +601,6 @@ public partial class iCS_IStorage {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    CleanupPortPositionOnEdge(ports[i]);
                     ports[i].LocalPosition.x= (i+0.5f) * xStep;
                     ports[i].LocalPosition.y= position.height;                
                 }
@@ -689,7 +617,6 @@ public partial class iCS_IStorage {
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    CleanupPortPositionOnEdge(ports[i]);
                     ports[i].LocalPosition.x= 0;
                     ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
                 }
@@ -706,7 +633,6 @@ public partial class iCS_IStorage {
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    CleanupPortPositionOnEdge(ports[i]);
                     ports[i].LocalPosition.x= position.width;
                     ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;
                 }
