@@ -31,6 +31,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void MouseDragEvent() {
         switch(Event.current.button) {
             case 0: { // Left mouse button
+                // Drag the selected node or pan the viewport if no node is selected.
                 if(IsDragEnabled) {
                     ProcessDrag();                                                
                 } else {

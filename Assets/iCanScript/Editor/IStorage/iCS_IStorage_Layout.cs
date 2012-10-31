@@ -620,49 +620,17 @@ public partial class iCS_IStorage {
         }
         // Selected closest edge.
         else {
-            port.Edge= GetClosestEdge(GetParent(port), Math3D.ToVector2(GetLayoutPosition(port)));            
+            port.Edge= GetClosestEdge(GetParent(port), port);            
         }
         // Set dirty flag if port edge has changed.
+        CleanupPortPositionOnEdge(port);
         if(port.Edge != edgeBeforeUpdate) SetDirty(port);
     }
-//    // ----------------------------------------------------------------------
-//    public void UpdatePortEdges(iCS_EditorObject p1, iCS_EditorObject p2) {
-//        // Don't update port edges for a transition bridge.  Leave the update
-//        // do the corresponding data connection & transition connection.
-//        iCS_EditorObject.EdgeEnum p1Edge= p1.Edge;
-//        iCS_EditorObject.EdgeEnum p2Edge= p2.Edge;
-//        UpdatePortEdgesInternal(p1, p2);
-//        if(p1Edge != p1.Edge) SetDirty(p1);
-//        if(p2Edge != p2.Edge) SetDirty(p2);
-//    }
-//    void UpdatePortEdgesInternal(iCS_EditorObject p1, iCS_EditorObject p2) {
-//        // Reset edge information.
-//        p1.Edge= iCS_EditorObject.EdgeEnum.None;
-//        p2.Edge= iCS_EditorObject.EdgeEnum.None;
-//        UpdatePortEdgeHardConstraints(p1);
-//        UpdatePortEdgeHardConstraints(p2);
-//        if(p1.Edge != iCS_EditorObject.EdgeEnum.None && p2.Edge != iCS_EditorObject.EdgeEnum.None) return;
-//
-//        // Selected closest edge.
-//        p1.Edge= GetClosestEdge(GetParent(p1), Math3D.ToVector2(GetLayoutPosition(p1)));
-//        p2.Edge= GetClosestEdge(GetParent(p2), Math3D.ToVector2(GetLayoutPosition(p2)));
-//        return;
-//    }
-//    void UpdatePortEdgeHardConstraints(iCS_EditorObject port) {
-//        if(port.IsEnablePort) {
-//            port.Edge= iCS_EditorObject.EdgeEnum.Top;
-//            return;            
-//        }
-//        if(port.IsDataPort) {
-//            port.Edge= port.IsInputPort ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Right;
-//            return;
-//        }
-//    }
     // ----------------------------------------------------------------------
-    public void PositionOnEdge(iCS_EditorObject port) {
+    public void CleanupPortPositionOnEdge(iCS_EditorObject port) {
         var parent= GetParent(port);
         var parentPos= GetLayoutPosition(parent);
-        switch(GetClosestEdge(parent, Math3D.ToVector2(GetLayoutPosition(port)))) {
+        switch(port.Edge) {
             case iCS_EditorObject.EdgeEnum.Top:      port.LocalPosition.y= 0; break; 
             case iCS_EditorObject.EdgeEnum.Bottom:   port.LocalPosition.y= parentPos.height; break;
             case iCS_EditorObject.EdgeEnum.Left:     port.LocalPosition.x= 0; break;

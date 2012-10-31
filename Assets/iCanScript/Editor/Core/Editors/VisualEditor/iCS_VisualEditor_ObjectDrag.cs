@@ -155,7 +155,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(!IStorage.IsNearParentEdge(DragObject)) {
 					CreateDragPort();
                 } else {
-                    IStorage.PositionOnEdge(DragObject);
                     IStorage.LayoutPorts(parent); 
                 }
                 break;

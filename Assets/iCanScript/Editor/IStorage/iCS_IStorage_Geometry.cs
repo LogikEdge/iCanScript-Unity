@@ -69,25 +69,55 @@ public partial class iCS_IStorage {
         return distance <= maxDistance;
     }
     // ----------------------------------------------------------------------
-    iCS_EditorObject.EdgeEnum GetClosestEdge(iCS_EditorObject node, Vector2 point) {
-        var pos= GetLayoutPosition(node);
-        float xDistance   = Mathf.Abs(point.x-pos.x);
-        float xMaxDistance= Mathf.Abs(point.x-pos.xMax);
-        float yDistance   = Mathf.Abs(point.y-pos.y);
-        float yMaxDistance= Mathf.Abs(point.y-pos.yMax);
-        if(xDistance < xMaxDistance) {
-            if(yDistance < yMaxDistance) {
-                return xDistance < yDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Top;					
-            } else {
-                return xDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Bottom;
-            }
-        } else {
-            if(yDistance < yMaxDistance) {
-                return xMaxDistance < yDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Top;
-            } else {
-                return xMaxDistance < yMaxDistance ? iCS_EditorObject.EdgeEnum.Right : iCS_EditorObject.EdgeEnum.Bottom;
-            }            
+    iCS_EditorObject.EdgeEnum GetClosestEdge(iCS_EditorObject node, iCS_EditorObject port) {
+        const float kAllowedGap= 2f*iCS_Config.PortRadius;
+        var nodePos= GetLayoutPosition(node);
+        var portPos= Math3D.ToVector2(GetLayoutPosition(port));
+        float topDistance= GetDistanceFromHorizontalLineSegment(portPos, nodePos.x, nodePos.xMax, nodePos.y);
+        float bottomDistance= GetDistanceFromHorizontalLineSegment(portPos, nodePos.x, nodePos.xMax, nodePos.yMax);
+        float leftDistance= GetDistanceFromVerticalLineSegment(portPos, nodePos.y, nodePos.yMax, nodePos.x);
+        float rightDistance= GetDistanceFromVerticalLineSegment(portPos, nodePos.y, nodePos.yMax, nodePos.xMax);
+        // Attempt to keep same edge node is shrinked.
+        switch(port.Edge) {
+			case iCS_EditorObject.EdgeEnum.Left: {
+                float left= leftDistance-kAllowedGap;
+                if(left < topDistance && left < bottomDistance && left < rightDistance) {
+                    return port.Edge;
+                }
+				break;
+			}
+			case iCS_EditorObject.EdgeEnum.Right: {
+                float right= rightDistance-kAllowedGap;
+                if(right < topDistance && right < bottomDistance && right < leftDistance) {
+                    return port.Edge;
+                }
+				break;
+			}
+			case iCS_EditorObject.EdgeEnum.Bottom: {
+                float bottom= bottomDistance-kAllowedGap;
+                if(bottom < topDistance && bottom < leftDistance && bottom < rightDistance) {
+                    return port.Edge;
+                }
+				break;
+			}
+			case iCS_EditorObject.EdgeEnum.Top: {
+                float top= topDistance-kAllowedGap;
+                if(top < bottomDistance && top < leftDistance && top < rightDistance) {
+                    return port.Edge;
+                }
+				break;
+			}            
         }
+        if(topDistance < bottomDistance) {
+            if(leftDistance < rightDistance) {
+                return topDistance < leftDistance ? iCS_EditorObject.EdgeEnum.Top : iCS_EditorObject.EdgeEnum.Left;					
+            }
+            return topDistance < rightDistance ? iCS_EditorObject.EdgeEnum.Top : iCS_EditorObject.EdgeEnum.Right;
+        }
+        if(leftDistance < rightDistance) {
+            return bottomDistance < leftDistance ? iCS_EditorObject.EdgeEnum.Bottom : iCS_EditorObject.EdgeEnum.Left;
+        }
+        return bottomDistance < rightDistance ? iCS_EditorObject.EdgeEnum.Bottom : iCS_EditorObject.EdgeEnum.Right;
     }
     // ----------------------------------------------------------------------
 	float GetDistanceFromHorizontalLineSegment(Vector2 point, float x1, float x2, float y) {
@@ -98,9 +128,10 @@ public partial class iCS_IStorage {
 		}
 		float distance= Mathf.Abs(point.y-y);
 		if(point.x >= x1 && point.x <= x2) return distance;
-		if(point.x < x1) return Mathf.Max(distance, x1-point.x);
-		return Mathf.Max(distance, point.x-x2);
-		
+        float x= (point.x < x1) ? x1 : x2;
+        float dx= x-point.x;
+        float dy= y-point.y;
+		return Mathf.Sqrt(dx*dx+dy*dy);
 	}
     // ----------------------------------------------------------------------
 	float GetDistanceFromVerticalLineSegment(Vector2 point, float y1, float y2, float x) {
@@ -111,9 +142,10 @@ public partial class iCS_IStorage {
 		}
 		float distance= Mathf.Abs(point.x-x);
 		if(point.y >= y1 && point.y <= y2) return distance;
-		if(point.y < y1) return Mathf.Max(distance, y1-point.y);
-		return Mathf.Max(distance, point.y-y2);
-		
+		float y= (point.y < y1) ? y1 : y2;
+        float dx= x-point.x;
+        float dy= y-point.y;
+		return Mathf.Sqrt(dx*dx+dy*dy);
 	}
     // ----------------------------------------------------------------------
     // Returns the minimal distance from the parent.
