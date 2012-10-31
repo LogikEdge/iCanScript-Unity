@@ -8,21 +8,7 @@ using System.Collections;
 // ===========================================================================
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
-    // Fileds
-	// ----------------------------------------------------------------------
-	UnityEngine.Object myDraggedObject= null;
-	
-    // ======================================================================
     // Respond to Unity drag & drop protocol.
-	// ----------------------------------------------------------------------
-    void DragAndDropPerform() {
-		myDraggedObject= GetDraggedObject();
-		if(myDraggedObject != null) {
-	        IStorage.RegisterUndo("DragAndDrop");			
-	        DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
-	        DragAndDrop.AcceptDrag();			
-		}
-    }
 	// ----------------------------------------------------------------------
     void DragAndDropUpdated() {
 	    iCS_EditorObject eObj= GetObjectAtMousePosition();
@@ -50,17 +36,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     	DragAndDrop.visualMode = DragAndDropVisualMode.Generic;
     }
 	// ----------------------------------------------------------------------
-    void DragAndDropExited() {
-        UnityEngine.Object draggedObject= myDraggedObject;
+    void DragAndDropPerformed() {
+        UnityEngine.Object draggedObject= GetDraggedObject();
 		if(draggedObject == null) { return; }
-		myDraggedObject= null;
 		
 		// Copy/Paste library from prefab
         iCS_Storage storage= GetDraggedLibrary(draggedObject);
 		if(storage != null) {
+		    IStorage.RegisterUndo("DragAndDrop");			
             PasteIntoGraph(GraphMousePosition, storage, storage.EditorObjects[0]);
 			// Remove data so that we don't get called multiple times (Unity bug !!!).
-            DragAndDrop.objectReferences= new UnityEngine.Object[0];
+            DragAndDrop.AcceptDrag();
 			return;
 		}
 		
@@ -70,12 +56,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	            Type portType= eObj.RuntimeType;
 	            Type dragObjType= draggedObject.GetType();
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
+        	        IStorage.RegisterUndo("DragAndDrop");			
                     IStorage.SetPortValue(eObj, draggedObject);
                     /*
                         TODO: Update node name if the port is "this" and the object is unnamed.
                     */
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
-		            DragAndDrop.objectReferences= new UnityEngine.Object[0];
+		            DragAndDrop.AcceptDrag();
 					return;
 				}
 			}
@@ -85,19 +72,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     Texture newTexture= draggedObject as Texture;
                     string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
                     if(newTexture != null) {
+            	        IStorage.RegisterUndo("DragAndDrop");			
                         eObj.IconGUID= iconGUID;                    
                         IStorage.Minimize(eObj);
                         // Remove data so that we don't get called multiple times (Unity bug !!!).
-                        DragAndDrop.objectReferences= new UnityEngine.Object[0];
+    		            DragAndDrop.AcceptDrag();
     				}
     				return;				
                 }
                 // Allow dropping Unity object in modules.
                 if(eObj.IsModule && draggedObject is GameObject) {
+        	        IStorage.RegisterUndo("DragAndDrop");			
                     GameObject gameObject= draggedObject as GameObject;
                     CreateGameObject(eObj.InstanceId, gameObject, GraphMousePosition);
 					// Remove data so that we don't get called multiple times (Unity bug !!!).
-		            DragAndDrop.objectReferences= new UnityEngine.Object[0];
+		            DragAndDrop.AcceptDrag();
                     return;
                 }
                 /*
@@ -105,7 +94,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 */
 			}
 		}
-		Undo.PerformUndo();
+    }
+	// ----------------------------------------------------------------------
+    void DragAndDropExited() {
     }
 
     // ======================================================================

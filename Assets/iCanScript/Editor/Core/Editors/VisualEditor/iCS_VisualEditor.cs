@@ -209,7 +209,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             // Unity DragAndDrop events.
             case EventType.DragPerform: {
-                DragAndDropPerform();
+                DragAndDropPerformed();
                 Event.current.Use();                
                 break;
             }
