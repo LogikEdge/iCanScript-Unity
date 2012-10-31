@@ -43,30 +43,33 @@ public class iCS_ConnectionParams {
     public iCS_ConnectionParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, storage.GetSource(port), storage) {}
     // ----------------------------------------------------------------------
     static Vector2 ConnectionDirectionFromTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
-        Vector2 direction;
-        if(port.IsFloating || to.IsFloating) {
-            Vector2 fromPos= Math3D.Middle(storage.GetLayoutPosition(port));
-            Vector2 toPos= Math3D.Middle(storage.GetLayoutPosition(to));
-            return GetBestDirectionFrom((toPos-fromPos).normalized);
-        } else {
-            if(port.IsOutTransitionPort && storage.GetParent(port).IsMinimized) {
-                return storage.GetTransitionModuleVector(storage.GetParent(port));
-            }
-            if(port.IsInTransitionPort && storage.GetParent(port).IsMinimized) {
-                return -storage.GetTransitionModuleVector(storage.GetParent(port));
-            }
-            if(port.IsOnLeftEdge) {
-                direction= LeftDirection;
-            } else if(port.IsOnRightEdge) {
-                direction= RightDirection;
-            } else if(port.IsOnTopEdge) {
-                direction= UpDirection;
-            } else {
-                direction= DownDirection;
-            }            
-        }
-        // Inverse direction for connection between nested nodes.
+        // Don't compute complex tangents if we don't have a proper parent.
         iCS_EditorObject portParent= storage.GetParent(port);
+        if(port.IsFloating) {
+            if(!storage.IsNearNodeEdge(portParent, Math3D.ToVector2(storage.GetLayoutPosition(port)), port.Edge)) {
+                Vector2 fromPos= Math3D.Middle(storage.GetLayoutPosition(port));
+                Vector2 toPos= Math3D.Middle(storage.GetLayoutPosition(to));
+                return GetBestDirectionFrom((toPos-fromPos).normalized);                
+            }
+        }
+
+        if(port.IsOutTransitionPort && portParent.IsMinimized) {
+            return storage.GetTransitionModuleVector(portParent);
+        }
+        if(port.IsInTransitionPort && portParent.IsMinimized) {
+            return -storage.GetTransitionModuleVector(portParent);
+        }
+        Vector2 direction;
+        if(port.IsOnLeftEdge) {
+            direction= LeftDirection;
+        } else if(port.IsOnRightEdge) {
+            direction= RightDirection;
+        } else if(port.IsOnTopEdge) {
+            direction= UpDirection;
+        } else {
+            direction= DownDirection;
+        }            
+        // Inverse direction for connection between nested nodes.
         iCS_EditorObject toParent= storage.GetParent(to);
         if(storage.IsChildOf(toParent, portParent) && !port.IsInStatePort) {
             direction= -direction;
