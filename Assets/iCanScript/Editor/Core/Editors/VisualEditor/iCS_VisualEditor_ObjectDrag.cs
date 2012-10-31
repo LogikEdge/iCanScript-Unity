@@ -149,13 +149,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 Vector2 newLocalPos= DragStartPosition+delta;
                 DragObject.LocalPosition.x= newLocalPos.x;
                 DragObject.LocalPosition.y= newLocalPos.y;
-                if(DragObject.IsStatePort) break;
                 // Determine if we should convert to data port connection drag.
-                iCS_EditorObject parent= IStorage.GetParentNode(DragOriginalPort);
-                if(!IStorage.IsNearParentEdge(DragObject)) {
-					CreateDragPort();
+                bool isNearParentEdge= IStorage.IsNearParentEdge(DragObject);
+                if(DragObject.IsStatePort) {
+                    if(isNearParentEdge) {
+                        IStorage.UpdatePortEdge(DragObject);
+                        iCS_EditorObject parent= IStorage.GetParentNode(DragOriginalPort);
+                        IStorage.UpdatePortPositions(parent); 
+                    }
                 } else {
-                    IStorage.LayoutPorts(parent); 
+                    if(!isNearParentEdge) {
+    					CreateDragPort();
+                    } else {
+                        iCS_EditorObject parent= IStorage.GetParentNode(DragOriginalPort);
+                        IStorage.UpdatePortPositions(parent); 
+                    }
                 }
                 break;
             }
@@ -242,8 +250,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.PortRelocation:
                     DragObject.IsFloating= false;
                     if(DragObject.IsDataPort) {
-                        IStorage.LayoutPorts(IStorage.GetParent(DragObject));
-                        // Verify for autocreation of instance node
+                        IStorage.UpdatePortPositions(IStorage.GetParent(DragObject));
                         break;
                     }                    
                     if(DragObject.IsStatePort) {
@@ -266,9 +273,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                         // Relocate dragged port if on the same state.
                         if(origState == newState) {
+                            IStorage.UpdatePortEdge(DragObject);
+                            IStorage.UpdatePortPositions(origState);
                             IStorage.SetDirty(DragObject);
-//                            DragObject.LocalPosition.x= DragStartPosition.x;
-//                            DragObject.LocalPosition.y= DragStartPosition.y;
                             break;
                         }
                         // Delete transition if the dragged port is not on a valid state.
