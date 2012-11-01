@@ -14,7 +14,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
 	iCS_HierarchyController myController;
 	Rect                    mySelectedAreaCache= new Rect(0,0,0,0);
 	int                     myLastFocusId= -1;
-	int                     myModificationId= -1;
+	int                     myUndoRedoId= -1;
 	    
     // =================================================================================
     // Activation/Deactivation.
@@ -24,7 +24,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
         myController= null;
         mySelectedAreaCache= new Rect(0,0,0,0);
         myLastFocusId= -1;
-        myModificationId= -1;
+        myUndoRedoId= -1;
     }
     public new void OnDisable() {
         base.OnDisable();
@@ -38,13 +38,13 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
         if(myController == null || myController.IStorage != IStorage) {
             myController= new iCS_HierarchyController(IStorage[0], IStorage);                        
             myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);            
-            myModificationId= IStorage.ModificationId;
+            myUndoRedoId= IStorage.UndoRedoId;
             return true;
         }
         if(myMainView == null) {
             myMainView= new DSScrollView(new RectOffset(0,0,0,0), false, true, true, myController.View);            
         }
-        if(myModificationId != IStorage.ModificationId) {
+        if(myUndoRedoId != IStorage.UndoRedoId) {
             myController.Init(IStorage[0], IStorage);
         }
         return true;        
@@ -145,11 +145,11 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
                         break;
                     }
                     case 'f': {
-                        if(iCS_EditorUtility.IsCurrentModificationId(myLastFocusId, IStorage)) {
+                        if(iCS_EditorUtility.IsCurrentUndoRedoId(myLastFocusId, IStorage)) {
                             /*
                                 FIXME: Undo creates a null exception error.
                             */
-                            iCS_EditorUtility.UndoIfModificationId(myLastFocusId, IStorage);
+                            iCS_EditorUtility.UndoIfUndoRedoId(myLastFocusId, IStorage);
                             myLastFocusId= -1;
                         } else {
                             if(selected != null) {

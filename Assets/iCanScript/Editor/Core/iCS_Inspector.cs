@@ -14,15 +14,23 @@ public class iCS_Inspector : Editor {
     // ======================================================================
     // Fields
 	// ----------------------------------------------------------------------
-    private iCS_IStorage              myStorage       = null;
-	private iCS_EditorObject          mySelectedObject= null;
-	private Dictionary<string,object> myFoldoutDB     = new Dictionary<string,object>();
+    private iCS_IStorage              myStorage             = null;
+	private iCS_EditorObject          mySelectedObject      = null;
+	private Dictionary<string,object> myFoldoutDB           = new Dictionary<string,object>();
 	
 	// ----------------------------------------------------------------------
     // Display state properties.
 	private bool    mySelectedObjectFold= true;
     private bool    myShowInputs        = false;
     private bool    myShowOutputs       = false;
+    
+	// ----------------------------------------------------------------------
+    // Repaint abort processing variables.
+    private bool                myAbortRepaint          = false;
+    private iCS_IStorage        myPreviousStorage       = null;
+    private int                 myPreviousModificationId= -1;
+    private iCS_EditorObject    myPreviousSelectedObject= null;
+    private int                 myPreviousPortSource    = -1;
     
     // ======================================================================
     // Properties
@@ -37,9 +45,6 @@ public class iCS_Inspector : Editor {
 	        return mySelectedObject;
 	    }
 	}
-
-    // ======================================================================
-	// ----------------------------------------------------------------------
 
 	// ----------------------------------------------------------------------
     // Bring up the graph editor window when the inspector is activated.
@@ -100,6 +105,37 @@ public class iCS_Inspector : Editor {
 		    EditorGUILayout.LabelField("FixedUpdateFrameId", behaviour.FixedUpdateFrameId.ToString());
 		}
 		
+        // Stop any repaint if the selected object has changed between the layout and repaint events.
+        switch(Event.current.type) {
+            case EventType.Layout:
+                myAbortRepaint= false;
+                if(myPreviousStorage != myStorage) {
+                    myAbortRepaint= true;
+                    myPreviousStorage= myStorage;
+                }
+                if(myPreviousModificationId != myStorage.ModificationId) {
+                    myAbortRepaint= true;
+                    myPreviousModificationId= myStorage.ModificationId;
+                }
+                if(myPreviousSelectedObject != mySelectedObject) {
+                    myAbortRepaint= true;
+                    myPreviousSelectedObject= mySelectedObject;
+                }
+                if(mySelectedObject.IsDataPort) {
+                    if(myPreviousPortSource != mySelectedObject.Source) {
+                        myAbortRepaint= true;
+                        myPreviousPortSource= mySelectedObject.Source;
+                    }
+                }
+                break;
+            case EventType.Repaint:
+                if(myAbortRepaint) {
+                    Repaint();
+                    return;                        
+                }
+                break;
+        }
+        
         // Draw selected object.
         EditorGUI.indentLevel= 0;
         if(mySelectedObject != null && SelectedObject.IsValid) {

@@ -18,7 +18,8 @@ public partial class iCS_IStorage {
     public  bool                AnimateLayout       = true;
     public  iCS_Storage         Storage             = null;
             iCS_IStorageCache   StorageCache        = null;
-            int                 UndoRedoId          = 0;
+    public  int                 UndoRedoId          = 0;
+    public  int                 ModificationId      = -1;
     public  bool                CleanupDeadPorts    = true;
 			P.TimeRatio			myAnimationTimeRatio= new P.TimeRatio();
     
@@ -88,7 +89,7 @@ public partial class iCS_IStorage {
     public bool IsParentValid(iCS_EditorObject obj)  { return IsValid(obj.ParentId); }
     // ----------------------------------------------------------------------
     public bool IsDirty            { get { ProcessUndoRedo(); return myIsDirty; }}
-	public int  ModificationId     { get { return UndoRedoId; }}
+//	public int  ModificationId     { get { return UndoRedoId; }}
 	public bool IsAnimationPlaying { get { return myAnimationTimeRatio.IsActive; }}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? GetParent(eObj) : null); }
@@ -129,6 +130,7 @@ public partial class iCS_IStorage {
         obj.IsDirty= true;        
         var parent= GetParent(obj);
         if(parent != null) { parent.IsDirty= true; }
+        ++ModificationId;
     }
     // ----------------------------------------------------------------------
     public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {

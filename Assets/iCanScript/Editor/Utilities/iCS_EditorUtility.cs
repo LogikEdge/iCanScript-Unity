@@ -84,7 +84,7 @@ public static class iCS_EditorUtility {
         iStorage.RegisterUndo("Make Visible: "+selected.Name);
         iStorage.SelectedObject= selected;        
         FocusOn(selected, iStorage);
-        return iStorage.ModificationId;
+        return iStorage.UndoRedoId;
     }
     public static void MakeVisible(iCS_EditorObject eObj, iCS_IStorage iStorage) {
         if(eObj == null || iStorage == null) return;
@@ -114,11 +114,11 @@ public static class iCS_EditorUtility {
         if(graphEditor != null) graphEditor.CenterAndScaleOn(eObj);        
     }
 	// ----------------------------------------------------------------------
-    public static bool IsCurrentModificationId(int modificationId, iCS_IStorage iStorage) {
-        return modificationId == iStorage.ModificationId;
+    public static bool IsCurrentUndoRedoId(int modificationId, iCS_IStorage iStorage) {
+        return modificationId == iStorage.UndoRedoId;
     } 
-    public static void UndoIfModificationId(int modificationId, iCS_IStorage iStorage) {
-        if(IsCurrentModificationId(modificationId, iStorage)) {
+    public static void UndoIfUndoRedoId(int modificationId, iCS_IStorage iStorage) {
+        if(IsCurrentUndoRedoId(modificationId, iStorage)) {
             Undo.PerformUndo();
         }
     }
