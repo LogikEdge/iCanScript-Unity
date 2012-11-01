@@ -45,8 +45,8 @@ public class iCS_ConnectionParams {
     static Vector2 ConnectionDirectionFromTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         // Don't compute complex tangents if we don't have a proper parent.
         iCS_EditorObject portParent= storage.GetParent(port);
-        if(port.IsFloating) {
-            if(!storage.IsNearNodeEdge(portParent, Math3D.ToVector2(storage.GetLayoutPosition(port)), port.Edge)) {
+        if(port.IsFloating || to.IsFloating) {
+            if(port.IsDataPort || !storage.IsNearNodeEdge(portParent, Math3D.ToVector2(storage.GetLayoutPosition(port)), port.Edge)) {
                 Vector2 fromPos= Math3D.Middle(storage.GetLayoutPosition(port));
                 Vector2 toPos= Math3D.Middle(storage.GetLayoutPosition(to));
                 return GetBestDirectionFrom((toPos-fromPos).normalized);                

@@ -286,6 +286,7 @@ public partial class iCS_IStorage {
                         DestroyInstanceInternal(obj);                            
                         modified= true;						
 					}
+                    // Cleanup disconnected typecasts.
     				if(obj.IsTypeCast) {
                         if(GetSource(FindInChildren(obj, c=> c.IsInDataPort)) == null &&
                            FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataPort)) == null) {

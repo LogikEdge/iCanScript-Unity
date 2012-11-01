@@ -61,17 +61,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	
 	// ----------------------------------------------------------------------
-    bool VerifyNewDragConnection(iCS_EditorObject fixPort, iCS_EditorObject dragPort) {
+    bool VerifyNewDragConnection() {
         // No new connection if no overlapping port found.
-        iCS_EditorObject overlappingPort= IStorage.GetOverlappingPort(dragPort);
+        iCS_EditorObject overlappingPort= IStorage.GetOverlappingPort(DragObject);
         if(overlappingPort == null) return false;
 
         // Only data ports can be connected together.
-        if(!fixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
+        if(!DragFixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
         // Destroy drag port since it is not needed anymore.
-        IStorage.DestroyInstance(dragPort);
-        dragPort= null;
-        return VerifyNewConnection(fixPort, overlappingPort);
+        IStorage.DestroyInstance(DragObject);
+        DragObject= null;
+        return VerifyNewConnection(DragFixPort, overlappingPort);
     }
 	// ----------------------------------------------------------------------
     bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject overlappingPort) {
@@ -174,6 +174,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		iCS_EditorObject inNode= IStorage.GetParent(inPort);
         iCS_EditorObject outNode= IStorage.GetParent(outPort);
         iCS_EditorObject inParent= GetParentNode(inNode);
+        
         iCS_EditorObject outParent= GetParentNode(outNode);
         // No need to create module ports if both connected nodes are under the same parent.
         if(inParent == outParent || inParent == outNode || inNode == outParent) {

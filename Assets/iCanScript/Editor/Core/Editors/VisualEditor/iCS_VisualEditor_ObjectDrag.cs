@@ -304,12 +304,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     break;
                 case DragTypeEnum.PortConnection:                
                     // Verify for a new connection.
-                    if(!VerifyNewDragConnection(DragFixPort, DragObject)) {
+                    if(!VerifyNewDragConnection()) {
                         bool isNearParent= IStorage.IsNearParent(DragObject);
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
                             Rect dragPortPos= IStorage.GetLayoutPosition(DragObject);
                             IStorage.DestroyInstance(DragObject);
+                            DragObject= null;
                             // Verify for disconnection.
                             if(!isNearParent) {
                                 // Let's determine if we want to create a module port.
