@@ -121,7 +121,7 @@ public class iCS_Inspector : Editor {
                     myAbortRepaint= true;
                     myPreviousSelectedObject= mySelectedObject;
                 }
-                if(mySelectedObject.IsDataPort) {
+                if(mySelectedObject != null && mySelectedObject.IsDataPort) {
                     if(myPreviousPortSource != mySelectedObject.Source) {
                         myAbortRepaint= true;
                         myPreviousPortSource= mySelectedObject.Source;
