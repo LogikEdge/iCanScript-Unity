@@ -45,9 +45,9 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
+        myEditorObjects= P.map(obj=> new iCS_EditorObject(obj.InstanceId, this), EngineObjects);
         StorageCache= new iCS_IStorageCache();
         ForEach(obj=> StorageCache.CreateInstance(obj));
-        myEditorObjects= P.map(obj=> new iCS_EditorObject(obj.InstanceId, this), EngineObjects);
         if(IsValid(0)) {
             Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
             ForEach(obj=> {
