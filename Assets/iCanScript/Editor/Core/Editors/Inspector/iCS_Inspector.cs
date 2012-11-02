@@ -177,6 +177,9 @@ public class iCS_Inspector : Editor {
                 else if(SelectedObject.IsPort) InspectPort(SelectedObject);
             }            
         }
+
+        // Allow repaint for modifications done by the user.
+        myPreviousModificationId= myStorage.ModificationId;
 	}
 
 	// ----------------------------------------------------------------------
