@@ -8,7 +8,7 @@ using System.Collections.Generic;
 	TODO : Add version information for later conversions.
 */
 [System.Serializable]
-public class iCS_EditorObject {
+public class iCS_EngineObject {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -18,7 +18,7 @@ public class iCS_EditorObject {
     public string                QualifiedType = "";
     public string                RawName       = "";
     public Rect                  LocalPosition = new Rect(0,0,0,0);
-    public iCS_DisplayOptionEnum DisplayOption = iCS_DisplayOptionEnum.Maximized;
+    public iCS_DisplayOptionEnum DisplayOption = iCS_DisplayOptionEnum.Unfolded;
     public bool                  IsNameEditable= true;
 
 	// Node specific attributes ---------------------------------------------
@@ -28,39 +28,33 @@ public class iCS_EditorObject {
     public string                RawTooltip= null;
 
     // Port specific attributes ---------------------------------------------
-    public enum EdgeEnum { None, Top, Bottom, Right, Left };
-    public EdgeEnum              Edge               = EdgeEnum.None;
-    public int                   Source             = -1;
+    public iCS_EdgeEnum          Edge               = iCS_EdgeEnum.None;
+    public int                   SourceId           = -1;
     public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;
 
     // State specific attributes ---------------------------------------------
     public bool                  IsRawEntryState= false;
-    
-    // Non-persistant properties --------------------------------------------
-    [System.NonSerialized] public bool IsFloating= false;
-    [System.NonSerialized] public bool IsDirty   = false;
 
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_EditorObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType, Rect localPosition) {
+    public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType, Rect localPosition) {
         Reset();
         ObjectType= objectType;
         InstanceId= id;
         ParentId= parentId;
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
-        IsDirty= true;
         LocalPosition= localPosition;
         if(IsDataPort) {
-            Edge= IsInputPort ? (IsEnablePort ? EdgeEnum.Top : EdgeEnum.Left) : EdgeEnum.Right;
+            Edge= IsInputPort ? (IsEnablePort ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left) : iCS_EdgeEnum.Right;
         }
     }
     // ----------------------------------------------------------------------
-    public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent, Vector2 localPosition) {
+    public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent, Vector2 localPosition) {
         Rect localRect= new Rect(localPosition.x, localPosition.y, toClone.LocalPosition.width, toClone.LocalPosition.height);
-        iCS_EditorObject instance= new iCS_EditorObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localRect);
+        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localRect);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
@@ -72,7 +66,7 @@ public class iCS_EditorObject {
 		// Port
         instance.Edge= toClone.Edge;
         instance.PortIndex= toClone.PortIndex;
-        if(instance.IsInDataPort && toClone.Source == -1 && !iCS_Types.IsA<UnityEngine.Object>(toClone.RuntimeType)) {
+        if(instance.IsInDataPort && toClone.SourceId == -1 && !iCS_Types.IsA<UnityEngine.Object>(toClone.RuntimeType)) {
             instance.InitialValueArchive= toClone.InitialValueArchive;
         }
         return instance;
@@ -86,7 +80,7 @@ public class iCS_EditorObject {
         QualifiedType= "";
 		RawName= "";
         LocalPosition= new Rect(0,0,0,0);
-        DisplayOption= iCS_DisplayOptionEnum.Maximized;
+        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;
 		// Node
 		MethodName= null;
@@ -94,26 +88,22 @@ public class iCS_EditorObject {
         IconGUID= null;
         RawTooltip = null;
 		// Port
-        Edge= EdgeEnum.None;
-        Source= -1;
+        Edge= iCS_EdgeEnum.None;
+        SourceId= -1;
 		PortIndex= -1;
 		InitialValueArchive= null;
 		// State
 		IsRawEntryState= false;
-		// Transient
-        IsFloating= false;
-        IsDirty= false;
     }
     
     // ----------------------------------------------------------------------
     // Display Option Accessor
-    public bool IsMaximized         { get { return iCS_DisplayOption.IsMaximized(DisplayOption); }}
-    public bool IsMinimized         { get { return iCS_DisplayOption.IsMinimized(DisplayOption); }}
+    public bool IsUnfolded          { get { return iCS_DisplayOption.IsUnfolded(DisplayOption); }}
+    public bool IsIconized          { get { return iCS_DisplayOption.IsIconized(DisplayOption); }}
     public bool IsFolded            { get { return iCS_DisplayOption.IsFolded(DisplayOption); }}
-    public void Fold()              { iCS_DisplayOption.SetFolded(ref DisplayOption); }
-    public void Unfold()            { Maximize(); }
-    public void Maximize()          { iCS_DisplayOption.SetMaximized(ref DisplayOption); }
-    public void Minimize()          { iCS_DisplayOption.SetMinimized(ref DisplayOption); }
+    public void Unfold()            { iCS_DisplayOption.Unfold(ref DisplayOption); }
+    public void Fold()              { iCS_DisplayOption.Fold(ref DisplayOption); }
+    public void Iconize()           { iCS_DisplayOption.Iconize(ref DisplayOption); }
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode                  { get { return iCS_ObjectType.IsNode(this); }}
@@ -175,7 +165,7 @@ public class iCS_EditorObject {
     public int  PortGroup       { get { return NbOfParams; } set { NbOfParams= value; }}
     public bool IsValid         { get { return InstanceId != -1; }}
     public bool IsParentValid   { get { return ParentId != -1; }}
-    public bool IsSourceValid   { get { return Source != -1; }}
+    public bool IsSourceValid   { get { return SourceId != -1; }}
     public bool IsNameEmpty     { get { return RawName == null || RawName == ""; }}
     public bool IsTooltipEmpty  { get { return RawTooltip == null || RawTooltip == ""; }}
     public Type RuntimeType     { get { return Type.GetType(QualifiedType); }}
@@ -194,10 +184,10 @@ public class iCS_EditorObject {
         get { return RawTooltip; }
         set { RawTooltip= value; }
     }
-    public bool IsOnTopEdge         { get { return Edge == EdgeEnum.Top; }}
-    public bool IsOnBottomEdge      { get { return Edge == EdgeEnum.Bottom; }}
-    public bool IsOnRightEdge       { get { return Edge == EdgeEnum.Right; }}
-    public bool IsOnLeftEdge        { get { return Edge == EdgeEnum.Left; }}
+    public bool IsOnTopEdge         { get { return Edge == iCS_EdgeEnum.Top; }}
+    public bool IsOnBottomEdge      { get { return Edge == iCS_EdgeEnum.Bottom; }}
+    public bool IsOnRightEdge       { get { return Edge == iCS_EdgeEnum.Right; }}
+    public bool IsOnLeftEdge        { get { return Edge == iCS_EdgeEnum.Left; }}
     public bool IsOnHorizontalEdge  { get { return IsOnTopEdge   || IsOnBottomEdge; }}
     public bool IsOnVerticalEdge    { get { return IsOnRightEdge || IsOnLeftEdge; }}
 
@@ -213,16 +203,16 @@ public class iCS_EditorObject {
 	}
 
     // ----------------------------------------------------------------------
-	public MethodBase GetMethodBase(List<iCS_EditorObject> editorObjects) {
+	public MethodBase GetMethodBase(List<iCS_EngineObject> engineObjects) {
         // Extract MethodBase for constructor.
         MethodBase method= null;
 		Type classType= RuntimeType;
         if(ObjectType == iCS_ObjectTypeEnum.Constructor) {
-            method= classType.GetConstructor(GetParamTypes(editorObjects));
+            method= classType.GetConstructor(GetParamTypes(engineObjects));
             if(method == null) {
                 string signature="(";
                 bool first= true;
-                foreach(var param in GetParamTypes(editorObjects)) {
+                foreach(var param in GetParamTypes(engineObjects)) {
                     if(first) { first= false; } else { signature+=", "; }
                     signature+= param.Name;
                 }
@@ -233,7 +223,7 @@ public class iCS_EditorObject {
         }
         // Extract MethodBase for class methods.
         if(MethodName == null) return null;
-		Type[] paramTypes= GetParamTypes(editorObjects);
+		Type[] paramTypes= GetParamTypes(engineObjects);
         method= classType.GetMethod(MethodName, paramTypes);            
         if(method == null) {
             string signature="(";
@@ -247,26 +237,26 @@ public class iCS_EditorObject {
         }
         return method;		            
 	}
-	public Type[] GetParamTypes(List<iCS_EditorObject> editorObjects) {
-		iCS_EditorObject[] ports= GetChildPorts(editorObjects);
+	public Type[] GetParamTypes(List<iCS_EngineObject> engineObjects) {
+		iCS_EngineObject[] ports= GetChildPorts(engineObjects);
 		Type[] result= new Type[NbOfParams];
 		for(int i= 0; i < result.Length; ++i) {
 			result[i]= ports[i].RuntimeType;
 		}
 		return result;	        
 	}
-	iCS_EditorObject[] GetChildPorts(List<iCS_EditorObject> editorObjects) {
-		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
+	iCS_EngineObject[] GetChildPorts(List<iCS_EngineObject> engineObjects) {
+		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
 		// Get all child data ports.
 		int nodeId= InstanceId;
-		foreach(var port in editorObjects) {
+		foreach(var port in engineObjects) {
 			if(port.ParentId != nodeId) continue;
 			if(!port.IsDataPort) continue;
 			if(port.IsEnablePort) continue;
 			ports.Add(port);
 		}
 		// Sort child ports according to index.
-		iCS_EditorObject[] result= ports.ToArray();
+		iCS_EngineObject[] result= ports.ToArray();
 		Array.Sort(result, (x,y)=> x.PortIndex - y.PortIndex);
 		return result;            
 	}

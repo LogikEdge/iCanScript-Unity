@@ -30,7 +30,7 @@ public class iCS_Inspector : Editor {
     private iCS_IStorage        myPreviousStorage       = null;
     private int                 myPreviousModificationId= -1;
     private iCS_EditorObject    myPreviousSelectedObject= null;
-    private int                 myPreviousPortSource    = -1;
+    private int                 myPreviousPortSourceId  = -1;
     
     // ======================================================================
     // Properties
@@ -122,9 +122,9 @@ public class iCS_Inspector : Editor {
                     myPreviousSelectedObject= mySelectedObject;
                 }
                 if(mySelectedObject != null && mySelectedObject.IsDataPort) {
-                    if(myPreviousPortSource != mySelectedObject.Source) {
+                    if(myPreviousPortSourceId != mySelectedObject.SourceId) {
                         myAbortRepaint= true;
-                        myPreviousPortSource= mySelectedObject.Source;
+                        myPreviousPortSourceId= mySelectedObject.SourceId;
                     }
                 }
                 break;

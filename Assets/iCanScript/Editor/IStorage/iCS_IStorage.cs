@@ -18,6 +18,7 @@ public partial class iCS_IStorage {
     public  bool                AnimateLayout       = true;
     public  iCS_Storage         Storage             = null;
             iCS_IStorageCache   StorageCache        = null;
+    List<iCS_EditorObject>      myEditorObjects     = null;
     public  int                 UndoRedoId          = 0;
     public  int                 ModificationId      = -1;
     public  bool                CleanupDeadPorts    = true;
@@ -46,6 +47,7 @@ public partial class iCS_IStorage {
     void GenerateEditorData() {
         StorageCache= new iCS_IStorageCache();
         ForEach(obj=> StorageCache.CreateInstance(obj));
+        myEditorObjects= P.map(obj=> new iCS_EditorObject(this, obj.InstanceId), EngineObjects);
         if(IsValid(0)) {
             Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
             ForEach(obj=> {
@@ -64,7 +66,8 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Basic Accessors
     // ----------------------------------------------------------------------
-    public List<iCS_EditorObject>    EditorObjects    { get { return Storage.EditorObjects; }}
+    public List<iCS_EditorObject>    EditorObjects    { get { return myEditorObjects; }}
+    public List<iCS_EngineObject>    EngineObjects    { get { return Storage.EngineObjects; }}
 	public Vector2					 ScrollPosition   { get { return Storage.ScrollPosition; } set { Storage.ScrollPosition= value; }}
     public float                     GuiScale         { get { return Storage.GuiScale; } set { Storage.GuiScale= value; }}
     public int                       SelectedObjectId { get { return Storage.SelectedObject; } set { Storage.SelectedObject= value; }}

@@ -292,7 +292,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);            
         } else if(current.IsDataPort) {
             if(current.IsInputPort) {
-                if(current.Source != -1) {
+                if(current.SourceId != -1) {
                     icon= iCS_BuiltinTextures.InDataPortIcon;                    
                 } else {
                     icon= iCS_BuiltinTextures.InValuePortIcon;

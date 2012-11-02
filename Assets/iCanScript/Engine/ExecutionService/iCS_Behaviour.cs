@@ -171,31 +171,31 @@ public sealed class iCS_Behaviour : iCS_Storage {
 		bool sanityNeeded= false;
 		do {
 			sanityNeeded= false;
-			for(int i= 0; i < EditorObjects.Count; ++i) {
-				if(EditorObjects[i].InstanceId == -1) continue;
-				if(EditorObjects[i].InstanceId != i) {
+			for(int i= 0; i < EngineObjects.Count; ++i) {
+				if(EngineObjects[i].InstanceId == -1) continue;
+				if(EngineObjects[i].InstanceId != i) {
 					sanityNeeded= true;
-					EditorObjects[i].InstanceId= -1;
+					EngineObjects[i].InstanceId= -1;
 					continue;
 				}
-				int parentId= EditorObjects[i].ParentId;
+				int parentId= EngineObjects[i].ParentId;
 				if(i == 0) {
 					if(parentId != -1) {
 						sanityNeeded= true;
-						EditorObjects[0].ParentId= -1;
+						EngineObjects[0].ParentId= -1;
 						continue;
 					}
 				} else {
 					// The parent id must be valid.
 					if(!IsInBounds(parentId)) {
 						sanityNeeded= true;
-						EditorObjects[i].InstanceId= -1;
+						EngineObjects[i].InstanceId= -1;
 						continue;				
 					}
 					// A port cannot be a parent.
-					if(EditorObjects[parentId].IsPort && !EditorObjects[parentId].IsOutMuxPort) {
+					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsOutMuxPort) {
 						sanityNeeded= true;
-						EditorObjects[i].InstanceId= -1;
+						EngineObjects[i].InstanceId= -1;
 						continue;										
 					}				
 				}
@@ -208,7 +208,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
 		return storageCorruption;
 	}
     // ----------------------------------------------------------------------
-	bool IsInBounds(int id) { return id >= 0 && id < EditorObjects.Count; }
+	bool IsInBounds(int id) { return id >= 0 && id < EngineObjects.Count; }
 	
     // ======================================================================
     // Code Generation
@@ -239,8 +239,8 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // ----------------------------------------------------------------------
     public void GenerateRuntimeNodes() {
         // Allocate runtime node array (if not already done).
-        if(EditorObjects.Count != myRuntimeNodes.Length) {
-            myRuntimeNodes= new iCS_Object[EditorObjects.Count];
+        if(EngineObjects.Count != myRuntimeNodes.Length) {
+            myRuntimeNodes= new iCS_Object[EngineObjects.Count];
 			for(int i= 0; i < myRuntimeNodes.Length; ++i) myRuntimeNodes[i]= null;
         }
         bool needAdditionalPass= false;
@@ -248,7 +248,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
             // Assume that this is the last pass.
             needAdditionalPass= false;
             // Generate all runtime nodes.
-            foreach(var node in EditorObjects) {
+            foreach(var node in EngineObjects) {
                 // Uninitialized.
 				if(node.InstanceId == -1) continue;
                 // Was already generated in a previous pass.
@@ -271,7 +271,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             break;
                         }
                         default: {
-							iCS_EditorObject edParent= GetParent(node);
+							iCS_EngineObject edParent= GetParent(node);
                             if(edParent.ObjectType == iCS_ObjectTypeEnum.TransitionModule) {
                                 edParent= GetParent(edParent);
                             }
@@ -379,7 +379,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
     }
     // ----------------------------------------------------------------------
     public void ConnectRuntimeNodes() {
-        foreach(var port in EditorObjects) {
+        foreach(var port in EngineObjects) {
 			if(port.InstanceId == -1) continue;
             if(port.IsPort) {
                 switch(port.ObjectType) {
@@ -396,18 +396,18 @@ public sealed class iCS_Behaviour : iCS_Storage {
 					case iCS_ObjectTypeEnum.InMuxPort: {
 						iCS_IParams rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_IParams;
 						if(rtMuxPort == null) break;
-                        iCS_EditorObject sourcePort= GetDataConnectionSource(port);
+                        iCS_EngineObject sourcePort= GetDataConnectionSource(port);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
 						rtMuxPort.SetParameterConnection(port.PortIndex, connection);
 						break;
 					}
                     case iCS_ObjectTypeEnum.InStatePort: {
-                        iCS_EditorObject endState= GetParent(port);
-                        iCS_EditorObject transitionModule= GetParent(GetSource(port));
-                        iCS_EditorObject actionModule= null;
-                        iCS_EditorObject triggerPort= null;
-                        iCS_EditorObject outStatePort= null;
-                        iCS_EditorObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
+                        iCS_EngineObject endState= GetParent(port);
+                        iCS_EngineObject transitionModule= GetParent(GetSource(port));
+                        iCS_EngineObject actionModule= null;
+                        iCS_EngineObject triggerPort= null;
+                        iCS_EngineObject outStatePort= null;
+                        iCS_EngineObject guardModule= GetTransitionModuleParts(transitionModule, out actionModule, out triggerPort, out outStatePort);
                         triggerPort= GetDataConnectionSource(triggerPort);
                         iCS_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
                         int triggerIdx= triggerPort.PortIndex;
@@ -441,7 +441,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                     case iCS_ObjectTypeEnum.InFunctionPort:
                     case iCS_ObjectTypeEnum.EnablePort: {
                         // Build connection.
-                        iCS_EditorObject sourcePort= GetDataConnectionSource(port);
+                        iCS_EngineObject sourcePort= GetDataConnectionSource(port);
 						iCS_Connection connection= sourcePort != port ? BuildConnection(sourcePort) : iCS_Connection.NoConnection;
                         // Build initial value.
 						object initValue= GetInitialValue(sourcePort);
@@ -484,14 +484,14 @@ public sealed class iCS_Behaviour : iCS_Storage {
         }
     }
     // ----------------------------------------------------------------------
-    iCS_EditorObject GetTransitionModuleParts(iCS_EditorObject transitionModule, out iCS_EditorObject actionModule,
-                                                                               out iCS_EditorObject triggerPort,
-                                                                               out iCS_EditorObject outStatePort) {
-        iCS_EditorObject guardModule= null;
+    iCS_EngineObject GetTransitionModuleParts(iCS_EngineObject transitionModule, out iCS_EngineObject actionModule,
+                                                                               out iCS_EngineObject triggerPort,
+                                                                               out iCS_EngineObject outStatePort) {
+        iCS_EngineObject guardModule= null;
         actionModule= null;
         triggerPort= null;
         outStatePort= null;
-        foreach(var edObj in EditorObjects) {
+        foreach(var edObj in EngineObjects) {
             if(edObj.IsTransitionAction) {
                 if(GetParent(edObj) == transitionModule) {
                     actionModule= edObj;
@@ -503,7 +503,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                 }
             }
             if(edObj.IsOutStaticModulePort && edObj.RuntimeType == typeof(bool) && edObj.Name == "trigger") {
-                iCS_EditorObject gModule= GetParent(edObj);
+                iCS_EngineObject gModule= GetParent(edObj);
                 if(gModule.IsTransitionGuard && GetParent(gModule) == transitionModule) {
                     triggerPort= edObj;
                 }
@@ -521,46 +521,46 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // ======================================================================
     // Runtime information extraction
     // ----------------------------------------------------------------------
-	MethodBase GetMethodBase(iCS_EditorObject node) {
-        return node.GetMethodBase(EditorObjects);
+	MethodBase GetMethodBase(iCS_EngineObject node) {
+        return node.GetMethodBase(EngineObjects);
 	}
-	FieldInfo GetFieldInfo(iCS_EditorObject node) {
+	FieldInfo GetFieldInfo(iCS_EngineObject node) {
         return node.GetFieldInfo();
 	}
-	bool[] GetPortIsOuts(iCS_EditorObject node) {
-		iCS_EditorObject[] ports= GetChildPorts(node);
+	bool[] GetPortIsOuts(iCS_EngineObject node) {
+		iCS_EngineObject[] ports= GetChildPorts(node);
 		bool[] isOuts= new bool[node.NbOfParams];
 		for(int i= 0; i < isOuts.Length; ++i) {
 			isOuts[i]= ports[i].IsOutputPort;
 		}
 		return isOuts;
 	}
-	Type[] GetParamTypes(iCS_EditorObject node) {
-	    return node.GetParamTypes(EditorObjects);
+	Type[] GetParamTypes(iCS_EngineObject node) {
+	    return node.GetParamTypes(EngineObjects);
 	}
-	iCS_EditorObject[] GetChildPorts(iCS_EditorObject node) {
-		List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
+	iCS_EngineObject[] GetChildPorts(iCS_EngineObject node) {
+		List<iCS_EngineObject> ports= new List<iCS_EngineObject>();
 		// Get all child data ports.
 		int nodeId= node.InstanceId;
-		foreach(var port in EditorObjects) {
+		foreach(var port in EngineObjects) {
 			if(port.ParentId != nodeId) continue;
 			if(!port.IsDataPort) continue;
 			if(port.IsEnablePort) continue;
 			ports.Add(port);
 		}
 		// Sort child ports according to index.
-		iCS_EditorObject[] result= ports.ToArray();
+		iCS_EngineObject[] result= ports.ToArray();
 		Array.Sort(result, (x,y)=> x.PortIndex - y.PortIndex);
 		return result;
 	}
     // ----------------------------------------------------------------------
-	object GetInitialValue(iCS_EditorObject port) {
+	object GetInitialValue(iCS_EngineObject port) {
 	    if(port.InitialValueArchive == null || port.InitialValueArchive == "") return null;
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
 		return coder.DecodeObjectForKey("InitialValue", this) ?? iCS_Types.DefaultValue(port.RuntimeType);
 	}
     // ----------------------------------------------------------------------
-	iCS_Connection BuildConnection(iCS_EditorObject port) {
+	iCS_Connection BuildConnection(iCS_EngineObject port) {
 		iCS_Connection connection= iCS_Connection.NoConnection;
 		if(myRuntimeNodes[port.InstanceId] != null) {
 			connection= new iCS_Connection(myRuntimeNodes[port.InstanceId] as iCS_IParams, 0);							

@@ -23,7 +23,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 			}
 			if(eObj.IsNode) {
-    			if(draggedObject is Texture && eObj.IsMinimized) {
+    			if(draggedObject is Texture && eObj.IsIconized) {
 		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 				    return;				
                 }
@@ -44,7 +44,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_Storage storage= GetDraggedLibrary(draggedObject);
 		if(storage != null) {
 		    IStorage.RegisterUndo("DragAndDrop");			
-            PasteIntoGraph(GraphMousePosition, storage, storage.EditorObjects[0]);
+            PasteIntoGraph(GraphMousePosition, storage, storage.EngineObjects[0]);
 			// Remove data so that we don't get called multiple times (Unity bug !!!).
             DragAndDrop.AcceptDrag();
 			return;
@@ -68,13 +68,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 			if(eObj.IsNode) {
                 // Allow change of icon on minimized nodes.
-    			if(draggedObject is Texture && eObj.IsMinimized) {
+    			if(draggedObject is Texture && eObj.IsIconized) {
                     Texture newTexture= draggedObject as Texture;
                     string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
                     if(newTexture != null) {
             	        IStorage.RegisterUndo("DragAndDrop");			
                         eObj.IconGUID= iconGUID;                    
-                        IStorage.Minimize(eObj);
+                        IStorage.Iconize(eObj);
                         // Remove data so that we don't get called multiple times (Unity bug !!!).
     		            DragAndDrop.AcceptDrag();
     				}

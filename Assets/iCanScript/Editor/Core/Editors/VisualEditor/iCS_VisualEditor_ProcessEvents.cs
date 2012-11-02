@@ -89,14 +89,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(myGraphics.IsFoldIconPicked(SelectedObject, mouseGraphPos, IStorage)) {
                     if(IStorage.IsFolded(SelectedObject)) {
                         IStorage.RegisterUndo("Unfold");
-                        IStorage.Maximize(SelectedObject);
+                        IStorage.Unfold(SelectedObject);
                     } else {
                         IStorage.RegisterUndo("Fold");
                         IStorage.Fold(SelectedObject);
                     }
                 } else if(myGraphics.IsMinimizeIconPicked(SelectedObject, mouseGraphPos, IStorage)) {
                     IStorage.RegisterUndo("Minimize");
-                    IStorage.Minimize(SelectedObject);
+                    IStorage.Iconize(SelectedObject);
                 } else {
                     // Fold/Unfold on double click.
                     if(SelectedObject == SelectedObjectBeforeMouseDown) {
@@ -135,39 +135,39 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ProcessNodeDisplayOptionEvent() {
         if(SelectedObject == null || !SelectedObject.IsNode) return;
         if(SelectedObject.IsFunction) {
-            if(SelectedObject.IsMinimized && !IsShiftKeyDown) {
-                IStorage.RegisterUndo("Maximize");
-                IStorage.Maximize(SelectedObject);                                                                            
-            } else if(SelectedObject.IsMaximized && IsShiftKeyDown) {
-                IStorage.RegisterUndo("Minimize");
-                IStorage.Minimize(SelectedObject);                    
+            if(SelectedObject.IsIconized && !IsShiftKeyDown) {
+                IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
+                IStorage.Unfold(SelectedObject);                                                                            
+            } else if(SelectedObject.IsUnfolded && IsShiftKeyDown) {
+                IStorage.RegisterUndo("Iconize "+SelectedObject.Name);
+                IStorage.Iconize(SelectedObject);                    
             }
         } else {
             if(IsShiftKeyDown) {
-                if(SelectedObject.IsMaximized) {
+                if(SelectedObject.IsUnfolded) {
                     if(IsControlKeyDown) {
-                        IStorage.RegisterUndo("Minimize");
-                        IStorage.Minimize(SelectedObject);                                                
+                        IStorage.RegisterUndo("Iconize "+SelectedObject.Name);
+                        IStorage.Iconize(SelectedObject);                                                
                     } else {
-                        IStorage.RegisterUndo("Fold");
+                        IStorage.RegisterUndo("Fold "+SelectedObject.Name);
                         IStorage.Fold(SelectedObject);                                                                    
                     }
                 } else if(SelectedObject.IsFolded) {
-                    IStorage.RegisterUndo("Minimize");
-                    IStorage.Minimize(SelectedObject);                        
+                    IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
+                    IStorage.Unfold(SelectedObject);                        
                 }
             } else {
-                if(SelectedObject.IsMinimized) {
+                if(SelectedObject.IsIconized) {
                     if(IsControlKeyDown) {
-                        IStorage.RegisterUndo("Maximize");
-                        IStorage.Maximize(SelectedObject);                                                                                                    
+                        IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
+                        IStorage.Unfold(SelectedObject);                                                                                                    
                     } else {
-                        IStorage.RegisterUndo("Unfold");
+                        IStorage.RegisterUndo("Fold "+SelectedObject.Name);
                         IStorage.Fold(SelectedObject);                                            
                     }
                 } else if(SelectedObject.IsFolded) {
-                    IStorage.RegisterUndo("Maximize");
-                    IStorage.Maximize(SelectedObject);                                                                            
+                    IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
+                    IStorage.Unfold(SelectedObject);                                                                            
                 }                    
             }
         }
@@ -209,7 +209,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case iCS_PickPartEnum.Value: {
-                if(!pickedObject.IsInDataPort || pickedObject.Source != -1) break;
+                if(!pickedObject.IsInDataPort || pickedObject.SourceId != -1) break;
                 Debug.Log("Value is being picked");
                 break;
             }

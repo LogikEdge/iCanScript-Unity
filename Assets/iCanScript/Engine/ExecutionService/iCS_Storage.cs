@@ -9,7 +9,7 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    [HideInInspector] public List<iCS_EditorObject>   EditorObjects = new List<iCS_EditorObject>();
+    [HideInInspector] public List<iCS_EngineObject>   EngineObjects = new List<iCS_EngineObject>();
     [HideInInspector] public List<Object>             UnityObjects  = new List<Object>();
     [HideInInspector] public int                      UndoRedoId    = 0;
 	[HideInInspector] public Vector2				  ScrollPosition= Vector2.zero;
@@ -19,7 +19,7 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public bool IsValidEditorObject(int id) { return id >= 0 && id < EditorObjects.Count && EditorObjects[id] != null; }
+    public bool IsValidEngineObject(int id) { return id >= 0 && id < EngineObjects.Count && EngineObjects[id] != null; }
     public bool IsValidUnityObject(int id)  { return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null; }
 
     // ======================================================================
@@ -30,8 +30,8 @@ public class iCS_Storage : MonoBehaviour {
 	
     // ----------------------------------------------------------------------
     public bool IsMuxPortChild(int id)  {
-        if(!IsValidEditorObject(id)) return false;
-        iCS_EditorObject eObj= EditorObjects[id];
+        if(!IsValidEngineObject(id)) return false;
+        iCS_EngineObject eObj= EngineObjects[id];
         return eObj.IsInModulePort && GetParent(eObj).IsOutModulePort;
     }
     
@@ -68,22 +68,22 @@ public class iCS_Storage : MonoBehaviour {
     }
 
     // ======================================================================
-    // EditorObject Utilities
+    // EnginObject Utilities
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetParent(iCS_EditorObject child) {
+    public iCS_EngineObject GetParent(iCS_EngineObject child) {
         if(child == null || child.ParentId == -1) return null;
-        return EditorObjects[child.ParentId]; 
+        return EngineObjects[child.ParentId]; 
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject GetSource(iCS_EditorObject port) {
-        if(port == null || port.Source == -1) return null;
-        return EditorObjects[port.Source];
+    public iCS_EngineObject GetSource(iCS_EngineObject port) {
+        if(port == null || port.SourceId == -1) return null;
+        return EngineObjects[port.SourceId];
     }
     // ----------------------------------------------------------------------
     // Returns the absolute position of the node.
-    public Rect GetPosition(iCS_EditorObject node) {
-        if(!IsValidEditorObject(node.ParentId)) return node.LocalPosition;
-        Rect position= GetPosition(EditorObjects[node.ParentId]);
+    public Rect GetPosition(iCS_EngineObject node) {
+        if(!IsValidEngineObject(node.ParentId)) return node.LocalPosition;
+        Rect position= GetPosition(EngineObjects[node.ParentId]);
         return new Rect(position.x+node.LocalPosition.x,
                         position.y+node.LocalPosition.y,
                         node.LocalPosition.width,
@@ -91,9 +91,9 @@ public class iCS_Storage : MonoBehaviour {
     }
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
-    public iCS_EditorObject GetDataConnectionSource(iCS_EditorObject port) {
+    public iCS_EngineObject GetDataConnectionSource(iCS_EngineObject port) {
         if(port == null || !port.IsDataPort) return null;
-        for(iCS_EditorObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
+        for(iCS_EngineObject sourcePort= GetSource(port); sourcePort != null && sourcePort.IsDataPort; sourcePort= GetSource(port)) {
             port= sourcePort;
         }
         return port;

@@ -55,7 +55,7 @@ public partial class iCS_Graphics {
         if(!ShouldShowLabel()) return false;
         if(!IsVisible(port, iStorage)) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
-        if((port.IsInputPort || port.IsModulePort) && port.Source != -1) {
+        if((port.IsInputPort || port.IsModulePort) && port.SourceId != -1) {
             var sourcePort= iStorage.GetSource(port);
             if(sourcePort.Name != port.Name) return true;
             if(!iStorage.IsVisible(sourcePort)) return true;
@@ -77,19 +77,19 @@ public partial class iCS_Graphics {
         Vector2 labelSize= GetPortNameSize(port);
 		Vector2 labelPos= GetPortCenter(port, iStorage);
         switch(port.Edge) {
-            case iCS_EditorObject.EdgeEnum.Left:
+            case iCS_EdgeEnum.Left:
                 labelPos.x+= 1 + iCS_Config.PortSize;
                 labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
                 break;
-            case iCS_EditorObject.EdgeEnum.Right:
+            case iCS_EdgeEnum.Right:
                 labelPos.x-= 1 + labelSize.x/Scale + iCS_Config.PortSize;
                 labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
                 break;
-            case iCS_EditorObject.EdgeEnum.Top:            
+            case iCS_EdgeEnum.Top:            
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
                 labelPos.y-= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, iStorage));
                 break;
-            case iCS_EditorObject.EdgeEnum.Bottom:
+            case iCS_EdgeEnum.Bottom:
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
                 labelPos.y+= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, iStorage)-0.2f*labelSize.y/Scale;
                 break;
@@ -124,7 +124,7 @@ public partial class iCS_Graphics {
         if(!port.IsDataPort || port.IsInMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
-        if(port.IsInputPort && port.Source != -1) {
+        if(port.IsInputPort && port.SourceId != -1) {
             var sourcePort= iStorage.GetSource(port);
             var sourceCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(sourcePort));
             var portCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(port));
@@ -149,17 +149,17 @@ public partial class iCS_Graphics {
 		Vector2 valueSize= GetPortValueSize(port, iStorage);
 		Vector2 valuePos= GetPortCenter(port, iStorage);
         switch(port.Edge) {
-            case iCS_EditorObject.EdgeEnum.Left:
+            case iCS_EdgeEnum.Left:
 				valuePos.x-= 1 + valueSize.x/Scale + iCS_Config.PortSize;
 				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
-            case iCS_EditorObject.EdgeEnum.Right:
+            case iCS_EdgeEnum.Right:
 				valuePos.x+= 1 + iCS_Config.PortSize;
 				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
-            case iCS_EditorObject.EdgeEnum.Top:            
+            case iCS_EdgeEnum.Top:            
                 break;
-            case iCS_EditorObject.EdgeEnum.Bottom:
+            case iCS_EdgeEnum.Bottom:
                 break;
         }
         return new Rect(valuePos.x, valuePos.y, valueSize.x, valueSize.y);	    

@@ -15,7 +15,7 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
     // Property.
 	// ----------------------------------------------------------------------
 	Rect 	 Position { get { return myGraphics.GetNodeNameGUIPosition(myTarget, myIStorage); }}
-	GUIStyle GuiStyle { get { return myTarget.IsMinimized ? myGraphics.LabelStyle : myGraphics.TitleStyle; }}
+	GUIStyle GuiStyle { get { return myTarget.IsIconized ? myGraphics.LabelStyle : myGraphics.TitleStyle; }}
 	
     // ======================================================================
     // Initialization.

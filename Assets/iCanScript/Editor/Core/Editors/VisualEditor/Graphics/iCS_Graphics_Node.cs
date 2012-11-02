@@ -23,7 +23,7 @@ public partial class iCS_Graphics {
     Vector2 GetNodeNameSize(iCS_EditorObject node, iCS_IStorage iStorage) {
         string portName= GetNodeName(node);
         GUIContent content= new GUIContent(portName);
-        return IsMinimized(node, iStorage) ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
+        return IsIconized(node, iStorage) ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
     }
     // ----------------------------------------------------------------------
     // Returns the non-scaled x,y with the scaled size.
@@ -32,7 +32,7 @@ public partial class iCS_Graphics {
         Rect pos= iStorage.GetLayoutPosition(node);
         float x= 0.5f*(pos.x+pos.xMax-size.x/Scale);
         float y= pos.y;
-        if(IsMinimized(node, iStorage)) {
+        if(IsIconized(node, iStorage)) {
             y-= 5f+size.y/Scale;
         } else {
 			y+= 0.9f*kNodeCornerRadius-0.5f*size.y/Scale;

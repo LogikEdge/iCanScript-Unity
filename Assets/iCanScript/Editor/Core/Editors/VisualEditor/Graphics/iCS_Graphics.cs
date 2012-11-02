@@ -351,7 +351,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
         // Don't draw minimized node.
-        if(IsInvisible(node, iStorage) || IsMinimized(node, iStorage)) return;
+        if(IsInvisible(node, iStorage) || IsIconized(node, iStorage)) return;
         
         // Draw node box (if visible).
         Rect position= GetDisplayPosition(node, iStorage);
@@ -393,7 +393,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
-        if(!IsMinimized(node, iStorage)) return;
+        if(!IsIconized(node, iStorage)) return;
         
         // Draw minimized node (if visible).
         Rect position= GetDisplayPosition(node, iStorage);
@@ -700,7 +700,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     public void DrawConnection(iCS_EditorObject port, iCS_IStorage iStorage, bool highlight= false, float lineWidth= 1.5f) {
         // No connection to draw if no valid source.
-        if(!iStorage.IsValid(port.Source)) return;
+        if(!iStorage.IsValid(port.SourceId)) return;
         iCS_EditorObject portParent= iStorage.GetParent(port);
 
         // No connection to draw if the parent is not visible.
@@ -775,7 +775,7 @@ public partial class iCS_Graphics {
 		return iStorage.GetDisplayPosition(edObj);
     }
    	// ----------------------------------------------------------------------
- 	bool IsMinimized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+ 	bool IsIconized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(!edObj.IsNode) return false;
 		var nodeAnimation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
         float area= nodeAnimation.CurrentValue.width*nodeAnimation.CurrentValue.height;

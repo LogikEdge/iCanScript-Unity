@@ -432,14 +432,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
         }
         iCS_EditorObject pasted= IStorage.CopyFrom(sourceRoot, new iCS_IStorage(sourceStorage), validParent, point);
-        if(IStorage.IsMaximized(pasted)) {
+        if(IStorage.IsUnfolded(pasted)) {
             IStorage.Fold(pasted);            
         }
     }
     iCS_EditorObject AutoCreateBehaviourEvent(string eventName, Vector2 point) {
 		var validParent= IStorage.CreateModule(0, point, iCS_Strings.Update);
 		validParent.Tooltip= iCS_AllowedChildren.TooltipForBehaviourChild(iCS_Strings.Update);
-        IStorage.Maximize(validParent);
+        IStorage.Unfold(validParent);
         return validParent;
     }
 

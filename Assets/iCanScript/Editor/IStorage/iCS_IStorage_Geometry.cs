@@ -44,24 +44,24 @@ public partial class iCS_IStorage {
 
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
-    public bool IsNearNodeEdge(iCS_EditorObject node, Vector2 point, iCS_EditorObject.EdgeEnum edge) {
+    public bool IsNearNodeEdge(iCS_EditorObject node, Vector2 point, iCS_EdgeEnum edge) {
 		float maxDistance= 2f*iCS_Config.PortSize;
         float distance= maxDistance+1f;
 		var pos= GetLayoutPosition(node);
 		switch(edge) {
-			case iCS_EditorObject.EdgeEnum.Left: {
+			case iCS_EdgeEnum.Left: {
 				distance= GetDistanceFromVerticalLineSegment(point, pos.y, pos.yMax, pos.x);
 				break;
 			}
-			case iCS_EditorObject.EdgeEnum.Right: {
+			case iCS_EdgeEnum.Right: {
 				distance= GetDistanceFromVerticalLineSegment(point, pos.y, pos.yMax, pos.xMax);
 				break;
 			}
-			case iCS_EditorObject.EdgeEnum.Bottom: {
+			case iCS_EdgeEnum.Bottom: {
 				distance= GetDistanceFromHorizontalLineSegment(point, pos.x, pos.xMax, pos.yMax);
 				break;
 			}
-			case iCS_EditorObject.EdgeEnum.Top: {
+			case iCS_EdgeEnum.Top: {
 				distance= GetDistanceFromHorizontalLineSegment(point, pos.x, pos.xMax, pos.y);
 				break;
 			}
@@ -69,7 +69,7 @@ public partial class iCS_IStorage {
         return distance <= maxDistance;
     }
     // ----------------------------------------------------------------------
-    iCS_EditorObject.EdgeEnum GetClosestEdge(iCS_EditorObject node, iCS_EditorObject port) {
+    iCS_EdgeEnum GetClosestEdge(iCS_EditorObject node, iCS_EditorObject port) {
         const float kAllowedGap= 2f*iCS_Config.PortRadius;
         var nodePos= GetLayoutPosition(node);
         var portPos= Math3D.ToVector2(GetLayoutPosition(port));
@@ -156,10 +156,10 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
-    public bool IsNearParentEdge(iCS_EditorObject port, iCS_EditorObject.EdgeEnum edge= iCS_EditorObject.EdgeEnum.None) {
+    public bool IsNearParentEdge(iCS_EditorObject port, iCS_EdgeEnum edge= iCS_EdgeEnum.None) {
         var parent= GetParent(port);
         var pos= Math3D.ToVector2(GetLayoutPosition(port));
-        return IsNearNodeEdge(parent, pos, (edge != iCS_EditorObject.EdgeEnum.None ? edge : port.Edge));
+        return IsNearNodeEdge(parent, pos, (edge != iCS_EdgeEnum.None ? edge : port.Edge));
     }
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
