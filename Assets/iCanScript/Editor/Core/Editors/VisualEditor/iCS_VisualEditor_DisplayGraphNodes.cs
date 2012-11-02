@@ -90,7 +90,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         );
 //        IStorage.ForEachChildNode(rootNode,
 //            node=> {
-//                if(!node.IsMinimized) {
+//                if(!node.IsIconized) {
 //                    if(node.IsFloating && floatingRootNode == null) {
 //                        floatingRootNode= node;
 //                    } else {
@@ -114,7 +114,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         );
 //        IStorage.ForEachChildNode(rootNode,
 //            node=> {
-//                if(!node.IsMinimized) {
+//                if(!node.IsIconized) {
 //                    if(node.IsFloating) {
 //                        myGraphics.DrawNormalNode(node, IStorage);
 //                        if(node.IsMaximized) {
@@ -171,7 +171,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //                }
 //                if(child.IsNode) {
 //                    if(IStorage.IsVisible(child)) {
-//                        if(child.IsMinimized) {
+//                        if(child.IsIconized) {
 //                            if(child.IsFloating && floatingRootNode == null) floatingRootNode= child;
 //                            myGraphics.DrawMinimizedNode(child, IStorage);
 //                        }

@@ -405,7 +405,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
     }
 	// ----------------------------------------------------------------------
-    void PasteIntoGraph(Vector2 point, iCS_Storage sourceStorage, iCS_EditorObject sourceRoot) {
+    void PasteIntoGraph(Vector2 point, iCS_Storage sourceStorage, iCS_EngineObject sourceRoot) {
         if(sourceRoot == null) return;
         iCS_EditorObject validParent= GetValidParentNodeUnder(point, sourceRoot.ObjectType, sourceRoot.Name);
         if(validParent == null) {
@@ -431,7 +431,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				return;
 			}
         }
-        iCS_EditorObject pasted= IStorage.CopyFrom(sourceRoot, new iCS_IStorage(sourceStorage), validParent, point);
+        iCS_IStorage srcIStorage= new iCS_IStorage(sourceStorage);
+        iCS_EditorObject srcRoot= srcIStorage.EditorObjects[sourceRoot.InstanceId];
+        iCS_EditorObject pasted= IStorage.CopyFrom(srcRoot, srcIStorage, validParent, point);
         if(IStorage.IsUnfolded(pasted)) {
             IStorage.Fold(pasted);            
         }

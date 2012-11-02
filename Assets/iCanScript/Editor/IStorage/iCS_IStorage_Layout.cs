@@ -17,12 +17,11 @@ public partial class iCS_IStorage {
     public void SetInitialPosition(iCS_EditorObject obj, Vector2 initialPosition) {
         if(IsValid(obj.ParentId)) {
             Rect position= GetLayoutPosition(EditorObjects[obj.ParentId]);
-            obj.LocalPosition.x= initialPosition.x - position.x;
-            obj.LocalPosition.y= initialPosition.y - position.y;            
+            obj.LocalPosition= new Rect(initialPosition.x-position.x, initialPosition.y-position.y,
+                                        obj.LocalPosition.width, obj.LocalPosition.height);
         }
         else {
-            obj.LocalPosition.x= initialPosition.x;
-            obj.LocalPosition.y= initialPosition.y;                        
+            obj.LocalPosition= new Rect(initialPosition.x, initialPosition.y, obj.LocalPosition.width, obj.LocalPosition.height);
         }
         SetDirty(obj);
     }
@@ -30,7 +29,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void Layout(iCS_EditorObject obj) {
         obj.IsDirty= false;
-        ExecuteIf(obj, iCS_ObjectType.IsNode, o=> NodeLayout(o));
+        ExecuteIf(obj, o=> o.IsNode, o=> NodeLayout(o));
     }
 
     // ----------------------------------------------------------------------
@@ -39,24 +38,29 @@ public partial class iCS_IStorage {
     public void NodeLayout(iCS_EditorObject node, bool needsToBeCentered= false) {
         // Don't layout node if it is not visible.
         if(!IsVisible(node)) return;
-
+        
         // Update transition module name
         if(node.IsTransitionModule) {
             GetTransitionName(node);
         }
         
         // Minimized nodes are fully collapsed.
-        if(node.IsMinimized) {
+        if(node.IsIconized) {
             Vector2 iconSize= iCS_Graphics.GetMaximizeIconSize(node);
             if(node.LocalPosition.width != iconSize.x || node.LocalPosition.height != iconSize.y) {
                 if(IsValid(node.ParentId)) {
-                    if(node.LocalPosition.x == 0) node.LocalPosition.x= 0.5f*GetParent(node).LocalPosition.width;
-                    if(node.LocalPosition.y == 0) node.LocalPosition.y= 0.5f*GetParent(node).LocalPosition.height;                    
+                    if(node.LocalPosition.x == 0) {
+                        node.LocalPosition= new Rect(0.5f*GetParent(node).LocalPosition.width, node.LocalPosition.y,
+                                                     node.LocalPosition.width, node.LocalPosition.height);
+                    }
+                    if(node.LocalPosition.y == 0) {
+                        node.LocalPosition= new Rect(node.LocalPosition.x, 0.5f*GetParent(node).LocalPosition.height,
+                                                     node.LocalPosition.width, node.LocalPosition.height);
+                    }
                 }
-                node.LocalPosition.x+= 0.5f*(node.LocalPosition.width-iconSize.x);
-                node.LocalPosition.y+= 0.5f*(node.LocalPosition.height-iconSize.y);
-                node.LocalPosition.width= iconSize.x;
-                node.LocalPosition.height= iconSize.y;
+                node.LocalPosition= new Rect(node.LocalPosition.x+0.5f*(node.LocalPosition.width-iconSize.x),
+                                             node.LocalPosition.y+0.5f*(node.LocalPosition.height-iconSize.y),
+                                             iconSize.x, iconSize.y);
                 UpdatePortPositions(node);
             }
             return;
@@ -159,8 +163,8 @@ public partial class iCS_IStorage {
     // Moves the node without changing its size.
     void DeltaMoveInternal(iCS_EditorObject node, Vector2 _delta) {
         if(Math3D.IsNotZero(_delta)) {
-            node.LocalPosition.x+= _delta.x;
-            node.LocalPosition.y+= _delta.y;
+            node.LocalPosition= new Rect(node.LocalPosition.x+_delta.x, node.LocalPosition.y+_delta.y,
+                                         node.LocalPosition.width, node.LocalPosition.height);
             SetDirty(node);
         }
     }
@@ -543,11 +547,11 @@ public partial class iCS_IStorage {
         var edgeBeforeUpdate= port.Edge;
         // Enable ports are always on top of the node.
         if(port.IsEnablePort) {
-            port.Edge= iCS_EditorObject.EdgeEnum.Top;
+            port.Edge= iCS_EdgeEnum.Top;
         }
         // Data ports are always on the left or right depending on input/output direction.
         else if(port.IsDataPort) {
-            port.Edge= port.IsInputPort ? iCS_EditorObject.EdgeEnum.Left : iCS_EditorObject.EdgeEnum.Right;
+            port.Edge= port.IsInputPort ? iCS_EdgeEnum.Left : iCS_EdgeEnum.Right;
         }
         // Selected closest edge.
         else {
@@ -561,21 +565,24 @@ public partial class iCS_IStorage {
     public void CleanupPortPositionOnEdge(iCS_EditorObject port) {
         var parent= GetParent(port);
         var parentPos= GetLayoutPosition(parent);
+        Rect lp= port.LocalPosition;
         switch(port.Edge) {
-            case iCS_EditorObject.EdgeEnum.Top:      port.LocalPosition.y= 0; break; 
-            case iCS_EditorObject.EdgeEnum.Bottom:   port.LocalPosition.y= parentPos.height; break;
-            case iCS_EditorObject.EdgeEnum.Left:     port.LocalPosition.x= 0; break;
-            case iCS_EditorObject.EdgeEnum.Right:    port.LocalPosition.x= parentPos.width; break;
+            case iCS_EdgeEnum.Top:      lp.y= 0; port.LocalPosition= lp; break; 
+            case iCS_EdgeEnum.Bottom:   lp.y= parentPos.height; port.LocalPosition= lp; break;
+            case iCS_EdgeEnum.Left:     lp.x= 0; port.LocalPosition= lp; break;
+            case iCS_EdgeEnum.Right:    lp.x= parentPos.width; port.LocalPosition= lp; break;
         }
     }
     // ----------------------------------------------------------------------
     // Updates the port position.
     public void UpdatePortPositions(iCS_EditorObject node) {
         // Special case for minimized nodes.
-        if(node.IsMinimized) {
+        if(node.IsIconized) {
             float cx= 0.5f*node.LocalPosition.width;
             float cy= 0.5f*node.LocalPosition.height;
-            ForEachChildPort(node, port=> { port.LocalPosition.x= cx; port.LocalPosition.y= cy; });
+            ForEachChildPort(node, port=> {
+                port.LocalPosition= new Rect(cx,cy, port.LocalPosition.width, port.LocalPosition.height);
+            });
             return;
         }
 
@@ -586,8 +593,7 @@ public partial class iCS_IStorage {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalPosition.x= (i+0.5f) * xStep;
-                    ports[i].LocalPosition.y= 0;                    
+                    ports[i].LocalPosition= new Rect((i+0.5f)*xStep, 0, 0, 0);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -601,8 +607,7 @@ public partial class iCS_IStorage {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalPosition.x= (i+0.5f) * xStep;
-                    ports[i].LocalPosition.y= position.height;                
+                    ports[i].LocalPosition= new Rect((i+0.5f)*xStep, position.height, 0, 0);
                 }
             }            
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -617,8 +622,7 @@ public partial class iCS_IStorage {
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalPosition.x= 0;
-                    ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;                
+                    ports[i].LocalPosition= new Rect(0, topOffset+(i+0.5f) * yStep, 0, 0);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -633,8 +637,7 @@ public partial class iCS_IStorage {
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalPosition.x= position.width;
-                    ports[i].LocalPosition.y= topOffset + (i+0.5f) * yStep;
+                    ports[i].LocalPosition= new Rect(position.width, topOffset+(i+0.5f)*yStep, 0, 0);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {

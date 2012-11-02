@@ -295,7 +295,7 @@ public partial class iCS_IStorage {
                 }
             }
         );
-        Minimize(func);
+        Iconize(func);
         NodeLayout(func);
         return func;
     }
@@ -312,7 +312,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject constructor= CreateMethod(module.ParentId, new Vector2(thisPos.x-50f, thisPos.y-20), desc);
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.This);
         SetSource(moduleThisPort, constructorThisPort);
-        Minimize(constructor);
+        Iconize(constructor);
         NodeLayout(constructor);
         return constructor;
     }

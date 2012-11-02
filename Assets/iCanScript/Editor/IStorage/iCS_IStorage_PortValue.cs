@@ -8,7 +8,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public void LoadInitialPortValueFromArchive(iCS_EditorObject port) {
 		if(!port.IsInDataPort) return;
-		if(port.Source != -1) return;
+		if(port.SourceId != -1) return;
 		if(iCS_Strings.IsEmpty(port.InitialValueArchive)) {
 			StorageCache[port.InstanceId].InitialValue= null;
 			return;
@@ -30,13 +30,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public object GetInitialPortValue(iCS_EditorObject port) {
 		if(!port.IsInDataPort) return null;
-		if(port.Source != -1) return null;
+		if(port.SourceId != -1) return null;
 		return StorageCache[port.InstanceId].InitialValue;
 	}
     // ----------------------------------------------------------------------
 	public void SetInitialPortValue(iCS_EditorObject port, object value) {
 		if(!port.IsInDataPort) return;
-		if(port.Source != -1) return;
+		if(port.SourceId != -1) return;
 		StorageCache[port.InstanceId].InitialValue= value;
         StoreInitialPortValueInArchive(port);
 	}

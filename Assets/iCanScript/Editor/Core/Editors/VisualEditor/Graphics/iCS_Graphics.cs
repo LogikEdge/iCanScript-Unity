@@ -506,7 +506,7 @@ public partial class iCS_Graphics {
         
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
-//        if(IsInvisible(port, iStorage) || IsMinimized(port, iStorage)) return;
+//        if(IsInvisible(port, iStorage) || IsIconized(port, iStorage)) return;
         if(IsInvisible(port, iStorage)) return;
         
         // Don't display if outside clipping area.

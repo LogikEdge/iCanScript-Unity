@@ -16,7 +16,7 @@ public class iCS_EditorObject {
     // ======================================================================
     // Conversion Utilities
     // ----------------------------------------------------------------------
-    iCS_EngineObject EngineObject         { get { return myIStorage.Storage[myId]; }}
+    public iCS_EngineObject EngineObject         { get { return myIStorage.EngineObjects[myId]; }}
     List<iCS_EngineObject> EditorToEngineList(List<iCS_EditorObject> editorObjects) {
         return Prelude.map(eo=> eo.EngineObject, editorObjects);
     }
@@ -27,25 +27,30 @@ public class iCS_EditorObject {
     public bool   IsValid                   { get { return myId != -1 && EngineObject.IsValid; }}
     public iCS_ObjectTypeEnum ObjectType    { get { return EngineObject.ObjectType; } set { EngineObject.ObjectType= value; }}
     public int    InstanceId                { get { return EngineObject.InstanceId; }}
-    public int    ParentId                  { get { return EngineObject.ParentId; }}
+    public int    ParentId                  { get { return EngineObject.ParentId; } set { EngineObject.ParentId= value; }}
     public Type   RuntimeType               { get { return EngineObject.RuntimeType; }}
     public string RawName                   { get { return EngineObject.RawName; } set { EngineObject.RawName= value; }}
     public string Name                      { get { return EngineObject.Name; } set { EngineObject.Name= value; }}
-    public bool   IsNameEditable            { get { return EngineObject.IsNameEditable; }}
+    public bool   IsNameEditable            { get { return EngineObject.IsNameEditable; } set { EngineObject.IsNameEditable= value; }}
     public string RawTooltip                { get { return EngineObject.RawTooltip; } set { EngineObject.RawTooltip= value; }}
     public string Tooltip                   { get { return EngineObject.Tooltip; } set { EngineObject.Tooltip= value; }}
     public bool   IsFloating                { get { return myIsFloating; } set { myIsFloating= value; }}
-    public bool   IsDrity                   { get { return myIsDirty; } set { myIsDirty= value; }}
+    public bool   IsDirty                   { get { return myIsDirty; } set { myIsDirty= value; }}
     public Rect   LocalPosition             { get { return EngineObject.LocalPosition; } set { EngineObject.LocalPosition= value; }}
     
     // Node specific attributes ---------------------------------------------
+    public string MethodName                { get { return EngineObject.MethodName; } set { EngineObject.MethodName= value; }}
+    public int    NbOfParams                { get { return EngineObject.NbOfParams; } set { EngineObject.NbOfParams= value; }}
     public string IconGUID                  { get { return EngineObject.IconGUID; } set { EngineObject.IconGUID= value; }}
     
 	// Port specific attributes ---------------------------------------------
-    public iCS_EdgeEnum Edge                { get { return EngineObject.Edge; }}
+    public iCS_EdgeEnum Edge                { get { return EngineObject.Edge; } set { EngineObject.Edge= value; }}
     public int          SourceId            { get { return EngineObject.SourceId; } set { EngineObject.SourceId= value; }}
-
+    public int          PortIndex           { get { return EngineObject.PortIndex; } set { EngineObject.PortIndex= value; }}
+    public string       InitialValueArchive { get { return EngineObject.InitialValueArchive; } set { EngineObject.InitialValueArchive= value;}}
+    
     // State specific attributes ---------------------------------------------
+    public bool IsRawEntryState             { get { return EngineObject.IsRawEntryState; } set { EngineObject.IsRawEntryState= value; }}
     public bool IsEntryState                { get { return EngineObject.IsEntryState; } set { EngineObject.IsEntryState= value; }}
     
     // Object Type Queries ---------------------------------------------------
@@ -54,6 +59,7 @@ public class iCS_EditorObject {
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
     public bool IsModulePort                { get { return EngineObject.IsModulePort; }}
+    public bool IsDynamicModulePort         { get { return EngineObject.IsDynamicModulePort; }}
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}
     public bool IsOutStatePort              { get { return EngineObject.IsOutStatePort; }}
@@ -71,29 +77,50 @@ public class iCS_EditorObject {
     public bool IsFunction                  { get { return EngineObject.IsFunction; }}
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
+    public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}
     public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
     public bool IsState                     { get { return EngineObject.IsState; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
     public bool IsInMuxPort                 { get { return EngineObject.IsInMuxPort; }}
     public bool IsOutMuxPort                { get { return EngineObject.IsOutMuxPort; }}
     
-    // Layout attributes ----------------------------------------------------
+    // Node layout attributes -----------------------------------------------
     public bool IsUnfolded                  { get { return EngineObject.IsUnfolded; }}
     public bool IsFolded                    { get { return EngineObject.IsFolded; }}
     public bool IsIconized                  { get { return EngineObject.IsIconized; }}
+    public void Unfold()                    { EngineObject.Unfold(); }
+    public void Fold()                      { EngineObject.Fold(); }
+    public void Iconize()                   { EngineObject.Iconize(); }
+    
+    // Port layout attributes -----------------------------------------------
+    public bool IsOnLeftEdge                { get { return EngineObject.IsOnLeftEdge; }}
+    public bool IsOnRightEdge               { get { return EngineObject.IsOnRightEdge; }}
+    public bool IsOnTopEdge                 { get { return EngineObject.IsOnTopEdge; }}
+    public bool IsOnBottomEdge              { get { return EngineObject.IsOnBottomEdge; }}
     
     // ----------------------------------------------------------------------
     public MethodBase GetMethodBase(List<iCS_EditorObject> editorObjects) {
         return EngineObject.GetMethodBase(EditorToEngineList(editorObjects));
     }
+    public FieldInfo GetFieldInfo() {
+        return EngineObject.GetFieldInfo();
+    }
     
     // ======================================================================
     // Constructors
     // ----------------------------------------------------------------------
-    public iCS_EditorObject(iCS_IStorage iStorage, int id) {
+    public iCS_EditorObject(int id, iCS_IStorage iStorage) {
+        Init(id, iStorage);
+    }
+    public iCS_EditorObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType,
+                            Rect localPosition, iCS_IStorage iStorage) {
+        new iCS_EngineObject(id, name, type, parentId, objectType, localPosition);
+        Init(id, iStorage);
+    }
+    void Init(int id, iCS_IStorage iStorage) {
         myIStorage= iStorage;
         myId= id;
-        myIsDirty= true;
+        myIsDirty= true;        
     }
     
     // ----------------------------------------------------------------------
@@ -102,5 +129,16 @@ public class iCS_EditorObject {
         IsFloating= false;
         IsDirty= false;
         EngineObject.Reset();
+    }
+    
+    // ----------------------------------------------------------------------
+    public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
+                                         Vector2 localPosition, iCS_IStorage iStorage) {
+        var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject, parent.EngineObject, localPosition);
+        return Clone(engineObject, iStorage);
+    }
+    // ----------------------------------------------------------------------
+    public static iCS_EditorObject Clone(iCS_EngineObject engineObject, iCS_IStorage iStorage) {
+        return new iCS_EditorObject(engineObject.InstanceId, iStorage);
     }
 }

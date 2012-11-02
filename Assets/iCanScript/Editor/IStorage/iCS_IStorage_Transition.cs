@@ -31,7 +31,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject outModulePort= CreatePort(" ", transitionModule.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutTransitionPort);        
         SetSource(inModulePort, fromStatePort);
         SetSource(toStatePort, outModulePort);
-        Minimize(transitionModule);
+        Iconize(transitionModule);
         // Create guard module
         iCS_EditorObject guard= CreateModule(transitionModule.InstanceId, transitionModulePos, "false", iCS_ObjectTypeEnum.TransitionGuard);
         var guardIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.TransitionTriggerIcon);
@@ -44,7 +44,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject guardPort= CreatePort("trigger", guard.InstanceId, typeof(bool), iCS_ObjectTypeEnum.OutStaticModulePort);
         guardPort.IsNameEditable= false;
         SetSource(fromStatePort, guardPort);
-        Minimize(guard);
+        Iconize(guard);
         // Create action module
         iCS_EditorObject action= CreateModule(transitionModule.InstanceId, transitionModulePos, "NoAction", iCS_ObjectTypeEnum.TransitionAction);
         var actionIconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
@@ -57,15 +57,15 @@ public partial class iCS_IStorage {
         iCS_EditorObject enablePort= CreateEnablePort(action.InstanceId);
         enablePort.IsNameEditable= false;
         SetSource(enablePort, guardPort);
-        Minimize(action);
+        Iconize(action);
         // Update port names
         UpdatePortNames(fromStatePort, toStatePort);
         // Set initial transition module position.
         var transitionIcon= iCS_TextureCache.GetTextureFromGUID(transitionModule.IconGUID);
-        transitionModule.LocalPosition.width= transitionIcon.width;
-        transitionModule.LocalPosition.height= transitionIcon.height;
-        inModulePort.LocalPosition.x= outModulePort.LocalPosition.x= 0.5f*transitionIcon.width;
-        inModulePort.LocalPosition.y= outModulePort.LocalPosition.y= 0.5f*transitionIcon.height;
+        transitionModule.LocalPosition= new Rect(transitionModule.LocalPosition.x, transitionModule.LocalPosition.y,
+                                                 transitionIcon.width, transitionIcon.height);
+        inModulePort.LocalPosition= new Rect(0.5f*transitionIcon.width, 0.5f*transitionIcon.height, 0, 0);
+        outModulePort= inModulePort;
         LayoutTransitionModule(transitionModule);
     }
     // ----------------------------------------------------------------------

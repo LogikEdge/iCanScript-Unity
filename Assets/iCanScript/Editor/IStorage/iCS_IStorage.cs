@@ -47,7 +47,7 @@ public partial class iCS_IStorage {
     void GenerateEditorData() {
         StorageCache= new iCS_IStorageCache();
         ForEach(obj=> StorageCache.CreateInstance(obj));
-        myEditorObjects= P.map(obj=> new iCS_EditorObject(this, obj.InstanceId), EngineObjects);
+        myEditorObjects= P.map(obj=> new iCS_EditorObject(obj.InstanceId, this), EngineObjects);
         if(IsValid(0)) {
             Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
             ForEach(obj=> {
@@ -88,7 +88,7 @@ public partial class iCS_IStorage {
     public bool IsValid(int id)                      { return id >= 0 && id < EditorObjects.Count && this[id] != null && this[id].InstanceId != -1; }
     public bool IsInvalid(int id)                    { return !IsValid(id); }
     public bool IsValid(iCS_EditorObject obj)        { return obj != null && IsValid(obj.InstanceId); }
-    public bool IsSourceValid(iCS_EditorObject obj)  { return IsValid(obj.Source); }
+    public bool IsSourceValid(iCS_EditorObject obj)  { return IsValid(obj.SourceId); }
     public bool IsParentValid(iCS_EditorObject obj)  { return IsValid(obj.ParentId); }
     // ----------------------------------------------------------------------
     public bool IsDirty            { get { ProcessUndoRedo(); return myIsDirty; }}
@@ -115,9 +115,9 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject      GetParent(iCS_EditorObject obj)            { return Storage.GetParent(obj); }
+    public iCS_EditorObject      GetParent(iCS_EditorObject obj)            { return obj.ParentId != -1 ? EditorObjects[obj.ParentId] : null; }
 	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= GetParent(obj); while(parent != null && !parent.IsNode) parent= GetParent(parent); return parent; }
-    public iCS_EditorObject      GetSource(iCS_EditorObject obj)            { return Storage.GetSource(obj); }
+    public iCS_EditorObject      GetSource(iCS_EditorObject obj)            { return obj.SourceId != -1 ? EditorObjects[obj.SourceId] : null; }
 	public iCS_EditorObjectCache GetEditorObjectCache(iCS_EditorObject obj) { return IsValid(obj) ? StorageCache[obj.InstanceId] : null; }
     public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? StorageCache[obj.InstanceId].AnimatedPosition.CurrentValue : default(Rect); }
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) StorageCache[obj.InstanceId].AnimatedPosition.Reset(pos); }
@@ -274,7 +274,7 @@ public partial class iCS_IStorage {
 						int nbOfChildren= NbOfChildren(obj, c=> c.IsInDataPort);
 						if(nbOfChildren == 1) {
 							iCS_EditorObject child= GetChildInputDataPorts(obj)[0];
-							obj.Source= child.Source;
+							obj.SourceId= child.SourceId;
 							obj.ObjectType= iCS_ObjectTypeEnum.OutDynamicModulePort;
 							DestroyInstanceInternal(child);
 						} else {
@@ -309,7 +309,7 @@ public partial class iCS_IStorage {
         Storage.ClearUnityObjects();
         ForEach(
             obj=> {
-                if(obj.IsInDataPort && obj.Source == -1 && StorageCache[obj.InstanceId].InitialValue != null) {
+                if(obj.IsInDataPort && obj.SourceId == -1 && StorageCache[obj.InstanceId].InitialValue != null) {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
@@ -399,7 +399,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         int id= GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
-        this[id]= iCS_EditorObject.Clone(id, srcObj, destParent, localPos);
+        this[id]= iCS_EditorObject.Clone(id, srcObj, destParent, localPos, this);
         this[id].IconGUID= srcObj.IconGUID;
         srcStorage.ForEachChild(srcObj,
             child=> CopyFrom(child, srcStorage, this[id], Math3D.ToVector2(child.LocalPosition), xlat)
@@ -412,7 +412,7 @@ public partial class iCS_IStorage {
     void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, List<Prelude.Tuple<int,int>> xlat) {
         srcStorage.ForEachRecursive(srcObj,
             child=> {
-                if(child.Source != -1) {
+                if(child.SourceId != -1) {
                     int id= -1;
                     int source= -1;
                     foreach(var pair in xlat) {
@@ -420,7 +420,7 @@ public partial class iCS_IStorage {
                             id= pair.Item2;
                             if(source != -1) break;
                         }
-                        if(pair.Item1 == child.Source) {
+                        if(pair.Item1 == child.SourceId) {
                             source= pair.Item2;
                             if(id != -1) break;
                         }
@@ -443,7 +443,7 @@ public partial class iCS_IStorage {
         // Determine best initial position.
         Rect initialPos= VisualEditorCenter();
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, initialPos);
+        this[id]= new iCS_EditorObject(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, initialPos, this);
 		SetDirty(this[id]);
         return this[id];
     }
@@ -455,7 +455,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos);
+        this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos, this);
         var center= Math3D.Middle(GetLayoutPosition(this[id]));
         SetDisplayPosition(this[id], new Rect(center.x,center.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
@@ -470,7 +470,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos);
+        this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos, this);
         var center= Math3D.Middle(GetLayoutPosition(this[id]));
         SetDisplayPosition(this[id], new Rect(center.x,center.y,0,0));
 		SetDirty(this[id]);
@@ -490,7 +490,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos);
+        this[id]= new iCS_EditorObject(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos, this);
         SetDisplayPosition(this[id], new Rect(initialPos.x,initialPos.y,0,0));
         // Set first state as the default entry state.
         this[id].IsRawEntryState= !ForEachChild(parent,
@@ -526,7 +526,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
+        this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -565,7 +565,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos);
+        this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -602,7 +602,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
-        iCS_EditorObject port= this[id]= new iCS_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0));
+        iCS_EditorObject port= this[id]= new iCS_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0), this);
         // Reajust data port position 
         iCS_EditorObject parent= GetParent(port);
 		if(port.IsDataPort && parent.IsDataPort) {
@@ -634,8 +634,9 @@ public partial class iCS_IStorage {
                 localPos= new Rect(initialPos.x-parentRect.x, initialPos.y-parentRect.y,size.x,size.y);
             } else {
                 localPos= new Rect(parentRect.width, parentRect.height, size.x, size.y);
-                parent.LocalPosition.width += 2f*iCS_Config.GutterSize+size.x;
-                parent.LocalPosition.height+= 2f*iCS_Config.GutterSize+size.y;                
+                parent.LocalPosition= new Rect(parent.LocalPosition.x, parent.LocalPosition.y,
+                                               parent.LocalPosition.width +2f*iCS_Config.GutterSize+size.x,
+                                               parent.LocalPosition.height+2f*iCS_Config.GutterSize+size.y);
             }
         } else {
             localPos= VisualEditorCenter();
@@ -659,8 +660,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject obj, iCS_EditorObject src) {
         int id= src == null ? -1 : src.InstanceId;
-        if(id != obj.Source) {
-            obj.Source= id; 
+        if(id != obj.SourceId) {
+            obj.SourceId= id; 
             SetDirty(obj);            
         }
     }
@@ -681,7 +682,7 @@ public partial class iCS_IStorage {
                 }
             }
         );
-        Minimize(conv);
+        Iconize(conv);
     }
     // ----------------------------------------------------------------------
     public void DisconnectPort(iCS_EditorObject port) {
@@ -690,7 +691,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject[] FindConnectedPorts(iCS_EditorObject port) {
-        return Filter(p=> p.IsPort && p.Source == port.InstanceId).ToArray();
+        return Filter(p=> p.IsPort && p.SourceId == port.InstanceId).ToArray();
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject FindAConnectedPort(iCS_EditorObject port) {
@@ -699,9 +700,9 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     bool IsPortConnected(iCS_EditorObject port) {
-        if(port.Source != -1) return true;
+        if(port.SourceId != -1) return true;
         foreach(var obj in EditorObjects) {
-            if(obj.IsValid && obj.IsPort && obj.Source == port.InstanceId) return true;
+            if(obj.IsValid && obj.IsPort && obj.SourceId == port.InstanceId) return true;
         }
         return false;
     }
@@ -709,7 +710,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
     public iCS_EditorObject GetDataConnectionSource(iCS_EditorObject port) {
-        return Storage.GetDataConnectionSource(port);
+        iCS_EngineObject engineObject= Storage.GetDataConnectionSource(port.EngineObject);
+        return engineObject != null ? EditorObjects[engineObject.InstanceId] : null;
     }
     
 }

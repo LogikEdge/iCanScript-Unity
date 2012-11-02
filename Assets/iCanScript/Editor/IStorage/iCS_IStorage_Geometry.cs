@@ -79,28 +79,28 @@ public partial class iCS_IStorage {
         float rightDistance= GetDistanceFromVerticalLineSegment(portPos, nodePos.y, nodePos.yMax, nodePos.xMax);
         // Attempt to keep same edge node is shrinked.
         switch(port.Edge) {
-			case iCS_EditorObject.EdgeEnum.Left: {
+			case iCS_EdgeEnum.Left: {
                 float left= leftDistance-kAllowedGap;
                 if(left < topDistance && left < bottomDistance && left < rightDistance) {
                     return port.Edge;
                 }
 				break;
 			}
-			case iCS_EditorObject.EdgeEnum.Right: {
+			case iCS_EdgeEnum.Right: {
                 float right= rightDistance-kAllowedGap;
                 if(right < topDistance && right < bottomDistance && right < leftDistance) {
                     return port.Edge;
                 }
 				break;
 			}
-			case iCS_EditorObject.EdgeEnum.Bottom: {
+			case iCS_EdgeEnum.Bottom: {
                 float bottom= bottomDistance-kAllowedGap;
                 if(bottom < topDistance && bottom < leftDistance && bottom < rightDistance) {
                     return port.Edge;
                 }
 				break;
 			}
-			case iCS_EditorObject.EdgeEnum.Top: {
+			case iCS_EdgeEnum.Top: {
                 float top= topDistance-kAllowedGap;
                 if(top < bottomDistance && top < leftDistance && top < rightDistance) {
                     return port.Edge;
@@ -110,14 +110,14 @@ public partial class iCS_IStorage {
         }
         if(topDistance < bottomDistance) {
             if(leftDistance < rightDistance) {
-                return topDistance < leftDistance ? iCS_EditorObject.EdgeEnum.Top : iCS_EditorObject.EdgeEnum.Left;					
+                return topDistance < leftDistance ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left;					
             }
-            return topDistance < rightDistance ? iCS_EditorObject.EdgeEnum.Top : iCS_EditorObject.EdgeEnum.Right;
+            return topDistance < rightDistance ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Right;
         }
         if(leftDistance < rightDistance) {
-            return bottomDistance < leftDistance ? iCS_EditorObject.EdgeEnum.Bottom : iCS_EditorObject.EdgeEnum.Left;
+            return bottomDistance < leftDistance ? iCS_EdgeEnum.Bottom : iCS_EdgeEnum.Left;
         }
-        return bottomDistance < rightDistance ? iCS_EditorObject.EdgeEnum.Bottom : iCS_EditorObject.EdgeEnum.Right;
+        return bottomDistance < rightDistance ? iCS_EdgeEnum.Bottom : iCS_EdgeEnum.Right;
     }
     // ----------------------------------------------------------------------
 	float GetDistanceFromHorizontalLineSegment(Vector2 point, float x1, float x2, float y) {

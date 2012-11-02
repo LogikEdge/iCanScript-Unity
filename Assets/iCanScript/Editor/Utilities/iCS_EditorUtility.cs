@@ -90,13 +90,13 @@ public static class iCS_EditorUtility {
         if(eObj == null || iStorage == null) return;
         if(eObj.IsNode) {
             for(var parent= iStorage.GetParent(eObj); parent != null && parent.InstanceId != 0; parent= iStorage.GetParent(parent)) {
-                iStorage.Maximize(parent);
+                iStorage.Unfold(parent);
             }            
             return;
         }
         if(eObj.IsPort) {
             var portParent= iStorage.GetParent(eObj);
-            if(!iStorage.IsVisible(portParent) || iStorage.IsMinimized(portParent)) {
+            if(!iStorage.IsVisible(portParent) || iStorage.IsIconized(portParent)) {
                 iStorage.Fold(portParent);
             }
             MakeVisible(portParent, iStorage);

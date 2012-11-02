@@ -91,7 +91,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void BehaviourMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         // Don't show any menu if behaviour not visible.
-        if(storage.IsMinimized(selectedObject) || storage.IsFolded(selectedObject)) return;
+        if(storage.IsIconized(selectedObject) || storage.IsFolded(selectedObject)) return;
 
         int len= iCS_AllowedChildren.BehaviourChildNames.Length;
 		MenuContext[] menu= new MenuContext[len];
@@ -108,14 +108,14 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void ModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         MenuContext[] menu= new MenuContext[0];
-        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+        if(!storage.IsIconized(selectedObject) && !storage.IsFolded(selectedObject)) {
             // Base menu items
             menu= new MenuContext[2];
             menu[0]= new MenuContext(ModuleStr);
             menu[1]= new MenuContext(StateChartStr); 
         }
 //        // Function menu items
-//        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+//        if(!storage.IsIconized(selectedObject) && !storage.IsFolded(selectedObject)) {
 //            List<iCS_ReflectionInfo> functionMenu= iCS_DataBase.BuildExpertMenu();
 //            tmp= new MenuContext[menu.Length+functionMenu.Count+1];
 //            menu.CopyTo(tmp, 0);
@@ -143,7 +143,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         MenuContext[] menu= new MenuContext[0];
-        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+        if(!storage.IsIconized(selectedObject) && !storage.IsFolded(selectedObject)) {
             menu= new MenuContext[1];
             menu[0]= new MenuContext(StateStr); 
         }
@@ -156,7 +156,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void StateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         MenuContext[] menu;
-        if(!storage.IsMinimized(selectedObject) && !storage.IsFolded(selectedObject)) {
+        if(!storage.IsIconized(selectedObject) && !storage.IsFolded(selectedObject)) {
             int len= iCS_AllowedChildren.StateChildNames.Length;
             menu= new MenuContext[len+4];
             menu[0]= new MenuContext(StateStr);
@@ -202,7 +202,7 @@ public class iCS_DynamicMenu {
         iCS_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
         iCS_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
         if(grandParent != null && grandParent.IsModule) {
-            if(!(selectedObject.IsInputPort && storage.IsValid(selectedObject.Source))) {
+            if(!(selectedObject.IsInputPort && storage.IsValid(selectedObject.SourceId))) {
                 menu= new MenuContext[1];
 				menu[0]= new MenuContext(PublishPortStr);                
             }
@@ -548,20 +548,20 @@ public class iCS_DynamicMenu {
             if(!grandParent.IsModule) return null;
 			Vector2 pos= ProcessMenuPosition;
 			switch(port.Edge) {
-				case iCS_EditorObject.EdgeEnum.Top: {
+				case iCS_EdgeEnum.Top: {
 					pos.y-= 100;
 					break;
 				}
-				case iCS_EditorObject.EdgeEnum.Bottom: {
+				case iCS_EdgeEnum.Bottom: {
 					pos.y+= 100;
 					break;
 				}
-				case iCS_EditorObject.EdgeEnum.Left: {
+				case iCS_EdgeEnum.Left: {
 					pos.x-= 100;
                     pos.y-= 20;
 					break;
 				}
-				case iCS_EditorObject.EdgeEnum.Right:
+				case iCS_EdgeEnum.Right:
 				default: {
 					pos.x+= 100;
 					pos.y-= 20;

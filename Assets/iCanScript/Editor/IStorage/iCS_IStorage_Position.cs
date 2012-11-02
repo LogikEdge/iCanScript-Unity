@@ -8,7 +8,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns the absolute position of the given object.
     public Rect GetLayoutPosition(iCS_EditorObject eObj) {
-        return Storage.GetPosition(eObj);
+        return Storage.GetPosition(eObj.EngineObject);
     }
     public Rect GetLayoutPosition(int id) {
         return GetLayoutPosition(EditorObjects[id]);
@@ -26,17 +26,15 @@ public partial class iCS_IStorage {
     public void SetLayoutPosition(iCS_EditorObject node, Rect _newPos) {
         // Adjust node size.
         Rect position= GetLayoutPosition(node);
-        node.LocalPosition.width = _newPos.width;
-        node.LocalPosition.height= _newPos.height;
+        node.LocalPosition= new Rect(node.LocalPosition.x, node.LocalPosition.y, _newPos.width, _newPos.height);
         // Reposition node.
         if(!IsValid(node.ParentId)) {
-            node.LocalPosition.x= _newPos.x;
-            node.LocalPosition.y= _newPos.y;            
+            node.LocalPosition= new Rect(_newPos.x, _newPos.y, node.LocalPosition.width, node.LocalPosition.height);
         }
         else {
             Rect deltaMove= new Rect(_newPos.xMin-position.xMin, _newPos.yMin-position.yMin, _newPos.width-position.width, _newPos.height-position.height);
-            node.LocalPosition.x+= deltaMove.x;
-            node.LocalPosition.y+= deltaMove.y;
+            node.LocalPosition= new Rect(node.LocalPosition.x+deltaMove.x, node.LocalPosition.y+deltaMove.y,
+                                         node.LocalPosition.width, node.LocalPosition.height);
             float separationX= Math3D.IsNotZero(deltaMove.x) ? deltaMove.x : deltaMove.width;
             float separationY= Math3D.IsNotZero(deltaMove.y) ? deltaMove.y : deltaMove.height;
             var separationVector= new Vector2(separationX, separationY);
