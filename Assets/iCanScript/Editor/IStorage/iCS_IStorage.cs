@@ -45,7 +45,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
-        myEditorObjects= P.map(obj=> obj != null ? new iCS_EditorObject(obj.InstanceId, this, obj) : null, EngineObjects);
+        myEditorObjects= P.map(obj=> obj != null ? new iCS_EditorObject(this, obj) : null, EngineObjects);
         if(myEditorObjects.Count != EngineObjects.Count) {
             Debug.Log("P1");
         }

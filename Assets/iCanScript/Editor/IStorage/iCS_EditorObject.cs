@@ -110,9 +110,6 @@ public class iCS_EditorObject {
     // Constructors
     // ----------------------------------------------------------------------
     public iCS_EditorObject(int id, iCS_IStorage iStorage, iCS_EngineObject engineObject) {
-        myIStorage= iStorage;
-        myId= id;
-        myIsDirty= true;        
         if(id >= 0) {
             // Grow engine object array if needed.
             for(int len= iStorage.EngineObjects.Count; id >= len; ++len) {
@@ -120,19 +117,32 @@ public class iCS_EditorObject {
             }
             iStorage.EngineObjects[id]= engineObject;            
         }
+        Init(id, iStorage);
     }
+    // ----------------------------------------------------------------------
     public iCS_EditorObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType,
                             Rect localPosition, iCS_IStorage iStorage) 
     : this(id, iStorage, new iCS_EngineObject(id, name, type, parentId, objectType, localPosition))
     {}
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject(iCS_IStorage iStorage, iCS_EngineObject engineObject) {
+        Init(engineObject == null ? -1 : engineObject.InstanceId, iStorage);
+    }
+    // ----------------------------------------------------------------------
+    void Init(int id, iCS_IStorage iStorage) {
+        myIStorage= iStorage;
+        myId= id;
+        myIsDirty= true;        
+    }
     
     // ----------------------------------------------------------------------
+    // Duplicate the given editor object with a new id and parent.
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
                                          Vector2 localPosition, iCS_IStorage iStorage) {
         var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject, parent.EngineObject, localPosition);
         return new iCS_EditorObject(id, iStorage, engineObject);
     }
-
+    
     // ----------------------------------------------------------------------
     // Reinitialize the editor object to its default values.
     public void Reset() {
