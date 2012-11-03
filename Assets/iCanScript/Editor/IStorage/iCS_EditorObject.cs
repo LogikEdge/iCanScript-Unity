@@ -26,7 +26,7 @@ public class iCS_EditorObject {
     // Common attributes ----------------------------------------------------
     public bool   IsValid                   { get { return myId != -1 && EngineObject.IsValid; }}
     public iCS_ObjectTypeEnum ObjectType    { get { return EngineObject.ObjectType; } set { EngineObject.ObjectType= value; }}
-    public int    InstanceId                { get { return EngineObject.InstanceId; }}
+    public int    InstanceId                { get { return myId; }}
     public int    ParentId                  { get { return EngineObject.ParentId; } set { EngineObject.ParentId= value; }}
     public Type   RuntimeType               { get { return EngineObject.RuntimeType; }}
     public string RawName                   { get { return EngineObject.RawName; } set { EngineObject.RawName= value; }}
@@ -114,7 +114,7 @@ public class iCS_EditorObject {
     }
     public iCS_EditorObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType,
                             Rect localPosition, iCS_IStorage iStorage) {
-        new iCS_EngineObject(id, name, type, parentId, objectType, localPosition);
+        iStorage.EngineObjects[id]= new iCS_EngineObject(id, name, type, parentId, objectType, localPosition);
         Init(id, iStorage);
     }
     void Init(int id, iCS_IStorage iStorage) {
