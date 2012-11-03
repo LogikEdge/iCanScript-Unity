@@ -139,7 +139,7 @@ public class iCS_EditorObject {
     // Duplicate the given editor object with a new id and parent.
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
                                          Vector2 localPosition, iCS_IStorage iStorage) {
-        var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject, parent.EngineObject, localPosition);
+        var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject, (parent == null ? null : parent.EngineObject), localPosition);
         return new iCS_EditorObject(id, iStorage, engineObject);
     }
     

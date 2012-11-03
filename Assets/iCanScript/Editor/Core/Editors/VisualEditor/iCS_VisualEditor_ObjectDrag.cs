@@ -79,7 +79,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 go.AddComponent("iCS_Library");
                 iCS_Library library= go.GetComponent<iCS_Library>();
                 iCS_IStorage iStorage= new iCS_IStorage(library);
-                iStorage.CopyFrom(node, IStorage, null, Vector2.zero);
+                iStorage.Copy(node, IStorage, null, iStorage, Vector2.zero);
                 DragAndDrop.PrepareStartDrag();
                 DragAndDrop.objectReferences= new UnityEngine.Object[1]{go};
                 DragAndDrop.StartDrag(node.Name);
