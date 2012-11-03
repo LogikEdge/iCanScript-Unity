@@ -109,11 +109,7 @@ public class iCS_EditorObject {
     // ======================================================================
     // Constructors
     // ----------------------------------------------------------------------
-    public iCS_EditorObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType,
-                            Rect localPosition, iCS_IStorage iStorage) {
-        Init(id, iStorage, new iCS_EngineObject(id, name, type, parentId, objectType, localPosition));
-    }
-    void Init(int id, iCS_IStorage iStorage, iCS_EngineObject engineObject) {
+    public iCS_EditorObject(int id, iCS_IStorage iStorage, iCS_EngineObject engineObject) {
         myIStorage= iStorage;
         myId= id;
         myIsDirty= true;        
@@ -125,14 +121,10 @@ public class iCS_EditorObject {
             iStorage.EngineObjects[id]= engineObject;            
         }
     }
-    
-    // ----------------------------------------------------------------------
-    // Reinitialize the editor object to its default values.
-    public void Reset() {
-        IsFloating= false;
-        IsDirty= false;
-        EngineObject.Reset();
-    }
+    public iCS_EditorObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType,
+                            Rect localPosition, iCS_IStorage iStorage) 
+    : this(id, iStorage, new iCS_EngineObject(id, name, type, parentId, objectType, localPosition))
+    {}
     
     // ----------------------------------------------------------------------
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
@@ -140,7 +132,12 @@ public class iCS_EditorObject {
         var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject, parent.EngineObject, localPosition);
         return new iCS_EditorObject(id, iStorage, engineObject);
     }
-    public iCS_EditorObject(int id, iCS_IStorage iStorage, iCS_EngineObject engineObject) {
-        Init(id, iStorage, engineObject);
-    }
+
+    // ----------------------------------------------------------------------
+    // Reinitialize the editor object to its default values.
+    public void Reset() {
+        IsFloating= false;
+        IsDirty= false;
+        EngineObject.Reset();
+    }    
 }
