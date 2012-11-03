@@ -111,13 +111,19 @@ public class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public iCS_EditorObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType,
                             Rect localPosition, iCS_IStorage iStorage) {
-        iStorage.EngineObjects[id]= new iCS_EngineObject(id, name, type, parentId, objectType, localPosition);
-        Init(id, iStorage);
+        Init(id, iStorage, new iCS_EngineObject(id, name, type, parentId, objectType, localPosition));
     }
-    void Init(int id, iCS_IStorage iStorage) {
+    void Init(int id, iCS_IStorage iStorage, iCS_EngineObject engineObject) {
         myIStorage= iStorage;
         myId= id;
         myIsDirty= true;        
+        if(id >= 0) {
+            // Grow engine object array if needed.
+            for(int len= iStorage.EngineObjects.Count; id >= len; ++len) {
+                iStorage.EngineObjects.Add(null);
+            }
+            iStorage.EngineObjects[id]= engineObject;            
+        }
     }
     
     // ----------------------------------------------------------------------
@@ -131,10 +137,10 @@ public class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
                                          Vector2 localPosition, iCS_IStorage iStorage) {
-        iStorage.EngineObjects[id]= iCS_EngineObject.Clone(id, toClone.EngineObject, parent.EngineObject, localPosition);
-        return new iCS_EditorObject(id, iStorage);
+        var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject, parent.EngineObject, localPosition);
+        return new iCS_EditorObject(id, iStorage, engineObject);
     }
-    public iCS_EditorObject(int id, iCS_IStorage iStorage) {
-        Init(id, iStorage);
+    public iCS_EditorObject(int id, iCS_IStorage iStorage, iCS_EngineObject engineObject) {
+        Init(id, iStorage, engineObject);
     }
 }

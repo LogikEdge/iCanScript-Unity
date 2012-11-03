@@ -385,13 +385,10 @@ public partial class iCS_IStorage {
         ProcessUndoRedo();
         // Find the next available id.
         int id= 0;
-        int len= EngineObjects.Count;
+        int len= EditorObjects.Count;
         while(id < len && IsValid(id)) { ++id; }
         if(id >= len) {
             id= len;
-            EngineObjects.Add(null);
-        }
-        if(id >= EditorObjects.Count) {
             EditorObjects.Add(null);
         }
         return id;
