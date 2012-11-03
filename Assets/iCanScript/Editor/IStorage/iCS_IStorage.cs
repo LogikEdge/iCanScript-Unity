@@ -110,6 +110,7 @@ public partial class iCS_IStorage {
         get {
             if(id < 0 || id >= EditorObjects.Count) return null;
             iCS_EditorObject eObj= EditorObjects[id];
+            if(eObj == null) return null;
             return eObj.InstanceId >= 0 ? eObj : null;
         }
         set {

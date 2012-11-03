@@ -109,9 +109,6 @@ public class iCS_EditorObject {
     // ======================================================================
     // Constructors
     // ----------------------------------------------------------------------
-    public iCS_EditorObject(int id, iCS_IStorage iStorage) {
-        Init(id, iStorage);
-    }
     public iCS_EditorObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType,
                             Rect localPosition, iCS_IStorage iStorage) {
         iStorage.EngineObjects[id]= new iCS_EngineObject(id, name, type, parentId, objectType, localPosition);
@@ -134,11 +131,10 @@ public class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
                                          Vector2 localPosition, iCS_IStorage iStorage) {
-        var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject, parent.EngineObject, localPosition);
-        return Clone(engineObject, iStorage);
+        iStorage.EngineObjects[id]= iCS_EngineObject.Clone(id, toClone.EngineObject, parent.EngineObject, localPosition);
+        return new iCS_EditorObject(id, iStorage);
     }
-    // ----------------------------------------------------------------------
-    public static iCS_EditorObject Clone(iCS_EngineObject engineObject, iCS_IStorage iStorage) {
-        return new iCS_EditorObject(engineObject.InstanceId, iStorage);
+    public iCS_EditorObject(int id, iCS_IStorage iStorage) {
+        Init(id, iStorage);
     }
 }
