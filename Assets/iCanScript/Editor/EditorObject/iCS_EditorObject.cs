@@ -7,10 +7,11 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_IStorage    myIStorage  = null;
-    int             myId        = -1;
-    bool            myIsFloating= false;
-    bool            myIsDirty   = false;
+    iCS_IStorage    		myIStorage  = null;
+    int             		myId        = -1;
+    bool            		myIsFloating= false;
+    bool            		myIsDirty   = false;
+
     
     // ======================================================================
     // Conversion Utilities
@@ -123,6 +124,7 @@ public partial class iCS_EditorObject {
         IsFloating= false;
         IsDirty= false;
 		InitialValue= null;
+		myAnimatedPosition.Reset();
         EngineObject.Reset();
     }    
 }

@@ -1,7 +1,16 @@
 using UnityEngine;
 using System.Collections;
+using P=Prelude;
 
 public partial class iCS_EditorObject {
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+	public P.Animate<Rect>	myAnimatedPosition= new P.Animate<Rect>();
+	public P.Animate<Rect> AnimatedPosition {
+		get { return myAnimatedPosition; }
+	}
+
     // Node layout attributes -----------------------------------------------
     public bool IsUnfolded                  { get { return EngineObject.IsUnfolded; }}
     public bool IsFolded                    { get { return EngineObject.IsFolded; }}
@@ -10,4 +19,5 @@ public partial class iCS_EditorObject {
     public void Fold()                      { EngineObject.Fold(); }
     public void Iconize()                   { EngineObject.Iconize(); }
     
+
 }

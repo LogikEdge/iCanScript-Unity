@@ -777,7 +777,7 @@ public partial class iCS_Graphics {
    	// ----------------------------------------------------------------------
  	bool IsIconized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(!edObj.IsNode) return false;
-		var nodeAnimation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
+		var nodeAnimation= edObj.AnimatedPosition;
         float area= nodeAnimation.CurrentValue.width*nodeAnimation.CurrentValue.height;
         return (area <= kIconicArea+1f);
     }
@@ -788,13 +788,13 @@ public partial class iCS_Graphics {
    	// ----------------------------------------------------------------------
     static bool IsVisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(edObj.IsNode) {
-    		var nodeAnimation= iStorage.GetEditorObjectCache(edObj).AnimatedPosition;
+    		var nodeAnimation= edObj.AnimatedPosition;
             float area= nodeAnimation.CurrentValue.width*nodeAnimation.CurrentValue.height;
             return Math3D.IsGreater(area, 0.1f);            
         }
         var parentNode= iStorage.GetParentNode(edObj);
         if(parentNode == null) return false;
-		var parentAnimation= iStorage.GetEditorObjectCache(parentNode).AnimatedPosition;
+		var parentAnimation= parentNode.AnimatedPosition;
         float parentArea= parentAnimation.CurrentValue.width*parentAnimation.CurrentValue.height;
         return parentArea > kIconicArea+1f;  // Parent is visible and not iconic.
     }

@@ -61,7 +61,7 @@ public partial class iCS_IStorage {
             Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
             ForEach(obj=> {
 		        // Initialize display position.
-                StorageCache[obj.InstanceId].AnimatedPosition.Reset(new Rect(graphCenter.x,graphCenter.y,0,0));
+                obj.AnimatedPosition.Reset(new Rect(graphCenter.x,graphCenter.y,0,0));
 				// Initialize initial port values.
 				if(obj.IsInDataPort) {
 					LoadInitialPortValueFromArchive(obj);
@@ -127,8 +127,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= obj.Parent; while(parent != null && !parent.IsNode) parent= parent.Parent; return parent; }
 	public iCS_EditorObjectCache GetEditorObjectCache(iCS_EditorObject obj) { return IsValid(obj) ? StorageCache[obj.InstanceId] : null; }
-    public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? StorageCache[obj.InstanceId].AnimatedPosition.CurrentValue : default(Rect); }
-    public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) StorageCache[obj.InstanceId].AnimatedPosition.Reset(pos); }
+    public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? obj.AnimatedPosition.CurrentValue : default(Rect); }
+    public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) obj.AnimatedPosition.Reset(pos); }
 	public P.TimeRatio	AnimationTimeRatio { get { return myAnimationTimeRatio; }}
     // ----------------------------------------------------------------------
     public object          GetRuntimeObject(iCS_EditorObject obj) {
@@ -170,7 +170,7 @@ public partial class iCS_IStorage {
         if(!AnimateLayout || (!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive)) {
             ForEach(
                 obj=> {
-                    var animation= GetEditorObjectCache(obj).AnimatedPosition;
+                    var animation= obj.AnimatedPosition;
                     animation.Reset(GetAnimationTarget(obj));                    
                 }
             );
@@ -202,7 +202,7 @@ public partial class iCS_IStorage {
             ForEach(
                 obj=> {
                     Rect target= GetAnimationTarget(obj);
-                    var animation= GetEditorObjectCache(obj).AnimatedPosition;
+                    var animation= obj.AnimatedPosition;
                     animation.Start(animation.CurrentValue,
                                     target,
                                     myAnimationTimeRatio,
@@ -220,7 +220,7 @@ public partial class iCS_IStorage {
             }
             ForEach(
                 obj=> {
-                    var animation= GetEditorObjectCache(obj).AnimatedPosition;
+                    var animation= obj.AnimatedPosition;
                     if(myAnimationTimeRatio.IsActive) {
                         animation.Update();                        
                     } else {
@@ -239,7 +239,7 @@ public partial class iCS_IStorage {
         // Validate that animation has been properly applied.
         ForEach(
             obj=> {
-                var animation= GetEditorObjectCache(obj).AnimatedPosition;
+                var animation= obj.AnimatedPosition;
                 if(IsVisible(obj)) {
                     if(Math3D.IsNotEqual(GetLayoutPosition(obj), animation.TargetValue)) {
                         Debug.Log("Animation was not properly applied for: "+obj.Name);                        

@@ -424,7 +424,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         DragType= DragTypeEnum.PortConnection;
         Rect portPos= IStorage.GetLayoutPosition(DragOriginalPort);
         IStorage.SetInitialPosition(DragObject, new Vector2(portPos.x, portPos.y));
-		IStorage.GetEditorObjectCache(DragObject).AnimatedPosition.Reset(portPos);
+		DragObject.AnimatedPosition.Reset(portPos);
 		Rect parentPos= IStorage.GetLayoutPosition(parent);
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
