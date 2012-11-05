@@ -22,11 +22,11 @@ public static class iCS_EditorUtility {
     }
 	// ----------------------------------------------------------------------
     public static iCS_EditorObject GetNextSibling(iCS_EditorObject node, iCS_IStorage storage) {
-        if(node == null || storage.GetParent(node) == null) return null;
+        if(node == null || node.Parent == null) return null;
         iCS_EditorObject nextSibling= null;
         iCS_EditorObject firstChild= null;
         bool nodeFound= false;
-        storage.ForEachChild(storage.GetParent(node),
+        storage.ForEachChild(node.Parent,
             child=> {
                 if(child.IsNode) {
                     if(firstChild == null) {
@@ -49,9 +49,9 @@ public static class iCS_EditorUtility {
     }
 	// ----------------------------------------------------------------------
     public static iCS_EditorObject GetPreviousSibling(iCS_EditorObject node, iCS_IStorage storage) {
-        if(node == null || storage.GetParent(node) == null) return null;
+        if(node == null || node.Parent == null) return null;
         iCS_EditorObject prevSibling= null;
-        storage.ForEachChild(storage.GetParent(node),
+        storage.ForEachChild(node.Parent,
             child=> {
                 if(child.IsNode) {
                     if(child == node && prevSibling != null) {
@@ -89,13 +89,13 @@ public static class iCS_EditorUtility {
     public static void MakeVisible(iCS_EditorObject eObj, iCS_IStorage iStorage) {
         if(eObj == null || iStorage == null) return;
         if(eObj.IsNode) {
-            for(var parent= iStorage.GetParent(eObj); parent != null && parent.InstanceId != 0; parent= iStorage.GetParent(parent)) {
+            for(var parent= eObj.Parent; parent != null && parent.InstanceId != 0; parent= parent.Parent) {
                 iStorage.Unfold(parent);
             }            
             return;
         }
         if(eObj.IsPort) {
-            var portParent= iStorage.GetParent(eObj);
+            var portParent= eObj.Parent;
             if(!iStorage.IsVisible(portParent) || iStorage.IsIconized(portParent)) {
                 iStorage.Fold(portParent);
             }
