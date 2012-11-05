@@ -1,5 +1,7 @@
 using UnityEngine;
+using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
