@@ -9,7 +9,7 @@ public partial class iCS_IStorage {
     public void AddDynamicPort(iCS_EditorObject port) {
         iCS_EditorObject parent= GetParent(port);
 		port.PortIndex= GetSortedChildDataPorts(parent).Length;
-		SetInitialPortValue(port, iCS_Types.DefaultValue(port.RuntimeType));
+		port.InitialPortValue= iCS_Types.DefaultValue(port.RuntimeType);
     }
     // ----------------------------------------------------------------------
     public void RemoveDynamicPort(iCS_EditorObject port) {

@@ -26,20 +26,6 @@ public partial class iCS_IStorage {
 		coder.EncodeObject("InitialValue", port.InitialValue, Storage);
 		port.InitialValueArchive= coder.Archive;         
     }
-    // ----------------------------------------------------------------------
-	public object GetInitialPortValue(iCS_EditorObject port) {
-		if(!port.IsInDataPort) return null;
-		if(port.SourceId != -1) return null;
-		return port.InitialValue;
-	}
-    // ----------------------------------------------------------------------
-	public void SetInitialPortValue(iCS_EditorObject port, object value) {
-		if(!port.IsInDataPort) return;
-		if(port.SourceId != -1) return;
-		port.InitialValue= value;
-        StoreInitialPortValueInArchive(port);
-	}
-
     // ======================================================================
     // Graph port value services.
     // ----------------------------------------------------------------------
@@ -52,11 +38,11 @@ public partial class iCS_IStorage {
 		    return funcBase.GetParameter(0);
 		}
 		funcBase= GetRuntimeObject(GetParent(port)) as iCS_IParams;
-		return funcBase == null ? GetInitialPortValue(port) : funcBase.GetParameter(port.PortIndex);
+		return funcBase == null ? port.InitialPortValue : funcBase.GetParameter(port.PortIndex);
 	}
     // ----------------------------------------------------------------------
 	public void SetPortValue(iCS_EditorObject port, object newValue) {
-		SetInitialPortValue(port, newValue);
+		port.InitialPortValue= newValue;
 		SetRuntimePortValue(port, newValue);
         SetDirty(GetParent(port));
     }
@@ -99,7 +85,7 @@ public partial class iCS_IStorage {
 		    return funcBase.GetParameter(0);
 		}
 		funcBase= GetRuntimeObject(GetParent(port)) as iCS_IParams;
-		return funcBase == null ? GetInitialPortValue(port) : null;
+		return funcBase == null ? port.InitialPortValue : null;
 	}
 	
 }

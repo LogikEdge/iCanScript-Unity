@@ -32,5 +32,20 @@ public partial class iCS_EditorObject {
     public bool IsOnRightEdge     { get { return EngineObject.IsOnRightEdge; }}
     public bool IsOnTopEdge       { get { return EngineObject.IsOnTopEdge; }}
     public bool IsOnBottomEdge    { get { return EngineObject.IsOnBottomEdge; }}
-	
+
+
+    // Initial port value ---------------------------------------------------
+	public object InitialPortValue {
+		get {
+			if(!IsInDataPort) return null;
+			if(SourceId != -1) return null;
+			return InitialValue;			
+		}
+		set {
+			if(!IsInDataPort) return;
+			if(SourceId != -1) return;
+			InitialValue= value;
+	        myIStorage.StoreInitialPortValueInArchive(this);			
+		}
+	}
 }

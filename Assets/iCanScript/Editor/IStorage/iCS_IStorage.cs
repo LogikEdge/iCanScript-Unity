@@ -552,7 +552,7 @@ public partial class iCS_IStorage {
 				if(initialPortValue == null) {
 					initialPortValue= iCS_Types.DefaultValue(desc.ParamTypes[portIdx]);
 				}
-                SetInitialPortValue(port, initialPortValue);
+                port.InitialPortValue= initialPortValue;
             }
         }
 		// Create return port.
@@ -591,7 +591,7 @@ public partial class iCS_IStorage {
 				if(initialPortValue == null) {
 					initialPortValue= iCS_Types.DefaultValue(desc.ParamTypes[portIdx]);
 				}
-                SetInitialPortValue(port, initialPortValue);
+                port.InitialPortValue= initialPortValue;
             }
         }
 		// Create return port.
