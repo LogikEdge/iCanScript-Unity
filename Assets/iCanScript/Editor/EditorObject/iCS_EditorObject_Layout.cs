@@ -6,7 +6,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	public P.Animate<Rect>	myAnimatedPosition= new P.Animate<Rect>();
+	private P.Animate<Rect>	myAnimatedPosition= new P.Animate<Rect>();
 	public P.Animate<Rect> AnimatedPosition {
 		get { return myAnimatedPosition; }
 	}

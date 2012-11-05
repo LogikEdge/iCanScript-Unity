@@ -11,7 +11,6 @@ public class iCS_EditorObjectCache {
     public int              ParentId    = -1;
     public List<int>        Children    = new List<int>();
 	// Graph Animation
-	public Rect				VisiblePosition = new Rect(0,0,0,0);					
 	
     // ======================================================================
     // Operations

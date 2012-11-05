@@ -11,8 +11,7 @@ public partial class iCS_EditorObject {
     int             		myId        = -1;
     bool            		myIsFloating= false;
     bool            		myIsDirty   = false;
-
-    
+ 
     // ======================================================================
     // Conversion Utilities
     // ----------------------------------------------------------------------
