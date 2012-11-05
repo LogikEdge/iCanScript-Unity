@@ -111,12 +111,8 @@ public partial class iCS_Graphics {
         return iCS_Types.GetElementType(port.RuntimeType);
     }
     // ----------------------------------------------------------------------
-    object GetPortValue(iCS_EditorObject port, iCS_IStorage iStorage) {
-        return iStorage.GetPortValue(port);
-    }
-    // ----------------------------------------------------------------------
-    string GetPortValueAsString(iCS_EditorObject port, iCS_IStorage iStorage) {
-        object portValue= GetPortValue(port, iStorage);
+    string GetPortValueAsString(iCS_EditorObject port) {
+        object portValue= port.PortValue;
         return (portValue != null) ? GetValueAsString(portValue) : null;
     }
     // ----------------------------------------------------------------------
@@ -125,13 +121,13 @@ public partial class iCS_Graphics {
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if(port.IsInputPort && port.SourceId != -1) {
-            var sourcePort= iStorage.GetSource(port);
+            var sourcePort= port.Source;
             var sourceCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(sourcePort));
             var portCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(port));
             var distance= Vector2.Distance(portCenter, sourceCenter);
             if(distance < 200.0f) return false;
         }
-        object portValue= iStorage.GetPortValue(port);
+        object portValue= port.PortValue;
         if(portValue == null) return false;
         if(Application.isPlaying && iCS_PreferencesEditor.ShowRuntimePortValue) return true;
         if(!Application.isPlaying) return true;
@@ -140,7 +136,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     // Returns the port value display size in GUI scale.
     Vector2 GetPortValueSize(iCS_EditorObject port, iCS_IStorage iStorage) {
-		string valueAsStr= GetPortValueAsString(port, iStorage);
+		string valueAsStr= GetPortValueAsString(port);
 		return iCS_Strings.IsNotEmpty(valueAsStr) ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
     }
     // ----------------------------------------------------------------------

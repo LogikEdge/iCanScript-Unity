@@ -566,7 +566,7 @@ public partial class iCS_Graphics {
     			EditorGUIUtility.LookLikeControls();
                 Rect portValuePos= GetPortValueGUIPosition(port, iStorage);
         		if(Math3D.IsNotZero(portValuePos.width)) {
-            		string valueAsStr= GetPortValueAsString(port, iStorage);
+            		string valueAsStr= GetPortValueAsString(port);
         			GUI.Label(portValuePos, valueAsStr, ValueStyle);			
         		}            				
     
@@ -574,7 +574,7 @@ public partial class iCS_Graphics {
                     CHANGED: ==> Experimental <==
                 */
     			// Bring up port editor for selected static ports.
-                object portValue= GetPortValue(port, iStorage);
+                object portValue= port.PortValue;
     			if(isStaticPort && portValue != null && Scale > 0.75f) {
     				EditorGUIUtility.LookLikeControls();
     				if(portValueType == typeof(bool)) {
@@ -586,7 +586,7 @@ public partial class iCS_Graphics {
     					bool newValue= GUI.Toggle(new Rect(togglePos.x-7, togglePos.y-9, 16, 16), currentValue, "");					
                         GUI.backgroundColor= savedBackgroundColor;
     					if(GUI.changed) {
-    						iStorage.SetPortValue(port, newValue);
+    						port.PortValue= newValue;
     					}
     				}
     			}

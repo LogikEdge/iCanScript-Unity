@@ -57,7 +57,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	            Type dragObjType= draggedObject.GetType();
 	            if(iCS_Types.IsA(portType, dragObjType)) {			
         	        IStorage.RegisterUndo("DragAndDrop");			
-                    IStorage.SetPortValue(eObj, draggedObject);
+                    eObj.PortValue= draggedObject;
                     /*
                         TODO: Update node name if the port is "this" and the object is unnamed.
                     */
@@ -122,7 +122,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         var module= IStorage.CreateModule(parentId, GraphMousePosition, gameObject.name, iCS_ObjectTypeEnum.Module, gameObject.GetType());
         var thisPort= IStorage.FindThisInputPort(module);
         if(thisPort != null) {
-            IStorage.SetPortValue(thisPort, gameObject);
+            thisPort.PortValue= gameObject;
         }
         /*
             TODO: Should construct the full gameobject including its components

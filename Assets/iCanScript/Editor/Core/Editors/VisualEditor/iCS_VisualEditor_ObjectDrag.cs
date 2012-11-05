@@ -324,7 +324,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
                                             if(IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-                                                IStorage.SetPortValue(newPort, IStorage.GetPortValue(DragFixPort));
+                                                newPort.PortValue= DragFixPort.PortValue;
                                                 SetNewDataConnection(DragFixPort, newPort);
                                                 break;
                                             }
@@ -332,7 +332,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
                                             if(!IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-                                                IStorage.SetPortValue(newPort, IStorage.GetPortValue(DragFixPort));
+                                                newPort.PortValue= DragFixPort.PortValue;
                                                 SetNewDataConnection(DragFixPort, newPort);
                                                 break;                                                
                                             }

@@ -53,6 +53,27 @@ public partial class iCS_EditorObject {
 		}
 	}
 
+    // Port Value -----------------------------------------------------------
+    // Fetches the runtime value if it exists, otherwise returns the initial value
+	public object PortValue {
+		get {
+			if(!IsValid || !IsDataPort) return null;
+			var port= this;
+			while(port.Source != null) port= port.Source;
+			iCS_IParams funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParams;
+			if(funcBase != null) {
+			    return funcBase.GetParameter(0);
+			}
+			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_IParams;
+			return funcBase == null ? port.InitialPortValue : funcBase.GetParameter(port.PortIndex);			
+		}
+		set {
+			InitialPortValue= value;
+			RuntimePortValue= value;
+	        myIStorage.SetDirty(Parent);			
+		}
+	}
+
     // Runtime port value ---------------------------------------------------
 	public object RuntimePortValue {
 		get {

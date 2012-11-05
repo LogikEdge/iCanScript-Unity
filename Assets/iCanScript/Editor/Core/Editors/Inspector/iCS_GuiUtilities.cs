@@ -40,14 +40,14 @@ public static class iCS_GuiUtilities {
         // Nothing to display if we don't have a runtime object and we are in readonly.
         if(isReadOnly && runtimeObject == null) return;
         // Update port value from runtime object in priority or the descriptor string if no runtime.
-		object portValue= storage.GetPortValue(port);
+		object portValue= port.PortValue;
         // Determine section name (used for foldout parent).
         string foldoutName= (port.IsInputPort ? "in" : "out")+"."+parent.Name;
         // Display primitives.
         bool isDirty= false;
         object newPortValue= ShowInInspector(port.Name, isReadOnly, hasSource, foldoutName, portType, portValue, indentLevel, foldoutDB, ref isDirty);
         if(!isReadOnly && isDirty) {
-			storage.SetPortValue(port, newPortValue);
+			port.PortValue= newPortValue;
         }
     }
 
