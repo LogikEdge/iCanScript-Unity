@@ -30,8 +30,8 @@ public static class iCS_GuiUtilities {
         if(!port.IsDataPort) return;
         // Extract port information
 		Type portType= port.RuntimeType;
-        iCS_EditorObject parent= storage.GetParent(port);
-        iCS_EditorObject sourcePort= storage.GetSource(port);
+        iCS_EditorObject parent= port.Parent;
+        iCS_EditorObject sourcePort= port.Source;
         bool hasSource= sourcePort != null;
         // Get runtime object if it exists.
         iCS_IParams runtimeObject= storage.GetRuntimeObject(parent) as iCS_IParams;

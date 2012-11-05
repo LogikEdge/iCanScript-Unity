@@ -26,7 +26,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Tree navigation
             case KeyCode.UpArrow: {
                 if(SelectedObject != null) {
-                    SelectedObject= IStorage.GetParent(SelectedObject);
+                    SelectedObject= SelectedObject.Parent;
                     CenterOnSelected();
                 } 
                 Event.current.Use();
@@ -122,7 +122,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case KeyCode.Backspace: {
                 if(SelectedObject != null && SelectedObject != myDisplayRoot && SelectedObject != StorageRoot &&
                   !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
-                    iCS_EditorObject parent= IStorage.GetParent(SelectedObject);
+                    iCS_EditorObject parent= SelectedObject.Parent;
                     iCS_EditorUtility.SafeDestroyObject(SelectedObject, IStorage);
                     SelectedObject= parent;
                 }

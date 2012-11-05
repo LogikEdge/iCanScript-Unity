@@ -44,7 +44,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			);
 			return;
 		}
-		iCS_EditorObject muxPort= IStorage.GetParent(SelectedObject);
+		iCS_EditorObject muxPort= SelectedObject.Parent;
 		if(!muxPort.IsDataPort) return;
 		bool takeNext= false;
 		bool found= IStorage.ForEachChild(muxPort,
@@ -77,8 +77,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool VerifyNewConnection(iCS_EditorObject fixPort, iCS_EditorObject overlappingPort) {
         // Only data ports can be connected together.
         if(!fixPort.IsDataPort || !overlappingPort.IsDataPort) return false;
-        iCS_EditorObject portParent= IStorage.GetParent(fixPort);
-        iCS_EditorObject overlappingPortParent= IStorage.GetParent(overlappingPort);
+        iCS_EditorObject portParent= fixPort.Parent;
+        iCS_EditorObject overlappingPortParent= overlappingPort.Parent;
         if(overlappingPort.IsOutputPort && (overlappingPortParent.IsState || overlappingPortParent.IsStateChart)) {
 			CreateStateMux(fixPort, overlappingPort);
 			return true;
@@ -152,7 +152,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	void CreateStateMux(iCS_EditorObject fixPort, iCS_EditorObject stateMuxPort) {
         iCS_ReflectionInfo conversion= null;
         if(!VerifyConnectionTypes(stateMuxPort, fixPort, out conversion)) return;
-		var source= IStorage.GetSource(stateMuxPort);
+		var source= stateMuxPort.Source;
 		// Simply connect a disconnected mux state port.
 		if(source == null && IStorage.NbOfChildren(stateMuxPort, c=> c.IsDataPort) == 0) {
 			SetNewDataConnection(stateMuxPort, fixPort, conversion);
@@ -171,8 +171,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo conversion= null) {
-		iCS_EditorObject inNode= IStorage.GetParent(inPort);
-        iCS_EditorObject outNode= IStorage.GetParent(outPort);
+		iCS_EditorObject inNode= inPort.Parent;
+        iCS_EditorObject outNode= outPort.Parent;
         iCS_EditorObject inParent= GetParentNode(inNode);
         
         iCS_EditorObject outParent= GetParentNode(outNode);
@@ -218,14 +218,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetParentModule(iCS_EditorObject edObj) {
-        iCS_EditorObject parentModule= IStorage.GetParent(edObj);
-        for(; parentModule != null && !parentModule.IsModule; parentModule= IStorage.GetParent(parentModule));
+        iCS_EditorObject parentModule= edObj.Parent;
+        for(; parentModule != null && !parentModule.IsModule; parentModule= parentModule.Parent);
         return parentModule;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetParentNode(iCS_EditorObject edObj) {
-        iCS_EditorObject parentNode= IStorage.GetParent(edObj);
-        for(; parentNode != null && !parentNode.IsNode; parentNode= IStorage.GetParent(parentNode));
+        iCS_EditorObject parentNode= edObj.Parent;
+        for(; parentNode != null && !parentNode.IsNode; parentNode= parentNode.Parent);
         return parentNode;
     }
 	// ----------------------------------------------------------------------
@@ -240,7 +240,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_EditorObject GetValidParentNodeUnder(Vector2 graphPos, iCS_EditorObject node) {
         if(!node.IsNode) return null;
         iCS_EditorObject newParent= IStorage.GetNodeAt(graphPos, node);
-        if(newParent == IStorage.GetParent(node)) return newParent;
+        if(newParent == node.Parent) return newParent;
         if(newParent != null && !iCS_AllowedChildren.CanAddChildNode(node.Name, node.ObjectType, newParent, IStorage)) {
             newParent= null;
         }
@@ -248,7 +248,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     void ChangeParent(iCS_EditorObject node, iCS_EditorObject newParent) {
-        iCS_EditorObject oldParent= IStorage.GetParent(node);
+        iCS_EditorObject oldParent= node.Parent;
         if(newParent == null || newParent == oldParent) return;
         IStorage.SetParent(node, newParent);
 		if(node.IsState) CleanupEntryState(node, oldParent);
@@ -257,7 +257,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	void CleanupEntryState(iCS_EditorObject state, iCS_EditorObject prevParent) {
 		state.IsEntryState= false;
-		iCS_EditorObject newParent= IStorage.GetParent(state);
+		iCS_EditorObject newParent= state.Parent;
 		bool anEntryExists= false;
 		IStorage.ForEachChild(newParent, child=> { if(child.IsEntryState) anEntryExists= true; });
 		if(!anEntryExists) state.IsEntryState= true;
@@ -291,23 +291,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         if(p.IsStatePort) {
                             iCS_EditorObject transitionModule= null;
                             if(p.IsInStatePort) {
-                                transitionModule= IStorage.GetParent(IStorage.GetSource(p));
+                                transitionModule= p.Source.Parent;
                             } else {
                                 iCS_EditorObject[] connectedPorts= IStorage.FindConnectedPorts(p);
                                 foreach(var cp in connectedPorts) {
                                     if(cp.IsInTransitionPort) {
-                                        transitionModule= IStorage.GetParent(cp);
+                                        transitionModule= cp.Parent;
                                         break;
                                     }
                                 }
                             }
-                            iCS_EditorObject outState= IStorage.GetParent(IStorage.GetFromStatePort(transitionModule));
-                            iCS_EditorObject inState= IStorage.GetParent(IStorage.GetToStatePort(transitionModule));
+                            iCS_EditorObject outState= IStorage.GetFromStatePort(transitionModule).Parent;
+                            iCS_EditorObject inState= IStorage.GetToStatePort(transitionModule).Parent;
                             iCS_EditorObject newParent= IStorage.GetTransitionParent(inState, outState);
-                            if(newParent != null && newParent != IStorage.GetParent(transitionModule)) {
+                            if(newParent != null && newParent != transitionModule.Parent) {
                                 ChangeParent(transitionModule, newParent);
                                 IStorage.LayoutTransitionModule(transitionModule);
-                                IStorage.SetDirty(IStorage.GetParent(node));
+                                IStorage.SetDirty(node.Parent);
                             }
                         }
                     }
@@ -365,12 +365,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_EditorObject RemoveConnection(iCS_EditorObject inPort) {
         iCS_EditorObject sourcePort= IStorage.GetDataConnectionSource(inPort);
         // Tear down previous connection.
-        iCS_EditorObject tmpPort= IStorage.GetSource(inPort);
+        iCS_EditorObject tmpPort= inPort.Source;
         List<iCS_EditorObject> toDestroy= new List<iCS_EditorObject>();
         while(tmpPort != null && tmpPort != sourcePort) {
             iCS_EditorObject[] connected= IStorage.FindConnectedPorts(tmpPort);
             if(connected.Length == 1) {
-                iCS_EditorObject t= IStorage.GetSource(tmpPort);
+                iCS_EditorObject t= tmpPort.Source;
                 toDestroy.Add(tmpPort);
                 tmpPort= t;
             } else {

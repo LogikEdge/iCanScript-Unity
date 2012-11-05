@@ -36,9 +36,9 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
 	static string GetPortPath(iCS_EditorObject port, iCS_IStorage iStorage) {
-		iCS_EditorObject parent= iStorage.GetParent(port);
+		iCS_EditorObject parent= port.Parent;
 		string path= parent.Name;
-		for(parent= iStorage.GetParent(parent); parent != null && parent != iStorage[0]; parent= iStorage.GetParent(parent)) {
+		for(parent= parent.Parent; parent != null && parent != iStorage[0]; parent= parent.Parent) {
 			path+= "."+parent.Name;			
 		}
 		return path;
@@ -56,7 +56,7 @@ public partial class iCS_Graphics {
         if(!IsVisible(port, iStorage)) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if((port.IsInputPort || port.IsModulePort) && port.SourceId != -1) {
-            var sourcePort= iStorage.GetSource(port);
+            var sourcePort= port.Source;
             if(sourcePort.Name != port.Name) return true;
             if(!iStorage.IsVisible(sourcePort)) return true;
             var sourceCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(sourcePort));

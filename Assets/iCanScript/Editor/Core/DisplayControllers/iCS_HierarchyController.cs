@@ -387,10 +387,10 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     public void ShowElement(iCS_EditorObject eObj) {
         if(eObj == null) return;
-        var parent= myStorage.GetParent(eObj);
+        var parent= eObj.Parent;
         while(parent != null) {
             myTreeView.Unfold(parent);
-            parent= myStorage.GetParent(parent);
+            parent= parent.Parent;
         }
     }
     // ---------------------------------------------------------------------------------

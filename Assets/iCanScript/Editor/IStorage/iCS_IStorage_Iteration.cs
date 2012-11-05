@@ -87,7 +87,7 @@ public partial class iCS_IStorage {
     public bool IsChildOf(iCS_EditorObject child, iCS_EditorObject parent) {
         if(IsInvalid(child.ParentId)) return false;
         if(child.ParentId == parent.InstanceId) return true;
-        return IsChildOf(GetParent(child), parent);
+        return IsChildOf(child.Parent, parent);
     }
     // ----------------------------------------------------------------------
     public void ForEachChildNode(iCS_EditorObject node, Action<iCS_EditorObject> action) {
@@ -162,8 +162,8 @@ public partial class iCS_IStorage {
     }
 	public iCS_EditorObject FindParentNode(iCS_EditorObject child) {
 		if(!IsValid(child)) return null;
-		var parent= GetParent(child);
-		for(; parent != null && !parent.IsNode; parent= GetParent(parent));
+		var parent= child.Parent;
+		for(; parent != null && !parent.IsNode; parent= parent.Parent);
 		return parent;
 	}
 }

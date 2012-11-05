@@ -51,8 +51,8 @@ public partial class iCS_IStorage {
 		// Return the layout position if the object is visible.
 		if(IsVisible(edObj)) return GetLayoutPosition(edObj);
 		// Return the center of the most visible parent if not visible.
-		var parent= GetParent(edObj);
-		for(; parent != null && !IsVisible(parent); parent= GetParent(parent));
+		var parent= edObj.Parent;
+		for(; parent != null && !IsVisible(parent); parent= parent.Parent);
 		if(parent != null) {
             Vector2 midPoint= Math3D.Middle(GetLayoutPosition(parent));
             return new Rect(midPoint.x, midPoint.y, 0, 0);							

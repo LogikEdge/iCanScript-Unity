@@ -150,21 +150,21 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns the minimal distance from the parent.
     public float GetDistanceFromParent(iCS_EditorObject port) {
-        iCS_EditorObject parentNode= GetParent(port);
+        iCS_EditorObject parentNode= port.Parent;
         Vector2 position= Math3D.ToVector2(GetLayoutPosition(port));
         return GetDistanceFromNode(parentNode, position);
     }
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearParentEdge(iCS_EditorObject port, iCS_EdgeEnum edge= iCS_EdgeEnum.None) {
-        var parent= GetParent(port);
+        var parent= port.Parent;
         var pos= Math3D.ToVector2(GetLayoutPosition(port));
         return IsNearNodeEdge(parent, pos, (edge != iCS_EdgeEnum.None ? edge : port.Edge));
     }
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearParent(iCS_EditorObject port) {
-        if(GetNodeAt(Math3D.ToVector2(GetLayoutPosition(port))) != GetParent(port)) return false;
+        if(GetNodeAt(Math3D.ToVector2(GetLayoutPosition(port))) != port.Parent) return false;
         return GetDistanceFromParent(port) <= iCS_Config.PortSize*2;
     }
     

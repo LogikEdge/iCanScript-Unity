@@ -104,7 +104,7 @@ public partial class iCS_IStorage {
 //	public int  ModificationId     { get { return UndoRedoId; }}
 	public bool IsAnimationPlaying { get { return myAnimationTimeRatio.IsActive; }}
     // ----------------------------------------------------------------------
-	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? GetParent(eObj) : null); }
+	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? eObj.Parent : null); }
     // ----------------------------------------------------------------------
     public iCS_EditorObject this[int id] {
         get {
@@ -120,14 +120,12 @@ public partial class iCS_IStorage {
             if(StorageCache.IsValid(id)) StorageCache.UpdateInstance(value);
             else                      StorageCache.CreateInstance(value);            
             SetDirty(EditorObjects[id]);
-            iCS_EditorObject parent= GetParent(EditorObjects[id]);
+            iCS_EditorObject parent= EditorObjects[id].Parent;
             if(parent != null) SetDirty(parent);
         }
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject      GetParent(iCS_EditorObject obj)            { return obj.ParentId != -1 ? EditorObjects[obj.ParentId] : null; }
-	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= GetParent(obj); while(parent != null && !parent.IsNode) parent= GetParent(parent); return parent; }
-    public iCS_EditorObject      GetSource(iCS_EditorObject obj)            { return obj.SourceId != -1 ? EditorObjects[obj.SourceId] : null; }
+	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= obj.Parent; while(parent != null && !parent.IsNode) parent= parent.Parent; return parent; }
 	public iCS_EditorObjectCache GetEditorObjectCache(iCS_EditorObject obj) { return IsValid(obj) ? StorageCache[obj.InstanceId] : null; }
     public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? StorageCache[obj.InstanceId].AnimatedPosition.CurrentValue : default(Rect); }
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) StorageCache[obj.InstanceId].AnimatedPosition.Reset(pos); }
@@ -141,14 +139,14 @@ public partial class iCS_IStorage {
     public void SetDirty(iCS_EditorObject obj) {
         myIsDirty= true;
         obj.IsDirty= true;        
-        var parent= GetParent(obj);
+        var parent= obj.Parent;
         if(parent != null) { parent.IsDirty= true; }
         ++ModificationId;
     }
     // ----------------------------------------------------------------------
     public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {
         Rect pos= GetLayoutPosition(edObj);
-        iCS_EditorObject oldParent= GetParent(edObj);
+        iCS_EditorObject oldParent= edObj.Parent;
         edObj.ParentId= newParent.InstanceId;
         StorageCache.UpdateInstance(oldParent);
         StorageCache.UpdateInstance(newParent);
@@ -264,8 +262,8 @@ public partial class iCS_IStorage {
             target= GetLayoutPosition(eObj);
         } else {
             // Find first visible parent.
-            var visibleParent= GetParent(eObj);
-            for(; visibleParent != null && !IsVisible(visibleParent); visibleParent= GetParent(visibleParent));
+            var visibleParent= eObj.Parent;
+            for(; visibleParent != null && !IsVisible(visibleParent); visibleParent= visibleParent.Parent);
             Vector2 center= Math3D.Middle(GetLayoutPosition(visibleParent ?? eObj));
             target= new Rect(center.x, center.y, 0, 0);
         }
@@ -277,7 +275,7 @@ public partial class iCS_IStorage {
         ForEach(
             obj=> {
                 // Cleanup disconnected dynamic state or module ports.
-				var parent= GetParent(obj);
+				var parent= obj.Parent;
                 if(CleanupDeadPorts) {
 					bool shouldRemove= false;
 					if(obj.IsOutMuxPort) {
@@ -291,10 +289,10 @@ public partial class iCS_IStorage {
 							shouldRemove= nbOfChildren == 0 && IsPortDisconnected(obj);							
 						}
 					} else if(obj.IsInMuxPort) {
-						shouldRemove= GetSource(obj) == null;
+						shouldRemove= obj.Source == null;
 					} else {
 						shouldRemove= ((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) ||
-						              (obj.IsDynamicModulePort && GetSource(obj) == null && (parent.IsStateChart || parent.IsState));
+						              (obj.IsDynamicModulePort && obj.Source == null && (parent.IsStateChart || parent.IsState));
 						
 					}
 					if(shouldRemove) {
@@ -303,7 +301,8 @@ public partial class iCS_IStorage {
 					}
                     // Cleanup disconnected typecasts.
     				if(obj.IsTypeCast) {
-                        if(GetSource(FindInChildren(obj, c=> c.IsInDataPort)) == null &&
+						var inDataPort= FindInChildren(obj, c=> c.IsInDataPort);
+                        if(inDataPort.Source == null &&
                            FindAConnectedPort(FindInChildren(obj, c=> c.IsOutDataPort)) == null) {
                            DestroyInstanceInternal(obj);
                            modified= true;
@@ -358,7 +357,7 @@ public partial class iCS_IStorage {
             Rect displayPos= displayPositions[i];
             if(Math3D.IsZero(displayPos.width) && Math3D.IsZero(displayPos.x)) {
                 iCS_EditorObject posObj= EditorObjects[i];
-                if(posObj.IsPort) posObj= GetParent(posObj);
+                if(posObj.IsPort) posObj= posObj.Parent;
                 Vector2 center= Math3D.Middle(GetLayoutPosition(posObj));
                 displayPos.x= center.x;
                 displayPos.y= center.y;
@@ -616,7 +615,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         iCS_EditorObject port= this[id]= new iCS_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0), this);
         // Reajust data port position 
-        iCS_EditorObject parent= GetParent(port);
+        iCS_EditorObject parent= port.Parent;
 		if(port.IsDataPort && parent.IsDataPort) {
 			port.LocalPosition= new Rect(0,0,0,0);
 		} else if(port.IsDataPort && !port.IsEnablePort) {
@@ -629,7 +628,7 @@ public partial class iCS_IStorage {
             }
         }
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
-        Rect parentPos= GetLayoutPosition(GetParent(port));
+        Rect parentPos= GetLayoutPosition(port.Parent);
         SetDisplayPosition(this[id], new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0));
 		SetDirty(this[id]);
         return EditorObjects[id];        
@@ -683,7 +682,7 @@ public partial class iCS_IStorage {
         Rect inPos= GetLayoutPosition(inPort);
         Rect outPos= GetLayoutPosition(outPort);
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
-        int grandParentId= GetParent(inPort).ParentId;
+        int grandParentId= inPort.ParentId;
         iCS_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);
         ForEachChild(conv,
             (child) => {

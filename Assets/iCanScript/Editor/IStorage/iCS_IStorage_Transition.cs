@@ -15,7 +15,7 @@ public partial class iCS_IStorage {
         UpdatePortEdge(toStatePort);        
         UpdatePortEdge(fromStatePort);        
         // Determine transition parent
-        iCS_EditorObject transitionParent= GetTransitionParent(GetParent(toStatePort), GetParent(fromStatePort));
+        iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
         // Create transition module
         var transitionModulePos= 0.5f*(fromStatePortPos+toStatePortPos);
         iCS_EditorObject transitionModule= CreateModule(transitionParent.InstanceId, transitionModulePos, "[false]", iCS_ObjectTypeEnum.TransitionModule);
@@ -72,8 +72,8 @@ public partial class iCS_IStorage {
     // Updates the port names of a transition.
     public void UpdatePortNames(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
         // State ports
-        var fromParent= GetParent(fromStatePort);
-        var toParent  = GetParent(toStatePort);
+        var fromParent= fromStatePort.Parent;
+        var toParent  = toStatePort.Parent;
         string statePortName= fromParent.Name+"->"+toParent.Name;
         fromStatePort.Name= statePortName;
         toStatePort.Name  = statePortName;
@@ -93,9 +93,9 @@ public partial class iCS_IStorage {
     public iCS_EditorObject GetTransitionParent(iCS_EditorObject toState, iCS_EditorObject fromState) {
         bool parentFound= false;
         iCS_EditorObject fromParent= null;
-        for(fromParent= fromState; fromParent != null; fromParent= GetParent(fromParent)) {
+        for(fromParent= fromState; fromParent != null; fromParent= fromParent.Parent) {
             iCS_EditorObject toParent= null;
-            for(toParent= toState; toParent != null; toParent= GetParent(toParent)) {
+            for(toParent= toState; toParent != null; toParent= toParent.Parent) {
                 if(fromParent == toParent) {
                     parentFound= true;
                     break;
@@ -113,10 +113,10 @@ public partial class iCS_IStorage {
         if(transitionObject.IsOutStatePort) return transitionObject;
         if(transitionObject.IsInStatePort) {
             do {
-                iCS_EditorObject source= GetSource(transitionObject);
+                iCS_EditorObject source= transitionObject.Source;
 				if(source == null) return null;
                 if(source.IsOutStatePort) return source;
-                iCS_EditorObject sourceParent= GetParent(source);
+                iCS_EditorObject sourceParent= source.Parent;
                 transitionObject= GetInTransitionPort(sourceParent);                
             } while(transitionObject != null);
             return null;
@@ -163,7 +163,7 @@ public partial class iCS_IStorage {
         foreach(var port in connectedPorts) {
             if(port.IsInTransitionPort) inStatePort= port;
         }
-        iCS_EditorObject transitionModule= GetParent(inStatePort);
+        iCS_EditorObject transitionModule= inStatePort.Parent;
         // Find transition module output port.
         ForEachChildPort(transitionModule,
             p=> {
@@ -181,7 +181,7 @@ public partial class iCS_IStorage {
         if(obj.IsInTransitionPort) return obj;
         iCS_EditorObject transitionModule= obj.IsTransitionModule ?
                 obj :
-                (obj.IsOutTransitionPort ? GetParent(obj) : GetTransitionModule(obj));
+                (obj.IsOutTransitionPort ? obj.Parent : GetTransitionModule(obj));
         iCS_EditorObject inTransitionPort= null;
         ForEachChildPort(transitionModule,
             p=> {
@@ -199,7 +199,7 @@ public partial class iCS_IStorage {
         if(obj.IsOutTransitionPort) return obj;
         iCS_EditorObject transitionModule= obj.IsTransitionModule ? 
                 obj :
-                (obj.IsInTransitionPort ? GetParent(obj) : GetTransitionModule(obj));
+                (obj.IsInTransitionPort ? obj.Parent : GetTransitionModule(obj));
         iCS_EditorObject outTransitionPort= null;
         ForEachChildPort(transitionModule,
             p=> {
@@ -218,7 +218,7 @@ public partial class iCS_IStorage {
         // Get the outStatePort
         statePort= GetFromStatePort(statePort);
 		if(statePort == null) return null;
-        return GetParent(GetParent(GetSource(statePort)));
+        return statePort.Source.Parent.Parent;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject GetTransitionGuardAndAction(iCS_EditorObject statePort, out iCS_EditorObject actionModule) {
@@ -260,7 +260,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject fromStatePort= GetFromStatePort(module);
         iCS_EditorObject toStatePort= GetToStatePort(module);
         if(toStatePort != null) {
-            iCS_EditorObject parent= GetParent(module);
+            iCS_EditorObject parent= module.Parent;
             iCS_ConnectionParams cp= new iCS_ConnectionParams(toStatePort, fromStatePort, this);
             Vector2 distance= cp.End-cp.Start;
             Vector2 delta= 0.5f*iCS_Config.GutterSize*(distance).normalized;

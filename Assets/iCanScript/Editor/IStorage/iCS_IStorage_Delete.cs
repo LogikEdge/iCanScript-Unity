@@ -55,7 +55,7 @@ public partial class iCS_IStorage {
         // Disconnect ports linking to this port.
         ExecuteIf(toDestroy, obj=> obj.IsPort, _=> DisconnectPort(toDestroy));
         // Update modules runtime data when removing a module port.
-        iCS_EditorObject parent= GetParent(toDestroy);
+        iCS_EditorObject parent= toDestroy.Parent;
         if(toDestroy.IsModulePort || toDestroy.IsInMuxPort) 	 RemoveDynamicPort(toDestroy);
         // Remember entry state.
         bool isEntryState= toDestroy.IsEntryState;

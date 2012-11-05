@@ -152,7 +152,7 @@ public class iCS_Inspector : Editor {
                         SelectedObject.Name= name;
                         if(SelectedObject.IsStatePort) {
                             if(SelectedObject.IsOutStatePort) myStorage.FindAConnectedPort(SelectedObject).Name= name;
-                            else myStorage.GetSource(SelectedObject).Name= name;                            
+                            else SelectedObject.Source.Name= name;                            
                         }
                         myStorage.SetDirty(SelectedObject);
                     }                    
@@ -169,7 +169,7 @@ public class iCS_Inspector : Editor {
                     SelectedObject.Tooltip= toolTip;
                     if(SelectedObject.IsStatePort) {
                         if(SelectedObject.IsOutStatePort) myStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;
-                        else myStorage.GetSource(SelectedObject).Tooltip= toolTip;
+                        else SelectedObject.Source.Tooltip= toolTip;
                     }
                 }
                 // Show inspector specific for each type of component.
@@ -269,7 +269,7 @@ public class iCS_Inspector : Editor {
                 foreach(var port in outPorts) {
                     iCS_EditorObject inPort= myStorage.FindAConnectedPort(port);
                     EditorGUILayout.LabelField("Name", inPort.Name);                        
-                    EditorGUILayout.LabelField("State", myStorage.GetParent(inPort).Name);                    
+                    EditorGUILayout.LabelField("State", inPort.Parent.Name);                    
                 }
             }
         }
@@ -281,8 +281,8 @@ public class iCS_Inspector : Editor {
                 EditorGUI.indentLevel= 2;
                 foreach(var port in inPorts) {
                     EditorGUILayout.LabelField("Name", port.Name);                        
-                    iCS_EditorObject outPort= myStorage.GetSource(port);
-                    EditorGUILayout.LabelField("State", myStorage.GetParent(outPort).Name);                    
+                    iCS_EditorObject outPort= port.Source;
+                    EditorGUILayout.LabelField("State", outPort.Parent.Name);                    
                 }
             }
         }
@@ -291,7 +291,7 @@ public class iCS_Inspector : Editor {
 	// ----------------------------------------------------------------------
     // Inspects the selected port.
     void InspectPort(iCS_EditorObject port) {
-        iCS_EditorObject parent= myStorage.GetParent(port);
+        iCS_EditorObject parent= port.Parent;
         EditorGUILayout.LabelField("Parent", parent.Name);
         string inOut= port.IsInputPort ? (port.IsEnablePort ? "enable":"in") : "out";
         EditorGUILayout.LabelField("Direction", inOut);

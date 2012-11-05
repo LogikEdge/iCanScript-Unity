@@ -50,11 +50,11 @@ public partial class iCS_IStorage {
             if(node.LocalPosition.width != iconSize.x || node.LocalPosition.height != iconSize.y) {
                 if(IsValid(node.ParentId)) {
                     if(node.LocalPosition.x == 0) {
-                        node.LocalPosition= new Rect(0.5f*GetParent(node).LocalPosition.width, node.LocalPosition.y,
+                        node.LocalPosition= new Rect(0.5f*node.Parent.LocalPosition.width, node.LocalPosition.y,
                                                      node.LocalPosition.width, node.LocalPosition.height);
                     }
                     if(node.LocalPosition.y == 0) {
-                        node.LocalPosition= new Rect(node.LocalPosition.x, 0.5f*GetParent(node).LocalPosition.height,
+                        node.LocalPosition= new Rect(node.LocalPosition.x, 0.5f*node.Parent.LocalPosition.height,
                                                      node.LocalPosition.width, node.LocalPosition.height);
                     }
                 }
@@ -188,7 +188,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void LayoutParent(iCS_EditorObject node, Vector2 _deltaMove) {
         if(!IsValid(node.ParentId)) return;
-        iCS_EditorObject parentNode= GetParent(node);
+        iCS_EditorObject parentNode= node.Parent;
         ResolveCollision(parentNode, _deltaMove);
         Layout(parentNode);
     }
@@ -375,10 +375,10 @@ public partial class iCS_IStorage {
     bool IsPortOnParent(iCS_EditorObject port) {
         if(!port.IsFloating) return true;
         if(port.IsDataPort) {
-            return IsNearNodeEdge(GetParent(port), Math3D.ToVector2(GetLayoutPosition(port)), port.Edge);
+            return IsNearNodeEdge(port.Parent, Math3D.ToVector2(GetLayoutPosition(port)), port.Edge);
         }
         if(port.IsStatePort) {
-            var parent= GetParent(port);
+            var parent= port.Parent;
             var bestEdge= GetClosestEdge(parent, port);
             return IsNearNodeEdge(parent, Math3D.ToVector2(GetLayoutPosition(port)), bestEdge);
         }
@@ -441,7 +441,7 @@ public partial class iCS_IStorage {
     void ResolveCollision(iCS_EditorObject node, Vector2 _delta) {
         ResolveCollisionOnChildren(node, _delta);
         if(!IsValid(node.ParentId)) return;
-        ResolveCollision(GetParent(node), _delta);
+        ResolveCollision(node.Parent, _delta);
     }
 
     // ----------------------------------------------------------------------
@@ -555,7 +555,7 @@ public partial class iCS_IStorage {
         }
         // Selected closest edge.
         else {
-            port.Edge= GetClosestEdge(GetParent(port), port);            
+            port.Edge= GetClosestEdge(port.Parent, port);            
         }
         // Set dirty flag if port edge has changed.
         if(!port.IsFloating) CleanupPortPositionOnEdge(port);
@@ -563,7 +563,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void CleanupPortPositionOnEdge(iCS_EditorObject port) {
-        var parent= GetParent(port);
+        var parent= port.Parent;
         var parentPos= GetLayoutPosition(parent);
         Rect lp= port.LocalPosition;
         switch(port.Edge) {

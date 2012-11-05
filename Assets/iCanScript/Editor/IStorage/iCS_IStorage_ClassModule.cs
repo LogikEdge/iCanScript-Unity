@@ -228,7 +228,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void ClassModuleDestroyPortIfNotConnected(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
         iCS_EditorObject port= ClassModuleGetPort(module, portName, objType);
-        if(port != null && GetSource(port) == null && FindAConnectedPort(port) == null) {
+        if(port != null && port.Source == null && FindAConnectedPort(port) == null) {
             DestroyInstance(port.InstanceId);
         }
     }
@@ -323,9 +323,9 @@ public partial class iCS_IStorage {
     }
     public iCS_EditorObject ClassModuleGetConstructor(iCS_EditorObject module) {
         iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.This, iCS_ObjectTypeEnum.InStaticModulePort);
-        iCS_EditorObject constructorThisPort= GetSource(moduleThisPort);
+        iCS_EditorObject constructorThisPort= moduleThisPort.Source;
         if(constructorThisPort == null) return null;
-        iCS_EditorObject constructor= GetParent(constructorThisPort);
+        iCS_EditorObject constructor= constructorThisPort.Parent;
         return constructor.IsConstructor ? constructor : null;
     }
 }

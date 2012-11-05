@@ -516,7 +516,7 @@ public partial class iCS_Graphics {
         if(!IsVisible(displayArea)) return;
         
         // Determine if port is selected.
-        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == iStorage.GetParent(selectedObject));
+        bool isSelectedPort= port == selectedObject || (selectedObject != null && selectedObject.IsDataPort && port == selectedObject.Parent);
 
 		// Compute port radius (radius is increased if port is selected).
 		if(isSelectedPort) {
@@ -529,7 +529,7 @@ public partial class iCS_Graphics {
 
 		// Determine port colors
         Color portColor= iCS_PreferencesEditor.GetTypeColor(portValueType);
-        Color nodeColor= GetNodeColor(iStorage.GetParent(port));
+        Color nodeColor= GetNodeColor(port.Parent);
 
         // Draw port icon
 		DrawPortIcon(port, portCenter, isSelectedPort, portColor, nodeColor, portRadius, iStorage);
@@ -552,7 +552,7 @@ public partial class iCS_Graphics {
         if(port.IsStatePort || port.IsTransitionPort) return;         
 
         // Determine if port is a static port (a port that feeds information into the graph).
-        bool isStaticPort= port.IsInDataPort && iStorage.GetSource(port) == null;
+        bool isStaticPort= port.IsInDataPort && port.Source == null;
 
         // Display port name.
         if(!ShouldDisplayPortName(port, iStorage)) return;
@@ -597,7 +597,7 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     public void DrawPortIcon(iCS_EditorObject port, Vector2 portCenter, bool isSelected, Color portColor, Color nodeColor, float portRadius, iCS_IStorage iStorage) {
         // Determine if port is a static port (a port that feeds information into the graph).
-        bool isStaticPort= port.IsInDataPort && iStorage.GetSource(port) == null;
+        bool isStaticPort= port.IsInDataPort && port.Source == null;
         // Draw port icon.
         if(port.IsDataPort) {
             // Don't display mux input ports.
@@ -682,7 +682,7 @@ public partial class iCS_Graphics {
     static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
     static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
     static float TopBottomLabelOffset(iCS_EditorObject port, iCS_IStorage iStorage) {
-        float ratio= port.LocalPosition.x/GetDisplayPosition(iStorage.GetParent(port), iStorage).width;
+        float ratio= port.LocalPosition.x/GetDisplayPosition(port.Parent, iStorage).width;
         float error= 100f;
         float offset= 0f;
         for(int i= 0; i < portTopBottomRatio.Length; ++i) {
@@ -701,14 +701,14 @@ public partial class iCS_Graphics {
     public void DrawConnection(iCS_EditorObject port, iCS_IStorage iStorage, bool highlight= false, float lineWidth= 1.5f) {
         // No connection to draw if no valid source.
         if(!iStorage.IsValid(port.SourceId)) return;
-        iCS_EditorObject portParent= iStorage.GetParent(port);
+        iCS_EditorObject portParent= port.Parent;
 
         // No connection to draw if the parent is not visible.
         if(!IsVisible(portParent, iStorage)) return;
 
         // No connection to draw if source parent is not visible.
-        iCS_EditorObject source= iStorage.GetSource(port);
-        iCS_EditorObject sourceParent= iStorage.GetParent(source);
+        iCS_EditorObject source= port.Source;
+        iCS_EditorObject sourceParent= source.Parent;
         if(!(IsVisible(sourceParent, iStorage) && !port.IsOutStatePort)) return;
         
         // No connection to draw if outside clipping area.

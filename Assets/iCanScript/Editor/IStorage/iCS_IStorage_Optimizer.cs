@@ -7,7 +7,7 @@ public partial class iCS_IStorage {
 	// ----------------------------------------------------------------------
     // This function will attempt to remove dupliacte ports on the same module.
     public void OptimizeDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort) {
-        var source= GetSource(inPort);
+        var source= inPort.Source;
         if(source == null) return;
         if(source != outPort) {
             OptimizeDataConnection(source, outPort);

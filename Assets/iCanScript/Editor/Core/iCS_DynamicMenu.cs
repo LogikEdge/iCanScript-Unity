@@ -364,8 +364,8 @@ public class iCS_DynamicMenu {
                 break;
             }
             case PublishPortStr: {
-                iCS_EditorObject parent= storage.GetParent(selectedObject);
-                iCS_EditorObject grandParent= storage.GetParent(parent);
+                iCS_EditorObject parent= selectedObject.Parent;
+                iCS_EditorObject grandParent= parent.Parent;
                 int grandParentId= grandParent.InstanceId;
                 if(selectedObject.IsInputPort) {
                     iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
@@ -472,7 +472,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessSetStateEntry(iCS_EditorObject state, iCS_IStorage storage) {
-        iCS_EditorObject parent= storage.GetParent(state);
+        iCS_EditorObject parent= state.Parent;
         storage.ForEachChild(parent,
             child=>{
                 if(child.IsEntryState) {
@@ -543,8 +543,8 @@ public class iCS_DynamicMenu {
     iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, iCS_ReflectionInfo desc) {
         if(parent.IsPort) {
             iCS_EditorObject port= parent;
-            parent= storage.GetParent(port);
-            iCS_EditorObject grandParent= storage.GetParent(parent);
+            parent= port.Parent;
+            iCS_EditorObject grandParent= parent.Parent;
             if(!grandParent.IsModule) return null;
 			Vector2 pos= ProcessMenuPosition;
 			switch(port.Edge) {

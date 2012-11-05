@@ -16,7 +16,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public bool IsVisible(iCS_EditorObject eObj) {
         if(IsInvalid(eObj.ParentId)) return true;
-        iCS_EditorObject parent= GetParent(eObj);
+        iCS_EditorObject parent= eObj.Parent;
         if(eObj.IsNode && (parent.IsFolded || parent.IsIconized)) return false;
 		if(eObj.IsDataPort && (parent.IsDataPort || parent.IsIconized)) return false;
         return IsVisible(parent);
@@ -47,7 +47,7 @@ public partial class iCS_IStorage {
         ForEachChild(eObj, child=> { if(child.IsPort) child.Iconize(); });
         SetDirty(eObj);
         if(IsValid(eObj.ParentId)) {
-            SetDirty(GetParent(eObj));
+            SetDirty(eObj.Parent);
         }
     }
     public void Iconize(int id) { if(IsValid(id)) Iconize(EditorObjects[id]); }
@@ -59,7 +59,7 @@ public partial class iCS_IStorage {
         ForEachChild(eObj, child=> { if(child.IsPort) child.Unfold(); });
         NodeLayout(eObj,true);
         if(IsValid(eObj.ParentId)) {
-            iCS_EditorObject parent= GetParent(eObj);
+            iCS_EditorObject parent= eObj.Parent;
             SetDirty(parent);
         }
     }

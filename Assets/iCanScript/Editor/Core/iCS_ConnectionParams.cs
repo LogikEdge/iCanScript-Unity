@@ -40,11 +40,11 @@ public class iCS_ConnectionParams {
     // ----------------------------------------------------------------------
     public iCS_ConnectionParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, storage.GetLayoutPosition(port), source, storage.GetLayoutPosition(source), storage) {}
     // ----------------------------------------------------------------------
-    public iCS_ConnectionParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, storage.GetSource(port), storage) {}
+    public iCS_ConnectionParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, port.Source, storage) {}
     // ----------------------------------------------------------------------
     static Vector2 ConnectionDirectionFromTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         // Don't compute complex tangents if we don't have a proper parent.
-        iCS_EditorObject portParent= storage.GetParent(port);
+        iCS_EditorObject portParent= port.Parent;
         if(port.IsFloating || to.IsFloating) {
             if(port.IsDataPort || !storage.IsNearNodeEdge(portParent, Math3D.ToVector2(storage.GetLayoutPosition(port)), port.Edge)) {
                 Vector2 fromPos= Math3D.Middle(storage.GetLayoutPosition(port));
@@ -70,7 +70,7 @@ public class iCS_ConnectionParams {
             direction= DownDirection;
         }            
         // Inverse direction for connection between nested nodes.
-        iCS_EditorObject toParent= storage.GetParent(to);
+        iCS_EditorObject toParent= to.Parent;
         if(storage.IsChildOf(toParent, portParent) && !port.IsInStatePort) {
             direction= -direction;
         }
