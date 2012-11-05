@@ -26,7 +26,7 @@ public partial class iCS_EditorObject {
     // Proxy Methods
     // ----------------------------------------------------------------------
     public bool   IsValid {
-		get { return myId != -1 && EngineObject.IsValid; }
+		get { return myId != -1; }
 	}
     public iCS_ObjectTypeEnum ObjectType {
 		get { return EngineObject.ObjectType; }
@@ -38,6 +38,10 @@ public partial class iCS_EditorObject {
     public int ParentId {
 		get { return EngineObject.ParentId; }
 		set { EngineObject.ParentId= value; }
+	}
+    public iCS_EditorObject Parent {
+		get { return (IsValid && ParentId != -1) ? myIStorage[ParentId] : null; }
+		set { if(IsValid) ParentId= (value != null ? value.InstanceId : -1); }
 	}
     public Type RuntimeType {
 		get { return EngineObject.RuntimeType; }

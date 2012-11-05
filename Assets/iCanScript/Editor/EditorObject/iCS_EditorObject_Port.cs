@@ -18,6 +18,10 @@ public partial class iCS_EditorObject {
 		get { return EngineObject.SourceId; }
 		set { EngineObject.SourceId= value; }
 	}
+    public iCS_EditorObject Source {
+		get { return (IsValid && SourceId != -1) ? myIStorage[SourceId] : null; }
+		set { if(IsValid) SourceId= (value != null ? value.InstanceId : -1); }
+	}
     public int PortIndex {
 		get { return EngineObject.PortIndex; }
 		set { EngineObject.PortIndex= value; }
@@ -46,6 +50,45 @@ public partial class iCS_EditorObject {
 			if(SourceId != -1) return;
 			InitialValue= value;
 	        myIStorage.StoreInitialPortValueInArchive(this);			
+		}
+	}
+
+    // Runtime port value ---------------------------------------------------
+	public object RuntimePortValue {
+		get {
+			if(!IsValid || !IsDataPort) return null;
+			var port= this;
+			while(port.Source != null) port= port.Source;
+			iCS_IParams funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParams;
+			if(funcBase != null) {
+			    return funcBase.GetParameter(0);
+			}
+			funcBase= myIStorage.GetRuntimeObject(port.Parent) as iCS_IParams;
+			return funcBase == null ? port.InitialPortValue : null;			
+		}
+		set {
+	        if(!IsValid || !IsInDataPort) return;
+	        // Just set the port if it has its own runtime.
+			iCS_IParams funcBase= myIStorage.GetRuntimeObject(this) as iCS_IParams;
+	        if(funcBase != null) {
+	            funcBase.SetParameter(0, value);
+	            return;
+	        }
+	        // Propagate value for module port.
+	        if(IsModulePort) {
+	            iCS_EditorObject[] connectedPorts= myIStorage.FindConnectedPorts(this);
+	            foreach(var cp in connectedPorts) {
+	                cp.RuntimePortValue= value;
+	            }
+	            return;
+	        }
+	        if(PortIndex < 0) return;
+	        iCS_EditorObject parent= Parent;
+	        if(parent == null) return;
+	        // Get runtime object if it exists.
+	        iCS_IParams runtimeObject= myIStorage.GetRuntimeObject(parent) as iCS_IParams;
+	        if(runtimeObject == null) return;
+	        runtimeObject.SetParameter(PortIndex, value);			
 		}
 	}
 }
