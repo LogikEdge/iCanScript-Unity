@@ -10,34 +10,33 @@ public partial class iCS_IStorage {
 		if(!port.IsInDataPort) return;
 		if(port.SourceId != -1) return;
 		if(iCS_Strings.IsEmpty(port.InitialValueArchive)) {
-			StorageCache[port.InstanceId].InitialValue= null;
+			port.InitialValue= null;
 			return;
 		}
 		iCS_Coder coder= new iCS_Coder(port.InitialValueArchive);
-		StorageCache[port.InstanceId].InitialValue= coder.DecodeObjectForKey("InitialValue", Storage);
+		port.InitialValue= coder.DecodeObjectForKey("InitialValue", Storage);
 	}
     // ----------------------------------------------------------------------
     public void StoreInitialPortValueInArchive(iCS_EditorObject port) {
-        var cache= StorageCache[port.InstanceId];
-        if(cache.InitialValue == null) {
+        if(port.InitialValue == null) {
             port.InitialValueArchive= null;
             return;
         }
 		iCS_Coder coder= new iCS_Coder();
-		coder.EncodeObject("InitialValue", cache.InitialValue, Storage);
+		coder.EncodeObject("InitialValue", port.InitialValue, Storage);
 		port.InitialValueArchive= coder.Archive;         
     }
     // ----------------------------------------------------------------------
 	public object GetInitialPortValue(iCS_EditorObject port) {
 		if(!port.IsInDataPort) return null;
 		if(port.SourceId != -1) return null;
-		return StorageCache[port.InstanceId].InitialValue;
+		return port.InitialValue;
 	}
     // ----------------------------------------------------------------------
 	public void SetInitialPortValue(iCS_EditorObject port, object value) {
 		if(!port.IsInDataPort) return;
 		if(port.SourceId != -1) return;
-		StorageCache[port.InstanceId].InitialValue= value;
+		port.InitialValue= value;
         StoreInitialPortValueInArchive(port);
 	}
 

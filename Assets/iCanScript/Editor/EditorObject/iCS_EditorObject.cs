@@ -76,7 +76,7 @@ public partial class iCS_EditorObject {
 	}
     
     // ======================================================================
-    // Constructors
+    // Constructors/Builders
     // ----------------------------------------------------------------------
     public iCS_EditorObject(int id, iCS_IStorage iStorage, iCS_EngineObject engineObject) {
         if(id >= 0) {
@@ -118,6 +118,7 @@ public partial class iCS_EditorObject {
     public void Reset() {
         IsFloating= false;
         IsDirty= false;
+		InitialValue= null;
         EngineObject.Reset();
     }    
 }

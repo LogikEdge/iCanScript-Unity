@@ -319,7 +319,7 @@ public partial class iCS_IStorage {
         Storage.ClearUnityObjects();
         ForEach(
             obj=> {
-                if(obj.IsInDataPort && obj.SourceId == -1 && StorageCache[obj.InstanceId].InitialValue != null) {
+                if(obj.IsInDataPort && obj.SourceId == -1 && obj.InitialValue != null) {
                     StoreInitialPortValueInArchive(obj);
                 }
                 else {
