@@ -10,10 +10,8 @@ public class iCS_EditorObjectCache {
     public bool             IsValid     = false;
     public int              ParentId    = -1;
     public List<int>        Children    = new List<int>();
-//	public object		    InitialValue= null;
 	// Graph Animation
 	public Rect				VisiblePosition = new Rect(0,0,0,0);					
-//	public P.Animate<Rect>	AnimatedPosition= new P.Animate<Rect>();
 	
     // ======================================================================
     // Operations
@@ -23,8 +21,6 @@ public class iCS_EditorObjectCache {
         IsValid= false;
         ParentId= -1;
         Children.Clear();
-//		InitialValue= null;
-//		AnimatedPosition.Reset();
     }
     public void AddChild(int id, iCS_EditorObjectCache toAdd) {
         if(Prelude.elem(id, Children.ToArray())) return;
