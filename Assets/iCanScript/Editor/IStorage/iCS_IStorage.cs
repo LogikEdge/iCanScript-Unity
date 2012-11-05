@@ -34,8 +34,8 @@ public partial class iCS_IStorage {
         if(Storage != storage) {
             myIsDirty= true;
             Storage= storage;
-            GenerateEditorData();
             UndoRedoId= Storage.UndoRedoId;          
+            GenerateEditorData();
         }
     }
     public void Reset() {
@@ -45,16 +45,11 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
-        myEditorObjects= P.map(obj=> obj != null ? new iCS_EditorObject(this, obj) : null, EngineObjects);
-        if(myEditorObjects.Count != EngineObjects.Count) {
-            Debug.Log("P1");
-        }
-        for(int i= 0; i < EngineObjects.Count; ++i) {
-            if(myEditorObjects[i].InstanceId != EngineObjects[i].InstanceId) {
-                Debug.Log("P2");
-            }
-        }
-        
+		// Rebuild Editor Objects from the Engine Objects.
+		myEditorObjects= new List<iCS_EditorObject>();
+		iCS_EditorObject.RebuildFromEngineObjects(this);
+		
+		// Rebuild cache from the engine objects.
         StorageCache= new iCS_IStorageCache();
         ForEach(obj=> StorageCache.CreateInstance(obj));
         if(IsValid(0)) {

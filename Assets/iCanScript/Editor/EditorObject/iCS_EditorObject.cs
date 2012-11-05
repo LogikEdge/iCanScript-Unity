@@ -7,10 +7,11 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_IStorage    		myIStorage  = null;
-    int             		myId        = -1;
-    bool            		myIsFloating= false;
-    bool            		myIsDirty   = false;
+    iCS_IStorage    	myIStorage  = null;
+    int             	myId        = -1;
+    bool            	myIsFloating= false;
+    bool            	myIsDirty   = false;
+    public List<int>	myChildren  = new List<int>();
  
     // ======================================================================
     // Conversion Utilities
@@ -37,7 +38,16 @@ public partial class iCS_EditorObject {
 	}
     public int ParentId {
 		get { return EngineObject.ParentId; }
-		set { EngineObject.ParentId= value; }
+		set {
+			int pid= EngineObject.ParentId;
+			if(pid != -1 && pid != value) {
+				myIStorage[pid].RemoveChild(InstanceId, this);
+			}
+			EngineObject.ParentId= value;
+			if(value != -1) {
+				myIStorage[value].AddChild(InstanceId, this);
+			}
+		}
 	}
     public iCS_EditorObject Parent {
 		get { return (IsValid && ParentId != -1) ? myIStorage[ParentId] : null; }
@@ -85,11 +95,11 @@ public partial class iCS_EditorObject {
     public iCS_EditorObject(int id, iCS_IStorage iStorage, iCS_EngineObject engineObject) {
         if(id >= 0) {
             // Grow engine object array if needed.
-            for(int len= iStorage.EngineObjects.Count; id >= len; ++len) {
-                iStorage.EngineObjects.Add(null);
-            }
+			GrowEngineObjects(id, iStorage);
             iStorage.EngineObjects[id]= engineObject;            
-        }
+        } else {
+			Debug.LogError("Trying to create an EditorObject with an invalid id: "+id);
+		}
         Init(id, iStorage);
     }
     // ----------------------------------------------------------------------
@@ -97,10 +107,6 @@ public partial class iCS_EditorObject {
                             Rect localPosition, iCS_IStorage iStorage) 
     : this(id, iStorage, new iCS_EngineObject(id, name, type, parentId, objectType, localPosition))
     {}
-    // ----------------------------------------------------------------------
-    public iCS_EditorObject(iCS_IStorage iStorage, iCS_EngineObject engineObject) {
-        Init(engineObject == null ? -1 : engineObject.InstanceId, iStorage);
-    }
     // ----------------------------------------------------------------------
     void Init(int id, iCS_IStorage iStorage) {
         myIStorage= iStorage;
@@ -116,14 +122,105 @@ public partial class iCS_EditorObject {
 												 localPosition);
         return new iCS_EditorObject(id, iStorage, engineObject);
     }
-    
+
     // ----------------------------------------------------------------------
     // Reinitialize the editor object to its default values.
     public void Reset() {
+		if(ParentId != -1) Parent.RemoveChild(InstanceId, this);
         IsFloating= false;
         IsDirty= false;
 		InitialValue= null;
 		myAnimatedPosition.Reset();
+		myChildren.Clear();
         EngineObject.Reset();
-    }    
+    } 
+
+    // ======================================================================
+	// Grow database if needed.
+    // ----------------------------------------------------------------------
+	private static void GrowObjects(int id, iCS_IStorage iStorage) {
+		GrowEngineObjects(id, iStorage);
+		GrowEditorObjects(id, iStorage);
+	}
+	private static void GrowEngineObjects(int id, iCS_IStorage iStorage) {
+        if(id >= 0) {
+            // Grow engine object array if needed.
+            for(int len= iStorage.EngineObjects.Count; id >= len; ++len) {
+                iStorage.EngineObjects.Add(null);
+            }
+        }
+	}
+	private static void GrowEditorObjects(int id, iCS_IStorage iStorage) {
+        if(id >= 0) {
+            // Grow engine object array if needed.
+            for(int len= iStorage.EditorObjects.Count; id >= len; ++len) {
+                iStorage.EditorObjects.Add(null);
+            }
+        }		
+	}
+	
+    // ======================================================================
+	// Rebuild from engine database.
+    // ----------------------------------------------------------------------
+    public iCS_EditorObject(int id, iCS_IStorage iStorage) {
+        Init(id, iStorage);
+    }
+    // ----------------------------------------------------------------------
+	public static void RebuildFromEngineObjects(iCS_IStorage iStorage) {
+		iStorage.EditorObjects.Clear();
+		foreach(var engineObject in iStorage.EngineObjects) {
+			iCS_EditorObject editorObject= null;
+			if(engineObject != null) {
+				editorObject= new iCS_EditorObject(engineObject.InstanceId, iStorage);
+			}			
+			iStorage.EditorObjects.Add(editorObject);
+		}
+		RebuildChildrenLists(iStorage);
+	}
+    // ----------------------------------------------------------------------
+	private static void RebuildChildrenLists(iCS_IStorage iStorage) {
+		foreach(var obj in iStorage.EditorObjects) {
+			if(obj != null && obj.ParentId != -1) {
+				obj.Parent.AddChild(obj.InstanceId, obj);
+			}			
+		}
+	}
+
+    // ======================================================================
+    // Child container management.
+    // ----------------------------------------------------------------------
+	public List<int> Children { get { return myChildren; }}
+    // ----------------------------------------------------------------------
+    public void AddChild(int id, iCS_EditorObject toAdd) {
+        if(Prelude.elem(id, myChildren.ToArray())) return;
+        myChildren.Add(id);
+    }
+    // ----------------------------------------------------------------------
+    public void RemoveChild(int id, iCS_EditorObject toDelete) {
+        for(int i= 0; i < myChildren.Count; ++i) {
+            if(myChildren[i] == id) {
+                myChildren.RemoveAt(i);
+                return;
+            }
+        }
+    }
+    // ----------------------------------------------------------------------
+    public bool AreChildrenInSameOrder(int[] orderedChildren) {
+        int i= 0;
+        for(int j= 0; j < Children.Count; ++j) {
+            if(Children[j] == orderedChildren[i]) {
+                if(++i >= orderedChildren.Length) return true;
+            };
+        }
+        return false;
+    }
+    // ----------------------------------------------------------------------
+    public void ReorderChildren(int[] orderedChildren) {
+        if(AreChildrenInSameOrder(orderedChildren)) return;
+        List<int> others= Prelude.filter(c=> Prelude.notElem(c,orderedChildren), Children);
+        int i= 0;
+        Prelude.forEach(c=> Children[i++]= c, orderedChildren);
+        Prelude.forEach(c=> Children[i++]= c, others);
+    }
+   
 }

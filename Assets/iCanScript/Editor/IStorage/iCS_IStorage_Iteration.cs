@@ -26,19 +26,19 @@ public partial class iCS_IStorage {
     public void ForEachChild(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            StorageCache.ForEachChild(id=> fnc(EditorObjects[id]));            
+            EditorObjects[0].ForEachChild(id=> fnc(EditorObjects[id]));            
         }
         else {
-            StorageCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
+            parent.ForEachChild(id=> fnc(EditorObjects[id]));            
         }
     }
     public bool ForEachChild(iCS_EditorObject parent, Func<iCS_EditorObject,bool> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            return StorageCache.ForEachChild(id=> fnc(EditorObjects[id]));            
+            return EditorObjects[0].ForEachChild(id=> fnc(EditorObjects[id]));            
         }
         else {
-            return StorageCache.ForEachChild(parent.InstanceId, id=> fnc(EditorObjects[id]));            
+            return parent.ForEachChild(id=> fnc(EditorObjects[id]));            
         }
     }
     public void ForEach(Action<iCS_EditorObject> fnc) {
@@ -51,17 +51,17 @@ public partial class iCS_IStorage {
     public void ForEachRecursiveDepthLast(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            StorageCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));                                
+            EditorObjects[0].ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));                                
         } else {
-            StorageCache.ForEachRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
+            parent.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));                    
         }
     }
     public void ForEachRecursiveDepthFirst(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            StorageCache.ForEachRecursiveDepthFirst(id => fnc(EditorObjects[id]));        
+            EditorObjects[0].ForEachRecursiveDepthFirst(id => fnc(EditorObjects[id]));        
         } else {
-            StorageCache.ForEachRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
+            parent.ForEachRecursiveDepthFirst(id=> fnc(EditorObjects[id]));                    
         }
     }
     public void ForEachChildRecursive(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
@@ -70,17 +70,17 @@ public partial class iCS_IStorage {
     public void ForEachChildRecursiveDepthLast(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            StorageCache.ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));        
+            EditorObjects[0].ForEachRecursiveDepthLast(id=> fnc(EditorObjects[id]));        
         } else {
-            StorageCache.ForEachChildRecursiveDepthLast(parent.InstanceId, id=> fnc(EditorObjects[id]));                    
+            parent.ForEachChildRecursiveDepthLast(id=> fnc(EditorObjects[id]));                    
         }
     }
     public void ForEachChildRecursiveDepthFirst(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();
         if(parent == null) {
-            StorageCache.ForEachRecursiveDepthFirst(id=> fnc(EditorObjects[id]));                    
+            EditorObjects[0].ForEachRecursiveDepthFirst(id=> fnc(EditorObjects[id]));                    
         } else {
-            StorageCache.ForEachChildRecursiveDepthFirst(parent.InstanceId, id=> fnc(EditorObjects[id]));        
+            parent.ForEachChildRecursiveDepthFirst(id=> fnc(EditorObjects[id]));        
         }
     }
     // ----------------------------------------------------------------------

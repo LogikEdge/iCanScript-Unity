@@ -72,96 +72,96 @@ public class iCS_IStorageCache {
     // ======================================================================
     // Tree Iterations
     // ----------------------------------------------------------------------
-    public void ForEachChild(Action<int> fnc) {
-        for(int id= 0; id < StorageCache.Count; ++id) {
-            if(IsValid(id) && StorageCache[id].ParentId == -1) fnc(id);
-        }
-    }
-    public bool ForEachChild(Func<int,bool> fnc) {
-        for(int id= 0; id < StorageCache.Count; ++id) {
-            if(IsValid(id) && StorageCache[id].ParentId == -1) {
-                if(fnc(id)) return true;
-            }
-        }
-        return false;
-    }
-    public void ForEachChild(int id, Action<int> fnc) {
-        if(IsInvalid(id)) return;
-        var nd= StorageCache[id];
-        foreach(var child in nd.Children) {
-            if(StorageCache[id].IsValid) fnc(child);
-        }
-    }
-    public bool ForEachChild(int id, Func<int,bool> fnc) {
-        if(IsInvalid(id)) return false;
-        var nd= StorageCache[id];
-        foreach(var child in nd.Children) {
-            if(StorageCache[id].IsValid) {
-                if(fnc(child)) return true;
-            }
-        }
-        return false;
-    }
-    // ----------------------------------------------------------------------
-    public void ForEachRecursiveDepthFirst(Action<int> fnc) {
-        // Nothing to do if the id is invalid
-        if(IsInvalid(0)) return;
-        // First do all children.
-        ForEachChild((child) => { ForEachRecursiveDepthFirst(child, fnc); });
-        // ... then root node.
-        fnc(0);
-    }
-    public void ForEachRecursiveDepthFirst(int id, Action<int> fnc) {
-        // Nothing to do if the id is invalid.
-        if(IsInvalid(id)) return;
-
-        // First iterate through all children ...
-        var nd= StorageCache[id];
-        foreach(var child in nd.Children) {
-            ForEachRecursiveDepthFirst(child, fnc);
-        }
-        
-        // ... then this node.
-        fnc(id);
-    }
-    public void ForEachRecursiveDepthLast(Action<int> fnc) {
-        // Nothing to do if the id is invalid
-        if(IsInvalid(0)) return;
-        // First root node.
-        fnc(0);
-        // ... then all children.
-        ForEachChild((child) => { ForEachRecursiveDepthLast(child, fnc); });
-    }
-    public void ForEachRecursiveDepthLast(int id, Action<int> fnc) {
-        // Nothing to do if the id is invalid
-        if(IsInvalid(id)) return;
-        // First this node ...
-        fnc(id);
-        // ... then iterate through all children.
-        var nd= StorageCache[id];
-        foreach(var child in nd.Children) {
-            ForEachRecursiveDepthLast(child, fnc);
-        }
-    }
-    // ----------------------------------------------------------------------
-    public void ForEachChildRecursiveDepthFirst(int id, Action<int> fnc) {
-        // Nothing to do if the id is invalid.
-        if(IsInvalid(id)) return;
-        // Don't use the id it is has been removed.
-        var nd= StorageCache[id];        
-        // Iterate through all children ...
-        foreach(var child in nd.Children) {
-            ForEachRecursiveDepthFirst(child, fnc);
-        }
-    }
-    public void ForEachChildRecursiveDepthLast(int id, Action<int> fnc) {
-        // Nothing to do if the id is invalid
-        if(IsInvalid(id)) return;
-        // Don't use the id it is has been removed.
-        var nd= StorageCache[id];        
-        // Iterate through all children.
-        foreach(var child in nd.Children) {
-            ForEachRecursiveDepthLast(child, fnc);
-        }
-    }
+//    public void ForEachChild(Action<int> fnc) {
+//        for(int id= 0; id < StorageCache.Count; ++id) {
+//            if(IsValid(id) && StorageCache[id].ParentId == -1) fnc(id);
+//        }
+//    }
+//    public bool ForEachChild(Func<int,bool> fnc) {
+//        for(int id= 0; id < StorageCache.Count; ++id) {
+//            if(IsValid(id) && StorageCache[id].ParentId == -1) {
+//                if(fnc(id)) return true;
+//            }
+//        }
+//        return false;
+//    }
+//    public void ForEachChild(int id, Action<int> fnc) {
+//        if(IsInvalid(id)) return;
+//        var nd= StorageCache[id];
+//        foreach(var child in nd.Children) {
+//            if(StorageCache[id].IsValid) fnc(child);
+//        }
+//    }
+//    public bool ForEachChild(int id, Func<int,bool> fnc) {
+//        if(IsInvalid(id)) return false;
+//        var nd= StorageCache[id];
+//        foreach(var child in nd.Children) {
+//            if(StorageCache[id].IsValid) {
+//                if(fnc(child)) return true;
+//            }
+//        }
+//        return false;
+//    }
+//    // ----------------------------------------------------------------------
+//    public void ForEachRecursiveDepthFirst(Action<int> fnc) {
+//        // Nothing to do if the id is invalid
+//        if(IsInvalid(0)) return;
+//        // First do all children.
+//        ForEachChild((child) => { ForEachRecursiveDepthFirst(child, fnc); });
+//        // ... then root node.
+//        fnc(0);
+//    }
+//    public void ForEachRecursiveDepthFirst(int id, Action<int> fnc) {
+//        // Nothing to do if the id is invalid.
+//        if(IsInvalid(id)) return;
+//
+//        // First iterate through all children ...
+//        var nd= StorageCache[id];
+//        foreach(var child in nd.Children) {
+//            ForEachRecursiveDepthFirst(child, fnc);
+//        }
+//        
+//        // ... then this node.
+//        fnc(id);
+//    }
+//    public void ForEachRecursiveDepthLast(Action<int> fnc) {
+//        // Nothing to do if the id is invalid
+//        if(IsInvalid(0)) return;
+//        // First root node.
+//        fnc(0);
+//        // ... then all children.
+//        ForEachChild((child) => { ForEachRecursiveDepthLast(child, fnc); });
+//    }
+//    public void ForEachRecursiveDepthLast(int id, Action<int> fnc) {
+//        // Nothing to do if the id is invalid
+//        if(IsInvalid(id)) return;
+//        // First this node ...
+//        fnc(id);
+//        // ... then iterate through all children.
+//        var nd= StorageCache[id];
+//        foreach(var child in nd.Children) {
+//            ForEachRecursiveDepthLast(child, fnc);
+//        }
+//    }
+//    // ----------------------------------------------------------------------
+//    public void ForEachChildRecursiveDepthFirst(int id, Action<int> fnc) {
+//        // Nothing to do if the id is invalid.
+//        if(IsInvalid(id)) return;
+//        // Don't use the id it is has been removed.
+//        var nd= StorageCache[id];        
+//        // Iterate through all children ...
+//        foreach(var child in nd.Children) {
+//            ForEachRecursiveDepthFirst(child, fnc);
+//        }
+//    }
+//    public void ForEachChildRecursiveDepthLast(int id, Action<int> fnc) {
+//        // Nothing to do if the id is invalid
+//        if(IsInvalid(id)) return;
+//        // Don't use the id it is has been removed.
+//        var nd= StorageCache[id];        
+//        // Iterate through all children.
+//        foreach(var child in nd.Children) {
+//            ForEachRecursiveDepthLast(child, fnc);
+//        }
+//    }
 }
