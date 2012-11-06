@@ -175,7 +175,8 @@ public sealed class iCS_Behaviour : iCS_Storage {
 				if(EngineObjects[i].InstanceId == -1) continue;
 				if(EngineObjects[i].InstanceId != i) {
 					sanityNeeded= true;
-					EngineObjects[i].InstanceId= -1;
+					EngineObjects[i]= null;
+					Debug.LogWarning("iCanScript Sanity: Object: "+i+" has an invalid instance id !!!");
 					continue;
 				}
 				int parentId= EngineObjects[i].ParentId;
@@ -183,19 +184,22 @@ public sealed class iCS_Behaviour : iCS_Storage {
 					if(parentId != -1) {
 						sanityNeeded= true;
 						EngineObjects[0].ParentId= -1;
+						Debug.LogWarning("iCanScript Sanity: Root object has a parent of: "+parentId);
 						continue;
 					}
 				} else {
 					// The parent id must be valid.
 					if(!IsInBounds(parentId)) {
 						sanityNeeded= true;
-						EngineObjects[i].InstanceId= -1;
+						EngineObjects[i]= null;
+						Debug.LogWarning("iCanScript Sanity: Object: "+i+" has an invalid parent: "+parentId);
 						continue;				
 					}
 					// A port cannot be a parent.
 					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsOutMuxPort) {
 						sanityNeeded= true;
-						EngineObjects[i].InstanceId= -1;
+						EngineObjects[i]= null;
+						Debug.Log("iCanScript Sanity: Port: "+parentId+" is the parent of: "+i);
 						continue;										
 					}				
 				}
@@ -250,6 +254,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
             // Generate all runtime nodes.
             foreach(var node in EngineObjects) {
                 // Uninitialized.
+				if(node == null) continue;
 				if(node.InstanceId == -1) continue;
                 // Was already generated in a previous pass.
                 if(myRuntimeNodes[node.InstanceId] != null) continue;
@@ -380,6 +385,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // ----------------------------------------------------------------------
     public void ConnectRuntimeNodes() {
         foreach(var port in EngineObjects) {
+			if(port == null) continue;
 			if(port.InstanceId == -1) continue;
             if(port.IsPort) {
                 switch(port.ObjectType) {
@@ -543,6 +549,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
 		// Get all child data ports.
 		int nodeId= node.InstanceId;
 		foreach(var port in EngineObjects) {
+			if(port == null) continue;
 			if(port.ParentId != nodeId) continue;
 			if(!port.IsDataPort) continue;
 			if(port.IsEnablePort) continue;

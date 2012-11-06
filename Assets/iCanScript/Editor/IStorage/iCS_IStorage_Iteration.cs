@@ -8,10 +8,10 @@ public partial class iCS_IStorage {
     // Editor Object Iteration Utilities
     // ----------------------------------------------------------------------
     public void FilterWith(Func<iCS_EditorObject,bool> cond, Action<iCS_EditorObject> action) {
-        Prelude.filterWith(cond, action, EditorObjects);
+        Prelude.filterWith(obj=> IsValid(obj) && cond(obj), action, EditorObjects);
     }
     public List<iCS_EditorObject> Filter(Func<iCS_EditorObject,bool> cond) {
-        return Prelude.filter(cond, EditorObjects);
+        return Prelude.filter(obj=> IsValid(obj) && cond(obj), EditorObjects);
     }
 	public int NbOfChildren(iCS_EditorObject parent) {
 		if(!IsValid(parent)) return 0;
@@ -42,7 +42,7 @@ public partial class iCS_IStorage {
         }
     }
     public void ForEach(Action<iCS_EditorObject> fnc) {
-        Prelude.filterWith(obj=> obj != null, fnc, EditorObjects);
+        Prelude.filterWith(IsValid, fnc, EditorObjects);
     }
     public void ForEachRecursive(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();

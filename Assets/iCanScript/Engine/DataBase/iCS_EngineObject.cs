@@ -52,6 +52,18 @@ public class iCS_EngineObject {
         }
     }
     // ----------------------------------------------------------------------
+	public iCS_EngineObject() {
+		Reset();
+	}
+    // ----------------------------------------------------------------------
+	public static iCS_EngineObject CreateInvalidInstance() {
+		return new iCS_EngineObject();
+	}
+    // ----------------------------------------------------------------------
+	public void DestroyInstance() {
+		Reset();
+	}
+    // ----------------------------------------------------------------------
     public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent, Vector2 localPosition) {
         Rect localRect= new Rect(localPosition.x, localPosition.y, toClone.LocalPosition.width, toClone.LocalPosition.height);
         iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localRect);
@@ -250,6 +262,7 @@ public class iCS_EngineObject {
 		// Get all child data ports.
 		int nodeId= InstanceId;
 		foreach(var port in engineObjects) {
+			if(port == null) continue;
 			if(port.ParentId != nodeId) continue;
 			if(!port.IsDataPort) continue;
 			if(port.IsEnablePort) continue;

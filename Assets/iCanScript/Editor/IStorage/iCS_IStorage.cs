@@ -48,7 +48,7 @@ public partial class iCS_IStorage {
 		iCS_EditorObject.RebuildFromEngineObjects(this);
 		
         // Re-initialize internal values.
-        if(IsValid(EditorObjects[0])) {
+        if(EditorObjects.Count > 0 && IsValid(EditorObjects[0])) {
             Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
             ForEach(obj=> {
 		        // Initialize display position.
@@ -86,7 +86,7 @@ public partial class iCS_IStorage {
     public bool IsLibrary           { get { return IsValid(EditorObjects[0]) && !EditorObjects[0].IsBehaviour; }}
     // ----------------------------------------------------------------------
     public bool IsValid(int id)                      { return id != -1; }
-    public bool IsValid(iCS_EditorObject obj)        { return obj != null; }
+    public bool IsValid(iCS_EditorObject obj)        { return obj.InstanceId != -1; }
     public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
     public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
     // ----------------------------------------------------------------------
@@ -395,12 +395,13 @@ public partial class iCS_IStorage {
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, localPos, destStorage);
         newObj.IconGUID= srcObj.IconGUID;
-        srcStorage.ForEachChild(srcObj,
+        srcObj.ForEachChild(
             child=> Copy(child, srcStorage, newObj, destStorage, Math3D.ToVector2(child.LocalPosition), xlat)
         );
 		if(newObj.IsInDataPort) {
 			LoadInitialPortValueFromArchive(this[id]);
 		}
+		destStorage.SetDirty(newObj);
         return newObj;
     }
     void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_IStorage destStorage, List<Prelude.Tuple<int,int>> xlat) {
@@ -437,7 +438,8 @@ public partial class iCS_IStorage {
         // Determine best initial position.
         Rect initialPos= VisualEditorCenter();
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, initialPos, this);
+        this[id]= iCS_EditorObject.CreateInstance(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, initialPos, this);
+		this[id].IsNameEditable= false;
 		SetDirty(this[id]);
         return this[id];
     }
@@ -449,7 +451,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, name, runtimeType, parentId, objectType, localPos, this);
+        this[id]= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, localPos, this);
         var center= Math3D.Middle(GetLayoutPosition(this[id]));
         SetDisplayPosition(this[id], new Rect(center.x,center.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
@@ -464,7 +466,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos, this);
+        this[id]= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos, this);
         var center= Math3D.Middle(GetLayoutPosition(this[id]));
         SetDisplayPosition(this[id], new Rect(center.x,center.y,0,0));
 		SetDirty(this[id]);
@@ -484,7 +486,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos, this);
+        this[id]= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos, this);
         SetDisplayPosition(this[id], new Rect(initialPos.x,initialPos.y,0,0));
         // Set first state as the default entry state.
         this[id].IsRawEntryState= !ForEachChild(parent,
@@ -520,7 +522,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
+        this[id]= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -559,7 +561,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create new EditorObject
-        this[id]= new iCS_EditorObject(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
+        this[id]= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -596,7 +598,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
-        iCS_EditorObject port= this[id]= new iCS_EditorObject(id, name, valueType, parentId, portType, new Rect(0,0,0,0), this);
+        iCS_EditorObject port= this[id]= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, new Rect(0,0,0,0), this);
         // Reajust data port position 
         iCS_EditorObject parent= port.Parent;
 		if(port.IsDataPort && parent.IsDataPort) {

@@ -41,6 +41,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Release all worker objects.
         myGraphics   = null;
         myDynamicMenu= null;
+		mySubEditor  = null;
     }
 
 	// ----------------------------------------------------------------------
