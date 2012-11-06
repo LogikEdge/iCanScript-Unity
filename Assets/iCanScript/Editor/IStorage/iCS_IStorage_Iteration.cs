@@ -15,7 +15,7 @@ public partial class iCS_IStorage {
     }
 	public int NbOfChildren(iCS_EditorObject parent) {
 		if(!IsValid(parent)) return 0;
-		return StorageCache[parent.InstanceId].Children.Count;
+		return parent.Children.Count;
 	}
 	public int NbOfChildren(iCS_EditorObject parent, Func<iCS_EditorObject, bool> filter) {
 		if(!IsValid(parent)) return 0;

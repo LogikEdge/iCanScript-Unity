@@ -153,8 +153,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         IStorage.Fold(SelectedObject);                                                                    
                     }
                 } else if(SelectedObject.IsFolded) {
-                    IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
-                    IStorage.Unfold(SelectedObject);                        
+                    IStorage.RegisterUndo("Iconize "+SelectedObject.Name);
+                    IStorage.Iconize(SelectedObject);                        
                 }
             } else {
                 if(SelectedObject.IsIconized) {

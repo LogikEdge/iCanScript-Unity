@@ -61,8 +61,7 @@ public partial class iCS_IStorage {
         // Set the parent dirty to force a relayout.
         if(IsValid(toDestroy.ParentId)) SetDirty(parent);
 		// Destroy instance.
-		StorageCache.DestroyInstance(toDestroy.InstanceId);
-		toDestroy.Reset();
+		toDestroy.DestroyInstance();
         // Reconfigure parent state if the object removed is an entry state.
         if(isEntryState) {
             SelectEntryState(parent);

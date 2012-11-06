@@ -17,7 +17,6 @@ public partial class iCS_IStorage {
             bool                AnimationNeeded     = true;
     public  bool                AnimateLayout       = true;
     public  iCS_Storage         Storage             = null;
-            iCS_IStorageCache   StorageCache        = null;
     List<iCS_EditorObject>      myEditorObjects     = null;
     public  int                 UndoRedoId          = 0;
     public  int                 ModificationId      = -1;
@@ -41,7 +40,6 @@ public partial class iCS_IStorage {
     public void Reset() {
         myIsDirty= true;
         Storage= null;
-        StorageCache= null;
     }
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
@@ -49,10 +47,6 @@ public partial class iCS_IStorage {
 		myEditorObjects= new List<iCS_EditorObject>();
 		iCS_EditorObject.RebuildFromEngineObjects(this);
 		
-		// Rebuild cache from the engine objects.
-        StorageCache= new iCS_IStorageCache();
-        ForEach(obj=> StorageCache.CreateInstance(obj));
-
         // Re-initialize internal values.
         if(IsValid(0)) {
             Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
@@ -112,10 +106,7 @@ public partial class iCS_IStorage {
         }
         set {
             ProcessUndoRedo();
-            if(value.InstanceId != id) Debug.LogError("Trying to add EditorObject at wrong index.");
             EditorObjects[id]= value;
-            if(StorageCache.IsValid(id)) StorageCache.UpdateInstance(value);
-            else                      StorageCache.CreateInstance(value);            
             SetDirty(EditorObjects[id]);
             iCS_EditorObject parent= EditorObjects[id].Parent;
             if(parent != null) SetDirty(parent);
@@ -123,7 +114,6 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
 	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= obj.Parent; while(parent != null && !parent.IsNode) parent= parent.Parent; return parent; }
-	public iCS_EditorObjectCache GetEditorObjectCache(iCS_EditorObject obj) { return IsValid(obj) ? StorageCache[obj.InstanceId] : null; }
     public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? obj.AnimatedPosition.CurrentValue : default(Rect); }
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) obj.AnimatedPosition.Reset(pos); }
 	public P.TimeRatio	AnimationTimeRatio { get { return myAnimationTimeRatio; }}
@@ -144,10 +134,7 @@ public partial class iCS_IStorage {
     public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {
         Rect pos= GetLayoutPosition(edObj);
         iCS_EditorObject oldParent= edObj.Parent;
-        edObj.ParentId= newParent.InstanceId;
-        StorageCache.UpdateInstance(oldParent);
-        StorageCache.UpdateInstance(newParent);
-        StorageCache.UpdateInstance(edObj);
+        edObj.Parent= newParent;
         SetLayoutPosition(edObj, pos);
         SetDirty(edObj);
         SetDirty(oldParent);
@@ -344,8 +331,8 @@ public partial class iCS_IStorage {
 //        Debug.Log("Undo/Redo was performed");
         // Keep a copy of the previous display position.
         List<Rect> displayPositions= new List<Rect>();
-        for(int i= 0; i < EditorObjects.Count; ++i) {
-            displayPositions.Add(StorageCache.IsValid(i) ? GetDisplayPosition(EditorObjects[i]) : new Rect(0,0,0,0));
+        foreach(var child in EditorObjects) {
+            displayPositions.Add(child != null ? GetDisplayPosition(child) : new Rect(0,0,0,0));
         }
         // Rebuild editor data.
         GenerateEditorData();
