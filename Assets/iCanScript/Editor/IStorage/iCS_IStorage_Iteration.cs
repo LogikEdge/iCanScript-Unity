@@ -85,7 +85,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public bool IsChildOf(iCS_EditorObject child, iCS_EditorObject parent) {
-        if(IsInvalid(child.ParentId)) return false;
+        if(!IsValid(child.ParentId)) return false;
         if(child.ParentId == parent.InstanceId) return true;
         return IsChildOf(child.Parent, parent);
     }
