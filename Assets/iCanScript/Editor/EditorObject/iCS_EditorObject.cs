@@ -16,8 +16,17 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Conversion Utilities
     // ----------------------------------------------------------------------
+    public List<iCS_EditorObject> EditorObjects {
+        get { return myIStorage.EditorObjects; }
+    }
+    public iCS_EditorObject EditorObject {
+		get { return EditorObjects[myId]; }
+	}
+    public List<iCS_EngineObject> EngineObjects {
+        get { return myIStorage.EngineObjects; }
+    }
     public iCS_EngineObject EngineObject {
-		get { return myIStorage.EngineObjects[myId]; }
+		get { return EngineObjects[myId]; }
 	}
     List<iCS_EngineObject> EditorToEngineList(List<iCS_EditorObject> editorObjects) {
         return Prelude.map(eo=> eo.EngineObject, editorObjects);
@@ -134,7 +143,18 @@ public partial class iCS_EditorObject {
 		myChildren.Clear();
         EngineObject.Reset();
     } 
-
+    // ----------------------------------------------------------------------
+    public void DestroyInstance() {
+        // Cleanup connections.
+        
+        // Destroy any children.
+        ForEachChild(child=> child.DestroyInstance());        
+        // Destroy associated engine object.
+        myIStorage.EngineObjects[InstanceId]= null;
+        // Destroy self.
+        myIStorage.EditorObjects[InstanceId]= null;
+    }
+    
     // ======================================================================
 	// Grow database if needed.
     // ----------------------------------------------------------------------

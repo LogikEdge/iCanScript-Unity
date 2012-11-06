@@ -35,7 +35,7 @@ public partial class iCS_IStorage {
 		// Don't process if the object has already been processed.
 		if(myDestroyQueue.Contains(toDestroy)) return;
 		// Schedule all children to be destroyed first.
-		toDestroy.ForEachChild(child=> ScheduleDestroyInstance(EditorObjects[child]));
+		toDestroy.ForEachChild(child=> ScheduleDestroyInstance(child));
 		// Add the object to the destroy queue.
 		myDestroyQueue.Add(toDestroy);
 		// Detroy the transition as a single block.

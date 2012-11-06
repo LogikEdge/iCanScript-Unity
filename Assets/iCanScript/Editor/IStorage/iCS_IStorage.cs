@@ -52,6 +52,8 @@ public partial class iCS_IStorage {
 		// Rebuild cache from the engine objects.
         StorageCache= new iCS_IStorageCache();
         ForEach(obj=> StorageCache.CreateInstance(obj));
+
+        // Re-initialize internal values.
         if(IsValid(0)) {
             Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
             ForEach(obj=> {
