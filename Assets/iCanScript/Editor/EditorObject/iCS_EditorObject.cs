@@ -41,11 +41,11 @@ public partial class iCS_EditorObject {
 		set {
 			int pid= EngineObject.ParentId;
 			if(pid != -1 && pid != value) {
-				myIStorage[pid].RemoveChild(InstanceId, this);
+				myIStorage[pid].RemoveChild(this);
 			}
 			EngineObject.ParentId= value;
 			if(value != -1) {
-				myIStorage[value].AddChild(InstanceId, this);
+				myIStorage[value].AddChild(this);
 			}
 		}
 	}
@@ -126,7 +126,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Reinitialize the editor object to its default values.
     public void Reset() {
-		if(ParentId != -1) Parent.RemoveChild(InstanceId, this);
+		if(ParentId != -1) Parent.RemoveChild(this);
         IsFloating= false;
         IsDirty= false;
 		InitialValue= null;
@@ -181,7 +181,7 @@ public partial class iCS_EditorObject {
 	private static void RebuildChildrenLists(iCS_IStorage iStorage) {
 		foreach(var obj in iStorage.EditorObjects) {
 			if(obj != null && obj.ParentId != -1) {
-				obj.Parent.AddChild(obj.InstanceId, obj);
+				obj.Parent.AddChild(obj);
 			}			
 		}
 	}
@@ -191,12 +191,14 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public List<int> Children { get { return myChildren; }}
     // ----------------------------------------------------------------------
-    public void AddChild(int id, iCS_EditorObject toAdd) {
+    public void AddChild(iCS_EditorObject toAdd) {
+        int id= toAdd.InstanceId;
         if(Prelude.elem(id, myChildren.ToArray())) return;
         myChildren.Add(id);
     }
     // ----------------------------------------------------------------------
-    public void RemoveChild(int id, iCS_EditorObject toDelete) {
+    public void RemoveChild(iCS_EditorObject toDelete) {
+        int id= toDelete.InstanceId;
         for(int i= 0; i < myChildren.Count; ++i) {
             if(myChildren[i] == id) {
                 myChildren.RemoveAt(i);
