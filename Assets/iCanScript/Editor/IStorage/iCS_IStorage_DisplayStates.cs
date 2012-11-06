@@ -15,13 +15,13 @@ public partial class iCS_IStorage {
     // Display Options
     // ----------------------------------------------------------------------
     public bool IsVisible(iCS_EditorObject eObj) {
-        if(IsInvalid(eObj.ParentId)) return true;
+        if(!IsValid(eObj.ParentId)) return true;
         iCS_EditorObject parent= eObj.Parent;
         if(eObj.IsNode && (parent.IsFolded || parent.IsIconized)) return false;
 		if(eObj.IsDataPort && (parent.IsDataPort || parent.IsIconized)) return false;
         return IsVisible(parent);
     }
-    public bool IsVisible(int id) { return IsInvalid(id) ? false : IsVisible(EditorObjects[id]); }
+    public bool IsVisible(int id) { return !IsValid(id) ? false : IsVisible(EditorObjects[id]); }
     // ----------------------------------------------------------------------
     public bool IsFolded(iCS_EditorObject eObj) { return eObj.IsFolded; }
     // ----------------------------------------------------------------------

@@ -42,7 +42,7 @@ public partial class iCS_IStorage {
         }
     }
     public void ForEach(Action<iCS_EditorObject> fnc) {
-        Prelude.filterWith(IsValid, fnc, EditorObjects);
+        Prelude.filterWith(obj=> obj != null, fnc, EditorObjects);
     }
     public void ForEachRecursive(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
         ProcessUndoRedo();

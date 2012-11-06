@@ -48,7 +48,7 @@ public partial class iCS_IStorage {
 		iCS_EditorObject.RebuildFromEngineObjects(this);
 		
         // Re-initialize internal values.
-        if(IsValid(0)) {
+        if(IsValid(EditorObjects[0])) {
             Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
             ForEach(obj=> {
 		        // Initialize display position.
@@ -73,23 +73,22 @@ public partial class iCS_IStorage {
     public int                       SelectedObjectId { get { return Storage.SelectedObject; } set { Storage.SelectedObject= value; }}
     public iCS_EditorObject          SelectedObject   { get { return this[SelectedObjectId]; } set { SelectedObjectId= value != null ? value.InstanceId : -1; }}
     // ----------------------------------------------------------------------
-    public bool IsBehaviour         { get { return IsValid(0) && EditorObjects[0].IsBehaviour; }}
+    public bool IsBehaviour         { get { return IsValid(EditorObjects[0]) && EditorObjects[0].IsBehaviour; }}
     public bool IsEmptyBehaviour    {
         get {
             if(!IsBehaviour) return false;
             for(int i= 1; i < EditorObjects.Count; ++i) {
-                if(IsValid(i)) return false;
+                if(IsValid(EditorObjects[i])) return false;
             }
             return true;
         }
     }
-    public bool IsLibrary           { get { return IsValid(0) && !EditorObjects[0].IsBehaviour; }}
+    public bool IsLibrary           { get { return IsValid(EditorObjects[0]) && !EditorObjects[0].IsBehaviour; }}
     // ----------------------------------------------------------------------
-    public bool IsValid(int id)                      { return id >= 0 && id < EditorObjects.Count && this[id] != null && this[id].InstanceId != -1; }
-    public bool IsInvalid(int id)                    { return !IsValid(id); }
-    public bool IsValid(iCS_EditorObject obj)        { return obj != null && IsValid(obj.InstanceId); }
-    public bool IsSourceValid(iCS_EditorObject obj)  { return IsValid(obj.SourceId); }
-    public bool IsParentValid(iCS_EditorObject obj)  { return IsValid(obj.ParentId); }
+    public bool IsValid(int id)                      { return id != -1; }
+    public bool IsValid(iCS_EditorObject obj)        { return obj != null; }
+    public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
+    public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
     // ----------------------------------------------------------------------
     public bool IsDirty            { get { ProcessUndoRedo(); return myIsDirty; }}
 //	public int  ModificationId     { get { return UndoRedoId; }}
@@ -328,33 +327,33 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     void SynchronizeAfterUndoRedo() {
-//        Debug.Log("Undo/Redo was performed");
         // Keep a copy of the previous display position.
-        List<Rect> displayPositions= new List<Rect>();
+        Rect[] displayPositions= new Rect[EditorObjects.Count];
+        int i= 0;
         foreach(var child in EditorObjects) {
-            displayPositions.Add(child != null ? GetDisplayPosition(child) : new Rect(0,0,0,0));
+            if(child != null) {
+                displayPositions[i]= GetDisplayPosition(child);                
+            }
+            ++i;
         }
         // Rebuild editor data.
         GenerateEditorData();
         // Put back the previous display position
-        for(int i= 0; i < displayPositions.Count; ++i) {
-            Rect displayPos= displayPositions[i];
-            if(Math3D.IsZero(displayPos.width) && Math3D.IsZero(displayPos.x)) {
-                iCS_EditorObject posObj= EditorObjects[i];
+        for(i= 0; i < displayPositions.Length; ++i) {
+            iCS_EditorObject posObj= EditorObjects[i];
+            if(posObj != null) {
+                Rect displayPos= displayPositions[i];
                 if(posObj.IsPort) posObj= posObj.Parent;
                 Vector2 center= Math3D.Middle(GetLayoutPosition(posObj));
                 displayPos.x= center.x;
-                displayPos.y= center.y;
+                displayPos.y= center.y;                    
+                SetDisplayPosition(EditorObjects[i], displayPos);
             }
-            SetDisplayPosition(EditorObjects[i], displayPos);
         }
         // Set all object dirty.
         foreach(var obj in EditorObjects) {
-            if(IsValid(obj.InstanceId)) {
+            if(obj != null) {
                 SetDirty(obj);
-            }
-            else {
-                obj.IsDirty= false;
             }
         }
         Storage.UndoRedoId= ++UndoRedoId;        
@@ -369,7 +368,7 @@ public partial class iCS_IStorage {
         // Find the next available id.
         int id= 0;
         int len= EditorObjects.Count;
-        while(id < len && IsValid(id)) { ++id; }
+        while(id < len && IsValid(EditorObjects[id])) { ++id; }
         if(id >= len) {
             id= len;
             EditorObjects.Add(null);

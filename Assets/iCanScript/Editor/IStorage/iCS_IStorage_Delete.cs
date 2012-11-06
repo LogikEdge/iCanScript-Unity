@@ -12,7 +12,7 @@ public partial class iCS_IStorage {
     // ======================================================================
     // ----------------------------------------------------------------------
     public void DestroyInstance(int id) {
-		if(IsInvalid(id)) return;
+		if(!IsValid(id)) return;
         DestroyInstance(EditorObjects[id]);
     }
     // ----------------------------------------------------------------------
@@ -22,7 +22,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     void DestroyInstanceInternal(iCS_EditorObject toDestroy) {
-        if(toDestroy == null || IsInvalid(toDestroy.InstanceId)) return;
+        if(toDestroy == null) return;
 		ScheduleDestroyInstance(toDestroy);
 		foreach(var obj in myDestroyQueue) {
 			DestroySingleObject(obj);

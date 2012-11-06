@@ -202,7 +202,7 @@ public class iCS_DynamicMenu {
         iCS_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
         iCS_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
         if(grandParent != null && grandParent.IsModule) {
-            if(!(selectedObject.IsInputPort && storage.IsValid(selectedObject.SourceId))) {
+            if(!(selectedObject.IsInputPort && storage.IsSourceValid(selectedObject))) {
                 menu= new MenuContext[1];
 				menu[0]= new MenuContext(PublishPortStr);                
             }
