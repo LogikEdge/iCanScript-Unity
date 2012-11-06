@@ -145,10 +145,22 @@ public partial class iCS_EditorObject {
     } 
     // ----------------------------------------------------------------------
     public void DestroyInstance() {
-        // Cleanup connections.
-        
         // Destroy any children.
         ForEachChild(child=> child.DestroyInstance());        
+        // Disconnect any port sourcing from this object.
+        if(IsPort) {
+            foreach(var child in EditorObjects) {
+                if(child != null && child.IsPort) {
+                    if(child.SourceId == InstanceId) {
+                        child.SourceId= -1;
+                    }
+                }
+            }
+        }
+        // Disconnect from parent.
+        if(ParentId != -1) {
+            Parent.RemoveChild(this);
+        }
         // Destroy associated engine object.
         myIStorage.EngineObjects[InstanceId]= null;
         // Destroy self.
