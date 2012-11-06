@@ -700,7 +700,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     public void DrawConnection(iCS_EditorObject port, iCS_IStorage iStorage, bool highlight= false, float lineWidth= 1.5f) {
         // No connection to draw if no valid source.
-        if(!iStorage.IsSourceValid(port)) return;
+        if(!port.IsSourceValid) return;
         iCS_EditorObject portParent= port.Parent;
 
         // No connection to draw if the parent is not visible.

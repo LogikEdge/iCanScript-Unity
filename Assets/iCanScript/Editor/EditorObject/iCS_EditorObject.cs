@@ -42,7 +42,7 @@ public partial class iCS_EditorObject {
 	
     public iCS_ObjectTypeEnum ObjectType {
 		get { return EngineObject.ObjectType; }
-		set { EngineObject.ObjectType= value; }
+		set { EngineObject.ObjectType= value; IsDirty= true; }
 	}
     public int InstanceId { 
 		get { return myId; }
@@ -51,12 +51,15 @@ public partial class iCS_EditorObject {
 		get { return EngineObject.ParentId; }
 		set {
 			int pid= EngineObject.ParentId;
-			if(IsIdValid(pid) && pid != value) {
-				myIStorage[pid].RemoveChild(this);
+			if(pid == value) return;
+			if(IsIdValid(pid)) {
+				EditorObjects[pid].RemoveChild(this);
+				EditorObjects[pid].IsDirty= true;
 			}
 			EngineObject.ParentId= value;
 			if(IsIdValid(value)) {
-				myIStorage[value].AddChild(this);
+				EditorObjects[value].AddChild(this);
+				EditorObjects[value].IsDirty= true;
 			}
 		}
 	}
@@ -69,11 +72,11 @@ public partial class iCS_EditorObject {
 	}
     public string RawName {
 		get { return EngineObject.RawName; }
-		set { EngineObject.RawName= value; }
+		set { EngineObject.RawName= value; IsDirty= true; }
 	}
     public string Name {
 		get { return EngineObject.Name; }
-		set { EngineObject.Name= value; }
+		set { EngineObject.Name= value; IsDirty= true; }
 	}
     public bool IsNameEditable {
 		get { return EngineObject.IsNameEditable; }
@@ -89,7 +92,7 @@ public partial class iCS_EditorObject {
 	}
     public bool IsFloating {
 		get { return myIsFloating; }
-		set { myIsFloating= value; }
+		set { myIsFloating= value; IsDirty= true; }
 	}
     public bool IsDirty {
 		get { return myIsDirty; }

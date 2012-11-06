@@ -85,7 +85,8 @@ public partial class iCS_IStorage {
     }
     public bool IsLibrary           { get { return IsValid(EditorObjects[0]) && !EditorObjects[0].IsBehaviour; }}
     // ----------------------------------------------------------------------
-    public bool IsValid(int id)                      { return id != -1; }
+    public bool IsIdValid(int id)                    { return id >= 0 && id < EditorObjects.Count; }
+	public bool IsValid(int id)						 { return IsIdValid(id) && EditorObjects[id].InstanceId == id; }
     public bool IsValid(iCS_EditorObject obj)        { return obj.InstanceId != -1; }
     public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
     public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
@@ -98,10 +99,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject this[int id] {
         get {
-            if(id < 0 || id >= EditorObjects.Count) return null;
-            iCS_EditorObject eObj= EditorObjects[id];
-            if(eObj == null) return null;
-            return eObj.InstanceId >= 0 ? eObj : null;
+            if(!IsIdValid(id)) return null;
+            var eObj= EditorObjects[id];
+            return eObj.IsValid ? eObj : null;
         }
         set {
             ProcessUndoRedo();
@@ -331,7 +331,7 @@ public partial class iCS_IStorage {
         Rect[] displayPositions= new Rect[EditorObjects.Count];
         int i= 0;
         foreach(var child in EditorObjects) {
-            if(child != null) {
+            if(child.IsValid) {
                 displayPositions[i]= GetDisplayPosition(child);                
             }
             ++i;
@@ -351,11 +351,7 @@ public partial class iCS_IStorage {
             }
         }
         // Set all object dirty.
-        foreach(var obj in EditorObjects) {
-            if(obj != null) {
-                SetDirty(obj);
-            }
-        }
+        ForEach(SetDirty);
         Storage.UndoRedoId= ++UndoRedoId;        
     }
     
@@ -369,10 +365,6 @@ public partial class iCS_IStorage {
         int id= 0;
         int len= EditorObjects.Count;
         while(id < len && IsValid(EditorObjects[id])) { ++id; }
-        if(id >= len) {
-            id= len;
-            EditorObjects.Add(null);
-        }
         return id;
     }
     // ----------------------------------------------------------------------
@@ -438,7 +430,7 @@ public partial class iCS_IStorage {
         // Determine best initial position.
         Rect initialPos= VisualEditorCenter();
         // Create new EditorObject
-        this[id]= iCS_EditorObject.CreateInstance(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, initialPos, this);
+        iCS_EditorObject.CreateInstance(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, initialPos, this);
 		this[id].IsNameEditable= false;
 		SetDirty(this[id]);
         return this[id];
@@ -451,7 +443,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        this[id]= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, localPos, this);
+        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, localPos, this);
         var center= Math3D.Middle(GetLayoutPosition(this[id]));
         SetDisplayPosition(this[id], new Rect(center.x,center.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
@@ -561,7 +553,7 @@ public partial class iCS_IStorage {
         // Calcute the desired screen position of the new object.
         Rect localPos= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create new EditorObject
-        this[id]= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
+        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -598,7 +590,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
-        iCS_EditorObject port= this[id]= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, new Rect(0,0,0,0), this);
+        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, new Rect(0,0,0,0), this);
         // Reajust data port position 
         iCS_EditorObject parent= port.Parent;
 		if(port.IsDataPort && parent.IsDataPort) {
