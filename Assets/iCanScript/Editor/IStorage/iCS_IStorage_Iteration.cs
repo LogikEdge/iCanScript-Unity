@@ -24,7 +24,7 @@ public partial class iCS_IStorage {
 		return cnt;
 	}
     public void ForEachChild(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
-        ProcessUndoRedo();
+        DetectUndoRedo();
         if(parent == null) {
             EditorObjects[0].ForEachChild(child=> fnc(child));            
         }
@@ -33,7 +33,7 @@ public partial class iCS_IStorage {
         }
     }
     public bool ForEachChild(iCS_EditorObject parent, Func<iCS_EditorObject,bool> fnc) {
-        ProcessUndoRedo();
+        DetectUndoRedo();
         if(parent == null) {
             return EditorObjects[0].ForEachChild(child=> fnc(child));            
         }
@@ -45,11 +45,11 @@ public partial class iCS_IStorage {
         Prelude.filterWith(IsValid, fnc, EditorObjects);
     }
     public void ForEachRecursive(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
-        ProcessUndoRedo();
+        DetectUndoRedo();
         ForEachRecursiveDepthLast(parent, fnc);
     }
     public void ForEachRecursiveDepthLast(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
-        ProcessUndoRedo();
+        DetectUndoRedo();
         if(parent == null) {
             EditorObjects[0].ForEachRecursiveDepthLast(child=> fnc(child));                                
         } else {
@@ -57,7 +57,7 @@ public partial class iCS_IStorage {
         }
     }
     public void ForEachRecursiveDepthFirst(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
-        ProcessUndoRedo();
+        DetectUndoRedo();
         if(parent == null) {
             EditorObjects[0].ForEachRecursiveDepthFirst(child => fnc(child));        
         } else {
@@ -68,7 +68,7 @@ public partial class iCS_IStorage {
         ForEachChildRecursiveDepthLast(parent, fnc);
     }
     public void ForEachChildRecursiveDepthLast(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
-        ProcessUndoRedo();
+        DetectUndoRedo();
         if(parent == null) {
             EditorObjects[0].ForEachRecursiveDepthLast(child=> fnc(child));        
         } else {
@@ -76,7 +76,7 @@ public partial class iCS_IStorage {
         }
     }
     public void ForEachChildRecursiveDepthFirst(iCS_EditorObject parent, Action<iCS_EditorObject> fnc) {
-        ProcessUndoRedo();
+        DetectUndoRedo();
         if(parent == null) {
             EditorObjects[0].ForEachRecursiveDepthFirst(child=> fnc(child));                    
         } else {

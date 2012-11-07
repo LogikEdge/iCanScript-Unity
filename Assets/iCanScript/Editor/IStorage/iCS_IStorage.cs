@@ -1,5 +1,3 @@
-#define DEBUG
-
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -31,15 +29,11 @@ public partial class iCS_IStorage {
     }
     public void Init(iCS_Storage storage) {
         if(Storage != storage) {
-            myIsDirty= true;
+            IsDirty= true;
             Storage= storage;
             UndoRedoId= Storage.UndoRedoId;          
             GenerateEditorData();
         }
-    }
-    public void Reset() {
-        myIsDirty= true;
-        Storage= null;
     }
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
@@ -91,7 +85,7 @@ public partial class iCS_IStorage {
     public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
     public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
     // ----------------------------------------------------------------------
-    public bool IsDirty            { get { ProcessUndoRedo(); return myIsDirty; }}
+    public bool IsDirty            { get { DetectUndoRedo(); return myIsDirty; } set { myIsDirty= value; }}
 //	public int  ModificationId     { get { return UndoRedoId; }}
 	public bool IsAnimationPlaying { get { return myAnimationTimeRatio.IsActive; }}
     // ----------------------------------------------------------------------
@@ -104,7 +98,7 @@ public partial class iCS_IStorage {
             return eObj.IsValid ? eObj : null;
         }
         set {
-            ProcessUndoRedo();
+            DetectUndoRedo();
             EditorObjects[id]= value;
             SetDirty(EditorObjects[id]);
             iCS_EditorObject parent= EditorObjects[id].Parent;
@@ -145,7 +139,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void Update() {
         // Processing any changed caused by Undo/Redo
-        ProcessUndoRedo();
+        DetectUndoRedo();
 /*
 	TODO: Optimize update.
 */        
@@ -218,25 +212,8 @@ public partial class iCS_IStorage {
             CleanupNeeded= Cleanup();
         }
         
-#if DEBUG
-        // Validate that animation has been properly applied.
-        ForEach(
-            obj=> {
-                var animation= obj.AnimatedPosition;
-                if(IsVisible(obj)) {
-                    if(Math3D.IsNotEqual(GetLayoutPosition(obj), animation.TargetValue)) {
-                        Debug.Log("Animation was not properly applied for: "+obj.Name);                        
-                    }
-                } else {
-                    float area= animation.TargetValue.width*animation.TargetValue.height;
-                    if(Math3D.IsNotZero(area)) {
-                        Debug.Log("Animation was not properly applied for: "+obj.Name);
-                    }
-                }
-            }
-        );
-#endif
-
+        // Perform sanity check
+        SanityCheck();
     }
     // ----------------------------------------------------------------------
     Rect GetAnimationTarget(iCS_EditorObject eObj) {
@@ -312,55 +289,11 @@ public partial class iCS_IStorage {
     }
     
     // ======================================================================
-    // Undo/Redo support
-    // ----------------------------------------------------------------------
-    public void RegisterUndo(string message= "iCanScript") {
-        Undo.RegisterUndo(Storage, message);
-        Storage.UndoRedoId= ++UndoRedoId;        
-    }
-    // ----------------------------------------------------------------------
-    void ProcessUndoRedo() {
-        // Regenerate internal structures if undo/redo was performed.
-        if(Storage.UndoRedoId != UndoRedoId) {
-			SynchronizeAfterUndoRedo();
-        }        
-    }
-    // ----------------------------------------------------------------------
-    void SynchronizeAfterUndoRedo() {
-        // Keep a copy of the previous display position.
-        Rect[] displayPositions= new Rect[EditorObjects.Count];
-        int i= 0;
-        foreach(var child in EditorObjects) {
-            if(child.IsValid) {
-                displayPositions[i]= GetDisplayPosition(child);                
-            }
-            ++i;
-        }
-        // Rebuild editor data.
-        GenerateEditorData();
-        // Put back the previous display position
-        for(i= 0; i < displayPositions.Length; ++i) {
-            iCS_EditorObject posObj= EditorObjects[i];
-            if(posObj != null) {
-                Rect displayPos= displayPositions[i];
-                if(posObj.IsPort) posObj= posObj.Parent;
-                Vector2 center= Math3D.Middle(GetLayoutPosition(posObj));
-                displayPos.x= center.x;
-                displayPos.y= center.y;                    
-                SetDisplayPosition(EditorObjects[i], displayPos);
-            }
-        }
-        // Set all object dirty.
-        ForEach(SetDirty);
-        Storage.UndoRedoId= ++UndoRedoId;        
-    }
-    
-    // ======================================================================
     // Editor Object Creation/Destruction
     // ----------------------------------------------------------------------
     int GetNextAvailableId() {
         // Covers Undo?redo for all creation operation
-        ProcessUndoRedo();
+        DetectUndoRedo();
         // Find the next available id.
         int id= 0;
         int len= EditorObjects.Count;

@@ -17,7 +17,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void DestroyInstance(iCS_EditorObject eObj) {
-        ProcessUndoRedo();
+        DetectUndoRedo();
         DestroyInstanceInternal(eObj);
     }
     // ----------------------------------------------------------------------

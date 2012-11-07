@@ -96,7 +96,14 @@ public partial class iCS_EditorObject {
 	}
     public bool IsDirty {
 		get { return myIsDirty; }
-		set { myIsDirty= value; }
+		set {
+            if(myIsDirty == value) return;
+		    myIsDirty= value;
+		    if(value) {
+		        myIStorage.IsDirty= true;
+                Debug.Log(Name+" is dirty");
+		    }
+	    }
 	}
     public Rect LocalPosition {
 		get { return EngineObject.LocalPosition; }
@@ -143,7 +150,7 @@ public partial class iCS_EditorObject {
         // Disconnect any port sourcing from this object.
         if(IsPort) {
             foreach(var child in EditorObjects) {
-                if(child != null && child.IsPort) {
+                if(child.IsValid && child.IsPort) {
                     if(child.SourceId == InstanceId) {
                         child.SourceId= -1;
                     }
@@ -181,9 +188,9 @@ public partial class iCS_EditorObject {
 			iStorage.EngineObjects.Add(engineObject);
 		}		
 	}
+    // ----------------------------------------------------------------------
 	private static void AddEditorObject(int id, iCS_EditorObject editorObject) {
 		var iStorage= editorObject.myIStorage;
-		SanityCheck(iStorage);
 		int len= iStorage.EditorObjects.Count;
 		if(id < 0) return;
 		if (id < len) {
@@ -231,9 +238,13 @@ public partial class iCS_EditorObject {
     public iCS_EditorObject(int id, iCS_IStorage iStorage) {
         myIStorage= iStorage;
         myId= id;
-		var parent= Parent;
-		if(parent != null) parent.AddChild(this);
-        IsDirty= true;        
+        if(IsIdValid(myId)) {
+    		var parent= Parent;
+    		if(parent != null) parent.AddChild(this);
+            IsDirty= true;            
+        } else {
+            IsDirty= false;
+        }
     }
     // ----------------------------------------------------------------------
 	public static void RebuildFromEngineObjects(iCS_IStorage iStorage) {
@@ -293,14 +304,5 @@ public partial class iCS_EditorObject {
         Prelude.forEach(c=> Children[i++]= c, orderedChildren);
         Prelude.forEach(c=> Children[i++]= c, others);
     }
-   
-    // ======================================================================
-	// Returns true if Editor and Engine object containers match.
-	public static bool SanityCheck(iCS_IStorage iStorage) {
-		if(iStorage.EngineObjects.Count != iStorage.EditorObjects.Count) {
-			Debug.LogWarning("iCanScript: Mismatch in Engine & Editor container size !!!");
-			return false;
-		}
-		return true;
-	}
+
 }
