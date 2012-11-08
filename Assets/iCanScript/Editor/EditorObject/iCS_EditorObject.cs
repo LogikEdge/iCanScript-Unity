@@ -104,45 +104,6 @@ public partial class iCS_EditorObject {
 		    }
 	    }
 	}
-    public Rect LocalRect {
-		get {
-            var engObj= EngineObject;
-			var localPosition= myIStorage.Storage.GetLocalPosition(engObj);
-		    float x= localPosition.x-0.5f*engObj.DisplaySize.x;
-		    float y= localPosition.y-0.5f*engObj.DisplaySize.y;
-		    return new Rect(x, y, engObj.DisplaySize.x, engObj.DisplaySize.y);
-		}
-		set {
-		    float x= value.x+0.5f*value.width;
-		    float y= value.y+0.5f*value.height;
-		    myIStorage.Storage.SetLocalPosition(EngineObject, new Vector2(x, y));
-		    EngineObject.DisplaySize= new Vector2(value.width, value.height);
-		}
-	}
-//    public Vector2 LocalPosition {
-//		get {
-//			return myIStorage.Storage.GetLocalPosition(EngineObject);
-//		}
-//		set {
-//			myIStorage.Storage.SetLocalPosition(EngineObject, value);
-//		}
-//	}
-    public Vector2 DisplaySize {
-		get {
-			return EngineObject.DisplaySize;
-		}
-		set {
-			EngineObject.DisplaySize= value;
-		}
-	}
-	public Vector2 RelativePosition {
-		get {
-			return EngineObject.RelativePosition;
-		}
-		set {
-			EngineObject.RelativePosition= value;
-		}
-	}
 	
     // ======================================================================
     // Constructors/Builders
@@ -150,14 +111,16 @@ public partial class iCS_EditorObject {
 	// Creates an instance of an editor/engine object pair.
 	public static iCS_EditorObject CreateInstance(int id, string name, Type type,
 												  int parentId, iCS_ObjectTypeEnum objectType,
-                            					  Rect localPosition, iCS_IStorage iStorage) {
+                            					  Rect localRect, iCS_IStorage iStorage) {
 		if(id < 0) return null;
 		// Create engine object.
-		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType, Math3D.ToVector2(localPosition), new Vector2(localPosition.width, localPosition.height));
+		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType);
 		AddEngineObject(id, engineObject, iStorage);
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
+		// Update display position.
+		editorObject.LocalRect= localRect;
 		return editorObject;
 	}
     // ----------------------------------------------------------------------
@@ -167,12 +130,13 @@ public partial class iCS_EditorObject {
 		if(id < 0) return null;
 		// Create engine object.
         var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject,
-												 (parent == null ? null : parent.EngineObject),
-												 localPosition);
+												 (parent == null ? null : parent.EngineObject));
 		AddEngineObject(id, engineObject, iStorage);
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
+		// Update display position.
+		editorObject.LocalRect= new Rect(localPosition.x, localPosition.y, toClone.DisplaySize.x, toClone.DisplaySize.y);
 		return editorObject;
     }
 

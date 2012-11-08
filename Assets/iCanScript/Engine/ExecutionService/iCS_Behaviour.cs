@@ -258,7 +258,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
 				if(node.InstanceId == -1) continue;
                 // Was already generated in a previous pass.
                 if(myRuntimeNodes[node.InstanceId] != null) continue;
-                Vector2 layout= Math3D.Middle(GetPosition(node));
+                Vector2 layout= Math3D.Middle(GetAbsoluteRect(node));
 				// Special case for active ports.
 				if(node.IsOutMuxPort) {
 					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, layout);
@@ -417,8 +417,8 @@ public sealed class iCS_Behaviour : iCS_Storage {
                         triggerPort= GetDataConnectionSource(triggerPort);
                         iCS_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
                         int triggerIdx= triggerPort.PortIndex;
-                        Rect outStatePortPos= GetPosition(outStatePort);
-                        Rect inStatePortPos= GetPosition(port);
+                        Rect outStatePortPos= GetAbsoluteRect(outStatePort);
+                        Rect inStatePortPos= GetAbsoluteRect(port);
                         Vector2 layout= new Vector2(0.5f*(inStatePortPos.x+outStatePortPos.x), 0.5f*(inStatePortPos.y+outStatePortPos.y));
                         iCS_Transition transition= new iCS_Transition(transitionModule.Name,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,

@@ -547,20 +547,21 @@ public partial class iCS_IStorage {
         Rect localPos;
         Texture2D icon= iCS_TextureCache.GetTextureFromGUID(iconGUID);
         var size= icon != null ? new Vector2(icon.width, icon.height) : iCS_Graphics.GetMaximizeIconSize(null);            
-        if(IsValid(parentId)) {
-            iCS_EditorObject parent= EditorObjects[parentId];
-            var parentRect= GetLayoutPosition(parent);
-            if(parentRect.Contains(initialPos)) {
-                localPos= new Rect(initialPos.x-parentRect.x, initialPos.y-parentRect.y,size.x,size.y);
-            } else {
-                localPos= new Rect(parentRect.width, parentRect.height, size.x, size.y);
-                parent.LocalRect= new Rect(parent.LocalRect.x, parent.LocalRect.y,
-                                           parent.DisplaySize.x +2f*iCS_Config.GutterSize+size.x,
-                                           parent.DisplaySize.y+2f*iCS_Config.GutterSize+size.y);
-            }
+		// Position in center of viewport if root object.
+        if(!IsValid(parentId)) {
+			return VisualEditorCenter();
+		}
+		
+        iCS_EditorObject parent= EditorObjects[parentId];
+        var parentRect= GetLayoutPosition(parent);
+        if(parentRect.Contains(initialPos)) {
+            localPos= new Rect(initialPos.x-parentRect.x, initialPos.y-parentRect.y,size.x,size.y);
         } else {
-            localPos= VisualEditorCenter();
-        }        
+            localPos= new Rect(parentRect.width, parentRect.height, size.x, size.y);
+            parent.LocalRect= new Rect(parent.LocalRect.x, parent.LocalRect.y,
+                                       parent.DisplaySize.x +2f*iCS_Config.GutterSize+size.x,
+                                       parent.DisplaySize.y+2f*iCS_Config.GutterSize+size.y);
+        }
         return localPos;
     }
     // ----------------------------------------------------------------------

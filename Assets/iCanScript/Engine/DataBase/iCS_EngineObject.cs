@@ -40,15 +40,15 @@ public class iCS_EngineObject {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType, Vector2 relativePosition, Vector2 size) {
+    public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType) {
         Reset();
         ObjectType= objectType;
         InstanceId= id;
         ParentId= parentId;
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
-        RelativePosition= relativePosition;
-        DisplaySize= size;
+        RelativePosition= Vector2.zero;
+        DisplaySize= Vector2.zero;
         if(IsDataPort) {
             Edge= IsInputPort ? (IsEnablePort ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left) : iCS_EdgeEnum.Right;
         }
@@ -66,11 +66,12 @@ public class iCS_EngineObject {
 		Reset();
 	}
     // ----------------------------------------------------------------------
-    public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent, Vector2 relativePosition) {
-        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, relativePosition, toClone.DisplaySize);
+    public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent) {
+        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
+		instance.DisplaySize= toClone.DisplaySize;
 		// Node
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;

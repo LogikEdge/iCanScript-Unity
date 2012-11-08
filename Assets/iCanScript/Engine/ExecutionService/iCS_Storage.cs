@@ -110,14 +110,14 @@ public class iCS_Storage : MonoBehaviour {
 	}
     // ----------------------------------------------------------------------
     // Returns the absolute position of the node.
-    public Rect GetPosition(iCS_EngineObject node) {
+    public Rect GetAbsoluteRect(iCS_EngineObject node) {
 		var localPosition= GetLocalPosition(node);
         float x= localPosition.x-0.5f*node.DisplaySize.x;
         float y= localPosition.y-0.5f*node.DisplaySize.y;
         if(!IsValidEngineObject(node.ParentId)) {
             return new Rect(x, y, node.DisplaySize.x, node.DisplaySize.y);
         }
-        Rect position= GetPosition(EngineObjects[node.ParentId]);
+        Rect position= GetAbsoluteRect(EngineObjects[node.ParentId]);
         return new Rect(position.x+x,
                         position.y+y,
                         node.DisplaySize.x,

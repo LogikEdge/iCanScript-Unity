@@ -520,6 +520,7 @@ public class iCS_DynamicMenu {
     // Creation Utilities
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateModule(iCS_EditorObject parent, iCS_IStorage storage, string name= "", bool nameEditable= true) {
+		Debug.Log("ProcessMenuPosition: "+ProcessMenuPosition);
         iCS_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, name);
         module.IsNameEditable= nameEditable;
         return module;
