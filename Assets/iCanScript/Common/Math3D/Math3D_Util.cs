@@ -156,6 +156,10 @@ public static partial class Math3D {
     }
 
 	// ----------------------------------------------------------------------
+    public static Rect BuildRect(Vector2 pos, Vector2 size) {
+        return new Rect(pos.x, pos.y, size.x, size.y);
+    }
+	// ----------------------------------------------------------------------
     public static Vector2 ToVector2(Rect rect) {
         return new Vector2(rect.x, rect.y);
     }

@@ -105,8 +105,18 @@ public partial class iCS_EditorObject {
 	    }
 	}
     public Rect LocalPosition {
-		get { return EngineObject.LocalPosition; }
-		set { EngineObject.LocalPosition= value; }
+		get {
+            var engObj= EngineObject;
+		    float x= engObj.LocalPosition.x-0.5f*engObj.DisplaySize.x;
+		    float y= engObj.LocalPosition.y-0.5f*engObj.DisplaySize.y;
+		    return new Rect(x, y, engObj.DisplaySize.x, engObj.DisplaySize.y);
+		}
+		set {
+		    float x= value.x+0.5f*value.width;
+		    float y= value.y+0.5f*value.height;
+		    EngineObject.LocalPosition= new Vector2(x, y);
+		    EngineObject.DisplaySize= new Vector2(value.width, value.height);
+		}
 	}
     
     // ======================================================================
@@ -118,7 +128,7 @@ public partial class iCS_EditorObject {
                             					  Rect localPosition, iCS_IStorage iStorage) {
 		if(id < 0) return null;
 		// Create engine object.
-		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType, localPosition);
+		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType, Math3D.ToVector2(localPosition), new Vector2(localPosition.width, localPosition.height));
 		AddEngineObject(id, engineObject, iStorage);
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
