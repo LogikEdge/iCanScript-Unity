@@ -80,10 +80,40 @@ public class iCS_Storage : MonoBehaviour {
         return EngineObjects[port.SourceId];
     }
     // ----------------------------------------------------------------------
+    // Returns the local position with respect to parent.
+	public Vector2 GetLocalPosition(iCS_EngineObject obj) {
+		if(obj.InstanceId == -1) return Vector2.zero;
+		if(obj.ParentId == -1) return obj.RelativePosition;
+		var parent= EngineObjects[obj.ParentId];
+		float x= parent.DisplaySize.x * obj.RelativePosition.x;
+		float y= parent.DisplaySize.y * obj.RelativePosition.y;
+		return new Vector2(x, y);
+	}
+    // ----------------------------------------------------------------------
+	// Updates the relative position with respect to parent.
+	public void SetLocalPosition(iCS_EngineObject obj, Vector2 localPosition) {
+		if(obj.InstanceId == -1) return;
+		if(obj.ParentId == -1) {
+			obj.RelativePosition= localPosition;
+			return;
+		}
+		var parent= EngineObjects[obj.ParentId];
+		float x= 0f;
+		if(Math3D.IsNotZero(parent.DisplaySize.x) && localPosition.x > 0) {
+			x= (localPosition.x > parent.DisplaySize.x) ? 1f : localPosition.x / parent.DisplaySize.x;
+		}
+		float y= 0f;
+		if(Math3D.IsNotZero(parent.DisplaySize.y) && localPosition.y > 0) {
+			y= (localPosition.y > parent.DisplaySize.y) ? 1f : localPosition.y / parent.DisplaySize.y;
+		}
+		obj.RelativePosition= new Vector2(x,y);
+	}
+    // ----------------------------------------------------------------------
     // Returns the absolute position of the node.
     public Rect GetPosition(iCS_EngineObject node) {
-        float x= node.LocalPosition.x-0.5f*node.DisplaySize.x;
-        float y= node.LocalPosition.y-0.5f*node.DisplaySize.y;
+		var localPosition= GetLocalPosition(node);
+        float x= localPosition.x-0.5f*node.DisplaySize.x;
+        float y= localPosition.y-0.5f*node.DisplaySize.y;
         if(!IsValidEngineObject(node.ParentId)) {
             return new Rect(x, y, node.DisplaySize.x, node.DisplaySize.y);
         }

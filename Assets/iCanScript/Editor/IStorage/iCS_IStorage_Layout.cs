@@ -17,11 +17,11 @@ public partial class iCS_IStorage {
     public void SetInitialPosition(iCS_EditorObject obj, Vector2 initialPosition) {
         if(IsValid(obj.ParentId)) {
             Rect position= GetLayoutPosition(EditorObjects[obj.ParentId]);
-            obj.LocalPosition= new Rect(initialPosition.x-position.x, initialPosition.y-position.y,
-                                        obj.LocalPosition.width, obj.LocalPosition.height);
+            obj.LocalRect= new Rect(initialPosition.x-position.x, initialPosition.y-position.y,
+                                    obj.DisplaySize.x, obj.DisplaySize.y);
         }
         else {
-            obj.LocalPosition= new Rect(initialPosition.x, initialPosition.y, obj.LocalPosition.width, obj.LocalPosition.height);
+            obj.LocalRect= new Rect(initialPosition.x, initialPosition.y, obj.DisplaySize.x, obj.DisplaySize.y);
         }
         SetDirty(obj);
     }
@@ -47,27 +47,27 @@ public partial class iCS_IStorage {
         // Minimized nodes are fully collapsed.
         if(node.IsIconized) {
             Vector2 iconSize= iCS_Graphics.GetMaximizeIconSize(node);
-            if(node.LocalPosition.width != iconSize.x || node.LocalPosition.height != iconSize.y) {
+            if(node.DisplaySize.x != iconSize.x || node.DisplaySize.y != iconSize.y) {
                 if(IsValid(node.ParentId)) {
-                    if(node.LocalPosition.x == 0) {
-                        node.LocalPosition= new Rect(0.5f*node.Parent.LocalPosition.width, node.LocalPosition.y,
-                                                     node.LocalPosition.width, node.LocalPosition.height);
+                    if(node.LocalRect.x == 0) {
+                        node.LocalRect= new Rect(0.5f*node.Parent.DisplaySize.x, node.LocalRect.y,
+                                                 node.DisplaySize.x, node.DisplaySize.y);
                     }
-                    if(node.LocalPosition.y == 0) {
-                        node.LocalPosition= new Rect(node.LocalPosition.x, 0.5f*node.Parent.LocalPosition.height,
-                                                     node.LocalPosition.width, node.LocalPosition.height);
+                    if(node.LocalRect.y == 0) {
+                        node.LocalRect= new Rect(node.LocalRect.x, 0.5f*node.Parent.DisplaySize.y,
+                                                 node.DisplaySize.x, node.DisplaySize.y);
                     }
                 }
-                node.LocalPosition= new Rect(node.LocalPosition.x+0.5f*(node.LocalPosition.width-iconSize.x),
-                                             node.LocalPosition.y+0.5f*(node.LocalPosition.height-iconSize.y),
-                                             iconSize.x, iconSize.y);
+                node.LocalRect= new Rect(node.LocalRect.x+0.5f*(node.DisplaySize.x-iconSize.x),
+                                         node.LocalRect.y+0.5f*(node.DisplaySize.y-iconSize.y),
+                                         iconSize.x, iconSize.y);
                 UpdatePortPositions(node);
             }
             return;
         }
 
         // Refresh children that have not yet performed a layout.
-        ForEachChild(node, c=> { if(c.LocalPosition.x == 0 && c.LocalPosition.y == 0) SetDirty(c); });
+        ForEachChild(node, c=> { if(c.LocalRect.x == 0 && c.LocalRect.y == 0) SetDirty(c); });
         
         // Resolve collision on children.
         ResolveCollisionOnChildren(node, Vector2.zero);
@@ -163,8 +163,8 @@ public partial class iCS_IStorage {
     // Moves the node without changing its size.
     void DeltaMoveInternal(iCS_EditorObject node, Vector2 _delta) {
         if(Math3D.IsNotZero(_delta)) {
-            node.LocalPosition= new Rect(node.LocalPosition.x+_delta.x, node.LocalPosition.y+_delta.y,
-                                         node.LocalPosition.width, node.LocalPosition.height);
+            node.LocalRect= new Rect(node.LocalRect.x+_delta.x, node.LocalRect.y+_delta.y,
+                                     node.DisplaySize.x, node.DisplaySize.y);
             SetDirty(node);
         }
     }
@@ -200,11 +200,11 @@ public partial class iCS_IStorage {
     // Returns the space used by all children.
     Rect ComputeChildRect(iCS_EditorObject node) {
         // Compute child space.
-        Rect childRect= new Rect(0.5f*node.LocalPosition.width,0.5f*node.LocalPosition.height,0,0);
+        Rect childRect= new Rect(0.5f*node.DisplaySize.x,0.5f*node.DisplaySize.y,0,0);
         ForEachChild(node,
             (child)=> {
                 if(child.IsNode && child.IsVisible && !child.IsFloating) {
-                    childRect= Math3D.Merge(childRect, child.LocalPosition);
+                    childRect= Math3D.Merge(childRect, child.LocalRect);
                 }
             }
         );
@@ -565,12 +565,12 @@ public partial class iCS_IStorage {
     public void CleanupPortPositionOnEdge(iCS_EditorObject port) {
         var parent= port.Parent;
         var parentPos= GetLayoutPosition(parent);
-        Rect lp= port.LocalPosition;
+        Rect lp= port.LocalRect;
         switch(port.Edge) {
-            case iCS_EdgeEnum.Top:      lp.y= 0; port.LocalPosition= lp; break; 
-            case iCS_EdgeEnum.Bottom:   lp.y= parentPos.height; port.LocalPosition= lp; break;
-            case iCS_EdgeEnum.Left:     lp.x= 0; port.LocalPosition= lp; break;
-            case iCS_EdgeEnum.Right:    lp.x= parentPos.width; port.LocalPosition= lp; break;
+            case iCS_EdgeEnum.Top:      lp.y= 0; port.LocalRect= lp; break; 
+            case iCS_EdgeEnum.Bottom:   lp.y= parentPos.height; port.LocalRect= lp; break;
+            case iCS_EdgeEnum.Left:     lp.x= 0; port.LocalRect= lp; break;
+            case iCS_EdgeEnum.Right:    lp.x= parentPos.width; port.LocalRect= lp; break;
         }
     }
     // ----------------------------------------------------------------------
@@ -578,10 +578,10 @@ public partial class iCS_IStorage {
     public void UpdatePortPositions(iCS_EditorObject node) {
         // Special case for minimized nodes.
         if(node.IsIconized) {
-            float cx= 0.5f*node.LocalPosition.width;
-            float cy= 0.5f*node.LocalPosition.height;
+            float cx= 0.5f*node.DisplaySize.x;
+            float cy= 0.5f*node.DisplaySize.y;
             ForEachChildPort(node, port=> {
-                port.LocalPosition= new Rect(cx,cy, port.LocalPosition.width, port.LocalPosition.height);
+                port.LocalRect= new Rect(cx,cy, port.DisplaySize.x, port.DisplaySize.y);
             });
             return;
         }
@@ -593,7 +593,7 @@ public partial class iCS_IStorage {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalPosition= new Rect((i+0.5f)*xStep, 0, 0, 0);
+                    ports[i].LocalRect= new Rect((i+0.5f)*xStep, 0, 0, 0);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -607,7 +607,7 @@ public partial class iCS_IStorage {
             float xStep= position.width / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalPosition= new Rect((i+0.5f)*xStep, position.height, 0, 0);
+                    ports[i].LocalRect= new Rect((i+0.5f)*xStep, position.height, 0, 0);
                 }
             }            
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -622,7 +622,7 @@ public partial class iCS_IStorage {
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalPosition= new Rect(0, topOffset+(i+0.5f) * yStep, 0, 0);
+                    ports[i].LocalRect= new Rect(0, topOffset+(i+0.5f) * yStep, 0, 0);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -637,7 +637,7 @@ public partial class iCS_IStorage {
             float yStep= (position.height-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalPosition= new Rect(position.width, topOffset+(i+0.5f)*yStep, 0, 0);
+                    ports[i].LocalRect= new Rect(position.width, topOffset+(i+0.5f)*yStep, 0, 0);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {

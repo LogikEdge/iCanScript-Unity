@@ -304,7 +304,7 @@ public partial class iCS_IStorage {
                                  iCS_EditorObject destParent, iCS_IStorage destStorage, Vector2 initialPos) {
         // Create new EditorObject
         Vector2 parentPos= IsValid(destParent) ? Math3D.ToVector2(GetLayoutPosition(destParent)) : Vector2.zero;
-        Vector2 sizeOffset= 0.5f*new Vector2(srcObj.LocalPosition.width, srcObj.LocalPosition.height);
+        Vector2 sizeOffset= 0.5f*new Vector2(srcObj.DisplaySize.x, srcObj.DisplaySize.y);
         Vector2 localPos= initialPos-parentPos-sizeOffset;
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
         iCS_EditorObject instance= Copy(srcObj, srcStorage, destParent, destStorage, localPos, xlat);
@@ -320,7 +320,7 @@ public partial class iCS_IStorage {
         var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, localPos, destStorage);
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
-            child=> Copy(child, srcStorage, newObj, destStorage, Math3D.ToVector2(child.LocalPosition), xlat)
+            child=> Copy(child, srcStorage, newObj, destStorage, Math3D.ToVector2(child.LocalRect), xlat)
         );
 		if(newObj.IsInDataPort) {
 			LoadInitialPortValueFromArchive(this[id]);
@@ -526,14 +526,14 @@ public partial class iCS_IStorage {
         // Reajust data port position 
         iCS_EditorObject parent= port.Parent;
 		if(port.IsDataPort && parent.IsDataPort) {
-			port.LocalPosition= new Rect(0,0,0,0);
+			port.LocalRect= new Rect(0,0,0,0);
 		} else if(port.IsDataPort && !port.IsEnablePort) {
             if(port.IsInputPort) {
                 int nbOfPorts= GetNbOfLeftPorts(parent);
-                port.LocalPosition= new Rect(0, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);
+                port.LocalRect= new Rect(0, parent.DisplaySize.y/(nbOfPorts+1), 0, 0);
             } else {
                 int nbOfPorts= GetNbOfRightPorts(parent);
-                port.LocalPosition= new Rect(parent.LocalPosition.width, parent.LocalPosition.height/(nbOfPorts+1), 0, 0);                
+                port.LocalRect= new Rect(parent.DisplaySize.x, parent.DisplaySize.y/(nbOfPorts+1), 0, 0);                
             }
         }
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
@@ -554,9 +554,9 @@ public partial class iCS_IStorage {
                 localPos= new Rect(initialPos.x-parentRect.x, initialPos.y-parentRect.y,size.x,size.y);
             } else {
                 localPos= new Rect(parentRect.width, parentRect.height, size.x, size.y);
-                parent.LocalPosition= new Rect(parent.LocalPosition.x, parent.LocalPosition.y,
-                                               parent.LocalPosition.width +2f*iCS_Config.GutterSize+size.x,
-                                               parent.LocalPosition.height+2f*iCS_Config.GutterSize+size.y);
+                parent.LocalRect= new Rect(parent.LocalRect.x, parent.LocalRect.y,
+                                           parent.DisplaySize.x +2f*iCS_Config.GutterSize+size.x,
+                                           parent.DisplaySize.y+2f*iCS_Config.GutterSize+size.y);
             }
         } else {
             localPos= VisualEditorCenter();

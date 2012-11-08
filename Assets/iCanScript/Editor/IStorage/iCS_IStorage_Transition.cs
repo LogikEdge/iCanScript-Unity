@@ -62,9 +62,9 @@ public partial class iCS_IStorage {
         UpdatePortNames(fromStatePort, toStatePort);
         // Set initial transition module position.
         var transitionIcon= iCS_TextureCache.GetTextureFromGUID(transitionModule.IconGUID);
-        transitionModule.LocalPosition= new Rect(transitionModule.LocalPosition.x, transitionModule.LocalPosition.y,
-                                                 transitionIcon.width, transitionIcon.height);
-        inModulePort.LocalPosition= new Rect(0.5f*transitionIcon.width, 0.5f*transitionIcon.height, 0, 0);
+        transitionModule.LocalRect= new Rect(transitionModule.LocalRect.x, transitionModule.LocalRect.y,
+                                             transitionIcon.width, transitionIcon.height);
+        inModulePort.LocalRect= new Rect(0.5f*transitionIcon.width, 0.5f*transitionIcon.height, 0, 0);
         outModulePort= inModulePort;
         LayoutTransitionModule(transitionModule);
     }

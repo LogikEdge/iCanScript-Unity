@@ -15,7 +15,7 @@ public partial class iCS_IStorage {
                 if(exclude != null) {
                     excludeFlag= n == exclude || IsChildOf(n, exclude);
                 }
-                return !excludeFlag && n.IsNode && n.IsVisible && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width);
+                return !excludeFlag && n.IsNode && n.IsVisible && IsInside(n, pick) && (foundNode == null || n.DisplaySize.x < foundNode.DisplaySize.x);
             },
             n=> foundNode= n
         );

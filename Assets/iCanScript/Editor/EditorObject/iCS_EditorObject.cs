@@ -104,21 +104,46 @@ public partial class iCS_EditorObject {
 		    }
 	    }
 	}
-    public Rect LocalPosition {
+    public Rect LocalRect {
 		get {
             var engObj= EngineObject;
-		    float x= engObj.LocalPosition.x-0.5f*engObj.DisplaySize.x;
-		    float y= engObj.LocalPosition.y-0.5f*engObj.DisplaySize.y;
+			var localPosition= myIStorage.Storage.GetLocalPosition(engObj);
+		    float x= localPosition.x-0.5f*engObj.DisplaySize.x;
+		    float y= localPosition.y-0.5f*engObj.DisplaySize.y;
 		    return new Rect(x, y, engObj.DisplaySize.x, engObj.DisplaySize.y);
 		}
 		set {
 		    float x= value.x+0.5f*value.width;
 		    float y= value.y+0.5f*value.height;
-		    EngineObject.LocalPosition= new Vector2(x, y);
+		    myIStorage.Storage.SetLocalPosition(EngineObject, new Vector2(x, y));
 		    EngineObject.DisplaySize= new Vector2(value.width, value.height);
 		}
 	}
-    
+//    public Vector2 LocalPosition {
+//		get {
+//			return myIStorage.Storage.GetLocalPosition(EngineObject);
+//		}
+//		set {
+//			myIStorage.Storage.SetLocalPosition(EngineObject, value);
+//		}
+//	}
+    public Vector2 DisplaySize {
+		get {
+			return EngineObject.DisplaySize;
+		}
+		set {
+			EngineObject.DisplaySize= value;
+		}
+	}
+	public Vector2 RelativePosition {
+		get {
+			return EngineObject.RelativePosition;
+		}
+		set {
+			EngineObject.RelativePosition= value;
+		}
+	}
+	
     // ======================================================================
     // Constructors/Builders
     // ----------------------------------------------------------------------

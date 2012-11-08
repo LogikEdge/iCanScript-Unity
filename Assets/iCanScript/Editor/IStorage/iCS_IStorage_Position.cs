@@ -20,21 +20,21 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns the local position of the given object.
     public Rect GetLayoutLocalPosition(iCS_EditorObject eObj) {
-        return eObj.LocalPosition;
+        return eObj.LocalRect;
     }
     // ----------------------------------------------------------------------
     public void SetLayoutPosition(iCS_EditorObject node, Rect _newPos) {
         // Adjust node size.
         Rect position= GetLayoutPosition(node);
-        node.LocalPosition= new Rect(node.LocalPosition.x, node.LocalPosition.y, _newPos.width, _newPos.height);
+        node.LocalRect= new Rect(node.LocalRect.x, node.LocalRect.y, _newPos.width, _newPos.height);
         // Reposition node.
         if(!IsValid(node.ParentId)) {
-            node.LocalPosition= new Rect(_newPos.x, _newPos.y, node.LocalPosition.width, node.LocalPosition.height);
+            node.LocalRect= new Rect(_newPos.x, _newPos.y, node.DisplaySize.x, node.DisplaySize.y);
         }
         else {
             Rect deltaMove= new Rect(_newPos.xMin-position.xMin, _newPos.yMin-position.yMin, _newPos.width-position.width, _newPos.height-position.height);
-            node.LocalPosition= new Rect(node.LocalPosition.x+deltaMove.x, node.LocalPosition.y+deltaMove.y,
-                                         node.LocalPosition.width, node.LocalPosition.height);
+            node.LocalRect= new Rect(node.LocalRect.x+deltaMove.x, node.LocalRect.y+deltaMove.y,
+                                     node.DisplaySize.x, node.DisplaySize.y);
             float separationX= Math3D.IsNotZero(deltaMove.x) ? deltaMove.x : deltaMove.width;
             float separationY= Math3D.IsNotZero(deltaMove.y) ? deltaMove.y : deltaMove.height;
             var separationVector= new Vector2(separationX, separationY);
@@ -42,8 +42,8 @@ public partial class iCS_IStorage {
         }
     }    
     // ----------------------------------------------------------------------
-    public void SetLayoutLocalPosition(iCS_EditorObject eObj, Rect newLocalPos) {
-        eObj.LocalPosition= newLocalPos;
+    public void SetLayoutLocalPosition(iCS_EditorObject eObj, Rect newLocalRect) {
+        eObj.LocalRect= newLocalRect;
     }
     
    	// ----------------------------------------------------------------------

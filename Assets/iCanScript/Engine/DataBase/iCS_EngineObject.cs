@@ -10,17 +10,17 @@ using System.Collections.Generic;
 [System.Serializable]
 public class iCS_EngineObject {
     // ======================================================================
-    // Properties
+    // Database Fields
     // ----------------------------------------------------------------------
-    public iCS_ObjectTypeEnum    ObjectType    = iCS_ObjectTypeEnum.Unknown;
-    public int                   InstanceId    = -1;
-    public int                   ParentId      = -1;
-    public string                QualifiedType = "";
-    public string                RawName       = "";
-    public Vector2               LocalPosition = Vector2.zero;
-    public Vector2               DisplaySize   = Vector2.zero;
-    public iCS_DisplayOptionEnum DisplayOption = iCS_DisplayOptionEnum.Unfolded;
-    public bool                  IsNameEditable= true;
+    public iCS_ObjectTypeEnum    ObjectType      = iCS_ObjectTypeEnum.Unknown;
+    public int                   InstanceId      = -1;
+    public int                   ParentId        = -1;
+    public string                QualifiedType   = "";
+    public string                RawName         = "";
+    public Vector2               RelativePosition= Vector2.zero;	// in % of parent except for root
+    public Vector2               DisplaySize     = Vector2.zero;	// in pixels
+    public iCS_DisplayOptionEnum DisplayOption   = iCS_DisplayOptionEnum.Unfolded;
+    public bool                  IsNameEditable  = true;
 
 	// Node specific attributes ---------------------------------------------
 	public string				 MethodName= null;
@@ -40,14 +40,14 @@ public class iCS_EngineObject {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType, Vector2 localPosition, Vector2 size) {
+    public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType, Vector2 relativePosition, Vector2 size) {
         Reset();
         ObjectType= objectType;
         InstanceId= id;
         ParentId= parentId;
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
-        LocalPosition= localPosition;
+        RelativePosition= relativePosition;
         DisplaySize= size;
         if(IsDataPort) {
             Edge= IsInputPort ? (IsEnablePort ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left) : iCS_EdgeEnum.Right;
@@ -66,8 +66,8 @@ public class iCS_EngineObject {
 		Reset();
 	}
     // ----------------------------------------------------------------------
-    public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent, Vector2 localPosition) {
-        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localPosition, toClone.DisplaySize);
+    public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent, Vector2 relativePosition) {
+        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, relativePosition, toClone.DisplaySize);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
@@ -92,7 +92,7 @@ public class iCS_EngineObject {
         ParentId= -1;
         QualifiedType= "";
 		RawName= "";
-        LocalPosition= Vector2.zero;
+        RelativePosition= Vector2.zero;
         DisplaySize= Vector2.zero;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;
