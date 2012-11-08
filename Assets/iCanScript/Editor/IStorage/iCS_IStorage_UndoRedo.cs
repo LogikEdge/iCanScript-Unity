@@ -25,18 +25,17 @@ public partial class iCS_IStorage {
         // Rebuild editor data.
         GenerateEditorData();
         // Put back the previous display position
+        Vector2 rootCenter= Math3D.Middle(displayPositions[0].Item2);
         ForEach(
             obj=> {
-                Rect displayPos= new Rect(0,0,0,0);
+                // Default to root center.
+                Rect displayPos= new Rect(rootCenter.x, rootCenter.y, 0, 0);                        
                 if(obj.InstanceId < displayPositions.Count && displayPositions[obj.InstanceId].Item1) {
                     displayPos= displayPositions[obj.InstanceId].Item2;
                 } else {
                     if(obj.IsParentValid && obj.ParentId < displayPositions.Count && displayPositions[obj.ParentId].Item1) {
                         Vector2 parentCenter= Math3D.Middle(displayPositions[obj.ParentId].Item2);
                         displayPos= new Rect(parentCenter.x, parentCenter.y, 0, 0);
-                    } else {
-                        Vector2 parentCenter= Math3D.Middle(displayPositions[0].Item2);
-                        displayPos= new Rect(parentCenter.x, parentCenter.y, 0, 0);                        
                     }
                 }
                 SetDisplayPosition(obj, displayPos);

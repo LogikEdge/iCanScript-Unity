@@ -101,7 +101,7 @@ public partial class iCS_EditorObject {
 		    myIsDirty= value;
 		    if(value) {
 		        myIStorage.IsDirty= true;
-                Debug.Log(Name+" is dirty");
+//                Debug.Log(Name+" is dirty");
 		    }
 	    }
 	}
@@ -167,6 +167,7 @@ public partial class iCS_EditorObject {
 		myAnimatedPosition.Reset();
 		// Reset the associated engine object.
         EngineObject.DestroyInstance();
+        myId= -1;
     }
     
     // ======================================================================
