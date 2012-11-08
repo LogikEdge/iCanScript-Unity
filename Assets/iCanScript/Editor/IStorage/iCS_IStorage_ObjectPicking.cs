@@ -15,7 +15,7 @@ public partial class iCS_IStorage {
                 if(exclude != null) {
                     excludeFlag= n == exclude || IsChildOf(n, exclude);
                 }
-                return !excludeFlag && n.IsNode && IsVisible(n) && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width);
+                return !excludeFlag && n.IsNode && n.IsVisible && IsInside(n, pick) && (foundNode == null || n.LocalPosition.width < foundNode.LocalPosition.width);
             },
             n=> foundNode= n
         );
@@ -37,7 +37,7 @@ public partial class iCS_IStorage {
         float bestDistance= 100000;     // Simply a big value
         if(filter == null) filter= GetPortAtDefaultFilter;
         FilterWith(
-            port=> port.IsPort && IsVisible(port) && !port.IsFloating && filter(port),
+            port=> port.IsPort && port.IsVisible && !port.IsFloating && filter(port),
             port=> {
                 Vector2 position= Math3D.ToVector2(GetLayoutPosition(port));
                 float distance= Vector2.Distance(position, pick);

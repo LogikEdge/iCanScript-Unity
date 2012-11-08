@@ -5,23 +5,14 @@ public partial class iCS_IStorage {
     public bool IsIconizedOnDisplay(iCS_EditorObject eObj)  { return eObj.IsIconized; }
     public bool IsUnfoldedOnDisplay(iCS_EditorObject eObj)  { return eObj.IsUnfolded; }
     public bool IsFoldedOnDisplay(iCS_EditorObject eObj)    { return eObj.IsFolded; }
-    public bool IsVisibleOnDisplay(iCS_EditorObject eObj)   { return IsVisible(eObj); }
+    public bool IsVisibleOnDisplay(iCS_EditorObject eObj)   { return eObj.IsVisible; }
     public bool IsIconizedInLayout(iCS_EditorObject eObj)   { return eObj.IsIconized; }
     public bool IsUnfoldedInLayout(iCS_EditorObject eObj)   { return eObj.IsUnfolded; }
     public bool IsFoldedInLayout(iCS_EditorObject eObj)     { return eObj.IsFolded; }
-    public bool IsVisibleInLayout(iCS_EditorObject eObj)    { return IsVisible(eObj); }
+    public bool IsVisibleInLayout(iCS_EditorObject eObj)    { return eObj.IsVisible; }
     
     // ======================================================================
     // Display Options
-    // ----------------------------------------------------------------------
-    public bool IsVisible(iCS_EditorObject eObj) {
-        if(!IsValid(eObj.ParentId)) return true;
-        iCS_EditorObject parent= eObj.Parent;
-        if(eObj.IsNode && (parent.IsFolded || parent.IsIconized)) return false;
-		if(eObj.IsDataPort && (parent.IsDataPort || parent.IsIconized)) return false;
-        return IsVisible(parent);
-    }
-    public bool IsVisible(int id) { return !IsValid(id) ? false : IsVisible(EditorObjects[id]); }
     // ----------------------------------------------------------------------
     public void Fold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.

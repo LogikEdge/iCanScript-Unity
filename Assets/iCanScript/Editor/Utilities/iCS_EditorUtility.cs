@@ -96,7 +96,7 @@ public static class iCS_EditorUtility {
         }
         if(eObj.IsPort) {
             var portParent= eObj.Parent;
-            if(!iStorage.IsVisible(portParent) || portParent.IsIconized) {
+            if(!portParent.IsVisible || portParent.IsIconized) {
                 iStorage.Fold(portParent);
             }
             MakeVisible(portParent, iStorage);

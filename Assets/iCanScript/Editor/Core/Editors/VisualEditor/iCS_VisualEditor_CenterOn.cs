@@ -27,7 +27,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void CenterAndScaleOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
-        while(obj != null && !IStorage.IsVisible(obj)) obj= obj.Parent;
+        while(obj != null && !obj.IsVisible) obj= obj.Parent;
         if(obj == null) return;
         Rect objectArea= IStorage.GetLayoutPosition(obj);
         float newScale= 1.0f;

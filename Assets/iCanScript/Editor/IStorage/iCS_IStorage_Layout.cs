@@ -37,7 +37,7 @@ public partial class iCS_IStorage {
     // Returns "true" if the new layout is within the window area.
     public void NodeLayout(iCS_EditorObject node, bool needsToBeCentered= false) {
         // Don't layout node if it is not visible.
-        if(!IsVisible(node)) return;
+        if(!node.IsVisible) return;
         
         // Update transition module name
         if(node.IsTransitionModule) {
@@ -203,7 +203,7 @@ public partial class iCS_IStorage {
         Rect childRect= new Rect(0.5f*node.LocalPosition.width,0.5f*node.LocalPosition.height,0,0);
         ForEachChild(node,
             (child)=> {
-                if(child.IsNode && IsVisible(child) && !child.IsFloating) {
+                if(child.IsNode && child.IsVisible && !child.IsFloating) {
                     childRect= Math3D.Merge(childRect, child.LocalPosition);
                 }
             }
@@ -217,7 +217,7 @@ public partial class iCS_IStorage {
         Rect childrenRect= new Rect(0,0,0,0);
         ForEachChild(node,
             (child)=> {
-                if(child.IsNode && IsVisible(child) && !child.IsFloating) {
+                if(child.IsNode && child.IsVisible && !child.IsFloating) {
                     var childPos= GetLayoutPosition(child);
                     if(Math3D.IsZero(childrenRect.width)) {
                         childrenRect= childPos;
@@ -449,7 +449,7 @@ public partial class iCS_IStorage {
     // collision has occured.
     public void ResolveCollisionOnChildren(iCS_EditorObject node, Vector2 _delta) {
         bool didCollide= false;
-        iCS_EditorObject[] children= BuildListOfChildren(c=> IsVisible(c) && c.IsNode && !c.IsFloating,node);
+        iCS_EditorObject[] children= BuildListOfChildren(c=> c.IsVisible && c.IsNode && !c.IsFloating,node);
         for(int i= 0; i < children.Length-1; ++i) {
             for(int j= i+1; j < children.Length; ++j) {
                 didCollide |= ResolveCollisionBetweenTwoNodes(children[i], children[j], _delta);                            
@@ -654,7 +654,7 @@ public partial class iCS_IStorage {
         Rect tmp= GetLayoutPosition(port);
         Vector2 position= new Vector2(tmp.x, tmp.y);
         FilterWith(
-            p=> p.IsPort && p != port && IsVisible(p),
+            p=> p.IsPort && p != port && p.IsVisible,
             p=> {
                 tmp= GetLayoutPosition(p);
                 Vector2 pPos= new Vector2(tmp.x, tmp.y);

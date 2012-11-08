@@ -21,7 +21,7 @@ public partial class iCS_IStorage {
         ForEach(
             obj=> {
                 var animation= obj.AnimatedPosition;
-                if(IsVisible(obj)) {
+                if(obj.IsVisible) {
                     if(Math3D.IsNotEqual(GetLayoutPosition(obj), animation.TargetValue)) {
                         Debug.LogWarning("iCanScript: Animation was not properly applied for: "+obj.Name+" with id: "+obj.InstanceId);                        
                     }

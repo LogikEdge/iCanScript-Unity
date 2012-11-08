@@ -217,12 +217,12 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     Rect GetAnimationTarget(iCS_EditorObject eObj) {
         Rect target;
-        if(IsVisible(eObj)) {
+        if(eObj.IsVisible) {
             target= GetLayoutPosition(eObj);
         } else {
             // Find first visible parent.
             var visibleParent= eObj.Parent;
-            for(; visibleParent != null && !IsVisible(visibleParent); visibleParent= visibleParent.Parent);
+            for(; visibleParent != null && !visibleParent.IsVisible; visibleParent= visibleParent.Parent);
             Vector2 center= Math3D.Middle(GetLayoutPosition(visibleParent ?? eObj));
             target= new Rect(center.x, center.y, 0, 0);
         }
