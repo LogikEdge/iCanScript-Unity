@@ -73,7 +73,10 @@ public partial class iCS_EditorObject {
 			return myIStorage.Storage.GetAbsoluteRect(EngineObject);
 		}
 		set {
-			if(!IsParentValid) LocalRect= value;
+			if(!IsParentValid) {
+			    LocalRect= value;
+			    return;
+		    }
 			// First adjust parent display area.
 			var parent= Parent;
 			var parentRect= parent.AbsoluteRect;
