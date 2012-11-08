@@ -111,7 +111,7 @@ public partial class iCS_EditorObject {
 	// Creates an instance of an editor/engine object pair.
 	public static iCS_EditorObject CreateInstance(int id, string name, Type type,
 												  int parentId, iCS_ObjectTypeEnum objectType,
-                            					  Rect localRect, iCS_IStorage iStorage) {
+                            					  iCS_IStorage iStorage) {
 		if(id < 0) return null;
 		// Create engine object.
 		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType);
@@ -119,14 +119,12 @@ public partial class iCS_EditorObject {
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
-		// Update display position.
-		editorObject.LocalRect= localRect;
 		return editorObject;
 	}
     // ----------------------------------------------------------------------
     // Duplicate the given editor object with a new id and parent.
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
-                                         Vector2 localPosition, iCS_IStorage iStorage) {
+                                         iCS_IStorage iStorage) {
 		if(id < 0) return null;
 		// Create engine object.
         var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject,
@@ -135,8 +133,6 @@ public partial class iCS_EditorObject {
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
-		// Update display position.
-		editorObject.LocalRect= new Rect(localPosition.x, localPosition.y, toClone.DisplaySize.x, toClone.DisplaySize.y);
 		return editorObject;
     }
 

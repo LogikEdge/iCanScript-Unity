@@ -317,7 +317,8 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         int id= destStorage.GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
-        var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, localPos, destStorage);
+        var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
+		newObj.LocalPosition= localPos;
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
             child=> Copy(child, srcStorage, newObj, destStorage, Math3D.ToVector2(child.LocalRect), xlat)
@@ -359,23 +360,23 @@ public partial class iCS_IStorage {
         if(id != 0) {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
-        // Determine best initial position.
-        Rect initialPos= VisualEditorCenter();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, initialPos, this);
-		this[id].IsNameEditable= false;
-		SetDirty(this[id]);
-        return this[id];
+        iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, this);
+		this[0].LocalRect= VisualEditorCenter();
+		this[0].IsNameEditable= false;
+		SetDirty(this[0]);
+        return this[0];
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateModule(int parentId, Vector2 initialPos, string name= "", iCS_ObjectTypeEnum objectType= iCS_ObjectTypeEnum.Module, Type runtimeType= null) {
 		if(runtimeType == null) runtimeType= typeof(iCS_Module);
         // Create the function node.
         int id= GetNextAvailableId();
-        // Calcute the desired screen position of the new object.
-        Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, localPos, this);
+        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
+        // Calcute the desired screen position of the new object.
+        this[id].LocalRect= PositionNewNodeInParent(initialPos, parentId);
+		// Set animated display position.
         var center= Math3D.Middle(GetLayoutPosition(this[id]));
         SetDisplayPosition(this[id], new Rect(center.x,center.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
@@ -387,10 +388,11 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateStateChart(int parentId, Vector2 initialPos, string name= "") {
         // Create the function node.
         int id= GetNextAvailableId();
-        // Calcute the desired screen position of the new object.
-        Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        this[id]= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, localPos, this);
+        this[id]= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
+        // Calcute the desired screen position of the new object.
+        this[id].LocalRect= PositionNewNodeInParent(initialPos, parentId);
+		// Set animated display position.
         var center= Math3D.Middle(GetLayoutPosition(this[id]));
         SetDisplayPosition(this[id], new Rect(center.x,center.y,0,0));
 		SetDirty(this[id]);
@@ -407,10 +409,11 @@ public partial class iCS_IStorage {
         }
         // Create the function node.
         int id= GetNextAvailableId();
-        // Calcute the desired screen position of the new object.
-        Rect localPos= PositionNewNodeInParent(initialPos, parentId);
         // Create new EditorObject
-        this[id]= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, localPos, this);
+        this[id]= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
+        // Calcute the desired screen position of the new object.
+        this[id].LocalRect= PositionNewNodeInParent(initialPos, parentId);
+		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(initialPos.x,initialPos.y,0,0));
         // Set first state as the default entry state.
         this[id].IsRawEntryState= !ForEachChild(parent,
@@ -438,16 +441,16 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreateStaticMethod(int parentId, Vector2 initialPos, iCS_ReflectionInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
-        // Determine minimized icon.
+        // Determine icon.
         var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
         if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
-        // Calcute the desired screen position of the new object.
-        Rect localPos= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create new EditorObject
-        this[id]= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
+        this[id]= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
         this[id].IconGUID= iconGUID;
+        // Calcute the desired screen position of the new object.
+        this[id].LocalRect= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -482,11 +485,11 @@ public partial class iCS_IStorage {
         if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
-        // Calcute the desired screen position of the new object.
-        Rect localPos= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, localPos, this);
+        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
         this[id].IconGUID= iconGUID;
+        // Calcute the desired screen position of the new object.
+		this[id].LocalRect= PositionNewNodeInParent(initialPos, parentId, iconGUID);
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -522,7 +525,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
-        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, new Rect(0,0,0,0), this);
+        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         // Reajust data port position 
         iCS_EditorObject parent= port.Parent;
 		if(port.IsDataPort && parent.IsDataPort) {
