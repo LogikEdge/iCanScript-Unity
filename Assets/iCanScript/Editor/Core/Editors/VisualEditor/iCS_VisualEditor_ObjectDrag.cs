@@ -58,7 +58,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
         // Port drag.
         iCS_EditorObject port= SelectedObject;
-        if(port != null && port.IsPort && !IStorage.IsIconized(port) && !port.IsTransitionPort) {
+        if(port != null && port.IsPort && !port.IsIconized && !port.IsTransitionPort) {
             IStorage.RegisterUndo("Port Drag");
             IStorage.CleanupDeadPorts= false;
             DragType= DragTypeEnum.PortRelocation;

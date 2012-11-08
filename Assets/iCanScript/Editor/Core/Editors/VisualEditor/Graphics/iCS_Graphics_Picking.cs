@@ -7,7 +7,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     public bool IsNodeTitleBarPicked(iCS_EditorObject node, Vector2 pick, iCS_IStorage iStorage) {
         if(node == null || !node.IsNode || !IsVisible(node, iStorage)) return false;
-        if(iStorage.IsIconized(node)) {
+        if(node.IsIconized) {
             Rect nodeNamePos= GetNodeNamePosition(node, iStorage);
             return nodeNamePos.Contains(pick);
         }
@@ -47,7 +47,7 @@ public partial class iCS_Graphics {
         return foldIconPos.Contains(pick);
     }
     bool ShouldDisplayFoldIcon(iCS_EditorObject obj, iCS_IStorage iStorage) {
-        if(iStorage.IsIconized(obj)) return false;
+        if(obj.IsIconized) return false;
         return (obj.IsModule || obj.IsStateChart || obj.IsState);
     }
     Rect GetFoldIconPosition(iCS_EditorObject obj, iCS_IStorage iStorage) {
@@ -64,7 +64,7 @@ public partial class iCS_Graphics {
         return minimizeIconPos.Contains(pick);
     }
     bool ShouldDisplayMinimizeIcon(iCS_EditorObject obj, iCS_IStorage iStorage) {
-        return obj.InstanceId != 0 && obj.IsNode && !iStorage.IsIconized(obj);
+        return obj.InstanceId != 0 && obj.IsNode && !obj.IsIconized;
     }
     Rect GetMinimizeIconPosition(iCS_EditorObject node, iCS_IStorage iStorage) {
         Rect objPos= GetDisplayPosition(node, iStorage);
@@ -93,12 +93,12 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     public bool IsMaximizeIconPicked(iCS_EditorObject obj, Vector2 mousePos, iCS_IStorage iStorage) {
-        if(!ShouldDisplayMaximizeIcon(obj, iStorage)) return false;
+        if(!ShouldDisplayMaximizeIcon(obj)) return false;
         Rect maximizeIconPos= GetMaximizeIconPosition(obj, iStorage);
         return maximizeIconPos.Contains(mousePos);
     }
-    bool ShouldDisplayMaximizeIcon(iCS_EditorObject obj, iCS_IStorage iStorage) {
-        return obj.InstanceId != 0 && obj.IsNode && iStorage.IsIconized(obj);
+    bool ShouldDisplayMaximizeIcon(iCS_EditorObject obj) {
+        return obj.InstanceId != 0 && obj.IsNode && obj.IsIconized;
     }
     Rect GetMaximizeIconPosition(iCS_EditorObject obj, iCS_IStorage iStorage) {
         return GetDisplayPosition(obj, iStorage);

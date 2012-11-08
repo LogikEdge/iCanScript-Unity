@@ -35,7 +35,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         Vector2 graphPosition= ViewportToGraph(_screenPos);
         iCS_EditorObject port= IStorage.GetPortAt(graphPosition);
         if(port != null) {
-            if(IStorage.IsIconized(port)) return port.Parent;
+            if(port.IsIconized) return port.Parent;
             return port;
         }
         iCS_EditorObject node= IStorage.GetNodeAt(graphPosition);                

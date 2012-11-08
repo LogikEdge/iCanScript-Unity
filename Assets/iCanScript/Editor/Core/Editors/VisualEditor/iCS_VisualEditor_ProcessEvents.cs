@@ -87,7 +87,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Process fold/unfold/minimize/maximize click.
                 Vector2 mouseGraphPos= GraphMousePosition;
                 if(myGraphics.IsFoldIconPicked(SelectedObject, mouseGraphPos, IStorage)) {
-                    if(IStorage.IsFolded(SelectedObject)) {
+                    if(SelectedObject.IsFolded) {
                         IStorage.RegisterUndo("Unfold");
                         IStorage.Unfold(SelectedObject);
                     } else {

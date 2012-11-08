@@ -2,13 +2,13 @@ using UnityEngine;
 using System.Collections;
 
 public partial class iCS_IStorage {
-    public bool IsIconizedOnDisplay(iCS_EditorObject eObj)  { return IsIconized(eObj); }
-    public bool IsUnfoldedOnDisplay(iCS_EditorObject eObj)  { return IsUnfolded(eObj); }
-    public bool IsFoldedOnDisplay(iCS_EditorObject eObj)    { return IsFolded(eObj); }
+    public bool IsIconizedOnDisplay(iCS_EditorObject eObj)  { return eObj.IsIconized; }
+    public bool IsUnfoldedOnDisplay(iCS_EditorObject eObj)  { return eObj.IsUnfolded; }
+    public bool IsFoldedOnDisplay(iCS_EditorObject eObj)    { return eObj.IsFolded; }
     public bool IsVisibleOnDisplay(iCS_EditorObject eObj)   { return IsVisible(eObj); }
-    public bool IsIconizedInLayout(iCS_EditorObject eObj)   { return IsIconized(eObj); }
-    public bool IsUnfoldedInLayout(iCS_EditorObject eObj)   { return IsUnfolded(eObj); }
-    public bool IsFoldedInLayout(iCS_EditorObject eObj)     { return IsFolded(eObj); }
+    public bool IsIconizedInLayout(iCS_EditorObject eObj)   { return eObj.IsIconized; }
+    public bool IsUnfoldedInLayout(iCS_EditorObject eObj)   { return eObj.IsUnfolded; }
+    public bool IsFoldedInLayout(iCS_EditorObject eObj)     { return eObj.IsFolded; }
     public bool IsVisibleInLayout(iCS_EditorObject eObj)    { return IsVisible(eObj); }
     
     // ======================================================================
@@ -23,8 +23,6 @@ public partial class iCS_IStorage {
     }
     public bool IsVisible(int id) { return !IsValid(id) ? false : IsVisible(EditorObjects[id]); }
     // ----------------------------------------------------------------------
-    public bool IsFolded(iCS_EditorObject eObj) { return eObj.IsFolded; }
-    // ----------------------------------------------------------------------
     public void Fold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
         if(eObj.IsFunction) {
@@ -38,9 +36,6 @@ public partial class iCS_IStorage {
     }
     public void Fold(int id) { if(IsValid(id)) Fold(EditorObjects[id]); }
     // ----------------------------------------------------------------------
-    public bool IsIconized(iCS_EditorObject eObj) {
-        return eObj.IsIconized;
-    }
     public void Iconize(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;
         eObj.Iconize();
@@ -52,7 +47,6 @@ public partial class iCS_IStorage {
     }
     public void Iconize(int id) { if(IsValid(id)) Iconize(EditorObjects[id]); }
     // ----------------------------------------------------------------------
-    public bool IsUnfolded(iCS_EditorObject eObj) { return eObj.IsUnfolded; }
     public void Unfold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;
         eObj.Unfold();
