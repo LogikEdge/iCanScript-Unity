@@ -29,29 +29,6 @@ public partial class iCS_EditorObject {
 
 
     // ======================================================================
-    public Rect LocalRect {
-		get {
-            var engObj= EngineObject;
-			var localPosition= myIStorage.Storage.GetLocalPosition(engObj);
-		    float x= localPosition.x-0.5f*engObj.DisplaySize.x;
-		    float y= localPosition.y-0.5f*engObj.DisplaySize.y;
-		    return new Rect(x, y, engObj.DisplaySize.x, engObj.DisplaySize.y);
-		}
-		set {
-		    float x= value.x+0.5f*value.width;
-		    float y= value.y+0.5f*value.height;
-		    myIStorage.Storage.SetLocalPosition(EngineObject, new Vector2(x, y));
-		    EngineObject.DisplaySize= new Vector2(value.width, value.height);
-		}
-	}
-    public Vector2 LocalPosition {
-		get {
-			return myIStorage.Storage.GetLocalPosition(EngineObject);
-		}
-		set {
-			myIStorage.Storage.SetLocalPosition(EngineObject, value);
-		}
-	}
     public Vector2 DisplaySize {
 		get {
 			return EngineObject.DisplaySize;
@@ -66,6 +43,29 @@ public partial class iCS_EditorObject {
 		}
 		set {
 			EngineObject.RelativePosition= value;
+		}
+	}
+    public Vector2 LocalPosition {
+		get {
+			return myIStorage.Storage.GetLocalPosition(EngineObject);
+		}
+		set {
+			myIStorage.Storage.SetLocalPosition(EngineObject, value);
+		}
+	}
+    public Rect LocalRect {
+		get {
+            var displaySize= EngineObject.DisplaySize;
+			var localPosition= LocalPosition;
+		    float x= localPosition.x-0.5f*displaySize.x;
+		    float y= localPosition.y-0.5f*displaySize.y;
+		    return new Rect(x, y, displaySize.x, displaySize.y);
+		}
+		set {
+		    float x= value.x+0.5f*value.width;
+		    float y= value.y+0.5f*value.height;
+		    LocalPosition= new Vector2(x, y);
+		    DisplaySize= new Vector2(value.width, value.height);
 		}
 	}
 	public Rect AbsoluteRect {
