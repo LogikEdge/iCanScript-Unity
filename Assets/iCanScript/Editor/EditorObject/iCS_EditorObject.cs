@@ -20,13 +20,13 @@ public partial class iCS_EditorObject {
         get { return myIStorage.EditorObjects; }
     }
     public iCS_EditorObject EditorObject {
-		get { return myId >= 0 && myId < EditorObjects.Count ? EditorObjects[myId] : null; }
+		get { return EditorObjects[myId]; }
 	}
     public List<iCS_EngineObject> EngineObjects {
         get { return myIStorage.EngineObjects; }
     }
     public iCS_EngineObject EngineObject {
-		get { return myId >= 0 && myId < EngineObjects.Count ? EngineObjects[myId] : null; }
+		get { return EngineObjects[myId]; }
 	}
     List<iCS_EngineObject> EditorToEngineList(List<iCS_EditorObject> editorObjects) {
         return Prelude.map(eo=> (eo != null ? eo.EngineObject : null), editorObjects);
@@ -36,9 +36,8 @@ public partial class iCS_EditorObject {
     // Proxy Methods
     // ----------------------------------------------------------------------
 	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count; }
-    public bool IsValid				{ get { return IsIdValid(myId); }}
-	public bool	IsParentValid		{ get { return IsValid && IsIdValid(ParentId); }}
-	public bool IsSourceValid		{ get { return IsValid && IsIdValid(SourceId); }}
+	public bool	IsParentValid		{ get { return IsIdValid(ParentId); }}
+	public bool IsSourceValid		{ get { return IsIdValid(SourceId); }}
 	
     public iCS_ObjectTypeEnum ObjectType {
 		get { return EngineObject.ObjectType; }
@@ -65,7 +64,7 @@ public partial class iCS_EditorObject {
 	}
     public iCS_EditorObject Parent {
 		get { return IsParentValid ? myIStorage[ParentId] : null; }
-		set { if(IsValid) ParentId= (value != null ? value.InstanceId : -1); }
+		set { ParentId= (value != null ? value.InstanceId : -1); }
 	}
     public Type RuntimeType {
 		get { return EngineObject.RuntimeType; }
@@ -149,25 +148,22 @@ public partial class iCS_EditorObject {
         ForEachChild(child=> child.DestroyInstance());        
         // Disconnect any port sourcing from this object.
         if(IsPort) {
-            foreach(var child in EditorObjects) {
-                if(child.IsValid && child.IsPort) {
-                    if(child.SourceId == InstanceId) {
+            myIStorage.ForEach(
+                child=> {
+                    if(child.IsPort && child.SourceId == InstanceId) {
                         child.SourceId= -1;
-                    }
+                    }                    
                 }
-            }
+            );
         }
 		// Update child lists.
-		if(ParentId != -1) Parent.RemoveChild(this);
-		if(Children != null) Children.Clear();
-		// Clear transient data.
-        IsFloating= false;
-        IsDirty= false;
-		InitialValue= null;
-		myAnimatedPosition.Reset();
+		if(IsParentValid) Parent.RemoveChild(this);
+        // Assure that the selected object is not us.
+        if(myIStorage.SelectedObject == EditorObject) myIStorage.SelectedObject= null;
 		// Reset the associated engine object.
         EngineObject.DestroyInstance();
-        myId= -1;
+        // Remove editor object.
+        EditorObjects[myId]= null;
     }
     
     // ======================================================================
@@ -185,7 +181,7 @@ public partial class iCS_EditorObject {
 			return;
 		}
 		if(id > len) {
-			GrowEngineObjects(id-1, iStorage);
+			GrowEngineObjects(id, iStorage);
 			iStorage.EngineObjects.Add(engineObject);
 		}		
 	}
@@ -203,34 +199,29 @@ public partial class iCS_EditorObject {
 			return;
 		}
 		if(id > len) {
-			GrowEditorObjects(id-1, iStorage);
+			GrowEditorObjects(id, iStorage);
 			iStorage.EditorObjects.Add(editorObject);
 		}		
 	}
-	private static void GrowObjects(int id, iCS_IStorage iStorage) {
-		GrowEngineObjects(id, iStorage);
-		GrowEditorObjects(id, iStorage);
-	}
-	private static void GrowEngineObjects(int id, iCS_IStorage iStorage) {
-        if(id >= 0) {
-            // Grow engine object array if needed.
-            for(int len= iStorage.EngineObjects.Count; id >= len; ++len) {
-                iStorage.EngineObjects.Add(iCS_EngineObject.CreateInvalidInstance());
-            }
+	private static void GrowEngineObjects(int size, iCS_IStorage iStorage) {
+        // Reserve space to contain the total amount of objects.
+        if(size > iStorage.EngineObjects.Capacity) {
+            iStorage.EngineObjects.Capacity= size;
+        }
+        // Add the number of missing objects.
+        for(int len= iStorage.EngineObjects.Count; size > len; ++len) {
+            iStorage.EngineObjects.Add(iCS_EngineObject.CreateInvalidInstance());
         }
 	}
-	private static void GrowEditorObjects(int id, iCS_IStorage iStorage) {
-        if(id >= 0) {
-            // Grow engine object array if needed.
-            for(int len= iStorage.EditorObjects.Count; id >= len; ++len) {
-                iStorage.EditorObjects.Add(CreateInvalidInstance(iStorage));
-            }
-        }		
-	}
-	// ----------------------------------------------------------------------
-	// Creates an invalid editor object to be used as a placeholder.
-	public static iCS_EditorObject CreateInvalidInstance(iCS_IStorage iStorage) {
-		return new iCS_EditorObject(-1, iStorage);
+	private static void GrowEditorObjects(int size, iCS_IStorage iStorage) {
+        // Reserve space to contain the total amount of objects.
+        if(size > iStorage.EditorObjects.Capacity) {
+            iStorage.EditorObjects.Capacity= size;
+        }
+        // Add the number of missing objects.
+        for(int len= iStorage.EditorObjects.Count; size > len; ++len) {
+            iStorage.EditorObjects.Add(null);
+        }
 	}
     
     // ======================================================================
@@ -239,30 +230,32 @@ public partial class iCS_EditorObject {
     public iCS_EditorObject(int id, iCS_IStorage iStorage) {
         myIStorage= iStorage;
         myId= id;
-        if(IsIdValid(myId)) {
-    		var parent= Parent;
-    		if(parent != null) parent.AddChild(this);
-            IsDirty= true;            
-        } else {
-            IsDirty= false;
-        }
+		var parent= Parent;
+		if(parent != null) parent.AddChild(this);
+        IsDirty= true;            
     }
     // ----------------------------------------------------------------------
 	public static void RebuildFromEngineObjects(iCS_IStorage iStorage) {
-		iStorage.EditorObjects.Clear();			
-		foreach(var engineObject in iStorage.EngineObjects) {
-			iCS_EditorObject editorObject= new iCS_EditorObject(engineObject.InstanceId, iStorage);
-			iStorage.EditorObjects.Add(editorObject);
+		iStorage.EditorObjects.Clear();
+		iStorage.EditorObjects.Capacity= iStorage.EngineObjects.Count;		
+		for(int i= 0; i < iStorage.EngineObjects.Count; ++i) {
+		    if(iStorage.EngineObjects[i].InstanceId == -1) {
+		        iStorage.EditorObjects.Add(null);
+		    } else {
+		        iStorage.EditorObjects.Add(new iCS_EditorObject(i, iStorage));
+		    }
 		}
 		RebuildChildrenLists(iStorage);
 	}
     // ----------------------------------------------------------------------
 	private static void RebuildChildrenLists(iCS_IStorage iStorage) {
-		foreach(var obj in iStorage.EditorObjects) {
-			if(obj.IsParentValid) {
-				obj.Parent.AddChild(obj);
-			}			
-		}
+		iStorage.ForEach(
+		    obj=> {
+    			if(obj.IsParentValid) {
+    				obj.Parent.AddChild(obj);
+    			}					        
+		    }
+		);
 	}
 
     // ======================================================================

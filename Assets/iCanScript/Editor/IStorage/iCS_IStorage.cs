@@ -80,8 +80,8 @@ public partial class iCS_IStorage {
     public bool IsLibrary           { get { return IsValid(EditorObjects[0]) && !EditorObjects[0].IsBehaviour; }}
     // ----------------------------------------------------------------------
     public bool IsIdValid(int id)                    { return id >= 0 && id < EditorObjects.Count; }
-	public bool IsValid(int id)						 { return IsIdValid(id) && EditorObjects[id].InstanceId == id; }
-    public bool IsValid(iCS_EditorObject obj)        { return obj.InstanceId != -1; }
+	public bool IsValid(int id)						 { return IsIdValid(id) && EditorObjects[id] != null && EditorObjects[id].InstanceId == id; }
+    public bool IsValid(iCS_EditorObject obj)        { return obj != null && obj.InstanceId != -1; }
     public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
     public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
     // ----------------------------------------------------------------------
@@ -94,8 +94,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject this[int id] {
         get {
             if(!IsIdValid(id)) return null;
-            var eObj= EditorObjects[id];
-            return eObj.IsValid ? eObj : null;
+            return EditorObjects[id];
         }
         set {
             DetectUndoRedo();
@@ -621,10 +620,8 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     bool IsPortConnected(iCS_EditorObject port) {
-        if(port.SourceId != -1) return true;
-        foreach(var obj in EditorObjects) {
-            if(obj.IsValid && obj.IsPort && obj.SourceId == port.InstanceId) return true;
-        }
+        if(port.IsSourceValid) return true;
+        if(FindFirst(o=> o.IsPort && o.SourceId == port.InstanceId) != null) return true;
         return false;
     }
     bool IsPortDisconnected(iCS_EditorObject port) { return !IsPortConnected(port); }

@@ -31,6 +31,10 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
     // Update.
 	// ----------------------------------------------------------------------
     public bool Update() {
+        // Abort if target is invalid.
+        if(myIStorage == null || myTarget == null) {
+            return false;
+        }
 		myEditor.Position= Position;
 		myEditor.GuiStyle= GuiStyle;
 		if(myEditor.Update()) {

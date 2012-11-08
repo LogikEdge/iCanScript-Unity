@@ -175,8 +175,8 @@ public sealed class iCS_Behaviour : iCS_Storage {
 				if(EngineObjects[i].InstanceId == -1) continue;
 				if(EngineObjects[i].InstanceId != i) {
 					sanityNeeded= true;
-					EngineObjects[i]= null;
-					Debug.LogWarning("iCanScript Sanity: Object: "+i+" has an invalid instance id !!!");
+					Debug.LogWarning("iCanScript Sanity: Object: "+i+" has an invalid instance id of: "+EngineObjects[i].InstanceId);
+					EngineObjects[i].Reset();
 					continue;
 				}
 				int parentId= EngineObjects[i].ParentId;
@@ -191,14 +191,14 @@ public sealed class iCS_Behaviour : iCS_Storage {
 					// The parent id must be valid.
 					if(!IsInBounds(parentId)) {
 						sanityNeeded= true;
-						EngineObjects[i]= null;
+						EngineObjects[i].Reset();
 						Debug.LogWarning("iCanScript Sanity: Object: "+i+" has an invalid parent: "+parentId);
 						continue;				
 					}
 					// A port cannot be a parent.
 					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsOutMuxPort) {
 						sanityNeeded= true;
-						EngineObjects[i]= null;
+						EngineObjects[i].Reset();
 						Debug.Log("iCanScript Sanity: Port: "+parentId+" is the parent of: "+i);
 						continue;										
 					}				

@@ -19,7 +19,7 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public bool IsValidEngineObject(int id) { return id >= 0 && id < EngineObjects.Count && EngineObjects[id] != null; }
+    public bool IsValidEngineObject(int id) { return id >= 0 && id < EngineObjects.Count && EngineObjects[id].InstanceId != -1; }
     public bool IsValidUnityObject(int id)  { return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null; }
 
     // ======================================================================

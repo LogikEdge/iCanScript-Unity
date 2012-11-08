@@ -21,7 +21,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void SynchronizeAfterUndoRedo() {
         // Keep a copy of the previous display position.
-        var displayPositions= P.map(o=> new P.Tuple<bool,Rect>(o.IsValid,GetDisplayPosition(o)), EditorObjects);  
+        var displayPositions= P.map(o=> new P.Tuple<bool,Rect>(IsValid(o),GetDisplayPosition(o)), EditorObjects);  
         // Rebuild editor data.
         GenerateEditorData();
         // Put back the previous display position

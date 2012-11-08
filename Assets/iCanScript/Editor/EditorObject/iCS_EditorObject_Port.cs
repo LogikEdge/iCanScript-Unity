@@ -19,8 +19,8 @@ public partial class iCS_EditorObject {
 		set { EngineObject.SourceId= value; }
 	}
     public iCS_EditorObject Source {
-		get { return (IsValid && SourceId != -1) ? myIStorage[SourceId] : null; }
-		set { if(IsValid) SourceId= (value != null ? value.InstanceId : -1); }
+		get { return SourceId != -1 ? myIStorage[SourceId] : null; }
+		set { SourceId= (value != null ? value.InstanceId : -1); }
 	}
     public int PortIndex {
 		get { return EngineObject.PortIndex; }
@@ -57,7 +57,7 @@ public partial class iCS_EditorObject {
     // Fetches the runtime value if it exists, otherwise returns the initial value
 	public object PortValue {
 		get {
-			if(!IsValid || !IsDataPort) return null;
+			if(!IsDataPort) return null;
 			var port= this;
 			while(port.Source != null) port= port.Source;
 			iCS_IParams funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParams;
@@ -77,7 +77,7 @@ public partial class iCS_EditorObject {
     // Runtime port value ---------------------------------------------------
 	public object RuntimePortValue {
 		get {
-			if(!IsValid || !IsDataPort) return null;
+			if(!IsDataPort) return null;
 			var port= this;
 			while(port.Source != null) port= port.Source;
 			iCS_IParams funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParams;
@@ -88,7 +88,7 @@ public partial class iCS_EditorObject {
 			return funcBase == null ? port.InitialPortValue : null;			
 		}
 		set {
-	        if(!IsValid || !IsInDataPort) return;
+	        if(!IsInDataPort) return;
 	        // Just set the port if it has its own runtime.
 			iCS_IParams funcBase= myIStorage.GetRuntimeObject(this) as iCS_IParams;
 	        if(funcBase != null) {

@@ -138,7 +138,7 @@ public class iCS_Inspector : Editor {
         
         // Draw selected object.
         EditorGUI.indentLevel= 0;
-        if(mySelectedObject != null && SelectedObject.IsValid) {
+        if(mySelectedObject != null) {
             mySelectedObjectFold= EditorGUILayout.Foldout(mySelectedObjectFold, "Selected Object");
             if(mySelectedObjectFold) {
                 // Display object name.

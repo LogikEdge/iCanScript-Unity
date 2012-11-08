@@ -15,8 +15,8 @@ public partial class iCS_EditorObject {
     public bool IsUnfolded  { get { return EngineObject.IsUnfolded; }}
     public bool IsFolded    { get { return EngineObject.IsFolded; }}
     public bool IsIconized  { get { return EngineObject.IsIconized; }}
-    public void Unfold()    { EngineObject.Unfold(); IsDirty= Parent.IsDirty= true; }
-    public void Fold()      { EngineObject.Fold(); IsDirty= Parent.IsDirty= true; }
-    public void Iconize()   { EngineObject.Iconize(); IsDirty= Parent.IsDirty= true; }
+    public void Unfold()    { EngineObject.Unfold(); IsDirty= true; }
+    public void Fold()      { EngineObject.Fold(); IsDirty= true; }
+    public void Iconize()   { EngineObject.Iconize(); IsDirty= true; }
     
 }
