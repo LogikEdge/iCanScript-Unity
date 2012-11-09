@@ -122,7 +122,7 @@ public partial class iCS_EditorObject {
             float leftPadding= iCS_Config.PaddingSize;
             ForEachLeftChildPort(
                 port=> {
-                    if(!port.IsStatePort && port.IsPortOnParent) {
+                    if(!port.IsStatePort && port.IsPortOnParentEdge) {
                         Vector2 labelSize= iCS_Config.GetPortLabelSize(Name);
                         float nameSize= labelSize.x+iCS_Config.PortSize;
                         if(leftPadding < nameSize) leftPadding= nameSize;
@@ -139,7 +139,7 @@ public partial class iCS_EditorObject {
             float rightPadding= iCS_Config.PaddingSize;
             ForEachRightChildPort(
                 port=> {
-                    if(!port.IsStatePort && port.IsPortOnParent) {
+                    if(!port.IsStatePort && port.IsPortOnParentEdge) {
                         Vector2 labelSize= iCS_Config.GetPortLabelSize(Name);
                         float nameSize= labelSize.x+iCS_Config.PortSize;
                         if(rightPadding < nameSize) rightPadding= nameSize;
@@ -150,8 +150,35 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public bool IsPortOnParent {
+    public bool IsPortOnParentEdge {
         get {
+    		float maxDistance= 2f*iCS_Config.PortSize;
+            float distance= 2f*maxDistance;
+            var parentSize= Parent.DisplaySize;
+            var edge= Edge;
+            switch(edge) {
+                case iCS_EdgeEnum.Top:
+                    distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, 0f);
+                    break; 
+                case iCS_EdgeEnum.Bottom:
+                    distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, parentSize.y);
+                    break;
+                case iCS_EdgeEnum.Left:
+                    distance= Math3D.DistanceFromVerticalLineSegment(LocalPosition, 0f, parentSize.y, 0f);
+                    break;
+                case iCS_EdgeEnum.Right:
+                    distance= Math3D.DistanceFromVerticalLineSegment(LocalPosition, 0f, parentSize.y, parentSize.x);
+                    break;                
+            }
+            return distance <= maxDistance;
+            
+            if(IsStatePort) {
+                var parent= port.Parent;
+                var bestEdge= GetClosestEdge(parent, port);
+                return IsNearNodeEdge(parent, Math3D.ToVector2(GetLayoutPosition(port)), bestEdge);
+            }
+            return false;
+            
             return myIStorage.IsPortOnParent(this);
         }
     }
