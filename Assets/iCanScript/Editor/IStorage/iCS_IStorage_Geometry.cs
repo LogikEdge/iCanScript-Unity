@@ -69,57 +69,6 @@ public partial class iCS_IStorage {
         return distance <= maxDistance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EdgeEnum GetClosestEdge(iCS_EditorObject node, iCS_EditorObject port) {
-        const float kAllowedGap= 2f*iCS_Config.PortRadius;
-        var nodePos= GetLayoutPosition(node);
-        var portPos= Math3D.ToVector2(GetLayoutPosition(port));
-        float topDistance= Math3D.DistanceFromHorizontalLineSegment(portPos, nodePos.x, nodePos.xMax, nodePos.y);
-        float bottomDistance= Math3D.DistanceFromHorizontalLineSegment(portPos, nodePos.x, nodePos.xMax, nodePos.yMax);
-        float leftDistance= Math3D.DistanceFromVerticalLineSegment(portPos, nodePos.y, nodePos.yMax, nodePos.x);
-        float rightDistance= Math3D.DistanceFromVerticalLineSegment(portPos, nodePos.y, nodePos.yMax, nodePos.xMax);
-        // Attempt to keep same edge node is shrinked.
-        switch(port.Edge) {
-			case iCS_EdgeEnum.Left: {
-                float left= leftDistance-kAllowedGap;
-                if(left < topDistance && left < bottomDistance && left < rightDistance) {
-                    return port.Edge;
-                }
-				break;
-			}
-			case iCS_EdgeEnum.Right: {
-                float right= rightDistance-kAllowedGap;
-                if(right < topDistance && right < bottomDistance && right < leftDistance) {
-                    return port.Edge;
-                }
-				break;
-			}
-			case iCS_EdgeEnum.Bottom: {
-                float bottom= bottomDistance-kAllowedGap;
-                if(bottom < topDistance && bottom < leftDistance && bottom < rightDistance) {
-                    return port.Edge;
-                }
-				break;
-			}
-			case iCS_EdgeEnum.Top: {
-                float top= topDistance-kAllowedGap;
-                if(top < bottomDistance && top < leftDistance && top < rightDistance) {
-                    return port.Edge;
-                }
-				break;
-			}            
-        }
-        if(topDistance < bottomDistance) {
-            if(leftDistance < rightDistance) {
-                return topDistance < leftDistance ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left;					
-            }
-            return topDistance < rightDistance ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Right;
-        }
-        if(leftDistance < rightDistance) {
-            return bottomDistance < leftDistance ? iCS_EdgeEnum.Bottom : iCS_EdgeEnum.Left;
-        }
-        return bottomDistance < rightDistance ? iCS_EdgeEnum.Bottom : iCS_EdgeEnum.Right;
-    }
-    // ----------------------------------------------------------------------
     // Returns the minimal distance from the parent.
     public float GetDistanceFromParent(iCS_EditorObject port) {
         iCS_EditorObject parentNode= port.Parent;

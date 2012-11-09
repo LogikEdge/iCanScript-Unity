@@ -155,7 +155,7 @@ public partial class iCS_EditorObject {
     		float maxDistance= 2f*iCS_Config.PortSize;
             float distance= 2f*maxDistance;
             var parentSize= Parent.DisplaySize;
-            var edge= IsStatePort ? myIStorage.GetClosestEdge(Parent, this) : Edge;
+            var edge= IsStatePort ? ClosestEdge : Edge;
             switch(edge) {
                 case iCS_EdgeEnum.Top:
                     distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, 0f);
@@ -173,4 +173,30 @@ public partial class iCS_EditorObject {
             return distance <= maxDistance;
         }
     }
+    // ----------------------------------------------------------------------
+	public iCS_EdgeEnum ClosestEdge {
+		get {
+			// Don't change edge if parent is iconized.
+			var parent= Parent;
+			if(parent.IsIconized) return Edge;
+            var parentSize= parent.DisplaySize;
+			var edge= iCS_EdgeEnum.Top;
+			float distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, 0f);
+			float d= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, parentSize.y);
+			if(d < distance) {
+				distance= d;
+				edge= iCS_EdgeEnum.Bottom;
+			}
+			d= Math3D.DistanceFromVerticalLineSegment(LocalPosition, 0f, parentSize.y, 0f);
+			if(d < distance) {
+				distance= d;
+				edge= iCS_EdgeEnum.Left;
+			}
+			d= Math3D.DistanceFromVerticalLineSegment(LocalPosition, 0f, parentSize.y, parentSize.x); 
+			if(d < distance) {
+				edge= iCS_EdgeEnum.Right;
+			}
+			return edge;
+		}
+	}
 }

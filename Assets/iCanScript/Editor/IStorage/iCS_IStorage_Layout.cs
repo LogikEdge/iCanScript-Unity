@@ -542,7 +542,7 @@ public partial class iCS_IStorage {
         }
         // Selected closest edge.
         else {
-            port.Edge= GetClosestEdge(port.Parent, port);            
+            port.Edge= port.ClosestEdge;            
         }
         // Set dirty flag if port edge has changed.
         if(!port.IsFloating) CleanupPortPositionOnEdge(port);
