@@ -1,31 +1,57 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using P=Prelude;
 
 /*
     TODO: Cleanup validation once child management as been cleaned up.
 */
 public partial class iCS_EditorObject {
-    // ======================================================================
-    // Tree Iterations
-    // ----------------------------------------------------------------------
+    // Children Iterations =================================================
     public void ForEachChild(Action<iCS_EditorObject> fnc) {
         foreach(var childId in Children) {
-            if(childId != -1) fnc(EditorObjects[childId]);
+            fnc(EditorObjects[childId]);
         }
     }
+    // ----------------------------------------------------------------------
+    public void ForEachChildFiltered(Func<iCS_EditorObject,bool> filter,
+                                     Action<iCS_EditorObject> action) {
+        ForEachChild(o=> P.executeIf(o, filter, action));
+    }
+    // ----------------------------------------------------------------------
+    public void ForEachChildPort(Action<iCS_EditorObject> action) {
+        ForEachChildFiltered(o=> o.IsPort, action);
+    }
+    // ----------------------------------------------------------------------
+    public void ForEachChildNode(Action<iCS_EditorObject> action) {
+        ForEachChildFiltered(o=> o.IsNode, action);
+    }
+    // ----------------------------------------------------------------------
+    public void ForEachLeftChildPort(Action<iCS_EditorObject> action) {
+        ForEachChildPort(o=> { if(o.IsOnLeftEdge) action(o); });
+    }
+    // ----------------------------------------------------------------------
+    public void ForEachRightChildPort(Action<iCS_EditorObject> action) {
+        ForEachChildPort(o=> { if(o.IsOnRightEdge) action(o); });
+    }
+    // ----------------------------------------------------------------------
+    public void ForEachTopChildPort(Action<iCS_EditorObject> action) {
+        ForEachChildPort(o=> { if(o.IsOnTopEdge) action(o); });
+    }
+    // ----------------------------------------------------------------------
+    public void ForEachBottomChildPort(Action<iCS_EditorObject> action) {
+        ForEachChildPort(o=> { if(o.IsOnBottomEdge) action(o); });
+    }
+    
     // ----------------------------------------------------------------------
     public bool ForEachChild(Func<iCS_EditorObject,bool> fnc) {
         foreach(var childId in Children) {
-            if(childId != -1) {
-                if(fnc(EditorObjects[childId])) return true;
-			} else {
-				Debug.LogWarning("Children list includes an invalid id");
-			}
+            if(fnc(EditorObjects[childId])) return true;
         }
         return false;
     }
-    // ----------------------------------------------------------------------
+
+    // Recursive Iterations =================================================
     public void ForEachRecursiveDepthFirst(Action<iCS_EditorObject> fnc) {
         // First iterate through all children ...
         foreach(var childId in Children) {
