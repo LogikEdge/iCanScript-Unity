@@ -37,25 +37,17 @@ public partial class iCS_EditorObject {
 			EngineObject.DisplaySize= value;
 		}
 	}
-	public Vector2 RelativePosition {
-		get {
-			return EngineObject.RelativePosition;
-		}
-		set {
-			EngineObject.RelativePosition= value;
-		}
-	}
     public Vector2 LocalPosition {
 		get {
-			return myIStorage.Storage.GetLocalPosition(EngineObject);
+			return EngineObject.LocalPosition;
 		}
 		set {
-			myIStorage.Storage.SetLocalPosition(EngineObject, value);
+			EngineObject.LocalPosition= value;
 		}
 	}
     public Rect LocalRect {
 		get {
-            var displaySize= EngineObject.DisplaySize;
+            var displaySize= DisplaySize;
 			var localPosition= LocalPosition;
 		    float x= localPosition.x-0.5f*displaySize.x;
 		    float y= localPosition.y-0.5f*displaySize.y;
@@ -91,5 +83,29 @@ public partial class iCS_EditorObject {
 			LocalRect= new Rect(value.x-newParentRect.x, value.y-newParentRect.y, value.width, value.height);
 		}
 	}
-
+    // ----------------------------------------------------------------------
+    public Vector2 DisplaySizeWithGutter {
+        get {
+            var size= DisplaySize;
+            var gutter2= 2f*iCS_Config.GutterSize;
+            return new Vector2(size.x+gutter2, size.y+gutter2);
+        }
+    }
+    public Rect LocalRectWithGutter {
+        get {
+            var displaySize= DisplaySizeWithGutter;
+			var localPosition= LocalPosition;
+		    float x= localPosition.x-0.5f*displaySize.x;
+		    float y= localPosition.y-0.5f*displaySize.y;
+		    return new Rect(x, y, displaySize.x, displaySize.y);            
+        }
+    }
+    public Rect AbsoluteRectWithGutter {
+        get {
+            var gutter= iCS_Config.GutterSize;
+            var gutter2= 2f*gutter;
+            var rect= AbsoluteRect;
+            return new Rect(rect.x-gutter, rect.y-gutter, rect.width+gutter2, rect.height+gutter2);
+        }
+    }
 }

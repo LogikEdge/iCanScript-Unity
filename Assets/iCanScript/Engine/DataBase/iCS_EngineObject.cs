@@ -17,8 +17,8 @@ public class iCS_EngineObject {
     public int                   ParentId        = -1;
     public string                QualifiedType   = "";
     public string                RawName         = "";
-    public Vector2               RelativePosition= Vector2.zero;	// in % of parent except for root
-    public Vector2               DisplaySize     = Vector2.zero;	// in pixels
+    public Vector2               LocalPosition   = Vector2.zero;
+    public Vector2               DisplaySize     = Vector2.zero;
     public iCS_DisplayOptionEnum DisplayOption   = iCS_DisplayOptionEnum.Unfolded;
     public bool                  IsNameEditable  = true;
 
@@ -47,7 +47,7 @@ public class iCS_EngineObject {
         ParentId= parentId;
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
-        RelativePosition= Vector2.zero;
+        LocalPosition= Vector2.zero;
         DisplaySize= Vector2.zero;
         if(IsDataPort) {
             Edge= IsInputPort ? (IsEnablePort ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left) : iCS_EdgeEnum.Right;
@@ -93,7 +93,7 @@ public class iCS_EngineObject {
         ParentId= -1;
         QualifiedType= "";
 		RawName= "";
-        RelativePosition= Vector2.zero;
+        LocalPosition= Vector2.zero;
         DisplaySize= Vector2.zero;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;
