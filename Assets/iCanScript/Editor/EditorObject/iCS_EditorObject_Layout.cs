@@ -3,14 +3,13 @@ using System.Collections;
 using P=Prelude;
 
 public partial class iCS_EditorObject {
-    // ======================================================================
-    // Display animation attributes -----------------------------------------
+    // Display animation attributes =========================================
 	private P.Animate<Rect>	myAnimatedPosition= new P.Animate<Rect>();
 	public P.Animate<Rect> AnimatedPosition {
 		get { return myAnimatedPosition; }
 	}
 
-    // ======================================================================
+    // Accessors ============================================================
     public Vector2 DisplaySize {
 		get {
 			return EngineObject.DisplaySize;
@@ -19,6 +18,7 @@ public partial class iCS_EditorObject {
 			EngineObject.DisplaySize= value;
 		}
 	}
+    // ----------------------------------------------------------------------
     public Vector2 LocalPosition {
 		get {
 			return EngineObject.LocalPosition;
@@ -27,6 +27,8 @@ public partial class iCS_EditorObject {
 			EngineObject.LocalPosition= value;
 		}
 	}
+
+    // High-Order Accessors =================================================
     public Rect LocalRect {
 		get {
             var displaySize= DisplaySize;
@@ -42,6 +44,7 @@ public partial class iCS_EditorObject {
 		    DisplaySize= new Vector2(value.width, value.height);
 		}
 	}
+    // ----------------------------------------------------------------------
 	public Rect AbsoluteRect {
 		get {
 			return myIStorage.Storage.GetAbsoluteRect(EngineObject);
@@ -63,17 +66,20 @@ public partial class iCS_EditorObject {
 			LocalRect= new Rect(value.x-newParentRect.x, value.y-newParentRect.y, value.width, value.height);
 		}
 	}
-    // ----------------------------------------------------------------------
+
+    // Accessor Modifiers ===================================================
     public Vector2 DisplaySizeWithMargin {
         get {
             return AddMargins(DisplaySize);
         }
     }
+    // ----------------------------------------------------------------------
     public Rect LocalRectWithMargin {
         get {
             return AddMargins(LocalRect);
         }
     }
+    // ----------------------------------------------------------------------
     public Rect AbsoluteRectWithMargin {
         get {
             return AddMargins(AbsoluteRect);
@@ -93,5 +99,25 @@ public partial class iCS_EditorObject {
     public static Vector2 AddMargins(Vector2 size) {
         var m2= 2f*iCS_Config.MarginSize;
         return new Vector2(size.x+m2, size.y+m2);
+    }
+    
+    // Node Layout Utilities ================================================
+    public float NodeTopPadding {
+        get {
+            if(IsIconized) return 0;
+            return iCS_Config.NodeTitleHeight+iCS_Config.PaddingSize;
+        }
+    }
+    public float NodeBottomPadding {
+        get {
+            if(IsIconized) return 0;
+            return iCS_Config.PaddingSize;            
+        }
+    }
+    public float NodeLeftPadding {
+        get {
+            if(IsIconized) return 0;
+            return 0;
+        }
     }
 }
