@@ -31,14 +31,7 @@ public partial class iCS_EditorObject {
 		set { EngineObject.InitialValueArchive= value;}
 	}
     
-    // Port layout attributes -----------------------------------------------
-    public bool IsOnLeftEdge      { get { return EngineObject.IsOnLeftEdge; }}
-    public bool IsOnRightEdge     { get { return EngineObject.IsOnRightEdge; }}
-    public bool IsOnTopEdge       { get { return EngineObject.IsOnTopEdge; }}
-    public bool IsOnBottomEdge    { get { return EngineObject.IsOnBottomEdge; }}
-
-
-    // Initial port value ---------------------------------------------------
+	// Port Value Utilities =================================================
 	public object InitialPortValue {
 		get {
 			if(!IsInDataPort) return null;
