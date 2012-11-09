@@ -155,7 +155,7 @@ public partial class iCS_EditorObject {
     		float maxDistance= 2f*iCS_Config.PortSize;
             float distance= 2f*maxDistance;
             var parentSize= Parent.DisplaySize;
-            var edge= Edge;
+            var edge= IsStatePort ? myIStorage.GetClosestEdge(Parent, this) : Edge;
             switch(edge) {
                 case iCS_EdgeEnum.Top:
                     distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, 0f);
@@ -171,15 +171,6 @@ public partial class iCS_EditorObject {
                     break;                
             }
             return distance <= maxDistance;
-            
-            if(IsStatePort) {
-                var parent= port.Parent;
-                var bestEdge= GetClosestEdge(parent, port);
-                return IsNearNodeEdge(parent, Math3D.ToVector2(GetLayoutPosition(port)), bestEdge);
-            }
-            return false;
-            
-            return myIStorage.IsPortOnParent(this);
         }
     }
 }

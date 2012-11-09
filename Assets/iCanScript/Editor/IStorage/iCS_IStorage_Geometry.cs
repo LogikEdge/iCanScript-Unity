@@ -69,7 +69,7 @@ public partial class iCS_IStorage {
         return distance <= maxDistance;
     }
     // ----------------------------------------------------------------------
-    iCS_EdgeEnum GetClosestEdge(iCS_EditorObject node, iCS_EditorObject port) {
+    public iCS_EdgeEnum GetClosestEdge(iCS_EditorObject node, iCS_EditorObject port) {
         const float kAllowedGap= 2f*iCS_Config.PortRadius;
         var nodePos= GetLayoutPosition(node);
         var portPos= Math3D.ToVector2(GetLayoutPosition(port));

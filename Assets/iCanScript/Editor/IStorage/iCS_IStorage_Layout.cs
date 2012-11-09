@@ -235,7 +235,7 @@ public partial class iCS_IStorage {
         float LeftMargin= 0;
         ForEachLeftPort(node,
             port=> {
-                if(!port.IsStatePort && IsPortOnParent(port)) {
+                if(!port.IsStatePort && port.IsPortOnParentEdge) {
                     Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
                     float nameSize= labelSize.x+iCS_Config.PortSize;
                     if(LeftMargin < nameSize) LeftMargin= nameSize;
@@ -250,7 +250,7 @@ public partial class iCS_IStorage {
         float RightMargin= 0;
         ForEachRightPort(node,
             port => {
-                if(!port.IsStatePort && IsPortOnParent(port)) {
+                if(!port.IsStatePort && port.IsPortOnParentEdge) {
                     Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
                     float nameSize= labelSize.x+iCS_Config.PortSize;
                     if(RightMargin < nameSize) RightMargin= nameSize;                    
@@ -344,7 +344,7 @@ public partial class iCS_IStorage {
     // Returns all ports position on the top edge.
     public iCS_EditorObject[] GetTopPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachTopPort(node, port=> { if(IsPortOnParent(port)) ports.Add(port);});
+        ForEachTopPort(node, port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
         return ports.ToArray();
     }
 
@@ -352,7 +352,7 @@ public partial class iCS_IStorage {
     // Returns all ports position on the bottom edge.
     public iCS_EditorObject[] GetBottomPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachBottomPort(node, port=> { if(IsPortOnParent(port)) ports.Add(port);});
+        ForEachBottomPort(node, port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
         return ports.ToArray();
     }
 
@@ -360,7 +360,7 @@ public partial class iCS_IStorage {
     // Returns all ports position on the left edge.
     public iCS_EditorObject[] GetLeftPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachLeftPort(node, port=> { if(IsPortOnParent(port)) ports.Add(port);});
+        ForEachLeftPort(node, port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
         return ports.ToArray();        
     }
 
@@ -368,21 +368,8 @@ public partial class iCS_IStorage {
     // Returns all ports position on the right edge.
     public iCS_EditorObject[] GetRightPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachRightPort(node, port=> { if(IsPortOnParent(port)) ports.Add(port);});
+        ForEachRightPort(node, port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
         return ports.ToArray();
-    }
-    // ----------------------------------------------------------------------
-    public bool IsPortOnParent(iCS_EditorObject port) {
-        if(!port.IsFloating) return true;
-        if(port.IsDataPort) {
-            return IsNearNodeEdge(port.Parent, Math3D.ToVector2(GetLayoutPosition(port)), port.Edge);
-        }
-        if(port.IsStatePort) {
-            var parent= port.Parent;
-            var bestEdge= GetClosestEdge(parent, port);
-            return IsNearNodeEdge(parent, Math3D.ToVector2(GetLayoutPosition(port)), bestEdge);
-        }
-        return false;
     }
     // ----------------------------------------------------------------------
     // Returns the number of ports on the top edge.
