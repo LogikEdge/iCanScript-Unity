@@ -72,9 +72,9 @@ public partial class iCS_EditorObject {
 			// First adjust parent display area.
 			var parent= Parent;
 			var parentRect= parent.AbsoluteRect;
-			float gutter= iCS_Config.GutterSize;
-			var childRect= new Rect(value.x-gutter, value.y-gutter,
-									value.width+2f*gutter, value.height+2f*gutter);
+			float margin= iCS_Config.MarginSize;
+			var childRect= new Rect(value.x-margin, value.y-margin,
+									value.width+2f*margin, value.height+2f*margin);
 			var newParentRect= Math3D.Union(childRect, parentRect);
 			if(Math3D.IsNotEqual(newParentRect, parentRect)) {
 				parent.AbsoluteRect= newParentRect;
@@ -84,28 +84,28 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-    public Vector2 DisplaySizeWithGutter {
+    public Vector2 DisplaySizeWithMargin {
         get {
             var size= DisplaySize;
-            var gutter2= 2f*iCS_Config.GutterSize;
-            return new Vector2(size.x+gutter2, size.y+gutter2);
+            var margin2= 2f*iCS_Config.MarginSize;
+            return new Vector2(size.x+margin2, size.y+margin2);
         }
     }
-    public Rect LocalRectWithGutter {
+    public Rect LocalRectWithMargin {
         get {
-            var displaySize= DisplaySizeWithGutter;
+            var displaySize= DisplaySizeWithMargin;
 			var localPosition= LocalPosition;
 		    float x= localPosition.x-0.5f*displaySize.x;
 		    float y= localPosition.y-0.5f*displaySize.y;
 		    return new Rect(x, y, displaySize.x, displaySize.y);            
         }
     }
-    public Rect AbsoluteRectWithGutter {
+    public Rect AbsoluteRectWithMargin {
         get {
-            var gutter= iCS_Config.GutterSize;
-            var gutter2= 2f*gutter;
+            var margin= iCS_Config.MarginSize;
+            var margin2= 2f*margin;
             var rect= AbsoluteRect;
-            return new Rect(rect.x-gutter, rect.y-gutter, rect.width+gutter2, rect.height+gutter2);
+            return new Rect(rect.x-margin, rect.y-margin, rect.width+margin2, rect.height+margin2);
         }
     }
 }

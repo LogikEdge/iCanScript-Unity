@@ -40,10 +40,10 @@ public class iCS_ScrollView {
         ScreenArea= new Rect(0, iCS_Config.EditorWindowToolbarHeight, screenArea.width, screenArea.height-iCS_Config.EditorWindowToolbarHeight);
 
         // Update scroll viewport.
-        Rect graphRect= new Rect(rootNodeRect.x - iCS_Config.GutterSize,
-                                 rootNodeRect.y - iCS_Config.GutterSize,
-                                 rootNodeRect.width + 2*iCS_Config.GutterSize,
-                                 rootNodeRect.height + 2*iCS_Config.GutterSize);
+        Rect graphRect= new Rect(rootNodeRect.x - iCS_Config.MarginSize,
+                                 rootNodeRect.y - iCS_Config.MarginSize,
+                                 rootNodeRect.width + 2*iCS_Config.MarginSize,
+                                 rootNodeRect.height + 2*iCS_Config.MarginSize);
 
         // Assure that the canvas covers the graph area.
         if(Canvas.x > graphRect.x) {

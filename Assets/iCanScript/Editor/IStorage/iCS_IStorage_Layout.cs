@@ -79,7 +79,7 @@ public partial class iCS_IStorage {
         float titleWidth  = iCS_Config.GetNodeWidth(node.Name)+iCS_Config.ExtraIconWidth;
         float leftMargin  = ComputeLeftMargin(node);
         float rightMargin = ComputeRightMargin(node);
-        float width       = 2.0f*iCS_Config.GutterSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childrenGlobalRect.width);
+        float width       = 2.0f*iCS_Config.PaddingSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childrenGlobalRect.width);
 
         // Process case without child nodes
         Rect globalPosition= GetLayoutPosition(node);
@@ -101,8 +101,8 @@ public partial class iCS_IStorage {
         // Process case with child nodes.
         else {
             // Adjust children local offset.
-            float neededChildXOffset= iCS_Config.GutterSize+leftMargin;
-            float neededChildYOffset= iCS_Config.GutterSize+iCS_Config.NodeTitleHeight;
+            float neededChildXOffset= iCS_Config.PaddingSize+leftMargin;
+            float neededChildYOffset= iCS_Config.PaddingSize+iCS_Config.NodeTitleHeight;
             float neededNodeGlobalX= childrenGlobalRect.x-neededChildXOffset;
             float neededNodeGlobalY= childrenGlobalRect.y-neededChildYOffset;
             if(Math3D.IsNotEqual(neededNodeGlobalX, globalPosition.x) ||
@@ -115,7 +115,7 @@ public partial class iCS_IStorage {
             int nbOfRightPorts= GetNbOfRightPorts(node);
             int nbOfPorts= nbOfLeftPorts > nbOfRightPorts ? nbOfLeftPorts : nbOfRightPorts;
             float portHeight= nbOfPorts*iCS_Config.MinimumPortSeparation;                                
-            float height= iCS_Config.NodeTitleHeight+Mathf.Max(portHeight, childrenGlobalRect.height+2.0f*iCS_Config.GutterSize);
+            float height= iCS_Config.NodeTitleHeight+Mathf.Max(portHeight, childrenGlobalRect.height+2.0f*iCS_Config.PaddingSize);
             
             // Relocate node if centering is needed 
             Rect newPos= new Rect(neededNodeGlobalX, neededNodeGlobalY, width, height);
@@ -501,9 +501,9 @@ public partial class iCS_IStorage {
 
     // ----------------------------------------------------------------------
     static Rect RectWithGutter(Rect _rect) {
-        float gutterSize= iCS_Config.GutterSize;
-        float gutterSize2= 2.0f*gutterSize;
-        return new Rect(_rect.x-gutterSize, _rect.y-gutterSize, _rect.width+gutterSize2, _rect.height+gutterSize2);        
+        float marginSize= iCS_Config.MarginSize;
+        float marginSize2= 2.0f*marginSize;
+        return new Rect(_rect.x-marginSize, _rect.y-marginSize, _rect.width+marginSize2, _rect.height+marginSize2);        
     }
     
     // ----------------------------------------------------------------------

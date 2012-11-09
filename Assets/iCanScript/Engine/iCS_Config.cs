@@ -32,16 +32,18 @@ public class iCS_Config {
     public static GUIStyle PortLabelStyle   { get { return GUI.skin.label; }}
     
     // ----------------------------------------------------------------------
-    public const  float GutterSize= 15.0f;
+    public const  float MarginSize = 15.0f;
+    public const  float PaddingSize= 15.0f;
     public static float ButtonHeight      { get { return GetButtonHeight("A"); }}
     public static float NodeTitleHeight   { get { return GetNodeHeight("A"); }}
     public static float MinimumNodeHeight { get { return 2.0f*NodeTitleHeight; }}
 
     // ----------------------------------------------------------------------
-    public const float EditorWindowGutterSize= GutterSize;
+    public const float EditorWindowMarginSize = MarginSize;
+    public const float EditorWindowPaddingSize= PaddingSize;
     public const float EditorWindowToolbarHeight= 16.0f;
-    public const float EditorWindowMinX= EditorWindowGutterSize;
-    public const float EditorWindowMinY= EditorWindowGutterSize + EditorWindowToolbarHeight;
+    public const float EditorWindowMinX= EditorWindowMarginSize;
+    public const float EditorWindowMinY= EditorWindowMarginSize + EditorWindowToolbarHeight;
     
     // ----------------------------------------------------------------------
     public static float ScrollBarWidth { get { return ButtonHeight; }}
