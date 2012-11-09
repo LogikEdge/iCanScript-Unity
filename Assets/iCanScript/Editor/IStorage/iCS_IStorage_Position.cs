@@ -8,7 +8,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns the absolute position of the given object.
     public Rect GetLayoutPosition(iCS_EditorObject eObj) {
-        return Storage.GetAbsoluteRect(eObj.EngineObject);
+        return eObj.AbsoluteRect;
     }
     public Rect GetLayoutPosition(int id) {
         return GetLayoutPosition(EditorObjects[id]);

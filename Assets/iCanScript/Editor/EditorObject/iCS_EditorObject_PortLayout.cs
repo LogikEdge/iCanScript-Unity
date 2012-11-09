@@ -9,6 +9,19 @@ public partial class iCS_EditorObject {
     public bool IsOnBottomEdge    { get { return EngineObject.IsOnBottomEdge; }}
 
     // Port Layout Utilities ================================================
+    public void CleanupPortEdgePosition() {
+        var size= Parent.DisplaySize;
+        var lp= LocalPosition;
+		var save= lp;
+        switch(Edge) {
+            case iCS_EdgeEnum.Top:      lp.y= 0; break; 
+            case iCS_EdgeEnum.Bottom:   lp.y= size.y; break;
+            case iCS_EdgeEnum.Left:     lp.x= 0; break;
+            case iCS_EdgeEnum.Right:    lp.x= size.x; break;
+        }
+		if(Math3D.IsNotEqual(lp, save)) LocalPosition= lp;
+    }
+    // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {
         get {
     		float maxDistance= 2f*iCS_Config.PortSize;

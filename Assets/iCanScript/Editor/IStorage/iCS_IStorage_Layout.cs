@@ -545,20 +545,8 @@ public partial class iCS_IStorage {
             port.Edge= port.ClosestEdge;            
         }
         // Set dirty flag if port edge has changed.
-        if(!port.IsFloating) CleanupPortPositionOnEdge(port);
+        if(!port.IsFloating) port.CleanupPortEdgePosition();
         if(port.Edge != edgeBeforeUpdate) SetDirty(port);
-    }
-    // ----------------------------------------------------------------------
-    public void CleanupPortPositionOnEdge(iCS_EditorObject port) {
-        var parent= port.Parent;
-        var parentPos= GetLayoutPosition(parent);
-        Rect lp= port.LocalRect;
-        switch(port.Edge) {
-            case iCS_EdgeEnum.Top:      lp.y= 0; port.LocalRect= lp; break; 
-            case iCS_EdgeEnum.Bottom:   lp.y= parentPos.height; port.LocalRect= lp; break;
-            case iCS_EdgeEnum.Left:     lp.x= 0; port.LocalRect= lp; break;
-            case iCS_EdgeEnum.Right:    lp.x= parentPos.width; port.LocalRect= lp; break;
-        }
     }
     // ----------------------------------------------------------------------
     // Updates the port position.

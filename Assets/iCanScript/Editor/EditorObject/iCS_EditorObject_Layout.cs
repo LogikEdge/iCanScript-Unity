@@ -12,6 +12,7 @@ public partial class iCS_EditorObject {
     // Accessors ============================================================
     public Vector2 DisplaySize {
 		get {
+			if(!IsVisible) return Vector2.zero;
 			return EngineObject.DisplaySize;
 		}
 		set {
@@ -21,6 +22,10 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 LocalPosition {
 		get {
+			if(!IsVisible) {
+				var size= Parent.DisplaySize;
+				return new Vector2(0.5f*size.x, 0.5f*size.y);
+			}
 			return EngineObject.LocalPosition;
 		}
 		set {
@@ -47,7 +52,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Rect AbsoluteRect {
 		get {
-			return myIStorage.Storage.GetAbsoluteRect(EngineObject);
+			if(!IsParentValid) return LocalRect;
+			var parentRect= Parent.AbsoluteRect;
+			var localRect= LocalRect;
+			return new Rect(parentRect.x+localRect.x, parentRect.y+localRect.y,
+							localRect.width, localRect.height);
 		}
 		set {
 			if(!IsParentValid) {
@@ -70,18 +79,21 @@ public partial class iCS_EditorObject {
     // Accessor Modifiers ===================================================
     public Vector2 DisplaySizeWithMargin {
         get {
+			if(!IsVisible) return DisplaySize;
             return AddMargins(DisplaySize);
         }
     }
     // ----------------------------------------------------------------------
     public Rect LocalRectWithMargin {
         get {
+			if(!IsVisible) return LocalRect;
             return AddMargins(LocalRect);
         }
     }
     // ----------------------------------------------------------------------
     public Rect AbsoluteRectWithMargin {
         get {
+			if(!IsVisible) return AbsoluteRect;
             return AddMargins(AbsoluteRect);
         }
     }
