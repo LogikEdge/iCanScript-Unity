@@ -3,6 +3,62 @@ using System.Collections;
 
 public partial class iCS_EditorObject {
     // Node Layout Utilities ================================================
+	public Vector2 NodeNeededSize {
+		get {
+			if(!IsVisible) return Vector2.zero;
+			if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
+			int nbOfPorts= Mathf.Max(NbOfLeftPorts, NbOfRightPorts);
+			float height= NodeTopPadding+NodeBottomPadding+nbOfPorts*iCS_Config.MinimumPortSeparation;
+			float width= Mathf.Max(NodeTitleWidth, NodeLeftPadding+NodeRightPadding);
+			if(IsFolded) {
+				return new Vector2(width, height);
+			}
+			var center= 0.5f*DisplaySize;
+			Rect childRect= new Rect(center.x, center.y, 0, 0);
+			ForEachChildNode(o=> Math3D.Union(childRect, o.LocalRect));
+			return new Vector2(width+childRect.width, height+childRect.height);
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Rect NodeNeededAbsoluteChildRect {
+		get {
+			if(!IsUnfolded) return new Rect(0,0,0,0);
+			var center= Math3D.Middle(AbsoluteRect);
+			Rect childRect= new Rect(center.x, center.y, 0, 0);
+			ForEachChildNode(o=> Math3D.Union(childRect, o.AbsoluteRect));
+			return childRect;
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Rect NodeAbsoluteChildRect {
+		get {
+			var r= AbsoluteRect;
+			var top= NodeTopPadding;
+			r.y+= top;
+			r.height-= top+NodeBottomPadding;
+			var left= NodeLeftPadding;
+			r.x+= left;
+			r.width-= left+NodeRightPadding;
+			return r;
+		}
+		set {
+			var top= NodeTopPadding;
+			value.y-= top;
+			value.height+= top+NodeBottomPadding;
+			var left= NodeLeftPadding;
+			value.x-= left;
+			value.width+= left+NodeRightPadding;
+			AbsoluteRect= value;
+		}
+	}
+    // ----------------------------------------------------------------------
+	public float NodeTitleWidth {
+		get {
+			if(IsIconized) return 0;
+			return iCS_Config.GetNodeWidth(Name)+iCS_Config.ExtraIconWidth+2f*iCS_Config.PaddingSize;
+		}
+	}
+    // ----------------------------------------------------------------------
     public float NodeTopPadding {
         get {
             if(IsIconized) return 0;

@@ -61,7 +61,6 @@ public partial class iCS_IStorage {
                 node.LocalRect= new Rect(node.LocalRect.x+0.5f*(node.DisplaySize.x-iconSize.x),
                                          node.LocalRect.y+0.5f*(node.DisplaySize.y-iconSize.y),
                                          iconSize.x, iconSize.y);
-                UpdatePortPositions(node);
             }
             return;
         }
@@ -76,10 +75,10 @@ public partial class iCS_IStorage {
         Rect  childrenGlobalRect= ComputeChildrenRect(node);
 
         // Compute needed width.
-        float titleWidth  = iCS_Config.GetNodeWidth(node.Name)+iCS_Config.ExtraIconWidth;
-        float leftMargin  = ComputeLeftMargin(node);
-        float rightMargin = ComputeRightMargin(node);
-        float width       = 2.0f*iCS_Config.PaddingSize + Mathf.Max(titleWidth, leftMargin + rightMargin + childrenGlobalRect.width);
+        float titleWidth  = node.NodeTitleWidth;
+        float leftMargin  = node.NodeLeftPadding;
+        float rightMargin = node.NodeRightPadding;
+        float width       = Mathf.Max(titleWidth, leftMargin + rightMargin + childrenGlobalRect.width);
 
         // Process case without child nodes
         Rect globalPosition= GetLayoutPosition(node);
@@ -101,8 +100,8 @@ public partial class iCS_IStorage {
         // Process case with child nodes.
         else {
             // Adjust children local offset.
-            float neededChildXOffset= iCS_Config.PaddingSize+leftMargin;
-            float neededChildYOffset= iCS_Config.PaddingSize+iCS_Config.NodeTitleHeight;
+            float neededChildXOffset= leftMargin;
+            float neededChildYOffset= node.NodeTopPadding;
             float neededNodeGlobalX= childrenGlobalRect.x-neededChildXOffset;
             float neededNodeGlobalY= childrenGlobalRect.y-neededChildYOffset;
             if(Math3D.IsNotEqual(neededNodeGlobalX, globalPosition.x) ||
