@@ -155,6 +155,26 @@ public static partial class Math3D {
         return angle;        
     }
 
+    // ======================================================================
+    // Lerp
+	// ----------------------------------------------------------------------
+    public static int     Lerp(int v1, int v2, float ratio)             { return (int)(v1+(v2-v1)*ratio); }
+    public static float   Lerp(float v1, float v2, float ratio)         { return v1+(v2-v1)*ratio; }
+    public static Vector2 Lerp(Vector2 v1, Vector2 v2, float ratio)     { return v1+(v2-v1)*ratio; }
+    public static Vector3 Lerp(Vector3 v1, Vector3 v2, float ratio)     { return v1+(v2-v1)*ratio; }
+    public static Vector4 Lerp(Vector4 v1, Vector4 v2, float ratio)     { return v1+(v2-v1)*ratio; }
+    public static Rect    Lerp(Rect r1, Rect r2, float ratio)           { return Add(r1, Mul(Sub(r2, r1), ratio)); }
+
+    // ======================================================================
+    // Rectangle utilities
+	// ----------------------------------------------------------------------
+    public static Rect Union(Rect _rect1, Rect _rect2) {
+        float xMin= Mathf.Min(_rect1.xMin, _rect2.xMin);
+        float yMin= Mathf.Min(_rect1.yMin, _rect2.yMin);
+        float xMax= Mathf.Max(_rect1.xMax, _rect2.xMax);
+        float yMax= Mathf.Max(_rect1.yMax, _rect2.yMax);
+        return new Rect(xMin, yMin, xMax-xMin, yMax-yMin);
+    }
 	// ----------------------------------------------------------------------
     public static Rect BuildRect(Vector2 pos, Vector2 size) {
         return new Rect(pos.x, pos.y, size.x, size.y);
@@ -185,25 +205,36 @@ public static partial class Math3D {
         if(IsZero(d)) return default(Rect);
         return Mul(r1, 1f/d);
     }
-    // ======================================================================
-    // Lerp
-	// ----------------------------------------------------------------------
-    public static int     Lerp(int v1, int v2, float ratio)             { return (int)(v1+(v2-v1)*ratio); }
-    public static float   Lerp(float v1, float v2, float ratio)         { return v1+(v2-v1)*ratio; }
-    public static Vector2 Lerp(Vector2 v1, Vector2 v2, float ratio)     { return v1+(v2-v1)*ratio; }
-    public static Vector3 Lerp(Vector3 v1, Vector3 v2, float ratio)     { return v1+(v2-v1)*ratio; }
-    public static Vector4 Lerp(Vector4 v1, Vector4 v2, float ratio)     { return v1+(v2-v1)*ratio; }
-    public static Rect    Lerp(Rect r1, Rect r2, float ratio)           { return Add(r1, Mul(Sub(r2, r1), ratio)); }
 
     // ======================================================================
-    // Rectangle utilities
+    // Line segment utilities
 	// ----------------------------------------------------------------------
-    public static Rect Union(Rect _rect1, Rect _rect2) {
-        float xMin= Mathf.Min(_rect1.xMin, _rect2.xMin);
-        float yMin= Mathf.Min(_rect1.yMin, _rect2.yMin);
-        float xMax= Mathf.Max(_rect1.xMax, _rect2.xMax);
-        float yMax= Mathf.Max(_rect1.yMax, _rect2.yMax);
-        return new Rect(xMin, yMin, xMax-xMin, yMax-yMin);
-    }
+	public static float DistanceFromHorizontalLineSegment(Vector2 point, float x1, float x2, float y) {
+		if(x1 > x2) {
+			var tmp= x1;
+			x1= x2;
+			x2= tmp;
+		}
+		float distance= Mathf.Abs(point.y-y);
+		if(point.x >= x1 && point.x <= x2) return distance;
+        float x= (point.x < x1) ? x1 : x2;
+        float dx= x-point.x;
+        float dy= y-point.y;
+		return Mathf.Sqrt(dx*dx+dy*dy);
+	}
+    // ----------------------------------------------------------------------
+	public static float DistanceFromVerticalLineSegment(Vector2 point, float y1, float y2, float x) {
+		if(y1 > y2) {
+			var tmp= y1;
+			y1= y2;
+			y2= tmp;
+		}
+		float distance= Mathf.Abs(point.x-x);
+		if(point.y >= y1 && point.y <= y2) return distance;
+		float y= (point.y < y1) ? y1 : y2;
+        float dx= x-point.x;
+        float dy= y-point.y;
+		return Mathf.Sqrt(dx*dx+dy*dy);
+	}
 
 }

@@ -372,7 +372,7 @@ public partial class iCS_IStorage {
         return ports.ToArray();
     }
     // ----------------------------------------------------------------------
-    bool IsPortOnParent(iCS_EditorObject port) {
+    public bool IsPortOnParent(iCS_EditorObject port) {
         if(!port.IsFloating) return true;
         if(port.IsDataPort) {
             return IsNearNodeEdge(port.Parent, Math3D.ToVector2(GetLayoutPosition(port)), port.Edge);
