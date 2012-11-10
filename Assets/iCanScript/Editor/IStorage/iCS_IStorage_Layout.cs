@@ -204,37 +204,6 @@ public partial class iCS_IStorage {
         );
         return childrenRect;
     }
-    // ----------------------------------------------------------------------
-    // Returns the inner left margin.
-    float ComputeLeftMargin(iCS_EditorObject node) {
-        float LeftMargin= 0;
-        ForEachLeftPort(node,
-            port=> {
-                if(!port.IsStatePort && port.IsPortOnParentEdge) {
-                    Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
-                    float nameSize= labelSize.x+iCS_Config.PortSize;
-                    if(LeftMargin < nameSize) LeftMargin= nameSize;
-                }
-            }
-        );
-        return LeftMargin;
-    }
-    // ----------------------------------------------------------------------
-    // Returns the inner right margin.
-    float ComputeRightMargin(iCS_EditorObject node) {
-        float RightMargin= 0;
-        ForEachRightPort(node,
-            port => {
-                if(!port.IsStatePort && port.IsPortOnParentEdge) {
-                    Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
-                    float nameSize= labelSize.x+iCS_Config.PortSize;
-                    if(RightMargin < nameSize) RightMargin= nameSize;                    
-                }
-            }
-        );
-        return RightMargin;
-    }
-
 
     // ======================================================================
     // Port Layout
