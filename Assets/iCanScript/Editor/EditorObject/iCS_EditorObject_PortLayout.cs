@@ -12,14 +12,13 @@ public partial class iCS_EditorObject {
     public void CleanupPortEdgePosition() {
         var size= Parent.DisplaySize;
         var lp= LocalPosition;
-		var save= lp;
         switch(Edge) {
             case iCS_EdgeEnum.Top:      lp.y= 0; break; 
             case iCS_EdgeEnum.Bottom:   lp.y= size.y; break;
             case iCS_EdgeEnum.Left:     lp.x= 0; break;
             case iCS_EdgeEnum.Right:    lp.x= size.x; break;
         }
-		if(Math3D.IsNotEqual(lp, save)) LocalPosition= lp;
+		LocalPosition= lp;
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {

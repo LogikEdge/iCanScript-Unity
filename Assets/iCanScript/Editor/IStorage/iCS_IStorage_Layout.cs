@@ -46,22 +46,7 @@ public partial class iCS_IStorage {
         
         // Minimized nodes are fully collapsed.
         if(node.IsIconized) {
-            Vector2 iconSize= iCS_Graphics.GetMaximizeIconSize(node);
-            if(node.DisplaySize.x != iconSize.x || node.DisplaySize.y != iconSize.y) {
-                if(IsValid(node.ParentId)) {
-                    if(node.LocalRect.x == 0) {
-                        node.LocalRect= new Rect(0.5f*node.Parent.DisplaySize.x, node.LocalRect.y,
-                                                 node.DisplaySize.x, node.DisplaySize.y);
-                    }
-                    if(node.LocalRect.y == 0) {
-                        node.LocalRect= new Rect(node.LocalRect.x, 0.5f*node.Parent.DisplaySize.y,
-                                                 node.DisplaySize.x, node.DisplaySize.y);
-                    }
-                }
-                node.LocalRect= new Rect(node.LocalRect.x+0.5f*(node.DisplaySize.x-iconSize.x),
-                                         node.LocalRect.y+0.5f*(node.DisplaySize.y-iconSize.y),
-                                         iconSize.x, iconSize.y);
-            }
+            node.DisplaySize= iCS_Graphics.GetMaximizeIconSize(node);
             return;
         }
 
