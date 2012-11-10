@@ -204,7 +204,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     iCS_EditorObject ClassModuleGetPort(iCS_EditorObject module, string portName, iCS_ObjectTypeEnum objType) {
         iCS_EditorObject result= null;
-        ForEachChildPort(module,
+        UntilMatchingChildPort(module,
             port=> {
                 if(port.Name == portName && port.ObjectType == objType) {
                     result= port;

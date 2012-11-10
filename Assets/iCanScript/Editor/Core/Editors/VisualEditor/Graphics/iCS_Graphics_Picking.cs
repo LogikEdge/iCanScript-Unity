@@ -182,7 +182,7 @@ public partial class iCS_Graphics {
                 pickInfo.PickedPartGUIPosition= new Rect(guiPos.x, guiPos.y, namePos.width, namePos.height);
                 return pickInfo;
             }
-            bool result= iStorage.ForEachChildNode(pickedNode,
+            bool result= iStorage.UntilMatchingChildNode(pickedNode,
                 c=> {
                     if(IsIconized(c, iStorage)) {
                         if(IsNodeNamePicked(c, pick, iStorage)) {

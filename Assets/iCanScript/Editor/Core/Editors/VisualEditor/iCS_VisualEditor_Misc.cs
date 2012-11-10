@@ -33,7 +33,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void RotateSelectedMuxPort() {
 		if(SelectedObject == null || !SelectedObject.IsDataPort) return;
 		if(SelectedObject.IsOutMuxPort) {
-			IStorage.ForEachChild(SelectedObject, 
+			IStorage.UntilMatchingChild(SelectedObject, 
 				c=> {
 					if(c.IsDataPort) {
 						SelectedObject= c;
@@ -47,7 +47,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		iCS_EditorObject muxPort= SelectedObject.Parent;
 		if(!muxPort.IsDataPort) return;
 		bool takeNext= false;
-		bool found= IStorage.ForEachChild(muxPort,
+		bool found= IStorage.UntilMatchingChild(muxPort,
 			c=> {
 				if(takeNext) {
 					SelectedObject= c;
@@ -264,7 +264,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		anEntryExists= false;
 		IStorage.ForEachChild(prevParent, child=> { if(child.IsEntryState) anEntryExists= true; });
 		if(!anEntryExists) {
-			IStorage.ForEachChild(prevParent,
+			IStorage.UntilMatchingChild(prevParent,
 				child=> {
 					if(child.IsState) {
 						child.IsEntryState= true;

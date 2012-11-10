@@ -134,7 +134,7 @@ public static class iCS_AllowedChildren {
     // Returns true if a child node exists with the same name.
     public static bool IsChildNodePresent(string childName, iCS_EditorObject parent, iCS_IStorage storage) {
         if(parent == null) return false;
-        return storage.ForEachChild(parent,
+        return storage.UntilMatchingChild(parent,
             child=> {
                 if(child.IsNode) {
                     return child.Name == childName;

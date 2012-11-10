@@ -37,13 +37,13 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public bool ForEachChild(iCS_EditorObject parent, Func<iCS_EditorObject,bool> fnc) {
+    public bool UntilMatchingChild(iCS_EditorObject parent, Func<iCS_EditorObject,bool> cond) {
         DetectUndoRedo();
         if(parent == null) {
-            return EditorObjects[0].ForEachChild(child=> fnc(child));            
+            return EditorObjects[0].UntilMatchingChild(child=> cond(child));            
         }
         else {
-            return parent.ForEachChild(child=> fnc(child));            
+            return parent.UntilMatchingChild(child=> cond(child));            
         }
     }
     // ----------------------------------------------------------------------
@@ -106,16 +106,16 @@ public partial class iCS_IStorage {
         ForEachChild(node, child=> ExecuteIf(child, port=> port.IsNode, action));        
     }
     // ----------------------------------------------------------------------
-    public bool ForEachChildNode(iCS_EditorObject node, Func<iCS_EditorObject,bool> fnc) {
-        return ForEachChild(node, child=> child.IsNode ? fnc(child) : false);
+    public bool UntilMatchingChildNode(iCS_EditorObject node, Func<iCS_EditorObject,bool> fnc) {
+        return UntilMatchingChild(node, child=> child.IsNode ? fnc(child) : false);
     }
     // ----------------------------------------------------------------------
     public void ForEachChildPort(iCS_EditorObject node, Action<iCS_EditorObject> action) {
         ForEachChild(node, child=> ExecuteIf(child, port=> port.IsPort, action));
     }
     // ----------------------------------------------------------------------
-    public bool ForEachChildPort(iCS_EditorObject node, Func<iCS_EditorObject,bool> fnc) {
-        return ForEachChild(node, child=> child.IsPort ? fnc(child) : false);
+    public bool UntilMatchingChildPort(iCS_EditorObject node, Func<iCS_EditorObject,bool> fnc) {
+        return UntilMatchingChild(node, child=> child.IsPort ? fnc(child) : false);
     }
     // ----------------------------------------------------------------------
 	public void ForEachChildDataPort(iCS_EditorObject node, Action<iCS_EditorObject> action) {
@@ -134,7 +134,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject FindInChildren(iCS_EditorObject parent, Func<iCS_EditorObject, bool> cond) {
         iCS_EditorObject foundChild= null;
-        ForEachChild(parent,
+        UntilMatchingChild(parent,
             child=> {
                 if(cond(child)) {
                     foundChild= child;

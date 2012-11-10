@@ -414,7 +414,7 @@ public partial class iCS_IStorage {
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         // Set first state as the default entry state.
-        this[id].IsRawEntryState= !ForEachChild(parent,
+        this[id].IsRawEntryState= !UntilMatchingChild(parent,
             child=> {
                 if(child.IsEntryState) {
                     return true;

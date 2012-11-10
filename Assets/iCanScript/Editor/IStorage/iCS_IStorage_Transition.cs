@@ -122,7 +122,7 @@ public partial class iCS_IStorage {
             return null;
         }
         if(transitionObject.IsTransitionModule) {
-            ForEachChild(transitionObject,
+            UntilMatchingChildNode(transitionObject,
                 child=> {
                     if(child.IsTransitionGuard) {
                         transitionObject= child;
@@ -134,7 +134,7 @@ public partial class iCS_IStorage {
         }
         if(transitionObject.IsTransitionGuard) {
             iCS_EditorObject outStatePort= null;
-            ForEachChildPort(transitionObject,
+            UntilMatchingChildPort(transitionObject,
                 port=> {
                     if(port.IsOutDataPort && port.RuntimeType == typeof(bool)) {
                         iCS_EditorObject[] connectedPorts= FindConnectedPorts(port);
@@ -165,7 +165,7 @@ public partial class iCS_IStorage {
         }
         iCS_EditorObject transitionModule= inStatePort.Parent;
         // Find transition module output port.
-        ForEachChildPort(transitionModule,
+        UntilMatchingChildPort(transitionModule,
             p=> {
                 if(p.IsOutTransitionPort) {
                     inStatePort= p;
@@ -183,7 +183,7 @@ public partial class iCS_IStorage {
                 obj :
                 (obj.IsOutTransitionPort ? obj.Parent : GetTransitionModule(obj));
         iCS_EditorObject inTransitionPort= null;
-        ForEachChildPort(transitionModule,
+        UntilMatchingChildPort(transitionModule,
             p=> {
                 if(p.IsInTransitionPort) {
                     inTransitionPort= p;
@@ -201,7 +201,7 @@ public partial class iCS_IStorage {
                 obj :
                 (obj.IsInTransitionPort ? obj.Parent : GetTransitionModule(obj));
         iCS_EditorObject outTransitionPort= null;
-        ForEachChildPort(transitionModule,
+        UntilMatchingChildPort(transitionModule,
             p=> {
                 if(p.IsOutTransitionPort) {
                     outTransitionPort= p;
@@ -238,7 +238,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public bool IsTransitionActionEmpty(iCS_EditorObject action) {
-        return !ForEachChild(action, child=> child.IsNode);
+        return !UntilMatchingChildNode(action, _=> true);
     }
     // ----------------------------------------------------------------------
     public string GetTransitionName(iCS_EditorObject statePort) {

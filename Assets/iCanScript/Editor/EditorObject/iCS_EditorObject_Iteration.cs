@@ -39,7 +39,7 @@ public partial class iCS_EditorObject {
     }
     
     // ----------------------------------------------------------------------
-    public bool ForEachChild(Func<iCS_EditorObject,bool> fnc) {
+    public bool UntilMatchingChild(Func<iCS_EditorObject,bool> fnc) {
         foreach(var childId in Children) {
             if(fnc(EditorObjects[childId])) return true;
         }

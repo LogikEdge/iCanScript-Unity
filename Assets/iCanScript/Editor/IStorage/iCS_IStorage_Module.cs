@@ -21,11 +21,11 @@ public partial class iCS_IStorage {
     // Module helpers
     // ----------------------------------------------------------------------
     public bool HasEnablePort(iCS_EditorObject module) {
-        return ForEachChildPort(module, p=> p.IsEnablePort);
+        return UntilMatchingChildPort(module, p=> p.IsEnablePort);
     }
     public iCS_EditorObject GetEnablePort(iCS_EditorObject module) {
         iCS_EditorObject enablePort= null;
-        ForEachChildPort(module, p=> { if(p.IsEnablePort) { enablePort= p; return true; } return false; });
+        UntilMatchingChildPort(module, p=> { if(p.IsEnablePort) { enablePort= p; return true; } return false; });
         return enablePort;
     }
 }

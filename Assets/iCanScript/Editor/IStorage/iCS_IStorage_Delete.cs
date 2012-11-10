@@ -70,7 +70,7 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
     void SelectEntryState(iCS_EditorObject parent) {
-        bool entryFound= ForEachChild(parent,
+        bool entryFound= UntilMatchingChild(parent,
             child=> {
                 if(child.IsEntryState) {
                     return true;
@@ -79,7 +79,7 @@ public partial class iCS_IStorage {
             }
         );        
         if(entryFound) return;
-        ForEachChild(parent,
+        UntilMatchingChild(parent,
             child=> {
                 if(child.IsState) {
                     child.IsRawEntryState= true;

@@ -592,7 +592,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     bool AsChildNodeWithName(iCS_EditorObject parent, string name, iCS_IStorage storage) {
-        return storage.ForEachChild(parent,
+        return storage.UntilMatchingChild(parent,
             child=> {
                 if(child.IsNode) {
                     return child.Name == name;

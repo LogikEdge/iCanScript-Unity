@@ -9,13 +9,10 @@ public static class iCS_EditorUtility {
     public static iCS_EditorObject GetFirstChild(iCS_EditorObject parent, iCS_IStorage storage) {
         if(parent == null) return null;
         iCS_EditorObject firstChild= parent;
-        storage.ForEachChild(parent,
+        storage.UntilMatchingChildNode(parent,
             child=> {
-                if(child.IsNode) {
-                    firstChild= child;
-                    return true;
-                }
-                return false;
+                firstChild= child;
+                return true;
             }
         );
         return firstChild;
@@ -26,20 +23,18 @@ public static class iCS_EditorUtility {
         iCS_EditorObject nextSibling= null;
         iCS_EditorObject firstChild= null;
         bool nodeFound= false;
-        storage.ForEachChild(node.Parent,
+        storage.UntilMatchingChildNode(node.Parent,
             child=> {
-                if(child.IsNode) {
-                    if(firstChild == null) {
-                        firstChild= child;
-                    }
-                    if(child == node) {
-                        nodeFound= true;
-                        return false;
-                    }
-                    if(nodeFound) {
-                        nextSibling= child;
-                        return true;
-                    }
+                if(firstChild == null) {
+                    firstChild= child;
+                }
+                if(child == node) {
+                    nodeFound= true;
+                    return false;
+                }
+                if(nodeFound) {
+                    nextSibling= child;
+                    return true;
                 }
                 return false;
             }
@@ -51,14 +46,12 @@ public static class iCS_EditorUtility {
     public static iCS_EditorObject GetPreviousSibling(iCS_EditorObject node, iCS_IStorage storage) {
         if(node == null || node.Parent == null) return null;
         iCS_EditorObject prevSibling= null;
-        storage.ForEachChild(node.Parent,
+        storage.UntilMatchingChild(node.Parent,
             child=> {
-                if(child.IsNode) {
-                    if(child == node && prevSibling != null) {
-                        return true;
-                    }
-                    prevSibling= child;
+                if(child == node && prevSibling != null) {
+                    return true;
                 }
+                prevSibling= child;
                 return false;
             }
         );
