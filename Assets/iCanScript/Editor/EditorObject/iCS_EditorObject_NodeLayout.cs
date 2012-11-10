@@ -20,18 +20,17 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Rect NodeNeededAbsoluteChildRect {
+	public Rect NodeNeededGlobalChildRect {
 		get {
 			if(!IsUnfolded) return new Rect(0,0,0,0);
-			var center= Math3D.Middle(AbsoluteRect);
+			var center= Math3D.Middle(GlobalRect);
 			Rect childRect= new Rect(center.x, center.y, 0, 0);
-			ForEachChildNode(o=> { if(!o.IsFloating) Math3D.Merge(childRect, o.AbsoluteRect); });
-			int nbOfPorts= Mathf.Max(NbOfLeftPorts, NbOfRightPorts);
-			float portHeight= nbOfPorts*iCS_Config.MinimumPortSeparation;
-			if(portHeight > childRect.height) {
-				var deltaY= portHeight-childRect.height;
+			ForEachChildNode(o=> { if(!o.IsFloating) Math3D.Merge(childRect, o.GlobalRect); });
+			float portsHeight= NeededPortsHeight;
+			if(portsHeight > childRect.height) {
+				var deltaY= portsHeight-childRect.height;
 				childRect.y-= 0.5f*deltaY;
-				childRect.height= portHeight;
+				childRect.height= portsHeight;
 			}
 			var left= NodeLeftPadding;
 			childRect.x-= left;
@@ -49,9 +48,9 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Rect NodeAbsoluteChildRect {
+	public Rect NodeGlobalChildRect {
 		get {
-			var r= AbsoluteRect;
+			var r= GlobalRect;
 			var top= NodeTopPadding;
 			r.y+= top;
 			r.height-= top+NodeBottomPadding;
@@ -67,7 +66,7 @@ public partial class iCS_EditorObject {
 			var left= NodeLeftPadding;
 			value.x-= left;
 			value.width+= left+NodeRightPadding;
-			AbsoluteRect= value;
+			GlobalRect= value;
 		}
 	}
     // ----------------------------------------------------------------------

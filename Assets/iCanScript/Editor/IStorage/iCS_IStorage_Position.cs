@@ -6,12 +6,12 @@ using System.Collections;
 */
 public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
-    // Returns the absolute position of the given object.
+    // Returns the global position of the given object.
     public Rect GetLayoutPosition(iCS_EditorObject eObj) {
-        return eObj.AbsoluteRect;
+        return eObj.GlobalRect;
     }
     public Rect GetLayoutPosition(int id) {
-        return EditorObjects[id].AbsoluteRect;
+        return EditorObjects[id].GlobalRect;
     }
     public Vector2 GetLayoutCenterPosition(iCS_EditorObject eObj) {
         return Math3D.Middle(GetLayoutPosition(eObj));
@@ -25,7 +25,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetLayoutPosition(iCS_EditorObject node, Rect _newPos) {
         // Adjust node size.
-        Rect position= node.AbsoluteRect;
+        Rect position= GetLayoutPosition(node);
         node.LocalRect= new Rect(node.LocalRect.x, node.LocalRect.y, _newPos.width, _newPos.height);
         // Reposition node.
         if(!IsValid(node.ParentId)) {

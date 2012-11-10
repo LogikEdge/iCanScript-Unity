@@ -73,7 +73,7 @@ public partial class iCS_EditorObject {
 			var childRect= AddMargins(value);
 			var newParentRect= Math3D.Union(childRect, parentRect);
 			if(Math3D.IsNotEqual(newParentRect, parentRect)) {
-				parent.AbsoluteRect= newParentRect;
+				parent.GlobalRect= newParentRect;
 			}
 			// The parent is now adjusted so we can now set our display area.
 			LocalRect= new Rect(value.x-newParentRect.x, value.y-newParentRect.y, value.width, value.height);

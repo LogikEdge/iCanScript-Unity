@@ -80,7 +80,7 @@ public class iCS_Storage : MonoBehaviour {
         return EngineObjects[port.SourceId];
     }
     // ----------------------------------------------------------------------
-    // Returns the absolute position of the node.
+    // Returns the global position of the node.
     public Rect GetAbsoluteRect(iCS_EngineObject node) {
 		var localPosition= node.LocalPosition;
         float x= localPosition.x-0.5f*node.DisplaySize.x;
