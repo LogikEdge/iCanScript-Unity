@@ -46,7 +46,7 @@ public static class iCS_EditorUtility {
     public static iCS_EditorObject GetPreviousSibling(iCS_EditorObject node, iCS_IStorage storage) {
         if(node == null || node.Parent == null) return null;
         iCS_EditorObject prevSibling= null;
-        storage.UntilMatchingChild(node.Parent,
+        storage.UntilMatchingChildNode(node.Parent,
             child=> {
                 if(child == node && prevSibling != null) {
                     return true;
