@@ -2,12 +2,6 @@ using UnityEngine;
 using System.Collections;
 
 public partial class iCS_EditorObject {
-    // Port layout attributes -----------------------------------------------
-    public bool IsOnLeftEdge      { get { return EngineObject.IsOnLeftEdge; }}
-    public bool IsOnRightEdge     { get { return EngineObject.IsOnRightEdge; }}
-    public bool IsOnTopEdge       { get { return EngineObject.IsOnTopEdge; }}
-    public bool IsOnBottomEdge    { get { return EngineObject.IsOnBottomEdge; }}
-
     // Port Layout Utilities ================================================
     public void CleanupPortEdgePosition() {
         var size= Parent.DisplaySize;
