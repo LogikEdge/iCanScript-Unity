@@ -14,17 +14,12 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public void ForEachChildFiltered(Func<iCS_EditorObject,bool> filter,
-                                     Action<iCS_EditorObject> action) {
-        ForEachChild(o=> P.executeIf(o, filter, action));
-    }
-    // ----------------------------------------------------------------------
     public void ForEachChildPort(Action<iCS_EditorObject> action) {
-        ForEachChildFiltered(o=> o.IsPort, action);
+        ForEachChild(o=> { if(o.IsPort) action(o); });
     }
     // ----------------------------------------------------------------------
     public void ForEachChildNode(Action<iCS_EditorObject> action) {
-        ForEachChildFiltered(o=> o.IsNode, action);
+        ForEachChild(o=> { if(o.IsNode) action(o); });
     }
     // ----------------------------------------------------------------------
     public void ForEachLeftChildPort(Action<iCS_EditorObject> action) {

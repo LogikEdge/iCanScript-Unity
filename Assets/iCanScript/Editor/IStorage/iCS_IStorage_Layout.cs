@@ -70,7 +70,7 @@ public partial class iCS_IStorage {
         float bottomPadding = node.NodeBottomPadding;
         float childrenWidth = childrenGlobalRect.width;
         float childrenHeight= childrenGlobalRect.height; 
-        float width         = leftPadding + rightPadding + Mathf.Max(titleWidth,  childrenWidth);
+        float width         =  Mathf.Max(titleWidth, leftPadding + rightPadding + childrenWidth);
         float height        = topPadding + bottomPadding + Mathf.Max(portsHeight, childrenHeight);
 
         // Process case without child nodes
@@ -171,28 +171,28 @@ public partial class iCS_IStorage {
         ResolveCollision(parentNode, _deltaMove);
         Layout(parentNode);
     }
-    // ----------------------------------------------------------------------
-    // Returns the space used by all children.
-    Rect ComputeChildRect(iCS_EditorObject node) {
-        // Compute child space.
-        Rect childRect= new Rect(0.5f*node.DisplaySize.x,0.5f*node.DisplaySize.y,0,0);
-        ForEachChild(node,
-            (child)=> {
-                if(child.IsNode && child.IsVisible && !child.IsFloating) {
-                    childRect= Math3D.Merge(childRect, child.LocalRect);
-                }
-            }
-        );
-        return childRect;
-    }
+//    // ----------------------------------------------------------------------
+//    // Returns the space used by all children.
+//    Rect ComputeChildRect(iCS_EditorObject node) {
+//        // Compute child space.
+//        Rect childRect= new Rect(0.5f*node.DisplaySize.x,0.5f*node.DisplaySize.y,0,0);
+//        ForEachChild(node,
+//            (child)=> {
+//                if(child.IsNode && child.IsVisible && !child.IsFloating) {
+//                    childRect= Math3D.Merge(childRect, child.LocalRect);
+//                }
+//            }
+//        );
+//        return childRect;
+//    }
     // ----------------------------------------------------------------------
     // Returns the space used by all children.
     Rect ComputeChildrenRect(iCS_EditorObject node) {
         // Compute child space.
         Rect childrenRect= new Rect(0,0,0,0);
-        ForEachChild(node,
-            (child)=> {
-                if(child.IsNode && child.IsVisible && !child.IsFloating) {
+        node.ForEachChildNode(
+            child=> {
+                if(child.IsVisible && !child.IsFloating) {
                     var childPos= GetLayoutPosition(child);
                     if(Math3D.IsZero(childrenRect.width)) {
                         childrenRect= childPos;
