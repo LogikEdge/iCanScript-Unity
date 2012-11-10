@@ -60,21 +60,22 @@ public partial class iCS_IStorage {
         Rect  childrenGlobalRect= ComputeChildrenRect(node);
 
         // Determine needed port height.
-        int nbOfPorts= Mathf.Max(node.NbOfLeftPorts, node.NbOfRightPorts);
-        float portHeight= nbOfPorts*iCS_Config.MinimumPortSeparation;                                
+        float portsHeight= node.NeededPortsHeight;
 
         // Compute needed width.
-        float titleWidth  = node.NodeTitleWidth;
-        float leftMargin  = node.NodeLeftPadding;
-        float rightMargin = node.NodeRightPadding;
-        float width       = Mathf.Max(titleWidth, leftMargin + rightMargin + childrenGlobalRect.width);
+        float titleWidth    = node.NodeTitleWidth;
+        float leftPadding   = node.NodeLeftPadding;
+        float rightPadding  = node.NodeRightPadding;
+        float topPadding    = node.NodeTopPadding;
+        float bottomPadding = node.NodeBottomPadding;
+        float childrenWidth = childrenGlobalRect.width;
+        float childrenHeight= childrenGlobalRect.height; 
+        float width         = leftPadding + rightPadding + Mathf.Max(titleWidth,  childrenWidth);
+        float height        = topPadding + bottomPadding + Mathf.Max(portsHeight, childrenHeight);
 
         // Process case without child nodes
         Rect globalPosition= GetLayoutPosition(node);
         if(Math3D.IsZero(childrenGlobalRect.width) || Math3D.IsZero(childrenGlobalRect.height)) {
-            // Compute needed height.
-            float height= Mathf.Max(iCS_Config.NodeTitleHeight+portHeight, iCS_Config.MinimumNodeHeight);                                
-            
             // Apply new width and height.
             if(Math3D.IsNotEqual(height, globalPosition.height) || Math3D.IsNotEqual(width, globalPosition.width)) {
                 float deltaWidth = width - globalPosition.width;
@@ -86,8 +87,8 @@ public partial class iCS_IStorage {
         // Process case with child nodes.
         else {
             // Adjust children local offset.
-            float neededChildXOffset= leftMargin;
-            float neededChildYOffset= node.NodeTopPadding;
+            float neededChildXOffset= leftPadding;
+            float neededChildYOffset= topPadding;
             float neededNodeGlobalX= childrenGlobalRect.x-neededChildXOffset;
             float neededNodeGlobalY= childrenGlobalRect.y-neededChildYOffset;
             if(Math3D.IsNotEqual(neededNodeGlobalX, globalPosition.x) ||
@@ -95,9 +96,6 @@ public partial class iCS_IStorage {
                    node.AdjustChildPosition(new Vector2(globalPosition.x-neededNodeGlobalX, globalPosition.y-neededNodeGlobalY));
             }
 
-            // Compute needed height.
-            float height= iCS_Config.NodeTitleHeight+Mathf.Max(portHeight, childrenGlobalRect.height+2.0f*iCS_Config.PaddingSize);
-            
             // Relocate node if centering is needed 
             Rect newPos= new Rect(neededNodeGlobalX, neededNodeGlobalY, width, height);
             if(needsToBeCentered) {

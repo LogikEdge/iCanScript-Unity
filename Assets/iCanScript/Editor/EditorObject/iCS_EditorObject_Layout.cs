@@ -54,10 +54,10 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Rect AbsoluteRect {
+	public Rect GlobalRect {
 		get {
 			if(!IsParentValid) return LocalRect;
-			var parentRect= Parent.AbsoluteRect;
+			var parentRect= Parent.GlobalRect;
 			var localRect= LocalRect;
 			return new Rect(parentRect.x+localRect.x, parentRect.y+localRect.y,
 							localRect.width, localRect.height);
@@ -69,7 +69,7 @@ public partial class iCS_EditorObject {
 		    }
 			// First adjust parent display area.
 			var parent= Parent;
-			var parentRect= parent.AbsoluteRect;
+			var parentRect= parent.GlobalRect;
 			var childRect= AddMargins(value);
 			var newParentRect= Math3D.Union(childRect, parentRect);
 			if(Math3D.IsNotEqual(newParentRect, parentRect)) {
@@ -95,10 +95,10 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public Rect AbsoluteRectWithMargin {
+    public Rect GlobalRectWithMargin {
         get {
-			if(!IsVisible) return AbsoluteRect;
-            return AddMargins(AbsoluteRect);
+			if(!IsVisible) return GlobalRect;
+            return AddMargins(GlobalRect);
         }
     }
 
@@ -118,3 +118,4 @@ public partial class iCS_EditorObject {
     }
     
 }
+

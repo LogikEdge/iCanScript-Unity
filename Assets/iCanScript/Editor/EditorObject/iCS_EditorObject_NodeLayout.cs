@@ -7,8 +7,8 @@ public partial class iCS_EditorObject {
 		get {
 			if(!IsVisible) return Vector2.zero;
 			if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
-			int nbOfPorts= Mathf.Max(NbOfLeftPorts, NbOfRightPorts);
-			float height= NodeTopPadding+NodeBottomPadding+nbOfPorts*iCS_Config.MinimumPortSeparation;
+			float portsHeight= NeededPortsHeight;
+			float height= NodeTopPadding+NodeBottomPadding+portsHeight;
 			float width= Mathf.Max(NodeTitleWidth, NodeLeftPadding+NodeRightPadding);
 			if(IsFolded) {
 				return new Vector2(width, height);
@@ -129,6 +129,12 @@ public partial class iCS_EditorObject {
     public void AdjustChildPosition(Vector2 _delta) {
         ForEachChildNode(child=> child.LocalPosition= child.LocalPosition+_delta);
     }
-
+    // ----------------------------------------------------------------------
+    public float NeededPortsHeight {
+        get {
+            int nbOfPorts= Mathf.Max(NbOfLeftPorts, NbOfRightPorts);
+            return nbOfPorts*iCS_Config.MinimumPortSeparation;                                            
+        }
+    }
 }
 
