@@ -17,6 +17,10 @@ public partial class iCS_EditorObject {
 		}
 		set {
 			EngineObject.DisplaySize= value;
+            // Update port position when parent node changes dimensions.
+			if(IsNode) {
+			    myIStorage.UpdatePortPositions(this);
+			}
 		}
 	}
     // ----------------------------------------------------------------------

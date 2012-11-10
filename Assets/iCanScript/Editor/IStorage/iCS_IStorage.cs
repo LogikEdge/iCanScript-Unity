@@ -530,10 +530,10 @@ public partial class iCS_IStorage {
 			port.LocalRect= new Rect(0,0,0,0);
 		} else if(port.IsDataPort && !port.IsEnablePort) {
             if(port.IsInputPort) {
-                int nbOfPorts= GetNbOfLeftPorts(parent);
+                int nbOfPorts= parent.NbOfLeftPorts;
                 port.LocalRect= new Rect(0, parent.DisplaySize.y/(nbOfPorts+1), 0, 0);
             } else {
-                int nbOfPorts= GetNbOfRightPorts(parent);
+                int nbOfPorts= parent.NbOfRightPorts;
                 port.LocalRect= new Rect(parent.DisplaySize.x, parent.DisplaySize.y/(nbOfPorts+1), 0, 0);                
             }
         }

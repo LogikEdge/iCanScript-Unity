@@ -71,6 +71,22 @@ public partial class iCS_EditorObject {
 		}
 	}
 	// ----------------------------------------------------------------------
+    public int NbOfTopPorts {
+		get {
+			int cnt= 0;
+			ForEachTopChildPort(_=> ++cnt);
+			return cnt;
+		}
+	}
+	// ----------------------------------------------------------------------
+    public int NbOfBottomPorts {
+		get {
+			int cnt= 0;
+			ForEachBottomChildPort(_=> ++cnt);
+			return cnt;
+		}
+	}
+	// ----------------------------------------------------------------------
     public int NbOfLeftPorts {
 		get {
 			int cnt= 0;

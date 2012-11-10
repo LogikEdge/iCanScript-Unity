@@ -99,7 +99,6 @@ public partial class iCS_EditorObject {
             ForEachLeftChildPort(
                 port=> {
                     if(!port.IsStatePort && port.IsPortOnParentEdge) {
-						Debug.Log("On left edge of: "+Name+" port: "+port.Name);
                         Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
                         float nameSize= labelSize.x+iCS_Config.PortSize;
                         if(leftPadding < nameSize) leftPadding= nameSize;
@@ -117,7 +116,6 @@ public partial class iCS_EditorObject {
             ForEachRightChildPort(
                 port=> {
                     if(!port.IsStatePort && port.IsPortOnParentEdge) {
-						Debug.Log("On right edge of: "+Name+" port: "+port.Name);
                         Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
                         float nameSize= labelSize.x+iCS_Config.PortSize;
                         if(rightPadding < nameSize) rightPadding= nameSize;
@@ -126,6 +124,10 @@ public partial class iCS_EditorObject {
             );
             return rightPadding;
         }
+    }
+    // ----------------------------------------------------------------------
+    public void AdjustChildPosition(Vector2 _delta) {
+        ForEachChildNode(child=> child.LocalPosition= child.LocalPosition+_delta);
     }
 
 }

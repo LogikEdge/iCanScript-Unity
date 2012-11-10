@@ -91,13 +91,11 @@ public partial class iCS_IStorage {
             float neededNodeGlobalY= childrenGlobalRect.y-neededChildYOffset;
             if(Math3D.IsNotEqual(neededNodeGlobalX, globalPosition.x) ||
                Math3D.IsNotEqual(neededNodeGlobalY, globalPosition.y)) {
-                   AdjustChildLocalPosition(node, new Vector2(globalPosition.x-neededNodeGlobalX, globalPosition.y-neededNodeGlobalY));
+                   node.AdjustChildPosition(new Vector2(globalPosition.x-neededNodeGlobalX, globalPosition.y-neededNodeGlobalY));
             }
 
             // Compute needed height.
-            int nbOfLeftPorts = GetNbOfLeftPorts(node);
-            int nbOfRightPorts= GetNbOfRightPorts(node);
-            int nbOfPorts= nbOfLeftPorts > nbOfRightPorts ? nbOfLeftPorts : nbOfRightPorts;
+            int nbOfPorts= Mathf.Max(node.NbOfLeftPorts, node.NbOfRightPorts);
             float portHeight= nbOfPorts*iCS_Config.MinimumPortSeparation;                                
             float height= iCS_Config.NodeTitleHeight+Mathf.Max(portHeight, childrenGlobalRect.height+2.0f*iCS_Config.PaddingSize);
             
@@ -175,10 +173,6 @@ public partial class iCS_IStorage {
         iCS_EditorObject parentNode= node.Parent;
         ResolveCollision(parentNode, _deltaMove);
         Layout(parentNode);
-    }
-    // ----------------------------------------------------------------------
-    void AdjustChildLocalPosition(iCS_EditorObject node, Vector2 _delta) {
-        ForEachChild(node, (child)=> { if(child.IsNode) DeltaMoveInternal(child, _delta); } );
     }
     // ----------------------------------------------------------------------
     // Returns the space used by all children.
@@ -354,37 +348,6 @@ public partial class iCS_IStorage {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
         ForEachRightPort(node, port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
         return ports.ToArray();
-    }
-    // ----------------------------------------------------------------------
-    // Returns the number of ports on the top edge.
-    public int GetNbOfTopPorts(iCS_EditorObject node) {
-        int nbOfPorts= 0;
-        ForEachTopPort(node, _=> ++nbOfPorts);
-        return nbOfPorts;
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns the number of ports on the bottom edge.
-    public int GetNbOfBottomPorts(iCS_EditorObject node) {
-        int nbOfPorts= 0;
-        ForEachBottomPort(node, _=> ++nbOfPorts);
-        return nbOfPorts;
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns the number of ports on the left edge.
-    public int GetNbOfLeftPorts(iCS_EditorObject node) {
-        int nbOfPorts= 0;
-        ForEachLeftPort(node, _=> ++nbOfPorts);
-        return nbOfPorts;
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns the number of ports on the right edge.
-    public int GetNbOfRightPorts(iCS_EditorObject node) {
-        int nbOfPorts= 0;
-        ForEachRightPort(node, _=> ++nbOfPorts);
-        return nbOfPorts;
     }
 
     // ----------------------------------------------------------------------

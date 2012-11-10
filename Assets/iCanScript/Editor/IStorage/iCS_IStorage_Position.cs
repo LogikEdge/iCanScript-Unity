@@ -11,7 +11,7 @@ public partial class iCS_IStorage {
         return eObj.AbsoluteRect;
     }
     public Rect GetLayoutPosition(int id) {
-        return GetLayoutPosition(EditorObjects[id]);
+        return EditorObjects[id].AbsoluteRect;
     }
     public Vector2 GetLayoutCenterPosition(iCS_EditorObject eObj) {
         return Math3D.Middle(GetLayoutPosition(eObj));
@@ -25,7 +25,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetLayoutPosition(iCS_EditorObject node, Rect _newPos) {
         // Adjust node size.
-        Rect position= GetLayoutPosition(node);
+        Rect position= node.AbsoluteRect;
         node.LocalRect= new Rect(node.LocalRect.x, node.LocalRect.y, _newPos.width, _newPos.height);
         // Reposition node.
         if(!IsValid(node.ParentId)) {
@@ -41,11 +41,6 @@ public partial class iCS_IStorage {
             LayoutParent(node, separationVector);
         }
     }    
-    // ----------------------------------------------------------------------
-    public void SetLayoutLocalPosition(iCS_EditorObject eObj, Rect newLocalRect) {
-        eObj.LocalRect= newLocalRect;
-    }
-    
    	// ----------------------------------------------------------------------
     public Rect GetVisiblePosition(iCS_EditorObject edObj) {
 		// Return the layout position if the object is visible.
