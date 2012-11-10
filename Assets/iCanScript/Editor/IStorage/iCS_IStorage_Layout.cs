@@ -59,6 +59,10 @@ public partial class iCS_IStorage {
         // Determine needed child rect (in global space).
         Rect  childrenGlobalRect= ComputeChildrenRect(node);
 
+        // Determine needed port height.
+        int nbOfPorts= Mathf.Max(node.NbOfLeftPorts, node.NbOfRightPorts);
+        float portHeight= nbOfPorts*iCS_Config.MinimumPortSeparation;                                
+
         // Compute needed width.
         float titleWidth  = node.NodeTitleWidth;
         float leftMargin  = node.NodeLeftPadding;
@@ -69,10 +73,7 @@ public partial class iCS_IStorage {
         Rect globalPosition= GetLayoutPosition(node);
         if(Math3D.IsZero(childrenGlobalRect.width) || Math3D.IsZero(childrenGlobalRect.height)) {
             // Compute needed height.
-            iCS_EditorObject[] leftPorts= GetLeftPorts(node);
-            iCS_EditorObject[] rightPorts= GetRightPorts(node);
-            int nbOfPorts= leftPorts.Length > rightPorts.Length ? leftPorts.Length : rightPorts.Length;
-            float height= Mathf.Max(iCS_Config.NodeTitleHeight+nbOfPorts*iCS_Config.MinimumPortSeparation, iCS_Config.MinimumNodeHeight);                                
+            float height= Mathf.Max(iCS_Config.NodeTitleHeight+portHeight, iCS_Config.MinimumNodeHeight);                                
             
             // Apply new width and height.
             if(Math3D.IsNotEqual(height, globalPosition.height) || Math3D.IsNotEqual(width, globalPosition.width)) {
@@ -95,8 +96,6 @@ public partial class iCS_IStorage {
             }
 
             // Compute needed height.
-            int nbOfPorts= Mathf.Max(node.NbOfLeftPorts, node.NbOfRightPorts);
-            float portHeight= nbOfPorts*iCS_Config.MinimumPortSeparation;                                
             float height= iCS_Config.NodeTitleHeight+Mathf.Max(portHeight, childrenGlobalRect.height+2.0f*iCS_Config.PaddingSize);
             
             // Relocate node if centering is needed 
