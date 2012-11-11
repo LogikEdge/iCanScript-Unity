@@ -80,7 +80,7 @@ public partial class iCS_EditorObject {
     public float NodeTitleHeight {
         get {
             if(IsIconized) return 0;
-            return 0.8f*iCS_Config.NodeTitleHeight;
+            return 0.75f*iCS_Config.NodeTitleHeight;
         }
     }
     // ----------------------------------------------------------------------

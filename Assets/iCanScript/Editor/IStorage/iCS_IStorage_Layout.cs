@@ -489,7 +489,6 @@ public partial class iCS_IStorage {
 
         // Relayout left ports.
         float topOffset= node.NodeTitleHeight;
-        Debug.Log("Top padding: "+topOffset);
         ports= SortLeftPorts(node);
         if(ports.Length != 0) {
             float yStep= (size.y-topOffset) / ports.Length;
@@ -509,7 +508,7 @@ public partial class iCS_IStorage {
             float yStep= (size.y-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalPosition= new Vector2(size.y, topOffset+(i+0.5f)*yStep);
+                    ports[i].LocalPosition= new Vector2(size.x, topOffset+(i+0.5f)*yStep);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {
