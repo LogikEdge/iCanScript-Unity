@@ -77,10 +77,17 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
+    public float NodeTitleHeight {
+        get {
+            if(IsIconized) return 0;
+            return 0.8f*iCS_Config.NodeTitleHeight;
+        }
+    }
+    // ----------------------------------------------------------------------
     public float NodeTopPadding {
         get {
             if(IsIconized) return 0;
-            return iCS_Config.NodeTitleHeight+iCS_Config.PaddingSize;
+            return NodeTitleHeight+iCS_Config.PaddingSize;
         }
     }
     // ----------------------------------------------------------------------
@@ -132,7 +139,8 @@ public partial class iCS_EditorObject {
     public float NeededPortsHeight {
         get {
             int nbOfPorts= Mathf.Max(NbOfLeftPorts, NbOfRightPorts);
-            return nbOfPorts*iCS_Config.MinimumPortSeparation;                                            
+            if(nbOfPorts == 0) return 0;
+            return iCS_Config.PortSize + (nbOfPorts-1)*iCS_Config.MinimumPortSeparation;                                            
         }
     }
 }

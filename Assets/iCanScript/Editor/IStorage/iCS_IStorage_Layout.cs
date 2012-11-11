@@ -64,6 +64,7 @@ public partial class iCS_IStorage {
 
         // Compute needed width.
         float titleWidth    = node.NodeTitleWidth;
+        float titleHeight   = node.NodeTitleHeight;
         float leftPadding   = node.NodeLeftPadding;
         float rightPadding  = node.NodeRightPadding;
         float topPadding    = node.NodeTopPadding;
@@ -71,7 +72,7 @@ public partial class iCS_IStorage {
         float childrenWidth = childrenGlobalRect.width;
         float childrenHeight= childrenGlobalRect.height; 
         float width         =  Mathf.Max(titleWidth, leftPadding + rightPadding + childrenWidth);
-        float height        = topPadding + bottomPadding + Mathf.Max(portsHeight, childrenHeight);
+        float height        = bottomPadding + Mathf.Max(titleHeight+portsHeight, topPadding+childrenHeight);
 
         // Process case without child nodes
         Rect globalPosition= GetLayoutPosition(node);
@@ -487,7 +488,8 @@ public partial class iCS_IStorage {
         }
 
         // Relayout left ports.
-        float topOffset= node.NodeTopPadding;
+        float topOffset= node.NodeTitleHeight;
+        Debug.Log("Top padding: "+topOffset);
         ports= SortLeftPorts(node);
         if(ports.Length != 0) {
             float yStep= (size.y-topOffset) / ports.Length;
