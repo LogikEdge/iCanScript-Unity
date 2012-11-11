@@ -16,11 +16,15 @@ public partial class iCS_EditorObject {
 			return EngineObject.DisplaySize;
 		}
 		set {
-			EngineObject.DisplaySize= value;
+            // Avoid propagating change if we did not change size
+            var engineObject= EngineObject;
+            var previousSize= engineObject.DisplaySize;
+            if(Math3D.IsEqual(previousSize, value)) return;
+            // Set new size and update any size dependent values.
+			engineObject.DisplaySize= value;
             // Update port position when parent node changes dimensions.
-			if(IsNode) {
-			    myIStorage.UpdatePortPositions(this);
-			}
+			if(IsNode) myIStorage.UpdatePortPositions(this);
+			IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -33,7 +37,13 @@ public partial class iCS_EditorObject {
 			return EngineObject.LocalPosition;
 		}
 		set {
+            // Avoid propagating change if we did not change position
+            var engineObject= EngineObject;
+            var previousPos= engineObject.LocalPosition;
+            if(Math3D.IsEqual(previousPos, value)) return;
+            // Set new local position and update any position dependent values.
 			EngineObject.LocalPosition= value;
+            IsDirty= true;
 		}
 	}
 
