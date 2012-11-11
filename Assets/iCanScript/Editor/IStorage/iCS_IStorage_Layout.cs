@@ -475,13 +475,13 @@ public partial class iCS_IStorage {
         }
 
         // Relayout top ports.
-        Rect position= GetLayoutPosition(node);        
+        var size= node.DisplaySize;        
         iCS_EditorObject[] ports= SortTopPorts(node);
         if(ports.Length != 0) {
-            float xStep= position.width / ports.Length;
+            float xStep= size.x / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalRect= new Rect((i+0.5f)*xStep, 0, 0, 0);
+                    ports[i].LocalPosition= new Vector2((i+0.5f)*xStep, 0);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -492,10 +492,10 @@ public partial class iCS_IStorage {
         // Relayout bottom ports.
         ports= SortBottomPorts(node);
         if(ports.Length != 0) {
-            float xStep= position.width / ports.Length;
+            float xStep= size.x / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalRect= new Rect((i+0.5f)*xStep, position.height, 0, 0);
+                    ports[i].LocalPosition= new Vector2((i+0.5f)*xStep, size.y);
                 }
             }            
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -504,13 +504,13 @@ public partial class iCS_IStorage {
         }
 
         // Relayout left ports.
+        float topOffset= node.NodeTopPadding;
         ports= SortLeftPorts(node);
         if(ports.Length != 0) {
-            float topOffset= iCS_Config.NodeTitleHeight-2;
-            float yStep= (position.height-topOffset) / ports.Length;
+            float yStep= (size.y-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalRect= new Rect(0, topOffset+(i+0.5f) * yStep, 0, 0);
+                    ports[i].LocalPosition= new Vector2(0, topOffset+(i+0.5f) * yStep);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {
@@ -521,11 +521,10 @@ public partial class iCS_IStorage {
         // Relayout right ports.
         ports= SortRightPorts(node);
         if(ports.Length != 0) {
-            float topOffset= iCS_Config.NodeTitleHeight-2;
-            float yStep= (position.height-topOffset) / ports.Length;
+            float yStep= (size.y-topOffset) / ports.Length;
             for(int i= 0; i < ports.Length; ++i) {
                 if(!ports[i].IsFloating) {
-                    ports[i].LocalRect= new Rect(position.width, topOffset+(i+0.5f)*yStep, 0, 0);
+                    ports[i].LocalPosition= new Vector2(size.y, topOffset+(i+0.5f)*yStep);
                 }
             }
             if(!AreChildrenInSameOrder(node, ports)) {

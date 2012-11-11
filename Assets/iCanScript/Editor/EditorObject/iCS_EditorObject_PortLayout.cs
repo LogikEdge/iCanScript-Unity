@@ -17,6 +17,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {
         get {
+            if(!IsFloating) return true;
     		float maxDistance= 2f*iCS_Config.PortSize;
             float distance= 2f*maxDistance;
             var parentSize= Parent.DisplaySize;
