@@ -24,17 +24,12 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void SetLayoutPosition(iCS_EditorObject node, Rect _newPos) {
-        // Adjust node size.
-        Rect position= GetLayoutPosition(node);
-        node.LocalRect= new Rect(node.LocalRect.x, node.LocalRect.y, _newPos.width, _newPos.height);
         // Reposition node.
-        if(!IsValid(node.ParentId)) {
-            node.LocalRect= new Rect(_newPos.x, _newPos.y, node.DisplaySize.x, node.DisplaySize.y);
-        }
-        else {
-            Rect deltaMove= new Rect(_newPos.xMin-position.xMin, _newPos.yMin-position.yMin, _newPos.width-position.width, _newPos.height-position.height);
-            node.LocalRect= new Rect(node.LocalRect.x+deltaMove.x, node.LocalRect.y+deltaMove.y,
-                                     node.DisplaySize.x, node.DisplaySize.y);
+        var globalRect= node.GlobalRect;
+        node.GlobalRect= _newPos;
+        if(node.IsParentValid) {
+            // Adjust node size.
+            Rect deltaMove= new Rect(_newPos.x-globalRect.x, _newPos.y-globalRect.y, _newPos.width-globalRect.width, _newPos.height-globalRect.height);
             float separationX= Math3D.IsNotZero(deltaMove.x) ? deltaMove.x : deltaMove.width;
             float separationY= Math3D.IsNotZero(deltaMove.y) ? deltaMove.y : deltaMove.height;
             var separationVector= new Vector2(separationX, separationY);
