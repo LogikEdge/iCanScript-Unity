@@ -219,7 +219,7 @@ public partial class iCS_IStorage {
     iCS_EditorObject[] SortTopPorts(iCS_EditorObject node) {
         Rect nodePos= GetLayoutPosition(node);
         float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
-        iCS_EditorObject[] ports= GetTopPorts(node);
+        iCS_EditorObject[] ports= node.TopPorts;
         Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetLayoutPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? cp.y : -cp.y, connectedPos);
@@ -229,7 +229,7 @@ public partial class iCS_IStorage {
     iCS_EditorObject[] SortBottomPorts(iCS_EditorObject node) {
         Rect nodePos= GetLayoutPosition(node);
         float refPos= 0.5f*(nodePos.xMin+nodePos.xMax);
-        iCS_EditorObject[] ports= GetBottomPorts(node);
+        iCS_EditorObject[] ports= node.BottomPorts;
         Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetLayoutPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.x, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.x ? -cp.y : cp.y, connectedPos);
@@ -239,7 +239,7 @@ public partial class iCS_IStorage {
     iCS_EditorObject[] SortLeftPorts(iCS_EditorObject node) {
         Rect nodePos= GetLayoutPosition(node);
         float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
-        iCS_EditorObject[] ports= GetLeftPorts(node);                             
+        iCS_EditorObject[] ports= node.LeftPorts;                             
         Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetLayoutPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? cp.x : -cp.x, connectedPos);
@@ -249,7 +249,7 @@ public partial class iCS_IStorage {
     iCS_EditorObject[] SortRightPorts(iCS_EditorObject node) {
         Rect nodePos= GetLayoutPosition(node);
         float refPos= 0.5f*(nodePos.yMin+nodePos.yMax);
-        iCS_EditorObject[] ports= GetRightPorts(node);
+        iCS_EditorObject[] ports= node.RightPorts;
         Vector2[] connectedPos= Prelude.map(p=> Math3D.ToVector2(GetLayoutPosition(p)), ports);
         float[] firstKeys = Prelude.map(cp=> cp.y, connectedPos); 
         float[] secondKeys= Prelude.map(cp=> refPos < cp.y ? -cp.x : cp.x, connectedPos);
@@ -285,38 +285,6 @@ public partial class iCS_IStorage {
         a= b;
         b= tmp;
     }
-    // ----------------------------------------------------------------------
-    // Returns all ports position on the top edge.
-    public iCS_EditorObject[] GetTopPorts(iCS_EditorObject node) {
-        List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        node.ForEachTopChildPort(port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
-        return ports.ToArray();
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns all ports position on the bottom edge.
-    public iCS_EditorObject[] GetBottomPorts(iCS_EditorObject node) {
-        List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        node.ForEachBottomChildPort(port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
-        return ports.ToArray();
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns all ports position on the left edge.
-    public iCS_EditorObject[] GetLeftPorts(iCS_EditorObject node) {
-        List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        node.ForEachLeftChildPort(port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
-        return ports.ToArray();        
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns all ports position on the right edge.
-    public iCS_EditorObject[] GetRightPorts(iCS_EditorObject node) {
-        List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        node.ForEachRightChildPort(port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
-        return ports.ToArray();
-    }
-
 
     // ======================================================================
     // Collision Functions

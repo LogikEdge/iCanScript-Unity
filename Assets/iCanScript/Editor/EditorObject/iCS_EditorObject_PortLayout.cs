@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public partial class iCS_EditorObject {
     // Port Layout Utilities ================================================
@@ -95,6 +96,38 @@ public partial class iCS_EditorObject {
 			int cnt= 0;
 			ForEachRightChildPort(_=> ++cnt);
 			return cnt;
+		}
+	}
+	// ----------------------------------------------------------------------
+    public iCS_EditorObject[] TopPorts {
+		get {
+            var result= new List<iCS_EditorObject>();
+			ForEachTopChildPort(c=> result.Add(c));
+			return result.ToArray();
+		}
+	}
+	// ----------------------------------------------------------------------
+    public iCS_EditorObject[] BottomPorts {
+		get {
+            var result= new List<iCS_EditorObject>();
+			ForEachBottomChildPort(c=> result.Add(c));
+			return result.ToArray();
+		}
+	}
+	// ----------------------------------------------------------------------
+    public iCS_EditorObject[] LeftPorts {
+		get {
+            var result= new List<iCS_EditorObject>();
+			ForEachLeftChildPort(c=> result.Add(c));
+			return result.ToArray();
+		}
+	}
+	// ----------------------------------------------------------------------
+    public iCS_EditorObject[] RightPorts {
+		get {
+            var result= new List<iCS_EditorObject>();
+			ForEachRightChildPort(c=> result.Add(c));
+			return result.ToArray();
 		}
 	}
 	
