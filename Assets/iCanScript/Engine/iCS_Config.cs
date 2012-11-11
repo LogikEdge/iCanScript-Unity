@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_Config {
+public static class iCS_Config {
     // ----------------------------------------------------------------------
     public const string Version= "Version 0.8.6";
     public const string VersionLabel= "(Beta #6)";

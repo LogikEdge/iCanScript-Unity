@@ -288,7 +288,7 @@ public partial class iCS_IStorage {
     // Returns all ports position on the top edge.
     public iCS_EditorObject[] GetTopPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachTopPort(node, port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
+        node.ForEachTopChildPort(port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
         return ports.ToArray();
     }
 
@@ -296,7 +296,7 @@ public partial class iCS_IStorage {
     // Returns all ports position on the bottom edge.
     public iCS_EditorObject[] GetBottomPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachBottomPort(node, port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
+        node.ForEachBottomChildPort(port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
         return ports.ToArray();
     }
 
@@ -304,7 +304,7 @@ public partial class iCS_IStorage {
     // Returns all ports position on the left edge.
     public iCS_EditorObject[] GetLeftPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachLeftPort(node, port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
+        node.ForEachLeftChildPort(port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
         return ports.ToArray();        
     }
 
@@ -312,25 +312,8 @@ public partial class iCS_IStorage {
     // Returns all ports position on the right edge.
     public iCS_EditorObject[] GetRightPorts(iCS_EditorObject node) {
         List<iCS_EditorObject> ports= new List<iCS_EditorObject>();
-        ForEachRightPort(node, port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
+        node.ForEachRightChildPort(port=> { if(port.IsPortOnParentEdge) ports.Add(port);});
         return ports.ToArray();
-    }
-
-    // ----------------------------------------------------------------------
-    public void ForEachTopPort(iCS_EditorObject node, System.Action<iCS_EditorObject> fnc) {
-        ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnTopEdge, fnc));
-    }
-    // ----------------------------------------------------------------------
-    public void ForEachBottomPort(iCS_EditorObject node, System.Action<iCS_EditorObject> fnc) {
-        ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnBottomEdge, fnc));
-    }
-    // ----------------------------------------------------------------------
-    public void ForEachLeftPort(iCS_EditorObject node, System.Action<iCS_EditorObject> fnc) {
-        ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnLeftEdge, fnc));
-    }
-    // ----------------------------------------------------------------------
-    public void ForEachRightPort(iCS_EditorObject node, System.Action<iCS_EditorObject> fnc) {
-        ForEachChildPort(node, child=> ExecuteIf(child, port=> port.IsOnRightEdge, fnc));
     }
 
 
