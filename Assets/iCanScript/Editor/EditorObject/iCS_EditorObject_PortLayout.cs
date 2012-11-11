@@ -97,4 +97,23 @@ public partial class iCS_EditorObject {
 			return cnt;
 		}
 	}
+	
+	// ======================================================================
+    // Layout from iCS_Port
+    // ----------------------------------------------------------------------
+    public void UpdatePortEdge() {
+        // Enable ports are always on top of the node.
+        if(IsEnablePort) {
+            Edge= iCS_EdgeEnum.Top;
+        }
+        // Data ports are always on the left or right depending on input/output direction.
+        else if(IsDataPort) {
+            Edge= IsInputPort ? iCS_EdgeEnum.Left : iCS_EdgeEnum.Right;
+        }
+        // Selected closest edge.
+        else {
+            Edge= ClosestEdge;            
+        }
+    }
+    
 }

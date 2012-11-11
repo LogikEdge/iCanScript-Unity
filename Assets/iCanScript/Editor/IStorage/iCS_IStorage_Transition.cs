@@ -12,8 +12,8 @@ public partial class iCS_IStorage {
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         SetInitialPosition(toStatePort, toStatePortPos);
         SetSource(toStatePort, fromStatePort);
-        UpdatePortEdge(toStatePort);        
-        UpdatePortEdge(fromStatePort);        
+        toStatePort.UpdatePortEdge();        
+        fromStatePort.UpdatePortEdge();        
         // Determine transition parent
         iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
         // Create transition module

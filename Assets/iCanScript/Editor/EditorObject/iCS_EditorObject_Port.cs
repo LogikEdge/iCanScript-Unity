@@ -12,7 +12,14 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public iCS_EdgeEnum Edge {
 		get { return EngineObject.Edge; }
-		set { EngineObject.Edge= value; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.Edge != value) {
+                engineObject.Edge= value;
+                if(!IsFloating) CleanupPortEdgePosition();
+                IsDirty= true;
+            }
+		}
 	}
     public int SourceId {
 		get { return EngineObject.SourceId; }

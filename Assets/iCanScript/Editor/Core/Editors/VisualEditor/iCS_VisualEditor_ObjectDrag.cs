@@ -153,7 +153,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 bool isNearParentEdge= IStorage.IsNearParentEdge(DragObject);
                 if(DragObject.IsStatePort) {
                     if(isNearParentEdge) {
-                        IStorage.UpdatePortEdge(DragObject);
+                        DragObject.UpdatePortEdge();
                         iCS_EditorObject parent= IStorage.GetParentNode(DragOriginalPort);
                         IStorage.UpdatePortPositions(parent); 
                     }
@@ -273,7 +273,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                         // Relocate dragged port if on the same state.
                         if(origState == newState) {
-                            IStorage.UpdatePortEdge(DragObject);
+                            DragObject.UpdatePortEdge();
                             IStorage.UpdatePortPositions(origState);
                             IStorage.SetDirty(DragObject);
                             break;
