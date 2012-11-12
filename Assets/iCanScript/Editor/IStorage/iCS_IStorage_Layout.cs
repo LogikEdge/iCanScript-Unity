@@ -348,20 +348,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns if the given rectangle collides with the node.
     public bool DoesCollideWithGutter(iCS_EditorObject node, iCS_EditorObject otherNode) {
-        return Math3D.DoesCollide(RectWithGutter(GetLayoutPosition(node)), GetLayoutPosition(otherNode));
+        return Math3D.DoesCollide(iCS_EditorObject.AddMargins(GetLayoutPosition(node)), GetLayoutPosition(otherNode));
     }
 
     // ----------------------------------------------------------------------
-    static Rect RectWithGutter(Rect _rect) {
-        float marginSize= iCS_Config.MarginSize;
-        float marginSize2= 2.0f*marginSize;
-        return new Rect(_rect.x-marginSize, _rect.y-marginSize, _rect.width+marginSize2, _rect.height+marginSize2);        
-    }
-    
-    // ----------------------------------------------------------------------
 	// Returns the seperation vector of two colliding nodes.
 	Vector2 GetSeperationVector(iCS_EditorObject node, Rect _rect) {
-        Rect myRect= RectWithGutter(GetLayoutPosition(node));
+        Rect myRect= iCS_EditorObject.AddMargins(GetLayoutPosition(node));
         Rect otherRect= _rect;
         float xMin= Mathf.Min(myRect.xMin, otherRect.xMin);
         float yMin= Mathf.Min(myRect.yMin, otherRect.yMin);
