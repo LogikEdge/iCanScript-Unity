@@ -172,20 +172,6 @@ public partial class iCS_IStorage {
         ResolveCollision(parentNode, _deltaMove);
         Layout(parentNode);
     }
-//    // ----------------------------------------------------------------------
-//    // Returns the space used by all children.
-//    Rect ComputeChildRect(iCS_EditorObject node) {
-//        // Compute child space.
-//        Rect childRect= new Rect(0.5f*node.DisplaySize.x,0.5f*node.DisplaySize.y,0,0);
-//        ForEachChild(node,
-//            (child)=> {
-//                if(child.IsNode && child.IsVisible && !child.IsFloating) {
-//                    childRect= Math3D.Merge(childRect, child.LocalRect);
-//                }
-//            }
-//        );
-//        return childRect;
-//    }
     // ----------------------------------------------------------------------
     // Returns the space used by all children.
     Rect ComputeChildrenRect(iCS_EditorObject node) {
