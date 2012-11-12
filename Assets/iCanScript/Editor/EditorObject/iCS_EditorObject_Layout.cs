@@ -22,8 +22,6 @@ public partial class iCS_EditorObject {
             if(Math3D.IsEqual(previousSize, value)) return;
             // Set new size and update any size dependent values.
 			engineObject.DisplaySize= value;
-            // Update port position when parent node changes dimensions.
-			if(IsNode) myIStorage.UpdatePortPositions(this);
 			IsDirty= true;
 		}
 	}
