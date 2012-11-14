@@ -22,7 +22,7 @@ public partial class iCS_IStorage {
             obj=> {
                 var animation= obj.AnimatedPosition;
                 if(obj.IsVisible) {
-                    if(Math3D.IsNotEqual(GetLayoutPosition(obj), animation.TargetValue)) {
+                    if(Math3D.IsNotEqual(obj.GlobalRect, animation.TargetValue)) {
                         Debug.LogWarning("iCanScript: Animation was not properly applied for: "+obj.Name+" with id: "+obj.InstanceId);                        
                     }
                 } else {

@@ -26,8 +26,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject GetPortAt(Vector2 pick, Func<iCS_EditorObject,bool> filter= null) {
         iCS_EditorObject port= GetClosestPortAt(pick, filter);
         if(port == null) return port;
-        Vector2 position= Math3D.ToVector2(GetLayoutPosition(port));
-        float distance= Vector2.Distance(position, pick);
+        float distance= Vector2.Distance(port.GlobalPosition, pick);
         return (distance < 3f*iCS_Config.PortRadius) ? port : null;
     }
     // ----------------------------------------------------------------------
@@ -39,7 +38,7 @@ public partial class iCS_IStorage {
         FilterWith(
             port=> port.IsPort && port.IsVisible && !port.IsFloating && filter(port),
             port=> {
-                Vector2 position= Math3D.ToVector2(GetLayoutPosition(port));
+                Vector2 position= port.GlobalPosition;
                 float distance= Vector2.Distance(position, pick);
                 if(distance < bestDistance) {
                     bestDistance= distance;

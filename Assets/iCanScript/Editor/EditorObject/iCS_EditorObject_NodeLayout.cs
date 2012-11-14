@@ -132,7 +132,7 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public void AdjustChildPosition(Vector2 _delta) {
+    public void AdjustChildLocalPosition(Vector2 _delta) {
         ForEachChildNode(child=> child.LocalPosition= child.LocalPosition+_delta);
     }
     // ----------------------------------------------------------------------

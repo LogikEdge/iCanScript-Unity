@@ -22,21 +22,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void CenterOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
-        CenterAt(Math3D.Middle(IStorage.GetLayoutPosition(obj)));
+        CenterAt(obj.GlobalPosition);
     }
 	// ----------------------------------------------------------------------
     public void CenterAndScaleOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
         while(obj != null && !obj.IsVisible) obj= obj.Parent;
         if(obj == null) return;
-        Rect objectArea= IStorage.GetLayoutPosition(obj);
+        var size= obj.DisplaySize;
         float newScale= 1.0f;
         if(obj.IsNode) {
-            float widthScale= position.width/(1.1f*objectArea.width);
-            float heightScale= position.height/(1.1f*objectArea.height);
+            float widthScale= position.width/(1.1f*size.x);
+            float heightScale= position.height/(1.1f*size.y);
             newScale= Mathf.Min(1.0f, Mathf.Min(widthScale, heightScale));
         }
-        CenterAtWithScale(Math3D.Middle(objectArea), newScale);
+        CenterAtWithScale(obj.GlobalPosition, newScale);
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {

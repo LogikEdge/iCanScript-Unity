@@ -6,8 +6,8 @@ public partial class iCS_IStorage {
     // Creation methods
     // ----------------------------------------------------------------------
     public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState) {
-        Vector2 fromStatePortPos= Math3D.ToVector2(GetLayoutPosition(fromStatePort));
-        Vector2 toStatePortPos  = Math3D.ToVector2(GetLayoutPosition(toState));
+        Vector2 fromStatePortPos= fromStatePort.GlobalPosition;
+        Vector2 toStatePortPos  = toState.GlobalPosition;
         // Create inStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         SetInitialPosition(toStatePort, toStatePortPos);
@@ -256,7 +256,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public Rect ProposeTransitionModulePosition(iCS_EditorObject module) {
-        Rect nodePos= GetLayoutPosition(module);
+        Rect nodePos= module.GlobalRect;
         iCS_EditorObject fromStatePort= GetFromStatePort(module);
         iCS_EditorObject toStatePort= GetToStatePort(module);
         if(toStatePort != null) {
@@ -296,10 +296,10 @@ public partial class iCS_IStorage {
         iCS_EditorObject outStatePort     = GetFromStatePort(module);
         iCS_EditorObject inTransitionPort = GetInTransitionPort(module);
         iCS_EditorObject outTransitionPort= GetOutTransitionPort(module);
-        var inStatePos= Math3D.ToVector2(GetLayoutPosition(inStatePort));
-        var outStatePos= Math3D.ToVector2(GetLayoutPosition(outStatePort));
-        var inTransitionPos= Math3D.ToVector2(GetLayoutPosition(inTransitionPort));
-        var outTransitionPos= Math3D.ToVector2(GetLayoutPosition(outTransitionPort));
+        var inStatePos= inStatePort.GlobalPosition;
+        var outStatePos= outStatePort.GlobalPosition;
+        var inTransitionPos= inTransitionPort.GlobalPosition;
+        var outTransitionPos= outTransitionPort.GlobalPosition;
         Vector2 dir= ((inStatePos-outTransitionPos).normalized+(inTransitionPos-outStatePos).normalized).normalized;
         return dir;
     }

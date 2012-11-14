@@ -43,7 +43,7 @@ public partial class iCS_IStorage {
 		
         // Re-initialize internal values.
         if(EditorObjects.Count > 0 && IsValid(EditorObjects[0])) {
-            Vector2 graphCenter= Math3D.Middle(GetLayoutPosition(EditorObjects[0]));
+            Vector2 graphCenter= EditorObjects[0].GlobalPosition;
             ForEach(obj=> {
 		        // Initialize display position.
                 obj.AnimatedPosition.Reset(new Rect(graphCenter.x,graphCenter.y,0,0));
@@ -124,7 +124,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {
-        Rect pos= GetLayoutPosition(edObj);
+        Rect pos= edObj.GlobalRect;
         iCS_EditorObject oldParent= edObj.Parent;
         edObj.Parent= newParent;
         SetLayoutPosition(edObj, pos);
@@ -218,12 +218,12 @@ public partial class iCS_IStorage {
     Rect GetAnimationTarget(iCS_EditorObject eObj) {
         Rect target;
         if(eObj.IsVisible) {
-            target= GetLayoutPosition(eObj);
+            target= eObj.GlobalRect;
         } else {
             // Find first visible parent.
             var visibleParent= eObj.Parent;
             for(; visibleParent != null && !visibleParent.IsVisible; visibleParent= visibleParent.Parent);
-            Vector2 center= Math3D.Middle(GetLayoutPosition(visibleParent ?? eObj));
+            Vector2 center= (visibleParent ?? eObj).GlobalPosition;
             target= new Rect(center.x, center.y, 0, 0);
         }
         return target;
@@ -301,15 +301,14 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject Copy(iCS_EditorObject srcObj, iCS_IStorage srcStorage,
-                                 iCS_EditorObject destParent, iCS_IStorage destStorage, Vector2 initialPos) {
+                                 iCS_EditorObject destParent, iCS_IStorage destStorage, Vector2 initialGlobalPos) {
         // Create new EditorObject
-        Vector2 parentPos= IsValid(destParent) ? Math3D.ToVector2(GetLayoutPosition(destParent)) : Vector2.zero;
-        Vector2 sizeOffset= 0.5f*new Vector2(srcObj.DisplaySize.x, srcObj.DisplaySize.y);
-        Vector2 localPos= initialPos-parentPos-sizeOffset;
+        Vector2 parentPos= IsValid(destParent) ? destParent.GlobalPosition : Vector2.zero;
+        Vector2 localPos= initialGlobalPos-parentPos;
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
         iCS_EditorObject instance= Copy(srcObj, srcStorage, destParent, destStorage, localPos, xlat);
         ReconnectCopy(srcObj, srcStorage, destStorage, xlat);
-        SetDisplayPosition(instance, new Rect(initialPos.x, initialPos.y,0,0));
+        SetDisplayPosition(instance, new Rect(initialGlobalPos.x, initialGlobalPos.y,0,0));
         return instance;
     }
     iCS_EditorObject Copy(iCS_EditorObject srcObj, iCS_IStorage srcStorage,
@@ -321,7 +320,7 @@ public partial class iCS_IStorage {
 		newObj.LocalPosition= localPos;
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
-            child=> Copy(child, srcStorage, newObj, destStorage, Math3D.ToVector2(child.LocalRect), xlat)
+            child=> Copy(child, srcStorage, newObj, destStorage, child.LocalPosition, xlat)
         );
 		if(newObj.IsInDataPort) {
 			LoadInitialPortValueFromArchive(this[id]);
@@ -538,8 +537,8 @@ public partial class iCS_IStorage {
             }
         }
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
-        Rect parentPos= GetLayoutPosition(port.Parent);
-        SetDisplayPosition(this[id], new Rect(0.5f*(parentPos.x+parentPos.xMax), 0.5f*(parentPos.y+parentPos.yMax),0,0));
+        var parentPos= port.Parent.GlobalPosition;
+        SetDisplayPosition(this[id], new Rect(parentPos.x, parentPos.y,0,0));
 		SetDirty(this[id]);
         return EditorObjects[id];        
     }
@@ -576,8 +575,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo convDesc) {
         if(convDesc == null) { SetSource(inPort, outPort); return; }
-        Rect inPos= GetLayoutPosition(inPort);
-        Rect outPos= GetLayoutPosition(outPort);
+        var inPos= inPort.GlobalPosition;
+        var outPos= outPort.GlobalPosition;
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= inPort.ParentId;
         iCS_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);

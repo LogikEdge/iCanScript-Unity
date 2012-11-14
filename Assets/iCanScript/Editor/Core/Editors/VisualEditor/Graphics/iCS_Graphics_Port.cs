@@ -59,8 +59,8 @@ public partial class iCS_Graphics {
             var sourcePort= port.Source;
             if(sourcePort.Name != port.Name) return true;
             if(!sourcePort.IsVisible) return true;
-            var sourceCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(sourcePort));
-            var portCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(port));
+            var sourceCenter= sourcePort.GlobalPosition;
+            var portCenter= port.GlobalPosition;
             var distance= Vector2.Distance(portCenter, sourceCenter);
             if(distance < 200.0f) return false;
         }
@@ -122,8 +122,8 @@ public partial class iCS_Graphics {
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if(port.IsInputPort && port.SourceId != -1) {
             var sourcePort= port.Source;
-            var sourceCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(sourcePort));
-            var portCenter= Math3D.ToVector2(iStorage.GetLayoutPosition(port));
+            var sourceCenter= sourcePort.GlobalPosition;
+            var portCenter= port.GlobalPosition;
             var distance= Vector2.Distance(portCenter, sourceCenter);
             if(distance < 200.0f) return false;
         }

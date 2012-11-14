@@ -80,19 +80,17 @@ public class iCS_Storage : MonoBehaviour {
         return EngineObjects[port.SourceId];
     }
     // ----------------------------------------------------------------------
-    // Returns the global position of the node.
-    public Rect GetGlobalRect(iCS_EngineObject node) {
-		var localPosition= node.LocalPosition;
-        float x= localPosition.x-0.5f*node.DisplaySize.x;
-        float y= localPosition.y-0.5f*node.DisplaySize.y;
-        if(!IsValidEngineObject(node.ParentId)) {
-            return new Rect(x, y, node.DisplaySize.x, node.DisplaySize.y);
-        }
-        Rect position= GetGlobalRect(EngineObjects[node.ParentId]);
-        return new Rect(position.x+x,
-                        position.y+y,
-                        node.DisplaySize.x,
-                        node.DisplaySize.y);
+    // Returns the global position of the object.
+    public Vector2 GetGlobalPosition(iCS_EngineObject obj) {
+        if(obj.ParentId == -1) return obj.LocalPosition;
+        return obj.LocalPosition + GetGlobalPosition(EngineObjects[obj.ParentId]);
+    }
+    // ----------------------------------------------------------------------
+    // Returns the global rectangle of the object.
+    public Rect GetGlobalRect(iCS_EngineObject obj) {
+        var size= obj.DisplaySize;
+        var pos= GetGlobalPosition(obj);
+        return new Rect(pos.x-0.5f*size.x, pos.y-0.5f*size.y, size.x, size.y);
     }
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.

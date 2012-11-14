@@ -28,11 +28,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 LocalPosition {
 		get {
-			if(!IsVisible) {
-				var size= Parent.DisplaySize;
-				return new Vector2(0.5f*size.x, 0.5f*size.y);
-			}
-			return EngineObject.LocalPosition;
+			return IsVisible ? EngineObject.LocalPosition : Vector2.zero;
 		}
 		set {
             // Avoid propagating change if we did not change position
@@ -62,24 +58,33 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
+    public Vector2 GlobalPosition {
+        get {
+            if(!IsParentValid) return LocalPosition;
+            return Parent.GlobalPosition+LocalPosition;
+        }
+        set {
+            if(!IsParentValid) {
+                LocalPosition= value;
+                return;
+            }
+            LocalPosition= value-Parent.GlobalPosition;
+        }
+    }
+    // ----------------------------------------------------------------------
 	public Rect GlobalRect {
 		get {
-			if(!IsParentValid) return LocalRect;
-			var parentRect= Parent.GlobalRect;
-			var localRect= LocalRect;
-			return new Rect(parentRect.x+localRect.x, parentRect.y+localRect.y,
-							localRect.width, localRect.height);
+            var displaySize= DisplaySize;
+			var globalPosition= GlobalPosition;
+		    float x= globalPosition.x-0.5f*displaySize.x;
+		    float y= globalPosition.y-0.5f*displaySize.y;
+		    return new Rect(x, y, displaySize.x, displaySize.y);
 		}
 		set {
-			if(!IsParentValid) {
-			    LocalRect= value;
-			    return;
-		    }
-			// First adjust parent display area.
-			var parent= Parent;
-			var parentRect= parent.GlobalRect;
-			// The parent is now adjusted so we can now set our display area.
-			LocalRect= new Rect(value.x-parentRect.x, value.y-parentRect.y, value.width, value.height);
+		    float x= value.x+0.5f*value.width;
+		    float y= value.y+0.5f*value.height;
+		    GlobalPosition= new Vector2(x, y);
+		    DisplaySize= new Vector2(value.width, value.height);
 		}
 	}
 

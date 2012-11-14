@@ -8,10 +8,10 @@ public partial class iCS_EditorObject {
         var size= Parent.DisplaySize;
         var lp= LocalPosition;
         switch(Edge) {
-            case iCS_EdgeEnum.Top:      lp.y= 0; break; 
-            case iCS_EdgeEnum.Bottom:   lp.y= size.y; break;
-            case iCS_EdgeEnum.Left:     lp.x= 0; break;
-            case iCS_EdgeEnum.Right:    lp.x= size.x; break;
+            case iCS_EdgeEnum.Top:      lp.y= -0.5f*size.y; break; 
+            case iCS_EdgeEnum.Bottom:   lp.y=  0.5f*size.y; break;
+            case iCS_EdgeEnum.Left:     lp.x= -0.5f*size.x; break;
+            case iCS_EdgeEnum.Right:    lp.x=  0.5f*size.x; break;
         }
 		LocalPosition= lp;
     }
@@ -22,19 +22,23 @@ public partial class iCS_EditorObject {
     		float maxDistance= 2f*iCS_Config.PortSize;
             float distance= 2f*maxDistance;
             var parentSize= Parent.DisplaySize;
+            float leftX  = -0.5f*parentSize.x;
+            float rightX =  0.5f*parentSize.x;
+            float topY   = -0.5f*parentSize.y;
+            float bottomY=  0.5f*parentSize.y;
             var edge= IsStatePort ? ClosestEdge : Edge;
             switch(edge) {
                 case iCS_EdgeEnum.Top:
-                    distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, 0f);
+                    distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, leftX, rightX, topY);
                     break; 
                 case iCS_EdgeEnum.Bottom:
-                    distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, parentSize.y);
+                    distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, leftX, rightX, bottomY);
                     break;
                 case iCS_EdgeEnum.Left:
-                    distance= Math3D.DistanceFromVerticalLineSegment(LocalPosition, 0f, parentSize.y, 0f);
+                    distance= Math3D.DistanceFromVerticalLineSegment(LocalPosition, topY, bottomY, leftX);
                     break;
                 case iCS_EdgeEnum.Right:
-                    distance= Math3D.DistanceFromVerticalLineSegment(LocalPosition, 0f, parentSize.y, parentSize.x);
+                    distance= Math3D.DistanceFromVerticalLineSegment(LocalPosition, topY, bottomY, rightX);
                     break;                
             }
             return distance <= maxDistance;
@@ -47,19 +51,23 @@ public partial class iCS_EditorObject {
 			var parent= Parent;
 			if(parent.IsIconized) return Edge;
             var parentSize= parent.DisplaySize;
+            float leftX  = -0.5f*parentSize.x;
+            float rightX =  0.5f*parentSize.x;
+            float topY   = -0.5f*parentSize.y;
+            float bottomY=  0.5f*parentSize.y;
 			var edge= iCS_EdgeEnum.Top;
-			float distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, 0f);
-			float d= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, 0f, parentSize.x, parentSize.y);
+			float distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, leftX, rightX, topY);
+			float d= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, leftX, rightX, bottomY);
 			if(d < distance) {
 				distance= d;
 				edge= iCS_EdgeEnum.Bottom;
 			}
-			d= Math3D.DistanceFromVerticalLineSegment(LocalPosition, 0f, parentSize.y, 0f);
+			d= Math3D.DistanceFromVerticalLineSegment(LocalPosition, topY, bottomY, leftX);
 			if(d < distance) {
 				distance= d;
 				edge= iCS_EdgeEnum.Left;
 			}
-			d= Math3D.DistanceFromVerticalLineSegment(LocalPosition, 0f, parentSize.y, parentSize.x); 
+			d= Math3D.DistanceFromVerticalLineSegment(LocalPosition, topY, bottomY, rightX); 
 			if(d < distance) {
 				edge= iCS_EdgeEnum.Right;
 			}
