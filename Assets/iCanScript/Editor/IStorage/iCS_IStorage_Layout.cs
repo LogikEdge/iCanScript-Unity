@@ -78,11 +78,10 @@ public partial class iCS_IStorage {
         // Process case with child nodes.
         else {
             // Adjust children local offset.
-            float parentWidthFromChildren= leftPadding+rightPadding+childrenGlobalRect.width;
-            float parentHeightFromChildren= topPadding+childrenGlobalRect.height;
-            float parentHeightFromPorts= titleHeight+portsHeight;
-            float width;
-            float height;
+            float parentWidthFromChildren = leftPadding+rightPadding+childrenGlobalRect.width;
+            float parentHeightFromChildren= bottomPadding+topPadding+childrenGlobalRect.height;
+            float parentHeightFromPorts   = bottomPadding+titleHeight+portsHeight;
+            float width, height;
             float xMin, yMin;
             if(titleWidth > parentWidthFromChildren) {
                 width= titleWidth;
