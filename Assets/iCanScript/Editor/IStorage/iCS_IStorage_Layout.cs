@@ -62,46 +62,59 @@ public partial class iCS_IStorage {
         float rightPadding  = node.NodeRightPadding;
         float topPadding    = node.NodeTopPadding;
         float bottomPadding = node.NodeBottomPadding;
-        float childrenWidth = childrenGlobalRect.width;
-        float childrenHeight= childrenGlobalRect.height; 
-        float width         =  Mathf.Max(titleWidth, leftPadding + rightPadding + childrenWidth);
-        float height        = bottomPadding + Mathf.Max(titleHeight+portsHeight, topPadding+childrenHeight);
 
         // Process case without child nodes
-        Rect globalPosition= node.GlobalRect;
+        var globalPosition= node.GlobalPosition;
+        var globalSize    = node.DisplaySize;
         if(Math3D.IsZero(childrenGlobalRect.width) || Math3D.IsZero(childrenGlobalRect.height)) {
             // Apply new width and height.
-            if(Math3D.IsNotEqual(height, globalPosition.height) || Math3D.IsNotEqual(width, globalPosition.width)) {
-                var pos= node.GlobalPosition;
-                Rect newPos= new Rect(pos.x-0.5f*width, pos.y-0.5f*height, width, height);
+            float width =  Mathf.Max(titleWidth, leftPadding + rightPadding);
+            float height= bottomPadding + Mathf.Max(titleHeight+portsHeight, topPadding);
+            if(Math3D.IsNotEqual(height, globalSize.x) || Math3D.IsNotEqual(width, globalSize.y)) {
+                Rect newPos= new Rect(globalPosition.x-0.5f*width, globalPosition.y-0.5f*height, width, height);
                 SetLayoutPosition(node, newPos);
             }
         }
         // Process case with child nodes.
         else {
             // Adjust children local offset.
-            float neededChildXOffset= leftPadding;
-            float neededChildYOffset= topPadding;
-            float neededNodeGlobalX= childrenGlobalRect.x-neededChildXOffset;
-            float neededNodeGlobalY= childrenGlobalRect.y-neededChildYOffset;
-            if(Math3D.IsNotEqual(neededNodeGlobalX, globalPosition.x) ||
-               Math3D.IsNotEqual(neededNodeGlobalY, globalPosition.y)) {
-                   node.AdjustChildLocalPosition(new Vector2(globalPosition.x-neededNodeGlobalX, globalPosition.y-neededNodeGlobalY));
+            float parentWidthFromChildren= leftPadding+rightPadding+childrenGlobalRect.width;
+            float parentHeightFromChildren= topPadding+childrenGlobalRect.height;
+            float parentHeightFromPorts= titleHeight+portsHeight;
+            float width;
+            float height;
+            float xMin, yMin;
+            if(titleWidth > parentWidthFromChildren) {
+                width= titleWidth;
+                xMin= 0.5f*(childrenGlobalRect.x+childrenGlobalRect.xMax-width);
+            } else {
+                width= parentWidthFromChildren;
+                xMin= childrenGlobalRect.x-leftPadding;
+            }
+            if(parentHeightFromPorts > parentHeightFromChildren) {
+                height= parentHeightFromPorts;
+                yMin= 0.5f*(childrenGlobalRect.y+childrenGlobalRect.yMax-parentHeightFromPorts);
+            } else {
+                height= parentHeightFromChildren;
+                yMin= childrenGlobalRect.y-topPadding;
+            }
+            var newRect= new Rect(xMin, yMin, width, height);
+            var newPosition= Math3D.Middle(newRect);
+            if(Math3D.IsNotEqual(newPosition.x, globalPosition.x) ||
+               Math3D.IsNotEqual(newPosition.y, globalPosition.y)) {
+                   node.AdjustChildLocalPosition(globalPosition-newPosition);
             }
 
             // Relocate node if centering is needed 
-            Rect newPos= new Rect(neededNodeGlobalX, neededNodeGlobalY, width, height);
             if(needsToBeCentered) {
-                var currentCenter= Math3D.Middle(globalPosition);
-                var newCenter= Math3D.Middle(newPos);
-                var diff= currentCenter-newCenter; 
+                var diff= globalPosition-newPosition; 
                 if(Math3D.IsNotZero(diff)) {
-                    newPos.x+= diff.x;
-                    newPos.y+= diff.y;
+                    newRect.x+= diff.x;
+                    newRect.y+= diff.y;
                 }
             }
-            if(!IsSamePosition(globalPosition, newPos)) {
-                SetLayoutPosition(node, newPos);
+            if(!IsSamePosition(node.GlobalRect, newRect)) {
+                SetLayoutPosition(node, newRect);
             }
         }
 
