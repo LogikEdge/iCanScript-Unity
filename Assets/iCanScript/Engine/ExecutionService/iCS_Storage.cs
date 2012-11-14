@@ -9,7 +9,7 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    /*[HideInInspector]*/ public List<iCS_EngineObject>   EngineObjects = new List<iCS_EngineObject>();
+    [HideInInspector] public List<iCS_EngineObject>   EngineObjects = new List<iCS_EngineObject>();
     [HideInInspector] public List<Object>             UnityObjects  = new List<Object>();
     [HideInInspector] public int                      UndoRedoId    = 0;
 	[HideInInspector] public Vector2				  ScrollPosition= Vector2.zero;

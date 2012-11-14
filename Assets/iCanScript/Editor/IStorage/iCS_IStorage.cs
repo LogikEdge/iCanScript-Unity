@@ -154,6 +154,7 @@ public partial class iCS_IStorage {
         
         // Perform layout if one or more objects has changed.
         if(myIsDirty) {
+//Debug.Log("Layout needed");
             // Tell Unity that our storage has changed.
             EditorUtility.SetDirty(Storage);
             // Prepare for cleanup after storage change.
