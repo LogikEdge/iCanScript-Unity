@@ -10,7 +10,7 @@ public partial class iCS_IStorage {
         Vector2 toStatePortPos  = toState.GlobalPosition;
         // Create inStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-        SetInitialPosition(toStatePort, toStatePortPos);
+        toStatePort.GlobalPosition= toStatePortPos;
         SetSource(toStatePort, fromStatePort);
         toStatePort.UpdatePortEdge();        
         fromStatePort.UpdatePortEdge();        

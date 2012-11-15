@@ -13,13 +13,6 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Node Layout
     // ----------------------------------------------------------------------
-    // Moves the node without changing its size.
-    public void SetInitialPosition(iCS_EditorObject obj, Vector2 initialPosition) {
-        obj.GlobalPosition= initialPosition;
-        SetDirty(obj);
-    }
-
-    // ----------------------------------------------------------------------
     public void Layout(iCS_EditorObject obj) {
         obj.IsDirty= false;
         ExecuteIf(obj, o=> o.IsNode, o=> NodeLayout(o));
@@ -278,30 +271,30 @@ public partial class iCS_IStorage {
     // Collision Functions
     // ----------------------------------------------------------------------
     // Resolve collision on parents.
-    void ResolveCollision(iCS_EditorObject node, Vector2 _delta) {
-        ResolveCollisionOnChildren(node, _delta);
+    void ResolveCollision(iCS_EditorObject node, Vector2 delta) {
+        ResolveCollisionOnChildren(node, delta);
         if(!IsValid(node.ParentId)) return;
-        ResolveCollision(node.Parent, _delta);
+        ResolveCollision(node.Parent, delta);
     }
 
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
-    public void ResolveCollisionOnChildren(iCS_EditorObject node, Vector2 _delta) {
+    public void ResolveCollisionOnChildren(iCS_EditorObject node, Vector2 delta) {
         bool didCollide= false;
         iCS_EditorObject[] children= BuildListOfChildren(c=> c.IsVisible && c.IsNode && !c.IsFloating,node);
         for(int i= 0; i < children.Length-1; ++i) {
             for(int j= i+1; j < children.Length; ++j) {
-                didCollide |= ResolveCollisionBetweenTwoNodes(children[i], children[j], _delta);                            
+                didCollide |= ResolveCollisionBetweenTwoNodes(children[i], children[j], delta);                            
             }
         }
-        if(didCollide) ResolveCollisionOnChildren(node, _delta);
+        if(didCollide) ResolveCollisionOnChildren(node, delta);
     }
 
     // ----------------------------------------------------------------------
     // Resolves collision between two nodes. "true" is returned if a collision
     // has occured.
-    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject node, iCS_EditorObject otherNode, Vector2 _delta) {
+    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject node, iCS_EditorObject otherNode, Vector2 delta) {
         // Nothing to do if they don't collide.
         if(!DoesCollideWithGutter(node, otherNode)) return false;
 
@@ -310,8 +303,8 @@ public partial class iCS_IStorage {
 		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) return false;
 
 		// Seperate using the known movement.
-        if( !Math3D.IsZero(_delta) ) {
-    		if(Vector2.Dot(_delta, penetration) > 0) {
+        if( !Math3D.IsZero(delta) ) {
+    		if(Vector2.Dot(delta, penetration) > 0) {
     		    DeltaMoveInternal(otherNode, penetration);
     		}
     		else {

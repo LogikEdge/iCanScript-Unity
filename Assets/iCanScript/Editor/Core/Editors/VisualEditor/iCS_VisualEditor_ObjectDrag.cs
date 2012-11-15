@@ -103,8 +103,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragType= DragTypeEnum.TransitionCreation;
             iCS_EditorObject outTransition= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutStatePort);
             iCS_EditorObject inTransition= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-            IStorage.SetInitialPosition(outTransition, pos);
-            IStorage.SetInitialPosition(inTransition, pos);
+            outTransition.GlobalPosition= pos;
+            inTransition.GlobalPosition= pos;
             inTransition.SourceId= outTransition.InstanceId;
             DragFixPort= outTransition;
             DragObject= inTransition;
@@ -414,7 +414,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         DragType= DragTypeEnum.PortConnection;
         var portPos= DragOriginalPort.GlobalPosition;
-        IStorage.SetInitialPosition(DragObject, portPos);
+        DragObject.GlobalPosition= portPos;
 		DragObject.AnimatedPosition.Reset(DragOriginalPort.GlobalRect);
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
