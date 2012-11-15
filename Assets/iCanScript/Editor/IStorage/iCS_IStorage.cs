@@ -165,7 +165,7 @@ public partial class iCS_IStorage {
             ForEachRecursiveDepthLast(EditorObjects[0],
                 obj=> {
                     if(obj.IsDirty) {
-                        Debug.Log(obj.Name+" is dirty");
+//                        Debug.Log(obj.Name+" is dirty");
                         Layout(obj);
                     }
                 }
@@ -301,26 +301,23 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject Copy(iCS_EditorObject srcObj, iCS_IStorage srcStorage,
-                                 iCS_EditorObject destParent, iCS_IStorage destStorage, Vector2 initialGlobalPos) {
+                                 iCS_EditorObject destParent, Vector2 globalPos, iCS_IStorage destStorage) {
         // Create new EditorObject
-        Vector2 parentPos= IsValid(destParent) ? destParent.GlobalPosition : Vector2.zero;
-        Vector2 localPos= initialGlobalPos-parentPos;
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
-        iCS_EditorObject instance= Copy(srcObj, srcStorage, destParent, destStorage, localPos, xlat);
+        iCS_EditorObject instance= Copy(srcObj, srcStorage, destParent, destStorage, globalPos, xlat);
         ReconnectCopy(srcObj, srcStorage, destStorage, xlat);
-        SetDisplayPosition(instance, new Rect(initialGlobalPos.x, initialGlobalPos.y,0,0));
+        SetDisplayPosition(instance, new Rect(globalPos.x, globalPos.y,0,0));
         return instance;
     }
     iCS_EditorObject Copy(iCS_EditorObject srcObj, iCS_IStorage srcStorage,
-                          iCS_EditorObject destParent, iCS_IStorage destStorage, Vector2 localPos, List<Prelude.Tuple<int,int>> xlat) {
+                          iCS_EditorObject destParent, iCS_IStorage destStorage, Vector2 globalPos, List<Prelude.Tuple<int,int>> xlat) {
         // Create new EditorObject
         int id= destStorage.GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
-        var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
-		newObj.LocalPosition= localPos;
+        var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, globalPos, destStorage);
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
-            child=> Copy(child, srcStorage, newObj, destStorage, child.LocalPosition, xlat)
+            child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalPosition, xlat)
         );
 		if(newObj.IsInDataPort) {
 			LoadInitialPortValueFromArchive(this[id]);
@@ -360,8 +357,7 @@ public partial class iCS_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, this);
-		this[0].LocalRect= VisualEditorCenter();
+        iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, VisualEditorCenter(), this);
 		this[0].IsNameEditable= false;
 		SetDirty(this[0]);
         return this[0];
@@ -372,9 +368,7 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
-        // Calcute the desired screen position of the new object.
-        PositionNewNodeInParent(this[id], globalPos);
+        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, globalPos, this);
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
@@ -387,9 +381,7 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
-        // Calcute the desired screen position of the new object.
-        PositionNewNodeInParent(this[id], globalPos);
+        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, globalPos, this);
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
 		SetDirty(this[id]);
@@ -407,9 +399,7 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
-        // Calcute the desired screen position of the new object.
-        PositionNewNodeInParent(this[id], globalPos);
+        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, globalPos, this);
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         // Set first state as the default entry state.
@@ -444,10 +434,8 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, globalPos, this);
         this[id].IconGUID= iconGUID;
-        // Calcute the desired screen position of the new object.
-        PositionNewNodeInParent(this[id], globalPos, iconGUID);
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -483,10 +471,8 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, globalPos, this);
         this[id].IconGUID= iconGUID;
-        // Calcute the desired screen position of the new object.
-		PositionNewNodeInParent(this[id], globalPos, iconGUID);
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -522,44 +508,18 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
-        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
-        // Reajust data port position 
-        iCS_EditorObject parent= port.Parent;
-		if(port.IsDataPort && parent.IsDataPort) {
-			port.LocalRect= new Rect(0,0,0,0);
-		} else if(port.IsDataPort && !port.IsEnablePort) {
-            if(port.IsInputPort) {
-                int nbOfPorts= parent.NbOfLeftPorts;
-                port.LocalRect= new Rect(0, parent.DisplaySize.y/(nbOfPorts+1), 0, 0);
-            } else {
-                int nbOfPorts= parent.NbOfRightPorts;
-                port.LocalRect= new Rect(parent.DisplaySize.x, parent.DisplaySize.y/(nbOfPorts+1), 0, 0);                
-            }
-        }
+        var parent= EditorObjects[parentId];
+        var globalPos= parent.GlobalPosition;
+        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, globalPos, this);
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
-        var parentPos= port.Parent.GlobalPosition;
-        SetDisplayPosition(this[id], new Rect(parentPos.x, parentPos.y,0,0));
+        SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
 		SetDirty(this[id]);
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
-    void PositionNewNodeInParent(iCS_EditorObject editorObject, Vector2 globalPos, string iconGUID= null) {
-        // Determine node size.
-        Texture2D icon= iCS_TextureCache.GetTextureFromGUID(iconGUID);
-        var size= icon != null ? new Vector2(icon.width, icon.height) : iCS_Graphics.GetMaximizeIconSize(null);            
-        // Update global node area.
-        editorObject.GlobalRect= new Rect(globalPos.x-0.5f*size.x, globalPos.y-0.5f*size.y, size.x, size.y);
-    }
-    // ----------------------------------------------------------------------
-    Rect VisualEditorCenter() {
-        Rect initialPos= new Rect(0,0,16,16);
+    Vector2 VisualEditorCenter() {
         iCS_VisualEditor editor= iCS_EditorMgr.FindVisualEditor();
-        if(editor != null) {
-            Vector2 center= editor.ViewportToGraph(editor.ViewportCenter);
-            initialPos.x= center.x-8f;
-            initialPos.y= center.y-8f;
-        }
-        return initialPos;        
+        return editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
     }
     
     // ======================================================================

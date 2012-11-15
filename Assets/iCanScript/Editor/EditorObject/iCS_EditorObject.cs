@@ -112,10 +112,13 @@ public partial class iCS_EditorObject {
 	// Creates an instance of an editor/engine object pair.
 	public static iCS_EditorObject CreateInstance(int id, string name, Type type,
 												  int parentId, iCS_ObjectTypeEnum objectType,
+												  Vector2 globalPosition,
                             					  iCS_IStorage iStorage) {
 		if(id < 0) return null;
+        // Compute local position.
+        var localPosition= parentId == -1 ? globalPosition : globalPosition-iStorage.EditorObjects[parentId].GlobalPosition;
 		// Create engine object.
-		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType);
+		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType, localPosition);
 		AddEngineObject(id, engineObject, iStorage);
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
@@ -125,11 +128,13 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Duplicate the given editor object with a new id and parent.
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
-                                         iCS_IStorage iStorage) {
+                                         Vector2 globalPosition, iCS_IStorage iStorage) {
 		if(id < 0) return null;
+        // Compute local position.
+        var localPosition= parent == null ? globalPosition : globalPosition-parent.GlobalPosition;
 		// Create engine object.
         var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject,
-												 (parent == null ? null : parent.EngineObject));
+												 (parent == null ? null : parent.EngineObject), localPosition);
 		AddEngineObject(id, engineObject, iStorage);
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
