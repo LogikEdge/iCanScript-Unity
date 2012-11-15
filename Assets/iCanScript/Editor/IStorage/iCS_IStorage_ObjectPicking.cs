@@ -50,4 +50,28 @@ public partial class iCS_IStorage {
     }
     bool GetPortAtDefaultFilter(iCS_EditorObject port) { return true; }
 
+    // ----------------------------------------------------------------------
+    // Returns the node at the given position
+    public iCS_EditorObject GetNodeWithEdgeAt(Vector2 pick, iCS_EditorObject exclude= null) {
+        iCS_EditorObject foundNode= null;
+        FilterWith(
+            n=> {
+                bool excludeFlag= false;
+                if(exclude != null) {
+                    excludeFlag= n == exclude || IsChildOf(n, exclude);
+                }
+                if(excludeFlag || !n.IsNode || !n.IsVisible) return false;
+                var portRadius= iCS_Config.PortRadius;
+                var portSize= 2f*portRadius;
+                var globalRect= n.GlobalRect;
+                var outterEdge= new Rect(globalRect.x-portRadius, globalRect.y-portRadius, globalRect.width+portSize, globalRect.height+portSize);
+                var innerEdge = new Rect(globalRect.x+portRadius, globalRect.y+portRadius, globalRect.width-portSize, globalRect.height-portSize);
+                return outterEdge.Contains(pick) && !innerEdge.Contains(pick) &&
+                       (foundNode == null || n.DisplaySize.x < foundNode.DisplaySize.x);
+            },
+            n=> foundNode= n
+        );
+        return foundNode;
+    }
+
 }

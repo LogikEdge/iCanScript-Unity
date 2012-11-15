@@ -301,9 +301,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             // Verify for disconnection.
                             if(!isNearParent) {
                                 // Let's determine if we want to create a module port.
-                                iCS_EditorObject newPortParent= GetNodeAtMousePosition();
-                                if(newPortParent == null) break;
-                                if(newPortParent.IsModule) {
+                                iCS_EditorObject newPortParent= GetNodeWithEdgeAtMousePosition();
+                                if(newPortParent != null && newPortParent.IsModule) {
                                     iCS_EditorObject portParent= DragFixPort.Parent;
                                     Rect modulePos= newPortParent.GlobalRect;
                                     float portSize2= 2f*iCS_Config.PortSize;
@@ -341,8 +340,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                             }
                                         }
                                     }
+                                }
+                                // Autocreate instance node if inside a composite module.
+                                newPortParent= GetNodeAtMousePosition();
+                                if(newPortParent != null && newPortParent.IsModule) {
                                     // Determine if we need to create an instance node.
-                                    AutocreateInstanceNode(dragPortPos, newPortParent);                                    
+                                    AutocreateInstanceNode(dragPortPos, newPortParent);
+                                    break;                                  
                                 }
                                 if(DragFixPort.IsOutputPort && (newPortParent.IsState || newPortParent.IsStateChart)) {
 									if(IStorage.IsNearNodeEdge(newPortParent, Math3D.ToVector2(dragPortPos), iCS_EdgeEnum.Right)) {

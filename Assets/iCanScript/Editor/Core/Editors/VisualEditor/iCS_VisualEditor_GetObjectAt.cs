@@ -16,6 +16,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 
 	// ----------------------------------------------------------------------
+    // Returns the node at the given mouse position.
+    iCS_EditorObject GetNodeWithEdgeAtMousePosition() {
+        Vector2 graphPosition= ViewportToGraph(ViewportMousePosition);
+        return IStorage.GetNodeWithEdgeAt(graphPosition);
+    }
+
+	// ----------------------------------------------------------------------
     // Returns the port at the given mouse position.
     iCS_EditorObject GetPortAtMousePosition() {
         Vector2 graphPosition= ViewportToGraph(ViewportMousePosition);
