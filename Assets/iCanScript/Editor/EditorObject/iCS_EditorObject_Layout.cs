@@ -25,14 +25,14 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 LocalPosition {
 		get {
-			return IsVisible ? EngineObject.LocalPosition : Vector2.zero;
+            if(!IsVisible) return Vector2.zero;
+            return IsPort ? myPortLocalPosition : EngineObject.LocalPosition;
 		}
 		set {
             // Avoid propagating change if we did not change position
-            var engineObject= EngineObject;
-            var previousPos= engineObject.LocalPosition;
-            if(Math3D.IsEqual(previousPos, value)) return;
+            if(Math3D.IsEqual(myPortLocalPosition, value)) return;
             // Set new local position and update any position dependent values.
+            myPortLocalPosition= value;
 			EngineObject.LocalPosition= value;
             IsDirty= true;
 		}

@@ -145,5 +145,43 @@ public partial class iCS_EditorObject {
             return iCS_Config.PortSize + (nbOfPorts-1)*iCS_Config.MinimumPortSeparation;                                            
         }
     }
+    // ----------------------------------------------------------------------
+    public int NbOfVerticalPortSlots {
+        get {
+            float height= DisplaySize.y-NodeTitleHeight-NodeBottomPadding;
+            int nbSlots= 0;
+            if(height > iCS_Config.PortSize) {
+                nbSlots= 1;
+                height-= iCS_Config.PortSize;
+            }
+            nbSlots+= (int)(height/iCS_Config.MinimumPortSeparation);
+            return nbSlots;
+        }
+    }
+    // ----------------------------------------------------------------------
+    public int NbOfHorizontalPortSlots {
+        get {
+            float width= DisplaySize.x-2f*iCS_Config.PaddingSize;
+            int nbSlots= 0;
+            if(width > iCS_Config.PortSize) {
+                nbSlots= 1;
+                width-= iCS_Config.PortSize;
+            }
+            nbSlots+= (int)(width/iCS_Config.MinimumPortSeparation);
+            return nbSlots;
+        }
+    }
+    // ----------------------------------------------------------------------
+    // This is a port property
+    public int PortSlotFromPosition {
+        get {
+            var parentRect= Parent.GlobalRect;
+            var pos= GlobalPosition;
+            float deltaY= pos.y-parentRect.y-NodeTitleHeight-iCS_Config.PortRadius;
+//            if(deltaY <= iCS_Config.PortSize+0.5f*iCS_Config.MinimumPortSeparation) return 0;
+//            deltaY-= iCS_Config.PortSize+0.5f*iCS_Config.MinimumPortSeparation;
+            return (int)(deltaY/iCS_Config.MinimumPortSeparation);
+        }
+    }
 }
 

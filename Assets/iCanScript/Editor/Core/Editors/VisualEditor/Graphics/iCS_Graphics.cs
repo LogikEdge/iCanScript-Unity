@@ -350,6 +350,7 @@ public partial class iCS_Graphics {
     //  NODE
     // ----------------------------------------------------------------------
     public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
+Debug.Log("Node: "+node.Name+" has "+node.NbOfVerticalPortSlots+" port slots");
         // Don't draw minimized node.
         if(IsInvisible(node, iStorage) || IsIconized(node, iStorage)) return;
         
@@ -503,6 +504,7 @@ public partial class iCS_Graphics {
     public void DrawPort(iCS_EditorObject port, iCS_IStorage iStorage) {
         // Don't show port if too small
         if(!ShouldShowPort()) return;
+Debug.Log("Port "+port.Name+" of "+port.Parent.Name+" slot is "+port.PortSlotFromPosition);
         
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
