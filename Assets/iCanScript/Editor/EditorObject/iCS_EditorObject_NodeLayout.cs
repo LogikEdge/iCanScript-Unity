@@ -101,12 +101,13 @@ public partial class iCS_EditorObject {
     public float NodeLeftPadding {
         get {
             if(IsIconized) return 0;
+            float paddingBy2= 0.5f*iCS_Config.PaddingSize;
             float leftPadding= iCS_Config.PaddingSize;
             ForEachLeftChildPort(
                 port=> {
                     if(!port.IsStatePort && port.IsPortOnParentEdge) {
                         Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
-                        float nameSize= labelSize.x+iCS_Config.PortSize;
+                        float nameSize= paddingBy2+labelSize.x+iCS_Config.PortSize;
                         if(leftPadding < nameSize) leftPadding= nameSize;
                     }
                 }
@@ -118,12 +119,13 @@ public partial class iCS_EditorObject {
     public float NodeRightPadding {
         get {
             if(IsIconized) return 0;
+            float paddingBy2= 0.5f*iCS_Config.PaddingSize;
             float rightPadding= iCS_Config.PaddingSize;
             ForEachRightChildPort(
                 port=> {
                     if(!port.IsStatePort && port.IsPortOnParentEdge) {
                         Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
-                        float nameSize= labelSize.x+iCS_Config.PortSize;
+                        float nameSize= paddingBy2+labelSize.x+iCS_Config.PortSize;
                         if(rightPadding < nameSize) rightPadding= nameSize;
                     }
                 }

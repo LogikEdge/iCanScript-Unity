@@ -120,7 +120,7 @@ public partial class iCS_Graphics {
         if(!port.IsDataPort || port.IsInMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
-        if(port.IsInputPort && port.SourceId != -1) {
+        if((port.IsInputPort || port.IsModulePort) && port.SourceId != -1) {
             var sourcePort= port.Source;
             var sourceCenter= sourcePort.GlobalPosition;
             var portCenter= port.GlobalPosition;
