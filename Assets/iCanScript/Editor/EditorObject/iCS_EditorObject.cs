@@ -12,6 +12,7 @@ public partial class iCS_EditorObject {
     bool            	myIsFloating= false;
     bool            	myIsDirty   = false;
     public List<int>	myChildren  = new List<int>();
+    Vector2             myDisplaySize= Vector2.zero;
  
     // ======================================================================
     // Conversion Utilities
@@ -133,6 +134,7 @@ public partial class iCS_EditorObject {
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
+        editorObject.DisplaySize= toClone.DisplaySize;
 		return editorObject;
     }
 

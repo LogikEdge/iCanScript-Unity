@@ -13,16 +13,13 @@ public partial class iCS_EditorObject {
     public Vector2 DisplaySize {
 		get {
 			if(!IsVisible) return Vector2.zero;
-			return EngineObject.DisplaySize;
+            return myDisplaySize;
 		}
 		set {
             // Avoid propagating change if we did not change size
-            var engineObject= EngineObject;
-            var previousSize= engineObject.DisplaySize;
-            if(Math3D.IsEqual(previousSize, value)) return;
-            // Set new size and update any size dependent values.
-			engineObject.DisplaySize= value;
-			IsDirty= true;
+            if(Math3D.IsEqual(myDisplaySize, value)) return;
+            myDisplaySize= value;
+            IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------

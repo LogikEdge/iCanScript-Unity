@@ -86,13 +86,6 @@ public class iCS_Storage : MonoBehaviour {
         return obj.LocalPosition + GetGlobalPosition(EngineObjects[obj.ParentId]);
     }
     // ----------------------------------------------------------------------
-    // Returns the global rectangle of the object.
-    public Rect GetGlobalRect(iCS_EngineObject obj) {
-        var size= obj.DisplaySize;
-        var pos= GetGlobalPosition(obj);
-        return new Rect(pos.x-0.5f*size.x, pos.y-0.5f*size.y, size.x, size.y);
-    }
-    // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
     public iCS_EngineObject GetDataConnectionSource(iCS_EngineObject port) {
         if(port == null || !port.IsDataPort) return null;

@@ -6,14 +6,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns true if the given point is inside the node coordinates.
     public bool IsInside(iCS_EditorObject node, Vector2 point) {
-        // Extend the node range to include the ports.
-        float portSize= iCS_Config.PortSize;
-        Rect nodePos= node.GlobalRect;
-        nodePos.x-= portSize;
-        nodePos.y-= portSize;
-        nodePos.width+= 2f*portSize;
-        nodePos.height+= 2f*portSize;
-        return nodePos.Contains(point);
+        return node.GlobalRect.Contains(point);
     }
 
     // ----------------------------------------------------------------------
