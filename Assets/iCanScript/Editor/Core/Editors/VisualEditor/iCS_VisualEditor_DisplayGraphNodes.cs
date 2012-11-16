@@ -88,20 +88,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
             }
         );
-//        IStorage.ForEachChildNode(rootNode,
-//            node=> {
-//                if(!node.IsIconized) {
-//                    if(node.IsFloating && floatingRootNode == null) {
-//                        floatingRootNode= node;
-//                    } else {
-//                        myGraphics.DrawNormalNode(node, IStorage);
-//                        if(node.IsMaximized) {
-//                            floatingRootNode= DrawNonFloatingNormalNode(node, floatingRootNode);
-//                        }                                            
-//                    }
-//                }
-//            }
-//        );
         return floatingRootNode;
     }
 	// ----------------------------------------------------------------------
@@ -112,18 +98,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(child.IsPort) myGraphics.DrawPort(child, IStorage);
             }
         );
-//        IStorage.ForEachChildNode(rootNode,
-//            node=> {
-//                if(!node.IsIconized) {
-//                    if(node.IsFloating) {
-//                        myGraphics.DrawNormalNode(node, IStorage);
-//                        if(node.IsMaximized) {
-//                            DrawNonFloatingNormalNode(node);
-//                        }
-//                    }
-//                }
-//            }
-//        );
     }
 
     // ======================================================================
@@ -133,16 +107,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.ForEachRecursiveDepthLast(rootNode,
             child=> { if(child.IsPort) myGraphics.DrawConnection(child, IStorage); }
         );
-//        IStorage.ForEachChild(rootNode,
-//            child=> {
-//                if(child.IsPort && IStorage.GetSource(child) != null) {
-//                    myGraphics.DrawConnection(child, IStorage);
-//                }
-//                if(child.IsNode && IStorage.IsVisible(child)) {
-//                    DisplayConnections(child);
-//                }                    
-//            }
-//        );
     }
 
     // ======================================================================
