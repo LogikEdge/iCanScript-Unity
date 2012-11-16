@@ -149,12 +149,14 @@ public partial class iCS_EditorObject {
     public int NbOfVerticalPortSlots {
         get {
             float height= DisplaySize.y-NodeTitleHeight-NodeBottomPadding;
+            float h1= height;
+            float h2= height-iCS_Config.PortRadius;
             int nbSlots= 0;
-            if(height > iCS_Config.PortSize) {
+            if(h1 > iCS_Config.PortSize) {
                 nbSlots= 1;
-                height-= iCS_Config.PortSize;
+                h1-= iCS_Config.PortSize;
             }
-            nbSlots+= (int)(height/iCS_Config.MinimumPortSeparation);
+            nbSlots+= (int)(h1/iCS_Config.MinimumPortSeparation)+(int)(h2/iCS_Config.MinimumPortSeparation);
             return nbSlots;
         }
     }
@@ -162,12 +164,14 @@ public partial class iCS_EditorObject {
     public int NbOfHorizontalPortSlots {
         get {
             float width= DisplaySize.x-2f*iCS_Config.PaddingSize;
+            float w1= width;
+            float w2= width-iCS_Config.PortRadius;
             int nbSlots= 0;
-            if(width > iCS_Config.PortSize) {
+            if(w1 > iCS_Config.PortSize) {
                 nbSlots= 1;
-                width-= iCS_Config.PortSize;
+                w1-= iCS_Config.PortSize;
             }
-            nbSlots+= (int)(width/iCS_Config.MinimumPortSeparation);
+            nbSlots+= (int)(w1/iCS_Config.MinimumPortSeparation)+(int)(w2/iCS_Config.MinimumPortSeparation);
             return nbSlots;
         }
     }
@@ -175,12 +179,13 @@ public partial class iCS_EditorObject {
     // This is a port property
     public int PortSlotFromPosition {
         get {
+            float step= 0.5f*iCS_Config.MinimumPortSeparation;
+            float topOffset= Parent.NodeTitleHeight;
             var parentRect= Parent.GlobalRect;
             var pos= GlobalPosition;
-            float deltaY= pos.y-parentRect.y-NodeTitleHeight-iCS_Config.PortRadius;
-//            if(deltaY <= iCS_Config.PortSize+0.5f*iCS_Config.MinimumPortSeparation) return 0;
-//            deltaY-= iCS_Config.PortSize+0.5f*iCS_Config.MinimumPortSeparation;
-            return (int)(deltaY/iCS_Config.MinimumPortSeparation);
+            float deltaY= pos.y-parentRect.y-topOffset;
+Debug.Log("Port "+Name+" deltaY= "+deltaY+" step= "+step);
+            return (int)(deltaY/step);
         }
     }
 }

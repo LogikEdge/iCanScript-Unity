@@ -522,7 +522,7 @@ Debug.Log("Port "+port.Name+" of "+port.Parent.Name+" slot is "+port.PortSlotFro
 
 		// Compute port radius (radius is increased if port is selected).
 		if(isSelectedPort) {
-			portRadius= 1.67f*iCS_Config.PortRadius;			
+			portRadius= iCS_Config.PortRadius*iCS_Config.SelectedPortFactor;			
 		}
 
         // Get port type information.
