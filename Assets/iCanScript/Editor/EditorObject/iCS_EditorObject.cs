@@ -68,6 +68,10 @@ public partial class iCS_EditorObject {
 		get { return IsParentValid ? myIStorage[ParentId] : null; }
 		set { ParentId= (value != null ? value.InstanceId : -1); }
 	}
+    public iCS_DisplayOptionEnum DisplayOption {
+        get { return EngineObject.DisplayOption; }
+        set { EngineObject.DisplayOption= value; }
+    }
     public Type RuntimeType {
 		get { return EngineObject.RuntimeType; }
 	}
@@ -102,7 +106,6 @@ public partial class iCS_EditorObject {
 		    myIsDirty= value;
 		    if(value) {
 		        myIStorage.IsDirty= true;
-//                Debug.Log(Name+" is dirty");
 		    }
 	    }
 	}

@@ -42,11 +42,7 @@ public partial class iCS_IStorage {
         if(!eObj.IsNode) return;
         eObj.Unfold();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Unfold(); });
-        NodeLayout(eObj,true);
-        if(IsValid(eObj.ParentId)) {
-            iCS_EditorObject parent= eObj.Parent;
-            SetDirty(parent);
-        }
+        eObj.IsDirty= true;
     }
     public void Unfold(int id) { if(IsValid(id)) Unfold(EditorObjects[id]); }
 

@@ -19,22 +19,45 @@ public partial class iCS_EditorObject {
             // Avoid propagating change if we did not change size
             if(Math3D.IsEqual(myDisplaySize, value)) return;
             myDisplaySize= value;
-            IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
     public Vector2 LocalPosition {
 		get {
             if(!IsVisible) return Vector2.zero;
-            return IsPort ? myPortLocalPosition : EngineObject.LocalPosition;
+            if(IsPort) {
+                if(IsFloating) return myPortLocalPosition;
+                var localPosition= EngineObject.LocalPosition;
+                if(IsOnHorizontalEdge) {
+                    return new Vector2(PortHorizontalLocalPositionFromRatio(localPosition.x), localPosition.y);
+                }                    
+                return new Vector2(localPosition.x, PortVerticalLocalPositionFromRatio(localPosition.y));
+            }
+            // This is a node.
+            return EngineObject.LocalPosition;
 		}
 		set {
-            // Avoid propagating change if we did not change position
-            if(Math3D.IsEqual(myPortLocalPosition, value)) return;
-            // Set new local position and update any position dependent values.
-            myPortLocalPosition= value;
-			EngineObject.LocalPosition= value;
-            IsDirty= true;
+            if(IsPort) {
+                // Avoid propagating change if we did not change position
+                if(Math3D.IsEqual(myPortLocalPosition, value)) return;
+                // Set new local position and update any position dependent values.
+                myPortLocalPosition= value;
+                if(IsFloating) return;
+                if(IsOnHorizontalEdge) {
+                    var ratio= PortHorizontalRatioFromLocalPosition(value);
+                    EngineObject.LocalPosition= new Vector2(ratio, value.y);
+                } else {
+                    var ratio= PortVerticalRatioFromLocalPosition(value);
+                    EngineObject.LocalPosition= new Vector2(value.x, ratio);                    
+                }
+            } else {
+                var engineObject= EngineObject;
+                var localPosition= engineObject.LocalPosition;
+                // Avoid propagating change if we did not change position
+                if(Math3D.IsEqual(localPosition, value)) return;
+                // Set new local position and update any position dependent values.
+    			engineObject.LocalPosition= value;                
+            }
 		}
 	}
 

@@ -350,7 +350,6 @@ public partial class iCS_Graphics {
     //  NODE
     // ----------------------------------------------------------------------
     public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
-Debug.Log("Node: "+node.Name+" has "+node.NbOfVerticalPortSlots+" port slots");
         // Don't draw minimized node.
         if(IsInvisible(node, iStorage) || IsIconized(node, iStorage)) return;
         
@@ -504,11 +503,11 @@ Debug.Log("Node: "+node.Name+" has "+node.NbOfVerticalPortSlots+" port slots");
     public void DrawPort(iCS_EditorObject port, iCS_IStorage iStorage) {
         // Don't show port if too small
         if(!ShouldShowPort()) return;
-Debug.Log("Port "+port.Name+" of "+port.Parent.Name+" slot is "+port.PortSlotFromPosition);
+//var ratio= port.PortVerticalRatioFromLocalPosition(port.LocalPosition);
+//Debug.Log("Port "+port.Name+" of "+port.Parent.Name+" ratio is "+ratio+" local position= "+port.LocalPosition+" pos from ratio= "+port.PortVerticalLocalPositionFromRatio(ratio));
         
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
-//        if(IsInvisible(port, iStorage) || IsIconized(port, iStorage)) return;
         if(IsInvisible(port, iStorage)) return;
         
         // Don't display if outside clipping area.

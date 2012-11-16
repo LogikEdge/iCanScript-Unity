@@ -85,7 +85,7 @@ public partial class iCS_IStorage {
     public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
     public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
     // ----------------------------------------------------------------------
-    public bool IsDirty            { get { DetectUndoRedo(); return myIsDirty; } set { myIsDirty= value; }}
+    public bool IsDirty            { get { DetectUndoRedo(); return myIsDirty; } set { myIsDirty= value; if(value) ++ModificationId; }}
 //	public int  ModificationId     { get { return UndoRedoId; }}
 	public bool IsAnimationPlaying { get { return myAnimationTimeRatio.IsActive; }}
     // ----------------------------------------------------------------------
@@ -116,11 +116,9 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void SetDirty(iCS_EditorObject obj) {
-        myIsDirty= true;
         obj.IsDirty= true;        
         var parent= obj.Parent;
         if(parent != null) { parent.IsDirty= true; }
-        ++ModificationId;
     }
     // ----------------------------------------------------------------------
     public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {
@@ -165,7 +163,7 @@ public partial class iCS_IStorage {
             ForEachRecursiveDepthLast(EditorObjects[0],
                 obj=> {
                     if(obj.IsDirty) {
-//                        Debug.Log(obj.Name+" is dirty");
+//                        Debug.Log(obj.Name+" is dirty.  Display option: "+obj.DisplayOption);
                         Layout(obj);
                     }
                 }

@@ -146,47 +146,37 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public int NbOfVerticalPortSlots {
-        get {
-            float height= DisplaySize.y-NodeTitleHeight-NodeBottomPadding;
-            float h1= height;
-            float h2= height-iCS_Config.PortRadius;
-            int nbSlots= 0;
-            if(h1 > iCS_Config.PortSize) {
-                nbSlots= 1;
-                h1-= iCS_Config.PortSize;
-            }
-            nbSlots+= (int)(h1/iCS_Config.MinimumPortSeparation)+(int)(h2/iCS_Config.MinimumPortSeparation);
-            return nbSlots;
-        }
-    }
-    // ----------------------------------------------------------------------
-    public int NbOfHorizontalPortSlots {
-        get {
-            float width= DisplaySize.x-2f*iCS_Config.PaddingSize;
-            float w1= width;
-            float w2= width-iCS_Config.PortRadius;
-            int nbSlots= 0;
-            if(w1 > iCS_Config.PortSize) {
-                nbSlots= 1;
-                w1-= iCS_Config.PortSize;
-            }
-            nbSlots+= (int)(w1/iCS_Config.MinimumPortSeparation)+(int)(w2/iCS_Config.MinimumPortSeparation);
-            return nbSlots;
-        }
+    // This is a port property
+    public float PortVerticalRatioFromLocalPosition(Vector2 localPosition) {
+        var parent= Parent;
+        var parentSize= parent.DisplaySize;
+        var titleHeight= parent.NodeTitleHeight;
+        var availableHeight= parentSize.y-titleHeight;
+        float deltaY= localPosition.y+0.5f*parentSize.y-titleHeight;
+        return deltaY/availableHeight;
     }
     // ----------------------------------------------------------------------
     // This is a port property
-    public int PortSlotFromPosition {
-        get {
-            float step= 0.5f*iCS_Config.MinimumPortSeparation;
-            float topOffset= Parent.NodeTitleHeight;
-            var parentRect= Parent.GlobalRect;
-            var pos= GlobalPosition;
-            float deltaY= pos.y-parentRect.y-topOffset;
-Debug.Log("Port "+Name+" deltaY= "+deltaY+" step= "+step);
-            return (int)(deltaY/step);
-        }
+    public float PortHorizontalRatioFromLocalPosition(Vector2 localPosition) {
+        var parentSize= Parent.DisplaySize;
+        if(Math3D.IsZero(parentSize.x)) return 0.5f;
+        float deltaX= localPosition.x+0.5f*parentSize.x;
+        return deltaX/parentSize.x;
+    }
+    // ----------------------------------------------------------------------
+    // This is a port property
+    public float PortVerticalLocalPositionFromRatio(float ratio) {
+        var parent= Parent;
+        var parentSize= parent.DisplaySize;
+        var titleHeight= parent.NodeTitleHeight;
+        var availableHeight= parentSize.y-titleHeight;
+        return titleHeight+availableHeight*ratio-0.5f*parentSize.y;
+    }
+    // ----------------------------------------------------------------------
+    // This is a port property
+    public float PortHorizontalLocalPositionFromRatio(float ratio) {
+        var parentWidth= Parent.DisplaySize.x;
+        return parentWidth*ratio-0.5f*parentWidth;
     }
 }
 
