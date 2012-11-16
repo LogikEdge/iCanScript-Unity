@@ -185,7 +185,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 iCS_EditorObject closestPort= IStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
                     Vector2 closestPortPos= closestPort.GlobalPosition;
-                    if(Vector2.Distance(closestPortPos, mousePosInGraph) < 4f*iCS_Config.PortRadius) {
+                    if(Vector2.Distance(closestPortPos, mousePosInGraph) < iCS_Config.PortSize) {
                         DragObject.GlobalPosition= closestPortPos;
                     }                    
                 }

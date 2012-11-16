@@ -514,7 +514,7 @@ Debug.Log("Port "+port.Name+" of "+port.Parent.Name+" slot is "+port.PortSlotFro
         // Don't display if outside clipping area.
 		Vector2 portCenter= GetPortCenter(port, iStorage);
 		float portRadius= iCS_Config.PortRadius;
-        Rect displayArea= new Rect(portCenter.x-200f, portCenter.y-4f*portRadius, 400f, 8f*portRadius);
+        Rect displayArea= new Rect(portCenter.x-200f, portCenter.y-2f*portRadius, 400f, 4f*portRadius);
         if(!IsVisible(displayArea)) return;
         
         // Determine if port is selected.
@@ -537,7 +537,7 @@ Debug.Log("Port "+port.Name+" of "+port.Parent.Name+" slot is "+port.PortSlotFro
 		DrawPortIcon(port, portCenter, isSelectedPort, portColor, nodeColor, portRadius, iStorage);
 
         // Configure move cursor for port.
-        Rect portPos= new Rect(portCenter.x-portRadius*1.5f, portCenter.y-portRadius*1.5f, portRadius*3f, portRadius*3f);
+        Rect portPos= new Rect(portCenter.x-portRadius, portCenter.y-portRadius, 2f*portRadius, 2f*portRadius);
         if(portPos.Contains(MousePosition)) {
             if(!port.IsTransitionPort) {
                 EditorGUIUtility_AddCursorRect (portPos, MouseCursor.Link);            

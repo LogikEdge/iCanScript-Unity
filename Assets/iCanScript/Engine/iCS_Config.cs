@@ -49,7 +49,7 @@ public static class iCS_Config {
     public static float ScrollBarWidth { get { return ButtonHeight; }}
 
     // ----------------------------------------------------------------------
-    public const  float PortRadius        = 3.0f;
+    public const  float PortRadius        = 5.55f;
     public const  float PortSize          = 2.0f * PortRadius;
     public const  float SelectedPortFactor= 1.67f;
     public static float MinimumPortSeparation { get { return GetPortLabelHeight("A"); }}

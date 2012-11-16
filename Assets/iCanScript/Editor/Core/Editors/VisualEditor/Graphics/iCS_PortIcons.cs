@@ -30,9 +30,9 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	static void BuildValuePortTemplates(float scale) {
-        float len= scale*iCS_Config.PortRadius*3.7f;
+        float len= scale*iCS_Config.PortSize;
 		BuildValuePortTemplate(len, ref myValuePortTemplate);
-		BuildValuePortTemplate(1.67f*len, ref mySelectedValuePortTemplate);
+		BuildValuePortTemplate(iCS_Config.SelectedPortFactor*len, ref mySelectedValuePortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildValuePortTemplate(float len, ref Texture2D template) {
@@ -61,10 +61,10 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	static void BuildDataPortTemplates(float scale) {
-        float radius= scale*iCS_Config.PortRadius*1.85f;
+        float radius= scale*iCS_Config.PortRadius;
         float ringWidth= 2f*(scale > 1f ? 1f+0.5f*(scale-1f) : 1f);
 		BuildDataPortTemplate(radius, ref myDataPortTemplate, ringWidth);
-		BuildDataPortTemplate(1.67f*radius, ref mySelectedDataPortTemplate, ringWidth);
+		BuildDataPortTemplate(iCS_Config.SelectedPortFactor*radius, ref mySelectedDataPortTemplate, ringWidth);
 	}
 	// ----------------------------------------------------------------------
 	static void BuildDataPortTemplate(float radius, ref Texture2D template, float ringWidth= 2f) {
