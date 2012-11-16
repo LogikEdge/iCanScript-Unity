@@ -36,9 +36,6 @@ public partial class iCS_IStorage {
             return;
         }
 
-        // Refresh children that have not yet performed a layout.
-        ForEachChild(node, c=> { if(c.LocalRect.x == 0 && c.LocalRect.y == 0) SetDirty(c); });
-        
         // Resolve collision on children.
         ResolveCollisionOnChildren(node, Vector2.zero);
 
@@ -63,7 +60,7 @@ public partial class iCS_IStorage {
             // Apply new width and height.
             float width =  Mathf.Max(titleWidth, leftPadding + rightPadding);
             float height= bottomPadding + Mathf.Max(titleHeight+portsHeight, topPadding);
-            if(Math3D.IsNotEqual(height, globalSize.x) || Math3D.IsNotEqual(width, globalSize.y)) {
+            if(Math3D.IsNotEqual(width, globalSize.x) || Math3D.IsNotEqual(height, globalSize.y)) {
                 Rect newPos= new Rect(globalPosition.x-0.5f*width, globalPosition.y-0.5f*height, width, height);
                 SetLayoutPosition(node, newPos);
             }
