@@ -80,13 +80,22 @@ public partial class iCS_IStorage {
     public bool IsLibrary           { get { return IsValid(EditorObjects[0]) && !EditorObjects[0].IsBehaviour; }}
     // ----------------------------------------------------------------------
     public bool IsIdValid(int id)                    { return id >= 0 && id < EditorObjects.Count; }
-	public bool IsValid(int id)						 { return IsIdValid(id) && EditorObjects[id] != null && EditorObjects[id].InstanceId == id; }
+	public bool IsValid(int id)						 { return IsIdValid(id) && IsValid(EditorObjects[id]); }
     public bool IsValid(iCS_EditorObject obj)        { return obj != null && obj.InstanceId != -1; }
     public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
     public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
     // ----------------------------------------------------------------------
-    public bool IsDirty            { get { DetectUndoRedo(); return myIsDirty; } set { myIsDirty= value; if(value) ++ModificationId; }}
-//	public int  ModificationId     { get { return UndoRedoId; }}
+    public bool IsDirty {
+        get {
+            DetectUndoRedo();
+            return myIsDirty;
+        }
+        set {
+            myIsDirty= value;
+            if(value) ++ModificationId;
+        }
+    }
+    // ----------------------------------------------------------------------
 	public bool IsAnimationPlaying { get { return myAnimationTimeRatio.IsActive; }}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? eObj.Parent : null); }
