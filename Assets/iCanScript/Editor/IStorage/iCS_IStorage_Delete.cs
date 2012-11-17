@@ -58,15 +58,12 @@ public partial class iCS_IStorage {
         if(toDestroy.IsModulePort || toDestroy.IsInMuxPort) 	 RemoveDynamicPort(toDestroy);
         // Remember entry state.
         bool isEntryState= toDestroy.IsEntryState;
-        // Set the parent dirty to force a relayout.
-        if(IsValid(toDestroy.ParentId)) parent.IsDirty= true;
 		// Destroy instance.
 		toDestroy.DestroyInstance();
         // Reconfigure parent state if the object removed is an entry state.
         if(isEntryState) {
             SelectEntryState(parent);
         }
-        IsDirty= true;
 	}
     // ----------------------------------------------------------------------
     void SelectEntryState(iCS_EditorObject parent) {

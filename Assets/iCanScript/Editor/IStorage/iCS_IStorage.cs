@@ -108,9 +108,6 @@ public partial class iCS_IStorage {
         set {
             DetectUndoRedo();
             EditorObjects[id]= value;
-            EditorObjects[id].IsDirty= true;
-            iCS_EditorObject parent= EditorObjects[id].Parent;
-            if(parent != null) parent.IsDirty= true;
         }
     }
     // ----------------------------------------------------------------------
@@ -129,9 +126,6 @@ public partial class iCS_IStorage {
         iCS_EditorObject oldParent= edObj.Parent;
         edObj.Parent= newParent;
         SetLayoutPosition(edObj, pos);
-        edObj.IsDirty= true;
-        oldParent.IsDirty= true;
-        newParent.IsDirty= true;
     }
     
     // ======================================================================
@@ -323,7 +317,6 @@ public partial class iCS_IStorage {
 		if(newObj.IsInDataPort) {
 			LoadInitialPortValueFromArchive(this[id]);
 		}
-		newObj.IsDirty= true;
         return newObj;
     }
     void ReconnectCopy(iCS_EditorObject srcObj, iCS_IStorage srcStorage, iCS_IStorage destStorage, List<Prelude.Tuple<int,int>> xlat) {
@@ -360,7 +353,6 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, VisualEditorCenter(), this);
 		this[0].IsNameEditable= false;
-		this[0].IsDirty= true;
         return this[0];
     }
     // ----------------------------------------------------------------------
@@ -374,7 +366,6 @@ public partial class iCS_IStorage {
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
         if(this[id].IsClassModule) ClassModuleCompleteCreation(this[id]);
-		this[id].IsDirty= true;
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -387,7 +378,6 @@ public partial class iCS_IStorage {
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
         // Automatically create entry state.
         CreateState(id, Vector2.zero, "EntryState");
-		this[id].IsDirty= true;
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -412,7 +402,6 @@ public partial class iCS_IStorage {
                 return false;
             }
         );
-        this[id].IsDirty= true;
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -459,7 +448,6 @@ public partial class iCS_IStorage {
 		}
         
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
-		this[id].IsDirty= true;
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -503,7 +491,6 @@ public partial class iCS_IStorage {
         port.PortIndex= portIdx;			
 
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
-		this[id].IsDirty= true;
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -514,7 +501,6 @@ public partial class iCS_IStorage {
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, globalPos, this);
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
-		this[id].IsDirty= true;
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
