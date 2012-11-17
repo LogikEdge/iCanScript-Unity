@@ -79,7 +79,7 @@ public partial class iCS_EditorObject {
 		set {
 			InitialPortValue= value;
 			RuntimePortValue= value;
-	        myIStorage.SetDirty(Parent);			
+	        Parent.IsDirty= true;			
 		}
 	}
 

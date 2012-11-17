@@ -307,7 +307,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(newParent != null && newParent != transitionModule.Parent) {
                                 ChangeParent(transitionModule, newParent);
                                 IStorage.LayoutTransitionModule(transitionModule);
-                                IStorage.SetDirty(node.Parent);
+                                node.Parent.IsDirty= true;
                             }
                         }
                     }
@@ -420,7 +420,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						MyWindow.ShowNotification(new GUIContent("Please use right mouse click on canvas to create behaviour event type before adding new object."));
 						SelectedObject= IStorage.EditorObjects[0];
 						myDynamicMenu.Update(SelectedObject, IStorage, point);
-						IStorage.SetDirty(SelectedObject);
+						SelectedObject.IsDirty= true;
 						return;
 					case 2:
 						validParent= AutoCreateBehaviourEvent(iCS_Strings.OnGUI, point);

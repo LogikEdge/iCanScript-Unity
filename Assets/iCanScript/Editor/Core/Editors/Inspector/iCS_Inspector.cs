@@ -154,7 +154,7 @@ public class iCS_Inspector : Editor {
                             if(SelectedObject.IsOutStatePort) myStorage.FindAConnectedPort(SelectedObject).Name= name;
                             else SelectedObject.Source.Name= name;                            
                         }
-                        myStorage.SetDirty(SelectedObject);
+                        SelectedObject.IsDirty= true;
                     }                    
                 } else {
                     EditorGUILayout.LabelField("Name", name);                    

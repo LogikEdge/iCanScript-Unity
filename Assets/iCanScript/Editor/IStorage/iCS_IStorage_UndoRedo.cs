@@ -42,7 +42,7 @@ public partial class iCS_IStorage {
             }
         );
         // Set all object dirty.
-        ForEach(SetDirty);
+        ForEach(o=> o.IsDirty= true);
         Storage.UndoRedoId= ++UndoRedoId;        
     }
     

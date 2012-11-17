@@ -267,7 +267,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
         }
         if(newName != IterValue.RawName) {
             IterValue.Name= newName;
-            IStorage.SetDirty(IterValue);
+            IterValue.IsDirty= true;
         }        
     }
     // ---------------------------------------------------------------------------------

@@ -477,12 +477,12 @@ public class iCS_DynamicMenu {
             child=>{
                 if(child.IsEntryState) {
                     child.IsRawEntryState= false;
-                    storage.SetDirty(child);
+                    child.IsDirty= true;
                 }
             }
         );
         state.IsRawEntryState= true;
-        storage.SetDirty(state);
+        state.IsDirty= true;
         return state;
     }
 	// ----------------------------------------------------------------------
