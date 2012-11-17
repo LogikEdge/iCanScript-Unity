@@ -14,16 +14,20 @@ public partial class iCS_EditorObject {
 		get { return EngineObject.Edge; }
 		set {
             var engineObject= EngineObject;
-            if(engineObject.Edge != value) {
-                engineObject.Edge= value;
-                if(!IsFloating) CleanupPortEdgePosition();
-                IsDirty= true;
-            }
+            if(engineObject.Edge == value) return;
+            engineObject.Edge= value;
+            if(!IsFloating) CleanupPortEdgePosition();
+            IsDirty= true;
 		}
 	}
     public int SourceId {
 		get { return EngineObject.SourceId; }
-		set { EngineObject.SourceId= value; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.SourceId == value) return;
+			EngineObject.SourceId= value;
+			IsDirty= true;
+		}
 	}
     public iCS_EditorObject Source {
 		get { return SourceId != -1 ? myIStorage[SourceId] : null; }

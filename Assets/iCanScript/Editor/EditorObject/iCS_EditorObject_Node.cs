@@ -13,6 +13,11 @@ public partial class iCS_EditorObject {
 	}
     public string IconGUID {
 		get { return EngineObject.IconGUID; }
-		set { EngineObject.IconGUID= value; IsDirty= true; }
+		set {
+			var engineObject= EngineObject;
+			if(engineObject.IconGUID == value) return;
+			engineObject.IconGUID= value;
+			IsDirty= true;
+		}
 	}
 }
