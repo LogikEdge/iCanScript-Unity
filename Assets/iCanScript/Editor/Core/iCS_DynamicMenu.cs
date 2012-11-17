@@ -474,8 +474,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessSetStateEntry(iCS_EditorObject state, iCS_IStorage storage) {
-        iCS_EditorObject parent= state.Parent;
-        storage.ForEachChild(parent,
+        storage.ForEachChild(state.Parent,
             child=>{
                 if(child.IsEntryState) {
                     child.IsRawEntryState= false;

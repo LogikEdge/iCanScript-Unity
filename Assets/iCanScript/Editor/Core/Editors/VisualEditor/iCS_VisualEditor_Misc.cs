@@ -164,6 +164,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			var firstMuxInput= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
 			IStorage.SetSource(firstMuxInput, source);
 			IStorage.SetSource(stateMuxPort, null);
+			stateMuxPort.IsDirty= true;
 		}
 		// Create new mux input port.
 		var inMuxPort= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);

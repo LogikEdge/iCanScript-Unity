@@ -54,13 +54,13 @@ public partial class iCS_EditorObject {
 			int pid= EngineObject.ParentId;
 			if(pid == value) return;
 			if(IsIdValid(pid)) {
-				EditorObjects[pid].RemoveChild(this);
-				EditorObjects[pid].IsDirty= true;
+				var oldParent= EditorObjects[pid];
+				oldParent.RemoveChild(this);
 			}
 			EngineObject.ParentId= value;
 			if(IsIdValid(value)) {
-				EditorObjects[value].AddChild(this);
-				EditorObjects[value].IsDirty= true;
+				var newParent= EditorObjects[value];
+				newParent.AddChild(this);
 			}
 		}
 	}
@@ -70,7 +70,7 @@ public partial class iCS_EditorObject {
 	}
     public iCS_DisplayOptionEnum DisplayOption {
         get { return EngineObject.DisplayOption; }
-        set { EngineObject.DisplayOption= value; }
+        set { EngineObject.DisplayOption= value; IsDirty= true; }
     }
     public Type RuntimeType {
 		get { return EngineObject.RuntimeType; }
@@ -127,6 +127,7 @@ public partial class iCS_EditorObject {
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
+		editorObject.IsDirty= true;
 		return editorObject;
 	}
     // ----------------------------------------------------------------------
@@ -144,6 +145,7 @@ public partial class iCS_EditorObject {
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
         editorObject.DisplaySize= toClone.DisplaySize;
+		editorObject.IsDirty= true;
 		return editorObject;
     }
 
@@ -163,7 +165,9 @@ public partial class iCS_EditorObject {
             );
         }
 		// Update child lists.
-		if(IsParentValid) Parent.RemoveChild(this);
+		if(IsParentValid) {
+			Parent.RemoveChild(this);
+		}
         // Assure that the selected object is not us.
         if(myIStorage.SelectedObject == EditorObject) myIStorage.SelectedObject= null;
 		// Reset the associated engine object.
@@ -303,6 +307,7 @@ public partial class iCS_EditorObject {
         int i= 0;
         Prelude.forEach(c=> Children[i++]= c, orderedChildren);
         Prelude.forEach(c=> Children[i++]= c, others);
+		IsDirty= true;
     }
 
 }
