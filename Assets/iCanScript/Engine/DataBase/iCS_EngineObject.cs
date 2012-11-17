@@ -34,7 +34,7 @@ public class iCS_EngineObject {
 	public string				 InitialValueArchive= null;
 
     // State specific attributes ---------------------------------------------
-    public bool                  IsRawEntryState= false;
+    public bool                  IsEntryState= false;
 
     // ======================================================================
     // Initialization
@@ -104,7 +104,7 @@ public class iCS_EngineObject {
 		PortIndex= -1;
 		InitialValueArchive= null;
 		// State
-		IsRawEntryState= false;
+		IsEntryState= false;
     }
     
     // ----------------------------------------------------------------------
@@ -158,7 +158,6 @@ public class iCS_EngineObject {
     public bool IsOutDataPort           { get { return iCS_ObjectType.IsOutDataPort(this); }}
     public bool IsInTransitionPort      { get { return iCS_ObjectType.IsInTransitionPort(this); }}
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
-    public bool IsEntryState            { get { return IsState && IsRawEntryState; } set { IsRawEntryState= value; }}
     public bool IsClassModule           { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
 	public bool	IsMuxPort				{ get { return iCS_ObjectType.IsMuxPort(this); }}
 	public bool IsInMuxPort				{ get { return iCS_ObjectType.IsInMuxPort(this); }}

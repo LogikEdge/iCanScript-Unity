@@ -170,7 +170,7 @@ public class iCS_DynamicMenu {
                 }
             }
             menu[len+2]= new MenuContext(SeparatorStr);
-            if(selectedObject.IsRawEntryState) {
+            if(selectedObject.IsEntryState) {
                 menu[len+3]= new MenuContext(String.Concat("#", SetAsEntryStr));
             } else {
                 menu[len+3]= new MenuContext(SetAsEntryStr);
@@ -378,7 +378,6 @@ public class iCS_DynamicMenu {
                     storage.SetSource(port, selectedObject);
                     port.GlobalPosition= new Vector2(grandParentRect.xMax, portPosition.y);
                 }
-                grandParent.IsDirty= true;
                 break;                
             }
             default: {
@@ -477,13 +476,11 @@ public class iCS_DynamicMenu {
         storage.ForEachChild(state.Parent,
             child=>{
                 if(child.IsEntryState) {
-                    child.IsRawEntryState= false;
-                    child.IsDirty= true;
+                    child.IsEntryState= false;
                 }
             }
         );
-        state.IsRawEntryState= true;
-        state.IsDirty= true;
+        state.IsEntryState= true;
         return state;
     }
 	// ----------------------------------------------------------------------

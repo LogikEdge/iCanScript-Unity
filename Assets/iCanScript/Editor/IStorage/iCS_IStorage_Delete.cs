@@ -82,7 +82,7 @@ public partial class iCS_IStorage {
         UntilMatchingChild(parent,
             child=> {
                 if(child.IsState) {
-                    child.IsRawEntryState= true;
+                    child.IsEntryState= true;
                     return true;
                 }
                 return false;
