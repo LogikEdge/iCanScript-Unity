@@ -123,7 +123,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {
         Rect pos= edObj.GlobalRect;
-        iCS_EditorObject oldParent= edObj.Parent;
         edObj.Parent= newParent;
         SetLayoutPosition(edObj, pos);
     }
@@ -516,7 +515,6 @@ public partial class iCS_IStorage {
         int id= src == null ? -1 : src.InstanceId;
         if(id != obj.SourceId) {
             obj.SourceId= id; 
-            obj.IsDirty= true;            
         }
     }
     // ----------------------------------------------------------------------
