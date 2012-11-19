@@ -163,19 +163,65 @@ public partial class iCS_EditorObject {
             Edge= ClosestEdge;            
         }
     }
+
+    // ======================================================================
     // ----------------------------------------------------------------------
     public static void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports,
                                                  float top, float bottom, float x) {
         // Compute position according to position.
         int nbPorts= ports.Length;
         float height= bottom-top;
-        float[] ys= new float[nbPorts];
+        float[] ys= GetPositionRatios(ports);
         for(int i= 0; i < nbPorts; ++i) {
-            ys[i]= height*ports[i].PositionRatio;
+            ys[i]*= height;
         }
         // Resolve position according to collisions.
         ResolvePortCollisions(ys, height);
+		// Update position from new layout.
+		for(int i= 0; i < nbPorts; ++i) {
+			ports[i].LocalPosition= new Vector2(x, ys[i]);
+		}
     }
+    // ----------------------------------------------------------------------
+    public static void LayoutPortsOnHorizontalEdge(iCS_EditorObject[] ports,
+                                                 float left, float right, float y) {
+        // Compute position according to position.
+        int nbPorts= ports.Length;
+        float width= right-left;
+        float[] xs= GetPositionRatios(ports);
+        for(int i= 0; i < nbPorts; ++i) {
+            xs[i]*= width;
+        }
+        // Resolve position according to collisions.
+        ResolvePortCollisions(xs, width);
+		// Update position from new layout.
+		for(int i= 0; i < nbPorts; ++i) {
+			ports[i].LocalPosition= new Vector2(xs[i], y);
+		}
+    }
+    // ----------------------------------------------------------------------
+	public static float[] GetPositionRatios(iCS_EditorObject[] ports) {
+		// Extract ratios.
+        int nbPorts= ports.Length;
+        float[] rs= new float[nbPorts];
+        for(int i= 0; i < nbPorts; ++i) {
+            rs[i]= ports[i].PositionRatio;
+        }
+		// Sort port according to ratios
+		bool sortNeeded= true;
+		for(int i= 0; i < nbPorts-1 && sortNeeded; ++i) {
+			var v= rs[i];
+			sortNeeded= false;
+			for(int j= 0; j < nbPorts; ++j) {
+				if(v > rs[j]) {
+					rs[i]= rs[j]; rs[j]= v;
+					var tmp= ports[i]; ports[i]= ports[j]; ports[j]= tmp;
+					sortNeeded= true;
+				}
+			}
+		}
+		return rs;
+	}
     // ----------------------------------------------------------------------
     // Resolves the port separartion on a given edge.
     public static float[] ResolvePortCollisions(float[] pos, float maxPos) {
@@ -221,8 +267,8 @@ public partial class iCS_EditorObject {
                 }
             }
         }
-        if(r >= nbPorts) {
-            Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!")
+        if(collisionDetectionNeeded) {
+            Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
         }
         return pos;        
     }
