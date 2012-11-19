@@ -174,14 +174,14 @@ public partial class iCS_EditorObject {
             ys[i]= height*ports[i].PositionRatio;
         }
         // Resolve position according to collisions.
-        ResolvePortColisions(ys, height);
+        ResolvePortCollisions(ys, height);
     }
     // ----------------------------------------------------------------------
     // Resolves the port separartion on a given edge.
-    public static float[] ReslovePortCollisions(float[] pos, float maxPos) {
+    public static float[] ResolvePortCollisions(float[] pos, float maxPos) {
         int nbPorts= pos.Length;
         bool collisionDetectionNeeded= true;
-        while(collisionDetectionNeeded) {
+        for(int r= 0; r < nbPorts && collisionDetectionNeeded; ++r) {
             collisionDetectionNeeded= false;
             for(int i= 0; i < nbPorts-1; ++i) {
                 int j= i+1;
@@ -220,6 +220,9 @@ public partial class iCS_EditorObject {
                     }
                 }
             }
+        }
+        if(r >= nbPorts) {
+            Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!")
         }
         return pos;        
     }
