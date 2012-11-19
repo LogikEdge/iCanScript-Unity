@@ -4,10 +4,13 @@ using System.Collections.Generic;
 
 public partial class iCS_EditorObject {
     // Storage accessors ====================================================
-    public float PositionRatio {
+    public float PortPositionRatio {
         get {
-            return EngineObject.LocalPosition.x;
+            return myPortPositionRatio;
         }
+		set {
+			myPortPositionRatio= value;
+		}
     }
     
     // Port Layout Utilities ================================================
@@ -205,7 +208,7 @@ public partial class iCS_EditorObject {
         int nbPorts= ports.Length;
         float[] rs= new float[nbPorts];
         for(int i= 0; i < nbPorts; ++i) {
-            rs[i]= ports[i].PositionRatio;
+            rs[i]= ports[i].PortPositionRatio;
         }
 		// Sort port according to ratios
 		bool sortNeeded= true;
