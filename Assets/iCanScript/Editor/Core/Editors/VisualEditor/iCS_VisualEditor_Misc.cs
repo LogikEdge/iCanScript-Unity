@@ -250,7 +250,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ChangeParent(iCS_EditorObject node, iCS_EditorObject newParent) {
         iCS_EditorObject oldParent= node.Parent;
         if(newParent == null || newParent == oldParent) return;
-        IStorage.SetParent(node, newParent);
+        node.Parent= newParent;
 		if(node.IsState) CleanupEntryState(node, oldParent);
         CleanupConnections(node);
     }

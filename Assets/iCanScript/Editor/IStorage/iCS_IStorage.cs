@@ -87,7 +87,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public bool IsDirty {
         get {
-            DetectUndoRedo();
             return myIsDirty;
         }
         set {
@@ -119,12 +118,6 @@ public partial class iCS_IStorage {
     public object          GetRuntimeObject(iCS_EditorObject obj) {
         iCS_Behaviour bh= Storage as iCS_Behaviour;
         return obj == null || bh == null ? null : bh.GetRuntimeObject(obj.InstanceId);
-    }
-    // ----------------------------------------------------------------------
-    public void SetParent(iCS_EditorObject edObj, iCS_EditorObject newParent) {
-        Rect pos= edObj.GlobalRect;
-        edObj.Parent= newParent;
-        SetLayoutPosition(edObj, pos);
     }
     
     // ======================================================================

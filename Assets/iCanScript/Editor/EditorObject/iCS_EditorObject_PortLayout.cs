@@ -3,6 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 public partial class iCS_EditorObject {
+    // Storage accessors ====================================================
+    public float PositionRatio {
+        get {
+            return EngineObject.LocalPosition.x;
+        }
+    }
+    
     // Port Layout Utilities ================================================
     public void CleanupPortEdgePosition() {
         var size= Parent.DisplaySize;
@@ -156,5 +163,64 @@ public partial class iCS_EditorObject {
             Edge= ClosestEdge;            
         }
     }
-    
+    // ----------------------------------------------------------------------
+    public static void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports,
+                                                 float top, float bottom, float x) {
+        // Compute position according to position.
+        int nbPorts= ports.Length;
+        float height= bottom-top;
+        float[] ys= new float[nbPorts];
+        for(int i= 0; i < nbPorts; ++i) {
+            ys[i]= height*ports[i].PositionRatio;
+        }
+        // Resolve position according to collisions.
+        ResolvePortColisions(ys, height);
+    }
+    // ----------------------------------------------------------------------
+    // Resolves the port separartion on a given edge.
+    public static float[] ReslovePortCollisions(float[] pos, float maxPos) {
+        int nbPorts= pos.Length;
+        bool collisionDetectionNeeded= true;
+        while(collisionDetectionNeeded) {
+            collisionDetectionNeeded= false;
+            for(int i= 0; i < nbPorts-1; ++i) {
+                int j= i+1;
+                if(pos[i] < 0f) pos[i]= 0f;
+                if(pos[j] > maxPos) pos[j]= maxPos;
+                float separation= pos[j]-pos[i];
+                if(separation < iCS_Config.MinimumPortSeparation) {
+                    bool before= false;
+                    bool after= false;
+                    if(pos[i] > 0f) {
+                        if(i == 0) {
+                            before= true;
+                        } else if((pos[i]-pos[i-1]) > iCS_Config.MinimumPortSeparation) {
+                            before= true;
+                        }
+                    }
+                    if(pos[j] < maxPos) {
+                        if(j+1 == nbPorts) {
+                            after= true;
+                        } else if(pos[j+1]-pos[j] > iCS_Config.MinimumPortSeparation) {
+                            after= true;
+                        }
+                    }
+                    // Determine where to expand.
+                    var overlap= iCS_Config.MinimumPortSeparation-separation;
+                    if(before && after) {
+                        pos[i]-= 0.5f*overlap;
+                        pos[j]+= 0.5f*overlap;
+                        collisionDetectionNeeded= true;
+                    } else if(before) {
+                        pos[i]-= overlap;
+                        collisionDetectionNeeded= true;
+                    } else if(after) {
+                        pos[j]+= overlap;
+                        collisionDetectionNeeded= true;
+                    }
+                }
+            }
+        }
+        return pos;        
+    }
 }
