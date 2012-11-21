@@ -146,37 +146,16 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    // This is a port property
-    public float PortVerticalRatioFromLocalPosition(Vector2 localPosition) {
-        var parent= Parent;
-        var parentSize= parent.DisplaySize;
-        var titleHeight= parent.NodeTitleHeight;
-        var availableHeight= parentSize.y-titleHeight;
-        float deltaY= localPosition.y+0.5f*parentSize.y-titleHeight;
-        return deltaY/availableHeight;
+    public float AvailableHeightForPorts {
+        get {
+            return DisplaySize.y-NodeTitleHeight-iCS_Config.MinimumPortSeparation;
+        }
     }
     // ----------------------------------------------------------------------
-    // This is a port property
-    public float PortHorizontalRatioFromLocalPosition(Vector2 localPosition) {
-        var parentSize= Parent.DisplaySize;
-        if(Math3D.IsZero(parentSize.x)) return 0.5f;
-        float deltaX= localPosition.x+0.5f*parentSize.x;
-        return deltaX/parentSize.x;
-    }
-    // ----------------------------------------------------------------------
-    // This is a port property
-    public float PortVerticalLocalPositionFromRatio(float ratio) {
-        var parent= Parent;
-        var parentSize= parent.DisplaySize;
-        var titleHeight= parent.NodeTitleHeight;
-        var availableHeight= parentSize.y-titleHeight;
-        return titleHeight+availableHeight*ratio-0.5f*parentSize.y;
-    }
-    // ----------------------------------------------------------------------
-    // This is a port property
-    public float PortHorizontalLocalPositionFromRatio(float ratio) {
-        var parentWidth= Parent.DisplaySize.x;
-        return parentWidth*ratio-0.5f*parentWidth;
+    public float AvailableWidthForPorts {
+        get {
+            return DisplaySize.x-iCS_Config.MinimumPortSeparation;
+        }
     }
 }
 

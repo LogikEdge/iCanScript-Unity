@@ -108,7 +108,8 @@ public partial class iCS_IStorage {
         }
 
         // Layout child ports
-        UpdatePortPositions(node);
+//        UpdatePortPositions(node);
+        node.LayoutPorts();
     }
     // ----------------------------------------------------------------------
     // Determine if position are the same.
