@@ -158,11 +158,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(!isNearParentEdge) {
     					CreateDragPort();
                     } else {
-                        iCS_EditorObject parent= IStorage.GetParentNode(DragOriginalPort);
-//                        IStorage.UpdatePortPositions(parent); 
-                        DragObject.CleanupPortEdgePosition();
-                        DragObject.UpdateVerticalPortRatioFromLocalPosition(DragObject.LocalPosition);
-                        DragObject.Parent.LayoutPorts();
+                        DragObject.UpdatePortAfterRelocation();
                     }
                 }
                 break;
@@ -243,10 +239,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.PortRelocation:
                     DragObject.IsFloating= false;
                     if(DragObject.IsDataPort) {
-//                        IStorage.UpdatePortPositions(DragObject.Parent);
-                        DragObject.CleanupPortEdgePosition();
-                        DragObject.UpdateVerticalPortRatioFromLocalPosition(DragObject.LocalPosition);
-                        DragObject.Parent.LayoutPorts();
+                        DragObject.UpdatePortAfterRelocation();
                         break;
                     }                    
                     if(DragObject.IsStatePort) {

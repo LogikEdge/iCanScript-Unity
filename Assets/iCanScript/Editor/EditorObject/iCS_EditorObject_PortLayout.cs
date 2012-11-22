@@ -165,6 +165,17 @@ public partial class iCS_EditorObject {
 
     // ======================================================================
     // ----------------------------------------------------------------------
+    // Updates port position after successful relocation.
+    public void UpdatePortAfterRelocation() {
+        CleanupPortEdgePosition();
+        if(IsOnVerticalEdge) {
+            UpdateVerticalPortRatioFromLocalPosition(LocalPosition);            
+        } else {
+            UpdateHorizontalPortRatioFromLocalPosition(LocalPosition);                        
+        }
+        Parent.LayoutPorts();        
+    }
+    // ----------------------------------------------------------------------
     // Updates the port ratio on the horizontal edage given the port local position.
     public void UpdateVerticalPortRatioFromLocalPosition(Vector2 localPosition) {
         var parent= Parent;
