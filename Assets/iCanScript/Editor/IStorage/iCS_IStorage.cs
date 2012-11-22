@@ -438,7 +438,9 @@ public partial class iCS_IStorage {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
             port.PortIndex= portIdx;			
 		}
-        
+        // Initialize port position.
+		this[id].InitialPortLayout();
+		// Initialize initial display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         return this[id];
     }
@@ -482,6 +484,9 @@ public partial class iCS_IStorage {
         port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.OutFunctionPort);
         port.PortIndex= portIdx;			
 
+        // Initialize port position.
+		this[id].InitialPortLayout();
+		// Initialize initial display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         return this[id];
     }
@@ -492,6 +497,7 @@ public partial class iCS_IStorage {
         var globalPos= parent.GlobalPosition;
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, globalPos, this);
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
+		port.UpdatePortEdge();
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
         return EditorObjects[id];        
     }

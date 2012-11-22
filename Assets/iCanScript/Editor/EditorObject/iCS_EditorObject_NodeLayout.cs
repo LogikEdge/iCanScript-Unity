@@ -170,12 +170,17 @@ public partial class iCS_EditorObject {
 			}
 		}
 		// Update port position ratio.
-		float step= 1f/len;
+		float step= 1f/(float)(len);
+Debug.Log("InitialPortLayout: "+ports.Length+" step= "+step);
+
 		for(int i= 0; i < len; ++i) {
-			ports[i].PortPositionRatio= (i+0.5f)*step;
+			float ratio= ((float)(i)+0.5f)*step;
+Debug.Log("ports["+i+"]= "+ratio);
+			ports[i].PortPositionRatio= ratio;
 		}		
 	}
     // ----------------------------------------------------------------------
+	// Updates the port position ratio of all edges.
     public void UpdatePortRatios() {
         foreach(var port in LeftPorts) {
             port.UpdateVerticalPortRatioFromLocalPosition(port.LocalPosition);
