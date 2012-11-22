@@ -13,7 +13,7 @@ public partial class iCS_EditorObject {
     bool            	myIsDirty          = false;
     public List<int>	myChildren         = new List<int>();
     Vector2             myDisplaySize      = Vector2.zero;
-    float               myPortPositionRatio= 0f;
+    Vector2             myPortLocalPosition= Vector2.zero;
  
     // ======================================================================
     // Conversion Utilities

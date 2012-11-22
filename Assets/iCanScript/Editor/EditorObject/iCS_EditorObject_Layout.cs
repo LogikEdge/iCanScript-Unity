@@ -25,39 +25,23 @@ public partial class iCS_EditorObject {
     public Vector2 LocalPosition {
 		get {
             if(!IsVisible) return Vector2.zero;
-//            if(IsPort) {
-//                if(IsFloating) return myPortLocalPosition;
-//                var localPosition= EngineObject.LocalPosition;
-//                if(IsOnHorizontalEdge) {
-//                    return new Vector2(PortHorizontalLocalPositionFromRatio(localPosition.x), localPosition.y);
-//                }                    
-//                return new Vector2(localPosition.x, PortVerticalLocalPositionFromRatio(localPosition.y));
-//            }
+            if(IsPort) {
+                return myPortLocalPosition;
+            }
             // This is a node.
             return EngineObject.LocalPosition;
 		}
 		set {
-//            if(IsPort) {
-//                // Avoid propagating change if we did not change position
-//                if(Math3D.IsEqual(myPortLocalPosition, value)) return;
-//                // Set new local position and update any position dependent values.
-//                myPortLocalPosition= value;
-//                if(IsFloating) return;
-//                if(IsOnHorizontalEdge) {
-//                    var ratio= PortHorizontalRatioFromLocalPosition(value);
-//                    EngineObject.LocalPosition= new Vector2(ratio, value.y);
-//                } else {
-//                    var ratio= PortVerticalRatioFromLocalPosition(value);
-//                    EngineObject.LocalPosition= new Vector2(value.x, ratio);                    
-//                }
-//            } else {
+            if(IsPort) {
+                myPortLocalPosition= value;
+            } else {
                 var engineObject= EngineObject;
                 var localPosition= engineObject.LocalPosition;
                 // Avoid propagating change if we did not change position
                 if(Math3D.IsEqual(localPosition, value)) return;
                 // Set new local position and update any position dependent values.
     			engineObject.LocalPosition= value;                
-//            }
+            }
 		}
 	}
 
