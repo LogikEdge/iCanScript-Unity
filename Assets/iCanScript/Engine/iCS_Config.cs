@@ -15,7 +15,6 @@ public static class iCS_Config {
 	public const string ProductPrefix= ProductAcronym+"_";
 	public const char   PrivateStringPrefix= '$';
 
-//#if UNITY_EDITOR
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // BEGIN EDITOR SECTION
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -113,5 +112,4 @@ public static class iCS_Config {
     public static float GetWindowHeight(string _label) {
         return GetButtonSize(_label).y;
     }
-//#endif
 }
