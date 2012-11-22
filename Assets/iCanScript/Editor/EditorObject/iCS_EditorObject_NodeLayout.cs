@@ -145,16 +145,50 @@ public partial class iCS_EditorObject {
             return iCS_Config.PortSize + (nbOfPorts-1)*iCS_Config.MinimumPortSeparation;                                            
         }
     }
+
+    // ======================================================================
+    // Ports layout helpers.
     // ----------------------------------------------------------------------
+    // Returns the available height to layout ports on the vertical edge.
     public float AvailableHeightForPorts {
         get {
-            return DisplaySize.y-NodeTitleHeight-iCS_Config.MinimumPortSeparation;
+            return VerticalPortsBottom-VerticalPortsTop;
         }
     }
     // ----------------------------------------------------------------------
+    // Returns the available width to layout ports on the horizontal edge.
     public float AvailableWidthForPorts {
         get {
-            return DisplaySize.x-iCS_Config.MinimumPortSeparation;
+            return HorizontalPortsRight-HorizontalPortsLeft;
+        }
+    }
+
+    // ----------------------------------------------------------------------
+    // Returns the top most coordinate for a port on the vertical edge.
+    public float VerticalPortsTop {
+        get {
+            return NodeTitleHeight+0.5f*(iCS_Config.MinimumPortSeparation-DisplaySize.y);
+        }
+    }
+    // ----------------------------------------------------------------------
+    // Returns the bottom most coordinate for a port on the vertical edge.
+    public float VerticalPortsBottom {
+        get {
+            return 0.5f*(DisplaySize.y-iCS_Config.MinimumPortSeparation);
+        }
+    }
+    // ----------------------------------------------------------------------
+    // Returns the left most coordinate for a port on the horizontal edge.
+    public float HorizontalPortsLeft {
+        get {
+            return 0.5f*(iCS_Config.MinimumPortSeparation-DisplaySize.x);
+        }
+    }
+    // ----------------------------------------------------------------------
+    // Returns the left most coordinate for a port on the horizontal edge.
+    public float HorizontalPortsRight {
+        get {
+            return 0.5f*(DisplaySize.x-iCS_Config.MinimumPortSeparation);
         }
     }
 }

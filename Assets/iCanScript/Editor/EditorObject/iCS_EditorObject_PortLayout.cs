@@ -167,16 +167,16 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public void UpdatePortRatios() {
         foreach(var port in LeftPorts) {
-            port.PortVerticalRatioFromLocalPosition(port.LocalPosition);
+            port.UpdateVerticalPortRatioFromLocalPosition(port.LocalPosition);
         }
         foreach(var port in RightPorts) {
-            port.PortVerticalRatioFromLocalPosition(port.LocalPosition);
+            port.UpdateVerticalPortRatioFromLocalPosition(port.LocalPosition);
         }
         foreach(var port in TopPorts) {
-            port.PortHorizontalRatioFromLocalPosition(port.LocalPosition);
+            port.UpdateHorizontalPortRatioFromLocalPosition(port.LocalPosition);
         }
         foreach(var port in BottomPorts) {
-            port.PortHorizontalRatioFromLocalPosition(port.LocalPosition);
+            port.UpdateHorizontalPortRatioFromLocalPosition(port.LocalPosition);
         }
     }
     // ----------------------------------------------------------------------
@@ -224,6 +224,57 @@ public partial class iCS_EditorObject {
 		}
     }
     // ----------------------------------------------------------------------
+    // Updates the port ratio on the horizontal edage given the port local position.
+    public void UpdateVerticalPortRatioFromLocalPosition(Vector2 localPosition) {
+        var parent= Parent;
+        var height= parent.AvailableHeightForPorts;
+        if(Math3D.IsSmallerOrEqual(height, 0f)) {
+            PortPositionRatio= 0.5f;
+            return;
+        }
+        float deltaY= localPosition.y-parent.VerticalPortsTop;
+        var ratio= deltaY/height;
+        if(ratio < 0f) ratio= 0f;
+        if(ratio > 1f) ratio= 1f;
+        PortPositionRatio= ratio;
+    }
+    // ----------------------------------------------------------------------
+    // Updates the port ratio on the horizontal edage given the port local position.
+    public void UpdateHorizontalPortRatioFromLocalPosition(Vector2 localPosition) {
+        var parent= Parent;
+        var width= parent.AvailableWidthForPorts;
+        if(Math3D.IsSmallerOrEqual(width, 0f)) {
+            PortPositionRatio= 0.5f;
+            return;
+        }
+        float deltaX= localPosition.x-parent.HorizontalPortsLeft;
+        var ratio= deltaX/width;
+        if(ratio < 0f) ratio= 0f;
+        if(ratio > 1f) ratio= 1f;
+        PortPositionRatio= ratio;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the Y coordinate for a port on the vertical edge given its
+    // ratio.
+    public float VerticalPortYCoordinateFromRatio() {
+        var parent= Parent;
+        var ratio= PortPositionRatio;
+        return parent.VerticalPortsTop+parent.AvailableHeightForPorts*ratio;
+    }
+    // ----------------------------------------------------------------------
+    // Returns the X coordinate for a port on the horizontal edge given its
+    // ratio.
+    public float HorizontalPortXCoordinateFromRatio() {
+        var parent= Parent;
+        var ratio= PortPositionRatio;
+        return parent.HorizontalPortsLeft+parent.AvailableWidthForPorts*ratio;
+    }
+
+    // ======================================================================
+    // Port layout utilities
+    // ----------------------------------------------------------------------
+    // Returns the sorted array of saved port ratios.  The input port array
+    // is also updated to reflect the sort order.
 	public static float[] GetPositionRatios(iCS_EditorObject[] ports) {
 		// Extract ratios.
         int nbPorts= ports.Length;
@@ -247,7 +298,8 @@ public partial class iCS_EditorObject {
 		return rs;
 	}
     // ----------------------------------------------------------------------
-    // Resolves the port separartion on a given edge.
+    // Resolves the port separartion on a given edge.  The position is local
+    // and ranges from 0 to "maxPos".
     public static float[] ResolvePortCollisions(float[] pos, float maxPos) {
         int nbPorts= pos.Length;
         if(nbPorts == 0) return new float[0];
@@ -296,52 +348,5 @@ public partial class iCS_EditorObject {
             Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
         }
         return pos;        
-    }
-    // ----------------------------------------------------------------------
-    // This is a port property
-    public void PortVerticalRatioFromLocalPosition(Vector2 localPosition) {
-        var parent= Parent;
-        var parentSize= parent.DisplaySize;
-        var titleHeight= parent.NodeTitleHeight;
-        var padding= iCS_Config.MinimumPortSeparation;
-        var availableHeight= parent.AvailableHeightForPorts;
-        float deltaY= localPosition.y+0.5f*parentSize.y-titleHeight-0.5f*padding;
-        var ratio= deltaY/availableHeight;
-        if(ratio < 0f) ratio= 0f;
-        if(ratio > 1f) ratio= 1f;
-        PortPositionRatio= ratio;
-    }
-    // ----------------------------------------------------------------------
-    // This is a port property
-    public void PortHorizontalRatioFromLocalPosition(Vector2 localPosition) {
-        var parentSize= Parent.DisplaySize;
-        if(Math3D.IsZero(parentSize.x)) {
-            PortPositionRatio= 0.5f;
-            return;
-        }
-        float deltaX= localPosition.x+0.5f*parentSize.x;
-        var ratio= deltaX/parentSize.x;
-        if(ratio < 0f) ratio= 0f;
-        if(ratio > 1f) ratio= 1f;
-        PortPositionRatio= ratio;
-    }
-    // ----------------------------------------------------------------------
-    // This is a port property
-    public float PortVerticalLocalPositionFromRatio() {
-        var ratio= PortPositionRatio;
-        var parent= Parent;
-        var parentSize= parent.DisplaySize;
-        var titleHeight= parent.NodeTitleHeight;
-        var padding= iCS_Config.MinimumPortSeparation;
-        var availableHeight= parentSize.y-titleHeight-padding;
-        return titleHeight+availableHeight*ratio-0.5f*parentSize.y+0.5f*padding;
-    }
-    // ----------------------------------------------------------------------
-    // This is a port property
-    public float PortHorizontalLocalPositionFromRatio() {
-        var parent= Parent;
-        var ratio= PortPositionRatio;
-        var parentWidth= parent.DisplaySize.x;
-        return parent.AvailableWidthForPorts*ratio-0.5f*parentWidth;
     }
 }
