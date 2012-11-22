@@ -145,6 +145,33 @@ public partial class iCS_EditorObject {
             return iCS_Config.PortSize + (nbOfPorts-1)*iCS_Config.MinimumPortSeparation;                                            
         }
     }
+    // ----------------------------------------------------------------------
+    public void UpdatePortRatios() {
+        foreach(var port in LeftPorts) {
+            port.UpdateVerticalPortRatioFromLocalPosition(port.LocalPosition);
+        }
+        foreach(var port in RightPorts) {
+            port.UpdateVerticalPortRatioFromLocalPosition(port.LocalPosition);
+        }
+        foreach(var port in TopPorts) {
+            port.UpdateHorizontalPortRatioFromLocalPosition(port.LocalPosition);
+        }
+        foreach(var port in BottomPorts) {
+            port.UpdateHorizontalPortRatioFromLocalPosition(port.LocalPosition);
+        }
+    }
+    // ----------------------------------------------------------------------
+    public void LayoutPorts() {
+        var halfSize= 0.5f*DisplaySize;
+        var verticalTop    = VerticalPortsTop;
+        var verticalBottom = VerticalPortsBottom;
+        var horizontalLeft = HorizontalPortsLeft;
+        var horizontalRight= HorizontalPortsRight;
+        LayoutPortsOnVerticalEdge  (LeftPorts  , verticalTop   , verticalBottom, -halfSize.x);
+        LayoutPortsOnVerticalEdge  (RightPorts , verticalTop   , verticalBottom,  halfSize.x);
+        LayoutPortsOnHorizontalEdge(TopPorts   , horizontalLeft, horizontalRight, -halfSize.y);
+        LayoutPortsOnHorizontalEdge(BottomPorts, horizontalLeft, horizontalRight,  halfSize.y);
+    }
 
     // ======================================================================
     // Ports layout helpers.
@@ -191,5 +218,43 @@ public partial class iCS_EditorObject {
             return 0.5f*(DisplaySize.x-iCS_Config.MinimumPortSeparation);
         }
     }
+    // ----------------------------------------------------------------------
+    public static void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports,
+                                                 float top, float bottom, float x) {
+        // Layout ports on one dimension edge.
+        float[] ys= LayoutPortsOnEdge(ports, top, bottom);
+		// Update position from new layout.
+        int nbPorts= ports.Length;
+		for(int i= 0; i < nbPorts; ++i) {
+			ports[i].LocalPosition= new Vector2(x, top+ys[i]);
+		}
+    }
+    // ----------------------------------------------------------------------
+    public static void LayoutPortsOnHorizontalEdge(iCS_EditorObject[] ports,
+                                                 float left, float right, float y) {
+        // Layout ports on one dimension edge.
+        float[] xs= LayoutPortsOnEdge(ports, left, right);
+		// Update position from new layout.
+        int nbPorts= ports.Length;
+		for(int i= 0; i < nbPorts; ++i) {
+			ports[i].LocalPosition= new Vector2(left+xs[i], y);
+		}
+    }
+    // ----------------------------------------------------------------------
+    // Layouts out the ports on an one dimension edge.
+    public static float[] LayoutPortsOnEdge(iCS_EditorObject[] ports,
+                                         float minValue, float maxValue) {
+        // Compute position according to position.
+        int nbPorts= ports.Length;
+        float diff= maxValue-minValue;
+        float[] xs= GetPositionRatios(ports);
+        for(int i= 0; i < nbPorts; ++i) {
+            xs[i]*= diff;
+        }
+        // Resolve position according to collisions.
+        ResolvePortCollisions(xs, diff);
+        return xs;
+    }
+    
 }
 

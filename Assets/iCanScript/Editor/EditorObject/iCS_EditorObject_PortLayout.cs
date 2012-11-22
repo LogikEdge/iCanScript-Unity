@@ -165,65 +165,6 @@ public partial class iCS_EditorObject {
 
     // ======================================================================
     // ----------------------------------------------------------------------
-    public void UpdatePortRatios() {
-        foreach(var port in LeftPorts) {
-            port.UpdateVerticalPortRatioFromLocalPosition(port.LocalPosition);
-        }
-        foreach(var port in RightPorts) {
-            port.UpdateVerticalPortRatioFromLocalPosition(port.LocalPosition);
-        }
-        foreach(var port in TopPorts) {
-            port.UpdateHorizontalPortRatioFromLocalPosition(port.LocalPosition);
-        }
-        foreach(var port in BottomPorts) {
-            port.UpdateHorizontalPortRatioFromLocalPosition(port.LocalPosition);
-        }
-    }
-    // ----------------------------------------------------------------------
-    public void LayoutPorts() {
-        var halfSize= 0.5f*DisplaySize;
-        var padding= 0.5f*iCS_Config.MinimumPortSeparation;
-        var titleHeight= NodeTitleHeight;
-        LayoutPortsOnVerticalEdge(LeftPorts , titleHeight-halfSize.y+padding, halfSize.y-padding, -halfSize.x);
-        LayoutPortsOnVerticalEdge(RightPorts, titleHeight-halfSize.y+padding, halfSize.y-padding,  halfSize.x);
-        LayoutPortsOnHorizontalEdge(TopPorts   , padding-halfSize.x, halfSize.x-padding, -halfSize.y);
-        LayoutPortsOnHorizontalEdge(BottomPorts, padding-halfSize.x, halfSize.x-padding,  halfSize.y);
-    }
-    // ----------------------------------------------------------------------
-    public static void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports,
-                                                 float top, float bottom, float x) {
-        // Compute position according to position.
-        int nbPorts= ports.Length;
-        float height= bottom-top;
-        float[] ys= GetPositionRatios(ports);
-        for(int i= 0; i < nbPorts; ++i) {
-            ys[i]*= height;
-        }
-        // Resolve position according to collisions.
-        ResolvePortCollisions(ys, height);
-		// Update position from new layout.
-		for(int i= 0; i < nbPorts; ++i) {
-			ports[i].LocalPosition= new Vector2(x, top+ys[i]);
-		}
-    }
-    // ----------------------------------------------------------------------
-    public static void LayoutPortsOnHorizontalEdge(iCS_EditorObject[] ports,
-                                                 float left, float right, float y) {
-        // Compute position according to position.
-        int nbPorts= ports.Length;
-        float width= right-left;
-        float[] xs= GetPositionRatios(ports);
-        for(int i= 0; i < nbPorts; ++i) {
-            xs[i]*= width;
-        }
-        // Resolve position according to collisions.
-        ResolvePortCollisions(xs, width);
-		// Update position from new layout.
-		for(int i= 0; i < nbPorts; ++i) {
-			ports[i].LocalPosition= new Vector2(left+xs[i], y);
-		}
-    }
-    // ----------------------------------------------------------------------
     // Updates the port ratio on the horizontal edage given the port local position.
     public void UpdateVerticalPortRatioFromLocalPosition(Vector2 localPosition) {
         var parent= Parent;
