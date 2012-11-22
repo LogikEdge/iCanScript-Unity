@@ -145,6 +145,36 @@ public partial class iCS_EditorObject {
             return iCS_Config.PortSize + (nbOfPorts-1)*iCS_Config.MinimumPortSeparation;                                            
         }
     }
+
+    // ----------------------------------------------------------------------
+	// Initializes port position ratio of all edges.
+	public void InitialPortLayout() {
+		InitialPortLayout(LeftPorts);
+		InitialPortLayout(RightPorts);
+		InitialPortLayout(TopPorts);
+		InitialPortLayout(BottomPorts);
+	}
+    // ----------------------------------------------------------------------
+	// Initializes port position ratio for ports on the same edge.
+	void InitialPortLayout(iCS_EditorObject[] ports) {
+		// Sort according to port index.
+		int len= ports.Length;
+		if(len == 0) return;
+		for(int i= 0; i < len-1; ++i) {
+			for(int j= i+1; j < len; ++j) {
+				if(ports[i].PortIndex > ports[j].PortIndex) {
+					var tmp= ports[i];
+					ports[i]= ports[j];
+					ports[j]= tmp;
+				}
+			}
+		}
+		// Update port position ratio.
+		float step= 1f/len;
+		for(int i= 0; i < len; ++i) {
+			ports[i].PortPositionRatio= (i+0.5f)*step;
+		}		
+	}
     // ----------------------------------------------------------------------
     public void UpdatePortRatios() {
         foreach(var port in LeftPorts) {
