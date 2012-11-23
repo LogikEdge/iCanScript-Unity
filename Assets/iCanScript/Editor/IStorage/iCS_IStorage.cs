@@ -149,7 +149,7 @@ public partial class iCS_IStorage {
             myIsDirty= false;
 
             // Perform layout of modified nodes.
-            ForEachRecursiveDepthLast(EditorObjects[0],
+            ForEachRecursiveDepthFirst(EditorObjects[0],
                 obj=> {
                     if(obj.IsDirty) {
 //                        Debug.Log(obj.Name+" is dirty.  Display option: "+obj.DisplayOption);
