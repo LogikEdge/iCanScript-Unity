@@ -3,12 +3,6 @@ using System.Collections;
 using P=Prelude;
 
 public partial class iCS_EditorObject {
-    // Display animation attributes =========================================
-	private P.Animate<Rect>	myAnimatedPosition= new P.Animate<Rect>();
-	public P.Animate<Rect> AnimatedPosition {
-		get { return myAnimatedPosition; }
-	}
-
     // Accessors ============================================================
     public Vector2 DisplaySize {
 		get {
@@ -26,14 +20,14 @@ public partial class iCS_EditorObject {
 		get {
             if(!IsVisible) return Vector2.zero;
             if(IsPort) {
-                return myPortLocalPosition;
+                return myLocalPosition;
             }
             // This is a node.
             return EngineObject.LocalPositionRatio;
 		}
 		set {
             if(IsPort) {
-                myPortLocalPosition= value;
+                myLocalPosition= value;
             } else {
                 var engineObject= EngineObject;
                 var localPosition= engineObject.LocalPositionRatio;

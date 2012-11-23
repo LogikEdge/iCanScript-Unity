@@ -3,22 +3,6 @@ using System.Collections;
 
 public partial class iCS_EditorObject {
     // Node Layout Utilities ================================================
-	public Vector2 NodeNeededSize {
-		get {
-			if(!IsVisible) return Vector2.zero;
-			if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
-			float portsHeight= NeededPortsHeight;
-			float height= NodeTopPadding+NodeBottomPadding+portsHeight;
-			float width= Mathf.Max(NodeTitleWidth, NodeLeftPadding+NodeRightPadding);
-			if(IsFolded) {
-				return new Vector2(width, height);
-			}
-			var center= 0.5f*DisplaySize;
-			Rect childRect= new Rect(center.x, center.y, 0, 0);
-			ForEachChildNode(o=> { if(!o.IsFloating) Math3D.Merge(childRect, o.LocalRect); });
-			return new Vector2(width+childRect.width, height+childRect.height);
-		}
-	}
     // ----------------------------------------------------------------------
 	public Rect NodeNeededGlobalChildRect {
 		get {
@@ -137,15 +121,6 @@ public partial class iCS_EditorObject {
     public void AdjustChildLocalPosition(Vector2 _delta) {
         ForEachChildNode(child=> child.LocalPosition= child.LocalPosition+_delta);
     }
-    // ----------------------------------------------------------------------
-    public float NeededPortsHeight {
-        get {
-            int nbOfPorts= Mathf.Max(NbOfLeftPorts, NbOfRightPorts);
-            if(nbOfPorts == 0) return 0;
-            return iCS_Config.PortSize + (nbOfPorts-1)*iCS_Config.MinimumPortSeparation;                                            
-        }
-    }
-
     // ----------------------------------------------------------------------
 	// Initializes port position ratio of all edges.
 	public void InitialPortLayout() {

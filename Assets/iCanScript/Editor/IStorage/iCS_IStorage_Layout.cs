@@ -1,3 +1,5 @@
+#define NEW_LAYOUT
+
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -36,6 +38,9 @@ public partial class iCS_IStorage {
             return;
         }
 
+#if NEW_LAYOUT
+        node.UpdateNodeSize();
+#else
         // Resolve collision on children.
         ResolveCollisionOnChildren(node, Vector2.zero);
 
@@ -110,6 +115,7 @@ public partial class iCS_IStorage {
         // Layout child ports
 //        UpdatePortPositions(node);
         node.LayoutPorts();
+#endif
     }
     // ----------------------------------------------------------------------
     // Determine if position are the same.
