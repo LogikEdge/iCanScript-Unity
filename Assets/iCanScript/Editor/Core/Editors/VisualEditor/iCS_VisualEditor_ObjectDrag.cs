@@ -158,7 +158,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(!isNearParentEdge) {
     					CreateDragPort();
                     } else {
-                        DragObject.UpdatePortAfterRelocation();
+                        DragObject.SavePosition();
                     }
                 }
                 break;
@@ -233,13 +233,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                         oldParent.IsDirty= true;                        
                     }
+                    node.SavePosition();
                     node.IsFloating= false;
                     break;
                 }
                 case DragTypeEnum.PortRelocation:
                     DragObject.IsFloating= false;
                     if(DragObject.IsDataPort) {
-                        DragObject.UpdatePortAfterRelocation();
+                        DragObject.SavePosition();
                         break;
                     }                    
                     if(DragObject.IsStatePort) {

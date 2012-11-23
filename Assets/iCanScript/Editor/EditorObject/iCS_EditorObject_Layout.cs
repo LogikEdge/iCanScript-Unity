@@ -19,23 +19,11 @@ public partial class iCS_EditorObject {
     public Vector2 LocalPosition {
 		get {
             if(!IsVisible) return Vector2.zero;
-            if(IsPort) {
-                return myLocalPosition;
-            }
-            // This is a node.
-            return EngineObject.LocalPositionRatio;
+            return myLocalPosition;
 		}
 		set {
-            if(IsPort) {
-                myLocalPosition= value;
-            } else {
-                var engineObject= EngineObject;
-                var localPosition= engineObject.LocalPositionRatio;
-                // Avoid propagating change if we did not change position
-                if(Math3D.IsEqual(localPosition, value)) return;
-                // Set new local position and update any position dependent values.
-    			engineObject.LocalPositionRatio= value;                
-            }
+            if(Math3D.IsEqual(myLocalPosition, value)) return;
+            myLocalPosition= value;
 		}
 	}
 

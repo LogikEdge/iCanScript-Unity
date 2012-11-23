@@ -165,47 +165,6 @@ public partial class iCS_EditorObject {
 
     // ======================================================================
     // ----------------------------------------------------------------------
-    // Updates port position after successful relocation.
-    public void UpdatePortAfterRelocation() {
-        CleanupPortEdgePosition();
-        if(IsOnVerticalEdge) {
-            UpdateVerticalPortRatioFromLocalPosition(LocalPosition);            
-        } else {
-            UpdateHorizontalPortRatioFromLocalPosition(LocalPosition);                        
-        }
-        Parent.LayoutPorts();        
-    }
-    // ----------------------------------------------------------------------
-    // Updates the port ratio on the horizontal edage given the port local position.
-    public void UpdateVerticalPortRatioFromLocalPosition(Vector2 localPosition) {
-        var parent= Parent;
-        var height= parent.AvailableHeightForPorts;
-        if(Math3D.IsSmallerOrEqual(height, 0f)) {
-            PortPositionRatio= 0.5f;
-            return;
-        }
-        float deltaY= localPosition.y-parent.VerticalPortsTop;
-        var ratio= deltaY/height;
-        if(ratio < 0f) ratio= 0f;
-        if(ratio > 1f) ratio= 1f;
-        PortPositionRatio= ratio;
-    }
-    // ----------------------------------------------------------------------
-    // Updates the port ratio on the horizontal edage given the port local position.
-    public void UpdateHorizontalPortRatioFromLocalPosition(Vector2 localPosition) {
-        var parent= Parent;
-        var width= parent.AvailableWidthForPorts;
-        if(Math3D.IsSmallerOrEqual(width, 0f)) {
-            PortPositionRatio= 0.5f;
-            return;
-        }
-        float deltaX= localPosition.x-parent.HorizontalPortsLeft;
-        var ratio= deltaX/width;
-        if(ratio < 0f) ratio= 0f;
-        if(ratio > 1f) ratio= 1f;
-        PortPositionRatio= ratio;
-    }
-    // ----------------------------------------------------------------------
     // Returns the Y coordinate for a port on the vertical edge given its
     // ratio.
     public float VerticalPortYCoordinateFromRatio() {

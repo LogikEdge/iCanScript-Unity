@@ -314,7 +314,8 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         int id= destStorage.GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
-        var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, globalPos, destStorage);
+        var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
+        newObj.GlobalPosition= globalPos;
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
             child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalPosition, xlat)
@@ -356,7 +357,8 @@ public partial class iCS_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, VisualEditorCenter(), this);
+        iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, this);
+        this[0].GlobalPosition= VisualEditorCenter();
 		this[0].IsNameEditable= false;
         return this[0];
     }
@@ -366,7 +368,8 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
+        this[id].GlobalPosition= globalPos;
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
@@ -378,11 +381,12 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
+        this[id].GlobalPosition= globalPos;
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
         // Automatically create entry state.
-        CreateState(id, Vector2.zero, "EntryState");
+        CreateState(id, globalPos, "EntryState");
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -395,7 +399,8 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
+        this[id].GlobalPosition= globalPos;
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         // Set first state as the default entry state.
@@ -429,7 +434,8 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        this[id].GlobalPosition= globalPos;
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -467,7 +473,8 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        this[id].GlobalPosition= globalPos;
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -508,7 +515,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         var parent= EditorObjects[parentId];
         var globalPos= parent.GlobalPosition;
-        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, globalPos, this);
+        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
 		port.UpdatePortEdge();
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));

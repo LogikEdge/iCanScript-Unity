@@ -54,6 +54,24 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
+    Rect ChildrenArea {
+        get {
+            var displaySize= DisplaySize;
+            Rect childArea= new Rect(-0.5f*displaySize.x, -0.5f*displaySize.y, displaySize.x, displaySize.y);
+            // Remove top & bottom padding.
+            var topPadding= NodeTopPadding;
+            var bottomPadding= NodeBottomPadding;
+            childArea.y+= topPadding;
+            childArea.height-= topPadding+bottomPadding;
+            // Remove left & right padding.
+            var leftPadding= NodeLeftPadding;
+            var rightPadding= NodeRightPadding;
+            childArea.x+= leftPadding;
+            childArea.width-= leftPadding+rightPadding;
+            return childArea;
+        }
+    }
+    // ----------------------------------------------------------------------
 	public float NodeTitleWidth {
 		get {
 			if(IsIconized) return 0;
@@ -146,11 +164,9 @@ public partial class iCS_EditorObject {
 		}
 		// Update port position ratio.
 		float step= 1f/(float)(len);
-Debug.Log("InitialPortLayout: "+ports.Length+" step= "+step);
 
 		for(int i= 0; i < len; ++i) {
 			float ratio= ((float)(i)+0.5f)*step;
-Debug.Log("ports["+i+"]= "+ratio);
 			ports[i].PortPositionRatio= ratio;
 		}		
 	}
@@ -158,16 +174,16 @@ Debug.Log("ports["+i+"]= "+ratio);
 	// Updates the port position ratio of all edges.
     public void UpdatePortRatios() {
         foreach(var port in LeftPorts) {
-            port.UpdateVerticalPortRatioFromLocalPosition(port.LocalPosition);
+            port.SaveVerticalPortRatioFromLocalPosition(port.LocalPosition);
         }
         foreach(var port in RightPorts) {
-            port.UpdateVerticalPortRatioFromLocalPosition(port.LocalPosition);
+            port.SaveVerticalPortRatioFromLocalPosition(port.LocalPosition);
         }
         foreach(var port in TopPorts) {
-            port.UpdateHorizontalPortRatioFromLocalPosition(port.LocalPosition);
+            port.SaveHorizontalPortRatioFromLocalPosition(port.LocalPosition);
         }
         foreach(var port in BottomPorts) {
-            port.UpdateHorizontalPortRatioFromLocalPosition(port.LocalPosition);
+            port.SaveHorizontalPortRatioFromLocalPosition(port.LocalPosition);
         }
     }
     // ----------------------------------------------------------------------

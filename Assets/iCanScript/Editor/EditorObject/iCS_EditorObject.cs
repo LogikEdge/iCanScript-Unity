@@ -8,6 +8,7 @@ public partial class iCS_EditorObject {
     // Fields
     // ----------------------------------------------------------------------
     iCS_IStorage    	myIStorage     = null;
+    bool                myIsLayoutValid= false;
     int             	myId           = -1;
     bool            	myIsFloating   = false;
     bool            	myIsDirty      = false;
@@ -112,13 +113,10 @@ public partial class iCS_EditorObject {
 	// Creates an instance of an editor/engine object pair.
 	public static iCS_EditorObject CreateInstance(int id, string name, Type type,
 												  int parentId, iCS_ObjectTypeEnum objectType,
-												  Vector2 globalPosition,
                             					  iCS_IStorage iStorage) {
 		if(id < 0) return null;
-        // Compute local position.
-        var localPosition= parentId == -1 ? globalPosition : globalPosition-iStorage.EditorObjects[parentId].GlobalPosition;
 		// Create engine object.
-		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType, localPosition);
+		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType);
 		AddEngineObject(id, engineObject, iStorage);
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
@@ -129,13 +127,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Duplicate the given editor object with a new id and parent.
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
-                                         Vector2 globalPosition, iCS_IStorage iStorage) {
+                                         iCS_IStorage iStorage) {
 		if(id < 0) return null;
-        // Compute local position.
-        var localPosition= parent == null ? globalPosition : globalPosition-parent.GlobalPosition;
 		// Create engine object.
         var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject,
-												 (parent == null ? null : parent.EngineObject), localPosition);
+												 (parent == null ? null : parent.EngineObject));
 		AddEngineObject(id, engineObject, iStorage);
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
@@ -238,7 +234,8 @@ public partial class iCS_EditorObject {
         myId= id;
 		var parent= Parent;
 		if(parent != null) parent.AddChild(this);
-        IsDirty= true;            
+        IsDirty= true;
+        myIsLayoutValid= false;            
     }
     // ----------------------------------------------------------------------
 	public static void RebuildFromEngineObjects(iCS_IStorage iStorage) {

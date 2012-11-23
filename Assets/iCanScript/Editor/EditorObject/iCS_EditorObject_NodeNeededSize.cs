@@ -56,22 +56,24 @@ public partial class iCS_EditorObject {
     public Vector2 NeededChildrenSize {
         get {
             // The size is initialized with the largest & tallest child.
-            Vector2 size= Vector2.zero;
+            Vector2 minSize= Vector2.zero;
+            Vector2 maxSize= Vector2.zero;
             ForEachChildNode(
                 c=> {
                     var childSize= c.DisplaySize;
-                    if(childSize.x > size.x) size.x= childSize.x;
-                    if(childSize.y > size.y) size.y= childSize.y;
+                    if(childSize.x > minSize.x) minSize.x= childSize.x;
+                    if(childSize.y > minSize.y) minSize.y= childSize.y;
+                    maxSize+= childSize;
                 }
             );
             // Return if no visible child.
-            if(Math3D.IsZero(size.x)) return Vector2.zero;
+            if(Math3D.IsZero(minSize.x)) return Vector2.zero;
             // Now lets start iterating until we position each child without
             // any overlap.
             /*
                 TODO: To be completed.
             */
-            return size;
+            return minSize;
         }
     }
 

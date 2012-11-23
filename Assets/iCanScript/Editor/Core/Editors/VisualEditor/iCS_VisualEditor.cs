@@ -61,6 +61,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void OnSelectionChange() {
         myNeedRepaint= true;
+        mySubEditor= null;
     }
     
     // ======================================================================
