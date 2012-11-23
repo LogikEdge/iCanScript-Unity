@@ -195,6 +195,7 @@ public partial class iCS_IStorage {
 
         // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {
+            UpdateExecutionPriority();
             CleanupNeeded= Cleanup();
         }
         
@@ -214,6 +215,18 @@ public partial class iCS_IStorage {
             target= new Rect(center.x, center.y, 0, 0);
         }
         return target;
+    }
+    // ----------------------------------------------------------------------
+    /*
+        TODO: Should use the layout rule the determine execution priority.
+    */
+    public void UpdateExecutionPriority() {
+        var len= EditorObjects.Count;
+        for(int i= 0; i < len; ++i) {
+            if(IsValid(i)) {
+                EditorObjects[i].ExecutionPriority= i;
+            }
+        }
     }
     // ----------------------------------------------------------------------
     public bool Cleanup() {

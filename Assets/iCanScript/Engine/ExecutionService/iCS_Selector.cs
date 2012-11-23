@@ -28,7 +28,7 @@ public class iCS_Selector : iCS_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Selector(string name, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {}
+    public iCS_Selector(string name, bool[] paramIsOuts, int priority) : base(name, paramIsOuts, priority) {}
 
     // ======================================================================
     // Execution

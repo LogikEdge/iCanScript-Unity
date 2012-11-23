@@ -20,4 +20,8 @@ public partial class iCS_EditorObject {
 			IsDirty= true;
 		}
 	}
+	public int ExecutionPriority {
+	    get { return EngineObject.ExecutionPriority; }
+	    set { EngineObject.ExecutionPriority= value; }
+	}
 }

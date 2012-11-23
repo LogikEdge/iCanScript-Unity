@@ -258,10 +258,10 @@ public sealed class iCS_Behaviour : iCS_Storage {
 				if(node.InstanceId == -1) continue;
                 // Was already generated in a previous pass.
                 if(myRuntimeNodes[node.InstanceId] != null) continue;
-                Vector2 layout= GetGlobalPosition(node);
+                int priority= node.ExecutionPriority;
 				// Special case for active ports.
 				if(node.IsOutMuxPort) {
-					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, layout);
+					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, priority);
 					continue;
 				}
                 if(node.IsNode) {
@@ -294,13 +294,13 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             break;
                         }
                         case iCS_ObjectTypeEnum.StateChart: {
-                            iCS_StateChart stateChart= new iCS_StateChart(node.Name, layout);
+                            iCS_StateChart stateChart= new iCS_StateChart(node.Name, priority);
                             myRuntimeNodes[node.InstanceId]= stateChart;
                             InvokeAddChildIfExists(parent, stateChart);
                             break;
                         }
                         case iCS_ObjectTypeEnum.State: {
-                            iCS_State state= new iCS_State(node.Name, layout);
+                            iCS_State state= new iCS_State(node.Name, priority);
                             myRuntimeNodes[node.InstanceId]= state;
                             InvokeAddChildIfExists(parent, state);
                             if(node.IsEntryState) {
@@ -319,26 +319,26 @@ public sealed class iCS_Behaviour : iCS_Storage {
                         }
                         case iCS_ObjectTypeEnum.TransitionGuard:
                         case iCS_ObjectTypeEnum.TransitionAction: {
-                            iCS_Module module= new iCS_Module(node.Name, layout);                                
+                            iCS_Module module= new iCS_Module(node.Name, priority);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             break;
                         }
                         case iCS_ObjectTypeEnum.Module: {
-                            iCS_Module module= new iCS_Module(node.Name, layout);                                
+                            iCS_Module module= new iCS_Module(node.Name, priority);                                
                             myRuntimeNodes[node.InstanceId]= module;
                             InvokeAddChildIfExists(parent, module);                                
                             break;
                         }
                         case iCS_ObjectTypeEnum.InstanceMethod: {
                             // Create method.
-                            iCS_Method method= new iCS_Method(node.Name, GetMethodBase(node), GetPortIsOuts(node), layout);                                
+                            iCS_Method method= new iCS_Method(node.Name, GetMethodBase(node), GetPortIsOuts(node), priority);                                
                             myRuntimeNodes[node.InstanceId]= method;
                             InvokeAddChildIfExists(parent, method);
                             break;                            
                         }
                         case iCS_ObjectTypeEnum.Constructor: {
                             // Create function.
-                            iCS_Constructor func= new iCS_Constructor(node.Name, GetMethodBase(node), GetPortIsOuts(node), layout);                                
+                            iCS_Constructor func= new iCS_Constructor(node.Name, GetMethodBase(node), GetPortIsOuts(node), priority);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
@@ -346,7 +346,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                         case iCS_ObjectTypeEnum.TypeCast:
                         case iCS_ObjectTypeEnum.StaticMethod: {
                             // Create function.
-                            iCS_Function func= new iCS_Function(node.Name, GetMethodBase(node), GetPortIsOuts(node), layout);                                
+                            iCS_Function func= new iCS_Function(node.Name, GetMethodBase(node), GetPortIsOuts(node), priority);                                
                             myRuntimeNodes[node.InstanceId]= func;
                             InvokeAddChildIfExists(parent, func);
                             break;
@@ -356,8 +356,8 @@ public sealed class iCS_Behaviour : iCS_Storage {
                             FieldInfo fieldInfo= GetFieldInfo(node);
 							bool[] portIsOuts= GetPortIsOuts(node);
                             iCS_FunctionBase rtField= portIsOuts.Length == 0 ?
-                                new iCS_GetInstanceField(node.Name, fieldInfo, portIsOuts, layout) as iCS_FunctionBase:
-                                new iCS_SetInstanceField(node.Name, fieldInfo, portIsOuts, layout) as iCS_FunctionBase;                                
+                                new iCS_GetInstanceField(node.Name, fieldInfo, portIsOuts, priority) as iCS_FunctionBase:
+                                new iCS_SetInstanceField(node.Name, fieldInfo, portIsOuts, priority) as iCS_FunctionBase;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;
@@ -367,8 +367,8 @@ public sealed class iCS_Behaviour : iCS_Storage {
 							FieldInfo fieldInfo= GetFieldInfo(node);
 							bool[] portIsOuts= GetPortIsOuts(node);
                             iCS_FunctionBase rtField= portIsOuts.Length == 0 ?
-                                new iCS_GetStaticField(node.Name, fieldInfo, portIsOuts, layout) as iCS_FunctionBase:
-                                new iCS_SetStaticField(node.Name, fieldInfo, portIsOuts, layout) as iCS_FunctionBase;                                
+                                new iCS_GetStaticField(node.Name, fieldInfo, portIsOuts, priority) as iCS_FunctionBase:
+                                new iCS_SetStaticField(node.Name, fieldInfo, portIsOuts, priority) as iCS_FunctionBase;                                
                             myRuntimeNodes[node.InstanceId]= rtField;
                             InvokeAddChildIfExists(parent, rtField);
                             break;                            
@@ -417,15 +417,12 @@ public sealed class iCS_Behaviour : iCS_Storage {
                         triggerPort= GetDataConnectionSource(triggerPort);
                         iCS_FunctionBase triggerFunc= triggerPort.IsOutModulePort ? null : myRuntimeNodes[triggerPort.ParentId] as iCS_FunctionBase;
                         int triggerIdx= triggerPort.PortIndex;
-                        Vector2 outStatePortPos= GetGlobalPosition(outStatePort);
-                        Vector2 inStatePortPos= GetGlobalPosition(port);
-                        Vector2 layout= new Vector2(0.5f*(inStatePortPos.x+outStatePortPos.x), 0.5f*(inStatePortPos.y+outStatePortPos.y));
                         iCS_Transition transition= new iCS_Transition(transitionModule.Name,
                                                                     myRuntimeNodes[endState.InstanceId] as iCS_State,
                                                                     myRuntimeNodes[guardModule.InstanceId] as iCS_Module,
                                                                     triggerFunc, triggerIdx,
                                                                     actionModule != null ? myRuntimeNodes[actionModule.InstanceId] as iCS_Module : null,
-                                                                    layout);
+                                                                    transitionModule.ExecutionPriority);
                         iCS_State state= myRuntimeNodes[outStatePort.ParentId] as iCS_State;
                         state.AddChild(transition);
                         break;

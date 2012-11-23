@@ -7,13 +7,13 @@ public class iCS_Object {
     // ----------------------------------------------------------------------
     public string  Name     { get; set; }
     public string  TypeName { get { return GetType().Name; }}
-    public Vector2 Layout   { get; set; }
+    public int     Priority { get; set; }
 
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Object(string name, Vector2 layout) {
+    public iCS_Object(string name, int priority) {
         Name= name;
-        Layout= layout;
+        Priority= priority;
     }
 }

@@ -41,7 +41,7 @@ public class iCS_MuxPort : iCS_Action, iCS_IParams {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_MuxPort(string name, Vector2 layout) : base(name, layout) {
+    public iCS_MuxPort(string name, int priority) : base(name, priority) {
 		myConnections= new iCS_Connection[1];
 		myConnections[0]= iCS_Connection.NoConnection;
 	}

@@ -21,7 +21,7 @@ public abstract class iCS_Action : iCS_Object {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Action(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_Action(string name, int priority) : base(name, priority) {}
      
     // ======================================================================
     // Execution

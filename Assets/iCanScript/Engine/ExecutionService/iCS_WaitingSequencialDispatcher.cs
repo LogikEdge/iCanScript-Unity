@@ -6,7 +6,7 @@ public class iCS_WaitingSequencialDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_WaitingSequencialDispatcher(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_WaitingSequencialDispatcher(string name, int priority) : base(name, priority) {}
     
     // ======================================================================
     // Execution

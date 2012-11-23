@@ -27,8 +27,8 @@ public sealed class iCS_State : iCS_Object {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_State(string name, Vector2 layout) : base(name, layout) {
-        myTransitions= new iCS_VerifyTransitions(name, layout);
+    public iCS_State(string name, int priority) : base(name, priority) {
+        myTransitions= new iCS_VerifyTransitions(name, priority);
     }
     
     // ======================================================================

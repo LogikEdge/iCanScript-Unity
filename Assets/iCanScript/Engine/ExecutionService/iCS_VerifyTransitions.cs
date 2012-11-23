@@ -18,7 +18,7 @@ public class iCS_VerifyTransitions : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_VerifyTransitions(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_VerifyTransitions(string name, int priority) : base(name, priority) {}
 
     // ======================================================================
     // Execution

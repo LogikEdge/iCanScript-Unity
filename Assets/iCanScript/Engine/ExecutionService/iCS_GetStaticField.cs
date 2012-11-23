@@ -13,7 +13,7 @@ public class iCS_GetStaticField : iCS_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_GetStaticField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
+    public iCS_GetStaticField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, int priority) : base(name, paramIsOuts, priority) {
         myFieldInfo= fieldInfo;
     }
     

@@ -38,7 +38,7 @@ public sealed class iCS_StateChart : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_StateChart(string name, Vector2 layout) : base(name, layout) {
+    public iCS_StateChart(string name, int priority) : base(name, priority) {
     }
 
     // ======================================================================

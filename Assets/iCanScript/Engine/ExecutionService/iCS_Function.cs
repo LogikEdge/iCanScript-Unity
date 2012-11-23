@@ -27,7 +27,7 @@ public class iCS_Function : iCS_FunctionBase {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Function(string name, MethodBase methodInfo, bool[] paramIsOuts, Vector2 layout) : base(name, paramIsOuts, layout) {
+    public iCS_Function(string name, MethodBase methodInfo, bool[] paramIsOuts, int priority) : base(name, paramIsOuts, priority) {
         myMethodInfo= methodInfo;
     }
     public new void SetParameterConnection(int id, iCS_Connection connection) {
