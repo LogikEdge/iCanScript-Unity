@@ -12,6 +12,7 @@ public class iCS_EngineObject {
     // ======================================================================
     // Database Fields
     // ----------------------------------------------------------------------
+    public int                   DataVersion       = 1;
     public iCS_ObjectTypeEnum    ObjectType        = iCS_ObjectTypeEnum.Unknown;
     public int                   InstanceId        = -1;
     public int                   ParentId          = -1;
@@ -29,13 +30,54 @@ public class iCS_EngineObject {
     public int                   ExecutionPriority= 0;
 
     // Port specific attributes ---------------------------------------------
-    public iCS_EdgeEnum          Edge               = iCS_EdgeEnum.None;
     public int                   SourceId           = -1;
     public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;
 
     // State specific attributes ---------------------------------------------
     public bool                  IsEntryState= false;
+
+    // ======================================================================
+    // Accessors
+    // ----------------------------------------------------------------------
+    public bool   IsValid         { get { return InstanceId != -1; }}
+    public bool   IsParentValid   { get { return ParentId != -1; }}
+    public bool   IsSourceValid   { get { return SourceId != -1; }}
+    public bool   IsNameEmpty     { get { return RawName == null || RawName == ""; }}
+    public Type   RuntimeType     { get { return Type.GetType(QualifiedType); }}
+    public string TypeName        { get { return iCS_Types.TypeName(RuntimeType);}} 
+    public string Name {
+        get { return IsNameEmpty ? ":"+TypeName : RawName; }
+        set { RawName= value; }
+    }
+    // Port Specific accesors ------------------------------------------------
+    public int PortGroup {
+        get { return NbOfParams; }
+        set { NbOfParams= value; }
+    }
+    public iCS_EdgeEnum Edge {
+        get {
+            var edge= LocalPositionRatio.x;
+            if(Math3D.IsEqual(edge, 1f)) return iCS_EdgeEnum.Left;
+            if(Math3D.IsEqual(edge, 2f)) return iCS_EdgeEnum.Right;
+            if(Math3D.IsEqual(edge, 3f)) return iCS_EdgeEnum.Top;
+            if(Math3D.IsEqual(edge, 4f)) return iCS_EdgeEnum.Bottom;
+            return iCS_EdgeEnum.None;
+        }
+        set {
+            switch(value) {
+                case iCS_EdgeEnum.Left  : LocalPositionRatio.x= 1f; break;
+                case iCS_EdgeEnum.Right : LocalPositionRatio.x= 2f; break;
+                case iCS_EdgeEnum.Top   : LocalPositionRatio.x= 3f; break;
+                case iCS_EdgeEnum.Bottom: LocalPositionRatio.x= 4f; break;
+                default                 : LocalPositionRatio.x= 0f; break;
+            }
+        }
+    }
+    public float PortPositionRatio {
+        get { return LocalPositionRatio.y; }
+        set { LocalPositionRatio.y= value; }
+    }
 
     // ======================================================================
     // Initialization
@@ -162,27 +204,6 @@ public class iCS_EngineObject {
     public bool SupportsAdditionOfPorts { get { return IsModule; }}
     public bool SupportsNestedNodes     { get { return IsModule; }}
     
-    // ======================================================================
-    // Accessors
-    // ----------------------------------------------------------------------
-    public int  PortGroup       { get { return NbOfParams; } set { NbOfParams= value; }}
-    public bool IsValid         { get { return InstanceId != -1; }}
-    public bool IsParentValid   { get { return ParentId != -1; }}
-    public bool IsSourceValid   { get { return SourceId != -1; }}
-    public bool IsNameEmpty     { get { return RawName == null || RawName == ""; }}
-    public Type RuntimeType     { get { return Type.GetType(QualifiedType); }}
-    public string TypeName {
-        get {
-            return iCS_Types.TypeName(RuntimeType);
-        }
-    }
-    public string Name {
-        get {
-            return IsNameEmpty ? ":"+TypeName : RawName;
-        }
-        set { RawName= value; }
-    }
-
     // ----------------------------------------------------------------------
 	public FieldInfo GetFieldInfo() {
         if(MethodName == null) return null;

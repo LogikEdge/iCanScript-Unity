@@ -5,12 +5,8 @@ using System.Collections.Generic;
 public partial class iCS_EditorObject {
     // Storage accessors ====================================================
     public float PortPositionRatio {
-        get { return EngineObject.LocalPositionRatio.y; }
-		set {
-            var engineObject= EngineObject;
-            var x= engineObject.LocalPositionRatio.x;
-		    EngineObject.LocalPositionRatio= new Vector2(x, value);
-		}
+        get { return EngineObject.PortPositionRatio; }
+		set { EngineObject.PortPositionRatio= value; }
     }
     
     // Port Layout Utilities ================================================
