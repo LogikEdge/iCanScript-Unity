@@ -20,7 +20,7 @@ public class iCS_PortTooltipEditor : iCS_ISubEditor {
         myIStorage= iStorage;
         myTarget= target;
         myOriginalName= myTarget.RawName;
-        myOriginalTooltip= myTarget.RawTooltip;
+        myOriginalTooltip= myTarget.Tooltip;
     }
     
 //    void OnEnable() {
@@ -45,17 +45,17 @@ public class iCS_PortTooltipEditor : iCS_ISubEditor {
             EditorGUILayout.LabelField("Name", name);                    
         }
         // Show object tooltip.
-        string tooltip= myTarget.RawTooltip;
+        string tooltip= myTarget.Tooltip;
         if(tooltip == null || tooltip == "") tooltip= EmptyStr;
         tooltip= EditorGUILayout.TextField("Tooltip", tooltip);
-        if(tooltip != EmptyStr && tooltip != myTarget.RawTooltip) {
+        if(tooltip != EmptyStr && tooltip != myTarget.Tooltip) {
             myTarget.Tooltip= tooltip;
         }
 
         GUILayout.BeginHorizontal(); {
             if(GUILayout.Button("Cancel")) {
                 myTarget.RawName= myOriginalName;
-                myTarget.RawTooltip= myOriginalTooltip;
+                myTarget.Tooltip= myOriginalTooltip;
 //                Close();
             }
             if(GUILayout.Button("Save")) {

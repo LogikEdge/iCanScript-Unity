@@ -87,10 +87,6 @@ public partial class iCS_EditorObject {
 		get { return EngineObject.IsNameEditable; }
 		set { EngineObject.IsNameEditable= value; }
 	}
-    public string RawTooltip {
-		get { return EngineObject.RawTooltip; }
-		set { EngineObject.RawTooltip= value; }
-	}
     public string Tooltip {
 		get { return EngineObject.Tooltip; }
 		set { EngineObject.Tooltip= value; }

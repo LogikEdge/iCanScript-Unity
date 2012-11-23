@@ -25,7 +25,7 @@ public class iCS_EngineObject {
 	public string				 MethodName       = null;
 	public int					 NbOfParams       = 0;     // Also used for port group
     public string                IconGUID         = null;
-    public string                RawTooltip       = null;
+    public string                Tooltip          = null;
     public int                   ExecutionPriority= 0;
 
     // Port specific attributes ---------------------------------------------
@@ -74,7 +74,7 @@ public class iCS_EngineObject {
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;
         instance.IconGUID= toClone.IconGUID;
-        instance.RawTooltip= toClone.RawTooltip;
+        instance.Tooltip= toClone.Tooltip;
 		// Port
         instance.Edge= toClone.Edge;
         instance.PortIndex= toClone.PortIndex;
@@ -98,7 +98,7 @@ public class iCS_EngineObject {
 		MethodName= null;
 		NbOfParams= 0;
         IconGUID= null;
-        RawTooltip = null;
+        Tooltip = null;
 		// Port
         Edge= iCS_EdgeEnum.None;
         SourceId= -1;
@@ -170,7 +170,6 @@ public class iCS_EngineObject {
     public bool IsParentValid   { get { return ParentId != -1; }}
     public bool IsSourceValid   { get { return SourceId != -1; }}
     public bool IsNameEmpty     { get { return RawName == null || RawName == ""; }}
-    public bool IsTooltipEmpty  { get { return RawTooltip == null || RawTooltip == ""; }}
     public Type RuntimeType     { get { return Type.GetType(QualifiedType); }}
     public string TypeName {
         get {
@@ -182,10 +181,6 @@ public class iCS_EngineObject {
             return IsNameEmpty ? ":"+TypeName : RawName;
         }
         set { RawName= value; }
-    }
-    public string Tooltip {
-        get { return RawTooltip; }
-        set { RawTooltip= value; }
     }
 
     // ----------------------------------------------------------------------
