@@ -80,12 +80,6 @@ public class iCS_Storage : MonoBehaviour {
         return EngineObjects[port.SourceId];
     }
     // ----------------------------------------------------------------------
-    // Returns the global position of the object.
-    public Vector2 GetGlobalPosition(iCS_EngineObject obj) {
-        if(obj.ParentId == -1) return obj.LocalPosition;
-        return obj.LocalPosition + GetGlobalPosition(EngineObjects[obj.ParentId]);
-    }
-    // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.
     public iCS_EngineObject GetDataConnectionSource(iCS_EngineObject port) {
         if(port == null || !port.IsDataPort) return null;
