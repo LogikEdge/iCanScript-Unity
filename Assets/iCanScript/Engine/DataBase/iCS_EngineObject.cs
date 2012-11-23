@@ -12,14 +12,14 @@ public class iCS_EngineObject {
     // ======================================================================
     // Database Fields
     // ----------------------------------------------------------------------
-    public iCS_ObjectTypeEnum    ObjectType      = iCS_ObjectTypeEnum.Unknown;
-    public int                   InstanceId      = -1;
-    public int                   ParentId        = -1;
-    public string                QualifiedType   = "";
-    public string                RawName         = "";
-    public Vector2               LocalPosition   = Vector2.zero;
-    public iCS_DisplayOptionEnum DisplayOption   = iCS_DisplayOptionEnum.Unfolded;
-    public bool                  IsNameEditable  = true;
+    public iCS_ObjectTypeEnum    ObjectType        = iCS_ObjectTypeEnum.Unknown;
+    public int                   InstanceId        = -1;
+    public int                   ParentId          = -1;
+    public string                QualifiedType     = "";
+    public string                RawName           = "";
+    public Vector2               LocalPositionRatio= Vector2.zero;
+    public iCS_DisplayOptionEnum DisplayOption     = iCS_DisplayOptionEnum.Unfolded;
+    public bool                  IsNameEditable    = true;
 
 	// Node specific attributes ---------------------------------------------
 	public string				 MethodName       = null;
@@ -40,14 +40,14 @@ public class iCS_EngineObject {
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType, Vector2 localPosition) {
+    public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType, Vector2 localPositionRatio) {
         Reset();
         ObjectType= objectType;
         InstanceId= id;
         ParentId= parentId;
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
-        LocalPosition= localPosition;
+        LocalPositionRatio= localPositionRatio;
         if(IsDataPort) {
             Edge= IsInputPort ? (IsEnablePort ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left) : iCS_EdgeEnum.Right;
         }
@@ -65,8 +65,8 @@ public class iCS_EngineObject {
 		Reset();
 	}
     // ----------------------------------------------------------------------
-    public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent, Vector2 localPosition) {
-        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localPosition);
+    public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent, Vector2 localPositionRatio) {
+        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localPositionRatio);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
@@ -91,7 +91,7 @@ public class iCS_EngineObject {
         ParentId= -1;
         QualifiedType= "";
 		RawName= "";
-        LocalPosition= Vector2.zero;
+        LocalPositionRatio= Vector2.zero;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;
 		// Node
@@ -108,14 +108,6 @@ public class iCS_EngineObject {
 		IsEntryState= false;
     }
     
-    // ----------------------------------------------------------------------
-    // Display Option Accessor
-    public bool IsUnfolded          { get { return iCS_DisplayOption.IsUnfolded(DisplayOption); }}
-    public bool IsIconized          { get { return iCS_DisplayOption.IsIconized(DisplayOption); }}
-    public bool IsFolded            { get { return iCS_DisplayOption.IsFolded(DisplayOption); }}
-    public void Unfold()            { iCS_DisplayOption.Unfold(ref DisplayOption); }
-    public void Fold()              { iCS_DisplayOption.Fold(ref DisplayOption); }
-    public void Iconize()           { iCS_DisplayOption.Iconize(ref DisplayOption); }
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode                  { get { return iCS_ObjectType.IsNode(this); }}

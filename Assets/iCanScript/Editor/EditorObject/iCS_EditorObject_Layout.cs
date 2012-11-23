@@ -29,18 +29,18 @@ public partial class iCS_EditorObject {
                 return myPortLocalPosition;
             }
             // This is a node.
-            return EngineObject.LocalPosition;
+            return EngineObject.LocalPositionRatio;
 		}
 		set {
             if(IsPort) {
                 myPortLocalPosition= value;
             } else {
                 var engineObject= EngineObject;
-                var localPosition= engineObject.LocalPosition;
+                var localPosition= engineObject.LocalPositionRatio;
                 // Avoid propagating change if we did not change position
                 if(Math3D.IsEqual(localPosition, value)) return;
                 // Set new local position and update any position dependent values.
-    			engineObject.LocalPosition= value;                
+    			engineObject.LocalPositionRatio= value;                
             }
 		}
 	}
