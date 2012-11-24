@@ -52,8 +52,9 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public Vector2 NeededChildrenSize {
+    public Rect NeededChildrenLocalRect {
         get {
+            if(!IsUnfolded) return new Rect(0,0,0,0);
             // The size is initialized with the largest & tallest child.
             Rect childRect= new Rect(0,0,0,0);
             ForEachChildNode(
@@ -63,7 +64,31 @@ public partial class iCS_EditorObject {
                     }
                 }
             );
+            return childRect;
+        }
+    }
+    // ----------------------------------------------------------------------
+    public Vector2 NeededChildrenSize {
+        get {
+            Rect childRect= NeededChildrenLocalRect;
             return new Vector2(childRect.width, childRect.height);
+        }
+    }
+    // ----------------------------------------------------------------------
+    public Rect NeededChildrenGlobalRect {
+        get {
+            var center= GlobalPosition;
+            Rect childRect= new Rect(center.x,center.y,0,0);
+            if(!IsUnfolded) return childRect;
+            // The size is initialized with the largest & tallest child.
+            ForEachChildNode(
+                c=> {
+                    if(!c.IsFloating) {
+                        childRect= Math3D.Merge(childRect, c.GlobalRect);                        
+                    }
+                }
+            );
+            return childRect;
         }
     }
 

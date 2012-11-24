@@ -135,7 +135,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case DragTypeEnum.NodeDrag:
                 iCS_EditorObject node= DragObject;
                 node.IsFloating= IsFloatingKeyDown;
-                IStorage.MoveTo(node, DragStartPosition+delta);
+                node.NodeUserDrag(DragStartPosition+delta);
+//                IStorage.MoveTo(node, DragStartPosition+delta);
                 node.IsDirty= true;
                 break;
             case DragTypeEnum.PortRelocation: {

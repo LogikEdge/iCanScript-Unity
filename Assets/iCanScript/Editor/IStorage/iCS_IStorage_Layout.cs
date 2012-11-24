@@ -286,7 +286,7 @@ public partial class iCS_IStorage {
     // collision has occured.
     public void ResolveCollisionOnChildren(iCS_EditorObject node, Vector2 delta) {
         bool didCollide= false;
-        iCS_EditorObject[] children= BuildListOfChildren(c=> c.IsVisible && c.IsNode && !c.IsFloating,node);
+        iCS_EditorObject[] children= BuildListOfChildren(c=> c.IsVisible && c.IsNode && !c.IsFloating, node);
         for(int i= 0; i < children.Length-1; ++i) {
             for(int j= i+1; j < children.Length; ++j) {
                 didCollide |= ResolveCollisionBetweenTwoNodes(children[i], children[j], delta);                            
