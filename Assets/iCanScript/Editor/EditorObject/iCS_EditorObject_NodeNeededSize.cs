@@ -59,7 +59,9 @@ public partial class iCS_EditorObject {
             Rect childRect= new Rect(0,0,0,0);
             ForEachChildNode(
                 c=> {
-                    childRect= Math3D.Merge(childRect, c.LocalRect);
+                    if(!c.IsFloating) {
+                        childRect= Math3D.Merge(childRect, c.LocalRect);                        
+                    }
                 }
             );
             return new Vector2(childRect.width, childRect.height);
