@@ -7,6 +7,9 @@ public partial class iCS_EditorObject {
     // have previously been updated.
     public void UpdateNodeSize() {
         DisplaySize= NodeNeededSize;
+        /*
+            TODO: Move Layout ports into DisplaySize::set
+        */
         LayoutPorts();
     }
     // ----------------------------------------------------------------------
