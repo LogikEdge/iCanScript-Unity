@@ -118,9 +118,20 @@ public partial class iCS_EditorObject {
     }
 
     // ======================================================================
+	// List builders.
+    // ----------------------------------------------------------------------
+	// Build list of children matching given criteria.
     public iCS_EditorObject[] BuildListOfChildren(Func<iCS_EditorObject, bool> cond) {
         var result= new List<iCS_EditorObject>();
         ForEachChild(c=> { if(cond(c)) result.Add(c); });
         return result.ToArray();
     }
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject[] BuildListOfChildNodes(Func<iCS_EditorObject, bool> cond) {
+		return BuildListOfChildren(c=> c.IsNode && cond(c));
+	}
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject[] BuildListOfChildPorts(Func<iCS_EditorObject, bool> cond) {
+		return BuildListOfChildren(c=> c.IsPort && cond(c));
+	}
 }
