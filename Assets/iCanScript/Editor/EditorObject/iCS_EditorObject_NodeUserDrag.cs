@@ -24,7 +24,7 @@ public partial class iCS_EditorObject {
         parent.ResolveCollisionOnChildren(delta);
         // Adjust parent to wrap children.
         var previousGlobalRect= parent.GlobalRect;
-        parent.UpdateNodeGlobalRect();
+        parent.WrapAroundChildrenNodes();
 		// Ask parent to do the same if parent Rect has changed.
         var newGlobalRect= parent.GlobalRect;
         if(Math3D.IsEqual(previousGlobalRect, newGlobalRect)) return;
