@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
@@ -18,12 +19,20 @@ public partial class iCS_EditorObject {
         var parent= Parent;
         // Resolve collision with siblings.
         myIStorage.ResolveCollisionOnChildren(parent, delta);
+		// Take a snapshot of the children position.
+		var childPositions= new List<Vector2>();
+		ForEachChildNode(c=> childPositions.Add(c.GlobalPosition));
         // Readjust parent size & position.
         var previousGlobalRect= parent.GlobalRect;
         var childrenGlobalRect= parent.NeededChildrenGlobalRect;
         parent.NodeGlobalChildRect= childrenGlobalRect;
         var newGlobalRect= parent.GlobalRect;
         if(Math3D.IsEqual(previousGlobalRect, newGlobalRect)) return;
-        parent.NodeAdjustAfterDrag(Math3D.Middle(newGlobalRect)-Math3D.Middle(previousGlobalRect));
+		// Reposition child to maintain their global positions.
+		int i= 0;
+		ForEachChildNode(c=> c.GlobalPosition= childPositions[i++]);
+		// Ask parent to do the same...
+		delta= Math3D.Middle(newGlobalRect)-Math3D.Middle(previousGlobalRect);
+        parent.NodeAdjustAfterDrag(delta);
     }
 }
