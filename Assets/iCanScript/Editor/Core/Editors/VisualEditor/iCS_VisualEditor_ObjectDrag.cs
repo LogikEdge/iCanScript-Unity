@@ -135,7 +135,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case DragTypeEnum.NodeDrag:
                 iCS_EditorObject node= DragObject;
                 node.IsFloating= IsFloatingKeyDown;
-                node.NodeUserDrag(DragStartPosition+delta);
+                node.UserDragTo(DragStartPosition+delta);
 //                IStorage.MoveTo(node, DragStartPosition+delta);
                 node.IsDirty= true;
                 break;
@@ -230,7 +230,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 ChangeParent(node, newParent);
                             }
                         } else {
-                            node.NodeUserDrag(DragStartPosition);
+                            node.UserDragTo(DragStartPosition);
                         }
                         oldParent.IsDirty= true;                        
                     }

@@ -8,7 +8,6 @@ public partial class iCS_EditorObject {
     // Fields
     // ----------------------------------------------------------------------
     iCS_IStorage    	myIStorage     = null;
-    bool                myIsLayoutValid= false;
     int             	myId           = -1;
     bool            	myIsFloating   = false;
     bool            	myIsDirty      = false;
@@ -235,7 +234,6 @@ public partial class iCS_EditorObject {
 		var parent= Parent;
 		if(parent != null) parent.AddChild(this);
         IsDirty= true;
-        myIsLayoutValid= false;            
     }
     // ----------------------------------------------------------------------
 	public static void RebuildFromEngineObjects(iCS_IStorage iStorage) {

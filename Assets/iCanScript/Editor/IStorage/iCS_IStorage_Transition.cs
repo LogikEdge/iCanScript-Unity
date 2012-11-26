@@ -288,7 +288,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void LayoutTransitionModule(iCS_EditorObject module) {
         GetTransitionName(module);
-        SetLayoutPosition(module, ProposeTransitionModulePosition(module));                    
+        module.GlobalRect= ProposeTransitionModulePosition(module);
     }
     // ----------------------------------------------------------------------
     public Vector2 GetTransitionModuleVector(iCS_EditorObject module) {

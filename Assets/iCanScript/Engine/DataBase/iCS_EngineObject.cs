@@ -12,7 +12,6 @@ public class iCS_EngineObject {
     // ======================================================================
     // Database Fields
     // ----------------------------------------------------------------------
-    public int                   DataVersion       = 1;
     public iCS_ObjectTypeEnum    ObjectType        = iCS_ObjectTypeEnum.Unknown;
     public int                   InstanceId        = -1;
     public int                   ParentId          = -1;

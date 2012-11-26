@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using P=Prelude;
 
 /*
@@ -116,4 +117,10 @@ public partial class iCS_EditorObject {
         }
     }
 
+    // ======================================================================
+    public iCS_EditorObject[] BuildListOfChildren(Func<iCS_EditorObject, bool> cond) {
+        var result= new List<iCS_EditorObject>();
+        ForEachChild(c=> { if(cond(c)) result.Add(c); });
+        return result.ToArray();
+    }
 }

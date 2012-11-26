@@ -118,28 +118,6 @@ public partial class iCS_IStorage {
 #endif
     }
     // ----------------------------------------------------------------------
-    // Determine if position are the same.
-    public bool IsSamePosition(Rect r1, Rect r2) {
-        return Math3D.IsWithin(r1.x, r2.x-kLayoutEpsilon, r2.x+kLayoutEpsilon) &&
-               Math3D.IsWithin(r1.y, r2.y-kLayoutEpsilon, r2.y+kLayoutEpsilon) &&
-               Math3D.IsWithin(r1.width, r2.width-kLayoutEpsilon, r2.width+kLayoutEpsilon) &&
-               Math3D.IsWithin(r1.height, r2.height-kLayoutEpsilon, r2.height+kLayoutEpsilon);
-    }
-    // ----------------------------------------------------------------------
-    // Moves the node without changing its size.
-    public void MoveTo(iCS_EditorObject node, Vector2 newPos) {
-        var delta= newPos - node.GlobalPosition;
-        DeltaMove(node, delta);
-    }
-    // ----------------------------------------------------------------------
-    // Moves the node without changing its size.
-    public void DeltaMove(iCS_EditorObject node, Vector2 delta) {
-        // Move the node
-        DeltaMoveInternal(node, delta);
-        // Resolve collision between siblings.
-        LayoutParent(node, delta);
-	}
-    // ----------------------------------------------------------------------
     // Moves the node without changing its size.
     void DeltaMoveInternal(iCS_EditorObject node, Vector2 delta) {
         if(Math3D.IsNotZero(delta)) {
@@ -163,32 +141,6 @@ public partial class iCS_IStorage {
     Vector2 GetBottomRightCorner(iCS_EditorObject node) {
         Rect position= node.GlobalRect;
         return new Vector2(position.xMax, position.yMax);
-    }
-    // ----------------------------------------------------------------------
-    void LayoutParent(iCS_EditorObject node, Vector2 deltaMove) {
-        if(!IsValid(node.ParentId)) return;
-        iCS_EditorObject parentNode= node.Parent;
-        ResolveCollision(parentNode, deltaMove);
-        Layout(parentNode);
-    }
-    // ----------------------------------------------------------------------
-    // Returns the space used by all children.
-    Rect ComputeChildrenRect(iCS_EditorObject node) {
-        // Compute child space.
-        Rect childrenRect= new Rect(0,0,0,0);
-        node.ForEachChildNode(
-            child=> {
-                if(child.IsVisible && !child.IsFloating) {
-                    var childPos= child.GlobalRect;
-                    if(Math3D.IsZero(childrenRect.width)) {
-                        childrenRect= childPos;
-                    } else {
-                        childrenRect= Math3D.Merge(childrenRect, childPos);                        
-                    }
-                }
-            }
-        );
-        return childrenRect;
     }
 
     // ======================================================================
@@ -270,104 +222,6 @@ public partial class iCS_IStorage {
         a= b;
         b= tmp;
     }
-
-    // ======================================================================
-    // Collision Functions
-    // ----------------------------------------------------------------------
-    // Resolve collision on parents.
-    void ResolveCollision(iCS_EditorObject node, Vector2 delta) {
-        ResolveCollisionOnChildren(node, delta);
-        if(!IsValid(node.ParentId)) return;
-        ResolveCollision(node.Parent, delta);
-    }
-
-    // ----------------------------------------------------------------------
-    // Resolves the collision between children.  "true" is returned if a
-    // collision has occured.
-    public void ResolveCollisionOnChildren(iCS_EditorObject node, Vector2 delta) {
-        bool didCollide= false;
-        iCS_EditorObject[] children= BuildListOfChildren(c=> c.IsVisible && c.IsNode && !c.IsFloating, node);
-        for(int i= 0; i < children.Length-1; ++i) {
-            for(int j= i+1; j < children.Length; ++j) {
-                didCollide |= ResolveCollisionBetweenTwoNodes(children[i], children[j], delta);                            
-            }
-        }
-        if(didCollide) ResolveCollisionOnChildren(node, delta);
-    }
-
-    // ----------------------------------------------------------------------
-    // Resolves collision between two nodes. "true" is returned if a collision
-    // has occured.
-    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject node, iCS_EditorObject otherNode, Vector2 delta) {
-        // Nothing to do if they don't collide.
-        if(!DoesCollideWithGutter(node, otherNode)) return false;
-
-        // Compute penetration.
-        Vector2 penetration= GetSeperationVector(node, otherNode.GlobalRect);
-		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) return false;
-
-		// Seperate using the known movement.
-        if( !Math3D.IsZero(delta) ) {
-    		if(Vector2.Dot(delta, penetration) > 0) {
-    		    DeltaMoveInternal(otherNode, penetration);
-    		}
-    		else {
-    		    DeltaMoveInternal(node, -penetration);
-    		}            
-    		return true;
-        }
-
-		// Seperate nodes by the penetration that is not a result of movement.
-        penetration*= 0.5f;
-        DeltaMoveInternal(otherNode, penetration);
-        DeltaMoveInternal(node, -penetration);
-        return true;
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns if the given rectangle collides with the node.
-    public bool DoesCollide(iCS_EditorObject node, iCS_EditorObject otherNode) {
-        return Math3D.DoesCollide(node.GlobalRect, otherNode.GlobalRect);
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns if the given rectangle collides with the node.
-    public bool DoesCollideWithGutter(iCS_EditorObject node, iCS_EditorObject otherNode) {
-        return Math3D.DoesCollide(iCS_EditorObject.AddMargins(node.GlobalRect), otherNode.GlobalRect);
-    }
-
-    // ----------------------------------------------------------------------
-	// Returns the seperation vector of two colliding nodes.
-	Vector2 GetSeperationVector(iCS_EditorObject node, Rect _rect) {
-        Rect myRect= iCS_EditorObject.AddMargins(node.GlobalRect);
-        Rect otherRect= _rect;
-        float xMin= Mathf.Min(myRect.xMin, otherRect.xMin);
-        float yMin= Mathf.Min(myRect.yMin, otherRect.yMin);
-        float xMax= Mathf.Max(myRect.xMax, otherRect.xMax);
-        float yMax= Mathf.Max(myRect.yMax, otherRect.yMax);
-        float xDistance= xMax-xMin;
-        float yDistance= yMax-yMin;
-        float totalWidth= myRect.width+otherRect.width;
-        float totalHeight= myRect.height+otherRect.height;
-        if(xDistance >= totalWidth) return Vector2.zero;
-        if(yDistance >= totalHeight) return Vector2.zero;
-        if((totalWidth-xDistance) < (totalHeight-yDistance)) {
-            if(myRect.xMin < otherRect.xMin) {
-                return new Vector2(totalWidth-xDistance, 0);
-            }
-            else {
-                return new Vector2(xDistance-totalWidth, 0);
-            }
-        }
-        else {
-            if(myRect.yMin < otherRect.yMin) {
-                return new Vector2(0, totalHeight-yDistance);
-            }
-            else {
-                return new Vector2(0, yDistance-totalHeight);                
-            }            
-        }
-	}
 
 
 	// ======================================================================
