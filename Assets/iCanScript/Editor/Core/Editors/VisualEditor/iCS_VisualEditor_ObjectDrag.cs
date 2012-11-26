@@ -230,7 +230,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 ChangeParent(node, newParent);
                             }
                         } else {
-                            IStorage.MoveTo(node, DragStartPosition);
+                            node.NodeUserDrag(DragStartPosition);
                         }
                         oldParent.IsDirty= true;                        
                     }
