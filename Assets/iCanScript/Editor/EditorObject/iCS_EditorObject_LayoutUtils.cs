@@ -18,4 +18,11 @@ public partial class iCS_EditorObject {
 		ForEachChildNode(c=> c.GlobalPosition= childPositions[i++]);
     }
 
+    // Adds a margin around given rectangle ---------------------------------
+    public static Rect AddMargins(Rect r) {
+        var m= iCS_Config.MarginSize;
+        var m2= 2f*m;
+        return new Rect(r.x-m, r.y-m, r.width+m2, r.height+m2);
+    }
+
 }

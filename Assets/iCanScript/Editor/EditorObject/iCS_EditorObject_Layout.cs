@@ -81,13 +81,6 @@ public partial class iCS_EditorObject {
 	}
 
     // Accessor Modifiers ===================================================
-    public Vector2 DisplaySizeWithMargin {
-        get {
-			if(!IsVisible) return DisplaySize;
-            return AddMargins(DisplaySize);
-        }
-    }
-    // ----------------------------------------------------------------------
     public Rect LocalRectWithMargin {
         get {
 			if(!IsVisible) return LocalRect;
@@ -102,20 +95,5 @@ public partial class iCS_EditorObject {
         }
     }
 
-    // ======================================================================
-    // Layout Utilities
-    // ======================================================================
-    // Adds a margin around given rectangle ---------------------------------
-    public static Rect AddMargins(Rect r) {
-        var m= iCS_Config.MarginSize;
-        var m2= 2f*m;
-        return new Rect(r.x-m, r.y-m, r.width+m2, r.height+m2);
-    }
-    // Adds a margin to the given size --------------------------------------
-    public static Vector2 AddMargins(Vector2 size) {
-        var m2= 2f*iCS_Config.MarginSize;
-        return new Vector2(size.x+m2, size.y+m2);
-    }
-    
 }
 
