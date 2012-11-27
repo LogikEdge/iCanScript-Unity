@@ -326,7 +326,7 @@ public partial class iCS_EditorObject {
                 if(pos[i] < 0f) pos[i]= 0f;
                 if(pos[j] > maxPos) pos[j]= maxPos;
                 float separation= pos[j]-pos[i];
-                if(separation < iCS_Config.MinimumPortSeparation) {
+                if(Math3D.IsSmaller(separation, iCS_Config.MinimumPortSeparation)) {
                     bool before= false;
                     bool after= false;
                     if(pos[i] > 0f) {
