@@ -65,6 +65,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragOriginalPort= port;
             DragFixPort= port;
             DragObject= port;
+/*
+	FIXME : Should we only put floating when port is off the parent edge ?
+*/
             DragObject.IsFloating= true;
             DragStartPosition= port.GlobalPosition;
             return true;
@@ -146,24 +149,22 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
                 // Update port position.
                 DragObject.GlobalPosition= DragStartPosition + delta;
-                // Determine if we should convert to data port connection drag.
-                bool isNearParentEdge= DragObject.IsPortOnParentEdge;
-                if(DragObject.IsStatePort) {
-                    if(isNearParentEdge) {
+				// Consider port relocation when dragging on parent edge.
+				if(DragObject.IsPortOnParentEdge) {
+	                if(DragObject.IsStatePort) {
                         DragObject.UpdatePortEdge();
-                        DragObject.Parent.LayoutPorts();
-                    }
-                } else {
-                    if(!isNearParentEdge) {
+					}
+                    DragObject.CleanupPortEdgePosition();
+                    DragObject.SavePosition();
+                    DragObject.Parent.LayoutPorts();						
+				} else {
+	                // Determine if we should convert to data port connection drag.
+					if(!DragObject.IsStatePort) {
     					CreateDragPort();
 						DragOriginalPort.GlobalPosition= DragStartPosition;
-						DragOriginalPort.SavePosition();
-                    } else {
-                        DragObject.CleanupPortEdgePosition();
-                        DragObject.SavePosition();
-                        DragObject.Parent.LayoutPorts();
-                    }
-                }
+						DragOriginalPort.SavePosition();						
+					}
+				}
                 break;
             }
             case DragTypeEnum.PortConnection: {
@@ -299,16 +300,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
                             var dragPortPos= DragObject.GlobalPosition;
+							IStorage.DestroyInstance(DragObject);
+							DragObject= null;
                             // Verify for disconnection.
                             if(!isNearParent) {
                                 // Let's determine if we want to create a module port.
                                 iCS_EditorObject newPortParent= GetNodeWithEdgeAtMousePosition();
                                 if(newPortParent != null && newPortParent.IsModule) {
                                     iCS_EditorObject portParent= DragFixPort.Parent;
-                                    Rect modulePos= newPortParent.GlobalRect;
-                                    float portSize2= 2f*iCS_Config.PortSize;
                                     if(DragFixPort.IsInputPort) {
-                                        if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
+                                        if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
                                             if(IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                                                 newPort.InitialGlobalPosition= dragPortPos;
@@ -317,7 +318,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                                 break;
                                             }
                                         }
-                                        if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
+                                        if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
                                             if(!IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                                                 newPort.InitialGlobalPosition= dragPortPos;
@@ -328,7 +329,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         }                                    
                                     }
                                     if(DragFixPort.IsOutputPort) {
-                                        if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.xMax-portSize2, modulePos.xMax+portSize2)) {
+                                        if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
                                             if(IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                                                 newPort.InitialGlobalPosition= dragPortPos;
@@ -336,7 +337,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                                 break;                                                                                                    
                                             }
                                         }
-                                        if(Math3D.IsWithinOrEqual(dragPortPos.x, modulePos.x-portSize2, modulePos.x+portSize2)) {
+                                        if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
                                             if(!IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                                                 newPort.InitialGlobalPosition= dragPortPos;
