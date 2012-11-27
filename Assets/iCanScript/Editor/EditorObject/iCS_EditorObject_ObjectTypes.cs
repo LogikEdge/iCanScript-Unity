@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//  OBJECT TYPE
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // Object Type Queries ---------------------------------------------------
     public bool IsPort                      { get { return EngineObject.IsPort; }}

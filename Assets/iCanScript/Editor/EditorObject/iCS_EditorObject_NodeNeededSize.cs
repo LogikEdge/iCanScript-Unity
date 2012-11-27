@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//  NODE NEEDED SIZE
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Updates the size of the node.  We assume that the size of all children

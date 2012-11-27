@@ -4,9 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-/*
-    TODO: Cleanup validation once child management as been cleaned up.
-*/
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//  ITERATION
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // Children Iterations =================================================
     public void ForEachChild(Action<iCS_EditorObject> fnc) {
