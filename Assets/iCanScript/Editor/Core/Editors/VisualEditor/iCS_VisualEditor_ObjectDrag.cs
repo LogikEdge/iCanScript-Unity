@@ -151,15 +151,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(DragObject.IsStatePort) {
                     if(isNearParentEdge) {
                         DragObject.UpdatePortEdge();
-                        iCS_EditorObject parent= IStorage.GetParentNode(DragOriginalPort);
-                        IStorage.UpdatePortPositions(parent); 
+                        DragObject.Parent.LayoutPorts();
                     }
                 } else {
                     if(!isNearParentEdge) {
     					CreateDragPort();
 						DragOriginalPort.GlobalPosition= DragStartPosition;
+						DragOriginalPort.SavePosition();
                     } else {
                         DragObject.CleanupPortEdgePosition();
+                        DragObject.SavePosition();
+                        DragObject.Parent.LayoutPorts();
                     }
                 }
                 break;
