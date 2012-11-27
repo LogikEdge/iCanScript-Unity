@@ -82,7 +82,14 @@ public partial class iCS_EditorObject {
 		    DisplaySize= new Vector2(value.width, value.height);
 		}
 	}
-
+    // ----------------------------------------------------------------------
+	public Vector2 InitialGlobalPosition {
+		set {
+			GlobalPosition= value;
+			SavePosition();
+			AnimatedPosition.Reset(GlobalRect);
+		}
+	}
     // Accessor Modifiers ===================================================
     public Rect LocalRectWithMargin {
         get {
