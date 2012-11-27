@@ -8,8 +8,12 @@ using System.Collections.Generic;
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Forces a new position on the object being dragged by the uesr.
-    public void NodeUserDragTo(Vector2 newPosition) {
-        NodeUserDragDelta(newPosition-GlobalPosition);
+    public void UserDragTo(Vector2 newPosition) {
+		if(IsNode) {
+	        NodeUserDragDelta(newPosition-GlobalPosition);			
+		} else {
+			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
+		}
     }
     // ----------------------------------------------------------------------
     // Forced adjustment of position of the object dragged by the user. 

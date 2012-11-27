@@ -118,33 +118,25 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
     public iCS_EditorObject[] TopPorts {
 		get {
-            var result= new List<iCS_EditorObject>();
-			ForEachTopChildPort(c=> result.Add(c));
-			return result.ToArray();
+			return BuildListOfChildPorts(c=> c.IsOnTopEdge && c.IsPortOnParentEdge);
 		}
 	}
 	// ----------------------------------------------------------------------
     public iCS_EditorObject[] BottomPorts {
 		get {
-            var result= new List<iCS_EditorObject>();
-			ForEachBottomChildPort(c=> result.Add(c));
-			return result.ToArray();
+			return BuildListOfChildPorts(c=> c.IsOnBottomEdge && c.IsPortOnParentEdge);
 		}
 	}
 	// ----------------------------------------------------------------------
     public iCS_EditorObject[] LeftPorts {
 		get {
-            var result= new List<iCS_EditorObject>();
-			ForEachLeftChildPort(c=> result.Add(c));
-			return result.ToArray();
+			return BuildListOfChildPorts(c=> c.IsOnLeftEdge && c.IsPortOnParentEdge);
 		}
 	}
 	// ----------------------------------------------------------------------
     public iCS_EditorObject[] RightPorts {
 		get {
-            var result= new List<iCS_EditorObject>();
-			ForEachRightChildPort(c=> result.Add(c));
-			return result.ToArray();
+			return BuildListOfChildPorts(c=> c.IsOnRightEdge && c.IsPortOnParentEdge);
 		}
 	}
 	
