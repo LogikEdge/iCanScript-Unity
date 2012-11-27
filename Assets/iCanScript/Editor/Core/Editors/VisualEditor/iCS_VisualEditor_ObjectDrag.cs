@@ -148,7 +148,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Update port position.
                 DragObject.GlobalPosition= DragStartPosition + delta;
                 // Determine if we should convert to data port connection drag.
-                bool isNearParentEdge= IStorage.IsNearParentEdge(DragObject);
+                bool isNearParentEdge= DragObject.IsPortOnParentEdge;
                 if(DragObject.IsStatePort) {
                     if(isNearParentEdge) {
                         DragObject.UpdatePortEdge();
@@ -159,7 +159,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(!isNearParentEdge) {
     					CreateDragPort();
                     } else {
-                        DragObject.SavePosition();
+                        DragObject.CleanupPortEdgePosition();
                     }
                 }
                 break;
@@ -293,7 +293,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.PortConnection:                
                     // Verify for a new connection.
                     if(!VerifyNewDragConnection()) {
-                        bool isNearParent= IStorage.IsNearParent(DragObject);
+                        bool isNearParent= DragObject.IsPortOnParentEdge;
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
                             var dragPortPos= DragObject.GlobalPosition;
