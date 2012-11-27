@@ -419,12 +419,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             IStorage.SetSource(DragObject, DragOriginalPort);
         }
         DragType= DragTypeEnum.PortConnection;
-        var portPos= DragOriginalPort.GlobalPosition;
-        DragObject.GlobalPosition= portPos;
-		DragObject.AnimatedPosition.Reset(DragOriginalPort.GlobalRect);
+        DragObject.GlobalPosition= ViewportMousePosition;
+		DragObject.AnimatedPosition.Reset(DragObject.GlobalRect);
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
-			DragStartPosition= portPos - parent.GlobalPosition;			
+			DragStartPosition= DragOriginalPort.GlobalPosition - parent.GlobalPosition;			
 		}
         DragObject.IsFloating= true;		
 	}
