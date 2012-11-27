@@ -28,30 +28,50 @@ public partial class iCS_EditorObject {
     public bool IsPortOnParentEdge {
         get {
             if(!IsFloating) return true;
-    		float maxDistance= iCS_Config.PortSize;
-            float distance= 2f*maxDistance;
-            var parentSize= Parent.DisplaySize;
-            float leftX  = -0.5f*parentSize.x;
-            float rightX =  0.5f*parentSize.x;
-            float topY   = -0.5f*parentSize.y;
-            float bottomY=  0.5f*parentSize.y;
             var edge= IsStatePort ? ClosestEdge : Edge;
-            switch(edge) {
-                case iCS_EdgeEnum.Top:
-                    distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, leftX, rightX, topY);
-                    break; 
-                case iCS_EdgeEnum.Bottom:
-                    distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, leftX, rightX, bottomY);
-                    break;
-                case iCS_EdgeEnum.Left:
-                    distance= Math3D.DistanceFromVerticalLineSegment(LocalPosition, topY, bottomY, leftX);
-                    break;
-                case iCS_EdgeEnum.Right:
-                    distance= Math3D.DistanceFromVerticalLineSegment(LocalPosition, topY, bottomY, rightX);
-                    break;                
-            }
-            return distance <= maxDistance;
+			return IsPortOnNodeEdge(Parent, edge);
         }
+    }
+    // ----------------------------------------------------------------------
+    public bool IsPortOnNodeEdge(iCS_EditorObject node, iCS_EdgeEnum edge) {
+		return IsPortOnRectEdge(node.GlobalRect, edge);
+    }
+    // ----------------------------------------------------------------------
+    public bool IsPortOnRectEdge(Rect r, iCS_EdgeEnum edge) {
+		return IsPositionOnRectEdge(GlobalPosition, r, edge);
+    }
+/*
+	FIXME : The following method should be moved to NodeLayout or all the
+			edge stuff put together in another file...
+*/
+    // ----------------------------------------------------------------------
+	// Return true if the position is on the edge of the node.
+	public bool IsPositionOnEdge(Vector2 position, iCS_EdgeEnum edge) {
+		return IsPositionOnRectEdge(position, GlobalRect, edge);
+	}
+    // ----------------------------------------------------------------------
+    public static bool IsPositionOnRectEdge(Vector2 pos, Rect r, iCS_EdgeEnum edge) {
+		float maxDistance= iCS_Config.PortSize;
+        float distance= 2f*maxDistance;
+        float leftX  = r.xMin;
+        float rightX = r.xMax;
+        float topY   = r.yMin;
+        float bottomY= r.yMax;
+        switch(edge) {
+            case iCS_EdgeEnum.Top:
+                distance= Math3D.DistanceFromHorizontalLineSegment(pos, leftX, rightX, topY);
+                break; 
+            case iCS_EdgeEnum.Bottom:
+                distance= Math3D.DistanceFromHorizontalLineSegment(pos, leftX, rightX, bottomY);
+                break;
+            case iCS_EdgeEnum.Left:
+                distance= Math3D.DistanceFromVerticalLineSegment(pos, topY, bottomY, leftX);
+                break;
+            case iCS_EdgeEnum.Right:
+                distance= Math3D.DistanceFromVerticalLineSegment(pos, topY, bottomY, rightX);
+                break;                
+        }
+        return distance <= maxDistance;
     }
     // ----------------------------------------------------------------------
 	public iCS_EdgeEnum ClosestEdge {
@@ -176,83 +196,4 @@ public partial class iCS_EditorObject {
         return parent.HorizontalPortsLeft+parent.AvailableWidthForPorts*ratio;
     }
 
-    // ======================================================================
-    // Port layout utilities
-    // ----------------------------------------------------------------------
-    // Returns the sorted array of saved port ratios.  The input port array
-    // is also updated to reflect the sort order.
-	public static float[] GetPositionRatios(iCS_EditorObject[] ports) {
-		// Extract ratios.
-        int nbPorts= ports.Length;
-        float[] rs= new float[nbPorts];
-        for(int i= 0; i < nbPorts; ++i) {
-            rs[i]= ports[i].PortPositionRatio;
-        }
-		// Sort port according to ratios
-		bool sortNeeded= true;
-		for(int i= 0; i < nbPorts-1 && sortNeeded; ++i) {
-			var v= rs[i];
-			sortNeeded= false;
-			for(int j= 0; j < nbPorts; ++j) {
-				if(v > rs[j]) {
-					rs[i]= rs[j]; rs[j]= v;
-					var tmp= ports[i]; ports[i]= ports[j]; ports[j]= tmp;
-					sortNeeded= true;
-				}
-			}
-		}
-		return rs;
-	}
-    // ----------------------------------------------------------------------
-    // Resolves the port separartion on a given edge.  The position is local
-    // and ranges from 0 to "maxPos".
-    public static float[] ResolvePortCollisions(float[] pos, float maxPos) {
-        int nbPorts= pos.Length;
-        if(nbPorts == 0) return new float[0];
-        bool collisionDetectionNeeded= true;
-        for(int r= 0; r < nbPorts && collisionDetectionNeeded; ++r) {
-            collisionDetectionNeeded= false;
-            for(int i= 0; i < nbPorts-1; ++i) {
-                int j= i+1;
-                if(pos[i] < 0f) pos[i]= 0f;
-                if(pos[j] > maxPos) pos[j]= maxPos;
-                float separation= pos[j]-pos[i];
-                if(separation < iCS_Config.MinimumPortSeparation) {
-                    bool before= false;
-                    bool after= false;
-                    if(pos[i] > 0f) {
-                        if(i == 0) {
-                            before= true;
-                        } else if((pos[i]-pos[i-1]) > iCS_Config.MinimumPortSeparation) {
-                            before= true;
-                        }
-                    }
-                    if(pos[j] < maxPos) {
-                        if(j+1 == nbPorts) {
-                            after= true;
-                        } else if(pos[j+1]-pos[j] > iCS_Config.MinimumPortSeparation) {
-                            after= true;
-                        }
-                    }
-                    // Determine where to expand.
-                    var overlap= iCS_Config.MinimumPortSeparation-separation;
-                    if(before && after) {
-                        pos[i]-= 0.5f*overlap;
-                        pos[j]+= 0.5f*overlap;
-                        collisionDetectionNeeded= true;
-                    } else if(before) {
-                        pos[i]-= overlap;
-                        collisionDetectionNeeded= true;
-                    } else if(after) {
-                        pos[j]+= overlap;
-                        collisionDetectionNeeded= true;
-                    }
-                }
-            }
-        }
-        if(collisionDetectionNeeded) {
-            Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
-        }
-        return pos;        
-    }
 }

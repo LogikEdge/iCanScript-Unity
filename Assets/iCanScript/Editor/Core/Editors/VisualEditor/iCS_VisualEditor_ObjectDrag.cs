@@ -299,8 +299,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
                             var dragPortPos= DragObject.GlobalPosition;
-                            IStorage.DestroyInstance(DragObject);
-                            DragObject= null;
                             // Verify for disconnection.
                             if(!isNearParent) {
                                 // Let's determine if we want to create a module port.

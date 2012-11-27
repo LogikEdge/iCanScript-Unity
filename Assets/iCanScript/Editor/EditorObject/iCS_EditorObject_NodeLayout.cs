@@ -276,7 +276,7 @@ public partial class iCS_EditorObject {
         // Compute position according to position.
         int nbPorts= ports.Length;
         float diff= maxValue-minValue;
-        float[] xs= GetPositionRatios(ports);
+        float[] xs= GetPortPositionRatios(ref ports);
         for(int i= 0; i < nbPorts; ++i) {
             xs[i]*= diff;
         }
@@ -284,6 +284,85 @@ public partial class iCS_EditorObject {
         ResolvePortCollisions(xs, diff);
         return xs;
     }
-    
+
+    // ======================================================================
+    // Port layout utilities
+    // ----------------------------------------------------------------------
+    // Returns the sorted array of saved port ratios.  The input port array
+    // is also updated to reflect the sort order.
+	public static float[] GetPortPositionRatios(ref iCS_EditorObject[] ports) {
+		// Extract ratios.
+        int nbPorts= ports.Length;
+        float[] rs= new float[nbPorts];
+        for(int i= 0; i < nbPorts; ++i) {
+            rs[i]= ports[i].PortPositionRatio;
+        }
+		// Sort port according to ratios
+		bool sortNeeded= true;
+		for(int i= 0; i < nbPorts-1 && sortNeeded; ++i) {
+			var v= rs[i];
+			sortNeeded= false;
+			for(int j= 0; j < nbPorts; ++j) {
+				if(v > rs[j]) {
+					rs[i]= rs[j]; rs[j]= v;
+					var tmp= ports[i]; ports[i]= ports[j]; ports[j]= tmp;
+					sortNeeded= true;
+				}
+			}
+		}
+		return rs;
+	}
+    // ----------------------------------------------------------------------
+    // Resolves the port separartion on a given edge.  The position is local
+    // and ranges from 0 to "maxPos".
+    public static float[] ResolvePortCollisions(float[] pos, float maxPos) {
+        int nbPorts= pos.Length;
+        if(nbPorts == 0) return new float[0];
+        bool collisionDetectionNeeded= true;
+        for(int r= 0; r < nbPorts && collisionDetectionNeeded; ++r) {
+            collisionDetectionNeeded= false;
+            for(int i= 0; i < nbPorts-1; ++i) {
+                int j= i+1;
+                if(pos[i] < 0f) pos[i]= 0f;
+                if(pos[j] > maxPos) pos[j]= maxPos;
+                float separation= pos[j]-pos[i];
+                if(separation < iCS_Config.MinimumPortSeparation) {
+                    bool before= false;
+                    bool after= false;
+                    if(pos[i] > 0f) {
+                        if(i == 0) {
+                            before= true;
+                        } else if((pos[i]-pos[i-1]) > iCS_Config.MinimumPortSeparation) {
+                            before= true;
+                        }
+                    }
+                    if(pos[j] < maxPos) {
+                        if(j+1 == nbPorts) {
+                            after= true;
+                        } else if(pos[j+1]-pos[j] > iCS_Config.MinimumPortSeparation) {
+                            after= true;
+                        }
+                    }
+                    // Determine where to expand.
+                    var overlap= iCS_Config.MinimumPortSeparation-separation;
+                    if(before && after) {
+                        pos[i]-= 0.5f*overlap;
+                        pos[j]+= 0.5f*overlap;
+                        collisionDetectionNeeded= true;
+                    } else if(before) {
+                        pos[i]-= overlap;
+                        collisionDetectionNeeded= true;
+                    } else if(after) {
+                        pos[j]+= overlap;
+                        collisionDetectionNeeded= true;
+                    }
+                }
+            }
+        }
+        if(collisionDetectionNeeded) {
+            Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
+        }
+        return pos;        
+    }    
 }
 
