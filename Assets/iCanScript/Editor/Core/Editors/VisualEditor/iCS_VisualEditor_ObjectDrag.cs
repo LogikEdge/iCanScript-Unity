@@ -157,6 +157,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 } else {
                     if(!isNearParentEdge) {
     					CreateDragPort();
+						DragOriginalPort.GlobalPosition= DragStartPosition;
                     } else {
                         DragObject.CleanupPortEdgePosition();
                     }
@@ -167,7 +168,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Update port position.
                 DragObject.GlobalPosition= DragStartPosition + delta;
                 // Determine if we should go back to port relocation.
-                if(!DragOriginalPort.IsInMuxPort && IStorage.IsNearParentEdge(DragObject, DragOriginalPort.Edge)) {
+                if(!DragOriginalPort.IsInMuxPort && DragObject.IsPortOnParentEdge) {
                     iCS_EditorObject dragObjectSource= DragObject.Source;
                     if(dragObjectSource != DragOriginalPort) {
                         IStorage.SetSource(DragOriginalPort, dragObjectSource);
@@ -311,6 +312,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                             if(IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                                                 newPort.GlobalPosition= dragPortPos;
+												newPort.AnimatedPosition.Reset(newPort.GlobalRect);
                                                 newPort.PortValue= DragFixPort.PortValue;
                                                 SetNewDataConnection(DragFixPort, newPort);
                                                 break;
@@ -320,6 +322,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                             if(!IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                                                 newPort.GlobalPosition= dragPortPos;
+												newPort.AnimatedPosition.Reset(newPort.GlobalRect);
                                                 newPort.PortValue= DragFixPort.PortValue;
                                                 SetNewDataConnection(DragFixPort, newPort);
                                                 break;                                                
@@ -331,6 +334,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                             if(IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                                                 newPort.GlobalPosition= dragPortPos;
+												newPort.AnimatedPosition.Reset(newPort.GlobalRect);
                                                 SetNewDataConnection(newPort, DragFixPort);
                                                 break;                                                                                                    
                                             }
@@ -339,6 +343,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                             if(!IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                                                 newPort.GlobalPosition= dragPortPos;
+												newPort.AnimatedPosition.Reset(newPort.GlobalRect);
                                                 SetNewDataConnection(newPort, DragFixPort);
                                                 break;
                                             }
