@@ -161,7 +161,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	                // Determine if we should convert to data port connection drag.
 					if(!DragObject.IsStatePort) {
     					CreateDragPort();
-						DragOriginalPort.GlobalPosition= DragStartPosition;
 						DragOriginalPort.SavePosition();						
 					}
 				}
