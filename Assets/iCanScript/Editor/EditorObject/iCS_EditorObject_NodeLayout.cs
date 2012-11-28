@@ -298,15 +298,12 @@ public partial class iCS_EditorObject {
             rs[i]= ports[i].PortPositionRatio;
         }
 		// Sort port according to ratios
-		bool needsSorting= true;
-		for(int i= 0; i < nbPorts-1 && needsSorting; ++i) {
-			needsSorting= false;
+		for(int i= 0; i < nbPorts-1; ++i) {
 			var v= rs[i];
 			for(int j= i+1; j < nbPorts; ++j) {
 				if(rs[i] > rs[j]) {
 					rs[i]= rs[j]; rs[j]= v; v= rs[i];
 					var tmp= ports[i]; ports[i]= ports[j]; ports[j]= tmp;
-					needsSorting= true;
 				}
 			}
 		}
