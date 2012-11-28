@@ -262,7 +262,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         // Relocate dragged port if on the same state.
                         if(origState == newState) {
                             DragObject.UpdatePortEdge();
-                            IStorage.UpdatePortPositions(origState);
+							DragObject.SavePosition();
+							origState.LayoutPorts();
                             DragObject.IsDirty= true;
                             break;
                         }
