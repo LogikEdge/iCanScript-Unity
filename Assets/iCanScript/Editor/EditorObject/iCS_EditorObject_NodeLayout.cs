@@ -282,6 +282,12 @@ public partial class iCS_EditorObject {
         }
         // Resolve position according to collisions.
         ResolvePortCollisions(xs, diff);
+if(nbPorts != 0 && ports[0].Parent.Name == "Update") {
+    Debug.Log("minimium port seperation: "+iCS_Config.MinimumPortSeparation);
+    for(int i= 0; i < nbPorts; ++i) {
+        Debug.Log("Port: "+ports[i].Name+" pos: "+xs[i]);
+    }
+}
         return xs;
     }
 

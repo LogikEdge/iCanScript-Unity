@@ -33,8 +33,6 @@ public static class iCS_Config {
     // ----------------------------------------------------------------------
     public const  float MarginSize = 15.0f;
     public const  float PaddingSize= 15.0f;
-    public static float ButtonHeight      { get { return GetButtonHeight("A"); }}
-    public static float NodeTitleHeight   { get { return GetNodeHeight("A"); }}
     public static float MinimumNodeHeight { get { return 2.0f*NodeTitleHeight; }}
 
     // ----------------------------------------------------------------------
@@ -48,14 +46,37 @@ public static class iCS_Config {
     public static float ScrollBarWidth { get { return ButtonHeight; }}
 
     // ----------------------------------------------------------------------
+	public const float NodeShadowSize= 5.0f;
+	
+    // ----------------------------------------------------------------------
     public const  float PortRadius        = 5.55f;
     public const  float PortSize          = 2.0f * PortRadius;
     public const  float SelectedPortFactor= 1.67f;
-    public static float MinimumPortSeparation { get { return GetPortLabelHeight("A"); }}
 
-    // ----------------------------------------------------------------------
-	public const float NodeShadowSize= 5.0f;
-	
+    // ======================================================================
+    // Values optimized with caching ----------------------------------------
+           static float _MinimumPortSeparation= 0f;
+    public static float MinimumPortSeparation {
+        get {
+            if(_MinimumPortSeparation == 0f) _MinimumPortSeparation= GetPortLabelHeight("A");
+            return _MinimumPortSeparation;
+        }
+    }
+           static float _NodeTitleHeight= 0f;
+    public static float NodeTitleHeight {
+        get {
+            if(_NodeTitleHeight == 0f) _NodeTitleHeight= GetNodeHeight("A");
+            return _NodeTitleHeight;
+        }
+    }
+           static float _ButtonHeight= 0f;
+    public static float ButtonHeight {
+        get {
+            if(_ButtonHeight == 0f) _ButtonHeight= GetButtonHeight("A");
+            return _ButtonHeight;
+        }
+    }
+
     // ======================================================================
     // Node info.
     public static Vector2 GetNodeSize(string _label) {
