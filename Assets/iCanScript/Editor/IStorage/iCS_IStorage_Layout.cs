@@ -148,12 +148,14 @@ public partial class iCS_IStorage {
 	// ----------------------------------------------------------------------
     public iCS_EditorObject GetOverlappingPort(iCS_EditorObject port) {
         iCS_EditorObject foundPort= null;
+		float bestDistance= iCS_Config.PortSize;
         Vector2 position= port.GlobalPosition;
         FilterWith(
             p=> p.IsPort && p != port && p.IsVisible,
             p=> {
                 float distance= Vector2.Distance(p.GlobalPosition, position);
-                if(distance <= 1.5*iCS_Config.PortSize) {
+                if(distance < bestDistance) {
+					bestDistance= distance;
                     foundPort= p;
                 }
             }
