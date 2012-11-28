@@ -111,6 +111,7 @@ public class iCS_EngineObject {
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
+		instance.LocalPositionRatio= toClone.LocalPositionRatio;
 		// Node
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;

@@ -156,6 +156,7 @@ public partial class iCS_EditorObject {
 		// Sort according to port index.
 		int len= ports.Length;
 		if(len == 0) return;
+		// Sort port according to port index.
 		for(int i= 0; i < len-1; ++i) {
 			for(int j= i+1; j < len; ++j) {
 				if(ports[i].PortIndex > ports[j].PortIndex) {
@@ -167,11 +168,10 @@ public partial class iCS_EditorObject {
 		}
 		// Update port position ratio.
 		float step= 1f/(float)(len);
-
 		for(int i= 0; i < len; ++i) {
 			float ratio= ((float)(i)+0.5f)*step;
 			ports[i].PortPositionRatio= ratio;
-		}		
+		}
 	}
     // ----------------------------------------------------------------------
 	// Updates the port position ratio of all edges.
@@ -273,7 +273,7 @@ public partial class iCS_EditorObject {
     // Layouts out the ports on an one dimension edge.
     public static float[] LayoutPortsOnEdge(iCS_EditorObject[] ports,
                                          float minValue, float maxValue) {
-        // Compute position according to position.
+        // Compute position according to ratio.
         int nbPorts= ports.Length;
         float diff= maxValue-minValue;
         float[] xs= GetPortPositionRatios(ref ports);
