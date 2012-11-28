@@ -282,12 +282,6 @@ public partial class iCS_EditorObject {
         }
         // Resolve position according to collisions.
         ResolvePortCollisions(xs, diff);
-if(nbPorts != 0 && ports[0].Parent.Name == "Update") {
-    Debug.Log("minimium port seperation: "+iCS_Config.MinimumPortSeparation);
-    for(int i= 0; i < nbPorts; ++i) {
-        Debug.Log("Port: "+ports[i].Name+" pos: "+xs[i]);
-    }
-}
         return xs;
     }
 
@@ -323,49 +317,42 @@ if(nbPorts != 0 && ports[0].Parent.Name == "Update") {
     // and ranges from 0 to "maxPos".
     public static float[] ResolvePortCollisions(float[] pos, float maxPos) {
         int nbPorts= pos.Length;
-        if(nbPorts == 0) return new float[0];
-        bool collisionDetectionNeeded= true;
-        for(int r= 0; r < nbPorts && collisionDetectionNeeded; ++r) {
-            collisionDetectionNeeded= false;
+        if(nbPorts < 2) return pos;
+        float minSeparation= iCS_Config.MinimumPortSeparation;
+        // Determine min/max position for each port.
+        float[] minPositions= new float[nbPorts];
+        float[] maxPositions= new float[nbPorts]; 
+        for(int i= 0; i < nbPorts; ++i) {
+            minPositions[i]= i*minSeparation;
+            maxPositions[i]= maxPos-(nbPorts-1-i)*minSeparation;
+        }
+        // Iterate resolving collisions
+        float[] collisions= new float[nbPorts-1];
+        bool resolveCollisionNeeded= true;
+        for(int r= 0; r < nbPorts && resolveCollisionNeeded; ++r) {
+            // Apply hard min/max position constraints.
+            for(int i= 0; i < nbPorts; ++i) {
+                if(pos[i] < minPositions[i]) pos[i]= minPositions[i];
+                if(pos[i] > maxPositions[i]) pos[i]= maxPositions[i];
+            }
+            // Cummulate collisions.
+            resolveCollisionNeeded= false;
             for(int i= 0; i < nbPorts-1; ++i) {
-                int j= i+1;
-                if(pos[i] < 0f) pos[i]= 0f;
-                if(pos[j] > maxPos) pos[j]= maxPos;
-                float separation= pos[j]-pos[i];
-                if(Math3D.IsSmaller(separation, iCS_Config.MinimumPortSeparation)) {
-                    bool before= false;
-                    bool after= false;
-                    if(pos[i] > 0f) {
-                        if(i == 0) {
-                            before= true;
-                        } else if((pos[i]-pos[i-1]) > iCS_Config.MinimumPortSeparation) {
-                            before= true;
-                        }
-                    }
-                    if(pos[j] < maxPos) {
-                        if(j+1 == nbPorts) {
-                            after= true;
-                        } else if(pos[j+1]-pos[j] > iCS_Config.MinimumPortSeparation) {
-                            after= true;
-                        }
-                    }
-                    // Determine where to expand.
-                    var overlap= iCS_Config.MinimumPortSeparation-separation;
-                    if(before && after) {
-                        pos[i]-= 0.5f*overlap;
-                        pos[j]+= 0.5f*overlap;
-                        collisionDetectionNeeded= true;
-                    } else if(before) {
-                        pos[i]-= overlap;
-                        collisionDetectionNeeded= true;
-                    } else if(after) {
-                        pos[j]+= overlap;
-                        collisionDetectionNeeded= true;
-                    }
+                float overlap= -(pos[i+1]-pos[i]-minSeparation);
+                collisions[i]= overlap;
+                if(Math3D.IsGreater(overlap, 0f)) resolveCollisionNeeded= true;
+            }
+            if(!resolveCollisionNeeded) continue;
+            // Resolve collisions.
+            for(int i= 0; i < nbPorts-1; ++i) {
+                float overlap= collisions[i]; 
+                if(Math3D.IsGreater(overlap, 0f)) {
+                    pos[i]  -= 0.5f*overlap;
+                    pos[i+1]+= 0.5f*overlap;
                 }
             }
         }
-        if(collisionDetectionNeeded) {
+        if(resolveCollisionNeeded) {
             Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
         }
         return pos;        
