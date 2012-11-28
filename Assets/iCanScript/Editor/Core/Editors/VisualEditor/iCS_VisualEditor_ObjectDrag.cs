@@ -65,10 +65,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragOriginalPort= port;
             DragFixPort= port;
             DragObject= port;
-/*
-	FIXME : Should we only put floating when port is off the parent edge ?
-*/
-            DragObject.IsFloating= true;
             DragStartPosition= port.GlobalPosition;
             return true;
         }
@@ -179,7 +175,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     IStorage.DestroyInstance(DragObject);
                     DragObject= DragOriginalPort;
                     DragFixPort= DragOriginalPort;
-                    DragObject.IsFloating= true;
+                    DragObject.IsFloating= false;
                     DragType= DragTypeEnum.PortRelocation;
                     break;
                 }

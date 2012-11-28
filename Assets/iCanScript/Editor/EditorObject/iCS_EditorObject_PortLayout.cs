@@ -27,7 +27,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {
         get {
-            if(!IsFloating) return true;
             var edge= IsStatePort ? ClosestEdge : Edge;
 			return IsPortOnNodeEdge(Parent, edge);
         }
@@ -138,25 +137,25 @@ public partial class iCS_EditorObject {
 	// ----------------------------------------------------------------------
     public iCS_EditorObject[] TopPorts {
 		get {
-			return BuildListOfChildPorts(c=> c.IsOnTopEdge && c.IsPortOnParentEdge);
+			return BuildListOfChildPorts(c=> c.IsOnTopEdge && !c.IsFloating);
 		}
 	}
 	// ----------------------------------------------------------------------
     public iCS_EditorObject[] BottomPorts {
 		get {
-			return BuildListOfChildPorts(c=> c.IsOnBottomEdge && c.IsPortOnParentEdge);
+			return BuildListOfChildPorts(c=> c.IsOnBottomEdge && !c.IsFloating);
 		}
 	}
 	// ----------------------------------------------------------------------
     public iCS_EditorObject[] LeftPorts {
 		get {
-			return BuildListOfChildPorts(c=> c.IsOnLeftEdge && c.IsPortOnParentEdge);
+			return BuildListOfChildPorts(c=> c.IsOnLeftEdge && !c.IsFloating);
 		}
 	}
 	// ----------------------------------------------------------------------
     public iCS_EditorObject[] RightPorts {
 		get {
-			return BuildListOfChildPorts(c=> c.IsOnRightEdge && c.IsPortOnParentEdge);
+			return BuildListOfChildPorts(c=> c.IsOnRightEdge && !c.IsFloating);
 		}
 	}
 	

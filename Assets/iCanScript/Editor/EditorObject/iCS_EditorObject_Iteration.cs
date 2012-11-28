@@ -24,19 +24,19 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void ForEachLeftChildPort(Action<iCS_EditorObject> action) {
-        ForEachChildPort(o=> { if(o.IsOnLeftEdge && o.IsPortOnParentEdge) action(o); });
+        ForEachChildPort(o=> { if(o.IsOnLeftEdge && !o.IsFloating) action(o); });
     }
     // ----------------------------------------------------------------------
     public void ForEachRightChildPort(Action<iCS_EditorObject> action) {
-        ForEachChildPort(o=> { if(o.IsOnRightEdge && o.IsPortOnParentEdge) action(o); });
+        ForEachChildPort(o=> { if(o.IsOnRightEdge && !o.IsFloating) action(o); });
     }
     // ----------------------------------------------------------------------
     public void ForEachTopChildPort(Action<iCS_EditorObject> action) {
-        ForEachChildPort(o=> { if(o.IsOnTopEdge && o.IsPortOnParentEdge) action(o); });
+        ForEachChildPort(o=> { if(o.IsOnTopEdge && !o.IsFloating) action(o); });
     }
     // ----------------------------------------------------------------------
     public void ForEachBottomChildPort(Action<iCS_EditorObject> action) {
-        ForEachChildPort(o=> { if(o.IsOnBottomEdge && o.IsPortOnParentEdge) action(o); });
+        ForEachChildPort(o=> { if(o.IsOnBottomEdge && !o.IsFloating) action(o); });
     }
     
     // ----------------------------------------------------------------------
