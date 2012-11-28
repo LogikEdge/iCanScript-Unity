@@ -243,13 +243,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(y > bottom) {
 				y= bottom;
 			}
-			port.GlobalPosition= new Vector2(x,y);
-			port.SavePosition();
+			port.InitialGlobalPosition= new Vector2(x,y);
 			return;
 		}
 		if(Math3D.IsEqual(inPortPosition.y, outPortPosition.y)) {
-			port.GlobalPosition= new Vector2(x, 0.5f*(top+bottom));
-			port.SavePosition();
+			port.InitialGlobalPosition= new Vector2(x, 0.5f*(top+bottom));
 			return;
 		}
 		// Assure that the in position Y value is smaller then the out position.
@@ -266,8 +264,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			float y1= bottom-inPortPosition.y;
 			y= bottom-(y1*y1/(y1+y2));			
 		}
-		port.GlobalPosition= new Vector2(x,y);
-		port.SavePosition();
+		port.InitialGlobalPosition= new Vector2(x,y);
 		return;			
 	}
 
