@@ -230,12 +230,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			var tmp= inPortPosition; inPortPosition= outPortPosition; outPortPosition= tmp;
 		}
 		// Manage situation where new port is between the in & out ports.
+		var parentGlobalPosition= Math3D.Middle(parentGlobalRect);
+		var top   = parentGlobalPosition.y+parent.VerticalPortsTop;
+		var bottom= parentGlobalPosition.y+parent.VerticalPortsBottom;
+		float y;
 		if(Math3D.IsSmaller(inPortPosition.x, x) && Math3D.IsGreater(outPortPosition.x, x)) {
 			float ratio= (x-inPortPosition.x)/(outPortPosition.x-inPortPosition.x);
-			float y= Math3D.Lerp(inPortPosition.y, outPortPosition.y, ratio);
-			var parentGlobalPosition= Math3D.Middle(parentGlobalRect);
-			var top   = parentGlobalPosition.y+parent.VerticalPortsTop;
-			var bottom= parentGlobalPosition.y+parent.VerticalPortsBottom;
+			y= Math3D.Lerp(inPortPosition.y, outPortPosition.y, ratio);
 			if(y < top) { 
 				y= top;
 			}
@@ -246,7 +247,28 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			port.SavePosition();
 			return;
 		}
-		Debug.LogWarning("iCanScript: Port position not between not implemented yet.");
+		if(Math3D.IsEqual(inPortPosition.y, outPortPosition.y)) {
+			port.GlobalPosition= new Vector2(x, 0.5f*(top+bottom));
+			port.SavePosition();
+			return;
+		}
+		// Assure that the in position Y value is smaller then the out position.
+		if(inPortPosition.y > outPortPosition.y) {
+			var tmp= inPortPosition; inPortPosition= outPortPosition; outPortPosition= tmp;
+		}
+		// Compute some type of ratio if Y position traverse the top port position
+		if(Math3D.IsSmaller(inPortPosition.y, top) && Math3D.IsGreater(outPortPosition.y, top)) {
+			float y1= outPortPosition.y-top;
+			float y2= top-inPortPosition.y;
+			y= top+(y1*y1/(y1+y2));
+		} else {
+			float y2= outPortPosition.y-bottom;
+			float y1= bottom-inPortPosition.y;
+			y= bottom-(y1*y1/(y1+y2));			
+		}
+		port.GlobalPosition= new Vector2(x,y);
+		port.SavePosition();
+		return;			
 	}
 
 	// ----------------------------------------------------------------------
