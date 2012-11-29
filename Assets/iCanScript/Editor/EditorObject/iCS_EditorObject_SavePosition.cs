@@ -100,14 +100,14 @@ public partial class iCS_EditorObject {
         // Need to readjust ratio to avoid multiple ports at same ratio.
         for(int i= 0; i < len-1; ++i) {
             if(ratios[i] > 0.5f) continue; 
-            if(ratios[i]+0.005f > ratios[i+1]) {
+            if(Math3D.IsGreaterOrEqual(ratios[i], ratios[i+1])) {
                 ratios[i+1]= ratios[i]+0.01f;
                 ports[i+1].PortPositionRatio= ratios[i+1];
             }
         }
         for(int i= len-1; i > 0; --i) {
             if(ratios[i] < 0.5f) continue;
-            if(ratios[i-1]+0.005f > ratios[i]) {
+            if(Math3D.IsGreaterOrEqual(ratios[i-1], ratios[i])) {
                 ratios[i-1]= ratios[i]-0.01f;
                 ports[i-1].PortPositionRatio= ratios[i-1];
             }

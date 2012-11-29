@@ -18,7 +18,7 @@ public static partial class Math3D {
 // Float conditional statement using Epsilon.
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public static bool IsEqual(float a, float b) {
-        return Mathf.Abs(a-b) < Mathf.Epsilon;
+        return Mathf.Approximately(a,b);
     }  
     // ----------------------------------------------------------------------
     public static bool IsNotEqual(float a, float b) {
@@ -26,19 +26,19 @@ public static partial class Math3D {
     }
     // ----------------------------------------------------------------------
     public static bool IsSmaller(float a, float b) {
-        return (a + Mathf.Epsilon) < b;
+        return a < b && IsNotEqual(a,b);
     }
     // ----------------------------------------------------------------------
     public static bool IsSmallerOrEqual(float a, float b) {
-        return (a - Mathf.Epsilon) < b;
+        return a < b || IsEqual(a,b);
     }
     // ----------------------------------------------------------------------
     public static bool IsGreater(float a, float b) {
-        return (a - Mathf.Epsilon) > b;
+        return a > b && IsNotEqual(a,b);
     }
     // ----------------------------------------------------------------------
     public static bool IsGreaterOrEqual(float a, float b) {
-        return (a + Mathf.Epsilon) > b;
+        return a > b || IsEqual(a,b);
     }
     // ----------------------------------------------------------------------
     public static bool IsZero(float a) {
