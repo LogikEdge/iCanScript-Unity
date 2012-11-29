@@ -8,12 +8,17 @@ public partial class iCS_IStorage {
     public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState) {
         Vector2 fromStatePortPos= fromStatePort.GlobalPosition;
         Vector2 toStatePortPos  = toState.GlobalPosition;
-        // Create inStatePort
+        // Create toStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         toStatePort.GlobalPosition= toStatePortPos;
         SetSource(toStatePort, fromStatePort);
         toStatePort.UpdatePortEdge();        
-        fromStatePort.UpdatePortEdge();        
+        toStatePort.SavePosition();
+        toState.LayoutPorts();        
+        // Update fromStatePort position.
+        fromStatePort.UpdatePortEdge();
+        fromStatePort.SavePosition();
+        fromStatePort.Parent.LayoutPorts();
         // Determine transition parent
         iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
         // Create transition module
