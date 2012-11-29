@@ -351,7 +351,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                     AutocreateInstanceNode(dragPortPos, newPortParent);
                                     break;                                  
                                 }
-                                if(DragFixPort.IsOutputPort && (newPortParent.IsState || newPortParent.IsStateChart)) {
+                                if(DragFixPort.IsOutputPort && newPortParent != null && (newPortParent.IsState || newPortParent.IsStateChart)) {
 									if(IStorage.IsNearNodeEdge(newPortParent, dragPortPos, iCS_EdgeEnum.Right)) {
 	                                    iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
 	                                    SetNewDataConnection(newPort, DragFixPort);
