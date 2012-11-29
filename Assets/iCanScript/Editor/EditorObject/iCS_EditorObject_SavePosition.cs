@@ -58,9 +58,8 @@ public partial class iCS_EditorObject {
         }
         float deltaY= localPosition.y-parent.VerticalPortsTop;
         var ratio= deltaY/height;
-        if(ratio < 0f) ratio= 0f;
-        if(ratio > 1f) ratio= 1f;
         PortPositionRatio= ratio;
+        CleanupPortRatios();
     }
     // ----------------------------------------------------------------------
     // Updates the port ratio on the horizontal edage given the port local position.
@@ -73,9 +72,45 @@ public partial class iCS_EditorObject {
         }
         float deltaX= localPosition.x-parent.HorizontalPortsLeft;
         var ratio= deltaX/width;
-        if(ratio < 0f) ratio= 0f;
-        if(ratio > 1f) ratio= 1f;
         PortPositionRatio= ratio;
+        CleanupPortRatios();
     }
-
+    // ----------------------------------------------------------------------
+    void CleanupPortRatios() {
+        var parent= Parent;
+        iCS_EditorObject[] ports;
+        if(IsOnVerticalEdge) {
+            ports= IsOnLeftEdge ? parent.LeftPorts : parent.RightPorts;            
+        } else {
+            ports= IsOnTopEdge ? parent.TopPorts : parent.BottomPorts;                        
+        }
+        float[] ratios= GetPortPositionRatios(ref ports);
+        var len= ratios.Length;
+        // Flatten edge values.
+        for(int i= 0; i < len; ++i) {
+            if(ratios[i] < 0f) {
+                ratios[i]= 0f;
+                ports[i].PortPositionRatio= 0f;
+            }
+            if(ratios[i] > 1f) {
+                ratios[i]= 1f;
+                ports[i].PortPositionRatio= 1f;
+            }
+        }
+        // Need to readjust ratio to avoid multiple ports at same ratio.
+        for(int i= 0; i < len-1; ++i) {
+            if(ratios[i] > 0.5f) continue; 
+            if(ratios[i]+0.005f > ratios[i+1]) {
+                ratios[i+1]= ratios[i]+0.01f;
+                ports[i+1].PortPositionRatio= ratios[i+1];
+            }
+        }
+        for(int i= len-1; i > 0; --i) {
+            if(ratios[i] < 0.5f) continue;
+            if(ratios[i-1]+0.005f > ratios[i]) {
+                ratios[i-1]= ratios[i]-0.01f;
+                ports[i-1].PortPositionRatio= ratios[i-1];
+            }
+         }
+    }
 }
