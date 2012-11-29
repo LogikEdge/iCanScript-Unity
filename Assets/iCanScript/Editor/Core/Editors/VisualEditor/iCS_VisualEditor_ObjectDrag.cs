@@ -249,7 +249,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             origStateChart= origStateChart.Parent;
                         }
                         // Get new drag port state & state chart.
-                        iCS_EditorObject newState= GetStateAt(GraphMousePosition);
+                        iCS_EditorObject newState= IStorage.GetNodeWithEdgeAt(DragObject.GlobalPosition);
+                        if(newState == null || !newState.IsState) {
+                            newState= GetStateAt(GraphMousePosition);                            
+                        }
                         iCS_EditorObject newStateChart= null;
                         if(newState != null) {
                             newStateChart= newState.Parent;
