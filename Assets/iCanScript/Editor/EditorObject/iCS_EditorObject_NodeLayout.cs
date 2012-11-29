@@ -326,18 +326,19 @@ public partial class iCS_EditorObject {
         // Iterate resolving collisions
         float[] collisions= new float[nbPorts-1];
         bool resolveCollisionNeeded= true;
+        float allowedOverlap= 0.01f;
         for(int r= 0; r < nbPorts && resolveCollisionNeeded; ++r) {
             // Apply hard min/max position constraints.
             for(int i= 0; i < nbPorts; ++i) {
-                if(pos[i] < minPositions[i]) pos[i]= minPositions[i];
-                if(pos[i] > maxPositions[i]) pos[i]= maxPositions[i];
+                if(Math3D.IsSmaller(pos[i], minPositions[i])) pos[i]= minPositions[i];
+                if(Math3D.IsGreater(pos[i], maxPositions[i])) pos[i]= maxPositions[i];
             }
-            // Cummulate collisions.
+            // Cummulate collisions penetration.
             resolveCollisionNeeded= false;
             for(int i= 0; i < nbPorts-1; ++i) {
                 float overlap= -(pos[i+1]-pos[i]-minSeparation);
                 collisions[i]= overlap;
-                if(Math3D.IsGreater(overlap, 0f)) resolveCollisionNeeded= true;
+                if(Math3D.IsGreater(overlap, allowedOverlap)) resolveCollisionNeeded= true;
             }
             if(!resolveCollisionNeeded) continue;
             // Resolve collisions.
