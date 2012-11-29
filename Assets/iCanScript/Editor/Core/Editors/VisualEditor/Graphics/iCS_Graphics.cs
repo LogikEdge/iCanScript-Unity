@@ -503,8 +503,6 @@ public partial class iCS_Graphics {
     public void DrawPort(iCS_EditorObject port, iCS_IStorage iStorage) {
         // Don't show port if too small
         if(!ShouldShowPort()) return;
-//var ratio= port.PortVerticalRatioFromLocalPosition(port.LocalPosition);
-//Debug.Log("Port "+port.Name+" of "+port.Parent.Name+" ratio is "+ratio+" local position= "+port.LocalPosition+" pos from ratio= "+port.PortVerticalLocalPositionFromRatio(ratio));
         
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
@@ -617,13 +615,13 @@ public partial class iCS_Graphics {
             // State ports.
             if(port.IsOutStatePort) {
                 Handles.color= Color.white;
-                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);
+                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);
             }
         } else if(port.IsTransitionPort) {
             // Transition ports.
             if(port.IsOutTransitionPort) {
                 Handles.color= Color.white;
-                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);                            
+                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);                            
             }
         }
         else {
