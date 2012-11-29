@@ -135,7 +135,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 iCS_EditorObject node= DragObject;
                 node.IsFloating= IsFloatingKeyDown;
                 node.UserDragTo(DragStartPosition+delta);
-                node.IsDirty= true;
                 break;
             case DragTypeEnum.PortRelocation: {
 				// We can't relocate a mux port child.
@@ -231,7 +230,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         } else {
                             node.UserDragTo(DragStartPosition);
                         }
-                        oldParent.IsDirty= true;                        
                     }
                     node.SavePosition();
                     node.IsFloating= false;
@@ -264,7 +262,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             DragObject.UpdatePortEdge();
 							DragObject.SavePosition();
 							origState.LayoutPorts();
-                            DragObject.IsDirty= true;
                             break;
                         }
                         // Delete transition if the dragged port is not on a valid state.

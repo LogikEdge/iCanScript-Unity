@@ -122,7 +122,7 @@ public partial class iCS_IStorage {
     void DeltaMoveInternal(iCS_EditorObject node, Vector2 delta) {
         if(Math3D.IsNotZero(delta)) {
             node.LocalPosition= node.LocalPosition + delta;
-            node.IsDirty= true;
+//            node.IsDirty= true;
         }
     }
     // ----------------------------------------------------------------------

@@ -39,7 +39,6 @@ public class iCS_PortTooltipEditor : iCS_ISubEditor {
             name= EditorGUILayout.TextField("Name", name);
             if(name != EmptyStr && name != myTarget.RawName) {
                 myTarget.Name= name;
-                myTarget.IsDirty= true;
             }                    
         } else {
             EditorGUILayout.LabelField("Name", name);                    

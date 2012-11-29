@@ -33,7 +33,6 @@ public partial class iCS_IStorage {
             }            
         }
         Fold(module);
-        module.IsDirty= true;
     }
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputInstanceFields(iCS_EditorObject module) {

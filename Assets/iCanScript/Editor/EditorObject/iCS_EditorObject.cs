@@ -43,7 +43,12 @@ public partial class iCS_EditorObject {
 	
     public iCS_ObjectTypeEnum ObjectType {
 		get { return EngineObject.ObjectType; }
-		set { EngineObject.ObjectType= value; IsDirty= true; }
+		set {
+            var engineObject= EditorObject;
+            if(engineObject.ObjectType == value) return;
+		    engineObject.ObjectType= value;
+		    IsDirty= true;
+		}
 	}
     public int InstanceId { 
 		get { return myId; }
@@ -70,18 +75,33 @@ public partial class iCS_EditorObject {
 	}
     public iCS_DisplayOptionEnum DisplayOption {
         get { return EngineObject.DisplayOption; }
-        set { EngineObject.DisplayOption= value; IsDirty= true; }
+        set {
+            var engineObject= EngineObject;
+            if(engineObject.DisplayOption == value) return;
+            engineObject.DisplayOption= value;
+            IsDirty= true;
+        }
     }
     public Type RuntimeType {
 		get { return EngineObject.RuntimeType; }
 	}
     public string RawName {
 		get { return EngineObject.RawName; }
-		set { EngineObject.RawName= value; IsDirty= true; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.RawName == value) return;
+		    engineObject.RawName= value;
+		    IsDirty= true;
+		}
 	}
     public string Name {
 		get { return EngineObject.Name; }
-		set { EngineObject.Name= value; IsDirty= true; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.Name == value) return;
+		    engineObject.Name= value;
+		    IsDirty= true;
+		}
 	}
     public bool IsNameEditable {
 		get { return EngineObject.IsNameEditable; }
@@ -93,7 +113,11 @@ public partial class iCS_EditorObject {
 	}
     public bool IsFloating {
 		get { return myIsFloating; }
-		set { myIsFloating= value; IsDirty= true; }
+		set {
+            if(myIsFloating == value) return;
+		    myIsFloating= value;
+		    IsDirty= true;
+		}
 	}
     public bool IsDirty {
 		get { return myIsDirty; }
