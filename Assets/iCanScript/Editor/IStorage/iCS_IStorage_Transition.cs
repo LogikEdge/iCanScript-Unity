@@ -5,9 +5,8 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Creation methods
     // ----------------------------------------------------------------------
-    public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState) {
+    public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
         Vector2 fromStatePortPos= fromStatePort.GlobalPosition;
-        Vector2 toStatePortPos  = toState.GlobalPosition;
         // Create toStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         toStatePort.GlobalPosition= toStatePortPos;

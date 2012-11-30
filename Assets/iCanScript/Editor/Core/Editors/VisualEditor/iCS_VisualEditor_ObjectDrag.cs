@@ -372,7 +372,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(destState != null && destState.IsState) {
                         iCS_EditorObject outStatePort= IStorage[DragObject.SourceId];
                         outStatePort.IsFloating= false;
-                        IStorage.CreateTransition(outStatePort, destState);
+                        IStorage.CreateTransition(outStatePort, destState, DragObject.GlobalPosition);
                         DragObject.SourceId= -1;
                         IStorage.DestroyInstance(DragObject);
                     } else {
