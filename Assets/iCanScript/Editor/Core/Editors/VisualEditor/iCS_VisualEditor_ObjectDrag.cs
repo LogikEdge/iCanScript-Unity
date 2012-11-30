@@ -22,7 +22,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     bool             IsDragEnabled         = false;
     bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
 
-
     // ======================================================================
     // Functions.
 	// ----------------------------------------------------------------------

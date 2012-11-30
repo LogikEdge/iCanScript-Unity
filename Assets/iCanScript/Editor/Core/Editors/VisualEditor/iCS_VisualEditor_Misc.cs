@@ -160,10 +160,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		// Convert source port to child port.
 		if(source != null) {
-			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.OutMuxPort;
 			var firstMuxInput= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
 			IStorage.SetSource(firstMuxInput, source);
 			IStorage.SetSource(stateMuxPort, null);
+			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.OutMuxPort;
 		}
 		// Create new mux input port.
 		var inMuxPort= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);

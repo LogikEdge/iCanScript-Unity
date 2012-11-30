@@ -44,7 +44,7 @@ public partial class iCS_EditorObject {
     public iCS_ObjectTypeEnum ObjectType {
 		get { return EngineObject.ObjectType; }
 		set {
-            var engineObject= EditorObject;
+            var engineObject= EngineObject;
             if(engineObject.ObjectType == value) return;
 		    engineObject.ObjectType= value;
 		    IsDirty= true;

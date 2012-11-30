@@ -659,7 +659,7 @@ public partial class iCS_Graphics {
         radius*= Scale;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
-        float delta= radius*1.75f;
+        float delta= radius*0.8f;
 
         vectors[0]= new Vector3(center.x-delta, center.y-2f*delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+2f*delta, 0);
@@ -668,7 +668,7 @@ public partial class iCS_Graphics {
         Handles.color= Color.white;
 		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, _borderColor);
 
-        delta= radius*0.67f;
+        delta*= 0.60f;
         vectors[0]= new Vector3(center.x-delta, center.y-2f*delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+2f*delta, 0);
         vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);
