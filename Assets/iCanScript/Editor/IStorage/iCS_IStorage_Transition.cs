@@ -223,7 +223,11 @@ public partial class iCS_IStorage {
         // Get the outStatePort
         statePort= GetFromStatePort(statePort);
 		if(statePort == null) return null;
-        return statePort.Source.Parent.Parent;
+        var source= statePort.Source;
+		if(source == null) return null;
+        var parent= source.Parent;
+        if(parent == null) return null;
+        return parent.Parent;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject GetTransitionGuardAndAction(iCS_EditorObject statePort, out iCS_EditorObject actionModule) {
