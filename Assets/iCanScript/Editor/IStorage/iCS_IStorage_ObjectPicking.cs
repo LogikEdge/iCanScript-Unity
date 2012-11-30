@@ -27,7 +27,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject port= GetClosestPortAt(pick, filter);
         if(port == null) return port;
         float distance= Vector2.Distance(port.GlobalPosition, pick);
-        return (distance < iCS_Config.PortSize) ? port : null;
+        return (distance < iCS_Config.PortRadius*1.2f) ? port : null;
     }
     // ----------------------------------------------------------------------
     // Returns the connection at the given position.
