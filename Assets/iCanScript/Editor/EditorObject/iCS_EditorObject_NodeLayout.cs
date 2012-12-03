@@ -5,6 +5,12 @@ using System.Collections;
 //  NODE LAYOUT
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
+    // Storage accessors ====================================================
+    public Vector2 NodePositionRatio {
+        get { return EngineObject.LocalPositionRatio; }
+		set { EngineObject.LocalPositionRatio= value; }
+    }
+
     // Node Layout Utilities ================================================
     // ----------------------------------------------------------------------
 	public Rect NodeNeededGlobalChildRect {

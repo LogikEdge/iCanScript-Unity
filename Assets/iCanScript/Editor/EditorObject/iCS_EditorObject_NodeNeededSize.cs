@@ -103,13 +103,21 @@ public partial class iCS_EditorObject {
             ForEachChildNode(
                 c=> {
                     if(!c.IsFloating) {
-                        var ratio= c.LocalPositionRaio;
+                        var ratio= c.NodePositionRatio;
                         var rx= 0.5f-Mathf.Abs(0.5f-ratio.x);
                         var ry= 0.5f-Mathf.Abs(0.5f-ratio.y);
-                        var childSize= c.DisplaySize; 
+                        var childHalfSize= 0.5f*c.DisplaySize; 
+                        /*
+                            TODO: Make certain that rx & ry are not zero.
+                        */
+                        var sx= childHalfSize.x/rx;
+                        var sy= childHalfSize.y/ry;
+                        if(sx > childrenSize.x) childrenSize.x= sx;
+                        if(sy > childrenSize.y) childrenSize.y= sy;
                     }
                 }
             );
+            return childrenSize;
         }
     }
 }
