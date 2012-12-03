@@ -48,6 +48,12 @@ public partial class iCS_EditorObject {
     public void ResolveCollisionOnChildren(Vector2 delta) {
         bool didCollide= false;
         iCS_EditorObject[] children= BuildListOfChildNodes(c=> !c.IsFloating);
+        // Collect collision vectors.
+        var len= children.Length;
+        for(int i= 0; i < len; ++i) {
+            
+        }
+        // Resolve collisions.
         for(int i= 0; i < children.Length-1; ++i) {
             for(int j= i+1; j < children.Length; ++j) {
                 didCollide |= children[i].ResolveCollisionBetweenTwoNodes(children[j], delta);                            

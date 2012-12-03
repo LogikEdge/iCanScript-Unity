@@ -94,5 +94,22 @@ public partial class iCS_EditorObject {
             return childRect;
         }
     }
-
+    // ----------------------------------------------------------------------
+    // Computes the children area using the existing children display size 
+    // and their position ratios
+    public Vector2 ChildrenSizeByRatio {
+        get {
+            Vector2 childrenSize= Vector2.zero;
+            ForEachChildNode(
+                c=> {
+                    if(!c.IsFloating) {
+                        var ratio= c.LocalPositionRaio;
+                        var rx= 0.5f-Mathf.Abs(0.5f-ratio.x);
+                        var ry= 0.5f-Mathf.Abs(0.5f-ratio.y);
+                        var childSize= c.DisplaySize; 
+                    }
+                }
+            );
+        }
+    }
 }
