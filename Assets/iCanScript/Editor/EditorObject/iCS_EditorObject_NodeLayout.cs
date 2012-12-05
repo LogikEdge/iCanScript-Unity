@@ -19,7 +19,7 @@ public partial class iCS_EditorObject {
 			var center= Math3D.Middle(GlobalRect);
 			Rect childRect= new Rect(center.x, center.y, 0, 0);
 			ForEachChildNode(o=> { if(!o.IsFloating) Math3D.Merge(childRect, o.GlobalRect); });
-			float portsHeight= NeededPortsHeight;
+			float portsHeight= MinimumHeightForPorts;
 			if(portsHeight > childRect.height) {
 				var deltaY= portsHeight-childRect.height;
 				childRect.y-= 0.5f*deltaY;

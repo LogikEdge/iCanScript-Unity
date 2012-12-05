@@ -39,7 +39,7 @@ public partial class iCS_IStorage {
         }
 
 #if NEW_LAYOUT
-        node.UpdateNodeSize();
+        node.UpdateNodeSizeFromGlobalRect();
 #else
         // Resolve collision on children.
         ResolveCollisionOnChildren(node, Vector2.zero);
@@ -113,7 +113,6 @@ public partial class iCS_IStorage {
         }
 
         // Layout child ports
-//        UpdatePortPositions(node);
         node.LayoutPorts();
 #endif
     }
@@ -122,7 +121,6 @@ public partial class iCS_IStorage {
     void DeltaMoveInternal(iCS_EditorObject node, Vector2 delta) {
         if(Math3D.IsNotZero(delta)) {
             node.LocalPosition= node.LocalPosition + delta;
-//            node.IsDirty= true;
         }
     }
     // ----------------------------------------------------------------------

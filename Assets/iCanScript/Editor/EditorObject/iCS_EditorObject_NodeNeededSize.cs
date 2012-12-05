@@ -6,41 +6,45 @@ using System.Collections;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
-    // Updates the size of the node.  We assume that the size of all children
-    // have previously been updated.
-    public void UpdateNodeSize() {
-        DisplaySize= NodeNeededSize;
+    // Updates the size of the node.  We assume that all children have been
+    // previously layed out prior to updating the node size.
+    public void UpdateNodeSizeFromGlobalRect() {
+        DisplaySize= ComputeNodeSizeFromGlobalRect();
     }
     // ----------------------------------------------------------------------
-    // Returns the size needed by the node.  We assume that the display size
-    // of all children have previously been updated.
-	public Vector2 NodeNeededSize {
-		get {
-			if(!IsVisible) return Vector2.zero;
-			if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
-            float titleHeight= NodeTitleHeight;
-            float titleWidth = NodeTitleWidth;
-			float minHeight= NodeTopPadding+NodeBottomPadding;
-			float minWidth = NodeLeftPadding+NodeRightPadding;
-			float neededPortsHeight= titleHeight+NeededPortsHeight;
-			float neededPortsWidth = NeededPortsWidth;
-            // The simple case is without any visible child.
-            float portsTitleWidth= Mathf.Max(neededPortsWidth, titleWidth);
-            float width = Mathf.Max(minWidth, portsTitleWidth);
-            float height= Mathf.Max(minHeight, neededPortsHeight);
-			if(IsFolded || IsFunction) {
-				return new Vector2(width, height);
-			}
-            // We need to add the children area if any are visible.
-            var childrenSize= ChildrenSizeFromGlobalRect;
-            width = Mathf.Max(minWidth+childrenSize.x, portsTitleWidth);
-            height= Mathf.Max(minHeight+childrenSize.y, neededPortsHeight);
+    // Returns the size of the node using the current children layout.
+	Vector2 ComputeNodeSizeFromGlobalRect() {
+		if(!IsVisible) return Vector2.zero;
+		if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
+        float titleHeight= NodeTitleHeight;
+        float titleWidth = NodeTitleWidth;
+		float minHeight= NodeTopPadding+NodeBottomPadding;
+		float minWidth = NodeLeftPadding+NodeRightPadding;
+		float neededPortsHeight= titleHeight+MinimumHeightForPorts;
+		float neededPortsWidth = MinimumWidthForPorts;
+        // The simple case is without any visible child.
+        float portsTitleWidth= Mathf.Max(neededPortsWidth, titleWidth);
+        float width = Mathf.Max(minWidth, portsTitleWidth);
+        float height= Mathf.Max(minHeight, neededPortsHeight);
+		if(IsFolded || IsFunction) {
 			return new Vector2(width, height);
 		}
+        // We need to add the children area if any are visible.
+        var childrenSize= ChildrenSizeFromGlobalRect;
+        width = Mathf.Max(minWidth+childrenSize.x, portsTitleWidth);
+        height= Mathf.Max(minHeight+childrenSize.y, neededPortsHeight);
+
+var childrenSizeFromRatio= ChildrenSizeFromRatio;
+if(Math3D.IsNotEqual(childrenSize.x, childrenSizeFromRatio.x) || Math3D.IsNotEqual(childrenSize.y, childrenSizeFromRatio.y)) {
+    Debug.Log("ChildrenSizeRect= "+childrenSize+" ChildrenSizeFromRatio= "+childrenSizeFromRatio);
+    Debug.Log("Not same children size");
+}
+
+		return new Vector2(width, height);
 	}
     // ----------------------------------------------------------------------
     // Returns the minimium height needed for the left / right ports.
-    public float NeededPortsHeight {
+    public float MinimumHeightForPorts {
         get {
             int nbOfPorts= Mathf.Max(NbOfLeftPorts, NbOfRightPorts);
             return nbOfPorts*iCS_Config.MinimumPortSeparation;                                            
@@ -48,36 +52,14 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Returns the minimum width needed for the top / bottom ports.
-    public float NeededPortsWidth {
+    public float MinimumWidthForPorts {
         get {
             int nbOfPorts= Mathf.Max(NbOfTopPorts, NbOfBottomPorts);
             return nbOfPorts*iCS_Config.MinimumPortSeparation;                                            
         }
     }
     // ----------------------------------------------------------------------
-    public Rect ChildrenLocalRectFromLocalRect {
-        get {
-            if(!IsUnfolded) return new Rect(0,0,0,0);
-            // The size is initialized with the largest & tallest child.
-            Rect childRect= new Rect(0,0,0,0);
-            ForEachChildNode(
-                c=> {
-                    if(!c.IsFloating) {
-                        childRect= Math3D.Merge(childRect, c.LocalRect);                        
-                    }
-                }
-            );
-            return childRect;
-        }
-    }
-    // ----------------------------------------------------------------------
-    public Vector2 ChildrenSizeFromGlobalRect {
-        get {
-            Rect childRect= ChildrenLocalRectFromLocalRect;
-            return new Vector2(childRect.width, childRect.height);
-        }
-    }
-    // ----------------------------------------------------------------------
+    // Returns the global rectangle currently used by the children.
     public Rect ChildrenGlobalRectFromGlobalRect {
         get {
             var center= GlobalPosition;
@@ -95,8 +77,18 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    // Computes the children area using the existing children display size 
-    // and their position ratios
+    // Computes the children area size using the children global rect.  Note
+    // that child collision resolution is not performed by this function.
+    public Vector2 ChildrenSizeFromGlobalRect {
+        get {
+            Rect childRect= ChildrenGlobalRectFromGlobalRect;
+            return new Vector2(childRect.width, childRect.height);
+        }
+    }
+    // ----------------------------------------------------------------------
+    // Computes the children area size using the children size and position
+    // ratio.  Note that child collision resolution is not performed by this
+    // function.
     public Vector2 ChildrenSizeFromRatio {
         get {
             Vector2 childrenSize= Vector2.zero;
