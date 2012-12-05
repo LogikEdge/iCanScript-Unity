@@ -135,10 +135,6 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public void AdjustChildLocalPosition(Vector2 _delta) {
-        ForEachChildNode(child=> child.LocalPosition= child.LocalPosition+_delta);
-    }
-    // ----------------------------------------------------------------------
 	// Initializes port position ratio of all edges.
 	public void InitialPortLayout() {
 		InitialPortLayout(LeftPorts);
