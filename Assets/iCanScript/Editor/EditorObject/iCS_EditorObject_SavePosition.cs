@@ -22,7 +22,7 @@ public partial class iCS_EditorObject {
             return;
         }
         // Compute position ratio using node children area.
-        var childArea= Parent.ChildrenArea;
+        var childArea= Parent.ChildrenLocalRect;
         var topLeftCorner= new Vector2(childArea.x, childArea.y);
         var diff= LocalPosition-topLeftCorner;
         float ratioX= diff.x/childArea.width;

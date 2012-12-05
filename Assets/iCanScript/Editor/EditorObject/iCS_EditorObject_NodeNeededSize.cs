@@ -113,7 +113,7 @@ public partial class iCS_EditorObject {
                             var sx= childHalfSize.x/rx;
                             var sy= childHalfSize.y/ry;
                             if(sx > childrenSize.x) childrenSize.x= sx;
-                            if(sy > childrenSize.y) childrenSize.y= sy;                            
+                            if(sy > childrenSize.y) childrenSize.y= sy;
                         }
                     }
                 }

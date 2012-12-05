@@ -63,21 +63,11 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-    Rect ChildrenArea {
+    Rect ChildrenLocalRect {
         get {
-            var displaySize= DisplaySize;
-            Rect childArea= new Rect(-0.5f*displaySize.x, -0.5f*displaySize.y, displaySize.x, displaySize.y);
-            // Remove top & bottom padding.
-            var topPadding= NodeTopPadding;
-            var bottomPadding= NodeBottomPadding;
-            childArea.y+= topPadding;
-            childArea.height-= topPadding+bottomPadding;
-            // Remove left & right padding.
-            var leftPadding= NodeLeftPadding;
-            var rightPadding= NodeRightPadding;
-            childArea.x+= leftPadding;
-            childArea.width-= leftPadding+rightPadding;
-            return childArea;
+            var globalPosition= GlobalPosition;
+            var childGlobalRect= NodeGlobalChildRect;
+            return new Rect(childGlobalRect.x-globalPosition.x, childGlobalRect.y-globalPosition.y, childGlobalRect.width, childGlobalRect.height);
         }
     }
     // ----------------------------------------------------------------------

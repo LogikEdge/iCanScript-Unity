@@ -6,6 +6,18 @@ using System.Collections.Generic;
 //  LAYOUT UTILITIES
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
+    /*
+        TODO: Is "InitialGlobalPosition" valid for nodes ?
+    */
+    // Initializes the global position and saves the ratio =================
+	public Vector2 InitialGlobalPosition {
+		set {
+			GlobalPosition= value;
+			SavePosition();
+			AnimatedPosition.Reset(GlobalRect);
+		}
+	}
+
     // Adds a margin around given rectangle ---------------------------------
     static Rect AddMargins(Rect r) {
         var m= iCS_Config.MarginSize;
@@ -45,19 +57,5 @@ public partial class iCS_EditorObject {
 		int i= 0;
 		ForEachChildNode(c=> c.GlobalPosition= childPositions[i++]);
     }
-
-    // ----------------------------------------------------------------------
-	Vector2[] BuildListOfRatios(iCS_EditorObject[] children, Rect globalRect) {
-		var len= children.Length;
-		var result= new Vector2[len];
-		if(len == 0) return result;
-		var globalPosition= Math3D.Middle(globalRect);
-		var size= 0.5f*new Vector2(globalRect.width, globalRect.height);
-		for(int i= 0; i < len; ++i) {
-			var localPos= children[i].GlobalPosition-globalPosition;
-			result[i]= new Vector2(localPos.x/size.x, localPos.y/size.y);
-		}
-		return result;
-	}
 
 }

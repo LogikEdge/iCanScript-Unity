@@ -35,12 +35,8 @@ public partial class iCS_EditorObject {
     }
     
     // ======================================================================
-    // Proxy Methods
+    // Engine Object Accessors
     // ----------------------------------------------------------------------
-	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count; }
-	public bool	IsParentValid		{ get { return IsIdValid(ParentId); }}
-	public bool IsSourceValid		{ get { return IsIdValid(SourceId); }}
-	
     public iCS_ObjectTypeEnum ObjectType {
 		get { return EngineObject.ObjectType; }
 		set {
@@ -50,9 +46,7 @@ public partial class iCS_EditorObject {
 		    IsDirty= true;
 		}
 	}
-    public int InstanceId { 
-		get { return myId; }
-	}
+    // ----------------------------------------------------------------------
     public int ParentId {
 		get { return EngineObject.ParentId; }
 		set {
@@ -69,10 +63,7 @@ public partial class iCS_EditorObject {
 			}
 		}
 	}
-    public iCS_EditorObject Parent {
-		get { return IsParentValid ? myIStorage[ParentId] : null; }
-		set { ParentId= (value != null ? value.InstanceId : -1); }
-	}
+    // ----------------------------------------------------------------------
     public iCS_DisplayOptionEnum DisplayOption {
         get { return EngineObject.DisplayOption; }
         set {
@@ -82,9 +73,11 @@ public partial class iCS_EditorObject {
             IsDirty= true;
         }
     }
+    // ----------------------------------------------------------------------
     public Type RuntimeType {
 		get { return EngineObject.RuntimeType; }
 	}
+    // ----------------------------------------------------------------------
     public string RawName {
 		get { return EngineObject.RawName; }
 		set {
@@ -94,6 +87,7 @@ public partial class iCS_EditorObject {
 		    IsDirty= true;
 		}
 	}
+    // ----------------------------------------------------------------------
     public string Name {
 		get { return EngineObject.Name; }
 		set {
@@ -103,13 +97,30 @@ public partial class iCS_EditorObject {
 		    IsDirty= true;
 		}
 	}
+    // ----------------------------------------------------------------------
     public bool IsNameEditable {
 		get { return EngineObject.IsNameEditable; }
 		set { EngineObject.IsNameEditable= value; }
 	}
+    // ----------------------------------------------------------------------
     public string Tooltip {
 		get { return EngineObject.Tooltip; }
 		set { EngineObject.Tooltip= value; }
+	}
+    
+    // ======================================================================
+    // High-Level Properties
+    // ----------------------------------------------------------------------
+	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count; }
+	public bool	IsParentValid		{ get { return IsIdValid(ParentId); }}
+	public bool IsSourceValid		{ get { return IsIdValid(SourceId); }}
+	
+    public int InstanceId { 
+		get { return myId; }
+	}
+    public iCS_EditorObject Parent {
+		get { return IsParentValid ? myIStorage[ParentId] : null; }
+		set { ParentId= (value != null ? value.InstanceId : -1); }
 	}
     public bool IsFloating {
 		get { return myIsFloating; }
