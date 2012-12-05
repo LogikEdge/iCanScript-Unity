@@ -40,7 +40,7 @@ public partial class iCS_EditorObject {
 		var childPositions= new List<Vector2>();
 		ForEachChildNode(c=> childPositions.Add(c.GlobalPosition));
         // Readjust parent size & position.
-        NodeGlobalChildRect= NeededChildrenGlobalRect;
+        NodeGlobalChildRect= ChildrenGlobalRectFromGlobalRect;
 		// Reposition child to maintain their global positions.
 		int i= 0;
 		ForEachChildNode(c=> c.GlobalPosition= childPositions[i++]);

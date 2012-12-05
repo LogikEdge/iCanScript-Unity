@@ -32,7 +32,7 @@ public partial class iCS_EditorObject {
 				return new Vector2(width, height);
 			}
             // We need to add the children area if any are visible.
-            var childrenSize= NeededChildrenSize;
+            var childrenSize= ChildrenSizeFromGlobalRect;
             width = Mathf.Max(minWidth+childrenSize.x, portsTitleWidth);
             height= Mathf.Max(minHeight+childrenSize.y, neededPortsHeight);
 			return new Vector2(width, height);
@@ -55,7 +55,7 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public Rect NeededChildrenLocalRect {
+    public Rect ChildrenLocalRectFromLocalRect {
         get {
             if(!IsUnfolded) return new Rect(0,0,0,0);
             // The size is initialized with the largest & tallest child.
@@ -71,14 +71,14 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public Vector2 NeededChildrenSize {
+    public Vector2 ChildrenSizeFromGlobalRect {
         get {
-            Rect childRect= NeededChildrenLocalRect;
+            Rect childRect= ChildrenLocalRectFromLocalRect;
             return new Vector2(childRect.width, childRect.height);
         }
     }
     // ----------------------------------------------------------------------
-    public Rect NeededChildrenGlobalRect {
+    public Rect ChildrenGlobalRectFromGlobalRect {
         get {
             var center= GlobalPosition;
             Rect childRect= new Rect(center.x,center.y,0,0);
@@ -97,7 +97,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Computes the children area using the existing children display size 
     // and their position ratios
-    public Vector2 ChildrenSizeByRatio {
+    public Vector2 ChildrenSizeFromRatio {
         get {
             Vector2 childrenSize= Vector2.zero;
             ForEachChildNode(
@@ -106,14 +106,15 @@ public partial class iCS_EditorObject {
                         var ratio= c.NodePositionRatio;
                         var rx= 0.5f-Mathf.Abs(0.5f-ratio.x);
                         var ry= 0.5f-Mathf.Abs(0.5f-ratio.y);
-                        var childHalfSize= 0.5f*c.DisplaySize; 
-                        /*
-                            TODO: Make certain that rx & ry are not zero.
-                        */
-                        var sx= childHalfSize.x/rx;
-                        var sy= childHalfSize.y/ry;
-                        if(sx > childrenSize.x) childrenSize.x= sx;
-                        if(sy > childrenSize.y) childrenSize.y= sy;
+                        if(Math3D.IsZero(rx) || Math3D.IsZero(ry)) {
+                            Debug.LogWarning("iCanScript: Invalid node position ratio !!!");
+                        } else {
+                            var childHalfSize= 0.5f*c.DisplaySize; 
+                            var sx= childHalfSize.x/rx;
+                            var sy= childHalfSize.y/ry;
+                            if(sx > childrenSize.x) childrenSize.x= sx;
+                            if(sy > childrenSize.y) childrenSize.y= sy;                            
+                        }
                     }
                 }
             );
