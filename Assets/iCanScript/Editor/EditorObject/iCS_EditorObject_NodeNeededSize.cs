@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -12,8 +13,18 @@ public partial class iCS_EditorObject {
         DisplaySize= ComputeNodeSizeFromGlobalRect();
     }
     // ----------------------------------------------------------------------
-    // Returns the size of the node using the current children layout.
+    // Returns the size of the node using the current children global position.
 	Vector2 ComputeNodeSizeFromGlobalRect() {
+	    return ComputeNodeSize(o=> o.ChildrenSizeFromGlobalRect);
+	}
+    // ----------------------------------------------------------------------
+    // Returns the size of the node using the current children position ratio.
+	Vector2 ComputeNodeSizeFromRatio() {
+	    return ComputeNodeSize(o=> o.ChildrenSizeFromRatio);
+	}
+    // ----------------------------------------------------------------------
+    // Returns the size of the node using the current children layout.
+	Vector2 ComputeNodeSize(Func<iCS_EditorObject, Vector2> childrenSizeFunc) {
 		if(!IsVisible) return Vector2.zero;
 		if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
         float titleHeight= NodeTitleHeight;
@@ -30,7 +41,7 @@ public partial class iCS_EditorObject {
 			return new Vector2(width, height);
 		}
         // We need to add the children area if any are visible.
-        var childrenSize= ChildrenSizeFromGlobalRect;
+        var childrenSize= childrenSizeFunc(this);
         width = Mathf.Max(minWidth+childrenSize.x, portsTitleWidth);
         height= Mathf.Max(minHeight+childrenSize.y, neededPortsHeight);
 

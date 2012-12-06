@@ -217,7 +217,7 @@ public partial class iCS_EditorObject {
 			return;
 		}
 		if(id > len) {
-			GrowEngineObjects(id, iStorage);
+			GrowEngineObjectList(id, iStorage);
 			iStorage.EngineObjects.Add(engineObject);
 		}		
 	}
@@ -235,11 +235,11 @@ public partial class iCS_EditorObject {
 			return;
 		}
 		if(id > len) {
-			GrowEditorObjects(id, iStorage);
+			GrowEditorObjectList(id, iStorage);
 			iStorage.EditorObjects.Add(editorObject);
 		}		
 	}
-	private static void GrowEngineObjects(int size, iCS_IStorage iStorage) {
+	private static void GrowEngineObjectList(int size, iCS_IStorage iStorage) {
         // Reserve space to contain the total amount of objects.
         if(size > iStorage.EngineObjects.Capacity) {
             iStorage.EngineObjects.Capacity= size;
@@ -249,7 +249,7 @@ public partial class iCS_EditorObject {
             iStorage.EngineObjects.Add(iCS_EngineObject.CreateInvalidInstance());
         }
 	}
-	private static void GrowEditorObjects(int size, iCS_IStorage iStorage) {
+	private static void GrowEditorObjectList(int size, iCS_IStorage iStorage) {
         // Reserve space to contain the total amount of objects.
         if(size > iStorage.EditorObjects.Capacity) {
             iStorage.EditorObjects.Capacity= size;
@@ -275,11 +275,11 @@ public partial class iCS_EditorObject {
 		iStorage.EditorObjects.Clear();
 		iStorage.EditorObjects.Capacity= iStorage.EngineObjects.Count;		
 		for(int i= 0; i < iStorage.EngineObjects.Count; ++i) {
-		    if(iStorage.EngineObjects[i].InstanceId == -1) {
-		        iStorage.EditorObjects.Add(null);
-		    } else {
-		        iStorage.EditorObjects.Add(new iCS_EditorObject(i, iStorage));
+            iCS_EditorObject editorObj= null;
+		    if(iStorage.EngineObjects[i].InstanceId != -1) {
+		        editorObj= new iCS_EditorObject(i, iStorage);
 		    }
+	        iStorage.EditorObjects.Add(editorObj);
 		}
 		RebuildChildrenLists(iStorage);
 	}
