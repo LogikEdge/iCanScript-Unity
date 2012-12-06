@@ -12,9 +12,12 @@ public partial class iCS_EditorObject {
         if(IsIconized) return;
         // Folded nodes must initialize size and layout its ports using position ratio.
         if(IsFolded) {
-            
+            DisplaySize= ComputeNodeSizeFromRatio();
+            InitialPortLayout();
             return;
         }
-        
+        /*
+            TODO: initial position for unfolded nodes...
+        */
     }
 }
