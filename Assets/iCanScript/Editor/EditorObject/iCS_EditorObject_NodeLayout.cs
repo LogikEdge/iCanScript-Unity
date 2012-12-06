@@ -13,34 +13,6 @@ public partial class iCS_EditorObject {
 
     // Node Layout Utilities ================================================
     // ----------------------------------------------------------------------
-	public Rect NodeNeededGlobalChildRect {
-		get {
-			if(!IsUnfolded) return new Rect(0,0,0,0);
-			var center= Math3D.Middle(GlobalRect);
-			Rect childRect= new Rect(center.x, center.y, 0, 0);
-			ForEachChildNode(o=> { if(!o.IsFloating) Math3D.Merge(childRect, o.GlobalRect); });
-			float portsHeight= MinimumHeightForPorts;
-			if(portsHeight > childRect.height) {
-				var deltaY= portsHeight-childRect.height;
-				childRect.y-= 0.5f*deltaY;
-				childRect.height= portsHeight;
-			}
-			var left= NodeLeftPadding;
-			childRect.x-= left;
-			childRect.width+= left+NodeRightPadding;
-			var top= NodeTopPadding;
-			childRect.y-= top;
-			childRect.height+= top+NodeBottomPadding;
-			var titleWidth= NodeTitleWidth;
-			if(childRect.width < titleWidth) {
-				var deltaX= titleWidth-childRect.width;
-				childRect.x-= 0.5f*deltaX;
-				childRect.width= titleWidth;
-			}
-			return childRect;
-		}
-	}
-    // ----------------------------------------------------------------------
 	public Rect NodeGlobalChildRect {
 		get {
 			var r= GlobalRect;

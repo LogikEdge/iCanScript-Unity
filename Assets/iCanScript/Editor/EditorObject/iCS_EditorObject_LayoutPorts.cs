@@ -3,6 +3,8 @@ using System.Collections;
 
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
+    // Lays out the ports of this node using the position ratio and node size
+    // as basis.
     public void LayoutPorts() {
         var halfSize= 0.5f*DisplaySize;
         var verticalTop    = VerticalPortsTop;
