@@ -14,7 +14,7 @@ public partial class iCS_EditorObject {
         // Iconized nodes will be initialized by the parent node.
         if(IsIconized) return;
         // Initialize the node size using the children position ratio.
-        DisplaySize= ComputeNodeSizeFromRatio();
+        DisplaySize= ComputeNodeSizeFromChildrenRatio();
         // Layout any uninitialized port.
         InitialPortLayout();
         // Nothing more to do if we have no visible children.

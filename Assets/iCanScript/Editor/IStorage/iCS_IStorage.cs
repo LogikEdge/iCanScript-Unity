@@ -149,14 +149,7 @@ public partial class iCS_IStorage {
             myIsDirty= false;
 
             // Perform layout of modified nodes.
-            ForEachRecursiveDepthFirst(EditorObjects[0],
-                obj=> {
-                    if(obj.IsDirty) {
-//                        Debug.Log(obj.Name+" is dirty.  Display option: "+obj.DisplayOption);
-                        Layout(obj);
-                    }
-                }
-            );
+            PerformTreeLayoutFor(EditorObjects[0]);
             return;
         }
 
@@ -202,6 +195,7 @@ public partial class iCS_IStorage {
         // Perform sanity check
         SanityCheck();
     }
+
     // ----------------------------------------------------------------------
     Rect GetAnimationTarget(iCS_EditorObject eObj) {
         Rect target;

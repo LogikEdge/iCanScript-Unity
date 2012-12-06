@@ -22,10 +22,10 @@ public partial class iCS_IStorage {
             return Mathf.Min(Mathf.Abs(point.x-nodeRect.xMin),
                              Mathf.Abs(point.x-nodeRect.xMax));
         }
-        float distance= Vector2.Distance(point, GetTopLeftCorner(node));
-        distance= Mathf.Min(distance, Vector2.Distance(point, GetTopRightCorner(node)));
-        distance= Mathf.Min(distance, Vector2.Distance(point, GetBottomLeftCorner(node)));
-        distance= Mathf.Min(distance, Vector2.Distance(point, GetBottomRightCorner(node)));
+        float distance= Vector2.Distance(point, Math3D.TopLeftCorner(node.GlobalRect));
+        distance= Mathf.Min(distance, Vector2.Distance(point, Math3D.TopRightCorner(node.GlobalRect)));
+        distance= Mathf.Min(distance, Vector2.Distance(point, Math3D.BottomLeftCorner(node.GlobalRect)));
+        distance= Mathf.Min(distance, Vector2.Distance(point, Math3D.BottomRightCorner(node.GlobalRect)));
         return distance;
     }
 

@@ -6,13 +6,9 @@ using System.Collections;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // ======================================================================
-    public void Unfold()            { DisplayOption= iCS_DisplayOptionEnum.Unfolded; IsDirty= true; }
-    public void Fold()              { DisplayOption= iCS_DisplayOptionEnum.Folded;   IsDirty= true; }
-    public void Iconize()           { DisplayOption= iCS_DisplayOptionEnum.Iconized; IsDirty= true; }
     public bool IsUnfolded          { get { return DisplayOption == iCS_DisplayOptionEnum.Unfolded; }}
     public bool IsFolded            { get { return DisplayOption == iCS_DisplayOptionEnum.Folded;   }}
     public bool IsIconized          { get { return DisplayOption == iCS_DisplayOptionEnum.Iconized; }}
-
     public bool IsVisible {
         get {
             var parent= Parent;
@@ -22,5 +18,8 @@ public partial class iCS_EditorObject {
             return parent.IsVisible;            
         }
     }
+    public void Iconize()           { DisplayOption= iCS_DisplayOptionEnum.Iconized; IsDirty= true; }
+    public void Fold()              { DisplayOption= iCS_DisplayOptionEnum.Folded;   IsDirty= true; }
+    public void Unfold()            { DisplayOption= iCS_DisplayOptionEnum.Unfolded; IsDirty= true;}
 
 }

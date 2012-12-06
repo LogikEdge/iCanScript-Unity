@@ -9,17 +9,17 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Updates the size of the node.  We assume that all children have been
     // previously layed out prior to updating the node size.
-    public void UpdateNodeSizeFromGlobalRect() {
-        DisplaySize= ComputeNodeSizeFromGlobalRect();
+    public void UpdateNodeSizeFromChildrenGlobalRect() {
+        DisplaySize= ComputeNodeSizeFromChildrenGlobalRect();
     }
     // ----------------------------------------------------------------------
     // Returns the size of the node using the current children global position.
-	Vector2 ComputeNodeSizeFromGlobalRect() {
+	Vector2 ComputeNodeSizeFromChildrenGlobalRect() {
 	    return ComputeNodeSize(o=> o.ChildrenSizeFromGlobalRect);
 	}
     // ----------------------------------------------------------------------
     // Returns the size of the node using the current children position ratio.
-	Vector2 ComputeNodeSizeFromRatio() {
+	Vector2 ComputeNodeSizeFromChildrenRatio() {
 	    return ComputeNodeSize(o=> o.ChildrenSizeFromRatio);
 	}
     // ----------------------------------------------------------------------

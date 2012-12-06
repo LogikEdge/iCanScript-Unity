@@ -205,7 +205,23 @@ public static partial class Math3D {
         if(IsZero(d)) return default(Rect);
         return Mul(r1, 1f/d);
     }
-
+    // ----------------------------------------------------------------------
+	public static Vector2 TopLeftCorner(Rect r) {
+	    return new Vector2(r.xMin, r.yMin);
+	}
+    // ----------------------------------------------------------------------
+	public static Vector2 TopRightCorner(Rect r) {
+	    return new Vector2(r.xMax, r.yMin);
+	}
+    // ----------------------------------------------------------------------
+	public static Vector2 BottomLeftCorner(Rect r) {
+	    return new Vector2(r.xMin, r.yMax);
+	}
+    // ----------------------------------------------------------------------
+	public static Vector2 BottomRightCorner(Rect r) {
+	    return new Vector2(r.xMax, r.yMax);
+	}
+	
     // ======================================================================
     // Line segment utilities
 	// ----------------------------------------------------------------------
