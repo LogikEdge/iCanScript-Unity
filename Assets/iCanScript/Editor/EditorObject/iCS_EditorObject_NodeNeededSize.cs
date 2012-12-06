@@ -44,13 +44,6 @@ public partial class iCS_EditorObject {
         var childrenSize= childrenSizeFunc(this);
         width = Mathf.Max(minWidth+childrenSize.x, portsTitleWidth);
         height= Mathf.Max(minHeight+childrenSize.y, neededPortsHeight);
-
-var childrenSizeFromRatio= ChildrenSizeFromRatio;
-if(Math3D.IsNotEqual(childrenSize.x, childrenSizeFromRatio.x) || Math3D.IsNotEqual(childrenSize.y, childrenSizeFromRatio.y)) {
-    Debug.Log("ChildrenSizeRect= "+childrenSize+" ChildrenSizeFromRatio= "+childrenSizeFromRatio);
-    Debug.Log("Not same children size");
-}
-
 		return new Vector2(width, height);
 	}
     // ----------------------------------------------------------------------
