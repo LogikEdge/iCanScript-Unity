@@ -100,6 +100,8 @@ public partial class iCS_EditorObject {
 	Vector2 GetSeperationVector(Rect _rect) {
         Rect myRect= AddMargins(GlobalRect);
         Rect otherRect= _rect;
+		// No collision if X & Y distance of the enclosing rect is either
+		// larger or higher then the total width/height.
         float xMin= Mathf.Min(myRect.xMin, otherRect.xMin);
         float yMin= Mathf.Min(myRect.yMin, otherRect.yMin);
         float xMax= Mathf.Max(myRect.xMax, otherRect.xMax);
@@ -110,6 +112,9 @@ public partial class iCS_EditorObject {
         float totalHeight= myRect.height+otherRect.height;
         if(xDistance >= totalWidth) return Vector2.zero;
         if(yDistance >= totalHeight) return Vector2.zero;
+
+		// A collision is detected.  So lets compute the seperation
+		// vector.
         if((totalWidth-xDistance) < (totalHeight-yDistance)) {
             if(myRect.xMin < otherRect.xMin) {
                 return new Vector2(totalWidth-xDistance, 0);
