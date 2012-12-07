@@ -223,14 +223,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(oldParent != null) {
                         iCS_EditorObject newParent= GetValidParentNodeUnder(GraphMousePosition, node);
                         if(newParent != null) {
-                            if(newParent != oldParent) {
+                            if(newParent != oldParent && node.IsFloating) {
                                 ChangeParent(node, newParent);
                             }
                         } else {
                             node.UserDragTo(DragStartPosition);
                         }
                     }
-                    node.SavePosition();
                     node.IsFloating= false;
                     break;
                 }
