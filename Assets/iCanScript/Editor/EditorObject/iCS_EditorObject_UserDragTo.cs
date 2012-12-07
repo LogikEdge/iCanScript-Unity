@@ -10,7 +10,10 @@ public partial class iCS_EditorObject {
     // Forces a new position on the object being dragged by the uesr.
     public void UserDragTo(Vector2 newPosition) {
 		if(IsNode) {
-	        NodeUserDragDelta(newPosition-GlobalPosition);
+            IsSticky= true;
+            DeltaPosition= newPosition-GlobalPosition;
+	        NodeUserDragDelta();
+            IsSticky= false;
 	        IsDirty= true;			
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
@@ -18,13 +21,16 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Forced adjustment of position of the object dragged by the user. 
-    void NodeUserDragDelta(Vector2 delta) {
-        LocalPosition+= delta;
-        NodeAdjustAfterDrag(delta);
+    void NodeUserDragDelta() {
+        LocalPosition+= DeltaPosition;
+        NodeAdjustAfterDrag();
     }
     // ----------------------------------------------------------------------
     // Adjust position of the siblings and the parent after an object drag.
-    void NodeAdjustAfterDrag(Vector2 delta) {
+    void NodeAdjustAfterDrag() {
+        // Get a snapshot of the delta position.
+        var delta= DeltaPosition;
+        DeltaPosition= Vector2.zero;
         // Nothing else to do if this is the root object.
         if(!IsParentValid) return;
         var parent= Parent;
@@ -36,8 +42,8 @@ public partial class iCS_EditorObject {
 		// Ask parent to do the same if parent Rect has changed.
         var newGlobalRect= parent.GlobalRect;
         if(Math3D.IsEqual(previousGlobalRect, newGlobalRect)) return;
-		delta= Math3D.Middle(newGlobalRect)-Math3D.Middle(previousGlobalRect);
-        parent.NodeAdjustAfterDrag(delta);
+		parent.DeltaPosition= Math3D.Middle(newGlobalRect)-Math3D.Middle(previousGlobalRect);
+        parent.NodeAdjustAfterDrag();
     }
 
     // ======================================================================
@@ -48,11 +54,6 @@ public partial class iCS_EditorObject {
     public void ResolveCollisionOnChildren(Vector2 delta) {
         bool didCollide= false;
         iCS_EditorObject[] children= BuildListOfChildNodes(c=> !c.IsFloating);
-        // Collect collision vectors.
-        var len= children.Length;
-        for(int i= 0; i < len; ++i) {
-            
-        }
         // Resolve collisions.
         for(int i= 0; i < children.Length-1; ++i) {
             for(int j= i+1; j < children.Length; ++j) {

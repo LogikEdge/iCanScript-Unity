@@ -7,15 +7,15 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_IStorage    	myIStorage               = null;
-    int             	myId                     = -1;
-    bool            	myIsFloating             = false;
-    bool            	myIsDirty                = false;
-    public List<int>	myChildren               = new List<int>();
-    Vector2             myDisplaySize            = Vector2.zero;
-    Vector2             myLocalPosition          = Vector2.zero;
-    Vector2             myGlobalPositionFromRatio= Vector2.zero;
-    bool                myIsSticky               = false;
+    iCS_IStorage    	myIStorage     = null;
+    int             	myId           = -1;
+    bool            	myIsFloating   = false;
+    bool            	myIsDirty      = false;
+    public List<int>	myChildren     = new List<int>();
+    Vector2             myDisplaySize  = Vector2.zero;
+    Vector2             myLocalPosition= Vector2.zero;
+    Vector2             myDeltaPosition= Vector2.zero;
+    bool                myIsSticky     = false;
     
     // ======================================================================
     // Conversion Utilities
@@ -146,9 +146,9 @@ public partial class iCS_EditorObject {
 	    get { return myIsSticky; }
 	    set { myIsSticky= value; }
 	}
-	public Vector2 GlobalPositionFromRatio {
-	    get { return myGlobalPositionFromRatio; }
-	    set { myGlobalPositionFromRatio= value; }
+	public Vector2 DeltaPosition {
+	    get { return myDeltaPosition; }
+	    set { myDeltaPosition= value; }
 	}
 	
     // ======================================================================
