@@ -15,7 +15,6 @@ public partial class iCS_EditorObject {
     Vector2             myDisplaySize            = Vector2.zero;
     Vector2             myLocalPosition          = Vector2.zero;
     Vector2             myDeltaPosition          = Vector2.zero;
-    Vector2             myGlobalPositionFromRatio= Vector2.zero;
     bool                myIsSticky               = false;
     
     // ======================================================================

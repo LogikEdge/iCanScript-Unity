@@ -29,18 +29,21 @@ public partial class iCS_EditorObject {
         DeltaPosition= Vector2.zero;
         // Nothing else to do if this is the root object.
         if(!IsParentValid) return;
+        // Now we need to reformat the parent...
         var parent= Parent;
         // Keep copy of child desired global position.
         var childrenRect= parent.NodeGlobalChildRect;
-        parent.ForEachChildNode(
-            c=> {
-                if(c.IsSticky) {
-                    c.myGlobalPositionFromRatio= c.GlobalPosition;
-                } else {
-                    c.myGlobalPositionFromRatio= ComputeNodePositionFromRatio(childrenRect, c.NodePositionRatio);
-                }
-            }
-        );
+        var childNodes= parent.BuildListOfChildNodes(c=> !c.IsFloating);
+        var nbOfChildren= childNodes.Length;
+        var childGlobalPositionsFromRatio= new Vector2[nbOfChildren];
+        for(int i= 0; i < nbOfChildren; ++i) {
+            var c= childNodes[i];
+            if(c.IsSticky) {
+                childGlobalPositionsFromRatio[i]= c.GlobalPosition;
+            } else {
+                childGlobalPositionsFromRatio[i]= ComputeNodePositionFromRatio(childrenRect, c.NodePositionRatio);
+            }            
+        }
         // Resolve collision with siblings.
         parent.ResolveCollisionOnChildren(delta);
         // Adjust parent to wrap children.
@@ -51,11 +54,9 @@ public partial class iCS_EditorObject {
         if(Math3D.IsEqual(previousGlobalRect, newGlobalRect)) return;
         // Parent rect has changed so lets recompute children ratio.
         childrenRect= parent.NodeGlobalChildRect;
-        parent.ForEachChildNode(
-            c=> {
-                c.NodePositionRatio= ComputeNodeRatio(childrenRect, c.myGlobalPositionFromRatio);
-            }
-        );
+        for(int i= 0; i < nbOfChildren; ++i) {
+            childNodes[i].NodePositionRatio= ComputeNodeRatio(childrenRect, childGlobalPositionsFromRatio[i]);            
+        }
         // Move or resize the parent node.
 		parent.DeltaPosition= Math3D.Middle(newGlobalRect)-Math3D.Middle(previousGlobalRect);
         parent.IsSticky= true;
