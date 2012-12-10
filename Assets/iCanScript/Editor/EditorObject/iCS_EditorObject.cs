@@ -14,7 +14,6 @@ public partial class iCS_EditorObject {
     public List<int>	myChildren               = new List<int>();
     Vector2             myDisplaySize            = Vector2.zero;
     Vector2             myLocalPosition          = Vector2.zero;
-    Vector2             myDeltaPosition          = Vector2.zero;
     bool                myIsSticky               = false;
     
     // ======================================================================
@@ -145,10 +144,6 @@ public partial class iCS_EditorObject {
 	public bool IsSticky {
 	    get { return myIsSticky; }
 	    set { myIsSticky= value; }
-	}
-	public Vector2 DeltaPosition {
-	    get { return myDeltaPosition; }
-	    set { myDeltaPosition= value; }
 	}
 	
     // ======================================================================

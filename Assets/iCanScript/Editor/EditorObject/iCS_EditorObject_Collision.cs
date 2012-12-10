@@ -7,7 +7,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
-    public void ResolveCollisionOnChildren(Vector2 delta) {
+    public void ResolveCollisionOnChildren() {
         // Reposition all non-sticky node according to ratio
         ForEachChildNode(
             c=> {
@@ -17,23 +17,23 @@ public partial class iCS_EditorObject {
             }
         );
         // Resolve collisions.
-        ResolveCollisionOnChildrenImp(delta);
+        ResolveCollisionOnChildrenImp();
     }
-    public void ResolveCollisionOnChildrenImp(Vector2 delta) {
+    public void ResolveCollisionOnChildrenImp() {
         bool didCollide= false;
         iCS_EditorObject[] children= BuildListOfChildNodes(c=> !c.IsFloating);
         // Resolve collisions.
         for(int i= 0; i < children.Length-1; ++i) {
             for(int j= i+1; j < children.Length; ++j) {
-                didCollide |= children[i].ResolveCollisionBetweenTwoNodes(children[j], delta);                            
+                didCollide |= children[i].ResolveCollisionBetweenTwoNodes(children[j]);                            
             }
         }
-        if(didCollide) ResolveCollisionOnChildrenImp(delta);
+        if(didCollide) ResolveCollisionOnChildrenImp();
     }
     // ----------------------------------------------------------------------
     // Resolves collision between two nodes. "true" is returned if a collision
     // has occured.
-    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject otherNode, Vector2 delta) {
+    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject otherNode) {
         // Nothing to do if they don't collide.
         if(!DoesCollideWithMargins(otherNode)) return false;
 
@@ -102,23 +102,4 @@ public partial class iCS_EditorObject {
         }
 	}
 
-    // ======================================================================
-    // ----------------------------------------------------------------------
-    void NewCollisionAlgorithmForParentNode() {
-        UpdateDeltaPositionOfChildren();
-    }
-    
-    // ----------------------------------------------------------------------
-    // Updates the delta position of all non-sticky nodes according to the
-    // position ratio.
-    void UpdateDeltaPositionOfChildren() {
-        ForEachChildNode(
-            c=> {
-                if(!c.IsSticky) {
-                    c.DeltaPosition= GlobalPosition-c.NodeGlobalPositionFromRatio;
-                }
-            }
-        );
-    }
-    
 }
