@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,7 +13,13 @@ public partial class iCS_EditorObject {
 		if(IsNode) {
             IsSticky= true;
             LocalPosition+= newPosition-GlobalPosition;
-            NodeAdjustAfterDrag();
+            if(IsParentValid) {
+                var parent= Parent;
+                parent.IsSticky= true;
+                parent.AdjustParentAfterDrag();
+                parent.IsSticky= false;
+            }
+//            NodeAdjustAfterDrag();
             GlobalPosition= newPosition;
             SaveNodePosition();
             IsSticky= false;
@@ -22,14 +29,10 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Adjust position of the siblings and the parent after an object drag.
-    void NodeAdjustAfterDrag() {
-        // Nothing else to do if this is the root object.
-        if(!IsParentValid) return;
-        // Now we need to reformat the parent...
-        var parent= Parent;
+    void AdjustParentAfterDrag() {
         // Keep copy of child desired global position.
-        var childrenRect= parent.NodeGlobalChildRect;
-        var childNodes= parent.BuildListOfChildNodes(c=> !c.IsFloating);
+        var childrenRect= NodeGlobalChildRect;
+        var childNodes= BuildListOfChildNodes(c=> !c.IsFloating);
         var nbOfChildren= childNodes.Length;
         var childGlobalPositionsFromRatio= new Vector2[nbOfChildren];
         for(int i= 0; i < nbOfChildren; ++i) {
@@ -41,23 +44,60 @@ public partial class iCS_EditorObject {
             }            
         }
         // Resolve collision with siblings.
-        parent.ResolveCollisionOnChildren();
+        ResolveCollisionOnChildren();
         // Adjust parent to wrap children.
-        var previousGlobalRect= parent.GlobalRect;
-        parent.WrapAroundChildrenNodes();
+        var previousGlobalRect= GlobalRect;
+        WrapAroundChildrenNodes();
 		// Ask parent to do the same if parent Rect has changed.
-        var newGlobalRect= parent.GlobalRect;
+        var newGlobalRect= GlobalRect;
         if(Math3D.IsEqual(previousGlobalRect, newGlobalRect)) return;
         // Parent rect has changed so lets recompute children ratio.
-        childrenRect= parent.NodeGlobalChildRect;
+        childrenRect= NodeGlobalChildRect;
         for(int i= 0; i < nbOfChildren; ++i) {
             childNodes[i].NodePositionRatio= ComputeNodeRatio(childrenRect, childGlobalPositionsFromRatio[i]);            
         }
         // Move or resize the parent node.
-        parent.IsSticky= true;
-        parent.NodeAdjustAfterDrag();
-        parent.IsSticky= false;
+        if(IsParentValid) {
+            var parent= Parent;
+            parent.IsSticky= true;
+            parent.AdjustParentAfterDrag();
+            parent.IsSticky= false;
+        }
     }
 
+    // ----------------------------------------------------------------------
+    // Adjust position of the siblings and the parent after an object drag.
+    void AdjustParentLayout(Action<iCS_EditorObject> propagateAction) {
+        // Keep copy of child desired global position.
+        var childrenRect= NodeGlobalChildRect;
+        var childNodes= BuildListOfChildNodes(c=> !c.IsFloating);
+        var nbOfChildren= childNodes.Length;
+        var childGlobalPositionsFromRatio= new Vector2[nbOfChildren];
+        for(int i= 0; i < nbOfChildren; ++i) {
+            var c= childNodes[i];
+            if(c.IsSticky) {
+                childGlobalPositionsFromRatio[i]= c.GlobalPosition;
+            } else {
+                childGlobalPositionsFromRatio[i]= ComputeNodePositionFromRatio(childrenRect, c.NodePositionRatio);
+            }            
+        }
+        // Resolve collision with siblings.
+        ResolveCollisionOnChildren();
+        // Adjust parent to wrap children.
+        var previousGlobalRect= GlobalRect;
+        WrapAroundChildrenNodes();
+		// Ask parent to do the same if parent Rect has changed.
+        var newGlobalRect= GlobalRect;
+        if(Math3D.IsEqual(previousGlobalRect, newGlobalRect)) return;
+        // Parent rect has changed so lets recompute children ratio.
+        childrenRect= NodeGlobalChildRect;
+        for(int i= 0; i < nbOfChildren; ++i) {
+            childNodes[i].NodePositionRatio= ComputeNodeRatio(childrenRect, childGlobalPositionsFromRatio[i]);            
+        }
+        // Move or resize the parent node.
+        if(IsParentValid) {
+            propagateAction(Parent);
+        }
+    }
 
 }
