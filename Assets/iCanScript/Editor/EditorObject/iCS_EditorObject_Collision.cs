@@ -7,7 +7,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
-    public void ResolveCollisionOnChildren() {
+    public void ResolveCollisionOnChildrenNodes() {
         // Reposition all non-sticky node according to ratio
         ForEachChildNode(
             c=> {

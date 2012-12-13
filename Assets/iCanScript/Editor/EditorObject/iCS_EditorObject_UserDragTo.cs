@@ -40,11 +40,9 @@ public partial class iCS_EditorObject {
                 childGlobalPositionsFromRatio[i]= ComputeNodePositionFromRatio(childrenRect, c.NodePositionRatio);
             }            
         }
-        // Resolve collision with siblings.
-        ResolveCollisionOnChildren();
-        // Adjust parent to wrap children.
+        // Layout the node resolving collision on children.
         var previousGlobalRect= GlobalRect;
-        WrapAroundChildrenNodes();
+        LayoutNode();
 		// Ask parent to do the same if parent Rect has changed.
         var newGlobalRect= GlobalRect;
         if(Math3D.IsEqual(previousGlobalRect, newGlobalRect)) {
@@ -62,5 +60,18 @@ public partial class iCS_EditorObject {
   		}
 		IsSticky= false;
     }
-
+    // ----------------------------------------------------------------------
+    // Resolve collision between children then wrap node around the children.
+    public void LayoutNode() {
+        // Attempt to predict size.
+        bool shouldComputeSize= true;
+        ForEachChildNode(n=> { if(n.IsSticky) shouldComputeSize= false; });
+        if(shouldComputeSize) {
+            DisplaySize= ComputeNodeSizeFromChildrenRatio();
+        }
+        // Resolve collision with siblings.
+        ResolveCollisionOnChildrenNodes();
+        // Adjust parent to wrap children.
+        WrapAroundChildrenNodes();        
+    }
 }

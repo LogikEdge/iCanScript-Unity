@@ -40,7 +40,7 @@ public partial class iCS_IStorage {
         }
 
         // Update node size according to the current children layout.
-        node.UpdateNodeSizeFromChildrenGlobalRect();
+        node.LayoutNode();
     }
 
 }
