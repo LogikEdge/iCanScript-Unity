@@ -15,6 +15,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Rect NodeGlobalChildRect {
 		get {
+            if(IsIconized || IsFolded) {
+                Debug.LogWarning("iCanScript: NodeGlobalChildRect should not be called when the node is iconized or folded");
+                var gp= GlobalPosition;
+                return new Rect(gp.x, gp.y, 0, 0);
+            }
 			var r= GlobalRect;
 			var top= NodeTopPadding;
 			r.y+= top;
