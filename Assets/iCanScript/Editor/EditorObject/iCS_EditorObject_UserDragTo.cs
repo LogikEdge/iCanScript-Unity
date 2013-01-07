@@ -13,7 +13,7 @@ public partial class iCS_EditorObject {
 		if(IsNode) {
             IsSticky= true;
             LocalPosition+= newPosition-GlobalPosition;
-            if(IsParentValid) {
+            if(IsParentValid && !IsFloating) {
                 Parent.LayoutParentNodeAfterDrag();
             }
             GlobalPosition= newPosition;
