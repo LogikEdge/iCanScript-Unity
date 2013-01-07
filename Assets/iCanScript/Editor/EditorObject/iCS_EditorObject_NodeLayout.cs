@@ -37,7 +37,7 @@ public partial class iCS_EditorObject {
 			value.x-= left;
 			value.width+= left+NodeRightPadding;
             // Assure that the width is sufficent for the title.
-            float titleWidth= 2f*iCS_BuiltinTextures.kMinimizeIconSize+iCS_Config.GetWindowWidth(Name);
+            float titleWidth= iCS_Config.GetWindowWidth(Name)+2f*iCS_BuiltinTextures.kMinimizeIconSize+iCS_EditorConfig.kTitleFontSize;
             if(titleWidth > value.width) {
                 value.x-= 0.5f*(titleWidth-value.width);
                 value.width= titleWidth;

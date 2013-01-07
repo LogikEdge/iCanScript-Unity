@@ -14,13 +14,13 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
-    const float kInitScale       = 1f;
-    const float kMinimizeSize    = 32f;
-    const float kIconicArea      = kMinimizeSize*kMinimizeSize;
-    const float kNodeCornerRadius= 8f;
-    const float kNodeTitleHeight = 2f*kNodeCornerRadius;
-    const int   kLabelFontSize   = 11;
-    const int   kTitleFontSize   = 12;
+    const float kInitialScale    = iCS_EditorConfig.kInitialScale;
+    const float kIconicSize      = iCS_EditorConfig.kIconicSize;
+    const float kIconicArea      = iCS_EditorConfig.kIconicArea;
+    const float kNodeCornerRadius= iCS_EditorConfig.kNodeCornerRadius;
+    const float kNodeTitleHeight = iCS_EditorConfig.kNodeTitleHeight;
+    const int   kLabelFontSize   = iCS_EditorConfig.kLabelFontSize;
+    const int   kTitleFontSize   = iCS_EditorConfig.kTitleFontSize;
     
     // ======================================================================
     // PROPERTIES
@@ -48,7 +48,7 @@ public partial class iCS_Graphics {
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
-    float            Scale= kInitScale;
+    float            Scale= kInitialScale;
     Vector2          Translation= Vector2.zero;
     Rect             ClipingArea= new Rect(0,0,0,0);
     Vector2          MousePosition= Vector2.zero;
@@ -202,8 +202,8 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     static public bool Init(iCS_IStorage iStorage) {
         // Build texture temaples.
-        iCS_PortIcons.BuildPortIconTemplates(kInitScale);
-		iCS_NodeTextures.BuildNodeTemplate(kInitScale);
+        iCS_PortIcons.BuildPortIconTemplates(kInitialScale);
+		iCS_NodeTextures.BuildNodeTemplate(kInitialScale);
         // Load AA line texture.
         if(lineTexture == null) {
             if(!iCS_TextureCache.GetTexture(iCS_EditorStrings.AALineTexture, out lineTexture)) {
