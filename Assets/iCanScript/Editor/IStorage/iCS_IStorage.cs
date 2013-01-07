@@ -198,17 +198,7 @@ public partial class iCS_IStorage {
 
     // ----------------------------------------------------------------------
     Rect GetAnimationTarget(iCS_EditorObject eObj) {
-        Rect target;
-        if(eObj.IsVisible) {
-            target= eObj.GlobalRect;
-        } else {
-            // Find first visible parent.
-            var visibleParent= eObj.Parent;
-            for(; visibleParent != null && !visibleParent.IsVisible; visibleParent= visibleParent.Parent);
-            Vector2 center= (visibleParent ?? eObj).GlobalPosition;
-            target= new Rect(center.x, center.y, 0, 0);
-        }
-        return target;
+        return eObj.AnimationTarget;
     }
     // ----------------------------------------------------------------------
     /*
