@@ -364,6 +364,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
         this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
@@ -377,6 +378,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
         this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
         // Automatically create entry state.
@@ -395,6 +397,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
         this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         // Set first state as the default entry state.
@@ -430,6 +433,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
         this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -469,6 +473,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
         this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
