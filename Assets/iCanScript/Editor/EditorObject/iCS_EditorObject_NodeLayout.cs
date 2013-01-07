@@ -36,6 +36,12 @@ public partial class iCS_EditorObject {
 			var left= NodeLeftPadding;
 			value.x-= left;
 			value.width+= left+NodeRightPadding;
+            // Assure that the width is sufficent for the title.
+            float titleWidth= 2f*iCS_BuiltinTextures.kMinimizeIconSize+iCS_Config.GetWindowWidth(Name);
+            if(titleWidth > value.width) {
+                value.x-= 0.5f*(titleWidth-value.width);
+                value.width= titleWidth;
+            }
 			GlobalRect= value;
 		}
 	}
@@ -205,7 +211,5 @@ public partial class iCS_EditorObject {
         }
     }
 
-    // ======================================================================
-    // Port layout utilities
 }
 
