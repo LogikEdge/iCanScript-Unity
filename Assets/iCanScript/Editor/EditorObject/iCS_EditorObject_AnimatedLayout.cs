@@ -41,5 +41,8 @@ public partial class iCS_EditorObject {
                                  timeRatio,
                                  (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     }
-    
+	// ----------------------------------------------------------------------
+    public void DontAnimatePosition() {
+        myAnimatedPosition.Reset(GlobalRect);                        
+    }
 }

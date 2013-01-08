@@ -132,10 +132,7 @@ public partial class iCS_IStorage {
         // Update display if animation is disabled.
         if(!AnimateLayout || (!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive)) {
             ForEach(
-                obj=> {
-                    var animation= obj.AnimatedPosition;
-                    animation.Reset(GetAnimationTarget(obj));                    
-                }
+                obj=> obj.DontAnimatePosition()
             );
         }
         
@@ -156,15 +153,7 @@ public partial class iCS_IStorage {
         // Graph is now stable.  Recompute animation target if needed.
         if(AnimationNeeded && AnimateLayout) {
             ForEach(
-                obj=> {
-                    obj.AnimatePosition(myAnimationTimeRatio);
-//                    Rect target= GetAnimationTarget(obj);
-//                    var animation= obj.AnimatedPosition;
-//                    animation.Start(animation.CurrentValue,
-//                                    target,
-//                                    myAnimationTimeRatio,
-//                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-                }
+                obj=> obj.AnimatePosition(myAnimationTimeRatio)
             );
             myAnimationTimeRatio.Start(iCS_PreferencesEditor.AnimationTime);
             AnimationNeeded= false;
