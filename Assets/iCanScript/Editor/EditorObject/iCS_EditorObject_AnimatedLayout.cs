@@ -42,7 +42,15 @@ public partial class iCS_EditorObject {
                                  (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     }
 	// ----------------------------------------------------------------------
+    public void DontAnimatePositionAndChildren() {
+        DontAnimatePosition();
+        ForEachChildNode(c=> c.DontAnimatePositionAndChildren());                        
+    }
+	// ----------------------------------------------------------------------
     public void DontAnimatePosition() {
-        myAnimatedPosition.Reset(GlobalRect);                        
+        myAnimatedPosition.Reset(GlobalRect);
+        if(IsNode) {
+            ForEachChildPort(p=> p.DontAnimatePosition());
+        }
     }
 }

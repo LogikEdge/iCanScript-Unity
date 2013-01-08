@@ -17,6 +17,7 @@ public partial class iCS_EditorObject {
                 Parent.LayoutParentNodeAfterDrag();
             }
             GlobalPosition= newPosition;
+            DontAnimatePositionAndChildren();
             SaveNodePosition();
             IsSticky= false;
 		} else {
@@ -43,6 +44,7 @@ public partial class iCS_EditorObject {
         // Layout the node resolving collision on children.
         var previousGlobalRect= GlobalRect;
         LayoutNode();
+        DontAnimatePosition();
 		// Ask parent to do the same if parent Rect has changed.
         var newGlobalRect= GlobalRect;
         if(Math3D.IsEqual(previousGlobalRect, newGlobalRect)) {

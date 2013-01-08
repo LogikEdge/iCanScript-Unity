@@ -49,7 +49,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(IsDragStarted) return true;
 
         // Disable graph animation will dragging.
-        IStorage.AnimateLayout= false;
+//        IStorage.AnimateLayout= false;
 
         // Use the Left mouse down position has drag start position.
         MouseDragStartPosition= MouseDownPosition;
