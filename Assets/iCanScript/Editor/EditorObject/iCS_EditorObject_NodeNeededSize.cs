@@ -103,7 +103,7 @@ public partial class iCS_EditorObject {
                         var rx= 0.5f-Mathf.Abs(0.5f-ratio.x);
                         var ry= 0.5f-Mathf.Abs(0.5f-ratio.y);
                         if(Math3D.IsZero(rx) || Math3D.IsZero(ry)) {
-                            Debug.LogWarning("iCanScript: Invalid node position ratio for: "+c.Name);
+                            Debug.LogWarning("iCanScript: Invalid node position ratio: "+ratio+" for: "+c.Name);
                         } else {
                             var childHalfSize= 0.5f*c.DisplaySize; 
                             var sx= childHalfSize.x/rx;

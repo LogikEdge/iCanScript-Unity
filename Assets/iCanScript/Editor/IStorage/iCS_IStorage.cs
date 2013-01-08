@@ -157,12 +157,13 @@ public partial class iCS_IStorage {
         if(AnimationNeeded && AnimateLayout) {
             ForEach(
                 obj=> {
-                    Rect target= GetAnimationTarget(obj);
-                    var animation= obj.AnimatedPosition;
-                    animation.Start(animation.CurrentValue,
-                                    target,
-                                    myAnimationTimeRatio,
-                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+                    obj.AnimatePosition(myAnimationTimeRatio);
+//                    Rect target= GetAnimationTarget(obj);
+//                    var animation= obj.AnimatedPosition;
+//                    animation.Start(animation.CurrentValue,
+//                                    target,
+//                                    myAnimationTimeRatio,
+//                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
                 }
             );
             myAnimationTimeRatio.Start(iCS_PreferencesEditor.AnimationTime);
