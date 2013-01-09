@@ -283,6 +283,7 @@ public partial class iCS_EditorObject {
             iCS_EditorObject editorObj= null;
 		    if(iStorage.EngineObjects[i].InstanceId != -1) {
 		        editorObj= new iCS_EditorObject(i, iStorage);
+				if(i == 0) editorObj.LocalPosition= editorObj.NodePositionRatio;
 		    }
 	        iStorage.EditorObjects.Add(editorObj);
 		}

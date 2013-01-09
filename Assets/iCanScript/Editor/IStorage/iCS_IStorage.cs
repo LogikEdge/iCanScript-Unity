@@ -368,6 +368,7 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, this);
         this[0].GlobalPosition= VisualEditorCenter();
+		this[0].SavePosition();
 		this[0].IsNameEditable= false;
         return this[0];
     }
