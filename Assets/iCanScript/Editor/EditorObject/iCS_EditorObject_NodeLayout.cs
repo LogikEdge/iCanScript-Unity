@@ -56,7 +56,7 @@ public partial class iCS_EditorObject {
 	public float NodeTitleWidth {
 		get {
 			if(IsIconized) return 0;
-			return iCS_Config.GetNodeWidth(Name)+iCS_Config.ExtraIconWidth+2f*iCS_Config.PaddingSize;
+			return iCS_Config.GetWindowWidth(Name)+2f*iCS_BuiltinTextures.kMinimizeIconSize+iCS_EditorConfig.kTitleFontSize;
 		}
 	}
     // ----------------------------------------------------------------------

@@ -8,6 +8,20 @@ using P=Prelude;
 //  ITERATION
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
+	// Containment status ==================================================
+	public bool HasChildNode() {
+        foreach(var childId in Children) {
+            if(EditorObjects[childId].IsNode) return true;
+        }
+		return false;
+	}
+    // ----------------------------------------------------------------------
+	public bool HasChildPort() {
+        foreach(var childId in Children) {
+            if(EditorObjects[childId].IsPort) return true;
+        }
+		return false;
+	}
     // Children Iterations =================================================
     public void ForEachChild(Action<iCS_EditorObject> fnc) {
         foreach(var childId in Children) {
