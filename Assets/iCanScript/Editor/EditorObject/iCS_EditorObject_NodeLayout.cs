@@ -217,5 +217,20 @@ public partial class iCS_EditorObject {
         var intersection= Math3D.Intersection(childrenArea, childRect);
         return Math3D.IsNotEqual(intersection, childRect);
     }
+    // ----------------------------------------------------------------------
+    // Resolve collision between children then wrap node around the children.
+    public void LayoutNode() {
+        // Attempt to predict size.
+        bool shouldComputeSize= true;
+        ForEachChildNode(n=> { if(n.IsSticky) shouldComputeSize= false; });
+        if(shouldComputeSize) {
+            DisplaySize= ComputeNodeSizeFromChildrenRatio();
+        }
+        // Resolve collision with siblings.
+        ResolveCollisionOnChildrenNodes();
+        // Adjust parent to wrap children.
+        WrapAroundChildrenNodes();        
+    }
+
 }
 

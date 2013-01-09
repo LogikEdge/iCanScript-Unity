@@ -19,7 +19,6 @@ public partial class iCS_IStorage {
         obj.IsDirty= false;
         ExecuteIf(obj, o=> o.IsNode, o=> NodeLayout(o));
         //Debug.Log(obj.Name+" is dirty.  Display option: "+obj.DisplayOption);
-		Debug.Log("Name: "+obj.Name+" GPos= "+obj.GlobalPosition);
     }
 
     // ----------------------------------------------------------------------

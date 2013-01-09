@@ -11,12 +11,13 @@ public partial class iCS_EditorObject {
 	public object		    InitialValue= null;
 
     // ======================================================================
-    // Proxy Methods
-    // ----------------------------------------------------------------------
-    public float PortPositionRatio {
-        get { return EngineObject.PortPositionRatio; }
-		set { EngineObject.PortPositionRatio= value; }
-    }
+    // Port layout attributes.
+	public bool IsOnTopEdge         { get { return Edge == iCS_EdgeEnum.Top; }}
+    public bool IsOnBottomEdge      { get { return Edge == iCS_EdgeEnum.Bottom; }}
+    public bool IsOnRightEdge       { get { return Edge == iCS_EdgeEnum.Right; }}
+    public bool IsOnLeftEdge        { get { return Edge == iCS_EdgeEnum.Left; }}
+    public bool IsOnHorizontalEdge  { get { return IsOnTopEdge   || IsOnBottomEdge; }}
+    public bool IsOnVerticalEdge    { get { return IsOnRightEdge || IsOnLeftEdge; }}
     // ----------------------------------------------------------------------
     public iCS_EdgeEnum Edge {
 		get { return EngineObject.Edge; }
@@ -27,6 +28,19 @@ public partial class iCS_EditorObject {
             if(!IsFloating) CleanupPortEdgePosition();
             IsDirty= true;
 		}
+	}
+    // ----------------------------------------------------------------------
+    public float PortPositionRatio {
+        get { return EngineObject.PortPositionRatio; }
+		set { EngineObject.PortPositionRatio= value; }
+    }
+    
+    
+    // ======================================================================
+	// Port source related attributes.
+    public int PortIndex {
+		get { return EngineObject.PortIndex; }
+		set { EngineObject.PortIndex= value; }
 	}
     public int SourceId {
 		get { return EngineObject.SourceId; }
@@ -41,16 +55,14 @@ public partial class iCS_EditorObject {
 		get { return SourceId != -1 ? myIStorage[SourceId] : null; }
 		set { SourceId= (value != null ? value.InstanceId : -1); }
 	}
-    public int PortIndex {
-		get { return EngineObject.PortIndex; }
-		set { EngineObject.PortIndex= value; }
-	}
+
+    // ======================================================================
+	// Port value attributes.
     public string InitialValueArchive {
 		get { return EngineObject.InitialValueArchive; }
 		set { EngineObject.InitialValueArchive= value;}
 	}
-	
-	// Port Value Utilities =================================================
+	// ----------------------------------------------------------------------
 	public object InitialPortValue {
 		get {
 			if(!IsInDataPort) return null;
@@ -64,8 +76,7 @@ public partial class iCS_EditorObject {
 	        myIStorage.StoreInitialPortValueInArchive(this);			
 		}
 	}
-
-    // Port Value -----------------------------------------------------------
+	// ----------------------------------------------------------------------
     // Fetches the runtime value if it exists, otherwise returns the initial value
 	public object PortValue {
 		get {
@@ -85,8 +96,7 @@ public partial class iCS_EditorObject {
 	        Parent.IsDirty= true;			
 		}
 	}
-
-    // Runtime port value ---------------------------------------------------
+	// ----------------------------------------------------------------------
 	public object RuntimePortValue {
 		get {
 			if(!IsDataPort) return null;
