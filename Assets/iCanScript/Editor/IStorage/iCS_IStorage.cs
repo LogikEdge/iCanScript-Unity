@@ -1,7 +1,8 @@
+//#define NEW_UPDATE
+
 using UnityEngine;
 using UnityEditor;
 using System;
-//using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
@@ -13,7 +14,6 @@ public partial class iCS_IStorage {
             bool                myIsDirty           = true;
             bool                CleanupNeeded       = true;
             bool                AnimationNeeded     = true;
-    public  bool                AnimateLayout       = true;
     public  iCS_Storage         Storage             = null;
     List<iCS_EditorObject>      myEditorObjects     = null;
     public  int                 UndoRedoId          = 0;
@@ -126,11 +126,41 @@ public partial class iCS_IStorage {
     public void Update() {
         // Processing any changed caused by Undo/Redo
         DetectUndoRedo();
+#if NEW_UPDATE
+    // Perform layout if one or more objects has changed.
+    if(myIsDirty) {
+        // Tell Unity that our storage has changed.
+        EditorUtility.SetDirty(Storage);
+        // Prepare for cleanup after storage change.
+        CleanupNeeded= true;
+//        AnimationNeeded= true;
+        myIsDirty= false;
+    
+        // Perform layout of modified nodes.
+        PerformTreeLayoutFor(EditorObjects[0]);
+    }
+    // Update object animations.
+    ForEach(
+        obj=> {
+            var animation= obj.AnimatedPosition;
+            if(animation.IsActive) {
+                if(animation.IsElapsed) {
+                    animation.Reset(obj.AnimationTarget);                    
+                } else {
+                    animation.Update();                                            
+                }
+            } else {
+                animation.Reset(obj.AnimationTarget);
+            }
+        }
+    );
+    
+#else
 /*
 	TODO: Optimize update.
 */        
         // Update display if animation is disabled.
-        if(!AnimateLayout || (!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive)) {
+        if(!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive) {
             ForEach(
                 obj=> obj.DontAnimatePosition()
             );
@@ -147,11 +177,11 @@ public partial class iCS_IStorage {
 
             // Perform layout of modified nodes.
             PerformTreeLayoutFor(EditorObjects[0]);
-            return;
+//            return;
         }
 
         // Graph is now stable.  Recompute animation target if needed.
-        if(AnimationNeeded && AnimateLayout) {
+        if(AnimationNeeded) {
             ForEach(
                 obj=> obj.AnimatePosition(myAnimationTimeRatio)
             );
@@ -175,6 +205,7 @@ public partial class iCS_IStorage {
                 }
             );
         }
+#endif
 
         // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {
@@ -182,8 +213,11 @@ public partial class iCS_IStorage {
             CleanupNeeded= Cleanup();
         }
         
+#if NEW_UPDATE
+#else        
         // Perform sanity check
         SanityCheck();
+#endif
     }
 
     // ----------------------------------------------------------------------

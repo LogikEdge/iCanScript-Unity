@@ -48,9 +48,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Don't select new drag type if drag already started.
         if(IsDragStarted) return true;
 
-        // Disable graph animation will dragging.
-//        IStorage.AnimateLayout= false;
-
         // Use the Left mouse down position has drag start position.
         MouseDragStartPosition= MouseDownPosition;
         Vector2 pos= ViewportToGraph(MouseDragStartPosition);
@@ -112,7 +109,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
 
         // Disable dragging since mouse is not over Node or Port.
-        IStorage.AnimateLayout= true;
         DragType= DragTypeEnum.None;
         DragObject= null;
         IsDragEnabled= false;
@@ -212,7 +208,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }    
 	// ----------------------------------------------------------------------
     void EndDrag() {
-        IStorage.AnimateLayout= true;
 		ProcessDrag();
         try {
             switch(DragType) {
