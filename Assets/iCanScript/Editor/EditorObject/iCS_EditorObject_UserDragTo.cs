@@ -13,7 +13,7 @@ public partial class iCS_EditorObject {
 		if(IsNode) {
             IsSticky= true;
             LocalPosition+= newPosition-GlobalPosition;
-            if(IsParentValid && !IsFloating) {
+            if(IsParentValid) {
                 Parent.LayoutParentNodeAfterDrag(this);
             }
             GlobalPosition= newPosition;
@@ -45,7 +45,7 @@ public partial class iCS_EditorObject {
         var previousGlobalRect= GlobalRect;
         bool isDragForcingResize= IsOutsideChildArea(childBeingDragged);
         LayoutNode();
-        if(isDragForcingResize && !childBeingDragged.IsPositionAnimated) {
+        if(isDragForcingResize) {
             DontAnimatePosition();            
         }
 		// Ask parent to do the same if parent Rect has changed.

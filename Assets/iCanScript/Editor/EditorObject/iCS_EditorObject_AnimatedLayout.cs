@@ -49,6 +49,21 @@ public partial class iCS_EditorObject {
                                  (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     }
 	// ----------------------------------------------------------------------
+    public void AnimateTree() {
+        var timeRatio= new P.TimeRatio();
+        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+        AnimateTree(timeRatio);
+    }
+	// ----------------------------------------------------------------------
+    public void AnimateTree(P.TimeRatio timeRatio) {
+        myAnimatedPosition.Start(myAnimatedPosition.CurrentValue,
+                                 AnimationTarget,
+                                 timeRatio,
+                                 (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+        ForEachChild(c=> c.AnimateTree(timeRatio));
+    }
+
+	// ----------------------------------------------------------------------
     public void DontAnimatePositionAndChildren() {
         DontAnimatePosition();
         ForEachChildNode(c=> c.DontAnimatePositionAndChildren());                        
@@ -60,4 +75,5 @@ public partial class iCS_EditorObject {
             ForEachChildPort(p=> p.DontAnimatePosition());
         }
     }
+
 }
