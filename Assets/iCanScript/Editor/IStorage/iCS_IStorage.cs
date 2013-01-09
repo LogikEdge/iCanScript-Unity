@@ -220,10 +220,10 @@ public partial class iCS_IStorage {
 #endif
     }
 
-    // ----------------------------------------------------------------------
-    Rect GetAnimationTarget(iCS_EditorObject eObj) {
-        return eObj.AnimationTarget;
-    }
+//    // ----------------------------------------------------------------------
+//    Rect GetAnimationTarget(iCS_EditorObject eObj) {
+//        return eObj.AnimationTarget;
+//    }
     // ----------------------------------------------------------------------
     /*
         TODO: Should use the layout rule the determine execution priority.
@@ -538,7 +538,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     Vector2 VisualEditorCenter() {
         iCS_VisualEditor editor= iCS_EditorMgr.FindVisualEditor();
-        return editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
+        var center= editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
+//		Debug.Log("Visual Editor center: "+center);
+		return center;
     }
     
     // ======================================================================
