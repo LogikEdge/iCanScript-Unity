@@ -51,7 +51,7 @@ public partial class iCS_EditorObject {
     public float MinimumHeightForPorts {
         get {
             int nbOfPorts= Mathf.Max(NbOfLeftPorts, NbOfRightPorts);
-            return nbOfPorts*iCS_Config.MinimumPortSeparation;                                            
+            return nbOfPorts*iCS_EditorConfig.MinimumPortSeparation;                                            
         }
     }
     // ----------------------------------------------------------------------
@@ -59,7 +59,7 @@ public partial class iCS_EditorObject {
     public float MinimumWidthForPorts {
         get {
             int nbOfPorts= Mathf.Max(NbOfTopPorts, NbOfBottomPorts);
-            return nbOfPorts*iCS_Config.MinimumPortSeparation;                                            
+            return nbOfPorts*iCS_EditorConfig.MinimumPortSeparation;                                            
         }
     }
     // ----------------------------------------------------------------------

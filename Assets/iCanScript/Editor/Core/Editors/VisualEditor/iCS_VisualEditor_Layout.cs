@@ -41,13 +41,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     float UsableWindowWidth {
         get {
-            return position.width-2*iCS_Config.EditorWindowPaddingSize;            
+            return position.width-2*iCS_EditorConfig.EditorWindowPaddingSize;            
         }
     }    
 	// ----------------------------------------------------------------------
     float UsableWindowHeight {
         get {
-            return position.height-2*iCS_Config.EditorWindowPaddingSize+iCS_Config.EditorWindowToolbarHeight;
+            return position.height-2*iCS_EditorConfig.EditorWindowPaddingSize+iCS_EditorConfig.EditorWindowToolbarHeight;
             
         }
     }

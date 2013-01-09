@@ -510,7 +510,7 @@ public partial class iCS_Graphics {
         
         // Don't display if outside clipping area.
 		Vector2 portCenter= GetPortCenter(port, iStorage);
-		float portRadius= iCS_Config.PortRadius;
+		float portRadius= iCS_EditorConfig.PortRadius;
         Rect displayArea= new Rect(portCenter.x-200f, portCenter.y-2f*portRadius, 400f, 4f*portRadius);
         if(!IsVisible(displayArea)) return;
         
@@ -519,7 +519,7 @@ public partial class iCS_Graphics {
 
 		// Compute port radius (radius is increased if port is selected).
 		if(isSelectedPort) {
-			portRadius= iCS_Config.PortRadius*iCS_Config.SelectedPortFactor;			
+			portRadius= iCS_EditorConfig.PortRadius*iCS_EditorConfig.SelectedPortFactor;			
 		}
 
         // Get port type information.

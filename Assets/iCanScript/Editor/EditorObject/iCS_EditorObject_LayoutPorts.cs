@@ -81,7 +81,7 @@ public partial class iCS_EditorObject {
     static float[] ResolvePortCollisions(float[] pos, float maxPos) {
         int nbPorts= pos.Length;
         if(nbPorts < 2) return pos;
-        float minSeparation= iCS_Config.MinimumPortSeparation;
+        float minSeparation= iCS_EditorConfig.MinimumPortSeparation;
         // Determine min/max position for each port.
         float[] minPositions= new float[nbPorts];
         float[] maxPositions= new float[nbPorts]; 

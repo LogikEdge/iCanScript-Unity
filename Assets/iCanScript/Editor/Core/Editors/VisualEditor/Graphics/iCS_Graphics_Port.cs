@@ -78,20 +78,20 @@ public partial class iCS_Graphics {
 		Vector2 labelPos= GetPortCenter(port, iStorage);
         switch(port.Edge) {
             case iCS_EdgeEnum.Left:
-                labelPos.x+= 1 + iCS_Config.PortSize;
+                labelPos.x+= 1 + iCS_EditorConfig.PortSize;
                 labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
                 break;
             case iCS_EdgeEnum.Right:
-                labelPos.x-= 1 + labelSize.x/Scale + iCS_Config.PortSize;
+                labelPos.x-= 1 + labelSize.x/Scale + iCS_EditorConfig.PortSize;
                 labelPos.y-= 1 + 0.5f * labelSize.y/Scale;
                 break;
             case iCS_EdgeEnum.Top:            
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y-= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, iStorage));
+                labelPos.y-= iCS_EditorConfig.PortSize+0.8f*(labelSize.y/Scale)*(1+TopBottomLabelOffset(port, iStorage));
                 break;
             case iCS_EdgeEnum.Bottom:
                 labelPos.x-= 1 + 0.5f*labelSize.x/Scale;
-                labelPos.y+= iCS_Config.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, iStorage)-0.2f*labelSize.y/Scale;
+                labelPos.y+= iCS_EditorConfig.PortSize+0.8f*(labelSize.y/Scale)*TopBottomLabelOffset(port, iStorage)-0.2f*labelSize.y/Scale;
                 break;
         }
         return new Rect(labelPos.x, labelPos.y, labelSize.x, labelSize.y);	    
@@ -146,11 +146,11 @@ public partial class iCS_Graphics {
 		Vector2 valuePos= GetPortCenter(port, iStorage);
         switch(port.Edge) {
             case iCS_EdgeEnum.Left:
-				valuePos.x-= 1 + valueSize.x/Scale + iCS_Config.PortSize;
+				valuePos.x-= 1 + valueSize.x/Scale + iCS_EditorConfig.PortSize;
 				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
             case iCS_EdgeEnum.Right:
-				valuePos.x+= 1 + iCS_Config.PortSize;
+				valuePos.x+= 1 + iCS_EditorConfig.PortSize;
 				valuePos.y-= 1 + 0.5f * valueSize.y/Scale;
                 break;
             case iCS_EdgeEnum.Top:            

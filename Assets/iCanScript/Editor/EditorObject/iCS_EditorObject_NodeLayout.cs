@@ -56,41 +56,41 @@ public partial class iCS_EditorObject {
 	public float NodeTitleWidth {
 		get {
 			if(IsIconized) return 0;
-			return iCS_Config.GetWindowWidth(Name)+2f*iCS_BuiltinTextures.kMinimizeIconSize+iCS_EditorConfig.kTitleFontSize;
+			return iCS_EditorConfig.GetNodeTitleWidth(Name)+2f*iCS_BuiltinTextures.kMinimizeIconSize+iCS_EditorConfig.kTitleFontSize;
 		}
 	}
     // ----------------------------------------------------------------------
     public float NodeTitleHeight {
         get {
             if(IsIconized) return 0;
-            return 0.75f*iCS_Config.NodeTitleHeight;
+            return 0.75f*iCS_EditorConfig.NodeTitleHeight;
         }
     }
     // ----------------------------------------------------------------------
     public float NodeTopPadding {
         get {
             if(IsIconized) return 0;
-            return NodeTitleHeight+iCS_Config.PaddingSize;
+            return NodeTitleHeight+iCS_EditorConfig.PaddingSize;
         }
     }
     // ----------------------------------------------------------------------
     public float NodeBottomPadding {
         get {
             if(IsIconized) return 0;
-            return iCS_Config.PaddingSize;            
+            return iCS_EditorConfig.PaddingSize;            
         }
     }
     // ----------------------------------------------------------------------
     public float NodeLeftPadding {
         get {
             if(IsIconized) return 0;
-            float paddingBy2= 0.5f*iCS_Config.PaddingSize;
-            float leftPadding= iCS_Config.PaddingSize;
+            float paddingBy2= 0.5f*iCS_EditorConfig.PaddingSize;
+            float leftPadding= iCS_EditorConfig.PaddingSize;
             ForEachLeftChildPort(
                 port=> {
                     if(!port.IsStatePort && port.IsPortOnParentEdge) {
-                        Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
-                        float nameSize= paddingBy2+labelSize.x+iCS_Config.PortSize;
+                        Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(port.Name);
+                        float nameSize= paddingBy2+labelSize.x+iCS_EditorConfig.PortSize;
                         if(leftPadding < nameSize) leftPadding= nameSize;
                     }
                 }
@@ -102,13 +102,13 @@ public partial class iCS_EditorObject {
     public float NodeRightPadding {
         get {
             if(IsIconized) return 0;
-            float paddingBy2= 0.5f*iCS_Config.PaddingSize;
-            float rightPadding= iCS_Config.PaddingSize;
+            float paddingBy2= 0.5f*iCS_EditorConfig.PaddingSize;
+            float rightPadding= iCS_EditorConfig.PaddingSize;
             ForEachRightChildPort(
                 port=> {
                     if(!port.IsStatePort && port.IsPortOnParentEdge) {
-                        Vector2 labelSize= iCS_Config.GetPortLabelSize(port.Name);
-                        float nameSize= paddingBy2+labelSize.x+iCS_Config.PortSize;
+                        Vector2 labelSize= iCS_EditorConfig.GetPortLabelSize(port.Name);
+                        float nameSize= paddingBy2+labelSize.x+iCS_EditorConfig.PortSize;
                         if(rightPadding < nameSize) rightPadding= nameSize;
                     }
                 }
@@ -185,28 +185,28 @@ public partial class iCS_EditorObject {
     // Returns the top most coordinate for a port on the vertical edge.
     public float VerticalPortsTop {
         get {
-            return NodeTitleHeight+0.5f*(iCS_Config.MinimumPortSeparation-DisplaySize.y);
+            return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-DisplaySize.y);
         }
     }
     // ----------------------------------------------------------------------
     // Returns the bottom most coordinate for a port on the vertical edge.
     public float VerticalPortsBottom {
         get {
-            return 0.5f*(DisplaySize.y-iCS_Config.MinimumPortSeparation);
+            return 0.5f*(DisplaySize.y-iCS_EditorConfig.MinimumPortSeparation);
         }
     }
     // ----------------------------------------------------------------------
     // Returns the left most coordinate for a port on the horizontal edge.
     public float HorizontalPortsLeft {
         get {
-            return 0.5f*(iCS_Config.MinimumPortSeparation-DisplaySize.x);
+            return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-DisplaySize.x);
         }
     }
     // ----------------------------------------------------------------------
     // Returns the left most coordinate for a port on the horizontal edge.
     public float HorizontalPortsRight {
         get {
-            return 0.5f*(DisplaySize.x-iCS_Config.MinimumPortSeparation);
+            return 0.5f*(DisplaySize.x-iCS_EditorConfig.MinimumPortSeparation);
         }
     }
     // ----------------------------------------------------------------------
