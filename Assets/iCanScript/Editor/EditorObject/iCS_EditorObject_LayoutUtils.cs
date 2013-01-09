@@ -44,21 +44,6 @@ public partial class iCS_EditorObject {
 	} 
 	
     // ----------------------------------------------------------------------
-    // Updates the global Rect arround the children nodes.  It is assume that
-    // the children have previously been layed out.  The parent node will not
-    // be affect or marked for relayout if the node Rect has been modified.
-    public void WrapAroundChildrenNodes() { 
-		// Take a snapshot of the children position.
-		var childPositions= new List<Vector2>();
-		ForEachChildNode(c=> childPositions.Add(c.GlobalPosition));
-        // Readjust parent size & position.
-        NodeGlobalChildRect= ChildrenGlobalRectFromGlobalRect;
-		// Reposition child to maintain their global positions.
-		int i= 0;
-		ForEachChildNode(c=> c.GlobalPosition= childPositions[i++]);
-    }
-
-    // ----------------------------------------------------------------------
     static Vector2 ComputeNodeRatio(Rect r, Vector2 p) {
         if(Math3D.IsZero(r.width) || Math3D.IsZero(r.height)) {
             Debug.LogWarning("iCanScript: Invalid area in which to compute node ratio");

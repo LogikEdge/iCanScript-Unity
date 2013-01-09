@@ -11,7 +11,6 @@ public partial class iCS_EditorObject {
 		set { EngineObject.LocalPositionRatio= value; }
     }
 
-    // Node Layout Utilities ================================================
     // ----------------------------------------------------------------------
 	public Rect NodeGlobalChildRect {
 		get {
@@ -37,7 +36,7 @@ public partial class iCS_EditorObject {
 			value.x-= left;
 			value.width+= left+NodeRightPadding;
             // Assure that the width is sufficent for the title.
-            float titleWidth= iCS_Config.GetWindowWidth(Name)+2f*iCS_BuiltinTextures.kMinimizeIconSize+iCS_EditorConfig.kTitleFontSize;
+            float titleWidth= NodeTitleWidth;
             if(titleWidth > value.width) {
                 value.x-= 0.5f*(titleWidth-value.width);
                 value.width= titleWidth;
