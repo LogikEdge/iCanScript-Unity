@@ -29,6 +29,13 @@ public partial class iCS_EditorObject {
     }
     
 	// ----------------------------------------------------------------------
+    public bool IsPositionAnimated {
+        get {
+            return Math3D.IsNotEqual(AnimationTarget, myAnimatedPosition.CurrentValue);
+        }
+    }
+    
+	// ----------------------------------------------------------------------
     public void AnimatePosition() {
         var timeRatio= new P.TimeRatio();
         timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
@@ -48,7 +55,7 @@ public partial class iCS_EditorObject {
     }
 	// ----------------------------------------------------------------------
     public void DontAnimatePosition() {
-        myAnimatedPosition.Reset(GlobalRect);
+        myAnimatedPosition.Reset(AnimationTarget);
         if(IsNode) {
             ForEachChildPort(p=> p.DontAnimatePosition());
         }

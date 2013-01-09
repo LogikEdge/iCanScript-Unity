@@ -210,6 +210,13 @@ public partial class iCS_EditorObject {
             return 0.5f*(DisplaySize.x-iCS_Config.MinimumPortSeparation);
         }
     }
-
+    // ----------------------------------------------------------------------
+    // Returns true if given child is outside the existing children area.
+    bool IsOutsideChildArea(iCS_EditorObject child) {
+        var childrenArea= NodeGlobalChildRect;
+        var childRect= child.GlobalRect;
+        var intersection= Math3D.Intersection(childrenArea, childRect);
+        return Math3D.IsNotEqual(intersection, childRect);
+    }
 }
 

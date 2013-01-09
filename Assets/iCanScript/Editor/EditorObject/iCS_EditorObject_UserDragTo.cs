@@ -14,7 +14,7 @@ public partial class iCS_EditorObject {
             IsSticky= true;
             LocalPosition+= newPosition-GlobalPosition;
             if(IsParentValid && !IsFloating) {
-                Parent.LayoutParentNodeAfterDrag();
+                Parent.LayoutParentNodeAfterDrag(this);
             }
             GlobalPosition= newPosition;
             DontAnimatePositionAndChildren();
@@ -26,7 +26,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Adjust position of the siblings and the parent after an object drag.
-    void LayoutParentNodeAfterDrag() {
+    void LayoutParentNodeAfterDrag(iCS_EditorObject childBeingDragged) {
 		IsSticky= true;
         // Keep copy of child desired global position.
         var childrenRect= NodeGlobalChildRect;
@@ -43,8 +43,11 @@ public partial class iCS_EditorObject {
         }
         // Layout the node resolving collision on children.
         var previousGlobalRect= GlobalRect;
+        bool isDragForcingResize= IsOutsideChildArea(childBeingDragged);
         LayoutNode();
-        DontAnimatePosition();
+        if(isDragForcingResize && !childBeingDragged.IsPositionAnimated) {
+            DontAnimatePosition();            
+        }
 		// Ask parent to do the same if parent Rect has changed.
         var newGlobalRect= GlobalRect;
         if(Math3D.IsEqual(previousGlobalRect, newGlobalRect)) {
@@ -58,7 +61,7 @@ public partial class iCS_EditorObject {
         }
         // Move or resize the parent node.
         if(IsParentValid) {
-            Parent.LayoutParentNodeAfterDrag();
+            Parent.LayoutParentNodeAfterDrag(this);
   		}
 		IsSticky= false;
     }
