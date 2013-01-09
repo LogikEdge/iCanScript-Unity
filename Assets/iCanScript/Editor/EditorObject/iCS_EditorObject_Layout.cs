@@ -60,7 +60,6 @@ public partial class iCS_EditorObject {
         }
         set {
             if(!IsParentValid) {
-				Debug.Log("Root GPos= "+value);
                 LocalPosition= value;
                 return;
             }

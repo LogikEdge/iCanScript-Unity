@@ -1,5 +1,3 @@
-#define NEW_LAYOUT
-
 using UnityEngine;
 using System.Collections;
 

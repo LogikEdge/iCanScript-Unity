@@ -19,6 +19,10 @@ public partial class iCS_EditorObject {
         // Resolve collisions.
         ResolveCollisionOnChildrenImp();
     }
+    // ----------------------------------------------------------------------
+/*
+	TODO : Should resolve collision in parallel.
+*/
     public void ResolveCollisionOnChildrenImp() {
         bool didCollide= false;
         iCS_EditorObject[] children= BuildListOfChildNodes(c=> !c.IsFloating);
@@ -60,7 +64,7 @@ public partial class iCS_EditorObject {
         return false;
     }
     // ----------------------------------------------------------------------
-    // Returns if the given rectangle collides with the node.
+    // Returns true if the given rectangle collides with the node.
     public bool DoesCollideWithMargins(iCS_EditorObject otherNode) {
         return Math3D.DoesCollide(AddMargins(GlobalRect), otherNode.GlobalRect);
     }
