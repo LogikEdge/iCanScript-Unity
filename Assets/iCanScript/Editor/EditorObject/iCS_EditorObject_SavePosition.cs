@@ -18,7 +18,7 @@ public partial class iCS_EditorObject {
         // Save the global position for the root node.
         var engineObject= EngineObject;
         if(!IsParentValid) {
-            engineObject.LocalPositionRatio= GlobalPosition;
+            engineObject.LocalAnchorPosition= GlobalPosition;
             return;
         }
         // Compute position ratio using node children area.
@@ -31,7 +31,7 @@ public partial class iCS_EditorObject {
         if(ratioX > 1f) ratioX= 1f;
         if(ratioY < 0f) ratioY= 0f;
         if(ratioY > 1f) ratioY= 1f;
-        engineObject.LocalPositionRatio= new Vector2(ratioX, ratioY);
+        engineObject.LocalAnchorPosition= new Vector2(ratioX, ratioY);
     }
 
     // ======================================================================
