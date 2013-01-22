@@ -12,14 +12,15 @@ public class iCS_EngineObject {
     // ======================================================================
     // Database Fields
     // ----------------------------------------------------------------------
-    public iCS_ObjectTypeEnum    ObjectType        = iCS_ObjectTypeEnum.Unknown;
-    public int                   InstanceId        = -1;
-    public int                   ParentId          = -1;
-    public string                QualifiedType     = "";
-    public string                RawName           = "";
-    public Vector2               LocalPositionRatio= Vector2.zero;
-    public iCS_DisplayOptionEnum DisplayOption     = iCS_DisplayOptionEnum.Unfolded;
-    public bool                  IsNameEditable    = true;
+    public iCS_ObjectTypeEnum    ObjectType          = iCS_ObjectTypeEnum.Unknown;
+    public int                   InstanceId          = -1;
+    public int                   ParentId            = -1;
+    public string                QualifiedType       = "";
+    public string                RawName             = "";
+	public Vector2				 LocalAnchorPosition = Vector2.zero;
+	public Vector2				 LocalDisplayPosition= Vector2.zero;
+    public iCS_DisplayOptionEnum DisplayOption       = iCS_DisplayOptionEnum.Unfolded;
+    public bool                  IsNameEditable      = true;
 
 	// Node specific attributes ---------------------------------------------
 	public string				 MethodName       = null;
@@ -56,7 +57,7 @@ public class iCS_EngineObject {
     }
     public iCS_EdgeEnum Edge {
         get {
-            var edge= LocalPositionRatio.x;
+            var edge= LocalAnchorPosition.x;
             if(Math3D.IsEqual(edge, 1f)) return iCS_EdgeEnum.Left;
             if(Math3D.IsEqual(edge, 2f)) return iCS_EdgeEnum.Right;
             if(Math3D.IsEqual(edge, 3f)) return iCS_EdgeEnum.Top;
@@ -65,17 +66,17 @@ public class iCS_EngineObject {
         }
         set {
             switch(value) {
-                case iCS_EdgeEnum.Left  : LocalPositionRatio.x= 1f; break;
-                case iCS_EdgeEnum.Right : LocalPositionRatio.x= 2f; break;
-                case iCS_EdgeEnum.Top   : LocalPositionRatio.x= 3f; break;
-                case iCS_EdgeEnum.Bottom: LocalPositionRatio.x= 4f; break;
-                default                 : LocalPositionRatio.x= 0f; break;
+                case iCS_EdgeEnum.Left  : LocalAnchorPosition.x= 1f; break;
+                case iCS_EdgeEnum.Right : LocalAnchorPosition.x= 2f; break;
+                case iCS_EdgeEnum.Top   : LocalAnchorPosition.x= 3f; break;
+                case iCS_EdgeEnum.Bottom: LocalAnchorPosition.x= 4f; break;
+                default                 : LocalAnchorPosition.x= 0f; break;
             }
         }
     }
     public float PortPositionRatio {
-        get { return LocalPositionRatio.y; }
-        set { LocalPositionRatio.y= value; }
+        get { return LocalAnchorPosition.y; }
+        set { LocalAnchorPosition.y= value; }
     }
 
     // ======================================================================
@@ -88,7 +89,8 @@ public class iCS_EngineObject {
         ParentId= parentId;
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
-        LocalPositionRatio= Vector2.zero;
+        LocalAnchorPosition= Vector2.zero;
+        LocalDisplayPosition= Vector2.zero;
         if(IsDataPort) {
             Edge= IsInputPort ? (IsEnablePort ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left) : iCS_EdgeEnum.Right;
         }
@@ -111,7 +113,8 @@ public class iCS_EngineObject {
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
-		instance.LocalPositionRatio= toClone.LocalPositionRatio;
+		instance.LocalAnchorPosition= toClone.LocalAnchorPosition;
+		instance.LocalDisplayPosition= toClone.LocalDisplayPosition;
 		// Node
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;
@@ -133,7 +136,8 @@ public class iCS_EngineObject {
         ParentId= -1;
         QualifiedType= "";
 		RawName= "";
-        LocalPositionRatio= Vector2.zero;
+        LocalAnchorPosition= Vector2.zero;
+        LocalDisplayPosition= Vector2.zero;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;
 		// Node
