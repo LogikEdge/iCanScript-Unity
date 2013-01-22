@@ -80,4 +80,12 @@ public partial class iCS_EditorObject {
 			return rect;
 		}
 	}
+	
+	// ======================================================================
+    // High-order functions
+    // ----------------------------------------------------------------------
+	public SetGlobalAnchorAndDisplayPosition(Vector2 pos) {
+		GlobalAnchorPosition= pos;
+		GlobalDisplayPosition= pos;
+	}
 }
