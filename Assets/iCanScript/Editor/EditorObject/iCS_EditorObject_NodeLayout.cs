@@ -23,8 +23,8 @@ public partial class iCS_EditorObject {
 
     // Storage accessors ====================================================
     public Vector2 NodePositionRatio {
-        get { return EngineObject.LocalAnchorPosition; }
-		set { EngineObject.LocalAnchorPosition= value; }
+        get { return LocalAnchorPosition; }
+		set { LocalAnchorPosition= value; }
     }
 
     // ----------------------------------------------------------------------

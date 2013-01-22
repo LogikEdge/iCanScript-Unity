@@ -75,6 +75,24 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
+	public Vector2 LocalAnchorPosition {
+		get { return EngineObject.LocalAnchorPosition; }
+		set {
+			var engineObject= EngineObject;
+			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
+			engineObject.LocalAnchorPosition= value;
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Vector2 LocalDisplayPosition {
+		get { return EngineObject.LocalDisplayPosition; }
+		set {
+            var engineObject= EngineObject;
+			if(Math3D.IsEqual(engineObject.LocalDisplayPosition, value)) return;
+			engineObject.LocalDisplayPosition= value;
+		}
+	}
+    // ----------------------------------------------------------------------
     public Type RuntimeType {
 		get { return EngineObject.RuntimeType; }
 	}
