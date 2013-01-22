@@ -12,7 +12,7 @@ public partial class iCS_EditorObject {
     bool            	myIsFloating             = false;
     bool            	myIsDirty                = false;
     public List<int>	myChildren               = new List<int>();
-    Vector2             myDisplaySize            = Vector2.zero;
+//    Vector2             myDisplaySize            = Vector2.zero;
     Vector2             myLocalPosition          = Vector2.zero;
     bool                myIsSticky               = false;
     
@@ -74,24 +74,6 @@ public partial class iCS_EditorObject {
             IsDirty= true;
         }
     }
-    // ----------------------------------------------------------------------
-	public Vector2 LocalAnchorPosition {
-		get { return EngineObject.LocalAnchorPosition; }
-		set {
-			var engineObject= EngineObject;
-			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
-			engineObject.LocalAnchorPosition= value;
-		}
-	}
-    // ----------------------------------------------------------------------
-	public Vector2 LocalDisplayPosition {
-		get { return EngineObject.LocalDisplayPosition; }
-		set {
-            var engineObject= EngineObject;
-			if(Math3D.IsEqual(engineObject.LocalDisplayPosition, value)) return;
-			engineObject.LocalDisplayPosition= value;
-		}
-	}
     // ----------------------------------------------------------------------
     public Type RuntimeType {
 		get { return EngineObject.RuntimeType; }
