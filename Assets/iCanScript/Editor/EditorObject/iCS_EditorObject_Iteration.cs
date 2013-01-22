@@ -1,12 +1,27 @@
 using UnityEngine;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using P=Prelude;
 
-/*
-    TODO: Cleanup validation once child management as been cleaned up.
-*/
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//  ITERATION
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
+	// Containment status ==================================================
+	public bool HasChildNode() {
+        foreach(var childId in Children) {
+            if(EditorObjects[childId].IsNode) return true;
+        }
+		return false;
+	}
+    // ----------------------------------------------------------------------
+	public bool HasChildPort() {
+        foreach(var childId in Children) {
+            if(EditorObjects[childId].IsPort) return true;
+        }
+		return false;
+	}
     // Children Iterations =================================================
     public void ForEachChild(Action<iCS_EditorObject> fnc) {
         foreach(var childId in Children) {
@@ -23,19 +38,19 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void ForEachLeftChildPort(Action<iCS_EditorObject> action) {
-        ForEachChildPort(o=> { if(o.IsOnLeftEdge && o.IsPortOnParentEdge) action(o); });
+        ForEachChildPort(o=> { if(o.IsOnLeftEdge && !o.IsFloating) action(o); });
     }
     // ----------------------------------------------------------------------
     public void ForEachRightChildPort(Action<iCS_EditorObject> action) {
-        ForEachChildPort(o=> { if(o.IsOnRightEdge && o.IsPortOnParentEdge) action(o); });
+        ForEachChildPort(o=> { if(o.IsOnRightEdge && !o.IsFloating) action(o); });
     }
     // ----------------------------------------------------------------------
     public void ForEachTopChildPort(Action<iCS_EditorObject> action) {
-        ForEachChildPort(o=> { if(o.IsOnTopEdge && o.IsPortOnParentEdge) action(o); });
+        ForEachChildPort(o=> { if(o.IsOnTopEdge && !o.IsFloating) action(o); });
     }
     // ----------------------------------------------------------------------
     public void ForEachBottomChildPort(Action<iCS_EditorObject> action) {
-        ForEachChildPort(o=> { if(o.IsOnBottomEdge && o.IsPortOnParentEdge) action(o); });
+        ForEachChildPort(o=> { if(o.IsOnBottomEdge && !o.IsFloating) action(o); });
     }
     
     // ----------------------------------------------------------------------
@@ -116,4 +131,21 @@ public partial class iCS_EditorObject {
         }
     }
 
+    // ======================================================================
+	// List builders.
+    // ----------------------------------------------------------------------
+	// Build list of children matching given criteria.
+    public iCS_EditorObject[] BuildListOfChildren(Func<iCS_EditorObject, bool> cond) {
+        var result= new List<iCS_EditorObject>();
+        ForEachChild(c=> { if(cond(c)) result.Add(c); });
+        return result.ToArray();
+    }
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject[] BuildListOfChildNodes(Func<iCS_EditorObject, bool> cond) {
+		return BuildListOfChildren(c=> c.IsNode && cond(c));
+	}
+    // ----------------------------------------------------------------------
+	public iCS_EditorObject[] BuildListOfChildPorts(Func<iCS_EditorObject, bool> cond) {
+		return BuildListOfChildren(c=> c.IsPort && cond(c));
+	}
 }

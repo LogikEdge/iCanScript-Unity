@@ -22,7 +22,7 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
 	void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
 		// Reajust screen position for fix size shadow.
-		float shadowSize= iCS_Config.NodeShadowSize;
+		float shadowSize= iCS_EditorConfig.NodeShadowSize;
 		float shadowSize2= 2f*shadowSize;
 		Rect screenPos= new Rect(r.x-shadowSize, r.y-shadowSize, r.width+shadowSize2, r.height+shadowSize2);
 

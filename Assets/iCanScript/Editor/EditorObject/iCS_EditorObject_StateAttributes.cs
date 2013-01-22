@@ -1,6 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//  STATE / STATECHART ATTRIBUTES
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // State specific attributes ---------------------------------------------
     public bool IsEntryState {

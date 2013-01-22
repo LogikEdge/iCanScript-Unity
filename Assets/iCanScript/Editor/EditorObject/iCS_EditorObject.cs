@@ -7,14 +7,15 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_IStorage    	myIStorage         = null;
-    int             	myId               = -1;
-    bool            	myIsFloating       = false;
-    bool            	myIsDirty          = false;
-    public List<int>	myChildren         = new List<int>();
-    Vector2             myDisplaySize      = Vector2.zero;
-    Vector2             myPortLocalPosition= Vector2.zero;
- 
+    iCS_IStorage    	myIStorage               = null;
+    int             	myId                     = -1;
+    bool            	myIsFloating             = false;
+    bool            	myIsDirty                = false;
+    public List<int>	myChildren               = new List<int>();
+    Vector2             myDisplaySize            = Vector2.zero;
+    Vector2             myLocalPosition          = Vector2.zero;
+    bool                myIsSticky               = false;
+    
     // ======================================================================
     // Conversion Utilities
     // ----------------------------------------------------------------------
@@ -35,19 +36,18 @@ public partial class iCS_EditorObject {
     }
     
     // ======================================================================
-    // Proxy Methods
+    // Engine Object Accessors
     // ----------------------------------------------------------------------
-	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count; }
-	public bool	IsParentValid		{ get { return IsIdValid(ParentId); }}
-	public bool IsSourceValid		{ get { return IsIdValid(SourceId); }}
-	
     public iCS_ObjectTypeEnum ObjectType {
 		get { return EngineObject.ObjectType; }
-		set { EngineObject.ObjectType= value; IsDirty= true; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.ObjectType == value) return;
+		    engineObject.ObjectType= value;
+		    IsDirty= true;
+		}
 	}
-    public int InstanceId { 
-		get { return myId; }
-	}
+    // ----------------------------------------------------------------------
     public int ParentId {
 		get { return EngineObject.ParentId; }
 		set {
@@ -64,40 +64,72 @@ public partial class iCS_EditorObject {
 			}
 		}
 	}
-    public iCS_EditorObject Parent {
-		get { return IsParentValid ? myIStorage[ParentId] : null; }
-		set { ParentId= (value != null ? value.InstanceId : -1); }
-	}
+    // ----------------------------------------------------------------------
     public iCS_DisplayOptionEnum DisplayOption {
         get { return EngineObject.DisplayOption; }
-        set { EngineObject.DisplayOption= value; IsDirty= true; }
+        set {
+            var engineObject= EngineObject;
+            if(engineObject.DisplayOption == value) return;
+            engineObject.DisplayOption= value;
+            IsDirty= true;
+        }
     }
+    // ----------------------------------------------------------------------
     public Type RuntimeType {
 		get { return EngineObject.RuntimeType; }
 	}
+    // ----------------------------------------------------------------------
     public string RawName {
 		get { return EngineObject.RawName; }
-		set { EngineObject.RawName= value; IsDirty= true; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.RawName == value) return;
+		    engineObject.RawName= value;
+		    IsDirty= true;
+		}
 	}
+    // ----------------------------------------------------------------------
     public string Name {
 		get { return EngineObject.Name; }
-		set { EngineObject.Name= value; IsDirty= true; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.Name == value) return;
+		    engineObject.Name= value;
+		    IsDirty= true;
+		}
 	}
+    // ----------------------------------------------------------------------
     public bool IsNameEditable {
 		get { return EngineObject.IsNameEditable; }
 		set { EngineObject.IsNameEditable= value; }
 	}
-    public string RawTooltip {
-		get { return EngineObject.RawTooltip; }
-		set { EngineObject.RawTooltip= value; }
-	}
+    // ----------------------------------------------------------------------
     public string Tooltip {
 		get { return EngineObject.Tooltip; }
 		set { EngineObject.Tooltip= value; }
 	}
+    
+    // ======================================================================
+    // High-Level Properties
+    // ----------------------------------------------------------------------
+	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count; }
+	public bool	IsParentValid		{ get { return IsIdValid(ParentId); }}
+	public bool IsSourceValid		{ get { return IsIdValid(SourceId); }}
+	
+    public int InstanceId { 
+		get { return myId; }
+	}
+    public iCS_EditorObject Parent {
+		get { return IsParentValid ? myIStorage[ParentId] : null; }
+		set { ParentId= (value != null ? value.InstanceId : -1); }
+	}
     public bool IsFloating {
 		get { return myIsFloating; }
-		set { myIsFloating= value; IsDirty= true; }
+		set {
+            if(myIsFloating == value) return;
+		    myIsFloating= value;
+		    IsDirty= true;
+		}
 	}
     public bool IsDirty {
 		get { return myIsDirty; }
@@ -109,6 +141,10 @@ public partial class iCS_EditorObject {
 		    }
 	    }
 	}
+	public bool IsSticky {
+	    get { return myIsSticky; }
+	    set { myIsSticky= value; }
+	}
 	
     // ======================================================================
     // Constructors/Builders
@@ -116,13 +152,10 @@ public partial class iCS_EditorObject {
 	// Creates an instance of an editor/engine object pair.
 	public static iCS_EditorObject CreateInstance(int id, string name, Type type,
 												  int parentId, iCS_ObjectTypeEnum objectType,
-												  Vector2 globalPosition,
                             					  iCS_IStorage iStorage) {
 		if(id < 0) return null;
-        // Compute local position.
-        var localPosition= parentId == -1 ? globalPosition : globalPosition-iStorage.EditorObjects[parentId].GlobalPosition;
 		// Create engine object.
-		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType, localPosition);
+		var engineObject= new iCS_EngineObject(id, name, type, parentId, objectType);
 		AddEngineObject(id, engineObject, iStorage);
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
@@ -133,13 +166,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Duplicate the given editor object with a new id and parent.
     public static iCS_EditorObject Clone(int id, iCS_EditorObject toClone, iCS_EditorObject parent,
-                                         Vector2 globalPosition, iCS_IStorage iStorage) {
+                                         iCS_IStorage iStorage) {
 		if(id < 0) return null;
-        // Compute local position.
-        var localPosition= parent == null ? globalPosition : globalPosition-parent.GlobalPosition;
 		// Create engine object.
         var engineObject= iCS_EngineObject.Clone(id, toClone.EngineObject,
-												 (parent == null ? null : parent.EngineObject), localPosition);
+												 (parent == null ? null : parent.EngineObject));
 		AddEngineObject(id, engineObject, iStorage);
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
@@ -191,7 +222,7 @@ public partial class iCS_EditorObject {
 			return;
 		}
 		if(id > len) {
-			GrowEngineObjects(id, iStorage);
+			GrowEngineObjectList(id, iStorage);
 			iStorage.EngineObjects.Add(engineObject);
 		}		
 	}
@@ -209,11 +240,11 @@ public partial class iCS_EditorObject {
 			return;
 		}
 		if(id > len) {
-			GrowEditorObjects(id, iStorage);
+			GrowEditorObjectList(id, iStorage);
 			iStorage.EditorObjects.Add(editorObject);
 		}		
 	}
-	private static void GrowEngineObjects(int size, iCS_IStorage iStorage) {
+	private static void GrowEngineObjectList(int size, iCS_IStorage iStorage) {
         // Reserve space to contain the total amount of objects.
         if(size > iStorage.EngineObjects.Capacity) {
             iStorage.EngineObjects.Capacity= size;
@@ -223,7 +254,7 @@ public partial class iCS_EditorObject {
             iStorage.EngineObjects.Add(iCS_EngineObject.CreateInvalidInstance());
         }
 	}
-	private static void GrowEditorObjects(int size, iCS_IStorage iStorage) {
+	private static void GrowEditorObjectList(int size, iCS_IStorage iStorage) {
         // Reserve space to contain the total amount of objects.
         if(size > iStorage.EditorObjects.Capacity) {
             iStorage.EditorObjects.Capacity= size;
@@ -242,18 +273,19 @@ public partial class iCS_EditorObject {
         myId= id;
 		var parent= Parent;
 		if(parent != null) parent.AddChild(this);
-        IsDirty= true;            
+        IsDirty= true;
     }
     // ----------------------------------------------------------------------
 	public static void RebuildFromEngineObjects(iCS_IStorage iStorage) {
 		iStorage.EditorObjects.Clear();
 		iStorage.EditorObjects.Capacity= iStorage.EngineObjects.Count;		
 		for(int i= 0; i < iStorage.EngineObjects.Count; ++i) {
-		    if(iStorage.EngineObjects[i].InstanceId == -1) {
-		        iStorage.EditorObjects.Add(null);
-		    } else {
-		        iStorage.EditorObjects.Add(new iCS_EditorObject(i, iStorage));
+            iCS_EditorObject editorObj= null;
+		    if(iStorage.EngineObjects[i].InstanceId != -1) {
+		        editorObj= new iCS_EditorObject(i, iStorage);
+				if(i == 0) editorObj.LocalPosition= editorObj.NodePositionRatio;
 		    }
+	        iStorage.EditorObjects.Add(editorObj);
 		}
 		RebuildChildrenLists(iStorage);
 	}

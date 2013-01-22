@@ -1,7 +1,8 @@
+//#define NEW_UPDATE
+
 using UnityEngine;
 using UnityEditor;
 using System;
-//using System.Threading;
 using System.Collections;
 using System.Collections.Generic;
 using P= Prelude;
@@ -13,7 +14,6 @@ public partial class iCS_IStorage {
             bool                myIsDirty           = true;
             bool                CleanupNeeded       = true;
             bool                AnimationNeeded     = true;
-    public  bool                AnimateLayout       = true;
     public  iCS_Storage         Storage             = null;
     List<iCS_EditorObject>      myEditorObjects     = null;
     public  int                 UndoRedoId          = 0;
@@ -126,16 +126,43 @@ public partial class iCS_IStorage {
     public void Update() {
         // Processing any changed caused by Undo/Redo
         DetectUndoRedo();
+#if NEW_UPDATE
+    // Perform layout if one or more objects has changed.
+    if(myIsDirty) {
+        // Tell Unity that our storage has changed.
+        EditorUtility.SetDirty(Storage);
+        // Prepare for cleanup after storage change.
+        CleanupNeeded= true;
+//        AnimationNeeded= true;
+        myIsDirty= false;
+    
+        // Perform layout of modified nodes.
+        PerformTreeLayoutFor(EditorObjects[0]);
+    }
+    // Update object animations.
+    ForEach(
+        obj=> {
+            var animation= obj.AnimatedPosition;
+            if(animation.IsActive) {
+                if(animation.IsElapsed) {
+                    animation.Reset(obj.AnimationTarget);                    
+                } else {
+                    animation.Update();                                            
+                }
+            } else {
+                animation.Reset(obj.AnimationTarget);
+            }
+        }
+    );
+    
+#else
 /*
 	TODO: Optimize update.
 */        
         // Update display if animation is disabled.
-        if(!AnimateLayout || (!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive)) {
+        if(!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive) {
             ForEach(
-                obj=> {
-                    var animation= obj.AnimatedPosition;
-                    animation.Reset(GetAnimationTarget(obj));                    
-                }
+                obj=> obj.DontAnimatePosition()
             );
         }
         
@@ -149,28 +176,14 @@ public partial class iCS_IStorage {
             myIsDirty= false;
 
             // Perform layout of modified nodes.
-            ForEachRecursiveDepthLast(EditorObjects[0],
-                obj=> {
-                    if(obj.IsDirty) {
-//                        Debug.Log(obj.Name+" is dirty.  Display option: "+obj.DisplayOption);
-                        Layout(obj);
-                    }
-                }
-            );
-            return;
+            PerformTreeLayoutFor(EditorObjects[0]);
+//            return;
         }
 
         // Graph is now stable.  Recompute animation target if needed.
-        if(AnimationNeeded && AnimateLayout) {
+        if(AnimationNeeded) {
             ForEach(
-                obj=> {
-                    Rect target= GetAnimationTarget(obj);
-                    var animation= obj.AnimatedPosition;
-                    animation.Start(animation.CurrentValue,
-                                    target,
-                                    myAnimationTimeRatio,
-                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-                }
+                obj=> obj.AnimatePosition(myAnimationTimeRatio)
             );
             myAnimationTimeRatio.Start(iCS_PreferencesEditor.AnimationTime);
             AnimationNeeded= false;
@@ -192,28 +205,36 @@ public partial class iCS_IStorage {
                 }
             );
         }
+#endif
 
         // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {
+            UpdateExecutionPriority();
             CleanupNeeded= Cleanup();
         }
         
+#if NEW_UPDATE
+#else        
         // Perform sanity check
         SanityCheck();
+#endif
     }
+
+//    // ----------------------------------------------------------------------
+//    Rect GetAnimationTarget(iCS_EditorObject eObj) {
+//        return eObj.AnimationTarget;
+//    }
     // ----------------------------------------------------------------------
-    Rect GetAnimationTarget(iCS_EditorObject eObj) {
-        Rect target;
-        if(eObj.IsVisible) {
-            target= eObj.GlobalRect;
-        } else {
-            // Find first visible parent.
-            var visibleParent= eObj.Parent;
-            for(; visibleParent != null && !visibleParent.IsVisible; visibleParent= visibleParent.Parent);
-            Vector2 center= (visibleParent ?? eObj).GlobalPosition;
-            target= new Rect(center.x, center.y, 0, 0);
+    /*
+        TODO: Should use the layout rule the determine execution priority.
+    */
+    public void UpdateExecutionPriority() {
+        var len= EditorObjects.Count;
+        for(int i= 0; i < len; ++i) {
+            if(IsValid(i)) {
+                EditorObjects[i].ExecutionPriority= i;
+            }
         }
-        return target;
     }
     // ----------------------------------------------------------------------
     public bool Cleanup() {
@@ -301,7 +322,9 @@ public partial class iCS_IStorage {
         // Create new EditorObject
         int id= destStorage.GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
-        var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, globalPos, destStorage);
+        var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
+        newObj.GlobalPosition= globalPos;
+        newObj.SavePosition();
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
             child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalPosition, xlat)
@@ -343,7 +366,9 @@ public partial class iCS_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, VisualEditorCenter(), this);
+        iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, this);
+        this[0].GlobalPosition= VisualEditorCenter();
+		this[0].SavePosition();
 		this[0].IsNameEditable= false;
         return this[0];
     }
@@ -353,7 +378,9 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
+        this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
 	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
@@ -365,11 +392,13 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
+        this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
         // Automatically create entry state.
-        CreateState(id, Vector2.zero, "EntryState");
+        CreateState(id, globalPos, "EntryState");
         return this[id];
     }
     // ----------------------------------------------------------------------
@@ -382,7 +411,9 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
+        this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         // Set first state as the default entry state.
@@ -416,7 +447,9 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -438,7 +471,9 @@ public partial class iCS_IStorage {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
             port.PortIndex= portIdx;			
 		}
-        
+        // Initialize port position.
+		this[id].InitialPortLayout();
+		// Initialize initial display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         return this[id];
     }
@@ -452,7 +487,9 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, globalPos, this);
+        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        this[id].GlobalPosition= globalPos;
+        this[id].SaveNodePosition();
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -482,6 +519,9 @@ public partial class iCS_IStorage {
         port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.OutFunctionPort);
         port.PortIndex= portIdx;			
 
+        // Initialize port position.
+		this[id].InitialPortLayout();
+		// Initialize initial display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         return this[id];
     }
@@ -490,15 +530,18 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         var parent= EditorObjects[parentId];
         var globalPos= parent.GlobalPosition;
-        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, globalPos, this);
+        iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
+		port.UpdatePortEdge();
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
     Vector2 VisualEditorCenter() {
         iCS_VisualEditor editor= iCS_EditorMgr.FindVisualEditor();
-        return editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
+        var center= editor == null ? Vector2.zero : editor.ViewportToGraph(editor.ViewportCenter);
+//		Debug.Log("Visual Editor center: "+center);
+		return center;
     }
     
     // ======================================================================

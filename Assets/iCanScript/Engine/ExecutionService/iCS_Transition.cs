@@ -22,7 +22,7 @@ public class iCS_Transition : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Transition(string name, iCS_State endState, iCS_Action guard, iCS_FunctionBase triggerFunc, int portIdx, iCS_Action action, Vector2 layout) : base(name, layout) {
+    public iCS_Transition(string name, iCS_State endState, iCS_Action guard, iCS_FunctionBase triggerFunc, int portIdx, iCS_Action action, int priority) : base(name, priority) {
         myGuard          = guard;
         myAction         = action;
         myEndState       = endState;

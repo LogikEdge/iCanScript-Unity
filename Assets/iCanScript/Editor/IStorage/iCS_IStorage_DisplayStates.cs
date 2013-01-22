@@ -16,7 +16,6 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void Fold(iCS_EditorObject eObj) {
         if(!eObj.IsNode) return;    // Only nodes can be folded.
-        eObj.IsDirty= true;
         if(eObj.IsFunction) {
             Unfold(eObj);
             return;
@@ -30,10 +29,6 @@ public partial class iCS_IStorage {
         if(!eObj.IsNode) return;
         eObj.Iconize();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Iconize(); });
-        eObj.IsDirty= true;
-        if(IsValid(eObj.ParentId)) {
-            eObj.Parent.IsDirty= true;
-        }
     }
     public void Iconize(int id) { if(IsValid(id)) Iconize(EditorObjects[id]); }
     // ----------------------------------------------------------------------
@@ -41,7 +36,6 @@ public partial class iCS_IStorage {
         if(!eObj.IsNode) return;
         eObj.Unfold();
         ForEachChild(eObj, child=> { if(child.IsPort) child.Unfold(); });
-        eObj.IsDirty= true;
     }
     public void Unfold(int id) { if(IsValid(id)) Unfold(EditorObjects[id]); }
 

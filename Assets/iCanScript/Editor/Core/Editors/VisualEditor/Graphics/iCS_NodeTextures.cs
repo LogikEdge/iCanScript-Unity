@@ -87,7 +87,7 @@ public static class iCS_NodeTextures {
 		// Flush all cached textures.
 		FlushCachedTextures();
 		
-		int shadowSizeInt= (int)iCS_Config.NodeShadowSize;
+		int shadowSizeInt= (int)iCS_EditorConfig.NodeShadowSize;
 		int cornerOffset= shadowSizeInt+radiusInt;
 		int tileSize= radiusInt+extraTitleheightInt+shadowSizeInt;
 		int textureSize= 3*tileSize;

@@ -2,13 +2,10 @@ using UnityEngine;
 using System.Collections;
 using P=Prelude;
 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//  LAYOUT
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
-    // Display animation attributes =========================================
-	private P.Animate<Rect>	myAnimatedPosition= new P.Animate<Rect>();
-	public P.Animate<Rect> AnimatedPosition {
-		get { return myAnimatedPosition; }
-	}
-
     // Accessors ============================================================
     public Vector2 DisplaySize {
 		get {
@@ -19,29 +16,23 @@ public partial class iCS_EditorObject {
             // Avoid propagating change if we did not change size
             if(Math3D.IsEqual(myDisplaySize, value)) return;
             myDisplaySize= value;
+            if(IsNode && !IsIconized && IsVisible) {
+                LayoutPorts();
+                if(IsParentValid) {
+                    Parent.IsDirty= true;
+                }
+            }
 		}
 	}
     // ----------------------------------------------------------------------
     public Vector2 LocalPosition {
 		get {
             if(!IsVisible) return Vector2.zero;
-            if(IsPort) {
-                return myPortLocalPosition;
-            }
-            // This is a node.
-            return EngineObject.LocalPosition;
+            return myLocalPosition;
 		}
 		set {
-            if(IsPort) {
-                myPortLocalPosition= value;
-            } else {
-                var engineObject= EngineObject;
-                var localPosition= engineObject.LocalPosition;
-                // Avoid propagating change if we did not change position
-                if(Math3D.IsEqual(localPosition, value)) return;
-                // Set new local position and update any position dependent values.
-    			engineObject.LocalPosition= value;                
-            }
+            if(Math3D.IsEqual(myLocalPosition, value)) return;
+            myLocalPosition= value;
 		}
 	}
 
@@ -91,15 +82,7 @@ public partial class iCS_EditorObject {
 		    DisplaySize= new Vector2(value.width, value.height);
 		}
 	}
-
     // Accessor Modifiers ===================================================
-    public Vector2 DisplaySizeWithMargin {
-        get {
-			if(!IsVisible) return DisplaySize;
-            return AddMargins(DisplaySize);
-        }
-    }
-    // ----------------------------------------------------------------------
     public Rect LocalRectWithMargin {
         get {
 			if(!IsVisible) return LocalRect;
@@ -113,21 +96,5 @@ public partial class iCS_EditorObject {
             return AddMargins(GlobalRect);
         }
     }
-
-    // ======================================================================
-    // Layout Utilities
-    // ======================================================================
-    // Adds a margin around given rectangle ---------------------------------
-    public static Rect AddMargins(Rect r) {
-        var m= iCS_Config.MarginSize;
-        var m2= 2f*m;
-        return new Rect(r.x-m, r.y-m, r.width+m2, r.height+m2);
-    }
-    // Adds a margin to the given size --------------------------------------
-    public static Vector2 AddMargins(Vector2 size) {
-        var m2= 2f*iCS_Config.MarginSize;
-        return new Vector2(size.x+m2, size.y+m2);
-    }
-    
 }
 

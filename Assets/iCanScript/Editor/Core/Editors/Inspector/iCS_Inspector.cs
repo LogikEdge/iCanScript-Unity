@@ -154,18 +154,17 @@ public class iCS_Inspector : Editor {
                             if(SelectedObject.IsOutStatePort) myStorage.FindAConnectedPort(SelectedObject).Name= name;
                             else SelectedObject.Source.Name= name;                            
                         }
-                        SelectedObject.IsDirty= true;
                     }                    
                 } else {
                     EditorGUILayout.LabelField("Name", name);                    
                 }
                 // Show object tooltip.
-                string toolTip= SelectedObject.RawTooltip;
-                if(mySelectedObject.IsOutStatePort) toolTip= myStorage.FindAConnectedPort(SelectedObject).RawTooltip;
+                string toolTip= SelectedObject.Tooltip;
+                if(mySelectedObject.IsOutStatePort) toolTip= myStorage.FindAConnectedPort(SelectedObject).Tooltip;
                 if(toolTip == null || toolTip == "") toolTip= EmptyStr;
 				GUI.SetNextControlName("tooltip");
                 toolTip= EditorGUILayout.TextField("Tool Tip", toolTip);
-                if(toolTip != EmptyStr && toolTip != mySelectedObject.RawTooltip) {
+                if(toolTip != EmptyStr && toolTip != mySelectedObject.Tooltip) {
                     SelectedObject.Tooltip= toolTip;
                     if(SelectedObject.IsStatePort) {
                         if(SelectedObject.IsOutStatePort) myStorage.FindAConnectedPort(SelectedObject).Tooltip= toolTip;

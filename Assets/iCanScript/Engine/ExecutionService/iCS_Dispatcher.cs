@@ -12,7 +12,7 @@ public abstract class iCS_Dispatcher : iCS_Action {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_Dispatcher(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_Dispatcher(string name, int priority) : base(name, priority) {}
 
     // ======================================================================
     // Execution

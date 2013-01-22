@@ -13,7 +13,7 @@ public class iCS_SetInstanceField : iCS_SetStaticField {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_SetInstanceField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, Vector2 layout) : base(name, fieldInfo, paramIsOuts, layout) {
+    public iCS_SetInstanceField(string name, FieldInfo fieldInfo, bool[] paramIsOuts, int priority) : base(name, fieldInfo, paramIsOuts, priority) {
         myThisConnection= iCS_Connection.NoConnection;
     }
     public new void SetParameterConnection(int id, iCS_Connection connection) {

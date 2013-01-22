@@ -18,7 +18,7 @@ public static partial class Math3D {
 // Float conditional statement using Epsilon.
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     public static bool IsEqual(float a, float b) {
-        return Mathf.Abs(a-b) < Mathf.Epsilon;
+        return Mathf.Approximately(a,b);
     }  
     // ----------------------------------------------------------------------
     public static bool IsNotEqual(float a, float b) {
@@ -26,19 +26,19 @@ public static partial class Math3D {
     }
     // ----------------------------------------------------------------------
     public static bool IsSmaller(float a, float b) {
-        return (a + Mathf.Epsilon) < b;
+        return a < b && IsNotEqual(a,b);
     }
     // ----------------------------------------------------------------------
     public static bool IsSmallerOrEqual(float a, float b) {
-        return (a - Mathf.Epsilon) < b;
+        return a < b || IsEqual(a,b);
     }
     // ----------------------------------------------------------------------
     public static bool IsGreater(float a, float b) {
-        return (a - Mathf.Epsilon) > b;
+        return a > b && IsNotEqual(a,b);
     }
     // ----------------------------------------------------------------------
     public static bool IsGreaterOrEqual(float a, float b) {
-        return (a + Mathf.Epsilon) > b;
+        return a > b || IsEqual(a,b);
     }
     // ----------------------------------------------------------------------
     public static bool IsZero(float a) {
@@ -205,7 +205,23 @@ public static partial class Math3D {
         if(IsZero(d)) return default(Rect);
         return Mul(r1, 1f/d);
     }
-
+    // ----------------------------------------------------------------------
+	public static Vector2 TopLeftCorner(Rect r) {
+	    return new Vector2(r.xMin, r.yMin);
+	}
+    // ----------------------------------------------------------------------
+	public static Vector2 TopRightCorner(Rect r) {
+	    return new Vector2(r.xMax, r.yMin);
+	}
+    // ----------------------------------------------------------------------
+	public static Vector2 BottomLeftCorner(Rect r) {
+	    return new Vector2(r.xMin, r.yMax);
+	}
+    // ----------------------------------------------------------------------
+	public static Vector2 BottomRightCorner(Rect r) {
+	    return new Vector2(r.xMax, r.yMax);
+	}
+	
     // ======================================================================
     // Line segment utilities
 	// ----------------------------------------------------------------------

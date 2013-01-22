@@ -12,23 +12,23 @@ public class iCS_EngineObject {
     // ======================================================================
     // Database Fields
     // ----------------------------------------------------------------------
-    public iCS_ObjectTypeEnum    ObjectType      = iCS_ObjectTypeEnum.Unknown;
-    public int                   InstanceId      = -1;
-    public int                   ParentId        = -1;
-    public string                QualifiedType   = "";
-    public string                RawName         = "";
-    public Vector2               LocalPosition   = Vector2.zero;
-    public iCS_DisplayOptionEnum DisplayOption   = iCS_DisplayOptionEnum.Unfolded;
-    public bool                  IsNameEditable  = true;
+    public iCS_ObjectTypeEnum    ObjectType        = iCS_ObjectTypeEnum.Unknown;
+    public int                   InstanceId        = -1;
+    public int                   ParentId          = -1;
+    public string                QualifiedType     = "";
+    public string                RawName           = "";
+    public Vector2               LocalPositionRatio= Vector2.zero;
+    public iCS_DisplayOptionEnum DisplayOption     = iCS_DisplayOptionEnum.Unfolded;
+    public bool                  IsNameEditable    = true;
 
 	// Node specific attributes ---------------------------------------------
-	public string				 MethodName= null;
-	public int					 NbOfParams= 0;     // Also used for port group
-    public string                IconGUID  = null;
-    public string                RawTooltip= null;
+	public string				 MethodName       = null;
+	public int					 NbOfParams       = 0;     // Also used for port group
+    public string                IconGUID         = null;
+    public string                Tooltip          = null;
+    public int                   ExecutionPriority= 0;
 
     // Port specific attributes ---------------------------------------------
-    public iCS_EdgeEnum          Edge               = iCS_EdgeEnum.None;
     public int                   SourceId           = -1;
     public int                   PortIndex          = -1;
 	public string				 InitialValueArchive= null;
@@ -37,16 +37,58 @@ public class iCS_EngineObject {
     public bool                  IsEntryState= false;
 
     // ======================================================================
+    // Accessors
+    // ----------------------------------------------------------------------
+    public bool   IsValid         { get { return InstanceId != -1; }}
+    public bool   IsParentValid   { get { return ParentId != -1; }}
+    public bool   IsSourceValid   { get { return SourceId != -1; }}
+    public bool   IsNameEmpty     { get { return RawName == null || RawName == ""; }}
+    public Type   RuntimeType     { get { return Type.GetType(QualifiedType); }}
+    public string TypeName        { get { return iCS_Types.TypeName(RuntimeType);}} 
+    public string Name {
+        get { return IsNameEmpty ? ":"+TypeName : RawName; }
+        set { RawName= value; }
+    }
+    // Port Specific accesors ------------------------------------------------
+    public int PortGroup {
+        get { return NbOfParams; }
+        set { NbOfParams= value; }
+    }
+    public iCS_EdgeEnum Edge {
+        get {
+            var edge= LocalPositionRatio.x;
+            if(Math3D.IsEqual(edge, 1f)) return iCS_EdgeEnum.Left;
+            if(Math3D.IsEqual(edge, 2f)) return iCS_EdgeEnum.Right;
+            if(Math3D.IsEqual(edge, 3f)) return iCS_EdgeEnum.Top;
+            if(Math3D.IsEqual(edge, 4f)) return iCS_EdgeEnum.Bottom;
+            return iCS_EdgeEnum.None;
+        }
+        set {
+            switch(value) {
+                case iCS_EdgeEnum.Left  : LocalPositionRatio.x= 1f; break;
+                case iCS_EdgeEnum.Right : LocalPositionRatio.x= 2f; break;
+                case iCS_EdgeEnum.Top   : LocalPositionRatio.x= 3f; break;
+                case iCS_EdgeEnum.Bottom: LocalPositionRatio.x= 4f; break;
+                default                 : LocalPositionRatio.x= 0f; break;
+            }
+        }
+    }
+    public float PortPositionRatio {
+        get { return LocalPositionRatio.y; }
+        set { LocalPositionRatio.y= value; }
+    }
+
+    // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
-    public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType, Vector2 localPosition) {
+    public iCS_EngineObject(int id, string name, Type type, int parentId, iCS_ObjectTypeEnum objectType) {
         Reset();
         ObjectType= objectType;
         InstanceId= id;
         ParentId= parentId;
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
-        LocalPosition= localPosition;
+        LocalPositionRatio= Vector2.zero;
         if(IsDataPort) {
             Edge= IsInputPort ? (IsEnablePort ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left) : iCS_EdgeEnum.Right;
         }
@@ -64,16 +106,17 @@ public class iCS_EngineObject {
 		Reset();
 	}
     // ----------------------------------------------------------------------
-    public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent, Vector2 localPosition) {
-        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType, localPosition);
+    public static iCS_EngineObject Clone(int id, iCS_EngineObject toClone, iCS_EngineObject parent) {
+        iCS_EngineObject instance= new iCS_EngineObject(id, toClone.Name, toClone.RuntimeType, parent != null ? parent.InstanceId : -1, toClone.ObjectType);
 		// Commmon
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
+		instance.LocalPositionRatio= toClone.LocalPositionRatio;
 		// Node
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;
         instance.IconGUID= toClone.IconGUID;
-        instance.RawTooltip= toClone.RawTooltip;
+        instance.Tooltip= toClone.Tooltip;
 		// Port
         instance.Edge= toClone.Edge;
         instance.PortIndex= toClone.PortIndex;
@@ -90,14 +133,14 @@ public class iCS_EngineObject {
         ParentId= -1;
         QualifiedType= "";
 		RawName= "";
-        LocalPosition= Vector2.zero;
+        LocalPositionRatio= Vector2.zero;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;
 		// Node
 		MethodName= null;
 		NbOfParams= 0;
         IconGUID= null;
-        RawTooltip = null;
+        Tooltip = null;
 		// Port
         Edge= iCS_EdgeEnum.None;
         SourceId= -1;
@@ -107,14 +150,6 @@ public class iCS_EngineObject {
 		IsEntryState= false;
     }
     
-    // ----------------------------------------------------------------------
-    // Display Option Accessor
-    public bool IsUnfolded          { get { return iCS_DisplayOption.IsUnfolded(DisplayOption); }}
-    public bool IsIconized          { get { return iCS_DisplayOption.IsIconized(DisplayOption); }}
-    public bool IsFolded            { get { return iCS_DisplayOption.IsFolded(DisplayOption); }}
-    public void Unfold()            { iCS_DisplayOption.Unfold(ref DisplayOption); }
-    public void Fold()              { iCS_DisplayOption.Fold(ref DisplayOption); }
-    public void Iconize()           { iCS_DisplayOption.Iconize(ref DisplayOption); }
     // ----------------------------------------------------------------------
     // Object Type Acessor
     public bool IsNode                  { get { return iCS_ObjectType.IsNode(this); }}
@@ -169,32 +204,6 @@ public class iCS_EngineObject {
     public bool SupportsAdditionOfPorts { get { return IsModule; }}
     public bool SupportsNestedNodes     { get { return IsModule; }}
     
-    // ======================================================================
-    // Accessors
-    // ----------------------------------------------------------------------
-    public int  PortGroup       { get { return NbOfParams; } set { NbOfParams= value; }}
-    public bool IsValid         { get { return InstanceId != -1; }}
-    public bool IsParentValid   { get { return ParentId != -1; }}
-    public bool IsSourceValid   { get { return SourceId != -1; }}
-    public bool IsNameEmpty     { get { return RawName == null || RawName == ""; }}
-    public bool IsTooltipEmpty  { get { return RawTooltip == null || RawTooltip == ""; }}
-    public Type RuntimeType     { get { return Type.GetType(QualifiedType); }}
-    public string TypeName {
-        get {
-            return iCS_Types.TypeName(RuntimeType);
-        }
-    }
-    public string Name {
-        get {
-            return IsNameEmpty ? ":"+TypeName : RawName;
-        }
-        set { RawName= value; }
-    }
-    public string Tooltip {
-        get { return RawTooltip; }
-        set { RawTooltip= value; }
-    }
-
     // ----------------------------------------------------------------------
 	public FieldInfo GetFieldInfo() {
         if(MethodName == null) return null;

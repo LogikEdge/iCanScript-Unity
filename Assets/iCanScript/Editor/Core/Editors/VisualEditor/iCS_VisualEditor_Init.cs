@@ -54,6 +54,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             myDisplayRoot= null;
             myBookmark= null;
             DragType= DragTypeEnum.None;
+            mySubEditor= null;
 		    return false;
 		}
         if(IStorage != myPreviousIStorage) {
@@ -61,6 +62,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             myDisplayRoot= StorageRoot;
             myBookmark= null;
             DragType= DragTypeEnum.None;
+            mySubEditor= null;
         }
         
 		// Don't run if graphic sub-system did not initialise.

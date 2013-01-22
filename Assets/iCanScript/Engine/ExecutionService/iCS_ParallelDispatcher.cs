@@ -6,7 +6,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_ParallelDispatcher(string name, Vector2 layout) : base(name, layout) {}
+    public iCS_ParallelDispatcher(string name, int priority) : base(name, priority) {}
     
     // ======================================================================
     // Execution
@@ -47,7 +47,7 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
         int best= myQueueIdx;
         int queueSize= myExecuteQueue.Count;
         for(int i= myQueueIdx+1; i < queueSize; ++i) {
-            if(LayoutRule(myExecuteQueue[best].Layout, myExecuteQueue[i].Layout) == 1) {
+            if(myExecuteQueue[best].Priority > myExecuteQueue[i].Priority) {
                 best= i;
             }
         }
@@ -58,17 +58,5 @@ public class iCS_ParallelDispatcher : iCS_Dispatcher {
         }
         // Force execute the selected action.
         base.ForceExecute(frameId);
-    }
-
-    // ----------------------------------------------------------------------
-    // Returns 0(zero) if l1 is first in layout or 1(one) if l2 is first.
-    int LayoutRule(Vector2 l1, Vector2 l2) {
-        if(l1.x > l2.x) {
-            if(l2.y < l1.y) return 1;
-            return (l1.x-l2.x) < 0.03f*(l1.y-l2.y) ? 0 : 1;
-        } else {
-            if(l1.y < l2.y) return 0;
-            return (l2.x-l1.x) < 0.03f*(l1.y-l2.y) ? 1 : 0;
-        }
     }
 }

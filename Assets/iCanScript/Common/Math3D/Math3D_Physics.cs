@@ -32,8 +32,10 @@ public static partial class Math3D {
         float yMax= Mathf.Min(_rect1.yMax, _rect2.yMax);
         float width= xMax-xMin;
         float height= yMax-yMin;
-        if(Math3D.IsSmallerOrEqual(width,0.0f)) width= 0.0f;
-        if(Math3D.IsSmallerOrEqual(height, 0.0f)) height= 0.0f;
+        if(Math3D.IsSmallerOrEqual(width,0.0f) || Math3D.IsSmallerOrEqual(height, 0.0f)) {
+            width= 0.0f;
+            height= 0.0f;
+        }
         return new Rect(xMin, yMin, width, height);
     }
 

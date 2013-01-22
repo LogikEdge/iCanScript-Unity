@@ -1,15 +1,14 @@
 using UnityEngine;
 using System.Collections;
 
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+//  DISPLAY STATE
+// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // ======================================================================
-    // Node layout attributes -----------------------------------------------
-    public void Unfold()    { EngineObject.Unfold(); IsDirty= true; }
-    public void Fold()      { EngineObject.Fold(); IsDirty= true; }
-    public void Iconize()   { EngineObject.Iconize(); IsDirty= true; }
-    public bool IsUnfolded  { get { return EngineObject.IsUnfolded; }}
-    public bool IsFolded    { get { return EngineObject.IsFolded; }}
-    public bool IsIconized  { get { return EngineObject.IsIconized; }}
+    public bool IsUnfolded          { get { return DisplayOption == iCS_DisplayOptionEnum.Unfolded; }}
+    public bool IsFolded            { get { return DisplayOption == iCS_DisplayOptionEnum.Folded;   }}
+    public bool IsIconized          { get { return DisplayOption == iCS_DisplayOptionEnum.Iconized; }}
     public bool IsVisible {
         get {
             var parent= Parent;
@@ -19,6 +18,8 @@ public partial class iCS_EditorObject {
             return parent.IsVisible;            
         }
     }
-
+    public void Iconize()           { DisplayOption= iCS_DisplayOptionEnum.Iconized; IsDirty= true; }
+    public void Fold()              { DisplayOption= iCS_DisplayOptionEnum.Folded;   IsDirty= true; }
+    public void Unfold()            { DisplayOption= iCS_DisplayOptionEnum.Unfolded; IsDirty= true;}
 
 }

@@ -58,7 +58,7 @@ public class iCS_FunctionBase : iCS_Action, iCS_IParams {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_FunctionBase(string name, bool[] paramIsOuts, Vector2 layout) : base(name, layout) {
+    public iCS_FunctionBase(string name, bool[] paramIsOuts, int priority) : base(name, priority) {
         myParameterIsOuts= paramIsOuts;
         List<int> inIdx= new List<int>();
         List<int> outIdx= new List<int>();

@@ -19,21 +19,6 @@ public partial class iCS_IStorage {
     public Rect GetLayoutLocalPosition(iCS_EditorObject eObj) {
         return eObj.LocalRect;
     }
-    // ----------------------------------------------------------------------
-    public void SetLayoutPosition(iCS_EditorObject node, Rect newPos) {
-        // Reposition node.
-        var globalRect= node.GlobalRect;
-        if(Math3D.IsEqual(globalRect, newPos)) return;
-        node.GlobalRect= newPos;
-        if(node.IsParentValid) {
-            // Adjust node size.
-            Rect deltaMove= new Rect(newPos.x-globalRect.x, newPos.y-globalRect.y, newPos.width-globalRect.width, newPos.height-globalRect.height);
-            float separationX= Math3D.IsNotZero(deltaMove.x) ? deltaMove.x : deltaMove.width;
-            float separationY= Math3D.IsNotZero(deltaMove.y) ? deltaMove.y : deltaMove.height;
-            var separationVector= new Vector2(separationX, separationY);
-            LayoutParent(node, separationVector);
-        }
-    }    
    	// ----------------------------------------------------------------------
     public Rect GetVisiblePosition(iCS_EditorObject edObj) {
 		// Return the layout position if the object is visible.

@@ -5,15 +5,19 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Creation methods
     // ----------------------------------------------------------------------
-    public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState) {
+    public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
         Vector2 fromStatePortPos= fromStatePort.GlobalPosition;
-        Vector2 toStatePortPos  = toState.GlobalPosition;
-        // Create inStatePort
+        // Create toStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         toStatePort.GlobalPosition= toStatePortPos;
         SetSource(toStatePort, fromStatePort);
         toStatePort.UpdatePortEdge();        
-        fromStatePort.UpdatePortEdge();        
+        toStatePort.SavePosition();
+        toState.LayoutPorts();        
+        // Update fromStatePort position.
+        fromStatePort.UpdatePortEdge();
+        fromStatePort.SavePosition();
+        fromStatePort.Parent.LayoutPorts();
         // Determine transition parent
         iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
         // Create transition module
@@ -218,7 +222,11 @@ public partial class iCS_IStorage {
         // Get the outStatePort
         statePort= GetFromStatePort(statePort);
 		if(statePort == null) return null;
-        return statePort.Source.Parent.Parent;
+        var source= statePort.Source;
+		if(source == null) return null;
+        var parent= source.Parent;
+        if(parent == null) return null;
+        return parent.Parent;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject GetTransitionGuardAndAction(iCS_EditorObject statePort, out iCS_EditorObject actionModule) {
@@ -263,7 +271,7 @@ public partial class iCS_IStorage {
             iCS_EditorObject parent= module.Parent;
             iCS_ConnectionParams cp= new iCS_ConnectionParams(toStatePort, fromStatePort, this);
             Vector2 distance= cp.End-cp.Start;
-            Vector2 delta= 0.5f*iCS_Config.MarginSize*(distance).normalized;
+            Vector2 delta= 0.5f*iCS_EditorConfig.MarginSize*(distance).normalized;
             int steps= (int)(distance.magnitude/delta.magnitude);
             Vector2 pos= cp.Start;
             bool minFound= false;
@@ -288,7 +296,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void LayoutTransitionModule(iCS_EditorObject module) {
         GetTransitionName(module);
-        SetLayoutPosition(module, ProposeTransitionModulePosition(module));                    
+        module.GlobalRect= ProposeTransitionModulePosition(module);
     }
     // ----------------------------------------------------------------------
     public Vector2 GetTransitionModuleVector(iCS_EditorObject module) {

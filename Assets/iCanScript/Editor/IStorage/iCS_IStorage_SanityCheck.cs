@@ -5,7 +5,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Performs all sanity checks.
     void SanityCheck() {
-        SanityCheck_Animation();
+//        SanityCheck_Animation();
     }
     // ----------------------------------------------------------------------
     // Validates the editor/engine container coherency.

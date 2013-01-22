@@ -61,6 +61,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void OnSelectionChange() {
         myNeedRepaint= true;
+        mySubEditor= null;
     }
     
     // ======================================================================
@@ -170,6 +171,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     // Processes all events.
     void ProcessEvents() {
+//        Debug.Log("Event: "+Event.current.type+" time: "+myCurrentTime);
         switch(Event.current.type) {
             case EventType.Repaint: {
                 // Draw Graph.

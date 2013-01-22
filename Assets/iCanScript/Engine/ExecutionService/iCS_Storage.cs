@@ -9,7 +9,8 @@ public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    [HideInInspector] public List<iCS_EngineObject>   EngineObjects = new List<iCS_EngineObject>();
+    [HideInInspector] public int                      DataVersion   = 1;
+    /*[HideInInspector]*/ public List<iCS_EngineObject>   EngineObjects = new List<iCS_EngineObject>();
     [HideInInspector] public List<Object>             UnityObjects  = new List<Object>();
     [HideInInspector] public int                      UndoRedoId    = 0;
 	[HideInInspector] public Vector2				  ScrollPosition= Vector2.zero;
@@ -78,12 +79,6 @@ public class iCS_Storage : MonoBehaviour {
     public iCS_EngineObject GetSource(iCS_EngineObject port) {
         if(port == null || port.SourceId == -1) return null;
         return EngineObjects[port.SourceId];
-    }
-    // ----------------------------------------------------------------------
-    // Returns the global position of the object.
-    public Vector2 GetGlobalPosition(iCS_EngineObject obj) {
-        if(obj.ParentId == -1) return obj.LocalPosition;
-        return obj.LocalPosition + GetGlobalPosition(EngineObjects[obj.ParentId]);
     }
     // ----------------------------------------------------------------------
     // Returns the last data port in the connection or NULL if none exist.

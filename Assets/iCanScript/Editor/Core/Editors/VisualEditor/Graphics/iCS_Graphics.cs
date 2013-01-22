@@ -14,13 +14,13 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Constants
     // ----------------------------------------------------------------------
-    const float kInitScale       = 1f;
-    const float kMinimizeSize    = 32f;
-    const float kIconicArea      = kMinimizeSize*kMinimizeSize;
-    const float kNodeCornerRadius= 8f;
-    const float kNodeTitleHeight = 2f*kNodeCornerRadius;
-    const int   kLabelFontSize   = 11;
-    const int   kTitleFontSize   = 12;
+    const float kInitialScale    = iCS_EditorConfig.kInitialScale;
+    const float kIconicSize      = iCS_EditorConfig.kIconicSize;
+    const float kIconicArea      = iCS_EditorConfig.kIconicArea;
+    const float kNodeCornerRadius= iCS_EditorConfig.kNodeCornerRadius;
+    const float kNodeTitleHeight = iCS_EditorConfig.kNodeTitleHeight;
+    const int   kLabelFontSize   = iCS_EditorConfig.kLabelFontSize;
+    const int   kTitleFontSize   = iCS_EditorConfig.kTitleFontSize;
     
     // ======================================================================
     // PROPERTIES
@@ -48,7 +48,7 @@ public partial class iCS_Graphics {
 
     // ----------------------------------------------------------------------
     iCS_EditorObject selectedObject= null;
-    float            Scale= kInitScale;
+    float            Scale= kInitialScale;
     Vector2          Translation= Vector2.zero;
     Rect             ClipingArea= new Rect(0,0,0,0);
     Vector2          MousePosition= Vector2.zero;
@@ -202,8 +202,8 @@ public partial class iCS_Graphics {
 	// ----------------------------------------------------------------------
     static public bool Init(iCS_IStorage iStorage) {
         // Build texture temaples.
-        iCS_PortIcons.BuildPortIconTemplates(kInitScale);
-		iCS_NodeTextures.BuildNodeTemplate(kInitScale);
+        iCS_PortIcons.BuildPortIconTemplates(kInitialScale);
+		iCS_NodeTextures.BuildNodeTemplate(kInitialScale);
         // Load AA line texture.
         if(lineTexture == null) {
             if(!iCS_TextureCache.GetTexture(iCS_EditorStrings.AALineTexture, out lineTexture)) {
@@ -503,8 +503,6 @@ public partial class iCS_Graphics {
     public void DrawPort(iCS_EditorObject port, iCS_IStorage iStorage) {
         // Don't show port if too small
         if(!ShouldShowPort()) return;
-//var ratio= port.PortVerticalRatioFromLocalPosition(port.LocalPosition);
-//Debug.Log("Port "+port.Name+" of "+port.Parent.Name+" ratio is "+ratio+" local position= "+port.LocalPosition+" pos from ratio= "+port.PortVerticalLocalPositionFromRatio(ratio));
         
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
@@ -512,7 +510,7 @@ public partial class iCS_Graphics {
         
         // Don't display if outside clipping area.
 		Vector2 portCenter= GetPortCenter(port, iStorage);
-		float portRadius= iCS_Config.PortRadius;
+		float portRadius= iCS_EditorConfig.PortRadius;
         Rect displayArea= new Rect(portCenter.x-200f, portCenter.y-2f*portRadius, 400f, 4f*portRadius);
         if(!IsVisible(displayArea)) return;
         
@@ -521,7 +519,7 @@ public partial class iCS_Graphics {
 
 		// Compute port radius (radius is increased if port is selected).
 		if(isSelectedPort) {
-			portRadius= iCS_Config.PortRadius*iCS_Config.SelectedPortFactor;			
+			portRadius= iCS_EditorConfig.PortRadius*iCS_EditorConfig.SelectedPortFactor;			
 		}
 
         // Get port type information.
@@ -617,13 +615,13 @@ public partial class iCS_Graphics {
             // State ports.
             if(port.IsOutStatePort) {
                 Handles.color= Color.white;
-                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);
+                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);
             }
         } else if(port.IsTransitionPort) {
             // Transition ports.
             if(port.IsOutTransitionPort) {
                 Handles.color= Color.white;
-                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, portRadius*Scale);                            
+                Handles.DrawSolidDisc(TranslateAndScale(portCenter), FacingNormal, 0.65f*portRadius*Scale);                            
             }
         }
         else {
@@ -661,7 +659,7 @@ public partial class iCS_Graphics {
         radius*= Scale;
         Vector3 center= TranslateAndScale(_center);
         Vector3[] vectors= new Vector3[4];
-        float delta= radius*1.75f;
+        float delta= radius*0.8f;
 
         vectors[0]= new Vector3(center.x-delta, center.y-2f*delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+2f*delta, 0);
@@ -670,7 +668,7 @@ public partial class iCS_Graphics {
         Handles.color= Color.white;
 		Handles.DrawSolidRectangleWithOutline(vectors, backgroundColor, _borderColor);
 
-        delta= radius*0.67f;
+        delta*= 0.60f;
         vectors[0]= new Vector3(center.x-delta, center.y-2f*delta, 0);
         vectors[1]= new Vector3(center.x-delta, center.y+2f*delta, 0);
         vectors[2]= new Vector3(center.x+delta, center.y+delta, 0);

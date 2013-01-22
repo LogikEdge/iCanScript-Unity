@@ -160,10 +160,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		// Convert source port to child port.
 		if(source != null) {
-			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.OutMuxPort;
 			var firstMuxInput= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
 			IStorage.SetSource(firstMuxInput, source);
 			IStorage.SetSource(stateMuxPort, null);
+			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.OutMuxPort;
 		}
 		// Create new mux input port.
 		var inMuxPort= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
@@ -193,6 +193,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!inParentSeen && inParent != null) {
             iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, inParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             IStorage.SetSource(inPort, newPort, conversion);
+			SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
             SetNewDataConnection(newPort, outPort);
             IStorage.OptimizeDataConnection(inPort, outPort);
             return;                       
@@ -208,6 +209,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!outParentSeen && outParent != null) {
             iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             IStorage.SetSource(newPort, outPort, conversion);
+			SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
             SetNewDataConnection(inPort, newPort);
             IStorage.OptimizeDataConnection(inPort, outPort);
             return;                       
@@ -216,6 +218,56 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         IStorage.SetSource(inPort, outPort, conversion);
         IStorage.OptimizeDataConnection(inPort, outPort);
     }
+	// ----------------------------------------------------------------------
+	// This attempt to properly locate an autocreated data port.
+	void SetBestPositionForAutocreatedPort(iCS_EditorObject port, Vector2 inPortPosition, Vector2 outPortPosition) {
+		// Determine the parent edge position to use.
+		var parent= port.Parent;
+		var parentGlobalRect= parent.GlobalRect;
+		float x= port.IsInputPort ? parentGlobalRect.xMin : parentGlobalRect.xMax;
+		// Assure that the in position X value is smaller then the out position.
+		if(inPortPosition.x > outPortPosition.x) {
+			var tmp= inPortPosition; inPortPosition= outPortPosition; outPortPosition= tmp;
+		}
+		// Manage situation where new port is between the in & out ports.
+		var parentGlobalPosition= Math3D.Middle(parentGlobalRect);
+		var top   = parentGlobalPosition.y+parent.VerticalPortsTop;
+		var bottom= parentGlobalPosition.y+parent.VerticalPortsBottom;
+		float y;
+		if(Math3D.IsSmaller(inPortPosition.x, x) && Math3D.IsGreater(outPortPosition.x, x)) {
+			float ratio= (x-inPortPosition.x)/(outPortPosition.x-inPortPosition.x);
+			y= Math3D.Lerp(inPortPosition.y, outPortPosition.y, ratio);
+			if(y < top) { 
+				y= top;
+			}
+			if(y > bottom) {
+				y= bottom;
+			}
+			port.InitialGlobalPosition= new Vector2(x,y);
+			return;
+		}
+		if(Math3D.IsEqual(inPortPosition.y, outPortPosition.y)) {
+			port.InitialGlobalPosition= new Vector2(x, 0.5f*(top+bottom));
+			return;
+		}
+		// Assure that the in position Y value is smaller then the out position.
+		if(inPortPosition.y > outPortPosition.y) {
+			var tmp= inPortPosition; inPortPosition= outPortPosition; outPortPosition= tmp;
+		}
+		// Compute some type of ratio if Y position traverse the top port position
+		if(Math3D.IsSmaller(inPortPosition.y, top) && Math3D.IsGreater(outPortPosition.y, top)) {
+			float y1= outPortPosition.y-top;
+			float y2= top-inPortPosition.y;
+			y= top+(y1*y1/(y1+y2));
+		} else {
+			float y2= outPortPosition.y-bottom;
+			float y1= bottom-inPortPosition.y;
+			y= bottom-(y1*y1/(y1+y2));			
+		}
+		port.InitialGlobalPosition= new Vector2(x,y);
+		return;			
+	}
+
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetParentModule(iCS_EditorObject edObj) {
         iCS_EditorObject parentModule= edObj.Parent;

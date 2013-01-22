@@ -32,10 +32,10 @@ public static class iCS_BuiltinTextures {
     // =================================================================================
     // Constants
     // ---------------------------------------------------------------------------------
-    const int   kPortIconWidth   = 16;
-    const int   kPortIconHeight  = 12;
-    const int   kMinimizeIconSize= 16;
-    const int   kMaximizeIconSize= 16;
+    public const int   kPortIconWidth   = 16;
+    public const int   kPortIconHeight  = 12;
+    public const int   kMinimizeIconSize= 16;
+    public const int   kMaximizeIconSize= 16;
 
     // =================================================================================
     // Fields

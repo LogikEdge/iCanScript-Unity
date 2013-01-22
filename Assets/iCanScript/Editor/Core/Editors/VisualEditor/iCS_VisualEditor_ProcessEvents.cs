@@ -180,7 +180,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         ShowInstanceEditor();
         myDynamicMenu.Update(SelectedObject, IStorage, GraphMousePosition);
-        SelectedObject.IsDirty= true;                    
     }
 	// ----------------------------------------------------------------------
     void ShowInstanceEditor() {
