@@ -6,8 +6,9 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-	private Vector2 		myDisplaySize     = Vector2.zero;
-	private P.Animate<Rect>	myAnimatedRect= new P.Animate<Rect>();
+	private Vector2 		   myDisplaySize     			  = Vector2.zero;
+	private P.Animate<Vector2> myAnimatedGlobalDisplayPosition= new P.Animate<Vector2>();
+	private P.Animate<Vector2> myAnimatedDisplaySize          = new P.Animate<Vector2>();
 	
     // ======================================================================
     // Engine Object Proxy Position Accessors
@@ -68,16 +69,25 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Rect GlobalAnimatedRect {
+	public Vector2 AnimatedGlobalDisplayPosition {
 		get {
-			if(myAnimatedRect.IsActive && !myAnimatedRect.IsElapsed) {
-				return myAnimatedRect.CurrentValue;
+			if(myAnimatedGlobalDisplayPosition.IsActive && !myAnimatedGlobalDisplayPosition.IsElapsed) {
+				return myAnimatedGlobalDisplayPosition.CurrentValue;
 			}
-			Vector2 size= DisplaySize;
 			Vector2 pos= GlobalDisplayPosition;
-			var rect =new Rect(pos.x-0.5f*size.x, pos.y-0.5f*size.y, size.x, size.y);
-			myAnimatedRect.Reset(rect);
-			return rect;
+			myAnimatedGlobalDisplayPosition.Reset(pos);
+			return pos;
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Vector2 AnimatedDisplaySize {
+		get {
+			if(myAnimatedDisplaySize.IsActive && !myAnimatedDisplaySize.IsElapsed) {
+				return myAnimatedDisplaySize.CurrentValue;
+			}
+			Vector2 sze= DisplaySize;
+			myAnimatedDisplaySize.Reset(sze);
+			return sze;
 		}
 	}
 	
