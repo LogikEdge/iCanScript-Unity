@@ -37,6 +37,9 @@ public partial class iCS_EditorObject {
 		get {
 			return LocalAnchorPosition+LocalDisplayOffset;
 		}
+		set {
+			LocalDisplayOffset= value-LocalAnchorPosition;
+		}
 	}
     // ----------------------------------------------------------------------	
 	public Vector2 GlobalAnchorPosition {
@@ -45,11 +48,23 @@ public partial class iCS_EditorObject {
 			if(parent == null) return LocalAnchorPosition;
 			return parent.GlobalDisplayPosition+LocalAnchorPosition;
 		}
+		set {
+			LocalDisplayOffset= GlobalDisplayPosition-value;
+			var parent= Parent;
+			if(parent == null) {
+				LocalAnchorPosition= value;
+				return;
+			}
+			LocalAnchorPosition= value-parent.GlobalDisplayPosition;
+		}
 	}
     // ----------------------------------------------------------------------
 	public Vector2 GlobalDisplayPosition {
 		get {
 			return GlobalAnchorPosition+LocalDisplayOffset;
+		}
+		set {
+			LocalDisplayOffset= value-GlobalAnchorPosition;
 		}
 	}
     // ----------------------------------------------------------------------
