@@ -84,7 +84,7 @@ public partial class iCS_EditorObject {
 	// ======================================================================
     // High-order functions
     // ----------------------------------------------------------------------
-	public SetGlobalAnchorAndDisplayPosition(Vector2 pos) {
+	public void SetGlobalAnchorAndDisplayPosition(Vector2 pos) {
 		GlobalAnchorPosition= pos;
 		GlobalDisplayPosition= pos;
 	}
