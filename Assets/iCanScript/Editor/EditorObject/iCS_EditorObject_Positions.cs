@@ -81,11 +81,7 @@ public partial class iCS_EditorObject {
 		set {
 			var timeRatio= new P.TimeRatio();
 	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			myAnimatedGlobalDisplayPosition.Start(GlobalDisplayPosition,
-	                                              value,
-	                                              timeRatio,
-	                                              (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-			GlobalDisplayPosition= value;
+			AnimateGlobalDisplayPosition(timeRatio, value);
 		}
 	}
     // ----------------------------------------------------------------------
@@ -101,11 +97,7 @@ public partial class iCS_EditorObject {
 		set {
 			var timeRatio= new P.TimeRatio();
 	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			myAnimatedDisplaySize.Start(GlobalDisplayPosition,
-	                                    value,
-	                                    timeRatio,
-	                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-			DisplaySize= value;
+			AnimateDisplaySize(timeRatio, value);
 		}
 	}
     // ----------------------------------------------------------------------
@@ -117,10 +109,9 @@ public partial class iCS_EditorObject {
              return rect;
  		}
  		set {
- 		    var sze= new Vector2(value.width, value.height);
- 		    var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
- 		    AnimatedGlobalDisplayPosition= pos;
- 		    AnimatedDisplaySize= sze;
+			var timeRatio= new P.TimeRatio();
+	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+			AnimateGlobalDisplayRect(timeRatio, value);
  		}
  	}
  	// ----------------------------------------------------------------------
@@ -140,5 +131,28 @@ public partial class iCS_EditorObject {
 	public void SetGlobalAnchorAndDisplayPosition(Vector2 pos) {
 		GlobalAnchorPosition= pos;
 		GlobalDisplayPosition= pos;
+	}
+    // ----------------------------------------------------------------------
+	public void AnimateGlobalDisplayPosition(P.TimeRatio timeRatio, Vector2 finalPosition) {
+		myAnimatedGlobalDisplayPosition.Start(GlobalDisplayPosition,
+                                              finalPosition,
+                                              timeRatio,
+                                              (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+		GlobalDisplayPosition= finalPosition;	
+	}
+    // ----------------------------------------------------------------------
+	public void AnimateDisplaySize(P.TimeRatio timeRatio, Vector2 finalSize) {
+		myAnimatedDisplaySize.Start(DisplaySize,
+                                    finalSize,
+                                    timeRatio,
+                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+		DisplaySize= finalSize;		
+	}
+    // ----------------------------------------------------------------------
+	public void AnimateGlobalDisplayRect(P.TimeRatio timeRatio, Rect finalRect) {
+	    var sze= new Vector2(finalRect.width, finalRect.height);
+	    var pos= new Vector2(finalRect.x+0.5f*sze.x, finalRect.y+0.5f*sze.y);
+		AnimateGlobalDisplayPosition(timeRatio, pos);
+		AnimateDisplaySize(timeRatio, sze);
 	}
 }
