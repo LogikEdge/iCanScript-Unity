@@ -59,7 +59,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
     Vector2 CanScrollInDirection(Vector2 dir) {
-        Rect rootRect= myDisplayRoot.GlobalRect;
+        Rect rootRect= myDisplayRoot.AnimatedGlobalDisplayRect;
         var rootCenter= Math3D.Middle(rootRect);
         var topLeftCorner= ViewportToGraph(new Vector2(0, iCS_ToolbarUtility.GetHeight()/Scale));
         var bottomRightCorner= ViewportToGraph(new Vector2(position.width/Scale, position.height/Scale));

@@ -193,7 +193,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!inParentSeen && inParent != null) {
             iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, inParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             IStorage.SetSource(inPort, newPort, conversion);
-			SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
+			SetBestPositionForAutocreatedPort(newPort, inPort.AnimatedGlobalDisplayPosition, outPort.AnimatedGlobalDisplayPosition);
             SetNewDataConnection(newPort, outPort);
             IStorage.OptimizeDataConnection(inPort, outPort);
             return;                       
@@ -209,7 +209,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!outParentSeen && outParent != null) {
             iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             IStorage.SetSource(newPort, outPort, conversion);
-			SetBestPositionForAutocreatedPort(newPort, inPort.GlobalPosition, outPort.GlobalPosition);
+			SetBestPositionForAutocreatedPort(newPort, inPort.AnimatedGlobalDisplayPosition, outPort.AnimatedGlobalDisplayPosition);
             SetNewDataConnection(inPort, newPort);
             IStorage.OptimizeDataConnection(inPort, outPort);
             return;                       
@@ -223,7 +223,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	void SetBestPositionForAutocreatedPort(iCS_EditorObject port, Vector2 inPortPosition, Vector2 outPortPosition) {
 		// Determine the parent edge position to use.
 		var parent= port.Parent;
-		var parentGlobalRect= parent.GlobalRect;
+		var parentGlobalRect= parent.AnimatedGlobalDisplayRect;
 		float x= port.IsInputPort ? parentGlobalRect.xMin : parentGlobalRect.xMax;
 		// Assure that the in position X value is smaller then the out position.
 		if(inPortPosition.x > outPortPosition.x) {

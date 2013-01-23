@@ -85,6 +85,15 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
+	public Vector2 AnimatedLocalDisplayPosition {
+		get {
+			var globalPos= AnimatedGlobalDisplayPosition;
+			var parent= Parent;
+			if(parent == null) return globalPos;
+			return globalPos-parent.AnimateGlobalDisplayPosition;
+		}
+	}
+    // ----------------------------------------------------------------------
 	public Vector2 AnimatedDisplaySize {
 		get {
 			if(myAnimatedDisplaySize.IsActive && !myAnimatedDisplaySize.IsElapsed) {

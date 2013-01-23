@@ -367,16 +367,16 @@ public class iCS_DynamicMenu {
                 iCS_EditorObject parent= selectedObject.Parent;
                 iCS_EditorObject grandParent= parent.Parent;
                 int grandParentId= grandParent.InstanceId;
-				var grandParentRect= grandParent.GlobalRect;
-				var portPosition= selectedObject.GlobalPosition;
+				var grandParentRect= grandParent.AnimatedGlobalDisplayRect;
+				var portPosition= selectedObject.AnimatedGlobalDisplayPosition;
                 if(selectedObject.IsInputPort) {
                     iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                     storage.SetSource(selectedObject, port);
-                    port.GlobalPosition= new Vector2(grandParentRect.x, portPosition.y);
+                    port.SetGlobalAnchorAndDisplayPosition(new Vector2(grandParentRect.x, portPosition.y));
                 } else {
                     iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
                     storage.SetSource(port, selectedObject);
-                    port.GlobalPosition= new Vector2(grandParentRect.xMax, portPosition.y);
+                    port.SetGlobalAnchorAndDisplayPosition(new Vector2(grandParentRect.xMax, portPosition.y));
                 }
                 break;                
             }

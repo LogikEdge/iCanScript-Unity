@@ -253,4 +253,10 @@ public static partial class Math3D {
 		return Mathf.Sqrt(dx*dx+dy*dy);
 	}
 
+    // ======================================================================
+    // Area utilities
+	// ----------------------------------------------------------------------
+	public static float Area(float x, float y)	{ return x*y; }
+	public static float Area(Vector2 v)			{ return Area(v.x, v.y); }
+	public static float Area(Rect r)			{ return Area(r.width, r.height); }
 }

@@ -681,7 +681,7 @@ public partial class iCS_Graphics {
     static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
     static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
     static float TopBottomLabelOffset(iCS_EditorObject port, iCS_IStorage iStorage) {
-        float ratio= port.LocalRect.x/GetDisplayPosition(port.Parent, iStorage).width;
+        float ratio= 0.5f+port.AnimatedLocalDisplayPosition.x/port.Parent.AnimatedDisplaySize.x;
         float error= 100f;
         float offset= 0f;
         for(int i= 0; i < portTopBottomRatio.Length; ++i) {
@@ -776,8 +776,7 @@ public partial class iCS_Graphics {
    	// ----------------------------------------------------------------------
  	bool IsIconized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(!edObj.IsNode) return false;
-		var nodeAnimation= edObj.AnimatedPosition;
-        float area= nodeAnimation.CurrentValue.width*nodeAnimation.CurrentValue.height;
+        float area= Math3D.Area(edObj.AnimatedDisplaySize);
         return (area <= kIconicArea+1f);
     }
    	// ----------------------------------------------------------------------
@@ -787,14 +786,12 @@ public partial class iCS_Graphics {
    	// ----------------------------------------------------------------------
     static bool IsVisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(edObj.IsNode) {
-    		var nodeAnimation= edObj.AnimatedPosition;
-            float area= nodeAnimation.CurrentValue.width*nodeAnimation.CurrentValue.height;
+            float area= Math3D.Area(edObj.AnimatedDisplaySize);
             return Math3D.IsGreater(area, 0.1f);            
         }
         var parentNode= iStorage.GetParentNode(edObj);
         if(parentNode == null) return false;
-		var parentAnimation= parentNode.AnimatedPosition;
-        float parentArea= parentAnimation.CurrentValue.width*parentAnimation.CurrentValue.height;
+        float parentArea= Math3D.Area(parentNode.AnimatedDisplaySize);
         return parentArea > kIconicArea+1f;  // Parent is visible and not iconic.
     }
 }

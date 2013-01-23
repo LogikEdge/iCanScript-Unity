@@ -61,7 +61,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragOriginalPort= port;
             DragFixPort= port;
             DragObject= port;
-            DragStartPosition= port.GlobalPosition;
+            DragStartPosition= port.AnimatedGlobalDisplayPosition;
             return true;
         }
 
@@ -87,7 +87,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 node.IsFloating= IsFloatingKeyDown;
                 DragType= DragTypeEnum.NodeDrag;
                 DragObject= node;
-                DragStartPosition= node.GlobalPosition;                                                                    
+                DragStartPosition= node.AnimatedGlobalDisplayPosition;                                                                    
             }
             return true;
         }
@@ -98,12 +98,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragType= DragTypeEnum.TransitionCreation;
             iCS_EditorObject outTransition= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutStatePort);
             iCS_EditorObject inTransition= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-            outTransition.GlobalPosition= pos;
-            inTransition.GlobalPosition= pos;
+            outTransition.SetGlobalAnchorAndDisplayPosition(pos);
+            inTransition.SetGlobalAnchorAndDisplayPosition(pos);
             inTransition.SourceId= outTransition.InstanceId;
             DragFixPort= outTransition;
             DragObject= inTransition;
-            DragStartPosition= DragObject.GlobalPosition;
+            DragStartPosition= DragObject.AnimatedGlobalDisplayPosition;
             DragObject.IsFloating= true;
             return true;
         }
@@ -138,7 +138,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					return;
 				}
                 // Update port position.
-                DragObject.GlobalPosition= DragStartPosition + delta;
+                DragObject.SetGlobalAnchorAndDisplayPosition(DragStartPosition + delta);
 				// Consider port relocation when dragging on parent edge.
 				if(DragObject.IsPortOnParentEdge) {
 	                if(DragObject.IsStatePort) {
@@ -159,7 +159,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case DragTypeEnum.PortConnection: {
                 // Update port position.
                 var newPosition= DragStartPosition + delta;
-                DragObject.GlobalPosition= newPosition;
+                DragObject.SetGlobalAnchorAndDisplayPosition(newPosition);
                 // Determine if we should go back to port relocation. (IsPositionOnEdge)
                 if(!DragOriginalPort.IsInMuxPort && DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
                     iCS_EditorObject dragObjectSource= DragObject.Source;
@@ -177,9 +177,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 Vector2 mousePosInGraph= GraphMousePosition;
                 iCS_EditorObject closestPort= IStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
-                    Vector2 closestPortPos= closestPort.GlobalPosition;
+                    Vector2 closestPortPos= closestPort.GlobalDisplayPosition;
                     if(Vector2.Distance(closestPortPos, mousePosInGraph) < iCS_EditorConfig.PortSize) {
-                        DragObject.GlobalPosition= closestPortPos;
+                        DragObject.SetGlobalAnchorAndDisplayPosition(closestPortPos);
                     }                    
                 }
                 // Special case for module ports.
@@ -202,7 +202,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case DragTypeEnum.TransitionCreation:
                 // Update port position.
-                DragObject.GlobalPosition= DragStartPosition+delta;
+                DragObject.SetGlobalAnchorAndDisplayPosition(DragStartPosition+delta);
                 break;
         }
     }    
@@ -242,7 +242,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             origStateChart= origStateChart.Parent;
                         }
                         // Get new drag port state & state chart.
-                        iCS_EditorObject newState= IStorage.GetNodeWithEdgeAt(DragObject.GlobalPosition);
+                        iCS_EditorObject newState= IStorage.GetNodeWithEdgeAt(DragObject.GlobalDisplayPosition);
                         if(newState == null || !newState.IsState) {
                             newState= GetStateAt(GraphMousePosition);                            
                         }
@@ -265,14 +265,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
                                 IStorage.DestroyInstance(DragObject);
                             } else {
-                                DragObject.GlobalPosition= DragStartPosition;
+                                DragObject.SetGlobalAnchorAndDisplayPosition(DragStartPosition);
                             }
                             break;
                         }
                         // Relocate transition to the new state.
-                        var dragObjectPosition= DragObject.GlobalPosition;
+                        var dragObjectPosition= DragObject.GlobalDisplayPosition;
                         DragObject.Parent= newState;
-                        DragObject.GlobalPosition= dragObjectPosition;
+                        DragObject.SetGlobalAnchorAndDisplayPosition(dragObjectPosition);
                         DragObject.UpdatePortEdge();
                         DragObject.SavePosition();
                         newState.LayoutPorts();
@@ -294,7 +294,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         bool isNearParent= DragObject.IsPortOnParentEdge;
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
-                            var dragPortPos= DragObject.GlobalPosition;
+                            var dragPortPos= DragObject.GlobalDisplayPosition;
 							IStorage.DestroyInstance(DragObject);
 							DragObject= null;
                             // Verify for disconnection.
@@ -365,7 +365,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(destState != null && destState.IsState) {
                         iCS_EditorObject outStatePort= IStorage[DragObject.SourceId];
                         outStatePort.IsFloating= false;
-                        IStorage.CreateTransition(outStatePort, destState, DragObject.GlobalPosition);
+                        IStorage.CreateTransition(outStatePort, destState, DragObject.GlobalDisplayPosition);
                         DragObject.SourceId= -1;
                         IStorage.DestroyInstance(DragObject);
                     } else {
@@ -414,11 +414,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             IStorage.SetSource(DragObject, DragOriginalPort);
         }
         DragType= DragTypeEnum.PortConnection;
-        DragObject.GlobalPosition= ViewportMousePosition;
-		DragObject.AnimatedPosition.Reset(DragObject.GlobalRect);
+        DragObject.SetGlobalAnchorAndDisplayPosition(ViewportMousePosition);
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
-			DragStartPosition= DragOriginalPort.GlobalPosition - parent.GlobalPosition;			
+			DragStartPosition= DragOriginalPort.GlobalDisplayPosition - parent.GlobalDisplayPosition;			
 		}
         DragObject.IsFloating= true;		
 	}
