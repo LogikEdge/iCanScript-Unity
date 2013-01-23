@@ -79,6 +79,8 @@ public partial class iCS_EditorObject {
 			return pos;
 		}
 		set {
+			var timeRatio= new P.TimeRatio();
+	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
 			myAnimatedGlobalDisplayPosition.Start(GlobalDisplayPosition,
 	                                              value,
 	                                              timeRatio,
@@ -97,6 +99,8 @@ public partial class iCS_EditorObject {
 			return sze;
 		}
 		set {
+			var timeRatio= new P.TimeRatio();
+	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
 			myAnimatedDisplaySize.Start(GlobalDisplayPosition,
 	                                    value,
 	                                    timeRatio,
@@ -119,8 +123,17 @@ public partial class iCS_EditorObject {
  		    AnimatedDisplaySize= sze;
  		}
  	}
- 			
+ 	// ----------------------------------------------------------------------
+    public Rect AnimatedGlobalChildRect {
+        get {
+            var pos= AnimatedGlobalDisplayPosition;
+            Rect childRect= new Rect(pos.x, pos.y, 0, 0);
+            ForEachChildNode(
                 c=> childRect= Math3D.Merge(childRect, c.AnimatedGlobalDisplayRect)
+            );
+            return childRect;
+        }
+    }
 	// ======================================================================
     // High-order functions
     // ----------------------------------------------------------------------
