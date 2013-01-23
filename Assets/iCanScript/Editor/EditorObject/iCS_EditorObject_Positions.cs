@@ -120,6 +120,7 @@ public partial class iCS_EditorObject {
  		}
  	}
  			
+                c=> childRect= Math3D.Merge(childRect, c.AnimatedGlobalDisplayRect)
 	// ======================================================================
     // High-order functions
     // ----------------------------------------------------------------------
