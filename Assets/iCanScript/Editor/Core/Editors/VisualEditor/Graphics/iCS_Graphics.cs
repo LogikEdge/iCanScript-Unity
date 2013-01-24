@@ -356,7 +356,7 @@ public partial class iCS_Graphics {
         // Draw node box (if visible).
         Rect position= GetDisplayPosition(node, iStorage);
         if(!IsVisible(position)) return;
-        
+
         string title= GetNodeName(node);
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
