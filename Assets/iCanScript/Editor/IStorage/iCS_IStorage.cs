@@ -43,10 +43,10 @@ public partial class iCS_IStorage {
 		
         // Re-initialize internal values.
         if(EditorObjects.Count > 0 && IsValid(EditorObjects[0])) {
-            Vector2 graphCenter= EditorObjects[0].GlobalPosition;
+            Vector2 graphCenter= EditorObjects[0].GlobalAnchorPosition;
             ForEach(obj=> {
-		        // Initialize display position.
-                obj.AnimatedPosition.Reset(new Rect(graphCenter.x,graphCenter.y,0,0));
+//		        // Initialize display position.
+//                obj.AnimatedPosition.Reset(new Rect(graphCenter.x,graphCenter.y,0,0));
 				// Initialize initial port values.
 				if(obj.IsInDataPort) {
 					LoadInitialPortValueFromArchive(obj);
@@ -111,8 +111,8 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
 	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= obj.Parent; while(parent != null && !parent.IsNode) parent= parent.Parent; return parent; }
-    public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? obj.AnimatedPosition.CurrentValue : default(Rect); }
-    public void            SetDisplayPosition(iCS_EditorObject obj, Rect pos) { if(IsValid(obj)) obj.AnimatedPosition.Reset(pos); }
+    public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? obj.AnimatedGlobalDisplayRect : default(Rect); }
+    public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.GlobalDisplayRect= r; }
 	public P.TimeRatio	AnimationTimeRatio { get { return myAnimationTimeRatio; }}
     // ----------------------------------------------------------------------
     public object          GetRuntimeObject(iCS_EditorObject obj) {
@@ -161,9 +161,9 @@ public partial class iCS_IStorage {
 */        
         // Update display if animation is disabled.
         if(!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive) {
-            ForEach(
-                obj=> obj.DontAnimatePosition()
-            );
+//            ForEach(
+//                obj=> obj.DontAnimatePosition()
+//            );
         }
         
         // Perform layout if one or more objects has changed.
@@ -182,10 +182,10 @@ public partial class iCS_IStorage {
 
         // Graph is now stable.  Recompute animation target if needed.
         if(AnimationNeeded) {
-            ForEach(
-                obj=> obj.AnimatePosition(myAnimationTimeRatio)
-            );
-            myAnimationTimeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+//            ForEach(
+//                obj=> obj.AnimatePosition(myAnimationTimeRatio)
+//            );
+//            myAnimationTimeRatio.Start(iCS_PreferencesEditor.AnimationTime);
             AnimationNeeded= false;
         }
 
@@ -194,16 +194,16 @@ public partial class iCS_IStorage {
             if(myAnimationTimeRatio.IsElapsed) {
                 myAnimationTimeRatio.Reset();
             }
-            ForEach(
-                obj=> {
-                    var animation= obj.AnimatedPosition;
-                    if(myAnimationTimeRatio.IsActive) {
-                        animation.Update();                        
-                    } else {
-                        animation.Reset(animation.TargetValue);
-                    }
-                }
-            );
+//            ForEach(
+//                obj=> {
+//                    var animation= obj.AnimatedPosition;
+//                    if(myAnimationTimeRatio.IsActive) {
+//                        animation.Update();                        
+//                    } else {
+//                        animation.Reset(animation.TargetValue);
+//                    }
+//                }
+//            );
         }
 #endif
 
@@ -323,11 +323,11 @@ public partial class iCS_IStorage {
         int id= destStorage.GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
-        newObj.GlobalPosition= globalPos;
+        newObj.SetGlobalAnchorAndDisplayPosition(globalPos);
         newObj.SavePosition();
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
-            child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalPosition, xlat)
+            child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalAnchorPosition, xlat)
         );
 		if(newObj.IsInDataPort) {
 			LoadInitialPortValueFromArchive(this[id]);
@@ -367,7 +367,7 @@ public partial class iCS_IStorage {
         }
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, this);
-        this[0].GlobalPosition= VisualEditorCenter();
+        this[0].SetGlobalAnchorAndDisplayPosition(VisualEditorCenter());
 		this[0].SavePosition();
 		this[0].IsNameEditable= false;
         return this[0];
@@ -379,7 +379,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
-        this[id].GlobalPosition= globalPos;
+        this[id].SetGlobalAnchorAndDisplayPosition(globalPos);
         this[id].SaveNodePosition();
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
@@ -393,7 +393,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
-        this[id].GlobalPosition= globalPos;
+        this[id].SetGlobalAnchorAndDisplayPosition(globalPos);
         this[id].SaveNodePosition();
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
@@ -412,7 +412,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
-        this[id].GlobalPosition= globalPos;
+        this[id].SetGlobalAnchorAndDisplayPosition(globalPos);
         this[id].SaveNodePosition();
 		// Set animated display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
@@ -448,7 +448,7 @@ public partial class iCS_IStorage {
         }        
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        this[id].GlobalPosition= globalPos;
+        this[id].SetGlobalAnchorAndDisplayPosition(globalPos);
         this[id].SaveNodePosition();
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
@@ -472,7 +472,7 @@ public partial class iCS_IStorage {
             port.PortIndex= portIdx;			
 		}
         // Initialize port position.
-		this[id].InitialPortLayout();
+//		this[id].InitialPortLayout();
 		// Initialize initial display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         return this[id];
@@ -488,7 +488,7 @@ public partial class iCS_IStorage {
         }        
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        this[id].GlobalPosition= globalPos;
+        this[id].SetGlobalAnchorAndDisplayPosition(globalPos);
         this[id].SaveNodePosition();
         this[id].IconGUID= iconGUID;
         // Create parameter ports.
@@ -520,7 +520,7 @@ public partial class iCS_IStorage {
         port.PortIndex= portIdx;			
 
         // Initialize port position.
-		this[id].InitialPortLayout();
+//		this[id].InitialPortLayout();
 		// Initialize initial display position.
         SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
         return this[id];
@@ -529,7 +529,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
         var parent= EditorObjects[parentId];
-        var globalPos= parent.GlobalPosition;
+        var globalPos= parent.GlobalDisplayPosition;
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
 		port.UpdatePortEdge();
@@ -556,8 +556,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo convDesc) {
         if(convDesc == null) { SetSource(inPort, outPort); return; }
-        var inPos= inPort.GlobalPosition;
-        var outPos= outPort.GlobalPosition;
+        var inPos= inPort.AnimatedGlobalDisplayPosition;
+        var outPos= outPort.AnimatedGlobalDisplayPosition;
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= inPort.ParentId;
         iCS_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);

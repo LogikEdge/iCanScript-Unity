@@ -6,10 +6,10 @@ public partial class iCS_IStorage {
     // Creation methods
     // ----------------------------------------------------------------------
     public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
-        Vector2 fromStatePortPos= fromStatePort.GlobalPosition;
+        Vector2 fromStatePortPos= fromStatePort.GlobalDisplayPosition;
         // Create toStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-        toStatePort.GlobalPosition= toStatePortPos;
+        toStatePort.SetGlobalAnchorAndDisplayPosition(toStatePortPos);
         SetSource(toStatePort, fromStatePort);
         toStatePort.UpdatePortEdge();        
         toStatePort.SavePosition();
@@ -66,9 +66,9 @@ public partial class iCS_IStorage {
         UpdatePortNames(fromStatePort, toStatePort);
         // Set initial transition module position.
         var transitionIcon= iCS_TextureCache.GetTextureFromGUID(transitionModule.IconGUID);
-        transitionModule.LocalRect= new Rect(transitionModule.LocalRect.x, transitionModule.LocalRect.y,
-                                             transitionIcon.width, transitionIcon.height);
-        inModulePort.LocalRect= new Rect(0.5f*transitionIcon.width, 0.5f*transitionIcon.height, 0, 0);
+        transitionModule.SetLocalAnchorAndDisplayRect(new Rect(transitionModule.LocalDisplayRect.x, transitionModule.LocalDisplayRect.y,
+                                                                transitionIcon.width, transitionIcon.height));
+        inModulePort.SetLocalAnchorAndDisplayRect(new Rect(0.5f*transitionIcon.width, 0.5f*transitionIcon.height, 0, 0));
         outModulePort= inModulePort;
         LayoutTransitionModule(transitionModule);
     }
@@ -264,7 +264,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public Rect ProposeTransitionModulePosition(iCS_EditorObject module) {
-        Rect nodePos= module.GlobalRect;
+        Rect nodePos= module.GlobalDisplayRect;
         iCS_EditorObject fromStatePort= GetFromStatePort(module);
         iCS_EditorObject toStatePort= GetToStatePort(module);
         if(toStatePort != null) {
@@ -296,7 +296,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void LayoutTransitionModule(iCS_EditorObject module) {
         GetTransitionName(module);
-        module.GlobalRect= ProposeTransitionModulePosition(module);
+        module.SetGlobalAnchorAndDisplayRect(ProposeTransitionModulePosition(module));
     }
     // ----------------------------------------------------------------------
     public Vector2 GetTransitionModuleVector(iCS_EditorObject module) {
@@ -304,10 +304,10 @@ public partial class iCS_IStorage {
         iCS_EditorObject outStatePort     = GetFromStatePort(module);
         iCS_EditorObject inTransitionPort = GetInTransitionPort(module);
         iCS_EditorObject outTransitionPort= GetOutTransitionPort(module);
-        var inStatePos= inStatePort.GlobalPosition;
-        var outStatePos= outStatePort.GlobalPosition;
-        var inTransitionPos= inTransitionPort.GlobalPosition;
-        var outTransitionPos= outTransitionPort.GlobalPosition;
+        var inStatePos= inStatePort.GlobalDisplayPosition;
+        var outStatePos= outStatePort.GlobalDisplayPosition;
+        var inTransitionPos= inTransitionPort.GlobalDisplayPosition;
+        var outTransitionPos= outTransitionPort.GlobalDisplayPosition;
         Vector2 dir= ((inStatePos-outTransitionPos).normalized+(inTransitionPos-outStatePos).normalized).normalized;
         return dir;
     }

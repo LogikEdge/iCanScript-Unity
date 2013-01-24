@@ -10,14 +10,14 @@ public partial class iCS_EditorObject {
     // Port Layout Utilities ================================================
     public void CleanupPortEdgePosition() {
         var size= Parent.DisplaySize;
-        var lp= LocalPosition;
+        var lp= LocalDisplayPosition;
         switch(Edge) {
             case iCS_EdgeEnum.Top:      lp.y= -0.5f*size.y; break; 
             case iCS_EdgeEnum.Bottom:   lp.y=  0.5f*size.y; break;
             case iCS_EdgeEnum.Left:     lp.x= -0.5f*size.x; break;
             case iCS_EdgeEnum.Right:    lp.x=  0.5f*size.x; break;
         }
-		LocalPosition= lp;
+		LocalDisplayPosition= lp;
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {
@@ -28,11 +28,11 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnNodeEdge(iCS_EditorObject node, iCS_EdgeEnum edge) {
-		return IsPortOnRectEdge(node.GlobalRect, edge);
+		return IsPortOnRectEdge(node.AnimatedGlobalDisplayRect, edge);
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnRectEdge(Rect r, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(GlobalPosition, r, edge);
+		return IsPositionOnRectEdge(AnimatedGlobalDisplayPosition, r, edge);
     }
 /*
 	FIXME : The following method should be moved to NodeLayout or all the
@@ -41,7 +41,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	// Return true if the position is on the edge of the node.
 	public bool IsPositionOnEdge(Vector2 position, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(position, GlobalRect, edge);
+		return IsPositionOnRectEdge(position, AnimatedGlobalDisplayRect, edge);
 	}
     // ----------------------------------------------------------------------
     public static bool IsPositionOnRectEdge(Vector2 pos, Rect r, iCS_EdgeEnum edge) {
@@ -79,81 +79,81 @@ public partial class iCS_EditorObject {
             float topY   = -0.5f*parentSize.y;
             float bottomY=  0.5f*parentSize.y;
 			var edge= iCS_EdgeEnum.Top;
-			float distance= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, leftX, rightX, topY);
-			float d= Math3D.DistanceFromHorizontalLineSegment(LocalPosition, leftX, rightX, bottomY);
+			float distance= Math3D.DistanceFromHorizontalLineSegment(LocalDisplayPosition, leftX, rightX, topY);
+			float d= Math3D.DistanceFromHorizontalLineSegment(LocalDisplayPosition, leftX, rightX, bottomY);
 			if(d < distance) {
 				distance= d;
 				edge= iCS_EdgeEnum.Bottom;
 			}
-			d= Math3D.DistanceFromVerticalLineSegment(LocalPosition, topY, bottomY, leftX);
+			d= Math3D.DistanceFromVerticalLineSegment(LocalDisplayPosition, topY, bottomY, leftX);
 			if(d < distance) {
 				distance= d;
 				edge= iCS_EdgeEnum.Left;
 			}
-			d= Math3D.DistanceFromVerticalLineSegment(LocalPosition, topY, bottomY, rightX); 
+			d= Math3D.DistanceFromVerticalLineSegment(LocalDisplayPosition, topY, bottomY, rightX); 
 			if(d < distance) {
 				edge= iCS_EdgeEnum.Right;
 			}
 			return edge;
 		}
 	}
-	// ----------------------------------------------------------------------
-    public int NbOfTopPorts {
-		get {
-			int cnt= 0;
-			ForEachTopChildPort(_=> ++cnt);
-			return cnt;
-		}
-	}
-	// ----------------------------------------------------------------------
-    public int NbOfBottomPorts {
-		get {
-			int cnt= 0;
-			ForEachBottomChildPort(_=> ++cnt);
-			return cnt;
-		}
-	}
-	// ----------------------------------------------------------------------
-    public int NbOfLeftPorts {
-		get {
-			int cnt= 0;
-			ForEachLeftChildPort(_=> ++cnt);
-			return cnt;
-		}
-	}
-	// ----------------------------------------------------------------------
-    public int NbOfRightPorts {
-		get {
-			int cnt= 0;
-			ForEachRightChildPort(_=> ++cnt);
-			return cnt;
-		}
-	}
-	// ----------------------------------------------------------------------
-    public iCS_EditorObject[] TopPorts {
-		get {
-			return BuildListOfChildPorts(c=> c.IsOnTopEdge && !c.IsFloating);
-		}
-	}
-	// ----------------------------------------------------------------------
-    public iCS_EditorObject[] BottomPorts {
-		get {
-			return BuildListOfChildPorts(c=> c.IsOnBottomEdge && !c.IsFloating);
-		}
-	}
-	// ----------------------------------------------------------------------
-    public iCS_EditorObject[] LeftPorts {
-		get {
-			return BuildListOfChildPorts(c=> c.IsOnLeftEdge && !c.IsFloating);
-		}
-	}
-	// ----------------------------------------------------------------------
-    public iCS_EditorObject[] RightPorts {
-		get {
-			return BuildListOfChildPorts(c=> c.IsOnRightEdge && !c.IsFloating);
-		}
-	}
-	
+//	// ----------------------------------------------------------------------
+//    public int NbOfTopPorts {
+//		get {
+//			int cnt= 0;
+//			ForEachTopChildPort(_=> ++cnt);
+//			return cnt;
+//		}
+//	}
+//	// ----------------------------------------------------------------------
+//    public int NbOfBottomPorts {
+//		get {
+//			int cnt= 0;
+//			ForEachBottomChildPort(_=> ++cnt);
+//			return cnt;
+//		}
+//	}
+//	// ----------------------------------------------------------------------
+//    public int NbOfLeftPorts {
+//		get {
+//			int cnt= 0;
+//			ForEachLeftChildPort(_=> ++cnt);
+//			return cnt;
+//		}
+//	}
+//	// ----------------------------------------------------------------------
+//    public int NbOfRightPorts {
+//		get {
+//			int cnt= 0;
+//			ForEachRightChildPort(_=> ++cnt);
+//			return cnt;
+//		}
+//	}
+//	// ----------------------------------------------------------------------
+//    public iCS_EditorObject[] TopPorts {
+//		get {
+//			return BuildListOfChildPorts(c=> c.IsOnTopEdge && !c.IsFloating);
+//		}
+//	}
+//	// ----------------------------------------------------------------------
+//    public iCS_EditorObject[] BottomPorts {
+//		get {
+//			return BuildListOfChildPorts(c=> c.IsOnBottomEdge && !c.IsFloating);
+//		}
+//	}
+//	// ----------------------------------------------------------------------
+//    public iCS_EditorObject[] LeftPorts {
+//		get {
+//			return BuildListOfChildPorts(c=> c.IsOnLeftEdge && !c.IsFloating);
+//		}
+//	}
+//	// ----------------------------------------------------------------------
+//    public iCS_EditorObject[] RightPorts {
+//		get {
+//			return BuildListOfChildPorts(c=> c.IsOnRightEdge && !c.IsFloating);
+//		}
+//	}
+//	
 	// ======================================================================
     // Layout from iCS_Port
     // ----------------------------------------------------------------------
@@ -172,22 +172,22 @@ public partial class iCS_EditorObject {
         }
     }
 
-    // ======================================================================
-    // ----------------------------------------------------------------------
-    // Returns the Y coordinate for a port on the vertical edge given its
-    // ratio.
-    public float VerticalPortYCoordinateFromRatio() {
-        var parent= Parent;
-        var ratio= PortPositionRatio;
-        return parent.VerticalPortsTop+parent.AvailableHeightForPorts*ratio;
-    }
-    // ----------------------------------------------------------------------
-    // Returns the X coordinate for a port on the horizontal edge given its
-    // ratio.
-    public float HorizontalPortXCoordinateFromRatio() {
-        var parent= Parent;
-        var ratio= PortPositionRatio;
-        return parent.HorizontalPortsLeft+parent.AvailableWidthForPorts*ratio;
-    }
-
+//    // ======================================================================
+//    // ----------------------------------------------------------------------
+//    // Returns the Y coordinate for a port on the vertical edge given its
+//    // ratio.
+//    public float VerticalPortYCoordinateFromRatio() {
+//        var parent= Parent;
+//        var ratio= PortPositionRatio;
+//        return parent.VerticalPortsTop+parent.AvailableHeightForPorts*ratio;
+//    }
+//    // ----------------------------------------------------------------------
+//    // Returns the X coordinate for a port on the horizontal edge given its
+//    // ratio.
+//    public float HorizontalPortXCoordinateFromRatio() {
+//        var parent= Parent;
+//        var ratio= PortPositionRatio;
+//        return parent.HorizontalPortsLeft+parent.AvailableWidthForPorts*ratio;
+//    }
+//
 }

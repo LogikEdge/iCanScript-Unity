@@ -18,20 +18,20 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Validates that animation has been properly applied.
     void SanityCheck_Animation() {
-        ForEach(
-            obj=> {
-                var animation= obj.AnimatedPosition;
-                if(obj.IsVisible) {
-                    if(Math3D.IsNotEqual(obj.GlobalRect, animation.TargetValue)) {
-                        Debug.LogWarning("iCanScript: Animation was not properly applied for: "+obj.Name+" with id: "+obj.InstanceId);                        
-                    }
-                } else {
-                    float area= animation.TargetValue.width*animation.TargetValue.height;
-                    if(Math3D.IsNotZero(area)) {
-                        Debug.LogWarning("iCanScript: Shrink animation was not properly applied for: "+obj.Name+" with id: "+obj.InstanceId);
-                    }
-                }
-            }
-        );
+//        ForEach(
+//            obj=> {
+//                var animation= obj.AnimatedPosition;
+//                if(obj.IsVisible) {
+//                    if(Math3D.IsNotEqual(obj.GlobalRect, animation.TargetValue)) {
+//                        Debug.LogWarning("iCanScript: Animation was not properly applied for: "+obj.Name+" with id: "+obj.InstanceId);                        
+//                    }
+//                } else {
+//                    float area= animation.TargetValue.width*animation.TargetValue.height;
+//                    if(Math3D.IsNotZero(area)) {
+//                        Debug.LogWarning("iCanScript: Shrink animation was not properly applied for: "+obj.Name+" with id: "+obj.InstanceId);
+//                    }
+//                }
+//            }
+//        );
     }
 }
