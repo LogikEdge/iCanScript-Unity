@@ -29,8 +29,8 @@ public partial class iCS_EditorObject {
 		}
         // We need to add the children area if any are visible.
         var childrenSize= AnimatedGlobalChildRectWithMargins;
-        width = Mathf.Max(minWidth+childrenSize.x, portsTitleWidth);
-        height= Mathf.Max(minHeight+childrenSize.y, neededPortsHeight);
+        width = Mathf.Max(minWidth+childrenSize.width, portsTitleWidth);
+        height= Mathf.Max(minHeight+childrenSize.height, neededPortsHeight);
 		return new Vector2(width, height);
 	}
     
