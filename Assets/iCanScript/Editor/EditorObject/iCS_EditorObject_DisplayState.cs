@@ -16,6 +16,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // High-order display state functions.
     // ----------------------------------------------------------------------
+    // Returns true if the object object is visible excluding all animations.
     public bool IsVisible {
         get {
             var parent= Parent;
