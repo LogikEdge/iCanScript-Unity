@@ -7,11 +7,11 @@ public partial class iCS_EditorObject {
     // Updates the node display size.  It is assumed that the child animated
     // display rect has been previously updated.
     public void UpdateNodeDisplaySize() {
-        DisplaySize= ComputeNodeDisplaySize();
+        DisplaySize= ComputeNodeDisplaySize(AnimatedGlobalChildRectWithMargins);
     }
     // ----------------------------------------------------------------------
     // Returns the size of the node using the current children layout.
-	public Vector2 ComputeNodeDisplaySize() {
+	public Vector2 ComputeNodeDisplaySize(Rect childrenGlobalRect) {
 		if(!IsVisible) return Vector2.zero;
 		if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
         float titleHeight= NodeTitleHeight;
@@ -28,9 +28,8 @@ public partial class iCS_EditorObject {
 			return new Vector2(width, height);
 		}
         // We need to add the children area if any are visible.
-        var childrenSize= AnimatedGlobalChildRectWithMargins;
-        width = Mathf.Max(minWidth+childrenSize.width, portsTitleWidth);
-        height= Mathf.Max(minHeight+childrenSize.height, neededPortsHeight);
+        width = Mathf.Max(minWidth+childrenGlobalRect.width, portsTitleWidth);
+        height= Mathf.Max(minHeight+childrenGlobalRect.height, neededPortsHeight);
 		return new Vector2(width, height);
 	}
     
@@ -61,5 +60,9 @@ public partial class iCS_EditorObject {
             return childRect;
         }
     }
-
+    // ----------------------------------------------------------------------
+    public void WrapAroundChildren() {
+        var childrenGlobalRect= AnimatedGlobalChildRectWithMargins;
+        
+    }
 }

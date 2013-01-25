@@ -7,11 +7,10 @@ using System.Collections.Generic;
 //  NODE USER DRAG
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
-    // ----------------------------------------------------------------------
-    // Forces a new position on the object being dragged by the uesr.
-    public void UserDragTo(Vector2 newPosition) {
-		if(IsNode) {
-            SetGlobalAnchorAndDisplayPosition(newPosition);
+//    // ----------------------------------------------------------------------
+//    // Forces a new position on the object being dragged by the uesr.
+//    public void UserDragTo(Vector2 newPosition) {
+//		if(IsNode) {
 //            IsSticky= true;
 //            LocalPosition+= newPosition-GlobalPosition;
 //            if(IsParentValid) {
@@ -21,10 +20,10 @@ public partial class iCS_EditorObject {
 //            DontAnimatePositionAndChildren();
 //            SaveNodePosition();
 //            IsSticky= false;
-		} else {
-			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
-		}
-    }
+//		} else {
+//			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
+//		}
+//    }
 //    // ----------------------------------------------------------------------
 //    // Adjust position of the siblings and the parent after an object drag.
 //    void LayoutParentNodeAfterDrag(iCS_EditorObject childBeingDragged) {
