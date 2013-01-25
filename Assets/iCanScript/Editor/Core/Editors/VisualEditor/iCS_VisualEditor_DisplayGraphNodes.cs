@@ -33,7 +33,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Node graph display.
 	// ----------------------------------------------------------------------
 	void DrawGraph () {
-Debug.Log("# objects= "+IStorage.EditorObjects.Count+" Root DisplaySize= "+IStorage.EditorObjects[0].DisplaySize);
         // Ask the storage to update itself.
         IStorage.Update();
 

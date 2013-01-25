@@ -23,48 +23,6 @@ public partial class iCS_EditorObject {
 //	    return ComputeNodeSize(o=> o.ChildrenSizeFromRatio);
 //	}
 //    // ----------------------------------------------------------------------
-//    // Returns the size of the node using the current children layout.
-//	Vector2 ComputeNodeSize(Func<iCS_EditorObject, Vector2> childrenSizeFunc) {
-//		if(!IsVisible) return Vector2.zero;
-//		if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
-//        float titleHeight= NodeTitleHeight;
-//        float titleWidth = NodeTitleWidth;
-//		float minHeight= NodeTopPadding+NodeBottomPadding;
-//		float minWidth = NodeLeftPadding+NodeRightPadding;
-//		float neededPortsHeight= titleHeight+MinimumHeightForPorts;
-//		float neededPortsWidth = MinimumWidthForPorts;
-//        // The simple case is without any visible child.
-//        float portsTitleWidth= Mathf.Max(neededPortsWidth, titleWidth);
-//        float width = Mathf.Max(minWidth, portsTitleWidth);
-//        float height= Mathf.Max(minHeight, neededPortsHeight);
-//		if(IsFolded || IsFunction) {
-//			return new Vector2(width, height);
-//		}
-//        // We need to add the children area if any are visible.
-//        var childrenSize= childrenSizeFunc(this);
-//        width = Mathf.Max(minWidth+childrenSize.x, portsTitleWidth);
-//        height= Mathf.Max(minHeight+childrenSize.y, neededPortsHeight);
-//		return new Vector2(width, height);
-//	}
-//    // ----------------------------------------------------------------------
-//    // Returns the global rectangle currently used by the children.
-//    public Rect ChildrenGlobalRectFromGlobalRect {
-//        get {
-//            var center= GlobalPosition;
-//            Rect childRect= new Rect(center.x,center.y,0,0);
-//            if(!IsUnfolded) return childRect;
-//            // The size is initialized with the largest & tallest child.
-//            ForEachChildNode(
-//                c=> {
-//                    if(!c.IsFloating) {
-//                        childRect= Math3D.Merge(childRect, c.GlobalRect);                        
-//                    }
-//                }
-//            );
-//            return childRect;
-//        }
-//    }
-//    // ----------------------------------------------------------------------
 //    // Computes the children area size using the children global rect.  Note
 //    // that child collision resolution is not performed by this function.
 //    public Vector2 ChildrenSizeFromGlobalRect {
