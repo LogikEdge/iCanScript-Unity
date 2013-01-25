@@ -26,14 +26,6 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public bool IsVisibleWithAnimation {
-        get {
-            var area= Math3D.Area(AnimatedDisplaySize);
-            if(area < 0.1f) return false;
-            return Parent.IsVisibleWithAnimation;
-        }
-    }
-    // ----------------------------------------------------------------------
     // Returns true if the display size is currently being animated.
     public bool IsDisplaySizeAnimated {
         get {
