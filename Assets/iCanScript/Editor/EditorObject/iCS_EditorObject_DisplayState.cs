@@ -17,6 +17,9 @@ public partial class iCS_EditorObject {
     // High-order display state functions.
     // ----------------------------------------------------------------------
     // Returns true if the object object is visible excluding all animations.
+	/*
+		FIXME : Need to have a IsVisible for animated objects.
+	*/
     public bool IsVisible {
         get {
             var parent= Parent;

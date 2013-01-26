@@ -10,7 +10,7 @@ public partial class iCS_EditorObject {
 //    public void WrapAroundChildrenNodes() { 
 //		// Take a snapshot of the children position.
 //		var childPositions= new List<Vector2>();
-//		ForEachChildNode(c=> childPositions.Add(c.GlobalPosition));
+//		ForEachChildNode(c=> childPositions.Add(c.AniimatedGlobalDisplayPosition));
 //        // Readjust parent size & position.
 //        NodeGlobalChildRect= ChildrenGlobalRectFromGlobalRect;
 //		// Reposition child to maintain their global positions.
