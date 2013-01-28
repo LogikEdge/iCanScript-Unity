@@ -7,6 +7,7 @@ public partial class iCS_EditorObject {
     public void UserDragTo(Vector2 newPosition) {
 		if(IsNode) {
             SetGlobalAnchorAndLayoutPosition(newPosition);
+            Parent.WrapAroundChildrenNodes();
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}
