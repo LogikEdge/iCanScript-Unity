@@ -12,7 +12,7 @@ public partial class iCS_EditorObject {
     // be affect or marked for relayout if the node Rect has been modified.
     public void WrapAroundChildrenNodes() { 
 		// Nothing to do if node is not visible.
-		if(!IsVisible) return;
+		if(!IsVisibleInLayout) return;
 		// Take a snapshot of the children global position.
 		var childPositions= new List<Vector2>();
 		ForEachChildNode(c=> childPositions.Add(c.AnimatedGlobalDisplayPosition));

@@ -9,14 +9,14 @@ public partial class iCS_EditorObject {
     // Accessors ============================================================
     public Vector2 DisplaySize {
 		get {
-			if(!IsVisible) return Vector2.zero;
+			if(!IsVisibleInLayout) return Vector2.zero;
             return myDisplaySize;
 		}
 		set {
             // Avoid propagating change if we did not change size
             if(Math3D.IsEqual(myDisplaySize, value)) return;
             myDisplaySize= value;
-            if(IsNode && !IsIconized && IsVisible) {
+            if(IsNode && !IsIconized && IsVisibleInLayout) {
                 LayoutPorts();
                 if(IsParentValid) {
                     Parent.IsDirty= true;

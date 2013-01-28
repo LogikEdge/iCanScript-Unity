@@ -24,7 +24,7 @@ public partial class iCS_IStorage {
     // Returns "true" if the new layout is within the window area.
     public void NodeLayout(iCS_EditorObject node, bool needsToBeCentered= false) {
         // Don't layout node if it is not visible.
-        if(!node.IsVisible) return;
+        if(!node.IsVisibleInLayout) return;
 
         // Update transition module name
         if(node.IsTransitionModule) {

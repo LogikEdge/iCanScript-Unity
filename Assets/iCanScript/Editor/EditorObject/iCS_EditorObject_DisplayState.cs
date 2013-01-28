@@ -20,13 +20,21 @@ public partial class iCS_EditorObject {
 	/*
 		FIXME : Need to have a IsVisible for animated objects.
 	*/
-    public bool IsVisible {
+    public bool IsVisibleInLayout {
         get {
             var parent= Parent;
             if(parent == null) return true;    
             if(parent.IsIconized) return false;
             if(IsNode && parent.IsFolded) return false;
-            return parent.IsVisible;            
+            return parent.IsVisibleInLayout;            
+        }
+    }
+    // ----------------------------------------------------------------------
+    public bool IsVisibleWithAnimation {
+        get {
+            if(!IsAnimated) return IsVisibleInLayout;
+            var area= Math3D.Area(AnimatedDisplaySize);
+            return area > 0.1f;
         }
     }
     // ----------------------------------------------------------------------

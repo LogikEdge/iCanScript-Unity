@@ -12,7 +12,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Returns the size of the node using the current children layout.
 	public Vector2 ComputeNodeDisplaySize(Rect childrenGlobalRect) {
-		if(!IsVisible) return Vector2.zero;
+		if(!IsVisibleInLayout) return Vector2.zero;
 		if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
         float titleHeight= NodeTitleHeight;
         float titleWidth = NodeTitleWidth;

@@ -15,7 +15,7 @@ public partial class iCS_IStorage {
                 if(exclude != null) {
                     excludeFlag= n == exclude || IsChildOf(n, exclude);
                 }
-                return !excludeFlag && n.IsNode && n.IsVisible && IsInside(n, pick) && (foundNode == null || n.DisplaySize.x < foundNode.DisplaySize.x);
+                return !excludeFlag && n.IsNode && n.IsVisibleInLayout && IsInside(n, pick) && (foundNode == null || n.DisplaySize.x < foundNode.DisplaySize.x);
             },
             n=> foundNode= n
         );
@@ -36,7 +36,7 @@ public partial class iCS_IStorage {
         float bestDistance= 100000;     // Simply a big value
         if(filter == null) filter= GetPortAtDefaultFilter;
         FilterWith(
-            port=> port.IsPort && port.IsVisible && !port.IsFloating && filter(port),
+            port=> port.IsPort && port.IsVisibleInLayout && !port.IsFloating && filter(port),
             port=> {
                 Vector2 position= port.GlobalDisplayPosition;
                 float distance= Vector2.Distance(position, pick);
@@ -60,7 +60,7 @@ public partial class iCS_IStorage {
                 if(exclude != null) {
                     excludeFlag= n == exclude || IsChildOf(n, exclude);
                 }
-                if(excludeFlag || !n.IsNode || !n.IsVisible) return false;
+                if(excludeFlag || !n.IsNode || !n.IsVisibleInLayout) return false;
                 var portRadius= iCS_EditorConfig.PortRadius;
                 var portSize= 2f*portRadius;
                 var globalRect= n.GlobalDisplayRect;
@@ -79,7 +79,7 @@ public partial class iCS_IStorage {
 		float bestDistance= iCS_EditorConfig.PortSize;
         Vector2 position= port.GlobalDisplayPosition;
         FilterWith(
-            p=> p.IsPort && p != port && p.IsVisible,
+            p=> p.IsPort && p != port && p.IsVisibleInLayout,
             p=> {
                 float distance= Vector2.Distance(p.GlobalDisplayPosition, position);
                 if(distance < bestDistance) {
