@@ -1,9 +1,6 @@
 using UnityEngine;
 using System.Collections;
 
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-//  DISPLAY STATE
-// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // ======================================================================
     public bool IsUnfolded          { get { return DisplayOption == iCS_DisplayOptionEnum.Unfolded; }}
@@ -17,9 +14,6 @@ public partial class iCS_EditorObject {
     // High-order display state functions.
     // ----------------------------------------------------------------------
     // Returns true if the object object is visible excluding all animations.
-	/*
-		FIXME : Need to have a IsVisible for animated objects.
-	*/
     public bool IsVisibleInLayout {
         get {
             var parent= Parent;
@@ -30,7 +24,7 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public bool IsVisibleInAnimation {
+    public bool IsVisibleOnDisplay {
         get {
             if(!IsAnimated) return IsVisibleInLayout;
             var area= Math3D.Area(DisplaySize);
@@ -59,4 +53,5 @@ public partial class iCS_EditorObject {
             return IsDisplayPositionAnimated;
         }
     }
+
 }
