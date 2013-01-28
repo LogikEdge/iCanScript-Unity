@@ -78,7 +78,6 @@ public partial class iCS_EditorObject {
 			return parent.GlobalLayoutPosition+LocalAnchorPosition;
 		}
 		set {
-			LocalLayoutOffset= GlobalLayoutPosition-value;
 			var parent= Parent;
 			if(parent == null) {
 				LocalAnchorPosition= value;

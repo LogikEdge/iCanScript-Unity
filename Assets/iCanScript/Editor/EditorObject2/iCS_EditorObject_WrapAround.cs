@@ -10,6 +10,9 @@ public partial class iCS_EditorObject {
     public void WrapAroundChildrenNodes() { 
 		// Nothing to do if node is not visible.
 		if(!IsVisibleOnDisplay) return;
+		// Keep a copy of original rect to determine if we should forward
+		// this call to our parent.
+		var originalGlobalRect= GlobalLayoutRect;
 		// Take a snapshot of the children global position.
 		var childGlobalAnchorPositions= new List<Vector2>();
 		var childGlobalLayoutPositions= new List<Vector2>();
@@ -30,7 +33,6 @@ public partial class iCS_EditorObject {
 						childRect.y-topPadding,
 						childRect.width+leftPadding+rightPadding,
 						childRect.height+topPadding+bottomPadding);
-		var center= Math3D.Middle(r);
 		// Assure minimum size for title and ports.
 		var titleHeight= NodeTitleHeight;
 		var titleWidth= NodeTitleWidth;
@@ -47,7 +49,22 @@ public partial class iCS_EditorObject {
             r.y-= 0.5f*minHeight;
             r.height= minHeight;
         }
+		// Update parent node anchor positions.
+		var center= Math3D.Middle(r);
+		GlobalAnchorPosition= center-LocalLayoutOffset;
+		// Update layout size.
+		LayoutSize= new Vector2(r.width, r.height);
 		// Reposition child to maintain their global positions.
+		int i= 0;
+		ForEachChildNode(
+		    c=> {
+		        c.GlobalAnchorPosition= childGlobalAnchorPositions[i];
+				++i;
+	        }
+		);
+		if(Parent != null && Math3D.IsNotEqual(originalGlobalRect, GlobalLayoutRect)) {
+			Parent.WrapAroundChildrenNodes();
+		}
     }
 
 }
