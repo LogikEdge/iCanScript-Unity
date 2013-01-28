@@ -330,7 +330,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 	}
 
     // ---------------------------------------------------------------------------------
-	public Vector2	CurrentObjectDisplaySize() {
+	public Vector2	CurrentObjectLayoutSize() {
 		if(myFoldOffset == 0) {
             var emptySize= EditorStyles.foldout.CalcSize(new GUIContent(""));
     		myFoldOffset= emptySize.x;

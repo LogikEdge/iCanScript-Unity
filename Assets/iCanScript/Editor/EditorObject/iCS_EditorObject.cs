@@ -12,7 +12,7 @@ public partial class iCS_EditorObject {
     bool            	myIsFloating             = false;
     bool            	myIsDirty                = false;
     public List<int>	myChildren               = new List<int>();
-//    Vector2             myDisplaySize            = Vector2.zero;
+//    Vector2             myLayoutSize            = Vector2.zero;
 //    Vector2             myLocalPosition          = Vector2.zero;
     bool                myIsSticky               = false;
     
@@ -175,7 +175,7 @@ public partial class iCS_EditorObject {
 		// Create editor object.
 		var editorObject= new iCS_EditorObject(id, iStorage);
 		AddEditorObject(id, editorObject);
-        editorObject.DisplaySize= toClone.DisplaySize;
+        editorObject.LayoutSize= toClone.LayoutSize;
 		editorObject.IsDirty= true;
 		return editorObject;
     }

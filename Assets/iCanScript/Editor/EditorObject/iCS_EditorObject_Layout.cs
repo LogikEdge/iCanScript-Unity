@@ -7,7 +7,7 @@ using P=Prelude;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
     // Accessors ============================================================
-    public Vector2 DisplaySize {
+    public Vector2 LayoutSize {
 		get {
 			if(!IsVisibleInLayout) return Vector2.zero;
             return myLayoutSize;
@@ -39,7 +39,7 @@ public partial class iCS_EditorObject {
 //    // High-Order Accessors =================================================
 //    public Rect LocalRect {
 //		get {
-//            var displaySize= DisplaySize;
+//            var displaySize= LayoutSize;
 //			var localPosition= LocalPosition;
 //		    float x= localPosition.x-0.5f*displaySize.x;
 //		    float y= localPosition.y-0.5f*displaySize.y;
@@ -49,7 +49,7 @@ public partial class iCS_EditorObject {
 //		    float x= value.x+0.5f*value.width;
 //		    float y= value.y+0.5f*value.height;
 //		    LocalPosition= new Vector2(x, y);
-//		    DisplaySize= new Vector2(value.width, value.height);
+//		    LayoutSize= new Vector2(value.width, value.height);
 //		}
 //	}
 //    // ----------------------------------------------------------------------
@@ -69,7 +69,7 @@ public partial class iCS_EditorObject {
 //    // ----------------------------------------------------------------------
 //	public Rect GlobalRect {
 //		get {
-//            var displaySize= DisplaySize;
+//            var displaySize= LayoutSize;
 //			var globalPosition= GlobalPosition;
 //		    float x= globalPosition.x-0.5f*displaySize.x;
 //		    float y= globalPosition.y-0.5f*displaySize.y;
@@ -79,7 +79,7 @@ public partial class iCS_EditorObject {
 //		    float x= value.x+0.5f*value.width;
 //		    float y= value.y+0.5f*value.height;
 //		    GlobalPosition= new Vector2(x, y);
-//		    DisplaySize= new Vector2(value.width, value.height);
+//		    LayoutSize= new Vector2(value.width, value.height);
 //		}
 //	}
 //    // Accessor Modifiers ===================================================

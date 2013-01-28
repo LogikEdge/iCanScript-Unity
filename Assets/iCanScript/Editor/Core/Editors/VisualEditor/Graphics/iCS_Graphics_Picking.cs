@@ -149,7 +149,7 @@ public partial class iCS_Graphics {
 //            Debug.Log("Port: "+port.Name+" is being picked");
             pickInfo.PickedObject= port;
             pickInfo.PickedPart= iCS_PickPartEnum.EditorObject;
-            pickInfo.PickedPartGraphPosition= port.AnimatedGlobalDisplayRect;
+            pickInfo.PickedPartGraphPosition= port.AnimatedGlobalLayoutRect;
             pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
             return pickInfo;
         }
@@ -231,7 +231,7 @@ public partial class iCS_Graphics {
 //            Debug.Log("Node: "+pickedNode.Name+" is being picked");
             pickInfo.PickedObject= pickedNode;
             pickInfo.PickedPart= iCS_PickPartEnum.EditorObject;
-            pickInfo.PickedPartGraphPosition= pickedNode.AnimatedGlobalDisplayRect;
+            pickInfo.PickedPartGraphPosition= pickedNode.AnimatedGlobalLayoutRect;
             pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
             return pickInfo;
         }

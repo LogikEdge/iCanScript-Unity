@@ -210,7 +210,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	}
 
     // ---------------------------------------------------------------------------------
-	public Vector2	CurrentObjectDisplaySize() {
+	public Vector2	CurrentObjectLayoutSize() {
 		if(myStorage == null) return Vector2.zero;
 		if(myFoldOffset == 0) {
             var emptySize= EditorStyles.foldout.CalcSize(new GUIContent(""));

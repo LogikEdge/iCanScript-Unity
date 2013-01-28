@@ -69,7 +69,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
 		return myClassType != null ? myMethods.Length : 0;
     }
     // ---------------------------------------------------------------------------------
-    public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
+    public Vector2 LayoutSizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
 		if(myClassType == null) return Vector2.zero;
         var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(myMethods[row].FunctionSignatureNoThis));
 		signatureSize.x+= 12f;

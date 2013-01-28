@@ -20,15 +20,15 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void CleanupPortEdgePosition() {
-        var size= Parent.DisplaySize;
-        var lp= LocalDisplayPosition;
+        var size= Parent.LayoutSize;
+        var lp= LocalLayoutPosition;
         switch(Edge) {
             case iCS_EdgeEnum.Top:      lp.y= -0.5f*size.y; break; 
             case iCS_EdgeEnum.Bottom:   lp.y=  0.5f*size.y; break;
             case iCS_EdgeEnum.Left:     lp.x= -0.5f*size.x; break;
             case iCS_EdgeEnum.Right:    lp.x=  0.5f*size.x; break;
         }
-		LocalDisplayPosition= lp;
+		LocalLayoutPosition= lp;
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {
@@ -39,16 +39,16 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnNodeEdge(iCS_EditorObject node, iCS_EdgeEnum edge) {
-		return IsPortOnRectEdge(node.AnimatedGlobalDisplayRect, edge);
+		return IsPortOnRectEdge(node.AnimatedGlobalLayoutRect, edge);
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnRectEdge(Rect r, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(AnimatedGlobalDisplayPosition, r, edge);
+		return IsPositionOnRectEdge(AnimatedGlobalLayoutPosition, r, edge);
     }
     // ----------------------------------------------------------------------
 	// Return true if the position is on the edge of the node.
 	public bool IsPositionOnEdge(Vector2 position, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(position, AnimatedGlobalDisplayRect, edge);
+		return IsPositionOnRectEdge(position, AnimatedGlobalLayoutRect, edge);
 	}
     // ----------------------------------------------------------------------
     public static bool IsPositionOnRectEdge(Vector2 pos, Rect r, iCS_EdgeEnum edge) {
@@ -80,24 +80,24 @@ public partial class iCS_EditorObject {
 			// Don't change edge if parent is iconized.
 			var parent= Parent;
 			if(parent.IsIconized) return Edge;
-            var parentSize= parent.DisplaySize;
+            var parentSize= parent.LayoutSize;
             float leftX  = -0.5f*parentSize.x;
             float rightX =  0.5f*parentSize.x;
             float topY   = -0.5f*parentSize.y;
             float bottomY=  0.5f*parentSize.y;
 			var edge= iCS_EdgeEnum.Top;
-			float distance= Math3D.DistanceFromHorizontalLineSegment(LocalDisplayPosition, leftX, rightX, topY);
-			float d= Math3D.DistanceFromHorizontalLineSegment(LocalDisplayPosition, leftX, rightX, bottomY);
+			float distance= Math3D.DistanceFromHorizontalLineSegment(LocalLayoutPosition, leftX, rightX, topY);
+			float d= Math3D.DistanceFromHorizontalLineSegment(LocalLayoutPosition, leftX, rightX, bottomY);
 			if(d < distance) {
 				distance= d;
 				edge= iCS_EdgeEnum.Bottom;
 			}
-			d= Math3D.DistanceFromVerticalLineSegment(LocalDisplayPosition, topY, bottomY, leftX);
+			d= Math3D.DistanceFromVerticalLineSegment(LocalLayoutPosition, topY, bottomY, leftX);
 			if(d < distance) {
 				distance= d;
 				edge= iCS_EdgeEnum.Left;
 			}
-			d= Math3D.DistanceFromVerticalLineSegment(LocalDisplayPosition, topY, bottomY, rightX); 
+			d= Math3D.DistanceFromVerticalLineSegment(LocalLayoutPosition, topY, bottomY, rightX); 
 			if(d < distance) {
 				edge= iCS_EdgeEnum.Right;
 			}

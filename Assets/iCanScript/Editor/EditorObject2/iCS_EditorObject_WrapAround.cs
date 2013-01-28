@@ -15,7 +15,7 @@ public partial class iCS_EditorObject {
 		if(!IsVisibleInLayout) return;
 		// Take a snapshot of the children global position.
 		var childPositions= new List<Vector2>();
-		ForEachChildNode(c=> childPositions.Add(c.AnimatedGlobalDisplayPosition));
+		ForEachChildNode(c=> childPositions.Add(c.AnimatedGlobalLayoutPosition));
 		// Get padding for all sides.
 		float topPadding= NodeTopPadding;
 		float bottomPadding= NodeBottomPadding;

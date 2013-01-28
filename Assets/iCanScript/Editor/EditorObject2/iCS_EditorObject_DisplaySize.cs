@@ -6,12 +6,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Updates the node display size.  It is assumed that the child animated
     // display rect has been previously updated.
-    public void UpdateNodeDisplaySize() {
-        DisplaySize= ComputeNodeDisplaySize(AnimatedGlobalChildRectWithMargins);
+    public void UpdateNodeLayoutSize() {
+        LayoutSize= ComputeNodeLayoutSize(AnimatedGlobalChildRectWithMargins);
     }
     // ----------------------------------------------------------------------
     // Returns the size of the node using the current children layout.
-	public Vector2 ComputeNodeDisplaySize(Rect childrenGlobalRect) {
+	public Vector2 ComputeNodeLayoutSize(Rect childrenGlobalRect) {
 		if(!IsVisibleInLayout) return Vector2.zero;
 		if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
         float titleHeight= NodeTitleHeight;

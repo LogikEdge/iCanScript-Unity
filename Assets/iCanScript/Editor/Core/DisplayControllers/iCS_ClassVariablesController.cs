@@ -150,7 +150,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 		return myClassType != null ? myVariables.Length : 0;
     }
     // ---------------------------------------------------------------------------------
-    public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
+    public Vector2 LayoutSizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
 		if(myClassType == null) return Vector2.zero;
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kInColumnId) == 0 || string.Compare(columnId, kOutColumnId) == 0) {

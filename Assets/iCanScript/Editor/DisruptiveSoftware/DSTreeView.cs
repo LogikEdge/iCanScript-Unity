@@ -111,7 +111,7 @@ public class DSTreeView : DSView {
 			}
 
 			// Display current object.
-			var currentSize= myDataSource.CurrentObjectDisplaySize();
+			var currentSize= myDataSource.CurrentObjectLayoutSize();
 			Rect displayArea= new Rect(frameArea.x+indent*myIndentOffset, y, currentSize.x, currentSize.y);
             myRowInfo.Add(key, displayArea);
 			y+= currentSize.y;
@@ -165,7 +165,7 @@ public class DSTreeView : DSView {
 			IsFoldedDictionary.TryGetValue(key, out showChildren);
 
 			// Consider size of the current object.
-			var currentSize= myDataSource.CurrentObjectDisplaySize();
+			var currentSize= myDataSource.CurrentObjectLayoutSize();
 			currentSize.x+= indent*myIndentOffset;
 			if(currentSize.x > size.x) size.x= currentSize.x;
 			size.y+= currentSize.y;

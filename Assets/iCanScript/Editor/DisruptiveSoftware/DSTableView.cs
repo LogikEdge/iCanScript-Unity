@@ -42,7 +42,7 @@ public class DSTableView : DSView {
 					   bool displayColumnFrame, bool columnTitleSeperator= true) {
         myMainView= new DSTitleView(margins, displayFrame,
                                     title, titleAlignment, titleSeperator,
-                                    DisplayMainView, GetMainViewDisplaySize);
+                                    DisplayMainView, GetMainViewLayoutSize);
 		myColumnTitleSeperator= columnTitleSeperator;
 		myDisplayColumnFrame= displayColumnFrame;
     }
@@ -132,7 +132,7 @@ public class DSTableView : DSView {
             myScrollbarPosition.y= GUI.VerticalScrollbar(scrollbarPos, myScrollbarPosition.y, dataDisplayArea.height, 0, myColumnDataSize.y);
         }
     }
-    Vector2 GetMainViewDisplaySize(DSTitleView view, Rect displayArea) {
+    Vector2 GetMainViewLayoutSize(DSTitleView view, Rect displayArea) {
         float width= Mathf.Max(myColumnTitleSize.x, myColumnDataSize.x);
         float height= myColumnTitleSize.y+myColumnDataSize.y;
 		if(width > displayArea.width) height+= kScrollbarSize;
@@ -179,7 +179,7 @@ public class DSTableView : DSView {
             float x= dataArea.x;
             foreach(var column in myColumns) {
                 Rect displayRect= new Rect(x+column.Margins.left, y+column.Margins.top, column.DataSize.x-column.Margins.horizontal, myRowHeights[row]-column.Margins.vertical);
-                Vector2 dataSize= myDataSource.DisplaySizeForObjectInTableView(this, column, row);
+                Vector2 dataSize= myDataSource.LayoutSizeForObjectInTableView(this, column, row);
                 displayRect= DSCellView.PerformAlignment(displayRect, dataSize, column.Anchor);
 	            myDataSource.DisplayObjectInTableView(this, column, row, displayRect);					
                 x+= column.DataSize.x;
@@ -288,7 +288,7 @@ public class DSTableView : DSView {
 			// Determine column data area.
 			float maxCellWidth= titleSize.x;
 			for(int row= 0; row < nbOfRows; ++row) {
-				var cellSize= myDataSource.DisplaySizeForObjectInTableView(this, tableColumn, row);
+				var cellSize= myDataSource.LayoutSizeForObjectInTableView(this, tableColumn, row);
 				if(cellSize.x > maxCellWidth) maxCellWidth= cellSize.x;
 				if(cellSize.y > myRowHeights[row]) myRowHeights[row]= cellSize.y;
 			}

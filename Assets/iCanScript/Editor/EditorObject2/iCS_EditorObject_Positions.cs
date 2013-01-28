@@ -7,8 +7,8 @@ public partial class iCS_EditorObject {
 	// Fields
     // ----------------------------------------------------------------------
 	private Vector2 		   myLayoutSize     			  = Vector2.zero;
-	private P.Animate<Vector2> myAnimatedGlobalDisplayPosition= new P.Animate<Vector2>();
-	private P.Animate<Vector2> myAnimatedDisplaySize          = new P.Animate<Vector2>();
+	private P.Animate<Vector2> myAnimatedGlobalLayoutPosition= new P.Animate<Vector2>();
+	private P.Animate<Vector2> myAnimatedLayoutSize          = new P.Animate<Vector2>();
 	
     // ======================================================================
     // Engine Object Proxy Position Accessors
@@ -22,44 +22,44 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 LocalDisplayOffset {
-		get { return EngineObject.LocalDisplayOffset; }
+	public Vector2 LocalLayoutOffset {
+		get { return EngineObject.LocalLayoutOffset; }
 		set {
             var engineObject= EngineObject;
-			if(Math3D.IsEqual(engineObject.LocalDisplayOffset, value)) return;
-			engineObject.LocalDisplayOffset= value;
+			if(Math3D.IsEqual(engineObject.LocalLayoutOffset, value)) return;
+			engineObject.LocalLayoutOffset= value;
 		}
 	}
 
     // ======================================================================
 	// High-order accessors
     // ----------------------------------------------------------------------
-	public Vector2 LocalDisplayPosition {
+	public Vector2 LocalLayoutPosition {
 		get {
-			return LocalAnchorPosition+LocalDisplayOffset;
+			return LocalAnchorPosition+LocalLayoutOffset;
 		}
 		set {
-			LocalDisplayOffset= value-LocalAnchorPosition;
+			LocalLayoutOffset= value-LocalAnchorPosition;
 		}
 	}
     // ----------------------------------------------------------------------
-    public Rect LocalDisplayRect {
+    public Rect LocalLayoutRect {
         get {
-            var sze= DisplaySize;
-            var pos= LocalDisplayPosition;
+            var sze= LayoutSize;
+            var pos= LocalLayoutPosition;
             return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
         }
         set {
             var sze= new Vector2(value.width, value.height);
             var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
-            LocalDisplayPosition= pos;
-            DisplaySize= sze;
+            LocalLayoutPosition= pos;
+            LayoutSize= sze;
         }
     }
     // ----------------------------------------------------------------------	
     public Rect LocalAnchorRect {
         get {
-            var sze= DisplaySize;
+            var sze= LayoutSize;
             var pos= LocalAnchorPosition;
             return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
         }
@@ -67,7 +67,7 @@ public partial class iCS_EditorObject {
             var sze= new Vector2(value.width, value.height);
             var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
             LocalAnchorPosition= pos;
-            DisplaySize= sze;
+            LayoutSize= sze;
         }
     }
     // ----------------------------------------------------------------------	
@@ -75,103 +75,103 @@ public partial class iCS_EditorObject {
 		get {
 			var parent= Parent;
 			if(parent == null) return LocalAnchorPosition;
-			return parent.GlobalDisplayPosition+LocalAnchorPosition;
+			return parent.GlobalLayoutPosition+LocalAnchorPosition;
 		}
 		set {
-			LocalDisplayOffset= GlobalDisplayPosition-value;
+			LocalLayoutOffset= GlobalLayoutPosition-value;
 			var parent= Parent;
 			if(parent == null) {
 				LocalAnchorPosition= value;
 				return;
 			}
-			LocalAnchorPosition= value-parent.GlobalDisplayPosition;
+			LocalAnchorPosition= value-parent.GlobalLayoutPosition;
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 GlobalDisplayPosition {
+	public Vector2 GlobalLayoutPosition {
 		get {
-			return GlobalAnchorPosition+LocalDisplayOffset;
+			return GlobalAnchorPosition+LocalLayoutOffset;
 		}
 		set {
-			LocalDisplayOffset= value-GlobalAnchorPosition;
+			LocalLayoutOffset= value-GlobalAnchorPosition;
 		}
 	}
     // ----------------------------------------------------------------------
-    public Rect GlobalDisplayRect {
+    public Rect GlobalLayoutRect {
         get {
-            var pos= GlobalDisplayPosition;
-            var sze= DisplaySize;
+            var pos= GlobalLayoutPosition;
+            var sze= LayoutSize;
             return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
         }
         set {
             var sze= new Vector2(value.width, value.height);
             var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
-            DisplaySize= sze;
-            GlobalDisplayPosition= pos;
+            LayoutSize= sze;
+            GlobalLayoutPosition= pos;
         }
     }
     // ----------------------------------------------------------------------
-	public Vector2 AnimatedGlobalDisplayPosition {
+	public Vector2 AnimatedGlobalLayoutPosition {
 		get {
-			if(myAnimatedGlobalDisplayPosition.IsActive && !myAnimatedGlobalDisplayPosition.IsElapsed) {
-				return myAnimatedGlobalDisplayPosition.CurrentValue;
+			if(myAnimatedGlobalLayoutPosition.IsActive && !myAnimatedGlobalLayoutPosition.IsElapsed) {
+				return myAnimatedGlobalLayoutPosition.CurrentValue;
 			}
-			Vector2 pos= GlobalDisplayPosition;
-			myAnimatedGlobalDisplayPosition.Reset(pos);
+			Vector2 pos= GlobalLayoutPosition;
+			myAnimatedGlobalLayoutPosition.Reset(pos);
 			return pos;
 		}
 		set {
 			var timeRatio= new P.TimeRatio();
 	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			AnimateGlobalDisplayPosition(timeRatio, value);
+			AnimateGlobalLayoutPosition(timeRatio, value);
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 AnimatedLocalDisplayPosition {
+	public Vector2 AnimatedLocalLayoutPosition {
 		get {
-			var globalPos= AnimatedGlobalDisplayPosition;
+			var globalPos= AnimatedGlobalLayoutPosition;
 			var parent= Parent;
 			if(parent == null) return globalPos;
-			return globalPos-parent.AnimatedGlobalDisplayPosition;
+			return globalPos-parent.AnimatedGlobalLayoutPosition;
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 AnimatedDisplaySize {
+	public Vector2 AnimatedLayoutSize {
 		get {
-			if(myAnimatedDisplaySize.IsActive && !myAnimatedDisplaySize.IsElapsed) {
-				return myAnimatedDisplaySize.CurrentValue;
+			if(myAnimatedLayoutSize.IsActive && !myAnimatedLayoutSize.IsElapsed) {
+				return myAnimatedLayoutSize.CurrentValue;
 			}
-			Vector2 sze= DisplaySize;
-			myAnimatedDisplaySize.Reset(sze);
+			Vector2 sze= LayoutSize;
+			myAnimatedLayoutSize.Reset(sze);
 			return sze;
 		}
 		set {
 			var timeRatio= new P.TimeRatio();
 	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			AnimateDisplaySize(timeRatio, value);
+			AnimateLayoutSize(timeRatio, value);
 		}
 	}
     // ----------------------------------------------------------------------
- 	public Rect AnimatedGlobalDisplayRect {
+ 	public Rect AnimatedGlobalLayoutRect {
  		get {
-             var pos= AnimatedGlobalDisplayPosition;
-             var sze= AnimatedDisplaySize;
+             var pos= AnimatedGlobalLayoutPosition;
+             var sze= AnimatedLayoutSize;
              var rect= new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
              return rect;
  		}
  		set {
 			var timeRatio= new P.TimeRatio();
 	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			AnimateGlobalDisplayRect(timeRatio, value);
+			AnimateGlobalLayoutRect(timeRatio, value);
  		}
  	}
  	// ----------------------------------------------------------------------
     public Rect AnimatedGlobalChildRect {
         get {
-            var pos= AnimatedGlobalDisplayPosition;
+            var pos= AnimatedGlobalLayoutPosition;
             Rect childRect= new Rect(pos.x, pos.y, 0, 0);
             ForEachChildNode(
-                c=> childRect= Math3D.Merge(childRect, c.AnimatedGlobalDisplayRect)
+                c=> childRect= Math3D.Merge(childRect, c.AnimatedGlobalLayoutRect)
             );
             return childRect;
         }
@@ -179,52 +179,52 @@ public partial class iCS_EditorObject {
 	// ======================================================================
     // High-order functions
     // ----------------------------------------------------------------------
-	public void SetGlobalAnchorAndDisplayPosition(Vector2 pos) {
+	public void SetGlobalAnchorAndLayoutPosition(Vector2 pos) {
 		GlobalAnchorPosition= pos;
-		LocalDisplayOffset= Vector2.zero;
+		LocalLayoutOffset= Vector2.zero;
 	}
     // ----------------------------------------------------------------------
-	public void SetLocalAnchorAndDisplayPosition(Vector2 pos) {
+	public void SetLocalAnchorAndLayoutPosition(Vector2 pos) {
 		LocalAnchorPosition= pos;
-		LocalDisplayOffset= Vector2.zero;
+		LocalLayoutOffset= Vector2.zero;
 	}
     // ----------------------------------------------------------------------
-    public void SetGlobalAnchorAndDisplayRect(Rect r) {
+    public void SetGlobalAnchorAndLayoutRect(Rect r) {
         var sze= new Vector2(r.width, r.height);
         var pos= new Vector2(r.x+0.5f*sze.x, r.y+0.5f*sze.y);
         GlobalAnchorPosition= pos;
-		LocalDisplayOffset= Vector2.zero;
-        DisplaySize= sze;
+		LocalLayoutOffset= Vector2.zero;
+        LayoutSize= sze;
     }
     // ----------------------------------------------------------------------
-    public void SetLocalAnchorAndDisplayRect(Rect r) {
+    public void SetLocalAnchorAndLayoutRect(Rect r) {
         var sze= new Vector2(r.width, r.height);
         var pos= new Vector2(r.x+0.5f*sze.x, r.y+0.5f*sze.y);
         LocalAnchorPosition= pos;
-		LocalDisplayOffset= Vector2.zero;
-        DisplaySize= sze;        
+		LocalLayoutOffset= Vector2.zero;
+        LayoutSize= sze;        
     }
     // ----------------------------------------------------------------------
-	public void AnimateGlobalDisplayPosition(P.TimeRatio timeRatio, Vector2 finalPosition) {
-		myAnimatedGlobalDisplayPosition.Start(GlobalDisplayPosition,
+	public void AnimateGlobalLayoutPosition(P.TimeRatio timeRatio, Vector2 finalPosition) {
+		myAnimatedGlobalLayoutPosition.Start(GlobalLayoutPosition,
                                               finalPosition,
                                               timeRatio,
                                               (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-		GlobalDisplayPosition= finalPosition;	
+		GlobalLayoutPosition= finalPosition;	
 	}
     // ----------------------------------------------------------------------
-	public void AnimateDisplaySize(P.TimeRatio timeRatio, Vector2 finalSize) {
-		myAnimatedDisplaySize.Start(DisplaySize,
+	public void AnimateLayoutSize(P.TimeRatio timeRatio, Vector2 finalSize) {
+		myAnimatedLayoutSize.Start(LayoutSize,
                                     finalSize,
                                     timeRatio,
                                     (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-		DisplaySize= finalSize;		
+		LayoutSize= finalSize;		
 	}
     // ----------------------------------------------------------------------
-	public void AnimateGlobalDisplayRect(P.TimeRatio timeRatio, Rect finalRect) {
+	public void AnimateGlobalLayoutRect(P.TimeRatio timeRatio, Rect finalRect) {
 	    var sze= new Vector2(finalRect.width, finalRect.height);
 	    var pos= new Vector2(finalRect.x+0.5f*sze.x, finalRect.y+0.5f*sze.y);
-		AnimateGlobalDisplayPosition(timeRatio, pos);
-		AnimateDisplaySize(timeRatio, sze);
+		AnimateGlobalLayoutPosition(timeRatio, pos);
+		AnimateLayoutSize(timeRatio, sze);
 	}
 }

@@ -193,7 +193,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!inParentSeen && inParent != null) {
             iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, inParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             IStorage.SetSource(inPort, newPort, conversion);
-			SetBestPositionForAutocreatedPort(newPort, inPort.AnimatedGlobalDisplayPosition, outPort.AnimatedGlobalDisplayPosition);
+			SetBestPositionForAutocreatedPort(newPort, inPort.AnimatedGlobalLayoutPosition, outPort.AnimatedGlobalLayoutPosition);
             SetNewDataConnection(newPort, outPort);
             IStorage.OptimizeDataConnection(inPort, outPort);
             return;                       
@@ -209,7 +209,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(!outParentSeen && outParent != null) {
             iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             IStorage.SetSource(newPort, outPort, conversion);
-			SetBestPositionForAutocreatedPort(newPort, inPort.AnimatedGlobalDisplayPosition, outPort.AnimatedGlobalDisplayPosition);
+			SetBestPositionForAutocreatedPort(newPort, inPort.AnimatedGlobalLayoutPosition, outPort.AnimatedGlobalLayoutPosition);
             SetNewDataConnection(inPort, newPort);
             IStorage.OptimizeDataConnection(inPort, outPort);
             return;                       
@@ -223,7 +223,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	void SetBestPositionForAutocreatedPort(iCS_EditorObject port, Vector2 inPortPosition, Vector2 outPortPosition) {
 		// Determine the parent edge position to use.
 		var parent= port.Parent;
-		var parentGlobalRect= parent.AnimatedGlobalDisplayRect;
+		var parentGlobalRect= parent.AnimatedGlobalLayoutRect;
 		float x= port.IsInputPort ? parentGlobalRect.xMin : parentGlobalRect.xMax;
 		// Assure that the in position X value is smaller then the out position.
 		if(inPortPosition.x > outPortPosition.x) {
@@ -243,11 +243,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(y > bottom) {
 				y= bottom;
 			}
-			port.SetGlobalAnchorAndDisplayPosition(new Vector2(x,y));
+			port.SetGlobalAnchorAndLayoutPosition(new Vector2(x,y));
 			return;
 		}
 		if(Math3D.IsEqual(inPortPosition.y, outPortPosition.y)) {
-			port.SetGlobalAnchorAndDisplayPosition(new Vector2(x, 0.5f*(top+bottom)));
+			port.SetGlobalAnchorAndLayoutPosition(new Vector2(x, 0.5f*(top+bottom)));
 			return;
 		}
 		// Assure that the in position Y value is smaller then the out position.
@@ -264,7 +264,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			float y1= bottom-inPortPosition.y;
 			y= bottom-(y1*y1/(y1+y2));			
 		}
-		port.SetGlobalAnchorAndDisplayPosition(new Vector2(x,y));
+		port.SetGlobalAnchorAndLayoutPosition(new Vector2(x,y));
 		return;			
 	}
 

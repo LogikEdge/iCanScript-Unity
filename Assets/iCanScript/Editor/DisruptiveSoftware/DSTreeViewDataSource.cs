@@ -9,7 +9,7 @@ public interface DSTreeViewDataSource {
 	bool	MoveToNextSibling();
 	bool	MoveToFirstChild();
 	bool	MoveToParent();
-	Vector2	CurrentObjectDisplaySize();
+	Vector2	CurrentObjectLayoutSize();
 	bool	DisplayCurrentObject(Rect displayArea, bool foldout, Rect frameArea);
 	object	CurrentObjectKey();
 	void    MouseDownOn(object key, Vector2 mouseInScreenPoint, Rect screenArea);

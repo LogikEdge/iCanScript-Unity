@@ -8,12 +8,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Resolve collision between children then wrap node around the children.
     public void LayoutNode() {
-        UpdateNodeDisplaySize();
+        UpdateNodeLayoutSize();
 //        // Attempt to predict size.
 //        bool shouldComputeSize= true;
 //        ForEachChildNode(n=> { if(n.IsSticky) shouldComputeSize= false; });
 //        if(shouldComputeSize) {
-//            DisplaySize= ComputeNodeSizeFromChildrenRatio();
+//            LayoutSize= ComputeNodeSizeFromChildrenRatio();
 //        }
 //        // Resolve collision with siblings.
 //        ResolveCollisionOnChildrenNodes();
@@ -138,28 +138,28 @@ public partial class iCS_EditorObject {
     // Returns the top most coordinate for a port on the vertical edge.
     public float VerticalPortsTop {
         get {
-            return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-DisplaySize.y);
+            return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-LayoutSize.y);
         }
     }
     // ----------------------------------------------------------------------
     // Returns the bottom most coordinate for a port on the vertical edge.
     public float VerticalPortsBottom {
         get {
-            return 0.5f*(DisplaySize.y-iCS_EditorConfig.MinimumPortSeparation);
+            return 0.5f*(LayoutSize.y-iCS_EditorConfig.MinimumPortSeparation);
         }
     }
 //    // ----------------------------------------------------------------------
 //    // Returns the left most coordinate for a port on the horizontal edge.
 //    public float HorizontalPortsLeft {
 //        get {
-//            return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-DisplaySize.x);
+//            return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-LayoutSize.x);
 //        }
 //    }
 //    // ----------------------------------------------------------------------
 //    // Returns the left most coordinate for a port on the horizontal edge.
 //    public float HorizontalPortsRight {
 //        get {
-//            return 0.5f*(DisplaySize.x-iCS_EditorConfig.MinimumPortSeparation);
+//            return 0.5f*(LayoutSize.x-iCS_EditorConfig.MinimumPortSeparation);
 //        }
 //    }
 //    // ----------------------------------------------------------------------

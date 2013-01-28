@@ -253,7 +253,7 @@ public partial class iCS_IStorage {
     // ======================================================================
     public iCS_EditorObject ClassModuleCreate(iCS_EditorObject module, iCS_ReflectionInfo desc) {
         if(ClassModuleFindFunction(module, desc) != null) return null;
-        Rect moduleRect= module.GlobalDisplayRect;
+        Rect moduleRect= module.GlobalLayoutRect;
         iCS_EditorObject func= CreateMethod(module.InstanceId, new Vector2(0.5f*(moduleRect.x+moduleRect.xMax), moduleRect.yMax), desc);
         ForEachChildDataPort(func,
             port=> {
@@ -307,7 +307,7 @@ public partial class iCS_IStorage {
         ClassModuleDestroyConstructor(module);
         iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.This, iCS_ObjectTypeEnum.InStaticModulePort);
         if(moduleThisPort == null) return null;
-        Rect thisPos= moduleThisPort.GlobalDisplayRect; 
+        Rect thisPos= moduleThisPort.GlobalLayoutRect; 
         iCS_EditorObject constructor= CreateMethod(module.ParentId, new Vector2(thisPos.x-50f, thisPos.y-20), desc);
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.This);
         SetSource(moduleThisPort, constructorThisPort);

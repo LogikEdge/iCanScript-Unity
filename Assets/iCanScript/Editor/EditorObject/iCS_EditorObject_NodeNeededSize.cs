@@ -10,7 +10,7 @@ public partial class iCS_EditorObject {
 //    // Updates the size of the node.  We assume that all children have been
 //    // previously layed out prior to updating the node size.
 //    public void UpdateNodeSizeFromChildrenGlobalRect() {
-//        DisplaySize= ComputeNodeSizeFromChildrenGlobalRect();
+//        LayoutSize= ComputeNodeSizeFromChildrenGlobalRect();
 //    }
 //    // ----------------------------------------------------------------------
 //    // Returns the size of the node using the current children global position.
@@ -47,7 +47,7 @@ public partial class iCS_EditorObject {
 //                        if(Math3D.IsZero(rx) || Math3D.IsZero(ry)) {
 //                            Debug.LogWarning("iCanScript: Invalid node position ratio: "+ratio+" for: "+c.Name);
 //                        } else {
-//                            var childHalfSize= 0.5f*c.DisplaySize; 
+//                            var childHalfSize= 0.5f*c.LayoutSize; 
 //                            var sx= childHalfSize.x/rx;
 //                            var sy= childHalfSize.y/ry;
 //                            if(sx > childrenSize.x) childrenSize.x= sx;

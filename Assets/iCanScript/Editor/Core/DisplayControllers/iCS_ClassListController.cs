@@ -95,7 +95,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
 //		Debug.Log("#rows= "+myFilteredClasses.Count);
         return myFilteredClasses.Count;
     }
-    public Vector2 DisplaySizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
+    public Vector2 LayoutSizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
         iCS_ReflectionInfo desc= myFilteredClasses[row];
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kClassColumnId) == 0) {
