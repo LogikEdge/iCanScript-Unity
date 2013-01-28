@@ -10,12 +10,12 @@ public partial class iCS_EditorObject {
     public Vector2 DisplaySize {
 		get {
 			if(!IsVisibleInLayout) return Vector2.zero;
-            return myDisplaySize;
+            return myLayoutSize;
 		}
 		set {
             // Avoid propagating change if we did not change size
-            if(Math3D.IsEqual(myDisplaySize, value)) return;
-            myDisplaySize= value;
+            if(Math3D.IsEqual(myLayoutSize, value)) return;
+            myLayoutSize= value;
             if(IsNode && !IsIconized && IsVisibleInLayout) {
                 LayoutPorts();
                 if(IsParentValid) {

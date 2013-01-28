@@ -6,7 +6,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-	private Vector2 		   myDisplaySize     			  = Vector2.zero;
+	private Vector2 		   myLayoutSize     			  = Vector2.zero;
 	private P.Animate<Vector2> myAnimatedGlobalDisplayPosition= new P.Animate<Vector2>();
 	private P.Animate<Vector2> myAnimatedDisplaySize          = new P.Animate<Vector2>();
 	
