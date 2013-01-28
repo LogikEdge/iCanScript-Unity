@@ -7,8 +7,8 @@ public partial class iCS_EditorObject {
 	// Fields
     // ----------------------------------------------------------------------
 	private Vector2 		   myLayoutSize     			  = Vector2.zero;
-	private P.Animate<Vector2> myAnimatedGlobalLayoutPosition= new P.Animate<Vector2>();
-	private P.Animate<Vector2> myAnimatedLayoutSize          = new P.Animate<Vector2>();
+	private P.Animate<Vector2> myAnimatedGlobalDisplayPosition= new P.Animate<Vector2>();
+	private P.Animate<Vector2> myAnimatedDisplaySize          = new P.Animate<Vector2>();
 	
     // ======================================================================
     // Engine Object Proxy Position Accessors
@@ -111,13 +111,13 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-	public Vector2 AnimatedGlobalLayoutPosition {
+	public Vector2 GlobalDisplayPosition {
 		get {
-			if(myAnimatedGlobalLayoutPosition.IsActive && !myAnimatedGlobalLayoutPosition.IsElapsed) {
-				return myAnimatedGlobalLayoutPosition.CurrentValue;
+			if(myAnimatedGlobalDisplayPosition.IsActive && !myAnimatedGlobalDisplayPosition.IsElapsed) {
+				return myAnimatedGlobalDisplayPosition.CurrentValue;
 			}
 			Vector2 pos= GlobalLayoutPosition;
-			myAnimatedGlobalLayoutPosition.Reset(pos);
+			myAnimatedGlobalDisplayPosition.Reset(pos);
 			return pos;
 		}
 		set {
@@ -127,22 +127,22 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 AnimatedLocalLayoutPosition {
+	public Vector2 LocalDisplayPosition {
 		get {
-			var globalPos= AnimatedGlobalLayoutPosition;
+			var globalPos= GlobalDisplayPosition;
 			var parent= Parent;
 			if(parent == null) return globalPos;
-			return globalPos-parent.AnimatedGlobalLayoutPosition;
+			return globalPos-parent.GlobalDisplayPosition;
 		}
 	}
     // ----------------------------------------------------------------------
-	public Vector2 AnimatedLayoutSize {
+	public Vector2 DisplaySize {
 		get {
-			if(myAnimatedLayoutSize.IsActive && !myAnimatedLayoutSize.IsElapsed) {
-				return myAnimatedLayoutSize.CurrentValue;
+			if(myAnimatedDisplaySize.IsActive && !myAnimatedDisplaySize.IsElapsed) {
+				return myAnimatedDisplaySize.CurrentValue;
 			}
 			Vector2 sze= LayoutSize;
-			myAnimatedLayoutSize.Reset(sze);
+			myAnimatedDisplaySize.Reset(sze);
 			return sze;
 		}
 		set {
@@ -152,10 +152,10 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
- 	public Rect AnimatedGlobalLayoutRect {
+ 	public Rect GlobalDisplayRect {
  		get {
-             var pos= AnimatedGlobalLayoutPosition;
-             var sze= AnimatedLayoutSize;
+             var pos= GlobalDisplayPosition;
+             var sze= DisplaySize;
              var rect= new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
              return rect;
  		}
@@ -166,12 +166,12 @@ public partial class iCS_EditorObject {
  		}
  	}
  	// ----------------------------------------------------------------------
-    public Rect AnimatedGlobalChildRect {
+    public Rect GlobalDisplayChildRect {
         get {
-            var pos= AnimatedGlobalLayoutPosition;
+            var pos= GlobalDisplayPosition;
             Rect childRect= new Rect(pos.x, pos.y, 0, 0);
             ForEachChildNode(
-                c=> childRect= Math3D.Merge(childRect, c.AnimatedGlobalLayoutRect)
+                c=> childRect= Math3D.Merge(childRect, c.GlobalDisplayRect)
             );
             return childRect;
         }
@@ -206,7 +206,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
 	public void AnimateGlobalLayoutPosition(P.TimeRatio timeRatio, Vector2 finalPosition) {
-		myAnimatedGlobalLayoutPosition.Start(GlobalLayoutPosition,
+		myAnimatedGlobalDisplayPosition.Start(GlobalLayoutPosition,
                                               finalPosition,
                                               timeRatio,
                                               (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
@@ -214,7 +214,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	public void AnimateLayoutSize(P.TimeRatio timeRatio, Vector2 finalSize) {
-		myAnimatedLayoutSize.Start(LayoutSize,
+		myAnimatedDisplaySize.Start(LayoutSize,
                                     finalSize,
                                     timeRatio,
                                     (start,end,ratio)=>Math3D.Lerp(start,end,ratio));

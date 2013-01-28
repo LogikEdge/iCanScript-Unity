@@ -111,7 +111,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
 	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= obj.Parent; while(parent != null && !parent.IsNode) parent= parent.Parent; return parent; }
-    public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? obj.AnimatedGlobalLayoutRect : default(Rect); }
+    public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? obj.GlobalDisplayRect : default(Rect); }
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.GlobalLayoutRect= r; }
 	public P.TimeRatio	AnimationTimeRatio { get { return myAnimationTimeRatio; }}
     // ----------------------------------------------------------------------
@@ -556,8 +556,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo convDesc) {
         if(convDesc == null) { SetSource(inPort, outPort); return; }
-        var inPos= inPort.AnimatedGlobalLayoutPosition;
-        var outPos= outPort.AnimatedGlobalLayoutPosition;
+        var inPos= inPort.GlobalDisplayPosition;
+        var outPos= outPort.GlobalDisplayPosition;
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= inPort.ParentId;
         iCS_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);

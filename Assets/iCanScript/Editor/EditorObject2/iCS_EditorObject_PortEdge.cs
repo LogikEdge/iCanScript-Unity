@@ -39,16 +39,16 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnNodeEdge(iCS_EditorObject node, iCS_EdgeEnum edge) {
-		return IsPortOnRectEdge(node.AnimatedGlobalLayoutRect, edge);
+		return IsPortOnRectEdge(node.GlobalDisplayRect, edge);
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnRectEdge(Rect r, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(AnimatedGlobalLayoutPosition, r, edge);
+		return IsPositionOnRectEdge(GlobalDisplayPosition, r, edge);
     }
     // ----------------------------------------------------------------------
 	// Return true if the position is on the edge of the node.
 	public bool IsPositionOnEdge(Vector2 position, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(position, AnimatedGlobalLayoutRect, edge);
+		return IsPositionOnRectEdge(position, GlobalDisplayRect, edge);
 	}
     // ----------------------------------------------------------------------
     public static bool IsPositionOnRectEdge(Vector2 pos, Rect r, iCS_EdgeEnum edge) {

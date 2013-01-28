@@ -681,7 +681,7 @@ public partial class iCS_Graphics {
     static float[] portTopBottomRatio      = new float[]{ 1f/2f, 1f/4f, 3f/4f, 1f/6f, 5f/6f, 1f/8f, 3f/8f, 5f/8f, 7f/8f };
     static float[] portLabelTopBottomOffset= new float[]{ 0f   , 0f   , 0.8f , 0.8f , 0.8f , 0f   , 0.8f , 0f   , 0.8f };
     static float TopBottomLabelOffset(iCS_EditorObject port, iCS_IStorage iStorage) {
-        float ratio= 0.5f+port.AnimatedLocalLayoutPosition.x/port.Parent.AnimatedLayoutSize.x;
+        float ratio= 0.5f+port.LocalDisplayPosition.x/port.Parent.DisplaySize.x;
         float error= 100f;
         float offset= 0f;
         for(int i= 0; i < portTopBottomRatio.Length; ++i) {
@@ -776,7 +776,7 @@ public partial class iCS_Graphics {
    	// ----------------------------------------------------------------------
  	bool IsIconized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(!edObj.IsNode) return false;
-        float area= Math3D.Area(edObj.AnimatedLayoutSize);
+        float area= Math3D.Area(edObj.DisplaySize);
         return (area <= kIconicArea+1f);
     }
    	// ----------------------------------------------------------------------
@@ -786,12 +786,12 @@ public partial class iCS_Graphics {
    	// ----------------------------------------------------------------------
     static bool IsVisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
         if(edObj.IsNode) {
-            float area= Math3D.Area(edObj.AnimatedLayoutSize);
+            float area= Math3D.Area(edObj.DisplaySize);
             return Math3D.IsGreater(area, 0.1f);            
         }
         var parentNode= iStorage.GetParentNode(edObj);
         if(parentNode == null) return false;
-        float parentArea= Math3D.Area(parentNode.AnimatedLayoutSize);
+        float parentArea= Math3D.Area(parentNode.DisplaySize);
         return parentArea > kIconicArea+1f;  // Parent is visible and not iconic.
     }
 }

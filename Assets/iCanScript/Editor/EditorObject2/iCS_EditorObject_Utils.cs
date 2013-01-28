@@ -17,7 +17,7 @@ public partial class iCS_EditorObject {
        var len= nodes.Length;
        Rect[] rs= new Rect[len];
        for(int i= 0; i < len; ++ i) {
-           rs[i]= nodes[i].AnimatedGlobalLayoutRect;
+           rs[i]= nodes[i].GlobalDisplayRect;
        }
        for(int i= 0; i < len-1; ++i) {
            var r1= AddMargins(rs[i]);

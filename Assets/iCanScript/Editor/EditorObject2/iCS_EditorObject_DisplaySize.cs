@@ -7,7 +7,7 @@ public partial class iCS_EditorObject {
     // Updates the node display size.  It is assumed that the child animated
     // display rect has been previously updated.
     public void UpdateNodeLayoutSize() {
-        LayoutSize= ComputeNodeLayoutSize(AnimatedGlobalChildRectWithMargins);
+        LayoutSize= ComputeNodeLayoutSize(GlobalDisplayChildRectWithMargins);
     }
     // ----------------------------------------------------------------------
     // Returns the size of the node using the current children layout.
@@ -51,9 +51,9 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Returns the global rectangle currently used by the children.
-    public Rect AnimatedGlobalChildRectWithMargins {
+    public Rect GlobalDisplayChildRectWithMargins {
         get {
-            var childRect= AnimatedGlobalChildRect;
+            var childRect= GlobalDisplayChildRect;
             if(Math3D.IsNotZero(Math3D.Area(childRect))) {
                 childRect= AddMargins(childRect);
             }
@@ -62,7 +62,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void WrapAroundChildren() {
-        var childrenGlobalRect= AnimatedGlobalChildRectWithMargins;
+        var childrenGlobalRect= GlobalDisplayChildRectWithMargins;
         
     }
 }

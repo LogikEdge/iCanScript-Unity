@@ -33,7 +33,7 @@ public partial class iCS_EditorObject {
     public bool IsVisibleInAnimation {
         get {
             if(!IsAnimated) return IsVisibleInLayout;
-            var area= Math3D.Area(AnimatedLayoutSize);
+            var area= Math3D.Area(DisplaySize);
             return area > 0.1f;
         }
     }
@@ -41,14 +41,14 @@ public partial class iCS_EditorObject {
     // Returns true if the display size is currently being animated.
     public bool IsLayoutSizeAnimated {
         get {
-            return  myAnimatedLayoutSize.IsActive;
+            return  myAnimatedDisplaySize.IsActive;
         }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display position is currently being animated.
     public bool IsDisplayPositionAnimated {
         get {
-            return  myAnimatedGlobalLayoutPosition.IsActive;            
+            return  myAnimatedGlobalDisplayPosition.IsActive;            
         }
     }
     // ----------------------------------------------------------------------

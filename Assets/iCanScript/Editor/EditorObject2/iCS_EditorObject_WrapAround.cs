@@ -15,14 +15,14 @@ public partial class iCS_EditorObject {
 		if(!IsVisibleInLayout) return;
 		// Take a snapshot of the children global position.
 		var childPositions= new List<Vector2>();
-		ForEachChildNode(c=> childPositions.Add(c.AnimatedGlobalLayoutPosition));
+		ForEachChildNode(c=> childPositions.Add(c.GlobalDisplayPosition));
 		// Get padding for all sides.
 		float topPadding= NodeTopPadding;
 		float bottomPadding= NodeBottomPadding;
 		float leftPadding= NodeLeftPadding;
 		float rightPadding= NodeRightPadding;
 		// Determine rect to wrap children.
-		var childRect= AnimatedGlobalChildRectWithMargins;
+		var childRect= GlobalDisplayChildRectWithMargins;
 		var r= new Rect(childRect.x-leftPadding,
 						childRect.y-topPadding,
 						childRect.width+leftPadding+rightPadding,

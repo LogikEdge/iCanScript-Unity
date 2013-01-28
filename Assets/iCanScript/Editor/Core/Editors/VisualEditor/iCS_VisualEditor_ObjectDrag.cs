@@ -61,7 +61,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragOriginalPort= port;
             DragFixPort= port;
             DragObject= port;
-            DragStartPosition= port.AnimatedGlobalLayoutPosition;
+            DragStartPosition= port.GlobalDisplayPosition;
             return true;
         }
 
@@ -87,7 +87,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 node.IsFloating= IsFloatingKeyDown;
                 DragType= DragTypeEnum.NodeDrag;
                 DragObject= node;
-                DragStartPosition= node.AnimatedGlobalLayoutPosition;                                                                    
+                DragStartPosition= node.GlobalDisplayPosition;                                                                    
             }
             return true;
         }
@@ -103,7 +103,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             inTransition.SourceId= outTransition.InstanceId;
             DragFixPort= outTransition;
             DragObject= inTransition;
-            DragStartPosition= DragObject.AnimatedGlobalLayoutPosition;
+            DragStartPosition= DragObject.GlobalDisplayPosition;
             DragObject.IsFloating= true;
             return true;
         }

@@ -367,8 +367,8 @@ public class iCS_DynamicMenu {
                 iCS_EditorObject parent= selectedObject.Parent;
                 iCS_EditorObject grandParent= parent.Parent;
                 int grandParentId= grandParent.InstanceId;
-				var grandParentRect= grandParent.AnimatedGlobalLayoutRect;
-				var portPosition= selectedObject.AnimatedGlobalLayoutPosition;
+				var grandParentRect= grandParent.GlobalDisplayRect;
+				var portPosition= selectedObject.GlobalDisplayPosition;
                 if(selectedObject.IsInputPort) {
                     iCS_EditorObject port= storage.CreatePort(selectedObject.Name, grandParentId, selectedObject.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
                     storage.SetSource(selectedObject, port);
