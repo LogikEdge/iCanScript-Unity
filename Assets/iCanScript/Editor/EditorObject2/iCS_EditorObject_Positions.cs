@@ -123,7 +123,7 @@ public partial class iCS_EditorObject {
 		set {
 			var timeRatio= new P.TimeRatio();
 	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			AnimateGlobalLayoutPosition(timeRatio, value);
+			AnimateGlobalDisplayPosition(timeRatio, value);
 		}
 	}
     // ----------------------------------------------------------------------
@@ -148,7 +148,7 @@ public partial class iCS_EditorObject {
 		set {
 			var timeRatio= new P.TimeRatio();
 	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			AnimateLayoutSize(timeRatio, value);
+			AnimateDisplaySize(timeRatio, value);
 		}
 	}
     // ----------------------------------------------------------------------
@@ -162,7 +162,7 @@ public partial class iCS_EditorObject {
  		set {
 			var timeRatio= new P.TimeRatio();
 	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			AnimateGlobalLayoutRect(timeRatio, value);
+			AnimateGlobalDisplayRect(timeRatio, value);
  		}
  	}
  	// ----------------------------------------------------------------------
@@ -205,7 +205,7 @@ public partial class iCS_EditorObject {
         LayoutSize= sze;        
     }
     // ----------------------------------------------------------------------
-	public void AnimateGlobalLayoutPosition(P.TimeRatio timeRatio, Vector2 finalPosition) {
+	public void AnimateGlobalDisplayPosition(P.TimeRatio timeRatio, Vector2 finalPosition) {
 		myAnimatedGlobalDisplayPosition.Start(GlobalLayoutPosition,
                                               finalPosition,
                                               timeRatio,
@@ -213,7 +213,7 @@ public partial class iCS_EditorObject {
 		GlobalLayoutPosition= finalPosition;	
 	}
     // ----------------------------------------------------------------------
-	public void AnimateLayoutSize(P.TimeRatio timeRatio, Vector2 finalSize) {
+	public void AnimateDisplaySize(P.TimeRatio timeRatio, Vector2 finalSize) {
 		myAnimatedDisplaySize.Start(LayoutSize,
                                     finalSize,
                                     timeRatio,
@@ -221,10 +221,10 @@ public partial class iCS_EditorObject {
 		LayoutSize= finalSize;		
 	}
     // ----------------------------------------------------------------------
-	public void AnimateGlobalLayoutRect(P.TimeRatio timeRatio, Rect finalRect) {
+	public void AnimateGlobalDisplayRect(P.TimeRatio timeRatio, Rect finalRect) {
 	    var sze= new Vector2(finalRect.width, finalRect.height);
 	    var pos= new Vector2(finalRect.x+0.5f*sze.x, finalRect.y+0.5f*sze.y);
-		AnimateGlobalLayoutPosition(timeRatio, pos);
-		AnimateLayoutSize(timeRatio, sze);
+		AnimateGlobalDisplayPosition(timeRatio, pos);
+		AnimateDisplaySize(timeRatio, sze);
 	}
 }
