@@ -30,7 +30,7 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public bool IsVisibleWithAnimation {
+    public bool IsVisibleInAnimation {
         get {
             if(!IsAnimated) return IsVisibleInLayout;
             var area= Math3D.Area(AnimatedDisplaySize);
