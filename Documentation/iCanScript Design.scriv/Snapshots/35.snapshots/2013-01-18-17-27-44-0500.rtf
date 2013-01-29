@@ -1,0 +1,15 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf340
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker Req)}{\leveltext\leveltemplateid1\'04Req);}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker Req)}{\leveltext\leveltemplateid101\'04Req);}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\pard\tx202\tx1096\li1094\fi-1095\sb120\sa80\pardirnatural
+\ls1\ilvl0
+\f0\fs24 \cf0 {\listtext	Req)	}The local node anchor position is a persistent attribute that maintains the user desired position to the parent node before collision resolution.  The anchor position is local (relative) to the parent node.  The anchor position of the root node is an exception as it is a global position.\
+{\listtext	Req)	}The local anchor position of a node shall be set when the user drags that node.  The local anchor position is computed by subtracting the node\'92s global display position from the parent\'92s global position.  The local anchor position of the children nodes shall not be affect.  The global display position of children nodes shall be updated to reflect the change in the parent\'92s global position.\
+\pard\tx202\tx1096\li1094\fi-1095\sb120\sa80\pardirnatural
+\ls2\ilvl0\cf0 {\listtext	Req)	}The local anchor position shall not be changed when performing a fold/unfold/iconize operation.\
+{\listtext	Req)	}The local anchor position shall not be changed if a node is resized while the node is not on its anchor (display position is offset from the globalized anchor position).\
+{\listtext	Req)	}The local anchor position shall be changed if a parent node is resize resulting from a user drag of one of its children or grandchildren while it is on its anchor (display and globalized anchor position are the same).  The local anchor position is computed by subtracting the node\'92s global display position from the parent\'92s global position.  The visible child node display position shall not be affected by the change of anchor position.  The children local anchor position shall be update with the delta of the parent global display position such that its globalized anchor position is not changed.\
+{\listtext	Req)	}The local anchor position shall not be changed if a parent node is resize resulting from a fold/unfold/iconize operation of one of its children or grandchildren.}

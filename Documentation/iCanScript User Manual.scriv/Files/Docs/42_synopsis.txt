@@ -1,0 +1,3 @@
+- Provide a simplified list of important terms.
+
+- Discuss typographic conventions used in this manual.

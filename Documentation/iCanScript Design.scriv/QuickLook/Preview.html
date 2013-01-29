@@ -1,0 +1,141 @@
+<html>
+
+<head>
+<title>iCanScript Design</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+	body {background-color: #bac0c7}
+    p.binderItem {margin: 10.0px 0.0px 0.0px 05.0px; font-family:Cochin, Times, Courier, Arial, serif; font-size:14.0px;}
+    .page {border: 1px solid #727272; background: #fff}
+    hr {
+      border-top: 1px dashed #000;
+      border-bottom: 0px solid #fff;
+      color: #fff;
+      background-color: #fff;
+      height: 0px;
+  </style>
+</head>
+
+<body>
+
+<table border="0" width="100%" cellspacing="3">
+<tr>
+<td>
+
+<table class="page" width="100%" cellspacing="10" cellpadding="2">
+<tr>
+<td valign="top">
+
+<ul>
+<li>
+<p class="binderItem"><strong>Title Page</strong><br/>Title page to the manuscript.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Contents</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Foreword</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Graphic Editor</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Node Position</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Requirements</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Local Anchor Position Attribute (persistent)</strong><br/> Req) The local node anchor position is a persistent attribute that maintains the user desired position to the parent node before collision resolution.  The anchor position is relative (local) to the parent node position.  The anchor position of the root node is an exception as it is a global position.<br/>
+ Req) The local anchor position shall not be changed when performing a fold/unfold/iconize operation.<br/>
+ Req) The local anchor position shall not be changed when the node is not visible.<br/>
+ Req) The l...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Globalized Anchor Position (transient)</strong><br/> Req) The globalized anchor position is the position of the anchor in global space computed by adding the parent globalized layout position to the node’s local anchor position.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Local Layout Offset (persistent)</strong><br/> Req) The node local layout offset is a persistent attribute that maintains the final display position of the node after the collision algorithm has been applied.  It is derived from the local anchor position on which the node collision algorithm is applied.<br/>
+ Req) The local layout offset shall be changed if the user drags the node.  The local anchor position shall also be recomputed to reflect the user drag.<br/>
+ Req) The local layout offset shall not be changed if the user drags the parent or any p...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Globalized layout Position (transient)</strong><br/> Req) The globalized layout position is the display position in global space computed by adding the parent globalized layout position to the node’s local layout position.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Animated Position (transient)</strong><br/> Req) The node animated global position is a transient attribute that creates a visual transitions of the globalized display position when the node’s display position is autonomously changed by the system.  It is used to avoid user confusion on such operations as fold/unfold/iconize and collision node displacements.<br/>
+ Req) The animated position shall always be equal to the globalized display position when the node is not being animated.<br/>
+ Req) Fold/unfold/iconize operations shall be animated.  Any...</p>
+</li>
+<li>
+<p class="binderItem"><strong>Display Size (transient)</strong><br/> Req) The display size is a dynamic attribute that maintains the display dimension of the node.<br/>
+ Req) The display size shall be dynamically computed to include:<br/>
+ • The node name and fold/unfold/iconize icons (header width);<br/>
+ • The node ports and port names (left & right padding);<br/>
+ • The visible children using their display position and size.<br/>
+ Req) When unfold and with children, the display size of a node shall be calculated to contain the animated position and size of the children nodes.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Node Collisions</strong><br/> Req) Node collision shall always performed using the display position and display size.<br/>
+ Req) Detection of nodes causing an offset from the anchor position shall be determined by finding the closest colliding node(s) in the corridor between the current display position and the anchor position.<br/>
+ Req) A new collision shall be created when the display positions of two or more nodes overlap considering the inter-node margin.<br/>
+ Req) Node collision resolution shall not interfere with user drag operati...</p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Node User Drag Algorithm</strong><br/> 1) DragOffset= NewMousePosition-DragStartMousePosition;<br/>
+ 2) Node.DisplayPosition= Node.DragStartDisplayPosition+DragOffset;<br/>
+ 3) Node.LocalAnchorPosition= Node.DisplayPosition-Node.ParentDisplayPosition<br/>
+ 4) Resolve Collision with sibling<br/>
+ 5) Recompute parent display size</p>
+</li>
+<li>
+<p class="binderItem"><strong>Node Collision Algorithm</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Anchor Relayout</strong><br/>The anchor layout algorithm shall include the following elements:<br/>
+ ◆ The anchor position of a drag node is set as-is;<br/>
+ ◆ The anchor position of the children of a dragged node is relative to their parent anchor position;<br/>
+ ◆ The anchor position of the parent is recomputed if the drag node causes the parent to be resized;<br/>
+ ◆ Hierarchical grand-parent anchor positions are recomputed if a new anchor position/size of one of their children forces the grand-parent to be resized.<br/>
+</p>
+</li>
+<li>
+<p class="binderItem"><strong>Node Animation</strong></p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Port Position</strong></p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Endnotes</strong><br/> All footnotes will get inserted here upon print, and this bubble will be removed automatically.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Requirements -35- (Michels-MacBook-Pro's conflicted copy 2013-01-18)</strong><br/>Local Anchor Position Attribute (persistent)<br/>
+ • The local node anchor position is a persistent attribute that maintains the user desired position to the parent node before collision resolution.  The anchor position is local (relative) to the parent node.  The anchor position of the root node is an exception as it is a global position.<br/>
+ ◦ The local anchor position of a node shall be set when the user drags that node.  The local anchor position is computed by subtracting the node’s global display ...</p>
+</li>
+</ul>
+
+</td>
+<td width="8">
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</table>
+
+</body>
+</html>

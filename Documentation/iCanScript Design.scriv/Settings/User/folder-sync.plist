@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>automaticallyCheckForChanges</key>
+	<false/>
+	<key>deletedDocIDs</key>
+	<array>
+		<integer>38</integer>
+		<integer>53</integer>
+		<integer>52</integer>
+	</array>
+	<key>draftFileFormat</key>
+	<integer>0</integer>
+	<key>draftPlainTextExtension</key>
+	<string>txt</string>
+	<key>importDestinationID</key>
+	<integer>1</integer>
+	<key>importShowsContainersOnly</key>
+	<true/>
+	<key>otherFileFormat</key>
+	<integer>0</integer>
+	<key>otherPlainTextExtension</key>
+	<string>txt</string>
+	<key>plainTextAddsParagraphPadding</key>
+	<true/>
+	<key>syncsDraftFolder</key>
+	<true/>
+	<key>syncsOnlyDocumentsInCollection</key>
+	<false/>
+	<key>syncsOtherTextFiles</key>
+	<true/>
+	<key>takesSnapshots</key>
+	<true/>
+	<key>usesFileNumbering</key>
+	<true/>
+</dict>
+</plist>

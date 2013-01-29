@@ -1,0 +1,3 @@
+- Discuss installation
+- Discuss iCanScript menus
+- Discuss windows & panels
