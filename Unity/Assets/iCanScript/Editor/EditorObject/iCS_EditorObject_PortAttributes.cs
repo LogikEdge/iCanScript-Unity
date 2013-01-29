@@ -10,25 +10,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public object		    InitialValue= null;
 
-    // ======================================================================
-    // Port layout attributes.
-	public bool IsOnTopEdge         { get { return Edge == iCS_EdgeEnum.Top; }}
-    public bool IsOnBottomEdge      { get { return Edge == iCS_EdgeEnum.Bottom; }}
-    public bool IsOnRightEdge       { get { return Edge == iCS_EdgeEnum.Right; }}
-    public bool IsOnLeftEdge        { get { return Edge == iCS_EdgeEnum.Left; }}
-    public bool IsOnHorizontalEdge  { get { return IsOnTopEdge   || IsOnBottomEdge; }}
-    public bool IsOnVerticalEdge    { get { return IsOnRightEdge || IsOnLeftEdge; }}
-    // ----------------------------------------------------------------------
-    public iCS_EdgeEnum Edge {
-		get { return EngineObject.Edge; }
-		set {
-            var engineObject= EngineObject;
-            if(engineObject.Edge == value) return;
-            engineObject.Edge= value;
-            if(!IsFloating) CleanupPortEdgePosition();
-            IsDirty= true;
-		}
-	}
     // ----------------------------------------------------------------------
     public float PortPositionRatio {
         get { return EngineObject.PortPositionRatio; }

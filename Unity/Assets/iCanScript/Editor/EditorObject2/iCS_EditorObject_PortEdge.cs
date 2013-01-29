@@ -2,21 +2,42 @@ using UnityEngine;
 using System.Collections;
 
 public partial class iCS_EditorObject {
+    // ======================================================================
+    // Port layout attributes.
+	public bool IsOnTopEdge         { get { return Edge == iCS_EdgeEnum.Top; }}
+    public bool IsOnBottomEdge      { get { return Edge == iCS_EdgeEnum.Bottom; }}
+    public bool IsOnRightEdge       { get { return Edge == iCS_EdgeEnum.Right; }}
+    public bool IsOnLeftEdge        { get { return Edge == iCS_EdgeEnum.Left; }}
+    public bool IsOnHorizontalEdge  { get { return IsOnTopEdge   || IsOnBottomEdge; }}
+    public bool IsOnVerticalEdge    { get { return IsOnRightEdge || IsOnLeftEdge; }}
+    // ----------------------------------------------------------------------
+    public iCS_EdgeEnum Edge {
+		get { return EngineObject.Edge; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.Edge == value) return;
+            engineObject.Edge= value;
+            if(!IsFloating) CleanupPortEdgePosition();
+            IsDirty= true;
+		}
+	}
+
     // ----------------------------------------------------------------------
     // Updates the port edge information from the port type.
     public void UpdatePortEdge() {
         // Enable ports are always on top of the node.
         if(IsEnablePort) {
             Edge= iCS_EdgeEnum.Top;
+            return;
         }
-        // Data ports are always on the left or right depending on input/output direction.
-        else if(IsDataPort) {
+        // Data ports are always on the left or right depending on
+        // input/output direction.
+        if(IsDataPort) {
             Edge= IsInputPort ? iCS_EdgeEnum.Left : iCS_EdgeEnum.Right;
+            return;
         }
-        // Selected closest edge.
-        else {
-            Edge= ClosestEdge;            
-        }
+        // Selected closest edge for all other types of ports.
+        Edge= ClosestEdge;            
     }
     // ----------------------------------------------------------------------
     public void CleanupPortEdgePosition() {

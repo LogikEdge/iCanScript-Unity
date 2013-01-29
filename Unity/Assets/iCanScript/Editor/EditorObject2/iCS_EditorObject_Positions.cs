@@ -14,11 +14,22 @@ public partial class iCS_EditorObject {
     // Engine Object Proxy Position Accessors
     // ----------------------------------------------------------------------
 	public Vector2 LocalAnchorPosition {
-		get { return EngineObject.LocalAnchorPosition; }
+		get {
+            // Node local anchor position getter.
+            if(IsNode) return EngineObject.LocalAnchorPosition;
+			// Port local anchor position getter.
+            return GetPortLocalAnchorPositionFromRatio();
+		}
 		set {
 			var engineObject= EngineObject;
-			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
-			engineObject.LocalAnchorPosition= value;
+            // Node local anchor position setter.
+			if(IsNode) {
+    			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
+    			engineObject.LocalAnchorPosition= value;
+			    return;
+			}
+			// Port local anchor position setter.
+			UpdatePortEdge();
 		}
 	}
     // ----------------------------------------------------------------------
