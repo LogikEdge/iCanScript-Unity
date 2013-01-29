@@ -15,21 +15,21 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 LocalAnchorPosition {
 		get {
-            // Node local anchor position getter.
-            if(IsNode) return EngineObject.LocalAnchorPosition;
 			// Port local anchor position getter.
-            return GetPortLocalAnchorPositionFromRatio();
+            if(IsPort) return GetPortLocalAnchorPositionFromRatio();
+            // Node local anchor position getter.
+            return EngineObject.LocalAnchorPosition;
 		}
 		set {
-			var engineObject= EngineObject;
-            // Node local anchor position setter.
-			if(IsNode) {
-    			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
-    			engineObject.LocalAnchorPosition= value;
-			    return;
-			}
 			// Port local anchor position setter.
-			UpdatePortEdge();
+            if(IsPort) {
+    			UpdatePortEdge();
+                return;
+            }
+            // Node local anchor position setter.
+			var engineObject= EngineObject;
+			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
+			engineObject.LocalAnchorPosition= value;
 		}
 	}
     // ----------------------------------------------------------------------
