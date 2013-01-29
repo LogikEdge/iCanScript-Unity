@@ -4,32 +4,33 @@ using System.Collections;
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 GetPortLocalAnchorPositionFromRatio() {
-        var parentSize= Parent.DisplaySize;
+        var parent= Parent;
+        var ratio= PortPositionRatio;
+        var parentSize= parent.DisplaySize;
+        float x, y;
         if(IsOnVerticalEdge) {
-            var y= VerticalPortYCoordinateFromRatio();
-            if(IsOnLeftEdge) {
-                return new Vector2(-0.5f*parentSize.x, y);
-            }
-            return new Vector2(0.5f*parentSize.x, y);
+            x= (IsOnLeftEdge ? -0.5f : 0.5f)*parentSize.x;
+            y= parent.VerticalPortsTop+parent.AvailableHeightForPorts*ratio;
+        } else {
+            x= parent.HorizontalPortsLeft+parent.AvailableWidthForPorts*ratio;
+            y= (IsOnTopEdge ? -0.5f : 0.5f)*parentSize.y;            
         }
-        var x= HorizontalPortXCoordinateFromRatio();
-        if(IsOnTopEdge) {
-            return new Vector2(x, -0.5f*parentSize.y);
-        }
-        return new Vector2(x, 0.5f*parentSize.y);
+        return new Vector2(x, y);
     }
     // ----------------------------------------------------------------------
-    // Returns Y coordinate for a port on the vertical edge given its ratio.
-    public float VerticalPortYCoordinateFromRatio() {
+    public float GetPortRatioFromLocalAnchorPosition(Vector2 pos) {
         var parent= Parent;
-        var ratio= PortPositionRatio;
-        return parent.VerticalPortsTop+parent.AvailableHeightForPorts*ratio;
-    }
-    // ----------------------------------------------------------------------
-    // Returns X coordinate for a port on the horizontal edge given its ratio.
-    public float HorizontalPortXCoordinateFromRatio() {
-        var parent= Parent;
-        var ratio= PortPositionRatio;
-        return parent.HorizontalPortsLeft+parent.AvailableWidthForPorts*ratio;
+        var parentSize= parent.DisplaySize;
+        float ratio;
+        if(IsOnVerticalEdge) {
+            var a= pos.y+0.5f*parentSize.y-parent.VerticalPortsTop;
+            ratio= a/parent.AvailableHeightForPorts;
+        } else {
+            var a= pos.x+0.5f*parentSize.x-parent.HorizontalPortsLeft;
+            ratio= a/parent.AvailableWidthForPorts;
+        }
+        if(ratio <= 0f) return 0f;
+        if(ratio >= 1f) return 1f;
+        return ratio;
     }
 }

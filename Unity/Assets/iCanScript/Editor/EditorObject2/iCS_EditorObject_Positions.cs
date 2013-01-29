@@ -24,6 +24,7 @@ public partial class iCS_EditorObject {
 			// Port local anchor position setter.
             if(IsPort) {
     			UpdatePortEdge();
+    			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);
                 return;
             }
             // Node local anchor position setter.
