@@ -10,8 +10,8 @@ public partial class iCS_Graphics {
     // Common port utilities.
     // ----------------------------------------------------------------------
     // Returns the port center in graph coordinates.
-    Vector2 GetPortCenter(iCS_EditorObject port, iCS_IStorage iStorage) {
-        return Math3D.ToVector2(GetDisplayPosition(port, iStorage));
+    Vector2 GetPortCenter(iCS_EditorObject port) {
+        return port.GlobalDisplayPosition;
     }
 	// ----------------------------------------------------------------------
     string GetValueAsString(object value) {
@@ -75,7 +75,7 @@ public partial class iCS_Graphics {
     // Returns the port name position in graph coordinate and GUI scale size.
     Rect GetPortNamePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
         Vector2 labelSize= GetPortNameSize(port);
-		Vector2 labelPos= GetPortCenter(port, iStorage);
+		Vector2 labelPos= GetPortCenter(port);
         switch(port.Edge) {
             case iCS_EdgeEnum.Left:
                 labelPos.x+= 1 + iCS_EditorConfig.PortSize;
@@ -143,7 +143,7 @@ public partial class iCS_Graphics {
     // Returns the port value position in graph coordinate and GUI scale size.
     Rect GetPortValuePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
 		Vector2 valueSize= GetPortValueSize(port, iStorage);
-		Vector2 valuePos= GetPortCenter(port, iStorage);
+		Vector2 valuePos= GetPortCenter(port);
         switch(port.Edge) {
             case iCS_EdgeEnum.Left:
 				valuePos.x-= 1 + valueSize.x/Scale + iCS_EditorConfig.PortSize;

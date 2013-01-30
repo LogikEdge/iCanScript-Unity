@@ -23,10 +23,10 @@ public partial class iCS_EditorObject {
         var parentSize= parent.DisplaySize;
         float ratio;
         if(IsOnVerticalEdge) {
-            var a= pos.y+0.5f*parentSize.y-parent.VerticalPortsTop;
+            var a= pos.y-parent.VerticalPortsTop;
             ratio= a/parent.AvailableHeightForPorts;
         } else {
-            var a= pos.x+0.5f*parentSize.x-parent.HorizontalPortsLeft;
+            var a= pos.x-parent.HorizontalPortsLeft;
             ratio= a/parent.AvailableWidthForPorts;
         }
         if(ratio <= 0f) return 0f;
