@@ -18,9 +18,10 @@ public static class iCS_EditorConfig {
 	public const float NodeShadowSize= 5.0f;
 	
     // ----------------------------------------------------------------------
-    public const  float PortRadius        = 5.55f;
-    public const  float PortDiameter      = 2.0f * PortRadius;
-    public const  float SelectedPortFactor= 1.67f;
+    public const  float   PortRadius        = 5.55f;
+    public const  float   PortDiameter      = 2.0f * PortRadius;
+    public const  float   SelectedPortFactor= 1.67f;
+    public static Vector2 PortSize;
 
     // ----------------------------------------------------------------------
     public const  float MarginSize = 15.0f;
@@ -74,4 +75,8 @@ public static class iCS_EditorConfig {
     }
     static float _MinimumPortSeparation= 0f;
  
+    // ======================================================================
+    static iCS_EditorConfig() {
+        PortSize= new Vector2(PortDiameter, PortDiameter);
+    }
 }
