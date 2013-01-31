@@ -560,10 +560,10 @@ public partial class iCS_Graphics {
         GUI.Label(portNamePos, name, LabelStyle);                                    
 
         // Display port value (if applicable).
-        if(ShouldDisplayPortValue(port, iStorage)) {    
+        if(ShouldDisplayPortValue(port)) {    
             if(!port.IsFloating) {
     			EditorGUIUtility.LookLikeControls();
-                Rect portValuePos= GetPortValueGUIPosition(port, iStorage);
+                Rect portValuePos= GetPortValueGUIPosition(port);
         		if(Math3D.IsNotZero(portValuePos.width)) {
             		string valueAsStr= GetPortValueAsString(port);
         			GUI.Label(portValuePos, valueAsStr, ValueStyle);			

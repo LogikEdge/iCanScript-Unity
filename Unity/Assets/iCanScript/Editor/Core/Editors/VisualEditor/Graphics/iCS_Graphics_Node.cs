@@ -48,14 +48,13 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     // Returns the tooltip for the given node.
-	public static string GetNodeTooltip(iCS_EditorObject node, iCS_IStorage iStorage) {
+	public static string GetNodeTooltip(iCS_EditorObject node) {
 		string tooltip= "Name: "+(node.RawName ?? "")+"\n";
 		// Type information
 		Type runtimeType= node.RuntimeType;
 		if(runtimeType != null) tooltip+= "Type: "+iCS_Types.TypeName(runtimeType)+"\n";
 		// Number of direct children
-		int nbOfChildren= 0;
-		iStorage.ForEachChildNode(node, c=> ++nbOfChildren);
+		int nbOfChildren= node.NbOfChildNodes;
 		tooltip+= "Child nodes: "+nbOfChildren+"\n";
 		// User defined tooltip
 		if(iCS_Strings.IsNotEmpty(node.Tooltip)) tooltip+= node.Tooltip;

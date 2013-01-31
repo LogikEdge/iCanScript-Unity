@@ -41,6 +41,14 @@ public partial class iCS_EditorObject {
     public void ForEachChildNode(Action<iCS_EditorObject> action) {
         ForEachChild(o=> { if(o.IsNode) action(o); });
     }
+	// ----------------------------------------------------------------------
+    public int NbOfChildNodes {
+		get {
+			int cnt= 0;
+			ForEachChildNode(_=> ++cnt);
+			return cnt;
+		}
+	}
 
     // Port Iterations ======================================================
     public void ForEachChildPort(Action<iCS_EditorObject> action) {

@@ -116,7 +116,7 @@ public partial class iCS_Graphics {
         return (portValue != null) ? GetValueAsString(portValue) : null;
     }
     // ----------------------------------------------------------------------
-    bool ShouldDisplayPortValue(iCS_EditorObject port, iCS_IStorage iStorage) {
+    bool ShouldDisplayPortValue(iCS_EditorObject port) {
         if(!port.IsDataPort || port.IsInMuxPort) return false;
         if(!ShouldShowLabel()) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
@@ -135,14 +135,14 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     // Returns the port value display size in GUI scale.
-    Vector2 GetPortValueSize(iCS_EditorObject port, iCS_IStorage iStorage) {
+    Vector2 GetPortValueSize(iCS_EditorObject port) {
 		string valueAsStr= GetPortValueAsString(port);
 		return iCS_Strings.IsNotEmpty(valueAsStr) ? ValueStyle.CalcSize(new GUIContent(valueAsStr)) : Vector2.zero;        
     }
     // ----------------------------------------------------------------------
     // Returns the port value position in graph coordinate and GUI scale size.
-    Rect GetPortValuePosition(iCS_EditorObject port, iCS_IStorage iStorage) {
-		Vector2 valueSize= GetPortValueSize(port, iStorage);
+    Rect GetPortValuePosition(iCS_EditorObject port) {
+		Vector2 valueSize= GetPortValueSize(port);
 		Vector2 valuePos= GetPortCenter(port);
         switch(port.Edge) {
             case iCS_EdgeEnum.Left:
@@ -162,8 +162,8 @@ public partial class iCS_Graphics {
 	}
     // ----------------------------------------------------------------------
     // Returns the port value position in GUI coordinates and size.
-    Rect GetPortValueGUIPosition(iCS_EditorObject port, iCS_IStorage iStorage) {
-        Rect graphRect= GetPortValuePosition(port, iStorage);
+    Rect GetPortValueGUIPosition(iCS_EditorObject port) {
+        Rect graphRect= GetPortValuePosition(port);
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
 	}

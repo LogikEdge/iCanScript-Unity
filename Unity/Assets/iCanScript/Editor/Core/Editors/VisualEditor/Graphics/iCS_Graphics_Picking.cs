@@ -127,11 +127,11 @@ public partial class iCS_Graphics {
     // ======================================================================
     // Determines if the pick is within the port value label.
     // ----------------------------------------------------------------------
-    public bool IsPortValuePicked(iCS_EditorObject port, Vector2 pick, iCS_IStorage iStorage) {
-        if(!ShouldDisplayPortValue(port, iStorage)) return false;
+    public bool IsPortValuePicked(iCS_EditorObject port, Vector2 pick) {
+        if(!ShouldDisplayPortValue(port)) return false;
         if(!port.IsInputPort) return false;
         if(port.Source != null) return false;
-        Rect portValuePos= GetPortValuePosition(port, iStorage);
+        Rect portValuePos= GetPortValuePosition(port);
         float invScale= 1.0f/Scale;
         portValuePos.width*= invScale;
         portValuePos.height*= invScale;
@@ -215,11 +215,11 @@ public partial class iCS_Graphics {
                 pickInfo.PickedPartGUIPosition= new Rect(guiPos.x, guiPos.y, namePos.width, namePos.height);
                 return pickInfo;
             }
-            if(IsPortValuePicked(closestPort, pick, iStorage)) {
+            if(IsPortValuePicked(closestPort, pick)) {
 //                Debug.Log((closestPort.IsInputPort ? "Input":"Output")+" port value: "+closestPort.Name+" of "+iStorage.GetParent(closestPort).Name+" is being picked");
                 pickInfo.PickedObject= closestPort;
                 pickInfo.PickedPart= iCS_PickPartEnum.Value;
-                Rect namePos= GetPortValuePosition(closestPort, iStorage);
+                Rect namePos= GetPortValuePosition(closestPort);
                 float invScale= 1.0f/Scale;
                 pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
                 var guiPos= TranslateAndScale(Math3D.ToVector2(namePos));
