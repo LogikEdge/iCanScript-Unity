@@ -123,6 +123,13 @@ public partial class iCS_EditorObject {
 		get { return IsParentValid ? myIStorage[ParentId] : null; }
 		set { ParentId= (value != null ? value.InstanceId : -1); }
 	}
+	public iCS_EditorObject ParentNode {
+	    get {
+	        var parent= Parent;
+	        while(parent != null && !parent.IsNode) parent= parent.Parent;
+	        return parent;
+	    }
+	}
     public bool IsFloating {
 		get { return myIsFloating; }
 		set {

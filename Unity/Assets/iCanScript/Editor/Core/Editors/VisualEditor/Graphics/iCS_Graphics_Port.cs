@@ -49,11 +49,11 @@ public partial class iCS_Graphics {
 		return GetPortName(port)+"."+GetPortPath(port,iStorage);
 	}
     // ----------------------------------------------------------------------
-    bool ShouldDisplayPortName(iCS_EditorObject port, iCS_IStorage iStorage) {
+    bool ShouldDisplayPortName(iCS_EditorObject port) {
         if(port.IsInMuxPort) return false;
         if(port.IsStatePort || port.IsTransitionPort) return false;
         if(!ShouldShowLabel()) return false;
-        if(!IsVisible(port, iStorage)) return false;
+        if(!IsVisible(port)) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if((port.IsInputPort || port.IsModulePort) && port.SourceId != -1) {
             var sourcePort= port.Source;

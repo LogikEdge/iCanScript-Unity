@@ -20,7 +20,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public float GetPortRatioFromLocalAnchorPosition(Vector2 pos) {
         var parent= Parent;
-        var parentSize= parent.DisplaySize;
         float ratio;
         if(IsOnVerticalEdge) {
             var a= pos.y-parent.VerticalPortsTop;

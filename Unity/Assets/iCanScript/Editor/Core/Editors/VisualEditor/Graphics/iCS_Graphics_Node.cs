@@ -8,10 +8,10 @@ using System.Collections;
 // ==========================================================================
 public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
-    bool ShouldDisplayNodeName(iCS_EditorObject node, iCS_IStorage iStorage) {
+    bool ShouldDisplayNodeName(iCS_EditorObject node) {
         if(!ShouldShowTitle()) return false;
         if(!node.IsNode) return false;
-        if(!IsVisible(node,iStorage)) return false;
+        if(!IsVisible(node)) return false;
         return true;
     }
     // ----------------------------------------------------------------------

@@ -60,9 +60,4 @@ public partial class iCS_EditorObject {
             return childRect;
         }
     }
-    // ----------------------------------------------------------------------
-    public void WrapAroundChildren() {
-        var childrenGlobalRect= GlobalDisplayChildRectWithMargins;
-        
-    }
 }

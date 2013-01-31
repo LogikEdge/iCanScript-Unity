@@ -138,9 +138,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					return;
 				}
                 // Update port position.
-                DragObject.SetGlobalAnchorAndLayoutPosition(DragStartPosition + delta);
+                var newPortPos= DragStartPosition + delta;
+                DragObject.SetGlobalAnchorAndLayoutPosition(newPortPos);
 				// Consider port relocation when dragging on parent edge.
-				if(DragObject.IsPortOnParentEdge) {
+				if(iCS_EditorObject.IsPositionOnRectEdge(newPortPos,
+				                                         DragObject.Parent.GlobalDisplayRect,
+				                                         DragObject.Edge)) {
 	                if(DragObject.IsStatePort) {
                         DragObject.UpdatePortEdge();
 					}
@@ -149,6 +152,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				} else {
 	                // Determine if we should convert to data port connection drag.
 					if(!DragObject.IsStatePort) {
+                        Debug.Log("Create drag port");
     					CreateDragPort();
 					}
 				}
@@ -389,7 +393,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	void CreateDragPort() {
         // Data port. Create a drag port as appropriate.
-        iCS_EditorObject parent= IStorage.GetParentNode(DragOriginalPort);
+        iCS_EditorObject parent= DragOriginalPort.Parent;
         DragObject.IsFloating= false;
         if(DragOriginalPort.IsInputPort) {
             DragObject= IStorage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
@@ -409,7 +413,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             IStorage.SetSource(DragObject, DragOriginalPort);
         }
         DragType= DragTypeEnum.PortConnection;
-        DragObject.SetGlobalAnchorAndLayoutPosition(ViewportMousePosition);
+        DragObject.LocalAnchorPosition= DragOriginalPort.LocalAnchorPosition;
+        DragObject.GlobalLayoutPosition= ViewportMousePosition;
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
 			DragStartPosition= DragOriginalPort.GlobalLayoutPosition - parent.GlobalLayoutPosition;			

@@ -110,7 +110,6 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-	public iCS_EditorObject      GetParentNode(iCS_EditorObject obj)		{ var parent= obj.Parent; while(parent != null && !parent.IsNode) parent= parent.Parent; return parent; }
     public Rect            GetDisplayPosition(iCS_EditorObject obj)           { return IsValid(obj) ? obj.GlobalDisplayRect : default(Rect); }
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.GlobalLayoutRect= r; }
 	public P.TimeRatio	AnimationTimeRatio { get { return myAnimationTimeRatio; }}

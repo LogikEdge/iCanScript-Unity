@@ -6,7 +6,7 @@ public partial class iCS_Graphics {
     // Picking functionality
     // ----------------------------------------------------------------------
     public bool IsNodeTitleBarPicked(iCS_EditorObject node, Vector2 pick, iCS_IStorage iStorage) {
-        if(node == null || !node.IsNode || !IsVisible(node, iStorage)) return false;
+        if(node == null || !node.IsNode || !IsVisible(node)) return false;
         if(node.IsIconized) {
             Rect nodeNamePos= GetNodeNamePosition(node, iStorage);
             return nodeNamePos.Contains(pick);
@@ -108,7 +108,7 @@ public partial class iCS_Graphics {
     // Determines if the pick is within the port name label.
     // ----------------------------------------------------------------------
     public bool IsPortNamePicked(iCS_EditorObject port, Vector2 pick, iCS_IStorage iStorage) {
-        if(!ShouldDisplayPortName(port, iStorage)) return false;
+        if(!ShouldDisplayPortName(port)) return false;
         Rect portNamePos= GetPortNamePosition(port, iStorage);
         float invScale= 1.0f/Scale;
         portNamePos.width*= invScale;

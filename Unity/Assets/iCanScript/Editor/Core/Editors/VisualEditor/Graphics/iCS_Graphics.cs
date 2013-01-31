@@ -351,7 +351,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
         // Don't draw minimized node.
-        if(IsInvisible(node, iStorage) || IsIconized(node, iStorage)) return;
+        if(IsInvisible(node) || IsIconized(node, iStorage)) return;
         
         // Draw node box (if visible).
         Rect position= GetDisplayPosition(node, iStorage);
@@ -506,7 +506,7 @@ public partial class iCS_Graphics {
         
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
-        if(IsInvisible(port, iStorage)) return;
+        if(IsInvisible(port)) return;
         
         // Don't display if outside clipping area.
 		Vector2 portCenter= GetPortCenter(port);
@@ -554,7 +554,7 @@ public partial class iCS_Graphics {
         bool isStaticPort= port.IsInDataPort && port.Source == null;
 
         // Display port name.
-        if(!ShouldDisplayPortName(port, iStorage)) return;
+        if(!ShouldDisplayPortName(port)) return;
         Rect portNamePos= GetPortNameGUIPosition(port, iStorage);
         string name= GetPortName(port);
         GUI.Label(portNamePos, name, LabelStyle);                                    
@@ -703,12 +703,12 @@ public partial class iCS_Graphics {
         iCS_EditorObject portParent= port.Parent;
 
         // No connection to draw if the parent is not visible.
-        if(!IsVisible(portParent, iStorage)) return;
+        if(!IsVisible(portParent)) return;
 
         // No connection to draw if source parent is not visible.
         iCS_EditorObject source= port.Source;
         iCS_EditorObject sourceParent= source.Parent;
-        if(!(IsVisible(sourceParent, iStorage) && !port.IsOutStatePort)) return;
+        if(!(IsVisible(sourceParent) && !port.IsOutStatePort)) return;
         
         // No connection to draw if outside clipping area.
         Rect portPos= GetDisplayPosition(port, iStorage);
@@ -780,16 +780,16 @@ public partial class iCS_Graphics {
         return (area <= kIconicArea+1f);
     }
    	// ----------------------------------------------------------------------
-    static bool IsInvisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-        return !IsVisible(edObj, iStorage);
+    static bool IsInvisible(iCS_EditorObject edObj) {
+        return !IsVisible(edObj);
     }
    	// ----------------------------------------------------------------------
-    static bool IsVisible(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+    static bool IsVisible(iCS_EditorObject edObj) {
         if(edObj.IsNode) {
             float area= Math3D.Area(edObj.DisplaySize);
             return Math3D.IsGreater(area, 0.1f);            
         }
-        var parentNode= iStorage.GetParentNode(edObj);
+        var parentNode= edObj.ParentNode;
         if(parentNode == null) return false;
         float parentArea= Math3D.Area(parentNode.DisplaySize);
         return parentArea > kIconicArea+1f;  // Parent is visible and not iconic.
