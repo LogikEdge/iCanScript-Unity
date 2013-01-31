@@ -15,11 +15,9 @@ public partial class iCS_EditorObject {
 		var originalGlobalRect= GlobalLayoutRect;
 		// Take a snapshot of the children global position.
 		var childGlobalAnchorPositions= new List<Vector2>();
-		var childGlobalLayoutPositions= new List<Vector2>();
 		ForEachChildNode(
 		    c=> {
 		        childGlobalAnchorPositions.Add(c.GlobalAnchorPosition);
-                childGlobalLayoutPositions.Add(c.GlobalLayoutPosition);
 	        }
 		);
 		// Get padding for all sides.
