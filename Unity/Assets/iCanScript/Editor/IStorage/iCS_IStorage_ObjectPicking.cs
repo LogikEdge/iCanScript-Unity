@@ -76,7 +76,7 @@ public partial class iCS_IStorage {
 	// ----------------------------------------------------------------------
     public iCS_EditorObject GetOverlappingPort(iCS_EditorObject port) {
         iCS_EditorObject foundPort= null;
-		float bestDistance= iCS_EditorConfig.PortSize;
+		float bestDistance= iCS_EditorConfig.PortDiameter;
         Vector2 position= port.GlobalLayoutPosition;
         FilterWith(
             p=> p.IsPort && p != port && p.IsVisibleInLayout,

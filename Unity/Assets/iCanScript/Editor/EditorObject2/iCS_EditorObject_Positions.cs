@@ -149,6 +149,10 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 DisplaySize {
 		get {
+		    if(IsPort) {
+		        if(!IsVisibleOnDisplay) return Vector2.zero;
+		        return new Vector2(iCS_EditorConfig.PortDiameter, iCS_EditorConfig.PortDiameter);
+		    }
 			if(myAnimatedDisplaySize.IsActive && !myAnimatedDisplaySize.IsElapsed) {
 				return myAnimatedDisplaySize.CurrentValue;
 			}

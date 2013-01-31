@@ -32,13 +32,13 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearNode(iCS_EditorObject node, Vector2 point) {
-        return GetDistanceFromNode(node, point) <= iCS_EditorConfig.PortSize*2;
+        return GetDistanceFromNode(node, point) <= iCS_EditorConfig.PortDiameter*2;
     }
 
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearNodeEdge(iCS_EditorObject node, Vector2 point, iCS_EdgeEnum edge) {
-		float maxDistance= 2f*iCS_EditorConfig.PortSize;
+		float maxDistance= 2f*iCS_EditorConfig.PortDiameter;
         float distance= maxDistance+1f;
 		var pos= node.GlobalLayoutRect;
 		switch(edge) {
@@ -79,7 +79,7 @@ public partial class iCS_IStorage {
 //    // Returns true if the distance to parent is less then twice the port size.
 //    public bool IsNearParent(iCS_EditorObject port) {
 //        if(GetNodeAt(port.GlobalPosition) != port.Parent) return false;
-//        return GetDistanceFromParent(port) <= iCS_EditorConfig.PortSize*2;
+//        return GetDistanceFromParent(port) <= iCS_EditorConfig.PortDiameter*2;
 //    }
     
 }

@@ -73,7 +73,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
     public static bool IsPositionOnRectEdge(Vector2 pos, Rect r, iCS_EdgeEnum edge) {
-		float maxDistance= iCS_EditorConfig.PortSize;
+		float maxDistance= iCS_EditorConfig.PortDiameter;
         float distance= 2f*maxDistance;
         float leftX  = r.xMin;
         float rightX = r.xMax;

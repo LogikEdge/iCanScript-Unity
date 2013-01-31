@@ -30,7 +30,7 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	static void BuildValuePortTemplates(float scale) {
-        float len= scale*iCS_EditorConfig.PortSize;
+        float len= scale*iCS_EditorConfig.PortDiameter;
 		BuildValuePortTemplate(len, ref myValuePortTemplate);
 		BuildValuePortTemplate(iCS_EditorConfig.SelectedPortFactor*len, ref mySelectedValuePortTemplate);
 	}
