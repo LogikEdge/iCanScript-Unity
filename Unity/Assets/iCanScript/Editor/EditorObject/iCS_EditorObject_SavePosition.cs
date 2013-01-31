@@ -5,48 +5,6 @@ using System.Collections;
 //  SAVE POSITION
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 public partial class iCS_EditorObject {
-    // ----------------------------------------------------------------------
-    public void SavePosition() {
-        if(IsPort) {
-            SavePortPosition();
-        } else {
-            SaveNodePosition();
-        }
-    }
-    // ----------------------------------------------------------------------
-    public void SaveNodePosition() {
-//        // Save the global position for the root node.
-//        var engineObject= EngineObject;
-//        if(!IsParentValid) {
-//            engineObject.LocalAnchorPosition= GlobalPosition;
-//            return;
-//        }
-//        // Compute position ratio using node children area.
-//        var childArea= Parent.ChildrenLocalRect;
-//        var topLeftCorner= new Vector2(childArea.x, childArea.y);
-//        var diff= LocalPosition-topLeftCorner;
-//        float ratioX= diff.x/childArea.width;
-//        float ratioY= diff.y/childArea.height;
-//        if(ratioX < 0f) ratioX= 0f;
-//        if(ratioX > 1f) ratioX= 1f;
-//        if(ratioY < 0f) ratioY= 0f;
-//        if(ratioY > 1f) ratioY= 1f;
-//        engineObject.LocalAnchorPosition= new Vector2(ratioX, ratioY);
-    }
-
-    // ======================================================================
-    // Save Port Position
-    // ----------------------------------------------------------------------
-    // Updates port position after successful relocation.
-    void SavePortPosition() {
-//        CleanupPortEdgePosition();
-//        if(IsOnVerticalEdge) {
-//            SaveVerticalPortRatioFromLocalPosition(LocalPosition);            
-//        } else {
-//            SaveHorizontalPortRatioFromLocalPosition(LocalPosition);                        
-//        }
-//        Parent.LayoutPorts();        
-    }
 //    // ----------------------------------------------------------------------
 //    // Updates the port ratio on the horizontal edage given the port local position.
 //    void SaveVerticalPortRatioFromLocalPosition(Vector2 localPosition) {

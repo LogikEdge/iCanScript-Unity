@@ -145,13 +145,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         DragObject.UpdatePortEdge();
 					}
                     DragObject.CleanupPortEdgePosition();
-                    DragObject.SavePosition();
                     DragObject.Parent.LayoutPorts();						
 				} else {
 	                // Determine if we should convert to data port connection drag.
 					if(!DragObject.IsStatePort) {
     					CreateDragPort();
-						DragOriginalPort.SavePosition();						
 					}
 				}
                 break;
@@ -231,7 +229,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.PortRelocation:
                     DragObject.IsFloating= false;
                     if(DragObject.IsDataPort) {
-                        DragObject.SavePosition();
                         break;
                     }                    
                     if(DragObject.IsStatePort) {
@@ -256,7 +253,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         // Relocate dragged port if on the same state.
                         if(origState == newState) {
                             DragObject.UpdatePortEdge();
-							DragObject.SavePosition();
 							origState.LayoutPorts();
                             break;
                         }
@@ -274,7 +270,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         DragObject.Parent= newState;
                         DragObject.SetGlobalAnchorAndLayoutPosition(dragObjectPosition);
                         DragObject.UpdatePortEdge();
-                        DragObject.SavePosition();
                         newState.LayoutPorts();
                         iCS_EditorObject transitionModule= IStorage.GetTransitionModule(DragObject);
                         iCS_EditorObject otherStatePort= DragObject.IsInputPort ? IStorage.GetFromStatePort(transitionModule) : IStorage.GetToStatePort(transitionModule);
