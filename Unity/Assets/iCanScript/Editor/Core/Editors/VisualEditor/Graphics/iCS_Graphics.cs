@@ -354,7 +354,7 @@ public partial class iCS_Graphics {
         if(IsInvisible(node) || IsIconized(node)) return;
         
         // Draw node box (if visible).
-        Rect position= GetDisplayPosition(node, iStorage);
+        Rect position= node.GlobalDisplayRect;
         if(!IsVisible(position)) return;
 
         string title= GetNodeName(node);
@@ -371,7 +371,7 @@ public partial class iCS_Graphics {
             EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
         }
         // Fold/Unfold icon
-        if(ShouldDisplayFoldIcon(node, iStorage)) {
+        if(ShouldDisplayFoldIcon(node)) {
             if(node.IsFolded) {
                 GUI_DrawTexture(new Rect(position.x+6f, position.y-1f, foldedIcon.width, foldedIcon.height), foldedIcon);                           
             } else {
@@ -396,7 +396,7 @@ public partial class iCS_Graphics {
         if(!IsIconized(node)) return;
         
         // Draw minimized node (if visible).
-        Rect position= GetDisplayPosition(node, iStorage);
+        Rect position= node.GlobalDisplayRect;
         if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
         Rect displayArea= new Rect(position.x-100f, position.y-16f, position.width+200f, position.height+16f);
         if(!IsVisible(displayArea)) return;
@@ -711,8 +711,8 @@ public partial class iCS_Graphics {
         if(!(IsVisible(sourceParent) && !port.IsOutStatePort)) return;
         
         // No connection to draw if outside clipping area.
-        Rect portPos= GetDisplayPosition(port, iStorage);
-        Rect sourcePos= GetDisplayPosition(source, iStorage);
+        Rect portPos= port.GlobalDisplayRect;
+        Rect sourcePos= source.GlobalDisplayRect;
         Rect displayArea= new Rect(portPos.x, portPos.y, sourcePos.x-portPos.x, sourcePos.y-portPos.y);
         if(displayArea.width < 0) { displayArea.x= sourcePos.x; displayArea.width= portPos.x-sourcePos.x; }
         if(displayArea.height < 0) { displayArea.y= sourcePos.y; displayArea.height= portPos.y-sourcePos.y; }
@@ -769,10 +769,6 @@ public partial class iCS_Graphics {
     
     // ======================================================================
     //  Utilities
-    // ----------------------------------------------------------------------
-    static Rect GetDisplayPosition(iCS_EditorObject edObj, iCS_IStorage iStorage) {
-		return iStorage.GetDisplayPosition(edObj);
-    }
    	// ----------------------------------------------------------------------
  	bool IsIconized(iCS_EditorObject edObj) {
         if(!edObj.IsNode) return false;
