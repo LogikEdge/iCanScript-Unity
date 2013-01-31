@@ -351,7 +351,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
         // Don't draw minimized node.
-        if(IsInvisible(node) || IsIconized(node, iStorage)) return;
+        if(IsInvisible(node) || IsIconized(node)) return;
         
         // Draw node box (if visible).
         Rect position= GetDisplayPosition(node, iStorage);
@@ -393,7 +393,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
-        if(!IsIconized(node, iStorage)) return;
+        if(!IsIconized(node)) return;
         
         // Draw minimized node (if visible).
         Rect position= GetDisplayPosition(node, iStorage);
@@ -414,13 +414,13 @@ public partial class iCS_Graphics {
             GUI_Label(texturePos, new GUIContent("", GetNodeTooltip(node,iStorage)), LabelStyle);            
 #endif
         }
-		ShowTitleOver(texturePos, node, iStorage);
+		ShowTitleOver(texturePos, node);
     }
     // ----------------------------------------------------------------------
-	void ShowTitleOver(Rect pos, iCS_EditorObject node, iCS_IStorage iStorage) {
+	void ShowTitleOver(Rect pos, iCS_EditorObject node) {
         if(!ShouldShowTitle()) return;
         string title= GetNodeName(node);
-        Vector2 labelSize= GetNodeNameSize(node, iStorage);
+        Vector2 labelSize= GetNodeNameSize(node);
 		pos.y-=5f;	// Put title a bit higher.
         pos= TranslateAndScale(pos);
         Rect labelRect= new Rect(0.5f*(pos.x+pos.xMax-labelSize.x), pos.y-labelSize.y, labelSize.x, labelSize.y);
@@ -774,7 +774,7 @@ public partial class iCS_Graphics {
 		return iStorage.GetDisplayPosition(edObj);
     }
    	// ----------------------------------------------------------------------
- 	bool IsIconized(iCS_EditorObject edObj, iCS_IStorage iStorage) {
+ 	bool IsIconized(iCS_EditorObject edObj) {
         if(!edObj.IsNode) return false;
         float area= Math3D.Area(edObj.DisplaySize);
         return (area <= kIconicArea+1f);

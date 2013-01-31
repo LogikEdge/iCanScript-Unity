@@ -6,7 +6,6 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Field.
 	// ----------------------------------------------------------------------
-    iCS_IStorage        myIStorage= null;
     iCS_EditorObject    myTarget  = null;
 	iCS_FieldEditor	    myEditor  = null;
 	iCS_Graphics		myGraphics= null;
@@ -14,14 +13,13 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
     // ======================================================================
     // Property.
 	// ----------------------------------------------------------------------
-	Rect 	 Position { get { return myGraphics.GetNodeNameGUIPosition(myTarget, myIStorage); }}
+	Rect 	 Position { get { return myGraphics.GetNodeNameGUIPosition(myTarget); }}
 	GUIStyle GuiStyle { get { return myTarget.IsIconized ? myGraphics.LabelStyle : myGraphics.TitleStyle; }}
 	
     // ======================================================================
     // Initialization.
 	// ----------------------------------------------------------------------
-    public iCS_NodeNameEditor(iCS_EditorObject target, iCS_IStorage iStorage, iCS_Graphics graphics) {
-        myIStorage= iStorage;
+    public iCS_NodeNameEditor(iCS_EditorObject target, iCS_Graphics graphics) {
         myTarget= target;
 		myGraphics= graphics;
 		myEditor= new iCS_FieldEditor(Position, iCS_PreferencesEditor.RemoveProductPrefix(target.RawName), iCS_FieldTypeEnum.String, GuiStyle);
@@ -32,7 +30,7 @@ public class iCS_NodeNameEditor : iCS_ISubEditor {
 	// ----------------------------------------------------------------------
     public bool Update() {
         // Abort if target is invalid.
-        if(myIStorage == null || myTarget == null) {
+        if(myTarget == null) {
             return false;
         }
 		myEditor.Position= Position;

@@ -8,7 +8,7 @@ public partial class iCS_Graphics {
     public bool IsNodeTitleBarPicked(iCS_EditorObject node, Vector2 pick, iCS_IStorage iStorage) {
         if(node == null || !node.IsNode || !IsVisible(node)) return false;
         if(node.IsIconized) {
-            Rect nodeNamePos= GetNodeNamePosition(node, iStorage);
+            Rect nodeNamePos= GetNodeNamePosition(node);
             return nodeNamePos.Contains(pick);
         }
         Rect titleRect= GetDisplayPosition(node, iStorage);
@@ -20,8 +20,8 @@ public partial class iCS_Graphics {
     // Fold/Unfold icon functionality.
     // ----------------------------------------------------------------------
     public bool IsNodeNamePicked(iCS_EditorObject node, Vector2 pick, iCS_IStorage iStorage) {
-        if(IsIconized(node, iStorage)) {
-            Rect nodePos= GetNodeNamePosition(node, iStorage);
+        if(IsIconized(node)) {
+            Rect nodePos= GetNodeNamePosition(node);
             float invScale= 1.0f/Scale;
             nodePos.width*= invScale;
             nodePos.height*= invScale;
@@ -175,7 +175,7 @@ public partial class iCS_Graphics {
 //                Debug.Log("Node name: "+pickedNode.Name+" is being picked");
                 pickInfo.PickedObject= pickedNode;
                 pickInfo.PickedPart= iCS_PickPartEnum.Name;
-                Rect namePos= GetNodeNamePosition(pickedNode, iStorage);
+                Rect namePos= GetNodeNamePosition(pickedNode);
                 float invScale= 1.0f/Scale;
                 pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
                 var guiPos= TranslateAndScale(Math3D.ToVector2(namePos));
@@ -184,12 +184,12 @@ public partial class iCS_Graphics {
             }
             bool result= iStorage.UntilMatchingChildNode(pickedNode,
                 c=> {
-                    if(IsIconized(c, iStorage)) {
+                    if(IsIconized(c)) {
                         if(IsNodeNamePicked(c, pick, iStorage)) {
 //                            Debug.Log("Node name: "+c.Name+" is being picked");
                             pickInfo.PickedObject= c;
                             pickInfo.PickedPart= iCS_PickPartEnum.Name;
-                            Rect namePos= GetNodeNamePosition(c, iStorage);
+                            Rect namePos= GetNodeNamePosition(c);
                             float invScale= 1.0f/Scale;
                             pickInfo.PickedPartGraphPosition= new Rect(namePos.x, namePos.y, namePos.width*invScale, namePos.height*invScale);
                             var guiPos= TranslateAndScale(Math3D.ToVector2(namePos));

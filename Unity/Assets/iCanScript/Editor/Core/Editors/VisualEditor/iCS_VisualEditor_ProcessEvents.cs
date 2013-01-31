@@ -200,7 +200,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     					mySubEditor= new iCS_PortNameEditor(pickedObject, pickInfo.IStorage, myGraphics);											
     				}
     				if(pickedObject.IsNode) {
-    					mySubEditor= new iCS_NodeNameEditor(pickedObject, pickInfo.IStorage, myGraphics);
+    					mySubEditor= new iCS_NodeNameEditor(pickedObject, myGraphics);
     				}                                            
                 } else {
                     MyWindow.ShowNotification(new GUIContent("The selected name cannot be changed !!!"));

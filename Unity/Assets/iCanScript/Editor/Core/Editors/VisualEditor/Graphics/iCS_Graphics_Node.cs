@@ -20,19 +20,19 @@ public partial class iCS_Graphics {
     }	
     // ----------------------------------------------------------------------
     // Returns the scaled node name size.
-    Vector2 GetNodeNameSize(iCS_EditorObject node, iCS_IStorage iStorage) {
+    Vector2 GetNodeNameSize(iCS_EditorObject node) {
         string portName= GetNodeName(node);
         GUIContent content= new GUIContent(portName);
-        return IsIconized(node, iStorage) ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
+        return IsIconized(node) ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
     }
     // ----------------------------------------------------------------------
     // Returns the non-scaled x,y with the scaled size.
-    Rect GetNodeNamePosition(iCS_EditorObject node, iCS_IStorage iStorage) {
-        Vector2 size= GetNodeNameSize(node, iStorage);
+    Rect GetNodeNamePosition(iCS_EditorObject node) {
+        Vector2 size= GetNodeNameSize(node);
         Rect pos= node.GlobalDisplayRect;
         float x= 0.5f*(pos.x+pos.xMax-size.x/Scale);
         float y= pos.y;
-        if(IsIconized(node, iStorage)) {
+        if(IsIconized(node)) {
             y-= 5f+size.y/Scale;
         } else {
 			y+= 0.9f*kNodeCornerRadius-0.5f*size.y/Scale;
@@ -41,8 +41,8 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     // Returns the scaled x,y,size.
-    public Rect GetNodeNameGUIPosition(iCS_EditorObject node, iCS_IStorage iStorage) {
-        Rect graphRect= GetNodeNamePosition(node, iStorage);
+    public Rect GetNodeNameGUIPosition(iCS_EditorObject node) {
+        Rect graphRect= GetNodeNamePosition(node);
         var guiPos= TranslateAndScale(Math3D.ToVector2(graphRect));
         return new Rect(guiPos.x, guiPos.y, graphRect.width, graphRect.height);	    
     }
