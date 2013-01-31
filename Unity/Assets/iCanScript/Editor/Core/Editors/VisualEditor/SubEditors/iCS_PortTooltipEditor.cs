@@ -11,13 +11,11 @@ public class iCS_PortTooltipEditor : iCS_ISubEditor {
     // ======================================================================
     // Field.
 	// ----------------------------------------------------------------------
-    iCS_IStorage        myIStorage       = null;
     iCS_EditorObject    myTarget         = null;
     string	            myOriginalName   = null;
     string	            myOriginalTooltip= null;
     
-    public iCS_PortTooltipEditor(iCS_EditorObject target, iCS_IStorage iStorage) {
-        myIStorage= iStorage;
+    public iCS_PortTooltipEditor(iCS_EditorObject target) {
         myTarget= target;
         myOriginalName= myTarget.RawName;
         myOriginalTooltip= myTarget.Tooltip;
@@ -28,7 +26,7 @@ public class iCS_PortTooltipEditor : iCS_ISubEditor {
 //    }
     
     public bool Update() {
-        if(myTarget == null || myIStorage == null) {
+        if(myTarget == null) {
             Debug.LogWarning("iCanScript: Port Editor invoked before it is initialized.");
 //			Close();
             return false;
