@@ -145,15 +145,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				if(iCS_EditorObject.IsPositionOnRectEdge(newPosition,
 				                                         DragObject.Parent.GlobalDisplayRect,
 				                                         DragObject.Edge)) {
-	                if(DragObject.IsStatePort) {
-                        DragObject.UpdatePortEdge();
-					}
-                    DragObject.CleanupPortEdgePosition();
                     DragObject.Parent.LayoutPorts();						
 				} else {
 	                // Determine if we should convert to data port connection drag.
 					if(!DragObject.IsStatePort) {
-                        Debug.Log("Create drag port");
     					CreateDragPort();
 					}
 				}
@@ -179,9 +174,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 Vector2 mousePosInGraph= GraphMousePosition;
                 iCS_EditorObject closestPort= IStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
-                    Vector2 closestPortPos= closestPort.GlobalLayoutPosition;
+                    Vector2 closestPortPos= closestPort.GlobalDisplayPosition;
                     if(Vector2.Distance(closestPortPos, mousePosInGraph) < iCS_EditorConfig.PortDiameter) {
-                        DragObject.SetGlobalAnchorAndLayoutPosition(closestPortPos);
+                        DragObject.GlobalLayoutPosition= closestPortPos;
                     }                    
                 }
                 // Special case for module ports.
