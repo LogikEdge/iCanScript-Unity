@@ -161,7 +161,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case DragTypeEnum.PortConnection: {
                 // Update port position.
                 var newPosition= DragStartPosition + delta;
-                DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
+                DragObject.GlobalLayoutPosition= newPosition;
                 // Determine if we should go back to port relocation. (IsPositionOnEdge)
                 if(!DragOriginalPort.IsInMuxPort && DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
                     iCS_EditorObject dragObjectSource= DragObject.Source;
