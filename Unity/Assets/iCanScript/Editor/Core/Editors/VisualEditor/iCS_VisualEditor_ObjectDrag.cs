@@ -54,9 +54,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
         // Port drag.
         iCS_EditorObject port= SelectedObject;
-        if(port != null && port.IsPort && !port.IsIconized && !port.IsTransitionPort) {
+        if(port != null && port.IsPort && port.IsVisibleOnDisplay && !port.IsTransitionPort) {
             IStorage.RegisterUndo("Port Drag");
-            IStorage.CleanupDeadPorts= false;
+            IStorage.CleanupDeadPorts= false;		// Suspend object cleanup.
             DragType= DragTypeEnum.PortRelocation;
             DragOriginalPort= port;
             DragFixPort= port;
@@ -69,6 +69,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_EditorObject node= SelectedObject;                
         if(node != null && node.IsNode && (node.IsIconized || !node.IsState || myGraphics.IsNodeTitleBarPicked(node, pos))) {
             if(IsCopyKeyDown) {
+				// Transform into Unity drag & drop protocol. 
                 GameObject go= new GameObject(node.Name);
                 go.hideFlags = HideFlags.HideAndDontSave;
                 go.AddComponent("iCS_Library");
@@ -124,12 +125,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
         // Compute new object position.
         Vector2 delta= ViewportMousePosition - MouseDragStartPosition;
+        var newPosition= DragStartPosition + delta;
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
                 iCS_EditorObject node= DragObject;
                 node.IsFloating= IsFloatingKeyDown;
-                node.UserDragTo(DragStartPosition+delta);
+                node.UserDragTo(newPosition);
                 break;
             case DragTypeEnum.PortRelocation: {
 				// We can't relocate a mux port child.
@@ -138,10 +140,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					return;
 				}
                 // Update port position.
-                var newPortPos= DragStartPosition + delta;
-                DragObject.SetGlobalAnchorAndLayoutPosition(newPortPos);
+                DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
 				// Consider port relocation when dragging on parent edge.
-				if(iCS_EditorObject.IsPositionOnRectEdge(newPortPos,
+				if(iCS_EditorObject.IsPositionOnRectEdge(newPosition,
 				                                         DragObject.Parent.GlobalDisplayRect,
 				                                         DragObject.Edge)) {
 	                if(DragObject.IsStatePort) {
@@ -160,7 +161,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case DragTypeEnum.PortConnection: {
                 // Update port position.
-                var newPosition= DragStartPosition + delta;
                 DragObject.GlobalLayoutPosition= newPosition;
                 // Determine if we should go back to port relocation. (IsPositionOnEdge)
                 if(!DragOriginalPort.IsInMuxPort && DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
@@ -204,7 +204,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case DragTypeEnum.TransitionCreation:
                 // Update port position.
-                DragObject.SetGlobalAnchorAndLayoutPosition(DragStartPosition+delta);
+                DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
                 break;
         }
     }    
