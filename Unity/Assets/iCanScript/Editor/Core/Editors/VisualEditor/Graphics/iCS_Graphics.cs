@@ -711,8 +711,8 @@ public partial class iCS_Graphics {
         if(!(IsVisible(sourceParent) && !port.IsOutStatePort)) return;
         
         // No connection to draw if outside clipping area.
-        Rect portPos= port.GlobalDisplayRect;
-        Rect sourcePos= source.GlobalDisplayRect;
+        var portPos= port.GlobalDisplayPosition;
+        var sourcePos= source.GlobalDisplayPosition;
         Rect displayArea= new Rect(portPos.x, portPos.y, sourcePos.x-portPos.x, sourcePos.y-portPos.y);
         if(displayArea.width < 0) { displayArea.x= sourcePos.x; displayArea.width= portPos.x-sourcePos.x; }
         if(displayArea.height < 0) { displayArea.y= sourcePos.y; displayArea.height= portPos.y-sourcePos.y; }

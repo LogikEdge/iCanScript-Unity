@@ -23,7 +23,7 @@ public class iCS_ConnectionParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public iCS_ConnectionParams(iCS_EditorObject port, Rect portPos, iCS_EditorObject source, Rect sourcePos, iCS_IStorage storage) {
+    public iCS_ConnectionParams(iCS_EditorObject port, Vector2 portPos, iCS_EditorObject source, Vector2 sourcePos, iCS_IStorage storage) {
         Start= new Vector2(sourcePos.x, sourcePos.y);
         End= new Vector2(portPos.x, portPos.y);
 
@@ -38,7 +38,7 @@ public class iCS_ConnectionParams {
         Center= BezierCenter(Start, End, StartTangent, EndTangent);
     }
     // ----------------------------------------------------------------------
-    public iCS_ConnectionParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, port.GlobalDisplayRect, source, source.GlobalDisplayRect, storage) {}
+    public iCS_ConnectionParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, port.GlobalDisplayPosition, source, source.GlobalDisplayPosition, storage) {}
     // ----------------------------------------------------------------------
     public iCS_ConnectionParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, port.Source, storage) {}
     // ----------------------------------------------------------------------
