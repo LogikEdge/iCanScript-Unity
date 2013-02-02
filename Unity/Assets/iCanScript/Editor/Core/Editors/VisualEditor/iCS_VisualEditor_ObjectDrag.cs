@@ -54,7 +54,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
         // Port drag.
         iCS_EditorObject port= SelectedObject;
-        if(port != null && port.IsPort && port.IsVisibleOnDisplay && !port.IsTransitionPort) {
+        if(port != null && port.IsPort && port.IsVisibleOnDisplay) {
             IStorage.RegisterUndo("Port Drag");
             IStorage.CleanupDeadPorts= false;		// Suspend object cleanup.
             DragType= DragTypeEnum.PortRelocation;
@@ -148,7 +148,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     DragObject.Parent.LayoutPorts();						
 				} else {
 	                // Determine if we should convert to data port connection drag.
-					if(!DragObject.IsStatePort) {
+					if(!(DragObject.IsStatePort || DragObject.IsTransitionPort)) {
     					CreateDragPort();
 					}
 				}
