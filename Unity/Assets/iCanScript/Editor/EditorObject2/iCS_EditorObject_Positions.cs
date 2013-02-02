@@ -23,7 +23,7 @@ public partial class iCS_EditorObject {
 		set {
 			// Port local anchor position setter.
             if(IsPort) {
-    			UpdatePortEdge();
+    			UpdatePortEdge(value);
     			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);
                 return;
             }

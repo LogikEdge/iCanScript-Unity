@@ -25,6 +25,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Updates the port edge information from the port type.
     public void UpdatePortEdge() {
+		UpdatePortEdge(LocalDisplayPosition);
+    }
+	// ----------------------------------------------------------------------
+    // Updates the port edge information from the port type.
+    public void UpdatePortEdge(Vector2 localPosition) {
         // Enable ports are always on top of the node.
         if(IsEnablePort) {
             Edge= iCS_EdgeEnum.Top;
@@ -37,7 +42,7 @@ public partial class iCS_EditorObject {
             return;
         }
         // Selected closest edge for all other types of ports.
-        Edge= ClosestEdge;            
+        Edge= GetClosestEdge(localPosition);
     }
     // ----------------------------------------------------------------------
     public void CleanupPortEdgePosition() {
@@ -97,33 +102,35 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
 	public iCS_EdgeEnum ClosestEdge {
-		get {
-			// Don't change edge if parent is iconized.
-			var parent= Parent;
-			if(parent.IsIconized) return Edge;
-            var parentSize= parent.LayoutSize;
-            float leftX  = -0.5f*parentSize.x;
-            float rightX =  0.5f*parentSize.x;
-            float topY   = -0.5f*parentSize.y;
-            float bottomY=  0.5f*parentSize.y;
-			var edge= iCS_EdgeEnum.Top;
-			float distance= Math3D.DistanceFromHorizontalLineSegment(LocalLayoutPosition, leftX, rightX, topY);
-			float d= Math3D.DistanceFromHorizontalLineSegment(LocalLayoutPosition, leftX, rightX, bottomY);
-			if(d < distance) {
-				distance= d;
-				edge= iCS_EdgeEnum.Bottom;
-			}
-			d= Math3D.DistanceFromVerticalLineSegment(LocalLayoutPosition, topY, bottomY, leftX);
-			if(d < distance) {
-				distance= d;
-				edge= iCS_EdgeEnum.Left;
-			}
-			d= Math3D.DistanceFromVerticalLineSegment(LocalLayoutPosition, topY, bottomY, rightX); 
-			if(d < distance) {
-				edge= iCS_EdgeEnum.Right;
-			}
-			return edge;
+		get { return GetClosestEdge(LocalDisplayPosition); }
+	}
+    // ----------------------------------------------------------------------
+	public iCS_EdgeEnum GetClosestEdge(Vector2 localPosition) {
+		// Don't change edge if parent is iconized.
+		var parent= Parent;
+		if(parent.IsIconized) return Edge;
+        var parentSize= parent.LayoutSize;
+        float leftX  = -0.5f*parentSize.x;
+        float rightX =  0.5f*parentSize.x;
+        float topY   = -0.5f*parentSize.y;
+        float bottomY=  0.5f*parentSize.y;
+		var edge= iCS_EdgeEnum.Top;
+		float distance= Math3D.DistanceFromHorizontalLineSegment(localPosition, leftX, rightX, topY);
+		float d= Math3D.DistanceFromHorizontalLineSegment(localPosition, leftX, rightX, bottomY);
+		if(d < distance) {
+			distance= d;
+			edge= iCS_EdgeEnum.Bottom;
 		}
+		d= Math3D.DistanceFromVerticalLineSegment(localPosition, topY, bottomY, leftX);
+		if(d < distance) {
+			distance= d;
+			edge= iCS_EdgeEnum.Left;
+		}
+		d= Math3D.DistanceFromVerticalLineSegment(localPosition, topY, bottomY, rightX); 
+		if(d < distance) {
+			edge= iCS_EdgeEnum.Right;
+		}
+		return edge;
 	}
 
 }
