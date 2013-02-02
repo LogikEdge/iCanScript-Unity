@@ -396,13 +396,14 @@ public partial class iCS_Graphics {
         if(!IsIconized(node)) return;
         
         // Draw minimized node (if visible).
-        Rect position= node.GlobalDisplayRect;
-        if(position.width < 12f || position.height < 12f) return;  // Don't show if too small.
-        Rect displayArea= new Rect(position.x-100f, position.y-16f, position.width+200f, position.height+16f);
+        Rect displayRect= node.GlobalDisplayRect;
+        if(displayRect.width < 12f || displayRect.height < 12f) return;  // Don't show if too small.
+        Rect displayArea= new Rect(displayRect.x-100f, displayRect.y-16f, displayRect.width+200f, displayRect.height+16f);
         if(!IsVisible(displayArea)) return;
 
         Texture icon= GetMaximizeIcon(node);
-        Rect texturePos= new Rect(position.x, position.y, icon.width, icon.height);                
+		var position= Math3D.Middle(displayRect);
+        Rect texturePos= new Rect(position.x-0.5f*icon.width, position.y-0.5f*icon.height, icon.width, icon.height);                
         if(node.IsTransitionModule) {
             DrawMinimizedTransitionModule(iStorage.GetTransitionModuleVector(node), texturePos, Color.white);
         } else {
