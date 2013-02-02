@@ -46,7 +46,7 @@ public class iCS_ConnectionParams {
         // Don't compute complex tangents if we don't have a proper parent.
         iCS_EditorObject portParent= port.Parent;
         if(port.IsFloating || to.IsFloating) {
-            if(port.IsDataPort || !storage.IsNearNodeEdge(portParent, port.GlobalDisplayPosition, port.Edge)) {
+            if(port.IsDataPort || !portParent.IsPositionOnEdge(port.GlobalDisplayPosition, port.Edge)) {
                 Vector2 fromPos= port.GlobalDisplayPosition;
                 Vector2 toPos= to.GlobalDisplayPosition;
                 return GetBestDirectionFrom((toPos-fromPos).normalized);                

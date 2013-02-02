@@ -36,32 +36,6 @@ public partial class iCS_IStorage {
     }
 
     // ----------------------------------------------------------------------
-    // Returns true if the distance to parent is less then twice the port size.
-    public bool IsNearNodeEdge(iCS_EditorObject node, Vector2 point, iCS_EdgeEnum edge) {
-		float maxDistance= 2f*iCS_EditorConfig.PortDiameter;
-        float distance= maxDistance+1f;
-		var pos= node.GlobalLayoutRect;
-		switch(edge) {
-			case iCS_EdgeEnum.Left: {
-				distance= Math3D.DistanceFromVerticalLineSegment(point, pos.y, pos.yMax, pos.x);
-				break;
-			}
-			case iCS_EdgeEnum.Right: {
-				distance= Math3D.DistanceFromVerticalLineSegment(point, pos.y, pos.yMax, pos.xMax);
-				break;
-			}
-			case iCS_EdgeEnum.Bottom: {
-				distance= Math3D.DistanceFromHorizontalLineSegment(point, pos.x, pos.xMax, pos.yMax);
-				break;
-			}
-			case iCS_EdgeEnum.Top: {
-				distance= Math3D.DistanceFromHorizontalLineSegment(point, pos.x, pos.xMax, pos.y);
-				break;
-			}
-		}
-        return distance <= maxDistance;
-    }
-    // ----------------------------------------------------------------------
     // Returns the minimal distance from the parent.
     public float GetDistanceFromParent(iCS_EditorObject port) {
         iCS_EditorObject parentNode= port.Parent;
@@ -71,15 +45,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearParentEdge(iCS_EditorObject port, iCS_EdgeEnum edge= iCS_EdgeEnum.None) {
-        var parent= port.Parent;
+        var parent= port.ParentNode;
         var pos= port.GlobalLayoutPosition;
-        return IsNearNodeEdge(parent, pos, (edge != iCS_EdgeEnum.None ? edge : port.Edge));
+        return parent.IsPositionOnEdge(pos, (edge != iCS_EdgeEnum.None ? edge : port.Edge));
     }
-//    // ----------------------------------------------------------------------
-//    // Returns true if the distance to parent is less then twice the port size.
-//    public bool IsNearParent(iCS_EditorObject port) {
-//        if(GetNodeAt(port.GlobalPosition) != port.Parent) return false;
-//        return GetDistanceFromParent(port) <= iCS_EditorConfig.PortDiameter*2;
-//    }
     
 }
