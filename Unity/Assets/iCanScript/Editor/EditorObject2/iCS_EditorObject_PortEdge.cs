@@ -108,7 +108,7 @@ public partial class iCS_EditorObject {
 	public iCS_EdgeEnum GetClosestEdge(Vector2 localPosition) {
 		// Don't change edge if parent is iconized.
 		var parent= Parent;
-		if(parent.IsIconized) return Edge;
+		if(parent.IsIconizedOnDisplay) return Edge;
         var parentSize= parent.LayoutSize;
         float leftX  = -0.5f*parentSize.x;
         float rightX =  0.5f*parentSize.x;

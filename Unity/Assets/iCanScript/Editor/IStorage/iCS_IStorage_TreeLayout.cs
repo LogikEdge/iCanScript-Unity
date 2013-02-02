@@ -32,7 +32,7 @@ public partial class iCS_IStorage {
         }
 
         // Minimized nodes are fully collapsed.
-        if(node.IsIconized) {
+        if(node.IsIconizedInLayout) {
             node.LayoutSize= iCS_Graphics.GetMaximizeIconSize(node);
             return;
         }

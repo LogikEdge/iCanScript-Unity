@@ -372,7 +372,7 @@ public partial class iCS_Graphics {
         }
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node)) {
-            if(node.IsFolded) {
+            if(node.IsFoldedOnDisplay) {
                 GUI_DrawTexture(new Rect(position.x+6f, position.y-1f, foldedIcon.width, foldedIcon.height), foldedIcon);                           
             } else {
                 GUI_DrawTexture(new Rect(position.x+6f, position.y-1f, unfoldedIcon.width, unfoldedIcon.height), unfoldedIcon);               

@@ -48,6 +48,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 LocalLayoutPosition {
 		get {
+			if(IsPort) {
+				var parentNode= ParentNode;
+				if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) {
+					return Vector2.zero;
+				}				
+			}
 			return LocalAnchorPosition+LocalLayoutOffset;
 		}
 		set {

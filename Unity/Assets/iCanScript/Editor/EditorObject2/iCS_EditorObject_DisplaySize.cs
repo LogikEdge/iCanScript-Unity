@@ -13,7 +13,7 @@ public partial class iCS_EditorObject {
     // Returns the size of the node using the current children layout.
 	public Vector2 ComputeNodeLayoutSize(Rect childrenGlobalRect) {
 		if(!IsVisibleInLayout) return Vector2.zero;
-		if(IsIconized) return iCS_Graphics.GetMaximizeIconSize(this);
+		if(IsIconizedInLayout) return iCS_Graphics.GetMaximizeIconSize(this);
         float titleHeight= NodeTitleHeight;
         float titleWidth = NodeTitleWidth;
 		float minHeight= NodeTopPadding+NodeBottomPadding;
@@ -24,7 +24,7 @@ public partial class iCS_EditorObject {
         float portsTitleWidth= Mathf.Max(neededPortsWidth, titleWidth);
         float width = Mathf.Max(minWidth, portsTitleWidth);
         float height= Mathf.Max(minHeight, neededPortsHeight);
-		if(IsFolded || IsFunction) {
+		if(IsFoldedInLayout || IsFunction) {
 			return new Vector2(width, height);
 		}
         // We need to add the children area if any are visible.

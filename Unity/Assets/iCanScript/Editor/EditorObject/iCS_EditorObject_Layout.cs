@@ -16,7 +16,7 @@ public partial class iCS_EditorObject {
             // Avoid propagating change if we did not change size
             if(Math3D.IsEqual(myLayoutSize, value)) return;
             myLayoutSize= value;
-            if(IsNode && !IsIconized && IsVisibleInLayout) {
+            if(IsNode && !IsIconizedInLayout && IsVisibleInLayout) {
                 LayoutPorts();
                 if(IsParentValid) {
                     Parent.IsDirty= true;

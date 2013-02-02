@@ -7,7 +7,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     public bool IsNodeTitleBarPicked(iCS_EditorObject node, Vector2 pick) {
         if(node == null || !node.IsNode || !IsVisible(node)) return false;
-        if(node.IsIconized) {
+        if(node.IsIconizedOnDisplay) {
             Rect nodeNamePos= GetNodeNamePosition(node);
             return nodeNamePos.Contains(pick);
         }
@@ -47,7 +47,7 @@ public partial class iCS_Graphics {
         return foldIconPos.Contains(pick);
     }
     bool ShouldDisplayFoldIcon(iCS_EditorObject obj) {
-        if(obj.IsIconized) return false;
+        if(obj.IsIconizedOnDisplay) return false;
         return (obj.IsModule || obj.IsStateChart || obj.IsState);
     }
     Rect GetFoldIconPosition(iCS_EditorObject obj) {
@@ -64,7 +64,7 @@ public partial class iCS_Graphics {
         return minimizeIconPos.Contains(pick);
     }
     bool ShouldDisplayMinimizeIcon(iCS_EditorObject obj) {
-        return obj.InstanceId != 0 && obj.IsNode && !obj.IsIconized;
+        return obj.InstanceId != 0 && obj.IsNode && !obj.IsIconizedOnDisplay;
     }
     Rect GetMinimizeIconPosition(iCS_EditorObject node) {
         Rect objPos= node.GlobalDisplayRect;
@@ -98,7 +98,7 @@ public partial class iCS_Graphics {
         return maximizeIconPos.Contains(mousePos);
     }
     bool ShouldDisplayMaximizeIcon(iCS_EditorObject obj) {
-        return obj.InstanceId != 0 && obj.IsNode && obj.IsIconized;
+        return obj.InstanceId != 0 && obj.IsNode && obj.IsIconizedOnDisplay;
     }
     Rect GetMaximizeIconPosition(iCS_EditorObject obj) {
         return obj.GlobalDisplayRect;

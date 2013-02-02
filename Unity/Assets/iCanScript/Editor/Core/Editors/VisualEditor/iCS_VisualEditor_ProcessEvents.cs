@@ -87,7 +87,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Process fold/unfold/minimize/maximize click.
                 Vector2 mouseGraphPos= GraphMousePosition;
                 if(myGraphics.IsFoldIconPicked(SelectedObject, mouseGraphPos)) {
-                    if(SelectedObject.IsFolded) {
+                    if(SelectedObject.IsFoldedOnDisplay) {
                         IStorage.RegisterUndo("Unfold");
                         IStorage.Unfold(SelectedObject);
                     } else {
@@ -135,16 +135,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ProcessNodeDisplayOptionEvent() {
         if(SelectedObject == null || !SelectedObject.IsNode) return;
         if(SelectedObject.IsFunction) {
-            if(SelectedObject.IsIconized && !IsShiftKeyDown) {
+            if(SelectedObject.IsIconizedOnDisplay && !IsShiftKeyDown) {
                 IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
                 IStorage.Unfold(SelectedObject);                                                                            
-            } else if(SelectedObject.IsUnfolded && IsShiftKeyDown) {
+            } else if(SelectedObject.IsUnfoldedOnDisplay && IsShiftKeyDown) {
                 IStorage.RegisterUndo("Iconize "+SelectedObject.Name);
                 IStorage.Iconize(SelectedObject);                    
             }
         } else {
             if(IsShiftKeyDown) {
-                if(SelectedObject.IsUnfolded) {
+                if(SelectedObject.IsUnfoldedOnDisplay) {
                     if(IsControlKeyDown) {
                         IStorage.RegisterUndo("Iconize "+SelectedObject.Name);
                         IStorage.Iconize(SelectedObject);                                                
@@ -152,12 +152,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         IStorage.RegisterUndo("Fold "+SelectedObject.Name);
                         IStorage.Fold(SelectedObject);                                                                    
                     }
-                } else if(SelectedObject.IsFolded) {
+                } else if(SelectedObject.IsFoldedOnDisplay) {
                     IStorage.RegisterUndo("Iconize "+SelectedObject.Name);
                     IStorage.Iconize(SelectedObject);                        
                 }
             } else {
-                if(SelectedObject.IsIconized) {
+                if(SelectedObject.IsIconizedOnDisplay) {
                     if(IsControlKeyDown) {
                         IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
                         IStorage.Unfold(SelectedObject);                                                                                                    
@@ -165,7 +165,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         IStorage.RegisterUndo("Fold "+SelectedObject.Name);
                         IStorage.Fold(SelectedObject);                                            
                     }
-                } else if(SelectedObject.IsFolded) {
+                } else if(SelectedObject.IsFoldedOnDisplay) {
                     IStorage.RegisterUndo("Unfold "+SelectedObject.Name);
                     IStorage.Unfold(SelectedObject);                                                                            
                 }                    

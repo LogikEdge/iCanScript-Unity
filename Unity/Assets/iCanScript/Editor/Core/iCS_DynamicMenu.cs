@@ -91,7 +91,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void BehaviourMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         // Don't show any menu if behaviour not visible.
-        if(selectedObject.IsIconized || selectedObject.IsFolded) return;
+        if(selectedObject.IsIconizedOnDisplay || selectedObject.IsFoldedOnDisplay) return;
 
         int len= iCS_AllowedChildren.BehaviourChildNames.Length;
 		MenuContext[] menu= new MenuContext[len];
@@ -108,7 +108,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void ModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         MenuContext[] menu= new MenuContext[0];
-        if(!selectedObject.IsIconized && !selectedObject.IsFolded) {
+        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items
             menu= new MenuContext[2];
             menu[0]= new MenuContext(ModuleStr);
@@ -143,7 +143,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         MenuContext[] menu= new MenuContext[0];
-        if(!selectedObject.IsIconized && !selectedObject.IsFolded) {
+        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             menu= new MenuContext[1];
             menu[0]= new MenuContext(StateStr); 
         }
@@ -156,7 +156,7 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     void StateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
         MenuContext[] menu;
-        if(!selectedObject.IsIconized && !selectedObject.IsFolded) {
+        if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             int len= iCS_AllowedChildren.StateChildNames.Length;
             menu= new MenuContext[len+4];
             menu[0]= new MenuContext(StateStr);

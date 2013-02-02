@@ -484,7 +484,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_IStorage srcIStorage= new iCS_IStorage(sourceStorage);
         iCS_EditorObject srcRoot= srcIStorage.EditorObjects[sourceRoot.InstanceId];
         iCS_EditorObject pasted= IStorage.Copy(srcRoot, srcIStorage, validParent, point, IStorage);
-        if(pasted.IsUnfolded) {
+        if(pasted.IsUnfoldedOnDisplay) {
             IStorage.Fold(pasted);            
         }
     }

@@ -2,15 +2,6 @@ using UnityEngine;
 using System.Collections;
 
 public partial class iCS_IStorage {
-    public bool IsIconizedOnDisplay(iCS_EditorObject eObj)  { return eObj.IsIconized; }
-    public bool IsUnfoldedOnDisplay(iCS_EditorObject eObj)  { return eObj.IsUnfolded; }
-    public bool IsFoldedOnDisplay(iCS_EditorObject eObj)    { return eObj.IsFolded; }
-    public bool IsVisibleOnDisplay(iCS_EditorObject eObj)   { return eObj.IsVisibleOnDisplay; }
-    public bool IsIconizedInLayout(iCS_EditorObject eObj)   { return eObj.IsIconized; }
-    public bool IsUnfoldedInLayout(iCS_EditorObject eObj)   { return eObj.IsUnfolded; }
-    public bool IsFoldedInLayout(iCS_EditorObject eObj)     { return eObj.IsFolded; }
-    public bool IsVisibleInLayout(iCS_EditorObject eObj)    { return eObj.IsVisibleInLayout; }
-    
     // ======================================================================
     // Display Options
     // ----------------------------------------------------------------------

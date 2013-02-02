@@ -53,10 +53,10 @@ public class iCS_ConnectionParams {
             }
         }
 
-        if(port.IsOutTransitionPort && portParent.IsIconized) {
+        if(port.IsOutTransitionPort && portParent.IsIconizedOnDisplay) {
             return storage.GetTransitionModuleVector(portParent);
         }
-        if(port.IsInTransitionPort && portParent.IsIconized) {
+        if(port.IsInTransitionPort && portParent.IsIconizedOnDisplay) {
             return -storage.GetTransitionModuleVector(portParent);
         }
         Vector2 direction;

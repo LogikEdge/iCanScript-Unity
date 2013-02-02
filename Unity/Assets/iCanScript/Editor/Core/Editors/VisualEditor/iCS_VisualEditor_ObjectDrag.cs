@@ -67,7 +67,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
         // Node drag.
         iCS_EditorObject node= SelectedObject;                
-        if(node != null && node.IsNode && (node.IsIconized || !node.IsState || myGraphics.IsNodeTitleBarPicked(node, pos))) {
+        if(node != null && node.IsNode && (node.IsIconizedOnDisplay || !node.IsState || myGraphics.IsNodeTitleBarPicked(node, pos))) {
             if(IsCopyKeyDown) {
 				// Transform into Unity drag & drop protocol. 
                 GameObject go= new GameObject(node.Name);

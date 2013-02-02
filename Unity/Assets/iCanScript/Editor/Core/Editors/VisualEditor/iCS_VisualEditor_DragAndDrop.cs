@@ -23,7 +23,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 			}
 			if(eObj.IsNode) {
-    			if(draggedObject is Texture && eObj.IsIconized) {
+    			if(draggedObject is Texture && eObj.IsIconizedOnDisplay) {
 		    	    DragAndDrop.visualMode = DragAndDropVisualMode.Copy;
 				    return;				
                 }
@@ -68,7 +68,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 			if(eObj.IsNode) {
                 // Allow change of icon on minimized nodes.
-    			if(draggedObject is Texture && eObj.IsIconized) {
+    			if(draggedObject is Texture && eObj.IsIconizedOnDisplay) {
                     Texture newTexture= draggedObject as Texture;
                     string iconGUID= newTexture != null ? AssetDatabase.AssetPathToGUID(AssetDatabase.GetAssetPath(newTexture)) : null;
                     if(newTexture != null) {
