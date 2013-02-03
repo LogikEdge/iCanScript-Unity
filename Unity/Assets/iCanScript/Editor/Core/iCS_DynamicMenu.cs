@@ -5,11 +5,18 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class iCS_DynamicMenu {
+    // ======================================================================
+    // Types
+    // ----------------------------------------------------------------------
     internal class MenuContext {
         public string               Command;
         public iCS_EditorObject     SelectedObject;
         public iCS_IStorage         Storage;
         public iCS_ReflectionInfo   Descriptor;
+
+        // ======================================================================
+        // Menu context constructors.
+        // ----------------------------------------------------------------------
         public MenuContext(string command, iCS_ReflectionInfo descriptor= null) : this(command, descriptor, null, null) {}
         public MenuContext(string command, iCS_ReflectionInfo descriptor, iCS_EditorObject selected, iCS_IStorage storage) {
             Command= command;
@@ -18,6 +25,7 @@ public class iCS_DynamicMenu {
             Descriptor= descriptor;
         }
     }
+    
     // ======================================================================
     // Field
     // ----------------------------------------------------------------------

@@ -16,13 +16,23 @@ public partial class iCS_EditorObject {
 	public Vector2 LocalAnchorPosition {
 		get {
 			// Port local anchor position getter.
-            if(IsPort) return GetPortLocalAnchorPositionFromRatio();
+            if(IsPort) {
+				var parentNode= ParentNode;
+				if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) {
+					return Vector2.zero;
+				}				
+                return GetPortLocalAnchorPositionFromRatio();
+            }
             // Node local anchor position getter.
             return EngineObject.LocalAnchorPosition;
 		}
 		set {
 			// Port local anchor position setter.
             if(IsPort) {
+                // Don't update layout offset for port on iconized nodes.
+				var parentNode= ParentNode;
+				if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;
+                // Transform to a position ratio between 0f and 1f.
     			UpdatePortEdge(value);
     			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);
                 return;
@@ -34,9 +44,22 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
+    // Offset from the anchor position.
 	public Vector2 LocalLayoutOffset {
-		get { return EngineObject.LocalLayoutOffset; }
+		get {
+            if(IsPort) {
+				var parentNode= ParentNode;
+				if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) {
+					return Vector2.zero;
+				}				
+            }
+		    return EngineObject.LocalLayoutOffset;
+		}
 		set {
+            // Don't update layout offset for port on iconized nodes.
+			var parentNode= ParentNode;
+			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;
+            // Update the persistant local layout offset.
             var engineObject= EngineObject;
 			if(Math3D.IsEqual(engineObject.LocalLayoutOffset, value)) return;
 			engineObject.LocalLayoutOffset= value;
@@ -48,12 +71,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 LocalLayoutPosition {
 		get {
-			if(IsPort) {
-				var parentNode= ParentNode;
-				if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) {
-					return Vector2.zero;
-				}				
-			}
 			return LocalAnchorPosition+LocalLayoutOffset;
 		}
 		set {
