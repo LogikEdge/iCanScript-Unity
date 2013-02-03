@@ -4,9 +4,10 @@ using System.Collections;
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 GetPortLocalAnchorPositionFromRatio() {
-        var parent= Parent;
+        var parent= ParentNode;
         var ratio= PortPositionRatio;
         var parentSize= parent.DisplaySize;
+        if(parent.IsIconizedOnDisplay) parentSize*= 0.5f;
         float x, y;
         if(IsOnVerticalEdge) {
             x= (IsOnLeftEdge ? -0.5f : 0.5f)*parentSize.x;

@@ -17,10 +17,6 @@ public partial class iCS_EditorObject {
 		get {
 			// Port local anchor position getter.
             if(IsPort) {
-				var parentNode= ParentNode;
-				if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) {
-					return Vector2.zero;
-				}				
                 return GetPortLocalAnchorPositionFromRatio();
             }
             // Node local anchor position getter.
@@ -47,18 +43,14 @@ public partial class iCS_EditorObject {
     // Offset from the anchor position.
 	public Vector2 LocalLayoutOffset {
 		get {
-            if(IsPort) {
-				var parentNode= ParentNode;
-				if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) {
-					return Vector2.zero;
-				}				
-            }
 		    return EngineObject.LocalLayoutOffset;
 		}
 		set {
             // Don't update layout offset for port on iconized nodes.
-			var parentNode= ParentNode;
-			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;
+            if(IsPort) {
+    			var parentNode= ParentNode;
+    			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;                
+            }
             // Update the persistant local layout offset.
             var engineObject= EngineObject;
 			if(Math3D.IsEqual(engineObject.LocalLayoutOffset, value)) return;
