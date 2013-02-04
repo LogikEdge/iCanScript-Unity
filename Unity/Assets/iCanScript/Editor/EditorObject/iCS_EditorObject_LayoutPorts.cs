@@ -75,11 +75,10 @@ public partial class iCS_EditorObject {
 //		}
 //		return rs;
 //	}
-//    // ----------------------------------------------------------------------
-//    // Resolves the port separartion on a given edge.  The position is local
-//    // and ranges from 0 to "maxPos".
-//    static float[] ResolvePortCollisions(float[] pos, float maxPos) {
-//        int nbPorts= pos.Length;
+    // ----------------------------------------------------------------------
+    // Resolves the port layout position for a given edge.
+    static void ResolvePortCollisionsOnSameEdge(iCS_EditorObject[] ports) {
+        int nbPorts= ports.Length;
 //        if(nbPorts < 2) return pos;
 //        float minSeparation= iCS_EditorConfig.MinimumPortSeparation;
 //        // Determine min/max position for each port.
@@ -120,5 +119,5 @@ public partial class iCS_EditorObject {
 //            Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
 //        }
 //        return pos;        
-//    }    
+    }    
 }
