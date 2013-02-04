@@ -63,10 +63,9 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <Children>
-                        <BinderItem ID="4" Type="Folder" Created="2006-11-04 11:31:13 -0500" Modified="2013-01-15 09:44:16 -0500">
-                            <Title>Node Position</Title>
+                        <BinderItem ID="44" Type="Folder" Created="2013-01-18 15:21:49 -0500" Modified="2013-01-18 15:22:10 -0500">
+                            <Title>Requirements</Title>
                             <MetaData>
-                                <LabelID>2</LabelID>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -74,102 +73,19 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="44" Type="Folder" Created="2013-01-18 15:21:49 -0500" Modified="2013-01-18 15:22:10 -0500">
-                                    <Title>Requirements</Title>
+                                <BinderItem ID="35" Type="Text" Created="2011-07-07 14:35:31 -0400" Modified="2013-02-04 08:58:21 -0500">
+                                    <Title>Node Local Anchor Position Attribute (persistent)</Title>
                                     <MetaData>
+                                        <StatusID>3</StatusID>
                                         <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                        <NotesTextSelection>284,0</NotesTextSelection>
                                     </MetaData>
                                     <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                    <Children>
-                                        <BinderItem ID="35" Type="Text" Created="2011-07-07 14:35:31 -0400" Modified="2013-01-28 16:30:39 -0500">
-                                            <Title>Local Anchor Position Attribute (persistent)</Title>
-                                            <MetaData>
-                                                <StatusID>3</StatusID>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>284,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>814,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                        <BinderItem ID="43" Type="Text" Created="2013-01-18 15:21:30 -0500" Modified="2013-01-28 11:32:27 -0500">
-                                            <Title>Globalized Anchor Position (transient)</Title>
-                                            <MetaData>
-                                                <StatusID>3</StatusID>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>176,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                        <BinderItem ID="45" Type="Text" Created="2013-01-18 15:24:17 -0500" Modified="2013-01-28 11:28:21 -0500">
-                                            <Title>Local Layout Offset (persistent)</Title>
-                                            <MetaData>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>725,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                        <BinderItem ID="51" Type="Text" Created="2013-01-21 14:20:29 -0500" Modified="2013-01-28 11:32:11 -0500">
-                                            <Title>Globalized layout Position (transient)</Title>
-                                            <MetaData>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>170,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                        <BinderItem ID="48" Type="Text" Created="2013-01-18 15:25:59 -0500" Modified="2013-01-21 16:31:04 -0500">
-                                            <Title>Animated Position (transient)</Title>
-                                            <MetaData>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>749,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                        <BinderItem ID="46" Type="Text" Created="2013-01-18 15:25:16 -0500" Modified="2013-01-21 16:15:01 -0500">
-                                            <Title>Display Size (transient)</Title>
-                                            <MetaData>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>345,3</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                        <BinderItem ID="47" Type="Text" Created="2013-01-18 15:25:38 -0500" Modified="2013-01-18 15:26:05 -0500">
-                                            <Title>Node Collisions</Title>
-                                            <MetaData>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>568,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                    </Children>
-                                </BinderItem>
-                                <BinderItem ID="50" Type="Text" Created="2013-01-20 14:10:29 -0500" Modified="2013-01-20 14:16:55 -0500">
-                                    <Title>Node User Drag Algorithm</Title>
-                                    <MetaData>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>272,0</TextSelection>
+                                        <TextSelection>814,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="39" Type="Text" Created="2013-01-14 14:10:15 -0500" Modified="2013-01-14 14:10:27 -0500">
-                                    <Title>Node Collision Algorithm</Title>
+                                <BinderItem ID="53" Type="Text" Created="2013-02-04 09:11:25 -0500" Modified="2013-02-04 09:11:43 -0500">
+                                    <Title>Port Local Anchor Position</Title>
                                     <MetaData>
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -178,39 +94,88 @@
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="41" Type="Text" Created="2013-01-14 14:37:05 -0500" Modified="2013-01-18 15:28:11 -0500">
-                                    <Title>Anchor Relayout</Title>
+                                <BinderItem ID="43" Type="Text" Created="2013-01-18 15:21:30 -0500" Modified="2013-02-04 08:58:40 -0500">
+                                    <Title>Node Globalized Anchor Position (transient)</Title>
                                     <MetaData>
+                                        <StatusID>3</StatusID>
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                         <NotesTextSelection>0,0</NotesTextSelection>
                                     </MetaData>
                                     <TextSettings>
-                                        <TextSelection>477,0</TextSelection>
+                                        <TextSelection>176,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
-                                <BinderItem ID="6" Type="Text" Created="2006-11-04 11:33:03 -0500" Modified="2013-01-14 10:04:32 -0500">
-                                    <Title>Node Animation</Title>
+                                <BinderItem ID="54" Type="Text" Created="2013-02-04 09:11:50 -0500" Modified="2013-02-04 09:12:03 -0500">
+                                    <Title>Port Globalized Anchor Position</Title>
                                     <MetaData>
-                                        <LabelID>4</LabelID>
-                                        <StatusID>2</StatusID>
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                         <NotesTextSelection>0,0</NotesTextSelection>
                                     </MetaData>
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="45" Type="Text" Created="2013-01-18 15:24:17 -0500" Modified="2013-02-04 09:10:17 -0500">
+                                    <Title>Node Local Layout Offset (persistent)</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>668,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="55" Type="Text" Created="2013-02-04 09:12:12 -0500" Modified="2013-02-04 09:12:23 -0500">
+                                    <Title>Port Local Layout Offset</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="51" Type="Text" Created="2013-01-21 14:20:29 -0500" Modified="2013-02-04 09:11:12 -0500">
+                                    <Title>Globalized layout Position (transient)</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>56,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="48" Type="Text" Created="2013-01-18 15:25:59 -0500" Modified="2013-01-21 16:31:04 -0500">
+                                    <Title>Animated Position (transient)</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>749,0</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="46" Type="Text" Created="2013-01-18 15:25:16 -0500" Modified="2013-01-21 16:15:01 -0500">
+                                    <Title>Display Size (transient)</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>345,3</TextSelection>
+                                    </TextSettings>
+                                </BinderItem>
+                                <BinderItem ID="47" Type="Text" Created="2013-01-18 15:25:38 -0500" Modified="2013-01-18 15:26:05 -0500">
+                                    <Title>Node Collisions</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>568,0</TextSelection>
                                     </TextSettings>
                                 </BinderItem>
                             </Children>
-                        </BinderItem>
-                        <BinderItem ID="37" Type="Folder" Created="2013-01-14 10:26:30 -0500" Modified="2013-01-18 15:37:49 -0500">
-                            <Title>Port Position</Title>
-                            <MetaData>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
                         </BinderItem>
                     </Children>
                 </BinderItem>
@@ -304,6 +269,71 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
+                <BinderItem ID="39" Type="Text" Created="2013-01-14 14:10:15 -0500" Modified="2013-01-14 14:10:27 -0500">
+                    <Title>Node Collision Algorithm</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="41" Type="Text" Created="2013-01-14 14:37:05 -0500" Modified="2013-01-18 15:28:11 -0500">
+                    <Title>Anchor Relayout</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>477,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="6" Type="Text" Created="2006-11-04 11:33:03 -0500" Modified="2013-01-14 10:04:32 -0500">
+                    <Title>Node Animation</Title>
+                    <MetaData>
+                        <LabelID>4</LabelID>
+                        <StatusID>2</StatusID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="4" Type="Folder" Created="2006-11-04 11:31:13 -0500" Modified="2013-01-15 09:44:16 -0500">
+                    <Title>Node Position</Title>
+                    <MetaData>
+                        <LabelID>2</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="50" Type="Text" Created="2013-01-20 14:10:29 -0500" Modified="2013-01-20 14:16:55 -0500">
+                            <Title>Node User Drag Algorithm</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>272,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="37" Type="Folder" Created="2013-01-14 10:26:30 -0500" Modified="2013-01-18 15:37:49 -0500">
+                    <Title>Port Position</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
             </Children>
         </BinderItem>
     </Binder>
@@ -347,7 +377,7 @@
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 08:24:39 -0400" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="0" Characters="0" Date="2013-01-29 10:53:01 -0500"></PreviousSession>
+        <PreviousSession Words="8" Characters="35" Date="2013-02-04 08:54:11 -0500"></PreviousSession>
     </ProjectTargets>
-    <PrintSettings PaperSize="595.280029,841.890015" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
+    <PrintSettings PaperSize="595.275574,841.861389" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
 </ScrivenerProject>

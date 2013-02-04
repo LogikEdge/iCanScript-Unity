@@ -6,9 +6,9 @@
 {\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
 \pard\tx202\tx1096\li1094\fi-1095\sb120\sa80\pardirnatural
 \ls1\ilvl0
-\f0\fs24 \cf0 {\listtext	Req)	}The node local layout offset is a persistent attribute that maintains the final display position of the node after the collision algorithm has been applied.  It is derived from the local anchor position on which the node collision algorithm is applied.\
+\f0\fs24 \cf0 {\listtext	Req)	}The node local layout offset is a persistent attribute that maintains the final display position of the node after the collision algorithm has been applied.  It is relative to the local anchor position.\
 \pard\tx202\tx1096\li1094\fi-1095\sb120\sa80\pardirnatural
-\ls2\ilvl0\cf0 {\listtext	Req)	}The local layout offset shall be changed if the user drags the node.  The local anchor position shall also be recomputed to reflect the user drag.\
-{\listtext	Req)	}The local layout offset shall not be changed if the user drags the parent or any parent ancestor node.\
-{\listtext	Req)	}The local layout offset shall be changed if the node is involved in a collision resulting from a user drag.  The local anchor position is not changed in this situation.\
-{\listtext	Req)	}The local layout offset shall be changed if the node is not on its anchor position and one or more node(s) involved in the collision creating the offset has changed display position.  The local anchor position is not changed in this situation.}
+\ls2\ilvl0\cf0 {\listtext	Req)	}The node local layout offset is cleared when the user drags the node.  \
+{\listtext	Req)	}The node local layout offset shall not be changed if the user drags the parent or any parent ancestor node.\
+{\listtext	Req)	}The node local layout offset shall be changed if the node is involved in a collision resulting from a user drag.  The local anchor position is not changed in this situation.\
+{\listtext	Req)	}The node local layout offset shall be changed if the node is not on its anchor position and one or more node(s) involved in the collision creating the offset has changed display position.  The local anchor position is not changed in this situation.}
