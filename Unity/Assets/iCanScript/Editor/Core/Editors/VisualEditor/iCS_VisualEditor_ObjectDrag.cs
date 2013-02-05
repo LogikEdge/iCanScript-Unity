@@ -159,10 +159,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 DragObject.GlobalLayoutPosition= newPosition;
                 // Determine if we should go back to port relocation. (IsPositionOnEdge)
                 if(!DragOriginalPort.IsInMuxPort && DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
+                    // Re-establish original connection if we are aborting a port disconnect drag.
                     iCS_EditorObject dragObjectSource= DragObject.Source;
                     if(dragObjectSource != DragOriginalPort) {
                         IStorage.SetSource(DragOriginalPort, dragObjectSource);
                     }
+                    // Delete dynamically created floating drag port.
                     IStorage.DestroyInstance(DragObject);
                     DragObject= DragOriginalPort;
                     DragFixPort= DragOriginalPort;
