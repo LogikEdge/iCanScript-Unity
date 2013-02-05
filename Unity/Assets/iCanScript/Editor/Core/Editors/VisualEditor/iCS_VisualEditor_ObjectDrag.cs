@@ -26,7 +26,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Functions.
 	// ----------------------------------------------------------------------
     void MakeDataConnectionDrag() {
-        if(DragFixPort != DragOriginalPort) IStorage.SetSource(DragOriginalPort, DragFixPort);
+        if(DragFixPort != DragOriginalPort) {
+            IStorage.SetSource(DragOriginalPort, DragFixPort);
+        } else {
+            IStorage.SetSource(DragOriginalPort, null);            
+        }
         IStorage.SetSource(DragObject, DragOriginalPort);
         DragFixPort= DragOriginalPort;
     }

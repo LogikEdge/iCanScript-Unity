@@ -63,7 +63,14 @@ public partial class iCS_EditorObject {
 		get {
 			if(!IsDataPort) return null;
 			var port= this;
-			while(port.Source != null) port= port.Source;
+            int retry= 0;
+			while(port.Source != null) {
+			    port= port.Source;
+                if(++retry > 100) {
+                    Debug.LogWarning("iCanScript: Circular port connection detected on: "+port.ParentNode.Name+"."+port.Name);
+                    return null;
+                }
+		    }
 			iCS_IParams funcBase= myIStorage.GetRuntimeObject(port) as iCS_IParams;
 			if(funcBase != null) {
 			    return funcBase.GetParameter(0);
