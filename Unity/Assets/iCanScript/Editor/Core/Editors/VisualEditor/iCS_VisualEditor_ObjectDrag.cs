@@ -39,6 +39,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             IStorage.SetSource(DragOriginalPort, null);
         } else {
             if(DragFixPort == DragOriginalPort) {
+                IStorage.SetSource(DragObject, null);
                 IStorage.SetSource(DragFixPort, DragObject);
             }
         }
@@ -183,7 +184,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
                 // Special case for module ports.
                 if(DragOriginalPort.IsModulePort) {
-                    if(IStorage.IsInside(DragOriginalPort.Parent, mousePosInGraph)) {
+                    if(IStorage.IsInside(DragOriginalPort.ParentNode, mousePosInGraph)) {
                         if(DragOriginalPort.IsOutputPort) {
                             BreakDataConnectionDrag();
                         } else {
@@ -396,6 +397,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragObject= IStorage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             iCS_EditorObject prevSource= DragOriginalPort.Source;
             if(prevSource != null) {
+                if(prevSource == DragObject) {
+                    Debug.LogWarning("We are creating a drag port when a drag port already exists !!!");
+                    return;
+                }
                 DragFixPort= prevSource;
                 IStorage.SetSource(DragObject, DragFixPort);
                 IStorage.SetSource(DragOriginalPort, null);
@@ -411,7 +416,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         DragType= DragTypeEnum.PortConnection;
         DragObject.LocalAnchorPosition= DragOriginalPort.LocalAnchorPosition;
-        DragObject.GlobalLayoutPosition= ViewportMousePosition;
+        DragObject.GlobalLayoutPosition= GraphMousePosition;
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
 			DragStartPosition= DragOriginalPort.GlobalLayoutPosition - parent.GlobalLayoutPosition;			
