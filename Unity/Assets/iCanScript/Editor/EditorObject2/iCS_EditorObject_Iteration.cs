@@ -220,4 +220,18 @@ public partial class iCS_EditorObject {
 	public iCS_EditorObject[] BuildListOfChildPorts(Func<iCS_EditorObject, bool> cond) {
 		return BuildListOfChildren(c=> c.IsPort && cond(c));
 	}
+    // ----------------------------------------------------------------------
+    // Build a list of ports on the same edge.
+    public iCS_EditorObject[] BuildListOfPortOnSameEdge() {
+        Func<iCS_EditorObject,bool> cond= null;
+        switch(Edge) {
+            case iCS_EdgeEnum.Left:     cond= p=> p.IsOnLeftEdge;   break;
+            case iCS_EdgeEnum.Right:    cond= p=> p.IsOnRightEdge;  break;
+            case iCS_EdgeEnum.Top:      cond= p=> p.IsOnTopEdge;    break;
+            case iCS_EdgeEnum.Bottom:   cond= p=> p.IsOnBottomEdge; break;
+            default: break;
+        }
+        if(cond == null) return new iCS_EditorObject[0];
+        return ParentNode.BuildListOfChildPorts(cond);
+    }
 }

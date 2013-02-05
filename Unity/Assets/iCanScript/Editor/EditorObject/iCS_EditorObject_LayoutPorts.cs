@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 
 public partial class iCS_EditorObject {
@@ -19,21 +20,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     static void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports,
                                           float top, float bottom, float x) {
+        ports= SortVerticalPorts(ports);
         // Start from the anchor position.
         int nbPorts= ports.Length;
         float[] ys= new float[nbPorts];
         for(int i= 0; i < nbPorts; ++i) {
             ys[i]= ports[i].LocalAnchorPosition.y-top;
-        }
-        // Sort the anchor position from top to bottom.
-        for(int i= 0; i < nbPorts-1; ++i) {
-            for(int j= i+1; j < nbPorts; ++j) {
-                var v= ys[i];
-                if(v > ys[j]) {
-                    ys[i]= ys[j]; ys[j]= v; v= ys[i];
-                    var t= ports[i]; ports[i]= ports[j]; ports[j]= t;
-                }
-            }
         }
         // Resolve port collisions.
         ys= ResolvePortCollisions(ys, bottom-top);
@@ -45,21 +37,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     static void LayoutPortsOnHorizontalEdge(iCS_EditorObject[] ports,
                                             float left, float right, float y) {
+        ports= SortHorizontalPorts(ports);
         // Start from the anchor position.
         int nbPorts= ports.Length;
         float[] xs= new float[nbPorts];
         for(int i= 0; i < nbPorts; ++i) {
             xs[i]= ports[i].LocalAnchorPosition.x-left;
-        }
-        // Sort the anchor position from left to right.
-        for(int i= 0; i < nbPorts-1; ++i) {
-            for(int j= i+1; j < nbPorts; ++j) {
-                var v= xs[i];
-                if(v > xs[j]) {
-                    xs[i]= xs[j]; xs[j]= v; v= xs[i];
-                    var t= ports[i]; ports[i]= ports[j]; ports[j]= t;
-                }
-            }
         }
         // Resolve port collisions.
         xs= ResolvePortCollisions(xs, right-left);
@@ -124,5 +107,48 @@ public partial class iCS_EditorObject {
             Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
         }
         return sortedPosition;
+    }
+
+    // ======================================================================
+    // Port ordering utilities.
+    // ----------------------------------------------------------------------
+    static iCS_EditorObject[] SortPorts(iCS_EditorObject[] ports) {
+        if(ports.Length == 0) return ports;
+        if(ports[0].IsOnHorizontalEdge) return SortHorizontalPorts(ports);
+        return SortVerticalPorts(ports);
+    }
+    // ----------------------------------------------------------------------
+    static iCS_EditorObject[] SortHorizontalPorts(iCS_EditorObject[] ports) {
+        return SortPorts(ports, p=> p.LocalAnchorPosition.x);
+    }
+    // ----------------------------------------------------------------------
+    static iCS_EditorObject[] SortVerticalPorts(iCS_EditorObject[] ports) {
+        return SortPorts(ports, p=> p.LocalAnchorPosition.y);
+    }
+    // ----------------------------------------------------------------------
+    static iCS_EditorObject[] SortPorts(iCS_EditorObject[] ports, Func<iCS_EditorObject,float> key) {
+        // Accumulate keys.
+        int nbPorts= ports.Length;
+        float[] ks= new float[nbPorts];
+        for(int i= 0; i < nbPorts; ++i) {
+            ks[i]= key(ports[i]);
+        }
+        // Sort the anchor position from left to right.
+        return SortPorts(ports, ref ks);
+    }
+    // ----------------------------------------------------------------------
+    static iCS_EditorObject[] SortPorts(iCS_EditorObject[] ports, ref float[] ks) {
+        // Sort the anchor position from left to right.
+        int nbPorts= ports.Length;
+        for(int i= 0; i < nbPorts-1; ++i) {
+            for(int j= i+1; j < nbPorts; ++j) {
+                var v= ks[i];
+                if(v > ks[j]) {
+                    ks[i]= ks[j]; ks[j]= v; v= ks[i];
+                    var t= ports[i]; ports[i]= ports[j]; ports[j]= t;
+                }
+            }
+        }
+        return ports;        
     }
 }

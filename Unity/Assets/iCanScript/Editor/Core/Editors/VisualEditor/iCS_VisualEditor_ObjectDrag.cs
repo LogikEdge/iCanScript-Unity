@@ -144,12 +144,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					CreateDragPort();
 					return;
 				}
-                // Update port position.
-                DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
 				// Consider port relocation when dragging on parent edge.
 				if(iCS_EditorObject.IsPositionOnRectEdge(newPosition,
 				                                         DragObject.Parent.GlobalDisplayRect,
-				                                         DragObject.Edge)) {
+				                                         DragObject.Edge)) {                      
+                    DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
+                    var sameEdgePorts= DragObjects.BuildListOfPortsOnSameEdge();
+                    sameEdgePorts= iCS_EditorObject.SortPorts(sameEdgePorts);
+                    /*
+                        TODO: Must assure that no two ports have the same anchor...
+                    */                                                                                                                                               
                     DragObject.Parent.LayoutPorts();						
 				} else {
 	                // Determine if we should convert to data port connection drag.
