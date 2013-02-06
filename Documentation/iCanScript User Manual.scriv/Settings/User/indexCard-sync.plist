@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CollectionIdentifier</key>
+	<string>09F64DA6-8A39-4AA6-BA22-30A0B50ACBE9</string>
+	<key>IndexCardProjectName</key>
+	<string>iCanScript User Manual (IndexCard Sync)</string>
+	<key>PlainTextParagraphs</key>
+	<true/>
+	<key>SyncTextAndNotes</key>
+	<true/>
+	<key>TakeSnapshots</key>
+	<true/>
+</dict>
+</plist>

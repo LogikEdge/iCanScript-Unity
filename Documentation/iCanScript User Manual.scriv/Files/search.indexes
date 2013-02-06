@@ -73,9 +73,10 @@ Scrivener project templates are flexible and are not intended to restrict you to
         <Document ID="40">
             <Title>Philosophy</Title>
             <Synopsis>- Discuss what drives the development of iCanScript.</Synopsis>
-            <Text>ICanScript was create to help and improve the design process for creating software.  It is meant to extend the standard text editor for writing Unity scripts.  It offers a visual workflow to build, review and publish programming logic without removing the ability to write low-level logic using standard toolsets.
+            <Text>iCanScript was create to help and improve the design process for creating software.  It is meant to extend the standard text editor for writing Unity scripts.  It offers a visual workflow to build, review and publish programming logic without removing the ability to write low-level logic using standard toolsets.
 ICanScript roots its philosophy in that at one point, the software to be created uses concepts that are better expressed in terms of high-level building blocks including multi-level state charts.
 Number crushing is best expressed using low-level software and textual source code editors, high-level concepts are better expressed using visual design elements.  Often, corporations include a formal or informal development process to discuss and publish the high-level concepts pertaining the software product to be developed.   In all cases, these high-level concepts are expressed using diagrams as it is the simplest and most direct way of building and iterating on those fundamental aspect of the product.</Text>
+            <Notes>This is a note from Index Card.</Notes>
         </Document>
         <Document ID="41">
             <Title>About This Manual</Title>
@@ -95,9 +96,24 @@ Number crushing is best expressed using low-level software and textual source co
         <Document ID="51">
             <Title>The Library</Title>
         </Document>
+        <Document ID="60">
+            <Title>History</Title>
+            <Text>iCanScript is a concept that has evolved over the last 15 years of my professional software engineering life.
+In 1997, the core concepts of the engine sub-system were first designed and implemented for a large telecommunication corporation.  The resulting software engine was embedded in several large scale telecommunication products in the years to follow.
+Having joined the gaming industry in 2003, I have realized that the engine needed to be complemented by a visual editor to boost the productivity in the software design.  The main driving factor was the ease of communicating the software implementation to a broader audience.  Therefore, the visual editor focused on the mid-to-high-level software design aspects.  While the visual editor can be used for low-level software, it is not its main target.  This brought-in a fundamental requirement that the visual editor be a complement to the existing software development tools in which the standard source code editor remains a key element.
+In 2010, I have decided to dedicate myself to the design and implementation of the iCanScript product helping experienced and less experienced software designers realize their ideas with greater ease without forcing them to leave behind their existing workflow.
+
+#
+
+Michel Launier,
+Lead Engineer &amp; Founder of Disruptive Software,
+Disruptive Software
+</Text>
+        </Document>
         <Document ID="43">
             <Title>What's New</Title>
             <Synopsis>- Discuss major difference with previous version of the manual.</Synopsis>
+            <Text>iCanScript Release Candidate #1 (RC#1) is the first officially supported release of iCanScript.  It includes the following features:</Text>
         </Document>
         <Document ID="52">
             <Title>Instance Wizard</Title>
@@ -189,8 +205,12 @@ Non-Fiction/Umwan	18
 Non-Fiction/Umwan	19
 </Text>
         </Document>
+        <Document ID="62">
+            <Title>Updated Documents (Unsorted)</Title>
+        </Document>
         <Document ID="45">
-            <Title>Interface</Title>
+            <Title>Overview</Title>
+            <Text>iCanScript is a visual programming editor that can be used standalone or to complement existing source code text editors.</Text>
         </Document>
         <Document ID="28">
             <Title>Notes</Title>
@@ -241,9 +261,17 @@ Manual Rochon - help with the interface design and the overall operational conce
         </Document>
         <Document ID="57">
             <Title>iCanScript Anatomy</Title>
+            <Text>iCanScript is composed of:
+	* a central visual editor window;
+	* a library tree panel;
+	* a hierarchy tree panel;
+	* an object instance wizard panel; and
+	* a preference configuration panel.
+All of these windows and panels can be opened from Unity's Windows menu under the sub-menu iCanScript.
+Currently, the layout of iCanScript windows and panels are left to the user.</Text>
         </Document>
         <Document ID="49">
-            <Title>The Editor</Title>
+            <Title>The Visual Editor</Title>
         </Document>
         <Document ID="58">
             <Title>Keyboard Shortcuts</Title>
