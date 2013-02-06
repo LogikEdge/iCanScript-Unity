@@ -154,6 +154,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     /*
                         TODO: Must assure that no two ports have the same anchor...
                     */                                                                                                                                               
+                    // Position drag port between existing ports (if existing).
+                    // Assure that the difference in anchor ratio is at least 1/1000.
+                    
                     DragObject.Parent.LayoutPorts();						
 				} else {
 	                // Determine if we should convert to data port connection drag.
