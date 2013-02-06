@@ -145,31 +145,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					return;
 				}
 				// Consider port relocation when dragging on parent edge.
-				if(iCS_EditorObject.IsPositionOnRectEdge(newPosition,
-				                                         DragObject.Parent.GlobalDisplayRect,
-				                                         DragObject.Edge)) {                      
-                    DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
-                    var sameEdgePorts= DragObject.BuildListOfPortsOnSameEdge();
-                    sameEdgePorts= iCS_EditorObject.SortPorts(sameEdgePorts);
-                    // Build list of port display positions.
-                    // Force a conflict...
-                    var portDisplayPos= new Vector2[sameEdgePorts.Length];
-                    for(int i= 0; i < sameEdgePorts.Length; ++i) {
-                        portDisplayPos[i]= sameEdgePorts[i].GlobalDisplayPosition;
-                    }
-                    /*
-                        TODO: Must assure that no two ports have the same anchor...
-                    */                                                                                                                                               
-                    // Position drag port between existing ports (if existing).
-                    // Assure that the difference in anchor ratio is at least 1/1000.
-                    
-                    DragObject.Parent.LayoutPorts();						
-				} else {
-	                // Determine if we should convert to data port connection drag.
-					if(!(DragObject.IsStatePort || DragObject.IsTransitionPort)) {
-    					CreateDragPort();
-					}
-				}
+                ProcessPortRelocation(newPosition);
                 break;
             }
             case DragTypeEnum.PortConnection: {
@@ -441,6 +417,59 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         DragObject.IsFloating= true;		
 	}
 
+	// ----------------------------------------------------------------------
+    void ProcessPortRelocation(Vector2 newPosition) {
+		// Consider port relocation when dragging on parent edge.
+		if(iCS_EditorObject.IsPositionOnRectEdge(newPosition,
+		                                         DragObject.Parent.GlobalDisplayRect,
+		                                         DragObject.Edge)) {                      
+            // No reordering necessary if this is the only port on this edge.
+            var sameEdgePorts= DragObject.BuildListOfPortsOnSameEdge();
+            if(sameEdgePorts.Length < 2) {
+                DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);                    
+                DragObject.Parent.LayoutPorts();						                
+            }
+            // Determine before & after adjacent ports.
+            sameEdgePorts= iCS_EditorObject.SortPorts(sameEdgePorts);
+            iCS_EditorObject beforePort= null;
+            iCS_EditorObject samePositionPort= null;
+            iCS_EditorObject afterPort= null;
+            for(int i= 0; i < sameEdgePorts.Length; ++i) {
+                var iter= sameEdgePorts[i];
+                if(iter == DragObject) continue;
+                var displayPos= iter.GlobalDisplayPosition;
+                if(DragObject.IsOnHorizontalEdge) {
+                    if(Math3D.IsSmaller(displayPos.x, newPosition.x)) {
+                        beforePort= iter;
+                    } else if(afterPort == null && Math3D.IsGreater(displayPos.x, newPosition.x)) {
+                        afterPort= iter;
+                    } if(Math3D.IsEqual(displayPos.x, newPosition.x)) {
+                        samePositionPort= iter;
+                    }
+                } else {
+                    if(Math3D.IsSmaller(displayPos.y, newPosition.y)) {
+                        beforePort= iter;
+                    } else if(afterPort == null && Math3D.IsGreater(displayPos.y, newPosition.y)) {
+                        afterPort= iter;
+                    } if(Math3D.IsEqual(displayPos.y, newPosition.y)) {
+                        samePositionPort= iter;
+                    }                 
+                } 
+            }
+            // Update local anchor port ratio to reflect the relocation.
+            Debug.Log("Before: "+(beforePort == null ? "null" : beforePort.Name)+" Same: "+(samePositionPort == null ? "null" : samePositionPort.Name)+" after: "+(afterPort == null ? "null" : afterPort.Name));
+            
+            // Assure that the difference in anchor ratio is at least 1/1000.
+
+            DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);                    
+            DragObject.Parent.LayoutPorts();						
+		} else {
+            // Determine if we should convert to data port connection drag.
+			if(!(DragObject.IsStatePort || DragObject.IsTransitionPort)) {
+				CreateDragPort();
+			}
+		}        
+    }
 	// ----------------------------------------------------------------------
     void AutocreateInstanceNode(Vector2 globalPosition, iCS_EditorObject newParent) {
         var dragPort= DragFixPort;
