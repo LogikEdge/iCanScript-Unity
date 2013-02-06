@@ -420,16 +420,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void ProcessPortRelocation(Vector2 newPosition) {
 		// Consider port relocation when dragging on parent edge.
+		var parent= DragObject.ParentNode;
+		var parentRect= parent.GlobalDisplayRect;
+		var parentGloablPos= parent.GlobalDisplayPosition;
 		if(iCS_EditorObject.IsPositionOnRectEdge(newPosition,
-		                                         DragObject.Parent.GlobalDisplayRect,
+		                                         parentRect,
 		                                         DragObject.Edge)) {                      
             // No reordering necessary if this is the only port on this edge.
             var sameEdgePorts= DragObject.BuildListOfPortsOnSameEdge();
             if(sameEdgePorts.Length < 2) {
-                DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);                    
-                DragObject.Parent.LayoutPorts();						                
+	            DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);                    
+                parent.LayoutPorts();						                
+				return;
             }
             // Determine before & after adjacent ports.
+/*
+	FIXME : Maybe we don't need to sort to determine port ordering.
+*/
             sameEdgePorts= iCS_EditorObject.SortPorts(sameEdgePorts);
             iCS_EditorObject beforePort= null;
             iCS_EditorObject samePositionPort= null;
@@ -457,11 +464,76 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 } 
             }
             // Update local anchor port ratio to reflect the relocation.
-            Debug.Log("Before: "+(beforePort == null ? "null" : beforePort.Name)+" Same: "+(samePositionPort == null ? "null" : samePositionPort.Name)+" after: "+(afterPort == null ? "null" : afterPort.Name));
+			const float kMinRatioDiff= 0.001f;
+			// Just position drag port on the other side of the port with exactly the same position.
+			if(samePositionPort != null) {
+				// Give precedence to drag port.
+				var dragObjGlobalPos= DragObject.GlobalDisplayPosition;
+				float direction= Mathf.Sign(
+					DragObject.IsOnHorizontalEdge ? newPosition.x-dragObjGlobalPos.x : newPosition.y-dragObjGlobalPos.y
+				);
+				DragObject.PortPositionRatio= samePositionPort.PortPositionRatio+0.5f*direction*kMinRatioDiff;
+			}
+			// If we don't have a before port, assume that we are the first port on the edge.
+			else if(beforePort == null) {
+				if(afterPort == null) {
+					Debug.LogWarning("iCanScript: Problem with finding before & after ports on same edge.  Contact customer support.");
+		            DragObject.GlobalAnchorPosition= newPosition;                    					
+				} else {
+					float afterDiff= 0f;
+					float dragDiff = 0f;
+					if(DragObject.IsOnHorizontalEdge) {
+						var portsLeft= parentGloablPos.x+parent.HorizontalPortsLeft;
+						afterDiff= afterPort.GlobalDisplayPosition.x-portsLeft;
+						dragDiff= newPosition.x-portsLeft;
+					} else {
+						var portsTop= parentGloablPos.y+parent.VerticalPortsTop;
+						afterDiff= afterPort.GlobalDisplayPosition.y-portsTop;
+						dragDiff= newPosition.y-portsTop;
+					}
+					if(Math3D.IsZero(afterDiff)) {
+						DragObject.GlobalAnchorPosition= newPosition;
+					} else {
+						if(dragDiff < 0f) dragDiff= 0f;
+						DragObject.PortPositionRatio= afterPort.PortPositionRatio*dragDiff/afterDiff;						
+					}
+				}
+			}
+			// If we have a before port but no after port, we assume that we are the last port on the edge.
+			else if(afterPort == null) {
+				float afterDiff= 0f;
+				float dragDiff = 0f;
+				if(DragObject.IsOnHorizontalEdge) {
+					var portsRight= parentGloablPos.x+parent.HorizontalPortsRight;
+					afterDiff= portRightEnd-afterPort.GlobalDisplayPosition.x;
+					dragDiff= portsRight-newPosition.x;
+				} else {
+					var portsBottom= parentGloablPos.y+parent.VerticalPortsBottom;
+					afterDiff= portsBottom-afterPort.GlobalDisplayPosition.y;
+					dragDiff= portsBottom-newPosition.y;
+				}
+/*
+	TODO : To be completed.
+*/
+				if(Math3D.IsZero(afterDiff)) {
+					DragObject.GlobalAnchorPosition= newPosition;
+				} else {
+					if(dragDiff < 0f) dragDiff= 0f;
+					DragObject.PortPositionRatio= afterPort.PortPositionRatio*dragDiff/afterDiff;						
+				}
+			}
+			// We have both a before & after port, so lets position ourself between them.
+			else {
+/*
+	FIXME : To be completed.
+*/
+				DragObject.GlobalAnchorPosition= newPosition;
+				
+			}
             
             // Assure that the difference in anchor ratio is at least 1/1000.
 
-            DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);                    
+			DragObject.GlobalLayoutPosition= newPosition;
             DragObject.Parent.LayoutPorts();						
 		} else {
             // Determine if we should convert to data port connection drag.

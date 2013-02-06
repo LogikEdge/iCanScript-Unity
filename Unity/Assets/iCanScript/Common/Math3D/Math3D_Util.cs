@@ -64,7 +64,11 @@ public static partial class Math3D {
     public static bool IsOutsideOrEqualWithEpsilon(float a, float low, float high) {
         return IsSmallerOrEqual(a, low) || IsGreaterOrEqual(a, high);
     }
-    
+    // ----------------------------------------------------------------------
+    public static float SignWithZero(float a) {
+		if(IsZero(a)) return 0f;
+		return Mathf.Sign(a);
+	}
     // ======================================================================
     // SIMPLE VECTOR FUNCTIONS
     // ----------------------------------------------------------------------
