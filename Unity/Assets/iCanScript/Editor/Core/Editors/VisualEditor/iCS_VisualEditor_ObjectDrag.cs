@@ -152,6 +152,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     var sameEdgePorts= DragObject.BuildListOfPortsOnSameEdge();
                     sameEdgePorts= iCS_EditorObject.SortPorts(sameEdgePorts);
                     // Build list of port display positions.
+                    // Force a conflict...
                     var portDisplayPos= new Vector2[sameEdgePorts.Length];
                     for(int i= 0; i < sameEdgePorts.Length; ++i) {
                         portDisplayPos[i]= sameEdgePorts[i].GlobalDisplayPosition;
