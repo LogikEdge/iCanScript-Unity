@@ -151,6 +151,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
                     var sameEdgePorts= DragObjects.BuildListOfPortsOnSameEdge();
                     sameEdgePorts= iCS_EditorObject.SortPorts(sameEdgePorts);
+                    // Force a conflict...
                     /*
                         TODO: Must assure that no two ports have the same anchor...
                     */                                                                                                                                               
