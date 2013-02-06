@@ -112,7 +112,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Port ordering utilities.
     // ----------------------------------------------------------------------
-    static iCS_EditorObject[] SortPorts(iCS_EditorObject[] ports) {
+    public static iCS_EditorObject[] SortPorts(iCS_EditorObject[] ports) {
         if(ports.Length == 0) return ports;
         if(ports[0].IsOnHorizontalEdge) return SortHorizontalPorts(ports);
         return SortVerticalPorts(ports);

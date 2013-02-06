@@ -222,7 +222,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
     // Build a list of ports on the same edge.
-    public iCS_EditorObject[] BuildListOfPortOnSameEdge() {
+    public iCS_EditorObject[] BuildListOfPortsOnSameEdge() {
         Func<iCS_EditorObject,bool> cond= null;
         switch(Edge) {
             case iCS_EdgeEnum.Left:     cond= p=> p.IsOnLeftEdge;   break;

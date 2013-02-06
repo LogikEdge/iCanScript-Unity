@@ -149,8 +149,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				                                         DragObject.Parent.GlobalDisplayRect,
 				                                         DragObject.Edge)) {                      
                     DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
-                    var sameEdgePorts= DragObjects.BuildListOfPortsOnSameEdge();
+                    var sameEdgePorts= DragObject.BuildListOfPortsOnSameEdge();
                     sameEdgePorts= iCS_EditorObject.SortPorts(sameEdgePorts);
+                    // Build list of port display positions.
+                    var portDisplayPos= new Vector2[sameEdgePorts.Length];
+                    for(int i= 0; i < sameEdgePorts.Length; ++i) {
+                        portDisplayPos[i]= sameEdgePorts[i].GlobalDisplayPosition;
+                    }
                     /*
                         TODO: Must assure that no two ports have the same anchor...
                     */                                                                                                                                               
