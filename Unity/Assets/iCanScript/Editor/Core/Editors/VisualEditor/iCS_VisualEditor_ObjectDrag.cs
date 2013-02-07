@@ -446,21 +446,27 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(iter == DragObject) continue;
                 var displayPos= iter.GlobalDisplayPosition;
                 if(DragObject.IsOnHorizontalEdge) {
-                    if(Math3D.IsSmaller(displayPos.x, newPosition.x)) {
-                        beforePort= iter;
-                    } else if(afterPort == null && Math3D.IsGreater(displayPos.x, newPosition.x)) {
-                        afterPort= iter;
-                    } if(Math3D.IsEqual(displayPos.x, newPosition.x)) {
+                    var diff= displayPos.x-newPosition.x;
+                    if(Math3D.IsZero(diff)) {
                         samePositionPort= iter;
+                        break;
+                    }
+                    if(Math3D.IsSmaller(diff, 0f)) {
+                            beforePort= iter;                            
+                    } else if(afterPort == null && Math3D.IsGreater(diff, 0f)) {
+                        afterPort= iter;
                     }
                 } else {
-                    if(Math3D.IsSmaller(displayPos.y, newPosition.y)) {
-                        beforePort= iter;
-                    } else if(afterPort == null && Math3D.IsGreater(displayPos.y, newPosition.y)) {
-                        afterPort= iter;
-                    } if(Math3D.IsEqual(displayPos.y, newPosition.y)) {
+                    var diff= displayPos.y-newPosition.y;
+                    if(Math3D.IsZero(diff)) {
                         samePositionPort= iter;
-                    }                 
+                        break;
+                    }
+                    if(Math3D.IsSmaller(diff, 0f)) {
+                        beforePort= iter;
+                    } else if(afterPort == null && Math3D.IsGreater(diff, 0f)) {
+                        afterPort= iter;
+                    }
                 } 
             }
             // Update local anchor port ratio to reflect the relocation.
