@@ -583,9 +583,31 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					DragObject.PortPositionRatio= Math3D.Lerp(beforePort.PortPositionRatio, afterPort.PortPositionRatio, posInRange/range);						
 				}
 			}
-            
-            // Assure that the difference in anchor ratio is at least 1/1000.
-
+            // Cleanup anchor positions.
+            var sortedPorts= iCS_EditorObject.SortPorts(sameEdgePorts);
+            for(int i= 0; i < sortedPorts.Length-1; ++i) {
+                var ratio= sortedPorts[i].PortPositionRatio;
+                if(ratio < 0) {
+                    ratio= 0f;
+                    sortedPorts[i].PortPositionRatio= ratio;
+                }
+                var nextRatio= sortedPorts[i+1].PortPositionRatio;
+                if(ratio+kMinRatioDiff > nextRatio) {
+                    sortedPorts[i+1].PortPositionRatio= ratio+kMinRatioDiff;
+                }
+            }
+            for(int i= sortedPorts.Length-1; i > 0; --i) {
+                var ratio= sortedPorts[i].PortPositionRatio;
+                if(ratio > 1f) {
+                    ratio= 1f;
+                    sortedPorts[i].PortPositionRatio= ratio;
+                }
+                var prevRatio= sortedPorts[i-1].PortPositionRatio;
+                if(prevRatio > ratio-kMinRatioDiff) {
+                    sortedPorts[i-1].PortPositionRatio= ratio-kMinRatioDiff;
+                }                
+            }
+            // Adjust display position & relayout all other ports.
 			DragObject.GlobalLayoutPosition= newPosition;
             DragObject.Parent.LayoutPorts();						
 		} else {
