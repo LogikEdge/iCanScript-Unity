@@ -224,6 +224,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.PortRelocation:
                     DragObject.IsFloating= false;
                     if(DragObject.IsDataPort) {
+						DragObject.ParentNode.LayoutPorts();
                         break;
                     }                    
                     if(DragObject.IsStatePort) {
@@ -626,7 +627,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             // Adjust display position & relayout all other ports.
             DragObject.IsSticky= true;
-            DragObject.Parent.LayoutPorts();						
+            parent.LayoutPorts();						
 			SetPortRelocationLayoutPosition(newPosition, parent, parentGloablPos, parentRect);
             DragObject.IsSticky= false;
 		} else {
