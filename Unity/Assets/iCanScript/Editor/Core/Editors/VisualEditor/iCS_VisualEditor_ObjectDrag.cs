@@ -608,8 +608,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }                
             }
             // Adjust display position & relayout all other ports.
+            DragObject.IsSticky= true;
 			DragObject.GlobalLayoutPosition= newPosition;
             DragObject.Parent.LayoutPorts();						
+            DragObject.IsSticky= false;
 		} else {
             // Determine if we should convert to data port connection drag.
 			if(!(DragObject.IsStatePort || DragObject.IsTransitionPort)) {
