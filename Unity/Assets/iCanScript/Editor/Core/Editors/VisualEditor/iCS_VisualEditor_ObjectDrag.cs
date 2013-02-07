@@ -480,52 +480,70 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					Debug.LogWarning("iCanScript: Problem with finding before & after ports on same edge.  Contact customer support.");
 		            DragObject.GlobalAnchorPosition= newPosition;                    					
 				} else {
-					float afterDiff= 0f;
-					float dragDiff = 0f;
+					float range= 0f;
+					float posInRange = 0f;
 					if(DragObject.IsOnHorizontalEdge) {
-						var portsLeft= parentGloablPos.x+parent.HorizontalPortsLeft;
-						afterDiff= afterPort.GlobalDisplayPosition.x-portsLeft;
-						dragDiff= newPosition.x-portsLeft;
+						var rangeStart= parentGloablPos.x+parent.HorizontalPortsLeft;
+						var rangeEnd= afterPort.GlobalDisplayPosition.x;
+						range= rangeEnd-rangeStart;
+						posInRange= newPosition.x-rangeStart;
 					} else {
-						var portsTop= parentGloablPos.y+parent.VerticalPortsTop;
-						afterDiff= afterPort.GlobalDisplayPosition.y-portsTop;
-						dragDiff= newPosition.y-portsTop;
+						var rangeStart= parentGloablPos.y+parent.VerticalPortsTop;
+						var rangeEnd= afterPort.GlobalDisplayPosition.y;
+						range= rangeEnd-rangeStart;
+						posInRange= newPosition.y-rangeStart;
 					}
-					if(Math3D.IsZero(afterDiff)) {
+					if(Math3D.IsZero(range)) {
 						DragObject.GlobalAnchorPosition= newPosition;
 					} else {
-						if(dragDiff < 0f) dragDiff= 0f;
-						DragObject.PortPositionRatio= afterPort.PortPositionRatio*dragDiff/afterDiff;						
+						if(posInRange < 0f) posInRange= 0f;
+						DragObject.PortPositionRatio= Math3D.Lerp(0f, afterPort.PortPositionRatio, posInRange/range);						
 					}
 				}
 			}
 			// If we have a before port but no after port, we assume that we are the last port on the edge.
 			else if(afterPort == null) {
-				float beforeDiff= 0f;
-				float dragDiff = 0f;
+				float range= 0f;
+				float posInRange = 0f;
 				if(DragObject.IsOnHorizontalEdge) {
-					var portsRight= parentGloablPos.x+parent.HorizontalPortsRight;
-					beforeDiff= portsRight-beforePort.GlobalDisplayPosition.x;
-					dragDiff= portsRight-newPosition.x;
+					var rangeStart= beforePort.GlobalDisplayPosition.x;
+					var rangeEnd= parentGloablPos.x+parent.HorizontalPortsRight;
+					range= rangeEnd-rangeStart;
+					posInRange= newPosition.x > rangeEnd ? range : newPosition.x-rangeStart;
 				} else {
-					var portsBottom= parentGloablPos.y+parent.VerticalPortsBottom;
-					beforeDiff= portsBottom-beforePort.GlobalDisplayPosition.y;
-					dragDiff= portsBottom-newPosition.y;
+					var rangeStart= beforePort.GlobalDisplayPosition.y;
+					var rangeEnd= parentGloablPos.y+parent.VerticalPortsBottom;
+					range= rangeEnd-rangeStart;
+					posInRange= newPosition.y > rangeEnd ? range : newPosition.y-rangeStart;
 				}
-				if(Math3D.IsZero(beforeDiff)) {
+				if(Math3D.IsZero(range)) {
 					DragObject.GlobalAnchorPosition= newPosition;
 				} else {
-					if(dragDiff < 0f) dragDiff= 0f;
-					DragObject.PortPositionRatio= 1f+(beforePort.PortPositionRatio-1f)*dragDiff/beforeDiff;						
+					if(posInRange < 0f) posInRange= 0f;
+					DragObject.PortPositionRatio= Math3D.Lerp(beforePort.PortPositionRatio, 1f, posInRange/range);						
 				}
 			}
 			// We have both a before & after port, so lets position ourself between them.
 			else {
-/*
-	FIXME : To be completed.
-*/
-				DragObject.GlobalAnchorPosition= newPosition;
-				
+				float range= 0f;
+				float posInRange = 0f;
+				if(DragObject.IsOnHorizontalEdge) {
+					var rangeStart= beforePort.GlobalDisplayPosition.x;
+					var rangeEnd  = afterPort.GlobalDisplayPosition.x;
+					range= rangeEnd-rangeStart;
+					posInRange= newPosition.x-rangeStart;
+				} else {
+					var rangeStart= beforePort.GlobalDisplayPosition.y;
+					var rangeEnd  = afterPort.GlobalDisplayPosition.y;
+					range= rangeEnd-rangeStart;
+					posInRange= newPosition.y-rangeStart;
+				}
+				if(Math3D.IsZero(range)) {
+					DragObject.GlobalAnchorPosition= newPosition;
+				} else {
+					if(posInRange < 0f) posInRange= 0f;
+					DragObject.PortPositionRatio= Math3D.Lerp(beforePort.PortPositionRatio, afterPort.PortPositionRatio, posInRange/range);						
+				}
 			}
             
             // Assure that the difference in anchor ratio is at least 1/1000.
