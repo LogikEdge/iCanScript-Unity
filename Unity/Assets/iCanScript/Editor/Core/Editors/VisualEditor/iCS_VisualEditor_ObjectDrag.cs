@@ -434,38 +434,70 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				return;
             }
             // Determine before & after adjacent ports.
-/*
-	FIXME : Maybe we don't need to sort to determine port ordering.
-*/
-            sameEdgePorts= iCS_EditorObject.SortPorts(sameEdgePorts);
             iCS_EditorObject beforePort= null;
             iCS_EditorObject samePositionPort= null;
             iCS_EditorObject afterPort= null;
+            float            beforePortAbsDiff= 0f;
+            float            afterPortAbsDiff = 0f;
             for(int i= 0; i < sameEdgePorts.Length; ++i) {
                 var iter= sameEdgePorts[i];
                 if(iter == DragObject) continue;
                 var displayPos= iter.GlobalDisplayPosition;
                 if(DragObject.IsOnHorizontalEdge) {
                     var diff= displayPos.x-newPosition.x;
+                    var absDiff= Mathf.Abs(diff);
                     if(Math3D.IsZero(diff)) {
                         samePositionPort= iter;
                         break;
                     }
                     if(Math3D.IsSmaller(diff, 0f)) {
-                            beforePort= iter;                            
-                    } else if(afterPort == null && Math3D.IsGreater(diff, 0f)) {
-                        afterPort= iter;
+                        if(beforePort == null) {
+                            beforePort= iter;                                                        
+                            beforePortAbsDiff= absDiff;
+                        } else {
+                            if(Math3D.IsSmaller(absDiff, beforePortAbsDiff)) {
+                                beforePort= iter;
+                                beforePortAbsDiff= absDiff;
+                            }
+                        }
+                    } else if(Math3D.IsGreater(diff, 0f)) {
+                        if(afterPort == null) {
+                            afterPort= iter;
+                            afterPortAbsDiff= absDiff;
+                        } else {
+                            if(Math3D.IsSmaller(absDiff, afterPortAbsDiff)) {
+                                afterPort= iter;
+                                afterPortAbsDiff= absDiff;                                
+                            }
+                        }
                     }
                 } else {
                     var diff= displayPos.y-newPosition.y;
+                    var absDiff= Mathf.Abs(diff);
                     if(Math3D.IsZero(diff)) {
                         samePositionPort= iter;
                         break;
                     }
                     if(Math3D.IsSmaller(diff, 0f)) {
-                        beforePort= iter;
-                    } else if(afterPort == null && Math3D.IsGreater(diff, 0f)) {
-                        afterPort= iter;
+                        if(beforePort == null) {
+                            beforePort= iter;
+                            beforePortAbsDiff= absDiff;
+                        } else {
+                            if(Math3D.IsSmaller(absDiff, beforePortAbsDiff)) {
+                                beforePort= iter;
+                                beforePortAbsDiff= absDiff;                                
+                            }
+                        }
+                    } else if(Math3D.IsGreater(diff, 0f)) {
+                        if(afterPort == null) {
+                            afterPort= iter;
+                            afterPortAbsDiff= absDiff;
+                        } else {
+                            if(Math3D.IsSmaller(absDiff, afterPortAbsDiff)) {
+                                afterPort= iter;
+                                afterPortAbsDiff= absDiff;                                
+                            }
+                        }
                     }
                 } 
             }
