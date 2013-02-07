@@ -72,38 +72,38 @@ public partial class iCS_EditorObject {
         // Determine min/max position for each port.
         float[] minPositions= new float[nbPorts];
         float[] maxPositions= new float[nbPorts]; 
+		Debug.Log("Length= "+availableLength+" minSeparation= "+minSeparation);
         for(int i= 0; i < nbPorts; ++i) {
             minPositions[i]= i*minSeparation;
             maxPositions[i]= availableLength-(nbPorts-1-i)*minSeparation;
+            if(Math3D.IsSmaller(sortedPosition[i], minPositions[i])) sortedPosition[i]= minPositions[i];
+            if(Math3D.IsGreater(sortedPosition[i], maxPositions[i])) sortedPosition[i]= maxPositions[i];
         }
         // Iterate resolving collisions
-        float[] collisions= new float[nbPorts-1];
-        bool resolveCollisionNeeded= true;
-        float allowedOverlap= 0.01f;
-        for(int r= 0; r < nbPorts && resolveCollisionNeeded; ++r) {
-            // Apply hard min/max position constraints.
-            for(int i= 0; i < nbPorts; ++i) {
-                if(Math3D.IsSmaller(sortedPosition[i], minPositions[i])) sortedPosition[i]= minPositions[i];
-                if(Math3D.IsGreater(sortedPosition[i], maxPositions[i])) sortedPosition[i]= maxPositions[i];
-            }
-            // Cummulate collisions penetration.
-            resolveCollisionNeeded= false;
-            for(int i= 0; i < nbPorts-1; ++i) {
-                float overlap= -(sortedPosition[i+1]-sortedPosition[i]-minSeparation);
-                collisions[i]= overlap;
-                if(Math3D.IsGreater(overlap, allowedOverlap)) resolveCollisionNeeded= true;
-            }
-            if(!resolveCollisionNeeded) continue;
-            // Resolve collisions.
-            for(int i= 0; i < nbPorts-1; ++i) {
-                float overlap= collisions[i]; 
-                if(Math3D.IsGreater(overlap, 0f)) {
+        float kAllowedOverlap= 0.01f;
+		int retry= nbPorts*nbPorts;
+        for(int i= 0; i < nbPorts-1 && retry > 0; ++i) {
+            float overlap= -(sortedPosition[i+1]-sortedPosition[i]-minSeparation);
+            if(Math3D.IsGreater(overlap, kAllowedOverlap)) {
+				Debug.Log("["+retry+","+i+"] Overlap= "+overlap+" ("+sortedPosition[i]+","+sortedPosition[i+1]+")");
+				if(Math3D.IsEqual(sortedPosition[i], minPositions[i])) {
+                    sortedPosition[i+1]+= overlap;						
+				} else if(Math3D.IsEqual(sortedPosition[i+1], maxPositions[i+1])) {
+                    sortedPosition[i]  -= overlap;
+				} else {
                     sortedPosition[i]  -= 0.5f*overlap;
-                    sortedPosition[i+1]+= 0.5f*overlap;
-                }
-            }
+                    sortedPosition[i+1]+= 0.5f*overlap;						
+				}
+	            if(Math3D.IsSmaller(sortedPosition[i], minPositions[i])) sortedPosition[i]= minPositions[i];
+	            if(Math3D.IsGreater(sortedPosition[i], maxPositions[i])) sortedPosition[i]= maxPositions[i];
+	            if(Math3D.IsSmaller(sortedPosition[i+1], minPositions[i+1])) sortedPosition[i+1]= minPositions[i+1];
+	            if(Math3D.IsGreater(sortedPosition[i+1], maxPositions[i+1])) sortedPosition[i+1]= maxPositions[i+1];
+				// Restart from previous
+				--retry;
+				if(i != 0) i-= 2;
+			}
         }
-        if(resolveCollisionNeeded) {
+        if(retry <= 0) {
             Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
         }
         return sortedPosition;
