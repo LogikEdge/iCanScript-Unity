@@ -501,25 +501,22 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 			// If we have a before port but no after port, we assume that we are the last port on the edge.
 			else if(afterPort == null) {
-				float afterDiff= 0f;
+				float beforeDiff= 0f;
 				float dragDiff = 0f;
 				if(DragObject.IsOnHorizontalEdge) {
 					var portsRight= parentGloablPos.x+parent.HorizontalPortsRight;
-					afterDiff= portRightEnd-afterPort.GlobalDisplayPosition.x;
+					beforeDiff= portsRight-beforePort.GlobalDisplayPosition.x;
 					dragDiff= portsRight-newPosition.x;
 				} else {
 					var portsBottom= parentGloablPos.y+parent.VerticalPortsBottom;
-					afterDiff= portsBottom-afterPort.GlobalDisplayPosition.y;
+					beforeDiff= portsBottom-beforePort.GlobalDisplayPosition.y;
 					dragDiff= portsBottom-newPosition.y;
 				}
-/*
-	TODO : To be completed.
-*/
-				if(Math3D.IsZero(afterDiff)) {
+				if(Math3D.IsZero(beforeDiff)) {
 					DragObject.GlobalAnchorPosition= newPosition;
 				} else {
 					if(dragDiff < 0f) dragDiff= 0f;
-					DragObject.PortPositionRatio= afterPort.PortPositionRatio*dragDiff/afterDiff;						
+					DragObject.PortPositionRatio= 1f+(beforePort.PortPositionRatio-1f)*dragDiff/beforeDiff;						
 				}
 			}
 			// We have both a before & after port, so lets position ourself between them.
