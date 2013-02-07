@@ -633,6 +633,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		} else {
             // Determine if we should convert to data port connection drag.
 			if(!(DragObject.IsStatePort || DragObject.IsTransitionPort)) {
+				parent.LayoutPorts();
 				CreateDragPort();
 			}
 		}        
