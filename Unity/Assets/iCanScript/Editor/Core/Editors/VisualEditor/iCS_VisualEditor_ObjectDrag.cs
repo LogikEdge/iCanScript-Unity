@@ -426,13 +426,30 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(iCS_EditorObject.IsPositionOnRectEdge(newPosition,
 		                                         parentRect,
 		                                         DragObject.Edge)) {                      
+			// Set drag port anchor position.
+			DragObject.GlobalAnchorPosition= newPosition;
+            parent.LayoutPorts();						                
             // No reordering necessary if this is the only port on this edge.
             var sameEdgePorts= DragObject.BuildListOfPortsOnSameEdge();
-            if(sameEdgePorts.Length < 2) {
-	            DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);                    
-                parent.LayoutPorts();						                
+			var nbOfPortsOnEdge= sameEdgePorts.Length;
+            if(nbOfPortsOnEdge < 2) {
 				return;
             }
+			// Determine if we are in a mis-match between anchor & layout positions.
+			DragObject.GlobalLayoutPosition= newPosition;
+			var portsSortedOnAnchor= iCS_EditorObject.SortPortsOnAnchor(sameEdgePorts);
+			var portsSortedOnLayout= iCS_EditorObject.SortPortsOnLayout(sameEdgePorts);
+			bool anchorAndLayoutIdentical= true;
+			for(int i= 0; i < nbOfPortsOnEdge; ++i) {
+				if(portsSortedOnLayout[i] != portsSortedOnAnchor[i]) {
+					anchorAndLayoutIdentical= false;
+					break;
+				}
+			}
+			if(anchorAndLayoutIdentical == true) {
+				SetPortRelocationLayoutPosition(newPosition, parent, parentGloablPos, parentRect);
+				return;
+			}
             // Determine before & after adjacent ports.
             iCS_EditorObject beforePort= null;
             iCS_EditorObject samePositionPort= null;
@@ -584,7 +601,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				}
 			}
             // Cleanup anchor positions.
-            var sortedPorts= iCS_EditorObject.SortPorts(sameEdgePorts);
+            var sortedPorts= iCS_EditorObject.SortPortsOnAnchor(sameEdgePorts);
             for(int i= 0; i < sortedPorts.Length-1; ++i) {
                 var ratio= sortedPorts[i].PortPositionRatio;
                 if(ratio < 0) {
@@ -609,8 +626,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             // Adjust display position & relayout all other ports.
             DragObject.IsSticky= true;
-			DragObject.GlobalLayoutPosition= newPosition;
             DragObject.Parent.LayoutPorts();						
+			SetPortRelocationLayoutPosition(newPosition, parent, parentGloablPos, parentRect);
             DragObject.IsSticky= false;
 		} else {
             // Determine if we should convert to data port connection drag.
@@ -619,6 +636,23 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 		}        
     }
+	// ----------------------------------------------------------------------
+	void SetPortRelocationLayoutPosition(Vector2 newPosition, iCS_EditorObject parent, Vector2 parentGloablPos, Rect parentRect) {
+		float x,y;
+		if(DragObject.IsOnHorizontalEdge) {
+			x= newPosition.x;
+			if(x < parentGloablPos.x+parent.HorizontalPortsLeft)  x= parentGloablPos.x+parent.HorizontalPortsLeft;
+			if(x > parentGloablPos.x+parent.HorizontalPortsRight) x= parentGloablPos.x+parent.HorizontalPortsRight;
+			y= DragObject.IsOnTopEdge  ? parentRect.yMin : parentRect.yMax;
+			
+		} else {
+			x= DragObject.IsOnLeftEdge ? parentRect.xMin : parentRect.xMax;
+			y= newPosition.y;
+			if(y < parentGloablPos.y+parent.VerticalPortsTop)    y= parentGloablPos.y+parent.VerticalPortsTop;
+			if(y > parentGloablPos.y+parent.VerticalPortsBottom) y= parentGloablPos.y+parent.VerticalPortsBottom;
+		}
+		DragObject.GlobalLayoutPosition= new Vector2(x,y);		
+	}
 	// ----------------------------------------------------------------------
     void AutocreateInstanceNode(Vector2 globalPosition, iCS_EditorObject newParent) {
         var dragPort= DragFixPort;

@@ -20,7 +20,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     static void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports,
                                           float top, float bottom, float x) {
-        ports= SortVerticalPorts(ports);
+        ports= SortVerticalPortsOnAnchor(ports);
         // Start from the anchor position.
         int nbPorts= ports.Length;
         float[] ys= new float[nbPorts];
@@ -37,7 +37,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     static void LayoutPortsOnHorizontalEdge(iCS_EditorObject[] ports,
                                             float left, float right, float y) {
-        ports= SortHorizontalPorts(ports);
+        ports= SortHorizontalPortsOnAnchor(ports);
         // Start from the anchor position.
         int nbPorts= ports.Length;
         float[] xs= new float[nbPorts];
@@ -112,18 +112,32 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Port ordering utilities.
     // ----------------------------------------------------------------------
-    public static iCS_EditorObject[] SortPorts(iCS_EditorObject[] ports) {
+    public static iCS_EditorObject[] SortPortsOnAnchor(iCS_EditorObject[] ports) {
         if(ports.Length == 0) return ports;
-        if(ports[0].IsOnHorizontalEdge) return SortHorizontalPorts(ports);
-        return SortVerticalPorts(ports);
+        if(ports[0].IsOnHorizontalEdge) return SortHorizontalPortsOnAnchor(ports);
+        return SortVerticalPortsOnAnchor(ports);
     }
     // ----------------------------------------------------------------------
-    static iCS_EditorObject[] SortHorizontalPorts(iCS_EditorObject[] ports) {
+    static iCS_EditorObject[] SortHorizontalPortsOnAnchor(iCS_EditorObject[] ports) {
         return SortPorts(ports, p=> p.LocalAnchorPosition.x);
     }
     // ----------------------------------------------------------------------
-    static iCS_EditorObject[] SortVerticalPorts(iCS_EditorObject[] ports) {
+    static iCS_EditorObject[] SortVerticalPortsOnAnchor(iCS_EditorObject[] ports) {
         return SortPorts(ports, p=> p.LocalAnchorPosition.y);
+    }
+    // ----------------------------------------------------------------------
+    public static iCS_EditorObject[] SortPortsOnLayout(iCS_EditorObject[] ports) {
+        if(ports.Length == 0) return ports;
+        if(ports[0].IsOnHorizontalEdge) return SortHorizontalPortsOnLayout(ports);
+        return SortVerticalPortsOnLayout(ports);
+    }
+    // ----------------------------------------------------------------------
+    static iCS_EditorObject[] SortHorizontalPortsOnLayout(iCS_EditorObject[] ports) {
+        return SortPorts(ports, p=> p.LocalLayoutPosition.x);
+    }
+    // ----------------------------------------------------------------------
+    static iCS_EditorObject[] SortVerticalPortsOnLayout(iCS_EditorObject[] ports) {
+        return SortPorts(ports, p=> p.LocalLayoutPosition.y);
     }
     // ----------------------------------------------------------------------
     static iCS_EditorObject[] SortPorts(iCS_EditorObject[] ports, Func<iCS_EditorObject,float> key) {
