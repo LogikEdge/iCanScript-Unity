@@ -72,7 +72,6 @@ public partial class iCS_EditorObject {
         // Determine min/max position for each port.
         float[] minPositions= new float[nbPorts];
         float[] maxPositions= new float[nbPorts]; 
-		Debug.Log("Length= "+availableLength+" minSeparation= "+minSeparation);
         for(int i= 0; i < nbPorts; ++i) {
             minPositions[i]= i*minSeparation;
             maxPositions[i]= availableLength-(nbPorts-1-i)*minSeparation;
