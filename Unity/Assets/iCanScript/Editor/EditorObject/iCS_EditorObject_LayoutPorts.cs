@@ -1,3 +1,4 @@
+//#define NEW_PORT_COLLISION_ALGO
 using UnityEngine;
 using System;
 using System.Collections;
@@ -51,6 +52,69 @@ public partial class iCS_EditorObject {
 			ports[i].LocalLayoutPosition= new Vector2(left+xs[i], y);
 		}
     }
+#if NEW_PORT_COLLISION_ALGO
+	// ----------------------------------------------------------------------
+	// Resolves the port layout position for a given edge.
+	static float[] ResolvePortCollisions(float[] sortedPosition, float availableLength) {
+	    // Nothing collision to resolve if we don't have at least two ports.
+	    int nbPorts= sortedPosition.Length;
+	    if(nbPorts < 2) return sortedPosition;
+	    // We can't resolve collision if we don't have enough space to put all ports.
+	    // In such a situation, we simply distribute the ports has best we can on the
+	    // available size.
+	    float minSeparation= iCS_EditorConfig.MinimumPortSeparation;
+	    if(minSeparation*(nbPorts-1) >= availableLength) {
+	        var step= availableLength/(nbPorts-1);
+	        for(int i= 0; i < nbPorts; ++i) {
+	            sortedPosition[i]= i*step;
+	        }
+	        return sortedPosition;
+	    }
+	    // We have enough space to resolve the port layout and avoid overlap.
+	    // Determine min/max position for each port.
+	    float[] minPositions= new float[nbPorts];
+	    float[] maxPositions= new float[nbPorts]; 
+	    for(int i= 0; i < nbPorts; ++i) {
+	        minPositions[i]= i*minSeparation;
+	        maxPositions[i]= availableLength-(nbPorts-1-i)*minSeparation;
+	        if(Math3D.IsSmaller(sortedPosition[i], minPositions[i])) sortedPosition[i]= minPositions[i];
+	        if(Math3D.IsGreater(sortedPosition[i], maxPositions[i])) sortedPosition[i]= maxPositions[i];
+	    }
+		// Iterate cumulating collision depth.
+	    const float kAllowedOverlap= 0.1f;
+		var delta= new float[nbPorts];
+		bool needsToResolveCollisions= true;
+		float totalOverlap= nbPorts*availableLength;
+		float prevTotalOverlap= nbPorts*availableLength+1f;
+		while(needsToResolveCollisions && Math3D.IsSmaller(totalOverlap, prevTotalOverlap)) {
+			needsToResolveCollisions= false;
+			prevTotalOverlap= totalOverlap;
+			totalOverlap= 0;
+			for (int i= 0; i < nbPorts; ++i) delta[i]= 0f;
+			for (int i= 0; i < nbPorts-1; ++i) {
+	            float overlap= -(sortedPosition[i+1]-sortedPosition[i]-minSeparation);
+	            if(Math3D.IsGreater(overlap, kAllowedOverlap)) {
+					totalOverlap+= overlap;
+					var d= 0.5f*overlap;
+					delta[i]  -= d;
+					delta[i+1]+= d;
+					needsToResolveCollisions= true;
+				}
+			}
+	        // Iterate resolving collisions
+	        for(int i= 0; i < nbPorts; ++i) {
+				sortedPosition[i]+= delta[i];
+	            if(Math3D.IsSmaller(sortedPosition[i], minPositions[i])) sortedPosition[i]= minPositions[i];
+	            if(Math3D.IsGreater(sortedPosition[i], maxPositions[i])) sortedPosition[i]= maxPositions[i];
+	        }			
+		}
+	    if(needsToResolveCollisions) {
+	        Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
+			Debug.Log("PrevOverlap= "+prevTotalOverlap+" Overlap= "+totalOverlap);
+	    }
+	    return sortedPosition;
+	}
+#else
     // ----------------------------------------------------------------------
     // Resolves the port layout position for a given edge.
     static float[] ResolvePortCollisions(float[] sortedPosition, float availableLength) {
@@ -107,6 +171,7 @@ public partial class iCS_EditorObject {
         }
         return sortedPosition;
     }
+#endif
 
     // ======================================================================
     // Port ordering utilities.
