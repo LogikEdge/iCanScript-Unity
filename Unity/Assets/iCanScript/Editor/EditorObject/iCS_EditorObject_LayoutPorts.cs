@@ -19,6 +19,33 @@ public partial class iCS_EditorObject {
         LayoutPortsOnHorizontalEdge(BottomPorts, horizontalLeft, horizontalRight,  halfSize.y);
     }
     // ----------------------------------------------------------------------
+	public void LayoutPortsOnSameEdge(iCS_EditorObject[] ports) {
+		if(ports.Length == 0) return;
+		if(ports[0].IsOnHorizontalEdge) {
+			LayoutPortsOnHorizontalEdge(ports);
+		} else {
+			LayoutPortsOnVerticalEdge(ports);
+		}
+	}
+    // ----------------------------------------------------------------------
+	public void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports) {
+		if(ports.Length == 0) return;
+        var halfSize= 0.5f*DisplaySize.x;
+        var verticalTop    = VerticalPortsTop;
+        var verticalBottom = VerticalPortsBottom;
+		var x= ports[0].IsOnLeftEdge ? -halfSize : halfSize;
+        LayoutPortsOnVerticalEdge(ports, verticalTop, verticalBottom, x);
+	}
+    // ----------------------------------------------------------------------
+	public void LayoutPortsOnHorizontalEdge(iCS_EditorObject[] ports) {
+		if(ports.Length == 0) return;
+        var halfSize= 0.5f*DisplaySize.y;
+        var horizontalLeft = HorizontalPortsLeft;
+        var horizontalRight= HorizontalPortsRight;
+		var y= ports[0].IsOnTopEdge ? -halfSize : halfSize;
+        LayoutPortsOnHorizontalEdge(ports, horizontalLeft, horizontalRight, y);
+	}
+    // ----------------------------------------------------------------------
     static void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports,
                                           float top, float bottom, float x) {
         ports= SortVerticalPortsOnAnchor(ports);
@@ -148,7 +175,6 @@ public partial class iCS_EditorObject {
         for(int i= 0; i < nbPorts-1 && retry > 0; ++i) {
             float overlap= -(sortedPosition[i+1]-sortedPosition[i]-minSeparation);
             if(Math3D.IsGreater(overlap, kAllowedOverlap)) {
-				Debug.Log("["+retry+","+i+"] Overlap= "+overlap+" ("+sortedPosition[i]+","+sortedPosition[i+1]+")");
 				if(Math3D.IsEqual(sortedPosition[i], minPositions[i])) {
                     sortedPosition[i+1]+= overlap;						
 				} else if(Math3D.IsEqual(sortedPosition[i+1], maxPositions[i+1])) {
