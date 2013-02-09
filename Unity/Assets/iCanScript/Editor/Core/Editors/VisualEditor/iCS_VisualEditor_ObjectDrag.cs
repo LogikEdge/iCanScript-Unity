@@ -465,7 +465,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				break;
 			}
 		}
-		Debug.Log("DragObject index: "+index);
+//		Debug.Log("DragObject index: "+index);
 		// Determine proper anchor ratio for drag port.
 		float rangeRatioStart, rangeRatioEnd;
 		float rangePosStart,   rangePosEnd;
@@ -492,17 +492,93 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		var rangeOffset= newPositionOnEdge-rangePosStart;
 		var ratio= Math3D.Lerp(rangeRatioStart, rangeRatioEnd, rangeOffset/rangePos);
-//		const float kMinRatioDiff= 0.001f;
-//		if(Math3D.IsEqual(ratio, rangeRatioStart)) ratio+= kMinRatioDiff;
-//		if(Math3D.IsEqual(ratio, rangeRatioEnd)) ratio-= kMinRatioDiff;
+		// Cleanup ratio to avoid ordering issues caused by equal ratios.
+        const float kMinRatioDiff= 0.001f;
+        // ... first we arrange any overlap with the drag port.
+		if(index == 0) {
+		    var ratioDiff= portRatios[0]-ratio;
+		    if(ratioDiff < kMinRatioDiff) {
+		        ratio= portRatios[0]-kMinRatioDiff;
+		    }
+		} else if(index == nbOfPortsOnEdge) {
+		    var ratioDiff= ratio-portRatios[nbOfPortsOnEdge-1];
+		    if(ratioDiff < kMinRatioDiff) {
+		        ratio= portRatios[nbOfPortsOnEdge-1]+kMinRatioDiff;
+		    }
+		} else {
+		    var ratioDiff= ratio-portRatios[index-1];
+		    if(ratioDiff < kMinRatioDiff) {
+		        ratio= portRatios[index-1]+kMinRatioDiff;
+		    }
+		    ratioDiff= portRatios[index]-ratio;
+		    if(ratioDiff < kMinRatioDiff) {
+		        ratio= portRatios[index]-kMinRatioDiff;
+		    }
+		}
 		DragObject.PortPositionRatio= ratio;
-		// Cleanup ratio to avoid ordering issues caused by euqal ratios.
+		// ... rebuild port lists to include the drag port.
+		sortedPorts        = P.insertAt(DragObject,        index, sortedPorts);
+		portRatios         = P.insertAt(ratio,             index, portRatios);
+		portPositionsOnEdge= P.insertAt(newPositionOnEdge, index, portPositionsOnEdge);
+        nbOfPortsOnEdge    = sortedPorts.Length;
+        // ... then we offset any remaining overlaps or out of bounds.
+        for(int i= 0; i < nbOfPortsOnEdge-1; ++i) {
+            var r= sortedPorts[i].PortPositionRatio;
+            if(Math3D.IsSmallerOrEqual(r, 0f)) {
+                r= 0f;
+                sortedPorts[i].PortPositionRatio= r;
+            }
+            var nextRatio= sortedPorts[i+1].PortPositionRatio;
+            if(r+kMinRatioDiff > nextRatio) {
+                sortedPorts[i+1].PortPositionRatio= r+kMinRatioDiff;
+            }
+        }
+        for(int i= nbOfPortsOnEdge-1; i > 0; --i) {
+            var r= sortedPorts[i].PortPositionRatio;
+            if(Math3D.IsGreaterOrEqual(r, 1f)) {
+                r= 1f;
+                sortedPorts[i].PortPositionRatio= r;
+            }
+            var prevRatio= sortedPorts[i-1].PortPositionRatio;
+            if(prevRatio > r-kMinRatioDiff) {
+                sortedPorts[i-1].PortPositionRatio= r-kMinRatioDiff;
+            }                
+        }
+        // Rearrange layout position to give priority to the drag port.
+        float minSeparation= iCS_EditorConfig.MinimumPortSeparation;
+        for(int i= index; i < nbOfPortsOnEdge-1; ++i) {
+            var posDiff= portPositionsOnEdge[i+1]-portPositionsOnEdge[i];
+            if(posDiff < minSeparation) {
+                var offset= minSeparation-posDiff;
+                var pos= sortedPorts[i+1].GlobalLayoutPosition;
+                if(DragObject.IsOnHorizontalEdge) {
+                    pos.x+= offset;
+                } else {
+                    pos.y+= offset;
+                }
+                sortedPorts[i+1].GlobalLayoutPosition= pos;
+                portPositionsOnEdge[i+1]+= offset;
+            }
+        }
+        for(int i= index; i > 0; --i) {
+            var posDiff= portPositionsOnEdge[i]-portPositionsOnEdge[i-1];
+            if(posDiff < minSeparation) {
+                var offset= minSeparation-posDiff;
+                var pos= sortedPorts[i-1].GlobalLayoutPosition;
+                if(DragObject.IsOnHorizontalEdge) {
+                    pos.x-= offset;
+                } else {
+                    pos.y-= offset;
+                }
+                sortedPorts[i-1].GlobalLayoutPosition= pos;
+                portPositionsOnEdge[i-1]-= offset;
+            }
+        }
 /*
 	FIXME : Port relocation needs to be completed.
 */		
-		Debug.Log("Drag port ratio= "+ratio);
-
-		DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
+//		Debug.Log("Drag port ratio= "+ratio);
+        SetPortRelocationLayoutPosition(newPosition, parent, parentGlobalPos, parentRect);
 
 //		DragObject.GlobalLayoutPosition= newPosition;
 //        // Determine before & after adjacent ports.
