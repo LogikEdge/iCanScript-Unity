@@ -497,7 +497,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //		if(Math3D.IsEqual(ratio, rangeRatioEnd)) ratio-= kMinRatioDiff;
 		DragObject.PortPositionRatio= ratio;
 		// Cleanup ratio to avoid ordering issues caused by euqal ratios.
-		
+/*
+	FIXME : Port relocation needs to be completed.
+*/		
 		Debug.Log("Drag port ratio= "+ratio);
 
 		DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
