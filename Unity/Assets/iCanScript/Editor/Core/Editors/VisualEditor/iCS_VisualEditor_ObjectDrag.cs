@@ -439,14 +439,17 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
 			return;
         }
-		// Determine index of drag object according to display position.
+		// Build port related information (sortedPorts, portRatios, and portGlobalPositions).
 		parent.LayoutPortsOnSameEdge(sameEdgePorts);
-		var sortedPorts= iCS_EditorObject.SortPortsOnLayout(sameEdgePorts);		
+		var sortedPorts        = iCS_EditorObject.SortPortsOnLayout(sameEdgePorts);		
+		var portRatios         = P.map(p=> p.PortPositionRatio,     sortedPorts);
+		var portGlobalPositions= P.map(p=> p.GlobalDisplayPosition, sortedPorts);
+		// Determine index of drag object according to display position.
 		var delta= newPosition-DragObject.GlobalDisplayPosition;
 		int index;
 		for(index= 0; index < nbOfPortsOnEdge; ++index) {
 			if(DragObject.IsOnHorizontalEdge) {
-				var x= sortedPorts[index].GlobalDisplayPosition.x;
+				var x= portGlobalPositions[index].x;
 				if(Math3D.IsSmaller(newPosition.x, x)) {
 					break;
 				}
@@ -454,7 +457,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					break;
 				}
 			} else {
-				var y= sortedPorts[index].GlobalDisplayPosition.y;
+				var y= portGlobalPositions[index].y;
 				if(Math3D.IsSmaller(newPosition.y, y)) {
 					break;
 				}
@@ -464,6 +467,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 		}
 		Debug.Log("DragObject index: "+index);
+		// Determine proper anchor ratio for drag port.
+		
 		
 		DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
 
