@@ -442,37 +442,52 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Build port related information (sortedPorts, portRatios, and portGlobalPositions).
 		parent.LayoutPortsOnSameEdge(sameEdgePorts);
 		var sortedPorts        = iCS_EditorObject.SortPortsOnLayout(sameEdgePorts);		
-		var portRatios         = P.map(p=> p.PortPositionRatio,     sortedPorts);
-		var portGlobalPositions= P.map(p=> p.GlobalDisplayPosition, sortedPorts);
+		var portRatios         = P.map(p=> p.PortPositionRatio, sortedPorts);
+		var portPositionsOnEdge= P.map(p=> (p.IsOnHorizontalEdge ? p.GlobalDisplayPosition.x : p.GlobalDisplayPosition.y), sortedPorts);
+		var newPositionOnEdge  = DragObject.IsOnHorizontalEdge ? newPosition.x : newPosition.y;
+		var delta              = newPosition-DragObject.GlobalDisplayPosition;
+		var deltaOnEdge        = DragObject.IsOnHorizontalEdge ? delta.x : delta.y;
+		var parentGlobalPos    = parent.GlobalDisplayPosition;
+		var edgePosStart       = DragObject.IsOnHorizontalEdge ?
+									parentGlobalPos.x+parent.HorizontalPortsLeft :
+									parentGlobalPos.y+parent.VerticalPortsTop;
+		var edgePosEnd         = DragObject.IsOnHorizontalEdge ?
+									parentGlobalPos.x+parent.HorizontalPortsRight :
+									parentGlobalPos.y+parent.VerticalPortsBottom;
 		// Determine index of drag object according to display position.
-		var delta= newPosition-DragObject.GlobalDisplayPosition;
 		int index;
 		for(index= 0; index < nbOfPortsOnEdge; ++index) {
-			if(DragObject.IsOnHorizontalEdge) {
-				var x= portGlobalPositions[index].x;
-				if(Math3D.IsSmaller(newPosition.x, x)) {
-					break;
-				}
-				if(Math3D.IsEqual(newPosition.x, x) && Math3D.IsSmaller(delta.x, 0f)) {
-					break;
-				}
-			} else {
-				var y= portGlobalPositions[index].y;
-				if(Math3D.IsSmaller(newPosition.y, y)) {
-					break;
-				}
-				if(Math3D.IsEqual(newPosition.y, y) && Math3D.IsSmaller(delta.y, 0f)) {
-					break;
-				}				
+			var a= portPositionsOnEdge[index];
+			if(Math3D.IsSmaller(newPositionOnEdge, a)) {
+				break;
+			}
+			if(Math3D.IsEqual(newPositionOnEdge, a) && Math3D.IsSmaller(deltaOnEdge, 0f)) {
+				break;
 			}
 		}
 		Debug.Log("DragObject index: "+index);
 		// Determine proper anchor ratio for drag port.
-		
+		float rangeRatioStart, rangeRatioEnd;
+		float rangePosStart,   rangePosEnd;
+		if(index == 0) {
+			rangeRatioStart= 0f;
+			rangeRatioEnd  = portRatios[index];
+			rangePosStart  = edgePosStart;
+			rangePosEnd    = portPositionsOnEdge[index];
+		} else if(index == nbOfPortsOnEdge) {
+			rangeRatioStart= portRatios[index-1];
+			rangeRatioEnd  = 1f;
+			rangePosStart  = portPositionsOnEdge[index-1];
+			rangePosEnd    = edgePosEnd;			
+		} else {
+			rangeRatioStart= portRatios[index-1];
+			rangeRatioEnd  = portRatios[index];
+			rangePosStart  = portPositionsOnEdge[index-1];
+			rangePosEnd    = portPositionsOnEdge[index];			
+		}
 		
 		DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
 
-//		var parentGloablPos= parent.GlobalDisplayPosition;
 //		DragObject.GlobalLayoutPosition= newPosition;
 //        // Determine before & after adjacent ports.
 //        iCS_EditorObject beforePort= null;
