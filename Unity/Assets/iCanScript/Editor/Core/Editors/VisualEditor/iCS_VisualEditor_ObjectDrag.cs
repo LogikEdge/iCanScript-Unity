@@ -485,7 +485,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			rangePosStart  = portPositionsOnEdge[index-1];
 			rangePosEnd    = portPositionsOnEdge[index];			
 		}
+		var rangePos   = rangePosEnd-rangePosStart;
+		if(Math3D.IsZero(rangePos)) {
+			DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
+			return;
+		}
+		var rangeOffset= newPositionOnEdge-rangePosStart;
+		var ratio= Math3D.Lerp(rangeRatioStart, rangeRatioEnd, rangeOffset/rangePos);
+//		const float kMinRatioDiff= 0.001f;
+//		if(Math3D.IsEqual(ratio, rangeRatioStart)) ratio+= kMinRatioDiff;
+//		if(Math3D.IsEqual(ratio, rangeRatioEnd)) ratio-= kMinRatioDiff;
+		DragObject.PortPositionRatio= ratio;
+		// Cleanup ratio to avoid ordering issues caused by euqal ratios.
 		
+		Debug.Log("Drag port ratio= "+ratio);
+
 		DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
 
 //		DragObject.GlobalLayoutPosition= newPosition;
@@ -558,7 +572,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 //            } 
 //        }
 //        // Update local anchor port ratio to reflect the relocation.
-//		const float kMinRatioDiff= 0.001f;
 //		// Just position drag port on the other side of the port with exactly the same position.
 //		if(samePositionPort != null) {
 //			// Give precedence to drag port.
