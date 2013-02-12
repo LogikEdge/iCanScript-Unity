@@ -13,6 +13,8 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Engine Object Proxy Position Accessors
     // ----------------------------------------------------------------------
+    // The anchor position of a node is valid for an unfolded parent.
+    // The anchor position of a port is valid for folded and unfolded parent.
 	public Vector2 LocalAnchorPosition {
 		get {
 			// Port local anchor position getter.
