@@ -12,8 +12,6 @@ public partial class iCS_EditorObject {
     bool            	myIsFloating             = false;
     bool            	myIsDirty                = false;
     public List<int>	myChildren               = new List<int>();
-//    Vector2             myLayoutSize            = Vector2.zero;
-//    Vector2             myLocalPosition          = Vector2.zero;
     bool                myIsSticky               = false;
     
     // ======================================================================

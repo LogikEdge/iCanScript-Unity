@@ -25,17 +25,17 @@ public partial class iCS_EditorObject {
 	public void LayoutNode() {
         // Nothing to do for invisible ports.
         if(!IsVisibleInLayout) return;
+        // Just update the size of the node if it is iconized.
+        if(IsIconizedInLayout) {
+            LayoutSize= iCS_Graphics.GetMaximizeIconSize(this);
+            return;
+        }
         // Resolve any existing collisions on children for unfolded modules.
         if(IsUnfoldedInLayout && !IsFunction) {
             ResolveCollisionOnChildrenNodes();
             WrapAroundChildrenNodes();
     		LayoutPorts();
     		return;            
-        }
-        // Just update the size of the node if it is iconized.
-        if(IsIconizedInLayout) {
-            LayoutSize= iCS_Graphics.GetMaximizeIconSize(this);
-            return;
         }
         // Update the size and ports for folded & Function nodes.
         GlobalLayoutRect= NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(new Rect(0,0,0,0));

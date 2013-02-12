@@ -70,6 +70,19 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
+    public Vector2 LayoutSize {
+		get {
+			if(!IsVisibleInLayout) return Vector2.zero;
+            return myLayoutSize;
+		}
+		set {
+            // Avoid propagating change if we did not change size
+            if(Math3D.IsEqual(myLayoutSize, value)) return;
+            myLayoutSize= value;
+            IsDirty= true;
+		}
+	}
+    // ----------------------------------------------------------------------
     public Rect LocalLayoutRect {
         get {
             var sze= LayoutSize;
