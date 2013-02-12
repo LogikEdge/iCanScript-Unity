@@ -13,14 +13,24 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public float PortPositionRatio {
         get { return EngineObject.PortPositionRatio; }
-		set { EngineObject.PortPositionRatio= value; }
+		set {
+            var engineObject= EngineObject;
+			if(Math3D.IsEqual(engineObject.PortPositionRatio, value)) return;
+			engineObject.PortPositionRatio= value;
+			IsDirty= true;
+		}
     }
      
     // ======================================================================
 	// Port source related attributes.
     public int PortIndex {
 		get { return EngineObject.PortIndex; }
-		set { EngineObject.PortIndex= value; }
+		set {
+            var engineObject= EngineObject;
+			if(engineObject.PortIndex == value) return;
+			engineObject.PortIndex= value;
+			IsDirty= true;
+		}
 	}
     public int SourceId {
 		get { return EngineObject.SourceId; }
@@ -40,7 +50,12 @@ public partial class iCS_EditorObject {
 	// Port value attributes.
     public string InitialValueArchive {
 		get { return EngineObject.InitialValueArchive; }
-		set { EngineObject.InitialValueArchive= value;}
+		set {
+            var engineObject= EngineObject;
+			if(engineObject.InitialValueArchive == value) return;
+			engineObject.InitialValueArchive= value;
+			IsDirty= true;
+		}
 	}
 	// ----------------------------------------------------------------------
 	public object InitialPortValue {

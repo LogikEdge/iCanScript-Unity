@@ -39,6 +39,7 @@ public partial class iCS_EditorObject {
 			var engineObject= EngineObject;
 			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
 			engineObject.LocalAnchorPosition= value;
+			IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -57,6 +58,7 @@ public partial class iCS_EditorObject {
             var engineObject= EngineObject;
 			if(Math3D.IsEqual(engineObject.LocalLayoutOffset, value)) return;
 			engineObject.LocalLayoutOffset= value;
+			IsDirty= true;
 		}
 	}
 

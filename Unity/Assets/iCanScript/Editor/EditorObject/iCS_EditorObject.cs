@@ -98,12 +98,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
 		get { return EngineObject.IsNameEditable; }
-		set { EngineObject.IsNameEditable= value; }
+		set { EngineObject.IsNameEditable= value; IsDirty= true; }
 	}
     // ----------------------------------------------------------------------
     public string Tooltip {
 		get { return EngineObject.Tooltip; }
-		set { EngineObject.Tooltip= value; }
+		set { EngineObject.Tooltip= value; IsDirty= true; }
 	}
     
     // ======================================================================
