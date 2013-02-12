@@ -9,6 +9,7 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
+            bool                myForceRelayout     = true;
             bool                myIsDirty           = true;
             bool                CleanupNeeded       = true;
             bool                AnimationNeeded     = true;
@@ -19,6 +20,33 @@ public partial class iCS_IStorage {
     public  bool                CleanupDeadPorts    = true;
 			P.TimeRatio			myAnimationTimeRatio= new P.TimeRatio();
     
+    // ======================================================================
+    // Basic Accessors
+    // ----------------------------------------------------------------------
+    public List<iCS_EditorObject>    EditorObjects    { get { return myEditorObjects; }}
+    public List<iCS_EngineObject>    EngineObjects    { get { return Storage.EngineObjects; }}
+    public bool ForceRelayout {
+        get { return myForceRelayout; }
+        set { myForceRelayout= value; }
+    }
+	public Vector2 ScrollPosition {
+	    get { return Storage.ScrollPosition; }
+	    set { Storage.ScrollPosition= value; }
+	}
+    public float GuiScale {
+        get { return Storage.GuiScale; }
+        set { Storage.GuiScale= value; }
+    }
+    public int SelectedObjectId {
+        get { return Storage.SelectedObject; }
+        set { Storage.SelectedObject= value; }
+    }
+    public iCS_EditorObject SelectedObject {
+        get { return this[SelectedObjectId]; }
+        set { SelectedObjectId= value != null ? value.InstanceId : -1; }
+    }
+
+
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
@@ -31,7 +59,7 @@ public partial class iCS_IStorage {
             Storage= storage;
             UndoRedoId= Storage.UndoRedoId;          
             GenerateEditorData();
-			ForcedRelayoutOfTree(EditorObjects[0]);
+            ForceRelayout= true;
         }
     }
     // ----------------------------------------------------------------------
@@ -44,8 +72,6 @@ public partial class iCS_IStorage {
         if(EditorObjects.Count > 0 && IsValid(EditorObjects[0])) {
             Vector2 graphCenter= EditorObjects[0].GlobalAnchorPosition;
             ForEach(obj=> {
-//		        // Initialize display position.
-//                obj.AnimatedPosition.Reset(new Rect(graphCenter.x,graphCenter.y,0,0));
 				// Initialize initial port values.
 				if(obj.IsInDataPort) {
 					LoadInitialPortValueFromArchive(obj);
@@ -56,15 +82,6 @@ public partial class iCS_IStorage {
     }
     
     
-    // ======================================================================
-    // Basic Accessors
-    // ----------------------------------------------------------------------
-    public List<iCS_EditorObject>    EditorObjects    { get { return myEditorObjects; }}
-    public List<iCS_EngineObject>    EngineObjects    { get { return Storage.EngineObjects; }}
-	public Vector2					 ScrollPosition   { get { return Storage.ScrollPosition; } set { Storage.ScrollPosition= value; }}
-    public float                     GuiScale         { get { return Storage.GuiScale; } set { Storage.GuiScale= value; }}
-    public int                       SelectedObjectId { get { return Storage.SelectedObject; } set { Storage.SelectedObject= value; }}
-    public iCS_EditorObject          SelectedObject   { get { return this[SelectedObjectId]; } set { SelectedObjectId= value != null ? value.InstanceId : -1; }}
     // ----------------------------------------------------------------------
     public bool IsBehaviour         { get { return IsValid(EditorObjects[0]) && EditorObjects[0].IsBehaviour; }}
     public bool IsEmptyBehaviour    {
@@ -123,7 +140,13 @@ public partial class iCS_IStorage {
     public void Update() {
         // Processing any changed caused by Undo/Redo
         DetectUndoRedo();
-
+        
+        // Force a relayout if it is requested
+        if(myForceRelayout) {
+            myForceRelayout= false;
+            ForcedRelayoutOfTree(EditorObjects[0]);    
+        }
+		
 	    // Perform layout if one or more objects has changed.
 	    if(myIsDirty) {
 	        // Tell Unity that our storage has changed.
@@ -155,10 +178,6 @@ public partial class iCS_IStorage {
         }
     }
 
-//    // ----------------------------------------------------------------------
-//    Rect GetAnimationTarget(iCS_EditorObject eObj) {
-//        return eObj.AnimationTarget;
-//    }
     // ----------------------------------------------------------------------
     /*
         TODO: Should use the layout rule the determine execution priority.
