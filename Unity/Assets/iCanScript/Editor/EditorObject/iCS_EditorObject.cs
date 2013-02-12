@@ -136,11 +136,7 @@ public partial class iCS_EditorObject {
 		}
 	}
     public bool IsDirty {
-		set {
-		    if(value) {
-		        myIStorage.IsDirty= true;
-		    }
-	    }
+		set { if(value) myIStorage.IsDirty= true; }
 	}
 	public bool IsSticky {
 	    get { return myIsSticky; }
