@@ -21,7 +21,7 @@ public partial class iCS_IStorage {
 			P.TimeRatio			myAnimationTimeRatio= new P.TimeRatio();
     
     // ======================================================================
-    // Basic Accessors
+    // Public Accessors
     // ----------------------------------------------------------------------
     public List<iCS_EditorObject>    EditorObjects    { get { return myEditorObjects; }}
     public List<iCS_EngineObject>    EngineObjects    { get { return Storage.EngineObjects; }}
@@ -45,6 +45,14 @@ public partial class iCS_IStorage {
         get { return this[SelectedObjectId]; }
         set { SelectedObjectId= value != null ? value.InstanceId : -1; }
     }
+    public bool IsDirty {
+        get { return myIsDirty; }
+        set {
+            myIsDirty= value;
+            if(value) ++ModificationId;
+        }
+    }
+
 
 
     // ======================================================================
@@ -100,16 +108,6 @@ public partial class iCS_IStorage {
     public bool IsValid(iCS_EditorObject obj)        { return obj != null && obj.InstanceId != -1; }
     public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
     public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
-    // ----------------------------------------------------------------------
-    public bool IsDirty {
-        get {
-            return myIsDirty;
-        }
-        set {
-            myIsDirty= value;
-            if(value) ++ModificationId;
-        }
-    }
     // ----------------------------------------------------------------------
 	public bool IsAnimationPlaying { get { return myAnimationTimeRatio.IsActive; }}
     // ----------------------------------------------------------------------
