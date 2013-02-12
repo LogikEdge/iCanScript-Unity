@@ -3,16 +3,14 @@ using System.Collections;
 
 public partial class iCS_EditorObject {
     // ======================================================================
+    // Queries
+    // ----------------------------------------------------------------------    
     public bool IsUnfoldedInLayout  { get { return DisplayOption == iCS_DisplayOptionEnum.Unfolded; }}
     public bool IsFoldedInLayout    { get { return DisplayOption == iCS_DisplayOptionEnum.Folded;   }}
     public bool IsIconizedInLayout  { get { return DisplayOption == iCS_DisplayOptionEnum.Iconized; }}
-    public void Iconize()           { DisplayOption= iCS_DisplayOptionEnum.Iconized; IsDirty= true; }
-    public void Fold()              { DisplayOption= iCS_DisplayOptionEnum.Folded;   IsDirty= true; }
-    public void Unfold()            { DisplayOption= iCS_DisplayOptionEnum.Unfolded; IsDirty= true; }
 
     // ======================================================================
-    // High-order display state functions.
-    // ----------------------------------------------------------------------
+    // High-order queries.
 	public bool IsUnfoldedOnDisplay { get { return IsUnfoldedInLayout; }}
     // ----------------------------------------------------------------------
 	public bool IsFoldedOnDisplay	{ get { return IsFoldedInLayout; }}
@@ -58,6 +56,33 @@ public partial class iCS_EditorObject {
             if(IsLayoutSizeAnimated) return true;
             return IsDisplayPositionAnimated;
         }
+    }
+
+    // ======================================================================
+    // Display State Change
+    // ----------------------------------------------------------------------    
+    public void Iconize() {
+        if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
+        DisplayOption= iCS_DisplayOptionEnum.Iconized;
+        UpdateNodeLayoutSize();
+        LayoutParentNodesUntilTop();
+        IsDirty= true;
+    }
+    // ----------------------------------------------------------------------    
+    public void Fold() {
+        if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
+        DisplayOption= iCS_DisplayOptionEnum.Folded;
+        UpdateNodeLayoutSize();
+        LayoutParentNodesUntilTop();
+        IsDirty= true;
+    }
+    // ----------------------------------------------------------------------    
+    public void Unfold() {
+        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
+        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
+        UpdateNodeLayoutSize();
+        LayoutParentNodesUntilTop();
+        IsDirty= true;
     }
 
 }

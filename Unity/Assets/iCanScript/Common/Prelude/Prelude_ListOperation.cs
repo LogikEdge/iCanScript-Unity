@@ -36,4 +36,18 @@ public static partial class Prelude {
         }
         return newLst;
     }
+
+    // ----------------------------------------------------------------------
+    // insertAt :: a->Int->[a]->[a]
+    public static A[] insertAt<A>(A a, int idx, A[] lst) {
+        var newLst= new A[lst.Length+1];
+        if(idx > 0) {
+            Array.Copy(lst, newLst, idx);
+        }
+        newLst[idx]= a;
+        if(idx < lst.Length) {
+            Array.Copy(lst, idx, newLst, idx+1, lst.Length-idx);
+        }
+        return newLst;
+    }
 }

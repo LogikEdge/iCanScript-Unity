@@ -5,8 +5,8 @@ using System.Collections.Generic;
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Updates the global Rect arround the children nodes.  It is assume that
-    // the children have previously been layed out.  The parent node will not
-    // be affect or marked for relayout if the node Rect has been modified.
+    // the children have previously been layed out.  The anchor position and
+    // layout size will be updated accordingly.
     public void WrapAroundChildrenNodes() { 
 		// Nothing to do if node is not visible.
 		if(!IsVisibleOnDisplay) return;
@@ -60,9 +60,5 @@ public partial class iCS_EditorObject {
 				++i;
 	        }
 		);
-		if(Parent != null && Math3D.IsNotEqual(originalGlobalRect, GlobalLayoutRect)) {
-			Parent.WrapAroundChildrenNodes();
-		}
     }
-
 }

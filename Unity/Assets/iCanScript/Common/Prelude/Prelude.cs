@@ -27,10 +27,20 @@ public static partial class Prelude {
 
     // ----------------------------------------------------------------------
     // Currying support.
-    public static Func<B,A>                 constant<A,B>(A a)                     { return function<A,B,A>(constant, a); }
-    public static Func<A,C>                 dot<A,B,C>(Func<B,C> f1, Func<A,B> f2) { return function<Func<B,C>,Func<A,B>,A,C>(dot,f1,f2); }
-    public static Func<Func<A,B>,Func<A,C>> dot<A,B,C>(Func<B,C> f1)               { return function<Func<B,C>,Func<A,B>,A,C>(dot,f1); }
-    public static Func<A,C>                 flip<A,B,C>(Func<A,B,C> f, B b)        { return function<Func<A,B,C>,B,A,C>(flip,f,b); }
-    public static Func<B,Func<A,C>>         flip<A,B,C>(Func<A,B,C> f)             { return function<Func<A,B,C>,B,A,C>(flip,f); }
+    public static Func<B,A> constant<A,B>(A a) {
+        return function<A,B,A>(constant, a);
+    }
+    public static Func<A,C> dot<A,B,C>(Func<B,C> f1, Func<A,B> f2) {
+        return function<Func<B,C>,Func<A,B>,A,C>(dot,f1,f2);
+    }
+    public static Func<Func<A,B>,Func<A,C>> dot<A,B,C>(Func<B,C> f1) {
+        return function<Func<B,C>,Func<A,B>,A,C>(dot,f1);
+    }
+    public static Func<A,C> flip<A,B,C>(Func<A,B,C> f, B b) {
+        return function<Func<A,B,C>,B,A,C>(flip,f,b);
+    }
+    public static Func<B,Func<A,C>> flip<A,B,C>(Func<A,B,C> f) {
+        return function<Func<A,B,C>,B,A,C>(flip,f);
+    }
 
 }
