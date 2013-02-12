@@ -56,5 +56,22 @@ public partial class iCS_EditorObject {
             if(IsIconizedOnDisplay) return 0.25f*DisplaySize.x;
             return 0.5f*(DisplaySize.x-iCS_EditorConfig.MinimumPortSeparation);
         }
+    }    
+    // ----------------------------------------------------------------------
+    // Returns the minimium height needed for the left / right ports.
+    public float MinimumHeightForPorts {
+        get {
+            int nbOfPorts= Mathf.Max(NbOfLeftPorts, NbOfRightPorts);
+            return nbOfPorts*iCS_EditorConfig.MinimumPortSeparation;                                            
+        }
     }
+    // ----------------------------------------------------------------------
+    // Returns the minimum width needed for the top / bottom ports.
+    public float MinimumWidthForPorts {
+        get {
+            int nbOfPorts= Mathf.Max(NbOfTopPorts, NbOfBottomPorts);
+            return nbOfPorts*iCS_EditorConfig.MinimumPortSeparation;                                            
+        }
+    }
+    
 }

@@ -206,6 +206,18 @@ public partial class iCS_EditorObject {
             return childRect;
         }
     }
+    // ----------------------------------------------------------------------
+    // Returns the global rectangle currently used by the children.
+    public Rect GlobalDisplayChildRectWithMargins {
+        get {
+            var childRect= GlobalDisplayChildRect;
+            if(Math3D.IsNotZero(Math3D.Area(childRect))) {
+                childRect= AddMargins(childRect);
+            }
+            return childRect;
+        }
+    }
+    
 	// ======================================================================
     // High-order functions
     // ----------------------------------------------------------------------
