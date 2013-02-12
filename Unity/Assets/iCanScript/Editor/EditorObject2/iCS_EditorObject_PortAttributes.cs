@@ -15,8 +15,7 @@ public partial class iCS_EditorObject {
         get { return EngineObject.PortPositionRatio; }
 		set { EngineObject.PortPositionRatio= value; }
     }
-    
-    
+     
     // ======================================================================
 	// Port source related attributes.
     public int PortIndex {
