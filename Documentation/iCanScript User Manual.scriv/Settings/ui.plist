@@ -896,7 +896,7 @@
 	<key>mainDocumentEditor.textMode</key>
 	<integer>0</integer>
 	<key>mainWindowFrame</key>
-	<string>230 253 1453 1118 0 0 2560 1418 </string>
+	<string>97 60 1453 1118 0 0 1920 1178 </string>
 	<key>projectStatsSheet</key>
 	<dict>
 		<key>excludeAnnots</key>

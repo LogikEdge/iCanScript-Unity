@@ -337,7 +337,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileFootnotesStyleKey</key>
 	<integer>0</integer>
 	<key>SCRCompileFormatKey</key>
-	<integer>0</integer>
+	<integer>5</integer>
 	<key>SCRCompileFrontMatterIDKey</key>
 	<integer>-1</integer>
 	<key>SCRCompileGeneratePDFWithAspose</key>
