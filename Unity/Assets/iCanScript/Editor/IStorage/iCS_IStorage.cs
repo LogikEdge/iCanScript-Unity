@@ -52,7 +52,16 @@ public partial class iCS_IStorage {
             if(value) ++ModificationId;
         }
     }
-
+    public iCS_EditorObject this[int id] {
+        get {
+            if(!IsIdValid(id)) return null;
+            return EditorObjects[id];
+        }
+        set {
+            DetectUndoRedo();
+            EditorObjects[id]= value;
+        }
+    }
 
 
     // ======================================================================
@@ -112,17 +121,6 @@ public partial class iCS_IStorage {
 	public bool IsAnimationPlaying { get { return myAnimationTimeRatio.IsActive; }}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? eObj.Parent : null); }
-    // ----------------------------------------------------------------------
-    public iCS_EditorObject this[int id] {
-        get {
-            if(!IsIdValid(id)) return null;
-            return EditorObjects[id];
-        }
-        set {
-            DetectUndoRedo();
-            EditorObjects[id]= value;
-        }
-    }
     // ----------------------------------------------------------------------
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.GlobalLayoutRect= r; }
 	public P.TimeRatio	AnimationTimeRatio { get { return myAnimationTimeRatio; }}

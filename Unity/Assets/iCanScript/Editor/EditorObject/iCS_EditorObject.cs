@@ -10,7 +10,6 @@ public partial class iCS_EditorObject {
     iCS_IStorage    	myIStorage               = null;
     int             	myId                     = -1;
     bool            	myIsFloating             = false;
-    bool            	myIsDirty                = false;
     public List<int>	myChildren               = new List<int>();
     bool                myIsSticky               = false;
     
@@ -137,10 +136,7 @@ public partial class iCS_EditorObject {
 		}
 	}
     public bool IsDirty {
-		get { return myIsDirty; }
 		set {
-            if(myIsDirty == value) return;
-		    myIsDirty= value;
 		    if(value) {
 		        myIStorage.IsDirty= true;
 		    }
