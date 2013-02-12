@@ -295,7 +295,6 @@ public partial class iCS_IStorage {
             }
         );
         Iconize(func);
-        NodeLayout(func);
         return func;
     }
     public void ClassModuleDestroy(iCS_EditorObject module, iCS_ReflectionInfo desc) {
@@ -312,7 +311,6 @@ public partial class iCS_IStorage {
         iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.This);
         SetSource(moduleThisPort, constructorThisPort);
         Iconize(constructor);
-        NodeLayout(constructor);
         return constructor;
     }
     public void ClassModuleDestroyConstructor(iCS_EditorObject module) {
