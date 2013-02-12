@@ -2,6 +2,38 @@ using UnityEngine;
 using System.Collections;
 
 public partial class iCS_IStorage {
+	// ======================================================================
+    // ----------------------------------------------------------------------
+	void ForcedRelayoutOfTree(iCS_EditorObject root) {
+        ForEachRecursiveDepthFirst(root,
+            obj=> {
+            	if(!obj.IsVisibleInLayout) return;
+				UpdateTransitionModuleName(obj);
+				if(obj.IsNode) {
+					obj.LayoutNode();
+				}
+            }
+        );    		
+	}
+    // ----------------------------------------------------------------------
+	void ForcedRedisplayOfTree(iCS_EditorObject root) {
+        ForEachRecursiveDepthFirst(root,
+            obj=> {
+            	if(!obj.IsVisibleOnDisplay) return;
+				UpdateTransitionModuleName(obj);
+				if(obj.IsNode) {
+					obj.LayoutNode();
+				}
+            }
+        );    		
+	}
+    // ----------------------------------------------------------------------
+	void UpdateTransitionModuleName(iCS_EditorObject obj) {
+		if(!obj.IsTransitionModule) return;
+        GetTransitionName(obj);		
+	}
+	
+	// ======================================================================
     // ----------------------------------------------------------------------
     void PerformTreeLayoutFor(iCS_EditorObject branch) {
         ForEachRecursiveDepthFirst(branch,
@@ -16,7 +48,6 @@ public partial class iCS_IStorage {
     public void Layout(iCS_EditorObject obj) {
         obj.IsDirty= false;
         ExecuteIf(obj, o=> o.IsNode, o=> NodeLayout(o));
-        //Debug.Log(obj.Name+" is dirty.  Display option: "+obj.DisplayOption);
     }
 
     // ----------------------------------------------------------------------

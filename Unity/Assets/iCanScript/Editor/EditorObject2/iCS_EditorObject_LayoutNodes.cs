@@ -26,5 +26,11 @@ public partial class iCS_EditorObject {
             parent.IsSticky= false;
         }
     }
+    // ----------------------------------------------------------------------
+	public void LayoutNode() {
+        ResolveCollisionOnChildrenNodes();
+        WrapAroundChildrenNodes();
+		LayoutPorts();
+	}
 }
 

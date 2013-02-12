@@ -1,5 +1,3 @@
-//#define NEW_UPDATE
-
 using UnityEngine;
 using UnityEditor;
 using System;
@@ -33,6 +31,7 @@ public partial class iCS_IStorage {
             Storage= storage;
             UndoRedoId= Storage.UndoRedoId;          
             GenerateEditorData();
+			ForcedRelayoutOfTree(EditorObjects[0]);
         }
     }
     // ----------------------------------------------------------------------
@@ -124,98 +123,36 @@ public partial class iCS_IStorage {
     public void Update() {
         // Processing any changed caused by Undo/Redo
         DetectUndoRedo();
-#if NEW_UPDATE
-    // Perform layout if one or more objects has changed.
-    if(myIsDirty) {
-        // Tell Unity that our storage has changed.
-        EditorUtility.SetDirty(Storage);
-        // Prepare for cleanup after storage change.
-        CleanupNeeded= true;
-//        AnimationNeeded= true;
-        myIsDirty= false;
-    
-        // Perform layout of modified nodes.
-        PerformTreeLayoutFor(EditorObjects[0]);
-    }
-    // Update object animations.
-    ForEach(
-        obj=> {
-            var animation= obj.AnimatedPosition;
-            if(animation.IsActive) {
-                if(animation.IsElapsed) {
-                    animation.Reset(obj.AnimationTarget);                    
-                } else {
-                    animation.Update();                                            
-                }
-            } else {
-                animation.Reset(obj.AnimationTarget);
-            }
-        }
-    );
-    
-#else
-/*
-	TODO: Optimize update.
-*/        
-        // Update display if animation is disabled.
-        if(!myIsDirty && !AnimationNeeded && !myAnimationTimeRatio.IsActive) {
-//            ForEach(
-//                obj=> obj.DontAnimatePosition()
-//            );
-        }
-        
-        // Perform layout if one or more objects has changed.
-        if(myIsDirty) {
-            // Tell Unity that our storage has changed.
-            EditorUtility.SetDirty(Storage);
-            // Prepare for cleanup after storage change.
-            CleanupNeeded= true;
-            AnimationNeeded= true;
-            myIsDirty= false;
 
-            // Perform layout of modified nodes.
-            PerformTreeLayoutFor(EditorObjects[0]);
-//            return;
-        }
-
-        // Graph is now stable.  Recompute animation target if needed.
-        if(AnimationNeeded) {
-//            ForEach(
-//                obj=> obj.AnimatePosition(myAnimationTimeRatio)
-//            );
-//            myAnimationTimeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-            AnimationNeeded= false;
-        }
-
-        // Animate position.
-        if(myAnimationTimeRatio.IsActive) {
-            if(myAnimationTimeRatio.IsElapsed) {
-                myAnimationTimeRatio.Reset();
-            }
-//            ForEach(
-//                obj=> {
-//                    var animation= obj.AnimatedPosition;
-//                    if(myAnimationTimeRatio.IsActive) {
-//                        animation.Update();                        
-//                    } else {
-//                        animation.Reset(animation.TargetValue);
-//                    }
+	    // Perform layout if one or more objects has changed.
+	    if(myIsDirty) {
+	        // Tell Unity that our storage has changed.
+	        EditorUtility.SetDirty(Storage);
+	        // Prepare for cleanup after storage change.
+	        CleanupNeeded= true;
+	        myIsDirty= false;
+	    }
+//    // Update object animations.
+//    ForEach(
+//        obj=> {
+//            var animation= obj.AnimatedPosition;
+//            if(animation.IsActive) {
+//                if(animation.IsElapsed) {
+//                    animation.Reset(obj.AnimationTarget);                    
+//                } else {
+//                    animation.Update();                                            
 //                }
-//            );
-        }
-#endif
+//            } else {
+//                animation.Reset(obj.AnimationTarget);
+//            }
+//        }
+//    );
 
         // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {
             UpdateExecutionPriority();
             CleanupNeeded= Cleanup();
         }
-        
-#if NEW_UPDATE
-#else        
-        // Perform sanity check
-        SanityCheck();
-#endif
     }
 
 //    // ----------------------------------------------------------------------
