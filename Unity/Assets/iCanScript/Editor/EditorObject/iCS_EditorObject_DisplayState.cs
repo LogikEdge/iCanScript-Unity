@@ -15,7 +15,9 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public bool IsFoldedOnDisplay	{ get { return IsFoldedInLayout; }}
     // ----------------------------------------------------------------------
-	public bool IsIconizedOnDisplay	{ get { return IsIconizedInLayout; }}
+	public bool IsIconizedOnDisplay	{
+		get { return IsIconizedInLayout && !IsDisplaySizeAnimated; }
+	}
     // ----------------------------------------------------------------------
     // Returns true if the object object is visible excluding all animations.
     public bool IsVisibleInLayout {
