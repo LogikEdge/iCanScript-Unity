@@ -76,7 +76,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Vector2 LayoutSize {
 		get {
-			if(!IsVisibleInLayout) return Vector2.zero;
+			if(!IsVisibleInLayout) {
+				return Vector2.zero;
+			}
+			if(IsNode && IsIconizedInLayout) {
+				return iCS_Graphics.GetMaximizeIconSize(this);
+			}
             return myLayoutSize;
 		}
 		set {
@@ -285,5 +290,22 @@ public partial class iCS_EditorObject {
 	    var pos= new Vector2(finalRect.x+0.5f*sze.x, finalRect.y+0.5f*sze.y);
 		AnimateGlobalDisplayPosition(timeRatio, pos);
 		AnimateDisplaySize(timeRatio, sze);
+	}
+    // ----------------------------------------------------------------------
+	public void UpdateAnimation() {
+		if(myAnimatedDisplaySize.IsActive) {
+			if(myAnimatedDisplaySize.IsElapsed) {
+				myAnimatedDisplaySize.Reset();
+			} else {
+				myAnimatedDisplaySize.Update();
+			}
+		}
+		if(myAnimatedGlobalDisplayPosition.IsActive) {
+			if(myAnimatedGlobalDisplayPosition.IsElapsed) {
+				myAnimatedGlobalDisplayPosition.Reset();
+			} else {
+				myAnimatedGlobalDisplayPosition.Update();
+			}
+		}
 	}
 }

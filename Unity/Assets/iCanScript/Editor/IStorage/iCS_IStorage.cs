@@ -138,34 +138,35 @@ public partial class iCS_IStorage {
         DetectUndoRedo();
         
         // Force a relayout if it is requested
+		bool needToRelayout= false;
         if(myForceRelayout) {
+			needToRelayout= true;
             myForceRelayout= false;
-            ForcedRelayoutOfTree(EditorObjects[0]);    
         }
 		
 	    // Perform layout if one or more objects has changed.
 	    if(myIsDirty) {
+			needToRelayout= true;
 	        // Tell Unity that our storage has changed.
 	        EditorUtility.SetDirty(Storage);
 	        // Prepare for cleanup after storage change.
 	        CleanupNeeded= true;
 	        myIsDirty= false;
 	    }
-//    // Update object animations.
-//    ForEach(
-//        obj=> {
-//            var animation= obj.AnimatedPosition;
-//            if(animation.IsActive) {
-//                if(animation.IsElapsed) {
-//                    animation.Reset(obj.AnimationTarget);                    
-//                } else {
-//                    animation.Update();                                            
-//                }
-//            } else {
-//                animation.Reset(obj.AnimationTarget);
-//            }
-//        }
-//    );
+        // Update object animations.
+        ForEach(
+            obj=> {
+    			if(obj.IsAnimated) {
+					obj.UpdateAnimation();
+    				needToRelayout= true;
+    			}
+            }
+        );
+
+		// Relayout if needed.
+		if(needToRelayout) {
+            ForcedRelayoutOfTree(EditorObjects[0]);    			
+		}
 
         // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {
