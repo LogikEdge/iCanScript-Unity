@@ -7,7 +7,7 @@ public partial class iCS_EditorObject {
 	// Fields
     // ----------------------------------------------------------------------
 	private Vector2 		   myLayoutSize     			  = Vector2.zero;
-	private P.Animate<Vector2> myAnimatedGlobalDisplayPosition= new P.Animate<Vector2>();
+	private P.Animate<Vector2> myAnimatedDisplayPosition= new P.Animate<Vector2>();
 	private P.Animate<Vector2> myAnimatedDisplaySize          = new P.Animate<Vector2>();
 	
     // ======================================================================
@@ -161,11 +161,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 GlobalDisplayPosition {
 		get {
-			if(myAnimatedGlobalDisplayPosition.IsActive && !myAnimatedGlobalDisplayPosition.IsElapsed) {
-				return myAnimatedGlobalDisplayPosition.CurrentValue;
+			if(myAnimatedDisplayPosition.IsActive && !myAnimatedDisplayPosition.IsElapsed) {
+				return myAnimatedDisplayPosition.CurrentValue;
 			}
 			Vector2 pos= GlobalLayoutPosition;
-			myAnimatedGlobalDisplayPosition.Reset(pos);
+//			myAnimatedDisplayPosition.Reset(pos);
 			return pos;
 		}
 	}
@@ -189,7 +189,7 @@ public partial class iCS_EditorObject {
 				return myAnimatedDisplaySize.CurrentValue;
 			}
 			Vector2 sze= LayoutSize;
-			myAnimatedDisplaySize.Reset(sze);
+//			myAnimatedDisplaySize.Reset(sze);
 			return sze;
 		}
 	}
@@ -253,28 +253,25 @@ public partial class iCS_EditorObject {
 		LocalLayoutOffset= Vector2.zero;
         LayoutSize= sze;        
     }
+
+	// ======================================================================
+	// Animation
     // ----------------------------------------------------------------------
-	public void AnimateGlobalDisplayPosition(P.TimeRatio timeRatio, Vector2 finalPosition) {
-		myAnimatedGlobalDisplayPosition.Start(GlobalLayoutPosition,
-                                              finalPosition,
-                                              timeRatio,
-                                              (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-		GlobalLayoutPosition= finalPosition;	
+	void SetStartValueForDisplayRectAnimation() {
+		SetStartValueForDisplaySizeAnimation();
+		SetStartValueForDisplayPositionAnimation();
 	}
     // ----------------------------------------------------------------------
-	public void AnimateDisplaySize(P.TimeRatio timeRatio, Vector2 finalSize) {
-		myAnimatedDisplaySize.Start(LayoutSize,
-                                    finalSize,
-                                    timeRatio,
-                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-		LayoutSize= finalSize;		
+	void SetStartValueForDisplaySizeAnimation() {
+		if(!IsDisplaySizeAnimated) {
+			myAnimatedDisplaySize.Reset(LayoutSize);
+		}
 	}
     // ----------------------------------------------------------------------
-	public void AnimateGlobalDisplayRect(P.TimeRatio timeRatio, Rect finalRect) {
-	    var sze= new Vector2(finalRect.width, finalRect.height);
-	    var pos= new Vector2(finalRect.x+0.5f*sze.x, finalRect.y+0.5f*sze.y);
-		AnimateGlobalDisplayPosition(timeRatio, pos);
-		AnimateDisplaySize(timeRatio, sze);
+	void SetStartValueForDisplayPositionAnimation() {
+		if(!IsDisplayPositionAnimated) {
+			myAnimatedDisplayPosition.Reset(GlobalLayoutPosition);
+		}
 	}
     // ----------------------------------------------------------------------
 	void StartDisplayRectAnimation() {
@@ -301,30 +298,28 @@ public partial class iCS_EditorObject {
 							        LayoutSize,
 							        timeRatio,
                                     (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-		Debug.Log("Starting size animation from: "+myAnimatedDisplaySize.CurrentValue+" to "+LayoutSize);
 	}
     // ----------------------------------------------------------------------
 	void StartDisplayPositionAnimation(P.TimeRatio timeRatio) {
-		myAnimatedGlobalDisplayPosition.Start(myAnimatedGlobalDisplayPosition.CurrentValue,
-											  GlobalLayoutPosition,
-											  timeRatio,
-		                                      (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-		Debug.Log("Starting position animation from: "+myAnimatedGlobalDisplayPosition.CurrentValue+" to "+GlobalLayoutPosition);
+		myAnimatedDisplayPosition.Start(myAnimatedDisplayPosition.CurrentValue,
+										GlobalLayoutPosition,
+										timeRatio,
+		                                (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	}
     // ----------------------------------------------------------------------
 	public void UpdateAnimation() {
 		if(myAnimatedDisplaySize.IsActive) {
 			if(myAnimatedDisplaySize.IsElapsed) {
-				myAnimatedDisplaySize.Reset();
+				myAnimatedDisplaySize.Reset(LayoutSize);
 			} else {
 				myAnimatedDisplaySize.Update();
 			}
 		}
-		if(myAnimatedGlobalDisplayPosition.IsActive) {
-			if(myAnimatedGlobalDisplayPosition.IsElapsed) {
-				myAnimatedGlobalDisplayPosition.Reset();
+		if(myAnimatedDisplayPosition.IsActive) {
+			if(myAnimatedDisplayPosition.IsElapsed) {
+				myAnimatedDisplayPosition.Reset(GlobalLayoutPosition);
 			} else {
-				myAnimatedGlobalDisplayPosition.Update();
+				myAnimatedDisplayPosition.Update();
 			}
 		}
 	}

@@ -37,7 +37,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Returns true if the display size is currently being animated.
-    public bool IsLayoutSizeAnimated {
+    public bool IsDisplaySizeAnimated {
         get {
             return  myAnimatedDisplaySize.IsActive;
         }
@@ -46,14 +46,14 @@ public partial class iCS_EditorObject {
     // Returns true if the display position is currently being animated.
     public bool IsDisplayPositionAnimated {
         get {
-            return  myAnimatedGlobalDisplayPosition.IsActive;            
+            return  myAnimatedDisplayPosition.IsActive;            
         }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display size or position are being animated.
     public bool IsAnimated {
         get {
-            if(IsLayoutSizeAnimated) return true;
+            if(IsDisplaySizeAnimated) return true;
             return IsDisplayPositionAnimated;
         }
     }
@@ -63,28 +63,37 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------    
     public void Iconize() {
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
-        DisplayOption= iCS_DisplayOptionEnum.Iconized;
-        LayoutNode();
+		SetStartValueForDisplayRectAnimation();
+		{
+	        DisplayOption= iCS_DisplayOptionEnum.Iconized;
+	        LayoutNode();
+	        LayoutParentNodesUntilTop();			
+		}
 		StartDisplayRectAnimation();
-        LayoutParentNodesUntilTop();
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
-        DisplayOption= iCS_DisplayOptionEnum.Folded;
-        LayoutNode();
+		SetStartValueForDisplayRectAnimation();
+		{
+	        DisplayOption= iCS_DisplayOptionEnum.Folded;
+	        LayoutNode();
+	        LayoutParentNodesUntilTop();	
+		}
 		StartDisplayRectAnimation();
-        LayoutParentNodesUntilTop();
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Unfold() {
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
-        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-        LayoutNode();
+		SetStartValueForDisplayRectAnimation();
+		{
+	        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
+	        LayoutNode();
+	        LayoutParentNodesUntilTop();			
+		}
 		StartDisplayRectAnimation();
-        LayoutParentNodesUntilTop();
         IsDirty= true;
     }
 
