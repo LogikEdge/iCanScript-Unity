@@ -55,6 +55,7 @@ public partial class iCS_EditorObject {
 				oldParent.RemoveChild(this);
 			}
 			EngineObject.ParentId= value;
+			IsDirty= true;
 			if(IsIdValid(value)) {
 				var newParent= EditorObjects[value];
 				newParent.AddChild(this);
@@ -98,12 +99,22 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public bool IsNameEditable {
 		get { return EngineObject.IsNameEditable; }
-		set { EngineObject.IsNameEditable= value; IsDirty= true; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.IsNameEditable == value) return;
+		    engineObject.IsNameEditable= value;
+		    IsDirty= true;
+		}
 	}
     // ----------------------------------------------------------------------
     public string Tooltip {
 		get { return EngineObject.Tooltip; }
-		set { EngineObject.Tooltip= value; IsDirty= true; }
+		set {
+            var engineObject= EngineObject;
+            if(engineObject.Tooltip == value) return;
+		    engineObject.Tooltip= value;
+		    IsDirty= true;
+		}
 	}
     
     // ======================================================================

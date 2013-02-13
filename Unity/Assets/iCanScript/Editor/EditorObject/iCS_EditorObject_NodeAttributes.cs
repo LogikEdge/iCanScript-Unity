@@ -10,11 +10,21 @@ public partial class iCS_EditorObject {
     // Node specific attributes ---------------------------------------------
     public string MethodName {
 		get { return EngineObject.MethodName; }
-		set { EngineObject.MethodName= value; }
+		set {
+			var engineObject= EngineObject;
+            if(engineObject.MethodName == value) return;
+		    engineObject.MethodName= value;
+            IsDirty= true;
+		}
 	}
     public int NbOfParams {
 		get { return EngineObject.NbOfParams; }
-		set { EngineObject.NbOfParams= value; }
+		set {
+			var engineObject= EngineObject;
+            if(engineObject.NbOfParams == value) return;
+		    engineObject.NbOfParams= value;
+            IsDirty= true;
+		}
 	}
     public string IconGUID {
 		get { return EngineObject.IconGUID; }
@@ -27,7 +37,12 @@ public partial class iCS_EditorObject {
 	}
 	public int ExecutionPriority {
 	    get { return EngineObject.ExecutionPriority; }
-	    set { EngineObject.ExecutionPriority= value; }
+	    set {
+			var engineObject= EngineObject;
+            if(engineObject.ExecutionPriority == value) return;
+	        engineObject.ExecutionPriority= value;
+			IsDirty= true;
+	    }
 	}
     public MethodBase GetMethodBase(List<iCS_EditorObject> editorObjects) {
         return EngineObject.GetMethodBase(EditorToEngineList(editorObjects));
