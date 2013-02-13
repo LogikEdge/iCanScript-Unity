@@ -278,11 +278,15 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplaySizeAnimation(Vector2 startSize) {
-		myAnimatedDisplaySize.Reset(startSize);
+		if(!IsDisplaySizeAnimated) {
+			myAnimatedDisplaySize.Reset(startSize);
+		}
 	}
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplayPositionAnimation(Vector2 startPos) {
-		myAnimatedDisplayPosition.Reset(startPos);
+		if(!IsDisplayPositionAnimated) {
+			myAnimatedDisplayPosition.Reset(startPos);
+		}
 	}
     // ----------------------------------------------------------------------
 	void StartDisplayRectAnimation() {

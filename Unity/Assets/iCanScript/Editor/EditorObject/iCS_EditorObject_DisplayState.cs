@@ -93,7 +93,23 @@ public partial class iCS_EditorObject {
 		{
 	        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
 	        LayoutNode();
-	        LayoutParentNodesUntilTop();			
+	        LayoutParentNodesUntilTop();
+			var pos= GlobalLayoutPosition;
+			var childStartRect= new Rect(pos.x, pos.y, 0, 0);
+//			ForEachChildRecursiveDepthFirst(
+//				c=> {
+//					if(c.IsNode && c.IsVisibleInLayout) {
+//						c.SetStartValueForDisplayRectAnimation(childStartRect);
+//					}
+//				}
+//			);
+//			ForEachChildRecursiveDepthFirst(
+//				c=> {
+//					if(c.IsNode && c.IsVisibleInLayout) {
+//						c.StartDisplayRectAnimation();
+//					}
+//				}
+//			);
 		}
 		StartDisplayRectAnimation();
         IsDirty= true;
