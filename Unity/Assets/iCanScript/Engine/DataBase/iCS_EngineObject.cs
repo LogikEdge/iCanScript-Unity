@@ -18,7 +18,8 @@ public class iCS_EngineObject {
     public string                QualifiedType      = "";
     public string                RawName            = "";
 	public Vector2				 LocalAnchorPosition= Vector2.zero;
-	public Vector2				 LocalLayoutOffset = Vector2.zero;
+	public Vector2				 LocalLayoutOffset  = Vector2.zero;
+	public float				 Scale              = 1.0f;
     public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded;
     public bool                  IsNameEditable     = true;
 
