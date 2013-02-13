@@ -165,7 +165,6 @@ public partial class iCS_EditorObject {
 				return myAnimatedDisplayPosition.CurrentValue;
 			}
 			Vector2 pos= GlobalLayoutPosition;
-//			myAnimatedDisplayPosition.Reset(pos);
 			return pos;
 		}
 	}
@@ -189,7 +188,6 @@ public partial class iCS_EditorObject {
 				return myAnimatedDisplaySize.CurrentValue;
 			}
 			Vector2 sze= LayoutSize;
-//			myAnimatedDisplaySize.Reset(sze);
 			return sze;
 		}
 	}
@@ -272,6 +270,19 @@ public partial class iCS_EditorObject {
 		if(!IsDisplayPositionAnimated) {
 			myAnimatedDisplayPosition.Reset(GlobalLayoutPosition);
 		}
+	}
+    // ----------------------------------------------------------------------
+	void SetStartValueForDisplayRectAnimation(Rect r) {
+		SetStartValueForDisplaySizeAnimation(new Vector2(r.width, r.height));
+		SetStartValueForDisplayPositionAnimation(Math3D.Middle(r));
+	}
+    // ----------------------------------------------------------------------
+	void SetStartValueForDisplaySizeAnimation(Vector2 startSize) {
+		myAnimatedDisplaySize.Reset(startSize);
+	}
+    // ----------------------------------------------------------------------
+	void SetStartValueForDisplayPositionAnimation(Vector2 startPos) {
+		myAnimatedDisplayPosition.Reset(startPos);
 	}
     // ----------------------------------------------------------------------
 	void StartDisplayRectAnimation() {
