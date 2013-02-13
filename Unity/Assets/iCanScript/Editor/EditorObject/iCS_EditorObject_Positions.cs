@@ -44,6 +44,9 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
     // Offset from the anchor position.
+/*
+	FIXME : should we continue to persist this value?
+*/
 	public Vector2 LocalLayoutOffset {
 		get {
 		    return EngineObject.LocalLayoutOffset;
@@ -55,10 +58,7 @@ public partial class iCS_EditorObject {
     			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;                
             }
             // Update the persistant local layout offset.
-            var engineObject= EngineObject;
-			if(Math3D.IsEqual(engineObject.LocalLayoutOffset, value)) return;
-			engineObject.LocalLayoutOffset= value;
-			IsDirty= true;
+			EngineObject.LocalLayoutOffset= value;
 		}
 	}
 
@@ -168,11 +168,6 @@ public partial class iCS_EditorObject {
 			myAnimatedGlobalDisplayPosition.Reset(pos);
 			return pos;
 		}
-		set {
-			var timeRatio= new P.TimeRatio();
-	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			AnimateGlobalDisplayPosition(timeRatio, value);
-		}
 	}
     // ----------------------------------------------------------------------
 	public Vector2 LocalDisplayPosition {
@@ -197,11 +192,6 @@ public partial class iCS_EditorObject {
 			myAnimatedDisplaySize.Reset(sze);
 			return sze;
 		}
-		set {
-			var timeRatio= new P.TimeRatio();
-	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			AnimateDisplaySize(timeRatio, value);
-		}
 	}
     // ----------------------------------------------------------------------
  	public Rect GlobalDisplayRect {
@@ -210,11 +200,6 @@ public partial class iCS_EditorObject {
              var sze= DisplaySize;
              var rect= new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
              return rect;
- 		}
- 		set {
-			var timeRatio= new P.TimeRatio();
-	        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-			AnimateGlobalDisplayRect(timeRatio, value);
  		}
  	}
  	// ----------------------------------------------------------------------
@@ -290,6 +275,41 @@ public partial class iCS_EditorObject {
 	    var pos= new Vector2(finalRect.x+0.5f*sze.x, finalRect.y+0.5f*sze.y);
 		AnimateGlobalDisplayPosition(timeRatio, pos);
 		AnimateDisplaySize(timeRatio, sze);
+	}
+    // ----------------------------------------------------------------------
+	void StartDisplayRectAnimation() {
+		var timeRatio= new P.TimeRatio();
+        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+		StartDisplaySizeAnimation(timeRatio);
+		StartDisplayPositionAnimation(timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void StartDisplaySizeAnimation() {
+		var timeRatio= new P.TimeRatio();
+        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+		StartDisplaySizeAnimation(timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void StartDisplayPositionAnimation() {
+		var timeRatio= new P.TimeRatio();
+        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+		StartDisplayPositionAnimation(timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void StartDisplaySizeAnimation(P.TimeRatio timeRatio) {
+		myAnimatedDisplaySize.Start(myAnimatedDisplaySize.CurrentValue,
+							        LayoutSize,
+							        timeRatio,
+                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+		Debug.Log("Starting size animation from: "+myAnimatedDisplaySize.CurrentValue+" to "+LayoutSize);
+	}
+    // ----------------------------------------------------------------------
+	void StartDisplayPositionAnimation(P.TimeRatio timeRatio) {
+		myAnimatedGlobalDisplayPosition.Start(myAnimatedGlobalDisplayPosition.CurrentValue,
+											  GlobalLayoutPosition,
+											  timeRatio,
+		                                      (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+		Debug.Log("Starting position animation from: "+myAnimatedGlobalDisplayPosition.CurrentValue+" to "+GlobalLayoutPosition);
 	}
     // ----------------------------------------------------------------------
 	public void UpdateAnimation() {

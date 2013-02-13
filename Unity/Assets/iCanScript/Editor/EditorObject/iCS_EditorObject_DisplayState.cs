@@ -65,6 +65,7 @@ public partial class iCS_EditorObject {
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
         DisplayOption= iCS_DisplayOptionEnum.Iconized;
         LayoutNode();
+		StartDisplayRectAnimation();
         LayoutParentNodesUntilTop();
         IsDirty= true;
     }
@@ -73,6 +74,7 @@ public partial class iCS_EditorObject {
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
         DisplayOption= iCS_DisplayOptionEnum.Folded;
         LayoutNode();
+		StartDisplayRectAnimation();
         LayoutParentNodesUntilTop();
         IsDirty= true;
     }
@@ -81,6 +83,7 @@ public partial class iCS_EditorObject {
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         LayoutNode();
+		StartDisplayRectAnimation();
         LayoutParentNodesUntilTop();
         IsDirty= true;
     }

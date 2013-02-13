@@ -147,7 +147,12 @@ public partial class iCS_EditorObject {
 		}
 	}
     public bool IsDirty {
-		set { if(value) myIStorage.IsDirty= true; }
+		set {
+			if(value) {
+				myIStorage.IsDirty= true;
+//				Debug.Log("iCanScript: "+Name+" is dirty");
+			}
+		}
 	}
 	public bool IsSticky {
 	    get { return myIsSticky; }
