@@ -16,9 +16,10 @@ public partial class iCS_EditorObject {
         var parentGlobalRect= parent.GlobalLayoutRect;
         parent.LayoutNode();
         if(Math3D.IsNotEqual(parentGlobalRect, parent.GlobalLayoutRect)) {
+			var prevIsSticky= parent.IsSticky;
             parent.IsSticky= IsSticky;
             parent.LayoutParentNodesUntilTop();
-            parent.IsSticky= false;
+            parent.IsSticky= prevIsSticky;
         }
     }
     // ----------------------------------------------------------------------
