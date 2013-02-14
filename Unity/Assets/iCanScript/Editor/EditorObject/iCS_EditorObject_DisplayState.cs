@@ -90,6 +90,7 @@ public partial class iCS_EditorObject {
     public void Unfold() {
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
 		SetStartValueForDisplayRectAnimation();
+		var timer= BuildStandardAnimationTimer();
 		{
 	        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
 	        LayoutNode();
@@ -100,18 +101,12 @@ public partial class iCS_EditorObject {
 //				c=> {
 //					if(c.IsNode && c.IsVisibleInLayout) {
 //						c.SetStartValueForDisplayRectAnimation(childStartRect);
-//					}
-//				}
-//			);
-//			ForEachChildRecursiveDepthFirst(
-//				c=> {
-//					if(c.IsNode && c.IsVisibleInLayout) {
-//						c.StartDisplayRectAnimation();
+//						c.StartDisplayRectAnimation(timer);
 //					}
 //				}
 //			);
 		}
-		StartDisplayRectAnimation();
+		StartDisplayRectAnimation(timer);
         IsDirty= true;
     }
 

@@ -18,7 +18,6 @@ public class iCS_EngineObject {
     public string                QualifiedType      = "";
     public string                RawName            = "";
 	public Vector2				 LocalAnchorPosition= Vector2.zero;
-	public Vector2				 LocalLayoutOffset  = Vector2.zero;
 	public float				 Scale              = 1.0f;  // Used for children scale
     public iCS_DisplayOptionEnum DisplayOption      = iCS_DisplayOptionEnum.Unfolded;
     public bool                  IsNameEditable     = true;
@@ -91,7 +90,6 @@ public class iCS_EngineObject {
         Name= name;
         QualifiedType= type.AssemblyQualifiedName;
         LocalAnchorPosition= Vector2.zero;
-        LocalLayoutOffset= Vector2.zero;
         if(IsDataPort) {
             Edge= IsInputPort ? (IsEnablePort ? iCS_EdgeEnum.Top : iCS_EdgeEnum.Left) : iCS_EdgeEnum.Right;
         }
@@ -115,7 +113,6 @@ public class iCS_EngineObject {
         instance.DisplayOption= toClone.DisplayOption;
         instance.IsNameEditable= toClone.IsNameEditable;
 		instance.LocalAnchorPosition= toClone.LocalAnchorPosition;
-		instance.LocalLayoutOffset= toClone.LocalLayoutOffset;
 		// Node
 		instance.MethodName= toClone.MethodName;
 		instance.NbOfParams= toClone.NbOfParams;
@@ -138,7 +135,7 @@ public class iCS_EngineObject {
         QualifiedType= "";
 		RawName= "";
         LocalAnchorPosition= Vector2.zero;
-        LocalLayoutOffset= Vector2.zero;
+		Scale= 1.0f;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;
 		// Node

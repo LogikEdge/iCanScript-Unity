@@ -6,9 +6,10 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-	private Vector2 		   myLayoutSize     			  = Vector2.zero;
+	private Vector2 		   myLocalLayoutOffset      = Vector2.zero;
+	private Vector2 		   myLayoutSize     		= Vector2.zero;
 	private P.Animate<Vector2> myAnimatedDisplayPosition= new P.Animate<Vector2>();
-	private P.Animate<Vector2> myAnimatedDisplaySize          = new P.Animate<Vector2>();
+	private P.Animate<Vector2> myAnimatedDisplaySize    = new P.Animate<Vector2>();
 	
     // ======================================================================
     // Engine Object Proxy Position Accessors
@@ -44,12 +45,9 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
     // Offset from the anchor position.
-/*
-	FIXME : should we continue to persist this value?
-*/
 	public Vector2 LocalLayoutOffset {
 		get {
-		    return EngineObject.LocalLayoutOffset;
+			return myLocalLayoutOffset;
 		}
 		set {
             // Don't update layout offset for port on iconized nodes.
@@ -57,8 +55,7 @@ public partial class iCS_EditorObject {
     			var parentNode= ParentNode;
     			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;                
             }
-            // Update the persistant local layout offset.
-			EngineObject.LocalLayoutOffset= value;
+			myLocalLayoutOffset= value;
 		}
 	}
 
@@ -289,22 +286,29 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	void StartDisplayRectAnimation() {
+	static P.TimeRatio BuildStandardAnimationTimer() {
 		var timeRatio= new P.TimeRatio();
         timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
-		StartDisplaySizeAnimation(timeRatio);
-		StartDisplayPositionAnimation(timeRatio);
+		return timeRatio;
+	}
+    // ----------------------------------------------------------------------
+	void StartDisplayRectAnimation() {
+		var timeRatio= BuildStandardAnimationTimer();
+		StartDisplayRectAnimation(timeRatio);
 	}
     // ----------------------------------------------------------------------
 	void StartDisplaySizeAnimation() {
-		var timeRatio= new P.TimeRatio();
-        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+		var timeRatio= BuildStandardAnimationTimer(); 
 		StartDisplaySizeAnimation(timeRatio);
 	}
     // ----------------------------------------------------------------------
 	void StartDisplayPositionAnimation() {
-		var timeRatio= new P.TimeRatio();
-        timeRatio.Start(iCS_PreferencesEditor.AnimationTime);
+		var timeRatio= BuildStandardAnimationTimer();
+		StartDisplayPositionAnimation(timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void StartDisplayRectAnimation(P.TimeRatio timeRatio) {
+		StartDisplaySizeAnimation(timeRatio);
 		StartDisplayPositionAnimation(timeRatio);
 	}
     // ----------------------------------------------------------------------
