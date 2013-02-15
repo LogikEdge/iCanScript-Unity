@@ -12,10 +12,8 @@ public partial class iCS_EditorObject {
 	private P.Animate<Vector2> myAnimatedDisplaySize    = new P.Animate<Vector2>();
 	
     // ======================================================================
-    // Engine Object Proxy Position Accessors
+    // Anchor
     // ----------------------------------------------------------------------
-    // The anchor position of a node is valid for an unfolded parent.
-    // The anchor position of a port is valid for folded and unfolded parent.
 	public Vector2 LocalAnchorPosition {
 		get {
 			// Port local anchor position getter.
@@ -43,79 +41,6 @@ public partial class iCS_EditorObject {
 			IsDirty= true;
 		}
 	}
-    // ----------------------------------------------------------------------
-    // Offset from the anchor position.
-	public Vector2 LocalLayoutOffset {
-		get {
-			return myLocalLayoutOffset;
-		}
-		set {
-            // Don't update layout offset for port on iconized nodes.
-            if(IsPort) {
-    			var parentNode= ParentNode;
-    			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;                
-            }
-			myLocalLayoutOffset= value;
-		}
-	}
-
-    // ======================================================================
-	// High-order accessors
-    // ----------------------------------------------------------------------
-	public Vector2 LocalLayoutPosition {
-		get {
-			return LocalAnchorPosition+LocalLayoutOffset;
-		}
-		set {
-			LocalLayoutOffset= value-LocalAnchorPosition;
-		}
-	}
-    // ----------------------------------------------------------------------
-    public Vector2 LayoutSize {
-		get {
-			if(!IsVisibleInLayout) {
-				return Vector2.zero;
-			}
-			if(IsNode && IsIconizedInLayout) {
-				return iCS_Graphics.GetMaximizeIconSize(this);
-			}
-            return myLayoutSize;
-		}
-		set {
-            // Avoid propagating change if we did not change size
-            if(Math3D.IsEqual(myLayoutSize, value)) return;
-            myLayoutSize= value;
-            IsDirty= true;
-		}
-	}
-    // ----------------------------------------------------------------------
-    public Rect LocalLayoutRect {
-        get {
-            var sze= LayoutSize;
-            var pos= LocalLayoutPosition;
-            return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
-        }
-        set {
-            var sze= new Vector2(value.width, value.height);
-            var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
-            LocalLayoutPosition= pos;
-            LayoutSize= sze;
-        }
-    }
-    // ----------------------------------------------------------------------	
-    public Rect LocalAnchorRect {
-        get {
-            var sze= LayoutSize;
-            var pos= LocalAnchorPosition;
-            return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
-        }
-        set {
-            var sze= new Vector2(value.width, value.height);
-            var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
-            LocalAnchorPosition= pos;
-            LayoutSize= sze;
-        }
-    }
     // ----------------------------------------------------------------------	
 	public Vector2 GlobalAnchorPosition {
 		get {
@@ -132,9 +57,72 @@ public partial class iCS_EditorObject {
 			LocalAnchorPosition= value-parent.GlobalLayoutPosition;
 		}
 	}
+
+    // ======================================================================
+    // Layout
+    // ----------------------------------------------------------------------
+    public Vector2 LayoutSize {
+		get {
+			if(!IsVisibleInLayout) {
+				return Vector2.zero;
+			}
+			if(IsNode && IsIconizedInLayout) {
+				return iCS_Graphics.GetMaximizeIconSize(this);
+			}
+            return myLayoutSize;
+		}
+		set {
+            myLayoutSize= value;
+		}
+	}
+    // ----------------------------------------------------------------------
+    // Offset from the anchor position.
+	public Vector2 LocalLayoutOffset {
+		get {
+            if(!IsVisibleInLayout) {
+                return Vector2.zero;
+            }
+			return myLocalLayoutOffset;
+		}
+		set {
+            // Don't update layout offset for port on iconized nodes.
+            if(IsPort) {
+    			var parentNode= ParentNode;
+    			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;                
+            }
+			myLocalLayoutOffset= value;
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Vector2 LocalLayoutPosition {
+		get {
+            if(!IsVisibleInLayout) {
+                return Vector2.zero;
+            }
+			return LocalAnchorPosition+LocalLayoutOffset;
+		}
+		set {
+			LocalLayoutOffset= value-LocalAnchorPosition;
+		}
+	}
+    // ----------------------------------------------------------------------
+    public Rect LocalLayoutRect {
+        get {
+            var sze= LayoutSize;
+            var pos= LocalLayoutPosition;
+            return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
+        }
+        set {
+            var sze= new Vector2(value.width, value.height);
+            var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
+            LocalLayoutPosition= pos;
+            LayoutSize= sze;
+        }
+    }
     // ----------------------------------------------------------------------
 	public Vector2 GlobalLayoutPosition {
 		get {
+            if(!IsVisibleInLayout) return ParentNode.GlobalLayoutPosition;
 			return GlobalAnchorPosition+LocalLayoutOffset;
 		}
 		set {
@@ -155,6 +143,9 @@ public partial class iCS_EditorObject {
             GlobalLayoutPosition= pos;
         }
     }
+
+    // ======================================================================
+    // Display
     // ----------------------------------------------------------------------
 	public Vector2 GlobalDisplayPosition {
 		get {
