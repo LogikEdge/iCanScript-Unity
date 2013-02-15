@@ -79,6 +79,7 @@ public partial class iCS_EditorObject {
 			ports[i].LocalLayoutPosition= new Vector2(left+xs[i], y);
 		}
     }
+    // IMPROVE: Remove port shake when user drags.
 #if NEW_PORT_COLLISION_ALGO
 	// ----------------------------------------------------------------------
 	// Resolves the port layout position for a given edge.
@@ -193,6 +194,9 @@ public partial class iCS_EditorObject {
 			}
         }
         if(retry <= 0) {
+            /*
+                FIXME: Port layout not stabilizing when node is animated.
+            */
             Debug.LogWarning("iCanScript: Difficulty stabilizing port layout !!!");
         }
         return sortedPosition;
