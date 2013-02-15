@@ -12,7 +12,6 @@ public partial class iCS_IStorage {
             bool                myForceRelayout     = true;
             bool                myIsDirty           = true;
             bool                CleanupNeeded       = true;
-            bool                AnimationNeeded     = true;
     public  iCS_Storage         Storage             = null;
     List<iCS_EditorObject>      myEditorObjects     = null;
     public  int                 UndoRedoId          = 0;
@@ -87,7 +86,6 @@ public partial class iCS_IStorage {
 		
         // Re-initialize internal values.
         if(EditorObjects.Count > 0 && IsValid(EditorObjects[0])) {
-            Vector2 graphCenter= EditorObjects[0].GlobalAnchorPosition;
             ForEach(obj=> {
 				// Initialize initial port values.
 				if(obj.IsInDataPort) {

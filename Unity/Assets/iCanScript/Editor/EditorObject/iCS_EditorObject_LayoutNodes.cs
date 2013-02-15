@@ -54,9 +54,6 @@ public partial class iCS_EditorObject {
             Debug.LogWarning("iCanScript: Internal Error: WrapAroundChildrenNodes should not be invoked for invisible or iconized nodes.");
 		    return;
 	    }
-		// Keep a copy of original rect to determine if we should forward
-		// this call to our parent.
-		var originalGlobalRect= GlobalLayoutRect;
 		// Take a snapshot of the children global position.
 		var childGlobalAnchorPositions= new List<Vector2>();
 		ForEachChildNode(
