@@ -51,7 +51,6 @@ public partial class iCS_EditorObject {
     public void WrapAroundChildrenNodes() { 
 		// Nothing to do if node is not visible.
 		if(!IsVisibleOnDisplay || IsIconizedOnDisplay) {
-            Debug.LogWarning("iCanScript: Internal Error: WrapAroundChildrenNodes should not be invoked for invisible or iconized nodes.");
 		    return;
 	    }
 		// Take a snapshot of the children global position.
