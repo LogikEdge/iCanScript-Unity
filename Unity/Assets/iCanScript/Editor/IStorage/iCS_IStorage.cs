@@ -177,7 +177,7 @@ public partial class iCS_IStorage {
 
     // ----------------------------------------------------------------------
     /*
-        TODO: Should use the layout rule the determine execution priority.
+        FEATURE: Should use the layout rule the determine execution priority.
     */
     public void UpdateExecutionPriority() {
         var len= EditorObjects.Count;

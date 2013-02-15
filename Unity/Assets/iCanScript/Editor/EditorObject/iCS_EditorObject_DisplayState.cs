@@ -70,7 +70,9 @@ public partial class iCS_EditorObject {
 
     // ======================================================================
     // Display State Change
-    // ----------------------------------------------------------------------    
+    // ----------------------------------------------------------------------
+    // FIXME: Ports are not properly animated on unfold/fold/iconize.    
+    // IMPROVE: Should avoid digging through all objects to animate them on unfold/fold/iconize.
     public void Iconize() {
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
 		SetStartValueForDisplayRectAnimation();

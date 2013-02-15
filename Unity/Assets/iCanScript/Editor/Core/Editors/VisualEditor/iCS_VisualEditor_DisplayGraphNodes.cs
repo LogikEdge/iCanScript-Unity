@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 /*
-    FIXME: Cleanup conditional tree descent VS full tree descent when drawing graph.
+    TODO: Cleanup conditional tree descent VS full tree descent when drawing graph.
 */
 public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================

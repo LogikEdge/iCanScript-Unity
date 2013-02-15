@@ -17,7 +17,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void KeyDownEvent() {
 	    /*
-	     FIXME: use Event.character for all alphanumeric keyboard commands.
+	     TODO: use Event.character for all alphanumeric keyboard commands.
 	    */
 	    if(!HasKeyboardFocus) return;
 		var ev= Event.current;

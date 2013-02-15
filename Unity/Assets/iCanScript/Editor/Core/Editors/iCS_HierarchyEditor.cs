@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 /*
-    TODO: Fix bug which does not properly initialize hiearchy view on code reload
+    FIXME: Fix bug which does not properly initialize hiearchy view on code reload
 */
 public class iCS_HierarchyEditor : iCS_EditorBase {
     // =================================================================================

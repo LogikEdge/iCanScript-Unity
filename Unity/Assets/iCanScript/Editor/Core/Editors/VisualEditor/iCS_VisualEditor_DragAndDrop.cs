@@ -90,7 +90,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     return;
                 }
                 /*
-                    TODO: Should support resource drag&drop.
+                    FEATURE: Should support resource drag&drop.
                 */
 			}
 		}

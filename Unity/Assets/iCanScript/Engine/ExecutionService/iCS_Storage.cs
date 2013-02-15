@@ -5,6 +5,9 @@ using System.Collections.Generic;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is the main storage of uCode.  All object are derived
 // from this storage class.
+/*
+	FIXME: Add version information for later conversions.
+*/
 public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Fields

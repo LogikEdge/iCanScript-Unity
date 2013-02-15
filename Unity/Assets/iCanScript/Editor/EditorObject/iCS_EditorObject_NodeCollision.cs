@@ -15,7 +15,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
 /*
-	TODO : Should resolve collision in parallel.
+	IMPROVE : Should resolve collision in parallel.
 */
     public void ResolveCollisionOnChildrenImp() {
         bool didCollide= false;
