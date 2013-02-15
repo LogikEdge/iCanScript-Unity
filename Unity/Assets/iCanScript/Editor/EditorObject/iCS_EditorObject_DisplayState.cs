@@ -1,3 +1,11 @@
+/*
+   iCS_EditorObject_DisplayState.cs
+   iCanScript
+   
+   Created by Reinual on 2013-02-15.
+   Copyright 2013 Infaunier. All rights reserved.
+*/
+
 using UnityEngine;
 using System.Collections;
 
@@ -66,24 +74,26 @@ public partial class iCS_EditorObject {
     public void Iconize() {
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
 		SetStartValueForDisplayRectAnimation();
+		var timer= BuildStandardAnimationTimer();
 		{
 	        DisplayOption= iCS_DisplayOptionEnum.Iconized;
 	        LayoutNode();
 	        LayoutParentNodesUntilTop();			
 		}
-		StartDisplayRectAnimation();
+		StartDisplayRectAnimation(timer);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
 		SetStartValueForDisplayRectAnimation();
+		var timer= BuildStandardAnimationTimer();
 		{
 	        DisplayOption= iCS_DisplayOptionEnum.Folded;
 	        LayoutNode();
 	        LayoutParentNodesUntilTop();	
 		}
-		StartDisplayRectAnimation();
+		StartDisplayRectAnimation(timer);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
@@ -96,15 +106,18 @@ public partial class iCS_EditorObject {
 	        LayoutNode();
 	        LayoutParentNodesUntilTop();
 			var pos= GlobalLayoutPosition;
+/*
+    FIXME: Should already have the proper layout position before the unfold !!!
+*/
 			var childStartRect= new Rect(pos.x, pos.y, 0, 0);
-//			ForEachChildRecursiveDepthFirst(
-//				c=> {
-//					if(c.IsNode && c.IsVisibleInLayout) {
-//						c.SetStartValueForDisplayRectAnimation(childStartRect);
-//						c.StartDisplayRectAnimation(timer);
-//					}
-//				}
-//			);
+			ForEachChildRecursiveDepthFirst(
+				c=> {
+					if(c.IsNode && c.IsVisibleInLayout) {
+						c.SetStartValueForDisplayRectAnimation(childStartRect);
+						c.StartDisplayRectAnimation(timer);
+					}
+				}
+			);
 		}
 		StartDisplayRectAnimation(timer);
         IsDirty= true;
