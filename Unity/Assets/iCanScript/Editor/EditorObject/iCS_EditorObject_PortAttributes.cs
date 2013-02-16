@@ -10,17 +10,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public object		    InitialValue= null;
 
-    // ----------------------------------------------------------------------
-    public float PortPositionRatio {
-        get { return EngineObject.PortPositionRatio; }
-		set {
-            var engineObject= EngineObject;
-			if(Math3D.IsEqual(engineObject.PortPositionRatio, value)) return;
-			engineObject.PortPositionRatio= value;
-			IsDirty= true;
-		}
-    }
-     
     // ======================================================================
 	// Port source related attributes.
     public int PortIndex {

@@ -4,19 +4,19 @@ using System;
 using System.Collections;
 
 public partial class iCS_EditorObject {
+	// ======================================================================
+	// Fields
+    // ----------------------------------------------------------------------
+	Vector2 ParentDisplaySize= Vector2.zero;	// Use to determine if port needs relayout.
+
     // ----------------------------------------------------------------------
     // Lays out the ports of this node using the position ratio and node size
     // as basis.
     public void LayoutPorts() {
-        var halfSize= 0.5f*DisplaySize;
-        var verticalTop    = VerticalPortsTop;
-        var verticalBottom = VerticalPortsBottom;
-        var horizontalLeft = HorizontalPortsLeft;
-        var horizontalRight= HorizontalPortsRight;
-        LayoutPortsOnVerticalEdge  (LeftPorts  , verticalTop   , verticalBottom, -halfSize.x);
-        LayoutPortsOnVerticalEdge  (RightPorts , verticalTop   , verticalBottom,  halfSize.x);
-        LayoutPortsOnHorizontalEdge(TopPorts   , horizontalLeft, horizontalRight, -halfSize.y);
-        LayoutPortsOnHorizontalEdge(BottomPorts, horizontalLeft, horizontalRight,  halfSize.y);
+        LayoutPortsOnVerticalEdge(LeftPorts);
+        LayoutPortsOnVerticalEdge(RightPorts);
+        LayoutPortsOnHorizontalEdge(TopPorts);
+        LayoutPortsOnHorizontalEdge(BottomPorts);
     }
     // ----------------------------------------------------------------------
 	public void LayoutPortsOnSameEdge(iCS_EditorObject[] ports) {
@@ -28,26 +28,12 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-	public void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports) {
+    public void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports) {
 		if(ports.Length == 0) return;
-        var halfSize= 0.5f*DisplaySize.x;
-        var verticalTop    = VerticalPortsTop;
-        var verticalBottom = VerticalPortsBottom;
-		var x= ports[0].IsOnLeftEdge ? -halfSize : halfSize;
-        LayoutPortsOnVerticalEdge(ports, verticalTop, verticalBottom, x);
-	}
-    // ----------------------------------------------------------------------
-	public void LayoutPortsOnHorizontalEdge(iCS_EditorObject[] ports) {
-		if(ports.Length == 0) return;
-        var halfSize= 0.5f*DisplaySize.y;
-        var horizontalLeft = HorizontalPortsLeft;
-        var horizontalRight= HorizontalPortsRight;
-		var y= ports[0].IsOnTopEdge ? -halfSize : halfSize;
-        LayoutPortsOnHorizontalEdge(ports, horizontalLeft, horizontalRight, y);
-	}
-    // ----------------------------------------------------------------------
-    static void LayoutPortsOnVerticalEdge(iCS_EditorObject[] ports,
-                                          float top, float bottom, float x) {
+		// Get vertical top/bottom port range.
+        var top    = VerticalPortsTop;
+        var bottom = VerticalPortsBottom;
+		// Sort ports in ascending display order.
         ports= SortVerticalPortsOnAnchor(ports);
         // Start from the anchor position.
         int nbPorts= ports.Length;
@@ -58,13 +44,21 @@ public partial class iCS_EditorObject {
         // Resolve port collisions.
         ys= ResolvePortCollisions(ys, bottom-top);
 		// Update position from new layout.
+		var displaySize= DisplaySize;
+        var halfSize= 0.5f*displaySize.x;
+		var x= ports[0].IsOnLeftEdge ? -halfSize : halfSize;
 		for(int i= 0; i < nbPorts; ++i) {
 			ports[i].LocalLayoutPosition= new Vector2(x, top+ys[i]);
+			ports[i].ParentDisplaySize= displaySize;
 		}
     }
     // ----------------------------------------------------------------------
-    static void LayoutPortsOnHorizontalEdge(iCS_EditorObject[] ports,
-                                            float left, float right, float y) {
+    public void LayoutPortsOnHorizontalEdge(iCS_EditorObject[] ports) {
+		if(ports.Length == 0) return;
+		// Get horizontal start/end port range
+        var left = HorizontalPortsLeft;
+        var right= HorizontalPortsRight;
+		// Sort ports in ascendoing display order										
         ports= SortHorizontalPortsOnAnchor(ports);
         // Start from the anchor position.
         int nbPorts= ports.Length;
@@ -75,8 +69,12 @@ public partial class iCS_EditorObject {
         // Resolve port collisions.
         xs= ResolvePortCollisions(xs, right-left);
 		// Update position from new layout.
+		var displaySize= DisplaySize;
+        var halfSize= 0.5f*displaySize.y;
+		var y= ports[0].IsOnTopEdge ? -halfSize : halfSize;
 		for(int i= 0; i < nbPorts; ++i) {
 			ports[i].LocalLayoutPosition= new Vector2(left+xs[i], y);
+			ports[i].ParentDisplaySize= displaySize;
 		}
     }
     // IMPROVE: Remove port shake when user drags.

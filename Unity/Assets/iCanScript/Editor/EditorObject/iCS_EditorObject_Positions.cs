@@ -12,29 +12,48 @@ public partial class iCS_EditorObject {
 	private P.Animate<Vector2> myAnimatedDisplaySize    = new P.Animate<Vector2>();
 	
     // ======================================================================
+    // Ratio
+    // ----------------------------------------------------------------------
+    public float PortPositionRatio {
+        get { return EngineObject.PortPositionRatio; }
+		set {
+            var engineObject= EngineObject;
+			if(Math3D.IsEqual(engineObject.PortPositionRatio, value)) return;
+			engineObject.PortPositionRatio= value;
+			IsDirty= true;
+		}
+    }
+    // ======================================================================
     // Anchor
     // ----------------------------------------------------------------------
 	public Vector2 LocalAnchorPosition {
 		get {
-			// Port local anchor position getter.
-            if(IsPort) {
-                return GetPortLocalAnchorPositionFromRatio();
-            }
-            // Node local anchor position getter.
-            return EngineObject.LocalAnchorPosition;
+			return IsPort ? LocalAnchorPositionPort : LocalAnchorPositionNode;
 		}
 		set {
-			// Port local anchor position setter.
-            if(IsPort) {
-                // Don't update layout offset for port on iconized nodes.
-				var parentNode= ParentNode;
-				if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;
-                // Transform to a position ratio between 0f and 1f.
-    			UpdatePortEdge(value);
-    			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);
-                return;
-            }
-            // Node local anchor position setter.
+			if(IsPort) {
+				LocalAnchorPositionPort= value;
+			} else {
+				LocalAnchorPositionNode= value;
+			}
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Vector2 LocalAnchorPositionPort {
+		get { return GetPortLocalAnchorPositionFromRatio(); }
+		set {
+            // Don't update layout offset for port on iconized nodes.
+			var parentNode= ParentNode;
+			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;
+            // Transform to a position ratio between 0f and 1f.
+			UpdatePortEdge(value);
+			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Vector2 LocalAnchorPositionNode {
+		get { return EngineObject.LocalAnchorPosition; }
+		set {
 			var engineObject= EngineObject;
 			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
 			engineObject.LocalAnchorPosition= value;
