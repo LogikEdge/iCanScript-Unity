@@ -3,6 +3,10 @@ using UnityEngine;
 using System;
 using System.Collections;
 
+/*
+ 	FIXME: Port anchorPosition, LayoutPosition and DisplayPosition should all
+		   be computed as a block when parent is resized.
+*/
 public partial class iCS_EditorObject {
 	// ======================================================================
 	// Fields
