@@ -10,6 +10,7 @@ public partial class iCS_EditorObject {
 	private Vector2 		   myLayoutSize     		= Vector2.zero;
 	private P.Animate<Vector2> myAnimatedDisplayPosition= new P.Animate<Vector2>();
 	private P.Animate<Vector2> myAnimatedDisplaySize    = new P.Animate<Vector2>();
+	private Vector2            myPreviousDisplaySize    = Vector2.zero;
 	
     // ======================================================================
     // Ratio
@@ -28,44 +29,38 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 LocalAnchorPosition {
 		get {
-			return IsPort ? LocalAnchorPositionPort : LocalAnchorPositionNode;
+            if(IsPort) {
+                return GetPortLocalAnchorPositionFromRatio();    
+            } else {
+                return EngineObject.LocalAnchorPosition;
+            }
 		}
 		set {
 			if(IsPort) {
-				LocalAnchorPositionPort= value;
+                // Don't update layout offset for port on iconized nodes.
+    			var parentNode= ParentNode;
+    			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;
+                // Transform to a position ratio between 0f and 1f.
+    			UpdatePortEdge(value);
+    			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);
 			} else {
-				LocalAnchorPositionNode= value;
+    			var engineObject= EngineObject;
+    			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
+    			engineObject.LocalAnchorPosition= value;
+    			IsDirty= true;
 			}
-		}
-	}
-    // ----------------------------------------------------------------------
-	public Vector2 LocalAnchorPositionPort {
-		get { return GetPortLocalAnchorPositionFromRatio(); }
-		set {
-            // Don't update layout offset for port on iconized nodes.
-			var parentNode= ParentNode;
-			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;
-            // Transform to a position ratio between 0f and 1f.
-			UpdatePortEdge(value);
-			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);
-		}
-	}
-    // ----------------------------------------------------------------------
-	public Vector2 LocalAnchorPositionNode {
-		get { return EngineObject.LocalAnchorPosition; }
-		set {
-			var engineObject= EngineObject;
-			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
-			engineObject.LocalAnchorPosition= value;
-			IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------	
 	public Vector2 GlobalAnchorPosition {
 		get {
-			var parent= Parent;
+			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
-			return parent.GlobalLayoutPosition+LocalAnchorPosition;
+			if(IsPort) {
+			    return parent.GlobalDisplayPosition+LocalAnchorPosition;
+			} else {
+    			return parent.GlobalLayoutPosition+LocalAnchorPosition;			    
+			}
 		}
 		set {
 			var parent= Parent;
@@ -73,7 +68,11 @@ public partial class iCS_EditorObject {
 				LocalAnchorPosition= value;
 				return;
 			}
-			LocalAnchorPosition= value-parent.GlobalLayoutPosition;
+            if(IsPort) {
+                LocalAnchorPosition= value-parent.GlobalDisplayPosition;
+            } else {
+    			LocalAnchorPosition= value-parent.GlobalLayoutPosition;                
+            }
 		}
 	}
 
@@ -191,11 +190,18 @@ public partial class iCS_EditorObject {
 		        if(!IsVisibleOnDisplay) return Vector2.zero;
 		        return iCS_EditorConfig.PortSize;
 		    }
+		    Vector2 displaySize;
 			if(myAnimatedDisplaySize.IsActive && !myAnimatedDisplaySize.IsElapsed) {
-				return myAnimatedDisplaySize.CurrentValue;
+				displaySize= myAnimatedDisplaySize.CurrentValue;
+			} else {
+    			displaySize= LayoutSize;			    
 			}
-			Vector2 sze= LayoutSize;
-			return sze;
+            // Update ports to match parent node display size.
+            if(IsNode && Math3D.IsNotEqual(displaySize, myPreviousDisplaySize)) {
+                myPreviousDisplaySize= displaySize;
+                LayoutPorts();
+            }
+			return displaySize;
 		}
 	}
     // ----------------------------------------------------------------------

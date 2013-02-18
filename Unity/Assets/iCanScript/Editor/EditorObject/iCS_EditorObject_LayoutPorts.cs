@@ -8,11 +8,6 @@ using System.Collections;
 		   be computed as a block when parent is resized.
 */
 public partial class iCS_EditorObject {
-	// ======================================================================
-	// Fields
-    // ----------------------------------------------------------------------
-	Vector2 ParentDisplaySize= Vector2.zero;	// Use to determine if port needs relayout.
-
     // ----------------------------------------------------------------------
     // Lays out the ports of this node using the position ratio and node size
     // as basis.
@@ -53,7 +48,6 @@ public partial class iCS_EditorObject {
 		var x= ports[0].IsOnLeftEdge ? -halfSize : halfSize;
 		for(int i= 0; i < nbPorts; ++i) {
 			ports[i].LocalLayoutPosition= new Vector2(x, top+ys[i]);
-			ports[i].ParentDisplaySize= displaySize;
 		}
     }
     // ----------------------------------------------------------------------
@@ -78,7 +72,6 @@ public partial class iCS_EditorObject {
 		var y= ports[0].IsOnTopEdge ? -halfSize : halfSize;
 		for(int i= 0; i < nbPorts; ++i) {
 			ports[i].LocalLayoutPosition= new Vector2(left+xs[i], y);
-			ports[i].ParentDisplaySize= displaySize;
 		}
     }
     // IMPROVE: Remove port shake when user drags.
