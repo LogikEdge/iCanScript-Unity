@@ -17,7 +17,7 @@ public partial class iCS_IStorage {
     public  int                 UndoRedoId          = 0;
     public  int                 ModificationId      = -1;
     public  bool                CleanupDeadPorts    = true;
-			P.TimeRatio			myAnimationTimeRatio= new P.TimeRatio();
+    private bool                myIsAnimationPlaying= true;
     
     // ======================================================================
     // Public Accessors
@@ -116,12 +116,11 @@ public partial class iCS_IStorage {
     public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
     public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
     // ----------------------------------------------------------------------
-	public bool IsAnimationPlaying { get { return myAnimationTimeRatio.IsActive; }}
+	public bool IsAnimationPlaying { get { return myIsAnimationPlaying; }}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? eObj.Parent : null); }
     // ----------------------------------------------------------------------
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.GlobalLayoutRect= r; }
-	public P.TimeRatio	AnimationTimeRatio { get { return myAnimationTimeRatio; }}
     // ----------------------------------------------------------------------
     public object          GetRuntimeObject(iCS_EditorObject obj) {
         iCS_Behaviour bh= Storage as iCS_Behaviour;
@@ -152,11 +151,13 @@ public partial class iCS_IStorage {
 	        myIsDirty= false;
 	    }
         // Update object animations.
+        myIsAnimationPlaying= false;
         ForEach(
             obj=> {
     			if(obj.IsAnimated) {
 					obj.UpdateAnimation();
     				needToRelayout= true;
+    				myIsAnimationPlaying= true;
     			}
             }
         );

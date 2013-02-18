@@ -90,10 +90,6 @@ public partial class iCS_Graphics {
         ValueStyle.fontSize= (int)(kLabelFontSize*Scale);        
     }
     public void End(iCS_IStorage iStorage) {
-		var timeRatio= iStorage.AnimationTimeRatio;
-		if(timeRatio.IsActive && timeRatio.IsElapsed) {
-			timeRatio.Reset();
-		}
     }
     
     // ======================================================================
