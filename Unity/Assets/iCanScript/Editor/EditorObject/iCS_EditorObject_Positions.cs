@@ -31,9 +31,8 @@ public partial class iCS_EditorObject {
 		get {
             if(IsPort) {
                 return GetPortLocalAnchorPositionFromRatio();    
-            } else {
-                return EngineObject.LocalAnchorPosition;
             }
+            return EngineObject.LocalAnchorPosition;
 		}
 		set {
 			if(IsPort) {
@@ -57,10 +56,10 @@ public partial class iCS_EditorObject {
 			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
 			if(IsPort) {
+                // Ports are always relative to the display position.
 			    return parent.GlobalDisplayPosition+LocalAnchorPosition;
-			} else {
-    			return parent.GlobalLayoutPosition+LocalAnchorPosition;			    
 			}
+    		return parent.GlobalLayoutPosition+LocalAnchorPosition;			    
 		}
 		set {
 			var parent= Parent;
@@ -69,6 +68,7 @@ public partial class iCS_EditorObject {
 				return;
 			}
             if(IsPort) {
+                // Ports are always relative to the display position.
                 LocalAnchorPosition= value-parent.GlobalDisplayPosition;
             } else {
     			LocalAnchorPosition= value-parent.GlobalLayoutPosition;                
@@ -97,10 +97,16 @@ public partial class iCS_EditorObject {
     // Offset from the anchor position.
 	public Vector2 LocalLayoutOffset {
 		get {
-            if(!IsVisibleInLayout) {
-                return Vector2.zero;
+            if(IsPort) {
+                if(!IsVisibleOnDisplay) {
+                    return Vector2.zero;
+                }
+            } else {
+                if(!IsVisibleInLayout) {
+                    return Vector2.zero;
+                }
             }
-			return myLocalLayoutOffset;
+			return myLocalLayoutOffset;                
 		}
 		set {
             // Don't update layout offset for port on iconized nodes.
@@ -114,8 +120,14 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 LocalLayoutPosition {
 		get {
-            if(!IsVisibleInLayout) {
-                return Vector2.zero;
+            if(IsPort) {
+                if(!IsVisibleOnDisplay) {
+                    return Vector2.zero;
+                }                
+            } else {
+                if(!IsVisibleInLayout) {
+                    return Vector2.zero;
+                }                
             }
 			return LocalAnchorPosition+LocalLayoutOffset;
 		}
@@ -140,7 +152,15 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 GlobalLayoutPosition {
 		get {
-            if(!IsVisibleInLayout) return ParentNode.GlobalLayoutPosition;
+            if(IsPort) {
+                if(!IsVisibleOnDisplay) {
+                    return ParentNode.GlobalLayoutPosition;
+                }                
+            } else {
+                if(!IsVisibleInLayout) {
+                    return ParentNode.GlobalLayoutPosition;
+                }
+            }
 			return GlobalAnchorPosition+LocalLayoutOffset;
 		}
 		set {

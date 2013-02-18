@@ -40,6 +40,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public bool IsVisibleOnDisplay {
         get {
+            if(IsPort) {
+                var parent= ParentNode;
+                return parent.IsVisibleOnDisplay;
+            } else {
+                
+            }
             if(!IsAnimated) return IsVisibleInLayout;
             var area= Math3D.Area(DisplaySize);
             return area > 0.1f;
