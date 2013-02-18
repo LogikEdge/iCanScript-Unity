@@ -11,7 +11,7 @@ public partial class iCS_Graphics {
     bool ShouldDisplayNodeName(iCS_EditorObject node) {
         if(!ShouldShowTitle()) return false;
         if(!node.IsNode) return false;
-        if(!IsVisible(node)) return false;
+        if(!node.IsVisibleOnDisplay) return false;
         return true;
     }
     // ----------------------------------------------------------------------
@@ -23,7 +23,7 @@ public partial class iCS_Graphics {
     Vector2 GetNodeNameSize(iCS_EditorObject node) {
         string portName= GetNodeName(node);
         GUIContent content= new GUIContent(portName);
-        return IsIconized(node) ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
+        return node.IsIconizedOnDisplay ? LabelStyle.CalcSize(content) : TitleStyle.CalcSize(content);
     }
     // ----------------------------------------------------------------------
     // Returns the non-scaled x,y with the scaled size.
@@ -32,7 +32,7 @@ public partial class iCS_Graphics {
         Rect pos= node.GlobalDisplayRect;
         float x= 0.5f*(pos.x+pos.xMax-size.x/Scale);
         float y= pos.y;
-        if(IsIconized(node)) {
+        if(node.IsIconizedOnDisplay) {
             y-= 5f+size.y/Scale;
         } else {
 			y+= 0.9f*kNodeCornerRadius-0.5f*size.y/Scale;

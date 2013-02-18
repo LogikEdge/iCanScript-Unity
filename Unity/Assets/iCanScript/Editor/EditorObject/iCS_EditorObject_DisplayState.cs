@@ -24,7 +24,13 @@ public partial class iCS_EditorObject {
 	public bool IsFoldedOnDisplay	{ get { return IsFoldedInLayout; }}
     // ----------------------------------------------------------------------
 	public bool IsIconizedOnDisplay	{
-		get { return IsIconizedInLayout && !IsDisplaySizeAnimated; }
+		get {
+            if(IsPort) return false;
+            var area= Math3D.Area(DisplaySize);
+            if(Math3D.IsZero(area)) return false;
+            var iconArea= Math3D.Area(iCS_Graphics.GetMaximizeIconSize(this));
+            return Math3D.IsSmallerOrEqual(area, iconArea);
+		}
 	}
     // ----------------------------------------------------------------------
     // Returns true if the object object is visible excluding all animations.
@@ -43,8 +49,6 @@ public partial class iCS_EditorObject {
             if(IsPort) {
                 var parent= ParentNode;
                 return parent.IsVisibleOnDisplay;
-            } else {
-                
             }
             if(!IsAnimated) return IsVisibleInLayout;
             var area= Math3D.Area(DisplaySize);

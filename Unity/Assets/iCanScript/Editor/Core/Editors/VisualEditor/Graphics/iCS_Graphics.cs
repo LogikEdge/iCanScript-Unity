@@ -351,7 +351,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     public void DrawNormalNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
         // Don't draw minimized node.
-        if(IsInvisible(node) || IsIconized(node)) return;
+        if(!node.IsVisibleOnDisplay || node.IsIconizedOnDisplay) return;
         
         // Draw node box (if visible).
         Rect position= node.GlobalDisplayRect;
@@ -393,7 +393,7 @@ public partial class iCS_Graphics {
     }
     // ----------------------------------------------------------------------
     public void DrawMinimizedNode(iCS_EditorObject node, iCS_IStorage iStorage) {        
-        if(!IsIconized(node)) return;
+        if(!node.IsIconizedOnDisplay) return;
         
         // Draw minimized node (if visible).
         Rect displayRect= node.GlobalDisplayRect;
@@ -507,7 +507,7 @@ public partial class iCS_Graphics {
         
         // Only draw visible data ports.
         if(port == null || iStorage == null) return;
-        if(IsInvisible(port)) return;
+        if(!port.IsVisibleOnDisplay) return;
         
         // Don't display if outside clipping area.
 		Vector2 portCenter= GetPortCenter(port);
@@ -704,12 +704,12 @@ public partial class iCS_Graphics {
         iCS_EditorObject portParent= port.Parent;
 
         // No connection to draw if the parent is not visible.
-        if(!IsVisible(portParent)) return;
+        if(!portParent.IsVisibleOnDisplay) return;
 
         // No connection to draw if source parent is not visible.
         iCS_EditorObject source= port.Source;
         iCS_EditorObject sourceParent= source.Parent;
-        if(!(IsVisible(sourceParent) && !port.IsOutStatePort)) return;
+        if(!(sourceParent.IsVisibleOnDisplay && !port.IsOutStatePort)) return;
         
         // No connection to draw if outside clipping area.
         var portPos= port.GlobalDisplayPosition;
@@ -766,29 +766,5 @@ public partial class iCS_Graphics {
                 }
             }                 
         }
-    }
-    
-    // ======================================================================
-    //  Utilities
-   	// ----------------------------------------------------------------------
- 	bool IsIconized(iCS_EditorObject edObj) {
-        if(!edObj.IsNode) return false;
-        float area= Math3D.Area(edObj.DisplaySize);
-        return (area <= kIconicArea+1f);
-    }
-   	// ----------------------------------------------------------------------
-    static bool IsInvisible(iCS_EditorObject edObj) {
-        return !IsVisible(edObj);
-    }
-   	// ----------------------------------------------------------------------
-    static bool IsVisible(iCS_EditorObject edObj) {
-        if(edObj.IsNode) {
-            float area= Math3D.Area(edObj.DisplaySize);
-            return Math3D.IsGreater(area, 0.1f);            
-        }
-        var parentNode= edObj.ParentNode;
-        if(parentNode == null) return false;
-        float parentArea= Math3D.Area(parentNode.DisplaySize);
-        return parentArea > kIconicArea+1f;  // Parent is visible and not iconic.
     }
 }

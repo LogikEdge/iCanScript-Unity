@@ -53,7 +53,7 @@ public partial class iCS_Graphics {
         if(port.IsInMuxPort) return false;
         if(port.IsStatePort || port.IsTransitionPort) return false;
         if(!ShouldShowLabel()) return false;
-        if(!IsVisible(port)) return false;
+        if(!port.IsVisibleOnDisplay) return false;
         // Declutter graph by not displaying port name if it's an input and very close to the output.
         if((port.IsInputPort || port.IsModulePort) && port.SourceId != -1) {
             var sourcePort= port.Source;

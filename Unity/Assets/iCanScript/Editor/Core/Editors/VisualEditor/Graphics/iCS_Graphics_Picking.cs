@@ -6,7 +6,7 @@ public partial class iCS_Graphics {
     // Picking functionality
     // ----------------------------------------------------------------------
     public bool IsNodeTitleBarPicked(iCS_EditorObject node, Vector2 pick) {
-        if(node == null || !node.IsNode || !IsVisible(node)) return false;
+        if(node == null || !node.IsNode || !node.IsVisibleOnDisplay) return false;
         if(node.IsIconizedOnDisplay) {
             Rect nodeNamePos= GetNodeNamePosition(node);
             return nodeNamePos.Contains(pick);
@@ -20,7 +20,7 @@ public partial class iCS_Graphics {
     // Fold/Unfold icon functionality.
     // ----------------------------------------------------------------------
     public bool IsNodeNamePicked(iCS_EditorObject node, Vector2 pick) {
-        if(IsIconized(node)) {
+        if(node.IsIconizedOnDisplay) {
             Rect nodePos= GetNodeNamePosition(node);
             float invScale= 1.0f/Scale;
             nodePos.width*= invScale;
@@ -184,7 +184,7 @@ public partial class iCS_Graphics {
             }
             bool result= iStorage.UntilMatchingChildNode(pickedNode,
                 c=> {
-                    if(IsIconized(c)) {
+                    if(c.IsIconizedOnDisplay) {
                         if(IsNodeNamePicked(c, pick)) {
 //                            Debug.Log("Node name: "+c.Name+" is being picked");
                             pickInfo.PickedObject= c;
