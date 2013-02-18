@@ -509,6 +509,10 @@ public partial class iCS_Graphics {
         if(port == null || iStorage == null) return;
         if(!port.IsVisibleOnDisplay) return;
         
+        // Don't show port if its parent node is iconized.
+        var parent= port.ParentNode;
+        if(parent.IsIconizedOnDisplay) return;
+        
         // Don't display if outside clipping area.
 		Vector2 portCenter= GetPortCenter(port);
 		float portRadius= iCS_EditorConfig.PortRadius;
