@@ -29,7 +29,8 @@ public partial class iCS_EditorObject {
             var area= Math3D.Area(DisplaySize);
             if(Math3D.IsZero(area)) return false;
             var iconArea= Math3D.Area(iCS_Graphics.GetMaximizeIconSize(this));
-            return Math3D.IsSmallerOrEqual(area, iconArea);
+            return Math3D.IsSmallerOrEqual(area, iconArea) &&
+                   Math3D.IsGreater(area, iCS_EditorConfig.kMinIconicArea);
 		}
 	}
     // ----------------------------------------------------------------------
@@ -52,7 +53,7 @@ public partial class iCS_EditorObject {
             }
             if(!IsAnimated) return IsVisibleInLayout;
             var area= Math3D.Area(DisplaySize);
-            return area > 0.1f;
+            return Math3D.IsGreater(area, iCS_EditorConfig.kMinIconicArea);
         }
     }
     // ----------------------------------------------------------------------

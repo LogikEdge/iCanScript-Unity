@@ -393,7 +393,6 @@ public partial class iCS_Graphics {
         
         // Draw minimized node (if visible).
         Rect displayRect= node.GlobalDisplayRect;
-        if(displayRect.width < 12f || displayRect.height < 12f) return;  // Don't show if too small.
         Rect displayArea= new Rect(displayRect.x-100f, displayRect.y-16f, displayRect.width+200f, displayRect.height+16f);
         if(!IsVisible(displayArea)) return;
 
