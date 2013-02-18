@@ -75,6 +75,9 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Resolves the port layout position for a given edge.
+    /*
+        FIXME: Resolve jitter when port is being dragged by user.
+    */
     static float[] ResolvePortCollisions(float[] sortedPosition, float availableLength) {
         // Nothing collision to resolve if we don't have at least two ports.
         int nbPorts= sortedPosition.Length;
