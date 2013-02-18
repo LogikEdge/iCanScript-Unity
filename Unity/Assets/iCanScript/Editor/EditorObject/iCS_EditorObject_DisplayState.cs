@@ -11,6 +11,11 @@ using System.Collections;
 
 public partial class iCS_EditorObject {
     // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------    
+    bool myInvisibleBeforeAnimation= false;
+    
+    // ======================================================================
     // Queries
     // ----------------------------------------------------------------------    
     public bool IsUnfoldedInLayout  { get { return DisplayOption == iCS_DisplayOptionEnum.Unfolded; }}
@@ -78,11 +83,27 @@ public partial class iCS_EditorObject {
             return IsDisplayPositionAnimated;
         }
     }
-
+    // ----------------------------------------------------------------------
+    public float DisplayAlpha {
+        get {
+            if(IsPort)      return ParentNode.DisplayAlpha;
+            if(!IsAnimated) {
+                myInvisibleBeforeAnimation= false;
+                return 1f;
+            }
+            if(!IsVisibleInLayout) {
+                return 1f-myAnimatedDisplayPosition.Ratio;
+            }
+            if(myInvisibleBeforeAnimation) {
+                return myAnimatedDisplayPosition.Ratio;
+            }
+            return 1f;
+        }
+    }
+    
     // ======================================================================
     // Display State Change
     // ----------------------------------------------------------------------
-    // FIXME: Ports are not properly animated on unfold/fold/iconize.    
     // IMPROVE: Should avoid digging through all objects to animate them on unfold/fold/iconize.
     public void Iconize() {
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
@@ -164,6 +185,7 @@ public partial class iCS_EditorObject {
   			    c=> {
   				    if(c.IsNode && !c.IsVisibleInLayout) {
   					    c.SetStartValueForDisplayRectAnimation();
+  					    c.myInvisibleBeforeAnimation= true;
   				    }
   			    }
   		    );

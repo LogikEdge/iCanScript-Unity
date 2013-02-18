@@ -349,10 +349,12 @@ public partial class iCS_Graphics {
         // Don't draw minimized node.
         if(!node.IsVisibleOnDisplay || node.IsIconizedOnDisplay) return;
         
-        // Draw node box (if visible).
+        // Don't display if we are outside the clipping area.
         Rect position= node.GlobalDisplayRect;
         if(!IsVisible(position)) return;
 
+        // Draw node since all draw conditions are valid.
+        GUI.color= new Color(1f, 1f, 1f, node.DisplayAlpha);
         string title= GetNodeName(node);
         // Change background color if node is selected.
         Color backgroundColor= GetBackgroundColor(node);
@@ -377,6 +379,7 @@ public partial class iCS_Graphics {
         // Minimize Icon
         var minimizeIcon= iCS_BuiltinTextures.MinimizeIcon(Scale);
         GUI_DrawTexture(new Rect(position.xMax-2-/*minimizeIcon.width*/16, position.y-0.5f, /*minimizeIcon.width*/16, /*minimizeIcon.height*/16), minimizeIcon);
+        GUI.color= Color.white;
     }
     // ----------------------------------------------------------------------
     Color GetBackgroundColor(iCS_EditorObject node) {
@@ -396,6 +399,7 @@ public partial class iCS_Graphics {
         Rect displayArea= new Rect(displayRect.x-100f, displayRect.y-16f, displayRect.width+200f, displayRect.height+16f);
         if(!IsVisible(displayArea)) return;
 
+        GUI.color= new Color(1f, 1f, 1f, node.DisplayAlpha);
         Texture icon= GetMaximizeIcon(node);
 		var position= Math3D.Middle(displayRect);
         Rect texturePos= new Rect(position.x-0.5f*icon.width, position.y-0.5f*icon.height, icon.width, icon.height);                
@@ -411,6 +415,7 @@ public partial class iCS_Graphics {
 #endif
         }
 		ShowTitleOver(texturePos, node);
+        GUI.color= Color.white;
     }
     // ----------------------------------------------------------------------
 	void ShowTitleOver(Rect pos, iCS_EditorObject node) {
@@ -526,6 +531,10 @@ public partial class iCS_Graphics {
         Type portValueType= GetPortValueType(port);
         if(portValueType == null) return;
 
+        // Port alpha
+        var alpha= port.DisplayAlpha;
+        GUI.color= new Color(1f,1f,1f,alpha);
+        
 		// Determine port colors
         Color portColor= iCS_PreferencesEditor.GetTypeColor(portValueType);
         Color nodeColor= GetNodeColor(port.Parent);
@@ -591,6 +600,8 @@ public partial class iCS_Graphics {
     			}
            }
        }
+       // Reset GUI alpha.
+       GUI.color= Color.white;
     }
 
 	// ----------------------------------------------------------------------
@@ -718,9 +729,12 @@ public partial class iCS_Graphics {
         if(displayArea.height < 0) { displayArea.y= sourcePos.y; displayArea.height= portPos.y-sourcePos.y; }
         if(!IsVisible(displayArea)) return;
         
+        // Set connection alpha according to port alpha.
+        var alpha= port.DisplayAlpha*source.DisplayAlpha;
+        
         // Determine if this connection is part of the selected object.
         float highlightWidth= 2f;
-        Color highlightColor= new Color(0.67f, 0.67f, 0.67f);
+        Color highlightColor= new Color(0.67f, 0.67f, 0.67f, alpha);
         if(port == selectedObject || source == selectedObject || portParent == selectedObject || sourceParent == selectedObject) {
             highlight= true;
         }
@@ -730,6 +744,7 @@ public partial class iCS_Graphics {
             highlight= false;
         }
         Color color= iCS_PreferencesEditor.GetTypeColor(source.RuntimeType);
+        color.a*= alpha;
         iCS_ConnectionParams cp= new iCS_ConnectionParams(port, portPos, source, sourcePos, iStorage);
         Vector3 startPos= TranslateAndScale(cp.Start);
         Vector3 endPos= TranslateAndScale(cp.End);
@@ -747,6 +762,7 @@ public partial class iCS_Graphics {
     		Handles.DrawBezier(startPos, endPos, startTangent, endTangent, color, lineTexture, lineWidth);                    
         }
         // Show transition name for state connections.
+        GUI.color= new Color(1f,1f,1f,alpha);
         if(port.IsInStatePort || port.IsInTransitionPort) {
             // Show transition input port.
             Vector2 tangent= new Vector2(cp.EndTangent.x-cp.End.x, cp.EndTangent.y-cp.End.y);
@@ -765,5 +781,7 @@ public partial class iCS_Graphics {
                 }
             }                 
         }
+        // Reset GUI alpha.
+        GUI.color= Color.white;
     }
 }
