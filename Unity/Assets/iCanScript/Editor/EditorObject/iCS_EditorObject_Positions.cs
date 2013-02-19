@@ -190,8 +190,9 @@ public partial class iCS_EditorObject {
 			if(myAnimatedDisplayPosition.IsActive && !myAnimatedDisplayPosition.IsElapsed) {
 				return myAnimatedDisplayPosition.CurrentValue;
 			}
-			Vector2 pos= GlobalLayoutPosition;
-			return pos;
+			var parent= ParentNode;
+			if(parent == null) return GlobalLayoutPosition;
+			return parent.GlobalDisplayPosition+LocalLayoutPosition;
 		}
 	}
     // ----------------------------------------------------------------------
