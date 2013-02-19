@@ -35,12 +35,10 @@ public partial class iCS_EditorObject {
         if(IsUnfoldedInLayout && !IsFunction) {
             ResolveCollisionOnChildrenNodes();
             WrapAroundChildrenNodes();
-    		LayoutPorts();
     		return;            
         }
         // Update the size and ports for folded & Function nodes.
         GlobalLayoutRect= NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(new Rect(0,0,0,0));
-        LayoutPorts();
 	}
 
     // ----------------------------------------------------------------------

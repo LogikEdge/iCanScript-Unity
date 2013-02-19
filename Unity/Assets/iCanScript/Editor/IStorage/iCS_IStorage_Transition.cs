@@ -12,10 +12,8 @@ public partial class iCS_IStorage {
         toStatePort.SetGlobalAnchorAndLayoutPosition(toStatePortPos);
         SetSource(toStatePort, fromStatePort);
         toStatePort.UpdatePortEdge();        
-        toState.LayoutPorts();        
         // Update fromStatePort position.
         fromStatePort.UpdatePortEdge();
-        fromStatePort.Parent.LayoutPorts();
         // Determine transition parent
         iCS_EditorObject transitionParent= GetTransitionParent(toStatePort.Parent, fromStatePort.Parent);
         // Create transition module
