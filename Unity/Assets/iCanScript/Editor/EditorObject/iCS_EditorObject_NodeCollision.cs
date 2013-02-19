@@ -31,10 +31,14 @@ public partial class iCS_EditorObject {
 			int i= 0;
 			ForEachChildNode(
 				c=> {
-					var move= c.GlobalLayoutPosition-initialChildNodePos[i++];
+					var newGlobalPos= c.GlobalLayoutPosition;
+					if(c.IsDisplayPositionAnimated && Math3D.IsNotEqual(myAnimatedDisplayPosition.TargetValue, newGlobalPos)) {
+						c.StartDisplayPositionAnimation(animationTimer);						
+					}
+					var move= newGlobalPos-initialChildNodePos[i++];
 					if(Math3D.IsGreater(move.magnitude, dragMagnitude)) {
 						if(Vector2.Dot(ourDragObjectDelta, move) < 0) {
-							c.StartDisplayRectAnimation(animationTimer);
+							c.StartDisplayPositionAnimation(animationTimer);
 						}
 					}
 				}
