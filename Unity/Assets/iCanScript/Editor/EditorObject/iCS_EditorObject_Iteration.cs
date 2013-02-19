@@ -129,6 +129,14 @@ public partial class iCS_EditorObject {
 	    
     // Recursive Iterations =================================================
     public void ForEachRecursiveDepthFirst(Action<iCS_EditorObject> fnc) {
+        ForEachRecursiveDepthFirst(_=> true, fnc);
+    }
+	// ----------------------------------------------------------------------
+    public void ForEachRecursiveDepthFirst(Func<iCS_EditorObject, bool> cond,
+                                           Action<iCS_EditorObject> fnc) {
+        // Does this node pass the given condition?
+        var editorObject= EditorObject;
+        if(!cond(editorObject)) return;
         // First iterate through all children ...
         foreach(var childId in Children) {
 			if(childId != -1) {
@@ -136,20 +144,27 @@ public partial class iCS_EditorObject {
 				if(child != null) {
 		            child.ForEachRecursiveDepthFirst(fnc);									
 				} else {
-					Debug.LogWarning("Mismatch between children list and EditorObject container !!!");
+					Debug.LogWarning("iCanScript: Mismatch between children list and EditorObject container !!!");
 				}
 			} else {
-				Debug.LogWarning("Children list includes an invalid id");
+				Debug.LogWarning("iCanScript: Children list includes an invalid id");
 			}
         }
-        
         // ... then this node.
-        fnc(EditorObject);
+        fnc(editorObject);
     }
 	// ----------------------------------------------------------------------
     public void ForEachRecursiveDepthLast(Action<iCS_EditorObject> fnc) {
+        ForEachRecursiveDepthLast(_=> true, fnc);
+    }
+	// ----------------------------------------------------------------------
+    public void ForEachRecursiveDepthLast(Func<iCS_EditorObject,bool> cond,
+                                          Action<iCS_EditorObject> fnc) {
+        // Does this node pass the given condition?
+        var editorObject= EditorObject;
+        if(!cond(editorObject)) return;
         // First this node ...
-        fnc(EditorObject);
+        fnc(editorObject);
         // ... then iterate through all children.
         foreach(var childId in Children) {
 			if(childId != -1) {
@@ -157,10 +172,10 @@ public partial class iCS_EditorObject {
 				if(child != null) {
 		            child.ForEachRecursiveDepthLast(fnc);									
 				} else {
-					Debug.LogWarning("Mismatch between children list and EditorObject container !!!");
+					Debug.LogWarning("iCanScript: Mismatch between children list and EditorObject container !!!");
 				}
 			} else {
-				Debug.LogWarning("Children list includes an invalid id");
+				Debug.LogWarning("iCanScript: Children list includes an invalid id");
 			}
         }
     }
@@ -168,17 +183,24 @@ public partial class iCS_EditorObject {
     // Recursively iterating through all child nodes invoking the given
     // function on the leaf node first then the branch nodes.
     public void ForEachChildRecursiveDepthFirst(Action<iCS_EditorObject> fnc) {
+        ForEachChildRecursiveDepthFirst(_=> true, fnc);
+    }
+    // ----------------------------------------------------------------------
+    // Recursively iterating through all child nodes invoking the given
+    // function on the leaf node first then the branch nodes.
+    public void ForEachChildRecursiveDepthFirst(Func<iCS_EditorObject,bool> cond,
+                                                Action<iCS_EditorObject> fnc) {
         // Iterate through all children ...
         foreach(var childId in Children) {
 			if(childId != -1) {
 				var child= myIStorage[childId];
 				if(child != null) {
-		            child.ForEachRecursiveDepthFirst(fnc);
+		            child.ForEachRecursiveDepthFirst(cond, fnc);
 				} else {
-					Debug.LogWarning("Mismatch between children list and EditorObject container !!!");
+					Debug.LogWarning("iCanScript: Mismatch between children list and EditorObject container !!!");
 				}
 			} else {
-				Debug.LogWarning("Children list includes an invalid id");
+				Debug.LogWarning("iCanScript: Children list includes an invalid id");
 			}
         }
     }
@@ -186,17 +208,24 @@ public partial class iCS_EditorObject {
     // Recursively iterating through all child nodes invoking the given
     // function on the branch node first then the leaf nodes.
     public void ForEachChildRecursiveDepthLast(Action<iCS_EditorObject> fnc) {
+        ForEachChildRecursiveDepthLast(_=> true, fnc);
+    }
+    // ----------------------------------------------------------------------
+    // Recursively iterating through all child nodes invoking the given
+    // function on the branch node first then the leaf nodes.
+    public void ForEachChildRecursiveDepthLast(Func<iCS_EditorObject,bool> cond,
+                                               Action<iCS_EditorObject> fnc) {
         // Iterate through all children.
         foreach(var childId in Children) {
 			if(childId != -1) {
 				var child= myIStorage[childId];
 				if(child != null) {
-            		child.ForEachRecursiveDepthLast(fnc);
+            		child.ForEachRecursiveDepthLast(cond, fnc);
 				} else {
-					Debug.LogWarning("Mismatch between children list and EditorObject container !!!");
+					Debug.LogWarning("iCanScript: Mismatch between children list and EditorObject container !!!");
 				}
 			} else {
-				Debug.LogWarning("Children list includes an invalid id");
+				Debug.LogWarning("iCanScript: Children list includes an invalid id");
 			}
         }
     }
