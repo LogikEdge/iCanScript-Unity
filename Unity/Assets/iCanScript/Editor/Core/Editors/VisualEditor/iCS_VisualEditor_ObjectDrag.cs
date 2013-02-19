@@ -423,6 +423,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 
 	// ----------------------------------------------------------------------
+	/*
+		TODO: Move port relocation processing into editor object...
+	*/
     void ProcessPortRelocation(Vector2 newPosition) {
 		// Consider port relocation when dragging on parent edge.
 		var parent= DragObject.ParentNode;
