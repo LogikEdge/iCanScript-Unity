@@ -44,7 +44,7 @@ public partial class iCS_EditorObject {
     }
     
     // ----------------------------------------------------------------------    
-    void AnimateChildNodes(Action<iCS_EditorObject> fnc) {
+    void AnimateChildNodes(Action fnc) {
         // Create a uniqu timer the all child animations.
 		var timer= BuildStandardAnimationTimer();
         // Prepare to animate child nodes.
@@ -56,11 +56,11 @@ public partial class iCS_EditorObject {
 		    }
 	    );                
         // Run node modification function.
-        fnc(this);
+        fnc();
         // Animate all visible children.
 	    ForEachChildNode(
 		    c=> {
-			    if(c.IsVisibleInLayout) {
+			    if(c.IsVisibleInLayout && !c.IsSticky) {
 				    c.StartDisplayRectAnimation(timer);
 			    }
 		    }
