@@ -1,5 +1,7 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using P=Prelude;
 
 public partial class iCS_EditorObject {
     // ======================================================================
@@ -8,10 +10,36 @@ public partial class iCS_EditorObject {
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
     public void ResolveCollisionOnChildrenNodes() {
+		// Prepare to animate Drag node sibling.
+		List<Vector2> initialChildNodePos= new List<Vector2>();
+		var animationTimer= BuildStandardAnimationTimer();
+		if(this == ourDragObjectParent) {
+			ForEachChildNode(
+				c=> {
+					initialChildNodePos.Add(c.GlobalLayoutPosition);
+					c.SetStartValueForDisplayPositionAnimation();
+				}
+			);
+		}
         // Reposition all node at their anchor position.
         ForEachChildNode(c=> c.GlobalLayoutPosition= c.GlobalAnchorPosition);
         // Resolve collisions.
         ResolveCollisionOnChildrenImp();
+		// Only animate drag node sibling if they move in opposite direction.
+		if(this == ourDragObjectParent) {
+			float dragMagnitude= ourDragObjectDelta.magnitude;
+			int i= 0;
+			ForEachChildNode(
+				c=> {
+					var move= c.GlobalLayoutPosition-initialChildNodePos[i++];
+					if(Math3D.IsGreater(move.magnitude, dragMagnitude)) {
+						if(Vector2.Dot(ourDragObjectDelta, move) < 0) {
+							c.StartDisplayRectAnimation(animationTimer);
+						}
+					}
+				}
+			);
+		}
     }
     // ----------------------------------------------------------------------
 /*
@@ -31,24 +59,24 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Resolves collision between two nodes. "true" is returned if a collision
     // has occured.
-    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject otherNode) {
+    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject theOtherNode) {
         // Nothing to do if they don't collide.
-        if(!DoesCollideWithMargins(otherNode)) return false;
+        if(!DoesCollideWithMargins(theOtherNode)) return false;
 
         // Compute penetration.
-        Vector2 penetration= GetSeperationVector(otherNode.GlobalLayoutRect);
+        Vector2 penetration= GetSeperationVector(theOtherNode);
 		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) return false;
 
         // Seperate by half penetration if none is sticky.
-        if(!IsSticky && !otherNode.IsSticky) {
+        if(!IsSticky && !theOtherNode.IsSticky) {
             penetration*= 0.5f;
-            otherNode.LocalLayoutPosition+= penetration;
+            theOtherNode.LocalLayoutPosition+= penetration;
             LocalLayoutPosition-= penetration;
             return true;            
         }
 		// Seperate using the known movement.
-    	if(!otherNode.IsSticky) {
-            otherNode.LocalLayoutPosition+= penetration;
+    	if(!theOtherNode.IsSticky) {
+            theOtherNode.LocalLayoutPosition+= penetration;
             return true;
     	}
         if(!IsSticky) {            
@@ -65,9 +93,9 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	// Returns the seperation vector of two colliding nodes.  The vector
 	// returned is the smallest distance to remove the overlap.
-	Vector2 GetSeperationVector(Rect _rect) {
-        Rect myRect= AddMargins(GlobalLayoutRect);
-        Rect otherRect= _rect;
+	Vector2 GetSeperationVector(iCS_EditorObject theOther) {
+        Rect myRect   = AddMargins(GlobalLayoutRect);
+        Rect otherRect= theOther.GlobalLayoutRect;
 		// No collision if X & Y distance of the enclosing rect is either
 		// larger or higher then the total width/height.
         float xMin= Mathf.Min(myRect.xMin, otherRect.xMin);
@@ -81,22 +109,15 @@ public partial class iCS_EditorObject {
         if(xDistance >= totalWidth) return Vector2.zero;
         if(yDistance >= totalHeight) return Vector2.zero;
 		// A collision is detected.  The seperation vector is the
-		// smallest distance to remove the overlap.
-        if((totalWidth-xDistance) < (totalHeight-yDistance)) {
-            if(myRect.xMin < otherRect.xMin) {
-                return new Vector2(totalWidth-xDistance, 0);
-            }
-            else {
-                return new Vector2(xDistance-totalWidth, 0);
-            }
-        }
-        else {
-            if(myRect.yMin < otherRect.yMin) {
-                return new Vector2(0, totalHeight-yDistance);
-            }
-            else {
-                return new Vector2(0, yDistance-totalHeight);                
-            }            
-        }
+		// smallest distance to remove the overlap.  The separtion
+		// must also respect the anchor position relationship
+		// between the two overalpping nodes.
+		var anchorSepDir= theOther.LocalAnchorPosition-LocalAnchorPosition;
+		float sepX= anchorSepDir.x > 0 ? totalWidth-xDistance : xDistance-totalWidth;
+		float sepY= anchorSepDir.y > 0 ? totalHeight-yDistance : yDistance-totalHeight;
+		if(Mathf.Abs(sepX) < Mathf.Abs(sepY)) {
+			return new Vector2(sepX, 0);
+		}
+		return new Vector2(0, sepY);
 	}
 }

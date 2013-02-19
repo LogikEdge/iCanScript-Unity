@@ -7,12 +7,15 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    iCS_IStorage    	myIStorage               = null;
-    int             	myId                     = -1;
-    bool            	myIsFloating             = false;
-    public List<int>	myChildren               = new List<int>();
-    bool                myIsSticky               = false;
-    
+    iCS_IStorage    		myIStorage  	   = null;
+    int             		myId        	   = -1;
+    bool            		myIsFloating	   = false;
+    public List<int>		myChildren  	   = new List<int>();
+    bool                	myIsSticky  	   = false;
+    static iCS_EditorObject	ourDragObject	   = null;
+	static iCS_EditorObject ourDragObjectParent= null;
+	static Vector2			ourDragObjectDelta = Vector2.zero;
+
     // ======================================================================
     // Conversion Utilities
     // ----------------------------------------------------------------------
