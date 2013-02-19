@@ -42,9 +42,6 @@ public partial class iCS_EditorObject {
 		}
     }
     // ----------------------------------------------------------------------
-/*
-	IMPROVE : Should resolve collision in parallel.
-*/
     public void ResolveCollisionOnChildrenImp() {
         bool didCollide= false;
         iCS_EditorObject[] children= BuildListOfChildNodes(c=> !c.IsFloating);
