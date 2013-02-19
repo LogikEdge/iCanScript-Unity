@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>contentFontName</key>
+		<string>LucidaGrande</string>
+		<key>contentFontSize</key>
+		<real>14</real>
+		<key>layoutName</key>
+		<string>5161</string>
+		<key>lineOneContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Item: </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>nameGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:B492760A-D2AA-4B75-82F9-C41434253E84</string>
+				<key>fieldLabel</key>
+				<string>Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>lineThreeContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>UPC: 123489798786</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+		<key>lineTwoContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Price: </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>priceGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:3015645C-B678-4B6E-B933-767913AA820D</string>
+				<key>fieldLabel</key>
+				<string>Price</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>mediaContent</key>
+		<dict>
+			<key>dataValueKeyPath</key>
+			<string>pictureGnField</string>
+			<key>fieldGUID</key>
+			<string>Field:61E1FFFB-23C2-4558-8427-AAD1AE57FAF7</string>
+			<key>fieldLabel</key>
+			<string>Picture</string>
+			<key>type</key>
+			<integer>1</integer>
+		</dict>
+		<key>name</key>
+		<string>Default Label</string>
+		<key>sectionName</key>
+		<string>Avery Standard</string>
+		<key>wantsLabelBorder</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>contentFontName</key>
+		<string>LucidaGrande</string>
+		<key>contentFontSize</key>
+		<real>12</real>
+		<key>layoutName</key>
+		<string>5167</string>
+		<key>lineOneContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Item: </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>nameGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:B492760A-D2AA-4B75-82F9-C41434253E84</string>
+				<key>fieldLabel</key>
+				<string>Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>lineThreeContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string> </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>serialNumberGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:16164DD8-6AC4-4815-A868-C79D269D82ED</string>
+				<key>fieldLabel</key>
+				<string>SKU</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>lineTwoContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Price: </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>priceGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:3015645C-B678-4B6E-B933-767913AA820D</string>
+				<key>fieldLabel</key>
+				<string>Price</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>mediaContent</key>
+		<dict>
+			<key>type</key>
+			<integer>0</integer>
+		</dict>
+		<key>name</key>
+		<string>Price Tags</string>
+		<key>sectionName</key>
+		<string>Avery Standard</string>
+		<key>wantsLabelBorder</key>
+		<false/>
+	</dict>
+</array>
+</plist>

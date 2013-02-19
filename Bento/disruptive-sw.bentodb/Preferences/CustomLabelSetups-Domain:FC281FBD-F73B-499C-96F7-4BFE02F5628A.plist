@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>layoutName</key>
+		<string>5161</string>
+		<key>lineOneContents</key>
+		<array/>
+		<key>mediaContent</key>
+		<dict>
+			<key>dataValueKeyPath</key>
+			<string>pictureGnField</string>
+			<key>fieldGUID</key>
+			<string>Field:59BD65D1-8A87-4F9B-9F28-8EA09C0AC146</string>
+			<key>fieldLabel</key>
+			<string>Picture</string>
+			<key>type</key>
+			<integer>1</integer>
+		</dict>
+		<key>name</key>
+		<string>Default Label</string>
+		<key>sectionName</key>
+		<string>Avery Standard</string>
+	</dict>
+	<dict>
+		<key>contentColor</key>
+		<string>0 0 1 1</string>
+		<key>contentFontName</key>
+		<string>ArialMT</string>
+		<key>contentFontSize</key>
+		<real>10</real>
+		<key>layoutName</key>
+		<string>5161</string>
+		<key>lineFourContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Serial Number: </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>serialNumberGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:898C1F29-2F8C-4689-ACA3-65BCDB2FB733</string>
+				<key>fieldLabel</key>
+				<string>Serial Number</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>lineOneContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Property of Events Unlimited, Inc.</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+		<key>lineThreeContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Inventory ID: </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>inventoryIDGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:E603284D-4A78-4090-9646-9E61D6B808CD</string>
+				<key>fieldLabel</key>
+				<string>Inventory ID</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>lineTwoContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Item: </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>itemGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:BF184E40-1E75-46CC-ACD4-898E3A0081E7</string>
+				<key>fieldLabel</key>
+				<string>Item</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>mediaContent</key>
+		<dict>
+			<key>dataValueKeyPath</key>
+			<string>barCodeGnField</string>
+			<key>fieldGUID</key>
+			<string>Field:95ED6914-92E9-455A-860A-B1A415273DFD</string>
+			<key>fieldLabel</key>
+			<string>Bar Code</string>
+			<key>type</key>
+			<integer>1</integer>
+		</dict>
+		<key>name</key>
+		<string>Inventory Stickers</string>
+		<key>sectionName</key>
+		<string>Avery Standard</string>
+		<key>wantsLabelBorder</key>
+		<false/>
+	</dict>
+</array>
+</plist>

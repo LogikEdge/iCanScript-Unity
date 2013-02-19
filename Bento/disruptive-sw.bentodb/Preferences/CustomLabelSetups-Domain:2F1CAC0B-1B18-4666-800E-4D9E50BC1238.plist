@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>contentFontName</key>
+		<string>LucidaGrande</string>
+		<key>contentFontSize</key>
+		<real>14</real>
+		<key>layoutName</key>
+		<string>5161</string>
+		<key>lineOneContents</key>
+		<array>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>firstNamegnfieldGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:6C639A7A-FD95-43B2-ACBF-DDECB11EE653</string>
+				<key>fieldLabel</key>
+				<string>First Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>label</key>
+				<string> </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>lastNamegnfieldGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:A31D9ABD-6F7B-4F33-9766-234E1C8E6C26</string>
+				<key>fieldLabel</key>
+				<string>Last Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>mediaContent</key>
+		<dict>
+			<key>dataValueKeyPath</key>
+			<string>pictureGnField</string>
+			<key>fieldGUID</key>
+			<string>Field:B6EA0D0F-6DDA-4A92-8D8B-182A80D43FCF</string>
+			<key>fieldLabel</key>
+			<string>Picture</string>
+			<key>type</key>
+			<integer>1</integer>
+		</dict>
+		<key>name</key>
+		<string>Default Label</string>
+		<key>sectionName</key>
+		<string>Avery Standard</string>
+		<key>usesAddressLabelPrintingMode</key>
+		<true/>
+	</dict>
+	<dict>
+		<key>addressContent</key>
+		<dict>
+			<key>dataValueKeyPath</key>
+			<string>billToAddressGnField</string>
+			<key>fieldGUID</key>
+			<string>Field:E5779251-D83C-4704-BDC8-B6BF9AA66FFA</string>
+			<key>fieldLabel</key>
+			<string>Bill To Address</string>
+		</dict>
+		<key>contentFontName</key>
+		<string>LucidaGrande</string>
+		<key>contentFontSize</key>
+		<real>12</real>
+		<key>layoutName</key>
+		<string>5161</string>
+		<key>lineOneContents</key>
+		<array>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>firstNamegnfieldGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:6C639A7A-FD95-43B2-ACBF-DDECB11EE653</string>
+				<key>fieldLabel</key>
+				<string>First Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>label</key>
+				<string> </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>lastNamegnfieldGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:A31D9ABD-6F7B-4F33-9766-234E1C8E6C26</string>
+				<key>fieldLabel</key>
+				<string>Last Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>lineThreeContents</key>
+		<array>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>billToAddressGnField.city</string>
+				<key>fieldGUID</key>
+				<string>Field:E5779251-D83C-4704-BDC8-B6BF9AA66FFA</string>
+				<key>fieldLabel</key>
+				<string>Bill To Address (City)</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>label</key>
+				<string> </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>billToAddressGnField.state</string>
+				<key>fieldGUID</key>
+				<string>Field:E5779251-D83C-4704-BDC8-B6BF9AA66FFA</string>
+				<key>fieldLabel</key>
+				<string>Bill To Address (State)</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>label</key>
+				<string> </string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>billToAddressGnField.zip</string>
+				<key>fieldGUID</key>
+				<string>Field:E5779251-D83C-4704-BDC8-B6BF9AA66FFA</string>
+				<key>fieldLabel</key>
+				<string>Bill To Address (Zip)</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>lineTwoContents</key>
+		<array/>
+		<key>name</key>
+		<string>Mailing Labels</string>
+		<key>sectionName</key>
+		<string>Avery Standard</string>
+		<key>showsForeignCountryOnly</key>
+		<false/>
+		<key>usesAddressLabelPrintingMode</key>
+		<true/>
+		<key>wantsLabelBorder</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>contentFontName</key>
+		<string>LucidaGrande</string>
+		<key>contentFontSize</key>
+		<real>10</real>
+		<key>layoutName</key>
+		<string>5167</string>
+		<key>lineFourContents</key>
+		<array/>
+		<key>lineOneContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Add Name/Company Here</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+		<key>lineThreeContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Add Address Line 2 Here</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+		<key>lineTwoContents</key>
+		<array>
+			<dict>
+				<key>label</key>
+				<string>Add Address Line 1 Here</string>
+				<key>type</key>
+				<integer>1</integer>
+			</dict>
+		</array>
+		<key>name</key>
+		<string>Return Address Label</string>
+		<key>showsForeignCountryOnly</key>
+		<false/>
+		<key>usesAddressLabelPrintingMode</key>
+		<false/>
+	</dict>
+</array>
+</plist>

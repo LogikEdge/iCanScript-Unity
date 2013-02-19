@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>/Users/Reinual/Desktop/CustomerSignUp.csv</key>
+	<dict>
+		<key>collisionIndexes</key>
+		<dict/>
+		<key>fieldTypes</key>
+		<dict>
+			<key>0</key>
+			<string>com.filemaker.bento.field.core.number</string>
+			<key>1</key>
+			<string>com.filemaker.bento.field.core.date</string>
+			<key>3</key>
+			<string>com.filemaker.bento.field.group.email</string>
+		</dict>
+		<key>masterTableKey</key>
+		<string>86DEF077-D608-4F42-93FF-87A530EA78A2</string>
+		<key>tableMaps</key>
+		<dict/>
+	</dict>
+</dict>
+</plist>

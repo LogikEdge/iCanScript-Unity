@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>contentColor</key>
+		<string>0 0 1 1</string>
+		<key>contentFontName</key>
+		<string>LucidaCalligraphy-Italic</string>
+		<key>contentFontSize</key>
+		<real>10</real>
+		<key>layoutName</key>
+		<string>5161</string>
+		<key>lineOneContents</key>
+		<array>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>clientNameGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:071B48B0-8313-4C97-97DD-18B805940FE3</string>
+				<key>fieldLabel</key>
+				<string>Client Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>lineTwoContents</key>
+		<array>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>projectNameGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:81C64692-8C85-455F-8B6F-4B04F11BD568</string>
+				<key>fieldLabel</key>
+				<string>Project Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>name</key>
+		<string>Default Label</string>
+		<key>sectionName</key>
+		<string>Avery Standard</string>
+		<key>textAlignment</key>
+		<integer>0</integer>
+		<key>wantsLabelBorder</key>
+		<false/>
+	</dict>
+	<dict>
+		<key>contentColor</key>
+		<string>0.141859 0.367808 0.821863 1</string>
+		<key>contentFontName</key>
+		<string>LucidaGrande-Bold</string>
+		<key>contentFontSize</key>
+		<real>12</real>
+		<key>layoutName</key>
+		<string>Custom Page Layout</string>
+		<key>lineOneContents</key>
+		<array>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>clientNameGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:071B48B0-8313-4C97-97DD-18B805940FE3</string>
+				<key>fieldLabel</key>
+				<string>Client Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>lineTwoContents</key>
+		<array>
+			<dict>
+				<key>dataValueKeyPath</key>
+				<string>projectNameGnField</string>
+				<key>fieldGUID</key>
+				<string>Field:33402D80-A34A-4A20-8427-02BCC37CCCED</string>
+				<key>fieldLabel</key>
+				<string>Project, Task or Folder Name</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+		</array>
+		<key>name</key>
+		<string>FileFolderLabels</string>
+		<key>sectionName</key>
+		<string>FileFoldersLabels</string>
+		<key>showsForeignCountryOnly</key>
+		<false/>
+		<key>textAlignment</key>
+		<integer>2</integer>
+		<key>wantsLabelBorder</key>
+		<false/>
+	</dict>
+</array>
+</plist>

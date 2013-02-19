@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Domain:0761FF80-7E9C-41C6-826D-735063110D7E</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:0E5A41DF-3EB6-4E77-B61F-A29F94D7E285</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:272F16C3-E034-42FF-904D-E72AA259D1A0</key>
+	<dict>
+		<key>groupName</key>
+		<string>iCanScript Members</string>
+	</dict>
+	<key>Domain:2A65106C-B73F-44F7-94DF-8A710B644A3B</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:2CDE348E-42F3-492E-8891-4EA6A0632D44</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:2D34F61B-10DE-4CF6-BA24-0C42BF63226C</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:32FF70C1-A7B1-4CD3-80EA-CC1D772C9C72</key>
+	<dict>
+		<key>groupName</key>
+		<string>iCanScript Members</string>
+	</dict>
+	<key>Domain:52D7A9A3-8815-4F37-AB76-BDF2EBD9EB55</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:5A8EED56-98A8-48DA-84C5-6106431D5599</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:65323618-485F-4191-93E4-B3A8B10BACFD</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:83E012E7-5321-4322-B5F5-32957269AA30</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:A0CD2EA3-C21F-4647-86B6-7067878C23BF</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:BB2707B1-FA24-4D58-9317-822C5499CEA0</key>
+	<dict>
+		<key>groupName</key>
+		<string>iCanScript Members</string>
+	</dict>
+	<key>Domain:F11D9290-1C09-4724-8C1A-8A982A69740B</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+	<key>Domain:F140FDE2-7792-4F06-B25D-5202DD1B4A32</key>
+	<dict>
+		<key>groupName</key>
+		<string>card</string>
+	</dict>
+</dict>
+</plist>
