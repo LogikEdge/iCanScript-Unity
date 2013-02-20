@@ -31,7 +31,7 @@ public partial class iCS_EditorObject {
 			ForEachChildNode(
 				c=> {
 					var newGlobalPos= c.GlobalLayoutPosition;
-					if(c.IsDisplayPositionAnimated && Math3D.IsNotEqual(myAnimatedDisplayPosition.TargetValue, newGlobalPos)) {
+					if(c.IsDisplayPositionAnimated && Math3D.IsNotEqual(AnimatedPosition.TargetValue, newGlobalPos)) {
 						c.StartDisplayPositionAnimation();						
 					}
 					var move= newGlobalPos-initialChildNodePos[i++];

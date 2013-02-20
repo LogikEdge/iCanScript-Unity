@@ -1,21 +1,30 @@
+//#define NEW_ANIM
 using UnityEngine;
 using System;
 using System.Collections;
 using P=Prelude;
 
 public partial class iCS_EditorObject {
+    // ======================================================================
+	// Fields
+    // ----------------------------------------------------------------------
+	private P.Animate<Vector2> AnimatedPosition= new P.Animate<Vector2>();
+	private P.Animate<Vector2> AnimatedSize    = new P.Animate<Vector2>();
+
+    // ======================================================================
+    // Queries
     // ----------------------------------------------------------------------
     // Returns true if the display size is currently being animated.
     public bool IsDisplaySizeAnimated {
         get {
-            return  myAnimatedDisplaySize.IsActive;
+            return  AnimatedSize.IsActive;
         }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display position is currently being animated.
     public bool IsDisplayPositionAnimated {
         get {
-            return  myAnimatedDisplayPosition.IsActive;            
+            return  AnimatedPosition.IsActive;            
         }
     }
     // ----------------------------------------------------------------------
@@ -34,13 +43,13 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplaySizeAnimation() {
 		if(!IsDisplaySizeAnimated) {
-			myAnimatedDisplaySize.Reset(LayoutSize);
+			AnimatedSize.Reset(LayoutSize);
 		}
 	}
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplayPositionAnimation() {
 		if(!IsDisplayPositionAnimated) {
-			myAnimatedDisplayPosition.Reset(GlobalLayoutPosition);
+			AnimatedPosition.Reset(GlobalLayoutPosition);
 		}
 	}
     // ----------------------------------------------------------------------
@@ -51,13 +60,13 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplaySizeAnimation(Vector2 startSize) {
 		if(!IsDisplaySizeAnimated) {
-			myAnimatedDisplaySize.Reset(startSize);
+			AnimatedSize.Reset(startSize);
 		}
 	}
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplayPositionAnimation(Vector2 startPos) {
 		if(!IsDisplayPositionAnimated) {
-			myAnimatedDisplayPosition.Reset(startPos);
+			AnimatedPosition.Reset(startPos);
 		}
 	}
     // ----------------------------------------------------------------------
@@ -115,22 +124,22 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void StartDisplayRectAnimation() {
-        var startRect= new Rect(myAnimatedDisplayPosition.CurrentValue.x,
-                                myAnimatedDisplayPosition.CurrentValue.y,
-                                myAnimatedDisplaySize.CurrentValue.x,
-                                myAnimatedDisplaySize.CurrentValue.y);
+        var startRect= new Rect(AnimatedPosition.CurrentValue.x,
+                                AnimatedPosition.CurrentValue.y,
+                                AnimatedSize.CurrentValue.x,
+                                AnimatedSize.CurrentValue.y);
 		var timeRatio= BuildTimeRatioFromRect(startRect, GlobalLayoutRect);
 		StartDisplayRectAnimation(timeRatio);
 	}
     // ----------------------------------------------------------------------
 	void StartDisplaySizeAnimation() {
-        var startSize= myAnimatedDisplaySize.CurrentValue;
+        var startSize= AnimatedSize.CurrentValue;
 		var timeRatio= BuildTimeRatioFromSize(startSize, LayoutSize); 
 		StartDisplaySizeAnimation(timeRatio);
 	}
     // ----------------------------------------------------------------------
 	void StartDisplayPositionAnimation() {
-        var startPos= myAnimatedDisplayPosition.CurrentValue;
+        var startPos= AnimatedPosition.CurrentValue;
 		var timeRatio= BuildTimeRatioFromPosition(startPos, GlobalLayoutPosition);
 		StartDisplayPositionAnimation(timeRatio);
 	}
@@ -141,34 +150,53 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void StartDisplaySizeAnimation(P.TimeRatio timeRatio) {
-		myAnimatedDisplaySize.Start(myAnimatedDisplaySize.CurrentValue,
+		AnimatedSize.Start(AnimatedSize.CurrentValue,
 							        LayoutSize,
 							        timeRatio,
                                     (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	}
     // ----------------------------------------------------------------------
 	void StartDisplayPositionAnimation(P.TimeRatio timeRatio) {
-		myAnimatedDisplayPosition.Start(myAnimatedDisplayPosition.CurrentValue,
+		AnimatedPosition.Start(AnimatedPosition.CurrentValue,
 										GlobalLayoutPosition,
 										timeRatio,
 		                                (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	}
     // ----------------------------------------------------------------------
 	public void UpdateAnimation() {
-		if(myAnimatedDisplaySize.IsActive) {
-			if(myAnimatedDisplaySize.IsElapsed) {
-				myAnimatedDisplaySize.Reset(LayoutSize);
+#if NEW_ANIM
+        if(AnimatedSize.IsActive) {
+        	if(AnimatedSize.IsElapsed) {
+        		AnimatedSize.Reset();
+        	} else {
+        		AnimatedSize.Update();
+        	}
+        	LayoutSize= AnimatedSize.CurrentValue;
+        }
+        if(AnimatedPosition.IsActive) {
+        	if(AnimatedPosition.IsElapsed) {
+        		AnimatedPosition.Reset();
+        	} else {
+        		AnimatedPosition.Update();
+        	}
+        	GlobalLayoutPosition= AnimatedPosition.CurrentValue;
+        }
+#else
+		if(AnimatedSize.IsActive) {
+			if(AnimatedSize.IsElapsed) {
+				AnimatedSize.Reset(LayoutSize);
 			} else {
-				myAnimatedDisplaySize.Update();
+				AnimatedSize.Update();
 			}
 		}
-		if(myAnimatedDisplayPosition.IsActive) {
-			if(myAnimatedDisplayPosition.IsElapsed) {
-				myAnimatedDisplayPosition.Reset(GlobalLayoutPosition);
+		if(AnimatedPosition.IsActive) {
+			if(AnimatedPosition.IsElapsed) {
+				AnimatedPosition.Reset(GlobalLayoutPosition);
 			} else {
-				myAnimatedDisplayPosition.Update();
+				AnimatedPosition.Update();
 			}
 		}
+#endif
 	}
 
     // ----------------------------------------------------------------------
@@ -180,10 +208,10 @@ public partial class iCS_EditorObject {
                 return 1f;
             }
             if(!IsVisibleInLayout) {
-                return 1f-myAnimatedDisplayPosition.Ratio;
+                return 1f-AnimatedPosition.Ratio;
             }
             if(myInvisibleBeforeAnimation) {
-                return myAnimatedDisplayPosition.Ratio;
+                return AnimatedPosition.Ratio;
             }
             return 1f;
         }

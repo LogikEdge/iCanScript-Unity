@@ -1,3 +1,4 @@
+//#define NEW_ANIM
 using UnityEngine;
 using System.Collections;
 using P=Prelude;
@@ -8,8 +9,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	private Vector2 		   myLocalLayoutOffset      = Vector2.zero;
 	private Vector2 		   myLayoutSize     		= Vector2.zero;
-	private P.Animate<Vector2> myAnimatedDisplayPosition= new P.Animate<Vector2>();
-	private P.Animate<Vector2> myAnimatedDisplaySize    = new P.Animate<Vector2>();
 	private Vector2            myPreviousDisplaySize    = Vector2.zero;
 	
     // ======================================================================
@@ -187,33 +186,44 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 GlobalDisplayPosition {
 		get {
-			if(myAnimatedDisplayPosition.IsActive && !myAnimatedDisplayPosition.IsElapsed) {
-				return myAnimatedDisplayPosition.CurrentValue;
+#if NEW_ANIM
+            return GlobalLayoutPosition;
+#else
+			if(AnimatedPosition.IsActive && !AnimatedPosition.IsElapsed) {
+				return AnimatedPosition.CurrentValue;
 			}
 			var parent= ParentNode;
 			if(parent == null) return GlobalLayoutPosition;
 			return parent.GlobalDisplayPosition+LocalLayoutPosition;
+#endif
 		}
 	}
     // ----------------------------------------------------------------------
 	public Vector2 LocalDisplayPosition {
 		get {
+#if NEW_ANIM
+            return LocalLayoutPosition;
+#else
 			var globalPos= GlobalDisplayPosition;
 			var parent= Parent;
 			if(parent == null) return globalPos;
 			return globalPos-parent.GlobalDisplayPosition;
+#endif
 		}
 	}
     // ----------------------------------------------------------------------
 	public Vector2 DisplaySize {
 		get {
+#if NEW_ANIM
+            return LayoutSize;
+#else
 		    if(IsPort) {
 		        if(!IsVisibleOnDisplay) return Vector2.zero;
 		        return iCS_EditorConfig.PortSize;
 		    }
 		    Vector2 displaySize;
-			if(myAnimatedDisplaySize.IsActive && !myAnimatedDisplaySize.IsElapsed) {
-				displaySize= myAnimatedDisplaySize.CurrentValue;
+			if(AnimatedSize.IsActive && !AnimatedSize.IsElapsed) {
+				displaySize= AnimatedSize.CurrentValue;
 			} else {
     			displaySize= LayoutSize;			    
 			}
@@ -223,15 +233,20 @@ public partial class iCS_EditorObject {
                 LayoutPorts();
             }
 			return displaySize;
+#endif
 		}
 	}
     // ----------------------------------------------------------------------
  	public Rect GlobalDisplayRect {
  		get {
+#if NEW_ANIM
+            return GlobalLayoutRect;
+#else
              var pos= GlobalDisplayPosition;
              var sze= DisplaySize;
              var rect= new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
              return rect;
+#endif
  		}
  	}
  	// ----------------------------------------------------------------------
