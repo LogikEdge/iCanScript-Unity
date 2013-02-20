@@ -8,8 +8,10 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-	private P.Animate<Vector2> AnimatedPosition= new P.Animate<Vector2>();
-	private P.Animate<Vector2> AnimatedSize    = new P.Animate<Vector2>();
+	private P.Animate<Vector2> AnimatedPosition=
+		new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+	private P.Animate<Vector2> AnimatedSize=
+		new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 
     // ======================================================================
     // Queries
