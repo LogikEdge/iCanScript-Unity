@@ -24,6 +24,13 @@ public partial class iCS_EditorObject {
 	}
 
     // Children Iterations =================================================
+    public void ForEachParentNode(Action<iCS_EditorObject> fnc) {
+		var parent= ParentNode;
+		if(parent == null) return;
+		fnc(parent);
+		parent.ForEachParentNode(fnc);
+    }
+    // ----------------------------------------------------------------------
     public void ForEachChild(Action<iCS_EditorObject> fnc) {
         foreach(var childId in Children) {
             fnc(EditorObjects[childId]);
