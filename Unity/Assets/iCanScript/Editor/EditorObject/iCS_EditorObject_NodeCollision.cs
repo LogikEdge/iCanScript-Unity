@@ -33,12 +33,12 @@ public partial class iCS_EditorObject {
 				c=> {
 					var newGlobalPos= c.GlobalLayoutPosition;
 					if(c.IsPositionAnimated && Math3D.IsNotEqual(AnimatedPosition.TargetValue, newGlobalPos)) {
-						c.StartDisplayPositionAnimation();						
+						c.StartPositionAnimation(GlobalLayoutPosition);						
 					}
 					var move= newGlobalPos-initialChildNodePos[i++];
 					if(Math3D.IsGreater(move.magnitude, dragMagnitude)) {
 						if(Vector2.Dot(ourDragObjectDelta, move) < 0) {
-							c.StartDisplayPositionAnimation();
+							c.StartPositionAnimation(c.GlobalLayoutPosition);
 						}
 					}
 				}

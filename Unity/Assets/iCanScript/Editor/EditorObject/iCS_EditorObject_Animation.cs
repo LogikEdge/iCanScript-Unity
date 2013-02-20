@@ -1,4 +1,3 @@
-//#define NEW_ANIM
 using UnityEngine;
 using System;
 using System.Collections;
@@ -30,6 +29,9 @@ public partial class iCS_EditorObject {
     public bool IsAnimated {
         get { return IsSizeAnimated || IsPositionAnimated; }
     }
+
+    // ======================================================================
+	// Animation start value setters.
     // ----------------------------------------------------------------------
 	void SetRectAnimationStartValue(Rect r) {
 		SetSizeAnimationStartValue(new Vector2(r.width, r.height));
@@ -53,6 +55,51 @@ public partial class iCS_EditorObject {
 			AnimatedPosition.StartValue= startPos;
 		}
 	}
+
+    // ======================================================================
+	// Animation start functions
+    // ----------------------------------------------------------------------
+	void StartRectAnimation(Rect targetRect) {
+		var startSize= AnimatedSize.StartValue;
+        var startRect= new Rect(AnimatedPosition.StartValue.x-0.5f*startSize.x,
+                                AnimatedPosition.StartValue.y-0.5f*startSize.y,
+                                startSize.x,
+                                startSize.y);
+		var timeRatio= BuildTimeRatioFromRect(startRect, targetRect);
+		StartRectAnimation(targetRect, timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void StartSizeAnimation(Vector2 targetSize) {
+        var startSize= AnimatedSize.StartValue;
+		var timeRatio= BuildTimeRatioFromSize(startSize, targetSize); 
+		StartSizeAnimation(targetSize, timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void StartPositionAnimation(Vector2 targetPosition) {
+        var startPos= AnimatedPosition.StartValue;
+		var timeRatio= BuildTimeRatioFromPosition(startPos, targetPosition);
+		StartPositionAnimation(targetPosition, timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void StartRectAnimation(Rect targetRect, P.TimeRatio timeRatio) {
+		var targetSize= new Vector2(targetRect.width, targetRect.height);
+		var targetPosition= Math3D.Middle(targetRect);
+		StartSizeAnimation(targetSize, timeRatio);
+		StartPositionAnimation(targetPosition, timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void StartSizeAnimation(Vector2 targetSize, P.TimeRatio timeRatio) {
+		AnimatedSize.TargetValue= targetSize;
+		AnimatedSize.Start(timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void StartPositionAnimation(Vector2 targetPosition, P.TimeRatio timeRatio) {
+		AnimatedPosition.TargetValue= targetPosition;
+		AnimatedPosition.Start(timeRatio);
+	}
+
+    // ======================================================================
+	// Animation timer builders
     // ----------------------------------------------------------------------
     public static float AnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
         var distance= Vector2.Distance(p1,p2);
@@ -106,66 +153,11 @@ public partial class iCS_EditorObject {
         timeRatio.Start(time);
 		return timeRatio;
 	}
-    // ----------------------------------------------------------------------
-	void StartDisplayRectAnimation() {
-        var startRect= new Rect(AnimatedPosition.CurrentValue.x,
-                                AnimatedPosition.CurrentValue.y,
-                                AnimatedSize.CurrentValue.x,
-                                AnimatedSize.CurrentValue.y);
-		var timeRatio= BuildTimeRatioFromRect(startRect, GlobalLayoutRect);
-		StartDisplayRectAnimation(timeRatio);
-	}
-    // ----------------------------------------------------------------------
-	void StartDisplaySizeAnimation() {
-        var startSize= AnimatedSize.CurrentValue;
-		var timeRatio= BuildTimeRatioFromSize(startSize, LayoutSize); 
-		StartDisplaySizeAnimation(timeRatio);
-	}
-    // ----------------------------------------------------------------------
-	void StartDisplayPositionAnimation() {
-        var startPos= AnimatedPosition.CurrentValue;
-		var timeRatio= BuildTimeRatioFromPosition(startPos, GlobalLayoutPosition);
-		StartDisplayPositionAnimation(timeRatio);
-	}
-    // ----------------------------------------------------------------------
-	void StartDisplayRectAnimation(P.TimeRatio timeRatio) {
-		StartDisplaySizeAnimation(timeRatio);
-		StartDisplayPositionAnimation(timeRatio);
-	}
-    // ----------------------------------------------------------------------
-	void StartDisplaySizeAnimation(P.TimeRatio timeRatio) {
-		AnimatedSize.Start(AnimatedSize.CurrentValue,
-							        LayoutSize,
-							        timeRatio,
-                                    (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-	}
-    // ----------------------------------------------------------------------
-	void StartDisplayPositionAnimation(P.TimeRatio timeRatio) {
-		AnimatedPosition.Start(AnimatedPosition.CurrentValue,
-										GlobalLayoutPosition,
-										timeRatio,
-		                                (start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-	}
+
+    // ======================================================================
+	// Animation update
     // ----------------------------------------------------------------------
 	public void UpdateAnimation() {
-#if NEW_ANIM
-        if(AnimatedSize.IsActive) {
-        	if(AnimatedSize.IsElapsed) {
-        		AnimatedSize.Reset();
-        	} else {
-        		AnimatedSize.Update();
-        	}
-        	LayoutSize= AnimatedSize.CurrentValue;
-        }
-        if(AnimatedPosition.IsActive) {
-        	if(AnimatedPosition.IsElapsed) {
-        		AnimatedPosition.Reset();
-        	} else {
-        		AnimatedPosition.Update();
-        	}
-        	GlobalLayoutPosition= AnimatedPosition.CurrentValue;
-        }
-#else
 		if(AnimatedSize.IsActive) {
 			if(AnimatedSize.IsElapsed) {
 				AnimatedSize.Reset(LayoutSize);
@@ -180,7 +172,6 @@ public partial class iCS_EditorObject {
 				AnimatedPosition.Update();
 			}
 		}
-#endif
 	}
 
     // ----------------------------------------------------------------------
