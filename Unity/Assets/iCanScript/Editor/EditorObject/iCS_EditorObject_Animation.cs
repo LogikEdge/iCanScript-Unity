@@ -35,12 +35,18 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void SetSizeAnimationStartValue(Vector2 startSize) {
+		/*
+			FIXME: Should resynchronize the existing animation with the new start value.
+		*/
 		if(!IsSizeAnimated) {
 			AnimatedSize.StartValue= startSize;
 		}
 	}
     // ----------------------------------------------------------------------
 	void SetPositionAnimationStartValue(Vector2 startPos) {
+		/*
+			FIXME: Should resynchronize the existing animation with the new start value.
+		*/
 		if(!IsPositionAnimated) {
 			AnimatedPosition.StartValue= startPos;
 		}

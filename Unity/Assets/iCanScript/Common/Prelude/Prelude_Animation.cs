@@ -62,20 +62,26 @@ public static partial class Prelude {
 			Start(timeRatio, animFunc);
         }
 		public void Start(float animTime, Func<T,T,float,T> animFunc) {
+            myAnimFunc= animFunc;
+			Start(animTime);
+		}
+		public void Start(TimeRatio timeRatio, Func<T,T,float,T> animFunc) {
+            myAnimFunc= animFunc;
+			Start(timeRatio);
+		}
+		public void Start(float animTime) {
 			if(myTimeRatio == null || myIsTimeRatioOwner == false) {
 				myIsTimeRatioOwner= true;
 				myTimeRatio= new TimeRatio();
 			}
             myTimeRatio.Start(animTime);
             myCurrentValue= myStartValue;
-            myAnimFunc= animFunc;
 			myIsActive= true;
 		}
-		public void Start(TimeRatio timeRatio, Func<T,T,float,T> animFunc) {
+		public void Start(TimeRatio timeRatio) {
 			myIsTimeRatioOwner= false;
 			myTimeRatio= timeRatio;
             myCurrentValue= myStartValue;
-            myAnimFunc= animFunc;
 			myIsActive= true;
 		}
         public void Reset() {
