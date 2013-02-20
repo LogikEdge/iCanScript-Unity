@@ -51,23 +51,30 @@ public static partial class Prelude {
         public float    Ratio           { get { return myTimeRatio != null ? myTimeRatio.Ratio : 0.0f; }}
         public float    RemainingTime   { get { return myTimeRatio != null ? myTimeRatio.RemainingTime : 0.0f; }}
         
-        public void Start(T startValue, T targetValue, float deltaTime, Func<T,T,float,T> animFunc) {
+        public void Start(T startValue, T targetValue, float animTime, Func<T,T,float,T> animFunc) {
+			myStartValue= startValue;
+			myTargetValue= targetValue;
+			Start(animTime, animFunc);
+        }
+        public void Start(T startValue, T targetValue, TimeRatio timeRatio, Func<T,T,float,T> animFunc) {
+			myStartValue= startValue;
+			myTargetValue= targetValue;
+			Start(timeRatio, animFunc);
+        }
+		public void Start(float animTime, Func<T,T,float,T> animFunc) {
 			if(myTimeRatio == null || myIsTimeRatioOwner == false) {
 				myIsTimeRatioOwner= true;
 				myTimeRatio= new TimeRatio();
 			}
-            myTimeRatio.Start(deltaTime);
-			StartCommon(startValue, targetValue, animFunc);
-        }
-        public void Start(T startValue, T targetValue, TimeRatio timeRatio, Func<T,T,float,T> animFunc) {
+            myTimeRatio.Start(animTime);
+            myCurrentValue= myStartValue;
+            myAnimFunc= animFunc;
+			myIsActive= true;
+		}
+		public void Start(TimeRatio timeRatio, Func<T,T,float,T> animFunc) {
 			myIsTimeRatioOwner= false;
 			myTimeRatio= timeRatio;
-			StartCommon(startValue, targetValue, animFunc);
-        }
-		void StartCommon(T startValue, T targetValue, Func<T,T,float,T> animFunc) {
-            myCurrentValue= startValue;
-            myStartValue= startValue;
-            myTargetValue= targetValue;
+            myCurrentValue= myStartValue;
             myAnimFunc= animFunc;
 			myIsActive= true;
 		}
