@@ -15,8 +15,9 @@ public partial class iCS_EditorObject {
 		if(this == ourDragObjectParent) {
 			ForEachChildNode(
 				c=> {
-					initialChildNodePos.Add(c.GlobalLayoutPosition);
-					c.SetStartValueForDisplayPositionAnimation();
+					var animStartValue= c.GlobalLayoutPosition;
+					initialChildNodePos.Add(animStartValue);
+					c.SetPositionAnimationStartValue(animStartValue);
 				}
 			);
 		}

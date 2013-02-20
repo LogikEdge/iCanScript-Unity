@@ -70,15 +70,15 @@ public partial class iCS_EditorObject {
         // Nothing to do if already iconized.
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
         // Prepare current node animation.
-		SetStartValueForDisplayRectAnimation();
         var startValueForAnimation= GlobalDisplayRect;
+		SetRectAnimationStartValue(startValueForAnimation);
         // Prepare to animate child nodes if node was unfolded.
         bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
         if(animateChildren) {
   		    ForEachChildRecursiveDepthFirst(
   			    c=> {
   				    if(c.IsNode && c.IsVisibleInLayout) {
-  					    c.SetStartValueForDisplayRectAnimation();
+  					    c.SetRectAnimationStartValue(c.GlobalLayoutRect);
   				    }
   			    }
   		    );                
@@ -107,15 +107,15 @@ public partial class iCS_EditorObject {
         // Nothing to do if already fold.
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
         // Prepare current node animation.
-		SetStartValueForDisplayRectAnimation();
         var startValueForAnimation= GlobalDisplayRect;
+		SetRectAnimationStartValue(startValueForAnimation);
         // Prepare to animate child nodes if node was unfolded.
         bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
         if(animateChildren) {
   		    ForEachChildRecursiveDepthFirst(
   			    c=> {
   				    if(c.IsNode && c.IsVisibleInLayout) {
-  					    c.SetStartValueForDisplayRectAnimation();
+  					    c.SetRectAnimationStartValue(c.GlobalLayoutRect);
   				    }
   			    }
   		    );                
@@ -144,13 +144,13 @@ public partial class iCS_EditorObject {
         // Nothing to do if already unfold.
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
         // Prepare current node animation.
-		SetStartValueForDisplayRectAnimation();
         var startValueForAnimation= GlobalDisplayRect;
+		SetRectAnimationStartValue(startValueForAnimation);
         // Prepare to animate child nodes that may become visible when unfolding.
 	    ForEachChildRecursiveDepthFirst(
 		    c=> {
 			    if(c.IsNode && !c.IsVisibleInLayout) {
-				    c.SetStartValueForDisplayRectAnimation();
+				    c.SetRectAnimationStartValue(c.GlobalLayoutRect);
 				    c.myInvisibleBeforeAnimation= true;
 			    }
 		    }

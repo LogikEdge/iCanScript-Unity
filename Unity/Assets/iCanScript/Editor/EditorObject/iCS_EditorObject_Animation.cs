@@ -29,37 +29,20 @@ public partial class iCS_EditorObject {
         get { return IsSizeAnimated || IsPositionAnimated; }
     }
     // ----------------------------------------------------------------------
-	void SetStartValueForDisplayRectAnimation() {
-		SetStartValueForDisplaySizeAnimation();
-		SetStartValueForDisplayPositionAnimation();
+	void SetRectAnimationStartValue(Rect r) {
+		SetSizeAnimationStartValue(new Vector2(r.width, r.height));
+		SetPositionAnimationStartValue(Math3D.Middle(r));
 	}
     // ----------------------------------------------------------------------
-	void SetStartValueForDisplaySizeAnimation() {
+	void SetSizeAnimationStartValue(Vector2 startSize) {
 		if(!IsSizeAnimated) {
-			AnimatedSize.Reset(LayoutSize);
+			AnimatedSize.StartValue= startSize;
 		}
 	}
     // ----------------------------------------------------------------------
-	void SetStartValueForDisplayPositionAnimation() {
+	void SetPositionAnimationStartValue(Vector2 startPos) {
 		if(!IsPositionAnimated) {
-			AnimatedPosition.Reset(GlobalLayoutPosition);
-		}
-	}
-    // ----------------------------------------------------------------------
-	void SetStartValueForDisplayRectAnimation(Rect r) {
-		SetStartValueForDisplaySizeAnimation(new Vector2(r.width, r.height));
-		SetStartValueForDisplayPositionAnimation(Math3D.Middle(r));
-	}
-    // ----------------------------------------------------------------------
-	void SetStartValueForDisplaySizeAnimation(Vector2 startSize) {
-		if(!IsSizeAnimated) {
-			AnimatedSize.Reset(startSize);
-		}
-	}
-    // ----------------------------------------------------------------------
-	void SetStartValueForDisplayPositionAnimation(Vector2 startPos) {
-		if(!IsPositionAnimated) {
-			AnimatedPosition.Reset(startPos);
+			AnimatedPosition.StartValue= startPos;
 		}
 	}
     // ----------------------------------------------------------------------
