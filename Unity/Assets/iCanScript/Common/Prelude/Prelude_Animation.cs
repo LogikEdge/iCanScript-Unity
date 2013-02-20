@@ -50,6 +50,7 @@ public static partial class Prelude {
         public T        TargetValue     { get { return myTargetValue; } set { myTargetValue= value; }}
         public float    Ratio           { get { return myTimeRatio != null ? myTimeRatio.Ratio : 0.0f; }}
         public float    RemainingTime   { get { return myTimeRatio != null ? myTimeRatio.RemainingTime : 0.0f; }}
+		public Func<T,T,float,T> AnimFunc	{ get { return myAnimFunc; } set { myAnimFunc= value; }}
         
         public void Start(T startValue, T targetValue, float animTime, Func<T,T,float,T> animFunc) {
 			myStartValue= startValue;
