@@ -42,9 +42,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public void CenterAt(Vector2 point) {
         if(IStorage == null) return;
         Vector2 newScrollPosition= point-0.5f/Scale*new Vector2(position.width, position.height);
-        float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
-        float deltaTime= distance/3500f;
-        if(deltaTime < iCS_PreferencesEditor.AnimationTime) deltaTime= iCS_PreferencesEditor.AnimationTime;
+        float deltaTime= iCS_EditorObject.AnimationTimeFromPosition(ScrollPosition, newScrollPosition);
         if(deltaTime > 0.5f) deltaTime= 0.5f+(0.5f*(deltaTime-0.5f));
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         ScrollPosition= newScrollPosition;
@@ -53,9 +51,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     public void CenterAtWithScale(Vector2 point, float newScale) {
         if(IStorage == null) return;
         Vector2 newScrollPosition= point-0.5f/newScale*new Vector2(position.width, position.height);
-        float distance= Vector2.Distance(ScrollPosition, newScrollPosition);
-        float deltaTime= distance/3500f;
-        if(deltaTime < iCS_PreferencesEditor.AnimationTime) deltaTime= iCS_PreferencesEditor.AnimationTime;
+        float deltaTime= iCS_EditorObject.AnimationTimeFromPosition(ScrollPosition, newScrollPosition);
         if(deltaTime > 0.5f) deltaTime= 0.5f+(0.5f*(deltaTime-0.5f));
         myAnimatedScrollPosition.Start(ScrollPosition, newScrollPosition, deltaTime, (start,end,ratio)=> Math3D.Lerp(start, end, ratio));
         ScrollPosition= newScrollPosition;

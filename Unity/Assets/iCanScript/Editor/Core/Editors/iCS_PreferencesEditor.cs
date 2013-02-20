@@ -19,20 +19,20 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const float kColumn3X    = kColumn2X+kColumn2Width;
     // ---------------------------------------------------------------------------------
     // Display Option Constants
-    const float  kAnimationTime            = 0.35f;
-    const float  kScrollSpeed              = 3.0f;
-    const float  kEdgeScrollSpeed          = 400.0f;
-    const bool   kInverseZoom              = false;
-    const float  kZoomSpeed                = 1.0f;
-    const string kAnimationTimeKey         = "iCS_AnimationTime";
-    const string kScrollSpeedKey           = "iCS_ScrollSpeed";
-    const string kEdgeScrollSpeedKey       = "iCS_EdgeScrollSpeed";
-    const string kInverseZoomKey           = "iCS_InverseZoom";
-    const string kZoomSpeedKey             = "iCS_ZoomSpeed";
-    const bool   kShowRuntimePortValue     = false;
-    const float  kPortValueRefreshPeriod   = 0.1f;
-    const string kShowRuntimePortValueKey  = "iCS_ShowRuntimePortValue";
-    const string kPortValueRefreshPeriodKey= "iCS_PortValueRefresh";
+    const float  kAnimationPixelsPerSecond   = 100f;
+    const float  kScrollSpeed                = 3.0f;
+    const float  kEdgeScrollSpeed            = 400.0f;
+    const bool   kInverseZoom                = false;
+    const float  kZoomSpeed                  = 1.0f;
+    const string kAnimationPixelsPerSecondKey= "iCS_AnimationPixelsPerSecond";
+    const string kScrollSpeedKey             = "iCS_ScrollSpeed";
+    const string kEdgeScrollSpeedKey         = "iCS_EdgeScrollSpeed";
+    const string kInverseZoomKey             = "iCS_InverseZoom";
+    const string kZoomSpeedKey               = "iCS_ZoomSpeed";
+    const bool   kShowRuntimePortValue       = false;
+    const float  kPortValueRefreshPeriod     = 0.1f;
+    const string kShowRuntimePortValueKey    = "iCS_ShowRuntimePortValue";
+    const string kPortValueRefreshPeriodKey  = "iCS_PortValueRefresh";
     // ---------------------------------------------------------------------------------
     // Canvas Constants
     static  Color   kCanvasBackgroundColor;
@@ -117,13 +117,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
-    public static float AnimationTime {
+    public static float AnimationPixelsPerSecond {
         get {
-            return EditorPrefs.GetFloat(kAnimationTimeKey, kAnimationTime);
+            return EditorPrefs.GetFloat(kAnimationPixelsPerSecondKey, kAnimationPixelsPerSecond);
         }
         set {
-            if(value < 0) return;
-            EditorPrefs.SetFloat(kAnimationTimeKey, value);
+            if(value < 10f) value= 10f;
+            EditorPrefs.SetFloat(kAnimationPixelsPerSecondKey, value);
         }
     }
     public static float ScrollSpeed {
@@ -446,7 +446,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;            
         }
-        GUI.Label(pos[0], "Animation Time (seconds)");
+        GUI.Label(pos[0], "Animation Pixels/Second");
         GUI.Label(pos[1], "Scroll Speed");
         GUI.Label(pos[2], "Edge Scroll Speed (pixels)");
         GUI.Label(pos[3], "Inverse Zoom");
@@ -459,7 +459,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= kColumn3Width;
         }
-        AnimationTime= EditorGUI.FloatField(pos[0], AnimationTime);
+        AnimationPixelsPerSecond= EditorGUI.FloatField(pos[0], AnimationPixelsPerSecond);
         ScrollSpeed= EditorGUI.FloatField(pos[1], ScrollSpeed);
         EdgeScrollSpeed= EditorGUI.FloatField(pos[2], EdgeScrollSpeed);
         InverseZoom= EditorGUI.Toggle(pos[3], InverseZoom);
@@ -469,13 +469,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-            AnimationTime         = kAnimationTime;
-            ScrollSpeed           = kScrollSpeed;
-            EdgeScrollSpeed       = kEdgeScrollSpeed;
-            InverseZoom           = kInverseZoom;
-            ZoomSpeed             = kZoomSpeed;
-            ShowRuntimePortValue  = kShowRuntimePortValue;
-            PortValueRefreshPeriod= kPortValueRefreshPeriod;            
+            AnimationPixelsPerSecond= kAnimationPixelsPerSecond;
+            ScrollSpeed             = kScrollSpeed;
+            EdgeScrollSpeed         = kEdgeScrollSpeed;
+            InverseZoom             = kInverseZoom;
+            ZoomSpeed               = kZoomSpeed;
+            ShowRuntimePortValue    = kShowRuntimePortValue;
+            PortValueRefreshPeriod  = kPortValueRefreshPeriod;            
         }
     }
     // ---------------------------------------------------------------------------------

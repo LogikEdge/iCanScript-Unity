@@ -12,7 +12,6 @@ public partial class iCS_EditorObject {
     public void ResolveCollisionOnChildrenNodes() {
 		// Prepare to animate Drag node sibling.
 		List<Vector2> initialChildNodePos= new List<Vector2>();
-		var animationTimer= BuildStandardAnimationTimer();
 		if(this == ourDragObjectParent) {
 			ForEachChildNode(
 				c=> {
@@ -33,12 +32,12 @@ public partial class iCS_EditorObject {
 				c=> {
 					var newGlobalPos= c.GlobalLayoutPosition;
 					if(c.IsDisplayPositionAnimated && Math3D.IsNotEqual(myAnimatedDisplayPosition.TargetValue, newGlobalPos)) {
-						c.StartDisplayPositionAnimation(animationTimer);						
+						c.StartDisplayPositionAnimation();						
 					}
 					var move= newGlobalPos-initialChildNodePos[i++];
 					if(Math3D.IsGreater(move.magnitude, dragMagnitude)) {
 						if(Vector2.Dot(ourDragObjectDelta, move) < 0) {
-							c.StartDisplayPositionAnimation(animationTimer);
+							c.StartDisplayPositionAnimation();
 						}
 					}
 				}

@@ -67,103 +67,109 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // IMPROVE: Should avoid digging through all objects to animate them on unfold/fold/iconize.
     public void Iconize() {
+        // Nothing to do if already iconized.
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
+        // Prepare current node animation.
 		SetStartValueForDisplayRectAnimation();
-		var timer= BuildStandardAnimationTimer();
-		{
-            // Prepare to animate child nodes if node was unfolded.
-            bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
-            if(animateChildren) {
-      		    ForEachChildRecursiveDepthFirst(
-      			    c=> {
-      				    if(c.IsNode && c.IsVisibleInLayout) {
-      					    c.SetStartValueForDisplayRectAnimation();
-      				    }
-      			    }
-      		    );                
-            }
-            // Set the node has iconized.
-	        DisplayOption= iCS_DisplayOptionEnum.Iconized;
-	        LayoutNode();
-	        LayoutParentNodesUntilTop();
-            // Animate child nodes if node was unfolded.
-	        if(animateChildren) {
-    			ForEachChildRecursiveDepthFirst(
-    				c=> {
-    					if(c.IsNode && !c.IsVisibleInLayout) {
-    						c.StartDisplayRectAnimation(timer);
-    					}
-    				}
-    			);	            
-	        }				
-		}
-		StartDisplayRectAnimation(timer);
+        var startValueForAnimation= GlobalDisplayRect;
+        // Prepare to animate child nodes if node was unfolded.
+        bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+        if(animateChildren) {
+  		    ForEachChildRecursiveDepthFirst(
+  			    c=> {
+  				    if(c.IsNode && c.IsVisibleInLayout) {
+  					    c.SetStartValueForDisplayRectAnimation();
+  				    }
+  			    }
+  		    );                
+        }
+        // Set the node has iconized.
+        DisplayOption= iCS_DisplayOptionEnum.Iconized;
+        LayoutNode();
+        LayoutParentNodesUntilTop();
+        var timeRatio= BuildTimeRatioFromRect(startValueForAnimation, GlobalLayoutRect);
+        // Animate child nodes if node was unfolded.
+        if(animateChildren) {
+			ForEachChildRecursiveDepthFirst(
+				c=> {
+					if(c.IsNode && !c.IsVisibleInLayout) {
+						c.StartDisplayRectAnimation(timeRatio);
+					}
+				}
+			);	            
+        }				
+        // Animate current node.
+		StartDisplayRectAnimation(timeRatio);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
+        // Nothing to do if already fold.
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
+        // Prepare current node animation.
 		SetStartValueForDisplayRectAnimation();
-		var timer= BuildStandardAnimationTimer();
-		{
-            // Prepare to animate child nodes if node was unfolded.
-            bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
-            if(animateChildren) {
-      		    ForEachChildRecursiveDepthFirst(
-      			    c=> {
-      				    if(c.IsNode && c.IsVisibleInLayout) {
-      					    c.SetStartValueForDisplayRectAnimation();
-      				    }
-      			    }
-      		    );                
-            }
-            // Set the node has folded.
-	        DisplayOption= iCS_DisplayOptionEnum.Folded;
-	        LayoutNode();
-	        LayoutParentNodesUntilTop();
-            // Animate child nodes if node was unfolded.
-	        if(animateChildren) {
-    			ForEachChildRecursiveDepthFirst(
-    				c=> {
-    					if(c.IsNode && !c.IsVisibleInLayout) {
-    						c.StartDisplayRectAnimation(timer);
-    					}
-    				}
-    			);	            
-	        }	
-		}
-		StartDisplayRectAnimation(timer);
+        var startValueForAnimation= GlobalDisplayRect;
+        // Prepare to animate child nodes if node was unfolded.
+        bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+        if(animateChildren) {
+  		    ForEachChildRecursiveDepthFirst(
+  			    c=> {
+  				    if(c.IsNode && c.IsVisibleInLayout) {
+  					    c.SetStartValueForDisplayRectAnimation();
+  				    }
+  			    }
+  		    );                
+        }
+        // Set the node has folded.
+        DisplayOption= iCS_DisplayOptionEnum.Folded;
+        LayoutNode();
+        LayoutParentNodesUntilTop();
+        var timeRatio= BuildTimeRatioFromRect(startValueForAnimation, GlobalLayoutRect);
+        // Animate child nodes if node was unfolded.
+        if(animateChildren) {
+			ForEachChildRecursiveDepthFirst(
+				c=> {
+					if(c.IsNode && !c.IsVisibleInLayout) {
+						c.StartDisplayRectAnimation(timeRatio);
+					}
+				}
+			);	            
+        }	
+        // Animate current node.
+		StartDisplayRectAnimation(timeRatio);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Unfold() {
+        // Nothing to do if already unfold.
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
+        // Prepare current node animation.
 		SetStartValueForDisplayRectAnimation();
-		var timer= BuildStandardAnimationTimer();
-		{
-            // Prepare to animate child nodes that may become visible when unfolding.
-  		    ForEachChildRecursiveDepthFirst(
-  			    c=> {
-  				    if(c.IsNode && !c.IsVisibleInLayout) {
-  					    c.SetStartValueForDisplayRectAnimation();
-  					    c.myInvisibleBeforeAnimation= true;
-  				    }
-  			    }
-  		    );
-            // Set the node has unfolded.
-	        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-	        LayoutNode();
-	        LayoutParentNodesUntilTop();
-            // Animate child nodes that become visible by unfolding.
-			ForEachChildRecursiveDepthFirst(
-				c=> {
-					if(c.IsNode && c.IsVisibleInLayout) {
-						c.StartDisplayRectAnimation(timer);
-					}
+        var startValueForAnimation= GlobalDisplayRect;
+        // Prepare to animate child nodes that may become visible when unfolding.
+	    ForEachChildRecursiveDepthFirst(
+		    c=> {
+			    if(c.IsNode && !c.IsVisibleInLayout) {
+				    c.SetStartValueForDisplayRectAnimation();
+				    c.myInvisibleBeforeAnimation= true;
+			    }
+		    }
+	    );
+        // Set the node has unfolded.
+        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
+        LayoutNode();
+        LayoutParentNodesUntilTop();
+        var timeRatio= BuildTimeRatioFromRect(startValueForAnimation, GlobalLayoutRect);
+        // Animate child nodes that become visible by unfolding.
+		ForEachChildRecursiveDepthFirst(
+			c=> {
+				if(c.IsNode && c.IsVisibleInLayout) {
+					c.StartDisplayRectAnimation(timeRatio);
 				}
-			);
-		}
-		StartDisplayRectAnimation(timer);
+			}
+		);
+        // Animate current node.
+		StartDisplayRectAnimation(timeRatio);
         IsDirty= true;
     }
 
