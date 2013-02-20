@@ -15,25 +15,18 @@ public partial class iCS_EditorObject {
     // Queries
     // ----------------------------------------------------------------------
     // Returns true if the display size is currently being animated.
-    public bool IsDisplaySizeAnimated {
-        get {
-            return  AnimatedSize.IsActive;
-        }
+    public bool IsSizeAnimated {
+        get { return  AnimatedSize.IsActive; }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display position is currently being animated.
-    public bool IsDisplayPositionAnimated {
-        get {
-            return  AnimatedPosition.IsActive;            
-        }
+    public bool IsPositionAnimated {
+        get { return  AnimatedPosition.IsActive; }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display size or position are being animated.
     public bool IsAnimated {
-        get {
-            if(IsDisplaySizeAnimated) return true;
-            return IsDisplayPositionAnimated;
-        }
+        get { return IsSizeAnimated || IsPositionAnimated; }
     }
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplayRectAnimation() {
@@ -42,13 +35,13 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplaySizeAnimation() {
-		if(!IsDisplaySizeAnimated) {
+		if(!IsSizeAnimated) {
 			AnimatedSize.Reset(LayoutSize);
 		}
 	}
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplayPositionAnimation() {
-		if(!IsDisplayPositionAnimated) {
+		if(!IsPositionAnimated) {
 			AnimatedPosition.Reset(GlobalLayoutPosition);
 		}
 	}
@@ -59,13 +52,13 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplaySizeAnimation(Vector2 startSize) {
-		if(!IsDisplaySizeAnimated) {
+		if(!IsSizeAnimated) {
 			AnimatedSize.Reset(startSize);
 		}
 	}
     // ----------------------------------------------------------------------
 	void SetStartValueForDisplayPositionAnimation(Vector2 startPos) {
-		if(!IsDisplayPositionAnimated) {
+		if(!IsPositionAnimated) {
 			AnimatedPosition.Reset(startPos);
 		}
 	}
