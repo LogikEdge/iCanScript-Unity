@@ -380,6 +380,23 @@ public partial class iCS_Graphics {
         var minimizeIcon= iCS_BuiltinTextures.MinimizeIcon(Scale);
         GUI_DrawTexture(new Rect(position.xMax-2-/*minimizeIcon.width*/16, position.y-0.5f, /*minimizeIcon.width*/16, /*minimizeIcon.height*/16), minimizeIcon);
         GUI.color= Color.white;
+
+//		// DEBUG CODE
+//		// Show anchor offset if one exists.
+//		var anchorPos= node.GlobalAnchorPosition;
+//		if(Math3D.IsNotEqual(Math3D.Middle(position), anchorPos)) {
+//			var arrowStart= TranslateAndScale(anchorPos);
+//			var arrowEnd  = TranslateAndScale(Math3D.Middle(position));
+//			var arrow     = arrowEnd-arrowStart;
+//			var arrowSize = arrow.magnitude;
+//			var rotation  = new Quaternion();
+//			rotation.SetLookRotation(arrow, Vector3.up);
+//			Handles.color= Color.red;
+//			Handles.ArrowCap(0,
+//	                arrowStart,
+//	                rotation,
+//	                arrowSize);
+//		}
     }
     // ----------------------------------------------------------------------
     Color GetBackgroundColor(iCS_EditorObject node) {

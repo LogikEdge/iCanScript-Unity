@@ -10,33 +10,33 @@ public partial class iCS_EditorObject {
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
     public void ResolveCollisionOnChildrenNodes() {
-		// Prepare to animate nodes affected by collisions.
-		List<Vector2> childStartPos= new List<Vector2>();
-		ForEachChildNode(
-			c=> {
-				childStartPos.Add(c.GlobalLayoutPosition);
-			}
-		);
-        // Reposition all node at their anchor position.
-        ForEachChildNode(c=> c.GlobalLayoutPosition= c.GlobalAnchorPosition);
+		// Get a snapshot of the children state.
+		var children= BuildListOfChildNodes(_=> true);
+		var childStartPos = new Vector2[children.Length];
+		var childRect= new Rect[children.Length];
+		for(int i= 0; i < children.Length; ++i) {
+			var c= children[i];
+			childStartPos[i]= c.GlobalLayoutPosition;
+			childRect[i]    = c.GlobalAnchorRect;
+		}
         // Resolve collisions.
-        ResolveCollisionOnChildrenImp();
+        ResolveCollisionOnChildrenImp(children, ref childRect);
 		// Animate all nodes affected by collisions.
-		int i= 0;
-		ForEachChildNode(
-			c=> {
-				var targetPos= c.GlobalLayoutPosition;
-				var startPos= childStartPos[i++];
-                if(!IsSticky && Math3D.IsNotEqual(startPos, targetPos)) {
+		for(int i= 0; i < children.Length; ++i) {
+			var startPos= childStartPos[i];
+			var targetPos= Math3D.Middle(childRect[i]);
+			if(Math3D.IsNotEqual(startPos, targetPos)) {
+				var c= children[i];
+				c.GlobalLayoutPosition= targetPos;
+				if(!c.IsSticky) {
 					c.SetPositionAnimationStartValue(startPos);
-                    c.StartPositionAnimation(targetPos);
-                }
+                    c.StartPositionAnimation(targetPos);					
+				}
 			}
-		);
+		}
     }
     // ----------------------------------------------------------------------
-    public void ResolveCollisionOnChildrenImp() {
-        iCS_EditorObject[] children= BuildListOfChildNodes(c=> !c.IsFloating);
+    public void ResolveCollisionOnChildrenImp(iCS_EditorObject[] children, ref Rect[] childRect) {
         // Resolve collisions.
         bool didCollide= true;
 		while(didCollide) {
@@ -47,9 +47,7 @@ public partial class iCS_EditorObject {
 	            for(int j= i+1; j < children.Length; ++j) {
 					var c2= children[j];
 					if(c2.IsFloating) continue;
-					var r1= c1.GlobalLayoutRect;
-					var r2= c2.GlobalLayoutRect;
-	                didCollide |= c1.ResolveCollisionBetweenTwoNodes(c2, ref r1, ref r2);                            
+	                didCollide |= c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i], ref childRect[j]);                            
 	            }
 	        }			
 		}
@@ -71,17 +69,21 @@ public partial class iCS_EditorObject {
         // Seperate by half penetration if none is sticky.
         if(!IsSticky && !theOtherNode.IsSticky) {
             penetration*= 0.5f;
-            theOtherNode.LocalLayoutPosition+= penetration;
-            LocalLayoutPosition-= penetration;
+			theOtherRect.x+= penetration.x;
+			theOtherRect.y+= penetration.y;
+			myRect.x-= penetration.x;
+			myRect.y-= penetration.y;
             return true;            
         }
 		// Seperate using the known movement.
     	if(!theOtherNode.IsSticky) {
-            theOtherNode.LocalLayoutPosition+= penetration;
+			theOtherRect.x+= penetration.x;
+			theOtherRect.y+= penetration.y;
             return true;
     	}
         if(!IsSticky) {            
-    		LocalLayoutPosition-= penetration;
+			myRect.x-= penetration.x;
+			myRect.y-= penetration.y;
     		return true;
     	}            
         return false;

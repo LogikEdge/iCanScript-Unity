@@ -104,7 +104,14 @@ public partial class iCS_EditorObject {
     		LocalAnchorPosition= value-parent.GlobalLayoutPosition;                
 		}
 	}
-	
+    // ----------------------------------------------------------------------	
+	public Rect GlobalAnchorRect {
+		get {
+			var pos= GlobalAnchorPosition;
+			var size= LayoutSize;
+			return new Rect(pos.x-0.5f*size.x, pos.y-0.5f*size.y, size.x, size.y);
+		}
+	}
     // ======================================================================
     // Layout
     // ----------------------------------------------------------------------
@@ -228,7 +235,7 @@ public partial class iCS_EditorObject {
 			}
 			if(IsNode && Math3D.IsNotEqual(newPos, myPreviousDisplayPosition)) {
 			    myPreviousDisplayPosition= newPos;
-			    parent.WrapAroundChildrenNodes();
+			    parent.LayoutNode();
 			}
 			return newPos;
 		}
@@ -261,7 +268,7 @@ public partial class iCS_EditorObject {
                 LayoutPorts();
                 var parent= ParentNode;
                 if(parent != null) {
-                    parent.WrapAroundChildrenNodes();
+                    parent.LayoutNode();
                 }
             }
 			return displaySize;

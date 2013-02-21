@@ -101,7 +101,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Animation stop functions
     // ----------------------------------------------------------------------
-    void StopAllAnimation() {
+    void StopAnimations() {
         StopRectAnimation();
     }
     // ----------------------------------------------------------------------
