@@ -228,7 +228,7 @@ public partial class iCS_EditorObject {
 			}
 			if(IsNode && Math3D.IsNotEqual(newPos, myPreviousDisplayPosition)) {
 			    myPreviousDisplayPosition= newPos;
-			    parent.LayoutNode();
+			    parent.WrapAroundChildrenNodes();
 			}
 			return newPos;
 		}
@@ -261,7 +261,7 @@ public partial class iCS_EditorObject {
                 LayoutPorts();
                 var parent= ParentNode;
                 if(parent != null) {
-                    parent.LayoutNode();
+                    parent.WrapAroundChildrenNodes();
                 }
             }
 			return displaySize;

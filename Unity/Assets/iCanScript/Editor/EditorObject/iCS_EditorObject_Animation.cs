@@ -99,6 +99,26 @@ public partial class iCS_EditorObject {
 	}
 
     // ======================================================================
+	// Animation stop functions
+    // ----------------------------------------------------------------------
+    void StopAllAnimation() {
+        StopRectAnimation();
+    }
+    // ----------------------------------------------------------------------
+    void StopRectAnimation() {
+        StopSizeAnimation();
+        StopPositionAnimation();
+    }
+    // ----------------------------------------------------------------------
+    void StopSizeAnimation() {
+        AnimatedSize.Reset();
+    }
+    // ----------------------------------------------------------------------
+    void StopPositionAnimation() {
+        AnimatedPosition.Reset();
+    }
+    
+    // ======================================================================
 	// Animation timer builders
     // ----------------------------------------------------------------------
     public static float AnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
