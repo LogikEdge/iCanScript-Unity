@@ -11,12 +11,10 @@ public partial class iCS_EditorObject {
     // collision has occured.
     public void ResolveCollisionOnChildrenNodes() {
 		// Prepare to animate nodes affected by collisions.
-		List<Vector2> initialChildNodePos= new List<Vector2>();
+		List<Vector2> childStartPos= new List<Vector2>();
 		ForEachChildNode(
 			c=> {
-				var animStartValue= c.GlobalLayoutPosition;
-				initialChildNodePos.Add(animStartValue);
-				c.SetPositionAnimationStartValue(animStartValue);
+				childStartPos.Add(c.GlobalLayoutPosition);
 			}
 		);
         // Reposition all node at their anchor position.
@@ -28,12 +26,9 @@ public partial class iCS_EditorObject {
 		ForEachChildNode(
 			c=> {
 				var targetPos= c.GlobalLayoutPosition;
-				var startPos= initialChildNodePos[i++];
-                /*
-                    FIXME: Should use animation start value instead.
-                */
-//				var startPos= c.AnimatedPosition.StartValue;
-                if(Math3D.IsNotEqual(startPos, targetPos)) {
+				var startPos= childStartPos[i++];
+                if(!IsSticky && Math3D.IsNotEqual(startPos, targetPos)) {
+					c.SetPositionAnimationStartValue(startPos);
                     c.StartPositionAnimation(targetPos);
                 }
 			}
