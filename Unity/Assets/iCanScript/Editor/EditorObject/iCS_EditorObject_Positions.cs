@@ -54,9 +54,6 @@ public partial class iCS_EditorObject {
             PortLocalAnchorPosition= value-ParentNode.GlobalDisplayPosition;			
 		}
 	}
-    // ======================================================================
-	// Port Layout
-    // ----------------------------------------------------------------------	
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//							NODE POSITIONS
@@ -108,21 +105,6 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Layout
     // ----------------------------------------------------------------------
-    public Vector2 LayoutSize {
-		get {
-			if(!IsVisibleInLayout) {
-				return Vector2.zero;
-			}
-			if(IsNode && IsIconizedInLayout) {
-				return iCS_Graphics.GetMaximizeIconSize(this);
-			}
-            return myLayoutSize;
-		}
-		set {
-            myLayoutSize= value;
-		}
-	}
-    // ----------------------------------------------------------------------
     // Offset from the anchor position.
 	public Vector2 LocalLayoutOffset {
 		get {
@@ -167,7 +149,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Rect LocalLayoutRect {
         get {
-            var sze= LayoutSize;
+            var sze= DisplaySize;
             var pos= LocalLayoutPosition;
             return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
         }
@@ -175,7 +157,7 @@ public partial class iCS_EditorObject {
             var sze= new Vector2(value.width, value.height);
             var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
             LocalLayoutPosition= pos;
-            LayoutSize= sze;
+            DisplaySize= sze;
         }
     }
     // ----------------------------------------------------------------------
@@ -200,13 +182,13 @@ public partial class iCS_EditorObject {
     public Rect GlobalLayoutRect {
         get {
             var pos= GlobalLayoutPosition;
-            var sze= LayoutSize;
+            var sze= DisplaySize;
             return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
         }
         set {
             var sze= new Vector2(value.width, value.height);
             var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
-            LayoutSize= sze;
+            DisplaySize= sze;
             GlobalLayoutPosition= pos;
         }
     }
@@ -249,12 +231,7 @@ public partial class iCS_EditorObject {
 		        if(!IsVisibleOnDisplay) return Vector2.zero;
 		        return iCS_EditorConfig.PortSize;
 		    }
-		    Vector2 displaySize;
-			if(AnimatedSize.IsActive && !AnimatedSize.IsElapsed) {
-				displaySize= AnimatedSize.CurrentValue;
-			} else {
-    			displaySize= LayoutSize;			    
-			}
+			var displaySize= AnimatedSize.CurrentValue;
             // Update ports to match parent node display size.
             if(IsNode && Math3D.IsNotEqual(displaySize, myPreviousDisplaySize)) {
                 myPreviousDisplaySize= displaySize;
@@ -265,6 +242,14 @@ public partial class iCS_EditorObject {
                 }
             }
 			return displaySize;
+		}
+		set {
+		    if(IsPort) return;
+            var previousSize= AnimatedSize.CurrentValue;
+		    AnimatedSize.Reset(value);
+		    if(Math3D.IsNotEqual(previousSize, value)) {
+		        LayoutPorts();
+		    }
 		}
 	}
     // ----------------------------------------------------------------------
@@ -317,7 +302,7 @@ public partial class iCS_EditorObject {
         var pos= new Vector2(r.x+0.5f*sze.x, r.y+0.5f*sze.y);
         GlobalAnchorPosition= pos;
 		LocalLayoutOffset= Vector2.zero;
-        LayoutSize= sze;
+        DisplaySize= sze;
     }
     // ----------------------------------------------------------------------
     public void SetLocalAnchorAndLayoutRect(Rect r) {
@@ -325,7 +310,7 @@ public partial class iCS_EditorObject {
         var pos= new Vector2(r.x+0.5f*sze.x, r.y+0.5f*sze.y);
         LocalAnchorPosition= pos;
 		LocalLayoutOffset= Vector2.zero;
-        LayoutSize= sze;        
+        DisplaySize= sze;        
     }
 
 	// ======================================================================

@@ -25,7 +25,7 @@ public partial class iCS_EditorObject {
         if(!IsVisibleInLayout) return;
         // Just update the size of the node if it is iconized.
         if(IsIconizedInLayout) {
-            LayoutSize= iCS_Graphics.GetMaximizeIconSize(this);
+            DisplaySize= iCS_Graphics.GetMaximizeIconSize(this);
             return;
         }
         // Resolve any existing collisions on children for unfolded modules.
@@ -61,7 +61,7 @@ public partial class iCS_EditorObject {
 		var center= Math3D.Middle(r);
 		GlobalAnchorPosition= center-LocalLayoutOffset;
 		// Update layout size.
-		LayoutSize= new Vector2(r.width, r.height);
+		DisplaySize= new Vector2(r.width, r.height);
 		// Reposition child to maintain their global positions.
 		int i= 0;
 		ForEachChildNode(

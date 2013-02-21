@@ -31,20 +31,29 @@ public partial class iCS_EditorObject {
     }
 
     // ======================================================================
+    // Display Size Animation
+    // ----------------------------------------------------------------------
+	void AnimateSize(Vector2 targetSize) {
+        var startSize= AnimatedSize.CurrentValue;
+		var timeRatio= BuildTimeRatioFromSize(startSize, targetSize); 
+		AnimateSize(targetSize, timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	void AnimateSize(Vector2 targetSize, P.TimeRatio timeRatio) {
+        AnimatedSize.StartValue= AnimatedSize.CurrentValue;
+		AnimatedSize.TargetValue= targetSize;
+		AnimatedSize.Start(timeRatio);
+	}
+    // ----------------------------------------------------------------------
+    void StopSizeAnimation() {
+        AnimatedSize.Reset(AnimatedSize.TargetValue);
+    }
+    
+    // ======================================================================
 	// Animation start value setters.
     // ----------------------------------------------------------------------
 	void SetRectAnimationStartValue(Rect r) {
-		SetSizeAnimationStartValue(new Vector2(r.width, r.height));
 		SetPositionAnimationStartValue(Math3D.Middle(r));
-	}
-    // ----------------------------------------------------------------------
-	void SetSizeAnimationStartValue(Vector2 startSize) {
-		if(!IsSizeAnimated) {
-			AnimatedSize.StartValue= startSize;
-		} else {
-			AnimatedSize.StartValue= AnimatedSize.CurrentValue;
-			AnimatedSize.Start(AnimatedSize.RemainingTime);
-		}
 	}
     // ----------------------------------------------------------------------
 	void SetPositionAnimationStartValue(Vector2 startPos) {
@@ -69,12 +78,6 @@ public partial class iCS_EditorObject {
 		StartRectAnimation(targetRect, timeRatio);
 	}
     // ----------------------------------------------------------------------
-	void StartSizeAnimation(Vector2 targetSize) {
-        var startSize= AnimatedSize.StartValue;
-		var timeRatio= BuildTimeRatioFromSize(startSize, targetSize); 
-		StartSizeAnimation(targetSize, timeRatio);
-	}
-    // ----------------------------------------------------------------------
 	void StartPositionAnimation(Vector2 targetPosition) {
         var startPos= AnimatedPosition.StartValue;
 		var timeRatio= BuildTimeRatioFromPosition(startPos, targetPosition);
@@ -82,15 +85,8 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void StartRectAnimation(Rect targetRect, P.TimeRatio timeRatio) {
-		var targetSize= new Vector2(targetRect.width, targetRect.height);
 		var targetPosition= Math3D.Middle(targetRect);
-		StartSizeAnimation(targetSize, timeRatio);
 		StartPositionAnimation(targetPosition, timeRatio);
-	}
-    // ----------------------------------------------------------------------
-	void StartSizeAnimation(Vector2 targetSize, P.TimeRatio timeRatio) {
-		AnimatedSize.TargetValue= targetSize;
-		AnimatedSize.Start(timeRatio);
 	}
     // ----------------------------------------------------------------------
 	void StartPositionAnimation(Vector2 targetPosition, P.TimeRatio timeRatio) {
@@ -108,10 +104,6 @@ public partial class iCS_EditorObject {
     void StopRectAnimation() {
         StopSizeAnimation();
         StopPositionAnimation();
-    }
-    // ----------------------------------------------------------------------
-    void StopSizeAnimation() {
-        AnimatedSize.Reset();
     }
     // ----------------------------------------------------------------------
     void StopPositionAnimation() {
@@ -180,7 +172,7 @@ public partial class iCS_EditorObject {
 	public void UpdateAnimation() {
 		if(AnimatedSize.IsActive) {
 			if(AnimatedSize.IsElapsed) {
-				AnimatedSize.Reset(LayoutSize);
+				AnimatedSize.Reset();
 			} else {
 				AnimatedSize.Update();
 			}

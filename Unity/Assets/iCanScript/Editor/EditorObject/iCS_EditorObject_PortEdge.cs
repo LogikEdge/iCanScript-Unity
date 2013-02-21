@@ -46,7 +46,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void CleanupPortEdgePosition() {
-        var size= Parent.LayoutSize;
+        var size= Parent.DisplaySize;
         var lp= LocalLayoutPosition;
         switch(Edge) {
             case iCS_EdgeEnum.Top:      lp.y= -0.5f*size.y; break; 
@@ -109,7 +109,7 @@ public partial class iCS_EditorObject {
 		// Don't change edge if parent is iconized.
 		var parent= Parent;
 		if(parent.IsIconizedOnDisplay) return Edge;
-        var parentSize= parent.LayoutSize;
+        var parentSize= parent.DisplaySize;
         float leftX  = -0.5f*parentSize.x;
         float rightX =  0.5f*parentSize.x;
         float topY   = -0.5f*parentSize.y;

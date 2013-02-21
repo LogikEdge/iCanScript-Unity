@@ -15,7 +15,7 @@ public partial class iCS_IStorage {
                 if(exclude != null) {
                     excludeFlag= n == exclude || IsChildOf(n, exclude);
                 }
-                return !excludeFlag && n.IsNode && n.IsVisibleInLayout && IsInside(n, pick) && (foundNode == null || n.LayoutSize.x < foundNode.LayoutSize.x);
+                return !excludeFlag && n.IsNode && n.IsVisibleInLayout && IsInside(n, pick) && (foundNode == null || n.DisplaySize.x < foundNode.DisplaySize.x);
             },
             n=> foundNode= n
         );
@@ -67,7 +67,7 @@ public partial class iCS_IStorage {
                 var outterEdge= new Rect(globalRect.x-portRadius, globalRect.y-portRadius, globalRect.width+portSize, globalRect.height+portSize);
                 var innerEdge = new Rect(globalRect.x+portRadius, globalRect.y+portRadius, globalRect.width-portSize, globalRect.height-portSize);
                 return outterEdge.Contains(pick) && !innerEdge.Contains(pick) &&
-                       (foundNode == null || n.LayoutSize.x < foundNode.LayoutSize.x);
+                       (foundNode == null || n.DisplaySize.x < foundNode.DisplaySize.x);
             },
             n=> foundNode= n
         );
