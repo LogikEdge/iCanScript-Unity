@@ -7,7 +7,6 @@ public partial class iCS_EditorObject {
 	// Fields
     // ----------------------------------------------------------------------
 	private Vector2 myLocalLayoutOffset      = Vector2.zero;
-	private Vector2 myLayoutSize     		 = Vector2.zero;
 	private Vector2 myPreviousDisplaySize    = Vector2.zero;
 	private Vector2 myPreviousDisplayPosition= Vector2.zero;
 	
