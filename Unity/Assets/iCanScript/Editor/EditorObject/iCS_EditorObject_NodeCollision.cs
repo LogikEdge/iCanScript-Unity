@@ -10,40 +10,31 @@ public partial class iCS_EditorObject {
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
     public void ResolveCollisionOnChildrenNodes() {
-		// Prepare to animate Drag node sibling.
+		// Prepare to animate nodes affected by collisions.
 		List<Vector2> initialChildNodePos= new List<Vector2>();
-		if(this == ourDragObjectParent) {
-			ForEachChildNode(
-				c=> {
-					var animStartValue= c.GlobalLayoutPosition;
-					initialChildNodePos.Add(animStartValue);
-					c.SetPositionAnimationStartValue(animStartValue);
-				}
-			);
-		}
+		ForEachChildNode(
+			c=> {
+				var animStartValue= c.GlobalLayoutPosition;
+				initialChildNodePos.Add(animStartValue);
+				c.SetPositionAnimationStartValue(animStartValue);
+			}
+		);
         // Reposition all node at their anchor position.
         ForEachChildNode(c=> c.GlobalLayoutPosition= c.GlobalAnchorPosition);
         // Resolve collisions.
         ResolveCollisionOnChildrenImp();
-		// Only animate drag node sibling if they move in opposite direction.
-		if(this == ourDragObjectParent) {
-			float dragMagnitude= ourDragObjectDelta.magnitude;
-			int i= 0;
-			ForEachChildNode(
-				c=> {
-					var newGlobalPos= c.GlobalLayoutPosition;
-					if(c.IsPositionAnimated && Math3D.IsNotEqual(AnimatedPosition.TargetValue, newGlobalPos)) {
-						c.StartPositionAnimation(c.GlobalLayoutPosition);						
-					}
-					var move= newGlobalPos-initialChildNodePos[i++];
-					if(Math3D.IsGreater(move.magnitude, dragMagnitude)) {
-						if(Vector2.Dot(ourDragObjectDelta, move) < 0) {
-							c.StartPositionAnimation(c.GlobalLayoutPosition);
-						}
-					}
-				}
-			);
-		}
+		// Animate all nodes affected by collisions.
+		int i= 0;
+		ForEachChildNode(
+			c=> {
+				var targetPos= c.GlobalLayoutPosition;
+				var startPos= initialChildNodePos[i++];
+//				var startPos= c.AnimatedPosition.StartValue;
+                if(Math3D.IsNotEqual(startPos, targetPos)) {
+                    c.StartPositionAnimation(targetPos);
+                }
+			}
+		);
     }
     // ----------------------------------------------------------------------
     public void ResolveCollisionOnChildrenImp() {
