@@ -7,6 +7,10 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
+    private P.Animate<Vector2> AnimatedAnchor=
+        new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+    private P.Animate<Vector2> AnimatedLayoutOffset=
+        new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	private P.Animate<Vector2> AnimatedPosition=
 		new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	private P.Animate<Vector2> AnimatedSize=
@@ -170,16 +174,30 @@ public partial class iCS_EditorObject {
 	// Animation update
     // ----------------------------------------------------------------------
 	public void UpdateAnimation() {
+        if(AnimatedAnchor.IsActive) {
+            if(AnimatedAnchor.IsElapsed) {
+                AnimatedAnchor.Reset(AnimatedAnchor.TargetValue);
+            } else {
+                AnimatedAnchor.Update();
+            }
+        }
+        if(AnimatedLayoutOffset.IsActive) {
+            if(AnimatedLayoutOffset.IsElapsed) {
+                AnimatedLayoutOffset.Reset(AnimatedLayoutOffset.TargetValue);
+            } else {
+                AnimatedLayoutOffset.Update();
+            }
+        }
 		if(AnimatedSize.IsActive) {
 			if(AnimatedSize.IsElapsed) {
-				AnimatedSize.Reset();
+				AnimatedSize.Reset(AnimatedSize.TargetValue);
 			} else {
 				AnimatedSize.Update();
 			}
 		}
 		if(AnimatedPosition.IsActive) {
 			if(AnimatedPosition.IsElapsed) {
-				AnimatedPosition.Reset(GlobalLayoutPosition);
+				AnimatedPosition.Reset(AnimatedPosition.TargetValue);
 			} else {
 				AnimatedPosition.Update();
 			}

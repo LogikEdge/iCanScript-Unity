@@ -6,7 +6,6 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-	private Vector2 myLocalLayoutOffset      = Vector2.zero;
 	private Vector2 myPreviousDisplaySize    = Vector2.zero;
 	private Vector2 myPreviousDisplayPosition= Vector2.zero;
 	
@@ -116,7 +115,7 @@ public partial class iCS_EditorObject {
                     return Vector2.zero;
                 }
             }
-			return myLocalLayoutOffset;                
+			return AnimatedLayoutOffset.CurrentValue;
 		}
 		set {
             // Don't update layout offset for port on iconized nodes.
@@ -124,7 +123,7 @@ public partial class iCS_EditorObject {
     			var parentNode= ParentNode;
     			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;                
             }
-			myLocalLayoutOffset= value;
+			AnimatedLayoutOffset.Reset(value);
 		}
 	}
     // ----------------------------------------------------------------------
