@@ -135,7 +135,6 @@ public partial class iCS_IStorage {
         DetectUndoRedo();
         
         // Force a relayout if it is requested
-		bool needToRelayout= false;
         if(myForceRelayout) {
             myForceRelayout= false;
             ForcedRelayoutOfTree(EditorObjects[0]);    			

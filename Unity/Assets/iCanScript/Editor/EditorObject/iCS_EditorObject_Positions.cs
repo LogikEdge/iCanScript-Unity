@@ -6,9 +6,10 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-	private Vector2 		   myLocalLayoutOffset      = Vector2.zero;
-	private Vector2 		   myLayoutSize     		= Vector2.zero;
-	private Vector2            myPreviousDisplaySize    = Vector2.zero;
+	private Vector2 myLocalLayoutOffset      = Vector2.zero;
+	private Vector2 myLayoutSize     		 = Vector2.zero;
+	private Vector2 myPreviousDisplaySize    = Vector2.zero;
+	private Vector2 myPreviousDisplayPosition= Vector2.zero;
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
@@ -215,12 +216,21 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 GlobalDisplayPosition {
 		get {
-			if(AnimatedPosition.IsActive && !AnimatedPosition.IsElapsed) {
-				return AnimatedPosition.CurrentValue;
-			}
 			var parent= ParentNode;
-			if(parent == null) return GlobalLayoutPosition;
-			return parent.GlobalDisplayPosition+LocalLayoutPosition;
+            Vector2 newPos;
+			if(AnimatedPosition.IsActive && !AnimatedPosition.IsElapsed) {
+				newPos= AnimatedPosition.CurrentValue;
+			} else {
+    			if(parent == null) {
+    			    return GlobalLayoutPosition;
+			    }
+        		newPos= parent.GlobalDisplayPosition+LocalLayoutPosition;			    			        
+			}
+			if(IsNode && Math3D.IsNotEqual(newPos, myPreviousDisplayPosition)) {
+			    myPreviousDisplayPosition= newPos;
+			    parent.LayoutNode();
+			}
+			return newPos;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -249,6 +259,10 @@ public partial class iCS_EditorObject {
             if(IsNode && Math3D.IsNotEqual(displaySize, myPreviousDisplaySize)) {
                 myPreviousDisplaySize= displaySize;
                 LayoutPorts();
+                var parent= ParentNode;
+                if(parent != null) {
+                    parent.LayoutNode();
+                }
             }
 			return displaySize;
 		}

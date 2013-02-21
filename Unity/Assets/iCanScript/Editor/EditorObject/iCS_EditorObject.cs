@@ -12,9 +12,6 @@ public partial class iCS_EditorObject {
     bool            		myIsFloating	   = false;
     public List<int>		myChildren  	   = new List<int>();
     bool                	myIsSticky  	   = false;
-    static iCS_EditorObject	ourDragObject	   = null;
-	static iCS_EditorObject ourDragObjectParent= null;
-	static Vector2			ourDragObjectDelta = Vector2.zero;
 
     // ======================================================================
     // Conversion Utilities
