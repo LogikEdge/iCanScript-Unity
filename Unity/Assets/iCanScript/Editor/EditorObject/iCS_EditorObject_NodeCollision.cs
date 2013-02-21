@@ -36,25 +36,36 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void ResolveCollisionOnChildrenImp() {
-        bool didCollide= false;
         iCS_EditorObject[] children= BuildListOfChildNodes(c=> !c.IsFloating);
         // Resolve collisions.
-        for(int i= 0; i < children.Length-1; ++i) {
-            for(int j= i+1; j < children.Length; ++j) {
-                didCollide |= children[i].ResolveCollisionBetweenTwoNodes(children[j]);                            
-            }
-        }
-        if(didCollide) ResolveCollisionOnChildrenImp();
+        bool didCollide= true;
+		while(didCollide) {
+			didCollide= false;
+	        for(int i= 0; i < children.Length-1; ++i) {
+				var c1= children[i];
+				if(c1.IsFloating) continue;
+	            for(int j= i+1; j < children.Length; ++j) {
+					var c2= children[j];
+					if(c2.IsFloating) continue;
+					var r1= c1.GlobalLayoutRect;
+					var r2= c2.GlobalLayoutRect;
+	                didCollide |= c1.ResolveCollisionBetweenTwoNodes(c2, ref r1, ref r2);                            
+	            }
+	        }			
+		}
     }
     // ----------------------------------------------------------------------
     // Resolves collision between two nodes. "true" is returned if a collision
     // has occured.
-    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject theOtherNode) {
+    public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject theOtherNode,
+												ref Rect myRect, ref Rect theOtherRect) {
         // Nothing to do if they don't collide.
-        if(!DoesCollideWithMargins(theOtherNode)) return false;
+        if(!DoesCollideWithMargins(myRect, theOtherRect)) return false;
 
         // Compute penetration.
-        Vector2 penetration= GetSeperationVector(theOtherNode);
+        Vector2 penetration= GetSeperationVector(theOtherNode,
+												 myRect,
+												 theOtherRect);
 		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) return false;
 
         // Seperate by half penetration if none is sticky.
@@ -77,15 +88,14 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Returns true if the given rectangle collides with the node.
-    public bool DoesCollideWithMargins(iCS_EditorObject otherNode) {
-        return Math3D.DoesCollide(AddMargins(GlobalLayoutRect), otherNode.GlobalLayoutRect);
+    public static bool DoesCollideWithMargins(Rect r1, Rect r2) {
+        return Math3D.DoesCollide(AddMargins(r1), r2);
     }
     // ----------------------------------------------------------------------
 	// Returns the seperation vector of two colliding nodes.  The vector
 	// returned is the smallest distance to remove the overlap.
-	Vector2 GetSeperationVector(iCS_EditorObject theOther) {
-        Rect myRect   = AddMargins(GlobalLayoutRect);
-        Rect otherRect= theOther.GlobalLayoutRect;
+	Vector2 GetSeperationVector(iCS_EditorObject theOther, Rect myRect, Rect otherRect) {
+        myRect= AddMargins(myRect);
 		// No collision if X & Y distance of the enclosing rect is either
 		// larger or higher then the total width/height.
         float xMin= Mathf.Min(myRect.xMin, otherRect.xMin);
