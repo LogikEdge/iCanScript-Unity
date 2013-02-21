@@ -10,6 +10,8 @@ public partial class iCS_EditorObject {
 	private Vector2 		   myLayoutSize     		= Vector2.zero;
 	private Vector2            myPreviousDisplaySize    = Vector2.zero;
 	
+	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//								PORT POSITIONS
     // ======================================================================
     // Ratio
     // ----------------------------------------------------------------------
@@ -22,58 +24,81 @@ public partial class iCS_EditorObject {
 			IsDirty= true;
 		}
     }
+    // ----------------------------------------------------------------------
+	public Vector2 PortLocalAnchorPosition {
+		get {
+            return GetPortLocalAnchorPositionFromRatio();    			
+		}
+		set {
+            // Don't update layout offset for port on iconized nodes.
+			var parentNode= ParentNode;
+			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) {
+				return;
+			}
+            // Transform to a position ratio between 0f and 1f.
+			UpdatePortEdge(value);
+			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);			
+			IsDirty= true;
+		}
+	}
+	
+	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	//							NODE POSITIONS
     // ======================================================================
     // Anchor
     // ----------------------------------------------------------------------
 	public Vector2 LocalAnchorPosition {
 		get {
             if(IsPort) {
-                return GetPortLocalAnchorPositionFromRatio();    
+                return PortLocalAnchorPosition;    
             }
             return EngineObject.LocalAnchorPosition;
 		}
 		set {
 			if(IsPort) {
-                // Don't update layout offset for port on iconized nodes.
-    			var parentNode= ParentNode;
-    			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;
-                // Transform to a position ratio between 0f and 1f.
-    			UpdatePortEdge(value);
-    			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);
-			} else {
-    			var engineObject= EngineObject;
-    			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
-    			engineObject.LocalAnchorPosition= value;
-    			IsDirty= true;
+				PortLocalAnchorPosition= value;
+				return;
 			}
+			var engineObject= EngineObject;
+			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
+			engineObject.LocalAnchorPosition= value;
+			IsDirty= true;
 		}
 	}
     // ----------------------------------------------------------------------	
 	public Vector2 GlobalAnchorPosition {
 		get {
+			if(IsPort) {
+				return PortGlobalAnchorPosition;
+			}
 			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
-			if(IsPort) {
-                // Ports are always relative to the display position.
-			    return parent.GlobalDisplayPosition+LocalAnchorPosition;
-			}
     		return parent.GlobalLayoutPosition+LocalAnchorPosition;			    
 		}
 		set {
+			if(IsPort) {
+				PortGlobalAnchorPosition= value;
+				return;
+			}
 			var parent= Parent;
 			if(parent == null) {
 				LocalAnchorPosition= value;
 				return;
 			}
-            if(IsPort) {
-                // Ports are always relative to the display position.
-                LocalAnchorPosition= value-parent.GlobalDisplayPosition;
-            } else {
-    			LocalAnchorPosition= value-parent.GlobalLayoutPosition;                
-            }
+    		LocalAnchorPosition= value-parent.GlobalLayoutPosition;                
 		}
 	}
-
+    // ----------------------------------------------------------------------	
+    // Ports are always relative to the display position.
+	public Vector2 PortGlobalAnchorPosition {
+		get {
+		    return ParentNode.GlobalDisplayPosition+LocalAnchorPosition;			
+		}
+		set {
+            LocalAnchorPosition= value-ParentNode.GlobalDisplayPosition;			
+		}
+	}
+	
     // ======================================================================
     // Layout
     // ----------------------------------------------------------------------
