@@ -104,14 +104,7 @@ public partial class iCS_EditorObject {
     		LocalAnchorPosition= value-parent.GlobalLayoutPosition;                
 		}
 	}
-    // ----------------------------------------------------------------------	
-	public Rect GlobalAnchorRect {
-		get {
-			var pos= GlobalAnchorPosition;
-			var size= LayoutSize;
-			return new Rect(pos.x-0.5f*size.x, pos.y-0.5f*size.y, size.x, size.y);
-		}
-	}
+
     // ======================================================================
     // Layout
     // ----------------------------------------------------------------------
@@ -335,4 +328,19 @@ public partial class iCS_EditorObject {
         LayoutSize= sze;        
     }
 
+	// ======================================================================
+    // Utilities
+    // ----------------------------------------------------------------------
+    Rect BuildRect(Vector2 pos, Vector2 size) {
+        return new Rect(pos.x-0.5f*size.x, pos.y-0.5f*size.y, size.x, size.y);
+    }
+    // ----------------------------------------------------------------------
+    Vector2 PositionFrom(Rect r) {
+        var sze= SizeFrom(r);
+        return new Vector2(r.x+0.5f*sze.x, r.y+0.5f*sze.y);
+    }
+    // ----------------------------------------------------------------------
+    Vector2 SizeFrom(Rect r) {
+        return new Vector2(r.width, r.height);
+    }
 }

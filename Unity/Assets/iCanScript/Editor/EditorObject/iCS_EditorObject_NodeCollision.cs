@@ -17,7 +17,7 @@ public partial class iCS_EditorObject {
 		for(int i= 0; i < children.Length; ++i) {
 			var c= children[i];
 			childStartPos[i]= c.GlobalLayoutPosition;
-			childRect[i]    = c.GlobalAnchorRect;
+			childRect[i]    = BuildRect(c.GlobalAnchorPosition, c.DisplaySize);
 		}
         // Resolve collisions.
         ResolveCollisionOnChildrenImp(children, ref childRect);

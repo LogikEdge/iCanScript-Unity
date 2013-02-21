@@ -29,7 +29,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(obj == null || IStorage == null) return;
         while(obj != null && !obj.IsVisibleInLayout) obj= obj.Parent;
         if(obj == null) return;
-        var size= obj.LayoutSize;
+        var size= obj.DisplaySize;
         float newScale= 1.0f;
         if(obj.IsNode) {
             float widthScale= position.width/(1.1f*size.x);
