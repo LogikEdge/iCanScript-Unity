@@ -13,7 +13,7 @@ public partial class iCS_EditorObject {
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
     // ======================================================================
-    // Ratio
+    // Port Ratio
     // ----------------------------------------------------------------------
     public float PortPositionRatio {
         get { return EngineObject.PortPositionRatio; }
@@ -24,6 +24,8 @@ public partial class iCS_EditorObject {
 			IsDirty= true;
 		}
     }
+    // ======================================================================
+	// Port Anchor
     // ----------------------------------------------------------------------
 	public Vector2 PortLocalAnchorPosition {
 		get {
@@ -41,6 +43,19 @@ public partial class iCS_EditorObject {
 			IsDirty= true;
 		}
 	}
+    // ----------------------------------------------------------------------	
+    // Ports are always relative to the display position.
+	public Vector2 PortGlobalAnchorPosition {
+		get {
+		    return ParentNode.GlobalDisplayPosition+PortLocalAnchorPosition;			
+		}
+		set {
+            PortLocalAnchorPosition= value-ParentNode.GlobalDisplayPosition;			
+		}
+	}
+    // ======================================================================
+	// Port Layout
+    // ----------------------------------------------------------------------	
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//							NODE POSITIONS
@@ -86,16 +101,6 @@ public partial class iCS_EditorObject {
 				return;
 			}
     		LocalAnchorPosition= value-parent.GlobalLayoutPosition;                
-		}
-	}
-    // ----------------------------------------------------------------------	
-    // Ports are always relative to the display position.
-	public Vector2 PortGlobalAnchorPosition {
-		get {
-		    return ParentNode.GlobalDisplayPosition+LocalAnchorPosition;			
-		}
-		set {
-            LocalAnchorPosition= value-ParentNode.GlobalDisplayPosition;			
 		}
 	}
 	
