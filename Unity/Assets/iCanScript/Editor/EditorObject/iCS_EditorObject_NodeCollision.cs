@@ -29,6 +29,9 @@ public partial class iCS_EditorObject {
 			c=> {
 				var targetPos= c.GlobalLayoutPosition;
 				var startPos= initialChildNodePos[i++];
+                /*
+                    FIXME: Should use animation start value instead.
+                */
 //				var startPos= c.AnimatedPosition.StartValue;
                 if(Math3D.IsNotEqual(startPos, targetPos)) {
                     c.StartPositionAnimation(targetPos);
