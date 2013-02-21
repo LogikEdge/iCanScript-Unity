@@ -137,13 +137,12 @@ public partial class iCS_IStorage {
         // Force a relayout if it is requested
 		bool needToRelayout= false;
         if(myForceRelayout) {
-			needToRelayout= true;
             myForceRelayout= false;
+            ForcedRelayoutOfTree(EditorObjects[0]);    			
         }
 		
 	    // Perform layout if one or more objects has changed.
 	    if(myIsDirty) {
-			needToRelayout= true;
 	        // Tell Unity that our storage has changed.
 	        EditorUtility.SetDirty(Storage);
 	        // Prepare for cleanup after storage change.
@@ -156,16 +155,10 @@ public partial class iCS_IStorage {
             obj=> {
     			if(obj.IsAnimated) {
 					obj.UpdateAnimation();
-    				needToRelayout= true;
     				myIsAnimationPlaying= true;
     			}
             }
         );
-
-		// Relayout if needed.
-		if(needToRelayout) {
-            ForcedRelayoutOfTree(EditorObjects[0]);    			
-		}
 
         // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {

@@ -96,6 +96,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 DragObject= node;
                 DragStartPosition= node.GlobalDisplayPosition;                                                                    
 				node.IsSticky= true;
+				node.ForEachParentNode(p=> { p.IsSticky= true; });
             }
             return true;
         }
@@ -138,7 +139,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case DragTypeEnum.NodeDrag:
                 iCS_EditorObject node= DragObject;
                 node.IsFloating= IsFloatingKeyDown;
-				node.IsSticky= true;
                 node.UserDragTo(newPosition);
                 break;
             case DragTypeEnum.PortRelocation: {
@@ -222,6 +222,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                     }
 					node.IsSticky= false;
+					node.ForEachParentNode(p=> { p.IsSticky= false; });
                     node.IsFloating= false;
                     break;
                 }
