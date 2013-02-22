@@ -217,7 +217,9 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public float DisplayAlpha {
         get {
-            if(IsPort)      return ParentNode.DisplayAlpha;
+            if(IsPort) {
+                return ParentNode.DisplayAlpha;
+            }
             if(!IsAnimated) {
                 myInvisibleBeforeAnimation= false;
                 return 1f;

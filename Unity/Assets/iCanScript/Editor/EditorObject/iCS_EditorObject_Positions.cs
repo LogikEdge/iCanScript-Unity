@@ -142,16 +142,6 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-    public Rect LocalLayoutRect {
-        get {
-            return BuildRect(LocalLayoutPosition, DisplaySize);
-        }
-        set {
-            LocalLayoutPosition= PositionFrom(value);
-            DisplaySize= SizeFrom(value);
-        }
-    }
-    // ----------------------------------------------------------------------
 	public Vector2 GlobalLayoutPosition {
 		get {
             if(IsPort) {

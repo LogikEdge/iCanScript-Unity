@@ -58,7 +58,7 @@ public partial class iCS_Graphics {
         if((port.IsInputPort || port.IsModulePort) && port.SourceId != -1) {
             var sourcePort= port.Source;
             if(sourcePort.Name != port.Name) return true;
-            if(!sourcePort.IsVisibleInLayout) return true;
+            if(!sourcePort.IsVisibleOnDisplay) return true;
             var sourceCenter= sourcePort.GlobalDisplayPosition;
             var portCenter= port.GlobalDisplayPosition;
             var distance= Vector2.Distance(portCenter, sourceCenter);
