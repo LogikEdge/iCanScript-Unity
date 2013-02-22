@@ -35,7 +35,7 @@ public partial class iCS_EditorObject {
     		return;            
         }
         // Update the size and ports for folded & Function nodes.
-        GlobalLayoutRect= NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(new Rect(0,0,0,0));
+        GlobalLayoutRect= FoldedNodeRect();
 	}
 
     // ----------------------------------------------------------------------
@@ -56,7 +56,7 @@ public partial class iCS_EditorObject {
 	        }
 		);
         // Determine node global layout.
-        var r= NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(GlobalDisplayChildRectWithMargins);
+        var r= UnfoldedNodeRect();
 		// Update parent node anchor positions.
 		var center= Math3D.Middle(r);
 		GlobalAnchorPosition= center-LocalLayoutOffset;
@@ -72,6 +72,17 @@ public partial class iCS_EditorObject {
 		);
     }
 
+    // ----------------------------------------------------------------------
+    Rect FoldedNodeRect() {
+        return NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(new Rect(0,0,0,0));
+    }
+
+    // ----------------------------------------------------------------------
+    // We assume that the children have already been properly layed out.
+    Rect UnfoldedNodeRect() {
+        return NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(GlobalDisplayChildRectWithMargins);        
+    }
+    
     // ----------------------------------------------------------------------
     Rect NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(Rect childRect) {
         // Get padding for all sides.
