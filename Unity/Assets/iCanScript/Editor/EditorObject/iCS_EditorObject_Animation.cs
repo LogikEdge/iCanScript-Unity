@@ -7,8 +7,6 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-    private P.Animate<Vector2> AnimatedAnchor=
-        new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     private P.Animate<Vector2> AnimatedLayoutOffset=
         new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	private P.Animate<Vector2> AnimatedPosition=
@@ -26,7 +24,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Returns true if the display position is currently being animated.
     public bool IsPositionAnimated {
-        get { return  AnimatedPosition.IsActive; }
+        get { return  AnimatedPosition.IsActive || AnimatedLayoutOffset.IsActive; }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display size or position are being animated.
@@ -51,6 +49,25 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     void StopSizeAnimation() {
         AnimatedSize.Reset(AnimatedSize.TargetValue);
+    }
+    
+    // ======================================================================
+    // Layout Offset Animation
+    // ----------------------------------------------------------------------
+    void AnimateLayoutOffset(Vector2 targetLayoutOffset) {
+        var startLayoutOffset= AnimatedLayoutOffset.CurrentValue;
+		var timeRatio= BuildTimeRatioFromSize(startLayoutOffset, targetLayoutOffset);         
+        AnimateLayoutOffset(targetLayoutOffset, timeRatio);
+    }
+    // ----------------------------------------------------------------------
+    void AnimateLayoutOffset(Vector2 targetLayoutOffset, P.TimeRatio timeRatio) {
+        AnimatedLayoutOffset.StartValue= AnimatedLayoutOffset.CurrentValue;
+		AnimatedLayoutOffset.TargetValue= targetLayoutOffset;
+		AnimatedLayoutOffset.Start(timeRatio);        
+    }
+    // ----------------------------------------------------------------------
+    void StopLayoutOffsetAnimation() {
+        AnimatedLayoutOffset.Reset(AnimatedLayoutOffset.TargetValue);
     }
     
     // ======================================================================
@@ -174,13 +191,6 @@ public partial class iCS_EditorObject {
 	// Animation update
     // ----------------------------------------------------------------------
 	public void UpdateAnimation() {
-        if(AnimatedAnchor.IsActive) {
-            if(AnimatedAnchor.IsElapsed) {
-                AnimatedAnchor.Reset(AnimatedAnchor.TargetValue);
-            } else {
-                AnimatedAnchor.Update();
-            }
-        }
         if(AnimatedLayoutOffset.IsActive) {
             if(AnimatedLayoutOffset.IsElapsed) {
                 AnimatedLayoutOffset.Reset(AnimatedLayoutOffset.TargetValue);
