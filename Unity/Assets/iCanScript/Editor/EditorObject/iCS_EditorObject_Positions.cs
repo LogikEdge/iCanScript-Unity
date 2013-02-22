@@ -147,15 +147,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Rect LocalLayoutRect {
         get {
-            var sze= DisplaySize;
-            var pos= LocalLayoutPosition;
-            return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
+            return BuildRect(LocalLayoutPosition, DisplaySize);
         }
         set {
-            var sze= new Vector2(value.width, value.height);
-            var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
-            LocalLayoutPosition= pos;
-            DisplaySize= sze;
+            LocalLayoutPosition= PositionFrom(value);
+            DisplaySize= SizeFrom(value);
         }
     }
     // ----------------------------------------------------------------------
@@ -179,15 +175,11 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Rect GlobalLayoutRect {
         get {
-            var pos= GlobalLayoutPosition;
-            var sze= DisplaySize;
-            return new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
+            return BuildRect(GlobalLayoutPosition, DisplaySize);
         }
         set {
-            var sze= new Vector2(value.width, value.height);
-            var pos= new Vector2(value.x+0.5f*sze.x, value.y+0.5f*sze.y);
-            DisplaySize= sze;
-            GlobalLayoutPosition= pos;
+            GlobalLayoutPosition= PositionFrom(value);
+            DisplaySize= SizeFrom(value);
         }
     }
 
@@ -208,7 +200,7 @@ public partial class iCS_EditorObject {
 			}
 			if(IsNode && Math3D.IsNotEqual(newPos, myPreviousDisplayPosition)) {
 			    myPreviousDisplayPosition= newPos;
-			    parent.LayoutNode();
+                LayoutParentNodesUntilTop();
 			}
 			return newPos;
 		}
@@ -229,34 +221,24 @@ public partial class iCS_EditorObject {
 		        if(!IsVisibleOnDisplay) return Vector2.zero;
 		        return iCS_EditorConfig.PortSize;
 		    }
-			var displaySize= AnimatedSize.CurrentValue;
             // Update ports to match parent node display size.
+			var displaySize= AnimatedSize.CurrentValue;
             if(IsNode && Math3D.IsNotEqual(displaySize, myPreviousDisplaySize)) {
                 myPreviousDisplaySize= displaySize;
                 LayoutPorts();
-                var parent= ParentNode;
-                if(parent != null) {
-                    parent.LayoutNode();
-                }
+                LayoutParentNodesUntilTop();
             }
 			return displaySize;
 		}
 		set {
 		    if(IsPort) return;
-            var previousSize= AnimatedSize.CurrentValue;
 		    AnimatedSize.Reset(value);
-		    if(Math3D.IsNotEqual(previousSize, value)) {
-		        LayoutPorts();
-		    }
 		}
 	}
     // ----------------------------------------------------------------------
  	public Rect GlobalDisplayRect {
  		get {
-             var pos= GlobalDisplayPosition;
-             var sze= DisplaySize;
-             var rect= new Rect(pos.x-0.5f*sze.x, pos.y-0.5f*sze.y, sze.x, sze.y);
-             return rect;
+            return BuildRect(GlobalDisplayPosition, DisplaySize);
  		}
  	}
  	// ----------------------------------------------------------------------
@@ -296,19 +278,15 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
     public void SetGlobalAnchorAndLayoutRect(Rect r) {
-        var sze= new Vector2(r.width, r.height);
-        var pos= new Vector2(r.x+0.5f*sze.x, r.y+0.5f*sze.y);
-        GlobalAnchorPosition= pos;
+        GlobalAnchorPosition= PositionFrom(r);
+        DisplaySize= SizeFrom(r);
 		LocalLayoutOffset= Vector2.zero;
-        DisplaySize= sze;
     }
     // ----------------------------------------------------------------------
     public void SetLocalAnchorAndLayoutRect(Rect r) {
-        var sze= new Vector2(r.width, r.height);
-        var pos= new Vector2(r.x+0.5f*sze.x, r.y+0.5f*sze.y);
-        LocalAnchorPosition= pos;
+        LocalAnchorPosition= PositionFrom(r);
+        DisplaySize= SizeFrom(r);        
 		LocalLayoutOffset= Vector2.zero;
-        DisplaySize= sze;        
     }
 
 	// ======================================================================

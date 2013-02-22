@@ -7,7 +7,8 @@ public partial class iCS_EditorObject {
     public void UserDragTo(Vector2 newPosition) {
 		if(IsNode) {
             StopAnimations();
-            SetGlobalAnchorAndLayoutPosition(newPosition);
+            GlobalAnchorPosition= newPosition;
+            LocalLayoutOffset= Vector2.zero;
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}
