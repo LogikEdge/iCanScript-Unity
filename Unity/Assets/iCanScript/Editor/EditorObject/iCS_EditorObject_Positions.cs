@@ -18,7 +18,9 @@ public partial class iCS_EditorObject {
         get { return EngineObject.PortPositionRatio; }
 		set {
             var engineObject= EngineObject;
-			if(Math3D.IsEqual(engineObject.PortPositionRatio, value)) return;
+			if(Math3D.IsEqual(engineObject.PortPositionRatio, value)) {
+			    return;
+		    }
 			engineObject.PortPositionRatio= value;
 			IsDirty= true;
 		}
@@ -58,6 +60,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Anchor
     // ----------------------------------------------------------------------
+    // The anchor position is never animated.
 	public Vector2 LocalAnchorPosition {
 		get {
             if(IsPort) {
@@ -71,7 +74,10 @@ public partial class iCS_EditorObject {
 				return;
 			}
 			var engineObject= EngineObject;
-			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) return;
+			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) {
+			    return;
+		    }
+            // FIXME: Should layout parent nodes here.
 			engineObject.LocalAnchorPosition= value;
 			IsDirty= true;
 		}
@@ -84,60 +90,51 @@ public partial class iCS_EditorObject {
 			}
 			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
-    		return parent.GlobalLayoutPosition+LocalAnchorPosition;			    
+    		return parent.GlobalDisplayPosition+LocalAnchorPosition;			    
 		}
 		set {
 			if(IsPort) {
 				PortGlobalAnchorPosition= value;
 				return;
 			}
-			var parent= Parent;
+			var parent= ParentNode;
 			if(parent == null) {
 				LocalAnchorPosition= value;
 				return;
 			}
-    		LocalAnchorPosition= value-parent.GlobalLayoutPosition;                
+    		LocalAnchorPosition= value-parent.GlobalDisplayPosition;                
 		}
 	}
 
     // ======================================================================
     // Layout
     // ----------------------------------------------------------------------
-    // Offset from the anchor position.
+    // Offset from the anchor position.  This attribute is animated.
 	public Vector2 LocalLayoutOffset {
 		get {
-            if(IsPort) {
-                if(!IsVisibleOnDisplay) {
-                    return Vector2.zero;
-                }
-            } else {
-                if(!IsVisibleInLayout) {
-                    return Vector2.zero;
-                }
+            if(!IsVisibleOnDisplay) {
+                return Vector2.zero;
             }
 			return AnimatedLayoutOffset.CurrentValue;
 		}
 		set {
             // Don't update layout offset for port on iconized nodes.
             if(IsPort) {
-    			var parentNode= ParentNode;
-    			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) return;                
+    			var parent= ParentNode;
+    			if(parent.IsIconizedOnDisplay || !parent.IsVisibleOnDisplay) {
+    			    return;
+			    }
             }
+            // FIXME: Should relayout parent nodes on change.
 			AnimatedLayoutOffset.Reset(value);
 		}
 	}
     // ----------------------------------------------------------------------
 	public Vector2 LocalLayoutPosition {
 		get {
-            if(IsPort) {
-                if(!IsVisibleOnDisplay) {
-                    return Vector2.zero;
-                }                
-            } else {
-                if(!IsVisibleInLayout) {
-                    return Vector2.zero;
-                }                
-            }
+            if(!IsVisibleOnDisplay) {
+                return Vector2.zero;
+            }                
 			return LocalAnchorPosition+LocalLayoutOffset;
 		}
 		set {
