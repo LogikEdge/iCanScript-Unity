@@ -254,16 +254,15 @@ public partial class iCS_EditorObject {
 	// ======================================================================
     // High-order functions
     // ----------------------------------------------------------------------
+    public void SetGlobalAnchorAndLayoutRect(Rect r) {
+        SetGlobalAnchorAndLayoutPosition(PositionFrom(r));
+        DisplaySize= SizeFrom(r);
+    }
+    // ----------------------------------------------------------------------
 	public void SetGlobalAnchorAndLayoutPosition(Vector2 pos) {
 		GlobalAnchorPosition= pos;
 		LocalLayoutOffset= Vector2.zero;
 	}
-    // ----------------------------------------------------------------------
-    public void SetGlobalAnchorAndLayoutRect(Rect r) {
-        GlobalAnchorPosition= PositionFrom(r);
-        DisplaySize= SizeFrom(r);
-		LocalLayoutOffset= Vector2.zero;
-    }
 
 	// ======================================================================
     // Utilities
