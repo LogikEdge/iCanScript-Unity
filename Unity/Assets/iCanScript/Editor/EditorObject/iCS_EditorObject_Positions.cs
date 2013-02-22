@@ -259,20 +259,9 @@ public partial class iCS_EditorObject {
 		LocalLayoutOffset= Vector2.zero;
 	}
     // ----------------------------------------------------------------------
-	public void SetLocalAnchorAndLayoutPosition(Vector2 pos) {
-		LocalAnchorPosition= pos;
-		LocalLayoutOffset= Vector2.zero;
-	}
-    // ----------------------------------------------------------------------
     public void SetGlobalAnchorAndLayoutRect(Rect r) {
         GlobalAnchorPosition= PositionFrom(r);
         DisplaySize= SizeFrom(r);
-		LocalLayoutOffset= Vector2.zero;
-    }
-    // ----------------------------------------------------------------------
-    public void SetLocalAnchorAndLayoutRect(Rect r) {
-        LocalAnchorPosition= PositionFrom(r);
-        DisplaySize= SizeFrom(r);        
 		LocalLayoutOffset= Vector2.zero;
     }
 
