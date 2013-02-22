@@ -47,14 +47,14 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public void CleanupPortEdgePosition() {
         var size= Parent.DisplaySize;
-        var lp= LocalLayoutPosition;
+        var lp= LocalDisplayPosition;
         switch(Edge) {
             case iCS_EdgeEnum.Top:      lp.y= -0.5f*size.y; break; 
             case iCS_EdgeEnum.Bottom:   lp.y=  0.5f*size.y; break;
             case iCS_EdgeEnum.Left:     lp.x= -0.5f*size.x; break;
             case iCS_EdgeEnum.Right:    lp.x=  0.5f*size.x; break;
         }
-		LocalLayoutPosition= lp;
+		LocalDisplayPosition= lp;
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {

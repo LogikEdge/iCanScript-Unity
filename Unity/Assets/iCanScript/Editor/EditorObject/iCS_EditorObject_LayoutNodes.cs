@@ -13,9 +13,9 @@ public partial class iCS_EditorObject {
     void LayoutParentNodesUntilTop() {
         var parent= ParentNode;
         if(parent == null) return;
-        var parentGlobalRect= parent.GlobalLayoutRect;
+        var parentGlobalRect= parent.GlobalDisplayRect;
         parent.LayoutNode();
-        if(Math3D.IsNotEqual(parentGlobalRect, parent.GlobalLayoutRect)) {
+        if(Math3D.IsNotEqual(parentGlobalRect, parent.GlobalDisplayRect)) {
             parent.LayoutParentNodesUntilTop();
         }
     }
@@ -35,7 +35,7 @@ public partial class iCS_EditorObject {
     		return;            
         }
         // Update the size and ports for folded & Function nodes.
-        GlobalLayoutRect= FoldedNodeRect();
+        GlobalDisplayRect= FoldedNodeRect();
 	}
 
     // ----------------------------------------------------------------------
@@ -114,7 +114,7 @@ public partial class iCS_EditorObject {
 		// Determine rect to wrap children.
         float x, y;
 		if(Math3D.IsZero(childRect.width) || Math3D.IsZero(childRect.height)) {
-            var pos= GlobalLayoutPosition;
+            var pos= GlobalDisplayPosition;
 		    x= pos.x-0.5f*width;
 		    y= pos.y-0.5f*height;		    
 		} else {

@@ -22,7 +22,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void CenterOn(iCS_EditorObject obj) {
         if(obj == null || IStorage == null) return;
-        CenterAt(obj.GlobalLayoutPosition);
+        CenterAt(obj.GlobalDisplayPosition);
     }
 	// ----------------------------------------------------------------------
     public void CenterAndScaleOn(iCS_EditorObject obj) {
@@ -36,7 +36,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             float heightScale= position.height/(1.1f*size.y);
             newScale= Mathf.Min(1.0f, Mathf.Min(widthScale, heightScale));
         }
-        CenterAtWithScale(obj.GlobalLayoutPosition, newScale);
+        CenterAtWithScale(obj.GlobalDisplayPosition, newScale);
     }
 	// ----------------------------------------------------------------------
     public void CenterAt(Vector2 point) {

@@ -129,46 +129,6 @@ public partial class iCS_EditorObject {
 			AnimatedLayoutOffset.Reset(value);
 		}
 	}
-    // ----------------------------------------------------------------------
-	public Vector2 LocalLayoutPosition {
-		get {
-            if(!IsVisibleOnDisplay) {
-                return Vector2.zero;
-            }                
-			return LocalAnchorPosition+LocalLayoutOffset;
-		}
-		set {
-			LocalLayoutOffset= value-LocalAnchorPosition;
-		}
-	}
-    // ----------------------------------------------------------------------
-	public Vector2 GlobalLayoutPosition {
-		get {
-            if(IsPort) {
-                if(!IsVisibleOnDisplay) {
-                    return ParentNode.GlobalLayoutPosition;
-                }                
-            } else {
-                if(!IsVisibleInLayout) {
-                    return ParentNode.GlobalLayoutPosition;
-                }
-            }
-			return GlobalAnchorPosition+LocalLayoutOffset;
-		}
-		set {
-			LocalLayoutOffset= value-GlobalAnchorPosition;
-		}
-	}
-    // ----------------------------------------------------------------------
-    public Rect GlobalLayoutRect {
-        get {
-            return BuildRect(GlobalLayoutPosition, DisplaySize);
-        }
-        set {
-            GlobalLayoutPosition= PositionFrom(value);
-            DisplaySize= SizeFrom(value);
-        }
-    }
 
     // ======================================================================
     // Display
@@ -181,15 +141,22 @@ public partial class iCS_EditorObject {
 				newPos= AnimatedPosition.CurrentValue;
 			} else {
     			if(parent == null) {
-    			    return GlobalLayoutPosition;
+    			    return LocalAnchorPosition+LocalLayoutOffset;
 			    }
-        		newPos= parent.GlobalDisplayPosition+LocalLayoutPosition;			    			        
+        		newPos= parent.GlobalDisplayPosition+LocalAnchorPosition+LocalLayoutOffset;			    			        
 			}
 			if(IsNode && Math3D.IsNotEqual(newPos, myPreviousDisplayPosition)) {
 			    myPreviousDisplayPosition= newPos;
                 LayoutParentNodesUntilTop();
 			}
 			return newPos;
+		}
+		set {
+            var parent= ParentNode;
+		    if(parent == null) {
+		        LocalLayoutOffset= value-LocalAnchorPosition;
+		    }
+	        LocalLayoutOffset= value-parent.GlobalDisplayPosition-LocalAnchorPosition;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -199,6 +166,9 @@ public partial class iCS_EditorObject {
 			var parent= Parent;
 			if(parent == null) return globalPos;
 			return globalPos-parent.GlobalDisplayPosition;
+		}
+		set {
+		    LocalLayoutOffset= value-LocalLayoutOffset;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -228,6 +198,10 @@ public partial class iCS_EditorObject {
  	public Rect GlobalDisplayRect {
  		get {
             return BuildRect(GlobalDisplayPosition, DisplaySize);
+ 		}
+ 		set {
+ 		    GlobalDisplayPosition= PositionFrom(value);
+ 		    DisplaySize= SizeFrom(value);
  		}
  	}
     

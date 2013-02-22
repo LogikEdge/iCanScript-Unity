@@ -6,14 +6,14 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     // Returns true if the given point is inside the node coordinates.
     public bool IsInside(iCS_EditorObject node, Vector2 point) {
-        return node.GlobalLayoutRect.Contains(point);
+        return node.GlobalDisplayRect.Contains(point);
     }
 
     // ----------------------------------------------------------------------
     // Returns the minimal distance from the parent.
     public float GetDistanceFromNode(iCS_EditorObject node, Vector2 point) {
         if(IsInside(node, point)) return 0;
-        Rect nodeRect= node.GlobalLayoutRect;
+        Rect nodeRect= node.GlobalDisplayRect;
         if(point.x > nodeRect.xMin && point.x < nodeRect.xMax) {
             return Mathf.Min(Mathf.Abs(point.y-nodeRect.yMin),
                              Mathf.Abs(point.y-nodeRect.yMax));
@@ -22,10 +22,10 @@ public partial class iCS_IStorage {
             return Mathf.Min(Mathf.Abs(point.x-nodeRect.xMin),
                              Mathf.Abs(point.x-nodeRect.xMax));
         }
-        float distance= Vector2.Distance(point, Math3D.TopLeftCorner(node.GlobalLayoutRect));
-        distance= Mathf.Min(distance, Vector2.Distance(point, Math3D.TopRightCorner(node.GlobalLayoutRect)));
-        distance= Mathf.Min(distance, Vector2.Distance(point, Math3D.BottomLeftCorner(node.GlobalLayoutRect)));
-        distance= Mathf.Min(distance, Vector2.Distance(point, Math3D.BottomRightCorner(node.GlobalLayoutRect)));
+        float distance= Vector2.Distance(point, Math3D.TopLeftCorner(node.GlobalDisplayRect));
+        distance= Mathf.Min(distance, Vector2.Distance(point, Math3D.TopRightCorner(node.GlobalDisplayRect)));
+        distance= Mathf.Min(distance, Vector2.Distance(point, Math3D.BottomLeftCorner(node.GlobalDisplayRect)));
+        distance= Mathf.Min(distance, Vector2.Distance(point, Math3D.BottomRightCorner(node.GlobalDisplayRect)));
         return distance;
     }
 
@@ -39,14 +39,14 @@ public partial class iCS_IStorage {
     // Returns the minimal distance from the parent.
     public float GetDistanceFromParent(iCS_EditorObject port) {
         iCS_EditorObject parentNode= port.Parent;
-        Vector2 position= port.GlobalLayoutPosition;
+        Vector2 position= port.GlobalDisplayPosition;
         return GetDistanceFromNode(parentNode, position);
     }
     // ----------------------------------------------------------------------
     // Returns true if the distance to parent is less then twice the port size.
     public bool IsNearParentEdge(iCS_EditorObject port, iCS_EdgeEnum edge= iCS_EdgeEnum.None) {
         var parent= port.ParentNode;
-        var pos= port.GlobalLayoutPosition;
+        var pos= port.GlobalDisplayPosition;
         return parent.IsPositionOnEdge(pos, (edge != iCS_EdgeEnum.None ? edge : port.Edge));
     }
     

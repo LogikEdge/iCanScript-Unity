@@ -78,7 +78,7 @@ public partial class iCS_EditorObject {
   		    ForEachChildRecursiveDepthFirst(
   			    c=> {
   				    if(c.IsNode && c.IsVisibleInLayout) {
-  					    c.SetRectAnimationStartValue(c.GlobalLayoutRect);
+  					    c.SetRectAnimationStartValue(c.GlobalDisplayRect);
   				    }
   			    }
   		    );                
@@ -87,19 +87,19 @@ public partial class iCS_EditorObject {
         DisplayOption= iCS_DisplayOptionEnum.Iconized;
         LayoutNode();
         LayoutParentNodesUntilTop();
-        var timeRatio= BuildTimeRatioFromRect(startValueForAnimation, GlobalLayoutRect);
+        var timeRatio= BuildTimeRatioFromRect(startValueForAnimation, GlobalDisplayRect);
         // Animate child nodes if node was unfolded.
         if(animateChildren) {
 			ForEachChildRecursiveDepthFirst(
 				c=> {
 					if(c.IsNode && !c.IsVisibleInLayout) {
-						c.StartRectAnimation(c.GlobalLayoutRect, timeRatio);
+						c.StartRectAnimation(c.GlobalDisplayRect, timeRatio);
 					}
 				}
 			);	            
         }				
         // Animate current node.
-		StartRectAnimation(GlobalLayoutRect, timeRatio);
+		StartRectAnimation(GlobalDisplayRect, timeRatio);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
@@ -115,7 +115,7 @@ public partial class iCS_EditorObject {
   		    ForEachChildRecursiveDepthFirst(
   			    c=> {
   				    if(c.IsNode && c.IsVisibleInLayout) {
-  					    c.SetRectAnimationStartValue(c.GlobalLayoutRect);
+  					    c.SetRectAnimationStartValue(c.GlobalDisplayRect);
   				    }
   			    }
   		    );                
@@ -124,19 +124,19 @@ public partial class iCS_EditorObject {
         DisplayOption= iCS_DisplayOptionEnum.Folded;
         LayoutNode();
         LayoutParentNodesUntilTop();
-        var timeRatio= BuildTimeRatioFromRect(startValueForAnimation, GlobalLayoutRect);
+        var timeRatio= BuildTimeRatioFromRect(startValueForAnimation, GlobalDisplayRect);
         // Animate child nodes if node was unfolded.
         if(animateChildren) {
 			ForEachChildRecursiveDepthFirst(
 				c=> {
 					if(c.IsNode && !c.IsVisibleInLayout) {
-						c.StartRectAnimation(c.GlobalLayoutRect, timeRatio);
+						c.StartRectAnimation(c.GlobalDisplayRect, timeRatio);
 					}
 				}
 			);	            
         }	
         // Animate current node.
-		StartRectAnimation(GlobalLayoutRect, timeRatio);
+		StartRectAnimation(GlobalDisplayRect, timeRatio);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
@@ -149,7 +149,7 @@ public partial class iCS_EditorObject {
 	    ForEachChildRecursiveDepthFirst(
 		    c=> {
 			    if(c.IsNode && !c.IsVisibleInLayout) {
-				    c.SetRectAnimationStartValue(c.GlobalLayoutRect);
+				    c.SetRectAnimationStartValue(c.GlobalDisplayRect);
 				    c.myInvisibleBeforeAnimation= true;
 			    }
 		    }
@@ -159,7 +159,7 @@ public partial class iCS_EditorObject {
         LayoutNode();
         LayoutParentNodesUntilTop();
 		// Animate current node.
-		var animationTargetValue= GlobalLayoutRect;
+		var animationTargetValue= GlobalDisplayRect;
         var timeRatio= BuildTimeRatioFromRect(animationStartValue, animationTargetValue);
 		SetRectAnimationStartValue(animationStartValue);
 		StartRectAnimation(animationTargetValue, timeRatio);
@@ -167,7 +167,7 @@ public partial class iCS_EditorObject {
 		ForEachChildRecursiveDepthFirst(
 			c=> {
 				if(c.IsNode && c.IsVisibleInLayout) {
-					c.StartRectAnimation(c.GlobalLayoutRect, timeRatio);
+					c.StartRectAnimation(c.GlobalDisplayRect, timeRatio);
 				}
 			}
 		);

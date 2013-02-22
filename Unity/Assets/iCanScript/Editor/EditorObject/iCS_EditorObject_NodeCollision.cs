@@ -16,7 +16,7 @@ public partial class iCS_EditorObject {
 		var childRect= new Rect[children.Length];
 		for(int i= 0; i < children.Length; ++i) {
 			var c= children[i];
-			childStartPos[i]= c.GlobalLayoutPosition;
+			childStartPos[i]= c.GlobalDisplayPosition;
 			childRect[i]    = BuildRect(c.GlobalAnchorPosition, c.DisplaySize);
 		}
         // Resolve collisions.
@@ -27,7 +27,7 @@ public partial class iCS_EditorObject {
 			var targetPos= Math3D.Middle(childRect[i]);
 			if(Math3D.IsNotEqual(startPos, targetPos)) {
 				var c= children[i];
-				c.GlobalLayoutPosition= targetPos;
+				c.GlobalDisplayPosition= targetPos;
 				if(!c.IsSticky) {
 					c.SetPositionAnimationStartValue(startPos);
                     c.StartPositionAnimation(targetPos);					

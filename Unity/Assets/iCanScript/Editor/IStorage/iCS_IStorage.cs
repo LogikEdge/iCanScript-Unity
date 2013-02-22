@@ -120,7 +120,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? eObj.Parent : null); }
     // ----------------------------------------------------------------------
-    public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.GlobalLayoutRect= r; }
+    public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.GlobalDisplayRect= r; }
     // ----------------------------------------------------------------------
     public object          GetRuntimeObject(iCS_EditorObject obj) {
         iCS_Behaviour bh= Storage as iCS_Behaviour;
@@ -464,7 +464,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
         var parent= EditorObjects[parentId];
-        var globalPos= parent.GlobalLayoutPosition;
+        var globalPos= parent.GlobalDisplayPosition;
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
 		port.UpdatePortEdge();

@@ -6,7 +6,7 @@ public partial class iCS_IStorage {
     // Creation methods
     // ----------------------------------------------------------------------
     public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
-        Vector2 fromStatePortPos= fromStatePort.GlobalLayoutPosition;
+        Vector2 fromStatePortPos= fromStatePort.GlobalDisplayPosition;
         // Create toStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         toStatePort.SetGlobalAnchorAndLayoutPosition(toStatePortPos);
@@ -258,7 +258,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public Rect ProposeTransitionModulePosition(iCS_EditorObject module) {
-        Rect nodePos= module.GlobalLayoutRect;
+        Rect nodePos= module.GlobalDisplayRect;
         iCS_EditorObject fromStatePort= GetFromStatePort(module);
         iCS_EditorObject toStatePort= GetToStatePort(module);
         if(toStatePort != null) {
@@ -298,10 +298,10 @@ public partial class iCS_IStorage {
         iCS_EditorObject outStatePort     = GetFromStatePort(module);
         iCS_EditorObject inTransitionPort = GetInTransitionPort(module);
         iCS_EditorObject outTransitionPort= GetOutTransitionPort(module);
-        var inStatePos= inStatePort.GlobalLayoutPosition;
-        var outStatePos= outStatePort.GlobalLayoutPosition;
-        var inTransitionPos= inTransitionPort.GlobalLayoutPosition;
-        var outTransitionPos= outTransitionPort.GlobalLayoutPosition;
+        var inStatePos= inStatePort.GlobalDisplayPosition;
+        var outStatePos= outStatePort.GlobalDisplayPosition;
+        var inTransitionPos= inTransitionPort.GlobalDisplayPosition;
+        var outTransitionPos= outTransitionPort.GlobalDisplayPosition;
         Vector2 dir= ((inStatePos-outTransitionPos).normalized+(inTransitionPos-outStatePos).normalized).normalized;
         return dir;
     }
