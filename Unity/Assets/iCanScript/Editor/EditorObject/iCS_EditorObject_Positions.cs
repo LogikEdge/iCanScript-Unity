@@ -213,12 +213,14 @@ public partial class iCS_EditorObject {
             if(IsNode && Math3D.IsNotEqual(displaySize, myPreviousDisplaySize)) {
                 myPreviousDisplaySize= displaySize;
                 LayoutPorts();
-                LayoutParentNodesUntilTop();
             }
 			return displaySize;
 		}
 		set {
-		    if(IsPort) return;
+		    if(IsPort) {
+                Debug.LogWarning("iCanScript: Should not set DisplaySize on ports.");
+		        return;
+	        }
 		    AnimatedSize.Reset(value);
 		}
 	}
@@ -228,28 +230,6 @@ public partial class iCS_EditorObject {
             return BuildRect(GlobalDisplayPosition, DisplaySize);
  		}
  	}
- 	// ----------------------------------------------------------------------
-    public Rect GlobalDisplayChildRect {
-        get {
-            var pos= GlobalDisplayPosition;
-            Rect childRect= new Rect(pos.x, pos.y, 0, 0);
-            ForEachChildNode(
-                c=> childRect= Math3D.Merge(childRect, c.GlobalDisplayRect)
-            );
-            return childRect;
-        }
-    }
-    // ----------------------------------------------------------------------
-    // Returns the global rectangle currently used by the children.
-    public Rect GlobalDisplayChildRectWithMargins {
-        get {
-            var childRect= GlobalDisplayChildRect;
-            if(Math3D.IsNotZero(Math3D.Area(childRect))) {
-                childRect= AddMargins(childRect);
-            }
-            return childRect;
-        }
-    }
     
 	// ======================================================================
     // High-order functions
@@ -278,5 +258,30 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     Vector2 SizeFrom(Rect r) {
         return new Vector2(r.width, r.height);
+    }
+
+	// ======================================================================
+    // Child Position Utilities
+ 	// ----------------------------------------------------------------------
+    public Rect GlobalDisplayChildRect {
+        get {
+            var pos= GlobalDisplayPosition;
+            Rect childRect= new Rect(pos.x, pos.y, 0, 0);
+            ForEachChildNode(
+                c=> childRect= Math3D.Merge(childRect, c.GlobalDisplayRect)
+            );
+            return childRect;
+        }
+    }
+    // ----------------------------------------------------------------------
+    // Returns the global rectangle currently used by the children.
+    public Rect GlobalDisplayChildRectWithMargins {
+        get {
+            var childRect= GlobalDisplayChildRect;
+            if(Math3D.IsNotZero(Math3D.Area(childRect))) {
+                childRect= AddMargins(childRect);
+            }
+            return childRect;
+        }
     }
 }
