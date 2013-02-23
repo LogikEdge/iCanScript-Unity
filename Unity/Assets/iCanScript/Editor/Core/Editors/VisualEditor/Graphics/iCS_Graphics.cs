@@ -532,6 +532,7 @@ public partial class iCS_Graphics {
         
         // Don't display if outside clipping area.
 		Vector2 portCenter= GetPortCenter(port);
+		if(port.IsOnRightEdge) portCenter.x-= 1f/Scale;   // Small adjustement realign right ports on visual edge.
 		float portRadius= iCS_EditorConfig.PortRadius;
         Rect displayArea= new Rect(portCenter.x-200f, portCenter.y-2f*portRadius, 400f, 4f*portRadius);
         if(!IsVisible(displayArea)) return;
