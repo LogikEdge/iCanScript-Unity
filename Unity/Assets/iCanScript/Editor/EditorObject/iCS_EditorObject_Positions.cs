@@ -168,7 +168,7 @@ public partial class iCS_EditorObject {
 			return globalPos-parent.GlobalDisplayPosition;
 		}
 		set {
-		    LocalLayoutOffset= value-LocalLayoutOffset;
+		    LocalLayoutOffset= value-LocalAnchorPosition;
 		}
 	}
     // ----------------------------------------------------------------------
