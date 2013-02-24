@@ -130,11 +130,13 @@ public partial class iCS_EditorObject {
 			return newPos;
 		}
 		set {
+            var offsetWithoutParent= value-LocalAnchorPosition;
             var parent= ParentNode;
 		    if(parent == null) {
-		        LocalLayoutOffset= value-LocalAnchorPosition;
+		        LocalLayoutOffset= offsetWithoutParent;
+		        return;
 		    }
-	        LocalLayoutOffset= value-parent.GlobalDisplayPosition-LocalAnchorPosition;
+	        LocalLayoutOffset= offsetWithoutParent-parent.GlobalDisplayPosition;
 		}
 	}
     // ----------------------------------------------------------------------
