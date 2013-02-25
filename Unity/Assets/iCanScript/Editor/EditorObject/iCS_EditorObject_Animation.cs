@@ -42,7 +42,8 @@ public partial class iCS_EditorObject {
 	void AnimateSize(Vector2 targetSize, P.TimeRatio timeRatio) {
         AnimatedSize.StartValue= AnimatedSize.CurrentValue;
 		AnimatedSize.TargetValue= targetSize;
-		AnimatedSize.Start(timeRatio);
+//		AnimatedSize.Start(timeRatio);
+		AnimatedSize.Reset(targetSize);
 	}
     // ----------------------------------------------------------------------
     void StopSizeAnimation() {
@@ -62,6 +63,8 @@ public partial class iCS_EditorObject {
         AnimatedLayoutOffset.StartValue= AnimatedLayoutOffset.CurrentValue;
 		AnimatedLayoutOffset.TargetValue= targetLayoutOffset;
 		AnimatedLayoutOffset.Start(timeRatio);        
+//        AnimatedLayoutOffset.Reset(targetLayoutOffset);
+        Debug.Log("start: "+AnimatedLayoutOffset.StartValue+" target: "+targetLayoutOffset+" time: "+timeRatio.RemainingTime);
     }
     // ----------------------------------------------------------------------
     void StopLayoutOffsetAnimation() {

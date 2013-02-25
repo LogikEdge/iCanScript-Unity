@@ -92,7 +92,7 @@ public partial class iCS_EditorObject {
     			    return;
 			    }
             }
-			AnimatedLayoutOffset.Reset(value);
+			AnimatedLayoutOffset.Reset(value);                
 		}
 	}
 
@@ -149,9 +149,9 @@ public partial class iCS_EditorObject {
 		set {
 		    if(IsPort) {
                 Debug.LogWarning("iCanScript: Should not set DisplaySize on ports.");
-		        return;
+		        return; 
 	        }
-		    AnimatedSize.Reset(value);
+    		AnimatedSize.Reset(value);                
 		}
 	}
     // ----------------------------------------------------------------------
@@ -202,7 +202,7 @@ public partial class iCS_EditorObject {
             var pos= GlobalDisplayPosition;
             Rect childRect= new Rect(pos.x, pos.y, 0, 0);
             ForEachChildNode(
-                c=> childRect= Math3D.Merge(childRect, c.GlobalDisplayRect)
+                c=> { childRect= Math3D.Merge(childRect, c.GlobalDisplayRect); }
             );
             return childRect;
         }
