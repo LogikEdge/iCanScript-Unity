@@ -9,8 +9,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     private P.Animate<Vector2> AnimatedLayoutOffset=
         new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-	private P.Animate<Vector2> AnimatedPosition=
-		new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	private P.Animate<Vector2> AnimatedSize=
 		new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 
@@ -24,7 +22,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Returns true if the display position is currently being animated.
     public bool IsPositionAnimated {
-        get { return  AnimatedPosition.IsActive || AnimatedLayoutOffset.IsActive; }
+        get { return  AnimatedLayoutOffset.IsActive; }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display size or position are being animated.
@@ -71,64 +69,50 @@ public partial class iCS_EditorObject {
     }
     
     // ======================================================================
-	// Animation start value setters.
+	// Position Animation
     // ----------------------------------------------------------------------
-	void SetRectAnimationStartValue(Rect r) {
-		SetPositionAnimationStartValue(Math3D.Middle(r));
-	}
-    // ----------------------------------------------------------------------
-	void SetPositionAnimationStartValue(Vector2 startPos) {
-		if(!IsPositionAnimated) {
-			AnimatedPosition.StartValue= startPos;
-		} else {
-			AnimatedPosition.StartValue= AnimatedPosition.CurrentValue;
-			AnimatedPosition.Start(AnimatedPosition.RemainingTime);
-		}
-	}
-
-    // ======================================================================
-	// Animation start functions
-    // ----------------------------------------------------------------------
-	void StartRectAnimation(Rect targetRect) {
-		var startSize= AnimatedSize.StartValue;
-        var startRect= new Rect(AnimatedPosition.StartValue.x-0.5f*startSize.x,
-                                AnimatedPosition.StartValue.y-0.5f*startSize.y,
-                                startSize.x,
-                                startSize.y);
-		var timeRatio= BuildTimeRatioFromRect(startRect, targetRect);
-		StartRectAnimation(targetRect, timeRatio);
-	}
-    // ----------------------------------------------------------------------
-	void StartPositionAnimation(Vector2 targetPosition) {
-        var startPos= AnimatedPosition.StartValue;
-		var timeRatio= BuildTimeRatioFromPosition(startPos, targetPosition);
-		StartPositionAnimation(targetPosition, timeRatio);
-	}
-    // ----------------------------------------------------------------------
-	void StartRectAnimation(Rect targetRect, P.TimeRatio timeRatio) {
-		var targetPosition= Math3D.Middle(targetRect);
-		StartPositionAnimation(targetPosition, timeRatio);
-	}
-    // ----------------------------------------------------------------------
-	void StartPositionAnimation(Vector2 targetPosition, P.TimeRatio timeRatio) {
-		AnimatedPosition.TargetValue= targetPosition;
-		AnimatedPosition.Start(timeRatio);
-	}
-
-    // ======================================================================
-	// Animation stop functions
-    // ----------------------------------------------------------------------
-    void StopAnimations() {
-        StopRectAnimation();
+    void AnimatePosition(Vector2 targetPosition) {
+        var targetLayoutOffset= targetPosition-LocalAnchorPosition;
+        var parent= ParentNode;
+        if(parent != null) {
+            targetLayoutOffset-= parent.GlobalDisplayPosition;
+        }
+        AnimateLayoutOffset(targetLayoutOffset);
     }
     // ----------------------------------------------------------------------
-    void StopRectAnimation() {
-        StopSizeAnimation();
-        StopPositionAnimation();
+    void AnimatePosition(Vector2 targetPosition, P.TimeRatio timeRatio) {
+        var targetLayoutOffset= targetPosition-LocalAnchorPosition;
+        var parent= ParentNode;
+        if(parent != null) {
+            targetLayoutOffset-= parent.GlobalDisplayPosition;
+        }
+        AnimateLayoutOffset(targetLayoutOffset, timeRatio);
     }
     // ----------------------------------------------------------------------
     void StopPositionAnimation() {
-        AnimatedPosition.Reset();
+        StopLayoutOffsetAnimation();
+    }
+
+    // ======================================================================
+	// Rect Animation
+    // ----------------------------------------------------------------------
+    void AnimateRect(Rect globalRect) {
+        AnimatePosition(PositionFrom(globalRect));
+        AnimateSize(SizeFrom(globalRect));
+    }
+    // ----------------------------------------------------------------------
+    void AnimateRect(Rect globalRect, P.TimeRatio timeRatio) {
+        AnimatePosition(PositionFrom(globalRect), timeRatio);
+        AnimateSize(SizeFrom(globalRect), timeRatio);
+    }
+    // ----------------------------------------------------------------------
+    void StopRectAnimation() {
+        StopPositionAnimation();
+        StopSizeAnimation();
+    }
+    // ----------------------------------------------------------------------
+    void StopAnimations() {
+        StopRectAnimation();
     }
     
     // ======================================================================
@@ -205,13 +189,6 @@ public partial class iCS_EditorObject {
 				AnimatedSize.Update();
 			}
 		}
-		if(AnimatedPosition.IsActive) {
-			if(AnimatedPosition.IsElapsed) {
-				AnimatedPosition.Reset(AnimatedPosition.TargetValue);
-			} else {
-				AnimatedPosition.Update();
-			}
-		}
 	}
 
     // ----------------------------------------------------------------------
@@ -225,10 +202,10 @@ public partial class iCS_EditorObject {
                 return 1f;
             }
             if(!IsVisibleInLayout) {
-                return 1f-AnimatedPosition.Ratio;
+                return 1f-AnimatedLayoutOffset.Ratio;
             }
             if(myInvisibleBeforeAnimation) {
-                return AnimatedPosition.Ratio;
+                return AnimatedLayoutOffset.Ratio;
             }
             return 1f;
         }

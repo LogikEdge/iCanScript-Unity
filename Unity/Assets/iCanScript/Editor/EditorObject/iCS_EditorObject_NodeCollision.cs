@@ -29,8 +29,8 @@ public partial class iCS_EditorObject {
 				var c= children[i];
 				c.GlobalDisplayPosition= targetPos;
 				if(!c.IsSticky) {
-					c.SetPositionAnimationStartValue(startPos);
-                    c.StartPositionAnimation(targetPos);					
+					//c.SetPositionAnimationStartValue(startPos);
+                    //c.StartPositionAnimation(targetPos);					
 				}
 			}
 		}

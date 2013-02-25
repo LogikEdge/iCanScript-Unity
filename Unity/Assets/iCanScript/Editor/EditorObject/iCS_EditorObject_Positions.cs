@@ -7,7 +7,6 @@ public partial class iCS_EditorObject {
 	// Fields
     // ----------------------------------------------------------------------
 	private Vector2 myPreviousDisplaySize    = Vector2.zero;
-	private Vector2 myPreviousDisplayPosition= Vector2.zero;
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
@@ -22,7 +21,7 @@ public partial class iCS_EditorObject {
 			    return;
 		    }
 			engineObject.PortPositionRatio= value;
-			IsDirty= true;
+			IsDirty= true;  // Save new port ratio.
 		}
     }
 	
@@ -42,40 +41,32 @@ public partial class iCS_EditorObject {
 		set {
 			if(IsPort) {
                 // Don't update layout offset for port on iconized nodes.
-    			var parentNode= ParentNode;
-    			if(parentNode.IsIconizedOnDisplay || !parentNode.IsVisibleOnDisplay) {
+    			if(!IsVisibleOnDisplay) {
+                    Debug.LogWarning("iCanScript: Should not set port anchor position if not visible.");
     				return;
     			}
                 // Transform to a position ratio between 0f and 1f.
     			UpdatePortEdge(value);
     			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);			
-    			IsDirty= true;
+    			IsDirty= true;  // Save new anchor position.
 				return;
 			}
 			var engineObject= EngineObject;
 			if(Math3D.IsEqual(engineObject.LocalAnchorPosition, value)) {
 			    return;
 		    }
-            // FIXME: Should layout parent nodes here.
 			engineObject.LocalAnchorPosition= value;
-			IsDirty= true;
+			IsDirty= true;  // Save new anchor position.
 		}
 	}
     // ----------------------------------------------------------------------	
 	public Vector2 GlobalAnchorPosition {
 		get {
-			if(IsPort) {
-    		    return ParentNode.GlobalDisplayPosition+LocalAnchorPosition;			
-			}
 			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
     		return parent.GlobalDisplayPosition+LocalAnchorPosition;			    
 		}
 		set {
-			if(IsPort) {
-                LocalAnchorPosition= value-ParentNode.GlobalDisplayPosition;			
-				return;
-			}
 			var parent= ParentNode;
 			if(parent == null) {
 				LocalAnchorPosition= value;
@@ -91,9 +82,6 @@ public partial class iCS_EditorObject {
     // Offset from the anchor position.  This attribute is animated.
 	public Vector2 LocalLayoutOffset {
 		get {
-            if(!IsVisibleOnDisplay) {
-                return Vector2.zero;
-            }
 			return AnimatedLayoutOffset.CurrentValue;
 		}
 		set {
@@ -114,20 +102,10 @@ public partial class iCS_EditorObject {
 	public Vector2 GlobalDisplayPosition {
 		get {
 			var parent= ParentNode;
-            Vector2 newPos;
-			if(AnimatedPosition.IsActive && !AnimatedPosition.IsElapsed) {
-				newPos= AnimatedPosition.CurrentValue;
-			} else {
-    			if(parent == null) {
-    			    return LocalAnchorPosition+LocalLayoutOffset;
-			    }
-        		newPos= parent.GlobalDisplayPosition+LocalAnchorPosition+LocalLayoutOffset;			    			        
-			}
-			if(IsNode && Math3D.IsNotEqual(newPos, myPreviousDisplayPosition)) {
-			    myPreviousDisplayPosition= newPos;
-                LayoutParentNodesUntilTop();
-			}
-			return newPos;
+			if(parent == null) {
+			    return LocalAnchorPosition+LocalLayoutOffset;
+		    }
+    		return parent.GlobalDisplayPosition+LocalAnchorPosition+LocalLayoutOffset;			    			        
 		}
 		set {
             var offsetWithoutParent= value-LocalAnchorPosition;
@@ -154,8 +132,10 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 DisplaySize {
 		get {
+	        if(!IsVisibleOnDisplay) {
+	            return Vector2.zero;
+            }
 		    if(IsPort) {
-		        if(!IsVisibleOnDisplay) return Vector2.zero;
 		        return iCS_EditorConfig.PortSize;
 		    }
             // Update ports to match parent node display size.
