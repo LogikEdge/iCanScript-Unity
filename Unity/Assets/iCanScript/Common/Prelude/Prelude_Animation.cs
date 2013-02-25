@@ -20,8 +20,15 @@ public static partial class Prelude {
         
         public bool  IsActive       { get { return myStartTime != 0f || myEndTime != 0f; }}
         public bool  IsElapsed      { get { return CurrentTime() >= myEndTime; }}
-        public float Ratio          { get { return IsActive ? (CurrentTime()-myStartTime)/(myEndTime-myStartTime) : 1f; }}
         public float RemainingTime  { get { return myEndTime-CurrentTime(); }}
+        public float Ratio          {
+            get {
+                var now= CurrentTime();
+                return IsActive && now < myEndTime ?
+                    (now-myStartTime)/(myEndTime-myStartTime) :
+                    1f;
+            }
+        }
 
         public void Start(float deltaTime) {
             myStartTime= CurrentTime();
