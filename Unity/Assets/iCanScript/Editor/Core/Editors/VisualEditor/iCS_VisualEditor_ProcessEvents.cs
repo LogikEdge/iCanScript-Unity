@@ -209,7 +209,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case iCS_PickPartEnum.Value: {
                 if(!pickedObject.IsInDataPort || pickedObject.SourceId != -1) break;
-                Debug.Log("Value is being picked");
                 break;
             }
         }

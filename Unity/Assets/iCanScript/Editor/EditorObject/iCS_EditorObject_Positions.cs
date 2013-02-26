@@ -3,11 +3,6 @@ using System.Collections;
 using P=Prelude;
 
 public partial class iCS_EditorObject {
-    // ======================================================================
-	// Fields
-    // ----------------------------------------------------------------------
-	private Vector2 myPreviousDisplaySize    = Vector2.zero;
-	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
     // ======================================================================
@@ -92,11 +87,7 @@ public partial class iCS_EditorObject {
     			    return;
 			    }
             }
-            if(IsPort || IsSticky || IsFloating) {
-    			AnimatedLayoutOffset.Reset(value);                                
-            } else {
-                AnimateLayoutOffset(value);
-            }
+    		AnimatedLayoutOffset.Reset(value);                                
 		}
 	}
 
@@ -139,24 +130,14 @@ public partial class iCS_EditorObject {
 		    if(IsPort) {
 		        return iCS_EditorConfig.PortSize;
 		    }
-            // Update ports to match parent node display size.
-			var displaySize= AnimatedSize.CurrentValue;
-            if(IsNode && Math3D.IsNotEqual(displaySize, myPreviousDisplaySize)) {
-                myPreviousDisplaySize= displaySize;
-                LayoutPorts();
-            }
-			return displaySize;
+			return AnimatedSize.CurrentValue;
 		}
 		set {
 		    if(IsPort) {
                 Debug.LogWarning("iCanScript: Should not set DisplaySize on ports.");
 		        return; 
 	        }
-            if(IsPort || IsSticky || IsFloating) {
-        		AnimatedSize.Reset(value);                                
-            } else {
-                AnimateSize(value);                
-            }
+    		AnimatedSize.Reset(value);                                
 		}
 	}
     // ----------------------------------------------------------------------

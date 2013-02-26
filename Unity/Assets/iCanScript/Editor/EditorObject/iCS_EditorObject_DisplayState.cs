@@ -65,18 +65,48 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Display State Change
     // ----------------------------------------------------------------------
-    // IMPROVE: Should avoid digging through all objects to animate them on unfold/fold/iconize.
+    void Hide() {
+        // Nothing to do if we are not visible.
+        if(!IsVisibleOnDisplay) return;
+        // First hide all children.
+        ForEachChildNode(c=> c.Hide());
+        // ... then hide ourself.
+        DisplaySize= Vector2.zero;
+        LocalLayoutOffset= -LocalAnchorPosition;
+    }
+    // ----------------------------------------------------------------------
+    // We assume that our parent has just unfolded.
+    void Unhide() {
+        // Unhide iconized node
+        if(DisplayOption == iCS_DisplayOptionEnum.Iconized) {
+            DisplaySize= iCS_Graphics.GetMaximizeIconSize(this);
+            LocalLayoutOffset= Vector2.zero;
+            return;
+        }
+        // Unhide folded node
+        if(DisplayOption == iCS_DisplayOptionEnum.Folded) {
+            DisplaySize= SizeFrom(FoldedNodeRect());
+            LocalLayoutOffset= Vector2.zero;
+            return;
+        }
+        // Unhide unfolded node
+        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
+            ForEachChildNode(c=> c.Unhide());
+            LayoutNode();
+        }
+    }
+    // ----------------------------------------------------------------------
     public void Iconize() {
         // Nothing to do if already iconized.
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
         // Animate children if previous state was unfolded.
-        bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
+            ForEachChildNode(c=> c.Hide());
+        }
         // Set the node has iconized.
         DisplayOption= iCS_DisplayOptionEnum.Iconized;
         LayoutNode();
         LayoutParentNodesUntilTop();
-//        Vector2 targetSize= iCS_Graphics.GetMaximizeIconSize(this);
-//        AnimateSize(targetSize);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
@@ -84,13 +114,13 @@ public partial class iCS_EditorObject {
         // Nothing to do if already fold.
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
         // Animate children node if previous state was unfolded.
-        bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
+            ForEachChildNode(c=> c.Hide());            
+        }
         // Set the node has folded.
         DisplayOption= iCS_DisplayOptionEnum.Folded;
         LayoutNode();
         LayoutParentNodesUntilTop();
-//        var targetSize= SizeFrom(FoldedNodeRect());
-//        AnimateSize(targetSize);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
@@ -99,10 +129,10 @@ public partial class iCS_EditorObject {
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
         // Set the node has unfolded.
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
+        // Unhide all children nodes.
+        ForEachChildNode(c=> c.Unhide());
         LayoutNode();
         LayoutParentNodesUntilTop();
-//        var targetSize= SizeFrom(UnfoldedNodeRect());
-//        AnimateSize(targetSize);
         IsDirty= true;
     }
 

@@ -174,19 +174,29 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Animation update
     // ----------------------------------------------------------------------
+    // IMPROVE: Should avoid performing the layout on the parents multiple times.
 	public void UpdateAnimation() {
         if(AnimatedLayoutOffset.IsActive) {
+//            var prevLayoutOffset= AnimatedLayoutOffset.CurrentValue;
             if(AnimatedLayoutOffset.IsElapsed) {
                 AnimatedLayoutOffset.Reset(AnimatedLayoutOffset.TargetValue);
             } else {
                 AnimatedLayoutOffset.Update();
             }
+//            if(Math3D.IsNotEqual(prevLayoutOffset, AnimatedLayoutOffset.CurrentValue)) {
+//                LayoutParentNodesUntilTop();
+//            }
         }
 		if(AnimatedSize.IsActive) {
+            var prevSize= AnimatedSize.CurrentValue;
 			if(AnimatedSize.IsElapsed) {
 				AnimatedSize.Reset(AnimatedSize.TargetValue);
 			} else {
 				AnimatedSize.Update();
+			}
+			if(Math3D.IsNotEqual(prevSize, AnimatedSize.CurrentValue)) {
+                LayoutPorts();
+//			    LayoutParentNodesUntilTop();
 			}
 		}
 	}
@@ -202,10 +212,10 @@ public partial class iCS_EditorObject {
                 return 1f;
             }
             if(!IsVisibleInLayout) {
-                return 1f-AnimatedLayoutOffset.Ratio;
+                return 1f-AnimatedSize.Ratio;
             }
             if(myInvisibleBeforeAnimation) {
-                return AnimatedLayoutOffset.Ratio;
+                return AnimatedSize.Ratio;
             }
             return 1f;
         }
