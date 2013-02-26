@@ -17,12 +17,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Returns true if the display size is currently being animated.
     public bool IsSizeAnimated {
-        get { return  AnimatedSize.IsActive; }
+        get { return AnimatedSize.IsActive; }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display position is currently being animated.
     public bool IsPositionAnimated {
-        get { return  AnimatedLayoutOffset.IsActive; }
+        get { return AnimatedLayoutOffset.IsActive; }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display size or position are being animated.
@@ -42,8 +42,7 @@ public partial class iCS_EditorObject {
 	void AnimateSize(Vector2 targetSize, P.TimeRatio timeRatio) {
         AnimatedSize.StartValue= AnimatedSize.CurrentValue;
 		AnimatedSize.TargetValue= targetSize;
-//		AnimatedSize.Start(timeRatio);
-		AnimatedSize.Reset(targetSize);
+		AnimatedSize.Start(timeRatio);
 	}
     // ----------------------------------------------------------------------
     void StopSizeAnimation() {
@@ -63,8 +62,6 @@ public partial class iCS_EditorObject {
         AnimatedLayoutOffset.StartValue= AnimatedLayoutOffset.CurrentValue;
 		AnimatedLayoutOffset.TargetValue= targetLayoutOffset;
 		AnimatedLayoutOffset.Start(timeRatio);        
-//        AnimatedLayoutOffset.Reset(targetLayoutOffset);
-        Debug.Log("start: "+AnimatedLayoutOffset.StartValue+" target: "+targetLayoutOffset+" time: "+timeRatio.RemainingTime);
     }
     // ----------------------------------------------------------------------
     void StopLayoutOffsetAnimation() {
@@ -200,7 +197,7 @@ public partial class iCS_EditorObject {
             if(IsPort) {
                 return ParentNode.DisplayAlpha;
             }
-            if(!IsAnimated) {
+            if(true /*!IsAnimated*/) {
                 myInvisibleBeforeAnimation= false;
                 return 1f;
             }
