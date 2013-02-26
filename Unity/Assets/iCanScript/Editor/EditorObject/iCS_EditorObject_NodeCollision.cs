@@ -16,7 +16,12 @@ public partial class iCS_EditorObject {
 		var childRect= new Rect[children.Length];
 		for(int i= 0; i < children.Length; ++i) {
 			var c= children[i];
-			childStartPos[i]= c.GlobalDisplayPosition;
+            if(c.IsPositionAnimated) {
+                var localPos= c.LocalAnchorPosition+c.AnimatedLayoutOffset.TargetValue;
+                childStartPos[i]= GlobalDisplayPosition+localPos;
+            } else {
+    			childStartPos[i]= c.GlobalDisplayPosition;                
+            }
 			childRect[i]    = BuildRect(c.GlobalAnchorPosition, c.DisplaySize);
 		}
         // Resolve collisions.
