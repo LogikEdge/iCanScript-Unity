@@ -27,11 +27,11 @@ public partial class iCS_EditorObject {
 			var targetPos= Math3D.Middle(childRect[i]);
 			if(Math3D.IsNotEqual(startPos, targetPos)) {
 				var c= children[i];
-                if(c.IsSticky) {
+//                if(c.IsSticky) {
     				c.GlobalDisplayPosition= targetPos;                    
-                } else {
-                    c.AnimatePosition(targetPos);
-				}
+//                } else {
+//                    c.AnimatePosition(targetPos);
+//				}
 			}
 		}
     }

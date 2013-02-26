@@ -92,7 +92,11 @@ public partial class iCS_EditorObject {
     			    return;
 			    }
             }
-			AnimatedLayoutOffset.Reset(value);                
+            if(IsPort || IsSticky || IsFloating) {
+    			AnimatedLayoutOffset.Reset(value);                                
+            } else {
+                AnimateLayoutOffset(value);
+            }
 		}
 	}
 
@@ -148,7 +152,11 @@ public partial class iCS_EditorObject {
                 Debug.LogWarning("iCanScript: Should not set DisplaySize on ports.");
 		        return; 
 	        }
-    		AnimatedSize.Reset(value);                
+            if(IsPort || IsSticky || IsFloating) {
+        		AnimatedSize.Reset(value);                                
+            } else {
+                AnimateSize(value);                
+            }
 		}
 	}
     // ----------------------------------------------------------------------
