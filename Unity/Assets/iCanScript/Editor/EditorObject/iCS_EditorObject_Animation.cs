@@ -185,7 +185,6 @@ public partial class iCS_EditorObject {
             }
             if(Math3D.IsNotEqual(prevLayoutOffset, AnimatedLayoutOffset.CurrentValue)) {
                 LayoutParentNodesUntilTop();
-//                ForEachParentNode(p=> p.WrapAroundChildrenNodes());
             }
         }
 		if(AnimatedSize.IsActive) {
@@ -198,7 +197,6 @@ public partial class iCS_EditorObject {
 			if(Math3D.IsNotEqual(prevSize, AnimatedSize.CurrentValue)) {
                 LayoutPorts();
                 LayoutParentNodesUntilTop();
-//                ForEachParentNode(p=> p.WrapAroundChildrenNodes());
 			}
 		}
 	}
