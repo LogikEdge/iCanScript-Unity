@@ -132,9 +132,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 DisplaySize {
 		get {
-	        if(!IsVisibleOnDisplay) {
-	            return Vector2.zero;
-            }
 		    if(IsPort) {
 		        return iCS_EditorConfig.PortSize;
 		    }

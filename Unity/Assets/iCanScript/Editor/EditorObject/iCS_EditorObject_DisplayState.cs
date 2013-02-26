@@ -56,7 +56,7 @@ public partial class iCS_EditorObject {
                 var parent= ParentNode;
                 return parent.IsVisibleOnDisplay;
             }
-            if(true /*!IsAnimated*/) return IsVisibleInLayout;
+            if(!IsAnimated) return IsVisibleInLayout;
             var area= Math3D.Area(DisplaySize);
             return Math3D.IsGreater(area, iCS_EditorConfig.kMinIconicArea);
         }
