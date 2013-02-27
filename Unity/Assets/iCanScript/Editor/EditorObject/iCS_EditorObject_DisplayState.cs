@@ -65,7 +65,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Display State Change
     // ----------------------------------------------------------------------
-    void Hide() {
+    public void Hide() {
         // Nothing to do if we are not visible.
         if(!IsVisibleOnDisplay) return;
         // First hide all children.
@@ -76,7 +76,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // We assume that our parent has just unfolded.
-    void Unhide() {
+    public void Unhide() {
         // Unhide iconized node
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) {
             DisplaySize= iCS_Graphics.GetMaximizeIconSize(this);

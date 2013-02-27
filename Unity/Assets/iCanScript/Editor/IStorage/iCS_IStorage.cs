@@ -318,26 +318,26 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
-        this[id].SetGlobalAnchorAndLayoutPosition(globalPos);
-		// Set animated display position.
-        SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
-	    this[id].IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
-        if(this[id].IsClassModule) ClassModuleCompleteCreation(this[id]);
-        return this[id];
+        var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
+        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
+	    instance.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
+        if(instance.IsClassModule) ClassModuleCompleteCreation(instance);
+        // Perform initial node layout.
+        instance.Unhide();
+        return instance;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateStateChart(int parentId, Vector2 globalPos, string name= "") {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
-        this[id].SetGlobalAnchorAndLayoutPosition(globalPos);
-		// Set animated display position.
-        SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
+        var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
+        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
         // Automatically create entry state.
         CreateState(id, globalPos, "EntryState");
-        return this[id];
+        // Perform initial node layout.
+        instance.Unhide();
+        return instance;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateState(int parentId, Vector2 globalPos, string name= "") {
@@ -349,12 +349,10 @@ public partial class iCS_IStorage {
         // Create the function node.
         int id= GetNextAvailableId();
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
-        this[id].SetGlobalAnchorAndLayoutPosition(globalPos);
-		// Set animated display position.
-        SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
+        var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
+        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
         // Set first state as the default entry state.
-        this[id].IsEntryState= !UntilMatchingChild(parent,
+        instance.IsEntryState= !UntilMatchingChild(parent,
             child=> {
                 if(child.IsEntryState) {
                     return true;
@@ -362,7 +360,9 @@ public partial class iCS_IStorage {
                 return false;
             }
         );
-        return this[id];
+        // Perform initial node layout.
+        instance.Unhide();
+        return instance;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateMethod(int parentId, Vector2 globalPos, iCS_ReflectionInfo desc) {
@@ -384,9 +384,9 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        this[id].SetGlobalAnchorAndLayoutPosition(globalPos);
-        this[id].IconGUID= iconGUID;
+        var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
+        instance.IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -407,11 +407,9 @@ public partial class iCS_IStorage {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
             port.PortIndex= portIdx;			
 		}
-        // Initialize port position.
-//		this[id].InitialPortLayout();
-		// Initialize initial display position.
-        SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
-        return this[id];
+        // Perform initial node layout.
+        instance.Unhide();
+        return instance;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateInstanceMethod(int parentId, Vector2 globalPos, iCS_ReflectionInfo desc) {
@@ -423,9 +421,9 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        this[id].SetGlobalAnchorAndLayoutPosition(globalPos);
-        this[id].IconGUID= iconGUID;
+        var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
+        instance.IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
@@ -453,12 +451,9 @@ public partial class iCS_IStorage {
         port.PortIndex= portIdx++;			
         port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.OutFunctionPort);
         port.PortIndex= portIdx;			
-
-        // Initialize port position.
-//		this[id].InitialPortLayout();
-		// Initialize initial display position.
-        SetDisplayPosition(this[id], new Rect(globalPos.x,globalPos.y,0,0));
-        return this[id];
+        // Perform initial node layout.
+        instance.Unhide();
+        return instance;
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
