@@ -68,25 +68,28 @@ public partial class iCS_EditorObject {
     public void Hide() {
         // Nothing to do if we are not visible.
         if(!IsVisibleOnDisplay) return;
+        // Reposition at parent center.
+        LocalLayoutOffset= -LocalAnchorPosition;
         // First hide all children.
         ForEachChildNode(c=> c.Hide());
         // ... then hide ourself.
-        DisplaySize= Vector2.zero;
-        LocalLayoutOffset= -LocalAnchorPosition;
+        AnimateSize(Vector2.zero);
     }
     // ----------------------------------------------------------------------
     // We assume that our parent has just unfolded.
     public void Unhide() {
         // Unhide iconized node
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) {
-            DisplaySize= iCS_Graphics.GetMaximizeIconSize(this);
             LocalLayoutOffset= Vector2.zero;
+            DisplaySize= Vector2.zero;
+            AnimateSize(iCS_Graphics.GetMaximizeIconSize(this));
             return;
         }
         // Unhide folded node
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) {
-            DisplaySize= SizeFrom(FoldedNodeRect());
             LocalLayoutOffset= Vector2.zero;
+            DisplaySize= Vector2.zero;
+            AnimateSize(SizeFrom(FoldedNodeRect()));
             return;
         }
         // Unhide unfolded node
