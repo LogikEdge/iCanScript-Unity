@@ -82,20 +82,20 @@ public partial class iCS_EditorObject {
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) {
             LocalLayoutOffset= Vector2.zero;
             DisplaySize= Vector2.zero;
-            AnimateSize(iCS_Graphics.GetMaximizeIconSize(this));
+            AnimateSize(IconizedSize());
             return;
         }
         // Unhide folded node
-        if(DisplayOption == iCS_DisplayOptionEnum.Folded) {
+        if(IsFunction || DisplayOption == iCS_DisplayOptionEnum.Folded) {
             LocalLayoutOffset= Vector2.zero;
             DisplaySize= Vector2.zero;
-            AnimateSize(SizeFrom(FoldedNodeRect()));
+            AnimateRect(FoldedNodeRect());
             return;
         }
         // Unhide unfolded node
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
             ForEachChildNode(c=> c.Unhide());
-            LayoutNode();
+            AnimateRect(UnfoldedNodeRect());
         }
     }
     // ----------------------------------------------------------------------
@@ -108,22 +108,20 @@ public partial class iCS_EditorObject {
         }
         // Set the node has iconized.
         DisplayOption= iCS_DisplayOptionEnum.Iconized;
-        LayoutNode();
-        LayoutParentNodesUntilTop();
+        AnimateSize(IconizedSize());
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
         // Nothing to do if already fold.
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
+        // Set the node has folded.
+        DisplayOption= iCS_DisplayOptionEnum.Folded;
         // Animate children node if previous state was unfolded.
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
             ForEachChildNode(c=> c.Hide());            
         }
-        // Set the node has folded.
-        DisplayOption= iCS_DisplayOptionEnum.Folded;
-        LayoutNode();
-        LayoutParentNodesUntilTop();
+        AnimateSize(SizeFrom(FoldedNodeRect()));
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
@@ -134,8 +132,6 @@ public partial class iCS_EditorObject {
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         // Unhide all children nodes.
         ForEachChildNode(c=> c.Unhide());
-        LayoutNode();
-        LayoutParentNodesUntilTop();
         IsDirty= true;
     }
 

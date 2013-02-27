@@ -120,12 +120,16 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public static float AnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
         var distance= Vector2.Distance(p1,p2);
-	    return AnimationTimeFromDistance(distance);
+	    var time= AnimationTimeFromDistance(distance);
+        var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
+        return time < minAnimationTime ? minAnimationTime : time;
     }
     // ----------------------------------------------------------------------
     public static float AnimationTimeFromSize(Vector2 s1, Vector2 s2) {
         var distance= Vector2.Distance(s1,s2);
-	    return AnimationTimeFromDistance(distance);
+	    var time= AnimationTimeFromDistance(distance);
+        var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
+        return time < minAnimationTime ? minAnimationTime : time;
     }
     // ----------------------------------------------------------------------
     public static float AnimationTimeFromRect(Rect r1, Rect r2) {
@@ -136,7 +140,8 @@ public partial class iCS_EditorObject {
         if(t > distance) distance= t;
         t= Vector2.Distance(new Vector2(r1.x,r1.yMax), new Vector2(r2.x,r2.yMax));
         if(t > distance) distance= t;        
-	    return AnimationTimeFromDistance(distance);
+	    var time= AnimationTimeFromDistance(distance);
+        return time;
     }
     // ----------------------------------------------------------------------
     public static float AnimationTimeFromDistance(float distance) {

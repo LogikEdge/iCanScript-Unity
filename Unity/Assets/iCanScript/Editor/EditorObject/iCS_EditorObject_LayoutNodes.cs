@@ -73,6 +73,10 @@ public partial class iCS_EditorObject {
     }
 
     // ----------------------------------------------------------------------
+    Vector2 IconizedSize() {
+        return iCS_Graphics.GetMaximizeIconSize(this);
+    }
+    // ----------------------------------------------------------------------
     Rect FoldedNodeRect() {
         return NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(new Rect(0,0,0,0));
     }

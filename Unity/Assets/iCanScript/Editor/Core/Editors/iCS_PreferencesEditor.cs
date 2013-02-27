@@ -20,11 +20,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     // Display Option Constants
     const float  kAnimationPixelsPerSecond   = 400f;
+    const float  kMinAnimationTime           = 0.3f;
     const float  kScrollSpeed                = 3.0f;
     const float  kEdgeScrollSpeed            = 400.0f;
     const bool   kInverseZoom                = false;
     const float  kZoomSpeed                  = 1.0f;
     const string kAnimationPixelsPerSecondKey= "iCS_AnimationPixelsPerSecond";
+    const string kMinAnimationTimeKey        = "iCS_MinAnimationTime";
     const string kScrollSpeedKey             = "iCS_ScrollSpeed";
     const string kEdgeScrollSpeedKey         = "iCS_EdgeScrollSpeed";
     const string kInverseZoomKey             = "iCS_InverseZoom";
@@ -124,6 +126,15 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         set {
             if(value < 10f) value= 10f;
             EditorPrefs.SetFloat(kAnimationPixelsPerSecondKey, value);
+        }
+    }
+    public static float MinAnimationTime {
+        get {
+            return EditorPrefs.GetFloat(kMinAnimationTimeKey, kMinAnimationTime);
+        }
+        set {
+            if(value < 0.1f) value= 0.1f;
+            EditorPrefs.SetFloat(kMinAnimationTimeKey, value);
         }
     }
     public static float ScrollSpeed {
@@ -433,26 +444,27 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         // Draw column 2
         Rect p= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
         GUI.Label(p, "Animation Controls", EditorStyles.boldLabel);
-        Rect[] pos= new Rect[7];
+        Rect[] pos= new Rect[8];
         pos[0]= new Rect(p.x, p.yMax, p.width, p.height);
-        for(int i= 1; i < 6; ++i) {
+        for(int i= 1; i < 7; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
-        pos[5].y+= pos[4].height;
-        GUI.Label(pos[5], "Port Values", EditorStyles.boldLabel);
-        pos[5].y+= pos[5].height;
-        for(int i= 6; i < pos.Length; ++i) {
+        pos[6].y+= pos[5].height;
+        GUI.Label(pos[6], "Port Values", EditorStyles.boldLabel);
+        pos[6].y+= pos[6].height;
+        for(int i= 7; i < pos.Length; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;            
         }
         GUI.Label(pos[0], "Animation Pixels/Second");
-        GUI.Label(pos[1], "Scroll Speed");
-        GUI.Label(pos[2], "Edge Scroll Speed (pixels)");
-        GUI.Label(pos[3], "Inverse Zoom");
-        GUI.Label(pos[4], "Zoom Speed");
-        GUI.Label(pos[5], "Show Runtime Values");
-        GUI.Label(pos[6], "Refresh Period (seconds)");
+        GUI.Label(pos[1], "Minimum Animation Time");
+        GUI.Label(pos[2], "Scroll Speed");
+        GUI.Label(pos[3], "Edge Scroll Speed (pixels)");
+        GUI.Label(pos[4], "Inverse Zoom");
+        GUI.Label(pos[5], "Zoom Speed");
+        GUI.Label(pos[6], "Show Runtime Values");
+        GUI.Label(pos[7], "Refresh Period (seconds)");
         
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
@@ -460,16 +472,18 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].width= kColumn3Width;
         }
         AnimationPixelsPerSecond= EditorGUI.FloatField(pos[0], AnimationPixelsPerSecond);
-        ScrollSpeed= EditorGUI.FloatField(pos[1], ScrollSpeed);
-        EdgeScrollSpeed= EditorGUI.FloatField(pos[2], EdgeScrollSpeed);
-        InverseZoom= EditorGUI.Toggle(pos[3], InverseZoom);
-        ZoomSpeed= EditorGUI.FloatField(pos[4], ZoomSpeed);
-        ShowRuntimePortValue= EditorGUI.Toggle(pos[5], ShowRuntimePortValue);
-        PortValueRefreshPeriod= EditorGUI.FloatField(pos[6], PortValueRefreshPeriod);
+        MinAnimationTime= EditorGUI.FloatField(pos[1], MinAnimationTime);
+        ScrollSpeed= EditorGUI.FloatField(pos[2], ScrollSpeed);
+        EdgeScrollSpeed= EditorGUI.FloatField(pos[3], EdgeScrollSpeed);
+        InverseZoom= EditorGUI.Toggle(pos[4], InverseZoom);
+        ZoomSpeed= EditorGUI.FloatField(pos[5], ZoomSpeed);
+        ShowRuntimePortValue= EditorGUI.Toggle(pos[6], ShowRuntimePortValue);
+        PortValueRefreshPeriod= EditorGUI.FloatField(pos[7], PortValueRefreshPeriod);
 
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             AnimationPixelsPerSecond= kAnimationPixelsPerSecond;
+            MinAnimationTime        = kMinAnimationTime;
             ScrollSpeed             = kScrollSpeed;
             EdgeScrollSpeed         = kEdgeScrollSpeed;
             InverseZoom             = kInverseZoom;
