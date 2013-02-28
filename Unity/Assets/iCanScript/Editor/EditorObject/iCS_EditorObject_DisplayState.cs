@@ -200,7 +200,6 @@ public partial class iCS_EditorObject {
 		);
 		LayoutNode();
 		var newRect= GlobalDisplayRect;
-		Debug.Log("Unfold Rect= "+newRect);
 		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
         // Animate children if previous state was unfolded.
         ForEachChildNode(c=> c.Unhide(timeRatio));

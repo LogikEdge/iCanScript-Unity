@@ -463,7 +463,7 @@ public partial class iCS_IStorage {
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
 		port.UpdatePortEdge();
-        SetDisplayPosition(this[id], new Rect(globalPos.x, globalPos.y,0,0));
+		port.GlobalDisplayPosition= globalPos;
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
