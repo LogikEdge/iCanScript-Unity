@@ -74,12 +74,12 @@ public partial class iCS_EditorObject {
         ForEachChildNode(c=> c.Hide());
 	}
     // ----------------------------------------------------------------------
-	void Hide(P.TimeRatio timeRatio, Vector2 hidePoint) {
-		GlobalDisplayPosition= hidePoint;
+	void Hide(P.TimeRatio timeRatio) {
+		LocalLayoutOffset= -LocalAnchorPosition;
 		DisplaySize= Vector2.zero;
 		AnimateRect(timeRatio);
 		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-			ForEachChildNode(c=> c.Hide(timeRatio, hidePoint));
+			ForEachChildNode(c=> c.Hide(timeRatio));
 		}
 	}
     // ----------------------------------------------------------------------
@@ -93,6 +93,21 @@ public partial class iCS_EditorObject {
         // ... then hide ourself.
         AnimateSize(Vector2.zero);
     }
+    // ----------------------------------------------------------------------
+	void PrepareToUnhide() {
+		AnimatedLayoutOffset.StartValue= -LocalAnchorPosition;
+		AnimatedSize.StartValue= Vector2.zero;
+		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
+			ForEachChildNode(c=> c.PrepareToUnhide());
+		}		
+	}
+    // ----------------------------------------------------------------------
+	void Unhide(P.TimeRatio timeRatio) {
+		AnimateRect(timeRatio);
+		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
+			ForEachChildNode(c=> c.Unhide(timeRatio));
+		}
+	}
     // ----------------------------------------------------------------------
     // We assume that our parent has just unfolded.
     public void Unhide() {
@@ -135,7 +150,7 @@ public partial class iCS_EditorObject {
 		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
         // Animate children if previous state was unfolded.
         if(animateChildren) {
-            ForEachChildNode(c=> c.Hide(timeRatio, Math3D.Middle(newRect)));
+            ForEachChildNode(c=> c.Hide(timeRatio));
         }
 		AnimateRect(timeRatio);
         IsDirty= true;
@@ -144,23 +159,48 @@ public partial class iCS_EditorObject {
     public void Fold() {
         // Nothing to do if already fold.
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
-        // Set the node has folded.
-        DisplayOption= iCS_DisplayOptionEnum.Folded;
-        // Animate children node if previous state was unfolded.
-        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-            ForEachChildNode(c=> c.Hide());            
+		// Prepare to hide visible children
+		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+        if(animateChildren) {
+            ForEachChildNode(c=> c.PrepareToHide());
         }
-        AnimateSize(SizeFrom(FoldedNodeRect()));
+        // Set the node has folded.
+		var prevRect= GlobalDisplayRect;
+		PrepareToAnimateRect();
+        DisplayOption= iCS_DisplayOptionEnum.Folded;
+		LayoutNode();
+		LayoutParentNodesUntilTop();
+		var newRect= GlobalDisplayRect;
+		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
+        // Animate children if previous state was unfolded.
+        if(animateChildren) {
+            ForEachChildNode(c=> c.Hide(timeRatio));
+        }
+		AnimateRect(timeRatio);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Unfold() {
         // Nothing to do if already unfold.
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
+		// Prepare to hide visible children
+		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+        if(animateChildren) {
+            ForEachChildNode(c=> c.PrepareToHide());
+        }
         // Set the node has unfolded.
+		var prevRect= GlobalDisplayRect;
+		PrepareToAnimateRect();
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-        // Unhide all children nodes.
-        ForEachChildNode(c=> c.Unhide());
+		LayoutNode();
+		LayoutParentNodesUntilTop();
+		var newRect= GlobalDisplayRect;
+		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
+        // Animate children if previous state was unfolded.
+        if(animateChildren) {
+            ForEachChildNode(c=> c.Hide(timeRatio));
+        }
+		AnimateRect(timeRatio);
         IsDirty= true;
     }
 
