@@ -19,8 +19,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const float kColumn3X    = kColumn2X+kColumn2Width;
     // ---------------------------------------------------------------------------------
     // Display Option Constants
-    const float  kAnimationPixelsPerSecond   = 400f;
-    const float  kMinAnimationTime           = 0.3f;
+    const float  kAnimationPixelsPerSecond   = 1500f;
+    const float  kMinAnimationTime           = 0.35f;
     const float  kScrollSpeed                = 3.0f;
     const float  kEdgeScrollSpeed            = 400.0f;
     const bool   kInverseZoom                = false;

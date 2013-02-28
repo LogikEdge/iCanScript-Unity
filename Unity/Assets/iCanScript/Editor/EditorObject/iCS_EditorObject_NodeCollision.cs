@@ -9,7 +9,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
-    public void ResolveCollisionOnChildrenNodes() {
+    public void ResolveCollisionOnChildrenNodes(bool dontAnimate= false) {
 		// Get a snapshot of the children state.
 		var children= BuildListOfChildNodes(_=> true);
 		var childStartPos = new Vector2[children.Length];
@@ -32,18 +32,25 @@ public partial class iCS_EditorObject {
 			var targetPos= Math3D.Middle(childRect[i]);
 			if(Math3D.IsNotEqual(startPos, targetPos)) {
 				var c= children[i];
-                var anchor= GlobalAnchorPosition;
-                var prevOffset= startPos-anchor;
-                var newOffset= targetPos-anchor;
-                bool sameDirection= true;
-                var dotProduct= Vector2.Dot(prevOffset, newOffset);
-                var prevMagnitude= prevOffset.magnitude;
-                var newMagnitude= newOffset.magnitude;
-                sameDirection= dotProduct > 0.95f*(prevMagnitude*newMagnitude);
-                if(c.IsSticky || (sameDirection && !c.IsAnimated)) {
-    				c.GlobalDisplayPosition= targetPos;                    
-                } else {
-                    c.AnimatePosition(targetPos);
+				if(c.IsAnimated) {
+					c.AnimatePosition(targetPos);
+				} else if(c.IsSticky || dontAnimate) {
+    				c.GlobalDisplayPosition= targetPos;                    					
+				} else {
+	                var anchor= GlobalAnchorPosition;
+	                var prevOffset= startPos-anchor;
+	                var newOffset= targetPos-anchor;
+	                var dotProduct= Vector2.Dot(prevOffset, newOffset);
+	                var prevMagnitude= prevOffset.magnitude;
+	                var newMagnitude= newOffset.magnitude;
+	                bool sameDirection= dotProduct > 0.98f*(prevMagnitude*newMagnitude);
+					var distance= (targetPos-startPos).magnitude;
+					bool shortDistance= distance*20f < iCS_PreferencesEditor.AnimationPixelsPerSecond;
+	                if(sameDirection && shortDistance) {
+	    				c.GlobalDisplayPosition= targetPos;                    					
+                	} else {
+                    	c.AnimatePosition(targetPos);
+					}
 				}
 			}
 		}

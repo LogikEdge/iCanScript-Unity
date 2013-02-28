@@ -20,7 +20,7 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-	public void LayoutNode() {
+	public void LayoutNode(bool dontAnimate= false) {
         // Nothing to do for invisible ports.
         if(!IsVisibleInLayout) return;
         // Just update the size of the node if it is iconized.
@@ -30,7 +30,7 @@ public partial class iCS_EditorObject {
         }
         // Resolve any existing collisions on children for unfolded modules.
         if(IsUnfoldedInLayout && !IsFunction) {
-            ResolveCollisionOnChildrenNodes();
+            ResolveCollisionOnChildrenNodes(dontAnimate);
             WrapAroundChildrenNodes();
     		return;            
         }

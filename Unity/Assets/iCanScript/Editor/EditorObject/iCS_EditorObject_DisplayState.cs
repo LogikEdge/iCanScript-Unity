@@ -99,7 +99,8 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void Unhide(P.TimeRatio timeRatio) {
-		AnimateRect(timeRatio);
+		AnimatedSize.Start(timeRatio);
+		AnimatedLayoutOffset.Start(timeRatio);
 		IsAlphaAnimated= true;
 		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
 			ForEachChildNode(c=> c.Unhide(timeRatio));
@@ -195,10 +196,10 @@ public partial class iCS_EditorObject {
 				return false;
 			},
 			c=> {
-				c.LayoutNode();
+				c.LayoutNode(true);
 			}
 		);
-		LayoutNode();
+		LayoutNode(true);
 		var newRect= GlobalDisplayRect;
 		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
         // Animate children if previous state was unfolded.
