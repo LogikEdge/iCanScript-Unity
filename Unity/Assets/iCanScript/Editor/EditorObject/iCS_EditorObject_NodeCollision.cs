@@ -36,12 +36,10 @@ public partial class iCS_EditorObject {
                 var prevOffset= startPos-anchor;
                 var newOffset= targetPos-anchor;
                 bool sameDirection= true;
-                if(Math3D.IsNotZero(prevOffset) && Math3D.IsNotZero(newOffset)) {
-                    var dotProduct= Vector2.Dot(prevOffset, newOffset);
-                    var prevMagnitude= prevOffset.magnitude;
-                    var newMagnitude= newOffset.magnitude;
-                    sameDirection= dotProduct/(prevMagnitude*newMagnitude) > 0.9f;
-                }
+                var dotProduct= Vector2.Dot(prevOffset, newOffset);
+                var prevMagnitude= prevOffset.magnitude;
+                var newMagnitude= newOffset.magnitude;
+                sameDirection= dotProduct > 0.95f*(prevMagnitude*newMagnitude);
                 if(c.IsSticky || (sameDirection && !c.IsAnimated)) {
     				c.GlobalDisplayPosition= targetPos;                    
                 } else {
