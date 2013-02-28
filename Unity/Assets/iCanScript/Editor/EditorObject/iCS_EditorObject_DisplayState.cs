@@ -187,6 +187,7 @@ public partial class iCS_EditorObject {
 		// Perform layout on children first.
 		ForEachChildRecursiveDepthFirst(
 			(c,fnc)=> {
+				if(!c.IsNode) return false;
 				if(c.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
 					return true;
 				}
