@@ -136,20 +136,21 @@ public partial class iCS_EditorObject {
 	    
     // Recursive Iterations =================================================
     public void ForEachRecursiveDepthFirst(Action<iCS_EditorObject> fnc) {
-        ForEachRecursiveDepthFirst(_=> true, fnc);
+        ForEachRecursiveDepthFirst((_,__)=> true, fnc);
     }
 	// ----------------------------------------------------------------------
-    public void ForEachRecursiveDepthFirst(Func<iCS_EditorObject, bool> cond,
+    public void ForEachRecursiveDepthFirst(Func<iCS_EditorObject,
+												Action<iCS_EditorObject>,
+												bool> cond,
                                            Action<iCS_EditorObject> fnc) {
         // Does this node pass the given condition?
-        var editorObject= EditorObject;
-        if(!cond(editorObject)) return;
+        if(!cond(this, fnc)) return;
         // First iterate through all children ...
         foreach(var childId in Children) {
 			if(childId != -1) {
 				var child= EditorObjects[childId];
 				if(child != null) {
-		            child.ForEachRecursiveDepthFirst(fnc);									
+		            child.ForEachRecursiveDepthFirst(cond, fnc);									
 				} else {
 					Debug.LogWarning("iCanScript: Mismatch between children list and EditorObject container !!!");
 				}
@@ -158,26 +159,27 @@ public partial class iCS_EditorObject {
 			}
         }
         // ... then this node.
-        fnc(editorObject);
+        fnc(this);
     }
 	// ----------------------------------------------------------------------
     public void ForEachRecursiveDepthLast(Action<iCS_EditorObject> fnc) {
-        ForEachRecursiveDepthLast(_=> true, fnc);
+        ForEachRecursiveDepthLast((_,__)=> true, fnc);
     }
 	// ----------------------------------------------------------------------
-    public void ForEachRecursiveDepthLast(Func<iCS_EditorObject,bool> cond,
+    public void ForEachRecursiveDepthLast(Func<iCS_EditorObject,
+											   Action<iCS_EditorObject>,
+											   bool> cond,
                                           Action<iCS_EditorObject> fnc) {
         // Does this node pass the given condition?
-        var editorObject= EditorObject;
-        if(!cond(editorObject)) return;
+        if(!cond(this, fnc)) return;
         // First this node ...
-        fnc(editorObject);
+        fnc(this);
         // ... then iterate through all children.
         foreach(var childId in Children) {
 			if(childId != -1) {
 				var child= EditorObjects[childId];
 				if(child != null) {
-		            child.ForEachRecursiveDepthLast(fnc);									
+		            child.ForEachRecursiveDepthLast(cond, fnc);									
 				} else {
 					Debug.LogWarning("iCanScript: Mismatch between children list and EditorObject container !!!");
 				}
@@ -190,12 +192,14 @@ public partial class iCS_EditorObject {
     // Recursively iterating through all child nodes invoking the given
     // function on the leaf node first then the branch nodes.
     public void ForEachChildRecursiveDepthFirst(Action<iCS_EditorObject> fnc) {
-        ForEachChildRecursiveDepthFirst(_=> true, fnc);
+        ForEachChildRecursiveDepthFirst((_,__)=> true, fnc);
     }
     // ----------------------------------------------------------------------
     // Recursively iterating through all child nodes invoking the given
     // function on the leaf node first then the branch nodes.
-    public void ForEachChildRecursiveDepthFirst(Func<iCS_EditorObject,bool> cond,
+    public void ForEachChildRecursiveDepthFirst(Func<iCS_EditorObject,
+													 Action<iCS_EditorObject>,
+													 bool> cond,
                                                 Action<iCS_EditorObject> fnc) {
         // Iterate through all children ...
         foreach(var childId in Children) {
@@ -215,12 +219,14 @@ public partial class iCS_EditorObject {
     // Recursively iterating through all child nodes invoking the given
     // function on the branch node first then the leaf nodes.
     public void ForEachChildRecursiveDepthLast(Action<iCS_EditorObject> fnc) {
-        ForEachChildRecursiveDepthLast(_=> true, fnc);
+        ForEachChildRecursiveDepthLast((_,__)=> true, fnc);
     }
     // ----------------------------------------------------------------------
     // Recursively iterating through all child nodes invoking the given
     // function on the branch node first then the leaf nodes.
-    public void ForEachChildRecursiveDepthLast(Func<iCS_EditorObject,bool> cond,
+    public void ForEachChildRecursiveDepthLast(Func<iCS_EditorObject,
+													Action<iCS_EditorObject>,
+													bool> cond,
                                                Action<iCS_EditorObject> fnc) {
         // Iterate through all children.
         foreach(var childId in Children) {

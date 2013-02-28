@@ -7,6 +7,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
+	private bool IsAlphaAnimated= false;
     private P.Animate<Vector2> AnimatedLayoutOffset=
         new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	private P.Animate<Vector2> AnimatedSize=
@@ -264,17 +265,17 @@ public partial class iCS_EditorObject {
             if(IsPort) {
                 return ParentNode.DisplayAlpha;
             }
+			if(!IsAlphaAnimated) {
+				return 1f;
+			}
             if(!IsAnimated) {
-                myInvisibleBeforeAnimation= false;
+                IsAlphaAnimated= false;
                 return 1f;
             }
             if(!IsVisibleInLayout) {
                 return 1f-AnimatedSize.Ratio;
             }
-            if(myInvisibleBeforeAnimation) {
-                return AnimatedSize.Ratio;
-            }
-            return 1f;
+            return AnimatedSize.Ratio;
         }
     }
     
