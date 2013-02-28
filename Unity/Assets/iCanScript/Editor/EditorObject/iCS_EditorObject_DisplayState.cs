@@ -5,9 +5,9 @@
    Created by Reinual on 2013-02-15.
    Copyright 2013 Infaunier. All rights reserved.
 */
-
 using UnityEngine;
 using System.Collections;
+using P=Prelude;
 
 public partial class iCS_EditorObject {
     // ======================================================================
@@ -65,6 +65,24 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Display State Change
     // ----------------------------------------------------------------------
+	void PrepareToHide() {
+        // Nothing to do if we are not visible.
+        if(!IsVisibleOnDisplay) return;
+        // Reposition at parent center.
+        PrepareToAnimateRect();
+        // First hide all children.
+        ForEachChildNode(c=> c.Hide());
+	}
+    // ----------------------------------------------------------------------
+	void Hide(P.TimeRatio timeRatio, Vector2 hidePoint) {
+		GlobalDisplayPosition= hidePoint;
+		DisplaySize= Vector2.zero;
+		AnimateRect(timeRatio);
+		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
+			ForEachChildNode(c=> c.Hide(timeRatio, hidePoint));
+		}
+	}
+    // ----------------------------------------------------------------------
     public void Hide() {
         // Nothing to do if we are not visible.
         if(!IsVisibleOnDisplay) return;
@@ -102,13 +120,24 @@ public partial class iCS_EditorObject {
     public void Iconize() {
         // Nothing to do if already iconized.
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
-        // Animate children if previous state was unfolded.
-        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-            ForEachChildNode(c=> c.Hide());
+		// Prepare to hide visible children
+		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+        if(animateChildren) {
+            ForEachChildNode(c=> c.PrepareToHide());
         }
         // Set the node has iconized.
+		var prevRect= GlobalDisplayRect;
+		PrepareToAnimateRect();
         DisplayOption= iCS_DisplayOptionEnum.Iconized;
-        AnimateSize(IconizedSize());
+		LayoutNode();
+		LayoutParentNodesUntilTop();
+		var newRect= GlobalDisplayRect;
+		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
+        // Animate children if previous state was unfolded.
+        if(animateChildren) {
+            ForEachChildNode(c=> c.Hide(timeRatio, Math3D.Middle(newRect)));
+        }
+		AnimateRect(timeRatio);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    

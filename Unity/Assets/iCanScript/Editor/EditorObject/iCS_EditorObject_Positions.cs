@@ -189,7 +189,9 @@ public partial class iCS_EditorObject {
             Rect childRect= new Rect(pos.x, pos.y, 0, 0);
             ForEachChildNode(
                 c=> {
-				    childRect= Math3D.Merge(childRect, c.GlobalDisplayRect);
+					if(c.IsVisibleOnDisplay) {
+					    childRect= Math3D.Merge(childRect, c.GlobalDisplayRect);						
+					}
 				}
             );
             return childRect;

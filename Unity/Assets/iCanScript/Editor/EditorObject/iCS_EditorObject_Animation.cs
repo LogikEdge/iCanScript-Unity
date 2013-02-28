@@ -33,6 +33,13 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Display Size Animation
     // ----------------------------------------------------------------------
+	void PrepareToAnimateSize() {
+		AnimatedSize.StartValue= AnimatedSize.CurrentValue;
+		if(IsSizeAnimated) {
+			AnimatedSize.Start(AnimatedSize.RemainingTime);
+		}		
+	}
+    // ----------------------------------------------------------------------
 	void AnimateSize(Vector2 targetSize) {
         var startSize= AnimatedSize.CurrentValue;
 		var timeRatio= BuildTimeRatioFromSize(startSize, targetSize); 
@@ -45,12 +52,23 @@ public partial class iCS_EditorObject {
 		AnimatedSize.Start(timeRatio);
 	}
     // ----------------------------------------------------------------------
+	void AnimateSize(P.TimeRatio timeRatio) {
+		AnimatedSize.Start(timeRatio);
+	}
+    // ----------------------------------------------------------------------
     void StopSizeAnimation() {
         AnimatedSize.Reset(AnimatedSize.TargetValue);
     }
     
     // ======================================================================
     // Layout Offset Animation
+    // ----------------------------------------------------------------------
+	void PrepareToAnimateLayoutOffset() {
+		AnimatedLayoutOffset.StartValue= AnimatedLayoutOffset.CurrentValue;
+		if(IsPositionAnimated) {
+			AnimatedLayoutOffset.Start(AnimatedLayoutOffset.RemainingTime);
+		} 
+	}
     // ----------------------------------------------------------------------
     void AnimateLayoutOffset(Vector2 targetLayoutOffset) {
         var startLayoutOffset= AnimatedLayoutOffset.CurrentValue;
@@ -64,12 +82,20 @@ public partial class iCS_EditorObject {
 		AnimatedLayoutOffset.Start(timeRatio);        
     }
     // ----------------------------------------------------------------------
+	void AnimateLayoutOffset(P.TimeRatio timeRatio) {
+		AnimatedLayoutOffset.Start(timeRatio);
+	}
+    // ----------------------------------------------------------------------
     void StopLayoutOffsetAnimation() {
         AnimatedLayoutOffset.Reset(AnimatedLayoutOffset.TargetValue);
     }
     
     // ======================================================================
 	// Position Animation
+    // ----------------------------------------------------------------------
+	void PrepareToAnimatePosition() {
+		PrepareToAnimateLayoutOffset();
+	}
     // ----------------------------------------------------------------------
     void AnimatePosition(Vector2 targetPosition) {
         var targetLayoutOffset= targetPosition-LocalAnchorPosition;
@@ -89,12 +115,21 @@ public partial class iCS_EditorObject {
         AnimateLayoutOffset(targetLayoutOffset, timeRatio);
     }
     // ----------------------------------------------------------------------
+	void AnimatePosition(P.TimeRatio timeRatio) {
+		AnimateLayoutOffset(timeRatio);
+	}
+    // ----------------------------------------------------------------------
     void StopPositionAnimation() {
         StopLayoutOffsetAnimation();
     }
 
     // ======================================================================
 	// Rect Animation
+    // ----------------------------------------------------------------------
+	void PrepareToAnimateRect() {
+		PrepareToAnimatePosition();
+		PrepareToAnimateSize();
+	}
     // ----------------------------------------------------------------------
     void AnimateRect(Rect globalRect) {
         AnimatePosition(PositionFrom(globalRect));
@@ -105,6 +140,11 @@ public partial class iCS_EditorObject {
         AnimatePosition(PositionFrom(globalRect), timeRatio);
         AnimateSize(SizeFrom(globalRect), timeRatio);
     }
+    // ----------------------------------------------------------------------
+	void AnimateRect(P.TimeRatio timeRatio) {
+		AnimatePosition(timeRatio);
+		AnimateSize(timeRatio);
+	}
     // ----------------------------------------------------------------------
     void StopRectAnimation() {
         StopPositionAnimation();
@@ -118,64 +158,70 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Animation timer builders
     // ----------------------------------------------------------------------
-    public static float AnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
+    public static float RawAnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
         var distance= Vector2.Distance(p1,p2);
 	    var time= AnimationTimeFromDistance(distance);
         var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
         return time < minAnimationTime ? minAnimationTime : time;
     }
     // ----------------------------------------------------------------------
-    public static float AnimationTimeFromSize(Vector2 s1, Vector2 s2) {
-        var distance= Vector2.Distance(s1,s2);
+    public float AnimationTimeFromPosition(Vector2 p1, Vector2 p2) {
+        var distance= Vector2.Distance(p1,p2);
 	    var time= AnimationTimeFromDistance(distance);
+		if(IsPositionAnimated) {
+			var remainingTime= AnimatedLayoutOffset.RemainingTime;
+			return Mathf.Max(remainingTime, time);
+		}
         var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
         return time < minAnimationTime ? minAnimationTime : time;
     }
     // ----------------------------------------------------------------------
-    public static float AnimationTimeFromRect(Rect r1, Rect r2) {
-        var distance= Vector2.Distance(new Vector2(r1.x,r1.y), new Vector2(r2.x,r2.y));
-        var t= Vector2.Distance(new Vector2(r1.xMax,r1.y), new Vector2(r2.xMax,r2.y));
-        if(t > distance) distance= t;
-        t= Vector2.Distance(new Vector2(r1.xMax,r1.yMax), new Vector2(r2.xMax,r2.yMax));
-        if(t > distance) distance= t;
-        t= Vector2.Distance(new Vector2(r1.x,r1.yMax), new Vector2(r2.x,r2.yMax));
-        if(t > distance) distance= t;        
+    public float AnimationTimeFromSize(Vector2 s1, Vector2 s2) {
+        var distance= Vector2.Distance(s1,s2);
 	    var time= AnimationTimeFromDistance(distance);
-        return time;
+		if(IsSizeAnimated) {
+			var remainingTime= AnimatedSize.RemainingTime;
+			return Mathf.Max(remainingTime, time);			
+		}
+        var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
+        return time < minAnimationTime ? minAnimationTime : time;
+    }
+    // ----------------------------------------------------------------------
+    public float AnimationTimeFromRect(Rect r1, Rect r2) {
+		var p1= PositionFrom(r1);
+		var p2= PositionFrom(r2);
+		var s1= SizeFrom(r1);
+		var s2= SizeFrom(r2);
+		var positionTime= AnimationTimeFromPosition(p1, p2);
+		var sizeTime= AnimationTimeFromSize(s1, s2);
+		return Mathf.Max(positionTime, sizeTime);
     }
     // ----------------------------------------------------------------------
     public static float AnimationTimeFromDistance(float distance) {
 	    return distance/iCS_PreferencesEditor.AnimationPixelsPerSecond;
     }
     // ----------------------------------------------------------------------
-	public static P.TimeRatio BuildTimeRatioFromRect(Rect r1, Rect r2) {
-	    float time= AnimationTimeFromRect(r1, r2);
-		var timeRatio= new P.TimeRatio();
-        timeRatio.Start(time);
-		return timeRatio;
+	public P.TimeRatio BuildTimeRatioFromRect(Rect r1, Rect r2) {
+	    return BuildTimeRatio(AnimationTimeFromRect(r1, r2));
 	}
     // ----------------------------------------------------------------------
-	public static P.TimeRatio BuildTimeRatioFromPosition(Vector2 p1, Vector2 p2) {
-	    float time= AnimationTimeFromPosition(p1, p2);
-		var timeRatio= new P.TimeRatio();
-        timeRatio.Start(time);
-		return timeRatio;
+	public P.TimeRatio BuildTimeRatioFromPosition(Vector2 p1, Vector2 p2) {
+	    return BuildTimeRatio(AnimationTimeFromPosition(p1, p2));
 	}
     // ----------------------------------------------------------------------
-	public static P.TimeRatio BuildTimeRatioFromSize(Vector2 s1, Vector2 s2) {
-	    float time= AnimationTimeFromSize(s1, s2);
-		var timeRatio= new P.TimeRatio();
-        timeRatio.Start(time);
-		return timeRatio;
+	public P.TimeRatio BuildTimeRatioFromSize(Vector2 s1, Vector2 s2) {
+	    return BuildTimeRatio(AnimationTimeFromSize(s1, s2));
 	}
     // ----------------------------------------------------------------------
-	public static P.TimeRatio BuildTimeRatioFromDistance(float distance) {
-	    float time= AnimationTimeFromDistance(distance);
+	public P.TimeRatio BuildTimeRatioFromDistance(float distance) {
+	    return BuildTimeRatio(AnimationTimeFromDistance(distance));
+	}
+    // ----------------------------------------------------------------------
+	public P.TimeRatio BuildTimeRatio(float time) {
 		var timeRatio= new P.TimeRatio();
         timeRatio.Start(time);
-		return timeRatio;
+		return timeRatio;		
 	}
-
     // ======================================================================
 	// Animation update
     // ----------------------------------------------------------------------
@@ -189,7 +235,10 @@ public partial class iCS_EditorObject {
                 AnimatedLayoutOffset.Update();
             }
             if(Math3D.IsNotEqual(prevLayoutOffset, AnimatedLayoutOffset.CurrentValue)) {
-                LayoutParentNodesUntilTop();
+				var parent= ParentNode;
+				if(parent != null && !parent.IsAnimated) {
+	                LayoutParentNodesUntilTop();					
+				}
             }
         }
 		if(AnimatedSize.IsActive) {
@@ -201,7 +250,10 @@ public partial class iCS_EditorObject {
 			}
 			if(Math3D.IsNotEqual(prevSize, AnimatedSize.CurrentValue)) {
                 LayoutPorts();
-                LayoutParentNodesUntilTop();
+				var parent= ParentNode;
+				if(parent != null && !parent.IsAnimated) {
+	                LayoutParentNodesUntilTop();					
+				}
 			}
 		}
 	}
