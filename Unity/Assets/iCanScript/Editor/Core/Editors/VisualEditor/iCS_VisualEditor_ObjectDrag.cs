@@ -8,7 +8,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Types
     // ----------------------------------------------------------------------
-    enum DragTypeEnum { None, PortConnection, PortRelocation, NodeDrag, TransitionCreation };
+    enum DragTypeEnum { None, PortConnection, PortRelocation, NodeDrag, NodeRelocation, TransitionCreation };
 
 
     // ======================================================================
@@ -91,13 +91,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 IsDragEnabled= false;
                 DragType= DragTypeEnum.None;
             } else {
-                IStorage.RegisterUndo("Node Drag");
-                node.IsFloating= IsFloatingKeyDown;
-                DragType= DragTypeEnum.NodeDrag;
+                if(IsFloatingKeyDown) {
+                    IStorage.RegisterUndo("Node Relocation");
+                    DragType= DragTypeEnum.NodeRelocation;                                        
+                    node.IsFloating= true;
+                } else {
+                    IStorage.RegisterUndo("Node Drag");
+                    DragType= DragTypeEnum.NodeDrag;                    
+                    node.IsFloating= false;
+    				node.ForEachParentNode(p=> { p.IsSticky= true; });
+                }
+				node.IsSticky= true;
                 DragObject= node;
                 DragStartPosition= node.GlobalDisplayPosition;                                                                    
-				node.IsSticky= true;
-				node.ForEachParentNode(p=> { p.IsSticky= true; });
             }
             return true;
         }
@@ -115,6 +121,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragObject= inTransition;
             DragStartPosition= DragObject.GlobalDisplayPosition;
             DragObject.IsFloating= true;
+            DragObject.IsSticky= true;
             return true;
         }
 
@@ -138,9 +145,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
-                iCS_EditorObject node= DragObject;
-                node.IsFloating= IsFloatingKeyDown;
-                node.UserDragTo(newPosition);
+            case DragTypeEnum.NodeRelocation:
+                DragObject.UserDragTo(newPosition);
                 break;
             case DragTypeEnum.PortRelocation: {
 				// We can't relocate a mux port child.
@@ -210,22 +216,27 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             switch(DragType) {
                 case DragTypeEnum.None: break;
                 case DragTypeEnum.NodeDrag: {
+                    // Remove sticky on parent nodes.
+                    DragObject.IsFloating= false;
+                    DragObject.IsSticky= false;
+					DragObject.ForEachParentNode(p=> { p.IsSticky= false; });
+                    break;
+                }
+                case DragTypeEnum.NodeRelocation: {
+                    DragObject.IsFloating= false;
                     iCS_EditorObject node= DragObject;
                     iCS_EditorObject oldParent= node.Parent;
                     if(oldParent != null) {
                         iCS_EditorObject newParent= GetValidParentNodeUnder(GraphMousePosition, node);
-                        if(newParent != null) {
-                            if(newParent != oldParent && node.IsFloating) {
-                                ChangeParent(node, newParent);
-                            }
+                        if(newParent != null && newParent != oldParent) {
+                            ChangeParent(node, newParent);
                         } else {
-                            node.UserDragTo(DragStartPosition);
+                            node.IsFloating= true;
+                            node.AnimatePosition(DragStartPosition);                            
                         }
                     }
                     // Remove sticky on parent nodes.
                     DragObject.IsSticky= false;
-                    DragObject.IsFloating= false;
-					node.ForEachParentNode(p=> { p.IsSticky= false; });
                     break;
                 }
                 case DragTypeEnum.PortRelocation:
@@ -294,9 +305,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
                             var dragPortPos= DragObject.GlobalDisplayPosition;
-							IStorage.DestroyInstance(DragObject);
                             DragObject.IsSticky= false;
                             DragObject.IsFloating= false;
+							IStorage.DestroyInstance(DragObject);
 							DragObject= null;
                             // Verify for disconnection.
                             if(!isNearParent) {

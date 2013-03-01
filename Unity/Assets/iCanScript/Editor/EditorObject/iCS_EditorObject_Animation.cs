@@ -232,10 +232,11 @@ public partial class iCS_EditorObject {
             var prevLayoutOffset= AnimatedLayoutOffset.CurrentValue;
             if(AnimatedLayoutOffset.IsElapsed) {
                 AnimatedLayoutOffset.Reset(AnimatedLayoutOffset.TargetValue);
+                IsFloating= false;
             } else {
                 AnimatedLayoutOffset.Update();
             }
-            if(Math3D.IsNotEqual(prevLayoutOffset, AnimatedLayoutOffset.CurrentValue)) {
+            if(!IsFloating && Math3D.IsNotEqual(prevLayoutOffset, AnimatedLayoutOffset.CurrentValue)) {
 				var parent= ParentNode;
 				if(parent != null && !parent.IsAnimated) {
 	                LayoutParentNodesUntilTop();					
@@ -246,10 +247,11 @@ public partial class iCS_EditorObject {
             var prevSize= AnimatedSize.CurrentValue;
 			if(AnimatedSize.IsElapsed) {
 				AnimatedSize.Reset(AnimatedSize.TargetValue);
+                IsFloating= false;
 			} else {
 				AnimatedSize.Update();
 			}
-			if(Math3D.IsNotEqual(prevSize, AnimatedSize.CurrentValue)) {
+			if(!IsFloating && Math3D.IsNotEqual(prevSize, AnimatedSize.CurrentValue)) {
                 LayoutPorts();
 				var parent= ParentNode;
 				if(parent != null && !parent.IsAnimated) {
