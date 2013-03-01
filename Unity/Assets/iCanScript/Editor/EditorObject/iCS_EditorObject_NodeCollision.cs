@@ -11,7 +11,7 @@ public partial class iCS_EditorObject {
     // collision has occured.
     public void ResolveCollisionOnChildrenNodes(iCS_AnimationControl animCtrl) {
 		// Get a snapshot of the children state.
-		var children= BuildListOfChildNodes(_=> true);
+		var children= BuildListOfChildNodes(c=> !c.IsFloating);
 		var childStartPos = new Vector2[children.Length];
 		var childRect= new Rect[children.Length];
 		for(int i= 0; i < children.Length; ++i) {
@@ -58,17 +58,15 @@ public partial class iCS_EditorObject {
 		}
     }
     // ----------------------------------------------------------------------
-    public void ResolveCollisionOnChildrenImp(iCS_EditorObject[] children, ref Rect[] childRect) {
+    private void ResolveCollisionOnChildrenImp(iCS_EditorObject[] children, ref Rect[] childRect) {
         // Resolve collisions.
         bool didCollide= true;
 		while(didCollide) {
 			didCollide= false;
 	        for(int i= 0; i < children.Length-1; ++i) {
 				var c1= children[i];
-				if(c1.IsFloating) continue;
 	            for(int j= i+1; j < children.Length; ++j) {
 					var c2= children[j];
-					if(c2.IsFloating) continue;
 	                didCollide |= c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i], ref childRect[j]);                            
 	            }
 	        }			

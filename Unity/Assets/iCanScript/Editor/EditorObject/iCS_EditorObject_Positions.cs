@@ -188,11 +188,13 @@ public partial class iCS_EditorObject {
             Rect childRect= new Rect(pos.x, pos.y, 0, 0);
             ForEachChildNode(
                 c=> {
-					if(c.IsVisibleOnDisplay) {
-					    childRect= Math3D.Merge(childRect, c.GlobalDisplayRect);						
-					} else {
-						Debug.LogWarning("iCanScript: Trying to compute child rectangle with invisible children");
-					}
+                    if(!c.IsFloating) {
+    					if(c.IsVisibleOnDisplay) {
+        					childRect= Math3D.Merge(childRect, c.GlobalDisplayRect);											        
+    					} else {
+    						Debug.LogWarning("iCanScript: Trying to compute child rectangle with invisible children");
+    					}                        
+                    }
 				}
             );
             return childRect;
