@@ -21,24 +21,28 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void SynchronizeAfterUndoRedo() {
         // Keep a copy of the previous display position.
-        var displayPositions= P.map(o=> new P.Tuple<bool,Rect>(IsValid(o),o.GlobalDisplayRect), EditorObjects);  
+        var displayRects= P.map(o=> new P.Tuple<bool,Rect>(IsValid(o),o.GlobalDisplayRect), EditorObjects);  
         // Rebuild editor data.
         GenerateEditorData();
         // Put back the previous display position
-        Vector2 rootCenter= Math3D.Middle(displayPositions[0].Item2);
+        Vector2 rootPos= iCS_EditorObject.PositionFrom(displayRects[0].Item2);
         ForEach(
             obj=> {
                 // Default to root center.
-                Rect displayPos= new Rect(rootCenter.x, rootCenter.y, 0, 0);                        
-                if(obj.InstanceId < displayPositions.Count && displayPositions[obj.InstanceId].Item1) {
-                    displayPos= displayPositions[obj.InstanceId].Item2;
+                var displayRect= new Rect(rootPos.x, rootPos.y, 0, 0);                        
+                if(obj.InstanceId < displayRects.Count && displayRects[obj.InstanceId].Item1) {
+                    displayRect= displayRects[obj.InstanceId].Item2;
                 } else {
-                    if(obj.IsParentValid && obj.ParentId < displayPositions.Count && displayPositions[obj.ParentId].Item1) {
-                        Vector2 parentCenter= Math3D.Middle(displayPositions[obj.ParentId].Item2);
-                        displayPos= new Rect(parentCenter.x, parentCenter.y, 0, 0);
+                    if(obj.IsParentValid && obj.ParentId < displayRects.Count && displayRects[obj.ParentId].Item1) {
+                        var parentPos= iCS_EditorObject.PositionFrom(displayRects[obj.ParentId].Item2);
+                        displayRect= new Rect(parentPos.x, parentPos.y, 0, 0);
                     }
                 }
-                SetDisplayPosition(obj, displayPos);
+                if(obj.IsPort) {
+                    obj.AnimatePosition(iCS_EditorObject.PositionFrom(displayRect));                    
+                } else {
+                    obj.AnimateRect(displayRect);                    
+                }
             }
         );
         // Set all object dirty.
