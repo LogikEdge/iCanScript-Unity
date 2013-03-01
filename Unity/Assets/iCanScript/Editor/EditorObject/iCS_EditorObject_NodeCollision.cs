@@ -9,7 +9,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
-    public void ResolveCollisionOnChildrenNodes(bool dontAnimate= false) {
+    public void ResolveCollisionOnChildrenNodes(iCS_AnimationControl animCtrl) {
 		// Get a snapshot of the children state.
 		var children= BuildListOfChildNodes(_=> true);
 		var childStartPos = new Vector2[children.Length];
@@ -34,8 +34,10 @@ public partial class iCS_EditorObject {
 				var c= children[i];
 				if(c.IsAnimated) {
 					c.AnimatePosition(targetPos);
-				} else if(c.IsSticky || dontAnimate) {
+				} else if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
     				c.GlobalDisplayPosition= targetPos;                    					
+				} else if(animCtrl == iCS_AnimationControl.Always) {
+                	c.AnimatePosition(targetPos);				    
 				} else {
 	                var anchor= GlobalAnchorPosition;
 	                var prevOffset= startPos-anchor;

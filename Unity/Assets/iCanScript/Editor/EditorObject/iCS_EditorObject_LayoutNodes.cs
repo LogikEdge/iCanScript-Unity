@@ -10,17 +10,17 @@ public partial class iCS_EditorObject {
     // Layout the nodes from the parent of the object moving up the hierarchy
     // until we reach the top.  The sticky bit is carried over from the object
     // to the parent.
-    void LayoutParentNodesUntilTop() {
+    void LayoutParentNodesUntilTop(iCS_AnimationControl animCtrl= iCS_AnimationControl.Normal) {
         var parent= ParentNode;
         if(parent == null) return;
         var parentGlobalRect= parent.GlobalDisplayRect;
-        parent.LayoutNode();
+        parent.LayoutNode(animCtrl);
         if(Math3D.IsNotEqual(parentGlobalRect, parent.GlobalDisplayRect)) {
-            parent.LayoutParentNodesUntilTop();
+            parent.LayoutParentNodesUntilTop(animCtrl);
         }
     }
     // ----------------------------------------------------------------------
-	public void LayoutNode(bool dontAnimate= false) {
+	public void LayoutNode(iCS_AnimationControl animCtrl= iCS_AnimationControl.Normal) {
         // Nothing to do for invisible ports.
         if(!IsVisibleInLayout) return;
         // Just update the size of the node if it is iconized.
@@ -30,7 +30,7 @@ public partial class iCS_EditorObject {
         }
         // Resolve any existing collisions on children for unfolded modules.
         if(IsUnfoldedInLayout && !IsFunction) {
-            ResolveCollisionOnChildrenNodes(dontAnimate);
+            ResolveCollisionOnChildrenNodes(animCtrl);
             WrapAroundChildrenNodes();
     		return;            
         }

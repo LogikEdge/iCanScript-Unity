@@ -196,10 +196,10 @@ public partial class iCS_EditorObject {
 				return false;
 			},
 			c=> {
-				c.LayoutNode(true);
+				c.LayoutNode(iCS_AnimationControl.None);
 			}
 		);
-		LayoutNode(true);
+		LayoutNode(iCS_AnimationControl.None);
 		var newRect= GlobalDisplayRect;
 		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
         // Animate children if previous state was unfolded.
