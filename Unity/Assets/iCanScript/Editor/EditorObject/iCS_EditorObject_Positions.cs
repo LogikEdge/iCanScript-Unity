@@ -128,10 +128,7 @@ public partial class iCS_EditorObject {
 			return AnimatedSize.CurrentValue;
 		}
 		set {
-		    if(IsPort) {
-                Debug.LogWarning("iCanScript: Should not set DisplaySize on ports.");
-		        return; 
-	        }
+		    if(IsPort) return;
     		AnimatedSize.Reset(value);                                
 		}
 	}
