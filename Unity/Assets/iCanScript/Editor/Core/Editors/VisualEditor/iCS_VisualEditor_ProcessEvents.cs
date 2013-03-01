@@ -53,7 +53,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		MouseDownPosition= ViewportMousePosition;
         // Keep a copy of the scroll position.
         MouseDragStartPosition= ViewportMousePosition;
-        DragStartPosition= ScrollPosition;
+        DragStartDisplayPosition= ScrollPosition;
         // Update the selected object.
         SelectedObjectBeforeMouseDown= SelectedObject;
         DetermineSelectedObject();
@@ -216,6 +216,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void UpdateViewportPanning() {
         Vector2 diff= ViewportMousePosition-MouseDragStartPosition;
-        ScrollPosition= DragStartPosition-diff;        
+        ScrollPosition= DragStartDisplayPosition-diff;        
     }
 }

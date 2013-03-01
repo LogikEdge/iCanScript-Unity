@@ -14,13 +14,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Fields.
     // ----------------------------------------------------------------------
-    DragTypeEnum     DragType              = DragTypeEnum.None;
-    iCS_EditorObject DragObject            = null;
-    iCS_EditorObject DragFixPort           = null;
-    iCS_EditorObject DragOriginalPort      = null;
-    Vector2          MouseDragStartPosition= Vector2.zero;
-    Vector2          DragStartPosition     = Vector2.zero;
-    bool             IsDragEnabled         = false;
+    DragTypeEnum     DragType                = DragTypeEnum.None;
+    iCS_EditorObject DragObject              = null;
+    iCS_EditorObject DragFixPort             = null;
+    iCS_EditorObject DragOriginalPort        = null;
+    Vector2          MouseDragStartPosition  = Vector2.zero;
+    Vector2          DragStartDisplayPosition= Vector2.zero;
+    Vector2          DragStartAnchorPosition = Vector2.zero;
+    bool             IsDragEnabled           = false;
     bool             IsDragStarted         { get { return IsDragEnabled && DragObject != null; }}
 
     // ======================================================================
@@ -67,7 +68,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragOriginalPort= port;
             DragFixPort= port;
             DragObject= port;
-            DragStartPosition= port.GlobalDisplayPosition;
+            DragStartDisplayPosition= port.GlobalDisplayPosition;
             DragObject.IsSticky= true;
             return true;
         }
@@ -94,6 +95,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(IsFloatingKeyDown) {
                     IStorage.RegisterUndo("Node Relocation");
                     DragType= DragTypeEnum.NodeRelocation;                                        
+                    DragStartAnchorPosition= node.GlobalAnchorPosition;
                     node.IsFloating= true;
                 } else {
                     IStorage.RegisterUndo("Node Drag");
@@ -103,7 +105,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
 				node.IsSticky= true;
                 DragObject= node;
-                DragStartPosition= node.GlobalDisplayPosition;                                                                    
+                DragStartDisplayPosition= node.GlobalDisplayPosition;                                                                    
             }
             return true;
         }
@@ -119,7 +121,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             inTransition.SourceId= outTransition.InstanceId;
             DragFixPort= outTransition;
             DragObject= inTransition;
-            DragStartPosition= DragObject.GlobalDisplayPosition;
+            DragStartDisplayPosition= DragObject.GlobalDisplayPosition;
             DragObject.IsFloating= true;
             DragObject.IsSticky= true;
             return true;
@@ -141,7 +143,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
         // Compute new object position.
         Vector2 delta= ViewportMousePosition - MouseDragStartPosition;
-        var newPosition= DragStartPosition + delta;
+        var newPosition= DragStartDisplayPosition + delta;
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
@@ -232,7 +234,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             ChangeParent(node, newParent);
                         } else {
                             node.IsFloating= true;
-                            node.AnimatePosition(DragStartPosition);                            
+                            var pos= node.GlobalDisplayPosition;
+                            node.GlobalAnchorPosition= DragStartAnchorPosition;
+                            node.GlobalDisplayPosition= pos;
+                            node.AnimatePosition(DragStartDisplayPosition);                            
                         }
                     }
                     // Remove sticky on parent nodes.
@@ -276,7 +281,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
                                 IStorage.DestroyInstance(DragObject);
                             } else {
-                                DragObject.SetGlobalAnchorAndLayoutPosition(DragStartPosition);
+                                DragObject.SetGlobalAnchorAndLayoutPosition(DragStartDisplayPosition);
                             }
                             break;
                         }
@@ -435,7 +440,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         DragObject.GlobalDisplayPosition= GraphMousePosition;
 		// Reset initial position if port is being dettached from it original parent.
 		if(DragOriginalPort.IsInMuxPort) {
-			DragStartPosition= DragOriginalPort.GlobalDisplayPosition - parent.GlobalDisplayPosition;			
+			DragStartDisplayPosition= DragOriginalPort.GlobalDisplayPosition - parent.GlobalDisplayPosition;			
 		}
         DragObject.IsFloating= true;		
 	}
