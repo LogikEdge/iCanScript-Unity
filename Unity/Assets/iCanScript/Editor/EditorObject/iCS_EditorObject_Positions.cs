@@ -35,11 +35,6 @@ public partial class iCS_EditorObject {
 		}
 		set {
 			if(IsPort) {
-                // Don't update layout offset for port on iconized nodes.
-    			if(!IsVisibleOnDisplay) {
-                    Debug.LogWarning("iCanScript: Should not set port anchor position if not visible.");
-    				return;
-    			}
                 // Transform to a position ratio between 0f and 1f.
     			UpdatePortEdge(value);
     			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);			
