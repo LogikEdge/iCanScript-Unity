@@ -66,8 +66,12 @@ public static class iCS_EditorUtility {
     // otherwise.
     public static void SafeDestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
         iStorage.RegisterUndo("Removing: "+selectedObject.Name);
-        iStorage.DestroyInstance(selectedObject.InstanceId);                        
-    }
+        // TODO: Should animate parent node on node delete.
+        var parent= selectedObject.ParentNode;
+		iStorage.DestroyInstance(selectedObject.InstanceId);                        
+        parent.LayoutNode(iCS_AnimationControl.Always);
+        parent.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
+	}
     
 
     // ======================================================================

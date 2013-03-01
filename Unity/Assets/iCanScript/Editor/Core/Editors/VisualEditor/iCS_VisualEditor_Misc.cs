@@ -492,6 +492,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(pasted.IsUnfoldedOnDisplay) {
             IStorage.Fold(pasted);            
         }
+        pasted.LayoutNode();
+        pasted.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
     }
     iCS_EditorObject AutoCreateBehaviourEvent(string eventName, Vector2 point) {
 		var validParent= IStorage.CreateModule(0, point, iCS_Strings.Update);

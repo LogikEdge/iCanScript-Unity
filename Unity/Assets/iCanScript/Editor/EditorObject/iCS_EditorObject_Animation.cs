@@ -34,7 +34,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Display Size Animation
     // ----------------------------------------------------------------------
-	void PrepareToAnimateSize() {
+	public void PrepareToAnimateSize() {
 		AnimatedSize.StartValue= AnimatedSize.CurrentValue;
 		if(IsSizeAnimated) {
 			AnimatedSize.Start(AnimatedSize.RemainingTime);
@@ -53,7 +53,7 @@ public partial class iCS_EditorObject {
 		AnimatedSize.Start(timeRatio);
 	}
     // ----------------------------------------------------------------------
-	void AnimateSize(P.TimeRatio timeRatio) {
+	public void AnimateSize(P.TimeRatio timeRatio) {
 		AnimatedSize.Start(timeRatio);
 	}
     // ----------------------------------------------------------------------
@@ -127,7 +127,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Rect Animation
     // ----------------------------------------------------------------------
-	void PrepareToAnimateRect() {
+	public void PrepareToAnimateRect() {
 		PrepareToAnimatePosition();
 		PrepareToAnimateSize();
 	}
@@ -142,7 +142,7 @@ public partial class iCS_EditorObject {
         AnimateSize(SizeFrom(globalRect), timeRatio);
     }
     // ----------------------------------------------------------------------
-	void AnimateRect(P.TimeRatio timeRatio) {
+	public void AnimateRect(P.TimeRatio timeRatio) {
 		AnimatePosition(timeRatio);
 		AnimateSize(timeRatio);
 	}

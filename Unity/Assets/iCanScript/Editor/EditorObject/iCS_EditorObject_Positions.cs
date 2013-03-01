@@ -183,9 +183,7 @@ public partial class iCS_EditorObject {
                     if(!c.IsFloating) {
     					if(c.IsVisibleOnDisplay) {
         					childRect= Math3D.Merge(childRect, c.GlobalDisplayRect);											        
-    					} else {
-    						Debug.LogWarning("iCanScript: Trying to compute child rectangle with invisible children");
-    					}                        
+    					}
                     }
 				}
             );
