@@ -10,7 +10,7 @@ public partial class iCS_EditorObject {
     // Layout the nodes from the parent of the object moving up the hierarchy
     // until we reach the top.  The sticky bit is carried over from the object
     // to the parent.
-    void LayoutParentNodesUntilTop(iCS_AnimationControl animCtrl= iCS_AnimationControl.Normal) {
+    public void LayoutParentNodesUntilTop(iCS_AnimationControl animCtrl= iCS_AnimationControl.Normal) {
         var parent= ParentNode;
         if(parent == null) return;
         var parentGlobalRect= parent.GlobalDisplayRect;

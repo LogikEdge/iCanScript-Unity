@@ -207,8 +207,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void EndDrag() {
 		ProcessDrag();
         try {
-            DragObject.IsSticky= false;
-            DragObject.IsFloating= false;
             switch(DragType) {
                 case DragTypeEnum.None: break;
                 case DragTypeEnum.NodeDrag: {
@@ -225,10 +223,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                     }
                     // Remove sticky on parent nodes.
+                    DragObject.IsSticky= false;
+                    DragObject.IsFloating= false;
 					node.ForEachParentNode(p=> { p.IsSticky= false; });
                     break;
                 }
                 case DragTypeEnum.PortRelocation:
+                    DragObject.IsSticky= false;
+                    DragObject.IsFloating= false;
                     if(DragObject.IsDataPort) {
 						DragObject.ParentNode.LayoutPorts();
                         break;
@@ -293,6 +295,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             // We don't need the drag port anymore.
                             var dragPortPos= DragObject.GlobalDisplayPosition;
 							IStorage.DestroyInstance(DragObject);
+                            DragObject.IsSticky= false;
+                            DragObject.IsFloating= false;
 							DragObject= null;
                             // Verify for disconnection.
                             if(!isNearParent) {
@@ -362,6 +366,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     if(destState != null && destState.IsState) {
                         iCS_EditorObject outStatePort= IStorage[DragObject.SourceId];
                         outStatePort.IsFloating= false;
+                        outStatePort.IsSticky= false;
                         IStorage.CreateTransition(outStatePort, destState, DragObject.GlobalDisplayPosition);
                         DragObject.SourceId= -1;
                         IStorage.DestroyInstance(DragObject);

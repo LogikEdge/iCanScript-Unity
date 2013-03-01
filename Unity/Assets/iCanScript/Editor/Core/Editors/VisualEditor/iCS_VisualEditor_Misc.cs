@@ -302,7 +302,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void ChangeParent(iCS_EditorObject node, iCS_EditorObject newParent) {
         iCS_EditorObject oldParent= node.Parent;
         if(newParent == null || newParent == oldParent) return;
-        node.Parent= newParent;
+		// Change parent and relayout.
+		var nodePos= node.GlobalDisplayPosition;
+		node.Parent= newParent;
+		node.GlobalDisplayPosition= nodePos;
+		node.LayoutNode();
+		node.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
 		if(node.IsState) CleanupEntryState(node, oldParent);
         CleanupConnections(node);
     }

@@ -5,11 +5,6 @@ using P=Prelude;
 
 public partial class iCS_EditorObject {
     // ======================================================================
-	// Types
-    // ----------------------------------------------------------------------
-    public enum iCS_AnimationControl { Normal, Always, None };
-    
-    // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
 	private bool IsAlphaAnimated= false;
@@ -103,7 +98,7 @@ public partial class iCS_EditorObject {
 		PrepareToAnimateLayoutOffset();
 	}
     // ----------------------------------------------------------------------
-    void AnimatePosition(Vector2 targetPosition) {
+    public void AnimatePosition(Vector2 targetPosition) {
         var targetLayoutOffset= targetPosition-LocalAnchorPosition;
         var parent= ParentNode;
         if(parent != null) {
@@ -137,7 +132,7 @@ public partial class iCS_EditorObject {
 		PrepareToAnimateSize();
 	}
     // ----------------------------------------------------------------------
-    void AnimateRect(Rect globalRect) {
+    public void AnimateRect(Rect globalRect) {
         AnimatePosition(PositionFrom(globalRect));
         AnimateSize(SizeFrom(globalRect));
     }
