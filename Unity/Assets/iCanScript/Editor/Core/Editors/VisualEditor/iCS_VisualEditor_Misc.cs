@@ -305,7 +305,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Change parent and relayout.
 		var nodePos= node.GlobalDisplayPosition;
 		node.Parent= newParent;
-		node.GlobalDisplayPosition= nodePos;
+		node.SetGlobalAnchorAndLayoutPosition(nodePos);
 		node.LayoutNode();
 		node.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
 		if(node.IsState) CleanupEntryState(node, oldParent);
