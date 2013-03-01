@@ -381,7 +381,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 List<iCS_EditorObject> childNodes= new List<iCS_EditorObject>();
                 IStorage.ForEachChild(node, c=> { if(c.IsNode) childNodes.Add(c);});
                 foreach(var childNode in childNodes) { CleanupConnections(childNode); }
-                break;
+                goto case iCS_ObjectTypeEnum.InstanceMethod;
             }
             case iCS_ObjectTypeEnum.InstanceMethod:
             case iCS_ObjectTypeEnum.StaticMethod:
