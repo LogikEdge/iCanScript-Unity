@@ -60,6 +60,96 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Display State Change
     // ----------------------------------------------------------------------
+    public void Iconize() {
+        // Nothing to do if already iconized.
+        if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
+		// Prepare to hide visible children
+		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+        if(animateChildren) {
+            ForEachChildNode(c=> c.PrepareToHide());
+        }
+        // Set the node has iconized.
+		var prevRect= GlobalDisplayRect;
+		PrepareToAnimateRect();
+		PrepareToAnimateParents();
+        DisplayOption= iCS_DisplayOptionEnum.Iconized;
+		LayoutNode();
+		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
+		var newRect= GlobalDisplayRect;
+		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
+        // Animate children if previous state was unfolded.
+        if(animateChildren) {
+            ForEachChildNode(c=> c.Hide(timeRatio));
+        }
+		AnimateRect(timeRatio);
+		AnimateParents(timeRatio);
+        IsDirty= true;
+    }
+    // ----------------------------------------------------------------------    
+    public void Fold() {
+        // Nothing to do if already fold.
+        if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
+		// Prepare to hide visible children
+		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+        if(animateChildren) {
+            ForEachChildNode(c=> c.PrepareToHide());
+        }
+        // Set the node has folded.
+		var prevRect= GlobalDisplayRect;
+		PrepareToAnimateRect();
+		PrepareToAnimateParents();
+        DisplayOption= iCS_DisplayOptionEnum.Folded;
+		LayoutNode();
+		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
+		var newRect= GlobalDisplayRect;
+		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
+        // Animate children if previous state was unfolded.
+        if(animateChildren) {
+            ForEachChildNode(c=> c.Hide(timeRatio));
+        }
+		AnimateRect(timeRatio);
+		AnimateParents(timeRatio);
+        IsDirty= true;
+    }
+    // ----------------------------------------------------------------------    
+    public void Unfold() {
+        // Nothing to do if already unfold.
+        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
+		// Prepare to hide visible children
+        ForEachChildNode(c=> c.PrepareToUnhide());
+        // Set the node has unfolded.
+		var prevRect= GlobalDisplayRect;
+		PrepareToAnimateRect();
+		PrepareToAnimateParents();
+        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
+		// Perform layout on children first.
+		ForEachChildRecursiveDepthFirst(
+			(c,fnc)=> {
+				if(!c.IsNode) return false;
+				if(c.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
+					return true;
+				}
+				fnc(c);
+				return false;
+			},
+			c=> {
+				c.LayoutNode(iCS_AnimationControl.None);
+			}
+		);
+		LayoutNode(iCS_AnimationControl.None);
+		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
+		var newRect= GlobalDisplayRect;
+		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
+        // Animate children if previous state was unfolded.
+        ForEachChildNode(c=> c.Unhide(timeRatio));
+		AnimateRect(timeRatio);
+		AnimateParents(timeRatio);
+        IsDirty= true;
+    }
+
+    // ======================================================================
+    // Animation High-Order Utilities
+    // ----------------------------------------------------------------------
 	void PrepareToHide() {
         // Nothing to do if we are not visible.
         if(!IsVisibleOnDisplay) return;
@@ -130,82 +220,33 @@ public partial class iCS_EditorObject {
         }
     }
     // ----------------------------------------------------------------------
-    public void Iconize() {
-        // Nothing to do if already iconized.
-        if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
-		// Prepare to hide visible children
-		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
-        if(animateChildren) {
-            ForEachChildNode(c=> c.PrepareToHide());
-        }
-        // Set the node has iconized.
-		var prevRect= GlobalDisplayRect;
-		PrepareToAnimateRect();
-        DisplayOption= iCS_DisplayOptionEnum.Iconized;
-		LayoutNode();
-		var newRect= GlobalDisplayRect;
-		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
-        // Animate children if previous state was unfolded.
-        if(animateChildren) {
-            ForEachChildNode(c=> c.Hide(timeRatio));
-        }
-		AnimateRect(timeRatio);
-        IsDirty= true;
+    public void PrepareToAnimateParents() {
+        var parent= ParentNode;
+        if(parent == null) return;
+        parent.PrepareToAnimateRect();
+        parent.ForEachChildNode(
+            c=> {
+                if(c != this) {
+                    c.PrepareToAnimatePosition();
+                }
+            }
+        );
+        parent.PrepareToAnimateParents();
     }
-    // ----------------------------------------------------------------------    
-    public void Fold() {
-        // Nothing to do if already fold.
-        if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
-		// Prepare to hide visible children
-		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
-        if(animateChildren) {
-            ForEachChildNode(c=> c.PrepareToHide());
-        }
-        // Set the node has folded.
-		var prevRect= GlobalDisplayRect;
-		PrepareToAnimateRect();
-        DisplayOption= iCS_DisplayOptionEnum.Folded;
-		LayoutNode();
-		var newRect= GlobalDisplayRect;
-		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
-        // Animate children if previous state was unfolded.
-        if(animateChildren) {
-            ForEachChildNode(c=> c.Hide(timeRatio));
-        }
-		AnimateRect(timeRatio);
-        IsDirty= true;
+    // ----------------------------------------------------------------------
+    public void AnimateParents(P.TimeRatio timeRatio) {
+        var parent= ParentNode;
+        if(parent == null) return;
+        parent.AnimateRect(timeRatio);
+        parent.ForEachChildNode(
+            c=> {
+                if(c != this) {
+                    c.AnimatePosition(timeRatio);
+                }
+            }
+        );
+        parent.AnimateParents(timeRatio);        
     }
-    // ----------------------------------------------------------------------    
-    public void Unfold() {
-        // Nothing to do if already unfold.
-        if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
-		// Prepare to hide visible children
-        ForEachChildNode(c=> c.PrepareToUnhide());
-        // Set the node has unfolded.
-		var prevRect= GlobalDisplayRect;
-		PrepareToAnimateRect();
-        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-		// Perform layout on children first.
-		ForEachChildRecursiveDepthFirst(
-			(c,fnc)=> {
-				if(!c.IsNode) return false;
-				if(c.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-					return true;
-				}
-				fnc(c);
-				return false;
-			},
-			c=> {
-				c.LayoutNode(iCS_AnimationControl.None);
-			}
-		);
-		LayoutNode(iCS_AnimationControl.None);
-		var newRect= GlobalDisplayRect;
-		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
-        // Animate children if previous state was unfolded.
-        ForEachChildNode(c=> c.Unhide(timeRatio));
-		AnimateRect(timeRatio);
-        IsDirty= true;
-    }
+    
 
 }
