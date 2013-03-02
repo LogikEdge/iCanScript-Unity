@@ -6,6 +6,7 @@
    Copyright 2013 Infaunier. All rights reserved.
 */
 using UnityEngine;
+using System;
 using System.Collections;
 using P=Prelude;
 
@@ -69,20 +70,13 @@ public partial class iCS_EditorObject {
             ForEachChildNode(c=> c.PrepareToHide());
         }
         // Set the node has iconized.
-		var prevRect= GlobalDisplayRect;
-		PrepareToAnimateRect();
-		PrepareToAnimateParents();
-        DisplayOption= iCS_DisplayOptionEnum.Iconized;
-		LayoutNode();
-		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
-		var newRect= GlobalDisplayRect;
-		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
+		var timeRatio= AnimateGraph(
+			o=> o.DisplayOption= iCS_DisplayOptionEnum.Iconized
+		);
         // Animate children if previous state was unfolded.
         if(animateChildren) {
             ForEachChildNode(c=> c.Hide(timeRatio));
         }
-		AnimateRect(timeRatio);
-		AnimateParents(timeRatio);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
@@ -95,20 +89,13 @@ public partial class iCS_EditorObject {
             ForEachChildNode(c=> c.PrepareToHide());
         }
         // Set the node has folded.
-		var prevRect= GlobalDisplayRect;
-		PrepareToAnimateRect();
-		PrepareToAnimateParents();
-        DisplayOption= iCS_DisplayOptionEnum.Folded;
-		LayoutNode();
-		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
-		var newRect= GlobalDisplayRect;
-		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
+		var timeRatio= AnimateGraph(
+			o=> o.DisplayOption= iCS_DisplayOptionEnum.Folded
+		);
         // Animate children if previous state was unfolded.
         if(animateChildren) {
             ForEachChildNode(c=> c.Hide(timeRatio));
         }
-		AnimateRect(timeRatio);
-		AnimateParents(timeRatio);
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
@@ -118,37 +105,45 @@ public partial class iCS_EditorObject {
 		// Prepare to hide visible children
         ForEachChildNode(c=> c.PrepareToUnhide());
         // Set the node has unfolded.
+		var timeRatio= AnimateGraph(
+			o=> {
+		        o.DisplayOption= iCS_DisplayOptionEnum.Unfolded;
+				// Perform layout on children first.
+				o.ForEachChildRecursiveDepthFirst(
+					(c,fnc)=> {
+						if(!c.IsNode) return false;
+						if(c.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
+							return true;
+						}
+						fnc(c);
+						return false;
+					},
+					c=> {
+						c.LayoutNode(iCS_AnimationControl.None);
+					}
+				);
+			}
+		);
+        // Animate children if previous state was unfolded.
+        ForEachChildNode(c=> c.Unhide(timeRatio));
+        IsDirty= true;
+    }
+    // ======================================================================
+    // Animation High-Order Utilities
+    // ----------------------------------------------------------------------
+	public P.TimeRatio AnimateGraph(Action<iCS_EditorObject> fnc) {
 		var prevRect= GlobalDisplayRect;
 		PrepareToAnimateRect();
 		PrepareToAnimateParents();
-        DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-		// Perform layout on children first.
-		ForEachChildRecursiveDepthFirst(
-			(c,fnc)=> {
-				if(!c.IsNode) return false;
-				if(c.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-					return true;
-				}
-				fnc(c);
-				return false;
-			},
-			c=> {
-				c.LayoutNode(iCS_AnimationControl.None);
-			}
-		);
+		fnc(this);
 		LayoutNode(iCS_AnimationControl.None);
 		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
 		var newRect= GlobalDisplayRect;
-		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);
-        // Animate children if previous state was unfolded.
-        ForEachChildNode(c=> c.Unhide(timeRatio));
+		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);		
 		AnimateRect(timeRatio);
 		AnimateParents(timeRatio);
-        IsDirty= true;
-    }
-
-    // ======================================================================
-    // Animation High-Order Utilities
+		return timeRatio;
+	}
     // ----------------------------------------------------------------------
 	void PrepareToHide() {
         // Nothing to do if we are not visible.
@@ -156,7 +151,7 @@ public partial class iCS_EditorObject {
         // Reposition at parent center.
         PrepareToAnimateRect();
         // First hide all children.
-        ForEachChildNode(c=> c.Hide());
+        ForEachChildNode(c=> c.PrepareToHide());
 	}
     // ----------------------------------------------------------------------
 	void Hide(P.TimeRatio timeRatio) {
@@ -168,17 +163,17 @@ public partial class iCS_EditorObject {
 			ForEachChildNode(c=> c.Hide(timeRatio));
 		}
 	}
-    // ----------------------------------------------------------------------
-    public void Hide() {
-        // Nothing to do if we are not visible.
-        if(!IsVisibleOnDisplay) return;
-        // Reposition at parent center.
-        LocalLayoutOffset= -LocalAnchorPosition;
-        // First hide all children.
-        ForEachChildNode(c=> c.Hide());
-        // ... then hide ourself.
-        AnimateSize(Vector2.zero);
-    }
+//    // ----------------------------------------------------------------------
+//    public void Hide() {
+//        // Nothing to do if we are not visible.
+//        if(!IsVisibleOnDisplay) return;
+//        // Reposition at parent center.
+//        LocalLayoutOffset= -LocalAnchorPosition;
+//        // First hide all children.
+//        ForEachChildNode(c=> c.Hide());
+//        // ... then hide ourself.
+//        AnimateSize(Vector2.zero);
+//    }
     // ----------------------------------------------------------------------
 	void PrepareToUnhide() {
 		AnimatedLayoutOffset.StartValue= -LocalAnchorPosition;
