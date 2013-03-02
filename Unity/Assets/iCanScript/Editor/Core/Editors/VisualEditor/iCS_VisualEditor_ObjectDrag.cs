@@ -415,10 +415,50 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 
 	// ----------------------------------------------------------------------
+	void CleanupDragPort() {
+		if(DragObject != DragOriginalPort && DragObject != DragFixPort) {
+			IStorage.DestroyInstance(DragObject);
+			DragObject= null;
+		}
+	}
+	// ----------------------------------------------------------------------
 	void CreateDragPort() {
         // Data port. Create a drag port as appropriate.
         iCS_EditorObject parent= DragOriginalPort.Parent;
         DragObject.IsFloating= false;
+		// The simple case is for non-module data ports.
+		// TODO: Verify the following code...
+		if(!DragOriginalPort.IsModulePort) {
+			if(DragOriginalPort.IsInputPort) {
+				var sourcePort= DragOriginalPort.Source;
+				if(sourcePort != null) {	// Disconnect if the port is connected.
+					var sourceParent= sourcePort.ParentNode;
+		            var newPort= IStorage.CreatePort(sourcePort.Name,
+													 sourceParent.InstanceId,
+													 sourcePort.RuntimeType,
+													 iCS_ObjectTypeEnum.InDynamicModulePort);
+					CleanupDragPort();
+					DragFixPort= sourcePort;
+					DragObject= newPort;
+					IStorage.SetSource(DragObject, DragFixPort);
+					DragObject.IsFloating= true;
+					return;					
+				} else {					// Input is not connected so simply connect the drag port
+		            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
+													 parent.InstanceId,
+													 DragOriginalPort.RuntimeType,
+													 iCS_ObjectTypeEnum.OutDynamicModulePort);
+					CleanupDragPort();
+					DragObject= newPort;
+					DragFixPort= DragOriginalPort;
+					IStorage.SetSource(DragOriginalPort, DragObject);
+					DragObject.IsFloating= true;
+					return;					
+				}
+			} else {
+			....	
+			}
+		}
         if(DragOriginalPort.IsInputPort) {
             DragObject= IStorage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             iCS_EditorObject prevSource= DragOriginalPort.Source;
@@ -447,7 +487,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(DragOriginalPort.IsInMuxPort) {
 			DragStartDisplayPosition= DragOriginalPort.GlobalDisplayPosition - parent.GlobalDisplayPosition;			
 		}
-        DragObject.IsFloating= true;		
+        DragObject.IsFloating= true;
 	}
 
 	// ----------------------------------------------------------------------

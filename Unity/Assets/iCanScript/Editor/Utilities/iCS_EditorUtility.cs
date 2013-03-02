@@ -68,9 +68,9 @@ public static class iCS_EditorUtility {
         iStorage.RegisterUndo("Removing: "+selectedObject.Name);
         // TODO: Should animate parent node on node delete.
         var parent= selectedObject.ParentNode;
-		iStorage.DestroyInstance(selectedObject.InstanceId);                        
-        parent.LayoutNode(iCS_AnimationControl.Always);
-        parent.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
+		parent.AnimateGraph(
+			_=> iStorage.DestroyInstance(selectedObject.InstanceId)                        
+		);
 	}
     
 
