@@ -757,10 +757,6 @@ public partial class iCS_Graphics {
             highlight= true;
         }
         // Determine if this connection is part of a drag.
-        bool isFloating= (port.IsFloating || source.IsFloating);
-        if(isFloating) {
-            highlight= false;
-        }
         Color color= iCS_PreferencesEditor.GetTypeColor(source.RuntimeType);
         color.a*= alpha;
         iCS_ConnectionParams cp= new iCS_ConnectionParams(port, portPos, source, sourcePos, iStorage);
