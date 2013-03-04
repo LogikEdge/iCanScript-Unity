@@ -87,7 +87,6 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	void AnimateLayoutOffset(P.TimeRatio timeRatio) {
         if(Math3D.IsNotEqual(PreviousAnchor, LocalAnchorPosition)) {
-            Debug.Log("Needs to offset animation start: "+Name);
             var offset= LocalAnchorPosition-PreviousAnchor;
             AnimatedLayoutOffset.StartValue-= offset;
         }
