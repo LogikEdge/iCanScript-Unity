@@ -427,9 +427,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_EditorObject parent= DragOriginalPort.Parent;
         DragObject.IsFloating= false;
 		// The simple case is for non-module data ports.
-		// TODO: Verify the following code...
 		if(!DragOriginalPort.IsModulePort) {
+			// Determine if we are already properly connected.
+			if(DragObject != DragOriginalPort) return;
 			if(DragOriginalPort.IsInputPort) {
+				// Create the appropriate drag port.
 				var sourcePort= DragOriginalPort.Source;
 				if(sourcePort != null) {	// Disconnect if the port is connected.
 					var sourceParent= sourcePort.ParentNode;
@@ -441,8 +443,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					DragFixPort= sourcePort;
 					DragObject= newPort;
 					IStorage.SetSource(DragObject, DragFixPort);
-					DragObject.IsFloating= true;
-					return;					
 				} else {					// Input is not connected so simply connect the drag port
 		            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
 													 parent.InstanceId,
@@ -452,34 +452,162 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					DragObject= newPort;
 					DragFixPort= DragOriginalPort;
 					IStorage.SetSource(DragOriginalPort, DragObject);
-					DragObject.IsFloating= true;
-					return;					
 				}
-			} else {
-			....	
+			} else {	// Output port.
+	            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
+												 parent.InstanceId,
+												 DragOriginalPort.RuntimeType,
+												 iCS_ObjectTypeEnum.InDynamicModulePort);
+				CleanupDragPort();
+				DragObject= newPort;
+				DragFixPort= DragOriginalPort;
+				IStorage.SetSource(DragObject, DragFixPort);
+			}
+		} else {	// This is a module port.
+			var point= GraphMousePosition;
+			bool isInside= DragOriginalPort.ParentNode.GlobalDisplayRect.Contains(point);
+			if(DragOriginalPort.IsInputPort) {	// Input module port
+				if(isInside) {	// Inside parent node
+					// Nothing to do if already properly connected.
+					if(DragObject != DragOriginalPort &&
+					   DragFixPort == DragOriginalPort &&
+					   DragObject.Source == DragFixPort) {
+						return;
+					}
+					// Destroy previous drag port.
+					if(DragObject != DragOriginalPort) {
+						DragOriginalPort.Source= DragObject.Source;
+						DragFixPort= DragOriginalPort;
+					}
+		            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
+													 parent.InstanceId,
+													 DragOriginalPort.RuntimeType,
+													 iCS_ObjectTypeEnum.InDynamicModulePort);
+					CleanupDragPort();
+					DragObject= newPort;
+					IStorage.SetSource(DragObject, DragOriginalPort);
+					DragFixPort= DragOriginalPort;
+				} else {		// Outside parent node
+					// Nothing to do if already properly connected.
+					if(DragObject != DragOriginalPort &&
+					   DragFixPort != DragOriginalPort &&
+					   DragObject.Source == DragFixPort) {
+						return;
+					}
+					// Destroy previous drag port.
+					if(DragObject != DragOriginalPort) {
+						DragFixPort= DragOriginalPort;
+					}
+					var sourcePort= DragOriginalPort.Source;
+					if(sourcePort != null) {
+						var sourceParent= sourcePort.ParentNode;
+			            var newPort= IStorage.CreatePort(sourcePort.Name,
+														 sourceParent.InstanceId,
+														 sourcePort.RuntimeType,
+														 iCS_ObjectTypeEnum.InDynamicModulePort);
+						CleanupDragPort();
+						DragFixPort= sourcePort;
+						DragObject= newPort;
+						IStorage.SetSource(DragObject, DragFixPort);
+						DragObject.IsFloating= true;
+						return;						
+					} else {
+			            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
+														 parent.InstanceId,
+														 DragOriginalPort.RuntimeType,
+														 iCS_ObjectTypeEnum.OutDynamicModulePort);
+						CleanupDragPort();
+						DragObject= newPort;
+						IStorage.SetSource(DragOriginalPort, DragObject);
+						DragFixPort= DragOriginalPort;
+					}
+				}
+			} else {							// Output module port
+				if(isInside) {	// Inside parent node
+					var sourcePort= DragOriginalPort.Source;
+					if(sourcePort != null) {
+						// Nothing to do if already properly connected.
+						if(DragObject != DragOriginalPort &&
+						   DragFixPort != DragOriginalPort &&
+						   DragObject.Source == DragFixPort) {
+							return;
+						}
+						// Destroy previous drag port.
+						if(DragObject != DragOriginalPort) {
+							DragFixPort= DragOriginalPort;
+						}
+						var sourceParent= sourcePort.ParentNode;
+			            var newPort= IStorage.CreatePort(sourcePort.Name,
+														 sourceParent.InstanceId,
+														 sourcePort.RuntimeType,
+														 iCS_ObjectTypeEnum.InDynamicModulePort);
+						CleanupDragPort();
+						DragFixPort= sourcePort;
+						DragObject= newPort;
+						IStorage.SetSource(DragObject, DragFixPort);
+					} else {
+						// Nothing to do if already properly connected.
+						if(DragObject != DragOriginalPort &&
+						   DragFixPort == DragOriginalPort &&
+						   DragObject.Source == DragOriginalPort) {
+							return;
+						}
+						// Destroy previous drag port.
+						if(DragObject != DragOriginalPort) {
+							DragFixPort= DragOriginalPort;
+						}
+			            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
+														 parent.InstanceId,
+														 DragOriginalPort.RuntimeType,
+														 iCS_ObjectTypeEnum.OutDynamicModulePort);
+						CleanupDragPort();
+						DragObject= newPort;
+						IStorage.SetSource(DragOriginalPort, DragObject);
+						DragFixPort= DragOriginalPort;
+					}
+				} else {		// Outside parent node
+					// Nothing to do if already properly connected.
+					if(DragObject != DragOriginalPort &&
+					   DragFixPort == DragOriginalPort &&
+					   DragObject.Source == DragOriginalPort) {
+						return;
+					}
+					// Destroy previous drag port.
+					if(DragObject != DragOriginalPort) {
+						DragFixPort= DragOriginalPort;
+					}
+		            var newPort= IStorage.CreatePort(DragOriginalPort.Name,
+													 parent.InstanceId,
+													 DragOriginalPort.RuntimeType,
+													 iCS_ObjectTypeEnum.InDynamicModulePort);
+					CleanupDragPort();
+					DragObject= newPort;
+					IStorage.SetSource(DragObject, DragOriginalPort);
+					DragFixPort= DragOriginalPort;
+				}
 			}
 		}
-        if(DragOriginalPort.IsInputPort) {
-            DragObject= IStorage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-            iCS_EditorObject prevSource= DragOriginalPort.Source;
-            if(prevSource != null) {
-                if(prevSource == DragObject) {
-                    Debug.LogWarning("We are creating a drag port when a drag port already exists !!!");
-                    return;
-                }
-                DragFixPort= prevSource;
-                IStorage.SetSource(DragObject, DragFixPort);
-                IStorage.SetSource(DragOriginalPort, null);
-                DragObject.Name= DragFixPort.Name;
-            } else {
-                DragFixPort= DragOriginalPort;
-                IStorage.SetSource(DragFixPort, DragObject);
-            }                    
-        } else {
-            DragObject= IStorage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-            DragFixPort= DragOriginalPort;
-            IStorage.SetSource(DragObject, DragOriginalPort);
-        }
+//        if(DragOriginalPort.IsInputPort) {
+//            DragObject= IStorage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+//            iCS_EditorObject prevSource= DragOriginalPort.Source;
+//            if(prevSource != null) {
+//                if(prevSource == DragObject) {
+//                    Debug.LogWarning("We are creating a drag port when a drag port already exists !!!");
+//                    return;
+//                }
+//                DragFixPort= prevSource;
+//                IStorage.SetSource(DragObject, DragFixPort);
+//                IStorage.SetSource(DragOriginalPort, null);
+//                DragObject.Name= DragFixPort.Name;
+//            } else {
+//                DragFixPort= DragOriginalPort;
+//                IStorage.SetSource(DragFixPort, DragObject);
+//            }                    
+//        } else {
+//            DragObject= IStorage.CreatePort(DragOriginalPort.Name, parent.InstanceId, DragOriginalPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+//            DragFixPort= DragOriginalPort;
+//            IStorage.SetSource(DragObject, DragOriginalPort);
+//        }
         DragType= DragTypeEnum.PortConnection;
         DragObject.LocalAnchorPosition= DragOriginalPort.LocalAnchorPosition;
         DragObject.GlobalDisplayPosition= GraphMousePosition;
