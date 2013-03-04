@@ -12,7 +12,8 @@ public partial class iCS_EditorObject {
         new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	private P.Animate<Vector2> AnimatedSize=
 		new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-
+    private Vector2 PreviousAnchor= Vector2.zero;
+    
     // ======================================================================
     // Queries
     // ----------------------------------------------------------------------
@@ -65,6 +66,7 @@ public partial class iCS_EditorObject {
     // Layout Offset Animation
     // ----------------------------------------------------------------------
 	void PrepareToAnimateLayoutOffset() {
+        PreviousAnchor= LocalAnchorPosition;
 		AnimatedLayoutOffset.StartValue= AnimatedLayoutOffset.CurrentValue;
 		if(IsPositionAnimated) {
 			AnimatedLayoutOffset.Start(AnimatedLayoutOffset.RemainingTime);
@@ -84,6 +86,11 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
 	void AnimateLayoutOffset(P.TimeRatio timeRatio) {
+        if(Math3D.IsNotEqual(PreviousAnchor, LocalAnchorPosition)) {
+            Debug.Log("Needs to offset animation start: "+Name);
+            var offset= LocalAnchorPosition-PreviousAnchor;
+            AnimatedLayoutOffset.StartValue-= offset;
+        }
 		AnimatedLayoutOffset.Start(timeRatio);
 	}
     // ----------------------------------------------------------------------
