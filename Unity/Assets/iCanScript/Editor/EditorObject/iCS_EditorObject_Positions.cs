@@ -91,6 +91,10 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 GlobalDisplayPosition {
 		get {
+//            // Take the animation first
+//            if(AnimatedGlobalRect.IsActive) {
+//                return PositionFrom(AnimatedGlobalRect.CurrentValue);
+//            }
 			var parent= ParentNode;
 			if(parent == null) {
 			    return LocalAnchorPosition+LocalLayoutOffset;
@@ -125,6 +129,9 @@ public partial class iCS_EditorObject {
 		    if(IsPort) {
 		        return iCS_EditorConfig.PortSize;
 		    }
+//		    if(AnimatedGlobalRect.IsActive) {
+//		        return SizeFrom(AnimatedGlobalRect.CurrentValue);
+//		    }
 			return AnimatedSize.CurrentValue;
 		}
 		set {

@@ -163,17 +163,6 @@ public partial class iCS_EditorObject {
 			ForEachChildNode(c=> c.Hide(timeRatio));
 		}
 	}
-//    // ----------------------------------------------------------------------
-//    public void Hide() {
-//        // Nothing to do if we are not visible.
-//        if(!IsVisibleOnDisplay) return;
-//        // Reposition at parent center.
-//        LocalLayoutOffset= -LocalAnchorPosition;
-//        // First hide all children.
-//        ForEachChildNode(c=> c.Hide());
-//        // ... then hide ourself.
-//        AnimateSize(Vector2.zero);
-//    }
     // ----------------------------------------------------------------------
 	void PrepareToUnhide() {
 		AnimatedLayoutOffset.StartValue= -LocalAnchorPosition;
@@ -223,6 +212,7 @@ public partial class iCS_EditorObject {
             c=> {
                 if(c != this) {
                     c.PrepareToAnimatePosition();
+//                    c.PrepareToAnimateRect();
                 }
             }
         );
@@ -237,6 +227,7 @@ public partial class iCS_EditorObject {
             c=> {
                 if(c != this) {
                     c.AnimatePosition(timeRatio);
+//                    c.AnimateRect(timeRatio);
                 }
             }
         );

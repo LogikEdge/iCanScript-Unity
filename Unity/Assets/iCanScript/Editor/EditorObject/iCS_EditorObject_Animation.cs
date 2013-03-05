@@ -12,6 +12,8 @@ public partial class iCS_EditorObject {
         new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	private P.Animate<Vector2> AnimatedSize=
 		new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+//	private P.Animate<Rect> AnimatedGlobalRect=
+//		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     private Vector2 PreviousAnchor= Vector2.zero;
     
     // ======================================================================
@@ -134,24 +136,22 @@ public partial class iCS_EditorObject {
 	// Rect Animation
     // ----------------------------------------------------------------------
 	public void PrepareToAnimateRect() {
+//        AnimatedGlobalRect.StartValue= GlobalDisplayRect;
 		PrepareToAnimatePosition();
 		PrepareToAnimateSize();
+	}
+    // ----------------------------------------------------------------------
+	public void AnimateRect(P.TimeRatio timeRatio) {
+//        AnimatedGlobalRect.TargetValue= GlobalDisplayRect;
+//        AnimatedGlobalRect.Start(timeRatio);
+		AnimatePosition(timeRatio);
+		AnimateSize(timeRatio);
 	}
     // ----------------------------------------------------------------------
     public void AnimateRect(Rect globalRect) {
         AnimatePosition(PositionFrom(globalRect));
         AnimateSize(SizeFrom(globalRect));
     }
-    // ----------------------------------------------------------------------
-    void AnimateRect(Rect globalRect, P.TimeRatio timeRatio) {
-        AnimatePosition(PositionFrom(globalRect), timeRatio);
-        AnimateSize(SizeFrom(globalRect), timeRatio);
-    }
-    // ----------------------------------------------------------------------
-	public void AnimateRect(P.TimeRatio timeRatio) {
-		AnimatePosition(timeRatio);
-		AnimateSize(timeRatio);
-	}
     // ----------------------------------------------------------------------
     void StopRectAnimation() {
         StopPositionAnimation();
@@ -249,6 +249,22 @@ public partial class iCS_EditorObject {
 				}
             }
         }
+//		if(AnimatedGlobalRect.IsActive) {
+//            var prevRect= AnimatedGlobalRect.CurrentValue;
+//			if(AnimatedGlobalRect.IsElapsed) {
+//				AnimatedGlobalRect.Reset(AnimatedGlobalRect.TargetValue);
+//                IsFloating= false;
+//			} else {
+//				AnimatedGlobalRect.Update();
+//			}
+//			if(!IsFloating && Math3D.IsNotEqual(prevRect, AnimatedGlobalRect.CurrentValue)) {
+//                LayoutPorts();
+//				var parent= ParentNode;
+//				if(parent != null && !parent.IsAnimated) {
+//	                LayoutParentNodesUntilTop();					
+//				}
+//			}
+//		}
 		if(AnimatedSize.IsActive) {
             var prevSize= AnimatedSize.CurrentValue;
 			if(AnimatedSize.IsElapsed) {
