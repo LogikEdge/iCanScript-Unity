@@ -6,27 +6,6 @@ using System.Collections.Generic;
 
 public class iCS_DynamicMenu {
     // ======================================================================
-    // Types
-    // ----------------------------------------------------------------------
-    internal class MenuContext {
-        public string               Command;
-        public iCS_EditorObject     SelectedObject;
-        public iCS_IStorage         Storage;
-        public iCS_ReflectionInfo   Descriptor;
-
-        // ======================================================================
-        // Menu context constructors.
-        // ----------------------------------------------------------------------
-        public MenuContext(string command, iCS_ReflectionInfo descriptor= null) : this(command, descriptor, null, null) {}
-        public MenuContext(string command, iCS_ReflectionInfo descriptor, iCS_EditorObject selected, iCS_IStorage storage) {
-            Command= command;
-            SelectedObject= selected;
-            Storage= storage;
-            Descriptor= descriptor;
-        }
-    }
-    
-    // ======================================================================
     // Field
     // ----------------------------------------------------------------------
     Vector2 GraphPosition= Vector2.zero;
@@ -100,25 +79,25 @@ public class iCS_DynamicMenu {
         if(selectedObject.IsIconizedOnDisplay || selectedObject.IsFoldedOnDisplay) return;
 
         int len= iCS_AllowedChildren.BehaviourChildNames.Length;
-		MenuContext[] menu= new MenuContext[len];
+		iCS_MenuContext[] menu= new iCS_MenuContext[len];
         for(int i= 0; i < len; ++i) {
             string name= iCS_AllowedChildren.BehaviourChildNames[i];
             if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
-                menu[i]= new MenuContext(String.Concat("+ ", name));
+                menu[i]= new iCS_MenuContext(String.Concat("+ ", name));
             } else {
-                menu[i]= new MenuContext(String.Concat("#+ ", name));
+                menu[i]= new iCS_MenuContext(String.Concat("#+ ", name));
             }
         }
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void ModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        MenuContext[] menu= new MenuContext[0];
+        iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             // Base menu items
-            menu= new MenuContext[2];
-            menu[0]= new MenuContext(ModuleStr);
-            menu[1]= new MenuContext(StateChartStr); 
+            menu= new iCS_MenuContext[2];
+            menu[0]= new iCS_MenuContext(ModuleStr);
+            menu[1]= new iCS_MenuContext(StateChartStr); 
         }
 //        // Function menu items
 //        if(!storage.IsIconized(selectedObject) && !storage.IsFolded(selectedObject)) {
@@ -141,17 +120,17 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void TransitionModuleMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        MenuContext[] menu= new MenuContext[1];
-        menu[0]= new MenuContext(ShowHierarchyStr);
+        iCS_MenuContext[] menu= new iCS_MenuContext[1];
+        menu[0]= new iCS_MenuContext(ShowHierarchyStr);
         AddDeleteMenuItem(ref menu);
         ShowMenu(menu, selectedObject, storage);
     }
 	// ----------------------------------------------------------------------
     void StateChartMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        MenuContext[] menu= new MenuContext[0];
+        iCS_MenuContext[] menu= new iCS_MenuContext[0];
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
-            menu= new MenuContext[1];
-            menu[0]= new MenuContext(StateStr); 
+            menu= new iCS_MenuContext[1];
+            menu[0]= new iCS_MenuContext(StateStr); 
         }
         AddShowInHierarchyMenuItem(ref menu);
         if(selectedObject.InstanceId != 0) {
@@ -161,28 +140,28 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     void StateMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-        MenuContext[] menu;
+        iCS_MenuContext[] menu;
         if(!selectedObject.IsIconizedOnDisplay && !selectedObject.IsFoldedOnDisplay) {
             int len= iCS_AllowedChildren.StateChildNames.Length;
-            menu= new MenuContext[len+4];
-            menu[0]= new MenuContext(StateStr);
-            menu[1]= new MenuContext(SeparatorStr);
+            menu= new iCS_MenuContext[len+4];
+            menu[0]= new iCS_MenuContext(StateStr);
+            menu[1]= new iCS_MenuContext(SeparatorStr);
             for(int i= 0; i < len; ++i) {
                 string name= iCS_AllowedChildren.StateChildNames[i];
                 if(iCS_AllowedChildren.CanAddChildNode(name, iCS_ObjectTypeEnum.Module, selectedObject, storage)) {
-                    menu[i+2]= new MenuContext(String.Concat("+ ", name));
+                    menu[i+2]= new iCS_MenuContext(String.Concat("+ ", name));
                 } else {
-                    menu[i+2]= new MenuContext(String.Concat("#+ ", name));
+                    menu[i+2]= new iCS_MenuContext(String.Concat("#+ ", name));
                 }
             }
-            menu[len+2]= new MenuContext(SeparatorStr);
+            menu[len+2]= new iCS_MenuContext(SeparatorStr);
             if(selectedObject.IsEntryState) {
-                menu[len+3]= new MenuContext(String.Concat("#", SetAsEntryStr));
+                menu[len+3]= new iCS_MenuContext(String.Concat("#", SetAsEntryStr));
             } else {
-                menu[len+3]= new MenuContext(SetAsEntryStr);
+                menu[len+3]= new iCS_MenuContext(SetAsEntryStr);
             }
         } else {
-            menu= new MenuContext[0];
+            menu= new iCS_MenuContext[0];
         }
         AddShowInHierarchyMenuItem(ref menu);
         AddDeleteMenuItem(ref menu);
@@ -191,8 +170,8 @@ public class iCS_DynamicMenu {
     
 	// ----------------------------------------------------------------------
     void MethodMenu(iCS_EditorObject selectedObject, iCS_IStorage storage) {
-		MenuContext[] menu= new MenuContext[1];
-		menu[0]= new MenuContext(ShowHierarchyStr);
+		iCS_MenuContext[] menu= new iCS_MenuContext[1];
+		menu[0]= new iCS_MenuContext(ShowHierarchyStr);
         if(storage.EditorObjects[selectedObject.ParentId].IsModule) {
             AddDeleteMenuItem(ref menu);
         }
@@ -203,14 +182,14 @@ public class iCS_DynamicMenu {
 		/*
 			TODO : Add use as library filter option.
 		*/
-        MenuContext[] menu= new MenuContext[0];
+        iCS_MenuContext[] menu= new iCS_MenuContext[0];
         // Allow to publish port if the grand-parent is a module.
         iCS_EditorObject parent= storage.EditorObjects[selectedObject.ParentId];
         iCS_EditorObject grandParent= storage.EditorObjects[parent.ParentId];
         if(grandParent != null && grandParent.IsModule) {
             if(!(selectedObject.IsInputPort && selectedObject.IsSourceValid)) {
-                menu= new MenuContext[1];
-				menu[0]= new MenuContext(PublishPortStr);                
+                menu= new iCS_MenuContext[1];
+				menu[0]= new iCS_MenuContext(PublishPortStr);                
             }
         }
         // Get compatible functions.
@@ -223,24 +202,24 @@ public class iCS_DynamicMenu {
             }
             if(functionMenu.Count != 0) {
                 int len= menu.Length;
-                MenuContext[] tmp= null;
+                iCS_MenuContext[] tmp= null;
                 if(len == 0) {
-                    tmp= new MenuContext[functionMenu.Count];
+                    tmp= new iCS_MenuContext[functionMenu.Count];
                 } else {
-                    tmp= new MenuContext[len+1+functionMenu.Count];
+                    tmp= new iCS_MenuContext[len+1+functionMenu.Count];
                     menu.CopyTo(tmp, 0);
-                    tmp[len]= new MenuContext(SeparatorStr);
+                    tmp[len]= new iCS_MenuContext(SeparatorStr);
                     ++len;                    
                 }
                 menu= tmp;                
                 for(int i= 0; i < functionMenu.Count; ++i) {
-                    menu[len+i]= new MenuContext(functionMenu[i].ToString(), functionMenu[i]);
+                    menu[len+i]= new iCS_MenuContext(functionMenu[i].ToString(), functionMenu[i]);
                 }
             }
         }
         if(menu.Length == 0) {
-            menu= new MenuContext[1];
-            menu[0]= new MenuContext(ShowHierarchyStr);
+            menu= new iCS_MenuContext[1];
+            menu[0]= new iCS_MenuContext(ShowHierarchyStr);
         } else {
             AddShowInHierarchyMenuItem(ref menu);            
         }
@@ -254,7 +233,7 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Menu Utilities
 	// ----------------------------------------------------------------------
-    void ShowMenu(MenuContext[] menu, iCS_EditorObject selected, iCS_IStorage storage) {
+    void ShowMenu(iCS_MenuContext[] menu, iCS_EditorObject selected, iCS_IStorage storage) {
         int sepCnt= 0;
         GenericMenu gMenu= new GenericMenu();
         foreach(var item in menu) {
@@ -277,33 +256,33 @@ public class iCS_DynamicMenu {
         Reset();
     }
 	// ----------------------------------------------------------------------
-    void AddDeleteMenuItem(ref MenuContext[] existingMenu) {
+    void AddDeleteMenuItem(ref iCS_MenuContext[] existingMenu) {
         int idx= ResizeMenu(ref existingMenu, existingMenu.Length+2);
-        existingMenu[idx]= new MenuContext(SeparatorStr);
-        existingMenu[idx+1]= new MenuContext(DeleteStr);
+        existingMenu[idx]= new iCS_MenuContext(SeparatorStr);
+        existingMenu[idx+1]= new iCS_MenuContext(DeleteStr);
     }
 	// ----------------------------------------------------------------------
-    void AddShowInHierarchyMenuItem(ref MenuContext[] existingMenu) {
+    void AddShowInHierarchyMenuItem(ref iCS_MenuContext[] existingMenu) {
         int idx= ResizeMenu(ref existingMenu, existingMenu.Length+2);
-        existingMenu[idx]= new MenuContext(SeparatorStr);
-        existingMenu[idx+1]= new MenuContext(ShowHierarchyStr);        
+        existingMenu[idx]= new iCS_MenuContext(SeparatorStr);
+        existingMenu[idx+1]= new iCS_MenuContext(ShowHierarchyStr);        
     }
 	// ----------------------------------------------------------------------
-    int ResizeMenu(ref MenuContext[] existingMenu, int newSize) {
+    int ResizeMenu(ref iCS_MenuContext[] existingMenu, int newSize) {
         int idx= existingMenu.Length;
         if(idx > newSize) idx= newSize;
-        MenuContext[] newMenu= new MenuContext[newSize];
+        iCS_MenuContext[] newMenu= new iCS_MenuContext[newSize];
         existingMenu.CopyTo(newMenu, 0);
         existingMenu= newMenu;
         return idx;
     }
 	// ----------------------------------------------------------------------
-    iCS_ReflectionInfo GetReflectionDescFromMenuCommand(MenuContext menuContext) {
+    iCS_ReflectionInfo GetReflectionDescFromMenuCommand(iCS_MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
         return iCS_DataBase.GetDescriptor(menuCommand);
     }
 	// ----------------------------------------------------------------------
-    Type GetClassTypeFromMenuCommand(MenuContext menuContext) {
+    Type GetClassTypeFromMenuCommand(iCS_MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
         return iCS_DataBase.GetClassType(menuCommand);
     }
@@ -312,7 +291,7 @@ public class iCS_DynamicMenu {
     // Menu processing
 	// ----------------------------------------------------------------------
     void ProcessMenu(object obj) {
-        MenuContext context= obj as MenuContext;
+        iCS_MenuContext context= obj as iCS_MenuContext;
         iCS_EditorObject selectedObject= context.SelectedObject;
         iCS_IStorage storage= context.Storage;
         storage.RegisterUndo(context.Command);

@@ -45,7 +45,8 @@ public static class iCS_EditorConfig {
         return NodeStyle.CalcSize(new GUIContent(_label));
     }
     public static float GetNodeTitleWidth(string _label) {
-        return GetNodeTitleSize(_label).x;
+		var size= GetNodeTitleSize(_label);
+        return size.x;
     }
     public static float NodeTitleHeight {
         get {
