@@ -14,7 +14,6 @@ public static class iCS_EditorConfig {
     public const float kNodeTitleHeight = 2f*kNodeCornerRadius;
     public const int   kLabelFontSize   = 11;
     public const int   kTitleFontSize   = 12;
-    public const float kPixelsPerSeconds= 100;
 
     // ----------------------------------------------------------------------
 	public const float NodeShadowSize= 5.0f;
