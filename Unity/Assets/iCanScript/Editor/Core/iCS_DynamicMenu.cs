@@ -29,8 +29,7 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Field
     // ----------------------------------------------------------------------
-    Vector2 MenuPosition= Vector2.zero;
-    Vector2 ProcessMenuPosition= Vector2.zero;
+    Vector2 GraphPosition= Vector2.zero;
     
     // ======================================================================
     // Menu Items
@@ -62,20 +61,19 @@ public class iCS_DynamicMenu {
     // Menu state management
 	// ----------------------------------------------------------------------
     void Reset() {
-        MenuPosition= Vector2.zero;
+        GraphPosition= Vector2.zero;
     }
     
 	// ----------------------------------------------------------------------
-    public void Update(iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 mouseDownPosition) {
+    public void Update(iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 graphPosition) {
         // Update mouse position if not already done.
-        if(MenuPosition == Vector2.zero) MenuPosition= mouseDownPosition;
+        if(GraphPosition == Vector2.zero) GraphPosition= graphPosition;
 
         // Nothing to show if menu is inactive.
-        if(selectedObject == null || MenuPosition != mouseDownPosition) {
+        if(selectedObject == null || GraphPosition != graphPosition) {
             Reset();
             return;
         }
-        ProcessMenuPosition= MenuPosition;
         
         // Process the menu state.
         switch(selectedObject.ObjectType) {
@@ -257,9 +255,6 @@ public class iCS_DynamicMenu {
     // Menu Utilities
 	// ----------------------------------------------------------------------
     void ShowMenu(MenuContext[] menu, iCS_EditorObject selected, iCS_IStorage storage) {
-        ShowMenu(menu, MenuPosition, selected, storage);
-    }
-    void ShowMenu(MenuContext[] menu, Vector2 pos, iCS_EditorObject selected, iCS_IStorage storage) {
         int sepCnt= 0;
         GenericMenu gMenu= new GenericMenu();
         foreach(var item in menu) {
@@ -477,7 +472,7 @@ public class iCS_DynamicMenu {
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessCreateState(iCS_EditorObject parent, iCS_IStorage storage) {
-        return storage.CreateState(parent.InstanceId, ProcessMenuPosition);
+        return storage.CreateState(parent.InstanceId, GraphPosition);
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject ProcessSetStateEntry(iCS_EditorObject state, iCS_IStorage storage) {
@@ -526,24 +521,24 @@ public class iCS_DynamicMenu {
     // Creation Utilities
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateModule(iCS_EditorObject parent, iCS_IStorage storage, string name= "", bool nameEditable= true) {
-        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, name);
+        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, GraphPosition, name);
         module.IsNameEditable= nameEditable;
         return module;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateClassModule(iCS_EditorObject parent, iCS_IStorage storage, Type classType) {
-        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, ProcessMenuPosition, null, iCS_ObjectTypeEnum.Module, classType);
+        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, GraphPosition, null, iCS_ObjectTypeEnum.Module, classType);
         return module;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateStateChart(iCS_EditorObject parent, iCS_IStorage storage, string name= "", bool nameEditable= true) {
-        iCS_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, ProcessMenuPosition, name);
+        iCS_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, GraphPosition, name);
         stateChart.IsNameEditable= nameEditable;
         return stateChart;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateState(iCS_EditorObject parent, iCS_IStorage storage, string name= "") {
-        return storage.CreateState(parent.InstanceId, ProcessMenuPosition, name);
+        return storage.CreateState(parent.InstanceId, GraphPosition, name);
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, iCS_ReflectionInfo desc) {
@@ -552,7 +547,7 @@ public class iCS_DynamicMenu {
             parent= port.Parent;
             iCS_EditorObject grandParent= parent.Parent;
             if(!grandParent.IsModule) return null;
-			Vector2 pos= ProcessMenuPosition;
+			Vector2 pos= GraphPosition;
 			switch(port.Edge) {
 				case iCS_EdgeEnum.Top: {
 					pos.y-= 100;
@@ -588,7 +583,7 @@ public class iCS_DynamicMenu {
             }
             return method;
         }
-        return storage.CreateMethod(parent.InstanceId, ProcessMenuPosition, desc);            
+        return storage.CreateMethod(parent.InstanceId, GraphPosition, desc);            
     }
 	// ----------------------------------------------------------------------
     void DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
