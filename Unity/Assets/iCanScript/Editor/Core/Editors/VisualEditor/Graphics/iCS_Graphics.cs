@@ -176,9 +176,8 @@ public partial class iCS_Graphics {
     }
 
     // ----------------------------------------------------------------------
-    void DrawMinimizedTransitionModule(Vector2 dir, Rect r, Color nodeColor) {
-        r= TranslateAndScale(r);
-        Vector3 center= Math3D.Middle(r);
+    void DrawMinimizedTransitionModule(Vector2 dir, Vector2 p, Color nodeColor) {
+        Vector3 center= TranslateAndScale(p);
         Vector3 tangent= Vector3.Cross(dir, Vector3.forward);
         float size= 9f*Scale;
         Vector3 head= size*dir;
@@ -380,23 +379,6 @@ public partial class iCS_Graphics {
         var minimizeIcon= iCS_BuiltinTextures.MinimizeIcon(Scale);
         GUI_DrawTexture(new Rect(position.xMax-2-/*minimizeIcon.width*/16, position.y-0.5f, /*minimizeIcon.width*/16, /*minimizeIcon.height*/16), minimizeIcon);
         GUI.color= Color.white;
-
-//		// DEBUG CODE
-//		// Show anchor offset if one exists.
-//		var anchorPos= node.GlobalAnchorPosition;
-//		if(Math3D.IsNotEqual(Math3D.Middle(position), anchorPos)) {
-//			var arrowStart= TranslateAndScale(anchorPos);
-//			var arrowEnd  = TranslateAndScale(Math3D.Middle(position));
-//			var arrow     = arrowEnd-arrowStart;
-//			var arrowSize = arrow.magnitude;
-//			var rotation  = new Quaternion();
-//			rotation.SetLookRotation(arrow, Vector3.up);
-//			Handles.color= Color.red;
-//			Handles.ArrowCap(0,
-//	                arrowStart,
-//	                rotation,
-//	                arrowSize);
-//		}
     }
     // ----------------------------------------------------------------------
     Color GetBackgroundColor(iCS_EditorObject node) {
@@ -419,19 +401,19 @@ public partial class iCS_Graphics {
         GUI.color= new Color(1f, 1f, 1f, node.DisplayAlpha);
         Texture icon= GetMaximizeIcon(node);
 		var position= Math3D.Middle(displayRect);
-        Rect texturePos= new Rect(position.x-0.5f*icon.width, position.y-0.5f*icon.height, icon.width, icon.height);                
+        Rect textureRect= new Rect(position.x-0.5f*icon.width, position.y-0.5f*icon.height, icon.width, icon.height);                
         if(node.IsTransitionModule) {
-            DrawMinimizedTransitionModule(iStorage.GetTransitionModuleVector(node), texturePos, Color.white);
+            DrawMinimizedTransitionModule(iStorage.GetTransitionModuleVector(node), position, Color.white);
         } else {
-            GUI_DrawTexture(texturePos, icon);                                       
+            GUI_DrawTexture(textureRect, icon);                                       
         }
-        if(texturePos.Contains(MousePosition)) {
-            EditorGUIUtility_AddCursorRect (texturePos, MouseCursor.Link);
+        if(textureRect.Contains(MousePosition)) {
+            EditorGUIUtility_AddCursorRect (textureRect, MouseCursor.Link);
 #if SHOW_TOOLTIP
-            GUI_Label(texturePos, new GUIContent("", GetNodeTooltip(node,iStorage)), LabelStyle);            
+            GUI_Label(textureRect, new GUIContent("", GetNodeTooltip(node,iStorage)), LabelStyle);            
 #endif
         }
-		ShowTitleOver(texturePos, node);
+		ShowTitleOver(textureRect, node);
         GUI.color= Color.white;
     }
     // ----------------------------------------------------------------------
