@@ -247,6 +247,7 @@ public class iCS_DynamicMenu {
                 } else {
 					item.SelectedObject= selected;
 					item.Storage= storage;
+					item.GraphPosition= GraphPosition;
                     gMenu.AddItem(new GUIContent(item.Command), false, ProcessMenu, item);                                    
                 }
                 ++sepCnt;
