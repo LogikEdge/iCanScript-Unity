@@ -294,6 +294,7 @@ public class iCS_DynamicMenu {
     void ProcessMenu(object obj) {
         iCS_MenuContext context= obj as iCS_MenuContext;
         iCS_EditorObject selectedObject= context.SelectedObject;
+		Vector2 pos= context.GraphPosition;
         iCS_IStorage storage= context.Storage;
         storage.RegisterUndo(context.Command);
         // Process predefined modules for Behaviour & State.
@@ -304,7 +305,7 @@ public class iCS_DynamicMenu {
                 if(name[0] == ' ') name= name.Substring(1);
                 if(name == childName) {
                     string toolTip= iCS_AllowedChildren.BehaviourChildTooltips[i];
-                    ProcessCreateModuleWithUnchangableName(childName, selectedObject, storage, toolTip);
+                    ProcessCreateModuleWithUnchangableName(childName, context, toolTip);
                     return;
                 }
             }
@@ -316,31 +317,31 @@ public class iCS_DynamicMenu {
                 if(name[0] == ' ') name= name.Substring(1);
                 if(name == childName) {
                     string toolTip= iCS_AllowedChildren.StateChildTooltips[i];
-                    ProcessCreateModuleWithUnchangableName(childName, selectedObject, storage, toolTip);
+                    ProcessCreateModuleWithUnchangableName(childName, context, toolTip);
                     return;
                 }
             }            
         }
         // Process all other types of requests.
         switch(context.Command) {
-            case StartStr:                  ProcessCreateStart(selectedObject, storage); break;
-            case UpdateModuleStr:           ProcessCreateUpdateModule(selectedObject, storage); break;
-            case UpdateStateChartStr:       ProcessCreateUpdateStateChart(selectedObject, storage); break;
-            case FixedUpdateModuleStr:      ProcessCreateFixedUpdateModule(selectedObject, storage); break;
-            case FixedUpdateStateChartStr:  ProcessCreateFixedUpdateStateChart(selectedObject, storage); break;
-            case LateUpdateModuleStr:       ProcessCreateLateUpdateModule(selectedObject, storage); break;
-            case LateUpdateStateChartStr:   ProcessCreateLateUpdateStateChart(selectedObject, storage); break;
-            case OnGUIStr:                  ProcessCreateOnGui(selectedObject, storage); break;
-            case OnDrawGizmosStr:           ProcessCreateOnDrawGizmos(selectedObject, storage); break;
-            case ModuleStr:                 ProcessCreateModule(selectedObject, storage); break;
-            case StateChartStr:             ProcessCreateStateChart(selectedObject, storage); break;
-            case StateStr:                  ProcessCreateState(selectedObject, storage);  break;
-            case SetAsEntryStr:             ProcessSetStateEntry(selectedObject, storage); break;
-            case OnEntryStr:                ProcessCreateOnEntryModule(selectedObject, storage); break;
-            case OnUpdateStr:               ProcessCreateOnUpdateModule(selectedObject, storage); break;
-            case OnExitStr:                 ProcessCreateOnExitModule(selectedObject, storage); break;
-            case ShowHierarchyStr:          ProcessShowInHierarchy(selectedObject, storage); break;
-            case DeleteStr:                 ProcessDestroyObject(selectedObject, storage); break;
+            case StartStr:                  ProcessCreateStart(context); break;
+            case UpdateModuleStr:           ProcessCreateUpdateModule(context); break;
+            case UpdateStateChartStr:       ProcessCreateUpdateStateChart(context); break;
+            case FixedUpdateModuleStr:      ProcessCreateFixedUpdateModule(context); break;
+            case FixedUpdateStateChartStr:  ProcessCreateFixedUpdateStateChart(context); break;
+            case LateUpdateModuleStr:       ProcessCreateLateUpdateModule(context); break;
+            case LateUpdateStateChartStr:   ProcessCreateLateUpdateStateChart(context); break;
+            case OnGUIStr:                  ProcessCreateOnGui(context); break;
+            case OnDrawGizmosStr:           ProcessCreateOnDrawGizmos(context); break;
+            case ModuleStr:                 ProcessCreateModule(context); break;
+            case StateChartStr:             ProcessCreateStateChart(context); break;
+            case StateStr:                  ProcessCreateState(context);  break;
+            case SetAsEntryStr:             ProcessSetStateEntry(context); break;
+            case OnEntryStr:                ProcessCreateOnEntryModule(context); break;
+            case OnUpdateStr:               ProcessCreateOnUpdateModule(context); break;
+            case OnExitStr:                 ProcessCreateOnExitModule(context); break;
+            case ShowHierarchyStr:          ProcessShowInHierarchy(context); break;
+            case DeleteStr:                 ProcessDestroyObject(context); break;
             case EnablePortStr: {
                 iCS_EditorObject port= storage.CreatePort(iCS_Strings.EnablePort, selectedObject.InstanceId, typeof(bool), iCS_ObjectTypeEnum.EnablePort);
                 port.IsNameEditable= false;
@@ -369,93 +370,98 @@ public class iCS_DynamicMenu {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
 				}
-                CreateMethod(selectedObject, storage, desc);                                           
+                CreateMethod(selectedObject, storage, pos, desc);                                           
                 break;                
             }
         }
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateStart(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.Start, false);
+    static iCS_EditorObject ProcessCreateStart(iCS_MenuContext context) {
+        iCS_EditorObject module= CreateModule(context, iCS_Strings.Start, false);
         module.IsNameEditable= false;
         module.Tooltip= "Awake is called when the behaviour is being loaded.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateModuleWithUnchangableName(string behName, iCS_EditorObject parent, iCS_IStorage storage, string toolTip="") {
-        iCS_EditorObject module= CreateModule(parent, storage, behName, false);
+    static iCS_EditorObject ProcessCreateModuleWithUnchangableName(string behName, iCS_MenuContext context, string toolTip="") {
+        iCS_EditorObject module= CreateModule(context, behName, false);
         module.IsNameEditable= false;
         module.Tooltip= toolTip;
         return module;        
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.Update, false);
+    static iCS_EditorObject ProcessCreateUpdateModule(iCS_MenuContext context) {
+        iCS_EditorObject module= CreateModule(context, iCS_Strings.Update, false);
         module.IsNameEditable= false;
         module.Tooltip= "Executes on every frame update.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateUpdateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_Strings.Update, false);
+    static iCS_EditorObject ProcessCreateUpdateStateChart(iCS_MenuContext context) {
+        iCS_EditorObject stateChart= CreateStateChart(context, iCS_Strings.Update, false);
         stateChart.IsNameEditable= false;
         stateChart.Tooltip= "Executes on every frame update.";
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateLateUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.LateUpdate, false);
+    static iCS_EditorObject ProcessCreateLateUpdateModule(iCS_MenuContext context) {
+        iCS_EditorObject module= CreateModule(context, iCS_Strings.LateUpdate, false);
         module.IsNameEditable= false;
         module.Tooltip= "Executes after every frame update.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateLateUpdateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_Strings.LateUpdate, false);
+    static iCS_EditorObject ProcessCreateLateUpdateStateChart(iCS_MenuContext context) {
+        iCS_EditorObject stateChart= CreateStateChart(context, iCS_Strings.LateUpdate, false);
         stateChart.IsNameEditable= false;
         stateChart.Tooltip= "Executes after every frame update.";
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateFixedUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.FixedUpdate, false);
+    static iCS_EditorObject ProcessCreateFixedUpdateModule(iCS_MenuContext context) {
+        iCS_EditorObject module= CreateModule(context, iCS_Strings.FixedUpdate, false);
         module.IsNameEditable= false;
         module.Tooltip= "Executes at a fix frame rate. Independent from the frame update.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateFixedUpdateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject stateChart= CreateStateChart(parent, storage, iCS_Strings.FixedUpdate, false);
+    static iCS_EditorObject ProcessCreateFixedUpdateStateChart(iCS_MenuContext context) {
+        iCS_EditorObject stateChart= CreateStateChart(context, iCS_Strings.FixedUpdate, false);
         stateChart.IsNameEditable= false;
         stateChart.Tooltip= "Executes at a fix frame rate. Independent from the frame update.";
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateOnGui(iCS_EditorObject parent, iCS_IStorage storage) {
+    static iCS_EditorObject ProcessCreateOnGui(iCS_MenuContext context) {
         iCS_GuiUtilities.UnsupportedFeature();
         return null;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateOnDrawGizmos(iCS_EditorObject parent, iCS_IStorage storage) {
+    static iCS_EditorObject ProcessCreateOnDrawGizmos(iCS_MenuContext context) {
         iCS_GuiUtilities.UnsupportedFeature();
         return null;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage);
+    static iCS_EditorObject ProcessCreateModule(iCS_MenuContext context) {
+        iCS_EditorObject module= CreateModule(context);
         return module;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateStateChart(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject stateChart= CreateStateChart(parent, storage);
+    static iCS_EditorObject ProcessCreateStateChart(iCS_MenuContext context) {
+        iCS_EditorObject stateChart= CreateStateChart(context);
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateState(iCS_EditorObject parent, iCS_IStorage storage) {
-        return storage.CreateState(parent.InstanceId, GraphPosition);
+    static iCS_EditorObject ProcessCreateState(iCS_MenuContext context) {
+		var parent       = context.SelectedObject;
+		var storage      = context.Storage;
+		var graphPosition= context.GraphPosition;
+        return storage.CreateState(parent.InstanceId, graphPosition);
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessSetStateEntry(iCS_EditorObject state, iCS_IStorage storage) {
+    static iCS_EditorObject ProcessSetStateEntry(iCS_MenuContext context) {
+		var state        = context.SelectedObject;
+		var storage      = context.Storage;
         storage.ForEachChild(state.Parent,
             child=>{
                 if(child.IsEntryState) {
@@ -467,89 +473,101 @@ public class iCS_DynamicMenu {
         return state;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateOnEntryModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.OnEntry, false);
+    static iCS_EditorObject ProcessCreateOnEntryModule(iCS_MenuContext context) {
+        iCS_EditorObject module= CreateModule(context, iCS_Strings.OnEntry, false);
         module.IsNameEditable= false;
         module.Tooltip= "Executes on entry into this state.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateOnUpdateModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.OnUpdate, false);
+    static iCS_EditorObject ProcessCreateOnUpdateModule(iCS_MenuContext context) {
+        iCS_EditorObject module= CreateModule(context, iCS_Strings.OnUpdate, false);
         module.IsNameEditable= false;
         module.Tooltip= "Executes on every frame this state is active.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject ProcessCreateOnExitModule(iCS_EditorObject parent, iCS_IStorage storage) {
-        iCS_EditorObject module= CreateModule(parent, storage, iCS_Strings.OnExit, false);
+    static iCS_EditorObject ProcessCreateOnExitModule(iCS_MenuContext context) {
+        iCS_EditorObject module= CreateModule(context, iCS_Strings.OnExit, false);
         module.IsNameEditable= false;
         module.Tooltip= "Executes on exit from this state.";
         return module;
     }
 	// ----------------------------------------------------------------------
-    void ProcessShowInHierarchy(iCS_EditorObject obj, iCS_IStorage iStorage) {
+    static void ProcessShowInHierarchy(iCS_MenuContext context) {
+		var obj    = context.SelectedObject;
         var editor= iCS_EditorMgr.FindHierarchyEditor();
         if(editor != null) editor.ShowElement(obj);
     }
 	// ----------------------------------------------------------------------
-    void ProcessDestroyObject(iCS_EditorObject obj, iCS_IStorage storage) {
-        DestroyObject(obj, storage);    
+    static void ProcessDestroyObject(iCS_MenuContext context) {
+        DestroyObject(context);    
     }
 
     // ======================================================================
     // Creation Utilities
 	// ----------------------------------------------------------------------
-    iCS_EditorObject CreateModule(iCS_EditorObject parent, iCS_IStorage storage, string name= "", bool nameEditable= true) {
-        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, GraphPosition, name);
+    static iCS_EditorObject CreateModule(iCS_MenuContext context, string name= "", bool nameEditable= true) {
+		var parent       = context.SelectedObject;
+		var storage      = context.Storage;
+		var graphPosition= context.GraphPosition;
+        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, graphPosition, name);
         module.IsNameEditable= nameEditable;
         return module;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject CreateClassModule(iCS_EditorObject parent, iCS_IStorage storage, Type classType) {
-        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, GraphPosition, null, iCS_ObjectTypeEnum.Module, classType);
+    static iCS_EditorObject CreateClassModule(iCS_MenuContext context, Type classType) {
+		var parent       = context.SelectedObject;
+		var storage      = context.Storage;
+		var graphPosition= context.GraphPosition;
+        iCS_EditorObject module= storage.CreateModule(parent.InstanceId, graphPosition, null, iCS_ObjectTypeEnum.Module, classType);
         return module;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject CreateStateChart(iCS_EditorObject parent, iCS_IStorage storage, string name= "", bool nameEditable= true) {
-        iCS_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, GraphPosition, name);
+    static iCS_EditorObject CreateStateChart(iCS_MenuContext context, string name= "", bool nameEditable= true) {
+		var parent       = context.SelectedObject;
+		var storage      = context.Storage;
+		var graphPosition= context.GraphPosition;
+        iCS_EditorObject stateChart= storage.CreateStateChart(parent.InstanceId, graphPosition, name);
         stateChart.IsNameEditable= nameEditable;
         return stateChart;
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject CreateState(iCS_EditorObject parent, iCS_IStorage storage, string name= "") {
-        return storage.CreateState(parent.InstanceId, GraphPosition, name);
+    static iCS_EditorObject CreateState(iCS_MenuContext context, string name= "") {
+		var parent       = context.SelectedObject;
+		var storage      = context.Storage;
+		var graphPosition= context.GraphPosition;
+        return storage.CreateState(parent.InstanceId, graphPosition, name);
     }
 	// ----------------------------------------------------------------------
-    iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, iCS_ReflectionInfo desc) {
+    static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_ReflectionInfo desc) {
         if(parent.IsPort) {
             iCS_EditorObject port= parent;
             parent= port.Parent;
             iCS_EditorObject grandParent= parent.Parent;
             if(!grandParent.IsModule) return null;
-			Vector2 pos= GraphPosition;
 			switch(port.Edge) {
 				case iCS_EdgeEnum.Top: {
-					pos.y-= 100;
+					graphPosition.y-= 100;
 					break;
 				}
 				case iCS_EdgeEnum.Bottom: {
-					pos.y+= 100;
+					graphPosition.y+= 100;
 					break;
 				}
 				case iCS_EdgeEnum.Left: {
-					pos.x-= 100;
-                    pos.y-= 20;
+					graphPosition.x-= 100;
+                    graphPosition.y-= 20;
 					break;
 				}
 				case iCS_EdgeEnum.Right:
 				default: {
-					pos.x+= 100;
-					pos.y-= 20;
+					graphPosition.x+= 100;
+					graphPosition.y-= 20;
 					break;
 				}
 			}
-            iCS_EditorObject method= storage.CreateMethod(grandParent.InstanceId, pos, desc);
+            iCS_EditorObject method= storage.CreateMethod(grandParent.InstanceId, graphPosition, desc);
             if(port.IsInputPort) {
 				iCS_EditorObject[] outputPorts= Prelude.filter(x=> iCS_Types.IsA(port.RuntimeType, x.RuntimeType), storage.GetChildOutputDataPorts(method)); 
 				if(outputPorts.Length >= 1) {
@@ -563,15 +581,16 @@ public class iCS_DynamicMenu {
             }
             return method;
         }
-        return storage.CreateMethod(parent.InstanceId, GraphPosition, desc);            
+        return storage.CreateMethod(parent.InstanceId, graphPosition, desc);            
     }
 	// ----------------------------------------------------------------------
-    void DestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
+    static void DestroyObject(iCS_MenuContext context) {
+		var selectedObject= context.SelectedObject;
+		var iStorage      = context.Storage;
         iCS_EditorUtility.SafeDestroyObject(selectedObject, iStorage);
-        Reset();
     }
 	// ----------------------------------------------------------------------
-    bool AsChildNodeWithName(iCS_EditorObject parent, string name, iCS_IStorage storage) {
+    static bool AsChildNodeWithName(iCS_EditorObject parent, string name, iCS_IStorage storage) {
         return storage.UntilMatchingChild(parent,
             child=> {
                 if(child.IsNode) {
