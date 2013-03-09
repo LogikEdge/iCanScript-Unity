@@ -8,7 +8,8 @@ public class iCS_DynamicMenu {
     // ======================================================================
     // Field
     // ----------------------------------------------------------------------
-    Vector2 GraphPosition= Vector2.zero;
+    Vector2 				GraphPosition  = Vector2.zero;
+	List<iCS_MenuContext>	GUICommandQueue= new List<iCS_MenuContext>();
     
     // ======================================================================
     // Menu Items
@@ -43,6 +44,11 @@ public class iCS_DynamicMenu {
         GraphPosition= Vector2.zero;
     }
     
+	// ----------------------------------------------------------------------
+	public void OnGUI() {
+		GUICommandQueue.ForEach(c=> ProcessMenu(c));
+		GUICommandQueue.Clear();
+	}
 	// ----------------------------------------------------------------------
     public void Update(iCS_EditorObject selectedObject, iCS_IStorage storage, Vector2 graphPosition) {
         // Update mouse position if not already done.
@@ -248,7 +254,8 @@ public class iCS_DynamicMenu {
 					item.SelectedObject= selected;
 					item.Storage= storage;
 					item.GraphPosition= GraphPosition;
-                    gMenu.AddItem(new GUIContent(item.Command), false, ProcessMenu, item);                                    
+                    gMenu.AddItem(new GUIContent(item.Command), false,
+                                  c=> GUICommandQueue.Add((iCS_MenuContext)c), item);                                    
                 }
                 ++sepCnt;
             }

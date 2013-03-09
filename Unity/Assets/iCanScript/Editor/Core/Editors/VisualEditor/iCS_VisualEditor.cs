@@ -147,6 +147,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Load Editor Skin.
         GUI.skin= EditorGUIUtility.GetBuiltinSkin(EditorSkin.Inspector);
         
+		// Update pending menu commands
+		myDynamicMenu.OnGUI();
+		
 		// Update sub editor if active.
 		if(mySubEditor != null) {
 			mySubEditor.Update();
