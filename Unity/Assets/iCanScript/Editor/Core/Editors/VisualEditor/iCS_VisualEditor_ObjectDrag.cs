@@ -565,22 +565,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// TODO: Move port relocation processing into editor object...
 	// FIXME: Transition ports cannot be relocated on different edge.
     void ProcessPortRelocation(Vector2 newPosition) {
-		// Consider port relocation when dragging on parent edge.
 		var parent= DragObject.ParentNode;
 		var parentRect= parent.GlobalDisplayRect;
-		if(!iCS_EditorObject.IsPositionOnRectEdge(newPosition, parentRect, DragObject.Edge)) {
-            // Determine if we should convert to data port connection drag.
-            if(!(DragObject.IsStatePort || DragObject.IsTransitionPort)) {
-            	parent.LayoutPorts();
-            	CreateDragPort();
-            }
+        // Determine if we should convert to data port connection drag.
+		if(DragObject.IsDataPort && !iCS_EditorObject.IsPositionOnRectEdge(newPosition, parentRect, DragObject.Edge)) {
+            parent.LayoutPorts();
+            CreateDragPort();
             return;
 		}                      
         // No reordering necessary if this is the only port on this edge.
+        DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
         var sameEdgePorts= P.filter(p=> p != DragObject, DragObject.BuildListOfPortsOnSameEdge());
 		var nbOfPortsOnEdge= sameEdgePorts.Length;
         if(nbOfPortsOnEdge == 0) {
-			DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
 			return;
         }
 		// Build port related information (sortedPorts, portRatios, and portGlobalPositions).

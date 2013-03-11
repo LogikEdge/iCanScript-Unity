@@ -59,7 +59,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {
         get {
-            var edge= IsStatePort ? ClosestEdge : Edge;
+            var edge= IsStatePort || IsTransitionPort ? ClosestEdge : Edge;
 			return IsPortOnNodeEdge(Parent, edge);
         }
     }
