@@ -409,7 +409,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
 	void CreateDragPort() {
         // Data port. Create a drag port as appropriate.
-        iCS_EditorObject parent= DragOriginalPort.Parent;
+        iCS_EditorObject parent= DragOriginalPort.ParentNode;
 		// The simple case is for non-module data ports.
 		if(!DragOriginalPort.IsModulePort) {
 			// Determine if we are already properly connected.
@@ -606,7 +606,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				break;
 			}
 		}
-//		Debug.Log("DragObject index: "+index);
 		// Determine proper anchor ratio for drag port.
 		float rangeRatioStart, rangeRatioEnd;
 		float rangePosStart,   rangePosEnd;
