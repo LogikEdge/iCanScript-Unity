@@ -33,6 +33,7 @@ public partial class iCS_EditorObject {
     public bool IsStateChart                { get { return EngineObject.IsStateChart; }}
     public bool IsState                     { get { return EngineObject.IsState; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
+    public bool IsMuxPort                   { get { return EngineObject.IsMuxPort; }}
     public bool IsInMuxPort                 { get { return EngineObject.IsInMuxPort; }}
     public bool IsOutMuxPort                { get { return EngineObject.IsOutMuxPort; }}
 }
