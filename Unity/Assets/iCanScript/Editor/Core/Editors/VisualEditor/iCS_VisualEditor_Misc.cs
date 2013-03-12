@@ -19,7 +19,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_EditorObject DetermineSelectedObject() {
         // Object selection is performed on left mouse button only.
         iCS_EditorObject newSelected= GetObjectAtMousePosition();
-		if(SelectedObject != null && newSelected != null && newSelected.IsOutMuxPort && IStorage.GetOutMuxPort(SelectedObject) == newSelected) {
+		if(SelectedObject != null && newSelected != null && newSelected.IsParentMuxPort && IStorage.GetParentMuxPort(SelectedObject) == newSelected) {
 			ShouldRotateMuxPort= true;
 			return SelectedObject;
 		}
@@ -32,7 +32,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     void RotateSelectedMuxPort() {
 		if(SelectedObject == null || !SelectedObject.IsDataPort) return;
-		if(SelectedObject.IsOutMuxPort) {
+		if(SelectedObject.IsParentMuxPort) {
 			IStorage.UntilMatchingChild(SelectedObject, 
 				c=> {
 					if(c.IsDataPort) {
@@ -160,13 +160,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		// Convert source port to child port.
 		if(source != null) {
-			var firstMuxInput= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
+			var firstMuxInput= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.ChildMuxPort);
 			IStorage.SetSource(firstMuxInput, source);
 			IStorage.SetSource(stateMuxPort, null);
-			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.OutMuxPort;
+			stateMuxPort.ObjectType= iCS_ObjectTypeEnum.ParentMuxPort;
 		}
 		// Create new mux input port.
-		var inMuxPort= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.InMuxPort);
+		var inMuxPort= IStorage.CreatePort(fixPort.Name, stateMuxPort.InstanceId, stateMuxPort.RuntimeType, iCS_ObjectTypeEnum.ChildMuxPort);
 		SetNewDataConnection(inMuxPort, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------

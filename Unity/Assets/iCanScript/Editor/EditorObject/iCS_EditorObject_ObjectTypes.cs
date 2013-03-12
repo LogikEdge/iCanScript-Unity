@@ -34,7 +34,7 @@ public partial class iCS_EditorObject {
     public bool IsState                     { get { return EngineObject.IsState; }}
     public bool IsEnablePort                { get { return EngineObject.IsEnablePort; }}
     public bool IsMuxPort                   { get { return EngineObject.IsMuxPort; }}
-    public bool IsInMuxPort                 { get { return EngineObject.IsInMuxPort; }}
-    public bool IsOutMuxPort                { get { return EngineObject.IsOutMuxPort; }}
+    public bool IsChildMuxPort                 { get { return EngineObject.IsChildMuxPort; }}
+    public bool IsParentMuxPort                { get { return EngineObject.IsParentMuxPort; }}
     public bool IsNestedPort                { get { var parent= Parent; return parent != null && parent.IsPort; }}
 }

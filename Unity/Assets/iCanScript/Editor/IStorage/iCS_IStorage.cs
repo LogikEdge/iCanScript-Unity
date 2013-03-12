@@ -118,7 +118,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public bool IsAnimationPlaying { get { return myIsAnimationPlaying; }}
     // ----------------------------------------------------------------------
-	public iCS_EditorObject GetOutMuxPort(iCS_EditorObject eObj) { return eObj.IsOutMuxPort ? eObj : (eObj.IsInMuxPort ? eObj.Parent : null); }
+	public iCS_EditorObject GetParentMuxPort(iCS_EditorObject eObj) { return eObj.IsParentMuxPort ? eObj : (eObj.IsChildMuxPort ? eObj.Parent : null); }
     // ----------------------------------------------------------------------
     public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.GlobalDisplayRect= r; }
     // ----------------------------------------------------------------------
@@ -187,7 +187,7 @@ public partial class iCS_IStorage {
 				var parent= obj.Parent;
                 if(CleanupDeadPorts) {
 					bool shouldRemove= false;
-					if(obj.IsOutMuxPort) {
+					if(obj.IsParentMuxPort) {
 						int nbOfChildren= NbOfChildren(obj, c=> c.IsInDataPort);
 						if(nbOfChildren == 1) {
 							iCS_EditorObject child= GetChildInputDataPorts(obj)[0];
@@ -197,7 +197,7 @@ public partial class iCS_IStorage {
 						} else {
 							shouldRemove= nbOfChildren == 0 && IsPortDisconnected(obj);							
 						}
-					} else if(obj.IsInMuxPort) {
+					} else if(obj.IsChildMuxPort) {
 						shouldRemove= obj.Source == null;
 					} else {
 						shouldRemove= ((obj.IsStatePort || obj.IsDynamicModulePort) && IsPortDisconnected(obj)) ||
@@ -461,7 +461,7 @@ public partial class iCS_IStorage {
         var parent= EditorObjects[parentId];
         var globalPos= parent.GlobalDisplayPosition;
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
-        if(port.IsModulePort || port.IsInMuxPort) 	{ AddDynamicPort(port); }
+        if(port.IsModulePort || port.IsChildMuxPort) 	{ AddDynamicPort(port); }
 		port.UpdatePortEdge();
 		port.GlobalDisplayPosition= globalPos;
         return EditorObjects[id];        

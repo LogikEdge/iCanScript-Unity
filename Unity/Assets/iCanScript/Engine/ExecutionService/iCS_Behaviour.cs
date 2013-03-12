@@ -196,7 +196,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
 						continue;				
 					}
 					// A port cannot be a parent.
-					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsOutMuxPort) {
+					if(EngineObjects[parentId].IsPort && !EngineObjects[parentId].IsParentMuxPort) {
 						sanityNeeded= true;
 						EngineObjects[i].Reset();
 						Debug.Log("iCanScript Sanity: Port: "+parentId+" is the parent of: "+i);
@@ -260,7 +260,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                 if(myRuntimeNodes[node.InstanceId] != null) continue;
                 int priority= node.ExecutionPriority;
 				// Special case for active ports.
-				if(node.IsOutMuxPort) {
+				if(node.IsParentMuxPort) {
 					myRuntimeNodes[node.InstanceId]= new iCS_MuxPort(node.Name, priority);
 					continue;
 				}
@@ -399,7 +399,7 @@ public sealed class iCS_Behaviour : iCS_Storage {
                     case iCS_ObjectTypeEnum.OutStatePort: {
                         break;
                     }
-					case iCS_ObjectTypeEnum.InMuxPort: {
+					case iCS_ObjectTypeEnum.ChildMuxPort: {
 						iCS_IParams rtMuxPort= myRuntimeNodes[port.ParentId] as iCS_IParams;
 						if(rtMuxPort == null) break;
                         iCS_EngineObject sourcePort= GetDataConnectionSource(port);

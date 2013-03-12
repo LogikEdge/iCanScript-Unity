@@ -152,7 +152,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             case DragTypeEnum.PortRelocation: {
 				// We can't relocate a mux port child.
-				if(DragObject.IsInMuxPort) {
+				if(DragObject.IsChildMuxPort) {
 					CreateDragPort();
 					return;
 				}
@@ -164,7 +164,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Update port position.
                 DragObject.GlobalDisplayPosition= newPosition;
                 // Determine if we should go back to port relocation. (IsPositionOnEdge)
-                if(!DragOriginalPort.IsInMuxPort && DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
+                if(!DragOriginalPort.IsChildMuxPort && DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
                     RemoveDragPort();
                     break;
                 }
@@ -553,7 +553,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         DragObject.LocalAnchorPosition= DragOriginalPort.LocalAnchorPosition;
         DragObject.GlobalDisplayPosition= GraphMousePosition;
 		// Reset initial position if port is being dettached from it original parent.
-		if(DragOriginalPort.IsInMuxPort) {
+		if(DragOriginalPort.IsChildMuxPort) {
 			DragStartDisplayPosition= DragOriginalPort.GlobalDisplayPosition - parent.GlobalDisplayPosition;			
 		}
         DragObject.IsFloating= true;

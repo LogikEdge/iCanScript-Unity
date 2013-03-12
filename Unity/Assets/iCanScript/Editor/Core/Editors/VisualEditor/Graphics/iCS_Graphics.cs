@@ -611,9 +611,9 @@ public partial class iCS_Graphics {
         // Draw port icon.
         if(port.IsDataPort) {
             // Don't display mux input ports.
-            if(port.IsInMuxPort) return;
+            if(port.IsChildMuxPort) return;
             // Data ports.
-			if(port.IsOutMuxPort) {
+			if(port.IsParentMuxPort) {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
 			} else {
 				if(isStaticPort) {
