@@ -44,7 +44,7 @@ public class iCS_ConnectionParams {
     // ----------------------------------------------------------------------
     static Vector2 ConnectionDirectionFromTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         // Don't compute complex tangents if we don't have a proper parent.
-        iCS_EditorObject portParent= port.Parent;
+        iCS_EditorObject portParent= port.ParentNode;
         if(port.IsFloating || to.IsFloating) {
             if(port.IsDataPort || !portParent.IsPositionOnEdge(port.GlobalDisplayPosition, port.Edge)) {
                 Vector2 fromPos= port.GlobalDisplayPosition;
@@ -70,7 +70,7 @@ public class iCS_ConnectionParams {
             direction= DownDirection;
         }            
         // Inverse direction for connection between nested nodes.
-        iCS_EditorObject toParent= to.Parent;
+        iCS_EditorObject toParent= to.ParentNode;
         if(storage.IsChildOf(toParent, portParent) && !port.IsInStatePort) {
             direction= -direction;
         }

@@ -44,10 +44,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			);
 			return;
 		}
-		iCS_EditorObject muxPort= SelectedObject.Parent;
-		if(!muxPort.IsDataPort) return;
+		iCS_EditorObject parentMuxPort= SelectedObject.Parent;
+		if(!parentMuxPort.IsDataPort) return;
 		bool takeNext= false;
-		bool found= IStorage.UntilMatchingChild(muxPort,
+		bool found= IStorage.UntilMatchingChild(parentMuxPort,
 			c=> {
 				if(takeNext) {
 					SelectedObject= c;
@@ -57,7 +57,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				return false;
 			}
 		);
-		if(!found) SelectedObject= muxPort;
+		if(!found) SelectedObject= parentMuxPort;
 	}
 	
 	// ----------------------------------------------------------------------
