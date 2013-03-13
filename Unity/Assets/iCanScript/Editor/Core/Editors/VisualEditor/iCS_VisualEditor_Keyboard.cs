@@ -122,9 +122,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case KeyCode.Backspace: {
                 if(SelectedObject != null && SelectedObject != myDisplayRoot && SelectedObject != StorageRoot &&
                   !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
-                    iCS_EditorObject parent= SelectedObject.Parent;
-                    iCS_EditorUtility.SafeDestroyObject(SelectedObject, IStorage);
-                    SelectedObject= parent;
+	                iCS_EditorObject parent= SelectedObject.Parent;
+					bool changeSelected= true;
+					if(IsControlKeyDown) {
+						iCS_EditorUtility.ForceDestroyObject(SelectedObject, IStorage);
+					} else {
+	                    changeSelected= iCS_EditorUtility.SafeDestroyObject(SelectedObject, IStorage);						
+					}
+                    if(changeSelected) {
+	                    SelectedObject= parent;	
+					}
                 }
                 Event.current.Use();
                 break;
