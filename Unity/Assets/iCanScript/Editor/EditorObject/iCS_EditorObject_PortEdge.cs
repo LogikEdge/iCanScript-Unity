@@ -12,7 +12,12 @@ public partial class iCS_EditorObject {
     public bool IsOnVerticalEdge    { get { return IsOnRightEdge || IsOnLeftEdge; }}
     // ----------------------------------------------------------------------
     public iCS_EdgeEnum Edge {
-		get { return EngineObject.Edge; }
+		get {
+			if(IsNestedPort) {
+				return Parent.Edge;
+			}
+			return EngineObject.Edge;
+		}
 		set {
             var engineObject= EngineObject;
             if(engineObject.Edge == value) return;
