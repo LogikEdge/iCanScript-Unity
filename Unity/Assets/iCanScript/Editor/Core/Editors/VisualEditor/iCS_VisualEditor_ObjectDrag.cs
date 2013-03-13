@@ -151,11 +151,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 DragObject.UserDragTo(newPosition);
                 break;
             case DragTypeEnum.PortRelocation: {
-				// We can't relocate a mux port child.
-				if(DragObject.IsChildMuxPort) {
-					CreateDragPort();
-					return;
-				}
 				// Consider port relocation when dragging on parent edge.
                 ProcessPortRelocation(newPosition);
                 break;
@@ -717,7 +712,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 portPositionsOnEdge[i-1]-= offset;
             }
         }
-//		Debug.Log("Drag port ratio= "+ratio);
         // Finaly, set the drag port layout position.
         DragObject.GlobalDisplayPosition= newPosition;
     }

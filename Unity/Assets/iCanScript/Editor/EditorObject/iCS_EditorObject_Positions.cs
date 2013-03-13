@@ -88,12 +88,16 @@ public partial class iCS_EditorObject {
 			return AnimatedLayoutOffset.CurrentValue;
 		}
 		set {
-            // Don't update layout offset for port on iconized nodes.
+            // Update parent port for nested ports.
             if(IsPort) {
-    			var parent= ParentNode;
-    			if(parent.IsIconizedOnDisplay || !parent.IsVisibleOnDisplay) {
-    			    return;
-			    }
+                if(IsNestedPort) {
+                    if(Math3D.IsNotEqual(Parent.LocalLayoutOffset, value)) {
+                        Parent.LocalLayoutOffset= value;
+                    }
+                    return;
+                }
+                AnimatedLayoutOffset.Reset(value);
+                ForEachChildPort(p=> p.AnimatedLayoutOffset.Reset(value));                
             }
     		AnimatedLayoutOffset.Reset(value);                                
 		}
