@@ -159,7 +159,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 // Update port position.
                 DragObject.GlobalDisplayPosition= newPosition;
                 // Determine if we should go back to port relocation. (IsPositionOnEdge)
-                if(!DragOriginalPort.IsChildMuxPort && DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
+                if(DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
                     RemoveDragPort();
                     break;
                 }
@@ -344,13 +344,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                     AutocreateInstanceNode(dragPortPos, newPortParent);
                                     break;                                  
                                 }
+								// Allow output data connection on state modules.
                                 if(DragFixPort.IsOutputPort && newPortParent != null && (newPortParent.IsState || newPortParent.IsStateChart)) {
 									if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
 	                                    iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
 	                                    SetNewDataConnection(newPort, DragFixPort);
+										break;
 									}
-                                    break;
                                 }
+								// Cleanup child Mux port if it is disconnected.
+								if(DragOriginalPort.IsChildMuxPort && DragOriginalPort.Source == null) {
+									IStorage.DestroyInstance(DragOriginalPort);
+								}
                             }
                         }                    
                     }
@@ -527,7 +532,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
 				}
 				else {		// Outside parent node
-					// FIXME: Must connect to MuxParent.
 					// Nothing to do if already properly connected.
 					if(DragObject != DragOriginalPort &&
 					   DragFixPort == DragOriginalPort &&
