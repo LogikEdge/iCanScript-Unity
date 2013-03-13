@@ -181,6 +181,39 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             case DragTypeEnum.TransitionCreation:
                 // Update port position.
                 DragObject.GlobalDisplayPosition= newPosition;
+				// Update fix port edge & position.
+				var fixPortParentNode= DragFixPort.ParentNode;
+				var fixPortParentRect= fixPortParentNode.GlobalDisplayRect;
+				var fixPortParentCenter= Math3D.Middle(fixPortParentRect);
+				if(!fixPortParentRect.Contains(newPosition)) {
+					var dir= newPosition-fixPortParentCenter;
+					dir= Math3D.QuantizeAt90Degrees(dir);
+					iCS_EdgeEnum edge= iCS_EdgeEnum.None;
+					if(Math3D.IsZero(dir.x)) {
+						edge= dir.y > 0 ? iCS_EdgeEnum.Bottom : iCS_EdgeEnum.Top;
+					} else {
+						edge= dir.x > 0 ? iCS_EdgeEnum.Right : iCS_EdgeEnum.Left;
+					}
+					if(edge != DragFixPort.Edge) {
+						var center= fixPortParentCenter;
+						switch(edge) {
+						case iCS_EdgeEnum.Top:
+							newPosition= new Vector2(center.x, fixPortParentRect.yMin);
+							break;
+						case iCS_EdgeEnum.Bottom:
+							newPosition= new Vector2(center.x, fixPortParentRect.yMax);
+							break;
+						case iCS_EdgeEnum.Left:
+							newPosition= new Vector2(fixPortParentRect.xMin, center.y);
+							break;
+						default:
+							newPosition= new Vector2(fixPortParentRect.xMax, center.y);
+							break;
+						}
+						DragFixPort.SetGlobalAnchorAndLayoutPosition(newPosition);
+						fixPortParentNode.LayoutPorts();
+					}
+				}
                 break;
         }
     }    
