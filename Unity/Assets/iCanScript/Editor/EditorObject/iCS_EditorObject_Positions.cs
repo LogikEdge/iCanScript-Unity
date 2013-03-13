@@ -153,7 +153,8 @@ public partial class iCS_EditorObject {
 		}
 		set {
 		    if(IsPort) return;
-    		AnimatedSize.Reset(value);                                
+    		AnimatedSize.Reset(value);
+            LayoutPorts();
 		}
 	}
     // ----------------------------------------------------------------------
