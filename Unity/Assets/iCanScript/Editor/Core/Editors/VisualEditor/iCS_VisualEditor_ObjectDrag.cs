@@ -558,7 +558,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
 	// TODO: Move port relocation processing into editor object...
-	// FIXME: Transition ports cannot be relocated on different edge.
     void ProcessPortRelocation(Vector2 newPosition) {
 		var parent= DragObject.ParentNode;
 		var parentRect= parent.GlobalDisplayRect;
