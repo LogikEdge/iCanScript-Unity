@@ -108,14 +108,14 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 GlobalDisplayPosition {
 		get {
-//            // Take the animation first
-//            if(AnimatedGlobalRect.IsActive) {
-//                return PositionFrom(AnimatedGlobalRect.CurrentValue);
-//            }
 			var parent= ParentNode;
 			if(parent == null) {
 			    return LocalAnchorPosition+LocalLayoutOffset;
 		    }
+			// Special case for iconized transition module ports.
+			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
+				return parent.GlobalDisplayPosition;
+			}
     		return parent.GlobalDisplayPosition+LocalAnchorPosition+LocalLayoutOffset;			    			        
 		}
 		set {
