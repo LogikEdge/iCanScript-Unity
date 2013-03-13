@@ -527,6 +527,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 					}
 				}
 				else {		// Outside parent node
+					// FIXME: Must connect to MuxParent.
 					// Nothing to do if already properly connected.
 					if(DragObject != DragOriginalPort &&
 					   DragFixPort == DragOriginalPort &&
@@ -545,12 +546,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 		}
         DragType= DragTypeEnum.PortConnection;
-        DragObject.LocalAnchorPosition= DragOriginalPort.LocalAnchorPosition;
-        DragObject.GlobalDisplayPosition= GraphMousePosition;
-		// Reset initial position if port is being dettached from it original parent.
-		if(DragOriginalPort.IsChildMuxPort) {
-			DragStartDisplayPosition= DragOriginalPort.GlobalDisplayPosition - parent.GlobalDisplayPosition;			
-		}
+        DragObject.GlobalAnchorPosition= GraphMousePosition;
+		DragObject.GlobalDisplayPosition= GraphMousePosition;
         DragObject.IsFloating= true;
         DragObject.IsSticky= true;
         SelectedObject= DragObject;
