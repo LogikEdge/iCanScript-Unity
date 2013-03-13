@@ -180,7 +180,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case DragTypeEnum.TransitionCreation:
                 // Update port position.
-                DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
+                DragObject.GlobalDisplayPosition= newPosition;
                 break;
         }
     }    
