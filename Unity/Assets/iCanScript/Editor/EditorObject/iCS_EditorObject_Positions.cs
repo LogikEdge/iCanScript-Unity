@@ -29,16 +29,29 @@ public partial class iCS_EditorObject {
 	public Vector2 LocalAnchorPosition {
 		get {
             if(IsPort) {
-                return GetPortLocalAnchorPositionFromRatio();    			
+                return IsNestedPort ? Parent.LocalAnchorPosition : GetPortLocalAnchorPositionFromRatio();    			
             }
             return EngineObject.LocalAnchorPosition;
 		}
 		set {
 			if(IsPort) {
+                // Update the parent if the port is a nested port (avoid circular loop).
+			    if(IsNestedPort && Math3D.IsNotEqual(Parent.LocalAnchorPosition, value)) {
+			        Parent.LocalAnchorPosition= value;
+                    return;
+			    }
                 // Transform to a position ratio between 0f and 1f.
     			UpdatePortEdge(value);
     			PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);			
     			IsDirty= true;  // Save new anchor position.
+                // Update nested ports
+                ForEachChildPort(
+                    p=> {
+            			p.UpdatePortEdge(value);
+            			p.PortPositionRatio= GetPortRatioFromLocalAnchorPosition(value);			
+            			p.IsDirty= true;  // Save new anchor position.
+                    }
+                );
 				return;
 			}
 			var engineObject= EngineObject;
