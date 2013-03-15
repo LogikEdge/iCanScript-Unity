@@ -59,12 +59,21 @@ public static class iCS_EditorUtility {
     }
 
     // ======================================================================
-    // Object high-order manipulation.
+    // Object destruction editor utilities.
 	// ----------------------------------------------------------------------
     // Ask the user confirmation to destroy the object.  True is returned
     // if the user has accepted to delete the object; false is returned 
     // otherwise.
-    public static void SafeDestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
+    public static bool SafeDestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
+		// Ask user to confirm delete if CRTL not pressed.
+        if(!EditorUtility.DisplayDialog("Deleting "+selectedObject.Name, "Are you sure you want to remove the selected object.", "Delete", "Cancel")) {
+			return false;
+        }			
+		ForceDestroyObject(selectedObject, iStorage);
+		return true;
+	}
+	// ----------------------------------------------------------------------
+    public static void ForceDestroyObject(iCS_EditorObject selectedObject, iCS_IStorage iStorage) {
         iStorage.RegisterUndo("Removing: "+selectedObject.Name);
         // TODO: Should animate parent node on node delete.
         var parent= selectedObject.ParentNode;

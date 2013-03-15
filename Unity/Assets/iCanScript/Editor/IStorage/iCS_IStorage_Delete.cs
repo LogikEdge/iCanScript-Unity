@@ -7,7 +7,9 @@ public partial class iCS_IStorage {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	List<iCS_EditorObject>	myDestroyQueue= new List<iCS_EditorObject>();
+	bool                    myDestroyQueueInUse = false;
+	List<iCS_EditorObject>	myDestroyQueue      = new List<iCS_EditorObject>();
+	List<iCS_EditorObject>	myCachedDestroyQueue= new List<iCS_EditorObject>();
 	
     // ======================================================================
     // ----------------------------------------------------------------------
@@ -24,20 +26,39 @@ public partial class iCS_IStorage {
     void DestroyInstanceInternal(iCS_EditorObject toDestroy) {
         if(toDestroy == null) return;
 		ScheduleDestroyInstance(toDestroy);
-		foreach(var obj in myDestroyQueue) {
-			DestroySingleObject(obj);
+		// Avoid reentrancy.
+		if(myDestroyQueueInUse) {
+			return;
 		}
-		myDestroyQueue.Clear();
+		// Go through schedule queue to destroy all related objects. 
+		myDestroyQueueInUse= true;
+		while(myDestroyQueue.Count != 0) {
+			foreach(var obj in myDestroyQueue) {
+				DestroySingleObject(obj);
+			}
+			myDestroyQueue.Clear();
+			if(myCachedDestroyQueue.Count != 0) {
+				var tmp= myDestroyQueue;
+				myDestroyQueue= myCachedDestroyQueue;
+				myCachedDestroyQueue= tmp;
+			}			
+		}
+		myDestroyQueueInUse= false;
     }
     // ----------------------------------------------------------------------
 	void ScheduleDestroyInstance(iCS_EditorObject toDestroy) {
 		if(toDestroy == null || toDestroy.InstanceId == -1) return;
 		// Don't process if the object has already been processed.
 		if(myDestroyQueue.Contains(toDestroy)) return;
+		if(myCachedDestroyQueue.Contains(toDestroy)) return;			
 		// Schedule all children to be destroyed first.
 		toDestroy.ForEachChild(child=> ScheduleDestroyInstance(child));
 		// Add the object to the destroy queue.
-		myDestroyQueue.Add(toDestroy);
+		if(!myDestroyQueueInUse) {
+			myDestroyQueue.Add(toDestroy);			
+		} else {
+			myCachedDestroyQueue.Add(toDestroy);
+		}
 		// Detroy the transition as a single block.
 		if(toDestroy.IsStatePort || toDestroy.IsTransitionModule) {
 	        iCS_EditorObject outStatePort= GetFromStatePort(toDestroy);
@@ -55,7 +76,10 @@ public partial class iCS_IStorage {
         ExecuteIf(toDestroy, obj=> obj.IsPort, _=> DisconnectPort(toDestroy));
         // Update modules runtime data when removing a module port.
         iCS_EditorObject parent= toDestroy.Parent;
-        if(toDestroy.IsModulePort || toDestroy.IsChildMuxPort) 	 RemoveDynamicPort(toDestroy);
+		bool isChildMuxPort= toDestroy.IsChildMuxPort;
+		if(toDestroy.IsModulePort) {
+			RemoveDynamicPort(toDestroy);
+		}
         // Remember entry state.
         bool isEntryState= toDestroy.IsEntryState;
 		// Destroy instance.
@@ -64,6 +88,9 @@ public partial class iCS_IStorage {
         if(isEntryState) {
             SelectEntryState(parent);
         }
+		if(isChildMuxPort) {
+			CleanupMuxPort(parent);
+		}
 	}
     // ----------------------------------------------------------------------
     void SelectEntryState(iCS_EditorObject parent) {

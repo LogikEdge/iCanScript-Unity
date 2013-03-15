@@ -159,6 +159,14 @@ public static partial class Math3D {
         return angle;        
     }
 
+	// ----------------------------------------------------------------------
+	public static Vector2 QuantizeAt90Degrees(Vector2 v) {
+		if(Mathf.Abs(v.x) > Mathf.Abs(v.y)) {
+			return v.x > 0 ? new Vector2(1f,0) : new Vector2(-1f,0);
+		}
+		return v.y > 0 ? new Vector2(0,1f) : new Vector2(0,-1f);
+	}
+	
     // ======================================================================
     // Lerp
 	// ----------------------------------------------------------------------
