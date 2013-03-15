@@ -167,8 +167,8 @@ public partial class iCS_EditorObject {
     }
 	// ----------------------------------------------------------------------
     public void ForEachRecursiveDepthLast(Func<iCS_EditorObject,
-											   Action<iCS_EditorObject>,
-											   bool> cond,
+										  Action<iCS_EditorObject>,
+										  bool> cond,
                                           Action<iCS_EditorObject> fnc) {
         // Does this node pass the given condition?
         if(!cond(this, fnc)) return;

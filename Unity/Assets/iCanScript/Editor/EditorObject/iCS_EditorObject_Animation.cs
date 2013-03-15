@@ -224,7 +224,7 @@ public partial class iCS_EditorObject {
 	    return BuildTimeRatio(AnimationTimeFromDistance(distance));
 	}
     // ----------------------------------------------------------------------
-	public P.TimeRatio BuildTimeRatio(float time) {
+	public static P.TimeRatio BuildTimeRatio(float time) {
 		var timeRatio= new P.TimeRatio();
         timeRatio.Start(time);
 		return timeRatio;		
