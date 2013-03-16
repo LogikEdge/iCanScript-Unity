@@ -7,10 +7,10 @@ public partial class iCS_EditorObject {
     // Types
     // ----------------------------------------------------------------------
     public class PositionMemento {
-        public Vector2 AnchorPosition;
-        public Vector2 LayoutOffset;
-        public Vector2 Size;
-        public Vector2 GlobalPosition;
+        public Vector2 AnchorPosition= Vector2.zero;
+        public Vector2 LayoutOffset  = Vector2.zero;
+        public Vector2 Size          = Vector2.zero;
+        public Vector2 GlobalPosition= Vector2.zero;
         public Rect    GlobalRect
         { get { return iCS_EditorObject.BuildRect(GlobalPosition, Size); }}
         public Vector2 LocalPosition
