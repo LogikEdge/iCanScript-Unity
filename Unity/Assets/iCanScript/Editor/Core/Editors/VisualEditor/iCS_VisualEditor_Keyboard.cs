@@ -33,7 +33,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.DownArrow: {
-                if(SelectedObject == null) SelectedObject= myDisplayRoot;
+                if(SelectedObject == null) SelectedObject= DisplayRoot;
                 SelectedObject= iCS_EditorUtility.GetFirstChild(SelectedObject, IStorage);
                 CenterOnSelected();
                 Event.current.Use();
@@ -53,9 +53,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case KeyCode.F: {
                 if(ev.shift) {
-                    var selected= myDisplayRoot;
+                    var selected= DisplayRoot;
                     if(selected != null) {
-                        iCS_EditorUtility.SafeFocusOn(myDisplayRoot, IStorage);                        
+                        iCS_EditorUtility.SafeFocusOn(DisplayRoot, IStorage);                        
                     }
                 } else {
                     var selected= SelectedObject;
@@ -120,7 +120,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Object deletion
             case KeyCode.Delete:
             case KeyCode.Backspace: {
-                if(SelectedObject != null && SelectedObject != myDisplayRoot && SelectedObject != StorageRoot &&
+                if(SelectedObject != null && SelectedObject != DisplayRoot && SelectedObject != StorageRoot &&
                   !SelectedObject.IsTransitionAction && !SelectedObject.IsTransitionGuard) {
 	                iCS_EditorObject parent= SelectedObject.Parent;
 					bool changeSelected= true;
@@ -139,7 +139,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Object creation.
             case KeyCode.KeypadEnter: // fnc+return on Mac
             case KeyCode.Insert: {
-                if(SelectedObject == null) SelectedObject= myDisplayRoot;
+                if(SelectedObject == null) SelectedObject= DisplayRoot;
                 // Don't use mouse position if it is too far from selected node.
                 Vector2 graphPos= GraphMousePosition;
                 Rect parentRect= SelectedObject.GlobalDisplayRect;

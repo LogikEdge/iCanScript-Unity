@@ -175,8 +175,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     void ShowDynamicMenu() {
-        if(SelectedObject == null && myDisplayRoot.IsBehaviour) {
-            SelectedObject= myDisplayRoot;
+        if(SelectedObject == null && DisplayRoot.IsBehaviour) {
+            SelectedObject= DisplayRoot;
         }
         ShowInstanceEditor();
         myDynamicMenu.Update(SelectedObject, IStorage, GraphMousePosition);

@@ -53,6 +53,7 @@ public partial class iCS_IStorage {
                     }                        
                 }
                 obj.SetMemento(objMemento ?? rootMemento);
+                obj.PrepareToAnimateRect();
             }
         );
         // Rebuild layout
