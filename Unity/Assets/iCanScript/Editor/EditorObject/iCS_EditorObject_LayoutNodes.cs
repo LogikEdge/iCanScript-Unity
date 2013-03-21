@@ -13,9 +13,9 @@ public partial class iCS_EditorObject {
     public void LayoutParentNodesUntilTop(iCS_AnimationControl animCtrl= iCS_AnimationControl.Normal) {
         var parent= ParentNode;
         if(parent == null) return;
-        var parentGlobalRect= parent.GlobalDisplayRect;
+        var parentGlobalRect= parent.LayoutRect;
         parent.LayoutNode(animCtrl);
-        if(Math3D.IsNotEqual(parentGlobalRect, parent.GlobalDisplayRect)) {
+        if(Math3D.IsNotEqual(parentGlobalRect, parent.LayoutRect)) {
             parent.LayoutParentNodesUntilTop(animCtrl);
         }
     }
@@ -25,7 +25,7 @@ public partial class iCS_EditorObject {
         if(!IsVisibleInLayout) return;
         // Just update the size of the node if it is iconized.
         if(IsIconizedInLayout) {
-            DisplaySize= iCS_Graphics.GetMaximizeIconSize(this);
+            LayoutSize= iCS_Graphics.GetMaximizeIconSize(this);
             return;
         }
         // Resolve any existing collisions on children for unfolded modules.
@@ -35,7 +35,7 @@ public partial class iCS_EditorObject {
     		return;            
         }
         // Update the size and ports for folded & Function nodes.
-        GlobalDisplayRect= FoldedNodeRect();
+        LayoutRect= FoldedNodeRect();
 	}
 
     // ----------------------------------------------------------------------
@@ -61,7 +61,7 @@ public partial class iCS_EditorObject {
 		var center= Math3D.Middle(r);
 		AnchorPosition= center-LocalOffset;
 		// Update layout size.
-		DisplaySize= new Vector2(r.width, r.height);
+		LayoutSize= new Vector2(r.width, r.height);
 		// Reposition child to maintain their global positions.
 		int i= 0;
 		ForEachChildNode(
@@ -118,7 +118,7 @@ public partial class iCS_EditorObject {
 		// Determine rect to wrap children.
         float x, y;
 		if(Math3D.IsZero(childRect.width) || Math3D.IsZero(childRect.height)) {
-            var pos= GlobalDisplayPosition;
+            var pos= LayoutPosition;
 		    x= pos.x-0.5f*width;
 		    y= pos.y-0.5f*height;		    
 		} else {

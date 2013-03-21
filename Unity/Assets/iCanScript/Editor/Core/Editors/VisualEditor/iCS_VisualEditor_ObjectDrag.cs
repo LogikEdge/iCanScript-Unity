@@ -68,7 +68,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragOriginalPort= port;
             DragFixPort= port;
             DragObject= port;
-            DragStartDisplayPosition= port.GlobalDisplayPosition;
+            DragStartDisplayPosition= port.LayoutPosition;
             DragObject.IsSticky= true;
             return true;
         }
@@ -105,7 +105,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 }
 				node.IsSticky= true;
                 DragObject= node;
-                DragStartDisplayPosition= node.GlobalDisplayPosition;                                                                    
+                DragStartDisplayPosition= node.LayoutPosition;                                                                    
             }
             return true;
         }
@@ -121,7 +121,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             inTransition.SourceId= outTransition.InstanceId;
             DragFixPort= outTransition;
             DragObject= inTransition;
-            DragStartDisplayPosition= DragObject.GlobalDisplayPosition;
+            DragStartDisplayPosition= DragObject.LayoutPosition;
             DragObject.IsFloating= true;
             DragObject.IsSticky= true;
             return true;
@@ -157,7 +157,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case DragTypeEnum.PortConnection: {
                 // Update port position.
-                DragObject.GlobalDisplayPosition= newPosition;
+                DragObject.LayoutPosition= newPosition;
                 // Determine if we should go back to port relocation. (IsPositionOnEdge)
                 if(DragOriginalPort.Parent.IsPositionOnEdge(newPosition, DragOriginalPort.Edge)) {
                     RemoveDragPort();
@@ -167,9 +167,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 Vector2 mousePosInGraph= GraphMousePosition;
                 iCS_EditorObject closestPort= IStorage.GetClosestPortAt(mousePosInGraph, p=> p.IsDataPort);
                 if(closestPort != null && (closestPort.ParentId != DragOriginalPort.ParentId || closestPort.Edge != DragOriginalPort.Edge)) {
-                    Vector2 closestPortPos= closestPort.GlobalDisplayPosition;
+                    Vector2 closestPortPos= closestPort.LayoutPosition;
                     if(Vector2.Distance(closestPortPos, mousePosInGraph) < iCS_EditorConfig.PortDiameter) {
-                        DragObject.GlobalDisplayPosition= closestPortPos;
+                        DragObject.LayoutPosition= closestPortPos;
                     }                    
                 }
                 // Continously refresh drag port if module port.
@@ -180,10 +180,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
             case DragTypeEnum.TransitionCreation:
                 // Update port position.
-                DragObject.GlobalDisplayPosition= newPosition;
+                DragObject.LayoutPosition= newPosition;
 				// Update fix port edge & position.
 				var fixPortParentNode= DragFixPort.ParentNode;
-				var fixPortParentRect= fixPortParentNode.GlobalDisplayRect;
+				var fixPortParentRect= fixPortParentNode.LayoutRect;
 				var fixPortParentCenter= Math3D.Middle(fixPortParentRect);
 				if(!fixPortParentRect.Contains(newPosition)) {
 					var dir= newPosition-fixPortParentCenter;
@@ -245,10 +245,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             }
                         } else {
                             node.IsFloating= true;
-                            var pos= node.GlobalDisplayPosition;
+                            var pos= node.LayoutPosition;
                             node.AnchorPosition= DragStartAnchorPosition;
-                            node.GlobalDisplayPosition= pos;
-                            node.AnimatePosition(DragStartDisplayPosition);                            
+                            node.LayoutPosition= DragStartDisplayPosition;
+							var size= node.LayoutSize;
+							node.AnimationStart= iCS_EditorObject.BuildRect(pos, size);
+                            node.Animate(node.LayoutRect);                            
                         }
                     }
                     // Remove sticky on parent nodes.
@@ -270,7 +272,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             origStateChart= origStateChart.Parent;
                         }
                         // Get new drag port state & state chart.
-                        iCS_EditorObject newState= IStorage.GetNodeWithEdgeAt(DragObject.GlobalDisplayPosition);
+                        iCS_EditorObject newState= IStorage.GetNodeWithEdgeAt(DragObject.LayoutPosition);
                         if(newState == null || !newState.IsState) {
                             newState= GetStateAt(GraphMousePosition);                            
                         }
@@ -297,7 +299,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             break;
                         }
                         // Relocate transition to the new state.
-                        var dragObjectPosition= DragObject.GlobalDisplayPosition;
+                        var dragObjectPosition= DragObject.LayoutPosition;
                         DragObject.Parent= newState;
                         DragObject.SetAnchorAndLayoutPosition(dragObjectPosition);
                         DragObject.UpdatePortEdge();
@@ -320,7 +322,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         bool isNearParent= DragObject.IsPortOnParentEdge;
                         if(DragFixPort.IsDataPort) {
                             // We don't need the drag port anymore.
-                            var dragPortPos= DragObject.GlobalDisplayPosition;
+                            var dragPortPos= DragObject.LayoutPosition;
                             DragObject.IsSticky= false;
                             DragObject.IsFloating= false;
 							IStorage.DestroyInstance(DragObject);
@@ -399,7 +401,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         iCS_EditorObject outStatePort= IStorage[DragObject.SourceId];
                         outStatePort.IsFloating= false;
                         outStatePort.IsSticky= false;
-                        IStorage.CreateTransition(outStatePort, destState, DragObject.GlobalDisplayPosition);
+                        IStorage.CreateTransition(outStatePort, destState, DragObject.LayoutPosition);
                         DragObject.SourceId= -1;
                         IStorage.DestroyInstance(DragObject);
                     } else {
@@ -484,7 +486,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		else {	// This is a module port.
 			var point= GraphMousePosition;
-			bool isInside= DragOriginalPort.ParentNode.GlobalDisplayRect.Contains(point);
+			bool isInside= DragOriginalPort.ParentNode.LayoutRect.Contains(point);
 			if(DragOriginalPort.IsInputPort) {	// Input module port
 				if(isInside) {	// Inside parent node
 					// Nothing to do if already properly connected.
@@ -583,8 +585,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 		}
         DragType= DragTypeEnum.PortConnection;
-        DragObject.AnchorPosition= GraphMousePosition;
-		DragObject.GlobalDisplayPosition= GraphMousePosition;
+        DragObject.SetAnchorAndLayoutPosition(GraphMousePosition);
         DragObject.IsFloating= true;
         DragObject.IsSticky= true;
         SelectedObject= DragObject;
@@ -594,7 +595,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// TODO: Move port relocation processing into editor object...
     void ProcessPortRelocation(Vector2 newPosition) {
 		var parent= DragObject.ParentNode;
-		var parentRect= parent.GlobalDisplayRect;
+		var parentRect= parent.LayoutRect;
         // Determine if we should convert to data port connection drag.
 		if(DragObject.IsDataPort && !iCS_EditorObject.IsPositionOnRectEdge(newPosition, parentRect, DragObject.Edge)) {
             parent.LayoutPorts();
@@ -612,11 +613,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		parent.LayoutPortsOnSameEdge(sameEdgePorts);
 		var sortedPorts        = iCS_EditorObject.SortPortsOnLayout(sameEdgePorts);		
 		var portRatios         = P.map(p=> p.PortPositionRatio, sortedPorts);
-		var portPositionsOnEdge= P.map(p=> (p.IsOnHorizontalEdge ? p.GlobalDisplayPosition.x : p.GlobalDisplayPosition.y), sortedPorts);
+		var portPositionsOnEdge= P.map(p=> (p.IsOnHorizontalEdge ? p.LayoutPosition.x : p.LayoutPosition.y), sortedPorts);
 		var newPositionOnEdge  = DragObject.IsOnHorizontalEdge ? newPosition.x : newPosition.y;
-		var delta              = newPosition-DragObject.GlobalDisplayPosition;
+		var delta              = newPosition-DragObject.LayoutPosition;
 		var deltaOnEdge        = DragObject.IsOnHorizontalEdge ? delta.x : delta.y;
-		var parentGlobalPos    = parent.GlobalDisplayPosition;
+		var parentGlobalPos    = parent.LayoutPosition;
 		var edgePosStart       = DragObject.IsOnHorizontalEdge ?
 									parentGlobalPos.x+parent.HorizontalPortsLeft :
 									parentGlobalPos.y+parent.VerticalPortsTop;
@@ -721,13 +722,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             var posDiff= portPositionsOnEdge[i+1]-portPositionsOnEdge[i];
             if(posDiff < minSeparation) {
                 var offset= minSeparation-posDiff;
-                var pos= sortedPorts[i+1].GlobalDisplayPosition;
+                var pos= sortedPorts[i+1].LayoutPosition;
                 if(DragObject.IsOnHorizontalEdge) {
                     pos.x+= offset;
                 } else {
                     pos.y+= offset;
                 }
-                sortedPorts[i+1].GlobalDisplayPosition= pos;
+                sortedPorts[i+1].LayoutPosition= pos;
                 portPositionsOnEdge[i+1]+= offset;
             }
         }
@@ -735,18 +736,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             var posDiff= portPositionsOnEdge[i]-portPositionsOnEdge[i-1];
             if(posDiff < minSeparation) {
                 var offset= minSeparation-posDiff;
-                var pos= sortedPorts[i-1].GlobalDisplayPosition;
+                var pos= sortedPorts[i-1].LayoutPosition;
                 if(DragObject.IsOnHorizontalEdge) {
                     pos.x-= offset;
                 } else {
                     pos.y-= offset;
                 }
-                sortedPorts[i-1].GlobalDisplayPosition= pos;
+                sortedPorts[i-1].LayoutPosition= pos;
                 portPositionsOnEdge[i-1]-= offset;
             }
         }
         // Finaly, set the drag port layout position.
-        DragObject.GlobalDisplayPosition= newPosition;
+        DragObject.LayoutPosition= newPosition;
     }
 	// ----------------------------------------------------------------------
     Vector2 CleanupPortGlobalPositionOnEdge(Vector2 pos, iCS_EditorObject parent, Vector2 parentGloablPos, Rect parentRect) {

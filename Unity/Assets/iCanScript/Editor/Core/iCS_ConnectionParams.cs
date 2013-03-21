@@ -38,7 +38,7 @@ public class iCS_ConnectionParams {
         Center= BezierCenter(Start, End, StartTangent, EndTangent);
     }
     // ----------------------------------------------------------------------
-    public iCS_ConnectionParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, port.GlobalDisplayPosition, source, source.GlobalDisplayPosition, storage) {}
+    public iCS_ConnectionParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, port.AnimatedPosition, source, source.AnimatedPosition, storage) {}
     // ----------------------------------------------------------------------
     public iCS_ConnectionParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, port.Source, storage) {}
     // ----------------------------------------------------------------------
@@ -46,9 +46,9 @@ public class iCS_ConnectionParams {
         // Don't compute complex tangents if we don't have a proper parent.
         iCS_EditorObject portParent= port.ParentNode;
         if(port.IsFloating || to.IsFloating) {
-            if(port.IsDataPort || !portParent.IsPositionOnEdge(port.GlobalDisplayPosition, port.Edge)) {
-                Vector2 fromPos= port.GlobalDisplayPosition;
-                Vector2 toPos= to.GlobalDisplayPosition;
+            if(port.IsDataPort || !portParent.IsPositionOnEdge(port.AnimatedPosition, port.Edge)) {
+                Vector2 fromPos= port.AnimatedPosition;
+                Vector2 toPos= to.AnimatedPosition;
                 return GetBestDirectionFrom((toPos-fromPos).normalized);                
             }
         }

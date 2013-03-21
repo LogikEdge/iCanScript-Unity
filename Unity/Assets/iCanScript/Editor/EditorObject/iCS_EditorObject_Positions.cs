@@ -6,7 +6,9 @@ public partial class iCS_EditorObject {
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	// Fields
     // ======================================================================
-
+	Vector2		myLayoutSize = Vector2.zero;
+	Vector2		myLocalOffset= Vector2.zero;
+	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
     // ======================================================================
@@ -71,7 +73,7 @@ public partial class iCS_EditorObject {
 		get {
 			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
-    		return parent.GlobalDisplayPosition+LocalAnchorPosition;			    
+    		return parent.LayoutPosition+LocalAnchorPosition;			    
 		}
 		set {
 			var parent= ParentNode;
@@ -79,7 +81,7 @@ public partial class iCS_EditorObject {
 				LocalAnchorPosition= value;
 				return;
 			}
-    		LocalAnchorPosition= value-parent.GlobalDisplayPosition;                
+    		LocalAnchorPosition= value-parent.LayoutPosition;                
 		}
 	}
 
@@ -89,7 +91,7 @@ public partial class iCS_EditorObject {
     // Offset from the anchor position.  This attribute is animated.
 	public Vector2 LocalOffset {
 		get {
-			return myAnimatedLayoutOffset.CurrentValue;
+			return myLocalOffset;
 		}
 		set {
             // Update parent port for nested ports.
@@ -100,17 +102,25 @@ public partial class iCS_EditorObject {
                     }
                     return;
                 }
-                myAnimatedLayoutOffset.Reset(value);
-                ForEachChildPort(p=> p.myAnimatedLayoutOffset.Reset(value));                
+                myLocalOffset= value;
+                ForEachChildPort(p=> p.myLocalOffset= value);                
             }
-    		myAnimatedLayoutOffset.Reset(value);                                
+			myLocalOffset= value;
 		}
 	}
-
-    // ======================================================================
-    // Display
     // ----------------------------------------------------------------------
-	public Vector2 GlobalDisplayPosition {
+	public Vector2 LocalLayoutPosition {
+		get {
+			return LocalAnchorPosition+LocalOffset;
+		}
+		set {
+			LocalOffset= value-LocalAnchorPosition;
+		}
+	}
+    // ======================================================================
+	// Layout
+    // ----------------------------------------------------------------------
+	public Vector2 LayoutPosition {
 		get {
 			var parent= ParentNode;
 			if(parent == null) {
@@ -118,9 +128,12 @@ public partial class iCS_EditorObject {
 		    }
 			// Special case for iconized transition module ports.
 			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
-				return parent.GlobalDisplayPosition;
+				return parent.LayoutPosition;
 			}
-    		return parent.GlobalDisplayPosition+LocalAnchorPosition+LocalOffset;			    			        
+			if(IsPort) {
+				return parent.AnimatedPosition+LocalAnchorPosition+LocalOffset;
+			}
+    		return parent.LayoutPosition+LocalAnchorPosition+LocalOffset;			    			        
 		}
 		set {
             var offsetWithoutParent= value-LocalAnchorPosition;
@@ -129,63 +142,24 @@ public partial class iCS_EditorObject {
 		        LocalOffset= offsetWithoutParent;
 		        return;
 		    }
-	        LocalOffset= offsetWithoutParent-parent.GlobalDisplayPosition;
-		}
-	}
-    // ----------------------------------------------------------------------
-	public Vector2 LocalDisplayPosition {
-		get {
-			var globalPos= GlobalDisplayPosition;
-			var parent= Parent;
-			if(parent == null) return globalPos;
-			return globalPos-parent.GlobalDisplayPosition;
-		}
-		set {
-		    LocalOffset= value-LocalAnchorPosition;
-		}
-	}
-    // ----------------------------------------------------------------------
-	public Vector2 DisplaySize {
-		get {
-		    if(IsPort) {
-		        return iCS_EditorConfig.PortSize;
-		    }
-			return myAnimatedSize.CurrentValue;
-		}
-		set {
-		    if(IsPort) return;
-    		myAnimatedSize.Reset(value);
-            LayoutPorts();
-		}
-	}
-    // ----------------------------------------------------------------------
- 	public Rect GlobalDisplayRect {
- 		get {
-            var r= BuildRect(GlobalDisplayPosition, DisplaySize);
-            return r;
- 		}
- 		set {
- 		    GlobalDisplayPosition= PositionFrom(value);
- 		    DisplaySize= SizeFrom(value);
- 		}
- 	}
-
-    // ----------------------------------------------------------------------
-	public Vector2 LayoutPosition {
-		get {
-			return GlobalDisplayPosition;
-		}
-		set {
-			GlobalDisplayPosition= value;
+			if(IsPort) {
+				LocalOffset= offsetWithoutParent-parent.AnimatedPosition;
+			}
+	        LocalOffset= offsetWithoutParent-parent.LayoutPosition;
 		}
 	}
     // ----------------------------------------------------------------------
 	public Vector2 LayoutSize {
 		get {
-			return DisplaySize;
+		    if(IsPort) {
+		        return iCS_EditorConfig.PortSize;
+		    }
+			return myLayoutSize;
 		}
 		set {
-			DisplaySize= value;
+		    if(IsPort) return;
+    		myLayoutSize= value;
+            LayoutPorts();
 		}
 	}
     // ----------------------------------------------------------------------
@@ -282,7 +256,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public void SetAnchorAndLayoutRect(Rect r) {
         SetAnchorAndLayoutPosition(PositionFrom(r));
-        DisplaySize= SizeFrom(r);
+        LayoutSize= SizeFrom(r);
     }
     // ----------------------------------------------------------------------
 	public void SetAnchorAndLayoutPosition(Vector2 pos) {
@@ -310,13 +284,12 @@ public partial class iCS_EditorObject {
  	// ----------------------------------------------------------------------
     public Rect GlobalDisplayChildRect {
         get {
-            var pos= GlobalDisplayPosition;
-            Rect childRect= new Rect(pos.x, pos.y, 0, 0);
+            Rect childRect= BuildRect(AnimatedPosition, Vector2.zero);
             ForEachChildNode(
                 c=> {
                     if(!c.IsFloating) {
     					if(c.IsVisibleOnDisplay) {
-        					childRect= Math3D.Merge(childRect, c.GlobalDisplayRect);											        
+        					childRect= Math3D.Merge(childRect, c.AnimatedRect);											        
     					}
                     }
 				}

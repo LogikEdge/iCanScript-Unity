@@ -27,7 +27,7 @@ public partial class iCS_EditorObject {
 	public bool IsIconizedOnDisplay	{
 		get {
             if(IsPort) return false;
-            var area= Math3D.Area(DisplaySize);
+            var area= Math3D.Area(AnimatedSize);
             if(Math3D.IsZero(area)) return false;
             var iconArea= Math3D.Area(iCS_Graphics.GetMaximizeIconSize(this));
             return Math3D.IsSmallerOrEqual(area, iconArea) &&
@@ -53,7 +53,7 @@ public partial class iCS_EditorObject {
                 return parent.IsVisibleOnDisplay;
             }
             if(!IsAnimated) return IsVisibleInLayout;
-            var area= Math3D.Area(DisplaySize);
+            var area= Math3D.Area(AnimatedSize);
             return Math3D.IsGreater(area, iCS_EditorConfig.kMinIconicArea);
         }
     }
@@ -132,13 +132,13 @@ public partial class iCS_EditorObject {
     // Animation High-Order Utilities
     // ----------------------------------------------------------------------
 	public P.TimeRatio AnimateGraph(Action<iCS_EditorObject> fnc) {
-		var prevRect= GlobalDisplayRect;
+		var prevRect= LayoutRect;
 		PrepareToAnimateRect();
 		PrepareToAnimateParents();
 		fnc(this);
 		LayoutNode(iCS_AnimationControl.None);
 		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
-		var newRect= GlobalDisplayRect;
+		var newRect= LayoutRect;
 		var timeRatio= BuildTimeRatioFromRect(prevRect, newRect);		
 		AnimateRect(timeRatio);
 		AnimateParents(timeRatio);
@@ -156,7 +156,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	void Hide(P.TimeRatio timeRatio) {
 		LocalOffset= -LocalAnchorPosition;
-		DisplaySize= Vector2.zero;
+		LayoutSize= Vector2.zero;
 		AnimateRect(timeRatio);
 		IsAlphaAnimated= true;
 		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
@@ -186,14 +186,14 @@ public partial class iCS_EditorObject {
         // Unhide iconized node
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) {
             LocalOffset= Vector2.zero;
-            DisplaySize= Vector2.zero;
+            LayoutSize= Vector2.zero;
             AnimateSize(IconizedSize());
             return;
         }
         // Unhide folded node
         if(IsFunction || DisplayOption == iCS_DisplayOptionEnum.Folded) {
             LocalOffset= Vector2.zero;
-            DisplaySize= Vector2.zero;
+            LayoutSize= Vector2.zero;
             AnimateRect(FoldedNodeRect());
             return;
         }

@@ -6,7 +6,7 @@ public partial class iCS_IStorage {
     // Creation methods
     // ----------------------------------------------------------------------
     public void CreateTransition(iCS_EditorObject fromStatePort, iCS_EditorObject toState, Vector2 toStatePortPos) {
-        Vector2 fromStatePortPos= fromStatePort.GlobalDisplayPosition;
+        Vector2 fromStatePortPos= fromStatePort.LayoutPosition;
         // Create toStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
         toStatePort.SetAnchorAndLayoutPosition(toStatePortPos);
@@ -62,7 +62,7 @@ public partial class iCS_IStorage {
         UpdatePortNames(fromStatePort, toStatePort);
         // Set initial transition module position.
         var transitionIcon= iCS_TextureCache.GetTextureFromGUID(transitionModule.IconGUID);
-        transitionModule.DisplaySize= new Vector2(transitionIcon.width, transitionIcon.height);
+        transitionModule.LayoutSize= new Vector2(transitionIcon.width, transitionIcon.height);
         outModulePort= inModulePort;
         LayoutTransitionModule(transitionModule);
     }
@@ -258,7 +258,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public Rect ProposeTransitionModulePosition(iCS_EditorObject module) {
-        Rect nodePos= module.GlobalDisplayRect;
+        Rect nodePos= module.LayoutRect;
         iCS_EditorObject fromStatePort= GetFromStatePort(module);
         iCS_EditorObject toStatePort= GetToStatePort(module);
         if(toStatePort != null) {
@@ -298,10 +298,10 @@ public partial class iCS_IStorage {
         iCS_EditorObject outStatePort     = GetFromStatePort(module);
         iCS_EditorObject inTransitionPort = GetInTransitionPort(module);
         iCS_EditorObject outTransitionPort= GetOutTransitionPort(module);
-        var inStatePos= inStatePort.GlobalDisplayPosition;
-        var outStatePos= outStatePort.GlobalDisplayPosition;
-        var inTransitionPos= inTransitionPort.GlobalDisplayPosition;
-        var outTransitionPos= outTransitionPort.GlobalDisplayPosition;
+        var inStatePos= inStatePort.LayoutPosition;
+        var outStatePos= outStatePort.LayoutPosition;
+        var inTransitionPos= inTransitionPort.LayoutPosition;
+        var outTransitionPos= outTransitionPort.LayoutPosition;
         Vector2 dir= ((inStatePos-outTransitionPos).normalized+(inTransitionPos-outStatePos).normalized).normalized;
         return dir;
     }

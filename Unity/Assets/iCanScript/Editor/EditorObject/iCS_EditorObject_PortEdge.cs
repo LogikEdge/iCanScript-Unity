@@ -30,7 +30,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Updates the port edge information from the port type.
     public void UpdatePortEdge() {
-		UpdatePortEdge(LocalDisplayPosition);
+		UpdatePortEdge(LocalLayoutPosition);
     }
 	// ----------------------------------------------------------------------
     // Updates the port edge information from the port type.
@@ -51,15 +51,15 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public void CleanupPortEdgePosition() {
-        var size= Parent.DisplaySize;
-        var lp= LocalDisplayPosition;
+        var size= Parent.AnimatedSize;
+        var lp= LocalLayoutPosition;
         switch(Edge) {
             case iCS_EdgeEnum.Top:      lp.y= -0.5f*size.y; break; 
             case iCS_EdgeEnum.Bottom:   lp.y=  0.5f*size.y; break;
             case iCS_EdgeEnum.Left:     lp.x= -0.5f*size.x; break;
             case iCS_EdgeEnum.Right:    lp.x=  0.5f*size.x; break;
         }
-		LocalDisplayPosition= lp;
+		LocalLayoutPosition= lp;
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnParentEdge {
@@ -70,16 +70,16 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnNodeEdge(iCS_EditorObject node, iCS_EdgeEnum edge) {
-		return IsPortOnRectEdge(node.GlobalDisplayRect, edge);
+		return IsPortOnRectEdge(node.AnimatedRect, edge);
     }
     // ----------------------------------------------------------------------
     public bool IsPortOnRectEdge(Rect r, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(GlobalDisplayPosition, r, edge);
+		return IsPositionOnRectEdge(AnimatedPosition, r, edge);
     }
     // ----------------------------------------------------------------------
 	// Return true if the position is on the edge of the node.
 	public bool IsPositionOnEdge(Vector2 position, iCS_EdgeEnum edge) {
-		return IsPositionOnRectEdge(position, GlobalDisplayRect, edge);
+		return IsPositionOnRectEdge(position, AnimatedRect, edge);
 	}
     // ----------------------------------------------------------------------
     public static bool IsPositionOnRectEdge(Vector2 pos, Rect r, iCS_EdgeEnum edge) {
@@ -107,14 +107,14 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
 	public iCS_EdgeEnum ClosestEdge {
-		get { return GetClosestEdge(LocalDisplayPosition); }
+		get { return GetClosestEdge(AnimatedLocalPosition); }
 	}
     // ----------------------------------------------------------------------
 	public iCS_EdgeEnum GetClosestEdge(Vector2 localPosition) {
 		// Don't change edge if parent is iconized.
-		var parent= Parent;
+		var parent= ParentNode;
 		if(parent.IsIconizedOnDisplay) return Edge;
-        var parentSize= parent.DisplaySize;
+        var parentSize= parent.AnimatedSize;
         float leftX  = -0.5f*parentSize.x;
         float rightX =  0.5f*parentSize.x;
         float topY   = -0.5f*parentSize.y;

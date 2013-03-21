@@ -142,7 +142,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(SelectedObject == null) SelectedObject= DisplayRoot;
                 // Don't use mouse position if it is too far from selected node.
                 Vector2 graphPos= GraphMousePosition;
-                Rect parentRect= SelectedObject.GlobalDisplayRect;
+                Rect parentRect= SelectedObject.LayoutRect;
                 Vector2 parentOrigin= new Vector2(parentRect.x, parentRect.y);
                 Vector2 parentCenter= Math3D.Middle(parentRect);
                 float radius= Vector2.Distance(parentCenter, parentOrigin);

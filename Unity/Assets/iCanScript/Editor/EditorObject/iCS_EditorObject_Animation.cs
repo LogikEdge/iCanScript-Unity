@@ -114,7 +114,7 @@ public partial class iCS_EditorObject {
         var targetLayoutOffset= targetPosition-LocalAnchorPosition;
         var parent= ParentNode;
         if(parent != null) {
-            targetLayoutOffset-= parent.GlobalDisplayPosition;
+            targetLayoutOffset-= parent.LayoutPosition;
         }
         AnimateLayoutOffset(targetLayoutOffset);
     }
@@ -123,7 +123,7 @@ public partial class iCS_EditorObject {
         var targetLayoutOffset= targetPosition-LocalAnchorPosition;
         var parent= ParentNode;
         if(parent != null) {
-            targetLayoutOffset-= parent.GlobalDisplayPosition;
+            targetLayoutOffset-= parent.LayoutPosition;
         }
         AnimateLayoutOffset(targetLayoutOffset, timeRatio);
     }

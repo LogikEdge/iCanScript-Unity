@@ -42,11 +42,11 @@ public partial class iCS_EditorObject {
         // Resolve port collisions.
         ys= ResolvePortCollisions(ys, bottom-top);
 		// Update position from new layout.
-		var displaySize= DisplaySize;
+		var displaySize= AnimatedSize;
         var halfSize= 0.5f*displaySize.x;
 		var x= ports[0].IsOnLeftEdge ? -halfSize : halfSize;
 		for(int i= 0; i < nbPorts; ++i) {
-			ports[i].LocalDisplayPosition= new Vector2(x, top+ys[i]);
+			ports[i].LocalLayoutPosition= new Vector2(x, top+ys[i]);
 		}
     }
     // ----------------------------------------------------------------------
@@ -66,11 +66,11 @@ public partial class iCS_EditorObject {
         // Resolve port collisions.
         xs= ResolvePortCollisions(xs, right-left);
 		// Update position from new layout.
-		var displaySize= DisplaySize;
+		var displaySize= AnimatedSize;
         var halfSize= 0.5f*displaySize.y;
 		var y= ports[0].IsOnTopEdge ? -halfSize : halfSize;
 		for(int i= 0; i < nbPorts; ++i) {
-			ports[i].LocalDisplayPosition= new Vector2(left+xs[i], y);
+			ports[i].LocalLayoutPosition= new Vector2(left+xs[i], y);
 		}
     }
     // ----------------------------------------------------------------------
@@ -162,11 +162,11 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     static iCS_EditorObject[] SortHorizontalPortsOnLayout(iCS_EditorObject[] ports) {
-        return SortPorts(ports, p=> p.LocalDisplayPosition.x);
+        return SortPorts(ports, p=> p.LocalLayoutPosition.x);
     }
     // ----------------------------------------------------------------------
     static iCS_EditorObject[] SortVerticalPortsOnLayout(iCS_EditorObject[] ports) {
-        return SortPorts(ports, p=> p.LocalDisplayPosition.y);
+        return SortPorts(ports, p=> p.LocalLayoutPosition.y);
     }
     // ----------------------------------------------------------------------
     static iCS_EditorObject[] SortPorts(iCS_EditorObject[] ports, Func<iCS_EditorObject,float> key) {

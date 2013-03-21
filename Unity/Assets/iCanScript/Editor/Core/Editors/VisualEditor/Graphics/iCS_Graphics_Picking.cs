@@ -11,7 +11,7 @@ public partial class iCS_Graphics {
             Rect nodeNamePos= GetNodeNamePosition(node);
             return nodeNamePos.Contains(pick);
         }
-        Rect titleRect= node.GlobalDisplayRect;
+        Rect titleRect= node.AnimatedRect;
         titleRect.height= kNodeTitleHeight;
         return titleRect.Contains(pick);
     }
@@ -51,7 +51,7 @@ public partial class iCS_Graphics {
         return (obj.IsModule || obj.IsStateChart || obj.IsState);
     }
     Rect GetFoldIconPosition(iCS_EditorObject obj) {
-        Rect objPos= obj.GlobalDisplayRect;
+        Rect objPos= obj.AnimatedRect;
         return new Rect(objPos.x+8, objPos.y, foldedIcon.width, foldedIcon.height);
     }
 
@@ -67,7 +67,7 @@ public partial class iCS_Graphics {
         return obj.InstanceId != 0 && obj.IsNode && !obj.IsIconizedOnDisplay;
     }
     Rect GetMinimizeIconPosition(iCS_EditorObject node) {
-        Rect objPos= node.GlobalDisplayRect;
+        Rect objPos= node.AnimatedRect;
         return new Rect(objPos.xMax-2-/*minimizeIcon.width*/16, objPos.y, /*minimizeIcon.width*/16, /*minimizeIcon.height*/16);
     }
 
@@ -101,7 +101,7 @@ public partial class iCS_Graphics {
         return obj.InstanceId != 0 && obj.IsNode && obj.IsIconizedOnDisplay;
     }
     Rect GetMaximizeIconPosition(iCS_EditorObject obj) {
-        return obj.GlobalDisplayRect;
+        return obj.AnimatedRect;
     }
 
     // ======================================================================
@@ -149,7 +149,7 @@ public partial class iCS_Graphics {
 //            Debug.Log("Port: "+port.Name+" is being picked");
             pickInfo.PickedObject= port;
             pickInfo.PickedPart= iCS_PickPartEnum.EditorObject;
-            pickInfo.PickedPartGraphPosition= port.GlobalDisplayRect;
+            pickInfo.PickedPartGraphPosition= port.LayoutRect;
             pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
             return pickInfo;
         }
@@ -231,7 +231,7 @@ public partial class iCS_Graphics {
 //            Debug.Log("Node: "+pickedNode.Name+" is being picked");
             pickInfo.PickedObject= pickedNode;
             pickInfo.PickedPart= iCS_PickPartEnum.EditorObject;
-            pickInfo.PickedPartGraphPosition= pickedNode.GlobalDisplayRect;
+            pickInfo.PickedPartGraphPosition= pickedNode.LayoutRect;
             pickInfo.PickedPartGUIPosition= TranslateAndScale(pickInfo.PickedPartGraphPosition);
             return pickInfo;
         }

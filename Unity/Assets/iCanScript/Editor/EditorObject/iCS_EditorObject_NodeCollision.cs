@@ -16,13 +16,8 @@ public partial class iCS_EditorObject {
 		var childRect= new Rect[children.Length];
 		for(int i= 0; i < children.Length; ++i) {
 			var c= children[i];
-            if(c.IsPositionAnimated) {
-                var localPos= c.LocalAnchorPosition+c.myAnimatedLayoutOffset.TargetValue;
-                childStartPos[i]= GlobalDisplayPosition+localPos;
-            } else {
-    			childStartPos[i]= c.GlobalDisplayPosition;                
-            }
-			childRect[i]    = BuildRect(c.AnchorPosition, c.DisplaySize);
+    		childStartPos[i]= c.AnimatedPosition;                
+			childRect[i]    = BuildRect(c.AnchorPosition, c.LayoutSize);
 		}
         // Resolve collisions.
         ResolveCollisionOnChildrenImp(children, ref childRect);
@@ -35,7 +30,7 @@ public partial class iCS_EditorObject {
 				if(c.IsAnimated) {
 					c.AnimatePosition(targetPos);
 				} else if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
-    				c.GlobalDisplayPosition= targetPos;                    					
+    				c.LayoutPosition= targetPos;                    					
 				} else if(animCtrl == iCS_AnimationControl.Always) {
                 	c.AnimatePosition(targetPos);				    
 				} else {
@@ -49,7 +44,7 @@ public partial class iCS_EditorObject {
 					var distance= (targetPos-startPos).magnitude;
 					bool shortDistance= distance*20f < iCS_PreferencesEditor.AnimationPixelsPerSecond;
 	                if(sameDirection && shortDistance) {
-	    				c.GlobalDisplayPosition= targetPos;                    					
+	    				c.LayoutPosition= targetPos;                    					
                 	} else {
                     	c.AnimatePosition(targetPos);
 					}

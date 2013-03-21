@@ -349,7 +349,7 @@ public partial class iCS_Graphics {
         if(!node.IsVisibleOnDisplay || node.IsIconizedOnDisplay) return;
         
         // Don't display if we are outside the clipping area.
-        Rect position= node.GlobalDisplayRect;
+        Rect position= node.AnimatedRect;
         if(!IsVisible(position)) return;
 
         // Draw node since all draw conditions are valid.
@@ -394,7 +394,7 @@ public partial class iCS_Graphics {
         if(!node.IsIconizedOnDisplay) return;
         
         // Draw minimized node (if visible).
-        Rect displayRect= node.GlobalDisplayRect;
+        Rect displayRect= node.AnimatedRect;
         Rect displayArea= new Rect(displayRect.x-100f, displayRect.y-16f, displayRect.width+200f, displayRect.height+16f);
         if(!IsVisible(displayArea)) return;
 
@@ -722,8 +722,8 @@ public partial class iCS_Graphics {
         if(!(sourceParent.IsVisibleOnDisplay && !port.IsOutStatePort)) return;
         
         // No connection to draw if outside clipping area.
-        var portPos= port.GlobalDisplayPosition;
-        var sourcePos= source.GlobalDisplayPosition;
+        var portPos= port.AnimatedPosition;
+        var sourcePos= source.AnimatedPosition;
         Rect displayArea= new Rect(portPos.x, portPos.y, sourcePos.x-portPos.x, sourcePos.y-portPos.y);
         if(displayArea.width < 0) { displayArea.x= sourcePos.x; displayArea.width= portPos.x-sourcePos.x; }
         if(displayArea.height < 0) { displayArea.y= sourcePos.y; displayArea.height= portPos.y-sourcePos.y; }

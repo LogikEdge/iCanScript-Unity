@@ -29,9 +29,9 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleOnDisplay) return 0f;
             if(IsIconizedOnDisplay) {
-				return IsTransitionModule ? 0f : -0.25f*DisplaySize.y;
+				return IsTransitionModule ? 0f : -0.25f*AnimatedSize.y;
 			}
-            return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-DisplaySize.y);
+            return NodeTitleHeight+0.5f*(iCS_EditorConfig.MinimumPortSeparation-AnimatedSize.y);
         }
     }
     // ----------------------------------------------------------------------
@@ -40,9 +40,9 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleOnDisplay) return 0f;
             if(IsIconizedOnDisplay) {
-				return IsTransitionModule ? 0f : 0.25f*DisplaySize.y;
+				return IsTransitionModule ? 0f : 0.25f*AnimatedSize.y;
 			}
-            return 0.5f*(DisplaySize.y-iCS_EditorConfig.MinimumPortSeparation);
+            return 0.5f*(AnimatedSize.y-iCS_EditorConfig.MinimumPortSeparation);
         }
     }
     // ----------------------------------------------------------------------
@@ -51,9 +51,9 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleOnDisplay) return 0f;
             if(IsIconizedOnDisplay) {
-				return IsTransitionModule ? 0f : -0.25f*DisplaySize.x;
+				return IsTransitionModule ? 0f : -0.25f*AnimatedSize.x;
 			}
-            return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-DisplaySize.x);
+            return 0.5f*(iCS_EditorConfig.MinimumPortSeparation-AnimatedSize.x);
         }
     }
     // ----------------------------------------------------------------------
@@ -62,9 +62,9 @@ public partial class iCS_EditorObject {
         get {
             if(!IsVisibleOnDisplay) return 0f;
             if(IsIconizedOnDisplay) {
-				return IsTransitionModule ? 0f : 0.25f*DisplaySize.x;
+				return IsTransitionModule ? 0f : 0.25f*AnimatedSize.x;
 			}
-            return 0.5f*(DisplaySize.x-iCS_EditorConfig.MinimumPortSeparation);
+            return 0.5f*(AnimatedSize.x-iCS_EditorConfig.MinimumPortSeparation);
         }
     }    
     // ----------------------------------------------------------------------

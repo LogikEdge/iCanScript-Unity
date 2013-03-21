@@ -29,7 +29,7 @@ public partial class iCS_Graphics {
     // Returns the non-scaled x,y with the scaled size.
     Rect GetNodeNamePosition(iCS_EditorObject node) {
         Vector2 size= GetNodeNameSize(node);
-        Rect pos= node.GlobalDisplayRect;
+        Rect pos= node.AnimatedRect;
         float x= 0.5f*(pos.x+pos.xMax-size.x/Scale);
         float y= pos.y;
         if(node.IsIconizedOnDisplay) {

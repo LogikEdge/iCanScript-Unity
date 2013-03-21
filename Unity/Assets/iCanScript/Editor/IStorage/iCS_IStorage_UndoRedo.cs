@@ -33,7 +33,7 @@ public partial class iCS_IStorage {
         undoRedoRunning= true;
         // Keep a copy of the previous display position.
 		Rect emptyRect= new Rect(0,0,0,0);
-        var previousRect= P.map(o=> IsValid(o) ? o.GlobalDisplayRect : emptyRect, EditorObjects);  
+        var previousRect= P.map(o=> IsValid(o) ? o.LayoutRect : emptyRect, EditorObjects);  
         // Rebuild editor data.
         GenerateEditorData();
         // Stamp undo/redo identifier before using IStorage functions.
@@ -52,7 +52,7 @@ public partial class iCS_IStorage {
 						r= iCS_EditorObject.BuildRect(parentPos, Vector2.zero);
                     }                        
                 }
-				obj.GlobalDisplayRect= r;
+				obj.LayoutRect= r;
                 obj.PrepareToAnimateRect();
             }
         );

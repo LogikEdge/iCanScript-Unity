@@ -122,7 +122,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetParentMuxPort(iCS_EditorObject eObj) { return eObj.IsParentMuxPort ? eObj : (eObj.IsChildMuxPort ? eObj.Parent : null); }
     // ----------------------------------------------------------------------
-    public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.GlobalDisplayRect= r; }
+    public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.LayoutRect= r; }
     // ----------------------------------------------------------------------
     public object          GetRuntimeObject(iCS_EditorObject obj) {
         iCS_Behaviour bh= Storage as iCS_Behaviour;
@@ -461,11 +461,11 @@ public partial class iCS_IStorage {
     public iCS_EditorObject CreatePort(string name, int parentId, Type valueType, iCS_ObjectTypeEnum portType) {
         int id= GetNextAvailableId();
         var parent= EditorObjects[parentId];
-        var globalPos= parent.GlobalDisplayPosition;
+        var globalPos= parent.LayoutPosition;
         iCS_EditorObject port= iCS_EditorObject.CreateInstance(id, name, valueType, parentId, portType, this);
         if(port.IsModulePort || port.IsChildMuxPort) 	{ AddDynamicPort(port); }
 		port.UpdatePortEdge();
-		port.GlobalDisplayPosition= globalPos;
+		port.LayoutPosition= globalPos;
         return EditorObjects[id];        
     }
     // ----------------------------------------------------------------------
@@ -488,8 +488,8 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo convDesc) {
         if(convDesc == null) { SetSource(inPort, outPort); return; }
-        var inPos= inPort.GlobalDisplayPosition;
-        var outPos= outPort.GlobalDisplayPosition;
+        var inPos= inPort.LayoutPosition;
+        var outPos= outPort.LayoutPosition;
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
         int grandParentId= inPort.ParentId;
         iCS_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);
