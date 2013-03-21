@@ -29,11 +29,14 @@ public partial class iCS_EditorObject {
 			var startPos= childStartPos[i];
 			var startRect= BuildRect(startPos, size);
 			if(Math3D.IsNotEqual(startPos, targetPos)) {
+				// Update layout position
 				var c= children[i];
+				c.LayoutPosition= targetPos;
+				// Determine if we should animate the displacement.
 				if(c.IsAnimated) {
 					c.Animate(startRect, targetRect);
 				} else if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
-    				c.LayoutPosition= targetPos;                    					
+//    				c.LayoutPosition= targetPos;                    					
 				} else if(animCtrl == iCS_AnimationControl.Always) {
                 	c.Animate(startRect, targetRect);				    
 				} else {
@@ -46,9 +49,7 @@ public partial class iCS_EditorObject {
 	                bool sameDirection= dotProduct > 0.98f*(prevMagnitude*newMagnitude);
 					var distance= (targetPos-startPos).magnitude;
 					bool shortDistance= distance*20f < iCS_PreferencesEditor.AnimationPixelsPerSecond;
-	                if(sameDirection && shortDistance) {
-	    				c.LayoutPosition= targetPos;                    					
-                	} else {
+	                if(!sameDirection || !shortDistance) {
                     	c.Animate(startRect, targetRect);
 					}
 				}
