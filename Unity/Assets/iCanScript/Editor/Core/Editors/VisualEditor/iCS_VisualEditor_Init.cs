@@ -51,7 +51,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Nothing to do if we don't have a Graph to edit...
         UpdateMgr();
 		if(IStorage == null) {
-            myDisplayRoot= null;
+            DisplayRoot= null;
             myBookmark= null;
             DragType= DragTypeEnum.None;
             mySubEditor= null;
@@ -59,7 +59,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
         if(IStorage != myPreviousIStorage) {
             myPreviousIStorage= IStorage;
-            myDisplayRoot= StorageRoot;
+            DisplayRoot= StorageRoot;
             myBookmark= null;
             DragType= DragTypeEnum.None;
             mySubEditor= null;

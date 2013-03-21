@@ -32,44 +32,28 @@ public partial class iCS_IStorage {
         }
         undoRedoRunning= true;
         // Keep a copy of the previous display position.
-        var displayRects= P.map(
-            o=> {
-                if(IsValid(o)) {
-                    return new P.Tuple<bool,Rect>(true, o.GlobalDisplayRect);
-//                    return o.CreateMemento();
-                }
-                return new P.Tuple<bool,Rect>(false, new Rect(0,0,0,0));
-//                return null;
-            },
-            EditorObjects
-        );  
+        var objectMementos= P.map(o=> IsValid(o) ? o.CreateMemento() : null, EditorObjects);  
         // Rebuild editor data.
         GenerateEditorData();
         // Stamp undo/redo identifier before using IStorage functions.
         Storage.UndoRedoId= ++UndoRedoId;
         // Put back the previous display position
-        Vector2 rootPos= iCS_EditorObject.PositionFrom(displayRects[0].Item2);
+        var rootMemento= objectMementos[0];
         ForEachRecursiveDepthLast(EditorObjects[0],
             obj=> {
-                // Default to root center.
-                var displayRect= new Rect(rootPos.x, rootPos.y, 0, 0);                        
+                iCS_EditorObject.PositionMemento objMemento= null;                        
                 // only process valid objects.
-                if(obj.InstanceId < displayRects.Count) {
-                    if(displayRects[obj.InstanceId].Item1) {
-                        displayRect= displayRects[obj.InstanceId].Item2;                        
-                    } else {
-                        if(obj.IsParentValid && obj.ParentId < displayRects.Count && displayRects[obj.ParentId].Item1) {
-                            var parentPos= iCS_EditorObject.PositionFrom(displayRects[obj.ParentId].Item2);
-                            displayRect= new Rect(parentPos.x, parentPos.y, 0, 0);
-                        }                        
-                    }
-                }
-                if(obj.IsPort) {
-                    obj.GlobalDisplayPosition= iCS_EditorObject.PositionFrom(displayRect);                    
+                if(obj.InstanceId < objectMementos.Count && objectMementos[obj.InstanceId] != null) {
+                    objMemento= objectMementos[obj.InstanceId];                        
                 } else {
-                    obj.GlobalDisplayRect= displayRect;
-                    obj.PrepareToAnimateRect();                    
+                    if(obj.IsParentValid && obj.ParentId < objectMementos.Count && objectMementos[obj.ParentId] != null) {
+                        var parentMemento= objectMementos[obj.ParentId];
+                        objMemento= new iCS_EditorObject.PositionMemento();
+                        objMemento.GlobalPosition= parentMemento.GlobalPosition;
+                    }                        
                 }
+                obj.SetMemento(objMemento ?? rootMemento);
+                obj.PrepareToAnimateRect();
             }
         );
         // Rebuild layout

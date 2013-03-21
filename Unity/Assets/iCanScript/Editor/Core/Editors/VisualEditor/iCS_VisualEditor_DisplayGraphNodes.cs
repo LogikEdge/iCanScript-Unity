@@ -64,9 +64,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     
 	// ----------------------------------------------------------------------
     void DisplayGraphNodes() {
-        var floatingNormalNode= DisplayNonFloatingNormalNode(myDisplayRoot);
-        DisplayConnections(myDisplayRoot);
-        DisplayPortsAndMinimizedNodes(myDisplayRoot);
+        var floatingNormalNode= DisplayNonFloatingNormalNode(DisplayRoot);
+        DisplayConnections(DisplayRoot);
+        DisplayPortsAndMinimizedNodes(DisplayRoot);
         // Display floating nodes.
         if(floatingNormalNode != null) {
             DisplayFloatingNormalNode(floatingNormalNode);            

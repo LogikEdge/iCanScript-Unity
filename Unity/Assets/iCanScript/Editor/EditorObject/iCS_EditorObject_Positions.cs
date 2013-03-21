@@ -146,9 +146,6 @@ public partial class iCS_EditorObject {
 		    if(IsPort) {
 		        return iCS_EditorConfig.PortSize;
 		    }
-//		    if(AnimatedGlobalRect.IsActive) {
-//		        return SizeFrom(AnimatedGlobalRect.CurrentValue);
-//		    }
 			return AnimatedSize.CurrentValue;
 		}
 		set {
@@ -160,7 +157,8 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
  	public Rect GlobalDisplayRect {
  		get {
-            return BuildRect(GlobalDisplayPosition, DisplaySize);
+            var r= BuildRect(GlobalDisplayPosition, DisplaySize);
+            return r;
  		}
  		set {
  		    GlobalDisplayPosition= PositionFrom(value);

@@ -81,7 +81,9 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     void GenerateEditorData() {
 		// Rebuild Editor Objects from the Engine Objects.
-		myEditorObjects= new List<iCS_EditorObject>();
+		if(myEditorObjects == null) {
+		    myEditorObjects= new List<iCS_EditorObject>();
+	    }
 		iCS_EditorObject.RebuildFromEngineObjects(this);
 		
         // Re-initialize internal values.

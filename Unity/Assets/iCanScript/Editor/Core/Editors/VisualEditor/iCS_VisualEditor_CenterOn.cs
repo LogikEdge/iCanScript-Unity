@@ -5,19 +5,19 @@ using System.Collections;
 public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     public void CenterOnRoot() {
-        CenterOn(myDisplayRoot);            
+        CenterOn(DisplayRoot);            
     }
 	// ----------------------------------------------------------------------
     public void CenterAndScaleOnRoot() {
-        CenterAndScaleOn(myDisplayRoot);
+        CenterAndScaleOn(DisplayRoot);
     }
 	// ----------------------------------------------------------------------
     public void CenterOnSelected() {
-        CenterOn(SelectedObject ?? myDisplayRoot);
+        CenterOn(SelectedObject ?? DisplayRoot);
     }
 	// ----------------------------------------------------------------------
     public void CenterAndScaleOnSelected() {
-        CenterAndScaleOn(SelectedObject ?? myDisplayRoot);
+        CenterAndScaleOn(SelectedObject ?? DisplayRoot);
     }
 	// ----------------------------------------------------------------------
     public void CenterOn(iCS_EditorObject obj) {

@@ -19,9 +19,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    iCS_EditorObject    myDisplayRoot= null;
-    iCS_DynamicMenu     myDynamicMenu= null;
-    iCS_Graphics        myGraphics   = null;
+    int             myDisplayRootId= 0;
+    iCS_DynamicMenu myDynamicMenu  = null;
+    iCS_Graphics    myGraphics     = null;
     
     // ----------------------------------------------------------------------
     int   myUpdateCounter    = 0;
@@ -55,7 +55,18 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             return IStorage.EditorObjects[0];
         }
     }
-
+    iCS_EditorObject DisplayRoot {
+        get {
+            if(myDisplayRootId < 0 || IStorage == null || Prelude.length(IStorage.EditorObjects) <= myDisplayRootId) {
+                return null;
+            }
+            return IStorage.EditorObjects[myDisplayRootId];
+        }
+        set {
+            myDisplayRootId= value == null ? -1 : value.InstanceId;
+        }
+    }
+    
     // ======================================================================
     // Force a repaint on selection change.
 	// ----------------------------------------------------------------------
@@ -80,8 +91,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         // Determine repaint rate.
         if(IStorage != null) {
             // Update DisplayRoot
-            if(myDisplayRoot == null && IStorage.IsValid(0)) {
-                myDisplayRoot= IStorage[0];
+            if(DisplayRoot == null && IStorage.IsValid(0)) {
+                DisplayRoot= IStorage[0];
             }            
             
             // Repaint visual editor if it has changed
