@@ -165,7 +165,54 @@ public partial class iCS_EditorObject {
  		    DisplaySize= SizeFrom(value);
  		}
  	}
-    
+
+    // ----------------------------------------------------------------------
+	public Vector2 LayoutPosition {
+		get {
+			return PositionFrom(LayoutRect);
+		}
+		set {
+			LayoutRect= BuildRect(value, LayoutSize);
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Vector2 LayoutSize {
+		get {
+			return SizeFrom(LayoutRect);
+		}
+		set {
+			LayoutRect= BuildRect(LayoutPosition, value);
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Rect LayoutRect {
+		get {
+			return GlobalDisplayRect;
+		}
+		set {
+			GlobalDisplayRect= value;
+		}
+	}
+	
+    // ----------------------------------------------------------------------
+	public Vector2 AnimatedPosition {
+		get {
+			return PositionFrom(AnimatedRect);
+		}
+	}
+//    // ----------------------------------------------------------------------
+//	public Vector2 AnimatedSize {
+//		get {
+//			return SizeFrom(AnimatedRect);
+//		}
+//	}
+    // ----------------------------------------------------------------------
+    public Rect AnimatedRect {
+		get {
+			return LayoutRect;
+		}
+	}
+	
 	// ======================================================================
     // High-order functions
     // ----------------------------------------------------------------------
