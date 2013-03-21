@@ -32,27 +32,27 @@ public partial class iCS_IStorage {
         }
         undoRedoRunning= true;
         // Keep a copy of the previous display position.
-        var objectMementos= P.map(o=> IsValid(o) ? o.CreateMemento() : null, EditorObjects);  
+		Rect emptyRect= new Rect(0,0,0,0);
+        var previousRect= P.map(o=> IsValid(o) ? o.GlobalDisplayRect : emptyRect, EditorObjects);  
         // Rebuild editor data.
         GenerateEditorData();
         // Stamp undo/redo identifier before using IStorage functions.
         Storage.UndoRedoId= ++UndoRedoId;
         // Put back the previous display position
-        var rootMemento= objectMementos[0];
+        var rootRect= previousRect[0];
         ForEachRecursiveDepthLast(EditorObjects[0],
             obj=> {
-                iCS_EditorObject.PositionMemento objMemento= null;                        
+                var r= rootRect;                        
                 // only process valid objects.
-                if(obj.InstanceId < objectMementos.Count && objectMementos[obj.InstanceId] != null) {
-                    objMemento= objectMementos[obj.InstanceId];                        
+                if(obj.InstanceId < previousRect.Count && Math3D.Area(previousRect[obj.InstanceId]) > 0.1f) {
+                    r= previousRect[obj.InstanceId];                        
                 } else {
-                    if(obj.IsParentValid && obj.ParentId < objectMementos.Count && objectMementos[obj.ParentId] != null) {
-                        var parentMemento= objectMementos[obj.ParentId];
-                        objMemento= new iCS_EditorObject.PositionMemento();
-                        objMemento.GlobalPosition= parentMemento.GlobalPosition;
+                    if(obj.IsParentValid && obj.ParentId < previousRect.Count && Math3D.Area(previousRect[obj.ParentId]) > 0.1f) {
+                        var parentPos= iCS_EditorObject.PositionFrom(previousRect[obj.ParentId]);
+						r= new Rect(parentPos.x, parentPos.y, 0, 0);
                     }                        
                 }
-                obj.SetMemento(objMemento ?? rootMemento);
+				obj.GlobalDisplayRect= r;
                 obj.PrepareToAnimateRect();
             }
         );
