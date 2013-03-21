@@ -2,38 +2,7 @@ using UnityEngine;
 using System.Collections;
 using P=Prelude;
 
-public partial class iCS_EditorObject {
-    // ======================================================================
-    // Types
-    // ----------------------------------------------------------------------
-    public class PositionMemento {
-        public Vector2 AnchorPosition;
-        public Vector2 LayoutOffset;
-        public Vector2 Size;
-        public Vector2 GlobalPosition;
-        public Rect    GlobalRect
-        { get { return iCS_EditorObject.BuildRect(GlobalPosition, Size); }}
-        public Vector2 LocalPosition
-        { get { return AnchorPosition+LayoutOffset; }}
-    }
-    
-    // ======================================================================
-    // Memento functionality
-    // ----------------------------------------------------------------------
-    public PositionMemento CreateMemento() {
-        var memento= new PositionMemento();
-        memento.AnchorPosition= LocalAnchorPosition;
-        memento.LayoutOffset= LocalLayoutOffset;
-        memento.Size= DisplaySize;
-        memento.GlobalPosition= GlobalDisplayPosition;
-        return memento;
-    }
-    public void SetMemento(PositionMemento memento) {
-        LocalAnchorPosition= memento.AnchorPosition;
-        LocalLayoutOffset  = memento.LayoutOffset;
-        DisplaySize        = memento.Size;
-    }
-    
+public partial class iCS_EditorObject {   
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
     // ======================================================================
