@@ -17,7 +17,7 @@ public partial class iCS_EditorObject {
 		for(int i= 0; i < children.Length; ++i) {
 			var c= children[i];
             if(c.IsPositionAnimated) {
-                var localPos= c.LocalAnchorPosition+c.AnimatedLayoutOffset.TargetValue;
+                var localPos= c.LocalAnchorPosition+c.myAnimatedLayoutOffset.TargetValue;
                 childStartPos[i]= GlobalDisplayPosition+localPos;
             } else {
     			childStartPos[i]= c.GlobalDisplayPosition;                

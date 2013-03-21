@@ -85,7 +85,7 @@ public partial class iCS_EditorObject {
     // Offset from the anchor position.  This attribute is animated.
 	public Vector2 LocalOffset {
 		get {
-			return AnimatedLayoutOffset.CurrentValue;
+			return myAnimatedLayoutOffset.CurrentValue;
 		}
 		set {
             // Update parent port for nested ports.
@@ -96,10 +96,10 @@ public partial class iCS_EditorObject {
                     }
                     return;
                 }
-                AnimatedLayoutOffset.Reset(value);
-                ForEachChildPort(p=> p.AnimatedLayoutOffset.Reset(value));                
+                myAnimatedLayoutOffset.Reset(value);
+                ForEachChildPort(p=> p.myAnimatedLayoutOffset.Reset(value));                
             }
-    		AnimatedLayoutOffset.Reset(value);                                
+    		myAnimatedLayoutOffset.Reset(value);                                
 		}
 	}
 
@@ -146,11 +146,11 @@ public partial class iCS_EditorObject {
 		    if(IsPort) {
 		        return iCS_EditorConfig.PortSize;
 		    }
-			return AnimatedSize.CurrentValue;
+			return myAnimatedSize.CurrentValue;
 		}
 		set {
 		    if(IsPort) return;
-    		AnimatedSize.Reset(value);
+    		myAnimatedSize.Reset(value);
             LayoutPorts();
 		}
 	}
@@ -209,12 +209,12 @@ public partial class iCS_EditorObject {
 			return AnimatedPosition-parent.AnimatedPosition;
 		}
 	}
-//    // ----------------------------------------------------------------------
-//	public Vector2 AnimatedSize {
-//		get {
-//			return SizeFrom(AnimatedRect);
-//		}
-//	}
+    // ----------------------------------------------------------------------
+	public Vector2 AnimatedSize {
+		get {
+			return SizeFrom(AnimatedRect);
+		}
+	}
     // ----------------------------------------------------------------------
     public Rect AnimatedRect {
 		get {

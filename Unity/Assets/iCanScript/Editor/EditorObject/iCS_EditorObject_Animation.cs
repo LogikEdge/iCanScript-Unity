@@ -8,11 +8,11 @@ public partial class iCS_EditorObject {
 	// Fields
     // ----------------------------------------------------------------------
 	private bool IsAlphaAnimated= false;
-    private P.Animate<Vector2> AnimatedLayoutOffset=
+    private P.Animate<Vector2> myAnimatedLayoutOffset=
         new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-	private P.Animate<Vector2> AnimatedSize=
+	private P.Animate<Vector2> myAnimatedSize=
 		new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-//	private P.Animate<Rect> AnimatedGlobalRect=
+//	private P.Animate<Rect> myAnimatedRect=
 //		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     private Vector2 PreviousAnchor= Vector2.zero;
     
@@ -21,12 +21,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Returns true if the display size is currently being animated.
     public bool IsSizeAnimated {
-        get { return AnimatedSize.IsActive; }
+        get { return myAnimatedSize.IsActive; }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display position is currently being animated.
     public bool IsPositionAnimated {
-        get { return AnimatedLayoutOffset.IsActive; }
+        get { return myAnimatedLayoutOffset.IsActive; }
     }
     // ----------------------------------------------------------------------
     // Returns true if the display size or position are being animated.
@@ -38,30 +38,30 @@ public partial class iCS_EditorObject {
     // Display Size Animation
     // ----------------------------------------------------------------------
 	public void PrepareToAnimateSize() {
-		AnimatedSize.StartValue= AnimatedSize.CurrentValue;
+		myAnimatedSize.StartValue= myAnimatedSize.CurrentValue;
 		if(IsSizeAnimated) {
-			AnimatedSize.Start(AnimatedSize.RemainingTime);
+			myAnimatedSize.Start(myAnimatedSize.RemainingTime);
 		}		
 	}
     // ----------------------------------------------------------------------
 	public void AnimateSize(P.TimeRatio timeRatio) {
-		AnimatedSize.Start(timeRatio);
+		myAnimatedSize.Start(timeRatio);
 	}
     // ----------------------------------------------------------------------
 	void AnimateSize(Vector2 targetSize) {
-        var startSize= AnimatedSize.CurrentValue;
+        var startSize= myAnimatedSize.CurrentValue;
 		var timeRatio= BuildTimeRatioFromSize(startSize, targetSize); 
 		AnimateSize(targetSize, timeRatio);
 	}
     // ----------------------------------------------------------------------
 	void AnimateSize(Vector2 targetSize, P.TimeRatio timeRatio) {
-        AnimatedSize.StartValue= AnimatedSize.CurrentValue;
-		AnimatedSize.TargetValue= targetSize;
-		AnimatedSize.Start(timeRatio);
+        myAnimatedSize.StartValue= myAnimatedSize.CurrentValue;
+		myAnimatedSize.TargetValue= targetSize;
+		myAnimatedSize.Start(timeRatio);
 	}
     // ----------------------------------------------------------------------
     void StopSizeAnimation() {
-        AnimatedSize.Reset(AnimatedSize.TargetValue);
+        myAnimatedSize.Reset(myAnimatedSize.TargetValue);
     }
     
     // ======================================================================
@@ -69,34 +69,34 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	void PrepareToAnimateLayoutOffset() {
         PreviousAnchor= LocalAnchorPosition;
-		AnimatedLayoutOffset.StartValue= AnimatedLayoutOffset.CurrentValue;
+		myAnimatedLayoutOffset.StartValue= myAnimatedLayoutOffset.CurrentValue;
 		if(IsPositionAnimated) {
-			AnimatedLayoutOffset.Start(AnimatedLayoutOffset.RemainingTime);
+			myAnimatedLayoutOffset.Start(myAnimatedLayoutOffset.RemainingTime);
 		} 
 	}
     // ----------------------------------------------------------------------
 	void AnimateLayoutOffset(P.TimeRatio timeRatio) {
         if(Math3D.IsNotEqual(PreviousAnchor, LocalAnchorPosition)) {
             var offset= LocalAnchorPosition-PreviousAnchor;
-            AnimatedLayoutOffset.StartValue-= offset;
+            myAnimatedLayoutOffset.StartValue-= offset;
         }
-		AnimatedLayoutOffset.Start(timeRatio);
+		myAnimatedLayoutOffset.Start(timeRatio);
 	}
     // ----------------------------------------------------------------------
     void AnimateLayoutOffset(Vector2 targetLayoutOffset) {
-        var startLayoutOffset= AnimatedLayoutOffset.CurrentValue;
+        var startLayoutOffset= myAnimatedLayoutOffset.CurrentValue;
 		var timeRatio= BuildTimeRatioFromSize(startLayoutOffset, targetLayoutOffset);         
         AnimateLayoutOffset(targetLayoutOffset, timeRatio);
     }
     // ----------------------------------------------------------------------
     void AnimateLayoutOffset(Vector2 targetLayoutOffset, P.TimeRatio timeRatio) {
-        AnimatedLayoutOffset.StartValue= AnimatedLayoutOffset.CurrentValue;
-		AnimatedLayoutOffset.TargetValue= targetLayoutOffset;
-		AnimatedLayoutOffset.Start(timeRatio);        
+        myAnimatedLayoutOffset.StartValue= myAnimatedLayoutOffset.CurrentValue;
+		myAnimatedLayoutOffset.TargetValue= targetLayoutOffset;
+		myAnimatedLayoutOffset.Start(timeRatio);        
     }
     // ----------------------------------------------------------------------
     void StopLayoutOffsetAnimation() {
-        AnimatedLayoutOffset.Reset(AnimatedLayoutOffset.TargetValue);
+        myAnimatedLayoutOffset.Reset(myAnimatedLayoutOffset.TargetValue);
     }
     
     // ======================================================================
@@ -176,7 +176,7 @@ public partial class iCS_EditorObject {
         var distance= Vector2.Distance(p1,p2);
 	    var time= AnimationTimeFromDistance(distance);
 		if(IsPositionAnimated) {
-			var remainingTime= AnimatedLayoutOffset.RemainingTime;
+			var remainingTime= myAnimatedLayoutOffset.RemainingTime;
 			return Mathf.Max(remainingTime, time);
 		}
         var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
@@ -187,7 +187,7 @@ public partial class iCS_EditorObject {
         var distance= Vector2.Distance(s1,s2);
 	    var time= AnimationTimeFromDistance(distance);
 		if(IsSizeAnimated) {
-			var remainingTime= AnimatedSize.RemainingTime;
+			var remainingTime= myAnimatedSize.RemainingTime;
 			return Mathf.Max(remainingTime, time);			
 		}
         var minAnimationTime= iCS_PreferencesEditor.MinAnimationTime;
@@ -234,15 +234,15 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // IMPROVE: Should avoid performing the layout on the parents multiple times.
 	public void UpdateAnimation() {
-        if(AnimatedLayoutOffset.IsActive) {
-            var prevLayoutOffset= AnimatedLayoutOffset.CurrentValue;
-            if(AnimatedLayoutOffset.IsElapsed) {
-                AnimatedLayoutOffset.Reset(AnimatedLayoutOffset.TargetValue);
+        if(myAnimatedLayoutOffset.IsActive) {
+            var prevLayoutOffset= myAnimatedLayoutOffset.CurrentValue;
+            if(myAnimatedLayoutOffset.IsElapsed) {
+                myAnimatedLayoutOffset.Reset(myAnimatedLayoutOffset.TargetValue);
                 IsFloating= false;
             } else {
-                AnimatedLayoutOffset.Update();
+                myAnimatedLayoutOffset.Update();
             }
-            if(!IsFloating && Math3D.IsNotEqual(prevLayoutOffset, AnimatedLayoutOffset.CurrentValue)) {
+            if(!IsFloating && Math3D.IsNotEqual(prevLayoutOffset, myAnimatedLayoutOffset.CurrentValue)) {
 				var parent= ParentNode;
 				if(parent != null && !parent.IsAnimated) {
 	                LayoutParentNodesUntilTop();					
@@ -265,15 +265,15 @@ public partial class iCS_EditorObject {
 //				}
 //			}
 //		}
-		if(AnimatedSize.IsActive) {
-            var prevSize= AnimatedSize.CurrentValue;
-			if(AnimatedSize.IsElapsed) {
-				AnimatedSize.Reset(AnimatedSize.TargetValue);
+		if(myAnimatedSize.IsActive) {
+            var prevSize= myAnimatedSize.CurrentValue;
+			if(myAnimatedSize.IsElapsed) {
+				myAnimatedSize.Reset(myAnimatedSize.TargetValue);
                 IsFloating= false;
 			} else {
-				AnimatedSize.Update();
+				myAnimatedSize.Update();
 			}
-			if(!IsFloating && Math3D.IsNotEqual(prevSize, AnimatedSize.CurrentValue)) {
+			if(!IsFloating && Math3D.IsNotEqual(prevSize, myAnimatedSize.CurrentValue)) {
                 LayoutPorts();
 				var parent= ParentNode;
 				if(parent != null && !parent.IsAnimated) {
@@ -297,9 +297,9 @@ public partial class iCS_EditorObject {
                 return 1f;
             }
             if(!IsVisibleInLayout) {
-                return 1f-AnimatedSize.Ratio;
+                return 1f-myAnimatedSize.Ratio;
             }
-            return AnimatedSize.Ratio;
+            return myAnimatedSize.Ratio;
         }
     }
     

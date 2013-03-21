@@ -165,16 +165,16 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void PrepareToUnhide() {
-		AnimatedLayoutOffset.StartValue= -LocalAnchorPosition;
-		AnimatedSize.StartValue= Vector2.zero;
+		myAnimatedLayoutOffset.StartValue= -LocalAnchorPosition;
+		myAnimatedSize.StartValue= Vector2.zero;
 		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
 			ForEachChildNode(c=> c.PrepareToUnhide());
 		}		
 	}
     // ----------------------------------------------------------------------
 	void Unhide(P.TimeRatio timeRatio) {
-		AnimatedSize.Start(timeRatio);
-		AnimatedLayoutOffset.Start(timeRatio);
+		myAnimatedSize.Start(timeRatio);
+		myAnimatedLayoutOffset.Start(timeRatio);
 		IsAlphaAnimated= true;
 		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
 			ForEachChildNode(c=> c.Unhide(timeRatio));
