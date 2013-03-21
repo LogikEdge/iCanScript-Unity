@@ -53,7 +53,7 @@ public partial class iCS_IStorage {
                     }                        
                 }
 				obj.LayoutRect= r;
-                obj.PrepareToAnimateRect();
+                obj.AnimationStart= r;
             }
         );
         // Rebuild layout
@@ -63,7 +63,7 @@ public partial class iCS_IStorage {
         ForEach(
             obj=> {
                 if(obj.IsNode) {
-                    obj.AnimateRect(timeRatio);
+                    obj.Animate(obj.LayoutRect, timeRatio);
                 }
             }
         );

@@ -179,24 +179,21 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // We assume that our parent has just unfolded.
     public void Unhide() {
+		var start= BuildRect(ParentNode.LayoutPosition, Vector2.zero);
         // Unhide iconized node
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) {
-            LocalOffset= Vector2.zero;
-            LayoutSize= Vector2.zero;
-            AnimateSize(IconizedSize());
+			Animate(start, LayoutRect);
             return;
         }
         // Unhide folded node
         if(IsFunction || DisplayOption == iCS_DisplayOptionEnum.Folded) {
-            LocalOffset= Vector2.zero;
-            LayoutSize= Vector2.zero;
-            AnimateRect(FoldedNodeRect());
+			Animate(start, LayoutRect);
             return;
         }
         // Unhide unfolded node
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
             ForEachChildNode(c=> c.Unhide());
-            AnimateRect(UnfoldedNodeRect());
+			Animate(start, LayoutRect);
         }
     }
     // ----------------------------------------------------------------------
