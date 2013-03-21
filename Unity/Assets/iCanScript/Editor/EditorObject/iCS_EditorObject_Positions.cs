@@ -128,7 +128,7 @@ public partial class iCS_EditorObject {
 		    }
 			// Special case for iconized transition module ports.
 			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
-				return parent.LayoutPosition;
+				return parent.AnimatedPosition;
 			}
 			if(IsPort) {
 				return parent.AnimatedPosition+LocalAnchorPosition+LocalOffset;
