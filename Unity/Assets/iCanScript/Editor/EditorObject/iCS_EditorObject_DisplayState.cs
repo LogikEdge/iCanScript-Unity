@@ -207,7 +207,7 @@ public partial class iCS_EditorObject {
     public void AnimateParents(P.TimeRatio timeRatio) {
         var parent= ParentNode;
         if(parent == null) return;
-        parent.Animate(LayoutRect, timeRatio);
+        parent.Animate(parent.LayoutRect, timeRatio);
         parent.AnimateParents(timeRatio);        
     }
     
