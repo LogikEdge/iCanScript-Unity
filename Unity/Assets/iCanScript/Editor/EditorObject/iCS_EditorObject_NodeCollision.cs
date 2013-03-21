@@ -23,16 +23,19 @@ public partial class iCS_EditorObject {
         ResolveCollisionOnChildrenImp(children, ref childRect);
 		// Animate all nodes affected by collisions.
 		for(int i= 0; i < children.Length; ++i) {
+			var targetRect= childRect[i];
+			var size= SizeFrom(targetRect);
+			var targetPos= PositionFrom(targetRect);
 			var startPos= childStartPos[i];
-			var targetPos= Math3D.Middle(childRect[i]);
+			var startRect= BuildRect(startPos, size);
 			if(Math3D.IsNotEqual(startPos, targetPos)) {
 				var c= children[i];
 				if(c.IsAnimated) {
-					c.AnimatePosition(targetPos);
+					c.Animate(startRect, targetRect);
 				} else if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
     				c.LayoutPosition= targetPos;                    					
 				} else if(animCtrl == iCS_AnimationControl.Always) {
-                	c.AnimatePosition(targetPos);				    
+                	c.Animate(startRect, targetRect);				    
 				} else {
 	                var anchor= AnchorPosition;
 	                var prevOffset= startPos-anchor;
@@ -46,7 +49,7 @@ public partial class iCS_EditorObject {
 	                if(sameDirection && shortDistance) {
 	    				c.LayoutPosition= targetPos;                    					
                 	} else {
-                    	c.AnimatePosition(targetPos);
+                    	c.Animate(startRect, targetRect);
 					}
 				}
 			}
