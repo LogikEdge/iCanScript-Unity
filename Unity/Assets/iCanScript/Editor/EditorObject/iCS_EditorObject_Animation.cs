@@ -12,8 +12,8 @@ public partial class iCS_EditorObject {
         new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
 	private P.Animate<Vector2> myAnimatedSize=
 		new P.Animate<Vector2>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
-//	private P.Animate<Rect> myAnimatedRect=
-//		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
+	private P.Animate<Rect> myAnimatedRect=
+		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     private Vector2 PreviousAnchor= Vector2.zero;
     
     // ======================================================================
@@ -31,7 +31,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Returns true if the display size or position are being animated.
     public bool IsAnimated {
-        get { return IsSizeAnimated || IsPositionAnimated; }
+        get { return IsSizeAnimated || IsPositionAnimated || myAnimatedRect.IsActive; }
     }
 
     // ======================================================================
@@ -234,6 +234,22 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // IMPROVE: Should avoid performing the layout on the parents multiple times.
 	public void UpdateAnimation() {
+		if(myAnimatedRect.IsActive) {
+            var prevRect= myAnimatedRect.CurrentValue;
+			if(myAnimatedRect.IsElapsed) {
+				myAnimatedRect.Reset(myAnimatedRect.TargetValue);
+                IsFloating= false;
+			} else {
+				myAnimatedRect.Update();
+			}
+			if(!IsFloating && Math3D.IsNotEqual(prevRect, myAnimatedRect.CurrentValue)) {
+                LayoutPorts();
+				var parent= ParentNode;
+				if(parent != null && !parent.IsAnimated) {
+	                LayoutParentNodesUntilTop();					
+				}
+			}
+		}
         if(myAnimatedLayoutOffset.IsActive) {
             var prevLayoutOffset= myAnimatedLayoutOffset.CurrentValue;
             if(myAnimatedLayoutOffset.IsElapsed) {
@@ -249,22 +265,6 @@ public partial class iCS_EditorObject {
 				}
             }
         }
-//		if(AnimatedGlobalRect.IsActive) {
-//            var prevRect= AnimatedGlobalRect.CurrentValue;
-//			if(AnimatedGlobalRect.IsElapsed) {
-//				AnimatedGlobalRect.Reset(AnimatedGlobalRect.TargetValue);
-//                IsFloating= false;
-//			} else {
-//				AnimatedGlobalRect.Update();
-//			}
-//			if(!IsFloating && Math3D.IsNotEqual(prevRect, AnimatedGlobalRect.CurrentValue)) {
-//                LayoutPorts();
-//				var parent= ParentNode;
-//				if(parent != null && !parent.IsAnimated) {
-//	                LayoutParentNodesUntilTop();					
-//				}
-//			}
-//		}
 		if(myAnimatedSize.IsActive) {
             var prevSize= myAnimatedSize.CurrentValue;
 			if(myAnimatedSize.IsElapsed) {
