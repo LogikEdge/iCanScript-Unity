@@ -9,7 +9,7 @@ public partial class iCS_IStorage {
         Vector2 fromStatePortPos= fromStatePort.GlobalDisplayPosition;
         // Create toStatePort
         iCS_EditorObject toStatePort= CreatePort("", toState.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-        toStatePort.SetGlobalAnchorAndLayoutPosition(toStatePortPos);
+        toStatePort.SetAnchorAndLayoutPosition(toStatePortPos);
         SetSource(toStatePort, fromStatePort);
         toStatePort.UpdatePortEdge();        
         // Update fromStatePort position.
@@ -290,7 +290,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void LayoutTransitionModule(iCS_EditorObject module) {
         GetTransitionName(module);
-        module.SetGlobalAnchorAndLayoutRect(ProposeTransitionModulePosition(module));
+        module.SetAnchorAndLayoutRect(ProposeTransitionModulePosition(module));
     }
     // ----------------------------------------------------------------------
     public Vector2 GetTransitionModuleVector(iCS_EditorObject module) {

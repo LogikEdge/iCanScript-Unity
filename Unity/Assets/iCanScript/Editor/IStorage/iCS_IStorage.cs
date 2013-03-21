@@ -267,7 +267,7 @@ public partial class iCS_IStorage {
         int id= destStorage.GetNextAvailableId();
         xlat.Add(new Prelude.Tuple<int,int>(srcObj.InstanceId, id));
         var newObj= destStorage[id]= iCS_EditorObject.Clone(id, srcObj, destParent, destStorage);
-        newObj.SetGlobalAnchorAndLayoutPosition(globalPos);
+        newObj.SetAnchorAndLayoutPosition(globalPos);
         newObj.IconGUID= srcObj.IconGUID;
         srcObj.ForEachChild(
             child=> Copy(child, srcStorage, newObj, destStorage, globalPos+child.LocalAnchorPosition, xlat)
@@ -310,7 +310,7 @@ public partial class iCS_IStorage {
         }
         // Create new EditorObject
         iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, this);
-        this[0].SetGlobalAnchorAndLayoutPosition(VisualEditorCenter());
+        this[0].SetAnchorAndLayoutPosition(VisualEditorCenter());
 		this[0].IsNameEditable= false;
         return this[0];
     }
@@ -321,7 +321,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, runtimeType, parentId, objectType, this);
-        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
+        instance.SetAnchorAndLayoutPosition(globalPos);
 	    instance.IconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.ModuleIcon);			
         if(instance.IsClassModule) ClassModuleCompleteCreation(instance);
         // Perform initial node layout.
@@ -334,7 +334,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_StateChart), parentId, iCS_ObjectTypeEnum.StateChart, this);
-        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
+        instance.SetAnchorAndLayoutPosition(globalPos);
         // Automatically create entry state.
         CreateState(id, globalPos, "EntryState");
         // Perform initial node layout.
@@ -352,7 +352,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, name, typeof(iCS_State), parentId, iCS_ObjectTypeEnum.State, this);
-        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
+        instance.SetAnchorAndLayoutPosition(globalPos);
         // Set first state as the default entry state.
         instance.IsEntryState= !UntilMatchingChild(parent,
             child=> {
@@ -387,7 +387,7 @@ public partial class iCS_IStorage {
         }        
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
+        instance.SetAnchorAndLayoutPosition(globalPos);
         instance.IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
@@ -424,7 +424,7 @@ public partial class iCS_IStorage {
         }        
         // Create new EditorObject
         var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
-        instance.SetGlobalAnchorAndLayoutPosition(globalPos);
+        instance.SetAnchorAndLayoutPosition(globalPos);
         instance.IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;

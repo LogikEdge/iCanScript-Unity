@@ -116,8 +116,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             DragType= DragTypeEnum.TransitionCreation;
             iCS_EditorObject outTransition= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.OutStatePort);
             iCS_EditorObject inTransition= IStorage.CreatePort("[false]", node.InstanceId, typeof(void), iCS_ObjectTypeEnum.InStatePort);
-            outTransition.SetGlobalAnchorAndLayoutPosition(pos);
-            inTransition.SetGlobalAnchorAndLayoutPosition(pos);
+            outTransition.SetAnchorAndLayoutPosition(pos);
+            inTransition.SetAnchorAndLayoutPosition(pos);
             inTransition.SourceId= outTransition.InstanceId;
             DragFixPort= outTransition;
             DragObject= inTransition;
@@ -210,7 +210,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 							newPosition= new Vector2(fixPortParentRect.xMax, center.y);
 							break;
 						}
-						DragFixPort.SetGlobalAnchorAndLayoutPosition(newPosition);
+						DragFixPort.SetAnchorAndLayoutPosition(newPosition);
 						fixPortParentNode.LayoutPorts();
 					}
 				}
@@ -292,14 +292,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(EditorUtility.DisplayDialog("Deleting Transition", "Are you sure you want to remove the dragged transition.", "Delete", "Cancel")) {
                                 IStorage.DestroyInstance(DragObject);
                             } else {
-                                DragObject.SetGlobalAnchorAndLayoutPosition(DragStartDisplayPosition);
+                                DragObject.SetAnchorAndLayoutPosition(DragStartDisplayPosition);
                             }
                             break;
                         }
                         // Relocate transition to the new state.
                         var dragObjectPosition= DragObject.GlobalDisplayPosition;
                         DragObject.Parent= newState;
-                        DragObject.SetGlobalAnchorAndLayoutPosition(dragObjectPosition);
+                        DragObject.SetAnchorAndLayoutPosition(dragObjectPosition);
                         DragObject.UpdatePortEdge();
                         newState.LayoutPorts();
                         iCS_EditorObject transitionModule= IStorage.GetTransitionModule(DragObject);
@@ -335,7 +335,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
                                             if(IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-                                                newPort.SetGlobalAnchorAndLayoutPosition(dragPortPos);
+                                                newPort.SetAnchorAndLayoutPosition(dragPortPos);
                                                 newPort.PortValue= DragFixPort.PortValue;
                                                 SetNewDataConnection(DragFixPort, newPort);
                                                 break;
@@ -344,7 +344,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
                                             if(!IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-                                                newPort.SetGlobalAnchorAndLayoutPosition(dragPortPos);
+                                                newPort.SetAnchorAndLayoutPosition(dragPortPos);
                                                 newPort.PortValue= DragFixPort.PortValue;
                                                 SetNewDataConnection(DragFixPort, newPort);
                                                 break;                                                
@@ -355,7 +355,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Right)) {
                                             if(IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
-                                                newPort.SetGlobalAnchorAndLayoutPosition(dragPortPos);
+                                                newPort.SetAnchorAndLayoutPosition(dragPortPos);
                                                 SetNewDataConnection(newPort, DragFixPort);
                                                 break;                                                                                                    
                                             }
@@ -363,7 +363,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                         if(newPortParent.IsPositionOnEdge(dragPortPos, iCS_EdgeEnum.Left)) {
                                             if(!IStorage.IsChildOf(portParent, newPortParent)) {
                                                 iCS_EditorObject newPort= IStorage.CreatePort(DragFixPort.Name, newPortParent.InstanceId, DragFixPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
-                                                newPort.SetGlobalAnchorAndLayoutPosition(dragPortPos);
+                                                newPort.SetAnchorAndLayoutPosition(dragPortPos);
                                                 SetNewDataConnection(newPort, DragFixPort);
                                                 break;
                                             }
@@ -602,7 +602,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             return;
 		}                      
         // No reordering necessary if this is the only port on this edge.
-        DragObject.SetGlobalAnchorAndLayoutPosition(newPosition);
+        DragObject.SetAnchorAndLayoutPosition(newPosition);
         var sameEdgePorts= P.filter(p=> p != DragObject, DragObject.BuildListOfPortsOnSameEdge());
 		var nbOfPortsOnEdge= sameEdgePorts.Length;
         if(nbOfPortsOnEdge == 0) {

@@ -243,11 +243,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			if(y > bottom) {
 				y= bottom;
 			}
-			port.SetGlobalAnchorAndLayoutPosition(new Vector2(x,y));
+			port.SetAnchorAndLayoutPosition(new Vector2(x,y));
 			return;
 		}
 		if(Math3D.IsEqual(inPortPosition.y, outPortPosition.y)) {
-			port.SetGlobalAnchorAndLayoutPosition(new Vector2(x, 0.5f*(top+bottom)));
+			port.SetAnchorAndLayoutPosition(new Vector2(x, 0.5f*(top+bottom)));
 			return;
 		}
 		// Assure that the in position Y value is smaller then the out position.
@@ -264,7 +264,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			float y1= bottom-inPortPosition.y;
 			y= bottom-(y1*y1/(y1+y2));			
 		}
-		port.SetGlobalAnchorAndLayoutPosition(new Vector2(x,y));
+		port.SetAnchorAndLayoutPosition(new Vector2(x,y));
 		return;			
 	}
 
@@ -305,7 +305,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		// Change parent and relayout.
 		var nodePos= node.GlobalDisplayPosition;
 		node.Parent= newParent;
-		node.SetGlobalAnchorAndLayoutPosition(nodePos);
+		node.SetAnchorAndLayoutPosition(nodePos);
 		node.LayoutNode();
 		node.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
 		if(node.IsState) CleanupEntryState(node, oldParent);
