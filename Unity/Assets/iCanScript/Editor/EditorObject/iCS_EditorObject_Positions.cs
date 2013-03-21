@@ -63,7 +63,7 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------	
-	public Vector2 GlobalAnchorPosition {
+	public Vector2 AnchorPosition {
 		get {
 			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
@@ -175,7 +175,7 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
 	public void SetGlobalAnchorAndLayoutPosition(Vector2 pos) {
-		GlobalAnchorPosition= pos;
+		AnchorPosition= pos;
 		LocalLayoutOffset= Vector2.zero;
 	}
 

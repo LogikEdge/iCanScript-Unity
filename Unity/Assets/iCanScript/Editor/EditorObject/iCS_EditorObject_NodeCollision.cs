@@ -22,7 +22,7 @@ public partial class iCS_EditorObject {
             } else {
     			childStartPos[i]= c.GlobalDisplayPosition;                
             }
-			childRect[i]    = BuildRect(c.GlobalAnchorPosition, c.DisplaySize);
+			childRect[i]    = BuildRect(c.AnchorPosition, c.DisplaySize);
 		}
         // Resolve collisions.
         ResolveCollisionOnChildrenImp(children, ref childRect);
@@ -39,7 +39,7 @@ public partial class iCS_EditorObject {
 				} else if(animCtrl == iCS_AnimationControl.Always) {
                 	c.AnimatePosition(targetPos);				    
 				} else {
-	                var anchor= GlobalAnchorPosition;
+	                var anchor= AnchorPosition;
 	                var prevOffset= startPos-anchor;
 	                var newOffset= targetPos-anchor;
 	                var dotProduct= Vector2.Dot(prevOffset, newOffset);

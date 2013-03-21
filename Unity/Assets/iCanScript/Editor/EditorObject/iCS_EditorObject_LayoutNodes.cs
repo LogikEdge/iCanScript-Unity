@@ -52,21 +52,21 @@ public partial class iCS_EditorObject {
 		var childGlobalAnchorPositions= new List<Vector2>();
 		ForEachChildNode(
 		    c=> {
-		        childGlobalAnchorPositions.Add(c.GlobalAnchorPosition);
+		        childGlobalAnchorPositions.Add(c.AnchorPosition);
 	        }
 		);
         // Determine node global layout.
         var r= UnfoldedNodeRect();
 		// Update parent node anchor positions.
 		var center= Math3D.Middle(r);
-		GlobalAnchorPosition= center-LocalLayoutOffset;
+		AnchorPosition= center-LocalLayoutOffset;
 		// Update layout size.
 		DisplaySize= new Vector2(r.width, r.height);
 		// Reposition child to maintain their global positions.
 		int i= 0;
 		ForEachChildNode(
 		    c=> {
-		        c.GlobalAnchorPosition= childGlobalAnchorPositions[i];
+		        c.AnchorPosition= childGlobalAnchorPositions[i];
 				++i;
 	        }
 		);

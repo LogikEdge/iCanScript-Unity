@@ -95,7 +95,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 if(IsFloatingKeyDown) {
                     IStorage.RegisterUndo("Node Relocation");
                     DragType= DragTypeEnum.NodeRelocation;                                        
-                    DragStartAnchorPosition= node.GlobalAnchorPosition;
+                    DragStartAnchorPosition= node.AnchorPosition;
                     node.IsFloating= true;
                 } else {
                     IStorage.RegisterUndo("Node Drag");
@@ -246,7 +246,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         } else {
                             node.IsFloating= true;
                             var pos= node.GlobalDisplayPosition;
-                            node.GlobalAnchorPosition= DragStartAnchorPosition;
+                            node.AnchorPosition= DragStartAnchorPosition;
                             node.GlobalDisplayPosition= pos;
                             node.AnimatePosition(DragStartDisplayPosition);                            
                         }
@@ -583,7 +583,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
 		}
         DragType= DragTypeEnum.PortConnection;
-        DragObject.GlobalAnchorPosition= GraphMousePosition;
+        DragObject.AnchorPosition= GraphMousePosition;
 		DragObject.GlobalDisplayPosition= GraphMousePosition;
         DragObject.IsFloating= true;
         DragObject.IsSticky= true;

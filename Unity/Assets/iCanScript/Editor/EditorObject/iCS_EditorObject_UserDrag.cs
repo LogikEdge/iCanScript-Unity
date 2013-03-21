@@ -7,7 +7,7 @@ public partial class iCS_EditorObject {
     public void UserDragTo(Vector2 newPosition) {
 		if(IsNode) {
             StopAnimations();
-            GlobalAnchorPosition= newPosition;
+            AnchorPosition= newPosition;
             LocalLayoutOffset= Vector2.zero;
             LayoutParentNodesUntilTop();
 		} else {
