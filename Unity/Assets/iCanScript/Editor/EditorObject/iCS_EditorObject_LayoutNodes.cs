@@ -59,7 +59,7 @@ public partial class iCS_EditorObject {
         var r= UnfoldedNodeRect();
 		// Update parent node anchor positions.
 		var center= Math3D.Middle(r);
-		AnchorPosition= center-LocalLayoutOffset;
+		AnchorPosition= center-LocalOffset;
 		// Update layout size.
 		DisplaySize= new Vector2(r.width, r.height);
 		// Reposition child to maintain their global positions.

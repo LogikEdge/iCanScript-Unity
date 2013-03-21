@@ -83,7 +83,7 @@ public partial class iCS_EditorObject {
     // Layout
     // ----------------------------------------------------------------------
     // Offset from the anchor position.  This attribute is animated.
-	public Vector2 LocalLayoutOffset {
+	public Vector2 LocalOffset {
 		get {
 			return AnimatedLayoutOffset.CurrentValue;
 		}
@@ -91,8 +91,8 @@ public partial class iCS_EditorObject {
             // Update parent port for nested ports.
             if(IsPort) {
                 if(IsNestedPort) {
-                    if(Math3D.IsNotEqual(Parent.LocalLayoutOffset, value)) {
-                        Parent.LocalLayoutOffset= value;
+                    if(Math3D.IsNotEqual(Parent.LocalOffset, value)) {
+                        Parent.LocalOffset= value;
                     }
                     return;
                 }
@@ -110,22 +110,22 @@ public partial class iCS_EditorObject {
 		get {
 			var parent= ParentNode;
 			if(parent == null) {
-			    return LocalAnchorPosition+LocalLayoutOffset;
+			    return LocalAnchorPosition+LocalOffset;
 		    }
 			// Special case for iconized transition module ports.
 			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
 				return parent.GlobalDisplayPosition;
 			}
-    		return parent.GlobalDisplayPosition+LocalAnchorPosition+LocalLayoutOffset;			    			        
+    		return parent.GlobalDisplayPosition+LocalAnchorPosition+LocalOffset;			    			        
 		}
 		set {
             var offsetWithoutParent= value-LocalAnchorPosition;
             var parent= ParentNode;
 		    if(parent == null) {
-		        LocalLayoutOffset= offsetWithoutParent;
+		        LocalOffset= offsetWithoutParent;
 		        return;
 		    }
-	        LocalLayoutOffset= offsetWithoutParent-parent.GlobalDisplayPosition;
+	        LocalOffset= offsetWithoutParent-parent.GlobalDisplayPosition;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -137,7 +137,7 @@ public partial class iCS_EditorObject {
 			return globalPos-parent.GlobalDisplayPosition;
 		}
 		set {
-		    LocalLayoutOffset= value-LocalAnchorPosition;
+		    LocalOffset= value-LocalAnchorPosition;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -176,7 +176,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public void SetGlobalAnchorAndLayoutPosition(Vector2 pos) {
 		AnchorPosition= pos;
-		LocalLayoutOffset= Vector2.zero;
+		LocalOffset= Vector2.zero;
 	}
 
 	// ======================================================================

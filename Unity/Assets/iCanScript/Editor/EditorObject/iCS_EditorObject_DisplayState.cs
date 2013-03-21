@@ -155,7 +155,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void Hide(P.TimeRatio timeRatio) {
-		LocalLayoutOffset= -LocalAnchorPosition;
+		LocalOffset= -LocalAnchorPosition;
 		DisplaySize= Vector2.zero;
 		AnimateRect(timeRatio);
 		IsAlphaAnimated= true;
@@ -185,14 +185,14 @@ public partial class iCS_EditorObject {
     public void Unhide() {
         // Unhide iconized node
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) {
-            LocalLayoutOffset= Vector2.zero;
+            LocalOffset= Vector2.zero;
             DisplaySize= Vector2.zero;
             AnimateSize(IconizedSize());
             return;
         }
         // Unhide folded node
         if(IsFunction || DisplayOption == iCS_DisplayOptionEnum.Folded) {
-            LocalLayoutOffset= Vector2.zero;
+            LocalOffset= Vector2.zero;
             DisplaySize= Vector2.zero;
             AnimateRect(FoldedNodeRect());
             return;
