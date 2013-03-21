@@ -201,13 +201,6 @@ public partial class iCS_EditorObject {
         var parent= ParentNode;
         if(parent == null) return;
         parent.AnimationStart= parent.LayoutRect;
-//        parent.ForEachChildNode(
-//            c=> {
-//                if(c != this) {
-//                    c.AnimationStart= c.LayoutRect;
-//                }
-//            }
-//        );
         parent.PrepareToAnimateParents();
     }
     // ----------------------------------------------------------------------
@@ -215,13 +208,6 @@ public partial class iCS_EditorObject {
         var parent= ParentNode;
         if(parent == null) return;
         parent.Animate(LayoutRect, timeRatio);
-//        parent.ForEachChildNode(
-//            c=> {
-//                if(c != this) {
-//                    c.Animate(LayoutRect, timeRatio);
-//                }
-//            }
-//        );
         parent.AnimateParents(timeRatio);        
     }
     

@@ -36,7 +36,7 @@ public partial class iCS_EditorObject {
 				if(c.IsAnimated) {
 					c.Animate(startRect, targetRect);
 				} else if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
-//    				c.LayoutPosition= targetPos;                    					
+					// Don't animate.
 				} else if(animCtrl == iCS_AnimationControl.Always) {
                 	c.Animate(startRect, targetRect);				    
 				} else {
