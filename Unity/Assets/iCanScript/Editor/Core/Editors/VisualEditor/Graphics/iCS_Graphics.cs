@@ -398,12 +398,13 @@ public partial class iCS_Graphics {
         Rect displayArea= new Rect(displayRect.x-100f, displayRect.y-16f, displayRect.width+200f, displayRect.height+16f);
         if(!IsVisible(displayArea)) return;
 
-        GUI.color= new Color(1f, 1f, 1f, node.DisplayAlpha);
+		Color alphaWhite= new Color(1f, 1f, 1f, node.DisplayAlpha);
+        GUI.color= alphaWhite;
         Texture icon= GetMaximizeIcon(node);
 		var position= Math3D.Middle(displayRect);
         Rect textureRect= new Rect(position.x-0.5f*icon.width, position.y-0.5f*icon.height, icon.width, icon.height);                
         if(node.IsTransitionModule) {
-            DrawMinimizedTransitionModule(iStorage.GetTransitionModuleVector(node), position, Color.white);
+            DrawMinimizedTransitionModule(iStorage.GetTransitionModuleVector(node), position, alphaWhite);
         } else {
             GUI_DrawTexture(textureRect, icon);                                       
         }
