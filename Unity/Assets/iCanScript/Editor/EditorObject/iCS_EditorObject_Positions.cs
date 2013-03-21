@@ -169,28 +169,29 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public Vector2 LayoutPosition {
 		get {
-			return PositionFrom(LayoutRect);
+			return GlobalDisplayPosition;
 		}
 		set {
-			LayoutRect= BuildRect(value, LayoutSize);
+			GlobalDisplayPosition= value;
 		}
 	}
     // ----------------------------------------------------------------------
 	public Vector2 LayoutSize {
 		get {
-			return SizeFrom(LayoutRect);
+			return DisplaySize;
 		}
 		set {
-			LayoutRect= BuildRect(LayoutPosition, value);
+			DisplaySize= value;
 		}
 	}
     // ----------------------------------------------------------------------
 	public Rect LayoutRect {
 		get {
-			return GlobalDisplayRect;
+			return BuildRect(LayoutPosition, LayoutSize);
 		}
 		set {
-			GlobalDisplayRect= value;
+			LayoutPosition= PositionFrom(value);
+			LayoutSize= SizeFrom(value);
 		}
 	}
 	
@@ -198,6 +199,14 @@ public partial class iCS_EditorObject {
 	public Vector2 AnimatedPosition {
 		get {
 			return PositionFrom(AnimatedRect);
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Vector2 AnimatedLocalPosition {
+		get {
+			var parent= ParentNode;
+			if(parent == null) return AnimatedPosition;
+			return AnimatedPosition-parent.AnimatedPosition;
 		}
 	}
 //    // ----------------------------------------------------------------------

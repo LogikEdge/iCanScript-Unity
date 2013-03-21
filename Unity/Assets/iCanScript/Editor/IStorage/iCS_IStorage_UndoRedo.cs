@@ -49,7 +49,7 @@ public partial class iCS_IStorage {
                 } else {
                     if(obj.IsParentValid && obj.ParentId < previousRect.Count && Math3D.Area(previousRect[obj.ParentId]) > 0.1f) {
                         var parentPos= iCS_EditorObject.PositionFrom(previousRect[obj.ParentId]);
-						r= new Rect(parentPos.x, parentPos.y, 0, 0);
+						r= iCS_EditorObject.BuildRect(parentPos, Vector2.zero);
                     }                        
                 }
 				obj.GlobalDisplayRect= r;
