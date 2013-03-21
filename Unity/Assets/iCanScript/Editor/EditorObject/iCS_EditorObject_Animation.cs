@@ -134,7 +134,7 @@ public partial class iCS_EditorObject {
 
     // ======================================================================
 	// Rect Animation
-    // ----------------------------------------------------------------------
+    // ----------------------------------------------------------------------	
 	public void PrepareToAnimateRect() {
 //        AnimatedGlobalRect.StartValue= GlobalDisplayRect;
 		PrepareToAnimatePosition();
@@ -158,7 +158,7 @@ public partial class iCS_EditorObject {
         StopSizeAnimation();
     }
     // ----------------------------------------------------------------------
-    void StopAnimations() {
+    void StopAnimation() {
         StopRectAnimation();
     }
     

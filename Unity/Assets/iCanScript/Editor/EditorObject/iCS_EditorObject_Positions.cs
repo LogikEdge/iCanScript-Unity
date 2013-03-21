@@ -199,6 +199,8 @@ public partial class iCS_EditorObject {
 		}
 	}
 	
+	// ======================================================================
+	// Animation
     // ----------------------------------------------------------------------
 	public Vector2 AnimatedPosition {
 		get {
@@ -222,8 +224,57 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Rect AnimatedRect {
 		get {
+			if(IsAnimated) {
+				return myAnimatedRect.CurrentValue;
+			}
 			return LayoutRect;
 		}
+	}
+    // ----------------------------------------------------------------------
+	public Rect AnimationStart {
+		get {
+			return myAnimatedRect.StartValue;
+		}
+		set {
+			myAnimatedRect.StartValue= value;
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Rect AnimationTarget {
+		get {
+			return myAnimatedRect.TargetValue;
+		}
+		set {
+			myAnimatedRect.TargetValue= value;
+		}
+	}
+    // ----------------------------------------------------------------------
+	public void Animate(Rect start, Rect target) {
+		AnimationStart= start;
+		Animate(target);
+	}
+    // ----------------------------------------------------------------------
+	public void Animate(Rect start, Rect target, P.TimeRatio timeRatio) {
+		AnimationStart= start;
+		Animate(target, timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	public void Animate(Rect target, P.TimeRatio timeRatio) {
+		AnimationTarget= target;
+		Animate(timeRatio);
+	}
+    // ----------------------------------------------------------------------
+	public void Animate(Rect target) {
+		AnimationTarget= target;
+		Animate();
+	}
+    // ----------------------------------------------------------------------
+	public void Animate() {
+		Animate(BuildTimeRatioFromRect(myAnimatedRect.StartValue, myAnimatedRect.TargetValue));
+	}
+    // ----------------------------------------------------------------------
+	public void Animate(P.TimeRatio timeRatio) {
+		myAnimatedRect.Start(timeRatio);
 	}
 	
 	// ======================================================================
