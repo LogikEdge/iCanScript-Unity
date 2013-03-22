@@ -27,6 +27,10 @@ public partial class iCS_EditorObject {
 	public bool IsIconizedOnDisplay	{
 		get {
             if(IsPort) return false;
+			if(!IsAnimated) {
+				if(!IsVisibleInLayout) return false;
+				return IsIconizedInLayout;
+			}
             var area= Math3D.Area(AnimatedSize);
             if(Math3D.IsZero(area)) return false;
             var iconArea= Math3D.Area(iCS_Graphics.GetMaximizeIconSize(this));
@@ -49,8 +53,7 @@ public partial class iCS_EditorObject {
     public bool IsVisibleOnDisplay {
         get {
             if(IsPort) {
-                var parent= ParentNode;
-                return parent.IsVisibleOnDisplay;
+                return ParentNode.IsVisibleOnDisplay;
             }
             if(!IsAnimated) return IsVisibleInLayout;
             var area= Math3D.Area(AnimatedSize);
