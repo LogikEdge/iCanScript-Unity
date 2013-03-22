@@ -92,20 +92,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 IsDragEnabled= false;
                 DragType= DragTypeEnum.None;
             } else {
+				node.IsSticky= true;
+                DragObject= node;
+                DragStartDisplayPosition= node.LayoutPosition;                                                                    
                 if(IsFloatingKeyDown) {
                     IStorage.RegisterUndo("Node Relocation");
                     DragType= DragTypeEnum.NodeRelocation;                                        
                     DragStartAnchorPosition= node.AnchorPosition;
-                    node.IsFloating= true;
+                    node.ParentNode.AnimateGraph(_=> node.IsFloating= true);
+                    node.LayoutPosition= DragStartDisplayPosition;
                 } else {
                     IStorage.RegisterUndo("Node Drag");
                     DragType= DragTypeEnum.NodeDrag;                    
                     node.IsFloating= false;
     				node.ForEachParentNode(p=> { p.IsSticky= true; });
                 }
-				node.IsSticky= true;
-                DragObject= node;
-                DragStartDisplayPosition= node.LayoutPosition;                                                                    
             }
             return true;
         }
