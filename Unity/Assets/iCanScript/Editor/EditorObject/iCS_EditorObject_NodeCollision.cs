@@ -9,15 +9,25 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
-    public void ResolveCollisionOnChildrenNodes(iCS_AnimationControl animCtrl) {
+    // ----------------------------------------------------------------------
+    public void ResolveCollisionOnLayoutChildrenNodes(iCS_AnimationControl animCtrl) {
+        ResolveCollisionOnChildrenNodes(animCtrl, true);
+    }
+    // ----------------------------------------------------------------------
+    public void ResolveCollisionOnAnimatedChildrenNodes(iCS_AnimationControl animCtrl) {
+        ResolveCollisionOnChildrenNodes(animCtrl, false);
+    }
+    // ----------------------------------------------------------------------
+    public void ResolveCollisionOnChildrenNodes(iCS_AnimationControl animCtrl, bool useLayout) {
 		// Get a snapshot of the children state.
 		var children= BuildListOfChildNodes(c=> !c.IsFloating);
 		var childStartPos = new Vector2[children.Length];
 		var childRect= new Rect[children.Length];
 		for(int i= 0; i < children.Length; ++i) {
 			var c= children[i];
-    		childStartPos[i]= c.AnimatedPosition;                
-			childRect[i]    = BuildRect(c.AnchorPosition, c.LayoutSize);
+    		childStartPos[i]= c.AnimatedPosition;
+    		var cAnchor= useLayout ? c.LayoutAnchorPosition : c.AnimatedAnchorPosition;                
+			childRect[i]    = BuildRect(cAnchor, c.LayoutSize);
 		}
         // Resolve collisions.
         ResolveCollisionOnChildrenImp(children, ref childRect);
@@ -33,12 +43,10 @@ public partial class iCS_EditorObject {
 				var c= children[i];
 				c.LayoutPosition= targetPos;
 				// Determine if we should animate the displacement.
-				if(c.IsAnimated) {
-					c.Animate(startRect, targetRect);
-				} else if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
+				if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
 					// Don't animate.
-				} else if(animCtrl == iCS_AnimationControl.Always) {
-                	c.Animate(startRect, targetRect);				    
+				} else if(c.IsAnimated || animCtrl == iCS_AnimationControl.Always) {
+					c.Animate(startRect, targetRect);
 				} else {
 	                var anchor= AnchorPosition;
 	                var prevOffset= startPos-anchor;

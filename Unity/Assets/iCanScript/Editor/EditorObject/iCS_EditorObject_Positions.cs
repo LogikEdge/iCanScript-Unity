@@ -68,8 +68,24 @@ public partial class iCS_EditorObject {
 			IsDirty= true;  // Save new anchor position.
 		}
 	}
-    // ----------------------------------------------------------------------	
-	public Vector2 AnchorPosition {
+    // ----------------------------------------------------------------------
+    public Vector2 AnimatedAnchorPosition {
+		get {
+			var parent= ParentNode;
+			if(parent == null) return LocalAnchorPosition;
+    		return parent.AnimatedPosition+LocalAnchorPosition;			    
+		}
+		set {
+			var parent= ParentNode;
+			if(parent == null) {
+				LocalAnchorPosition= value;
+				return;
+			}
+    		LocalAnchorPosition= value-parent.AnimatedPosition;                
+		}        
+    }
+    // ----------------------------------------------------------------------
+    public Vector2 LayoutAnchorPosition {
 		get {
 			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
@@ -82,6 +98,15 @@ public partial class iCS_EditorObject {
 				return;
 			}
     		LocalAnchorPosition= value-parent.LayoutPosition;                
+		}                
+    }
+    // ----------------------------------------------------------------------	
+	public Vector2 AnchorPosition {
+		get {
+            return LayoutAnchorPosition;
+		}
+		set {
+            LayoutAnchorPosition= value;
 		}
 	}
 
@@ -201,7 +226,18 @@ public partial class iCS_EditorObject {
 			if(IsAnimated) {
 				return myAnimatedRect.CurrentValue;
 			}
-			return LayoutRect;
+			var parent= ParentNode;
+			if(parent == null) {
+			    return LayoutRect;
+		    }
+		    var parentPos= parent.AnimatedPosition;
+		    var size= LayoutSize;
+		    // Special case for iconized transition module ports.
+			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
+				return BuildRect(parentPos, size);
+			}
+            var pos= parentPos+LocalAnchorPosition+LocalOffset;
+			return BuildRect(pos, size);
 		}
 	}
     // ----------------------------------------------------------------------

@@ -30,8 +30,16 @@ public partial class iCS_EditorObject {
         }
         // Resolve any existing collisions on children for unfolded modules.
         if(IsUnfoldedInLayout && !IsFunction) {
-            ResolveCollisionOnChildrenNodes(animCtrl);
-            WrapAroundChildrenNodes();
+            if(IsAnimated) {
+                ResolveCollisionOnLayoutChildrenNodes(iCS_AnimationControl.Always);
+                WrapAroundLayoutChildrenNodes();                                
+                if(Math3D.IsNotEqual(LayoutRect, AnimationTarget)) {
+                    Animate(AnimatedRect, LayoutRect);
+                }
+            } else {
+                ResolveCollisionOnAnimatedChildrenNodes(animCtrl);
+                WrapAroundAnimatedChildrenNodes();                                
+            }
     		return;            
         }
         // Update the size and ports for folded & Function nodes.
@@ -43,16 +51,26 @@ public partial class iCS_EditorObject {
     // the children have previously been layed out.  The anchor position and
     // layout size will be updated accordingly.
     // NOTE: This function must not be called for iconized nodes.
-    public void WrapAroundChildrenNodes() { 
+    // ----------------------------------------------------------------------
+    public void WrapAroundLayoutChildrenNodes() {
+        WrapAroundChildrenNodes(true);
+    }
+    // ----------------------------------------------------------------------
+    public void WrapAroundAnimatedChildrenNodes() {
+        WrapAroundChildrenNodes(false);
+    }
+    // ----------------------------------------------------------------------
+    public void WrapAroundChildrenNodes(bool useLayout) { 
 		// Nothing to do if node is not visible.
 		if(!IsVisibleOnDisplay || IsIconizedOnDisplay) {
 		    return;
 	    }
 		// Take a snapshot of the children global position.
-		var childGlobalAnchorPositions= new List<Vector2>();
+		var childAnchorPositions= new List<Vector2>();
 		ForEachChildNode(
 		    c=> {
-		        childGlobalAnchorPositions.Add(c.AnchorPosition);
+		        var p= useLayout ? c.LayoutAnchorPosition : c.AnimatedAnchorPosition;
+		        childAnchorPositions.Add(p);
 	        }
 		);
         // Determine node global layout.
@@ -66,7 +84,11 @@ public partial class iCS_EditorObject {
 		int i= 0;
 		ForEachChildNode(
 		    c=> {
-		        c.AnchorPosition= childGlobalAnchorPositions[i];
+                if(useLayout) {
+    		        c.LayoutAnchorPosition= childAnchorPositions[i];                    
+                } else {
+    		        c.AnimatedAnchorPosition= childAnchorPositions[i];
+                }
 				++i;
 	        }
 		);
