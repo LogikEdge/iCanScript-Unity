@@ -149,6 +149,7 @@ public partial class iCS_EditorObject {
 	public P.TimeRatio AnimateGraph(Action<iCS_EditorObject> fnc) {
 		AnimationStart= LayoutRect;
 		PrepareToAnimateParents();
+		PrepareToAnimateChildren();
 		fnc(this);
 		LayoutNode(iCS_AnimationControl.None);
 		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
@@ -156,6 +157,7 @@ public partial class iCS_EditorObject {
 		var timeRatio= BuildTimeRatioFromRect(AnimationStart, newRect);		
 		Animate(LayoutRect, timeRatio);
 		AnimateParents(timeRatio);
+		AnimateChildren(timeRatio);
 		return timeRatio;
 	}
     // ----------------------------------------------------------------------
@@ -225,6 +227,29 @@ public partial class iCS_EditorObject {
         parent.Animate(parent.LayoutRect, timeRatio);
         parent.AnimateParents(timeRatio);        
     }
-    
+    // ----------------------------------------------------------------------
+    public void PrepareToAnimateChildren() {
+        if(!IsUnfoldedOnDisplay) return;
+        ForEachChildNode(
+            c=> {
+                if(!c.IsFloating && !c.IsSticky) {
+                    c.AnimationStart= c.AnimatedRect;
+                    c.PrepareToAnimateChildren();                                    
+                }
+            }
+        );
+    }
+    // ----------------------------------------------------------------------
+    public void AnimateChildren(P.TimeRatio timeRatio) {
+        if(!IsUnfoldedOnDisplay) return;
+        ForEachChildNode(
+            c=> {
+                if(!c.IsFloating && !c.IsSticky) {
+                    c.Animate(c.LayoutRect, timeRatio);
+                    c.AnimateChildren(timeRatio);                    
+                }
+            }
+        );
+    }
 
 }

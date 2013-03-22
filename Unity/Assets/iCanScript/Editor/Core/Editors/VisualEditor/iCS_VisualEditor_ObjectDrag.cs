@@ -244,13 +244,19 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 oldParent.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
                             }
                         } else {
-                            node.IsFloating= true;
+                            // Animate node back to its original position.
                             var pos= node.LayoutPosition;
-                            node.AnchorPosition= DragStartAnchorPosition;
-                            node.LayoutPosition= DragStartDisplayPosition;
 							var size= node.LayoutSize;
 							node.AnimationStart= iCS_EditorObject.BuildRect(pos, size);
-                            node.Animate(node.LayoutRect);                            
+                            var parent= node.ParentNode;
+                            parent.AnimateGraph(
+                                o=> {
+                                    node.AnchorPosition= DragStartAnchorPosition;
+                                    node.LayoutPosition= DragStartDisplayPosition;
+                                }
+                            );
+                            node.IsFloating= true;
+                            node.Animate(node.LayoutRect);
                         }
                     }
                     // Remove sticky on parent nodes.

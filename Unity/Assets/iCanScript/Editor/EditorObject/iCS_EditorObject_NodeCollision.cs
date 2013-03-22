@@ -21,11 +21,11 @@ public partial class iCS_EditorObject {
     public void ResolveCollisionOnChildrenNodes(iCS_AnimationControl animCtrl, bool useLayout) {
 		// Get a snapshot of the children state.
 		var children= BuildListOfChildNodes(c=> !c.IsFloating);
-		var childStartPos = new Vector2[children.Length];
+		var childStartRect = new Rect[children.Length];
 		var childRect= new Rect[children.Length];
 		for(int i= 0; i < children.Length; ++i) {
 			var c= children[i];
-    		childStartPos[i]= c.AnimatedPosition;
+    		childStartRect[i]= c.AnimatedRect;
     		var cAnchor= useLayout ? c.LayoutAnchorPosition : c.AnimatedAnchorPosition;                
 			childRect[i]    = BuildRect(cAnchor, c.LayoutSize);
 		}
@@ -34,11 +34,10 @@ public partial class iCS_EditorObject {
 		// Animate all nodes affected by collisions.
 		for(int i= 0; i < children.Length; ++i) {
 			var targetRect= childRect[i];
-			var size= SizeFrom(targetRect);
 			var targetPos= PositionFrom(targetRect);
-			var startPos= childStartPos[i];
-			var startRect= BuildRect(startPos, size);
-			if(Math3D.IsNotEqual(startPos, targetPos)) {
+			var startRect= childStartRect[i];
+			var startPos= PositionFrom(startRect);
+			if(Math3D.IsNotEqual(startRect, targetRect)) {
 				// Update layout position
 				var c= children[i];
 				c.LayoutPosition= targetPos;

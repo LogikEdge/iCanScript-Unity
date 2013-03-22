@@ -224,7 +224,7 @@ public partial class iCS_EditorObject {
     public Rect AnimatedRect {
 		get {
 			if(IsAnimated) {
-				return myAnimatedRect.CurrentValue;
+    			return myAnimatedRect.CurrentValue;
 			}
 			var parent= ParentNode;
 			if(parent == null) {
@@ -236,8 +236,10 @@ public partial class iCS_EditorObject {
 			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
 				return BuildRect(parentPos, size);
 			}
+            // FIXME: This is problematic because we are using the Anchor+Offset from the Layout.
             var pos= parentPos+LocalAnchorPosition+LocalOffset;
-			return BuildRect(pos, size);
+            var r= BuildRect(pos, size);
+			return r;
 		}
 	}
     // ----------------------------------------------------------------------
