@@ -50,7 +50,7 @@ public static partial class Prelude {
         TimeRatio           myTimeRatio   	  = null;
         Func<T,T,float,T>   myAnimFunc    	  = null;
         
-        public bool     IsActive        { get { return myTimeRatio != null ? myIsActive && myTimeRatio.IsActive : false; }}
+        public bool     IsActive        { get { return myIsActive && myTimeRatio != null; }}
         public bool     IsElapsed       { get { return myTimeRatio != null ? myTimeRatio.IsElapsed : true; }}
         public T        CurrentValue    { get { return myCurrentValue; }}
         public T        StartValue      { get { return myStartValue; } set { myStartValue= value; }}

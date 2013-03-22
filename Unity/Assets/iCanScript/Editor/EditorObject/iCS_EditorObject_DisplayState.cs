@@ -147,17 +147,33 @@ public partial class iCS_EditorObject {
     // Animation High-Order Utilities
     // ----------------------------------------------------------------------
 	public P.TimeRatio AnimateGraph(Action<iCS_EditorObject> fnc) {
-		AnimationStart= LayoutRect;
-		PrepareToAnimateParents();
-		PrepareToAnimateChildren();
+        EditorObjects[0].ForEachRecursiveDepthLast(
+            (o,f)=> {
+                if(!o.IsNode) return false;
+                if(!o.IsUnfoldedInLayout) {
+                    f(o);
+                    return false;
+                }
+                return true;
+            },
+            o=> o.AnimationStart= o.AnimatedRect
+        );
 		fnc(this);
 		LayoutNode(iCS_AnimationControl.None);
 		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
-		var newRect= LayoutRect;
-		var timeRatio= BuildTimeRatioFromRect(AnimationStart, newRect);		
-		Animate(LayoutRect, timeRatio);
-		AnimateParents(timeRatio);
-		AnimateChildren(timeRatio);
+		var timeRatio= BuildTimeRatioFromRect(AnimationStart, LayoutRect);		
+        EditorObjects[0].ForEachRecursiveDepthLast(
+            (o,f)=> {
+                if(!o.IsNode) return false;
+                if(o.IsSticky || o.IsFloating) return false;
+                if(!o.IsUnfoldedInLayout) {
+                    f(o);
+                    return false;
+                }
+                return true;
+            },
+            o=> o.Animate(o.LayoutRect, timeRatio)
+        );
 		return timeRatio;
 	}
     // ----------------------------------------------------------------------
@@ -212,44 +228,6 @@ public partial class iCS_EditorObject {
             ForEachChildNode(c=> c.Unhide());
 			Animate(start, LayoutRect);
         }
-    }
-    // ----------------------------------------------------------------------
-    public void PrepareToAnimateParents() {
-        var parent= ParentNode;
-        if(parent == null) return;
-        parent.AnimationStart= parent.LayoutRect;
-        parent.PrepareToAnimateParents();
-    }
-    // ----------------------------------------------------------------------
-    public void AnimateParents(P.TimeRatio timeRatio) {
-        var parent= ParentNode;
-        if(parent == null) return;
-        parent.Animate(parent.LayoutRect, timeRatio);
-        parent.AnimateParents(timeRatio);        
-    }
-    // ----------------------------------------------------------------------
-    public void PrepareToAnimateChildren() {
-        if(!IsUnfoldedOnDisplay) return;
-        ForEachChildNode(
-            c=> {
-                if(!c.IsFloating && !c.IsSticky) {
-                    c.AnimationStart= c.AnimatedRect;
-                    c.PrepareToAnimateChildren();                                    
-                }
-            }
-        );
-    }
-    // ----------------------------------------------------------------------
-    public void AnimateChildren(P.TimeRatio timeRatio) {
-        if(!IsUnfoldedOnDisplay) return;
-        ForEachChildNode(
-            c=> {
-                if(!c.IsFloating && !c.IsSticky) {
-                    c.Animate(c.LayoutRect, timeRatio);
-                    c.AnimateChildren(timeRatio);                    
-                }
-            }
-        );
     }
 
 }
