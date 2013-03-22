@@ -101,7 +101,7 @@ public static class iCS_EditorUtility {
             return;
         }
         if(eObj.IsPort) {
-            var portParent= eObj.Parent;
+            var portParent= eObj.ParentNode;
             if(!portParent.IsVisibleInLayout || portParent.IsIconizedInLayout) {
                 iStorage.Fold(portParent);
             }
