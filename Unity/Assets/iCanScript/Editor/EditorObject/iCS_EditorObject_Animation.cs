@@ -96,14 +96,19 @@ public partial class iCS_EditorObject {
 	public void UpdateAnimation() {
 		if(myAnimatedRect.IsActive) {
             var prevRect= myAnimatedRect.CurrentValue;
+            Rect newRect;
 			if(myAnimatedRect.IsElapsed) {
 				myAnimatedRect.Reset(myAnimatedRect.TargetValue);
+                newRect= LayoutRect;
                 IsFloating= false;
 			} else {
 				myAnimatedRect.Update();
+                newRect= myAnimatedRect.CurrentValue;
 			}
-			if(!IsFloating && Math3D.IsNotEqual(prevRect, myAnimatedRect.CurrentValue)) {
+			if(!IsFloating && Math3D.IsNotEqual(prevRect, newRect)) {
+                // Update child ports
                 LayoutPorts();
+                // Update parent node
 				var parent= ParentNode;
 				if(parent != null && !parent.IsAnimated) {
 	                LayoutParentNodesUntilTop();					
