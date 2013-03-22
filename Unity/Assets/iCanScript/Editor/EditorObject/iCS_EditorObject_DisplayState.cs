@@ -81,9 +81,6 @@ public partial class iCS_EditorObject {
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
 		// Prepare to hide visible children
 		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
-        if(animateChildren) {
-            ForEachChildNode(c=> c.PrepareToHide());
-        }
         // Set the node has iconized.
 		var timeRatio= AnimateGraph(
 			o=> o.DisplayOption= iCS_DisplayOptionEnum.Iconized
@@ -100,9 +97,6 @@ public partial class iCS_EditorObject {
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
 		// Prepare to hide visible children
 		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
-        if(animateChildren) {
-            ForEachChildNode(c=> c.PrepareToHide());
-        }
         // Set the node has folded.
 		var timeRatio= AnimateGraph(
 			o=> o.DisplayOption= iCS_DisplayOptionEnum.Folded
@@ -175,15 +169,6 @@ public partial class iCS_EditorObject {
             o=> o.Animate(o.LayoutRect, timeRatio)
         );
 		return timeRatio;
-	}
-    // ----------------------------------------------------------------------
-	void PrepareToHide() {
-        // Nothing to do if we are not visible.
-        if(!IsVisibleOnDisplay) return;
-        // Reposition at parent center.
-        AnimationStart= LayoutRect;
-        // First hide all children.
-        ForEachChildNode(c=> c.PrepareToHide());
 	}
     // ----------------------------------------------------------------------
 	void Hide(P.TimeRatio timeRatio) {
