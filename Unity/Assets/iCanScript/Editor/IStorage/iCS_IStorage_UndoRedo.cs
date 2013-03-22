@@ -52,7 +52,6 @@ public partial class iCS_IStorage {
 						r= iCS_EditorObject.BuildRect(parentPos, Vector2.zero);
                     }                        
                 }
-				obj.LayoutRect= r;
                 obj.AnimationStart= r;
             }
         );
@@ -62,7 +61,7 @@ public partial class iCS_IStorage {
         var timeRatio= iCS_EditorObject.BuildTimeRatio(0.5f);  // Half second animation.
         ForEach(
             obj=> {
-                if(obj.IsNode) {
+                if(obj.IsNode && obj.IsVisibleInLayout) {
                     obj.Animate(obj.LayoutRect, timeRatio);
                 }
             }

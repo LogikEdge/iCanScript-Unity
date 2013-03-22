@@ -42,10 +42,10 @@ public partial class iCS_EditorObject {
 				var c= children[i];
 				c.LayoutPosition= targetPos;
 				// Determine if we should animate the displacement.
-				if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
-					// Don't animate.
-				} else if(c.IsAnimated || animCtrl == iCS_AnimationControl.Always) {
+				if(c.IsAnimated || animCtrl == iCS_AnimationControl.Always) {
 					c.Animate(startRect, targetRect);
+				} else if(c.IsSticky || animCtrl == iCS_AnimationControl.None) {
+					// Don't animate.
 				} else {
 	                var anchor= AnchorPosition;
 	                var prevOffset= startPos-anchor;

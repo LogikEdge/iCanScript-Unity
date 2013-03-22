@@ -24,9 +24,9 @@ public static partial class Prelude {
         public float Ratio          {
             get {
                 var now= CurrentTime();
-                return IsActive && now < myEndTime ?
-                    (now-myStartTime)/(myEndTime-myStartTime) :
-                    1f;
+				if(!IsActive || now >= myEndTime) return 1f;
+                var ratio= (now-myStartTime)/(myEndTime-myStartTime);
+				return Math3D.IsSmaller(ratio, 1f) ? ratio : 1f; 
             }
         }
 
