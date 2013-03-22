@@ -227,7 +227,7 @@ public partial class iCS_EditorObject {
     			return myAnimatedRect.CurrentValue;
 			}
 			var parent= ParentNode;
-			if(parent == null || (IsNode && (IsFloating || IsSticky))) {
+			if(parent == null || (IsFloating || IsSticky)) {
 			    return LayoutRect;
 		    }
 		    var parentPos= parent.AnimatedPosition;
