@@ -534,6 +534,9 @@ public partial class iCS_Graphics {
 
         // Port alpha
         var alpha= port.DisplayAlpha;
+        if(parent.IsIconizedInLayout && parent.IsAnimated) {
+            alpha= 1f-parent.AnimationTimeRatio;
+        } 
         GUI.color= new Color(1f,1f,1f,alpha);
         
 		// Determine port colors

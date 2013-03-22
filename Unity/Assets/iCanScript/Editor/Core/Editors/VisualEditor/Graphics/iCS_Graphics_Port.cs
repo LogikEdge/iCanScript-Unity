@@ -50,6 +50,7 @@ public partial class iCS_Graphics {
 	}
     // ----------------------------------------------------------------------
     bool ShouldDisplayPortName(iCS_EditorObject port) {
+//        if(!port.IsVisibleInLayout) return false;
         if(port.IsChildMuxPort) return false;
         if(port.IsStatePort || port.IsTransitionPort) return false;
         if(!ShouldShowLabel()) return false;

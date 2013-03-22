@@ -21,6 +21,7 @@ public partial class iCS_EditorObject {
 	public void StopAnimation() {
 		myAnimatedRect.Reset(myAnimatedRect.TargetValue);
 	}
+	public float AnimationTimeRatio { get { return myAnimatedRect.Ratio; }}
 	
     // ======================================================================
 	// Animation timer builders
