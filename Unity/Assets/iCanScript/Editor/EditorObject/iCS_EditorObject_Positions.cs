@@ -158,6 +158,9 @@ public partial class iCS_EditorObject {
 			if(IsPort) {
 				return parent.AnimatedPosition+LocalAnchorPosition+LocalOffset;
 			}
+			if(!IsVisibleInLayout) {
+			    return parent.LayoutPosition;
+			}
     		return parent.LayoutPosition+LocalAnchorPosition+LocalOffset;			    			        
 		}
 		set {
@@ -178,6 +181,9 @@ public partial class iCS_EditorObject {
 		get {
 		    if(IsPort) {
 		        return iCS_EditorConfig.PortSize;
+		    }
+		    if(!IsVisibleInLayout) {
+		        return Vector2.zero;
 		    }
 			return myLayoutSize;
 		}

@@ -188,7 +188,6 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	void Unhide(P.TimeRatio timeRatio) {
-		Animate(LayoutRect, timeRatio);
 		IsAlphaAnimated= true;
 		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
 			ForEachChildNode(c=> c.Unhide(timeRatio));
