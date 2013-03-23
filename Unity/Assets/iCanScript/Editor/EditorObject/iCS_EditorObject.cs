@@ -296,6 +296,7 @@ public partial class iCS_EditorObject {
             iCS_EditorObject editorObj= null;
 		    if(iStorage.EngineObjects[i].InstanceId != -1) {
 		        editorObj= new iCS_EditorObject(i, iStorage);
+				editorObj.myAnchorCache= editorObj.LocalAnchorPosition;
 		    }
 	        iStorage.EditorObjects.Add(editorObj);
 		}

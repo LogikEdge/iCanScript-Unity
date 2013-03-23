@@ -8,6 +8,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	Vector2		myLayoutSize = Vector2.zero;
 	Vector2		myLocalOffset= Vector2.zero;
+	Vector2		myAnchorCache= Vector2.zero;  // Used for undo/redo animation
 	
 	// %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	//								PORT POSITIONS
@@ -40,6 +41,7 @@ public partial class iCS_EditorObject {
             return EngineObject.LocalAnchorPosition;
 		}
 		set {
+			myAnchorCache= value;
 			if(IsPort) {
                 // Update the parent if the port is a nested port (avoid circular loop).
 			    if(IsNestedPort && Math3D.IsNotEqual(Parent.LocalAnchorPosition, value)) {
@@ -213,6 +215,18 @@ public partial class iCS_EditorObject {
 		set {
 			LayoutPosition= PositionFrom(value);
 			LayoutSize= SizeFrom(value);
+		}
+	}
+    // ----------------------------------------------------------------------
+	public Rect CachedLayoutRect {
+		get {
+			var parent= ParentNode;
+			var localPos= myAnchorCache+myLocalOffset;
+			if(parent == null) {
+				return BuildRect(localPos, myLayoutSize);
+			}
+			var parentPos= PositionFrom(parent.CachedLayoutRect);
+			return BuildRect(parentPos+localPos, myLayoutSize);
 		}
 	}
 	

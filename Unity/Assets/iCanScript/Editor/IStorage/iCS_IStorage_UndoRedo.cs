@@ -33,7 +33,7 @@ public partial class iCS_IStorage {
         undoRedoRunning= true;
         // Keep a copy of the previous display position.
 		Rect emptyRect= new Rect(0,0,0,0);
-        var previousRect= P.map(o=> IsValid(o) ? o.LayoutRect : emptyRect, EditorObjects);  
+        var previousRect= P.map(o=> IsValid(o) ? o.CachedLayoutRect : emptyRect, EditorObjects);  
         // Rebuild editor data.
         GenerateEditorData();
         // Stamp undo/redo identifier before using IStorage functions.
@@ -58,11 +58,14 @@ public partial class iCS_IStorage {
         // Rebuild layout
         ForcedRelayoutOfTree(EditorObjects[0]);
         // Animate change.
-        var timeRatio= iCS_EditorObject.BuildTimeRatio(0.5f);  // Half second animation.
+        var timeRatio= iCS_EditorObject.BuildTimeRatio(2.5f);  // Half second animation.
         ForEach(
             obj=> {
                 if(obj.IsNode && obj.IsVisibleInLayout) {
                     obj.Animate(obj.LayoutRect, timeRatio);
+					if(obj.Name == ":Debug") {
+						Debug.Log("AnimStart: "+obj.AnimationStart+" AnimTarget: "+obj.LayoutRect);
+					}
                 }
             }
         );
