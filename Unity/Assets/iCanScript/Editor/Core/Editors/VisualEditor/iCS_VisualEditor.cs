@@ -186,7 +186,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Processes all events.
     void ProcessEvents() {
 //        Debug.Log("Event: "+Event.current.type+" time: "+myCurrentTime);
-        switch(Event.current.type) {
+		var ev= Event.current;
+		// TODO: Should use undo/redo event to rebuild editor objects.
+//		if(ev.commandName == "UndoRedoPerformed") {
+//			IStorage.SynchronizeAfterUndoRedo();
+//			Debug.Log("UndoRedo detected");
+//		}
+        switch(ev.type) {
             case EventType.Repaint: {
                 // Draw Graph.
                 DrawGraph();

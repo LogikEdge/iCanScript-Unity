@@ -24,7 +24,7 @@ public partial class iCS_IStorage {
         }        
     }
     // ----------------------------------------------------------------------
-    void SynchronizeAfterUndoRedo() {
+    public void SynchronizeAfterUndoRedo() {
         // Avoid reentry.
         if(undoRedoRunning) {
             Debug.LogWarning("iCanScript: Reentering SynchronizeAfterUndoRedo...");
@@ -65,6 +65,9 @@ public partial class iCS_IStorage {
             obj=> {
                 if(obj.IsNode && obj.IsVisibleInLayout) {
                     obj.Animate(obj.LayoutRect, timeRatio);
+//					if(obj.Name == ":StateChart") {
+//						Debug.Log("AnimStart: "+obj.AnimationStart+" AnimTarget: "+obj.AnimationTarget);
+//					}
                 }
             }
         );
