@@ -118,4 +118,9 @@ public static class iCS_EditorMgr {
         int idx= FindIndexOf(typeof(iCS_LibraryEditor).Name);
         return idx >= 0 ? myEditors[idx].Editor as iCS_LibraryEditor : null;
     }    
+    // ======================================================================
+	public static void RepaintVisualEditor() {
+		var editor= FindVisualEditor();
+		editor.MyWindow.Repaint();
+	}
 }

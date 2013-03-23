@@ -58,18 +58,19 @@ public partial class iCS_IStorage {
         // Rebuild layout
         ForcedRelayoutOfTree(EditorObjects[0]);
         // Animate change.
-        var timeRatio= iCS_EditorObject.BuildTimeRatio(2.5f);  // Half second animation.
+		var animTime= iCS_PreferencesEditor.MinAnimationTime;
+		if(animTime < 0.5f) animTime*= 1.5f;
+        var timeRatio= iCS_EditorObject.BuildTimeRatio(animTime);
         ForEach(
             obj=> {
                 if(obj.IsNode && obj.IsVisibleInLayout) {
                     obj.Animate(obj.LayoutRect, timeRatio);
-					if(obj.Name == ":Debug") {
-						Debug.Log("AnimStart: "+obj.AnimationStart+" AnimTarget: "+obj.LayoutRect);
-					}
                 }
             }
         );
-        undoRedoRunning= false;        
+        undoRedoRunning= false; 
+		IsDirty= true;
+		iCS_EditorMgr.RepaintVisualEditor();
     }
     
 }
