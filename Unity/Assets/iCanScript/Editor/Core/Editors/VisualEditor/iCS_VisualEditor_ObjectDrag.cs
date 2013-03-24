@@ -249,9 +249,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             }
                         } else {
                             // Animate node back to its original position.
-                            var pos= node.LayoutPosition;
-							var size= node.LayoutSize;
-							node.AnimationStart= iCS_EditorObject.BuildRect(pos, size);
                             var parent= node.ParentNode;
 							node.IsSticky= false;
                             parent.AnimateGraph(
@@ -261,7 +258,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                                 }
                             );
                             node.IsFloating= true;
-                            node.Animate(node.LayoutRect);
                         }
                     }
                     // Remove sticky on parent nodes.
