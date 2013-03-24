@@ -249,8 +249,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             }
                         } else {
                             // Animate node back to its original position.
-                            var parent= node.ParentNode;
 							node.IsSticky= false;
+                            var parent= node.ParentNode;
                             parent.AnimateGraph(
                                 o=> {
                                     node.AnchorPosition= DragStartAnchorPosition;
