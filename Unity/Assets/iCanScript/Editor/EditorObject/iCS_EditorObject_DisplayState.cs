@@ -140,37 +140,6 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Animation High-Order Utilities
     // ----------------------------------------------------------------------
-	public P.TimeRatio AnimateGraph(Action<iCS_EditorObject> fnc) {
-        EditorObjects[0].ForEachRecursiveDepthLast(
-            (o,f)=> {
-                if(!o.IsNode) return false;
-                if(!o.IsUnfoldedInLayout) {
-                    f(o);
-                    return false;
-                }
-                return true;
-            },
-            o=> o.AnimationStart= o.AnimatedRect
-        );
-		fnc(this);
-		LayoutNode(iCS_AnimationControl.None);
-		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
-		var timeRatio= BuildTimeRatioFromRect(AnimationStart, LayoutRect);		
-        EditorObjects[0].ForEachRecursiveDepthLast(
-            (o,f)=> {
-                if(!o.IsNode) return false;
-                if(o.IsSticky || o.IsFloating) return false;
-                if(!o.IsUnfoldedInLayout) {
-                    f(o);
-                    return false;
-                }
-                return true;
-            },
-            o=> o.Animate(o.LayoutRect, timeRatio)
-        );
-		return timeRatio;
-	}
-    // ----------------------------------------------------------------------
 	void Hide(P.TimeRatio timeRatio) {
 		var target= BuildRect(ParentNode.LayoutPosition, Vector2.zero);
 		Animate(target, timeRatio);

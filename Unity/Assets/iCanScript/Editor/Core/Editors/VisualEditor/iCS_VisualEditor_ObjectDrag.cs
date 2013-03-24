@@ -92,14 +92,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 IsDragEnabled= false;
                 DragType= DragTypeEnum.None;
             } else {
-				node.IsSticky= true;
                 DragObject= node;
                 DragStartDisplayPosition= node.LayoutPosition;                                                                    
                 if(IsFloatingKeyDown) {
                     IStorage.RegisterUndo("Node Relocation");
                     DragType= DragTypeEnum.NodeRelocation;                                        
                     DragStartAnchorPosition= node.AnchorPosition;
-                    node.ParentNode.AnimateGraph(_=> node.IsFloating= true);
+                    var parent= node.ParentNode;
+                    parent.AnimateGraph(_=> node.IsFloating= true);
                     node.LayoutPosition= DragStartDisplayPosition;
                 } else {
                     IStorage.RegisterUndo("Node Drag");
@@ -107,6 +107,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     node.IsFloating= false;
     				node.ForEachParentNode(p=> { p.IsSticky= true; });
                 }
+				node.IsSticky= true;
             }
             return true;
         }
@@ -148,8 +149,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
-            case DragTypeEnum.NodeRelocation:
                 DragObject.UserDragTo(newPosition);
+                break;
+            case DragTypeEnum.NodeRelocation:
+                DragObject.AnchorPosition= newPosition;
+                DragObject.LocalOffset= Vector2.zero;
                 break;
             case DragTypeEnum.PortRelocation: {
 				// Consider port relocation when dragging on parent edge.
