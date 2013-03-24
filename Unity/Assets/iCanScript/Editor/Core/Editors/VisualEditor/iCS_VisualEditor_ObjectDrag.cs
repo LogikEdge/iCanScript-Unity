@@ -250,6 +250,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 							var size= node.LayoutSize;
 							node.AnimationStart= iCS_EditorObject.BuildRect(pos, size);
                             var parent= node.ParentNode;
+							node.IsSticky= false;
                             parent.AnimateGraph(
                                 o=> {
                                     node.AnchorPosition= DragStartAnchorPosition;
