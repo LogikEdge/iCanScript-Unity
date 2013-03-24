@@ -149,11 +149,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         switch(DragType) {
             case DragTypeEnum.None: break;
             case DragTypeEnum.NodeDrag:
-                DragObject.UserDragTo(newPosition);
+                DragObject.NodeDragTo(newPosition);
                 break;
             case DragTypeEnum.NodeRelocation:
-                DragObject.AnchorPosition= newPosition;
-                DragObject.LocalOffset= Vector2.zero;
+                DragObject.NodeRelocateTo(newPosition);
                 break;
             case DragTypeEnum.PortRelocation: {
 				// Consider port relocation when dragging on parent edge.
