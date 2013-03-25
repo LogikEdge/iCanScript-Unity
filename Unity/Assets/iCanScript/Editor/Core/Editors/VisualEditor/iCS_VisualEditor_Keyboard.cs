@@ -26,6 +26,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             // Tree navigation
             case KeyCode.UpArrow: {
                 if(SelectedObject != null) {
+                    // Move node
+                    if(IsShiftKeyDown && SelectedObject.IsNode) {
+                        var newPos= SelectedObject.LayoutPosition;
+                        newPos.y-= IsAltKeyDown ? 5f: 1f;
+                        SelectedObject.IsSticky= true;
+                        SelectedObject.NodeDragTo(newPos);
+                        SelectedObject.IsSticky= false;
+                        Event.current.Use();
+                        return;
+                    }
                     SelectedObject= SelectedObject.Parent;
                     CenterOnSelected();
                 } 
@@ -33,6 +43,15 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.DownArrow: {
+                if(IsShiftKeyDown && SelectedObject.IsNode) {
+                    var newPos= SelectedObject.LayoutPosition;
+                    newPos.y+= IsAltKeyDown ? 5f: 1f;
+                    SelectedObject.IsSticky= true;
+                    SelectedObject.NodeDragTo(newPos);
+                    SelectedObject.IsSticky= false;
+                    Event.current.Use();
+                    return;
+                }
                 if(SelectedObject == null) SelectedObject= DisplayRoot;
                 SelectedObject= iCS_EditorUtility.GetFirstChild(SelectedObject, IStorage);
                 CenterOnSelected();
@@ -40,12 +59,30 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case KeyCode.RightArrow: {
+                if(IsShiftKeyDown && SelectedObject.IsNode) {
+                    var newPos= SelectedObject.LayoutPosition;
+                    newPos.x+= IsAltKeyDown ? 5f: 1f;
+                    SelectedObject.IsSticky= true;
+                    SelectedObject.NodeDragTo(newPos);
+                    SelectedObject.IsSticky= false;
+                    Event.current.Use();
+                    return;
+                }
                 SelectedObject= iCS_EditorUtility.GetNextSibling(SelectedObject, IStorage);
                 CenterOnSelected();
                 Event.current.Use();
                 break;
             }
             case KeyCode.LeftArrow: {
+                if(IsShiftKeyDown && SelectedObject.IsNode) {
+                    var newPos= SelectedObject.LayoutPosition;
+                    newPos.x-= IsAltKeyDown ? 5f: 1f;
+                    SelectedObject.IsSticky= true;
+                    SelectedObject.NodeDragTo(newPos);
+                    SelectedObject.IsSticky= false;
+                    Event.current.Use();
+                    return;
+                }
                 SelectedObject= iCS_EditorUtility.GetPreviousSibling(SelectedObject, IStorage);
                 CenterOnSelected();
                 Event.current.Use();
