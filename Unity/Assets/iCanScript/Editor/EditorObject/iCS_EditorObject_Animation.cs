@@ -153,6 +153,7 @@ public partial class iCS_EditorObject {
 		fnc(this);
 		LayoutNode(iCS_AnimationControl.None);
 		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
+//        myIStorage.ForcedRelayoutOfTree(EditorObjects[0]);
 		var timeRatio= BuildTimeRatioFromRect(AnimationStart, LayoutRect);		
         EditorObjects[0].ForEachRecursiveDepthLast(
             (c,_)=> c.IsNode,
