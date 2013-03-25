@@ -79,24 +79,18 @@ public partial class iCS_EditorObject {
     public void Iconize() {
         // Nothing to do if already iconized.
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
-		// Prepare to hide visible children
-		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
         // Set the node has iconized.
 		var timeRatio= AnimateGraph(
 			o=> o.DisplayOption= iCS_DisplayOptionEnum.Iconized
 		);
-        // Animate children if previous state was unfolded.
-        if(animateChildren) {
-            ForEachChildNode(c=> c.Hide(timeRatio));
-        }
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Fold() {
         // Nothing to do if already fold.
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
-		// Prepare to hide visible children
-		bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
+    	// Prepare to hide visible children
+    	bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
         // Set the node has folded.
 		var timeRatio= AnimateGraph(
 			o=> o.DisplayOption= iCS_DisplayOptionEnum.Folded
@@ -133,8 +127,6 @@ public partial class iCS_EditorObject {
 				);
 			}
 		);
-        // Animate children if previous state was unfolded.
-        ForEachChildNode(c=> c.Unhide(timeRatio));
         IsDirty= true;
     }
     // ======================================================================
@@ -143,7 +135,6 @@ public partial class iCS_EditorObject {
 	void Hide(P.TimeRatio timeRatio) {
 		var target= BuildRect(ParentNode.LayoutPosition, Vector2.zero);
 		Animate(target, timeRatio);
-		IsAlphaAnimated= true;
 		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
 			ForEachChildNode(c=> c.Hide(timeRatio));
 		}
@@ -154,13 +145,6 @@ public partial class iCS_EditorObject {
 		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
 			ForEachChildNode(c=> c.PrepareToUnhide());
 		}		
-	}
-    // ----------------------------------------------------------------------
-	void Unhide(P.TimeRatio timeRatio) {
-		IsAlphaAnimated= true;
-		if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-			ForEachChildNode(c=> c.Unhide(timeRatio));
-		}
 	}
     // ----------------------------------------------------------------------
     // We assume that our parent has just unfolded.

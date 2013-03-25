@@ -7,7 +7,6 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
-	private bool IsAlphaAnimated= false;
 	private P.Animate<Rect> myAnimatedRect=
 		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     
@@ -124,17 +123,13 @@ public partial class iCS_EditorObject {
             if(IsPort) {
                 return ParentNode.DisplayAlpha;
             }
-			if(!IsAlphaAnimated) {
-				return 1f;
-			}
-            if(!IsAnimated) {
-                IsAlphaAnimated= false;
-                return 1f;
-            }
             if(!IsVisibleInLayout) {
                 return 1f-myAnimatedRect.Ratio;
             }
-            return myAnimatedRect.Ratio;
+            if(IsAnimated && Math3D.Area(myAnimatedRect.StartValue) < 0.1f) {
+                return myAnimatedRect.Ratio;
+            }
+            return 1f;
         }
     }
 
