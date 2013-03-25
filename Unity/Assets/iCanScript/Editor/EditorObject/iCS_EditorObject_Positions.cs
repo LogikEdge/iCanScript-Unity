@@ -318,6 +318,7 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	public void Animate(P.TimeRatio timeRatio) {
+	    if(!iCS_PreferencesEditor.AnimationEnabled) return;
         if(myAnimatedRect.IsActive) {
             float time= Mathf.Max(myAnimatedRect.RemainingTime, timeRatio.RemainingTime);
             myAnimatedRect.Start(time);

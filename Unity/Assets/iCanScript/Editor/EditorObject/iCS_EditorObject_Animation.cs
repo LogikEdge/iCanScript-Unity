@@ -137,33 +137,37 @@ public partial class iCS_EditorObject {
     // Full graph animation
     // ----------------------------------------------------------------------
 	public P.TimeRatio AnimateGraph(Action<iCS_EditorObject> fnc) {
-        EditorObjects[0].ForEachRecursiveDepthLast(
-            (c,_)=> c.IsNode,
-            node => {
-                // FIXME: Should not have to redo what should be done by AnimatedRect when not visible.
-                if(node.IsVisibleOnDisplay) {
-                    node.AnimationStart= node.AnimatedRect;
-                } else {
-                    var t= node.ParentNode;
-                    while(!t.IsVisibleOnDisplay) t= t.ParentNode;
-                    node.AnimationStart= BuildRect(t.AnimatedPosition, Vector2.zero);                    
+        if(iCS_PreferencesEditor.AnimationEnabled) {
+            EditorObjects[0].ForEachRecursiveDepthLast(
+                (c,_)=> c.IsNode,
+                node => {
+                    // FIXME: Should not have to redo what should be done by AnimatedRect when not visible.
+                    if(node.IsVisibleOnDisplay) {
+                        node.AnimationStart= node.AnimatedRect;
+                    } else {
+                        var t= node.ParentNode;
+                        while(!t.IsVisibleOnDisplay) t= t.ParentNode;
+                        node.AnimationStart= BuildRect(t.AnimatedPosition, Vector2.zero);                    
+                    }
                 }
-            }
-        );
+            );            
+        }
 		fnc(this);
 		LayoutNode(iCS_AnimationControl.None);
 		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
 //        myIStorage.ForcedRelayoutOfTree(EditorObjects[0]);
-		var timeRatio= BuildTimeRatioFromRect(AnimationStart, LayoutRect);		
-        EditorObjects[0].ForEachRecursiveDepthLast(
-            (c,_)=> c.IsNode,
-            node=> {
-                var r= node.LayoutRect;
-                if(Math3D.Area(node.AnimationStart) > 0.1f || Math3D.Area(r) > 0.1f) {
-                    node.Animate(r, timeRatio);
+        var timeRatio= BuildTimeRatioFromRect(AnimationStart, LayoutRect);		
+        if(iCS_PreferencesEditor.AnimationEnabled) {
+            EditorObjects[0].ForEachRecursiveDepthLast(
+                (c,_)=> c.IsNode,
+                node=> {
+                    var r= node.LayoutRect;
+                    if(Math3D.Area(node.AnimationStart) > 0.1f || Math3D.Area(r) > 0.1f) {
+                        node.Animate(r, timeRatio);
+                    }
                 }
-            }
-        );
+            );
+        }
 		return timeRatio;
 	}
     
