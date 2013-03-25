@@ -76,6 +76,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
     
     // ======================================================================
+    // Repaint Proxy
+	// ----------------------------------------------------------------------
+    void Repaint() {
+        MyWindow.Repaint();
+    }
+    
+    // ======================================================================
     // Periodic Update
 	// ----------------------------------------------------------------------
 	public void Update() {
@@ -97,12 +104,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             
             // Repaint visual editor if it has changed
             if(IStorage.IsDirty || IStorage.IsAnimationPlaying || myAnimatedScrollPosition.IsActive || myAnimatedScale.IsActive) {
-                MyWindow.Repaint();
+                Repaint();
                 myNeedRepaint= true;
             }
             // Repaint on request.
             else if(myNeedRepaint) {
-                MyWindow.Repaint();
+                Repaint();
                 myNeedRepaint= false;                    
             }
             // Repaint if game is running.
@@ -113,12 +120,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 int newRefreshCounter= (int)(currentTime*refreshFactor);
                 if(newRefreshCounter != myRefreshCounter) {
                     myRefreshCounter= newRefreshCounter;
-                    MyWindow.Repaint();
+                    Repaint();
                 }
             }
 #if FORCE_REPAINT
             else {
-                MyWindow.Repaint();					
+                Repaint();					
             }
 #endif
         }
@@ -185,13 +192,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ----------------------------------------------------------------------
     // Processes all events.
     void ProcessEvents() {
-//        Debug.Log("Event: "+Event.current.type+" time: "+myCurrentTime);
 		var ev= Event.current;
 		// TODO: Should use undo/redo event to rebuild editor objects.
-//		if(ev.commandName == "UndoRedoPerformed") {
-//			IStorage.SynchronizeAfterUndoRedo();
-//			Debug.Log("UndoRedo detected");
-//		}
+		//if(ev.commandName == "UndoRedoPerformed") {
+        //    Debug.Log("EventType: "+ev.type);
+		//	IStorage.SynchronizeAfterUndoRedo();
+		//	Debug.Log("UndoRedo detected");
+	    //}
         switch(ev.type) {
             case EventType.Repaint: {
                 // Draw Graph.
@@ -251,6 +258,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 KeyDownEvent();
                 myNeedRepaint= true;
     			break;
+			}
+			case EventType.ValidateCommand: {
+                // Force repaint on undo/redo.
+			    if(ev.commandName == "UndoRedoPerformed") {
+			        Repaint();
+			        break;
+			    }
+			    break;
 			}
         }
     }
