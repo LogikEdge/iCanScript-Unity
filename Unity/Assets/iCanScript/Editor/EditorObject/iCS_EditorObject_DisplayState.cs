@@ -32,6 +32,7 @@ public partial class iCS_EditorObject {
 
     // ======================================================================
     // High-order queries.
+    // FIX: Fold/Unfold not properly functional when animated.
 	public bool IsUnfoldedOnDisplay { get { return IsUnfoldedInLayout; }}
     // ----------------------------------------------------------------------
 	public bool IsFoldedOnDisplay	{ get { return IsFoldedInLayout; }}

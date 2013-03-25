@@ -138,32 +138,29 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public P.TimeRatio AnimateGraph(Action<iCS_EditorObject> fnc) {
         EditorObjects[0].ForEachRecursiveDepthLast(
-            (o,f)=> {
-                if(!o.IsNode) return false;
-                if(!o.IsUnfoldedInLayout) {
-                    f(o);
-                    return false;
+            (c,_)=> c.IsNode,
+            node => {
+                // FIXME: Should not have to redo what should be done by AnimatedRect when not visible.
+                if(node.IsVisibleOnDisplay) {
+                    node.AnimationStart= node.AnimatedRect;
+                } else {
+                    var t= node.ParentNode;
+                    while(!t.IsVisibleOnDisplay) t= t.ParentNode;
+                    node.AnimationStart= BuildRect(t.AnimatedPosition, Vector2.zero);                    
                 }
-                return true;
-            },
-            o=> o.AnimationStart= o.AnimatedRect
+            }
         );
 		fnc(this);
 		LayoutNode(iCS_AnimationControl.None);
 		LayoutParentNodesUntilTop(iCS_AnimationControl.None);
 		var timeRatio= BuildTimeRatioFromRect(AnimationStart, LayoutRect);		
         EditorObjects[0].ForEachRecursiveDepthLast(
-            (o,f)=> {
-                if(!o.IsNode) return false;
-                if(o.IsSticky || o.IsFloating) return false;
-                if(!o.IsUnfoldedInLayout) {
-                    f(o);
-                    return false;
+            (c,_)=> c.IsNode,
+            node=> {
+                var r= node.LayoutRect;
+                if(Math3D.Area(node.AnimationStart) > 0.1f || Math3D.Area(r) > 0.1f) {
+                    node.Animate(r, timeRatio);
                 }
-                return true;
-            },
-            o=> {
-                o.Animate(o.LayoutRect, timeRatio);
             }
         );
 		return timeRatio;
