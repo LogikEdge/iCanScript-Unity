@@ -10,15 +10,7 @@ public partial class iCS_EditorObject {
     // Resolves the collision between children.  "true" is returned if a
     // collision has occured.
     // ----------------------------------------------------------------------
-    public void ResolveCollisionOnLayoutChildrenNodes(iCS_AnimationControl animCtrl) {
-        ResolveCollisionOnChildrenNodes(animCtrl, true);
-    }
-    // ----------------------------------------------------------------------
-    public void ResolveCollisionOnAnimatedChildrenNodes(iCS_AnimationControl animCtrl) {
-        ResolveCollisionOnChildrenNodes(animCtrl, false);
-    }
-    // ----------------------------------------------------------------------
-    public void ResolveCollisionOnChildrenNodes(iCS_AnimationControl animCtrl, bool useLayout) {
+    public void ResolveCollisionOnChildrenNodes(iCS_AnimationControl animCtrl) {
 		// Get a snapshot of the children state.
 		var children= BuildListOfChildNodes(c=> !c.IsFloating);
 		var childStartRect = new Rect[children.Length];
@@ -26,7 +18,7 @@ public partial class iCS_EditorObject {
 		for(int i= 0; i < children.Length; ++i) {
 			var c= children[i];
     		childStartRect[i]= c.AnimatedRect;
-    		var cAnchor= useLayout ? c.LayoutAnchorPosition : c.AnimatedAnchorPosition;                
+    		var cAnchor= c.AnchorPosition;                
 			childRect[i]    = BuildRect(cAnchor, c.LayoutSize);
 		}
         // Resolve collisions.

@@ -71,23 +71,7 @@ public partial class iCS_EditorObject {
 		}
 	}
     // ----------------------------------------------------------------------
-    public Vector2 AnimatedAnchorPosition {
-		get {
-			var parent= ParentNode;
-			if(parent == null) return LocalAnchorPosition;
-    		return parent.AnimatedPosition+LocalAnchorPosition;			    
-		}
-		set {
-			var parent= ParentNode;
-			if(parent == null) {
-				LocalAnchorPosition= value;
-				return;
-			}
-    		LocalAnchorPosition= value-parent.AnimatedPosition;                
-		}        
-    }
-    // ----------------------------------------------------------------------
-    public Vector2 LayoutAnchorPosition {
+    public Vector2 AnchorPosition {
 		get {
 			var parent= ParentNode;
 			if(parent == null) return LocalAnchorPosition;
@@ -102,15 +86,6 @@ public partial class iCS_EditorObject {
     		LocalAnchorPosition= value-parent.LayoutPosition;                
 		}                
     }
-    // ----------------------------------------------------------------------	
-	public Vector2 AnchorPosition {
-		get {
-            return LayoutAnchorPosition;
-		}
-		set {
-            LayoutAnchorPosition= value;
-		}
-	}
 
     // ======================================================================
     // Layout
@@ -358,23 +333,7 @@ public partial class iCS_EditorObject {
 	// ======================================================================
     // Child Position Utilities
  	// ----------------------------------------------------------------------
-    public Rect AnimatedChildRect {
-        get {
-            Rect childRect= BuildRect(AnimatedPosition, Vector2.zero);
-            ForEachChildNode(
-                c=> {
-                    if(!c.IsFloating) {
-    					if(c.IsVisibleOnDisplay) {
-        					childRect= Math3D.Merge(childRect, c.AnimatedRect);											        
-    					}
-                    }
-				}
-            );
-            return childRect;
-        }
-    }
- 	// ----------------------------------------------------------------------
-    public Rect LayoutChildRect {
+    public Rect ChildRect {
         get {
             Rect childRect= BuildRect(LayoutPosition, Vector2.zero);
             ForEachChildNode(
@@ -391,20 +350,9 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Returns the global rectangle currently used by the children.
-    public Rect AnimatedChildRectWithMargins {
+    public Rect ChildRectWithMargins {
         get {
-            var childRect= AnimatedChildRect;
-            if(Math3D.IsNotZero(Math3D.Area(childRect))) {
-                childRect= AddMargins(childRect);
-            }
-            return childRect;
-        }
-    }
-    // ----------------------------------------------------------------------
-    // Returns the global rectangle currently used by the children.
-    public Rect LayoutChildRectWithMargins {
-        get {
-            var childRect= LayoutChildRect;
+            var childRect= ChildRect;
             if(Math3D.IsNotZero(Math3D.Area(childRect))) {
                 childRect= AddMargins(childRect);
             }

@@ -232,6 +232,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     DragObject.IsFloating= false;
                     DragObject.IsSticky= false;
 					DragObject.ForEachParentNode(p=> { p.IsSticky= false; });
+					IStorage.ForcedRelayoutOfTree(IStorage.EditorObjects[0]);
                     break;
                 }
                 case DragTypeEnum.NodeRelocation: {

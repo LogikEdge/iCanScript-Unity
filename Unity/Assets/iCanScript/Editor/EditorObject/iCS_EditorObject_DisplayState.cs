@@ -104,20 +104,6 @@ public partial class iCS_EditorObject {
 		AnimateGraph(
 			o=> {
 		        o.DisplayOption= iCS_DisplayOptionEnum.Unfolded;
-				// Perform layout on children first.
-				o.ForEachChildRecursiveDepthFirst(
-					(c,fnc)=> {
-						if(!c.IsNode) return false;
-						if(c.DisplayOption == iCS_DisplayOptionEnum.Unfolded) {
-							return true;
-						}
-						fnc(c);
-						return false;
-					},
-					c=> {
-						c.LayoutNode(iCS_AnimationControl.None);
-					}
-				);
 			}
 		);
         IsDirty= true;

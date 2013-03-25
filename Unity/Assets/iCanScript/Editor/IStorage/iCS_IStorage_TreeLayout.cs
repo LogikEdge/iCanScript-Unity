@@ -10,7 +10,7 @@ public partial class iCS_IStorage {
             	if(!obj.IsVisibleInLayout) return;
 				UpdateTransitionModuleName(obj);
 				if(obj.IsNode) {
-					obj.LayoutNode();
+					obj.LayoutNode(iCS_AnimationControl.None);
 				}
             }
         );    		

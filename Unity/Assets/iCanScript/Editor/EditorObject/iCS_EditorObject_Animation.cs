@@ -144,6 +144,9 @@ public partial class iCS_EditorObject {
                     // FIXME: Should not have to redo what should be done by AnimatedRect when not visible.
                     if(node.IsVisibleOnDisplay) {
                         node.AnimationStart= node.AnimatedRect;
+                        if(node.Name == ":StateChart") {
+                            Debug.Log("AnimStart: "+node.AnimationStart);
+                        }
                     } else {
                         var t= node.ParentNode;
                         while(!t.IsVisibleOnDisplay) t= t.ParentNode;
@@ -165,6 +168,9 @@ public partial class iCS_EditorObject {
                     if(!node.IsFloating) {
                         if(Math3D.Area(node.AnimationStart) > 0.1f || Math3D.Area(r) > 0.1f) {
                             node.Animate(r, timeRatio);
+                            if(node.Name == ":StateChart") {
+                                Debug.Log("AnimStart: "+node.AnimationStart+" AnimTarget: "+r);
+                            }
                         }                        
                     }
                 }
