@@ -255,7 +255,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public Rect AnimatedRect {
 		get {
-			if(IsAnimated) {
+			if(IsAnimated && iCS_PreferencesEditor.AnimationEnabled) {
     			return myAnimatedRect.CurrentValue;
 			}
 			var parent= ParentNode;

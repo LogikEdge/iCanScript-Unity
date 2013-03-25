@@ -152,14 +152,16 @@ public partial class iCS_IStorage {
 	    }
         // Update object animations.
         myIsAnimationPlaying= false;
-        ForEach(
-            obj=> {
-    			if(obj.IsAnimated) {
-					obj.UpdateAnimation();
-    				myIsAnimationPlaying= true;
-    			}
-            }
-        );
+        if(iCS_PreferencesEditor.AnimationEnabled) {
+            ForEach(
+                obj=> {
+        			if(obj.IsAnimated) {
+    					obj.UpdateAnimation();
+        				myIsAnimationPlaying= true;
+        			}
+                }
+            );            
+        }
 
         // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {
