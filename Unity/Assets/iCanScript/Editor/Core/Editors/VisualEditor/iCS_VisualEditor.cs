@@ -85,6 +85,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Periodic Update
 	// ----------------------------------------------------------------------
+    // TODO: Simplify Update using event instead of continusouly scan all objects.
 	public void Update() {
         // Don't run update faster then requested.
         float currentTime= Time.realtimeSinceStartup;

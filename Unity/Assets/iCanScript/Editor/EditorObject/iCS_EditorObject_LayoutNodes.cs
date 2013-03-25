@@ -74,7 +74,7 @@ public partial class iCS_EditorObject {
 	        }
 		);
         // Determine node global layout.
-        var r= UnfoldedNodeRect();
+        var r= useLayout ? UnfoldedLayoutNodeRect() : UnfoldedAnimatedNodeRect();
 		// Update parent node anchor positions.
 		var center= Math3D.Middle(r);
 		AnchorPosition= center-LocalOffset;
@@ -100,17 +100,22 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     Rect FoldedNodeRect() {
-        return NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(new Rect(0,0,0,0));
+        return NodeRectFromChildrenRectWithMargins(new Rect(0,0,0,0));
     }
 
     // ----------------------------------------------------------------------
     // We assume that the children have already been properly layed out.
-    Rect UnfoldedNodeRect() {
-        return NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(GlobalDisplayChildRectWithMargins);        
+    Rect UnfoldedAnimatedNodeRect() {
+        return NodeRectFromChildrenRectWithMargins(AnimatedChildRectWithMargins);        
+    }
+    // ----------------------------------------------------------------------
+    // We assume that the children have already been properly layed out.
+    Rect UnfoldedLayoutNodeRect() {
+        return NodeRectFromChildrenRectWithMargins(LayoutChildRectWithMargins);        
     }
     
     // ----------------------------------------------------------------------
-    Rect NodeGlobalLayoutRectFromChildrenGlobalLayoutRectWithMargins(Rect childRect) {
+    Rect NodeRectFromChildrenRectWithMargins(Rect childRect) {
         // Get padding for all sides.
 		float topPadding= NodeTopPadding;
 		float bottomPadding= NodeBottomPadding;

@@ -280,7 +280,7 @@ public partial class iCS_EditorObject {
 			return myAnimatedRect.StartValue;
 		}
 		set {
-			myAnimatedRect.StartValue= value;
+			myAnimatedRect.StartValue= myAnimatedRect.IsActive ? myAnimatedRect.CurrentValue : value;
 		}
 	}
     // ----------------------------------------------------------------------
@@ -318,6 +318,11 @@ public partial class iCS_EditorObject {
 	}
     // ----------------------------------------------------------------------
 	public void Animate(P.TimeRatio timeRatio) {
+        if(myAnimatedRect.IsActive) {
+            float time= Mathf.Max(myAnimatedRect.RemainingTime, timeRatio.RemainingTime);
+            myAnimatedRect.Start(time);
+            return;
+        }
 		myAnimatedRect.Start(timeRatio);
 	}
 	
@@ -352,7 +357,7 @@ public partial class iCS_EditorObject {
 	// ======================================================================
     // Child Position Utilities
  	// ----------------------------------------------------------------------
-    public Rect GlobalDisplayChildRect {
+    public Rect AnimatedChildRect {
         get {
             Rect childRect= BuildRect(AnimatedPosition, Vector2.zero);
             ForEachChildNode(
@@ -367,11 +372,38 @@ public partial class iCS_EditorObject {
             return childRect;
         }
     }
+ 	// ----------------------------------------------------------------------
+    public Rect LayoutChildRect {
+        get {
+            Rect childRect= BuildRect(LayoutPosition, Vector2.zero);
+            ForEachChildNode(
+                c=> {
+                    if(!c.IsFloating) {
+    					if(c.IsVisibleInLayout) {
+        					childRect= Math3D.Merge(childRect, c.LayoutRect);											        
+    					}
+                    }
+				}
+            );
+            return childRect;
+        }
+    }
     // ----------------------------------------------------------------------
     // Returns the global rectangle currently used by the children.
-    public Rect GlobalDisplayChildRectWithMargins {
+    public Rect AnimatedChildRectWithMargins {
         get {
-            var childRect= GlobalDisplayChildRect;
+            var childRect= AnimatedChildRect;
+            if(Math3D.IsNotZero(Math3D.Area(childRect))) {
+                childRect= AddMargins(childRect);
+            }
+            return childRect;
+        }
+    }
+    // ----------------------------------------------------------------------
+    // Returns the global rectangle currently used by the children.
+    public Rect LayoutChildRectWithMargins {
+        get {
+            var childRect= LayoutChildRect;
             if(Math3D.IsNotZero(Math3D.Area(childRect))) {
                 childRect= AddMargins(childRect);
             }
