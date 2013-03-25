@@ -81,7 +81,7 @@ public partial class iCS_EditorObject {
         // Nothing to do if already iconized.
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) return;
         // Set the node has iconized.
-		var timeRatio= AnimateGraph(
+		AnimateGraph(
 			o=> o.DisplayOption= iCS_DisplayOptionEnum.Iconized
 		);
         IsDirty= true;
@@ -90,26 +90,18 @@ public partial class iCS_EditorObject {
     public void Fold() {
         // Nothing to do if already fold.
         if(DisplayOption == iCS_DisplayOptionEnum.Folded) return;
-    	// Prepare to hide visible children
-    	bool animateChildren= DisplayOption == iCS_DisplayOptionEnum.Unfolded;
         // Set the node has folded.
-		var timeRatio= AnimateGraph(
+		AnimateGraph(
 			o=> o.DisplayOption= iCS_DisplayOptionEnum.Folded
 		);
-        // Animate children if previous state was unfolded.
-        if(animateChildren) {
-            ForEachChildNode(c=> c.Hide(timeRatio));
-        }
         IsDirty= true;
     }
     // ----------------------------------------------------------------------    
     public void Unfold() {
         // Nothing to do if already unfold.
         if(DisplayOption == iCS_DisplayOptionEnum.Unfolded) return;
-		// Prepare to hide visible children
-        ForEachChildNode(c=> c.PrepareToUnhide());
         // Set the node has unfolded.
-		var timeRatio= AnimateGraph(
+		AnimateGraph(
 			o=> {
 		        o.DisplayOption= iCS_DisplayOptionEnum.Unfolded;
 				// Perform layout on children first.
