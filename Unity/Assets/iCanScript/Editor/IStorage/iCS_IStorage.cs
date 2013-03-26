@@ -132,7 +132,10 @@ public partial class iCS_IStorage {
     public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.SourceId); }
     public bool IsParentValid(iCS_EditorObject obj)  { return IsIdValid(obj.ParentId); }
     // ----------------------------------------------------------------------
-	public bool IsAnimationPlaying { get { return myIsAnimationPlaying; }}
+	public bool IsAnimationPlaying {
+		get { return myIsAnimationPlaying; }
+		set { myIsAnimationPlaying= value; }
+	}
     // ----------------------------------------------------------------------
 	public iCS_EditorObject GetParentMuxPort(iCS_EditorObject eObj) {
 		return eObj.IsParentMuxPort ? eObj : (eObj.IsChildMuxPort ? eObj.Parent : null);
@@ -165,7 +168,9 @@ public partial class iCS_IStorage {
 	        myIsDirty= false;
 	    }
         // Update object animations.
-		UpdateAnimations();
+		if(IsAnimationPlaying) {
+			UpdateAnimations();			
+		}
 
         // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {
@@ -176,13 +181,13 @@ public partial class iCS_IStorage {
 
     // ----------------------------------------------------------------------
 	public void UpdateAnimations() {
-        myIsAnimationPlaying= false;
+        IsAnimationPlaying= false;
         if(iCS_PreferencesEditor.AnimationEnabled) {
             ForEach(
                 obj=> {
         			if(obj.IsAnimated) {
     					obj.UpdateAnimation();
-        				myIsAnimationPlaying= true;
+        				IsAnimationPlaying= true;
         			}
                 }
             );            
