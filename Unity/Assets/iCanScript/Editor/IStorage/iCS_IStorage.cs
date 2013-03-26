@@ -124,10 +124,10 @@ public partial class iCS_IStorage {
 		return id >= 0 && id < EditorObjects.Count;
 	}
 	public bool IsValid(int id) {
-		return IsIdValid(id) && IsValid(EditorObjects[id]);
+		return IsIdValid(id) && EditorObjects[id] != null;
 	}
     public bool IsValid(iCS_EditorObject obj) {
-		return obj != null && obj.InstanceId != -1;
+		return obj != null && IsIdValid(obj.InstanceId);
 	}
     public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.SourceId); }
     public bool IsParentValid(iCS_EditorObject obj)  { return IsIdValid(obj.ParentId); }
