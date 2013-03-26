@@ -142,7 +142,6 @@ public partial class iCS_EditorObject {
             EditorObjects[0].ForEachRecursiveDepthLast(
                 (c,_)=> c.IsNode,
                 node => {
-                    // FIXME: Should not have to redo what should be done by AnimatedRect when not visible.
                     if(node.IsVisibleOnDisplay) {
                         node.AnimationStart= node.AnimatedRect;
                     } else {

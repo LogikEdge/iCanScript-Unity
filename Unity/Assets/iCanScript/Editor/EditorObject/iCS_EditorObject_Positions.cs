@@ -249,7 +249,6 @@ public partial class iCS_EditorObject {
 			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
 				return BuildRect(parentPos, size);
 			}
-            // FIXME: This is problematic because we are using the Anchor+Offset from the Layout.
             var pos= parentPos+LocalAnchorPosition+LocalOffset;
             var r= BuildRect(pos, size);
 			return r;

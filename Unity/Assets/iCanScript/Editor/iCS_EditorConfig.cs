@@ -36,6 +36,17 @@ public static class iCS_EditorConfig {
     public const float EditorWindowMinY= EditorWindowMarginSize + EditorWindowToolbarHeight;
 
     // ======================================================================
+	public static string VersionStr {
+		get {
+			return "Version "+iCS_Config.MajorVersion+"."+
+			                  iCS_Config.MinorVersion+"."+
+							  iCS_Config.BugFixVersion;
+		}
+	}
+    public const string VersionLabel= "(RC #1)";
+	
+	
+    // ======================================================================
     public static GUIStyle NodeStyle        { get { return GUI.skin.button; }}
     public static GUIStyle PortLabelStyle   { get { return GUI.skin.label; }}
     

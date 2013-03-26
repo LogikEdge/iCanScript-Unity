@@ -60,15 +60,31 @@ public partial class iCS_EditorObject {
         // Resolve collisions.
 		int r= 0;
         bool didCollide= true;
-		while(didCollide && ++r < 10) {
+		while(didCollide) {
 			didCollide= false;
+			iCS_EditorObject lowest= null;
 	        for(int i= 0; i < children.Length-1; ++i) {
 				var c1= children[i];
 	            for(int j= i+1; j < children.Length; ++j) {
 					var c2= children[j];
-	                didCollide |= c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i], ref childRect[j]);
+	                if(c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i],
+															  ref childRect[j])) {
+					    didCollide= true;	
+					}
+					if(c1.LayoutPriority > c2.LayoutPriority) {
+						lowest= c1;
+					} else if(c2.LayoutPriority > c1.LayoutPriority) {
+						lowest= c2;
+					}
 	            }
 	        }
+			if(++r > 10) {
+				if(lowest == null || lowest.LayoutPriority <= 1) {
+					break;
+				}
+				lowest.LayoutPriority= lowest.LayoutPriority-1;
+				r= 0;
+			}
 		}
     }
     // ----------------------------------------------------------------------

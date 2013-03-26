@@ -2,10 +2,6 @@ using UnityEngine;
 using System;
 using System.Collections;
 
-/*
- 	FIXME: Port anchorPosition, LayoutPosition and DisplayPosition should all
-		   be computed as a block when parent is resized.
-*/
 public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // Lays out the ports of this node using the position ratio and node size
@@ -75,9 +71,6 @@ public partial class iCS_EditorObject {
     }
     // ----------------------------------------------------------------------
     // Resolves the port layout position for a given edge.
-    /*
-        FIXME: Resolve jitter when port is being dragged by user.
-    */
     static float[] ResolvePortCollisions(float[] sortedPosition, float availableLength) {
         // Nothing collision to resolve if we don't have at least two ports.
         int nbPorts= sortedPosition.Length;

@@ -87,7 +87,7 @@ public static class iCS_EditorUtility {
     // GUI helpers
 	// ----------------------------------------------------------------------
     public static int SafeSelectAndMakeVisible(iCS_EditorObject selected, iCS_IStorage iStorage) {
-        iStorage.RegisterUndo("Make Visible: "+selected.Name);
+        iStorage.RegisterUndo("Focus on: "+selected.Name);
         iStorage.SelectedObject= selected;        
         FocusOn(selected, iStorage);
         return iStorage.UndoRedoId;
@@ -125,6 +125,7 @@ public static class iCS_EditorUtility {
     } 
     public static void UndoIfUndoRedoId(int modificationId, iCS_IStorage iStorage) {
         if(IsCurrentUndoRedoId(modificationId, iStorage)) {
+//	        EditorApplication.ExecuteMenuItem("/Edit/Undo iCanScript");                
             Undo.PerformUndo();
         }
     }

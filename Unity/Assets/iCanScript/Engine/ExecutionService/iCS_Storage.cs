@@ -3,28 +3,31 @@ using System.Collections;
 using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-// This class is the main storage of uCode.  All object are derived
+// This class is the main storage of iCanScript.  All object are derived
 // from this storage class.
-/*
-	FIXME: Add version information for later conversions.
-*/
 public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    [HideInInspector] public int                      DataVersion   = 1;
-    /*[HideInInspector]*/ public List<iCS_EngineObject>   EngineObjects = new List<iCS_EngineObject>();
-    [HideInInspector] public List<Object>             UnityObjects  = new List<Object>();
-    [HideInInspector] public int                      UndoRedoId    = 0;
-	[HideInInspector] public Vector2				  ScrollPosition= Vector2.zero;
-	[HideInInspector] public float  				  GuiScale      = 1f;	
-	[HideInInspector] public int    				  SelectedObject= -1;	
+    [HideInInspector] public int			MajorVersion  = iCS_Config.MajorVersion;
+    [HideInInspector] public int    		MinorVersion  = iCS_Config.MinorVersion;
+    [HideInInspector] public int    		BugFixVersion = iCS_Config.BugFixVersion;
+    [HideInInspector] public List<Object>   UnityObjects  = new List<Object>();
+    [HideInInspector] public int            UndoRedoId    = 0;
+	[HideInInspector] public Vector2		ScrollPosition= Vector2.zero;
+	[HideInInspector] public float  		GuiScale      = 1f;	
+	[HideInInspector] public int    		SelectedObject= -1;	
+    [HideInInspector] public List<iCS_EngineObject>   EngineObjects = new List<iCS_EngineObject>();
 
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public bool IsValidEngineObject(int id) { return id >= 0 && id < EngineObjects.Count && EngineObjects[id].InstanceId != -1; }
-    public bool IsValidUnityObject(int id)  { return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null; }
+    public bool IsValidEngineObject(int id) {
+		return id >= 0 && id < EngineObjects.Count && EngineObjects[id].InstanceId != -1;
+	}
+    public bool IsValidUnityObject(int id)  {
+		return id >= 0 && id < UnityObjects.Count && UnityObjects[id] != null;
+	}
 
     // ======================================================================
     // Initialization
