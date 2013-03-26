@@ -106,7 +106,12 @@ public partial class iCS_EditorObject {
 		SetAsHighestLayoutPriority();
 		AnimateGraph(
 			o=> {
+				// Keep a copy of the anchor position.
+				var savedAnchor= o.AnchorPosition;
 		        o.DisplayOption= iCS_DisplayOptionEnum.Unfolded;
+				// Relayout chidlren nodes.
+				myIStorage.ForcedRelayoutOfTree(o);
+				o.SetAnchorAndLayoutPosition(savedAnchor);
 			}
 		);
         IsDirty= true;
