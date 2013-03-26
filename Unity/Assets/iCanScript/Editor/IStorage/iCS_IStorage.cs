@@ -189,7 +189,11 @@ public partial class iCS_IStorage {
         				IsAnimationPlaying= true;
         			}
                 }
-            );            
+            );
+			// Force full relayout after animation has completed.
+            if(IsAnimationPlaying == false) {
+				ForcedRelayoutOfTree(EditorObjects[0]);
+			}
         }		
 	}
 	
