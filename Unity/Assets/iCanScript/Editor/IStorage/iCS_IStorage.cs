@@ -129,8 +129,8 @@ public partial class iCS_IStorage {
     public bool IsValid(iCS_EditorObject obj) {
 		return obj != null && obj.InstanceId != -1;
 	}
-    public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
-    public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
+    public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.SourceId); }
+    public bool IsParentValid(iCS_EditorObject obj)  { return IsIdValid(obj.ParentId); }
     // ----------------------------------------------------------------------
 	public bool IsAnimationPlaying { get { return myIsAnimationPlaying; }}
     // ----------------------------------------------------------------------
