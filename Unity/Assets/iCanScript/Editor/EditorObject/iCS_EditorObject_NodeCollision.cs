@@ -5,6 +5,20 @@ using P=Prelude;
 
 public partial class iCS_EditorObject {
     // ======================================================================
+	// Fields
+    // ----------------------------------------------------------------------
+	int LayoutPriority= 0;
+	
+	void ReduceChildrenLayoutPriority() {
+		ForEachChildNode(c=> ++c.LayoutPriority);
+	}
+	void SetHasHighestLayoutPriority() {
+		var parent= ParentNode;
+		if(parent != null) parent.ReduceChildrenLayoutPriority();
+		LayoutPriority= 0;
+	}
+	
+    // ======================================================================
     // Collision Functions
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
@@ -83,27 +97,46 @@ public partial class iCS_EditorObject {
 												 myRect,
 												 theOtherRect);
 		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) return false;
-
-        // Seperate by half penetration if none is sticky.
-        if(!IsSticky && !theOtherNode.IsSticky) {
+		// Use Layout priority to determine which node to move.
+		if(LayoutPriority == theOtherNode.LayoutPriority) {
             penetration*= 0.5f;
 			theOtherRect.x+= penetration.x;
 			theOtherRect.y+= penetration.y;
 			myRect.x-= penetration.x;
 			myRect.y-= penetration.y;
-            return true;            
-        }
-		// Seperate using the known movement.
-    	if(!theOtherNode.IsSticky) {
+            return true;            			
+		}
+		if(LayoutPriority < theOtherNode.LayoutPriority) {
 			theOtherRect.x+= penetration.x;
 			theOtherRect.y+= penetration.y;
-            return true;
-    	}
-        if(!IsSticky) {            
+            return true;			
+		}
+		if(LayoutPriority > theOtherNode.LayoutPriority) {
 			myRect.x-= penetration.x;
 			myRect.y-= penetration.y;
-    		return true;
-    	}            
+    		return true;			
+		}
+//
+//        // Seperate by half penetration if none is sticky.
+//        if(!IsSticky && !theOtherNode.IsSticky) {
+//            penetration*= 0.5f;
+//			theOtherRect.x+= penetration.x;
+//			theOtherRect.y+= penetration.y;
+//			myRect.x-= penetration.x;
+//			myRect.y-= penetration.y;
+//            return true;            
+//        }
+//		// Seperate using the known movement.
+//    	if(!theOtherNode.IsSticky) {
+//			theOtherRect.x+= penetration.x;
+//			theOtherRect.y+= penetration.y;
+//            return true;
+//    	}
+//        if(!IsSticky) {            
+//			myRect.x-= penetration.x;
+//			myRect.y-= penetration.y;
+//    		return true;
+//    	}            
         return false;
     }
     // ----------------------------------------------------------------------
