@@ -5,20 +5,6 @@ using P=Prelude;
 
 public partial class iCS_EditorObject {
     // ======================================================================
-	// Fields
-    // ----------------------------------------------------------------------
-	int LayoutPriority= 0;
-	
-	void ReduceChildrenLayoutPriority() {
-		ForEachChildNode(c=> ++c.LayoutPriority);
-	}
-	void SetHasHighestLayoutPriority() {
-		var parent= ParentNode;
-		if(parent != null) parent.ReduceChildrenLayoutPriority();
-		LayoutPriority= 0;
-	}
-	
-    // ======================================================================
     // Collision Functions
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
@@ -172,5 +158,21 @@ public partial class iCS_EditorObject {
 			return new Vector2(sepX, 0);
 		}
 		return new Vector2(0, sepY);
+	}
+
+	// ======================================================================
+	// Layout priority functionality.
+	// ----------------------------------------------------------------------
+	// Reduces the layout priority of all chidren.
+	void ReduceChildrenLayoutPriority() {
+		ForEachChildNode(c=> ++c.LayoutPriority);
+	}
+    // ----------------------------------------------------------------------
+	// Sets the current object as the highest layout priority.
+	void SetAsHighestLayoutPriority() {
+		var parent= ParentNode;
+		if(parent != null) parent.ReduceChildrenLayoutPriority();
+		LayoutPriority= 0;
+		IsDirty=true;
 	}
 }

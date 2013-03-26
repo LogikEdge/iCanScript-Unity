@@ -25,6 +25,7 @@ public class iCS_EngineObject {
     public string                IconGUID         = null;
     public string                Tooltip          = null;
     public int                   ExecutionPriority= 0;
+	public int					 LayoutPriority   = 0;
 
     // Port specific attributes ---------------------------------------------
     public int                   SourceId           = -1;
@@ -132,6 +133,7 @@ public class iCS_EngineObject {
         QualifiedType= "";
 		RawName= "";
         LocalAnchorPosition= Vector2.zero;
+		LayoutPriority= 0;
 		Scale= 1.0f;
         DisplayOption= iCS_DisplayOptionEnum.Unfolded;
         IsNameEditable= true;

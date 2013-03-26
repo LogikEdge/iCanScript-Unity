@@ -90,6 +90,12 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Layout
     // ----------------------------------------------------------------------
+	// Node priority when resolving collisions.
+	public int LayoutPriority {
+		get { return EngineObject.LayoutPriority; }
+		set { EngineObject.LayoutPriority= value; }
+	}
+    // ----------------------------------------------------------------------
     // Offset from the anchor position.  This attribute is animated.
 	public Vector2 LocalOffset {
 		get {
