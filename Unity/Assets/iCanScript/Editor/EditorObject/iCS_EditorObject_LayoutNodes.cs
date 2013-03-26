@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -19,6 +20,13 @@ public partial class iCS_EditorObject {
             parent.LayoutParentNodesUntilTop(animCtrl);
         }
     }
+    // ----------------------------------------------------------------------
+	public void LayoutUnfoldedParentNodesUsingAnimatedChildren() {
+		for(var parent= ParentNode; parent != null; parent= parent.ParentNode) {
+			parent.ResolveCollisionOnChildrenNodes(iCS_AnimationControl.Normal);
+            parent.WrapAroundChildrenNodes(o=> o.AnimatedUnfoldedNodeRect());                                
+		}		
+	}
     // ----------------------------------------------------------------------
 	public void LayoutNode(iCS_AnimationControl animCtrl= iCS_AnimationControl.Normal) {
         // Nothing to do for invisible ports.
@@ -44,7 +52,10 @@ public partial class iCS_EditorObject {
     // layout size will be updated accordingly.
     // NOTE: This function must not be called for iconized nodes.
     // ----------------------------------------------------------------------
-    public void WrapAroundChildrenNodes() { 
+	public void WrapAroundChildrenNodes() {
+		WrapAroundChildrenNodes(o=> o.UnfoldedNodeRect());
+	}
+    public void WrapAroundChildrenNodes(Func<iCS_EditorObject,Rect> childRectFnc) { 
 		// Nothing to do if node is not visible.
 		if(!IsVisibleInLayout || IsIconizedInLayout) {
 		    return;
@@ -57,7 +68,7 @@ public partial class iCS_EditorObject {
 	        }
 		);
         // Determine node global layout.
-        var r= UnfoldedNodeRect();
+        var r= childRectFnc(this);
 		// Update parent node anchor positions.
 		var center= Math3D.Middle(r);
 		AnchorPosition= center-LocalOffset;
@@ -85,6 +96,11 @@ public partial class iCS_EditorObject {
     // We assume that the children have already been properly layed out.
     Rect UnfoldedNodeRect() {
         return NodeRectFromChildrenRectWithMargins(ChildRectWithMargins);        
+    }
+    // ----------------------------------------------------------------------
+    // We assume that the children have already been properly layed out.
+    Rect AnimatedUnfoldedNodeRect() {
+        return NodeRectFromChildrenRectWithMargins(AnimatedChildRectWithMargins);        
     }
     
     // ----------------------------------------------------------------------

@@ -359,4 +359,31 @@ public partial class iCS_EditorObject {
             return childRect;
         }
     }
+ 	// ----------------------------------------------------------------------
+    public Rect AnimatedChildRect {
+        get {
+            Rect childRect= BuildRect(LayoutPosition, Vector2.zero);
+            ForEachChildNode(
+                c=> {
+                    if(!c.IsFloating) {
+    					if(c.IsVisibleInLayout) {
+        					childRect= Math3D.Merge(childRect, c.AnimatedRect);											        
+    					}
+                    }
+				}
+            );
+            return childRect;
+        }
+    }
+    // ----------------------------------------------------------------------
+    // Returns the global rectangle currently used by the children.
+    public Rect AnimatedChildRectWithMargins {
+        get {
+            var childRect= AnimatedChildRect;
+            if(Math3D.IsNotZero(Math3D.Area(childRect))) {
+                childRect= AddMargins(childRect);
+            }
+            return childRect;
+        }
+    }
 }
