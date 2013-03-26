@@ -7,6 +7,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
+	public bool LayoutUsingAnimatedChildren= false;
 	private P.Animate<Rect> myAnimatedRect=
 		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     
@@ -110,8 +111,8 @@ public partial class iCS_EditorObject {
                 LayoutPorts();
                 // Update parent node
 				var parent= ParentNode;
-				if(parent != null && !parent.IsAnimated) {
-//					LayoutUnfoldedParentNodesUsingAnimatedChildren();
+				if(parent != null && !parent.IsAnimated && parent.LayoutUsingAnimatedChildren) {
+					LayoutUnfoldedParentNodesUsingAnimatedChildren();
 				}
 			}
 		}

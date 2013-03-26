@@ -7,6 +7,31 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	static iCS_EditorObject ourLastDraggedNode= null;
 	
+	// ======================================================================
+	// Node Drag
+    // ----------------------------------------------------------------------
+	public void StartNodeDrag() {
+        IsFloating= false;
+		IsSticky= true;
+		ForEachParentNode(
+			p=> {
+				p.IsSticky= true;
+				p.LayoutUsingAnimatedChildren= true;
+			}
+		);		
+	}
+    // ----------------------------------------------------------------------
+	public void EndNodeDrag() {
+        IsFloating= false;
+        IsSticky= false;
+		ForEachParentNode(
+			p=> {
+				p.IsSticky= false;
+				p.LayoutUsingAnimatedChildren= false;
+			}
+		);
+		myIStorage.ForcedRelayoutOfTree(myIStorage.EditorObjects[0]);		
+	}
     // ----------------------------------------------------------------------
     // Forces a new position on the object being dragged by the uesr.
     public void NodeDragTo(Vector2 newPosition) {
@@ -20,6 +45,19 @@ public partial class iCS_EditorObject {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}
     }
+
+	// ======================================================================
+	// Node Relocate
+    // ----------------------------------------------------------------------
+	public void StartNodeRelocate() {
+		IsFloating= true;
+		IsSticky= true;
+	}
+    // ----------------------------------------------------------------------
+	public void EndNodeRelocate() {
+		IsFloating= false;
+		IsSticky= false;
+	}
     // ----------------------------------------------------------------------
     // Forces a new position on the object being dragged by the uesr.
     public void NodeRelocateTo(Vector2 newPosition) {

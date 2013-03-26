@@ -101,13 +101,12 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     var parent= node.ParentNode;
                     parent.AnimateGraph(_=> node.IsFloating= true);
                     node.LayoutPosition= DragStartDisplayPosition;
+					node.StartNodeRelocate();
                 } else {
                     IStorage.RegisterUndo("Node Drag");
                     DragType= DragTypeEnum.NodeDrag;                    
-                    node.IsFloating= false;
-    				node.ForEachParentNode(p=> { p.IsSticky= true; });
+                    node.StartNodeDrag();
                 }
-				node.IsSticky= true;
             }
             return true;
         }
@@ -229,10 +228,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 case DragTypeEnum.None: break;
                 case DragTypeEnum.NodeDrag: {
                     // Remove sticky on parent nodes.
-                    DragObject.IsFloating= false;
-                    DragObject.IsSticky= false;
-					DragObject.ForEachParentNode(p=> { p.IsSticky= false; });
-					IStorage.ForcedRelayoutOfTree(IStorage.EditorObjects[0]);
+                    DragObject.EndNodeDrag();
                     break;
                 }
                 case DragTypeEnum.NodeRelocation: {
@@ -262,7 +258,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                         }
                     }
                     // Remove sticky on parent nodes.
-                    DragObject.IsSticky= false;
+                    DragObject.EndNodeRelocate();
                     break;
                 }
                 case DragTypeEnum.PortRelocation:
