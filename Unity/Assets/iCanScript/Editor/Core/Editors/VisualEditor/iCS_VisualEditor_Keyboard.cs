@@ -53,8 +53,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     return;
                 }
                 if(SelectedObject == null) SelectedObject= DisplayRoot;
-                SelectedObject= iCS_EditorUtility.GetFirstChild(SelectedObject, IStorage);
-                CenterOnSelected();
+				if(SelectedObject.IsUnfoldedInLayout) {
+	                SelectedObject= iCS_EditorUtility.GetFirstChild(SelectedObject, IStorage);
+	                CenterOnSelected();					
+				}
                 Event.current.Use();
                 break;
             }
