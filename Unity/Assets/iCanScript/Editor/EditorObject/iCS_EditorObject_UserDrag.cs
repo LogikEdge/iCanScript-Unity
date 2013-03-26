@@ -3,16 +3,12 @@ using System.Collections;
 
 public partial class iCS_EditorObject {
 	// ======================================================================
-	// Fields;
-    // ----------------------------------------------------------------------
-	static iCS_EditorObject ourLastDraggedNode= null;
-	
-	// ======================================================================
 	// Node Drag
     // ----------------------------------------------------------------------
 	public void StartNodeDrag() {
         IsFloating= false;
 		IsSticky= true;
+		SetAsHighestLayoutPriority();
 		ForEachParentNode(
 			p=> {
 				p.IsSticky= true;
@@ -39,7 +35,6 @@ public partial class iCS_EditorObject {
             StopAnimation();
             AnchorPosition= newPosition;
             LocalOffset= Vector2.zero;
-			SetDragNodeLayoutPriority();
 			LayoutUnfoldedParentNodesUsingAnimatedChildren();
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
@@ -52,6 +47,7 @@ public partial class iCS_EditorObject {
 	public void StartNodeRelocate() {
 		IsFloating= true;
 		IsSticky= true;
+		SetAsHighestLayoutPriority();
 	}
     // ----------------------------------------------------------------------
 	public void EndNodeRelocate() {
@@ -65,16 +61,8 @@ public partial class iCS_EditorObject {
             StopAnimation();
             AnchorPosition= newPosition;
             LocalOffset= Vector2.zero;
-			SetDragNodeLayoutPriority();
 		} else {
 			Debug.LogWarning("iCanScript: UserDragTo not implemented for ports.");
 		}
     }
-    // ----------------------------------------------------------------------
-	void SetDragNodeLayoutPriority() {
-		if(ourLastDraggedNode != this) {
-			ourLastDraggedNode= this;
-			SetAsHighestLayoutPriority();
-		}
-	} 
 }
