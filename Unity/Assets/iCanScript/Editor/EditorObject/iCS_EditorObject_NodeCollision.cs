@@ -174,5 +174,6 @@ public partial class iCS_EditorObject {
 		if(parent != null) parent.ReduceChildrenLayoutPriority();
 		LayoutPriority= 0;
 		IsDirty=true;
+		if(parent != null) parent.SetAsHighestLayoutPriority();
 	}
 }

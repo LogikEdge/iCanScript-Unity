@@ -111,7 +111,7 @@ public partial class iCS_EditorObject {
                 // Update parent node
 				var parent= ParentNode;
 				if(parent != null && !parent.IsAnimated) {
-					LayoutUnfoldedParentNodesUsingAnimatedChildren();
+//					LayoutUnfoldedParentNodesUsingAnimatedChildren();
 				}
 			}
 		}
