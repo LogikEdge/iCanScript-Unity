@@ -151,6 +151,17 @@ public partial class iCS_IStorage {
 	        myIsDirty= false;
 	    }
         // Update object animations.
+		UpdateAnimations();
+
+        // Perform graph cleanup once objects & layout are stable.
+        if(CleanupNeeded) {
+            UpdateExecutionPriority();
+            CleanupNeeded= Cleanup();
+        }
+    }
+
+    // ----------------------------------------------------------------------
+	public void UpdateAnimations() {
         myIsAnimationPlaying= false;
         if(iCS_PreferencesEditor.AnimationEnabled) {
             ForEach(
@@ -161,15 +172,9 @@ public partial class iCS_IStorage {
         			}
                 }
             );            
-        }
-
-        // Perform graph cleanup once objects & layout are stable.
-        if(CleanupNeeded) {
-            UpdateExecutionPriority();
-            CleanupNeeded= Cleanup();
-        }
-    }
-
+        }		
+	}
+	
     // ----------------------------------------------------------------------
     /*
         FEATURE: Should use the layout rule the determine execution priority.
