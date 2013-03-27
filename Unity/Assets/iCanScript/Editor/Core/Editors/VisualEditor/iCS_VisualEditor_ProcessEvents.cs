@@ -66,7 +66,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case 1: { // Right mouse button
-                ShowDynamicMenu();
+                myShowDynamicMenu= true;
                 break;
             }
             case 2: { // Middle mouse button

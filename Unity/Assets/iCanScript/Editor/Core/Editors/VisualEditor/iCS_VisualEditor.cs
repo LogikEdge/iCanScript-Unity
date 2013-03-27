@@ -24,6 +24,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     iCS_Graphics    myGraphics     = null;
     
     // ----------------------------------------------------------------------
+    bool  myShowDynamicMenu  = false;
     int   myUpdateCounter    = 0;
     int   myRefreshCounter   = 0;
     float myCurrentTime      = 0;
@@ -208,6 +209,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;                
             }
             case EventType.Layout: {
+                if(myShowDynamicMenu) {
+                    myShowDynamicMenu= false;
+                    ShowDynamicMenu();
+                }
                 Event.current.Use();                        
                 break;
             }
