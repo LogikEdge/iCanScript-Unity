@@ -136,6 +136,8 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     // We assume that our parent has just unfolded.
     public void Unhide() {
+        var parent= ParentNode;
+        if(parent ==  null) return;
 		var start= BuildRect(ParentNode.LayoutPosition, Vector2.zero);
         // Unhide iconized node
         if(DisplayOption == iCS_DisplayOptionEnum.Iconized) {
