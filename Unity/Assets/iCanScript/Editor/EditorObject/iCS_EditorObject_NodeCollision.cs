@@ -5,20 +5,6 @@ using P=Prelude;
 
 public partial class iCS_EditorObject {
     // ======================================================================
-	// Fields
-    // ----------------------------------------------------------------------
-	int LayoutPriority= 0;
-	
-	void ReduceChildrenLayoutPriority() {
-		ForEachChildNode(c=> ++c.LayoutPriority);
-	}
-	void SetHasHighestLayoutPriority() {
-		var parent= ParentNode;
-		if(parent != null) parent.ReduceChildrenLayoutPriority();
-		LayoutPriority= 0;
-	}
-	
-    // ======================================================================
     // Collision Functions
     // ----------------------------------------------------------------------
     // Resolves the collision between children.  "true" is returned if a
@@ -72,16 +58,33 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     private void ResolveCollisionOnChildrenImp(iCS_EditorObject[] children, ref Rect[] childRect) {
         // Resolve collisions.
+		int r= 0;
         bool didCollide= true;
 		while(didCollide) {
 			didCollide= false;
+			iCS_EditorObject lowest= null;
 	        for(int i= 0; i < children.Length-1; ++i) {
 				var c1= children[i];
 	            for(int j= i+1; j < children.Length; ++j) {
 					var c2= children[j];
-	                didCollide |= c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i], ref childRect[j]);                            
+	                if(c1.ResolveCollisionBetweenTwoNodes(c2, ref childRect[i],
+															  ref childRect[j])) {
+					    didCollide= true;	
+					}
+					if(c1.LayoutPriority > c2.LayoutPriority) {
+						lowest= c1;
+					} else if(c2.LayoutPriority > c1.LayoutPriority) {
+						lowest= c2;
+					}
 	            }
-	        }			
+	        }
+			if(++r > 10) {
+				if(lowest == null || lowest.LayoutPriority <= 1) {
+					break;
+				}
+				lowest.LayoutPriority= lowest.LayoutPriority-1;
+				r= 0;
+			}
 		}
     }
     // ----------------------------------------------------------------------
@@ -90,13 +93,17 @@ public partial class iCS_EditorObject {
     public bool ResolveCollisionBetweenTwoNodes(iCS_EditorObject theOtherNode,
 												ref Rect myRect, ref Rect theOtherRect) {
         // Nothing to do if they don't collide.
-        if(!DoesCollideWithMargins(myRect, theOtherRect)) return false;
+        if(!DoesCollideWithMargins(myRect, theOtherRect)) {
+			return false;
+		}
 
         // Compute penetration.
         Vector2 penetration= GetSeperationVector(theOtherNode,
 												 myRect,
 												 theOtherRect);
-		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) return false;
+		if(Mathf.Abs(penetration.x) < 1.0f && Mathf.Abs(penetration.y) < 1.0f) {
+			return false;
+		}
 		// Use Layout priority to determine which node to move.
 		if(LayoutPriority == theOtherNode.LayoutPriority) {
             penetration*= 0.5f;
@@ -116,27 +123,6 @@ public partial class iCS_EditorObject {
 			myRect.y-= penetration.y;
     		return true;			
 		}
-//
-//        // Seperate by half penetration if none is sticky.
-//        if(!IsSticky && !theOtherNode.IsSticky) {
-//            penetration*= 0.5f;
-//			theOtherRect.x+= penetration.x;
-//			theOtherRect.y+= penetration.y;
-//			myRect.x-= penetration.x;
-//			myRect.y-= penetration.y;
-//            return true;            
-//        }
-//		// Seperate using the known movement.
-//    	if(!theOtherNode.IsSticky) {
-//			theOtherRect.x+= penetration.x;
-//			theOtherRect.y+= penetration.y;
-//            return true;
-//    	}
-//        if(!IsSticky) {            
-//			myRect.x-= penetration.x;
-//			myRect.y-= penetration.y;
-//    		return true;
-//    	}            
         return false;
     }
     // ----------------------------------------------------------------------
@@ -172,5 +158,22 @@ public partial class iCS_EditorObject {
 			return new Vector2(sepX, 0);
 		}
 		return new Vector2(0, sepY);
+	}
+
+	// ======================================================================
+	// Layout priority functionality.
+	// ----------------------------------------------------------------------
+	// Reduces the layout priority of all chidren.
+	void ReduceChildrenLayoutPriority() {
+		ForEachChildNode(c=> ++c.LayoutPriority);
+	}
+    // ----------------------------------------------------------------------
+	// Sets the current object as the highest layout priority.
+	void SetAsHighestLayoutPriority() {
+		var parent= ParentNode;
+		if(parent != null) parent.ReduceChildrenLayoutPriority();
+		LayoutPriority= 0;
+		IsDirty=true;
+		if(parent != null) parent.SetAsHighestLayoutPriority();
 	}
 }

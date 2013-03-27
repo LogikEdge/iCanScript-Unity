@@ -90,6 +90,12 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Layout
     // ----------------------------------------------------------------------
+	// Node priority when resolving collisions.
+	public int LayoutPriority {
+		get { return EngineObject.LayoutPriority; }
+		set { EngineObject.LayoutPriority= value; }
+	}
+    // ----------------------------------------------------------------------
     // Offset from the anchor position.  This attribute is animated.
 	public Vector2 LocalOffset {
 		get {
@@ -243,7 +249,6 @@ public partial class iCS_EditorObject {
 			if(IsTransitionPort && parent.IsIconizedOnDisplay) {
 				return BuildRect(parentPos, size);
 			}
-            // FIXME: This is problematic because we are using the Anchor+Offset from the Layout.
             var pos= parentPos+LocalAnchorPosition+LocalOffset;
             var r= BuildRect(pos, size);
 			return r;
@@ -294,6 +299,7 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
 	public void Animate(P.TimeRatio timeRatio) {
 	    if(!iCS_PreferencesEditor.AnimationEnabled) return;
+		myIStorage.IsAnimationPlaying= true;
         if(myAnimatedRect.IsActive) {
             float time= Mathf.Max(myAnimatedRect.RemainingTime, timeRatio.RemainingTime);
             myAnimatedRect.Start(time);

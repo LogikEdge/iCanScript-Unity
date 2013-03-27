@@ -7,6 +7,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
 	// Fields
     // ----------------------------------------------------------------------
+	public bool LayoutUsingAnimatedChildren= false;
 	private P.Animate<Rect> myAnimatedRect=
 		new P.Animate<Rect>((start,end,ratio)=>Math3D.Lerp(start,end,ratio));
     
@@ -110,7 +111,7 @@ public partial class iCS_EditorObject {
                 LayoutPorts();
                 // Update parent node
 				var parent= ParentNode;
-				if(parent != null && !parent.IsAnimated) {
+				if(parent != null && !parent.IsAnimated && parent.LayoutUsingAnimatedChildren) {
 					LayoutUnfoldedParentNodesUsingAnimatedChildren();
 				}
 			}
@@ -141,7 +142,6 @@ public partial class iCS_EditorObject {
             EditorObjects[0].ForEachRecursiveDepthLast(
                 (c,_)=> c.IsNode,
                 node => {
-                    // FIXME: Should not have to redo what should be done by AnimatedRect when not visible.
                     if(node.IsVisibleOnDisplay) {
                         node.AnimationStart= node.AnimatedRect;
                     } else {

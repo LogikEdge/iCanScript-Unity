@@ -435,8 +435,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
 
         // Show iCanScript version information.
-        string version= iCS_Config.Version;
-        string versionLabel= iCS_Config.VersionLabel;
+        string version= iCS_EditorConfig.VersionStr;
+        string versionLabel= iCS_EditorConfig.VersionLabel;
         GUIContent versionContent= new GUIContent(version);
         Vector2 versionSize= GUI.skin.label.CalcSize(versionContent);
         float x= column1Rect.x+0.5f*(column1Rect.width-versionSize.x);

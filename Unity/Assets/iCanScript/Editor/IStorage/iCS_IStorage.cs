@@ -62,7 +62,6 @@ public partial class iCS_IStorage {
         }
     }
 
-
     // ======================================================================
     // Initialization
     // ----------------------------------------------------------------------
@@ -100,7 +99,11 @@ public partial class iCS_IStorage {
     
     
     // ----------------------------------------------------------------------
-    public bool IsBehaviour         { get { return IsValid(EditorObjects[0]) && EditorObjects[0].IsBehaviour; }}
+    public bool IsBehaviour {
+		get {
+			return IsValid(EditorObjects[0]) && EditorObjects[0].IsBehaviour;
+		}
+	}
     public bool IsEmptyBehaviour    {
         get {
             if(!IsBehaviour) return false;
@@ -110,21 +113,34 @@ public partial class iCS_IStorage {
             return true;
         }
     }
-    public bool IsLibrary           { get { return IsValid(EditorObjects[0]) && !EditorObjects[0].IsBehaviour; }}
+    public bool IsLibrary {
+		get {
+			return IsValid(EditorObjects[0]) && !EditorObjects[0].IsBehaviour;
+		}
+	}
     // ----------------------------------------------------------------------
-    public bool IsIdValid(int id)                    { return id >= 0 && id < EditorObjects.Count; }
-	public bool IsValid(int id)						 { return IsIdValid(id) && IsValid(EditorObjects[id]); }
-    public bool IsValid(iCS_EditorObject obj)        { return obj != null && obj.InstanceId != -1; }
-    public bool IsSourceValid(iCS_EditorObject obj)  { return obj.SourceId != -1; }
-    public bool IsParentValid(iCS_EditorObject obj)  { return obj.ParentId != -1; }
+    public bool IsIdValid(int id) {
+		return id >= 0 && id < EditorObjects.Count;
+	}
+	public bool IsValid(int id) {
+		return IsIdValid(id) && EditorObjects[id] != null;
+	}
+    public bool IsValid(iCS_EditorObject obj) {
+		return obj != null && IsIdValid(obj.InstanceId);
+	}
+    public bool IsSourceValid(iCS_EditorObject obj)  { return IsIdValid(obj.SourceId); }
+    public bool IsParentValid(iCS_EditorObject obj)  { return IsIdValid(obj.ParentId); }
     // ----------------------------------------------------------------------
-	public bool IsAnimationPlaying { get { return myIsAnimationPlaying; }}
+	public bool IsAnimationPlaying {
+		get { return myIsAnimationPlaying; }
+		set { myIsAnimationPlaying= value; }
+	}
     // ----------------------------------------------------------------------
-	public iCS_EditorObject GetParentMuxPort(iCS_EditorObject eObj) { return eObj.IsParentMuxPort ? eObj : (eObj.IsChildMuxPort ? eObj.Parent : null); }
+	public iCS_EditorObject GetParentMuxPort(iCS_EditorObject eObj) {
+		return eObj.IsParentMuxPort ? eObj : (eObj.IsChildMuxPort ? eObj.Parent : null);
+	}
     // ----------------------------------------------------------------------
-    public void            SetDisplayPosition(iCS_EditorObject obj, Rect r) { if(IsValid(obj)) obj.LayoutRect= r; }
-    // ----------------------------------------------------------------------
-    public object          GetRuntimeObject(iCS_EditorObject obj) {
+    public object GetRuntimeObject(iCS_EditorObject obj) {
         iCS_Behaviour bh= Storage as iCS_Behaviour;
         return obj == null || bh == null ? null : bh.GetRuntimeObject(obj.InstanceId);
     }
@@ -151,17 +167,9 @@ public partial class iCS_IStorage {
 	        myIsDirty= false;
 	    }
         // Update object animations.
-        myIsAnimationPlaying= false;
-        if(iCS_PreferencesEditor.AnimationEnabled) {
-            ForEach(
-                obj=> {
-        			if(obj.IsAnimated) {
-    					obj.UpdateAnimation();
-        				myIsAnimationPlaying= true;
-        			}
-                }
-            );            
-        }
+		if(IsAnimationPlaying) {
+			UpdateAnimations();			
+		}
 
         // Perform graph cleanup once objects & layout are stable.
         if(CleanupNeeded) {
@@ -170,6 +178,25 @@ public partial class iCS_IStorage {
         }
     }
 
+    // ----------------------------------------------------------------------
+	public void UpdateAnimations() {
+        IsAnimationPlaying= false;
+        if(iCS_PreferencesEditor.AnimationEnabled) {
+            ForEach(
+                obj=> {
+        			if(obj.IsAnimated) {
+    					obj.UpdateAnimation();
+        				IsAnimationPlaying= true;
+        			}
+                }
+            );
+			// Force full relayout after animation has completed.
+            if(IsAnimationPlaying == false) {
+				ForcedRelayoutOfTree(EditorObjects[0]);
+			}
+        }		
+	}
+	
     // ----------------------------------------------------------------------
     /*
         FEATURE: Should use the layout rule the determine execution priority.
@@ -260,7 +287,7 @@ public partial class iCS_IStorage {
         List<Prelude.Tuple<int, int>> xlat= new List<Prelude.Tuple<int, int>>();
         iCS_EditorObject instance= Copy(srcObj, srcStorage, destParent, destStorage, globalPos, xlat);
         ReconnectCopy(srcObj, srcStorage, destStorage, xlat);
-        SetDisplayPosition(instance, new Rect(globalPos.x, globalPos.y,0,0));
+        instance.LayoutRect= iCS_EditorObject.BuildRect(globalPos, Vector2.zero);
         return instance;
     }
     iCS_EditorObject Copy(iCS_EditorObject srcObj, iCS_IStorage srcStorage,
