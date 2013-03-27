@@ -253,6 +253,7 @@ public partial class iCS_IStorage {
         }
         // Update transition module name.
         iCS_EditorObject transitionModule= GetTransitionModule(statePort);
+        if(transitionModule == null) return "";
         transitionModule.Name= name;
         return name;
     }
