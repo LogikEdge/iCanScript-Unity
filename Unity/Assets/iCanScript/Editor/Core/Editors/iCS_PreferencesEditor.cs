@@ -387,7 +387,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         kGameObjectTypeColor= Color.blue;
         kDefaultTypeColor   = Color.white;
     }
-    public new void OnEnable() {
+    public override void OnEnable() {
         base.OnEnable();
         MyWindow.title= "iCanScript Preferences";
         MyWindow.minSize= new Vector2(500f, 425f);

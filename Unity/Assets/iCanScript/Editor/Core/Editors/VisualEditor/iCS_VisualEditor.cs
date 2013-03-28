@@ -71,7 +71,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Force a repaint on selection change.
 	// ----------------------------------------------------------------------
-    public void OnSelectionChange() {
+    public override void OnSelectionChange() {
         myNeedRepaint= true;
         mySubEditor= null;
     }
@@ -87,7 +87,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Periodic Update
 	// ----------------------------------------------------------------------
     // TODO: Simplify Update using event instead of continusouly scan all objects.
-	public void Update() {
+	public override void Update() {
         // Don't run update faster then requested.
         float currentTime= Time.realtimeSinceStartup;
         int newUpdateCounter= (int)(currentTime*kUpdateRate);

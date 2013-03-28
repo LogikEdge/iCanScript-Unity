@@ -42,4 +42,5 @@ public static class iCS_WindowMenu {
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
  	}
+
 }

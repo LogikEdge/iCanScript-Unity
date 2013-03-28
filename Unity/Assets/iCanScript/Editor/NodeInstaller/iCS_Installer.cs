@@ -16,6 +16,7 @@ public static class iCS_Installer {
     // Currently, we install the Unity & .NET components in the node database.
     // ------------------------------------------------------------------------
     // Forces invokation of the constructor if not already done.
+    // TODO: Verify using a delegate for installing user nodes.
     public static void Install() {
         if(iCS_Reflection.NeedToRunInstaller) {
             iCS_NETClasses.PopulateDataBase();
