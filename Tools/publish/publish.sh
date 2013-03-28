@@ -54,6 +54,8 @@ cp iCanScriptEditor.dll $PUBLISH_EDITOR_DIR
 cp $PRODUCT_DIR/readme.txt $PUBLISH_PRODUCT_DIR
 #cp -r $PRODUCT_DIR/AssetStore $DESTINATION_DIR
 cp -r $EDITOR_DIR/Resources $PUBLISH_EDITOR_DIR
-rsync -av --exclude=*/*.meta $EDITOR_PUBLIC_SOURCES_DIR $PUBLISH_EDITOR_DIR >/dev/null
-rsync -av --exclude=*/*.meta $ENGINE_PUBLIC_SOURCES_DIR $PUBLISH_ENGINE_DIR >/dev/null
+rsync -av $EDITOR_PUBLIC_SOURCES_DIR $PUBLISH_EDITOR_DIR >/dev/null
+rsync -av $ENGINE_PUBLIC_SOURCES_DIR $PUBLISH_ENGINE_DIR >/dev/null
+#rsync -av --exclude=*/*.meta $EDITOR_PUBLIC_SOURCES_DIR $PUBLISH_EDITOR_DIR >/dev/null
+#rsync -av --exclude=*/*.meta $ENGINE_PUBLIC_SOURCES_DIR $PUBLISH_ENGINE_DIR >/dev/null
 
