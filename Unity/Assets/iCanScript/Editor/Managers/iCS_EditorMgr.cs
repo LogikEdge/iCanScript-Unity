@@ -70,15 +70,15 @@ public static class iCS_EditorMgr {
     public static void Add(EditorWindow window) {
         var windowTypeName= window.GetType().Name;
         iCS_EditorBase editor= null;
-        if(windowTypeName == "iCS_PreferencesProxy") {
+        if(windowTypeName == "iCS_PreferencesEditorWindow") {
             editor= new iCS_PreferencesEditor();
-        } else if(windowTypeName == "iCS_HierarchyEditorProxy") {
+        } else if(windowTypeName == "iCS_HierarchyEditorWindow") {
             editor= new iCS_HierarchyEditor();
-        } else if(windowTypeName == "iCS_InstanceEditorProxy") {
+        } else if(windowTypeName == "iCS_InstanceEditorWindow") {
             editor= new iCS_InstanceEditor();
-        } else if(windowTypeName == "iCS_LibraryEditorProxy") {
+        } else if(windowTypeName == "iCS_LibraryEditorWindow") {
             editor= new iCS_LibraryEditor();
-        } else if(windowTypeName == "iCS_VisualEditorProxy") {
+        } else if(windowTypeName == "iCS_VisualEditorWindow") {
             editor= new iCS_VisualEditor();
         }
         if(editor == null) {
