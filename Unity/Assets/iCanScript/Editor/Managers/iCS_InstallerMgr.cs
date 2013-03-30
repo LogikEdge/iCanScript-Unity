@@ -16,12 +16,12 @@ public static class iCS_InstallerMgr {
         string gizmoSrc= iCS_Config.ResourcePath+"/iCanScriptGizmo.png";
         string gizmoDest= "Assets/Gizmos/iCanScriptGizmo.png";
         if(!Directory.Exists(assetPath+"/Gizmos")) {
-            Debug.Log("Creating Gizmos folder");
+            Debug.Log("iCanScript: Creating Gizmos folder");
     	    AssetDatabase.CreateFolder("Assets","Gizmos");            
         }
         if(iCS_Strings.IsEmpty(AssetDatabase.ValidateMoveAsset(gizmoSrc, gizmoDest))) {
     	    AssetDatabase.CopyAsset(gizmoSrc,gizmoDest);
-    	    Debug.Log("Copying iCanScriptGizmo.png into the Gizmos folder");            
+    	    Debug.Log("iCanScript: Copying iCanScriptGizmo.png into the Gizmos folder");            
         }	    
 	}
 }
