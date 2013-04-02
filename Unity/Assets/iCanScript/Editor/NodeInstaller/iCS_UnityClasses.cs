@@ -4,7 +4,7 @@ using System.Collections;
 
 public static class iCS_UnityClasses {
     // ----------------------------------------------------------------------
-    // Install the desired .NET classes
+    // Install the desired Unity classes
     public static void PopulateDataBase() {
         DecodeUnityClassInfo(typeof(AccelerationEvent));
         

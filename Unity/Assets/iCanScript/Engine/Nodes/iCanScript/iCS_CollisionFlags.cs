@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 [iCS_Class(Company="iCanScript")]
 public static class iCS_CollisionFlags {
