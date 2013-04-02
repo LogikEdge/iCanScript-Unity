@@ -46,9 +46,15 @@ $GMCS @iCanScriptEditor.rsp
 #./obfuscate.sh
 # Install libraries inside the publish directory.
 echo "Installing into" $PUBLISH_PRODUCT_DIR "..."
-rm -r -f $PUBLISH_ROOT
-mkdir $PUBLISH_ROOT
-mkdir $PUBLISH_ASSETS_DIR
+if [ ! -d $PUBLISH_ROOT ]; then
+    mkdir $PUBLISH_ROOT
+fi
+if [ ! -d $PUBLISH_ASSETS_DIR ]; then
+    mkdir $PUBLISH_ASSETS_DIR
+fi
+if [ -d $PUBLISH_PRODUCT_DIR ]; then
+    rm -r -f $PUBLISH_PRODUCT_DIR
+fi
 mkdir $PUBLISH_PRODUCT_DIR
 mkdir $PUBLISH_ENGINE_DIR
 mkdir $PUBLISH_EDITOR_DIR

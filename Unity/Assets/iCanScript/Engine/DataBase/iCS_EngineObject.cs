@@ -42,8 +42,33 @@ public class iCS_EngineObject {
     public bool   IsParentValid   { get { return ParentId != -1; }}
     public bool   IsSourceValid   { get { return SourceId != -1; }}
     public bool   IsNameEmpty     { get { return RawName == null || RawName == ""; }}
-    public Type   RuntimeType     { get { return Type.GetType(QualifiedType); }}
     public string TypeName        { get { return iCS_Types.TypeName(RuntimeType);}} 
+    public Type   RuntimeType     {
+        get {
+            if(string.IsNullOrEmpty(QualifiedType)) return null;
+            var t= Type.GetType(QualifiedType);
+            if(t != null) return t;
+            // Attempt to find type in different assembly.
+            var typeIdent= QualifiedType.Split(new char[]{','});
+            var typeName= typeIdent[0];
+            var assemblyName= typeIdent[1];
+            foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
+                var newType= assembly.GetType(typeName);
+                if(newType != null) {
+                    // Don't give warning for known conversions.
+                    var newAssemblyName= newType.Assembly.FullName.Split(new char[]{','})[0];
+                    if(assemblyName != "iCanScriptEngine" && newAssemblyName != "iCanScriptEngine") {
+                        Debug.LogWarning("iCanScript: Unable to find type: "+typeName+" in assembly: "+assemblyName+" ... using assembly: "+newAssemblyName+" instead.");                        
+                    }
+                    // Correct assembly qualified name.
+                    QualifiedType= newType.AssemblyQualifiedName;
+                    return newType;
+                }
+            }
+            Debug.LogWarning("iCanScript: Unable to find type: "+typeName+" in assembly: "+assemblyName);
+            return null;
+        }
+    }
     public string Name {
         get { return IsNameEmpty ? ":"+TypeName : RawName; }
         set { RawName= value; }
