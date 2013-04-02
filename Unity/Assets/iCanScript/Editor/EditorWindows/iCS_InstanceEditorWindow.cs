@@ -1,1 +1,1 @@
-public class iCS_InstanceEditorWindow : iCS_EditorWindow {}
+public sealed class iCS_InstanceEditorWindow : iCS_InstanceEditor {}

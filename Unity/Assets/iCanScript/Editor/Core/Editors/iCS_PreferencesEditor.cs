@@ -387,11 +387,11 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         kGameObjectTypeColor= Color.blue;
         kDefaultTypeColor   = Color.white;
     }
-    public override void OnEnable() {
+    public new void OnEnable() {
         base.OnEnable();
-        MyWindow.title= "iCanScript Preferences";
-        MyWindow.minSize= new Vector2(500f, 425f);
-        MyWindow.maxSize= new Vector2(500f, 425f);
+        title= "iCanScript Preferences";
+        minSize= new Vector2(500f, 425f);
+        maxSize= new Vector2(500f, 425f);
     }
 
     void Initialize() {
@@ -410,7 +410,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    public override void OnGUI() {
+    public void OnGUI() {
         Initialize();
         
         float gridHeight= 20*selGridStrings.Length;

@@ -6,7 +6,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	// ======================================================================
 	// Properties
 	// ----------------------------------------------------------------------
-	bool    HasKeyboardFocus    { get { return EditorWindow.focusedWindow == MyWindow; }}
+	bool    HasKeyboardFocus    { get { return EditorWindow.focusedWindow == this; }}
     bool    IsShiftKeyDown      { get { return Event.current.shift; }}
     bool    IsControlKeyDown    { get { return Event.current.control; }}
     bool    IsAltKeyDown        { get { return Event.current.alt; }}

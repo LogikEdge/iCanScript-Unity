@@ -7,88 +7,26 @@ using System.Collections.Generic;
 
 public static class iCS_EditorMgr {
     // =================================================================================
-    // Types
-    // ---------------------------------------------------------------------------------
-    class EditorInfo {
-        public string           Key   = null;
-        public EditorWindow     Window= null;
-        public iCS_EditorBase   Editor= null;
-        public EditorInfo(string key, EditorWindow window, iCS_EditorBase editor) {
-            Key= key;
-            Window= window;
-            Editor= editor;
-        }
-    }
-    
-    // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    static List<EditorInfo>   myEditors= null;
+    static List<iCS_EditorBase>   myEditors= null;
     
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
     static iCS_EditorMgr() {
-        myEditors= new List<EditorInfo>();
-    }
-    
-    // =================================================================================
-    // Dispatcher
-    // ---------------------------------------------------------------------------------
-    public static void OnEnable(EditorWindow window) {
-        Add(window);
-        var editor= FindEditor(window);
-        if(editor == null) return;
-        editor.OnEnable(window);
-    }
-    public static void OnDisable(EditorWindow window) {
-        var editor= FindEditor(window);
-        if(editor == null) return;
-        editor.OnDisable(window);
-        Remove(window);
-    }
-    public static void OnGUI(EditorWindow window) {
-        var editor= FindEditor(window);
-        if(editor == null) return;
-        editor.OnGUI();        
-    }
-    public static void OnSelectionChange(EditorWindow window) {
-        var editor= FindEditor(window);
-        if(editor == null) return;
-        editor.OnSelectionChange();        
-    }
-    public static void Update(EditorWindow window) {
-        var editor= FindEditor(window);
-        if(editor == null) return;
-        editor.Update();                
+        myEditors= new List<iCS_EditorBase>();
     }
     
     // =================================================================================
     // Window management
     // ---------------------------------------------------------------------------------
     // FIXME: The relationship between proxy type and editor name needs to be cleaned up.
-    public static void Add(EditorWindow window) {
-        var windowTypeName= window.GetType().Name;
-        iCS_EditorBase editor= null;
-        if(windowTypeName == "iCS_PreferencesEditorWindow") {
-            editor= new iCS_PreferencesEditor();
-        } else if(windowTypeName == "iCS_HierarchyEditorWindow") {
-            editor= new iCS_HierarchyEditor();
-        } else if(windowTypeName == "iCS_InstanceEditorWindow") {
-            editor= new iCS_InstanceEditor();
-        } else if(windowTypeName == "iCS_LibraryEditorWindow") {
-            editor= new iCS_LibraryEditor();
-        } else if(windowTypeName == "iCS_VisualEditorWindow") {
-            editor= new iCS_VisualEditor();
-        }
-        if(editor == null) {
-            Debug.LogWarning("iCanScript: Unable to create editor for: "+windowTypeName);
-            return;
-        }
-        myEditors.Add(new EditorInfo(editor.GetType().Name, window, editor));
+    public static void Add(iCS_EditorBase editor) {
+        myEditors.Add(editor);
     }
-    public static void Remove(EditorWindow window) {
-        int idx= FindIndexOf(window);
+    public static void Remove(iCS_EditorBase editor) {
+        int idx= FindIndexOf(editor);
         if(idx >= 0) myEditors.RemoveAt(idx);
     }
     
@@ -102,33 +40,9 @@ public static class iCS_EditorMgr {
     // =================================================================================
     // Search/Iterations
     // ---------------------------------------------------------------------------------
-    static iCS_EditorBase FindEditor(EditorWindow window) {
-        var editorInfo= FindEditorInfo(window);
-        return editorInfo != null ? editorInfo.Editor : null;
-    }
-    // ---------------------------------------------------------------------------------
-    static EditorInfo FindEditorInfo(EditorWindow window) {
-        int idx= FindIndexOf(window);
-        return idx >= 0 ? myEditors[idx] : null;
-    }
-    // ---------------------------------------------------------------------------------
-    static EditorInfo FindEditorInfo(string key) {
-        int idx= FindIndexOf(key);
-        return idx >= 0 ? myEditors[idx] : null;        
-    }
-    // ---------------------------------------------------------------------------------
-    static int FindIndexOf(EditorWindow window) {
+    static int FindIndexOf(iCS_EditorBase editor) {
         for(int i= 0; i < myEditors.Count; ++i) {
-            if(myEditors[i].Window == window) {
-                return i;
-            }
-        }        
-        return -1;
-    }
-    // ---------------------------------------------------------------------------------
-    static int FindIndexOf(string key) {
-        for(int i= 0; i < myEditors.Count; ++i) {
-            if(myEditors[i].Key == key) {
+            if(myEditors[i] == editor) {
                 return i;
             }
         }        
@@ -153,12 +67,13 @@ public static class iCS_EditorMgr {
     }
 
     // ======================================================================
-    public static EditorWindow FindWindow(string key) {
-        int idx= FindIndexOf(key);
-        return idx >= 0 ? myEditors[idx].Window : null;        
-    }
     public static EditorWindow FindWindow(Type type) {
-        return FindWindow(type.Name);
+        foreach(var ed in myEditors) {
+            if(iCS_Types.IsA(type, ed.GetType())) {
+                return ed;
+            }
+        }
+        return null;
     }
     public static EditorWindow FindWindow<T>() {
         return FindWindow(typeof(T));
@@ -177,24 +92,20 @@ public static class iCS_EditorMgr {
     }    
     // ======================================================================
     public static iCS_VisualEditor FindVisualEditor() {
-        int idx= FindIndexOf(typeof(iCS_VisualEditor).Name);
-        return idx >= 0 ? myEditors[idx].Editor as iCS_VisualEditor : null;
+        return FindWindow(typeof(iCS_VisualEditor)) as iCS_VisualEditor;
     } 
     public static iCS_InstanceEditor FindInstanceEditor() {
-        int idx= FindIndexOf(typeof(iCS_InstanceEditor).Name);
-        return idx >= 0 ? myEditors[idx].Editor as iCS_InstanceEditor : null;
+        return FindWindow(typeof(iCS_InstanceEditor)) as iCS_InstanceEditor;
     }
     public static iCS_HierarchyEditor FindHierarchyEditor() {
-        int idx= FindIndexOf(typeof(iCS_HierarchyEditor).Name);
-        return idx >= 0 ? myEditors[idx].Editor as iCS_HierarchyEditor : null;
+        return FindWindow(typeof(iCS_HierarchyEditor)) as iCS_HierarchyEditor;
     }
     public static iCS_LibraryEditor FindLibraryEditor() {
-        int idx= FindIndexOf(typeof(iCS_LibraryEditor).Name);
-        return idx >= 0 ? myEditors[idx].Editor as iCS_LibraryEditor : null;
+        return FindWindow(typeof(iCS_LibraryEditor)) as iCS_LibraryEditor;
     }    
     // ======================================================================
 	public static void RepaintVisualEditor() {
 		var editor= FindVisualEditor();
-		editor.MyWindow.Repaint();
+		editor.Repaint();
 	}
 }

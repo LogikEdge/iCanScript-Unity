@@ -108,7 +108,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                     outPort= overlappingPort;
                 }                    
             } else {
-                MyWindow.ShowNotification(new GUIContent("Cannot connect nested node ports from input to output !!!"));
+                ShowNotification(new GUIContent("Cannot connect nested node ports from input to output !!!"));
                 return true;
             }
         } else {
@@ -122,7 +122,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             }
         } else {
             string direction= inPort.IsInputPort ? "input" : "output";
-            MyWindow.ShowNotification(new GUIContent("Cannot connect an "+direction+" port to an "+direction+" port !!!"));
+            ShowNotification(new GUIContent("Cannot connect an "+direction+" port to an "+direction+" port !!!"));
         }
         return true;
     }
@@ -143,7 +143,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
         typeCast= iCS_DataBase.FindTypeCast(outType, inType);
         if(typeCast == null) {
-			MyWindow.ShowNotification(new GUIContent("No automatic type conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
+			ShowNotification(new GUIContent("No automatic type conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
             return false;
         }
         return true;
@@ -473,7 +473,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						validParent= AutoCreateBehaviourEvent(iCS_Strings.Update, point);
 						break;
 					case 1:
-						MyWindow.ShowNotification(new GUIContent("Please use right mouse click on canvas to create behaviour event type before adding new object."));
+						ShowNotification(new GUIContent("Please use right mouse click on canvas to create behaviour event type before adding new object."));
 						SelectedObject= IStorage.EditorObjects[0];
 						myDynamicMenu.Update(SelectedObject, IStorage, point);
 						return;

@@ -53,7 +53,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    public override void OnGUI() {
+    public void OnGUI() {
         UpdateMgr();
         if(!IsInitialized()) return;
 		var toolbarRect= ShowToolbar();
@@ -70,9 +70,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
     public void ShowElement(iCS_EditorObject eObj) {
         if(!IsInitialized()) return;
         myController.ShowElement(eObj);
-        if(MyWindow != null) {
-            MyWindow.Repaint();            
-        }
+        Repaint();            
     }
 	// ----------------------------------------------------------------------
 	Rect ShowToolbar() {
@@ -96,7 +94,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
                 myController.MouseDownOn(null, mouseInScreenPoint, areaInScreenPosition);
                 Event.current.Use();
                 // Move keyboard focus to this window.
-                MyWindow.Focus();
+                Focus();
 				break;
 			}
             case EventType.MouseUp: {
@@ -154,7 +152,7 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
                         } else {
                             if(selected != null) {
                                 myLastFocusId= iCS_EditorUtility.SafeSelectAndMakeVisible(selected, IStorage);
-                                MyWindow.Focus();
+                                Focus();
                                 Event.current.Use();
                             }                            
                         }

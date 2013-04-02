@@ -71,23 +71,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
     // Force a repaint on selection change.
 	// ----------------------------------------------------------------------
-    public override void OnSelectionChange() {
+    public void OnSelectionChange() {
         myNeedRepaint= true;
         mySubEditor= null;
-    }
-    
-    // ======================================================================
-    // Repaint Proxy
-	// ----------------------------------------------------------------------
-    void Repaint() {
-        MyWindow.Repaint();
     }
     
     // ======================================================================
     // Periodic Update
 	// ----------------------------------------------------------------------
     // TODO: Simplify Update using event instead of continusouly scan all objects.
-	public override void Update() {
+	public void Update() {
         // Don't run update faster then requested.
         float currentTime= Time.realtimeSinceStartup;
         int newUpdateCounter= (int)(currentTime*kUpdateRate);
@@ -139,21 +132,21 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
 	// Handles all event messages.
 	// ----------------------------------------------------------------------
-	public override void OnGUI() {
+	public void OnGUI() {
         // Attempt to initialize environment (if not already done).
         bool isInit= IsInitialized();
 
 		// Nothing to be drawn until we are fully initialized.
         if(!isInit || IStorage == null) {
             // Tell the user that we can display without a behavior or library.
-            MyWindow.ShowNotification(new GUIContent("No iCanScript component selected !!!"));
+            ShowNotification(new GUIContent("No iCanScript component selected !!!"));
             myNotificationShown= true;
             return;            
         }
 
         // Remove any previously shown notification.
         if(myNotificationShown) {
-            MyWindow.RemoveNotification();
+            RemoveNotification();
             myNotificationShown= false;
         }
        	
@@ -254,7 +247,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 break;
             }
             case EventType.DragExited: {
-                if(EditorWindow.mouseOverWindow == MyWindow) {
+                if(EditorWindow.mouseOverWindow == this) {
                     DragAndDropExited();
                     Event.current.Use();
                 }

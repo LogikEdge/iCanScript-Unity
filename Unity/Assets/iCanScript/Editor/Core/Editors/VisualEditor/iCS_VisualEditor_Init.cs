@@ -13,11 +13,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // Prepares the editor for editing a graph.  Note that the graph to edit
     // is not configured at this point.  We must wait for an activate from
     // the graph inspector to know which graph to edit. 
-	public override void OnEnable() {        
+	public new void OnEnable() {        
         base.OnEnable();
         
 		// Tell Unity we want to be informed of move drag events
-		MyWindow.wantsMouseMove= true;
+		wantsMouseMove= true;
 
         // Create worker objects.
         myGraphics   = new iCS_Graphics();
@@ -35,7 +35,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 
 	// ----------------------------------------------------------------------
     // Releases all resources used by the iCS_Behaviour editor.
-    public override void OnDisable() {
+    public new void OnDisable() {
         base.OnDisable();
         
         // Release all worker objects.

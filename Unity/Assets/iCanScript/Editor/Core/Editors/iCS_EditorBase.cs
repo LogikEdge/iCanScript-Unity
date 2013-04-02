@@ -2,19 +2,16 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_EditorBase {
+public class iCS_EditorBase : EditorWindow {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
 	iCS_IStorage		myIStorage= null;
-    EditorWindow        myEditorWindow= null;
     
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------
 	public iCS_IStorage 	IStorage 	   { get { return myIStorage; } set { myIStorage= value; }}
-	public Rect             position       { get { return myEditorWindow.position; }}
-	public EditorWindow     MyWindow       { get { return myEditorWindow; } set { myEditorWindow= value; }}
 	public iCS_EditorObject SelectedObject {
 	    get { return myIStorage != null ? IStorage.SelectedObject : null; }
 	    set { if(IStorage != null) IStorage.SelectedObject= value; }
@@ -23,13 +20,11 @@ public class iCS_EditorBase {
     // =================================================================================
     // Activation/Deactivation.
     // ---------------------------------------------------------------------------------
-    public void OnEnable(EditorWindow window) {
-        MyWindow= window;
-        OnEnable();
+    public void OnEnable() {
+        iCS_EditorMgr.Add(this);
     }
-    public void OnDisable(EditorWindow window) {
-        OnDisable();
-        MyWindow= null;
+    public void OnDisable() {
+        iCS_EditorMgr.Remove(this);
     }
 
     // =================================================================================
@@ -39,13 +34,4 @@ public class iCS_EditorBase {
         iCS_EditorMgr.Update();
         myIStorage= iCS_StorageMgr.IStorage;
     }
-    
-    // =================================================================================
-    // Functions that all editor window must respond to.
-    // ---------------------------------------------------------------------------------
-    public virtual void OnEnable()          {}
-    public virtual void OnDisable()         {}
-    public virtual void OnGUI()             {}
-    public virtual void Update()            {}
-    public virtual void OnSelectionChange() {}
 }

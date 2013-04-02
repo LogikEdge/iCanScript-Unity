@@ -1,2 +1,2 @@
 // FIXME: Add comments for user.
-public class iCS_HierarchyEditorWindow : iCS_EditorWindow {}
+public sealed class iCS_HierarchyEditorWindow : iCS_HierarchyEditor {}

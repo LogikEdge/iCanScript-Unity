@@ -29,7 +29,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    public override void OnGUI() {
+    public void OnGUI() {
         UpdateMgr();
 		if(!IsInitialized()) return;
 		var toolbarRect= ShowToolbar();

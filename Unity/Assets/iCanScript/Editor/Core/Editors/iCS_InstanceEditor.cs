@@ -42,7 +42,7 @@ public class iCS_InstanceEditor : iCS_EditorBase {
     // =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    public override void OnGUI() {
+    public void OnGUI() {
 		// Update storage manager.
         UpdateMgr();
         // Wait until window is configured.

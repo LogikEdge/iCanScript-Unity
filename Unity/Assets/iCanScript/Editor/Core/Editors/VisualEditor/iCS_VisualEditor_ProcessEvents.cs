@@ -187,7 +187,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             bool hadKeyboardFocus= HasKeyboardFocus;
             iCS_EditorMgr.ShowInstanceEditor();
             // Keep keyboard focus.
-            if(hadKeyboardFocus) MyWindow.Focus();
+            if(hadKeyboardFocus) Focus();
         }        
     }
 	// ----------------------------------------------------------------------
@@ -203,7 +203,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     					mySubEditor= new iCS_NodeNameEditor(pickedObject, myGraphics);
     				}                                            
                 } else {
-                    MyWindow.ShowNotification(new GUIContent("The selected name cannot be changed !!!"));
+                    ShowNotification(new GUIContent("The selected name cannot be changed !!!"));
                 }
                 break;
             }
