@@ -737,11 +737,11 @@ public class iCS_Coder {
 		// Decompress type string.
 		int cSharpTypeIdx= value.IndexOf("!!");
 		if(cSharpTypeIdx > 0) {
-			return Type.GetType(value.Substring(0, cSharpTypeIdx)+CSharpTypeStr+value.Substring(cSharpTypeIdx+2));
+			return iCS_Types.TypeFromAssemblyQualifiedName(value.Substring(0, cSharpTypeIdx)+CSharpTypeStr+value.Substring(cSharpTypeIdx+2));
 		}
 		int unityEngineTypeIdx= value.IndexOf("!#");
 		if(unityEngineTypeIdx > 0) {
-			return Type.GetType(value.Substring(0, unityEngineTypeIdx)+UnityEngineTypeStr+value.Substring(unityEngineTypeIdx+2));
+			return iCS_Types.TypeFromAssemblyQualifiedName(value.Substring(0, unityEngineTypeIdx)+UnityEngineTypeStr+value.Substring(unityEngineTypeIdx+2));
 		}
 		int defaultTypeIdx= value.IndexOf("!%");
 		if(defaultTypeIdx > 0) {
@@ -759,7 +759,7 @@ public class iCS_Coder {
 		if(publicKeyIdx > 0) {
 			value= value.Substring(0, publicKeyIdx)+PublicKeyTokenStr+value.Substring(publicKeyIdx+2);			
 		}
-		return Type.GetType(value);
+		return iCS_Types.TypeFromAssemblyQualifiedName(value);
     }
 	// ----------------------------------------------------------------------
     public bool DecodeBoolForKey(string key) {
