@@ -141,7 +141,7 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
     public object GetRuntimeObject(iCS_EditorObject obj) {
-        iCS_Behaviour bh= Storage as iCS_Behaviour;
+        iCS_BehaviourImp bh= Storage as iCS_BehaviourImp;
         return obj == null || bh == null ? null : bh.GetRuntimeObject(obj.InstanceId);
     }
     

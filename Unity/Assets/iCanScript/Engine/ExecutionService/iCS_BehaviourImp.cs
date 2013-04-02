@@ -4,7 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-public sealed class iCS_Behaviour : iCS_Storage {
+public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -43,6 +43,19 @@ public sealed class iCS_Behaviour : iCS_Storage {
     // This function should be used to pass information between objects.  It
     // is invoked after Awake and before any Update call.
     void Start() {
+#if DEBUG
+        if(EngineObjects.Count >= 1 && EngineObjects[0] != null) {
+            string tn= EngineObjects[0].QualifiedType;
+            Debug.Log("Behaviour: "+tn);
+            Type t2= Type.GetType(tn);
+            if(t2 == null) {
+                Debug.Log("Behaviour type not found");
+            } else {
+                Debug.Log("Returned type: "+t2.Name);            
+            }            
+        }
+#endif
+
         GenerateCode();
         if(myStartAction != null) {
             do {

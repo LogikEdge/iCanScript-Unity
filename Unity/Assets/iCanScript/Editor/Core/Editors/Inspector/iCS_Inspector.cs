@@ -99,8 +99,8 @@ public class iCS_Inspector : Editor {
 		EditorGUIUtility.LookLikeControls();
 
         // Frame count.
-		if(myStorage.Storage is iCS_Behaviour && Application.isPlaying) {
-		    iCS_Behaviour behaviour= myStorage.Storage as iCS_Behaviour;
+		if(myStorage.Storage is iCS_BehaviourImp && Application.isPlaying) {
+		    iCS_BehaviourImp behaviour= myStorage.Storage as iCS_BehaviourImp;
 		    EditorGUILayout.LabelField("UpdateFrameId", behaviour.UpdateFrameId.ToString());
 		    EditorGUILayout.LabelField("FixedUpdateFrameId", behaviour.FixedUpdateFrameId.ToString());
 		}

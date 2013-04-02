@@ -196,7 +196,7 @@ public class iCS_EngineObject {
     public bool IsOutTransitionPort     { get { return iCS_ObjectType.IsOutTransitionPort(this); }}
     public bool IsClassModule           { get { return IsModule && RuntimeType != typeof(iCS_Module); }}
 	public bool	IsMuxPort				{ get { return iCS_ObjectType.IsMuxPort(this); }}
-	public bool IsChildMuxPort				{ get { return iCS_ObjectType.IsChildMuxPort(this); }}
+	public bool IsChildMuxPort			{ get { return iCS_ObjectType.IsChildMuxPort(this); }}
 	public bool IsParentMuxPort			{ get { return iCS_ObjectType.IsParentMuxPort(this); }}
     
     // ======================================================================

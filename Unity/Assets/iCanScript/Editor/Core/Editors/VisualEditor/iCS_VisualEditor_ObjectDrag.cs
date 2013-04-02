@@ -81,7 +81,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 GameObject go= new GameObject(node.Name);
                 go.hideFlags = HideFlags.HideAndDontSave;
                 go.AddComponent("iCS_Library");
-                iCS_Library library= go.GetComponent<iCS_Library>();
+                iCS_LibraryImp library= go.GetComponent<iCS_Library>();
                 iCS_IStorage iStorage= new iCS_IStorage(library);
                 iStorage.Copy(node, IStorage, null, Vector2.zero, iStorage);
                 DragAndDrop.PrepareStartDrag();
