@@ -9,9 +9,9 @@ public class iCS_Menu {
 	//[MenuItem("iCanScript/Create Behaviour #&b", false, 1)]
 	public static void CreateBehaviour() {
 		// Create State Chart component.
-		iCS_Behaviour storage = Selection.activeGameObject.GetComponent<iCS_Behaviour>();
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_BehaviourImp>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<iCS_Behaviour>();
+			storage= Selection.activeGameObject.AddComponent("iCS_Behaviour") as iCS_BehaviourImp;
             iCS_IStorage iStorage= new iCS_IStorage(storage);
             iStorage.CreateBehaviour();
             iStorage= null;
@@ -30,9 +30,9 @@ public class iCS_Menu {
 	//[MenuItem("iCanScript/Create Module Library", false, 2)]
 	public static void CreateModuleLibrary() {
 		// Create State Chart component.
-		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Library>();
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_LibraryImp>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<iCS_Library>();
+			storage= Selection.activeGameObject.AddComponent("iCS_Library") as iCS_LibraryImp;
             storage.enabled= false;
             iCS_IStorage iStorage= new iCS_IStorage(storage);
             iStorage.CreateModule(-1, Vector2.zero, "Module Library");
@@ -51,9 +51,9 @@ public class iCS_Menu {
 	//[MenuItem("iCanScript/Create State Chart Library", false, 3)]
 	public static void CreateStateChartLibrary() {
 		// Create State Chart component.
-		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_Library>();
+		iCS_Storage storage = Selection.activeGameObject.GetComponent<iCS_LibraryImp>();
 		if(storage == null) {
-			storage= Selection.activeGameObject.AddComponent<iCS_Library>();
+			storage= Selection.activeGameObject.AddComponent("iCS_Library") as iCS_LibraryImp;
             storage.enabled= false;
             iCS_IStorage iStorage= new iCS_IStorage(storage);
             iStorage.CreateStateChart(-1, Vector2.zero, "State Chart Library");

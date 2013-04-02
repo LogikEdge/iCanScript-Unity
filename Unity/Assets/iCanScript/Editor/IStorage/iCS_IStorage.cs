@@ -338,7 +338,7 @@ public partial class iCS_IStorage {
             Debug.LogError("Behaviour MUST be the root object !!!");
         }
         // Create new EditorObject
-        iCS_EditorObject.CreateInstance(0, null, typeof(iCS_Behaviour), -1, iCS_ObjectTypeEnum.Behaviour, this);
+        iCS_EditorObject.CreateInstance(0, null, typeof(iCS_BehaviourImp), -1, iCS_ObjectTypeEnum.Behaviour, this);
         this[0].SetAnchorAndLayoutPosition(VisualEditorCenter());
 		this[0].IsNameEditable= false;
         return this[0];

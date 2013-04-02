@@ -111,7 +111,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         if(draggedObject != null) {
             GameObject go= draggedObject as GameObject;
             if(go != null) {
-                iCS_Storage storage= go.GetComponent<iCS_Library>();
+                iCS_Storage storage= go.GetComponent<iCS_LibraryImp>();
                 return storage;
             }
         }

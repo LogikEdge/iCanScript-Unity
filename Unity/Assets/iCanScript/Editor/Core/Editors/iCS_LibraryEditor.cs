@@ -133,8 +133,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         // Build drag object.
         GameObject go= new GameObject(node.Name);
         go.hideFlags = HideFlags.HideAndDontSave;
-        go.AddComponent("iCS_Library");
-        iCS_Library library= go.GetComponent<iCS_Library>();
+        var library= go.AddComponent("iCS_Library") as iCS_LibraryImp;
         iCS_IStorage iStorage= new iCS_IStorage(library);
         CreateInstance(node, iStorage);
         // Fill drag info.
