@@ -4,3 +4,6 @@
 [submodule "Unity/Assets/iCanScript/Engine/Nodes"]
 	path = Unity/Assets/iCanScript/Engine/Nodes
 	url = git@github.com:Disruptive-Software/iCanScript_Nodes.git
+[submodule "WebSite"]
+	path = WebSite
+	url = git@github.com:Reinual/iCanScriptWebSite.git
