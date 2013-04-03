@@ -5,6 +5,7 @@ using System.Collections.Generic;
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // This class is the main storage of iCanScript.  All object are derived
 // from this storage class.
+[AddComponentMenu("")]
 public class iCS_Storage : MonoBehaviour {
     // ======================================================================
     // Fields

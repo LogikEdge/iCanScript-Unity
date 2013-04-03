@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
+[AddComponentMenu("")]
 public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Properties
