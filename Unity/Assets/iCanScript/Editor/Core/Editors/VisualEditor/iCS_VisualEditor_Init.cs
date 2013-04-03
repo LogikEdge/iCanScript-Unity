@@ -58,6 +58,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		    return false;
 		}
         if(IStorage != myPreviousIStorage) {
+            // Avoid using a storage without a root node.
+            if(StorageRoot == null) {
+                return false;
+            }
             myPreviousIStorage= IStorage;
             DisplayRoot= StorageRoot;
             myBookmark= null;
