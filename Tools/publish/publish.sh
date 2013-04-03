@@ -16,7 +16,6 @@ EDITOR_DIR=$PRODUCT_DIR/Editor
 ENGINE_DIR=$PRODUCT_DIR/Engine
 EDITOR_PUBLIC_NODE_INSTALLER_DIR=$EDITOR_DIR/NodeInstaller
 EDITOR_PUBLIC_EDITOR_WINDOWS_DIR=$EDITOR_DIR/EditorWindows
-ENGINE_PUBLIC_NODES_DIR=$ENGINE_DIR/Nodes
 ENGINE_PUBLIC_COMPONENTS_DIR=$ENGINE_DIR/Components
 PUBLISH_ROOT=$ROOT_DIR/../Published
 PUBLISH_ASSETS_DIR=$PUBLISH_ROOT/Assets
@@ -27,8 +26,7 @@ PUBLISH_ENGINE_DIR=$PUBLISH_PRODUCT_DIR/Engine
 echo "Generating file list ..."
 find $EDITOR_PUBLIC_NODE_INSTALLER_DIR -name "*.cs" >editorFilesToExclude
 find $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR -name "*.cs" >>editorFilesToExclude
-find $ENGINE_PUBLIC_NODES_DIR -name "*.cs" >engineFilesToExclude
-find $ENGINE_PUBLIC_COMPONENTS_DIR -name "*.cs" >>engineFilesToExclude
+find $ENGINE_PUBLIC_COMPONENTS_DIR -name "*.cs" >engineFilesToExclude
 find $EDITOR_DIR -name "*.cs" >_editorFiles
 find $PRODUCT_DIR -name "*.cs" | grep -v -f _editorFiles - >_engineFiles
 grep -v -f editorFilesToExclude _editorFiles >editorFiles
@@ -66,7 +64,6 @@ cp $PRODUCT_DIR/readme.txt $PUBLISH_PRODUCT_DIR
 cp -r $EDITOR_DIR/Resources $PUBLISH_EDITOR_DIR
 rsync -av $EDITOR_PUBLIC_NODE_INSTALLER_DIR $PUBLISH_EDITOR_DIR >/dev/null
 rsync -av $EDITOR_PUBLIC_EDITOR_WINDOWS_DIR $PUBLISH_EDITOR_DIR >/dev/null
-rsync -av $ENGINE_PUBLIC_NODES_DIR $PUBLISH_ENGINE_DIR >/dev/null
 rsync -av $ENGINE_PUBLIC_COMPONENTS_DIR $PUBLISH_ENGINE_DIR >/dev/null
 #rsync -av --exclude=*/*.meta $EDITOR_PUBLIC_NODE_INSTALLER_DIR $PUBLISH_EDITOR_DIR >/dev/null
 #rsync -av --exclude=*/*.meta $ENGINE_PUBLIC_NODES_DIR $PUBLISH_ENGINE_DIR >/dev/null

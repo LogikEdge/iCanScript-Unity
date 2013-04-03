@@ -46,28 +46,22 @@ public static class iCS_iCanScriptMenu {
     public static void CenterOnSelected() {
         iCS_Menu.CenterOnSelected();
     }
-//    // ======================================================================
-//    [MenuItem("iCanScript/",false,40)]
-//    [MenuItem("iCanScript/Reload Libraries",false,41)]
-//    public static void ReloadLibraries() {
-//        iCS_Installer.Install();
-//    }
     // ======================================================================
     // Documentation Access
-    [MenuItem("iCanScript/",false,50)]
-    [MenuItem("iCanScript/Documentation/Home Page",false,51)]
+    [MenuItem("iCanScript/",false,30)]
+    [MenuItem("iCanScript/Documentation/Home Page",false,31)]
     public static void HomePage() {
         Application.OpenURL("http://www.icanscript.com");
     }
-    [MenuItem("iCanScript/Documentation/User's Manual",false,52)]
+    [MenuItem("iCanScript/Documentation/User's Manual",false,32)]
     public static void UserManual() {
         Application.OpenURL("http://www.icanscript.com/documentation/user_guide");
     }
-    [MenuItem("iCanScript/Documentation/Programmer's Guide",false,53)]
+    [MenuItem("iCanScript/Documentation/Programmer's Guide",false,33)]
     public static void ProgrammerGuide() {
         Application.OpenURL("http://www.icanscript.com/documentation/programmer_guide");
     }
-    [MenuItem("iCanScript/Documentation/Release Notes",false,54)]
+    [MenuItem("iCanScript/Documentation/Release Notes",false,34)]
     public static void ReleaseNotes() {
         Application.OpenURL("http://www.icanscript.com/support/release_notes");
     }
