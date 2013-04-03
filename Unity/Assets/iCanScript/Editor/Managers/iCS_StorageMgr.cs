@@ -20,7 +20,7 @@ public static class iCS_StorageMgr {
     public static iCS_EditorObject SelectedObject   { get { return IStorage != null ? IStorage.SelectedObject : null; } set { if(IStorage != null) IStorage.SelectedObject= value; }}
 	
     // =================================================================================
-    // Selection Update.
+    // Storage & Selected object Update.
     // ---------------------------------------------------------------------------------
 	public static void Update() {
 		GameObject go= Selection.activeGameObject;
@@ -37,6 +37,12 @@ public static class iCS_StorageMgr {
             myIsPlaying= Application.isPlaying;
             return;
         }
+        // Create a root object if one does not exist.
+        if(storage.EngineObjects.Count == 0) {
+            if(storage is iCS_BehaviourImp) {
+                CreateRootBehaviourNode(storage);
+            }
+        }
 		// Verify for storage change.
         bool isPlaying= Application.isPlaying;
 		if(myIStorage == null || myIStorage.Storage != storage || myIsPlaying != isPlaying) {
@@ -50,4 +56,10 @@ public static class iCS_StorageMgr {
 			mySelectedObject= myIStorage.SelectedObject;
 		}
 	}
+    // ---------------------------------------------------------------------------------
+    public static void CreateRootBehaviourNode(iCS_Storage storage) {
+        var behaviour= new iCS_EngineObject(0, "Behaviour", typeof(iCS_BehaviourImp), -1, iCS_ObjectTypeEnum.Behaviour);
+        storage.EngineObjects.Add(behaviour);        
+    }
+
 }
