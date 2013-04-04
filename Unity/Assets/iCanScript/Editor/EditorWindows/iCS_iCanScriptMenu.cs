@@ -14,28 +14,6 @@ public static class iCS_iCanScriptMenu {
 	}
 
     // ======================================================================
-	// Create a library module to selected game object.
-	[MenuItem("iCanScript/Create Module Library", false, 2)]
-	public static void CreateModuleLibrary() {
-        iCS_Menu.CreateModuleLibrary();
-	}
-	[MenuItem("iCanScript/Create Module Library", true, 2)]
-	public static bool ValidateCreateModuleLibrary() {
-        return iCS_Menu.ValidateCreateModuleLibrary();
-	}
-
-    // ======================================================================
-	// Create a library module to selected game object.
-	[MenuItem("iCanScript/Create State Chart Library", false, 3)]
-	public static void CreateStateChartLibrary() {
-        iCS_Menu.CreateStateChartLibrary();
-	}
-	[MenuItem("iCanScript/Create State Chart Library", true, 3)]
-	public static bool ValidateCreateStateChartLibrary() {
-        return iCS_Menu.ValidateCreateStateChartLibrary();
-	}
-
-    // ======================================================================
     // Navigation
     [MenuItem("iCanScript/",false,20)]
     [MenuItem("iCanScript/Center Graph _#&f",false,21)]
