@@ -79,8 +79,8 @@
 	<integer>0</integer>
 	<key>inspectorSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {970, 1070}}</string>
-		<string>{{971, 0}, {258, 1070}}</string>
+		<string>{{0, 0}, {976, 1070}}</string>
+		<string>{{977, 0}, {252, 1070}}</string>
 	</array>
 	<key>inspectorWidth</key>
 	<real>201</real>
@@ -879,7 +879,7 @@
 	<key>mainDocumentEditor.rulerIsVisible</key>
 	<false/>
 	<key>mainDocumentEditor.scrollRect</key>
-	<string>{{0, 0}, {646.66669, 682.66669}}</string>
+	<string>{{0, 0}, {650.66669, 682.66669}}</string>
 	<key>mainDocumentEditor.selectedRanges</key>
 	<string>{1021, 0}</string>
 	<key>mainDocumentEditor.textEditorState</key>
