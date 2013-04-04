@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-04 13:48:35 -0400">
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-04 16:10:19 -0400">
     <Binder>
         <BinderItem ID="12" Type="Text" Created="2007-03-25 14:48:19 -0400" Modified="2011-11-09 08:22:20 -0500">
             <Title>Non-Fiction Format</Title>
@@ -22,9 +22,21 @@
                 <SelectedSubdocumentIDs>37</SelectedSubdocumentIDs>
             </CorkboardAndOutliner>
             <Children>
-                <BinderItem ID="60" Type="Text" Created="2013-02-04 09:37:44 -0500" Modified="2013-02-04 10:27:30 -0500">
-                    <Title>History</Title>
+                <BinderItem ID="63" Type="Text" Created="2013-04-04 14:50:50 -0400" Modified="2013-04-04 16:09:24 -0400">
+                    <Title>Many Thanks</Title>
                     <MetaData>
+                        <StatusID>3</StatusID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>325,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="60" Type="Text" Created="2013-02-04 09:37:44 -0500" Modified="2013-04-04 16:09:43 -0400">
+                    <Title>Preface</Title>
+                    <MetaData>
+                        <StatusID>2</StatusID>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
@@ -32,14 +44,14 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="37" Type="Text" Created="2013-01-04 15:26:21 -0500" Modified="2013-02-04 09:38:16 -0500">
+                <BinderItem ID="37" Type="Text" Created="2013-01-04 15:26:21 -0500" Modified="2013-04-04 16:08:15 -0400">
                     <Title>Acknowledgements</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>0,0</TextSelection>
+                        <TextSelection>222,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
                 <BinderItem ID="38" Type="Folder" Created="2013-01-04 15:27:46 -0500" Modified="2013-01-19 09:56:32 -0500">
@@ -62,7 +74,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="40" Type="Text" Created="2013-01-04 15:29:15 -0500" Modified="2013-02-06 11:31:05 -0500">
+                        <BinderItem ID="40" Type="Text" Created="2013-01-04 15:29:15 -0500" Modified="2013-04-04 16:08:36 -0400">
                             <Title>Philosophy</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -82,7 +94,7 @@
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
                         </BinderItem>
-                        <BinderItem ID="43" Type="Text" Created="2013-01-04 15:30:40 -0500" Modified="2013-02-06 10:34:50 -0500">
+                        <BinderItem ID="43" Type="Text" Created="2013-01-04 15:30:40 -0500" Modified="2013-04-04 16:08:45 -0400">
                             <Title>What's New</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -104,7 +116,7 @@
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="45" Type="Folder" Created="2013-01-04 15:31:23 -0500" Modified="2013-02-06 10:27:48 -0500">
+                <BinderItem ID="45" Type="Folder" Created="2013-01-04 15:31:23 -0500" Modified="2013-04-04 16:09:05 -0400">
                     <Title>Overview</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -114,7 +126,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <Children>
-                        <BinderItem ID="57" Type="Text" Created="2013-01-07 08:45:01 -0500" Modified="2013-02-06 10:27:44 -0500">
+                        <BinderItem ID="57" Type="Text" Created="2013-01-07 08:45:01 -0500" Modified="2013-04-04 16:09:05 -0400">
                             <Title>iCanScript Anatomy</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -421,7 +433,7 @@
             <Title>Search Results</Title>
             <SearchSettings Operator="Exact" Type="All" CaseSensitive="No">non-fiction format</SearchSettings>
         </Collection>
-        <Collection Type="Arbitrary" ID="09F64DA6-8A39-4AA6-BA22-30A0B50ACBE9" Color="0.765382 0.76387 0.822976">
+        <Collection Type="Arbitrary" ID="09F64DA6-8A39-4AA6-BA22-30A0B50ACBE9" Color="0.8 0.4 1.0">
             <Title>IndexCard Sync</Title>
             <BinderIDs>
                 <BinderID>56</BinderID>
@@ -463,7 +475,7 @@
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 08:24:39 -0400" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="0" Characters="0" Date="2013-04-04 13:47:11 -0400"></PreviousSession>
+        <PreviousSession Words="61" Characters="400" Date="2013-04-04 14:21:01 -0400"></PreviousSession>
     </ProjectTargets>
-    <PrintSettings PaperSize="595.280029,841.890015" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
+    <PrintSettings PaperSize="595.275574,841.861389" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
 </ScrivenerProject>

@@ -8,23 +8,21 @@
 	<dict>
 		<key>09F64DA6-8A39-4AA6-BA22-30A0B50ACBE9</key>
 		<array>
-			<integer>40</integer>
+			<integer>56</integer>
 		</array>
 	</dict>
 	<key>DisableFileRecoveryOnOpen</key>
 	<true/>
+	<key>MainWindowIsFullScreen</key>
+	<true/>
 	<key>binderSelection</key>
 	<array>
-		<integer>5</integer>
-		<integer>6</integer>
-		<integer>7</integer>
-		<integer>8</integer>
-		<integer>9</integer>
+		<integer>1</integer>
 	</array>
 	<key>binderSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {223, 1258}}</string>
-		<string>{{224, 0}, {1229, 1258}}</string>
+		<string>{{0, 0}, {223, 1132}}</string>
+		<string>{{224, 0}, {1696, 1132}}</string>
 	</array>
 	<key>binderState</key>
 	<array>
@@ -35,7 +33,7 @@
 	<true/>
 	<key>collectionSelectionAutosaveName</key>
 	<array>
-		<integer>1</integer>
+		<integer>0</integer>
 	</array>
 	<key>collectionsHeight</key>
 	<real>101</real>
@@ -48,8 +46,8 @@
 	</dict>
 	<key>collectionsSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {223, 101}}</string>
-		<string>{{0, 102}, {223, 971}}</string>
+		<string>{{0, 0}, {223, 110}}</string>
+		<string>{{0, 111}, {223, 998}}</string>
 	</array>
 	<key>collectionsTabListIsCollapsed</key>
 	<false/>
@@ -60,27 +58,59 @@
 	</array>
 	<key>editorSplitType</key>
 	<integer>0</integer>
+	<key>fullScreenBackgroundFade</key>
+	<real>0.89999997615814209</real>
 	<key>fullScreenInspectorMode</key>
 	<integer>0</integer>
 	<key>fullScreenInspectorVisible</key>
 	<false/>
+	<key>fullScreenPaperHeight</key>
+	<integer>-1</integer>
+	<key>fullScreenPaperPosition</key>
+	<integer>0</integer>
+	<key>fullScreenPaperWidth</key>
+	<integer>906</integer>
 	<key>fullScreenTextEditorSettings</key>
 	<dict>
 		<key>lineNumberingInterval</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>showsLineNumbers</key>
 		<false/>
+		<key>textScale</key>
+		<integer>125</integer>
 		<key>usesFacingPages</key>
 		<false/>
+		<key>usesTypewriterScrolling</key>
+		<true/>
 	</dict>
 	<key>inspectorIsCollapsed</key>
 	<false/>
 	<key>inspectorNotesMode</key>
 	<integer>0</integer>
+	<key>inspectorReferencesColumns</key>
+	<dict>
+		<key>order</key>
+		<array>
+			<string>ICON</string>
+			<string>DESCRIPTION</string>
+			<string>URL</string>
+		</array>
+		<key>widths</key>
+		<dict>
+			<key>DESCRIPTION</key>
+			<real>87</real>
+			<key>ICON</key>
+			<real>16</real>
+			<key>URL</key>
+			<real>134.44239807128906</real>
+		</dict>
+	</dict>
+	<key>inspectorSelectedDataTab</key>
+	<integer>0</integer>
 	<key>inspectorSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {976, 1070}}</string>
-		<string>{{977, 0}, {252, 1070}}</string>
+		<string>{{0, 0}, {982, 1070}}</string>
+		<string>{{983, 0}, {246, 1070}}</string>
 	</array>
 	<key>inspectorWidth</key>
 	<real>201</real>
@@ -88,12 +118,12 @@
 	<integer>0</integer>
 	<key>mainDocumentEditor.binderDocuments</key>
 	<array>
-		<integer>40</integer>
+		<integer>0</integer>
 	</array>
 	<key>mainDocumentEditor.corkboardVisible</key>
 	<false/>
 	<key>mainDocumentEditor.currentEditorViewMode</key>
-	<integer>0</integer>
+	<integer>1</integer>
 	<key>mainDocumentEditor.editorGroupsViewMode</key>
 	<integer>1</integer>
 	<key>mainDocumentEditor.hiddenOutlinerColumnIdentifiers</key>
@@ -124,7 +154,7 @@
 	<key>mainDocumentEditor.navigationHistory</key>
 	<dict>
 		<key>CurrentIndex</key>
-		<integer>84</integer>
+		<integer>94</integer>
 		<key>NavigationHistoryArray</key>
 		<array>
 			<dict>
@@ -872,6 +902,90 @@
 				<key>ViewMode</key>
 				<integer>0</integer>
 			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>56</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>12</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>AggregateSelection</key>
+				<string>{1247, 0}</string>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>0</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>60</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>AggregateSelection</key>
+				<string>{0, 0}</string>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>0</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>63</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>60</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>63</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>37</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>0</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>0</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>1</integer>
+			</dict>
 		</array>
 	</dict>
 	<key>mainDocumentEditor.outlinerVisible</key>
@@ -879,9 +993,9 @@
 	<key>mainDocumentEditor.rulerIsVisible</key>
 	<false/>
 	<key>mainDocumentEditor.scrollRect</key>
-	<string>{{0, 0}, {650.66669, 682.66669}}</string>
+	<string>{{0, 0}, {466.66666, 706.66669}}</string>
 	<key>mainDocumentEditor.selectedRanges</key>
-	<string>{1021, 0}</string>
+	<string>{360, 0}</string>
 	<key>mainDocumentEditor.textEditorState</key>
 	<dict>
 		<key>hasMultiplePages</key>
@@ -939,7 +1053,7 @@
 		</dict>
 	</dict>
 	<key>selectedCollectionTabIndex</key>
-	<integer>2</integer>
+	<integer>0</integer>
 	<key>showEditScriveningsTitles</key>
 	<true/>
 	<key>showInvisibles</key>

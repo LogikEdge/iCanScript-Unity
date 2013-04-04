@@ -74,7 +74,7 @@ Scrivener project templates are flexible and are not intended to restrict you to
             <Title>Philosophy</Title>
             <Synopsis>- Discuss what drives the development of iCanScript.</Synopsis>
             <Text>iCanScript was create to help and improve the design process for creating software.  It is meant to extend the standard text editor for writing Unity scripts.  It offers a visual workflow to build, review and publish programming logic without removing the ability to write low-level logic using standard toolsets.
-ICanScript roots its philosophy in that at one point, the software to be created uses concepts that are better expressed in terms of high-level building blocks including multi-level state charts.
+iCanScript roots its philosophy in that at one point, the software to be created uses concepts that are better expressed in terms of high-level building blocks including multi-level state charts.
 Number crushing is best expressed using low-level software and textual source code editors, high-level concepts are better expressed using visual design elements.  Often, corporations include a formal or informal development process to discuss and publish the high-level concepts pertaining the software product to be developed.   In all cases, these high-level concepts are expressed using diagrams as it is the simplest and most direct way of building and iterating on those fundamental aspect of the product.</Text>
             <Notes>This is a note from Index Card.</Notes>
         </Document>
@@ -97,11 +97,12 @@ Number crushing is best expressed using low-level software and textual source co
             <Title>The Library</Title>
         </Document>
         <Document ID="60">
-            <Title>History</Title>
+            <Title>Preface</Title>
             <Text>iCanScript is a concept that has evolved over the last 15 years of my professional software engineering life.
-In 1997, the core concepts of the engine sub-system were first designed and implemented for a large telecommunication corporation.  The resulting software engine was embedded in several large scale telecommunication products in the years to follow.
-Having joined the gaming industry in 2003, I have realized that the engine needed to be complemented by a visual editor to boost the productivity in the software design.  The main driving factor was the ease of communicating the software implementation to a broader audience.  Therefore, the visual editor focused on the mid-to-high-level software design aspects.  While the visual editor can be used for low-level software, it is not its main target.  This brought-in a fundamental requirement that the visual editor be a complement to the existing software development tools in which the standard source code editor remains a key element.
-In 2010, I have decided to dedicate myself to the design and implementation of the iCanScript product helping experienced and less experienced software designers realize their ideas with greater ease without forcing them to leave behind their existing workflow.
+In 1997, the core concepts of the engine sub-system were first designed and implemented for a large telecommunication corporation.  The resulting software engine was embedded in several large scale products in the years to follow.
+Having joined the gaming industry in 2003, I have realized that the engine needed to be complemented by a visual editor to boost the productivity in designing software.
+The rationale for the visual editor is to ease the understanding of software implementations to a broader audience.  Consequently, the visual editor focuses on the mid-to-high-level software design aspects.  Though the visual editor can be used for the design of low-level software, it is not its main forte thus establishing the fundamental requirement that the visual editor embed into the existing software development pipeline in which the standard source code editor remains a key element.
+In 2010, I have decided to dedicate myself to the design and implementation of the iCanScript product, helping experienced and less experienced software designers realize their ideas with greater ease without forcing them to depart from their existing workflow.
 
 #
 
@@ -222,10 +223,17 @@ Non-Fiction/Umwan	19
         <Document ID="37">
             <Title>Acknowledgements</Title>
             <Synopsis>- Thanks to all the donors.</Synopsis>
-            <Text>Many thanks to the following people for very kindly donating time to iCanScript:
-Manual Rochon - help with the interface design and the overall operational concepts.  Manual was also a key tester on the Windows platform.
+            <Text>Many thanks to the following people for very kindly donating time and knowledge in creating iCanScript:
+Manual Rochon - helped in user interface design as well as the overall operational concepts.  Manual was also a key validator on the Windows platform.
 
 </Text>
+        </Document>
+        <Document ID="63">
+            <Title>Many Thanks</Title>
+            <Text>We, at Disruptive Software, would like to start by saying: 
+— Thank You for your interest in iCanScript !!!                 
+Their is nothing more exiting for software designers like us than growing our customer base and we will make every effort to help you become one of our users.
+— The Software Development Team at Disruptive Software.</Text>
         </Document>
         <Document ID="46">
             <Title>Interface Overview</Title>
