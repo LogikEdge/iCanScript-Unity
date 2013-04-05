@@ -34,6 +34,7 @@ public static class iCS_EditorMgr {
     // Event distribution.
     // ---------------------------------------------------------------------------------
 	public static void Update() {
+        // Update storage information for selected object.
 		iCS_StorageMgr.Update();
 	}
 	

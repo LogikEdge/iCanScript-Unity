@@ -109,16 +109,12 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kInstanceAutocreateOutPropertiesKey      = "iCS_InstanceAutocreateOutProperties"; 
     const string kInstanceAutocreateInStaticPropertiesKey = "iCS_InstanceAutocreateInStaticProperties";
     const string kInstanceAutocreateOutStaticPropertiesKey= "iCS_InstanceAutocreateOutStaticProperties";
-    // ---------------------------------------------------------------------------------
-    // Code Generation Constants
-	const bool	 kShowCodeGenerationMessages= true;
-	const string kShowCodeGenerationMessagesKey= "iCS_ShowCodeGenerationMessages";
 	
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
 	int         selGridId= 0;
-	string[]    selGridStrings= new string[]{"Display Options", "Canvas", "Node Colors", "Type Colors", "Instance Wizard", "Code Generation"};
+	string[]    selGridStrings= new string[]{"Display Options", "Canvas", "Node Colors", "Type Colors", "Instance Wizard" };
 	GUIStyle    titleStyle= null;
 	GUIStyle    selectionStyle= null;
 	Texture2D	selectionBackground= null;
@@ -343,10 +339,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutStaticPropertiesKey, kInstanceAutocreateOutStaticProperties); }
         set { EditorPrefs.SetBool(kInstanceAutocreateOutStaticPropertiesKey, value); }        
     }
-	public static bool ShowCodeGenerationMessages {
-		get { return EditorPrefs.GetBool(kShowCodeGenerationMessagesKey, kShowCodeGenerationMessages); }
-		set { EditorPrefs.SetBool(kShowCodeGenerationMessagesKey, value); }
-	}
     
 	// =================================================================================
     // Storage Utilities
@@ -467,7 +459,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             case 2: NodeColors(); break;
             case 3: TypeColors(); break;
             case 4: InstanceWizard(); break;
-			case 5: CodeGeneration(); break;
             default: break;
         }
 
@@ -727,29 +718,6 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             InstanceAutocreateOutStaticProperties= kInstanceAutocreateOutStaticProperties;
         }        
     }
-    // ---------------------------------------------------------------------------------
-	void CodeGeneration() {
-        // Column 2
-        Rect[] pos= new Rect[1];
-        pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
-        for(int i= 1; i < pos.Length; ++i) {
-            pos[i]= pos[i-1];
-            pos[i].y= pos[i-1].yMax;
-        }
-        GUI.Label(pos[0], "Show Code Generation Messages");
-
-        // Draw Column 3
-        for(int i= 0; i < pos.Length; ++i) {
-            pos[i].x+= kColumn2Width;
-            pos[i].width= kColumn3Width;
-        }
-        ShowCodeGenerationMessages= EditorGUI.Toggle(pos[0], ShowCodeGenerationMessages);
-
-        // Reset Button
-        if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
-            ShowCodeGenerationMessages= kShowCodeGenerationMessages;
-        }		
-	}
 	
 	// =================================================================================
     // Helpers.
