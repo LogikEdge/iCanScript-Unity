@@ -405,26 +405,28 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 
     // ---------------------------------------------------------------------------------
 	static GUIStyle largeLabelStyleCache= null;
-	static GUIStyle labelStyleCache= null;
     void RebuildStyles() {
+        bool rebuildStyleNeeded= false;
+        if(largeLabelStyleCache != EditorStyles.largeLabel) {
+            rebuildStyleNeeded= true;
+            largeLabelStyleCache= EditorStyles.largeLabel;
+        }
 		// Build title style
-        if(titleStyle == null || largeLabelStyleCache != EditorStyles.largeLabel) {
-			largeLabelStyleCache= EditorStyles.largeLabel;
+        if(titleStyle == null || rebuildStyleNeeded) {
             titleStyle= new GUIStyle(EditorStyles.largeLabel);                    
 	        titleStyle.fontSize= 18;
 	        titleStyle.fontStyle= FontStyle.Bold;
 		}
 		// Build selection grid style
-        if(selectionStyle == null || labelStyleCache != EditorStyles.label) {
-			labelStyleCache= EditorStyles.label;
-            selectionStyle= new GUIStyle(EditorStyles.label);
-			selectionStyle.fontStyle= EditorStyles.label.fontStyle+1;
+        if(selectionStyle == null || rebuildStyleNeeded) {
+            const int additionalPadding= 9;
+            selectionStyle= new GUIStyle(EditorStyles.largeLabel);
 	        selectionStyle.alignment= TextAnchor.MiddleRight;
-	        selectionStyle.padding= new RectOffset(10,10,10,10);
+	        selectionStyle.padding= new RectOffset(10,10,additionalPadding,additionalPadding);
 	        selectionStyle.margin= new RectOffset(0,0,0,0);
 			selectionStyle.overflow= new RectOffset(0,0,0,0);
 			selectionStyle.border= new RectOffset(0,0,0,0);
-			selectionStyle.fixedHeight= 20+selectionStyle.lineHeight;
+			selectionStyle.fixedHeight= 2*additionalPadding+selectionStyle.lineHeight;
 			var bkgColor= GUI.skin.settings.selectionColor;
 			bkgColor.a= 1f;
 			if(selectionBackground == null) {
