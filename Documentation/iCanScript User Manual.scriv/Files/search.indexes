@@ -85,7 +85,7 @@ Number crushing is best expressed using low-level software and textual source co
 - Different document formats.</Synopsis>
         </Document>
         <Document ID="50">
-            <Title>The Inspector</Title>
+            <Title>Unity Inspector</Title>
         </Document>
         <Document ID="42">
             <Title>Terms and Conventions</Title>
@@ -94,7 +94,7 @@ Number crushing is best expressed using low-level software and textual source co
 - Discuss typographic conventions used in this manual.</Synopsis>
         </Document>
         <Document ID="51">
-            <Title>The Library</Title>
+            <Title>Library</Title>
         </Document>
         <Document ID="60">
             <Title>Preface</Title>
@@ -123,13 +123,13 @@ Disruptive Software
             <Title>Sub-Section</Title>
         </Document>
         <Document ID="44">
-            <Title>Installation and Upgrading</Title>
+            <Title>Installation and Upgrades</Title>
         </Document>
         <Document ID="27">
             <Title>Ideas</Title>
         </Document>
         <Document ID="53">
-            <Title>The Hierarchy</Title>
+            <Title>Hierarchy</Title>
         </Document>
         <Document ID="36">
             <Title>Sample MS</Title>
@@ -217,7 +217,7 @@ Non-Fiction/Umwan	19
             <Title>Notes</Title>
         </Document>
         <Document ID="54">
-            <Title>iCanScript for Senior Programmers</Title>
+            <Title>Extending iCanScript</Title>
             <Synopsis>- iCanScript for senior programmers</Synopsis>
         </Document>
         <Document ID="37">
@@ -251,6 +251,9 @@ Their is nothing more exciting for software designers like us than growing our c
             <Title>Introduction</Title>
             <Synopsis>- Discuss the purpose of this manual.</Synopsis>
         </Document>
+        <Document ID="64">
+            <Title>Preferences</Title>
+        </Document>
         <Document ID="47">
             <Title>Quick Tour</Title>
         </Document>
@@ -279,7 +282,7 @@ All of these windows and panels can be opened from Unity's Windows menu under th
 Currently, the layout of iCanScript windows and panels are left to the user.</Text>
         </Document>
         <Document ID="49">
-            <Title>The Visual Editor</Title>
+            <Title>Visual Editor</Title>
         </Document>
         <Document ID="58">
             <Title>Keyboard Shortcuts</Title>
