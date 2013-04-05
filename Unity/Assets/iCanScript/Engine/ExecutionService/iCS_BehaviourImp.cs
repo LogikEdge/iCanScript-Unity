@@ -218,6 +218,7 @@ public class iCS_BehaviourImp : iCS_Storage {
     // Code Generation
     // ----------------------------------------------------------------------
     public void GenerateCode() {
+		// TODO : Code generation message should be displayed according to preference panel.
         Debug.Log("iCanScript: Generating real-time code for "+gameObject.name+"...");
 		// Verify for storage sanity.
 		if(SanityCheck()) {
