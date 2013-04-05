@@ -271,7 +271,7 @@ Their is nothing more exciting for software designers like us than growing our c
         <Document ID="65">
             <Title>Executing Your Visual Scripts</Title>
             <Text>iCanScript autonomously generates the visual script code when you request to run your game.  No special user intervention is required.
-By default, iCanScript will send a log message for each game object for which it will generate the code.  You may remove this log message from the preference panel under the Code Generation section.</Text>
+</Text>
         </Document>
         <Document ID="48">
             <Title>Designing</Title>
@@ -289,6 +289,12 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
         </Document>
         <Document ID="66">
             <Title>Saving &amp; Loading Your Visual Scripts</Title>
+            <Text>Your visual scripts are automatically saved and reloaded as part of the game object in which they reside.  Your iCanScript components may be in one of two configurations: either as part of a GameObject in a Scene or as part of a Prefab in the Project.  In both cases, the iCanScript component will be saved and reload by Unity in the standard way.
+Here are the considerations for saving &amp; reloading iCanScript components:
+iCanScript in a GameObject:
+This implies that if the visual script is a component of a game object in a scene, that scene must be saved as it is necessary for any other type of change in the scene.
+iCanScript in a Prefab:
+Visual script components that are included in  prefabs are automatically saved as part of the parent prefab.</Text>
         </Document>
         <Document ID="49">
             <Title>Visual Editor</Title>

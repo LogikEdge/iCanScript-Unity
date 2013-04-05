@@ -17,7 +17,7 @@
 	<true/>
 	<key>binderSelection</key>
 	<array>
-		<integer>14</integer>
+		<integer>1</integer>
 	</array>
 	<key>binderSplitFrames</key>
 	<array>
@@ -48,8 +48,8 @@
 	</dict>
 	<key>collectionsSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {223, 100}}</string>
-		<string>{{0, 101}, {223, 1008}}</string>
+		<string>{{0, 0}, {297, 100}}</string>
+		<string>{{0, 101}, {297, 1264}}</string>
 	</array>
 	<key>collectionsTabListIsCollapsed</key>
 	<false/>
@@ -71,7 +71,7 @@
 	<key>fullScreenPaperPosition</key>
 	<integer>0</integer>
 	<key>fullScreenPaperWidth</key>
-	<integer>1612</integer>
+	<integer>2174</integer>
 	<key>fullScreenTextEditorSettings</key>
 	<dict>
 		<key>lineNumberingInterval</key>
@@ -111,8 +111,8 @@
 	<integer>0</integer>
 	<key>inspectorSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {1373, 1106}}</string>
-		<string>{{1374, 0}, {322, 1106}}</string>
+		<string>{{0, 0}, {1823, 1362}}</string>
+		<string>{{1824, 0}, {438, 1362}}</string>
 	</array>
 	<key>inspectorWidth</key>
 	<real>201</real>
@@ -120,7 +120,7 @@
 	<integer>0</integer>
 	<key>mainDocumentEditor.binderDocuments</key>
 	<array>
-		<integer>65</integer>
+		<integer>0</integer>
 	</array>
 	<key>mainDocumentEditor.corkboardVisible</key>
 	<false/>
@@ -159,22 +159,6 @@
 		<integer>99</integer>
 		<key>NavigationHistoryArray</key>
 		<array>
-			<dict>
-				<key>BinderDocIDs</key>
-				<array>
-					<integer>38</integer>
-				</array>
-				<key>ViewMode</key>
-				<integer>0</integer>
-			</dict>
-			<dict>
-				<key>BinderDocIDs</key>
-				<array>
-					<integer>41</integer>
-				</array>
-				<key>ViewMode</key>
-				<integer>0</integer>
-			</dict>
 			<dict>
 				<key>BinderDocIDs</key>
 				<array>
@@ -1051,9 +1035,29 @@
 				<integer>1</integer>
 			</dict>
 			<dict>
+				<key>AggregateSelection</key>
+				<string>{0, 0}</string>
 				<key>BinderDocIDs</key>
 				<array>
 					<integer>65</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>AggregateSelection</key>
+				<string>{752, 0}</string>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>66</integer>
+				</array>
+				<key>ViewMode</key>
+				<integer>1</integer>
+			</dict>
+			<dict>
+				<key>BinderDocIDs</key>
+				<array>
+					<integer>0</integer>
 				</array>
 				<key>ViewMode</key>
 				<integer>1</integer>
@@ -1065,9 +1069,9 @@
 	<key>mainDocumentEditor.rulerIsVisible</key>
 	<false/>
 	<key>mainDocumentEditor.scrollRect</key>
-	<string>{{0, 0}, {466.66666, 706.66669}}</string>
+	<string>{{0, 0}, {466.66666, 877.33331}}</string>
 	<key>mainDocumentEditor.selectedRanges</key>
-	<string>{363, 0}</string>
+	<string>{0, 0}</string>
 	<key>mainDocumentEditor.textEditorState</key>
 	<dict>
 		<key>hasMultiplePages</key>
@@ -1082,7 +1086,7 @@
 	<key>mainDocumentEditor.textMode</key>
 	<integer>0</integer>
 	<key>mainWindowFrame</key>
-	<string>97 60 1453 1118 0 0 1920 1178 </string>
+	<string>230 300 1453 1118 0 0 2560 1418 </string>
 	<key>projectStatsSheet</key>
 	<dict>
 		<key>excludeAnnots</key>
