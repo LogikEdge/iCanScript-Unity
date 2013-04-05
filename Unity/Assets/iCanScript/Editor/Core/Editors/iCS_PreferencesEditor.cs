@@ -112,7 +112,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     // Code Generation Constants
 	const bool	 kShowCodeGenerationMessages= true;
-	const string kShowCodeGenerationMessagesKey= "iCS_ShowCodeGenerationMessage";
+	const string kShowCodeGenerationMessagesKey= "iCS_ShowCodeGenerationMessages";
 	
     // =================================================================================
     // Fields
