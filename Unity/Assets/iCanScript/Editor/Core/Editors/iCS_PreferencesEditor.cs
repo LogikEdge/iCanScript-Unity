@@ -121,6 +121,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 	string[]    selGridStrings= new string[]{"Display Options", "Canvas", "Node Colors", "Type Colors", "Instance Wizard", "Code Generation"};
 	GUIStyle    titleStyle= null;
 	GUIStyle    selectionStyle= null;
+	Texture2D	selectionBackground= null;
 	
     // =================================================================================
     // Properties
@@ -402,36 +403,52 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         maxSize= new Vector2(500f, 425f);
     }
 
-    void Initialize() {
-        if(titleStyle == null) {
+    // ---------------------------------------------------------------------------------
+	static GUIStyle largeLabelStyleCache= null;
+	static GUIStyle labelStyleCache= null;
+    void RebuildStyles() {
+		// Build title style
+        if(titleStyle == null || largeLabelStyleCache != EditorStyles.largeLabel) {
+			largeLabelStyleCache= EditorStyles.largeLabel;
             titleStyle= new GUIStyle(EditorStyles.largeLabel);                    
-            titleStyle.fontSize= 18;
-            titleStyle.fontStyle= FontStyle.Bold;
-        }
-        if(selectionStyle == null) {
+	        titleStyle.fontSize= 18;
+	        titleStyle.fontStyle= FontStyle.Bold;
+		}
+		// Build selection grid style
+        if(selectionStyle == null || labelStyleCache != EditorStyles.label) {
+			labelStyleCache= EditorStyles.label;
             selectionStyle= new GUIStyle(EditorStyles.label);
-            selectionStyle.alignment= TextAnchor.MiddleRight;
-            selectionStyle.padding= new RectOffset(10,10,10,10);
-            selectionStyle.margin= new RectOffset(0,0,0,0);
+			selectionStyle.fontStyle= EditorStyles.label.fontStyle+1;
+	        selectionStyle.alignment= TextAnchor.MiddleRight;
+	        selectionStyle.padding= new RectOffset(10,10,10,10);
+	        selectionStyle.margin= new RectOffset(0,0,0,0);
 			selectionStyle.overflow= new RectOffset(0,0,0,0);
 			selectionStyle.border= new RectOffset(0,0,0,0);
 			selectionStyle.fixedHeight= 20+selectionStyle.lineHeight;
-			var activeBackground= new Texture2D(1,1);
-			activeBackground.SetPixel(0,0,GUI.skin.settings.selectionColor);
-			activeBackground.Apply();
-			selectionStyle.onNormal.background= activeBackground;
+			var bkgColor= GUI.skin.settings.selectionColor;
+			bkgColor.a= 1f;
+			if(selectionBackground == null) {
+				selectionBackground= new Texture2D(1,1);				
+			}
+			selectionBackground.SetPixel(0,0,bkgColor);
+			selectionBackground.Apply();
+			selectionStyle.onNormal.background= selectionBackground;
 			selectionStyle.onNormal.textColor= Color.white;
-        }
+		}
     }
 
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
     public void OnGUI() {
-        Initialize();
+		// Reset GUI alpha.
+		GUI.color= Color.white;
+		// Build GUI styles (in case they were changed by user).
+        RebuildStyles();
+		
         float lineHeight= selectionStyle.fixedHeight;
         float gridHeight= lineHeight*selGridStrings.Length;
-        Rect column1Rect= new Rect(0,0,kColumn1Width,position.height);
+        Rect column1Rect= new Rect(0,-1,kColumn1Width,position.height+1);
         GUI.Box(column1Rect,"");
         selGridId= GUI.SelectionGrid(new Rect(0,kMargin+kTitleHeight,kColumn1Width,gridHeight), selGridId, selGridStrings, 1, selectionStyle);
 
@@ -458,7 +475,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         GUIContent versionContent= new GUIContent(version);
         Vector2 versionSize= GUI.skin.label.CalcSize(versionContent);
         float x= column1Rect.x+0.5f*(column1Rect.width-versionSize.x);
-        float y= column1Rect.yMax-2f*versionSize.y;
+        float y= column1Rect.yMax-2.5f*versionSize.y;
         Rect pos= new Rect(x, y, versionSize.x, versionSize.y);
         GUI.Label(pos, versionContent);
         pos.y+= versionSize.y;
