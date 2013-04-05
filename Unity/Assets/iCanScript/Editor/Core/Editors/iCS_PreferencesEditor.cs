@@ -736,7 +736,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
-        GUI.Label(pos[0], "Show Code Generation Message");
+        GUI.Label(pos[0], "Show Code Generation Messages");
 
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
