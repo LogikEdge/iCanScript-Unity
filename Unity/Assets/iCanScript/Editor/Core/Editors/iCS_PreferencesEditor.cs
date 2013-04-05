@@ -411,7 +411,16 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         if(selectionStyle == null) {
             selectionStyle= new GUIStyle(EditorStyles.label);
             selectionStyle.alignment= TextAnchor.MiddleRight;
-            selectionStyle.padding= new RectOffset(10,10,0,0);
+            selectionStyle.padding= new RectOffset(10,10,10,10);
+            selectionStyle.margin= new RectOffset(0,0,0,0);
+			selectionStyle.overflow= new RectOffset(0,0,0,0);
+			selectionStyle.border= new RectOffset(0,0,0,0);
+			selectionStyle.fixedHeight= 20+selectionStyle.lineHeight;
+			var activeBackground= new Texture2D(1,1);
+			activeBackground.SetPixel(0,0,GUI.skin.settings.selectionColor);
+			activeBackground.Apply();
+			selectionStyle.onNormal.background= activeBackground;
+			selectionStyle.onNormal.textColor= Color.white;
         }
     }
 
@@ -420,8 +429,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     public void OnGUI() {
         Initialize();
-        
-        float gridHeight= 20*selGridStrings.Length;
+        float lineHeight= selectionStyle.fixedHeight;
+        float gridHeight= lineHeight*selGridStrings.Length;
         Rect column1Rect= new Rect(0,0,kColumn1Width,position.height);
         GUI.Box(column1Rect,"");
         selGridId= GUI.SelectionGrid(new Rect(0,kMargin+kTitleHeight,kColumn1Width,gridHeight), selGridId, selGridStrings, 1, selectionStyle);

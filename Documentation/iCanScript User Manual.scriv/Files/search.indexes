@@ -250,6 +250,7 @@ Their is nothing more exciting for software designers like us than growing our c
         <Document ID="38">
             <Title>Introduction</Title>
             <Synopsis>- Discuss the purpose of this manual.</Synopsis>
+            <Text>Welcome to the User Manual of iCanScript.  The following sections will get you acquainted with the user interface and the </Text>
         </Document>
         <Document ID="64">
             <Title>Preferences</Title>
@@ -267,6 +268,11 @@ Their is nothing more exciting for software designers like us than growing our c
 - Discuss iCanScript menus
 - Discuss windows &amp; panels</Synopsis>
         </Document>
+        <Document ID="65">
+            <Title>Executing Your Visual Scripts</Title>
+            <Text>iCanScript autonomously generates the visual script code when you request to run your game.  No special user intervention is required.
+By default, iCanScript will send a log message for each game object for which it will generate the code.  You may remove this log message from the preference panel under the Code Generation section.</Text>
+        </Document>
         <Document ID="48">
             <Title>Designing</Title>
         </Document>
@@ -280,6 +286,9 @@ Their is nothing more exciting for software designers like us than growing our c
 	* a preference configuration panel.
 All of these windows and panels can be opened from Unity's Windows menu under the sub-menu iCanScript.
 Currently, the layout of iCanScript windows and panels are left to the user.</Text>
+        </Document>
+        <Document ID="66">
+            <Title>Saving &amp; Loading Your Visual Scripts</Title>
         </Document>
         <Document ID="49">
             <Title>Visual Editor</Title>
