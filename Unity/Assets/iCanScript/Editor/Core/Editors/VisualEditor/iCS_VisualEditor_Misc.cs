@@ -171,8 +171,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo conversion= null) {
-		iCS_EditorObject inNode= inPort.Parent;
-        iCS_EditorObject outNode= outPort.Parent;
+		iCS_EditorObject inNode= inPort.ParentNode;
+        iCS_EditorObject outNode= outPort.ParentNode;
         iCS_EditorObject inParent= GetParentNode(inNode);
         
         iCS_EditorObject outParent= GetParentNode(outNode);

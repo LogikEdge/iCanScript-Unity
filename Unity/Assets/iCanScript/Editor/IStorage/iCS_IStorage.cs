@@ -516,11 +516,14 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo convDesc) {
-        if(convDesc == null) { SetSource(inPort, outPort); return; }
+        if(convDesc == null) {
+            SetSource(inPort, outPort);
+            return;
+        }
         var inPos= inPort.LayoutPosition;
         var outPos= outPort.LayoutPosition;
         Vector2 convPos= new Vector2(0.5f*(inPos.x+outPos.x), 0.5f*(inPos.y+outPos.y));
-        int grandParentId= inPort.ParentId;
+        int grandParentId= inPort.ParentNode.ParentId;
         iCS_EditorObject conv= CreateMethod(grandParentId, convPos, convDesc);
         ForEachChild(conv,
             (child) => {
