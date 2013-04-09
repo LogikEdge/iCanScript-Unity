@@ -6,6 +6,12 @@ using System.Collections;
     TODO: Should show frameId in header bar.
 */
 public partial class iCS_VisualEditor : iCS_EditorBase {
+    // =======================================================================
+    // Toolbar Constants
+    // -----------------------------------------------------------------------
+    const float kSliderSize= 60f;
+    
+    // -----------------------------------------------------------------------
 	void Toolbar() {
 		// Build standard toolbar at top of editor window.
 		Rect r= iCS_ToolbarUtility.BuildToolbar(position.width, -1f);
@@ -23,14 +29,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         iCS_ToolbarUtility.MiniLabel(ref r, "Runtime Values", 0,0);
         float refreshSpeed= Mathf.Sqrt(iCS_PreferencesEditor.PortValueRefreshPeriod);
-        float newRefreshSpeed= iCS_ToolbarUtility.Slider(ref r, 120f, refreshSpeed, 0.3162f, 1.414f, spacer, spacer);
+        float newRefreshSpeed= iCS_ToolbarUtility.Slider(ref r, kSliderSize, refreshSpeed, 0.3162f, 1.414f, spacer, spacer);
         if(newRefreshSpeed != refreshSpeed) {
             iCS_PreferencesEditor.PortValueRefreshPeriod= newRefreshSpeed*newRefreshSpeed;
         }
         iCS_ToolbarUtility.Separator(ref r);
         
 		// Show zoom control at the end of the toolbar.
-        float newScale= iCS_ToolbarUtility.Slider(ref r, 120f, Scale, 2f, 0.15f, spacer, spacer, true);
+        float newScale= iCS_ToolbarUtility.Slider(ref r, kSliderSize, Scale, 2f, 0.15f, spacer, spacer, true);
         iCS_ToolbarUtility.MiniLabel(ref r, "Zoom", 10f, 0, true);
 		if(Math3D.IsNotEqual(newScale, Scale)) {
             Vector2 pivot= ViewportToGraph(ViewportCenter);

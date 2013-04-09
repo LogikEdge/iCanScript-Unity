@@ -434,7 +434,10 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    public void OnGUI() {
+    public new void OnGUI() {
+        // Draw common stuff for all editors
+        base.OnGUI();
+        
 		// Reset GUI alpha.
 		GUI.color= Color.white;
 		// Build GUI styles (in case they were changed by user).

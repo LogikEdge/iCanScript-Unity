@@ -21,7 +21,7 @@ public static class iCS_WindowMenu {
  	// iCanScript Hierarchy editor Menu.
  	[MenuItem("Window/iCanScript/Hierarchy")]
  	public static void MenuHierarchyEditor() {
-        var editor= EditorWindow.GetWindow(typeof(iCS_HierarchyEditorWindow), false, "iCS Hierarchy");
+        var editor= EditorWindow.GetWindow(typeof(iCS_HierarchyEditorWindow), false, "Hierarchy");
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
  	}
@@ -29,7 +29,7 @@ public static class iCS_WindowMenu {
  	// iCanScript Project editor Menu.
  	[MenuItem("Window/iCanScript/Library")]
  	public static void MenuLibraryEditor() {
-        var editor= EditorWindow.GetWindow(typeof(iCS_LibraryEditorWindow), false, "iCS Library");
+        var editor= EditorWindow.GetWindow(typeof(iCS_LibraryEditorWindow), false, "Library");
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
 
@@ -38,7 +38,7 @@ public static class iCS_WindowMenu {
  	// iCanScript ClassWizard editor Menu.
  	[MenuItem("Window/iCanScript/Instance Wizard")]
  	public static void MenuInstanceEditor() {
-        var editor= EditorWindow.GetWindow(typeof(iCS_InstanceEditorWindow), false, "iCS Instance");
+        var editor= EditorWindow.GetWindow(typeof(iCS_InstanceEditorWindow), false, "Instance");
         EditorWindow.DontDestroyOnLoad(editor);
         editor.hideFlags= HideFlags.DontSave;
  	}

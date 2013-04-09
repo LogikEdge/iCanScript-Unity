@@ -5,6 +5,7 @@
 using UnityEngine;
 using UnityEditor;
 using System;
+using System.Reflection;
 using System.Threading;
 using System.IO;
 using System.Collections;
@@ -132,7 +133,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ======================================================================
 	// Handles all event messages.
 	// ----------------------------------------------------------------------
-	public void OnGUI() {
+	public new void OnGUI() {
+        // Draw common stuff for all editors
+        base.OnGUI();
+
         // Attempt to initialize environment (if not already done).
         bool isInit= IsInitialized();
 

@@ -42,7 +42,10 @@ public class iCS_InstanceEditor : iCS_EditorBase {
     // =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    public void OnGUI() {
+    public new void OnGUI() {
+        // Draw common stuff for all editors
+        base.OnGUI();
+        
 		// Update storage manager.
         UpdateMgr();
         // Wait until window is configured.

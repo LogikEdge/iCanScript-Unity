@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEditor;
+using System;
+using System.Reflection;
 using System.Collections;
 
 public class iCS_EditorBase : EditorWindow {
@@ -27,6 +29,27 @@ public class iCS_EditorBase : EditorWindow {
         iCS_EditorMgr.Remove(this);
     }
 
+    // =================================================================================
+    // OnGUI
+    // ---------------------------------------------------------------------------------
+    public void OnGUI() {
+        // Install iCanScript icon in tab title area.
+        // (must hack since Unity does not provide a direct way of adding editor title images).
+        var propertyInfo= GetType().GetProperty("cachedTitleContent", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+        if(propertyInfo != null) {
+            var methodInfo= propertyInfo.GetGetMethod(true);
+            if(methodInfo != null) {
+                var r= methodInfo.Invoke(this, null) as GUIContent;
+                if(r.image == null) {
+                    Texture2D iCanScriptLogo= null;
+                    if(iCS_TextureCache.GetTexture(iCS_EditorStrings.TitleLogoIcon, out iCanScriptLogo)) {
+                        r.image= iCanScriptLogo;
+                    }
+                }
+            }
+        }
+    }
+    
     // =================================================================================
     // Update the editor manager.
     // ---------------------------------------------------------------------------------

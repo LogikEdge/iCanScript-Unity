@@ -53,7 +53,10 @@ public class iCS_HierarchyEditor : iCS_EditorBase {
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    public void OnGUI() {
+    public new void OnGUI() {
+        // Draw common stuff for all editors
+        base.OnGUI();
+        
         UpdateMgr();
         if(!IsInitialized()) return;
 		var toolbarRect= ShowToolbar();

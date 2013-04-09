@@ -4,6 +4,7 @@ using System.Collections;
 public class iCS_EditorStrings {
     // Icons
 	public const string LogoIcon             = "iCS_LogoIcon.png";
+	public const string TitleLogoIcon        = "iCS_TitleLogoIcon.png";
 	public const string FoldedIcon           = "iCS_FoldedIcon.psd";
 	public const string UnfoldedIcon         = "iCS_UnfoldedIcon.psd";
 	public const string MinimizeIcon         = "iCS_MinimizeIcon.psd";

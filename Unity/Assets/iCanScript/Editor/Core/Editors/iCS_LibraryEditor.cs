@@ -29,7 +29,10 @@ public class iCS_LibraryEditor : iCS_EditorBase {
 	// =================================================================================
     // Display.
     // ---------------------------------------------------------------------------------
-    public void OnGUI() {
+    public new void OnGUI() {
+        // Draw the base stuff for all windows.
+        base.OnGUI();
+        
         UpdateMgr();
 		if(!IsInitialized()) return;
 		var toolbarRect= ShowToolbar();
