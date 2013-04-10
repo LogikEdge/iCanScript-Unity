@@ -442,12 +442,15 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
 		GUI.color= Color.white;
 		// Build GUI styles (in case they were changed by user).
         RebuildStyles();
-		
-        float lineHeight= selectionStyle.fixedHeight;
-        float gridHeight= lineHeight*selGridStrings.Length;
+        
+        // Outline column 1 area
         Rect column1Rect= new Rect(0,-1,kColumn1Width,position.height+1);
         GUI.Box(column1Rect,"");
-        selGridId= GUI.SelectionGrid(new Rect(0,kMargin+kTitleHeight,kColumn1Width,gridHeight), selGridId, selGridStrings, 1, selectionStyle);
+
+        // Show selection grid.
+        float lineHeight= selectionStyle.fixedHeight;
+        float gridHeight= lineHeight*selGridStrings.Length;
+        selGridId= GUI.SelectionGrid(new Rect(0,kTitleHeight,kColumn1Width,gridHeight), selGridId, selGridStrings, 1, selectionStyle);
 
         // Show title
         if(selGridId >= 0 && selGridId < selGridStrings.Length) {
@@ -479,6 +482,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         versionSize= GUI.skin.label.CalcSize(versionContent);        
         pos.x= column1Rect.x+0.5f*(column1Rect.width-versionSize.x);
         GUI.Label(pos, versionContent);
+
+        // Show product icon
+        Texture2D iCanScriptLogo= null;
+        if(iCS_TextureCache.GetTexture(iCS_EditorStrings.LogoIcon, out iCanScriptLogo)) {
+            Rect r= new Rect(0.5f*(kColumn1Width-64f), position.height-74f-2f*versionSize.y, 64f, 64f);
+            GUI.DrawTexture(r, iCanScriptLogo);
+        }        		
 	}
     // ---------------------------------------------------------------------------------
     void DisplayOptions() {
