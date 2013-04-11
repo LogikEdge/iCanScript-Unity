@@ -1,3 +1,0 @@
-- Document applicability
-- Software version
-- Different document formats.

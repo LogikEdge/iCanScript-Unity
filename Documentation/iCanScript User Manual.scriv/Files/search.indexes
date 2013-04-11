@@ -1,6 +1,47 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <SearchIndexes Version="1.0">
     <Documents>
+        <Document ID="62">
+            <Title>Updated Documents (Unsorted)</Title>
+        </Document>
+        <Document ID="55">
+            <Title>Appendices</Title>
+            <Synopsis>- Keyboard shortcuts quick reference
+- Programming keywords</Synopsis>
+        </Document>
+        <Document ID="40">
+            <Title>Philosophy</Title>
+            <Synopsis>- Discuss what drives the development of iCanScript.</Synopsis>
+            <Text>iCanScript was created to help and improve the design process for creating software.  It is meant to extend the standard text editor for writing Unity scripts.  It offers a visual workflow to build, review, and publish programming logic without removing the ability to write low-level logic using standard toolsets.
+iCanScript roots its philosophy in that at one point, the software to be created uses concepts that are better expressed in terms of high-level building blocks including multi-level state charts.
+Number crushing is best expressed using low-level software and textual source code editors, high-level concepts are better expressed using visual design elements.  Often, corporations include a formal or informal development process to discuss and publish the high-level concepts pertaining the software product to be developed.   In all cases, these high-level concepts are expressed using diagrams as it is the simplest and most direct way of building and iterating on those fundamental aspects of the product.</Text>
+            <Notes>This is a note from Index Card.</Notes>
+        </Document>
+        <Document ID="63">
+            <Title>Many Thanks</Title>
+            <Synopsis>We, at Disruptive Software, would like to start by saying: 
+— Thank You for your interest in iCanScript !!!         
+Their is nothing more exciting for software designers like us than growing our customer base and we will make every effort to help you become one of our users.
+— The Software Development Team at Disruptive Software.</Synopsis>
+            <Text>We, at Disruptive Software, would like to start by saying: 
+— Thank You for your interest in iCanScript !!!                 
+Their is nothing more exciting for software designers like us than growing our customer base and we will make every effort to help you become one of our users.
+— The Software Development Team at Disruptive Software.</Text>
+        </Document>
+        <Document ID="56">
+            <Title>What is iCanScript</Title>
+            <Synopsis>- Discuss how iCanScript can help in the programming experience.</Synopsis>
+            <Text>iCanScript is a visual scripting editor for the Unity game engine.</Text>
+        </Document>
+        <Document ID="49">
+            <Title>Visual Editor</Title>
+        </Document>
+        <Document ID="64">
+            <Title>Preferences</Title>
+        </Document>
+        <Document ID="27">
+            <Title>Ideas</Title>
+        </Document>
         <Document ID="12">
             <Title>Non-Fiction Format</Title>
             <Text>NON-FICTION WITH SUB-HEADS
@@ -58,43 +99,86 @@ See the “Sample MS” PDF file in the Research folder for an example of a docu
 Final Note
 Scrivener project templates are flexible and are not intended to restrict you to a particular workflow. You can change, delete or move the files and folders contained in the template, and you can create your own templates by setting up a skeletal project with the files, folders and settings you would like to use for new projects and using File > Save As Template.</Text>
         </Document>
-        <Document ID="4">
-            <Title>Chapter Subtitle</Title>
-        </Document>
-        <Document ID="30">
-            <Title>Foreword</Title>
-        </Document>
-        <Document ID="6">
-            <Title>Section</Title>
-        </Document>
-        <Document ID="31">
-            <Title>Contents</Title>
-        </Document>
-        <Document ID="40">
-            <Title>Philosophy</Title>
-            <Synopsis>- Discuss what drives the development of iCanScript.</Synopsis>
-            <Text>iCanScript was created to help and improve the design process for creating software.  It is meant to extend the standard text editor for writing Unity scripts.  It offers a visual workflow to build, review, and publish programming logic without removing the ability to write low-level logic using standard toolsets.
-iCanScript roots its philosophy in that at one point, the software to be created uses concepts that are better expressed in terms of high-level building blocks including multi-level state charts.
-Number crushing is best expressed using low-level software and textual source code editors, high-level concepts are better expressed using visual design elements.  Often, corporations include a formal or informal development process to discuss and publish the high-level concepts pertaining the software product to be developed.   In all cases, these high-level concepts are expressed using diagrams as it is the simplest and most direct way of building and iterating on those fundamental aspects of the product.</Text>
-            <Notes>This is a note from Index Card.</Notes>
-        </Document>
-        <Document ID="41">
-            <Title>About This Manual</Title>
-            <Synopsis>- Document applicability
-- Software version
-- Different document formats.</Synopsis>
-        </Document>
-        <Document ID="50">
-            <Title>Unity Inspector</Title>
-        </Document>
         <Document ID="42">
             <Title>Terms and Conventions</Title>
             <Synopsis>- Provide a simplified list of important terms.
 
 - Discuss typographic conventions used in this manual.</Synopsis>
         </Document>
+        <Document ID="57">
+            <Title>iCanScript Anatomy</Title>
+            <Text>iCanScript is composed of:
+	* a central visual editor window;
+	* a library tree panel;
+	* a hierarchy tree panel;
+	* an object instance wizard panel; and
+	* a preference configuration panel.
+All of these windows and panels can be opened from Unity's Windows menu under the sub-menu iCanScript.
+Currently, the layout of iCanScript windows and panels are left to the user.</Text>
+        </Document>
+        <Document ID="65">
+            <Title>Executing Your Visual Scripts</Title>
+            <Text>iCanScript autonomously generates the visual script code when you request to run your game.  No special user intervention is required.
+</Text>
+        </Document>
+        <Document ID="58">
+            <Title>Menus and Keyboard Shortcuts</Title>
+        </Document>
+        <Document ID="50">
+            <Title>Unity Inspector</Title>
+        </Document>
+        <Document ID="43">
+            <Title>What's New</Title>
+            <Synopsis>- Discuss major difference with previous version of the manual.</Synopsis>
+            <Text>iCanScript Release Candidate #1 (RC#1) is the first officially supported release of iCanScript.  It includes the following features:</Text>
+        </Document>
+        <Document ID="66">
+            <Title>Saving &amp; Loading Your Visual Scripts</Title>
+            <Text>Your visual scripts are automatically saved and reloaded as part of the game object in which they reside.  Your iCanScript components may be in one of two configurations: either as part of a GameObject in a Scene or as part of a Prefab in the Project.  In both cases, the iCanScript component will be saved and reload by Unity in the standard way.
+Here are the considerations for saving &amp; reloading iCanScript components:
+iCanScript in a GameObject:
+This implies that if the visual script is a component of a game object in a scene, that scene must be saved as it is necessary for any other type of change in the scene.
+iCanScript in a Prefab:
+Visual script components that are included in  prefabs are automatically saved as part of the parent prefab.</Text>
+        </Document>
+        <Document ID="59">
+            <Title>Programming Keywords</Title>
+        </Document>
         <Document ID="51">
             <Title>Library</Title>
+        </Document>
+        <Document ID="44">
+            <Title>Installation and Upgrades</Title>
+            <Text>iCanScript is delivered in three Unity packages:
+- iCanScript: the core editor &amp; engine (mandatory);
+- iCanScript_Nodes: base library nodes (optional);
+- iCanScript_Examples: example projects (optional).</Text>
+        </Document>
+        <Document ID="37">
+            <Title>Acknowledgements</Title>
+            <Synopsis>- Thanks to all the donors.</Synopsis>
+            <Text>Many thanks to the following people for very kindly donating time and knowledge in creating iCanScript:
+Manual Rochon - helped in user interface design as well as the overall operational concepts.  Manual was also a key validator on the Windows platform.
+
+</Text>
+        </Document>
+        <Document ID="67">
+            <Title>Tips and Tricks and Trouble</Title>
+        </Document>
+        <Document ID="52">
+            <Title>Instance Wizard</Title>
+        </Document>
+        <Document ID="45">
+            <Title>Overview</Title>
+            <Text>iCanScript is a visual programming editor that can be used standalone or to complement existing source code text editors.</Text>
+        </Document>
+        <Document ID="38">
+            <Title>Introduction</Title>
+            <Synopsis>- Discuss the purpose of this manual.</Synopsis>
+            <Text>Welcome to the User Manual of iCanScript.  The following sections will get you acquainted with the user interface and the </Text>
+        </Document>
+        <Document ID="68">
+            <Title>Preferences</Title>
         </Document>
         <Document ID="60">
             <Title>Preface</Title>
@@ -108,233 +192,17 @@ In 2010, I have decided to dedicate myself to the design and implementation of t
 
 Michel Launier,
 Lead Engineer &amp; Founder of Disruptive Software,
-Disruptive Software
-</Text>
-        </Document>
-        <Document ID="43">
-            <Title>What's New</Title>
-            <Synopsis>- Discuss major difference with previous version of the manual.</Synopsis>
-            <Text>iCanScript Release Candidate #1 (RC#1) is the first officially supported release of iCanScript.  It includes the following features:</Text>
-        </Document>
-        <Document ID="52">
-            <Title>Instance Wizard</Title>
-        </Document>
-        <Document ID="35">
-            <Title>Sub-Section</Title>
-        </Document>
-        <Document ID="44">
-            <Title>Installation and Upgrades</Title>
-        </Document>
-        <Document ID="27">
-            <Title>Ideas</Title>
+Disruptive Software</Text>
         </Document>
         <Document ID="53">
             <Title>Hierarchy</Title>
         </Document>
-        <Document ID="36">
-            <Title>Sample MS</Title>
-            <Text>Simon Umwan Your manuscript should have your address and contact details on the first page only.
-If you have an agent, your agent's address can be included beneath.
-Non-Fiction With Sub-Heads Format by S. Umwan
-2,200 words
-Contents
-Foreword	3 Chapter One - Philately	6 Chapter Two - Phil Attley	11 Endnotes	18
-Non-Fiction/Umwan	2
-Foreword
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi rhoncus adipiscing velit, sit amet cursus libero vehicula sed. Nulla sed urna tellus. Proin non ligula at ligula mollis tempor nec non ipsum. Maecenas non ultricies elit. Ut ac eros ac eros scelerisque commodo. Suspendisse accumsan risus nec leo sagittis dignissim. Aenean mollis iaculis mattis. Integer quam eros, ullamcorper at auctor ut, semper ac quam. Donec et felis vitae justo laoreet laoreet. Nam eu purus vel nisl venenatis sodales. Quisque tempor blandit dolor, non placerat dui tristique commodo. Curabitur scelerisque hendrerit lectus, laoreet semper dui commodo porta. Morbi ullamcorper, ipsum tristique sollicitudin tristique, leo arcu accumsan eros, consequat euismod ipsum sem quis libero.
-Morbi ut tortor ipsum. Maecenas ut rhoncus metus. Etiam
-Non-Fiction/Umwan	3
-pellentesque hendrerit dignissim. Sed aliquam, sem quis pulvinar pharetra, urna nunc pharetra orci, eu varius velit lacus eu nisl. Ut et quam non mauris convallis ullamcorper sed non libero. In hac habitasse platea dictumst. Proin quis pellentesque magna. Mauris in erat est. Nullam ac risus mi, vitae lacinia nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum dignissim elementum neque, vitae consectetur lectus pharetra nec. Fusce odio orci, fringilla a vulputate feugiat, placerat eget massa. Integer non magna eget dolor pulvinar vestibulum sit amet at mi. Cras blandit leo erat, id accumsan velit. Integer hendrerit, diam ut tincidunt sodales, diam lorem viverra nisl, vel porttitor ante metus et sem. Suspendisse potenti. Suspendisse eget lacus enim, sed placerat enim. Ut sit amet arcu id lacus gravida luctus ullamcorper pellentesque justo.
-Cras laoreet, ligula non sagittis ornare, dolor sapien pharetra leo, non hendrerit nisi libero at enim. Nulla facilisi. Aenean volutpat hendrerit orci, at commodo massa vestibulum congue. Aenean interdum, erat quis interdum porttitor, odio tortor ullamcorper nisl, eget tincidunt velit massa ut turpis. Praesent lacinia condimentum erat, a tempor elit viverra eget. Curabitur id erat quis massa feugiat semper. Suspendisse semper eros vitae mauris dignissim imperdiet mattis mauris accumsan.
-Non-Fiction/Umwan	4
-Suspendisse potenti. Vivamus vitae risus neque, id tempus mi. Integer quis dolor et felis blandit auctor sed eget lectus. Donec sagittis ultricies diam, vitae porta nisi vehicula facilisis. Nullam et nunc a lacus tempus viverra. Ut pharetra tortor quis sem pretium pellentesque fermentum diam viverra. Vestibulum luctus sapien vel nibh vulputate eu tempor orci vehicula. Proin ultricies lobortis orci, id facilisis sapien ornare non.
-Non-Fiction/Umwan	5
-Chapter One: Philately
-The Joy of Collecting Stamps
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi rhoncus adipiscing velit, sit amet cursus libero vehicula sed. Nulla sed urna tellus. Proin non ligula at ligula mollis tempor nec non ipsum. Maecenas non ultricies elit. Ut ac eros ac eros scelerisque commodo. Suspendisse accumsan risus nec leo sagittis dignissim. Aenean mollis iaculis mattis. Integer quam eros, ullamcorper at auctor ut, semper ac quam. Donec et felis vitae justo laoreet laoreet. Nam eu purus vel nisl venenatis sodales. Quisque tempor blandit dolor, non placerat dui tristique commodo. Curabitur scelerisque hendrerit lectus, laoreet semper dui commodo porta. Morbi ullamcorper, ipsum
-Non-Fiction/Umwan	6
-tristique sollicitudin tristique, leo arcu accumsan eros, consequat euismod ipsum sem quis libero.
-Meeting People
-Meeting people is overrated. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi rhoncus adipiscing velit, sit amet cursus libero vehicula sed. Nulla sed urna tellus. Proin non ligula at ligula mollis tempor nec non ipsum. Maecenas non ultricies elit. Ut ac eros ac eros scelerisque commodo. Suspendisse accumsan risus nec leo sagittis dignissim. Aenean mollis iaculis mattis. Integer quam eros, ullamcorper at auctor ut, semper ac quam. Donec et felis vitae justo laoreet laoreet.1 Nam eu purus vel nisl venenatis sodales. Quisque tempor blandit dolor, non placerat dui tristique commodo. Curabitur scelerisque hendrerit lectus, laoreet semper dui commodo porta. Morbi ullamcorper, ipsum tristique sollicitudin tristique, leo arcu accumsan eros, consequat euismod ipsum sem quis libero.
-The Smell
-Stamps smelly nice. And they are tasty. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi rhoncus adipiscing velit, sit amet cursus libero vehicula sed. Nulla sed urna
-Non-Fiction/Umwan	7
-tellus. Proin non ligula at ligula mollis tempor nec non ipsum. Maecenas non ultricies elit. Ut ac eros ac eros scelerisque commodo. Suspendisse accumsan risus nec leo sagittis dignissim. Aenean mollis iaculis mattis. Integer quam eros, ullamcorper at auctor ut, semper ac quam. Donec et felis vitae justo laoreet laoreet. Nam eu purus vel nisl venenatis sodales. Quisque tempor blandit dolor, non placerat dui tristique commodo. Curabitur scelerisque hendrerit lectus, laoreet semper dui commodo porta. Morbi ullamcorper, ipsum tristique sollicitudin tristique, leo arcu accumsan eros, consequat euismod ipsum sem quis libero.
-Difficult-to-Find Stamps
-Morbi ut tortor ipsum. Maecenas ut rhoncus metus. Etiam pellentesque hendrerit dignissim. Sed aliquam, sem quis pulvinar pharetra, urna nunc pharetra orci, eu varius velit lacus eu nisl. Ut et quam non mauris convallis ullamcorper sed non libero. In hac habitasse platea dictumst. Proin quis pellentesque magna. Mauris in erat est.2 Nullam ac risus mi, vitae lacinia nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum dignissim elementum neque, vitae consectetur lectus pharetra nec. Fusce odio orci, fringilla a vulputate feugiat, placerat
-Non-Fiction/Umwan	8
-eget massa. Integer non magna eget dolor pulvinar vestibulum sit amet at mi. Cras blandit leo erat, id accumsan velit. Integer hendrerit, diam ut tincidunt sodales, diam lorem viverra nisl, vel porttitor ante metus et sem. Suspendisse potenti. Suspendisse eget lacus enim, sed placerat enim. Ut sit amet arcu id lacus gravida luctus ullamcorper pellentesque justo.
-The Treskilling Yellow
-Morbi ut tortor ipsum. Maecenas ut rhoncus metus. Etiam pellentesque hendrerit dignissim. Sed aliquam, sem quis pulvinar pharetra, urna nunc pharetra orci, eu varius velit lacus eu nisl. Ut et quam non mauris convallis ullamcorper sed non libero. In hac habitasse platea dictumst. Proin quis pellentesque magna. Mauris in erat est. Nullam ac risus mi, vitae lacinia nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum dignissim elementum neque, vitae consectetur lectus pharetra nec. Fusce odio orci, fringilla a vulputate feugiat, placerat eget massa. Integer non magna eget dolor pulvinar vestibulum sit amet at mi.3 Cras blandit leo erat, id accumsan velit. Integer hendrerit, diam ut tincidunt sodales, diam lorem viverra nisl, vel porttitor ante metus et sem. Suspendisse potenti. Suspendisse eget lacus enim, sed placerat enim. Ut sit amet arcu
-Non-Fiction/Umwan	9
-id lacus gravida luctus ullamcorper pellentesque justo.
-Inverted Jenny
-Morbi ut tortor ipsum. Maecenas ut rhoncus metus. Etiam pellentesque hendrerit dignissim. Sed aliquam, sem quis pulvinar pharetra, urna nunc pharetra orci, eu varius velit lacus eu nisl. Ut et quam non mauris convallis ullamcorper sed non libero. In hac habitasse platea dictumst. Proin quis pellentesque magna. Mauris in erat est. Nullam ac risus mi, vitae lacinia nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum dignissim elementum neque, vitae consectetur lectus pharetra nec. Fusce odio orci, fringilla a vulputate feugiat, placerat eget massa. Integer non magna eget dolor pulvinar vestibulum sit amet at mi.4 Cras blandit leo erat, id accumsan velit. Integer hendrerit, diam ut tincidunt sodales, diam lorem viverra nisl, vel porttitor ante metus et sem. Suspendisse potenti. Suspendisse eget lacus enim, sed placerat enim. Ut sit amet arcu id lacus gravida luctus ullamcorper pellentesque justo.
-Non-Fiction/Umwan	10
-Chapter Two: Phil Attley
-The Life of Phil Attley
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi rhoncus adipiscing velit, sit amet cursus libero vehicula sed. Nulla sed urna tellus. Proin non ligula at ligula mollis tempor nec non ipsum. Maecenas non ultricies elit. Ut ac eros ac eros scelerisque commodo. Suspendisse accumsan risus nec leo sagittis dignissim. Aenean mollis iaculis mattis. Integer quam eros, ullamcorper at auctor ut, semper ac quam. Donec et felis vitae justo laoreet laoreet. Nam eu purus vel nisl venenatis sodales. Quisque tempor blandit dolor, non placerat dui tristique commodo. Curabitur scelerisque hendrerit lectus, laoreet semper dui commodo porta. Morbi ullamcorper, ipsum
-Non-Fiction/Umwan	11
-tristique sollicitudin tristique, leo arcu accumsan eros, consequat euismod ipsum sem quis libero.
-Morbi ut tortor ipsum. Maecenas ut rhoncus metus. Etiam pellentesque hendrerit dignissim. Sed aliquam, sem quis pulvinar pharetra, urna nunc pharetra orci, eu varius velit lacus eu nisl. Ut et quam non mauris convallis ullamcorper sed non libero. In hac habitasse platea dictumst. Proin quis pellentesque magna. Mauris in erat est. Nullam ac risus mi, vitae lacinia nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum dignissim elementum neque, vitae consectetur lectus pharetra nec. Fusce odio orci, fringilla a vulputate feugiat, placerat eget massa. Integer non magna eget dolor pulvinar vestibulum sit amet at mi. Cras blandit leo erat, id accumsan velit. Integer hendrerit, diam ut tincidunt sodales, diam lorem viverra nisl, vel porttitor ante metus et sem. Suspendisse potenti. Suspendisse eget lacus enim, sed placerat enim. Ut sit amet arcu id lacus gravida luctus ullamcorper pellentesque justo.
-Birth
-Morbi ut tortor ipsum. Maecenas ut rhoncus metus. Etiam pellentesque hendrerit dignissim. Sed aliquam, sem quis pulvinar
-Non-Fiction/Umwan	12
-pharetra, urna nunc pharetra orci, eu varius velit lacus eu nisl. Ut et quam non mauris convallis ullamcorper sed non libero. In hac habitasse platea dictumst. Proin quis pellentesque magna. Mauris in erat est. Nullam ac risus mi, vitae lacinia nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum dignissim elementum neque, vitae consectetur lectus pharetra nec. Fusce odio orci, fringilla a vulputate feugiat, placerat eget massa. Integer non magna eget dolor pulvinar vestibulum sit amet at mi. Cras blandit leo erat, id accumsan velit. Integer hendrerit, diam ut tincidunt sodales, diam lorem viverra nisl, vel porttitor ante metus et sem. Suspendisse potenti. Suspendisse eget lacus enim, sed placerat enim. Ut sit amet arcu id lacus gravida luctus ullamcorper pellentesque justo.5
-Early Years
-Cras laoreet, ligula non sagittis ornare, dolor sapien pharetra leo, non hendrerit nisi libero at enim. Nulla facilisi. Aenean volutpat hendrerit orci, at commodo massa vestibulum congue. Aenean interdum, erat quis interdum porttitor, odio tortor ullamcorper nisl, eget tincidunt velit massa ut turpis. Praesent lacinia condimentum erat, a tempor elit viverra eget.
-Non-Fiction/Umwan	13
-Curabitur id erat quis massa feugiat semper. Suspendisse semper eros vitae mauris dignissim imperdiet mattis mauris accumsan. Suspendisse potenti. Vivamus vitae risus neque, id tempus mi. Integer quis dolor et felis blandit auctor sed eget lectus. Donec sagittis ultricies diam, vitae porta nisi vehicula facilisis. Nullam et nunc a lacus tempus viverra. Ut pharetra tortor quis sem pretium pellentesque fermentum diam viverra. Vestibulum luctus sapien vel nibh vulputate eu tempor orci vehicula. Proin ultricies lobortis orci, id facilisis sapien ornare non.
-School
-Nulla facilisi. Praesent bibendum, ipsum et mattis dictum, neque lacus bibendum enim, sed porta massa metus in enim. Nullam orci nisi, imperdiet at vehicula eu, lacinia vel libero. Donec in nisi lectus, sollicitudin porta est. In vitae risus nisi. Aenean eget hendrerit metus. Sed venenatis est at justo sagittis ullamcorper. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.6 Aenean eget ullamcorper nisi. Aliquam gravida ultrices lobortis. Suspendisse eget dignissim lorem. Suspendisse potenti. Pellentesque blandit orci quis tellus aliquet ut pharetra ante pellentesque. Sed sit amet dui orci. Sed ac euismod nulla. Proin ut eros libero.
-Non-Fiction/Umwan	14
-Family
-Mauris vitae tellus elit, non gravida augue. Fusce in dui mi. Aliquam augue sapien, vulputate at porttitor ut, mollis in ipsum. Sed porta tortor non mauris iaculis vel molestie nisl interdum. Aenean ut felis urna. Cras ac est quis neque pharetra fermentum. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent sem dui, luctus a feugiat vitae, porta sed turpis. Duis vitae nulla felis. In adipiscing libero massa.7 Sed neque mauris, gravida non bibendum congue, congue at massa. Quisque elit ligula, tempor laoreet sagittis quis, accumsan quis purus. Aliquam eu purus condimentum libero tristique fringilla a ut massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
-Licked to Death!
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi rhoncus adipiscing velit, sit amet cursus libero vehicula sed. Nulla sed urna tellus. Proin non ligula at ligula mollis tempor nec non ipsum. Maecenas non ultricies elit. Ut ac eros ac eros scelerisque commodo. Suspendisse accumsan risus nec leo
-Non-Fiction/Umwan	15
-sagittis dignissim. Aenean mollis iaculis mattis. Integer quam eros, ullamcorper at auctor ut, semper ac quam. Donec et felis vitae justo laoreet laoreet. Nam eu purus vel nisl venenatis sodales. Quisque tempor blandit dolor, non placerat dui tristique commodo. Curabitur scelerisque hendrerit lectus, laoreet semper dui commodo porta. Morbi ullamcorper, ipsum tristique sollicitudin tristique, leo arcu accumsan eros, consequat euismod ipsum sem quis libero.
-Morbi ut tortor ipsum. Maecenas ut rhoncus metus. Etiam pellentesque hendrerit dignissim. Sed aliquam, sem quis pulvinar pharetra, urna nunc pharetra orci, eu varius velit lacus eu nisl. Ut et quam non mauris convallis ullamcorper sed non libero. In hac habitasse platea dictumst. Proin quis pellentesque magna. Mauris in erat est. Nullam ac risus mi, vitae lacinia nibh. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Vestibulum dignissim elementum neque, vitae consectetur lectus pharetra nec. Fusce odio orci, fringilla a vulputate feugiat, placerat eget massa. Integer non magna eget dolor pulvinar vestibulum sit amet at mi. Cras blandit leo erat, id accumsan velit. Integer hendrerit, diam ut tincidunt sodales, diam lorem viverra nisl, vel porttitor ante metus et sem. Suspendisse potenti. Suspendisse eget lacus enim, sed placerat enim. Ut sit amet arcu
-Non-Fiction/Umwan	16
-Non-Fiction/Umwan	17
-id lacus gravida luctus ullamcorper pellentesque justo.
-Endnotes
-1. Quisque tempor blandit dolor, non placerat dui tristique commodo. Curabitur scelerisque hendrerit lectus, laoreet semper dui commodo porta. 2. Quisque tempor blandit dolor, non placerat dui tristique commodo. Curabitur scelerisque hendrerit lectus, laoreet semper dui commodo porta. 3. Vestibulum dignissim elementum neque, vitae consectetur lectus pharetra nec. 4. Morbi ut tortor ipsum. Maecenas ut rhoncus metus. Etiam pellentesque hendrerit dignissim. Sed aliquam, sem quis pulvinar pharetra, urna nunc pharetra orci, eu varius velit lacus eu nisl. Ut et quam non mauris convallis ullamcorper sed non libero.
-Non-Fiction/Umwan	18
-5. Integer quam eros, ullamcorper at auctor ut, semper ac quam. Donec et felis vitae justo laoreet laoreet. 6. Mauris vitae tellus elit, non gravida augue. Fusce in dui mi. Aliquam augue sapien, vulputate at porttitor ut, mollis in ipsum. Sed porta tortor non mauris iaculis vel molestie nisl interdum.
-7. Integer quis dolor et felis blandit auctor sed eget lectus. Donec sagittis ultricies diam, vitae porta nisi vehicula facilisis.
-Non-Fiction/Umwan	19
-</Text>
-        </Document>
-        <Document ID="62">
-            <Title>Updated Documents (Unsorted)</Title>
-        </Document>
-        <Document ID="45">
-            <Title>Overview</Title>
-            <Text>iCanScript is a visual programming editor that can be used standalone or to complement existing source code text editors.</Text>
-        </Document>
-        <Document ID="28">
-            <Title>Notes</Title>
+        <Document ID="46">
+            <Title>Interface Overview</Title>
         </Document>
         <Document ID="54">
             <Title>Extending iCanScript</Title>
             <Synopsis>- iCanScript for senior programmers</Synopsis>
-        </Document>
-        <Document ID="37">
-            <Title>Acknowledgements</Title>
-            <Synopsis>- Thanks to all the donors.</Synopsis>
-            <Text>Many thanks to the following people for very kindly donating time and knowledge in creating iCanScript:
-Manual Rochon - helped in user interface design as well as the overall operational concepts.  Manual was also a key validator on the Windows platform.
-
-</Text>
-        </Document>
-        <Document ID="63">
-            <Title>Many Thanks</Title>
-            <Text>We, at Disruptive Software, would like to start by saying: 
-— Thank You for your interest in iCanScript !!!                 
-Their is nothing more exciting for software designers like us than growing our customer base and we will make every effort to help you become one of our users.
-— The Software Development Team at Disruptive Software.</Text>
-        </Document>
-        <Document ID="46">
-            <Title>Interface Overview</Title>
-        </Document>
-        <Document ID="29">
-            <Title>Endnotes</Title>
-            <Text> All footnotes will get inserted here upon print, and this bubble will be removed automatically.</Text>
-        </Document>
-        <Document ID="55">
-            <Title>Appendices</Title>
-            <Synopsis>- Keyboard shortcuts quick reference
-- Programming keywords</Synopsis>
-        </Document>
-        <Document ID="38">
-            <Title>Introduction</Title>
-            <Synopsis>- Discuss the purpose of this manual.</Synopsis>
-            <Text>Welcome to the User Manual of iCanScript.  The following sections will get you acquainted with the user interface and the </Text>
-        </Document>
-        <Document ID="64">
-            <Title>Preferences</Title>
-        </Document>
-        <Document ID="47">
-            <Title>Quick Tour</Title>
-        </Document>
-        <Document ID="56">
-            <Title>What is iCanScript</Title>
-            <Synopsis>- Discuss how iCanScript can help in the programming experience.</Synopsis>
-        </Document>
-        <Document ID="39">
-            <Title>Preparation</Title>
-            <Synopsis>- Discuss installation
-- Discuss iCanScript menus
-- Discuss windows &amp; panels</Synopsis>
-        </Document>
-        <Document ID="65">
-            <Title>Executing Your Visual Scripts</Title>
-            <Text>iCanScript autonomously generates the visual script code when you request to run your game.  No special user intervention is required.
-</Text>
-        </Document>
-        <Document ID="48">
-            <Title>Designing</Title>
-        </Document>
-        <Document ID="57">
-            <Title>iCanScript Anatomy</Title>
-            <Text>iCanScript is composed of:
-	* a central visual editor window;
-	* a library tree panel;
-	* a hierarchy tree panel;
-	* an object instance wizard panel; and
-	* a preference configuration panel.
-All of these windows and panels can be opened from Unity's Windows menu under the sub-menu iCanScript.
-Currently, the layout of iCanScript windows and panels are left to the user.</Text>
-        </Document>
-        <Document ID="66">
-            <Title>Saving &amp; Loading Your Visual Scripts</Title>
-            <Text>Your visual scripts are automatically saved and reloaded as part of the game object in which they reside.  Your iCanScript components may be in one of two configurations: either as part of a GameObject in a Scene or as part of a Prefab in the Project.  In both cases, the iCanScript component will be saved and reload by Unity in the standard way.
-Here are the considerations for saving &amp; reloading iCanScript components:
-iCanScript in a GameObject:
-This implies that if the visual script is a component of a game object in a scene, that scene must be saved as it is necessary for any other type of change in the scene.
-iCanScript in a Prefab:
-Visual script components that are included in  prefabs are automatically saved as part of the parent prefab.</Text>
-        </Document>
-        <Document ID="49">
-            <Title>Visual Editor</Title>
-        </Document>
-        <Document ID="58">
-            <Title>Keyboard Shortcuts</Title>
-        </Document>
-        <Document ID="59">
-            <Title>Programming Keywords</Title>
-        </Document>
-        <Document ID="11">
-            <Title>Title Page</Title>
-            <Synopsis>Title page to the manuscript.</Synopsis>
-            <Text>Michel Launier
-6139 des Sizerins
-Laval
-QC
-H7L 5V2
-(450) 625-8277
-michel.launier@videotron.ca
-
-(Your agent’s name)
-(Your agent’s address)
-&lt;$wc100> words
-
-
-
-
-
-
-
-
-
-
-&lt;$projecttitle>
-
-by &lt;$fullName></Text>
-            <Notes>This is the title page of the manuscript. Note that “Compile As-Is” is ticked - this ensures that the title page’s formatting doesn’t get changed during the Compile process, even though the formatting of other text documents will be overridden to use a standard 12-point manuscript font.
-
-The &lt;$projecttitle> and &lt;$fullname> tags get replaced with the information set in Project > Meta-Data Settings… > Project Properties. You can edit those settings or just replace this text altogether. (Other information is taken from Address Book when the project is created.)</Notes>
         </Document>
     </Documents>
 </SearchIndexes>
