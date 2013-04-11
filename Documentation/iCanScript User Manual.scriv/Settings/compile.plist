@@ -19,15 +19,15 @@
 	<key>SCRCompileAvoidWidowsAndOrphansKey</key>
 	<true/>
 	<key>SCRCompileCenterAlternateFooterStringKey</key>
-	<string>&lt;$p&gt;</string>
+	<string></string>
 	<key>SCRCompileCenterAlternateHeaderStringKey</key>
-	<string>&lt;$author&gt;</string>
+	<string></string>
 	<key>SCRCompileCenterFirstPageFooterStringKey</key>
 	<string></string>
 	<key>SCRCompileCenterFirstPageHeaderStringKey</key>
 	<string></string>
 	<key>SCRCompileCenterFooterStringKey</key>
-	<string>&lt;$p&gt;</string>
+	<string></string>
 	<key>SCRCompileCenterHeaderStringKey</key>
 	<string>&lt;$projecttitle&gt;</string>
 	<key>SCRCompileColorPrintedHyperlinksKey</key>
@@ -223,9 +223,11 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRIncludeSynopsesKey</key>
 			<false/>
 			<key>SCRIncludeTextKey</key>
-			<false/>
+			<true/>
 			<key>SCRIncludeTitlesKey</key>
 			<true/>
+			<key>SCRMainTextUppercaseFirstWordsUseSmallCapsKey</key>
+			<false/>
 			<key>SCRMainTextWordsToUppercaseInNewSectionsKey</key>
 			<integer>0</integer>
 			<key>SCRMetaDataAttributesKey</key>
@@ -260,7 +262,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			VGV4dFRhYgCVhAJDZgBIhpKEoaIAbIaGgZAAhARbMmZdJAKGhg==
 			</data>
 			<key>SCRPagePaddingKey</key>
-			<integer>10</integer>
+			<integer>5</integer>
 			<key>SCRPlaceTitleAsRunInHeadKey</key>
 			<false/>
 			<key>SCRSectionRectoVersoKey</key>
@@ -304,12 +306,12 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYs
-			hAVbNDRjXQYAAAAkAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
-			YQBuAFAAUwBNAFQAhAFmFIQBYwCcAZwAnACGkoSXmBBOU1BhcmFn
-			cmFwaFN0eWxlhpKEhIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUA
-			hIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BTAgCFgYAAhARbMWZd
-			AYaG
+			hIQITlNTdHJpbmcBlYQBKxBOU1BhcmFncmFwaFN0eWxlhpKEhIQX
+			TlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3JhcGhT
+			dHlsZQCVhARDQ0BTAgCFgYAAhARbMWZdAYaShJeYBk5TRm9udIaS
+			hISEBk5TRm9udB6VliyEBVs0NGNdBgAAACQAAAD//lQAaQBtAGUA
+			cwBOAGUAdwBSAG8AbQBhAG4AUABTAE0AVACEAWYYhAFjAKABoACg
+			AIaG
 			</data>
 			<key>SCRTitleCaseKey</key>
 			<integer>2</integer>
@@ -317,11 +319,11 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKxBOU1BhcmFncmFwaFN0eWxlhpKEhIQX
-			TlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3JhcGhT
-			dHlsZQCVhARDQ0BTAgCFAoQEWzFmXQyGkoSXmAZOU0ZvbnSGkoSE
-			hAZOU0ZvbnQelZYshAVbNDRjXQYAAAAkAAAA//5UAGkAbQBlAHMA
-			TgBlAHcAUgBvAG0AYQBuAFAAUwBNAFQAhAFmGIQBYwCgAaAAoACG
+			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYs
+			hAVbNDRjXQYAAAAkAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
+			YQBuAFAAUwBNAFQAhAFmFoQBYwCcAZwAnACGkoSXmBBOU1BhcmFn
+			cmFwaFN0eWxlhpKEhIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUA
+			hIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BTAgCFAoQEWzFmXQyG
 			hg==
 			</data>
 			<key>SCRTitlePrefixCaseKey</key>
@@ -342,7 +344,9 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRTitleSuffixCaseKey</key>
 			<integer>0</integer>
 			<key>SCRTitleSuffixKey</key>
-			<string></string>
+			<string>
+
+</string>
 		</dict>
 		<dict>
 			<key>SCRHasRTFBookmarksKey</key>
@@ -354,7 +358,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRIncludeSynopsesKey</key>
 			<false/>
 			<key>SCRIncludeTextKey</key>
-			<false/>
+			<true/>
 			<key>SCRIncludeTitlesKey</key>
 			<true/>
 			<key>SCRMainTextUppercaseFirstWordsUseSmallCapsKey</key>
@@ -393,7 +397,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			VGV4dFRhYgCVhAJDZgBIhpKEoaIAbIaGgZAAhARbMmZdJAKGhg==
 			</data>
 			<key>SCRPagePaddingKey</key>
-			<integer>8</integer>
+			<integer>2</integer>
 			<key>SCRPlaceTitleAsRunInHeadKey</key>
 			<false/>
 			<key>SCRSectionRectoVersoKey</key>
@@ -425,24 +429,26 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYg
-			hAVbMzJjXQYAAAAYAAAA//5CAGEAcwBrAGUAcgB2AGkAbABsAGUA
-			hAFmC4QBYwCcAZwAnACGkoSXmBBOU1BhcmFncmFwaFN0eWxlhpKE
-			hIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3Jh
-			cGhTdHlsZQCVhARDQ0BTAwCEhIQHTlNBcnJheQCVlgOShISECU5T
-			VGV4dFRhYgCVhAJDZgBIhpKEoaIAbIaShKGiAIGQAIaGEIQEWzFm
-			XQuGhg==
+			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYY
+			hAVbMjRjXQYAAAAOAAAA//5DAG8AYwBoAGkAbgAAAIQBZg6EAWMA
+			nAGcAJwAhpKEl5gQTlNQYXJhZ3JhcGhTdHlsZYaShISEF05TTXV0
+			YWJsZVBhcmFncmFwaFN0eWxlAISEEE5TUGFyYWdyYXBoU3R5bGUA
+			lYQEQ0NAUwMAhISEB05TQXJyYXkAlZYGkoSEhAlOU1RleHRUYWIA
+			lYQCQ2YAJIaShKGiAEiGkoShogBshpKEoaIAgZAAhpKEoaIAgbQA
+			hpKEoaIAgdgAhoaBkgCEBFszZl0KEoPNzIw/hoY=
 			</data>
 			<key>SCRTitleAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYs
-			hAVbNDRjXQYAAAAkAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
-			YQBuAFAAUwBNAFQAhAFmEoQBYwCcAZwAnACGkoSXmBBOU1BhcmFn
-			cmFwaFN0eWxlhpKEhIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUA
-			hIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BTAgCFgQABhARbMWZd
-			DIaG
+			hIQITlNTdHJpbmcBlYQBKxBOU1BhcmFncmFwaFN0eWxlhpKEhIQX
+			TlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3JhcGhT
+			dHlsZQCVhARDQ0BTAgCEhIQHTlNBcnJheQCVlgaShISECU5TVGV4
+			dFRhYgCVhAJDZgAkhpKEnp4ASIaShJ6eAGyGkoSengCBkACGkoSe
+			ngCBtACGkoSengCB2ACGhoGQAIQEWzJmXRKDmZmZP4aShJeYBk5T
+			Rm9udIaShISEBk5TRm9udB6VljiEBVs1NmNdBgAAADAAAAD//kIA
+			bwBkAG8AbgBpAFMAdgB0AHkAVAB3AG8ASQBUAEMAVABUAC0AQgBv
+			AG8AawCEAWYehAFjAKMBowCjAIaG
 			</data>
 			<key>SCRTitleCaseKey</key>
 			<integer>0</integer>
@@ -475,7 +481,9 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRTitleSuffixCaseKey</key>
 			<integer>0</integer>
 			<key>SCRTitleSuffixKey</key>
-			<string></string>
+			<string>
+
+</string>
 		</dict>
 		<dict>
 			<key>SCRHasRTFBookmarksKey</key>
@@ -487,7 +495,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRIncludeSynopsesKey</key>
 			<false/>
 			<key>SCRIncludeTextKey</key>
-			<false/>
+			<true/>
 			<key>SCRIncludeTitlesKey</key>
 			<true/>
 			<key>SCRMainTextUppercaseFirstWordsUseSmallCapsKey</key>
@@ -526,7 +534,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			VGV4dFRhYgCVhAJDZgBIhpKEoaIAbIaGgZAAhARbMmZdJAKGhg==
 			</data>
 			<key>SCRPagePaddingKey</key>
-			<integer>8</integer>
+			<integer>1</integer>
 			<key>SCRPlaceTitleAsRunInHeadKey</key>
 			<false/>
 			<key>SCRSectionRectoVersoKey</key>
@@ -574,8 +582,8 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			hAVbNDRjXQYAAAAkAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
 			YQBuAFAAUwBNAFQAhAFmEoQBYwCcAZwAnACGkoSXmBBOU1BhcmFn
 			cmFwaFN0eWxlhpKEhIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUA
-			hIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BTAgCFgQABhARbMWZd
-			DIaG
+			hIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BTAACFAoQEWzFmXQaG
+			hg==
 			</data>
 			<key>SCRTitleCaseKey</key>
 			<integer>0</integer>
@@ -583,11 +591,11 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYs
-			hAVbNDRjXQYAAAAkAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
-			YQBuAFAAUwBNAFQAhAFmFIQBYwCcAZwAnACGkoSXmBBOU1BhcmFn
-			cmFwaFN0eWxlhpKEhIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUA
-			hIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BTAgCFAoQEWzFmXQaG
+			hIQITlNTdHJpbmcBlYQBKxBOU1BhcmFncmFwaFN0eWxlhpKEhIQX
+			TlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3JhcGhT
+			dHlsZQCVhARDQ0BTAACFAoQEWzFmXQaGkoSXmAZOU0ZvbnSGkoSE
+			hAZOU0ZvbnQelZYshAVbNDRjXQYAAAAkAAAA//5UAGkAbQBlAHMA
+			TgBlAHcAUgBvAG0AYQBuAFAAUwBNAFQAhAFmFIQBYwCgAaAAoACG
 			hg==
 			</data>
 			<key>SCRTitlePrefixCaseKey</key>
@@ -611,7 +619,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 		</dict>
 	</array>
 	<key>SCRCompileFolderSectionSeparatorKey</key>
-	<integer>3</integer>
+	<integer>2</integer>
 	<key>SCRCompileFooterFontKey</key>
 	<data>
 	BAtzdHJlYW10eXBlZIHoA4QBQISEhAZOU0ZvbnQehIQITlNPYmplY3QAhYQBaSyEBVs0
@@ -681,9 +689,9 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	</data>
 	<key>SCRCompileHeaderFontKey</key>
 	<data>
-	BAtzdHJlYW10eXBlZIHoA4QBQISEhAZOU0ZvbnQehIQITlNPYmplY3QAhYQBaSSEBVsz
-	NmNdBgAAABoAAAD//kwAdQBjAGkAZABhAEcAcgBhAG4AZABlAAAAhAFmCYQBYwCYAZgA
-	mACG
+	BAtzdHJlYW10eXBlZIHoA4QBQISEhAZOU0ZvbnQehIQITlNPYmplY3QAhYQBaSyEBVs0
+	NGNdBgAAACQAAAD//k0AeQByAGkAYQBkAFAAcgBvAC0AUgBlAGcAdQBsAGEAcgCEAWYK
+	hAFjAJgBmACYAIY=
 	</data>
 	<key>SCRCompileIgnoresLevelsOutsideCurrentCompileGroupKey</key>
 	<false/>
@@ -716,7 +724,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileLeftAlternateFooterStringKey</key>
 	<string></string>
 	<key>SCRCompileLeftAlternateHeaderStringKey</key>
-	<string></string>
+	<string>*&lt;$p&gt;*</string>
 	<key>SCRCompileLeftFirstPageFooterStringKey</key>
 	<string></string>
 	<key>SCRCompileLeftFirstPageHeaderStringKey</key>
@@ -724,7 +732,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileLeftFooterStringKey</key>
 	<string></string>
 	<key>SCRCompileLeftHeaderStringKey</key>
-	<string></string>
+	<string>&lt;$sectiontitle&gt;</string>
 	<key>SCRCompileMarkEndOfTextKey</key>
 	<false/>
 	<key>SCRCompileMultiMarkdownAddFormatCompleteKey</key>
@@ -767,9 +775,9 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileMultiMarkdownshowPDFLogKey</key>
 	<false/>
 	<key>SCRCompileNoHeaderAfterPageBreaksKey</key>
-	<true/>
+	<false/>
 	<key>SCRCompileNoHeaderOrFooterOnSinglePagesKey</key>
-	<true/>
+	<false/>
 	<key>SCRCompileNoPagePaddingForFirstDocumentKey</key>
 	<integer>0</integer>
 	<key>SCRCompileNotesBeforeTextKey</key>
@@ -818,19 +826,19 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompilePDFUnderlineInternalLinksKey</key>
 	<false/>
 	<key>SCRCompilePageBottomMarginKey</key>
-	<real>0.5</real>
+	<real>0.75</real>
 	<key>SCRCompilePageBottomMarginUnitsKey</key>
 	<integer>1</integer>
 	<key>SCRCompilePageLeftMarginKey</key>
-	<real>0.5</real>
+	<real>0.75</real>
 	<key>SCRCompilePageLeftMarginUnitsKey</key>
 	<integer>1</integer>
 	<key>SCRCompilePageRightMarginKey</key>
-	<real>0.5</real>
+	<real>0.75</real>
 	<key>SCRCompilePageRightMarginUnitsKey</key>
 	<integer>1</integer>
 	<key>SCRCompilePageTopMarginKey</key>
-	<real>0.5</real>
+	<real>0.75</real>
 	<key>SCRCompilePageTopMarginUnitsKey</key>
 	<integer>1</integer>
 	<key>SCRCompilePlainTextConversionTypeKey</key>
@@ -839,14 +847,14 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<data>
 	BAtzdHJlYW10eXBlZIHoA4QBQISEhAtOU1ByaW50SW5mbwGEhAhOU09iamVjdACFkoSE
 	hBNOU011dGFibGVEaWN0aW9uYXJ5AISEDE5TRGljdGlvbmFyeQCUhAFpDZKEhIQITlNT
-	dHJpbmcBlIQBKxZOU0hvcml6b250YWxseUNlbnRlcmVkhpKEhIQITlNOdW1iZXIAhIQH
-	TlNWYWx1ZQCUhAEqhJeXAYaShJmZD05TU2NhbGluZ0ZhY3RvcoaShJuchIQBZJ0BhpKE
+	dHJpbmcBlIQBKw9OU1NjYWxpbmdGYWN0b3KGkoSEhAhOU051bWJlcgCEhAdOU1ZhbHVl
+	AJSEASqEhAFknQGGkoSZmRZOU0hvcml6b250YWxseUNlbnRlcmVkhpKEm5yEl5cBhpKE
 	mZkNTlNSaWdodE1hcmdpboaShJuchIQBZp5IhpKEmZkMTlNMZWZ0TWFyZ2luhpKEm5yj
-	nkiGkoSZmQ1OU09yaWVudGF0aW9uhpKEm5ydlwCGkoSZmRVOU0hvcml6b25hbFBhZ2lu
-	YXRpb26GkoSbnJ2XAoaShJmZFE5TVmVydGljYWxseUNlbnRlcmVkhpKakoSZmRROU1Zl
-	cnRpY2FsUGFnaW5hdGlvboaSp5KEmZkLTlNUb3BNYXJnaW6GkoSbnKOeWoaShJmZDk5T
+	nkiGkoSZmRVOU0hvcml6b25hbFBhZ2luYXRpb26GkoSbnKCXAoaShJmZDU5TT3JpZW50
+	YXRpb26GkoSbnKCXAIaShJmZFE5TVmVydGljYWxseUNlbnRlcmVkhpKfkoSZmRROU1Zl
+	cnRpY2FsUGFnaW5hdGlvboaSqZKEmZkLTlNUb3BNYXJnaW6GkoSbnKOeWoaShJmZDk5T
 	Qm90dG9tTWFyZ2luhpKEm5yjnlqGkoSZmQ5OU1BNUGFnZUZvcm1hdIaShISEDU5TTXV0
-	YWJsZURhdGEAhIQGTlNEYXRhAJSXgQwZhAdbNjQxMmNdPD94bWwgdmVyc2lvbj0iMS4w
+	YWJsZURhdGEAhIQGTlNEYXRhAJSXgcYchAdbNzM2NmNdPD94bWwgdmVyc2lvbj0iMS4w
 	IiBlbmNvZGluZz0iVVRGLTgiPz4KPCFET0NUWVBFIHBsaXN0IFBVQkxJQyAiLS8vQXBw
 	bGUvL0RURCBQTElTVCAxLjAvL0VOIiAiaHR0cDovL3d3dy5hcHBsZS5jb20vRFREcy9Q
 	cm9wZXJ0eUxpc3QtMS4wLmR0ZCI+CjxwbGlzdCB2ZXJzaW9uPSIxLjAiPgo8ZGljdD4K
@@ -897,64 +905,83 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	PjE8L3JlYWw+CgkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuc3RhdGVGbGFn
 	PC9rZXk+CgkJCQk8aW50ZWdlcj4wPC9pbnRlZ2VyPgoJCQk8L2RpY3Q+CgkJPC9hcnJh
 	eT4KCTwvZGljdD4KCTxrZXk+Y29tLmFwcGxlLnByaW50LnN1YlRpY2tldC5wYXBlcl9p
-	bmZvX3RpY2tldDwva2V5PgoJPGRpY3Q+CgkJPGtleT5jb20uYXBwbGUucHJpbnQuUGFn
-	ZUZvcm1hdC5QTUFkanVzdGVkUGFnZVJlY3Q8L2tleT4KCQk8ZGljdD4KCQkJPGtleT5j
-	b20uYXBwbGUucHJpbnQudGlja2V0LmNyZWF0b3I8L2tleT4KCQkJPHN0cmluZz5jb20u
-	YXBwbGUuam9idGlja2V0PC9zdHJpbmc+CgkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRp
-	Y2tldC5pdGVtQXJyYXk8L2tleT4KCQkJPGFycmF5PgoJCQkJPGRpY3Q+CgkJCQkJPGtl
-	eT5jb20uYXBwbGUucHJpbnQuUGFnZUZvcm1hdC5QTUFkanVzdGVkUGFnZVJlY3Q8L2tl
-	eT4KCQkJCQk8YXJyYXk+CgkJCQkJCTxpbnRlZ2VyPjA8L2ludGVnZXI+CgkJCQkJCTxp
-	bnRlZ2VyPjA8L2ludGVnZXI+CgkJCQkJCTxyZWFsPjUzOC41ODk4MjY1ODM4NjIzPC9y
-	ZWFsPgoJCQkJCQk8cmVhbD4zNDYuMzg5MjgwMzE5MjEzODc8L3JlYWw+CgkJCQkJPC9h
-	cnJheT4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuc3RhdGVGbGFnPC9r
-	ZXk+CgkJCQkJPGludGVnZXI+MDwvaW50ZWdlcj4KCQkJCTwvZGljdD4KCQkJPC9hcnJh
-	eT4KCQk8L2RpY3Q+CgkJPGtleT5jb20uYXBwbGUucHJpbnQuUGFnZUZvcm1hdC5QTUFk
-	anVzdGVkUGFwZXJSZWN0PC9rZXk+CgkJPGRpY3Q+CgkJCTxrZXk+Y29tLmFwcGxlLnBy
-	aW50LnRpY2tldC5jcmVhdG9yPC9rZXk+CgkJCTxzdHJpbmc+Y29tLmFwcGxlLmpvYnRp
-	Y2tldDwvc3RyaW5nPgoJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuaXRlbUFy
-	cmF5PC9rZXk+CgkJCTxhcnJheT4KCQkJCTxkaWN0PgoJCQkJCTxrZXk+Y29tLmFwcGxl
-	LnByaW50LlBhZ2VGb3JtYXQuUE1BZGp1c3RlZFBhcGVyUmVjdDwva2V5PgoJCQkJCTxh
-	cnJheT4KCQkJCQkJPHJlYWw+LTguNTwvcmVhbD4KCQkJCQkJPHJlYWw+LTkuNjQwMDAw
-	MzQzMzIyNzUzOTwvcmVhbD4KCQkJCQkJPHJlYWw+NTUyLjc1OTgyNjY2MDE1NjI1PC9y
-	ZWFsPgoJCQkJCQk8cmVhbD4zNTYuMDI5MjgwNjYyNTM2NjI8L3JlYWw+CgkJCQkJPC9h
-	cnJheT4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuc3RhdGVGbGFnPC9r
-	ZXk+CgkJCQkJPGludGVnZXI+MDwvaW50ZWdlcj4KCQkJCTwvZGljdD4KCQkJPC9hcnJh
-	eT4KCQk8L2RpY3Q+CgkJPGtleT5jb20uYXBwbGUucHJpbnQuUGFwZXJJbmZvLlBNQ3Vz
-	dG9tUGFwZXI8L2tleT4KCQk8ZGljdD4KCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlj
-	a2V0LmNyZWF0b3I8L2tleT4KCQkJPHN0cmluZz5jb20uYXBwbGUuam9idGlja2V0PC9z
-	dHJpbmc+CgkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5pdGVtQXJyYXk8L2tl
-	eT4KCQkJPGFycmF5PgoJCQkJPGRpY3Q+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQu
-	UGFwZXJJbmZvLlBNQ3VzdG9tUGFwZXI8L2tleT4KCQkJCQk8dHJ1ZS8+CgkJCQkJPGtl
-	eT5jb20uYXBwbGUucHJpbnQudGlja2V0LnN0YXRlRmxhZzwva2V5PgoJCQkJCTxpbnRl
-	Z2VyPjA8L2ludGVnZXI+CgkJCQk8L2RpY3Q+CgkJCTwvYXJyYXk+CgkJPC9kaWN0PgoJ
-	CTxrZXk+Y29tLmFwcGxlLnByaW50LlBhcGVySW5mby5QTVBhcGVyTmFtZTwva2V5PgoJ
-	CTxkaWN0PgoJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuY3JlYXRvcjwva2V5
-	PgoJCQk8c3RyaW5nPmNvbS5hcHBsZS5qb2J0aWNrZXQ8L3N0cmluZz4KCQkJPGtleT5j
-	b20uYXBwbGUucHJpbnQudGlja2V0Lml0ZW1BcnJheTwva2V5PgoJCQk8YXJyYXk+CgkJ
-	CQk8ZGljdD4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC5QYXBlckluZm8uUE1QYXBl
-	ck5hbWU8L2tleT4KCQkJCQk8c3RyaW5nPjUuMDggeCA3LjgxIFBhcGVyYmFjazwvc3Ry
-	aW5nPgoJCQkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5zdGF0ZUZsYWc8L2tl
-	eT4KCQkJCQk8aW50ZWdlcj4wPC9pbnRlZ2VyPgoJCQkJPC9kaWN0PgoJCQk8L2FycmF5
-	PgoJCTwvZGljdD4KCQk8a2V5PmNvbS5hcHBsZS5wcmludC5QYXBlckluZm8uUE1VbmFk
-	anVzdGVkUGFnZVJlY3Q8L2tleT4KCQk8ZGljdD4KCQkJPGtleT5jb20uYXBwbGUucHJp
-	bnQudGlja2V0LmNyZWF0b3I8L2tleT4KCQkJPHN0cmluZz5jb20uYXBwbGUuam9idGlj
-	a2V0PC9zdHJpbmc+CgkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5pdGVtQXJy
-	YXk8L2tleT4KCQkJPGFycmF5PgoJCQkJPGRpY3Q+CgkJCQkJPGtleT5jb20uYXBwbGUu
-	cHJpbnQuUGFwZXJJbmZvLlBNVW5hZGp1c3RlZFBhZ2VSZWN0PC9rZXk+CgkJCQkJPGFy
-	cmF5PgoJCQkJCQk8aW50ZWdlcj4wPC9pbnRlZ2VyPgoJCQkJCQk8aW50ZWdlcj4wPC9p
-	bnRlZ2VyPgoJCQkJCQk8cmVhbD41MzguNTg5ODI2NTgzODYyMzwvcmVhbD4KCQkJCQkJ
-	PHJlYWw+MzQ2LjM4OTI4MDMxOTIxMzg3PC9yZWFsPgoJCQkJCTwvYXJyYXk+CgkJCQkJ
-	PGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LnN0YXRlRmxhZzwva2V5PgoJCQkJCTxp
-	bnRlZ2VyPjA8L2ludGVnZXI+CgkJCQk8L2RpY3Q+CgkJCTwvYXJyYXk+CgkJPC9kaWN0
-	PgoJCTxrZXk+Y29tLmFwcGxlLnByaW50LlBhcGVySW5mby5QTVVuYWRqdXN0ZWRQYXBl
-	clJlY3Q8L2tleT4KCQk8ZGljdD4KCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0
-	LmNyZWF0b3I8L2tleT4KCQkJPHN0cmluZz5jb20uYXBwbGUuam9idGlja2V0PC9zdHJp
-	bmc+CgkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5pdGVtQXJyYXk8L2tleT4K
-	CQkJPGFycmF5PgoJCQkJPGRpY3Q+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQuUGFw
-	ZXJJbmZvLlBNVW5hZGp1c3RlZFBhcGVyUmVjdDwva2V5PgoJCQkJCTxhcnJheT4KCQkJ
-	CQkJPHJlYWw+LTguNTwvcmVhbD4KCQkJCQkJPHJlYWw+LTkuNjQwMDAwMzQzMzIyNzUz
-	OTwvcmVhbD4KCQkJCQkJPHJlYWw+NTUyLjc1OTgyNjY2MDE1NjI1PC9yZWFsPgoJCQkJ
-	CQk8cmVhbD4zNTYuMDI5MjgwNjYyNTM2NjI8L3JlYWw+CgkJCQkJPC9hcnJheT4KCQkJ
+	bmZvX3RpY2tldDwva2V5PgoJPGRpY3Q+CgkJPGtleT5QTVBQRFBhcGVyQ29kZU5hbWU8
+	L2tleT4KCQk8ZGljdD4KCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LmNyZWF0
+	b3I8L2tleT4KCQkJPHN0cmluZz5jb20uYXBwbGUuam9idGlja2V0PC9zdHJpbmc+CgkJ
+	CTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5pdGVtQXJyYXk8L2tleT4KCQkJPGFy
+	cmF5PgoJCQkJPGRpY3Q+CgkJCQkJPGtleT5QTVBQRFBhcGVyQ29kZU5hbWU8L2tleT4K
+	CQkJCQk8c3RyaW5nPkxldHRlcjwvc3RyaW5nPgoJCQkJCTxrZXk+Y29tLmFwcGxlLnBy
+	aW50LnRpY2tldC5zdGF0ZUZsYWc8L2tleT4KCQkJCQk8aW50ZWdlcj4wPC9pbnRlZ2Vy
+	PgoJCQkJPC9kaWN0PgoJCQk8L2FycmF5PgoJCTwvZGljdD4KCQk8a2V5PlBNUFBEVHJh
+	bnNsYXRpb25TdHJpbmdQYXBlck5hbWU8L2tleT4KCQk8ZGljdD4KCQkJPGtleT5jb20u
+	YXBwbGUucHJpbnQudGlja2V0LmNyZWF0b3I8L2tleT4KCQkJPHN0cmluZz5jb20uYXBw
+	bGUuam9idGlja2V0PC9zdHJpbmc+CgkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tl
+	dC5pdGVtQXJyYXk8L2tleT4KCQkJPGFycmF5PgoJCQkJPGRpY3Q+CgkJCQkJPGtleT5Q
+	TVBQRFRyYW5zbGF0aW9uU3RyaW5nUGFwZXJOYW1lPC9rZXk+CgkJCQkJPHN0cmluZz5V
+	UyBMZXR0ZXI8L3N0cmluZz4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQu
+	c3RhdGVGbGFnPC9rZXk+CgkJCQkJPGludGVnZXI+MDwvaW50ZWdlcj4KCQkJCTwvZGlj
+	dD4KCQkJPC9hcnJheT4KCQk8L2RpY3Q+CgkJPGtleT5QTVRpb2dhUGFwZXJOYW1lPC9r
+	ZXk+CgkJPGRpY3Q+CgkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5jcmVhdG9y
+	PC9rZXk+CgkJCTxzdHJpbmc+Y29tLmFwcGxlLmpvYnRpY2tldDwvc3RyaW5nPgoJCQk8
+	a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuaXRlbUFycmF5PC9rZXk+CgkJCTxhcnJh
+	eT4KCQkJCTxkaWN0PgoJCQkJCTxrZXk+UE1UaW9nYVBhcGVyTmFtZTwva2V5PgoJCQkJ
+	CTxzdHJpbmc+bmEtbGV0dGVyPC9zdHJpbmc+CgkJCQkJPGtleT5jb20uYXBwbGUucHJp
+	bnQudGlja2V0LnN0YXRlRmxhZzwva2V5PgoJCQkJCTxpbnRlZ2VyPjA8L2ludGVnZXI+
+	CgkJCQk8L2RpY3Q+CgkJCTwvYXJyYXk+CgkJPC9kaWN0PgoJCTxrZXk+Y29tLmFwcGxl
+	LnByaW50LlBhZ2VGb3JtYXQuUE1BZGp1c3RlZFBhZ2VSZWN0PC9rZXk+CgkJPGRpY3Q+
+	CgkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5jcmVhdG9yPC9rZXk+CgkJCTxz
+	dHJpbmc+Y29tLmFwcGxlLmpvYnRpY2tldDwvc3RyaW5nPgoJCQk8a2V5PmNvbS5hcHBs
+	ZS5wcmludC50aWNrZXQuaXRlbUFycmF5PC9rZXk+CgkJCTxhcnJheT4KCQkJCTxkaWN0
+	PgoJCQkJCTxrZXk+Y29tLmFwcGxlLnByaW50LlBhZ2VGb3JtYXQuUE1BZGp1c3RlZFBh
+	Z2VSZWN0PC9rZXk+CgkJCQkJPGFycmF5PgoJCQkJCQk8aW50ZWdlcj4wPC9pbnRlZ2Vy
+	PgoJCQkJCQk8aW50ZWdlcj4wPC9pbnRlZ2VyPgoJCQkJCQk8cmVhbD43MzQ8L3JlYWw+
+	CgkJCQkJCTxyZWFsPjU3NjwvcmVhbD4KCQkJCQk8L2FycmF5PgoJCQkJCTxrZXk+Y29t
+	LmFwcGxlLnByaW50LnRpY2tldC5zdGF0ZUZsYWc8L2tleT4KCQkJCQk8aW50ZWdlcj4w
+	PC9pbnRlZ2VyPgoJCQkJPC9kaWN0PgoJCQk8L2FycmF5PgoJCTwvZGljdD4KCQk8a2V5
+	PmNvbS5hcHBsZS5wcmludC5QYWdlRm9ybWF0LlBNQWRqdXN0ZWRQYXBlclJlY3Q8L2tl
+	eT4KCQk8ZGljdD4KCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LmNyZWF0b3I8
+	L2tleT4KCQkJPHN0cmluZz5jb20uYXBwbGUuam9idGlja2V0PC9zdHJpbmc+CgkJCTxr
+	ZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5pdGVtQXJyYXk8L2tleT4KCQkJPGFycmF5
+	PgoJCQkJPGRpY3Q+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQuUGFnZUZvcm1hdC5Q
+	TUFkanVzdGVkUGFwZXJSZWN0PC9rZXk+CgkJCQkJPGFycmF5PgoJCQkJCQk8cmVhbD4t
+	MTg8L3JlYWw+CgkJCQkJCTxyZWFsPi0xODwvcmVhbD4KCQkJCQkJPHJlYWw+Nzc0PC9y
+	ZWFsPgoJCQkJCQk8cmVhbD41OTQ8L3JlYWw+CgkJCQkJPC9hcnJheT4KCQkJCQk8a2V5
+	PmNvbS5hcHBsZS5wcmludC50aWNrZXQuc3RhdGVGbGFnPC9rZXk+CgkJCQkJPGludGVn
+	ZXI+MDwvaW50ZWdlcj4KCQkJCTwvZGljdD4KCQkJPC9hcnJheT4KCQk8L2RpY3Q+CgkJ
+	PGtleT5jb20uYXBwbGUucHJpbnQuUGFwZXJJbmZvLlBNQ3VzdG9tUGFwZXI8L2tleT4K
+	CQk8ZGljdD4KCQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LmNyZWF0b3I8L2tl
+	eT4KCQkJPHN0cmluZz5jb20uYXBwbGUuam9idGlja2V0PC9zdHJpbmc+CgkJCTxrZXk+
+	Y29tLmFwcGxlLnByaW50LnRpY2tldC5pdGVtQXJyYXk8L2tleT4KCQkJPGFycmF5PgoJ
+	CQkJPGRpY3Q+CgkJCQkJPGtleT5jb20uYXBwbGUucHJpbnQuUGFwZXJJbmZvLlBNQ3Vz
+	dG9tUGFwZXI8L2tleT4KCQkJCQk8ZmFsc2UvPgoJCQkJCTxrZXk+Y29tLmFwcGxlLnBy
+	aW50LnRpY2tldC5zdGF0ZUZsYWc8L2tleT4KCQkJCQk8aW50ZWdlcj4wPC9pbnRlZ2Vy
+	PgoJCQkJPC9kaWN0PgoJCQk8L2FycmF5PgoJCTwvZGljdD4KCQk8a2V5PmNvbS5hcHBs
+	ZS5wcmludC5QYXBlckluZm8uUE1QYXBlck5hbWU8L2tleT4KCQk8ZGljdD4KCQkJPGtl
+	eT5jb20uYXBwbGUucHJpbnQudGlja2V0LmNyZWF0b3I8L2tleT4KCQkJPHN0cmluZz5j
+	b20uYXBwbGUuam9idGlja2V0PC9zdHJpbmc+CgkJCTxrZXk+Y29tLmFwcGxlLnByaW50
+	LnRpY2tldC5pdGVtQXJyYXk8L2tleT4KCQkJPGFycmF5PgoJCQkJPGRpY3Q+CgkJCQkJ
+	PGtleT5jb20uYXBwbGUucHJpbnQuUGFwZXJJbmZvLlBNUGFwZXJOYW1lPC9rZXk+CgkJ
+	CQkJPHN0cmluZz5uYS1sZXR0ZXI8L3N0cmluZz4KCQkJCQk8a2V5PmNvbS5hcHBsZS5w
+	cmludC50aWNrZXQuc3RhdGVGbGFnPC9rZXk+CgkJCQkJPGludGVnZXI+MDwvaW50ZWdl
+	cj4KCQkJCTwvZGljdD4KCQkJPC9hcnJheT4KCQk8L2RpY3Q+CgkJPGtleT5jb20uYXBw
+	bGUucHJpbnQuUGFwZXJJbmZvLlBNVW5hZGp1c3RlZFBhZ2VSZWN0PC9rZXk+CgkJPGRp
+	Y3Q+CgkJCTxrZXk+Y29tLmFwcGxlLnByaW50LnRpY2tldC5jcmVhdG9yPC9rZXk+CgkJ
+	CTxzdHJpbmc+Y29tLmFwcGxlLmpvYnRpY2tldDwvc3RyaW5nPgoJCQk8a2V5PmNvbS5h
+	cHBsZS5wcmludC50aWNrZXQuaXRlbUFycmF5PC9rZXk+CgkJCTxhcnJheT4KCQkJCTxk
+	aWN0PgoJCQkJCTxrZXk+Y29tLmFwcGxlLnByaW50LlBhcGVySW5mby5QTVVuYWRqdXN0
+	ZWRQYWdlUmVjdDwva2V5PgoJCQkJCTxhcnJheT4KCQkJCQkJPGludGVnZXI+MDwvaW50
+	ZWdlcj4KCQkJCQkJPGludGVnZXI+MDwvaW50ZWdlcj4KCQkJCQkJPHJlYWw+NzM0PC9y
+	ZWFsPgoJCQkJCQk8cmVhbD41NzY8L3JlYWw+CgkJCQkJPC9hcnJheT4KCQkJCQk8a2V5
+	PmNvbS5hcHBsZS5wcmludC50aWNrZXQuc3RhdGVGbGFnPC9rZXk+CgkJCQkJPGludGVn
+	ZXI+MDwvaW50ZWdlcj4KCQkJCTwvZGljdD4KCQkJPC9hcnJheT4KCQk8L2RpY3Q+CgkJ
+	PGtleT5jb20uYXBwbGUucHJpbnQuUGFwZXJJbmZvLlBNVW5hZGp1c3RlZFBhcGVyUmVj
+	dDwva2V5PgoJCTxkaWN0PgoJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuY3Jl
+	YXRvcjwva2V5PgoJCQk8c3RyaW5nPmNvbS5hcHBsZS5qb2J0aWNrZXQ8L3N0cmluZz4K
+	CQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0Lml0ZW1BcnJheTwva2V5PgoJCQk8
+	YXJyYXk+CgkJCQk8ZGljdD4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC5QYXBlcklu
+	Zm8uUE1VbmFkanVzdGVkUGFwZXJSZWN0PC9rZXk+CgkJCQkJPGFycmF5PgoJCQkJCQk8
+	cmVhbD4tMTg8L3JlYWw+CgkJCQkJCTxyZWFsPi0xODwvcmVhbD4KCQkJCQkJPHJlYWw+
+	Nzc0PC9yZWFsPgoJCQkJCQk8cmVhbD41OTQ8L3JlYWw+CgkJCQkJPC9hcnJheT4KCQkJ
 	CQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuc3RhdGVGbGFnPC9rZXk+CgkJCQkJ
 	PGludGVnZXI+MDwvaW50ZWdlcj4KCQkJCTwvZGljdD4KCQkJPC9hcnJheT4KCQk8L2Rp
 	Y3Q+CgkJPGtleT5jb20uYXBwbGUucHJpbnQuUGFwZXJJbmZvLnBwZC5QTVBhcGVyTmFt
@@ -962,19 +989,18 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	YXRvcjwva2V5PgoJCQk8c3RyaW5nPmNvbS5hcHBsZS5qb2J0aWNrZXQ8L3N0cmluZz4K
 	CQkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0Lml0ZW1BcnJheTwva2V5PgoJCQk8
 	YXJyYXk+CgkJCQk8ZGljdD4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC5QYXBlcklu
-	Zm8ucHBkLlBNUGFwZXJOYW1lPC9rZXk+CgkJCQkJPHN0cmluZz41LjA4IHggNy44MSBQ
-	YXBlcmJhY2s8L3N0cmluZz4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQu
-	c3RhdGVGbGFnPC9rZXk+CgkJCQkJPGludGVnZXI+MDwvaW50ZWdlcj4KCQkJCTwvZGlj
-	dD4KCQkJPC9hcnJheT4KCQk8L2RpY3Q+CgkJPGtleT5jb20uYXBwbGUucHJpbnQudGlj
-	a2V0LkFQSVZlcnNpb248L2tleT4KCQk8c3RyaW5nPjAwLjIwPC9zdHJpbmc+CgkJPGtl
-	eT5jb20uYXBwbGUucHJpbnQudGlja2V0LnR5cGU8L2tleT4KCQk8c3RyaW5nPmNvbS5h
-	cHBsZS5wcmludC5QYXBlckluZm9UaWNrZXQ8L3N0cmluZz4KCTwvZGljdD4KCTxrZXk+
-	Y29tLmFwcGxlLnByaW50LnRpY2tldC5BUElWZXJzaW9uPC9rZXk+Cgk8c3RyaW5nPjAw
-	LjIwPC9zdHJpbmc+Cgk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQudHlwZTwva2V5
-	PgoJPHN0cmluZz5jb20uYXBwbGUucHJpbnQuUGFnZUZvcm1hdFRpY2tldDwvc3RyaW5n
-	Pgo8L2RpY3Q+CjwvcGxpc3Q+CoaShJmZC05TUGFwZXJOYW1lhpKEmZkVNS4wOCB4IDcu
-	ODEgUGFwZXJiYWNrhpKEmZkLTlNQYXBlclNpemWGkoScnISEDHtfTlNTaXplPWZmfaKD
-	q9W2Q4OhUAxEhoaG
+	Zm8ucHBkLlBNUGFwZXJOYW1lPC9rZXk+CgkJCQkJPHN0cmluZz5MZXR0ZXI8L3N0cmlu
+	Zz4KCQkJCQk8a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQuc3RhdGVGbGFnPC9rZXk+
+	CgkJCQkJPGludGVnZXI+MDwvaW50ZWdlcj4KCQkJCTwvZGljdD4KCQkJPC9hcnJheT4K
+	CQk8L2RpY3Q+CgkJPGtleT5jb20uYXBwbGUucHJpbnQudGlja2V0LkFQSVZlcnNpb248
+	L2tleT4KCQk8c3RyaW5nPjAwLjIwPC9zdHJpbmc+CgkJPGtleT5jb20uYXBwbGUucHJp
+	bnQudGlja2V0LnR5cGU8L2tleT4KCQk8c3RyaW5nPmNvbS5hcHBsZS5wcmludC5QYXBl
+	ckluZm9UaWNrZXQ8L3N0cmluZz4KCTwvZGljdD4KCTxrZXk+Y29tLmFwcGxlLnByaW50
+	LnRpY2tldC5BUElWZXJzaW9uPC9rZXk+Cgk8c3RyaW5nPjAwLjIwPC9zdHJpbmc+Cgk8
+	a2V5PmNvbS5hcHBsZS5wcmludC50aWNrZXQudHlwZTwva2V5PgoJPHN0cmluZz5jb20u
+	YXBwbGUucHJpbnQuUGFnZUZvcm1hdFRpY2tldDwvc3RyaW5nPgo8L2RpY3Q+CjwvcGxp
+	c3Q+CoaShJmZC05TUGFwZXJOYW1lhpKEmZkJbmEtbGV0dGVyhpKEmZkLTlNQYXBlclNp
+	emWGkoScnISEDHtfTlNTaXplPWZmfaKBZAKBGAOGhoY=
 	</data>
 	<key>SCRCompileProjectVariableReplacementsKey</key>
 	<array/>
@@ -1023,11 +1049,11 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileRightFirstPageFooterStringKey</key>
 	<string></string>
 	<key>SCRCompileRightFirstPageHeaderStringKey</key>
-	<string></string>
+	<string>*&lt;$p&gt;*</string>
 	<key>SCRCompileRightFooterStringKey</key>
 	<string></string>
 	<key>SCRCompileRightHeaderStringKey</key>
-	<string></string>
+	<string>*&lt;$p&gt;*</string>
 	<key>SCRCompileStatisticsCharacterCountExcludesWhitespaceKey</key>
 	<false/>
 	<key>SCRCompileStatisticsCountAllTextKey</key>
@@ -1061,7 +1087,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileTextAndFolderCustomSeparatorStringKey</key>
 	<string></string>
 	<key>SCRCompileTextAndFolderSectionSeparatorKey</key>
-	<integer>3</integer>
+	<integer>2</integer>
 	<key>SCRCompileTextContainerFormattingLevelsKey</key>
 	<array>
 		<dict>
@@ -1074,9 +1100,11 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRIncludeSynopsesKey</key>
 			<false/>
 			<key>SCRIncludeTextKey</key>
-			<false/>
+			<true/>
 			<key>SCRIncludeTitlesKey</key>
 			<integer>1</integer>
+			<key>SCRMainTextUppercaseFirstWordsUseSmallCapsKey</key>
+			<false/>
 			<key>SCRMainTextWordsToUppercaseInNewSectionsKey</key>
 			<integer>0</integer>
 			<key>SCRMetaDataAttributesKey</key>
@@ -1092,9 +1120,13 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			dgBpAGwAbABlAIQBZgyEAWMAowGjAKMAhoY=
 			</data>
 			<key>SCRMultiMarkdownPlacesTitlePrefixInsideHashesKey</key>
-			<integer>1</integer>
+			<true/>
 			<key>SCRMultiMarkdownPlacesTitleSuffixInsideHashesKey</key>
-			<integer>1</integer>
+			<true/>
+			<key>SCRNextSectionRectoVersoKey</key>
+			<integer>0</integer>
+			<key>SCRNextSectionUsesRectoVersoControlKey</key>
+			<false/>
 			<key>SCRNotesAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
@@ -1107,9 +1139,13 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			VGV4dFRhYgCVhAJDZgBIhpKEoaIAbIaGgZAAhARbMmZdJAKGhg==
 			</data>
 			<key>SCRPagePaddingKey</key>
-			<integer>8</integer>
+			<integer>2</integer>
 			<key>SCRPlaceTitleAsRunInHeadKey</key>
+			<false/>
+			<key>SCRSectionRectoVersoKey</key>
 			<integer>0</integer>
+			<key>SCRSectionUsesRectoVersoControlKey</key>
+			<false/>
 			<key>SCRSubtitlesAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
@@ -1135,27 +1171,27 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYg
-			hAVbMzJjXQYAAAAYAAAA//5CAGEAcwBrAGUAcgB2AGkAbABsAGUA
-			hAFmC4QBYwCcAZwAnACGkoSXmBBOU1BhcmFncmFwaFN0eWxlhpKE
-			hIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3Jh
-			cGhTdHlsZQCVhARDQ0BTAwCEhIQHTlNBcnJheQCVlgOShISECU5T
-			VGV4dFRhYgCVhAJDZgBIhpKEoaIAbIaShKGiAIGQAIaGEIQEWzFm
-			XQuGhg==
+			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYY
+			hAVbMjRjXQYAAAAOAAAA//5DAG8AYwBoAGkAbgAAAIQBZg6EAWMA
+			nAGcAJwAhpKEl5gQTlNQYXJhZ3JhcGhTdHlsZYaShISEF05TTXV0
+			YWJsZVBhcmFncmFwaFN0eWxlAISEEE5TUGFyYWdyYXBoU3R5bGUA
+			lYQEQ0NAUwMAhISEB05TQXJyYXkAlZYGkoSEhAlOU1RleHRUYWIA
+			lYQCQ2YAJIaShKGiAEiGkoShogBshpKEoaIAgZAAhpKEoaIAgbQA
+			hpKEoaIAgdgAhoaBkgCEBFszZl0KEoPNzIw/hoY=
 			</data>
 			<key>SCRTitleAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZY8
-			hAVbNjBjXQYAAAAyAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
-			YQBuAFAAUwAtAEkAdABhAGwAaQBjAE0AVAAAAIQBZg6EAWMAnAGc
-			AJwAhpKEl5gQTlNQYXJhZ3JhcGhTdHlsZYaShISEF05TTXV0YWJs
-			ZVBhcmFncmFwaFN0eWxlAISEEE5TUGFyYWdyYXBoU3R5bGUAlYQE
-			Q0NAUwIAhYGAAIQEWzFmXQGGhg==
+			hIQITlNTdHJpbmcBlYQBKxBOU1BhcmFncmFwaFN0eWxlhpKEhIQX
+			TlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3JhcGhT
+			dHlsZQCVhARDQ0BTAACFgYAAhARbMWZdAYaShJeYBk5TRm9udIaS
+			hISEBk5TRm9udB6VljiEBVs1NmNdBgAAAC4AAAD//lQAaQBtAGUA
+			cwBOAGUAdwBSAG8AbQBhAG4AUABTAC0AQgBvAGwAZABNAFQAAACE
+			AWYOhAFjAKABoACgAIaG
 			</data>
 			<key>SCRTitleCaseKey</key>
-			<integer>0</integer>
+			<integer>2</integer>
 			<key>SCRTitlePrefixAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
@@ -1168,10 +1204,9 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			hg==
 			</data>
 			<key>SCRTitlePrefixCaseKey</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>SCRTitlePrefixKey</key>
-			<string>Chapter &lt;$t&gt;
-</string>
+			<string></string>
 			<key>SCRTitleSuffixAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
@@ -1185,7 +1220,8 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRTitleSuffixCaseKey</key>
 			<integer>0</integer>
 			<key>SCRTitleSuffixKey</key>
-			<string></string>
+			<string>
+</string>
 		</dict>
 	</array>
 	<key>SCRCompileTextCustomSeparatorStringKey</key>
@@ -1205,6 +1241,8 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<true/>
 			<key>SCRIncludeTitlesKey</key>
 			<true/>
+			<key>SCRMainTextUppercaseFirstWordsUseSmallCapsKey</key>
+			<false/>
 			<key>SCRMainTextWordsToUppercaseInNewSectionsKey</key>
 			<integer>0</integer>
 			<key>SCRMetaDataAttributesKey</key>
@@ -1223,6 +1261,10 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<true/>
 			<key>SCRMultiMarkdownPlacesTitleSuffixInsideHashesKey</key>
 			<true/>
+			<key>SCRNextSectionRectoVersoKey</key>
+			<integer>0</integer>
+			<key>SCRNextSectionUsesRectoVersoControlKey</key>
+			<false/>
 			<key>SCRNotesAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
@@ -1236,8 +1278,12 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			MmZdJAKGhg==
 			</data>
 			<key>SCRPagePaddingKey</key>
-			<integer>8</integer>
+			<integer>2</integer>
 			<key>SCRPlaceTitleAsRunInHeadKey</key>
+			<false/>
+			<key>SCRSectionRectoVersoKey</key>
+			<integer>0</integer>
+			<key>SCRSectionUsesRectoVersoControlKey</key>
 			<false/>
 			<key>SCRSubtitlesAttributesKey</key>
 			<data>
@@ -1264,27 +1310,27 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYg
-			hAVbMzJjXQYAAAAYAAAA//5CAGEAcwBrAGUAcgB2AGkAbABsAGUA
-			hAFmC4QBYwCcAZwAnACGkoSXmBBOU1BhcmFncmFwaFN0eWxlhpKE
-			hIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3Jh
-			cGhTdHlsZQCVhARDQ0BTAwCEhIQHTlNBcnJheQCVlgOShISECU5T
-			VGV4dFRhYgCVhAJDZgBIhpKEoaIAbIaShKGiAIGQAIaGgZAAhARb
-			MmZdCwGGhg==
+			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYY
+			hAVbMjRjXQYAAAAOAAAA//5DAG8AYwBoAGkAbgAAAIQBZg6EAWMA
+			nAGcAJwAhpKEl5gQTlNQYXJhZ3JhcGhTdHlsZYaShISEF05TTXV0
+			YWJsZVBhcmFncmFwaFN0eWxlAISEEE5TUGFyYWdyYXBoU3R5bGUA
+			lYQEQ0NAUwMAhISEB05TQXJyYXkAlZYGkoSEhAlOU1RleHRUYWIA
+			lYQCQ2YAJIaShKGiAEiGkoShogBshpKEoaIAgZAAhpKEoaIAgbQA
+			hpKEoaIAgdgAhoaBkgCEBFszZl0KEoPNzIw/hoY=
 			</data>
 			<key>SCRTitleAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYs
-			hAVbNDRjXQYAAAAkAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
-			YQBuAFAAUwBNAFQAhAFmDoQBYwCcAZwAnACGkoSXmBBOU1BhcmFn
-			cmFwaFN0eWxlhpKEhIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUA
-			hIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BTAgCFAoQEWzFmXRiG
-			hg==
+			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZY4
+			hAVbNTZjXQYAAAAuAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
+			YQBuAFAAUwAtAEIAbwBsAGQATQBUAAAAhAFmDoQBYwCcAZwAnACG
+			koSXmBBOU1BhcmFncmFwaFN0eWxlhpKEhIQXTlNNdXRhYmxlUGFy
+			YWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BT
+			AACFAoQEWzFmXRiGhg==
 			</data>
 			<key>SCRTitleCaseKey</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>SCRTitlePrefixAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
@@ -1297,7 +1343,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			AIaG
 			</data>
 			<key>SCRTitlePrefixCaseKey</key>
-			<integer>1</integer>
+			<integer>2</integer>
 			<key>SCRTitlePrefixKey</key>
 			<string></string>
 			<key>SCRTitleSuffixAttributesKey</key>
@@ -1357,7 +1403,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			AaMAowCGhg==
 			</data>
 			<key>SCRPagePaddingKey</key>
-			<integer>12</integer>
+			<integer>0</integer>
 			<key>SCRSubtitlesAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
@@ -1434,7 +1480,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 		</dict>
 	</array>
 	<key>SCRCompileTextSectionSeparatorKey</key>
-	<integer>2</integer>
+	<integer>1</integer>
 	<key>SCRCompileUnderlinePrintedHyperlinksKey</key>
 	<true/>
 	<key>SCRCompileUpdateScrivenerLinksWithPrefixAndSuffixKey</key>

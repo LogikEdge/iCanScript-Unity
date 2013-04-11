@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-11 14:58:28 -0400">
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-11 17:39:27 -0400">
     <Binder>
         <BinderItem ID="12" Type="Text" Created="2007-03-25 14:48:19 -0400" Modified="2013-04-11 08:33:42 -0400">
             <Title>Non-Fiction Format</Title>
@@ -25,7 +25,7 @@
                 </OutlinerExpandedState>
             </CorkboardAndOutliner>
             <Children>
-                <BinderItem ID="84" Type="Text" Created="2013-04-11 13:35:22 -0400" Modified="2013-04-11 14:42:52 -0400">
+                <BinderItem ID="84" Type="Text" Created="2013-04-11 13:35:22 -0400" Modified="2013-04-11 17:31:07 -0400">
                     <Title>Table Of Content</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -35,7 +35,7 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="63" Type="Text" Created="2013-04-04 14:50:50 -0400" Modified="2013-04-11 10:14:35 -0400">
+                <BinderItem ID="63" Type="Text" Created="2013-04-04 14:50:50 -0400" Modified="2013-04-11 15:13:52 -0400">
                     <Title>Many Thanks</Title>
                     <MetaData>
                         <StatusID>5</StatusID>
@@ -44,10 +44,10 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>325,0</TextSelection>
+                        <TextSelection>126,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="60" Type="Text" Created="2013-02-04 09:37:44 -0500" Modified="2013-04-11 10:14:21 -0400">
+                <BinderItem ID="60" Type="Text" Created="2013-02-04 09:37:44 -0500" Modified="2013-04-11 17:00:06 -0400">
                     <Title>Preface</Title>
                     <MetaData>
                         <StatusID>5</StatusID>
@@ -56,8 +56,21 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>644,0</TextSelection>
+                        <TextSelection>1482,0</TextSelection>
                     </TextSettings>
+                    <Children>
+                        <BinderItem ID="85" Type="Text" Created="2013-04-11 16:57:37 -0400" Modified="2013-04-11 17:02:04 -0400">
+                            <Title>Signature</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CompileAsIs>Yes</CompileAsIs>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
                 </BinderItem>
                 <BinderItem ID="37" Type="Text" Created="2013-01-04 15:26:21 -0500" Modified="2013-04-05 12:08:56 -0400">
                     <Title>Acknowledgements</Title>
@@ -83,10 +96,11 @@
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <Children>
-                        <BinderItem ID="56" Type="Folder" Created="2013-01-07 08:44:03 -0500" Modified="2013-04-11 10:16:59 -0400">
+                        <BinderItem ID="56" Type="Folder" Created="2013-01-07 08:44:03 -0500" Modified="2013-04-11 16:04:08 -0400">
                             <Title>What is iCanScript</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -98,6 +112,7 @@
                             <Title>Philosophy</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -108,6 +123,7 @@
                         <BinderItem ID="69" Type="Folder" Created="2013-04-11 09:13:53 -0400" Modified="2013-04-11 09:20:22 -0400">
                             <Title>About This Manual</Title>
                             <MetaData>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -142,6 +158,7 @@
                             <Title>What's New</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -153,6 +170,7 @@
                             <Title>Installation and Upgrading</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -227,6 +245,7 @@
                         <BinderItem ID="72" Type="Folder" Created="2013-04-11 09:24:45 -0400" Modified="2013-04-11 10:16:23 -0400">
                             <Title>Interface</Title>
                             <MetaData>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -325,6 +344,7 @@
                         <BinderItem ID="71" Type="Folder" Created="2013-04-11 09:20:50 -0400" Modified="2013-04-11 09:20:56 -0400">
                             <Title>Quick Tour</Title>
                             <MetaData>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -349,6 +369,7 @@
                             <Title>Saving &amp; Loading Your Visual Scripts</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -360,6 +381,7 @@
                             <Title>Executing Your Visual Scripts</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -385,6 +407,7 @@
                             <Title>Creating Nodes</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -396,6 +419,7 @@
                             <Title>Installing Libraries</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -421,6 +445,7 @@
                             <Title>Menus and Keyboard Shortcuts</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -432,6 +457,7 @@
                             <Title>Preferences</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -443,6 +469,7 @@
                             <Title>Programming Keywords</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -454,6 +481,7 @@
                             <Title>Tips and Tricks and Trouble</Title>
                             <MetaData>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
@@ -578,7 +606,7 @@
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 08:24:39 -0400" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="568" Characters="3357" Date="2013-04-11 08:33:14 -0400"></PreviousSession>
+        <PreviousSession Words="568" Characters="3359" Date="2013-04-11 15:44:41 -0400"></PreviousSession>
     </ProjectTargets>
-    <PrintSettings PaperSize="595.275574,841.861389" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
+    <PrintSettings PaperSize="595.280029,841.890015" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
 </ScrivenerProject>
