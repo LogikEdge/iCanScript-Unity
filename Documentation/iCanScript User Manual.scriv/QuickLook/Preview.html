@@ -28,6 +28,9 @@
 
 <ul>
 <li>
+<p class="binderItem"><strong>Table Of Content</strong></p>
+</li>
+<li>
 <p class="binderItem"><strong>Many Thanks</strong><br/>We, at Disruptive Software, would like to start by saying: <br/>
 — Thank You for your interest in iCanScript !!!         <br/>
 Their is nothing more exciting for software designers like us than growing our customer base and we will make every effort to help you become one of our users.<br/>
@@ -53,28 +56,62 @@ Having joined the gaming industry in 2003, I have realized that the software eng
 <p class="binderItem"><strong>Philosophy</strong><br/>- Discuss what drives the development of iCanScript.</p>
 </li>
 <li>
+<p class="binderItem"><strong>About This Manual</strong><br/>The manual itself has been split into five primary sections and an appendix. The first section introduces iCanScript’s terminology and interface and gives a quick tour for those who want to start writing as soon as possible. It is highly recommended that you also go through the Quick Tour (chapter 6) to get the most out of iCanScript and eliminate confusion over some of its unique features.</p>
+</li>
+<hr/>
+<ul>
+<li>
 <p class="binderItem"><strong>Terms and Conventions</strong><br/>- Provide a simplified list of important terms.<br/>
 <br/>
 - Discuss typographic conventions used in this manual.</p>
 </li>
 <li>
-<p class="binderItem"><strong>What's New</strong><br/>- Discuss major difference with previous version of the manual.</p>
-</li>
-<li>
-<p class="binderItem"><strong>Installation and Upgrades</strong><br/>iCanScript is delivered in three Unity packages:<br/>
-- iCanScript: the core editor & engine (mandatory);<br/>
-- iCanScript_Nodes: base library nodes (optional);<br/>
-- iCanScript_Examples: example projects (optional).</p>
+<p class="binderItem"><strong>Finding Things</strong><br/>Alternatively, the appendices have been designed to use as a sort of topical index. If you have a question about a particular menu command, for instance, you can find it in the appendix, Menus and Keyboard Shortcuts (Appendix A). Often, if the feature merits it, there will be a cross-reference to a more thorough description of the feature in the main manual. When all else fails, a detailed table of contents has been provided at the beginning of the document.</p>
 </li>
 </ul>
 <hr/>
 <li>
-<p class="binderItem"><strong>Overview</strong><br/>iCanScript is a visual programming editor that can be used standalone or to complement existing source code text editors.</p>
+<p class="binderItem"><strong>What's New</strong><br/>- Discuss major difference with previous version of the manual.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Installation and Upgrading</strong><br/>iCanScript is delivered in three Unity packages:<br/>
+- iCanScript: the core editor & engine (mandatory);<br/>
+- iCanScript_Nodes: base library nodes (optional);<br/>
+- iCanScript_Examples: example projects (optional).</p>
 </li>
 <hr/>
 <ul>
 <li>
-<p class="binderItem"><strong>iCanScript Anatomy</strong><br/>iCanScript is composed of:<br/>
+<p class="binderItem"><strong>Registering</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Trial Version</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Purchasing iCanScript</strong></p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Installation</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Application Updates</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Staying Informed</strong></p>
+</li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Interface</strong></p>
+</li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Interface Overview</strong><br/>iCanScript is composed of:<br/>
  * a central visual editor window;<br/>
  * a library tree panel;<br/>
  * a hierarchy tree panel;<br/>
@@ -84,12 +121,16 @@ All of these windows and panels can be opened from Unity's Windows menu under th
 Currently, the layout of iCanScript windows and panels are left to the user.</p>
 </li>
 <li>
-<p class="binderItem"><strong>Interface Overview</strong></p>
+<p class="binderItem"><strong>Menu Items</strong></p>
 </li>
-</ul>
-<hr/>
+<li>
+<p class="binderItem"><strong>Inspector</strong></p>
+</li>
 <li>
 <p class="binderItem"><strong>Preferences</strong></p>
+</li>
+<li>
+<p class="binderItem"><strong>Library</strong></p>
 </li>
 <li>
 <p class="binderItem"><strong>Visual Editor</strong></p>
@@ -98,14 +139,20 @@ Currently, the layout of iCanScript windows and panels are left to the user.</p>
 <p class="binderItem"><strong>Hierarchy</strong></p>
 </li>
 <li>
-<p class="binderItem"><strong>Library</strong></p>
-</li>
-<li>
 <p class="binderItem"><strong>Instance Wizard</strong></p>
 </li>
+</ul>
+<hr/>
 <li>
-<p class="binderItem"><strong>Unity Inspector</strong></p>
+<p class="binderItem"><strong>Quick Tour</strong></p>
 </li>
+</ul>
+<hr/>
+<li>
+<p class="binderItem"><strong>Visual Scripting</strong></p>
+</li>
+<hr/>
+<ul>
 <li>
 <p class="binderItem"><strong>Saving & Loading Your Visual Scripts</strong><br/>Your visual scripts are automatically saved and reloaded as part of the game object in which they reside.  Your iCanScript components may be in one of two configurations: either as part of a GameObject in a Scene or as part of a Prefab in the Project.  In both cases, the iCanScript component will be saved and reload by Unity in the standard way.<br/>
 Here are the considerations for saving & reloading iCanScript components:<br/>
@@ -115,9 +162,21 @@ This implies that if the visual script is a compon...</p>
 <li>
 <p class="binderItem"><strong>Executing Your Visual Scripts</strong><br/>iCanScript autonomously generates the visual script code when you request to run your game.  No special user intervention is required.</p>
 </li>
+</ul>
+<hr/>
 <li>
 <p class="binderItem"><strong>Extending iCanScript</strong><br/>- iCanScript for senior programmers</p>
 </li>
+<hr/>
+<ul>
+<li>
+<p class="binderItem"><strong>Creating Nodes</strong><br/>This section discusses how to create your own nodes from source code.   Please refer to section XXX if you want to install an existing library.</p>
+</li>
+<li>
+<p class="binderItem"><strong>Installing Libraries</strong></p>
+</li>
+</ul>
+<hr/>
 <li>
 <p class="binderItem"><strong>Appendices</strong><br/>- Keyboard shortcuts quick reference<br/>
 - Programming keywords</p>
