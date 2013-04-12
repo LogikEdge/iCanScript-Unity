@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <SearchIndexes Version="1.0">
     <Documents>
+        <Document ID="86">
+            <Title>Images</Title>
+        </Document>
         <Document ID="69">
             <Title>About This Manual</Title>
             <Text>The manual itself has been split into five primary sections and an appendix. The first section introduces iCanScript’s terminology and interface and gives a quick tour for those who want to start writing as soon as possible. It is highly recommended that you also go through the Quick Tour (chapter 6) to get the most out of iCanScript and eliminate confusion over some of its unique features.</Text>
@@ -64,6 +67,9 @@ Scrivener project templates are flexible and are not intended to restrict you to
         </Document>
         <Document ID="78">
             <Title>Application Updates</Title>
+        </Document>
+        <Document ID="87">
+            <Title>Shadow_Line_1</Title>
         </Document>
         <Document ID="79">
             <Title>Installation</Title>
@@ -262,6 +268,8 @@ Visual script components that are included in  prefabs are automatically saved a
         </Document>
         <Document ID="84">
             <Title>Table Of Content</Title>
+            <Text>
+</Text>
         </Document>
         <Document ID="67">
             <Title>Tips and Tricks and Trouble</Title>
