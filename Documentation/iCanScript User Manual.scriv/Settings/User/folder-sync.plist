@@ -6,6 +6,19 @@
 	<false/>
 	<key>collectionIdentAutosaveName</key>
 	<string>493CBF7D-9D81-44D3-AAF2-3091F708FB17</string>
+	<key>deletedDocIDs</key>
+	<array>
+		<integer>46</integer>
+		<integer>95</integer>
+		<integer>91</integer>
+		<integer>94</integer>
+		<integer>93</integer>
+		<integer>45</integer>
+		<integer>92</integer>
+		<integer>57</integer>
+		<integer>90</integer>
+		<integer>96</integer>
+	</array>
 	<key>draftFileFormat</key>
 	<integer>0</integer>
 	<key>draftPlainTextExtension</key>
