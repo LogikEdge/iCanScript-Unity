@@ -97,7 +97,6 @@ The main concepts of iCanScript can be summarized as follows:</Text>
         <Document ID="98">
             <Title>PDF Cover</Title>
             <Text>
-
 User
 Manual
 iCanScript v0.9.0 for Unity 3D
@@ -125,8 +124,6 @@ Revision: 0.9.0-01
             <Text>Whenever the documentation refers to an action that must be taken by you, the visible name for that action will be formatted like so. Button labels, menu items, and keyboard shortcuts will all be displayed in this fashion.
 Menus will be displayed in a hierarchy using the “ ⌘ ” character to separate top-level, sub-menu, and items. Example: To convert a range of selected text to uppercase, invoke the Format ⌘ Convert ⌘ To Uppercase command.
 Keyboard shortcuts will use the following symbols:
-ß ß
-ß
 – : The Command key, or the Apple key, is the one located directly to the left and right of your spacebar.
 : The Option key is also labelled the Alt key on some keyboards, depending on which country you purchased your Mac from. Some laptops only have one Option key on the left side.
 : Control is usually located to the left and right of the Option keys on their respective side. Some laptops only have one Control key between the Option key and the Fn key on the left side.
@@ -281,17 +278,22 @@ Visual script components that are included in  prefabs are automatically saved a
         </Document>
         <Document ID="84">
             <Title>Table Of Content</Title>
+            <Text>?partID - ?title 					&lt;$p>
+?chapterID - ?title				&lt;$p>
+?chapterID - ?title				&lt;$p>
+?partID - ?title					&lt;$p>
+?appendixID - ?title				&lt;$p>
+</Text>
         </Document>
         <Document ID="67">
             <Title>Tips and Tricks and Trouble</Title>
         </Document>
         <Document ID="76">
             <Title>Trial Version</Title>
-            <Text>Trial version text.
-</Text>
         </Document>
         <Document ID="59">
             <Title>Programming Keywords</Title>
+            <Text>?appendix</Text>
         </Document>
         <Document ID="85">
             <Title>Signature</Title>

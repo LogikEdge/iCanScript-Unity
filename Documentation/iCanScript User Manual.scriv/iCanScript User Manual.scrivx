@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-12 21:31:49 -0400">
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-13 00:44:22 -0400">
     <Binder>
         <BinderItem ID="12" Type="Text" Created="2007-03-25 14:48:19 -0400" Modified="2013-04-11 08:33:42 -0400">
             <Title>Non-Fiction Format</Title>
@@ -22,7 +22,7 @@
                 <TextSelection>0,0</TextSelection>
             </TextSettings>
             <Children>
-                <BinderItem ID="98" Type="Text" Created="2013-04-12 16:05:52 -0400" Modified="2013-04-12 21:31:31 -0400">
+                <BinderItem ID="98" Type="Text" Created="2013-04-12 16:05:52 -0400" Modified="2013-04-12 23:00:36 -0400">
                     <Title>PDF Cover</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
@@ -30,7 +30,7 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>110,1</TextSelection>
+                        <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <References>
                         <Reference BinderID="99" Destination="[Internal Link]">Cover</Reference>
@@ -58,7 +58,7 @@
                 </OutlinerExpandedState>
             </CorkboardAndOutliner>
             <Children>
-                <BinderItem ID="84" Type="Text" Created="2013-04-11 13:35:22 -0400" Modified="2013-04-12 16:07:44 -0400">
+                <BinderItem ID="84" Type="Text" Created="2013-04-11 13:35:22 -0400" Modified="2013-04-13 00:33:20 -0400">
                     <Title>Table Of Content</Title>
                     <MetaData>
                         <PageBreakBefore>Yes</PageBreakBefore>
@@ -66,7 +66,7 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>1,0</TextSelection>
+                        <TextSelection>137,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
                 <BinderItem ID="63" Type="Text" Created="2013-04-04 14:50:50 -0400" Modified="2013-04-11 15:13:52 -0400">
@@ -134,6 +134,9 @@
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                    </References>
                     <Children>
                         <BinderItem ID="56" Type="Folder" Created="2013-01-07 08:44:03 -0500" Modified="2013-04-12 14:12:54 -0400">
                             <Title>What is iCanScript</Title>
@@ -157,6 +160,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                            </References>
                         </BinderItem>
                         <BinderItem ID="40" Type="Folder" Created="2013-01-04 15:29:15 -0500" Modified="2013-04-12 14:12:59 -0400">
                             <Title>Philosophy</Title>
@@ -182,9 +188,10 @@
                             </TextSettings>
                             <References>
                                 <Reference BinderID="79" Destination="[Internal Link]">Installation</Reference>
+                                <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
                             </References>
                         </BinderItem>
-                        <BinderItem ID="69" Type="Folder" Created="2013-04-11 09:13:53 -0400" Modified="2013-04-12 14:13:04 -0400">
+                        <BinderItem ID="69" Type="Folder" Created="2013-04-11 09:13:53 -0400" Modified="2013-04-12 23:21:00 -0400">
                             <Title>About This Manual</Title>
                             <MetaData>
                                 <LabelID>2</LabelID>
@@ -206,7 +213,7 @@
                                 <TextSelection>393,0</TextSelection>
                             </TextSettings>
                             <Children>
-                                <BinderItem ID="42" Type="Text" Created="2013-01-04 15:29:57 -0500" Modified="2013-04-11 09:40:41 -0400">
+                                <BinderItem ID="42" Type="Text" Created="2013-01-04 15:29:57 -0500" Modified="2013-04-12 23:19:32 -0400">
                                     <Title>Terms and Conventions</Title>
                                     <MetaData>
                                         <StatusID>1</StatusID>
@@ -292,7 +299,7 @@
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
                                     <Children>
-                                        <BinderItem ID="76" Type="Text" Created="2013-04-11 10:05:17 -0400" Modified="2013-04-12 13:04:10 -0400">
+                                        <BinderItem ID="76" Type="Text" Created="2013-04-11 10:05:17 -0400" Modified="2013-04-13 00:34:56 -0400">
                                             <Title>Trial Version</Title>
                                             <MetaData>
                                                 <IncludeInCompile>Yes</IncludeInCompile>
@@ -305,20 +312,8 @@
                                                 </CustomMetaData>
                                             </MetaData>
                                             <TextSettings>
-                                                <TextSelection>20,0</TextSelection>
+                                                <TextSelection>0,0</TextSelection>
                                             </TextSettings>
-                                            <Children>
-                                                <BinderItem ID="88" Type="Text" Created="2013-04-12 13:04:08 -0400" Modified="2013-04-12 13:05:59 -0400">
-                                                    <Title>Level 5</Title>
-                                                    <MetaData>
-                                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                                    </MetaData>
-                                                    <TextSettings>
-                                                        <TextSelection>23,0</TextSelection>
-                                                    </TextSettings>
-                                                </BinderItem>
-                                            </Children>
                                         </BinderItem>
                                         <BinderItem ID="77" Type="Text" Created="2013-04-11 10:05:29 -0400" Modified="2013-04-11 10:05:39 -0400">
                                             <Title>Purchasing iCanScript</Title>
@@ -509,6 +504,9 @@
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                    </References>
                     <Children>
                         <BinderItem ID="66" Type="Folder" Created="2013-04-05 12:14:03 -0400" Modified="2013-04-12 14:13:31 -0400">
                             <Title>Saving &amp; Loading Your Visual Scripts</Title>
@@ -637,6 +635,9 @@
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                    </References>
                     <Children>
                         <BinderItem ID="58" Type="Text" Created="2013-01-07 13:12:25 -0500" Modified="2013-04-12 15:02:44 -0400">
                             <Title>Menus and Keyboard Shortcuts</Title>
@@ -660,6 +661,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                            </References>
                             <Children>
                                 <BinderItem ID="89" Type="Text" Created="2013-04-12 13:08:17 -0400" Modified="2013-04-12 15:09:34 -0400">
                                     <Title>Appendix folder</Title>
@@ -736,6 +740,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                            </References>
                             <Children>
                                 <BinderItem ID="90" Type="Text" Created="2013-04-12 14:51:36 -0400" Modified="2013-04-12 14:51:36 -0400">
                                     <Title>Untitled</Title>
@@ -761,7 +768,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="59" Type="Text" Created="2013-01-07 13:12:58 -0500" Modified="2013-04-12 14:07:15 -0400">
+                        <BinderItem ID="59" Type="Text" Created="2013-01-07 13:12:58 -0500" Modified="2013-04-12 23:36:53 -0400">
                             <Title>Programming Keywords</Title>
                             <MetaData>
                                 <LabelID>7</LabelID>
@@ -783,6 +790,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                            </References>
                             <Children>
                                 <BinderItem ID="91" Type="Text" Created="2013-04-12 14:51:46 -0400" Modified="2013-04-12 14:51:46 -0400">
                                     <Title>Untitled</Title>
@@ -1147,6 +1157,16 @@
                         <ImageScalesProportionally>No</ImageScalesProportionally>
                     </MediaSettings>
                 </BinderItem>
+                <BinderItem ID="88" Type="Text" Created="2013-04-12 13:04:08 -0400" Modified="2013-04-12 13:05:59 -0400">
+                    <Title>Level 5</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>23,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
             </Children>
         </BinderItem>
     </Binder>
@@ -1203,7 +1223,7 @@
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 08:24:39 -0400" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="24" Characters="119" Date="2013-04-12 21:29:31 -0400"></PreviousSession>
+        <PreviousSession Words="15" Characters="137" Date="2013-04-13 00:36:57 -0400"></PreviousSession>
     </ProjectTargets>
     <FullScreenBackdrop Type="BinderID">101</FullScreenBackdrop>
     <PrintSettings PaperSize="595.280029,841.890015" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
