@@ -229,7 +229,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRMainTextUppercaseFirstWordsUseSmallCapsKey</key>
 			<false/>
 			<key>SCRMainTextWordsToUppercaseInNewSectionsKey</key>
-			<integer>3</integer>
+			<integer>0</integer>
 			<key>SCRMetaDataAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
@@ -763,7 +763,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileFootnotesFontKey</key>
 	<data>
 	BAtzdHJlYW10eXBlZIHoA4QBQISEhAZOU0ZvbnQehIQITlNPYmplY3QAhYQBaRiEBVsy
-	NGNdBgAAABAAAAD//kMAbwB1AHIAaQBlAHIAhAFmCoQBYwCYAZgAmACG
+	NGNdBgAAABAAAAD//kMAbwB1AHIAaQBlAHIAhAFmCYQBYwCYAZgAmACG
 	</data>
 	<key>SCRCompileFootnotesHaveSeparatorKey</key>
 	<true/>
@@ -797,7 +797,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileGroupFootnotesBeforePageBreakTypeKey</key>
 	<integer>1</integer>
 	<key>SCRCompileGroupFootnotesBeforePageBreaksKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileGroupIdentifierInfoKey</key>
 	<dict>
 		<key>Identifier</key>
@@ -823,9 +823,9 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	</data>
 	<key>SCRCompileHeaderFontKey</key>
 	<data>
-	BAtzdHJlYW10eXBlZIHoA4QBQISEhAZOU0ZvbnQehIQITlNPYmplY3QAhYQBaSyEBVs0
-	NGNdBgAAACQAAAD//k0AeQByAGkAYQBkAFAAcgBvAC0AUgBlAGcAdQBsAGEAcgCEAWYK
-	hAFjAJgBmACYAIY=
+	BAtzdHJlYW10eXBlZIHoA4QBQISEhAZOU0ZvbnQehIQITlNPYmplY3QAhYQBaSSEBVsz
+	NmNdBgAAABoAAAD//kwAdQBjAGkAZABhAEcAcgBhAG4AZABlAAAAhAFmCoQBYwCYAZgA
+	mACG
 	</data>
 	<key>SCRCompileIgnoresLevelsOutsideCurrentCompileGroupKey</key>
 	<false/>
@@ -834,7 +834,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileIncludeCompileGroupTextKey</key>
 	<true/>
 	<key>SCRCompileIncludeCurrentSelectionDescendantsKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileIncludeFootnotesInStatisticsKey</key>
 	<false/>
 	<key>SCRCompileIncludedTagKey</key>
@@ -933,19 +933,19 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileOverrideFontNameKey</key>
 	<string>Helvetica</string>
 	<key>SCRCompileOverrideFootnotesFontKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileOverridePrefixSeparatorInInlineLinksKey</key>
 	<true/>
 	<key>SCRCompileOverridePreserveFormattingHasLimits</key>
 	<false/>
 	<key>SCRCompileOverridePreservesAlignmentKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileOverridePreservesCenteredAlignmentOnlyKey</key>
 	<false/>
 	<key>SCRCompileOverridePreservesIndentsKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileOverridePreservesLineSpacingKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileOverrideTextAndNotesFormatKey</key>
 	<true/>
 	<key>SCRCompilePDFExportColorInternalLinksKey</key>
@@ -955,7 +955,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompilePDFInternalLinkColorKey</key>
 	<data>
 	BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2JqZWN0AIWEAWMBhARm
-	ZmZmAACDgYAAPwGG
+	ZmZmgzYyLD2DJNXMPoNCwQw9AYY=
 	</data>
 	<key>SCRCompilePDFUnderlineInternalLinksKey</key>
 	<false/>
@@ -1306,7 +1306,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileResampleImagesKey</key>
 	<false/>
 	<key>SCRCompileRestrictWidthOfStitchedTablesKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileRightAlternateFooterStringKey</key>
 	<string></string>
 	<key>SCRCompileRightAlternateHeaderStringKey</key>
@@ -1344,7 +1344,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileStatisticsFilterTypeKey</key>
 	<integer>1</integer>
 	<key>SCRCompileStitchTablesTogetherKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileStraightenTypographersQuotesKey</key>
 	<false/>
 	<key>SCRCompileTableImagesMaxWidthKey</key>

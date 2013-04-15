@@ -15,7 +15,6 @@ Many Thanks	&lt;$p>
 Preface	&lt;$p>
 Acknowledgements	&lt;$p>
 Introduction	&lt;$p>
-What is iCanScript	&lt;$p>
 Philosophy	&lt;$p>
 About This Manual	&lt;$p>
 Terms and Conventions	&lt;$p>
@@ -69,7 +68,7 @@ Their is nothing more exciting for software designers like us than growing our c
 — The Software Development Team at Disruptive Software.</Synopsis>
             <Text>We, at Disruptive Software, would like to start by saying: 
 
-— Thank You for your interest in iCanScript !!!                 
+“Thank You for your interest in iCanScript !!!”
 
 Their is nothing more exciting for software designers like us than growing our customer base and we will make every effort to help you become one of our users.
 
@@ -87,12 +86,18 @@ iCanScript was developed because no other …
         <Document ID="49">
             <Title>Visual Editor</Title>
         </Document>
+        <Document ID="121">
+            <Title>Quote</Title>
+        </Document>
         <Document ID="71">
             <Title>Quick Tour</Title>
             <Text>This is a quick tour guide to using iCanScript for the first time.</Text>
         </Document>
         <Document ID="64">
             <Title>Preferences</Title>
+        </Document>
+        <Document ID="122">
+            <Title>Footnotes</Title>
         </Document>
         <Document ID="72">
             <Title>Interface</Title>
@@ -124,6 +129,10 @@ Visual script components that are included in  prefabs are automatically saved a
             <Title>Programming Keywords</Title>
             <Text>?appendix</Text>
         </Document>
+        <Document ID="123">
+            <Title>ENIAC</Title>
+            <Text>ENIAC (Electronic Numerical Integrator And Computer) was the first electronic general-purpose computer. It was Turing-complete, digital, and capable of being reprogrammed to solve a full range of computing problems.</Text>
+        </Document>
         <Document ID="81">
             <Title>Interface Overview</Title>
             <Text>iCanScript is composed of:
@@ -140,6 +149,33 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
         </Document>
         <Document ID="67">
             <Title>Tips and Tricks and Trouble</Title>
+            <Text>“Walking on water and developing software from a specification are easy if both are frozen.”
+&lt;$img:Shadow_Line_1;w=200;h=2>
+- Edward V Berard
+
+“It always takes longer than you expect, even when you take into account Hofstadter’s Law.”
+&lt;$img:Shadow_Line_1;w=200;h=2>
+- Hofstadter’s Law
+
+“When all you have is a hammer, everything starts to look like a nail.”
+&lt;$img:Shadow_Line_1;w=200;h=2>
+- Unknown
+
+“Better train people and risk they leave – than do nothing and risk they stay.”
+&lt;$img:Shadow_Line_1;w=200;h=2>
+- Unknown
+
+“I have not failed. I’ve just found 10,000 ways that won’t work.”
+&lt;$img:Shadow_Line_1;w=200;h=2>
+- Thomas A. Edison
+
+“Good judgement is the result of experience … Experience is the result of bad judgement.”
+&lt;$img:Shadow_Line_1;w=200;h=2>
+- Fred Brooks
+
+“Now I’m a pretty lazy person and am prepared to work quite hard in order to avoid work.”
+&lt;$img:Shadow_Line_1;w=200;h=2>
+- Martin Fowler</Text>
         </Document>
         <Document ID="82">
             <Title>Creating Nodes</Title>
@@ -153,61 +189,15 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
         </Document>
         <Document ID="69">
             <Title>About This Manual</Title>
-            <Text>The manual itself has been split into five primary sections and an appendix. The first section introduces iCanScript’s terminology and interface and gives a quick tour for those who want to start writing as soon as possible. It is highly recommended that you also go through the Quick Tour (chapter 6) to get the most out of iCanScript and eliminate confusion over some of its unique features.</Text>
+            <Text>This manual is available in PDF format and can be access from the iCanScript menu, under User Manual.  It is also available from the Disruptive Software web site at www.icanscript.com/documentation/user_guide.
+Annotating the PDF: If you wish to make notes and annotate the PDF using software such as Reader or Skim, it is recommended you download a separate copy, or locate the PDF in the iCanScript installation and drag a copy out for your own personal use. When iCanScript updates, it will very likely overwrite the existing PDF in the installation, which will destroy any of your notes.
+The manual itself has been split into three primary sections and an appendix. The first section introduces iCanScript’s terminology and interface and gives a quick tour for those who want to start programming as soon as possible. It is highly recommended that you also go through the Quick Tour (chapter ?chapterID) to get the most out of iCanScript and eliminate confusion over some of its unique features.</Text>
         </Document>
         <Document ID="83">
             <Title>Installing Libraries</Title>
         </Document>
         <Document ID="76">
             <Title>Trial Version</Title>
-        </Document>
-        <Document ID="84">
-            <Title>Table Of Content</Title>
-            <Text>&lt;$img:Shadow_Line_1;w=500;h=2>
-&lt;$Title>
-
-Table Of Content	&lt;$p>
-Many Thanks	&lt;$p>
-Preface		&lt;$p>
-Acknowledgements	&lt;$p>
-?pID	Introduction	&lt;$p>
-?cID	What is iCanScript	&lt;$p>
-?cID	Philosophy	&lt;$p>
-?cID	About This Manual	&lt;$p>
-?sID	Terms and Conventions	&lt;$p>
-?sID	Finding Things	&lt;$p>
-?cID	What's New	&lt;$p>
-?cID	Installation and Upgrading	&lt;$p>
-?sID	Registering	&lt;$p>
-?sID	Installation	&lt;$p>
-?sID	Application Updates	&lt;$p>
-?sID	Staying Informed	&lt;$p>
-?cID	Interface	&lt;$p>
-?sID	Interface Overview	&lt;$p>
-?sID	Menu Items	&lt;$p>
-?sID	Inspector	&lt;$p>
-?sID	Preferences	&lt;$p>
-?sID	Library	&lt;$p>
-?sID	Visual Editor	&lt;$p>
-?sID	Hierarchy	&lt;$p>
-?sID	Instance Wizard	&lt;$p>
-?cID	Quick Tour	&lt;$p>
-?pID	Visual Scripting	&lt;$p>
-?cID	Saving &amp; Loading Your Visual Scripts	&lt;$p>
-?cID	Executing Your Visual Scripts	&lt;$p>
-?pID	Extending iCanScript	&lt;$p>
-?cID	Creating Nodes	&lt;$p>
-?cID	Installing Libraries	&lt;$p>
-?pID	Appendices	&lt;$p>
-?aID	Menus and Keyboard Shortcuts	&lt;$p>
-?aID	Preferences	&lt;$p>
-?aID	Programming Keywords	&lt;$p>
-?aID	Tips and Tricks and Trouble	&lt;$p>
-
-</Text>
-        </Document>
-        <Document ID="118">
-            <Title>ToC</Title>
         </Document>
         <Document ID="77">
             <Title>Purchasing iCanScript</Title>
@@ -287,35 +277,11 @@ See the “Sample MS” PDF file in the Research folder for an example of a docu
 Final Note
 Scrivener project templates are flexible and are not intended to restrict you to a particular workflow. You can change, delete or move the files and folders contained in the template, and you can create your own templates by setting up a skeletal project with the files, folders and settings you would like to use for new projects and using File > Save As Template.</Text>
         </Document>
-        <Document ID="119">
-            <Title>Toc</Title>
-            <Text>
-
-
-
-This is a test sentence to verify tables of content bwqkjfbwkjfh lkhfjk j;whf;wh fl;kw hflk;wh fklwhjf klw flk’wj flkwejfklwejfklejkljfkl klewfj klwejf lkwej fklewjfklwej lkwjfkl jewklfj welkf jewkljf klwejf l’wejf lk’wejf kl’wejf klewj fklwejf klwejfklewjf klewj fe jklewj klewj fklejfkewj fkwejf kewjfewfj kew jfkewjf kewjf kewj kj fkewj fk;wj fkwj fkwj f;wjfk;wejfk;wej f;wejfk;ewjfk;wejf ;we jf;wjf;kwej f;jf;wkej;we jf kkwj.
-
-
-
-
-
-</Text>
-        </Document>
         <Document ID="87">
             <Title>Shadow_Line_1</Title>
         </Document>
-        <Document ID="94">
-            <Title>Second Folder</Title>
-        </Document>
-        <Document ID="88">
-            <Title>Level 5</Title>
-            <Text>This is a level 5 text.</Text>
-        </Document>
-        <Document ID="89">
-            <Title>Appendix folder</Title>
-        </Document>
         <Document ID="97">
-            <Title>Front Covers</Title>
+            <Title>Front Cover</Title>
         </Document>
         <Document ID="98">
             <Title>PDF Cover</Title>
@@ -329,21 +295,23 @@ iCanScript v0.9.0 for Unity 3D
 
 Disruptive Software
 &lt;$fullModifiedDate>
-Revision: 0.9.0-01
-© 2010-2013, Disruptive Software.  All rights reserved.</Text>
-        </Document>
-        <Document ID="99">
-            <Title>Cover</Title>
-            <Text>PDF Cover</Text>
+Revision: 0.9.0-A
+© 2010-2013, Disruptive Software.  All rights reserved.
+</Text>
         </Document>
         <Document ID="40">
             <Title>Philosophy</Title>
             <Synopsis>- Discuss what drives the development of iCanScript.</Synopsis>
-            <Text>iCanScript was created to help and improve the design process for creating software.  It is meant to extend the standard text editor for writing Unity scripts.  It offers a visual workflow to build, review, and publish programming logic without removing the ability to write low-level logic using standard toolsets.
+            <Text>“Think twice before you start programming or you will program twice before you start thinking.”
+&lt;$Img:Shadow_Line_1;w=200;h=2>
+- Unknown
+
+More then 50 years after ENIAC, most programmers still rely solely on textual editors to express their creative thoughts into programs that can be compiled or interpreted by computers.  As the programs get larger and larger, the complexity of the textual implementation forces workflow 
+iCanScript was created to help and improve the design process for creating software.  It is meant to extend the standard text editor for writing Unity scripts.  It offers a visual workflow to build, review, and publish programming logic without removing the ability to write low-level logic using standard toolsets.
 iCanScript roots its philosophy in that at one point, the software to be created uses concepts that are better expressed in terms of high-level building blocks including multi-level state charts.
 Number crushing is best expressed using low-level software and textual source code editors, high-level concepts are better expressed using visual design elements.  Often, corporations include a formal or informal development process to discuss and publish the high-level concepts pertaining the software product to be developed.   In all cases, these high-level concepts are expressed using diagrams as it is the simplest and most direct way of building and iterating on those fundamental aspects of the product.
-
 The main concepts of iCanScript can be summarized as follows:</Text>
+            <Comments>ENIAC (Electronic Numerical Integrator And Computer) was the first electronic general-purpose computer. It was Turing-complete, digital, and capable of being reprogrammed to solve a full range of computing problems.</Comments>
             <Notes>This is a note from Index Card.</Notes>
         </Document>
         <Document ID="27">
@@ -397,7 +365,6 @@ Manual Rochon - helped in user interface design as well as the overall operation
         <Document ID="38">
             <Title>Introduction</Title>
             <Synopsis>- Discuss the purpose of this manual.</Synopsis>
-            <Text>Welcome to the User Manual of iCanScript.  The following sections will get you acquainted with the user interface and the </Text>
         </Document>
         <Document ID="60">
             <Title>Preface</Title>
