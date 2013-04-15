@@ -1238,6 +1238,36 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>variable</key>
 			<string>?partTitle</string>
 		</dict>
+		<dict>
+			<key>replacement</key>
+			<string>&lt;$n#chapter:&lt;$parenttitle_no_spaces&gt;&gt;.&lt;$sn&gt;</string>
+			<key>variable</key>
+			<string>?sectionID</string>
+		</dict>
+		<dict>
+			<key>replacement</key>
+			<string>&lt;$n#chapter:&lt;$parenttitle_no_spaces&gt;&gt;.&lt;$sn&gt;</string>
+			<key>variable</key>
+			<string>?sID</string>
+		</dict>
+		<dict>
+			<key>replacement</key>
+			<string>&lt;$n#chapter:&lt;$title_no_spaces&gt;&gt;</string>
+			<key>variable</key>
+			<string>?cID</string>
+		</dict>
+		<dict>
+			<key>replacement</key>
+			<string>&lt;$R#part:&lt;$title_no_spaces&gt;&gt;</string>
+			<key>variable</key>
+			<string>?pID</string>
+		</dict>
+		<dict>
+			<key>replacement</key>
+			<string>&lt;$L#appendix:&lt;$title_no_spaces&gt;&gt;</string>
+			<key>variable</key>
+			<string>?aID</string>
+		</dict>
 	</array>
 	<key>SCRCompileRTFColumnsStartLocationKey</key>
 	<integer>0</integer>

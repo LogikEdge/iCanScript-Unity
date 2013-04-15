@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-14 04:58:19 -0400">
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-15 00:00:30 -0400">
     <Binder>
         <BinderItem ID="12" Type="Text" Created="2007-03-25 14:48:19 -0400" Modified="2013-04-11 08:33:42 -0400">
             <Title>Non-Fiction Format</Title>
@@ -11,6 +11,9 @@
             <TextSettings>
                 <TextSelection>0,0</TextSelection>
             </TextSettings>
+            <References>
+                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+            </References>
         </BinderItem>
         <BinderItem ID="97" Type="Folder" Created="2013-04-12 16:05:24 -0400" Modified="2013-04-12 16:05:42 -0400">
             <Title>Front Covers</Title>
@@ -45,7 +48,7 @@
                 <IconFileName>Book (Blue Book).tiff</IconFileName>
             </MetaData>
             <CorkboardAndOutliner>
-                <SelectedSubdocumentIDs>37-38, 40, 42-44, 49-56, 58-60, 63-75, 78-83</SelectedSubdocumentIDs>
+                <SelectedSubdocumentIDs>37-38, 40, 42-44, 49-56, 58-60, 63-75, 78-84, 120</SelectedSubdocumentIDs>
                 <OutlinerExpandedState>
                     <ItemID>38</ItemID>
                     <ItemID>69</ItemID>
@@ -58,16 +61,20 @@
                 </OutlinerExpandedState>
             </CorkboardAndOutliner>
             <Children>
-                <BinderItem ID="84" Type="Text" Created="2013-04-11 13:35:22 -0400" Modified="2013-04-13 00:33:20 -0400">
-                    <Title>Table Of Content</Title>
+                <BinderItem ID="120" Type="Text" Created="2013-04-14 23:41:53 -0400" Modified="2013-04-14 23:57:15 -0400">
+                    <Title>Table of Content</Title>
                     <MetaData>
                         <PageBreakBefore>Yes</PageBreakBefore>
                         <IncludeInCompile>Yes</IncludeInCompile>
+                        <CompileAsIs>Yes</CompileAsIs>
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>137,0</TextSelection>
+                        <TextSelection>156,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="120" Destination="[Internal Link]">Table of Content</Reference>
+                    </References>
                 </BinderItem>
                 <BinderItem ID="63" Type="Text" Created="2013-04-04 14:50:50 -0400" Modified="2013-04-11 15:13:52 -0400">
                     <Title>Many Thanks</Title>
@@ -82,6 +89,7 @@
                     </TextSettings>
                     <References>
                         <Reference BinderID="79" Destination="[Internal Link]">Installation</Reference>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                     </References>
                 </BinderItem>
                 <BinderItem ID="60" Type="Text" Created="2013-02-04 09:37:44 -0500" Modified="2013-04-11 17:00:06 -0400">
@@ -95,6 +103,9 @@
                     <TextSettings>
                         <TextSelection>1482,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
                     <Children>
                         <BinderItem ID="85" Type="Text" Created="2013-04-11 16:57:37 -0400" Modified="2013-04-11 17:02:04 -0400">
                             <Title>Signature</Title>
@@ -121,6 +132,9 @@
                     <TextSettings>
                         <TextSelection>222,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
                 </BinderItem>
                 <BinderItem ID="38" Type="Folder" Created="2013-01-04 15:27:46 -0500" Modified="2013-04-12 14:12:49 -0400">
                     <Title>Introduction</Title>
@@ -136,6 +150,7 @@
                     </TextSettings>
                     <References>
                         <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                     </References>
                     <Children>
                         <BinderItem ID="56" Type="Folder" Created="2013-01-07 08:44:03 -0500" Modified="2013-04-12 14:12:54 -0400">
@@ -162,6 +177,7 @@
                             </TextSettings>
                             <References>
                                 <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                             </References>
                         </BinderItem>
                         <BinderItem ID="40" Type="Folder" Created="2013-01-04 15:29:15 -0500" Modified="2013-04-12 14:12:59 -0400">
@@ -189,6 +205,7 @@
                             <References>
                                 <Reference BinderID="79" Destination="[Internal Link]">Installation</Reference>
                                 <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                             </References>
                         </BinderItem>
                         <BinderItem ID="69" Type="Folder" Created="2013-04-11 09:13:53 -0400" Modified="2013-04-12 23:21:00 -0400">
@@ -212,6 +229,9 @@
                             <TextSettings>
                                 <TextSelection>393,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                             <Children>
                                 <BinderItem ID="42" Type="Text" Created="2013-01-04 15:29:57 -0500" Modified="2013-04-12 23:19:32 -0400">
                                     <Title>Terms and Conventions</Title>
@@ -223,6 +243,9 @@
                                     <TextSettings>
                                         <TextSelection>274,1</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="70" Type="Text" Created="2013-04-11 09:15:34 -0400" Modified="2013-04-12 10:25:22 -0400">
                                     <Title>Finding Things</Title>
@@ -233,6 +256,9 @@
                                     <TextSettings>
                                         <TextSelection>462,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                             </Children>
                         </BinderItem>
@@ -258,6 +284,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                         <BinderItem ID="44" Type="Folder" Created="2013-01-04 15:30:56 -0500" Modified="2013-04-12 14:13:11 -0400">
                             <Title>Installation and Upgrading</Title>
@@ -281,6 +310,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                             <Children>
                                 <BinderItem ID="75" Type="Folder" Created="2013-04-11 09:59:07 -0400" Modified="2013-04-12 14:43:47 -0400">
                                     <Title>Registering</Title>
@@ -298,6 +330,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                     <Children>
                                         <BinderItem ID="76" Type="Text" Created="2013-04-11 10:05:17 -0400" Modified="2013-04-13 00:34:56 -0400">
                                             <Title>Trial Version</Title>
@@ -336,6 +371,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="78" Type="Text" Created="2013-04-11 10:07:52 -0400" Modified="2013-04-11 10:08:02 -0400">
                                     <Title>Application Updates</Title>
@@ -346,6 +384,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="80" Type="Text" Created="2013-04-11 10:10:21 -0400" Modified="2013-04-11 10:10:26 -0400">
                                     <Title>Staying Informed</Title>
@@ -356,6 +397,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                             </Children>
                         </BinderItem>
@@ -380,6 +424,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                             <Children>
                                 <BinderItem ID="81" Type="Text" Created="2013-04-11 10:15:48 -0400" Modified="2013-04-11 10:16:19 -0400">
                                     <Title>Interface Overview</Title>
@@ -390,6 +437,9 @@
                                     <TextSettings>
                                         <TextSelection>370,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="73" Type="Text" Created="2013-04-11 09:25:54 -0400" Modified="2013-04-11 09:26:08 -0400">
                                     <Title>Menu Items</Title>
@@ -400,6 +450,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="50" Type="Text" Created="2013-01-04 15:43:49 -0500" Modified="2013-04-11 09:27:00 -0400">
                                     <Title>Inspector</Title>
@@ -411,6 +464,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="64" Type="Text" Created="2013-04-05 11:57:22 -0400" Modified="2013-04-10 23:04:45 -0400">
                                     <Title>Preferences</Title>
@@ -422,6 +478,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="51" Type="Text" Created="2013-01-04 15:44:00 -0500" Modified="2013-04-10 23:04:52 -0400">
                                     <Title>Library</Title>
@@ -433,6 +492,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="49" Type="Text" Created="2013-01-04 15:35:39 -0500" Modified="2013-04-10 23:04:47 -0400">
                                     <Title>Visual Editor</Title>
@@ -444,6 +506,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="53" Type="Text" Created="2013-01-04 15:46:56 -0500" Modified="2013-04-10 23:04:49 -0400">
                                     <Title>Hierarchy</Title>
@@ -455,6 +520,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                                 <BinderItem ID="52" Type="Text" Created="2013-01-04 15:45:22 -0500" Modified="2013-04-10 23:04:57 -0400">
                                     <Title>Instance Wizard</Title>
@@ -466,6 +534,9 @@
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                             </Children>
                         </BinderItem>
@@ -490,6 +561,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                     </Children>
                 </BinderItem>
@@ -506,6 +580,7 @@
                     </TextSettings>
                     <References>
                         <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                     </References>
                     <Children>
                         <BinderItem ID="66" Type="Folder" Created="2013-04-05 12:14:03 -0400" Modified="2013-04-12 14:13:31 -0400">
@@ -530,6 +605,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                         <BinderItem ID="65" Type="Folder" Created="2013-04-05 12:13:28 -0400" Modified="2013-04-12 14:13:36 -0400">
                             <Title>Executing Your Visual Scripts</Title>
@@ -553,6 +631,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                     </Children>
                 </BinderItem>
@@ -574,6 +655,9 @@
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
                     <Children>
                         <BinderItem ID="82" Type="Folder" Created="2013-04-11 10:22:22 -0400" Modified="2013-04-12 15:11:15 -0400">
                             <Title>Creating Nodes</Title>
@@ -597,6 +681,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                         <BinderItem ID="83" Type="Folder" Created="2013-04-11 10:22:43 -0400" Modified="2013-04-12 15:11:20 -0400">
                             <Title>Installing Libraries</Title>
@@ -620,6 +707,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                     </Children>
                 </BinderItem>
@@ -637,6 +727,7 @@
                     </TextSettings>
                     <References>
                         <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                     </References>
                     <Children>
                         <BinderItem ID="58" Type="Text" Created="2013-01-07 13:12:25 -0500" Modified="2013-04-12 15:02:44 -0400">
@@ -663,60 +754,8 @@
                             </TextSettings>
                             <References>
                                 <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                             </References>
-                            <Children>
-                                <BinderItem ID="89" Type="Text" Created="2013-04-12 13:08:17 -0400" Modified="2013-04-12 15:09:34 -0400">
-                                    <Title>Appendix folder</Title>
-                                    <MetaData>
-                                        <LabelID>7</LabelID>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                        <CustomMetaData>
-                                            <MetaDataItem>
-                                                <FieldID>chapternumbering</FieldID>
-                                                <Value>L</Value>
-                                            </MetaDataItem>
-                                        </CustomMetaData>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                    <Children>
-                                        <BinderItem ID="93" Type="Text" Created="2013-04-12 14:51:59 -0400" Modified="2013-04-12 14:51:59 -0400">
-                                            <Title>Untitled</Title>
-                                            <MetaData>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>0,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                    </Children>
-                                </BinderItem>
-                                <BinderItem ID="94" Type="Text" Created="2013-04-12 15:09:45 -0400" Modified="2013-04-12 15:09:52 -0400">
-                                    <Title>Second Folder</Title>
-                                    <MetaData>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                    <Children>
-                                        <BinderItem ID="95" Type="Text" Created="2013-04-12 15:09:56 -0400" Modified="2013-04-12 15:09:56 -0400">
-                                            <Title>Untitled</Title>
-                                            <MetaData>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>0,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                    </Children>
-                                </BinderItem>
-                            </Children>
                         </BinderItem>
                         <BinderItem ID="68" Type="Text" Created="2013-04-10 23:23:57 -0400" Modified="2013-04-12 14:07:11 -0400">
                             <Title>Preferences</Title>
@@ -742,31 +781,8 @@
                             </TextSettings>
                             <References>
                                 <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                             </References>
-                            <Children>
-                                <BinderItem ID="90" Type="Text" Created="2013-04-12 14:51:36 -0400" Modified="2013-04-12 14:51:36 -0400">
-                                    <Title>Untitled</Title>
-                                    <MetaData>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                    <Children>
-                                        <BinderItem ID="96" Type="Text" Created="2013-04-12 15:14:02 -0400" Modified="2013-04-12 15:14:02 -0400">
-                                            <Title>Untitled</Title>
-                                            <MetaData>
-                                                <IncludeInCompile>Yes</IncludeInCompile>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>0,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                    </Children>
-                                </BinderItem>
-                            </Children>
                         </BinderItem>
                         <BinderItem ID="59" Type="Text" Created="2013-01-07 13:12:58 -0500" Modified="2013-04-12 23:36:53 -0400">
                             <Title>Programming Keywords</Title>
@@ -792,19 +808,8 @@
                             </TextSettings>
                             <References>
                                 <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                             </References>
-                            <Children>
-                                <BinderItem ID="91" Type="Text" Created="2013-04-12 14:51:46 -0400" Modified="2013-04-12 14:51:46 -0400">
-                                    <Title>Untitled</Title>
-                                    <MetaData>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                </BinderItem>
-                            </Children>
                         </BinderItem>
                         <BinderItem ID="67" Type="Text" Created="2013-04-10 23:23:14 -0400" Modified="2013-04-12 14:07:01 -0400">
                             <Title>Tips and Tricks and Trouble</Title>
@@ -828,18 +833,9 @@
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
-                            <Children>
-                                <BinderItem ID="92" Type="Text" Created="2013-04-12 14:51:53 -0400" Modified="2013-04-12 14:51:53 -0400">
-                                    <Title>Untitled</Title>
-                                    <MetaData>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                </BinderItem>
-                            </Children>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                     </Children>
                 </BinderItem>
@@ -1167,6 +1163,137 @@
                         <TextSelection>23,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
+                <BinderItem ID="118" Type="Text" Created="2013-04-14 21:49:02 -0400" Modified="2013-04-14 21:51:47 -0400">
+                    <Title>ToC</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="119" Type="Text" Created="2013-04-14 21:51:42 -0400" Modified="2013-04-14 22:17:53 -0400">
+                    <Title>Toc</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>434,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="89" Type="Text" Created="2013-04-12 13:08:17 -0400" Modified="2013-04-12 15:09:34 -0400">
+                    <Title>Appendix folder</Title>
+                    <MetaData>
+                        <LabelID>7</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>chapternumbering</FieldID>
+                                <Value>L</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="93" Type="Text" Created="2013-04-12 14:51:59 -0400" Modified="2013-04-12 14:51:59 -0400">
+                            <Title>Untitled</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="94" Type="Text" Created="2013-04-12 15:09:45 -0400" Modified="2013-04-12 15:09:52 -0400">
+                    <Title>Second Folder</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="95" Type="Text" Created="2013-04-12 15:09:56 -0400" Modified="2013-04-12 15:09:56 -0400">
+                            <Title>Untitled</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="90" Type="Text" Created="2013-04-12 14:51:36 -0400" Modified="2013-04-12 14:51:36 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="96" Type="Text" Created="2013-04-12 15:14:02 -0400" Modified="2013-04-12 15:14:02 -0400">
+                            <Title>Untitled</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="91" Type="Text" Created="2013-04-12 14:51:46 -0400" Modified="2013-04-12 14:51:46 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="92" Type="Text" Created="2013-04-12 14:51:53 -0400" Modified="2013-04-12 14:51:53 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="84" Type="Text" Created="2013-04-11 13:35:22 -0400" Modified="2013-04-14 23:38:47 -0400">
+                    <Title>Table Of Content</Title>
+                    <MetaData>
+                        <PageBreakBefore>Yes</PageBreakBefore>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <CompileAsIs>Yes</CompileAsIs>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,39</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
+                </BinderItem>
             </Children>
         </BinderItem>
     </Binder>
@@ -1223,7 +1350,7 @@
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 08:24:39 -0400" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="0" Characters="0" Date="2013-04-14 03:40:29 -0400"></PreviousSession>
+        <PreviousSession Words="0" Characters="0" Date="2013-04-14 23:59:59 -0400"></PreviousSession>
     </ProjectTargets>
     <FullScreenBackdrop Type="BinderID">101</FullScreenBackdrop>
     <PrintSettings PaperSize="595.280029,841.890015" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
