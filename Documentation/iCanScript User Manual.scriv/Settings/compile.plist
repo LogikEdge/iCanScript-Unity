@@ -955,7 +955,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompilePDFInternalLinkColorKey</key>
 	<data>
 	BAtzdHJlYW10eXBlZIHoA4QBQISEhAdOU0NvbG9yAISECE5TT2JqZWN0AIWEAWMBhARm
-	ZmZmgzYyLD2DJNXMPoNCwQw9AYY=
+	ZmZmAIORkJA+AAGG
 	</data>
 	<key>SCRCompilePDFUnderlineInternalLinksKey</key>
 	<false/>
@@ -2585,7 +2585,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileUseAlternativeBlankLineSeparatorBetweenPagesKey</key>
 	<true/>
 	<key>SCRCompileUseHyphenationKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileUsePeriodSpaceFootnoteMarkerStyleKey</key>
 	<false/>
 	<key>SCRCompileUseProjectPageSetupKey</key>
