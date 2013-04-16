@@ -129,8 +129,8 @@ Visual script components that are included in  prefabs are automatically saved a
             <Title>ENIAC</Title>
             <Text>ENIAC (Electronic Numerical Integrator And Computer) was the first electronic general-purpose computer. It was Turing-complete, digital, and capable of being reprogrammed to solve a full range of computing problems.</Text>
         </Document>
-        <Document ID="59">
-            <Title>Programming Keywords</Title>
+        <Document ID="130">
+            <Title>Dummy</Title>
         </Document>
         <Document ID="81">
             <Title>Interface Overview</Title>
@@ -178,8 +178,8 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
 &lt;$img:Shadow_Line_1;w=200;h=2>
 - Martin Fowler</Text>
         </Document>
-        <Document ID="130">
-            <Title>Dummy</Title>
+        <Document ID="59">
+            <Title>Programming Keywords</Title>
         </Document>
         <Document ID="82">
             <Title>Creating Nodes</Title>
@@ -191,11 +191,11 @@ Currently, the layout of iCanScript windows and panels are left to the user.</Te
         <Document ID="124">
             <Title>Registering &amp; Downloading</Title>
         </Document>
-        <Document ID="68">
-            <Title>Preferences</Title>
-        </Document>
         <Document ID="131">
             <Title>Appendices</Title>
+        </Document>
+        <Document ID="68">
+            <Title>Preferences</Title>
         </Document>
         <Document ID="69">
             <Title>About This Manual</Title>

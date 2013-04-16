@@ -227,7 +227,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRIncludeTitlesKey</key>
 			<false/>
 			<key>SCRMainTextUppercaseFirstWordsUseSmallCapsKey</key>
-			<false/>
+			<true/>
 			<key>SCRMainTextWordsToUppercaseInNewSectionsKey</key>
 			<integer>0</integer>
 			<key>SCRMetaDataAttributesKey</key>
@@ -262,7 +262,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			VGV4dFRhYgCVhAJDZgBIhpKEoaIAbIaGgZAAhARbMmZdJAKGhg==
 			</data>
 			<key>SCRPagePaddingKey</key>
-			<integer>12</integer>
+			<integer>2</integer>
 			<key>SCRPlaceTitleAsRunInHeadKey</key>
 			<false/>
 			<key>SCRSectionRectoVersoKey</key>
@@ -366,7 +366,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRMainTextUppercaseFirstWordsUseSmallCapsKey</key>
 			<true/>
 			<key>SCRMainTextWordsToUppercaseInNewSectionsKey</key>
-			<integer>3</integer>
+			<integer>0</integer>
 			<key>SCRMetaDataAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
@@ -1097,7 +1097,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<key>SCRIncludeSynopsesKey</key>
 			<false/>
 			<key>SCRIncludeTextKey</key>
-			<true/>
+			<false/>
 			<key>SCRIncludeTitlesKey</key>
 			<integer>1</integer>
 			<key>SCRMainTextUppercaseFirstWordsUseSmallCapsKey</key>
