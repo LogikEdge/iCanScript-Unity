@@ -1453,14 +1453,12 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u
 			YXJ5AISEDE5TRGljdGlvbmFyeQCEhAhOU09iamVjdACFhAFpApKE
-			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZY4
-			hAVbNTZjXQYAAAAuAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
-			YQBuAFAAUwAtAEIAbwBsAGQATQBUAAAAhAFmDoQBYwCcAZwAnACG
-			koSXmBBOU1BhcmFncmFwaFN0eWxlhpKEhIQXTlNNdXRhYmxlUGFy
-			YWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BT
-			AwCEhIQHTlNBcnJheQCVlgaShISECU5TVGV4dFRhYgCVhAJDZgAk
-			hpKEoaIASIaShKGiAGyGkoShogCBkACGkoShogCBtACGkoShogCB
-			2ACGhoESAYQEWzNmXQoSFIaG
+			hIQITlNTdHJpbmcBlYQBKwZOU0ZvbnSGkoSEhAZOU0ZvbnQelZYs
+			hAVbNDRjXQYAAAAkAAAA//5UAGkAbQBlAHMATgBlAHcAUgBvAG0A
+			YQBuAFAAUwBNAFQAhAFmEoQBYwCcAZwAnACGkoSXmBBOU1BhcmFn
+			cmFwaFN0eWxlhpKEhIQXTlNNdXRhYmxlUGFyYWdyYXBoU3R5bGUA
+			hIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BTAACFEoQEWzJmXQaD
+			AGCZQYaG
 			</data>
 			<key>SCRTitleCaseKey</key>
 			<integer>2</integer>
@@ -1475,12 +1473,12 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			YWdyYXBoU3R5bGUAhIQQTlNQYXJhZ3JhcGhTdHlsZQCVhARDQ0BT
 			AwCEhIQHTlNBcnJheQCVlgaShISECU5TVGV4dFRhYgCVhAJDZgAk
 			hpKEoaIASIaShKGiAGyGkoShogCBkACGkoShogCBtACGkoShogCB
-			2ACGhoESAYQEWzNmXQoSFIaG
+			2ACGhoESAYQEWzNmXQqDANCMQRSGhg==
 			</data>
 			<key>SCRTitlePrefixCaseKey</key>
 			<integer>2</integer>
 			<key>SCRTitlePrefixKey</key>
-			<string>&lt;$L:appendix:&lt;$parenttitle_no_spaces&gt;&gt;.&lt;$n&gt;  </string>
+			<string>&lt;$img:&lt;$custom:header_image&gt;;w=24&gt;&lt;$L:appendix:&lt;$parenttitle_no_spaces&gt;&gt;.&lt;$n&gt;  </string>
 			<key>SCRTitleSuffixAttributesKey</key>
 			<data>
 			BAtzdHJlYW10eXBlZIHoA4QBQISEhBNOU011dGFibGVEaWN0aW9u

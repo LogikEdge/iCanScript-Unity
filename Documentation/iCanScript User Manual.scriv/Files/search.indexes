@@ -311,8 +311,14 @@ Scrivener project templates are flexible and are not intended to restrict you to
         <Document ID="87">
             <Title>Shadow_Line_1</Title>
         </Document>
+        <Document ID="140">
+            <Title>Expand / Fold</Title>
+        </Document>
         <Document ID="127">
             <Title>Visual Scripting</Title>
+        </Document>
+        <Document ID="141">
+            <Title>Insert / Delete</Title>
         </Document>
         <Document ID="128">
             <Title>Dummy</Title>
@@ -337,6 +343,9 @@ Revision: 0.9.0-AP&lt;$revision>
         </Document>
         <Document ID="129">
             <Title>Extending iCanScript</Title>
+        </Document>
+        <Document ID="137">
+            <Title>Navigation</Title>
         </Document>
         <Document ID="40">
             <Title>Philosophy</Title>
@@ -378,6 +387,9 @@ Interface elements will be capitalised as proper nouns to help differentiate the
             <Title>What's New</Title>
             <Synopsis>- Discuss major difference with previous version of the manual.</Synopsis>
             <Text>iCanScript Release Candidate #1 (RC#1) is the first officially supported release of iCanScript.  It includes the following features:</Text>
+        </Document>
+        <Document ID="139">
+            <Title>Bookmarks</Title>
         </Document>
         <Document ID="51">
             <Title>Library</Title>

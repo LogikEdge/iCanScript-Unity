@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-16 16:23:02 -0400">
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-16 17:16:48 -0400">
     <Binder>
         <BinderItem ID="12" Type="Text" Created="2007-03-25 14:48:19 -0400" Modified="2013-04-11 08:33:42 -0400">
             <Title>Non-Fiction Format</Title>
@@ -88,7 +88,7 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>0,0</TextSelection>
+                        <TextSelection>326,0</TextSelection>
                     </TextSettings>
                     <References>
                         <Reference BinderID="79" Destination="[Internal Link]">Installation</Reference>
@@ -650,16 +650,119 @@
                             </TextSettings>
                             <References>
                                 <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
                             </References>
                             <Children>
-                                <BinderItem ID="133" Type="Text" Created="2013-04-16 16:05:26 -0400" Modified="2013-04-16 16:07:10 -0400">
-                                    <Title>Untitled</Title>
+                                <BinderItem ID="137" Type="Text" Created="2013-04-16 16:42:03 -0400" Modified="2013-04-16 17:06:58 -0400">
+                                    <Title>Navigation</Title>
                                     <MetaData>
+                                        <StatusID>1</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
                                         <NotesTextSelection>0,0</NotesTextSelection>
+                                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                                        <IndexCardImageFileExtension>png</IndexCardImageFileExtension>
+                                        <CustomMetaData>
+                                            <MetaDataItem>
+                                                <FieldID>header</FieldID>
+                                                <Value>Navigation_64x64</Value>
+                                            </MetaDataItem>
+                                        </CustomMetaData>
                                     </MetaData>
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="133" Type="Text" Created="2013-04-16 16:05:26 -0400" Modified="2013-04-16 16:07:10 -0400">
+                                            <Title>Untitled</Title>
+                                            <MetaData>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="139" Type="Text" Created="2013-04-16 17:07:35 -0400" Modified="2013-04-16 17:10:04 -0400">
+                                    <Title>Bookmarks</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                        <CustomMetaData>
+                                            <MetaDataItem>
+                                                <FieldID>header</FieldID>
+                                                <Value>Bookmarks_64x64</Value>
+                                            </MetaDataItem>
+                                        </CustomMetaData>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="142" Type="Text" Created="2013-04-16 17:08:30 -0400" Modified="2013-04-16 17:10:59 -0400">
+                                            <Title>Untitled</Title>
+                                            <MetaData>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="140" Type="Text" Created="2013-04-16 17:07:55 -0400" Modified="2013-04-16 17:10:20 -0400">
+                                    <Title>Expand / Fold</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                        <CustomMetaData>
+                                            <MetaDataItem>
+                                                <FieldID>header</FieldID>
+                                                <Value>FoldExpand_64x64</Value>
+                                            </MetaDataItem>
+                                        </CustomMetaData>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="143" Type="Text" Created="2013-04-16 17:08:38 -0400" Modified="2013-04-16 17:11:04 -0400">
+                                            <Title>Untitled</Title>
+                                            <MetaData>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
+                                </BinderItem>
+                                <BinderItem ID="141" Type="Text" Created="2013-04-16 17:08:19 -0400" Modified="2013-04-16 17:10:35 -0400">
+                                    <Title>Insert / Delete</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                        <CustomMetaData>
+                                            <MetaDataItem>
+                                                <FieldID>header</FieldID>
+                                                <Value>InsertDelete_64x64</Value>
+                                            </MetaDataItem>
+                                        </CustomMetaData>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <Children>
+                                        <BinderItem ID="144" Type="Text" Created="2013-04-16 17:08:45 -0400" Modified="2013-04-16 17:11:09 -0400">
+                                            <Title>Untitled</Title>
+                                            <MetaData>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
                                 </BinderItem>
                             </Children>
                         </BinderItem>
@@ -802,6 +905,24 @@
                 <TextSelection>0,0</TextSelection>
             </TextSettings>
             <Children>
+                <BinderItem ID="145" Type="Image" Created="2013-04-04 13:58:58 -0400" Modified="2013-04-04 13:58:58 -0400">
+                    <Title>FoldExpand_64x64</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                </BinderItem>
+                <BinderItem ID="138" Type="Image" Created="2013-04-04 13:58:58 -0400" Modified="2013-04-04 13:58:58 -0400">
+                    <Title>Navigation_64x64</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                </BinderItem>
                 <BinderItem ID="113" Type="Image" Created="2013-04-12 16:38:11 -0400" Modified="2013-04-12 16:38:11 -0400">
                     <Title>iCanScript_Title_large_shadow_838x178x32</Title>
                     <MetaData>
@@ -939,6 +1060,24 @@
                 </BinderItem>
                 <BinderItem ID="117" Type="Image" Created="2013-04-12 17:16:41 -0400" Modified="2013-04-12 17:16:41 -0400">
                     <Title>iCanScript_Title</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                </BinderItem>
+                <BinderItem ID="146" Type="Image" Created="2013-04-04 13:58:58 -0400" Modified="2013-04-04 13:58:58 -0400">
+                    <Title>InsertDelete_64x64</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                </BinderItem>
+                <BinderItem ID="147" Type="Image" Created="2013-04-04 13:58:58 -0400" Modified="2013-04-04 13:58:58 -0400">
+                    <Title>Bookmarks_64x64</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <FileExtension>png</FileExtension>
@@ -1174,6 +1313,9 @@
             <Status ID="5">Done</Status>
         </StatusItems>
     </StatusSettings>
+    <CustomMetaDataSettings>
+        <MetaDataField ID="header" Wraps="No">header_image</MetaDataField>
+    </CustomMetaDataSettings>
     <ProjectProperties>
         <ProjectTitle></ProjectTitle>
         <AbbreviatedTitle></AbbreviatedTitle>
@@ -1184,7 +1326,7 @@
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 08:24:39 -0400" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="166" Characters="1113" Date="2013-04-16 16:11:38 -0400"></PreviousSession>
+        <PreviousSession Words="166" Characters="1113" Date="2013-04-16 16:24:37 -0400"></PreviousSession>
     </ProjectTargets>
     <FullScreenBackdrop Type="BinderID">101</FullScreenBackdrop>
     <PrintSettings PaperSize="595.275574,841.861389" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
