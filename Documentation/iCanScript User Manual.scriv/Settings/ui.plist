@@ -520,8 +520,8 @@
 	<integer>5</integer>
 	<key>inspectorSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {1193, 1070}}</string>
-		<string>{{1194, 0}, {446, 1070}}</string>
+		<string>{{0, 0}, {1186, 1070}}</string>
+		<string>{{1187, 0}, {453, 1070}}</string>
 	</array>
 	<key>inspectorSynopsisIsCollapsed</key>
 	<false/>
@@ -1721,9 +1721,9 @@
 		<integer>55</integer>
 	</array>
 	<key>supportingDocumentEditor.scrollRect</key>
-	<string>{{0, 1338.8571}, {681.71429, 567.42847}}</string>
+	<string>{{0, 1269.1428}, {677.71429, 567.42859}}</string>
 	<key>supportingDocumentEditor.selectedRanges</key>
-	<string>{1981, 0}</string>
+	<string>{1831, 5}</string>
 	<key>supportingDocumentEditor.textEditorState</key>
 	<dict>
 		<key>hasMultiplePages</key>
