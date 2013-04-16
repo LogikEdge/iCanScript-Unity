@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-15 18:48:26 -0400">
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-16 08:51:25 -0400">
     <Binder>
         <BinderItem ID="12" Type="Text" Created="2007-03-25 14:48:19 -0400" Modified="2013-04-11 08:33:42 -0400">
             <Title>Non-Fiction Format</Title>
@@ -63,10 +63,10 @@
                 </OutlinerExpandedState>
             </CorkboardAndOutliner>
             <Children>
-                <BinderItem ID="120" Type="Text" Created="2013-04-14 23:41:53 -0400" Modified="2013-04-15 18:46:18 -0400">
+                <BinderItem ID="120" Type="Text" Created="2013-04-14 23:41:53 -0400" Modified="2013-04-16 08:11:29 -0400">
                     <Title>Table of Content</Title>
                     <MetaData>
-                        <StatusID>1</StatusID>
+                        <StatusID>2</StatusID>
                         <PageBreakBefore>Yes</PageBreakBefore>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <CompileAsIs>Yes</CompileAsIs>
@@ -149,7 +149,7 @@
                         <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
                     </References>
                     <Children>
-                        <BinderItem ID="40" Type="Folder" Created="2013-01-04 15:29:15 -0500" Modified="2013-04-15 16:45:55 -0400">
+                        <BinderItem ID="40" Type="Folder" Created="2013-01-04 15:29:15 -0500" Modified="2013-04-16 08:51:25 -0400">
                             <Title>Philosophy</Title>
                             <MetaData>
                                 <LabelID>2</LabelID>
@@ -1004,7 +1004,7 @@
         </Collection>
         <Collection Type="RecentSearch" ID="2655DDF6-4AB8-42CB-A433-1CD76FC351D2" Color="0.922 0.91 0.98">
             <Title>Search Results</Title>
-            <SearchSettings Operator="Exact" Type="Status" CaseSensitive="No">No Status</SearchSettings>
+            <SearchSettings Operator="Any" Type="Status" Scope="Draft" CompileSetting="Include" CaseSensitive="No">To Draft</SearchSettings>
         </Collection>
         <Collection Type="Arbitrary" ID="E3F72C75-7848-4E5C-9C27-13B5E65666FB" Color="0.992 0.973 0.769">
             <Title>Updated Documents</Title>
@@ -1047,7 +1047,7 @@
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 08:24:39 -0400" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="355" Characters="2224" Date="2013-04-15 18:13:48 -0400"></PreviousSession>
+        <PreviousSession Words="66" Characters="419" Date="2013-04-16 08:10:44 -0400"></PreviousSession>
     </ProjectTargets>
     <FullScreenBackdrop Type="BinderID">101</FullScreenBackdrop>
     <PrintSettings PaperSize="595.275574,841.861389" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>

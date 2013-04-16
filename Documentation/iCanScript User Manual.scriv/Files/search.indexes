@@ -7,16 +7,6 @@
         <Document ID="121">
             <Title>Quote</Title>
         </Document>
-        <Document ID="69">
-            <Title>About This Manual</Title>
-            <Text>This manual is available in PDF format and can be access from the iCanScript menu, under User Manual.  It is also available from the Disruptive Software web site at www.icanscript.com/documentation/user_guide.
-Annotating the PDF: If you wish to make notes and annotate the PDF using software such as Reader or Skim, it is recommended you download a separate copy, or locate the PDF in the iCanScript installation and drag a copy out for your own personal use. When iCanScript updates, it will very likely overwrite the existing PDF in the installation, which will destroy any of your notes.
-The manual itself has been split into three primary sections and an appendix. The first section introduces iCanScript’s terminology and interface and gives a quick tour for those who want to start programming as soon as possible. It is highly recommended that you also go through the Quick Tour (chapter ?chapterID) to get the most out of iCanScript and eliminate confusion over some of its unique features.
-iCanScript has a wide variety of features to accommodate many different purposes, including </Text>
-        </Document>
-        <Document ID="78">
-            <Title>Application Updates</Title>
-        </Document>
         <Document ID="12">
             <Title>Non-Fiction Format</Title>
             <Text>NON-FICTION WITH SUB-HEADS
@@ -74,6 +64,16 @@ See the “Sample MS” PDF file in the Research folder for an example of a docu
 Final Note
 Scrivener project templates are flexible and are not intended to restrict you to a particular workflow. You can change, delete or move the files and folders contained in the template, and you can create your own templates by setting up a skeletal project with the files, folders and settings you would like to use for new projects and using File > Save As Template.</Text>
         </Document>
+        <Document ID="78">
+            <Title>Application Updates</Title>
+        </Document>
+        <Document ID="69">
+            <Title>About This Manual</Title>
+            <Text>This manual is available in PDF format and can be access from the iCanScript menu, under User Manual.  It is also available from the Disruptive Software web site at www.icanscript.com/documentation/user_guide.
+Annotating the PDF: If you wish to make notes and annotate the PDF using software such as Reader or Skim, it is recommended you download a separate copy, or locate the PDF in the iCanScript installation and drag a copy out for your own personal use. When iCanScript updates, it will very likely overwrite the existing PDF in the installation, which will destroy any of your notes.
+The manual itself has been split into three primary sections and an appendix. The first section introduces iCanScript’s terminology and interface and gives a quick tour for those who want to start programming as soon as possible. It is highly recommended that you also go through the Quick Tour (chapter ?chapterID) to get the most out of iCanScript and eliminate confusion over some of its unique features.
+iCanScript has a wide variety of features to accommodate many different purposes, including </Text>
+        </Document>
         <Document ID="87">
             <Title>Shadow_Line_1</Title>
         </Document>
@@ -93,12 +93,13 @@ Scrivener project templates are flexible and are not intended to restrict you to
 &lt;$Img:Shadow_Line_1;w=200;h=2>
 - Unknown
 
-More then 50 years after ENIAC, most programmers still rely solely on textual editors to express their creative thoughts into programs that can be compiled or interpreted by computers.  As the programs get larger and larger, the complexity of the textual implementation forces workflow 
+More then 50 years after ENIAC, most programmers still rely solely on textual editors to express their creative thoughts into programs that can be compiled or interpreted by computers.  As the programs increase in complexity, many corporations encourage the interdisciplinary discussion of the high-level concepts overseeing the software product to be created.   In all cases, these high-level concepts are expressed in diagrams for it is the simplest and most direct way of building and iterating on those fundamental aspects of the product.  It is this realization that has conducted to a new breed of visual editors that uses diagrams to express programmatic behaviours.  iCanScript is such an editor. 
 iCanScript was created to help and improve the design process for creating software.  It is meant to extend the standard text editor for writing Unity scripts.  It offers a visual workflow to build, review, and publish programming logic without removing the ability to write low-level logic using standard toolsets.
 iCanScript roots its philosophy in that at one point, the software to be created uses concepts that are better expressed in terms of high-level building blocks including multi-level state charts.
 Number crushing is best expressed using low-level software and textual source code editors, high-level concepts are better expressed using visual design elements.  Often, corporations include a formal or informal development process to discuss and publish the high-level concepts pertaining the software product to be developed.   In all cases, these high-level concepts are expressed using diagrams as it is the simplest and most direct way of building and iterating on those fundamental aspects of the product.
 The main concepts of iCanScript can be summarized as follows:</Text>
-            <Comments>ENIAC (Electronic Numerical Integrator And Computer) was the first electronic general-purpose computer. It was Turing-complete, digital, and capable of being reprogrammed to solve a full range of computing problems.</Comments>
+            <Comments>ENIAC (Electronic Numerical Integrator And Computer) was the first electronic general-purpose computer. It was Turing-complete, digital, and capable of being reprogrammed to solve a full range of computing problems.
+The term interdisciplinary is used to express a team composed of various expertise or talent not limited to software engineers.</Comments>
             <Notes>This is a note from Index Card.</Notes>
         </Document>
         <Document ID="98">
