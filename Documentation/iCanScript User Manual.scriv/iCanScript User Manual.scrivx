@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-16 17:16:48 -0400">
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-16 20:05:19 -0400">
     <Binder>
         <BinderItem ID="12" Type="Text" Created="2007-03-25 14:48:19 -0400" Modified="2013-04-11 08:33:42 -0400">
             <Title>Non-Fiction Format</Title>
@@ -142,7 +142,7 @@
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="40" Type="Folder" Created="2013-01-04 15:29:15 -0500" Modified="2013-04-16 13:59:56 -0400">
+                <BinderItem ID="40" Type="Folder" Created="2013-01-04 15:29:15 -0500" Modified="2013-04-16 19:05:23 -0400">
                     <Title>Philosophy</Title>
                     <MetaData>
                         <LabelID>2</LabelID>
@@ -653,7 +653,7 @@
                                 <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
                             </References>
                             <Children>
-                                <BinderItem ID="137" Type="Text" Created="2013-04-16 16:42:03 -0400" Modified="2013-04-16 17:06:58 -0400">
+                                <BinderItem ID="137" Type="Text" Created="2013-04-16 16:42:03 -0400" Modified="2013-04-16 18:52:54 -0400">
                                     <Title>Navigation</Title>
                                     <MetaData>
                                         <StatusID>1</StatusID>
@@ -840,7 +840,7 @@
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="67" Type="Text" Created="2013-04-10 23:23:14 -0400" Modified="2013-04-16 14:01:53 -0400">
+                        <BinderItem ID="67" Type="Text" Created="2013-04-10 23:23:14 -0400" Modified="2013-04-16 19:08:34 -0400">
                             <Title>Tips and Tricks and Trouble</Title>
                             <MetaData>
                                 <LabelID>7</LabelID>
@@ -860,7 +860,7 @@
                                 </CustomMetaData>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>911,0</TextSelection>
+                                <TextSelection>418,1</TextSelection>
                             </TextSettings>
                             <Children>
                                 <BinderItem ID="136" Type="Text" Created="2013-04-16 16:06:08 -0400" Modified="2013-04-16 16:06:57 -0400">
@@ -913,6 +913,11 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                         <ShowSynopsisImage>Yes</ShowSynopsisImage>
                     </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
                 </BinderItem>
                 <BinderItem ID="138" Type="Image" Created="2013-04-04 13:58:58 -0400" Modified="2013-04-04 13:58:58 -0400">
                     <Title>Navigation_64x64</Title>
@@ -922,6 +927,11 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                         <ShowSynopsisImage>Yes</ShowSynopsisImage>
                     </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
                 </BinderItem>
                 <BinderItem ID="113" Type="Image" Created="2013-04-12 16:38:11 -0400" Modified="2013-04-12 16:38:11 -0400">
                     <Title>iCanScript_Title_large_shadow_838x178x32</Title>
@@ -1271,6 +1281,72 @@
                         <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
                     </References>
                 </BinderItem>
+                <BinderItem ID="149" Type="Other" Created="2013-04-16 18:27:23 -0400" Modified="2013-04-16 18:27:23 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>xls</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <References>
+                        <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="148" Type="PDF" Created="2013-04-16 18:28:03 -0400" Modified="2013-04-16 18:36:56 -0400">
+                    <Title>Table1</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>pdf</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <MediaSettings>
+                        <CurrentPDFPage>0</CurrentPDFPage>
+                    </MediaSettings>
+                </BinderItem>
+                <BinderItem ID="150" Type="Other" Created="2013-04-16 18:25:38 -0400" Modified="2013-04-16 18:25:38 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>numbers</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <References>
+                        <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="151" Type="Other" Created="2013-04-16 18:27:23 -0400" Modified="2013-04-16 18:27:23 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>xls</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <References>
+                        <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="152" Type="Other" Created="2013-04-16 18:27:23 -0400" Modified="2013-04-16 18:27:23 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>xls</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <References>
+                        <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="153" Type="PDF" Created="2013-04-16 18:28:03 -0400" Modified="2013-04-16 18:28:03 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>pdf</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <MediaSettings>
+                        <CurrentPDFPage>0</CurrentPDFPage>
+                    </MediaSettings>
+                </BinderItem>
             </Children>
         </BinderItem>
     </Binder>
@@ -1326,7 +1402,7 @@
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 08:24:39 -0400" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="166" Characters="1113" Date="2013-04-16 16:24:37 -0400"></PreviousSession>
+        <PreviousSession Words="126" Characters="905" Date="2013-04-16 18:56:52 -0400"></PreviousSession>
     </ProjectTargets>
     <FullScreenBackdrop Type="BinderID">101</FullScreenBackdrop>
     <PrintSettings PaperSize="595.275574,841.861389" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>

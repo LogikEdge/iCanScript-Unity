@@ -504,7 +504,7 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 	<key>SCRCompileFootnotesStyleKey</key>
 	<integer>0</integer>
 	<key>SCRCompileFormatKey</key>
-	<integer>20</integer>
+	<integer>12</integer>
 	<key>SCRCompileFountainHeadersUsesBinderIndentsKey</key>
 	<false/>
 	<key>SCRCompileFountainTitlePageMetaDataKey</key>
@@ -999,6 +999,18 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 			<string>&lt;$L#appendix:&lt;$title_no_spaces&gt;&gt;</string>
 			<key>variable</key>
 			<string>?aID</string>
+		</dict>
+		<dict>
+			<key>replacement</key>
+			<string>&lt;$img:Shadow_Line_1;w=500;h=2&gt;</string>
+			<key>variable</key>
+			<string>!---</string>
+		</dict>
+		<dict>
+			<key>replacement</key>
+			<string>&lt;img:$@&gt;</string>
+			<key>variable</key>
+			<string>!img($@)</string>
 		</dict>
 	</array>
 	<key>SCRCompileRTFColumnsStartLocationKey</key>

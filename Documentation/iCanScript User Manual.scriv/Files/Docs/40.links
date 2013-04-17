@@ -2,7 +2,7 @@
 <Links Version="1.0" Anchor="RTF">
     <CommentsAndFootnotes>
         <Comment IsFootnote="Yes" Collapsed="No" ID="BCA39F51-59BE-46FA-841B-3DCD52705C40">
-            <Range>163,5</Range>
+            <Range>137,5</Range>
             <Color>0.85 0.85 0.85</Color>
             <RTF><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf370
 {\fonttbl\f0\fnil\fcharset0 Cochin;}
@@ -12,7 +12,7 @@
 \f0\fs28 \cf0 ENIAC (Electronic Numerical Integrator And Computer) was the first electronic general-purpose {\field{\*\fldinst{HYPERLINK "http://en.wikipedia.org/wiki/Computer"}}{\fldrslt computer}}. It was {\field{\*\fldinst{HYPERLINK "http://en.wikipedia.org/wiki/Turing_complete"}}{\fldrslt Turing-complete}}, digital, and capable of being reprogrammed to solve a full range of computing problems.}]]></RTF>
         </Comment>
         <Comment IsFootnote="Yes" Collapsed="No" ID="37985FCD-D63C-4B54-B08C-F70B6E3D35A0">
-            <Range>396,17</Range>
+            <Range>370,17</Range>
             <Color>0.85 0.85 0.85</Color>
             <RTF><![CDATA[{\rtf1\ansi\ansicpg1252\cocoartf1187\cocoasubrtf370
 {\fonttbl\f0\fnil\fcharset0 Verdana;}
