@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-16 20:05:19 -0400">
+<ScrivenerProject Version="1.0" Creator="SCRMAC-2.4.1-22949" Modified="2013-04-18 00:48:01 -0400">
     <Binder>
         <BinderItem ID="12" Type="Text" Created="2007-03-25 14:48:19 -0400" Modified="2013-04-11 08:33:42 -0400">
             <Title>Non-Fiction Format</Title>
@@ -11,11 +11,13 @@
             <TextSettings>
                 <TextSelection>0,0</TextSelection>
             </TextSettings>
+            <References>
+                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+            </References>
         </BinderItem>
-        <BinderItem ID="97" Type="Folder" Created="2013-04-12 16:05:24 -0400" Modified="2013-04-15 15:06:57 -0400">
-            <Title>Front Cover</Title>
+        <BinderItem ID="97" Type="Folder" Created="2013-04-12 16:05:24 -0400" Modified="2013-04-12 16:05:42 -0400">
+            <Title>Front Covers</Title>
             <MetaData>
-                <StatusID>5</StatusID>
                 <IncludeInCompile>Yes</IncludeInCompile>
                 <NotesTextSelection>0,0</NotesTextSelection>
             </MetaData>
@@ -23,18 +25,19 @@
                 <TextSelection>0,0</TextSelection>
             </TextSettings>
             <Children>
-                <BinderItem ID="98" Type="Text" Created="2013-04-12 16:05:52 -0400" Modified="2013-04-15 18:47:07 -0400">
+                <BinderItem ID="98" Type="Text" Created="2013-04-12 16:05:52 -0400" Modified="2013-04-12 23:00:36 -0400">
                     <Title>PDF Cover</Title>
                     <MetaData>
-                        <LabelID>8</LabelID>
-                        <StatusID>5</StatusID>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <CompileAsIs>Yes</CompileAsIs>
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>48,0</TextSelection>
+                        <TextSelection>0,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="99" Destination="[Internal Link]">Cover</Reference>
+                    </References>
                 </BinderItem>
             </Children>
         </BinderItem>
@@ -45,41 +48,35 @@
                 <IconFileName>Book (Blue Book).tiff</IconFileName>
             </MetaData>
             <CorkboardAndOutliner>
-                <SelectedSubdocumentIDs>37-38, 40, 42-44, 49-56, 58-60, 63-75, 78-83, 120</SelectedSubdocumentIDs>
+                <SelectedSubdocumentIDs>37-38, 40, 42-44, 49-56, 58-60, 63-75, 78-84, 120</SelectedSubdocumentIDs>
                 <OutlinerExpandedState>
                     <ItemID>38</ItemID>
                     <ItemID>69</ItemID>
                     <ItemID>44</ItemID>
-                    <ItemID>75</ItemID>
                     <ItemID>72</ItemID>
                     <ItemID>71</ItemID>
                     <ItemID>74</ItemID>
-                    <ItemID>66</ItemID>
-                    <ItemID>65</ItemID>
                     <ItemID>54</ItemID>
-                    <ItemID>82</ItemID>
-                    <ItemID>83</ItemID>
                     <ItemID>55</ItemID>
                 </OutlinerExpandedState>
             </CorkboardAndOutliner>
             <Children>
-                <BinderItem ID="120" Type="Text" Created="2013-04-14 23:41:53 -0400" Modified="2013-04-16 08:11:29 -0400">
+                <BinderItem ID="120" Type="Text" Created="2013-04-14 23:41:53 -0400" Modified="2013-04-14 23:57:15 -0400">
                     <Title>Table of Content</Title>
                     <MetaData>
-                        <StatusID>2</StatusID>
                         <PageBreakBefore>Yes</PageBreakBefore>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <CompileAsIs>Yes</CompileAsIs>
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>133,0</TextSelection>
+                        <TextSelection>156,0</TextSelection>
                     </TextSettings>
                     <References>
                         <Reference BinderID="120" Destination="[Internal Link]">Table of Content</Reference>
                     </References>
                 </BinderItem>
-                <BinderItem ID="63" Type="Text" Created="2013-04-04 14:50:50 -0400" Modified="2013-04-15 15:01:49 -0400">
+                <BinderItem ID="63" Type="Text" Created="2013-04-04 14:50:50 -0400" Modified="2013-04-11 15:13:52 -0400">
                     <Title>Many Thanks</Title>
                     <MetaData>
                         <StatusID>5</StatusID>
@@ -88,13 +85,14 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>326,0</TextSelection>
+                        <TextSelection>0,343</TextSelection>
                     </TextSettings>
                     <References>
                         <Reference BinderID="79" Destination="[Internal Link]">Installation</Reference>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                     </References>
                 </BinderItem>
-                <BinderItem ID="60" Type="Text" Created="2013-02-04 09:37:44 -0500" Modified="2013-04-16 15:32:30 -0400">
+                <BinderItem ID="60" Type="Text" Created="2013-02-04 09:37:44 -0500" Modified="2013-04-11 17:00:06 -0400">
                     <Title>Preface</Title>
                     <MetaData>
                         <StatusID>5</StatusID>
@@ -103,8 +101,25 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>1569,0</TextSelection>
+                        <TextSelection>0,1482</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
+                    <Children>
+                        <BinderItem ID="85" Type="Text" Created="2013-04-11 16:57:37 -0400" Modified="2013-04-11 17:02:04 -0400">
+                            <Title>Signature</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <CompileAsIs>Yes</CompileAsIs>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <IgnoresTitlePrefixAndSuffix>Yes</IgnoresTitlePrefixAndSuffix>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>4,83</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
                 </BinderItem>
                 <BinderItem ID="37" Type="Text" Created="2013-01-04 15:26:21 -0500" Modified="2013-04-05 12:08:56 -0400">
                     <Title>Acknowledgements</Title>
@@ -115,368 +130,444 @@
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>222,0</TextSelection>
+                        <TextSelection>0,254</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
                 </BinderItem>
-                <BinderItem ID="125" Type="Text" Created="2013-04-16 15:24:11 -0400" Modified="2013-04-16 15:48:00 -0400">
+                <BinderItem ID="38" Type="Folder" Created="2013-01-04 15:27:46 -0500" Modified="2013-04-12 14:12:49 -0400">
                     <Title>Introduction</Title>
                     <MetaData>
                         <LabelID>8</LabelID>
-                        <StatusID>5</StatusID>
+                        <StatusID>1</StatusID>
                         <PageBreakBefore>Yes</PageBreakBefore>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                    <Children>
-                        <BinderItem ID="126" Type="Text" Created="2013-04-16 15:33:51 -0400" Modified="2013-04-16 15:36:01 -0400">
-                            <Title>Dummy</Title>
-                            <MetaData>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                    </Children>
-                </BinderItem>
-                <BinderItem ID="40" Type="Folder" Created="2013-01-04 15:29:15 -0500" Modified="2013-04-16 19:05:23 -0400">
-                    <Title>Philosophy</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>1087,0</TextSelection>
                     </TextSettings>
                     <References>
-                        <Reference BinderID="79" Destination="[Internal Link]">Installation</Reference>
                         <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                     </References>
-                </BinderItem>
-                <BinderItem ID="69" Type="Folder" Created="2013-04-11 09:13:53 -0400" Modified="2013-04-16 12:08:24 -0400">
-                    <Title>About This Manual</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>393,0</TextSelection>
-                    </TextSettings>
                     <Children>
-                        <BinderItem ID="42" Type="Folder" Created="2013-01-04 15:29:57 -0500" Modified="2013-04-12 23:19:32 -0400">
-                            <Title>Terms and Conventions</Title>
+                        <BinderItem ID="56" Type="Folder" Created="2013-01-07 08:44:03 -0500" Modified="2013-04-12 14:12:54 -0400">
+                            <Title>What is iCanScript</Title>
                             <MetaData>
+                                <LabelID>2</LabelID>
                                 <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>274,1</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                        <BinderItem ID="70" Type="Folder" Created="2013-04-11 09:15:34 -0400" Modified="2013-04-15 15:07:35 -0400">
-                            <Title>Finding Things</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>462,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                    </Children>
-                </BinderItem>
-                <BinderItem ID="43" Type="Folder" Created="2013-01-04 15:30:40 -0500" Modified="2013-04-12 14:13:07 -0400">
-                    <Title>What's New</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-                <BinderItem ID="44" Type="Folder" Created="2013-01-04 15:30:56 -0500" Modified="2013-04-12 14:13:11 -0400">
-                    <Title>Installation and Upgrading</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                    <Children>
-                        <BinderItem ID="124" Type="Folder" Created="2013-04-16 14:44:58 -0400" Modified="2013-04-16 14:58:43 -0400">
-                            <Title>Registering &amp; Downloading</Title>
-                            <MetaData>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
                             </MetaData>
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="40" Type="Folder" Created="2013-01-04 15:29:15 -0500" Modified="2013-04-12 14:12:59 -0400">
+                            <Title>Philosophy</Title>
+                            <MetaData>
+                                <LabelID>2</LabelID>
+                                <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>1087,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="79" Destination="[Internal Link]">Installation</Reference>
+                                <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="69" Type="Folder" Created="2013-04-11 09:13:53 -0400" Modified="2013-04-12 23:21:00 -0400">
+                            <Title>About This Manual</Title>
+                            <MetaData>
+                                <LabelID>2</LabelID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>393,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                             <Children>
-                                <BinderItem ID="76" Type="Folder" Created="2013-04-11 10:05:17 -0400" Modified="2013-04-16 14:41:18 -0400">
-                                    <Title>Trial Version</Title>
+                                <BinderItem ID="42" Type="Text" Created="2013-01-04 15:29:57 -0500" Modified="2013-04-12 23:19:32 -0400">
+                                    <Title>Terms and Conventions</Title>
                                     <MetaData>
-                                        <StatusID>2</StatusID>
+                                        <StatusID>1</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>274,1</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="70" Type="Text" Created="2013-04-11 09:15:34 -0400" Modified="2013-04-12 10:25:22 -0400">
+                                    <Title>Finding Things</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>462,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                            </Children>
+                        </BinderItem>
+                        <BinderItem ID="43" Type="Folder" Created="2013-01-04 15:30:40 -0500" Modified="2013-04-12 14:13:07 -0400">
+                            <Title>What's New</Title>
+                            <MetaData>
+                                <LabelID>2</LabelID>
+                                <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="44" Type="Folder" Created="2013-01-04 15:30:56 -0500" Modified="2013-04-12 14:13:11 -0400">
+                            <Title>Installation and Upgrading</Title>
+                            <MetaData>
+                                <LabelID>2</LabelID>
+                                <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
+                            <Children>
+                                <BinderItem ID="75" Type="Folder" Created="2013-04-11 09:59:07 -0400" Modified="2013-04-12 14:43:47 -0400">
+                                    <Title>Registering</Title>
+                                    <MetaData>
+                                        <LabelID>9</LabelID>
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                         <NotesTextSelection>0,0</NotesTextSelection>
                                         <CustomMetaData>
                                             <MetaDataItem>
-                                                <FieldID>numbering</FieldID>
-                                                <Value>sn</Value>
+                                                <FieldID>chapternumbering</FieldID>
+                                                <Value>n</Value>
                                             </MetaDataItem>
                                         </CustomMetaData>
                                     </MetaData>
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                    <Children>
+                                        <BinderItem ID="76" Type="Text" Created="2013-04-11 10:05:17 -0400" Modified="2013-04-13 00:34:56 -0400">
+                                            <Title>Trial Version</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                                <CustomMetaData>
+                                                    <MetaDataItem>
+                                                        <FieldID>numbering</FieldID>
+                                                        <Value>sn</Value>
+                                                    </MetaDataItem>
+                                                </CustomMetaData>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                        <BinderItem ID="77" Type="Text" Created="2013-04-11 10:05:29 -0400" Modified="2013-04-11 10:05:39 -0400">
+                                            <Title>Purchasing iCanScript</Title>
+                                            <MetaData>
+                                                <IncludeInCompile>Yes</IncludeInCompile>
+                                                <NotesTextSelection>0,0</NotesTextSelection>
+                                            </MetaData>
+                                            <TextSettings>
+                                                <TextSelection>0,0</TextSelection>
+                                            </TextSettings>
+                                        </BinderItem>
+                                    </Children>
                                 </BinderItem>
-                                <BinderItem ID="77" Type="Folder" Created="2013-04-11 10:05:29 -0400" Modified="2013-04-16 14:54:16 -0400">
-                                    <Title>Purchasing iCanScript</Title>
+                                <BinderItem ID="79" Type="Text" Created="2013-04-11 10:09:07 -0400" Modified="2013-04-12 15:17:17 -0400">
+                                    <Title>Installation</Title>
                                     <MetaData>
-                                        <StatusID>2</StatusID>
                                         <IncludeInCompile>Yes</IncludeInCompile>
                                         <NotesTextSelection>0,0</NotesTextSelection>
                                     </MetaData>
                                     <TextSettings>
                                         <TextSelection>0,0</TextSelection>
                                     </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="78" Type="Text" Created="2013-04-11 10:07:52 -0400" Modified="2013-04-11 10:08:02 -0400">
+                                    <Title>Application Updates</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="80" Type="Text" Created="2013-04-11 10:10:21 -0400" Modified="2013-04-11 10:10:26 -0400">
+                                    <Title>Staying Informed</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
                                 </BinderItem>
                             </Children>
                         </BinderItem>
-                        <BinderItem ID="79" Type="Folder" Created="2013-04-11 10:09:07 -0400" Modified="2013-04-15 15:08:10 -0400">
-                            <Title>Installation</Title>
+                        <BinderItem ID="72" Type="Folder" Created="2013-04-11 09:24:45 -0400" Modified="2013-04-12 14:13:14 -0400">
+                            <Title>Interface</Title>
                             <MetaData>
-                                <StatusID>1</StatusID>
+                                <LabelID>2</LabelID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
                             </MetaData>
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
+                            <Children>
+                                <BinderItem ID="81" Type="Text" Created="2013-04-11 10:15:48 -0400" Modified="2013-04-11 10:16:19 -0400">
+                                    <Title>Interface Overview</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>370,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="73" Type="Text" Created="2013-04-11 09:25:54 -0400" Modified="2013-04-11 09:26:08 -0400">
+                                    <Title>Menu Items</Title>
+                                    <MetaData>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="50" Type="Text" Created="2013-01-04 15:43:49 -0500" Modified="2013-04-11 09:27:00 -0400">
+                                    <Title>Inspector</Title>
+                                    <MetaData>
+                                        <StatusID>1</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="64" Type="Text" Created="2013-04-05 11:57:22 -0400" Modified="2013-04-10 23:04:45 -0400">
+                                    <Title>Preferences</Title>
+                                    <MetaData>
+                                        <StatusID>1</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="51" Type="Text" Created="2013-01-04 15:44:00 -0500" Modified="2013-04-10 23:04:52 -0400">
+                                    <Title>Library</Title>
+                                    <MetaData>
+                                        <StatusID>1</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="49" Type="Text" Created="2013-01-04 15:35:39 -0500" Modified="2013-04-10 23:04:47 -0400">
+                                    <Title>Visual Editor</Title>
+                                    <MetaData>
+                                        <StatusID>1</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="53" Type="Text" Created="2013-01-04 15:46:56 -0500" Modified="2013-04-10 23:04:49 -0400">
+                                    <Title>Hierarchy</Title>
+                                    <MetaData>
+                                        <StatusID>1</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                                <BinderItem ID="52" Type="Text" Created="2013-01-04 15:45:22 -0500" Modified="2013-04-10 23:04:57 -0400">
+                                    <Title>Instance Wizard</Title>
+                                    <MetaData>
+                                        <StatusID>1</StatusID>
+                                        <IncludeInCompile>Yes</IncludeInCompile>
+                                        <NotesTextSelection>0,0</NotesTextSelection>
+                                    </MetaData>
+                                    <TextSettings>
+                                        <TextSelection>0,0</TextSelection>
+                                    </TextSettings>
+                                    <References>
+                                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                                    </References>
+                                </BinderItem>
+                            </Children>
                         </BinderItem>
-                        <BinderItem ID="78" Type="Folder" Created="2013-04-11 10:07:52 -0400" Modified="2013-04-16 14:35:46 -0400">
-                            <Title>Application Updates</Title>
+                        <BinderItem ID="71" Type="Folder" Created="2013-04-11 09:20:50 -0400" Modified="2013-04-12 17:41:28 -0400">
+                            <Title>Quick Tour</Title>
                             <MetaData>
-                                <StatusID>1</StatusID>
+                                <LabelID>2</LabelID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
                             </MetaData>
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
-                        </BinderItem>
-                        <BinderItem ID="80" Type="Folder" Created="2013-04-11 10:10:21 -0400" Modified="2013-04-15 15:08:22 -0400">
-                            <Title>Staying Informed</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="72" Type="Folder" Created="2013-04-11 09:24:45 -0400" Modified="2013-04-15 15:08:27 -0400">
-                    <Title>Interface</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                    <Children>
-                        <BinderItem ID="81" Type="Folder" Created="2013-04-11 10:15:48 -0400" Modified="2013-04-15 15:08:32 -0400">
-                            <Title>Interface Overview</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>370,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                        <BinderItem ID="73" Type="Folder" Created="2013-04-11 09:25:54 -0400" Modified="2013-04-15 15:10:26 -0400">
-                            <Title>Menu Items</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                        <BinderItem ID="50" Type="Folder" Created="2013-01-04 15:43:49 -0500" Modified="2013-04-11 09:27:00 -0400">
-                            <Title>Inspector</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                        <BinderItem ID="64" Type="Folder" Created="2013-04-05 11:57:22 -0400" Modified="2013-04-10 23:04:45 -0400">
-                            <Title>Preferences</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                        <BinderItem ID="51" Type="Folder" Created="2013-01-04 15:44:00 -0500" Modified="2013-04-10 23:04:52 -0400">
-                            <Title>Library</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                        <BinderItem ID="49" Type="Folder" Created="2013-01-04 15:35:39 -0500" Modified="2013-04-10 23:04:47 -0400">
-                            <Title>Visual Editor</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                        <BinderItem ID="53" Type="Folder" Created="2013-01-04 15:46:56 -0500" Modified="2013-04-10 23:04:49 -0400">
-                            <Title>Hierarchy</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                        <BinderItem ID="52" Type="Folder" Created="2013-01-04 15:45:22 -0500" Modified="2013-04-10 23:04:57 -0400">
-                            <Title>Instance Wizard</Title>
-                            <MetaData>
-                                <StatusID>1</StatusID>
-                                <IncludeInCompile>Yes</IncludeInCompile>
-                                <NotesTextSelection>0,0</NotesTextSelection>
-                            </MetaData>
-                            <TextSettings>
-                                <TextSelection>0,0</TextSelection>
-                            </TextSettings>
-                        </BinderItem>
-                    </Children>
-                </BinderItem>
-                <BinderItem ID="71" Type="Folder" Created="2013-04-11 09:20:50 -0400" Modified="2013-04-15 15:10:30 -0400">
-                    <Title>Quick Tour</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                    <References>
-                        <Reference BinderID="69" Destination="[Internal Link]">About This Manual</Reference>
-                    </References>
-                </BinderItem>
-                <BinderItem ID="127" Type="Text" Created="2013-04-16 15:48:07 -0400" Modified="2013-04-16 15:48:57 -0400">
+                <BinderItem ID="74" Type="Folder" Created="2013-04-11 09:28:43 -0400" Modified="2013-04-12 14:13:26 -0400">
                     <Title>Visual Scripting</Title>
                     <MetaData>
                         <LabelID>8</LabelID>
@@ -487,137 +578,146 @@
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
                     <Children>
-                        <BinderItem ID="128" Type="Text" Created="2013-04-16 15:48:31 -0400" Modified="2013-04-16 15:48:51 -0400">
-                            <Title>Dummy</Title>
+                        <BinderItem ID="66" Type="Folder" Created="2013-04-05 12:14:03 -0400" Modified="2013-04-12 14:13:31 -0400">
+                            <Title>Saving &amp; Loading Your Visual Scripts</Title>
                             <MetaData>
+                                <LabelID>2</LabelID>
+                                <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
+                                <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
                             </MetaData>
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="65" Type="Folder" Created="2013-04-05 12:13:28 -0400" Modified="2013-04-12 14:13:36 -0400">
+                            <Title>Executing Your Visual Scripts</Title>
+                            <MetaData>
+                                <LabelID>2</LabelID>
+                                <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="66" Type="Folder" Created="2013-04-05 12:14:03 -0400" Modified="2013-04-12 14:13:31 -0400">
-                    <Title>Saving &amp; Loading Your Visual Scripts</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-                <BinderItem ID="65" Type="Folder" Created="2013-04-05 12:13:28 -0400" Modified="2013-04-12 14:13:36 -0400">
-                    <Title>Executing Your Visual Scripts</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-                <BinderItem ID="129" Type="Text" Created="2013-04-16 15:49:11 -0400" Modified="2013-04-16 15:49:30 -0400">
+                <BinderItem ID="54" Type="Folder" Created="2013-01-04 15:48:52 -0500" Modified="2013-04-12 14:07:32 -0400">
                     <Title>Extending iCanScript</Title>
                     <MetaData>
                         <LabelID>8</LabelID>
+                        <StatusID>1</StatusID>
                         <PageBreakBefore>Yes</PageBreakBefore>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <NotesTextSelection>0,0</NotesTextSelection>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>chapternumbering</FieldID>
+                                <Value>n</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
                     </MetaData>
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
                     <Children>
-                        <BinderItem ID="130" Type="Text" Created="2013-04-16 15:49:35 -0400" Modified="2013-04-16 15:49:44 -0400">
-                            <Title>Dummy</Title>
+                        <BinderItem ID="82" Type="Folder" Created="2013-04-11 10:22:22 -0400" Modified="2013-04-12 15:11:15 -0400">
+                            <Title>Creating Nodes</Title>
                             <MetaData>
+                                <LabelID>2</LabelID>
+                                <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
+                                <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
                             </MetaData>
                             <TextSettings>
                                 <TextSelection>0,0</TextSelection>
                             </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
+                        </BinderItem>
+                        <BinderItem ID="83" Type="Folder" Created="2013-04-11 10:22:43 -0400" Modified="2013-04-12 15:11:20 -0400">
+                            <Title>Installing Libraries</Title>
+                            <MetaData>
+                                <LabelID>2</LabelID>
+                                <StatusID>1</StatusID>
+                                <PageBreakBefore>Yes</PageBreakBefore>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                                <CustomMetaData>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumbering</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                    <MetaDataItem>
+                                        <FieldID>chapternumberingstyle</FieldID>
+                                        <Value>n</Value>
+                                    </MetaDataItem>
+                                </CustomMetaData>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="82" Type="Folder" Created="2013-04-11 10:22:22 -0400" Modified="2013-04-12 15:11:15 -0400">
-                    <Title>Creating Nodes</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-                <BinderItem ID="83" Type="Folder" Created="2013-04-11 10:22:43 -0400" Modified="2013-04-12 15:11:20 -0400">
-                    <Title>Installing Libraries</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-                <BinderItem ID="131" Type="Text" Created="2013-04-16 15:50:05 -0400" Modified="2013-04-16 15:50:19 -0400">
+                <BinderItem ID="55" Type="Folder" Created="2013-01-04 15:49:18 -0500" Modified="2013-04-12 13:58:50 -0400">
                     <Title>Appendices</Title>
                     <MetaData>
                         <LabelID>8</LabelID>
+                        <StatusID>1</StatusID>
                         <PageBreakBefore>Yes</PageBreakBefore>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <NotesTextSelection>0,0</NotesTextSelection>
@@ -625,6 +725,10 @@
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
+                    <References>
+                        <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
                     <Children>
                         <BinderItem ID="58" Type="Text" Created="2013-01-07 13:12:25 -0500" Modified="2013-04-12 15:02:44 -0400">
                             <Title>Menus and Keyboard Shortcuts</Title>
@@ -650,121 +754,8 @@
                             </TextSettings>
                             <References>
                                 <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
-                                <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                             </References>
-                            <Children>
-                                <BinderItem ID="137" Type="Text" Created="2013-04-16 16:42:03 -0400" Modified="2013-04-16 18:52:54 -0400">
-                                    <Title>Navigation</Title>
-                                    <MetaData>
-                                        <StatusID>1</StatusID>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
-                                        <IndexCardImageFileExtension>png</IndexCardImageFileExtension>
-                                        <CustomMetaData>
-                                            <MetaDataItem>
-                                                <FieldID>header</FieldID>
-                                                <Value>Navigation_64x64</Value>
-                                            </MetaDataItem>
-                                        </CustomMetaData>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                    <Children>
-                                        <BinderItem ID="133" Type="Text" Created="2013-04-16 16:05:26 -0400" Modified="2013-04-16 16:07:10 -0400">
-                                            <Title>Untitled</Title>
-                                            <MetaData>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>0,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                    </Children>
-                                </BinderItem>
-                                <BinderItem ID="139" Type="Text" Created="2013-04-16 17:07:35 -0400" Modified="2013-04-16 17:10:04 -0400">
-                                    <Title>Bookmarks</Title>
-                                    <MetaData>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                        <CustomMetaData>
-                                            <MetaDataItem>
-                                                <FieldID>header</FieldID>
-                                                <Value>Bookmarks_64x64</Value>
-                                            </MetaDataItem>
-                                        </CustomMetaData>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                    <Children>
-                                        <BinderItem ID="142" Type="Text" Created="2013-04-16 17:08:30 -0400" Modified="2013-04-16 17:10:59 -0400">
-                                            <Title>Untitled</Title>
-                                            <MetaData>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>0,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                    </Children>
-                                </BinderItem>
-                                <BinderItem ID="140" Type="Text" Created="2013-04-16 17:07:55 -0400" Modified="2013-04-16 17:10:20 -0400">
-                                    <Title>Expand / Fold</Title>
-                                    <MetaData>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                        <CustomMetaData>
-                                            <MetaDataItem>
-                                                <FieldID>header</FieldID>
-                                                <Value>FoldExpand_64x64</Value>
-                                            </MetaDataItem>
-                                        </CustomMetaData>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                    <Children>
-                                        <BinderItem ID="143" Type="Text" Created="2013-04-16 17:08:38 -0400" Modified="2013-04-16 17:11:04 -0400">
-                                            <Title>Untitled</Title>
-                                            <MetaData>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>0,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                    </Children>
-                                </BinderItem>
-                                <BinderItem ID="141" Type="Text" Created="2013-04-16 17:08:19 -0400" Modified="2013-04-16 17:10:35 -0400">
-                                    <Title>Insert / Delete</Title>
-                                    <MetaData>
-                                        <IncludeInCompile>Yes</IncludeInCompile>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                        <CustomMetaData>
-                                            <MetaDataItem>
-                                                <FieldID>header</FieldID>
-                                                <Value>InsertDelete_64x64</Value>
-                                            </MetaDataItem>
-                                        </CustomMetaData>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                    <Children>
-                                        <BinderItem ID="144" Type="Text" Created="2013-04-16 17:08:45 -0400" Modified="2013-04-16 17:11:09 -0400">
-                                            <Title>Untitled</Title>
-                                            <MetaData>
-                                                <NotesTextSelection>0,0</NotesTextSelection>
-                                            </MetaData>
-                                            <TextSettings>
-                                                <TextSelection>0,0</TextSelection>
-                                            </TextSettings>
-                                        </BinderItem>
-                                    </Children>
-                                </BinderItem>
-                            </Children>
                         </BinderItem>
                         <BinderItem ID="68" Type="Text" Created="2013-04-10 23:23:57 -0400" Modified="2013-04-12 14:07:11 -0400">
                             <Title>Preferences</Title>
@@ -790,20 +781,10 @@
                             </TextSettings>
                             <References>
                                 <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                             </References>
-                            <Children>
-                                <BinderItem ID="134" Type="Text" Created="2013-04-16 16:05:56 -0400" Modified="2013-04-16 16:07:06 -0400">
-                                    <Title>Untitled</Title>
-                                    <MetaData>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                </BinderItem>
-                            </Children>
                         </BinderItem>
-                        <BinderItem ID="59" Type="Text" Created="2013-01-07 13:12:58 -0500" Modified="2013-04-16 14:02:05 -0400">
+                        <BinderItem ID="59" Type="Text" Created="2013-01-07 13:12:58 -0500" Modified="2013-04-12 23:36:53 -0400">
                             <Title>Programming Keywords</Title>
                             <MetaData>
                                 <LabelID>7</LabelID>
@@ -827,20 +808,10 @@
                             </TextSettings>
                             <References>
                                 <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                             </References>
-                            <Children>
-                                <BinderItem ID="135" Type="Text" Created="2013-04-16 16:06:02 -0400" Modified="2013-04-16 16:07:01 -0400">
-                                    <Title>Untitled</Title>
-                                    <MetaData>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                </BinderItem>
-                            </Children>
                         </BinderItem>
-                        <BinderItem ID="67" Type="Text" Created="2013-04-10 23:23:14 -0400" Modified="2013-04-16 19:08:34 -0400">
+                        <BinderItem ID="67" Type="Text" Created="2013-04-10 23:23:14 -0400" Modified="2013-04-12 14:07:01 -0400">
                             <Title>Tips and Tricks and Trouble</Title>
                             <MetaData>
                                 <LabelID>7</LabelID>
@@ -860,25 +831,17 @@
                                 </CustomMetaData>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>418,1</TextSelection>
+                                <TextSelection>0,0</TextSelection>
                             </TextSettings>
-                            <Children>
-                                <BinderItem ID="136" Type="Text" Created="2013-04-16 16:06:08 -0400" Modified="2013-04-16 16:06:57 -0400">
-                                    <Title>Untitled</Title>
-                                    <MetaData>
-                                        <NotesTextSelection>0,0</NotesTextSelection>
-                                    </MetaData>
-                                    <TextSettings>
-                                        <TextSelection>0,0</TextSelection>
-                                    </TextSettings>
-                                </BinderItem>
-                            </Children>
+                            <References>
+                                <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                            </References>
                         </BinderItem>
                     </Children>
                 </BinderItem>
             </Children>
         </BinderItem>
-        <BinderItem ID="27" Type="Folder" Created="2010-10-29 12:14:01 -0400" Modified="2013-04-16 16:00:31 -0400">
+        <BinderItem ID="27" Type="Folder" Created="2010-10-29 12:14:01 -0400" Modified="2013-04-10 23:10:28 -0400">
             <Title>Ideas</Title>
             <MetaData>
                 <NotesTextSelection>0,0</NotesTextSelection>
@@ -905,34 +868,6 @@
                 <TextSelection>0,0</TextSelection>
             </TextSettings>
             <Children>
-                <BinderItem ID="145" Type="Image" Created="2013-04-04 13:58:58 -0400" Modified="2013-04-04 13:58:58 -0400">
-                    <Title>FoldExpand_64x64</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>png</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
-                    </MetaData>
-                    <MediaSettings>
-                        <ImageScaleFactor>1.0</ImageScaleFactor>
-                        <ImageRotation>None</ImageRotation>
-                        <ImageScalesProportionally>No</ImageScalesProportionally>
-                    </MediaSettings>
-                </BinderItem>
-                <BinderItem ID="138" Type="Image" Created="2013-04-04 13:58:58 -0400" Modified="2013-04-04 13:58:58 -0400">
-                    <Title>Navigation_64x64</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>png</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
-                    </MetaData>
-                    <MediaSettings>
-                        <ImageScaleFactor>1.0</ImageScaleFactor>
-                        <ImageRotation>None</ImageRotation>
-                        <ImageScalesProportionally>No</ImageScalesProportionally>
-                    </MediaSettings>
-                </BinderItem>
                 <BinderItem ID="113" Type="Image" Created="2013-04-12 16:38:11 -0400" Modified="2013-04-12 16:38:11 -0400">
                     <Title>iCanScript_Title_large_shadow_838x178x32</Title>
                     <MetaData>
@@ -1077,24 +1012,6 @@
                         <ShowSynopsisImage>Yes</ShowSynopsisImage>
                     </MetaData>
                 </BinderItem>
-                <BinderItem ID="146" Type="Image" Created="2013-04-04 13:58:58 -0400" Modified="2013-04-04 13:58:58 -0400">
-                    <Title>InsertDelete_64x64</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>png</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
-                    </MetaData>
-                </BinderItem>
-                <BinderItem ID="147" Type="Image" Created="2013-04-04 13:58:58 -0400" Modified="2013-04-04 13:58:58 -0400">
-                    <Title>Bookmarks_64x64</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>png</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
-                    </MetaData>
-                </BinderItem>
             </Children>
         </BinderItem>
         <BinderItem ID="62" Type="Folder" Created="2013-02-06 10:20:22 -0500" Modified="2013-04-10 23:10:17 -0400">
@@ -1113,239 +1030,269 @@
                 <PageBreakBefore>Yes</PageBreakBefore>
             </MetaData>
             <Children>
-                <BinderItem ID="56" Type="Folder" Created="2013-01-07 08:44:03 -0500" Modified="2013-04-12 14:12:54 -0400">
-                    <Title>What is iCanScript</Title>
-                    <MetaData>
-                        <LabelID>2</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                            <MetaDataItem>
-                                <FieldID>chapternumberingstyle</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                    <References>
-                        <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
-                    </References>
-                </BinderItem>
-                <BinderItem ID="121" Type="Text" Created="2013-04-15 15:21:35 -0400" Modified="2013-04-15 15:28:42 -0400">
-                    <Title>Quote</Title>
+                <BinderItem ID="99" Type="Text" Created="2013-04-12 16:06:46 -0400" Modified="2013-04-12 16:11:08 -0400">
+                    <Title>Cover</Title>
                     <MetaData>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <CompileAsIs>Yes</CompileAsIs>
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
+                        <TextSelection>9,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="110" Type="Image" Created="2013-04-03 14:26:12 -0400" Modified="2013-04-03 14:26:12 -0400">
+                    <Title>iCanScript_Title_large_shadow_1024x1024x32</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
+                </BinderItem>
+                <BinderItem ID="105" Type="Image" Created="2013-04-03 14:26:12 -0400" Modified="2013-04-03 14:26:12 -0400">
+                    <Title>iCanScript_Title_large_256x256x32</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
+                </BinderItem>
+                <BinderItem ID="106" Type="Image" Created="2013-04-03 14:26:12 -0400" Modified="2013-04-03 14:26:12 -0400">
+                    <Title>iCanScript_Title_large_512x512x32</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
+                </BinderItem>
+                <BinderItem ID="107" Type="Image" Created="2013-04-03 14:26:12 -0400" Modified="2013-04-03 14:26:12 -0400">
+                    <Title>iCanScript_Title_large_1024x1024x32</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
+                </BinderItem>
+                <BinderItem ID="111" Type="Image" Created="2013-04-03 14:26:12 -0400" Modified="2013-04-03 14:26:12 -0400">
+                    <Title>iCanScript_Title_large_shadow_512x512x32</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
+                </BinderItem>
+                <BinderItem ID="114" Type="Image" Created="2013-04-12 16:47:01 -0400" Modified="2013-04-12 16:47:01 -0400">
+                    <Title>iCanScript_Title</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
+                </BinderItem>
+                <BinderItem ID="115" Type="Image" Created="2013-04-12 16:48:58 -0400" Modified="2013-04-12 16:48:58 -0400">
+                    <Title>iCanScript_Title</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
+                </BinderItem>
+                <BinderItem ID="116" Type="Image" Created="2013-04-12 16:57:30 -0400" Modified="2013-04-12 16:57:30 -0400">
+                    <Title>iCanScript_Title</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <FileExtension>png</FileExtension>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <ShowSynopsisImage>Yes</ShowSynopsisImage>
+                    </MetaData>
+                    <MediaSettings>
+                        <ImageScaleFactor>1.0</ImageScaleFactor>
+                        <ImageRotation>None</ImageRotation>
+                        <ImageScalesProportionally>No</ImageScalesProportionally>
+                    </MediaSettings>
+                </BinderItem>
+                <BinderItem ID="88" Type="Text" Created="2013-04-12 13:04:08 -0400" Modified="2013-04-12 13:05:59 -0400">
+                    <Title>Level 5</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>23,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="118" Type="Text" Created="2013-04-14 21:49:02 -0400" Modified="2013-04-14 21:51:47 -0400">
+                    <Title>ToC</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="122" Type="Folder" Created="2013-04-15 16:10:04 -0400" Modified="2013-04-15 16:10:20 -0400">
-                    <Title>Footnotes</Title>
+                <BinderItem ID="119" Type="Text" Created="2013-04-14 21:51:42 -0400" Modified="2013-04-14 22:17:53 -0400">
+                    <Title>Toc</Title>
                     <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>434,0</TextSelection>
+                    </TextSettings>
+                    <References>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
+                    </References>
+                </BinderItem>
+                <BinderItem ID="89" Type="Text" Created="2013-04-12 13:08:17 -0400" Modified="2013-04-12 15:09:34 -0400">
+                    <Title>Appendix folder</Title>
+                    <MetaData>
+                        <LabelID>7</LabelID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                        <CustomMetaData>
+                            <MetaDataItem>
+                                <FieldID>chapternumbering</FieldID>
+                                <Value>L</Value>
+                            </MetaDataItem>
+                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="93" Type="Text" Created="2013-04-12 14:51:59 -0400" Modified="2013-04-12 14:51:59 -0400">
+                            <Title>Untitled</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="94" Type="Text" Created="2013-04-12 15:09:45 -0400" Modified="2013-04-12 15:09:52 -0400">
+                    <Title>Second Folder</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
                         <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                     <Children>
-                        <BinderItem ID="123" Type="Text" Created="2013-04-15 16:10:29 -0400" Modified="2013-04-15 16:17:35 -0400">
-                            <Title>ENIAC</Title>
+                        <BinderItem ID="95" Type="Text" Created="2013-04-12 15:09:56 -0400" Modified="2013-04-12 15:09:56 -0400">
+                            <Title>Untitled</Title>
                             <MetaData>
                                 <IncludeInCompile>Yes</IncludeInCompile>
                                 <NotesTextSelection>0,0</NotesTextSelection>
                             </MetaData>
                             <TextSettings>
-                                <TextSelection>0,215</TextSelection>
+                                <TextSelection>0,0</TextSelection>
                             </TextSettings>
-                            <References>
-                                <Reference BinderID="40" Destination="[Internal Link]">Philosophy</Reference>
-                            </References>
                         </BinderItem>
                     </Children>
                 </BinderItem>
-                <BinderItem ID="75" Type="Folder" Created="2013-04-11 09:59:07 -0400" Modified="2013-04-15 15:07:54 -0400">
-                    <Title>Registering</Title>
+                <BinderItem ID="90" Type="Text" Created="2013-04-12 14:51:36 -0400" Modified="2013-04-12 14:51:36 -0400">
+                    <Title>Untitled</Title>
                     <MetaData>
-                        <LabelID>9</LabelID>
-                        <StatusID>1</StatusID>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                    <Children>
+                        <BinderItem ID="96" Type="Text" Created="2013-04-12 15:14:02 -0400" Modified="2013-04-12 15:14:02 -0400">
+                            <Title>Untitled</Title>
+                            <MetaData>
+                                <IncludeInCompile>Yes</IncludeInCompile>
+                                <NotesTextSelection>0,0</NotesTextSelection>
+                            </MetaData>
+                            <TextSettings>
+                                <TextSelection>0,0</TextSelection>
+                            </TextSettings>
+                        </BinderItem>
+                    </Children>
+                </BinderItem>
+                <BinderItem ID="91" Type="Text" Created="2013-04-12 14:51:46 -0400" Modified="2013-04-12 14:51:46 -0400">
+                    <Title>Untitled</Title>
+                    <MetaData>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
                     </MetaData>
                     <TextSettings>
                         <TextSelection>0,0</TextSelection>
                     </TextSettings>
                 </BinderItem>
-                <BinderItem ID="85" Type="Text" Created="2013-04-11 16:57:37 -0400" Modified="2013-04-15 15:11:53 -0400">
-                    <Title>Signature</Title>
+                <BinderItem ID="92" Type="Text" Created="2013-04-12 14:51:53 -0400" Modified="2013-04-12 14:51:53 -0400">
+                    <Title>Untitled</Title>
                     <MetaData>
-                        <StatusID>5</StatusID>
+                        <IncludeInCompile>Yes</IncludeInCompile>
+                        <NotesTextSelection>0,0</NotesTextSelection>
+                    </MetaData>
+                    <TextSettings>
+                        <TextSelection>0,0</TextSelection>
+                    </TextSettings>
+                </BinderItem>
+                <BinderItem ID="84" Type="Text" Created="2013-04-11 13:35:22 -0400" Modified="2013-04-14 23:38:47 -0400">
+                    <Title>Table Of Content</Title>
+                    <MetaData>
+                        <PageBreakBefore>Yes</PageBreakBefore>
                         <IncludeInCompile>Yes</IncludeInCompile>
                         <CompileAsIs>Yes</CompileAsIs>
                         <NotesTextSelection>0,0</NotesTextSelection>
-                        <IgnoresTitlePrefixAndSuffix>Yes</IgnoresTitlePrefixAndSuffix>
                     </MetaData>
                     <TextSettings>
-                        <TextSelection>1,86</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-                <BinderItem ID="38" Type="Folder" Created="2013-01-04 15:27:46 -0500" Modified="2013-04-15 15:41:04 -0400">
-                    <Title>Introduction</Title>
-                    <MetaData>
-                        <LabelID>8</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>122,0</TextSelection>
+                        <TextSelection>0,39</TextSelection>
                     </TextSettings>
                     <References>
-                        <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
+                        <Reference BinderID="84" Destination="[Internal Link]">Table Of Content</Reference>
                     </References>
-                </BinderItem>
-                <BinderItem ID="74" Type="Folder" Created="2013-04-11 09:28:43 -0400" Modified="2013-04-15 15:10:33 -0400">
-                    <Title>Visual Scripting</Title>
-                    <MetaData>
-                        <LabelID>8</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                    <References>
-                        <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
-                    </References>
-                </BinderItem>
-                <BinderItem ID="54" Type="Folder" Created="2013-01-04 15:48:52 -0500" Modified="2013-04-12 14:07:32 -0400">
-                    <Title>Extending iCanScript</Title>
-                    <MetaData>
-                        <LabelID>8</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                        <CustomMetaData>
-                            <MetaDataItem>
-                                <FieldID>chapternumbering</FieldID>
-                                <Value>n</Value>
-                            </MetaDataItem>
-                        </CustomMetaData>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-                <BinderItem ID="132" Type="Text" Created="2013-04-16 15:50:23 -0400" Modified="2013-04-16 15:50:36 -0400">
-                    <Title>Dummy</Title>
-                    <MetaData>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                </BinderItem>
-                <BinderItem ID="55" Type="Folder" Created="2013-01-04 15:49:18 -0500" Modified="2013-04-12 13:58:50 -0400">
-                    <Title>Appendices</Title>
-                    <MetaData>
-                        <LabelID>8</LabelID>
-                        <StatusID>1</StatusID>
-                        <PageBreakBefore>Yes</PageBreakBefore>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <TextSettings>
-                        <TextSelection>0,0</TextSelection>
-                    </TextSettings>
-                    <References>
-                        <Reference BinderID="76" Destination="[Internal Link]">Trial Version</Reference>
-                    </References>
-                </BinderItem>
-                <BinderItem ID="149" Type="Other" Created="2013-04-16 18:27:23 -0400" Modified="2013-04-16 18:27:23 -0400">
-                    <Title>Untitled</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>xls</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <References>
-                        <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
-                    </References>
-                </BinderItem>
-                <BinderItem ID="148" Type="PDF" Created="2013-04-16 18:28:03 -0400" Modified="2013-04-16 18:36:56 -0400">
-                    <Title>Table1</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>pdf</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <MediaSettings>
-                        <CurrentPDFPage>0</CurrentPDFPage>
-                    </MediaSettings>
-                </BinderItem>
-                <BinderItem ID="150" Type="Other" Created="2013-04-16 18:25:38 -0400" Modified="2013-04-16 18:25:38 -0400">
-                    <Title>Untitled</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>numbers</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <References>
-                        <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
-                    </References>
-                </BinderItem>
-                <BinderItem ID="151" Type="Other" Created="2013-04-16 18:27:23 -0400" Modified="2013-04-16 18:27:23 -0400">
-                    <Title>Untitled</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>xls</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <References>
-                        <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
-                    </References>
-                </BinderItem>
-                <BinderItem ID="152" Type="Other" Created="2013-04-16 18:27:23 -0400" Modified="2013-04-16 18:27:23 -0400">
-                    <Title>Untitled</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>xls</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <References>
-                        <Reference BinderID="137" Destination="[Internal Link]">Navigation</Reference>
-                    </References>
-                </BinderItem>
-                <BinderItem ID="153" Type="PDF" Created="2013-04-16 18:28:03 -0400" Modified="2013-04-16 18:28:03 -0400">
-                    <Title>Untitled</Title>
-                    <MetaData>
-                        <IncludeInCompile>Yes</IncludeInCompile>
-                        <FileExtension>pdf</FileExtension>
-                        <NotesTextSelection>0,0</NotesTextSelection>
-                    </MetaData>
-                    <MediaSettings>
-                        <CurrentPDFPage>0</CurrentPDFPage>
-                    </MediaSettings>
                 </BinderItem>
             </Children>
         </BinderItem>
@@ -1356,7 +1303,10 @@
         </Collection>
         <Collection Type="RecentSearch" ID="2655DDF6-4AB8-42CB-A433-1CD76FC351D2" Color="0.922 0.91 0.98">
             <Title>Search Results</Title>
-            <SearchSettings Operator="Any" Type="Status" Scope="Draft" CompileSetting="Include" CaseSensitive="No">To Draft</SearchSettings>
+            <SearchSettings Operator="Exact" Type="Label" CaseSensitive="No">No Label</SearchSettings>
+        </Collection>
+        <Collection Type="Arbitrary" ID="493CBF7D-9D81-44D3-AAF2-3091F708FB17" Color="0.710265 0.771509 0.717056">
+            <Title>ToDo v0.9.0</Title>
         </Collection>
         <Collection Type="Arbitrary" ID="E3F72C75-7848-4E5C-9C27-13B5E65666FB" Color="0.992 0.973 0.769">
             <Title>Updated Documents</Title>
@@ -1386,12 +1336,10 @@
             <Status ID="2">First Draft</Status>
             <Status ID="3">Revised Draft</Status>
             <Status ID="4">Final Draft</Status>
+            <Status ID="6">Title Page</Status>
             <Status ID="5">Done</Status>
         </StatusItems>
     </StatusSettings>
-    <CustomMetaDataSettings>
-        <MetaDataField ID="header" Wraps="No">header_image</MetaDataField>
-    </CustomMetaDataSettings>
     <ProjectProperties>
         <ProjectTitle></ProjectTitle>
         <AbbreviatedTitle></AbbreviatedTitle>
@@ -1402,8 +1350,8 @@
     <ProjectTargets Notify="No">
         <DraftTarget Type="Words" CountIncludedOnly="Yes" CurrentCompileGroupOnly="Yes" Deadline="2011-04-12 08:24:39 -0400" IgnoreDeadline="Yes">0</DraftTarget>
         <SessionTarget Type="Words" CountDraftOnly="Yes" AllowNegatives="No" ResetType="Midnight" DeterminedFromDeadline="No" WritingDays="" CanWriteOnDeadlineDate="No">0</SessionTarget>
-        <PreviousSession Words="126" Characters="905" Date="2013-04-16 18:56:52 -0400"></PreviousSession>
+        <PreviousSession Words="0" Characters="0" Date="2013-04-17 00:14:31 -0400"></PreviousSession>
     </ProjectTargets>
     <FullScreenBackdrop Type="BinderID">101</FullScreenBackdrop>
-    <PrintSettings PaperSize="595.275574,841.861389" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
+    <PrintSettings PaperSize="595.280029,841.890015" LeftMargin="72.0" RightMargin="72.0" TopMargin="90.0" BottomMargin="90.0" PaperType="iso-a4" Orientation="Portrait" HorizontalPagination="Clip" VerticalPagination="Auto" ScaleFactor="1.0" HorizontallyCentered="Yes" VerticallyCentered="Yes" Collates="Yes" PagesAcross="1" PagesDown="1"></PrintSettings>
 </ScrivenerProject>
