@@ -11,6 +11,7 @@ public partial class iCS_EditorObject {
     public bool IsInDataPort                { get { return EngineObject.IsInDataPort; }}
     public bool IsOutDataPort               { get { return EngineObject.IsOutDataPort; }}
     public bool IsModulePort                { get { return EngineObject.IsModulePort; }}
+    public bool IsOutModulePort             { get { return EngineObject.IsOutModulePort; }}
     public bool IsDynamicModulePort         { get { return EngineObject.IsDynamicModulePort; }}
     public bool IsStatePort                 { get { return EngineObject.IsStatePort; }}
     public bool IsInStatePort               { get { return EngineObject.IsInStatePort; }}

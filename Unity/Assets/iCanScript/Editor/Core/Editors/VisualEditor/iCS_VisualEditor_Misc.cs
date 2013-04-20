@@ -398,6 +398,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             }
                         }
                         if(port.IsOutDataPort) {
+							// FIXME: Removing & recreating ports looses user position.
                             iCS_EditorObject[] allInPorts= FindAllConnectedInDataPorts(port);
                             foreach(var inPort in allInPorts) {
                                 RemoveConnection(inPort);
