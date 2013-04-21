@@ -171,27 +171,27 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo conversion= null) {
-		iCS_EditorObject inNode= inPort.ParentNode;
-        iCS_EditorObject outNode= outPort.ParentNode;
-        iCS_EditorObject inParent= inNode.ParentNode;
-        
-        iCS_EditorObject outParent= outNode.ParentNode;
+		iCS_EditorObject inParentNode= inPort.ParentNode;
+        iCS_EditorObject outParentNode= outPort.ParentNode;
+        iCS_EditorObject inGrandParent= inParentNode.ParentNode;        
+        iCS_EditorObject outGrandParent= outParentNode.ParentNode;
+
         // No need to create module ports if both connected nodes are under the same parent.
-        if(inParent == outParent || inParent == outNode || inNode == outParent) {
+        if(inGrandParent == outGrandParent || inGrandParent == outParentNode || inParentNode == outGrandParent) {
             IStorage.SetSource(inPort, outPort, conversion);
             IStorage.OptimizeDataConnection(inPort, outPort);
             return;
         }
         // Create inPort if inParent is not part of the outParent hierarchy.
         bool inParentSeen= false;
-        for(iCS_EditorObject op= outParent.ParentNode; op != null; op= op.ParentNode) {
-            if(inParent == op) {
+        for(iCS_EditorObject op= outGrandParent.ParentNode; op != null; op= op.ParentNode) {
+            if(inGrandParent == op) {
                 inParentSeen= true;
                 break;
             }
         }
-        if(!inParentSeen && inParent != null) {
-            iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, inParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
+        if(!inParentSeen && inGrandParent != null) {
+            iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, inGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
             IStorage.SetSource(inPort, newPort, conversion);
 			SetBestPositionForAutocreatedPort(newPort, inPort.LayoutPosition, outPort.LayoutPosition);
             SetNewDataConnection(newPort, outPort);
@@ -200,14 +200,14 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         // Create outPort if outParent is not part of the inParent hierarchy.
         bool outParentSeen= false;
-        for(iCS_EditorObject ip= inParent.ParentNode; ip != null; ip= ip.ParentNode) {
-            if(outParent == ip) {
+        for(iCS_EditorObject ip= inGrandParent.ParentNode; ip != null; ip= ip.ParentNode) {
+            if(outGrandParent == ip) {
                 outParentSeen= true;
                 break;
             }
         }
-        if(!outParentSeen && outParent != null) {
-            iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, outParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+        if(!outParentSeen && outGrandParent != null) {
+            iCS_EditorObject newPort= IStorage.CreatePort(outPort.Name, outGrandParent.InstanceId, outPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
             IStorage.SetSource(newPort, outPort, conversion);
 			SetBestPositionForAutocreatedPort(newPort, inPort.LayoutPosition, outPort.LayoutPosition);
             SetNewDataConnection(inPort, newPort);
