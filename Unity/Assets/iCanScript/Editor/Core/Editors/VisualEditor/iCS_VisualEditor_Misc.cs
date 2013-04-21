@@ -173,9 +173,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo conversion= null) {
 		iCS_EditorObject inNode= inPort.ParentNode;
         iCS_EditorObject outNode= outPort.ParentNode;
-        iCS_EditorObject inParent= GetParentNode(inNode);
+        iCS_EditorObject inParent= inNode.ParentNode;
         
-        iCS_EditorObject outParent= GetParentNode(outNode);
+        iCS_EditorObject outParent= outNode.ParentNode;
         // No need to create module ports if both connected nodes are under the same parent.
         if(inParent == outParent || inParent == outNode || inNode == outParent) {
             IStorage.SetSource(inPort, outPort, conversion);
@@ -184,7 +184,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         // Create inPort if inParent is not part of the outParent hierarchy.
         bool inParentSeen= false;
-        for(iCS_EditorObject op= GetParentNode(outParent); op != null; op= GetParentNode(op)) {
+        for(iCS_EditorObject op= outParent.ParentNode; op != null; op= op.ParentNode) {
             if(inParent == op) {
                 inParentSeen= true;
                 break;
@@ -200,7 +200,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         }
         // Create outPort if outParent is not part of the inParent hierarchy.
         bool outParentSeen= false;
-        for(iCS_EditorObject ip= GetParentNode(inParent); ip != null; ip= GetParentNode(ip)) {
+        for(iCS_EditorObject ip= inParent.ParentNode; ip != null; ip= ip.ParentNode) {
             if(outParent == ip) {
                 outParentSeen= true;
                 break;
@@ -273,12 +273,6 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_EditorObject parentModule= edObj.Parent;
         for(; parentModule != null && !parentModule.IsModule; parentModule= parentModule.Parent);
         return parentModule;
-    }
-	// ----------------------------------------------------------------------
-    iCS_EditorObject GetParentNode(iCS_EditorObject edObj) {
-        iCS_EditorObject parentNode= edObj.Parent;
-        for(; parentNode != null && !parentNode.IsNode; parentNode= parentNode.Parent);
-        return parentNode;
     }
 	// ----------------------------------------------------------------------
     iCS_EditorObject GetValidParentNodeUnder(Vector2 point, iCS_ObjectTypeEnum objType, string objName) {
