@@ -276,4 +276,26 @@ public partial class iCS_EditorObject {
         if(cond == null) return new iCS_EditorObject[0];
         return ParentNode.BuildListOfChildPorts(cond);
     }
+    // ----------------------------------------------------------------------
+    // Builds a list of parent nodes.  The list is sorted from the top most
+    // parent to the bottom most leaf.
+    public iCS_EditorObject[] BuildListOfParentNodes() {
+        var result= new List<iCS_EditorObject>();
+        for(var parent= ParentNode; parent != null; parent= parent.ParentNode) {
+            result.Add(parent);
+        }
+        return P.reverse(result).ToArray();
+    }
+    // ----------------------------------------------------------------------
+    // Return the lowest shared parent between two objects.
+    public iCS_EditorObject GetCommonParent(iCS_EditorObject theOther) {
+        var l1= BuildListOfParentNodes();
+        var l2= theOther.BuildListOfParentNodes();
+        var commonParent= null;
+        for(int i= 0; i < l1.Length && i < l2.Length; ++i) {
+            if(l1[i] != l2[i]) break;
+            commonParent= l1[i];
+        }
+        return commonParent;
+    }
 }
