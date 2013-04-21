@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //  PORT ATTRIBUTES
@@ -48,7 +49,24 @@ public partial class iCS_EditorObject {
 			return Filter(c=> c.IsPort && c.SourceId == InstanceId).ToArray();
 		}
 	}
-	 
+	public iCS_EditorObject[] DestinationEndPoints {
+		get {
+			var result= new List<iCS_EditorObject>();
+			BuildDestinationEndPoints(ref result);
+			return result.ToArray();
+		}
+	}
+	private void BuildDestinationEndPoints(ref List<iCS_EditorObject> r) {
+		var destinations= Destinations;
+		if(destinations.Length == 0) {
+			r.Add(this);
+		} else {
+			foreach(var p in destinations) {
+				p.BuildDestinationEndPoints(ref r);
+			}
+		}
+	} 
+	
     // ======================================================================
 	// Port value attributes.
     public string InitialValueArchive {

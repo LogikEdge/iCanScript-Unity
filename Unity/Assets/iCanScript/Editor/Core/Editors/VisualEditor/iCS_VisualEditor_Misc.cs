@@ -303,7 +303,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		node.LayoutNode();
 		node.LayoutParentNodesUntilTop(iCS_AnimationControl.Always);
 		if(node.IsState) CleanupEntryState(node, oldParent);
-        CleanupConnections(node);
+//        CleanupConnections(node);
+        RebuildConnections(node);
     }
 	// ----------------------------------------------------------------------
 	void CleanupEntryState(iCS_EditorObject state, iCS_EditorObject prevParent) {
@@ -327,6 +328,48 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 	}
 	// ----------------------------------------------------------------------
+	void RebuildConnections(iCS_EditorObject node) {
+		node.ForEachChildPort(
+			p=> {
+				var sourceEndPoint= p.SourceEndPoint;
+				foreach(var dep in p.DestinationEndPoints) {
+					var commonParentNode= sourceEndPoint.GetCommonParent(dep);
+					Debug.Log("Rebuilding from: "+sourceEndPoint.Name+":"+sourceEndPoint.ParentNode.Name+" to "+
+					          dep.Name+":"+dep.ParentNode.Name+" Common Parent: "+commonParentNode.Name);
+					// Determine what needs to be rebuilt starting from the destination.
+					var destination= dep;
+					for(var parent= destination.ParentNode; parent != commonParentNode; parent= parent.ParentNode) {
+						if(destination.ParentNode != parent) {
+							var existingPort= FindPortWithSourceEndPoint(parent, sourceEndPoint);
+							if(existingPort != null) {
+								Debug.Log("Reusing port: "+existingPort.Name+" on "+parent.Name);
+							} else {
+								Debug.Log("Need to build port on: "+parent.Name);								
+							}
+						}
+						destination= destination.Source;
+					}
+					// Determine which ports to rebuild starting from the destination.
+					Debug.LogWarning("Need to cpmplete RebuildConnections");
+				}
+			}
+		);
+	}
+    // ----------------------------------------------------------------------
+	iCS_EditorObject FindPortWithSourceEndPoint(iCS_EditorObject node, iCS_EditorObject srcEP) {
+		iCS_EditorObject result= null;
+		node.UntilMatchingChild(
+			p=> {
+				if(p.IsPort && p.SourceEndPoint == srcEP) {
+					result= p;
+					return true;
+				}
+				return false;
+			}
+		);
+		return result;
+	}
+    // ----------------------------------------------------------------------
     void CleanupConnections(iCS_EditorObject node) {
         switch(node.ObjectType) {
             case iCS_ObjectTypeEnum.StateChart: {
