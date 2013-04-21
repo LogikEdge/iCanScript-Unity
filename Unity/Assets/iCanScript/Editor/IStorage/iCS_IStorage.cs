@@ -539,15 +539,11 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void DisconnectPort(iCS_EditorObject port) {
         SetSource(port, null);
-        Prelude.forEach(p=> SetSource(p, null), FindConnectedPorts(port));        
-    }
-    // ----------------------------------------------------------------------
-    public iCS_EditorObject[] FindConnectedPorts(iCS_EditorObject port) {
-        return Filter(p=> p.IsPort && p.SourceId == port.InstanceId).ToArray();
+        Prelude.forEach(p=> SetSource(p, null), port.Destinations);        
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject FindAConnectedPort(iCS_EditorObject port) {
-        iCS_EditorObject[] connectedPorts= FindConnectedPorts(port);
+        iCS_EditorObject[] connectedPorts= port.Destinations;
         return connectedPorts.Length != 0 ? connectedPorts[0] : null;
     }
     // ----------------------------------------------------------------------

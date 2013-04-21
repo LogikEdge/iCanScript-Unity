@@ -171,9 +171,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	// ----------------------------------------------------------------------
     void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo conversion= null) {
-		iCS_EditorObject inParentNode= inPort.ParentNode;
-        iCS_EditorObject outParentNode= outPort.ParentNode;
-        iCS_EditorObject inGrandParent= inParentNode.ParentNode;        
+		iCS_EditorObject inParentNode  = inPort.ParentNode;
+        iCS_EditorObject outParentNode = outPort.ParentNode;
+        iCS_EditorObject inGrandParent = inParentNode.ParentNode;        
         iCS_EditorObject outGrandParent= outParentNode.ParentNode;
 
         // No need to create module ports if both connected nodes are under the same parent.
@@ -344,7 +344,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                             if(p.IsInStatePort) {
                                 transitionModule= p.Source.Parent;
                             } else {
-                                iCS_EditorObject[] connectedPorts= IStorage.FindConnectedPorts(p);
+                                iCS_EditorObject[] connectedPorts= p.Destinations;
                                 foreach(var cp in connectedPorts) {
                                     if(cp.IsInTransitionPort) {
                                         transitionModule= cp.Parent;
@@ -419,7 +419,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         iCS_EditorObject tmpPort= inPort.Source;
         List<iCS_EditorObject> toDestroy= new List<iCS_EditorObject>();
         while(tmpPort != null && tmpPort != sourcePort) {
-            iCS_EditorObject[] connected= IStorage.FindConnectedPorts(tmpPort);
+            iCS_EditorObject[] connected= tmpPort.Destinations;
             if(connected.Length == 1) {
                 iCS_EditorObject t= tmpPort.Source;
                 toDestroy.Add(tmpPort);
@@ -442,7 +442,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     // ----------------------------------------------------------------------
     void FillConnectedInDataPorts(iCS_EditorObject outPort, List<iCS_EditorObject> result) {
         if(outPort == null) return;
-        iCS_EditorObject[] connectedPorts= IStorage.FindConnectedPorts(outPort);
+        iCS_EditorObject[] connectedPorts= outPort.Destinations;
         foreach(var port in connectedPorts) {
             if(port.IsDataPort) {
                 if(port.IsModulePort) {

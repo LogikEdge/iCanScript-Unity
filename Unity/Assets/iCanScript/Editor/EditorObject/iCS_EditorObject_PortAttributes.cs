@@ -34,7 +34,21 @@ public partial class iCS_EditorObject {
 		get { return SourceId != -1 ? myIStorage[SourceId] : null; }
 		set { SourceId= (value != null ? value.InstanceId : -1); }
 	}
-
+	public iCS_EditorObject SourceEndPoint {
+		get {
+			var iter= this;
+			for(var tmp= iter.Source; tmp != null; tmp= tmp.Source) {
+				iter= tmp;
+			}
+			return iter;
+		}
+	}
+	public iCS_EditorObject[] Destinations {
+		get {
+			return Filter(c=> c.IsPort && c.SourceId == InstanceId).ToArray();
+		}
+	}
+	 
     // ======================================================================
 	// Port value attributes.
     public string InitialValueArchive {
@@ -110,7 +124,7 @@ public partial class iCS_EditorObject {
 	        }
 	        // Propagate value for module port.
 	        if(IsModulePort) {
-	            iCS_EditorObject[] connectedPorts= myIStorage.FindConnectedPorts(this);
+	            iCS_EditorObject[] connectedPorts= Destinations;
 	            foreach(var cp in connectedPorts) {
 	                cp.RuntimePortValue= value;
 	            }

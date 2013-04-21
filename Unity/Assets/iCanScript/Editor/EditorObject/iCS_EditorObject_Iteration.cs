@@ -134,7 +134,29 @@ public partial class iCS_EditorObject {
 		}
 	}
 	    
-    // Recursive Iterations =================================================
+    // Global Iterations =================================================
+	public void ForEach(Action<iCS_EditorObject> fnc) {
+		FilterWith((_,__)=> true, fnc);
+	}
+	// ----------------------------------------------------------------------
+	public void FilterWith(Func<iCS_EditorObject,
+						        Action<iCS_EditorObject>,
+							    bool> cond,
+						   Action<iCS_EditorObject> fnc) {
+		P.filterWith(
+			c=> c != null && c.IsValid && cond(c,fnc),
+			fnc,
+			EditorObjects
+		);
+	}
+	// ----------------------------------------------------------------------
+	public List<iCS_EditorObject> Filter(Func<iCS_EditorObject,bool> cond) {
+		return P.filter(
+			c=> c != null && c.IsValid && cond(c),
+			EditorObjects
+		);
+	}
+	// ----------------------------------------------------------------------
     public void ForEachRecursiveDepthFirst(Action<iCS_EditorObject> fnc) {
         ForEachRecursiveDepthFirst((_,__)=> true, fnc);
     }
@@ -291,11 +313,19 @@ public partial class iCS_EditorObject {
     public iCS_EditorObject GetCommonParent(iCS_EditorObject theOther) {
         var l1= BuildListOfParentNodes();
         var l2= theOther.BuildListOfParentNodes();
-        var commonParent= null;
+        iCS_EditorObject commonParent= null;
         for(int i= 0; i < l1.Length && i < l2.Length; ++i) {
             if(l1[i] != l2[i]) break;
             commonParent= l1[i];
         }
         return commonParent;
     }
+    // ----------------------------------------------------------------------
+	public P.Tuple<iCS_EditorObject,iCS_EditorObject>[] Connections {
+		get {
+			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
+			var source= SourceEndPoint;
+			return result.ToArray();
+		}
+	}
 }

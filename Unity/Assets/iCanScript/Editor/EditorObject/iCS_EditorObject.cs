@@ -123,7 +123,10 @@ public partial class iCS_EditorObject {
 	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count; }
 	public bool	IsParentValid		{ get { return IsIdValid(ParentId); }}
 	public bool IsSourceValid		{ get { return IsIdValid(SourceId); }}
-	
+
+	public bool IsValid {
+		get { return IsIdValid(InstanceId); }
+	}
     public int InstanceId { 
 		get { return myId; }
 	}

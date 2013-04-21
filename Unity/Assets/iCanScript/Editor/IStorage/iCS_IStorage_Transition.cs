@@ -135,7 +135,7 @@ public partial class iCS_IStorage {
             UntilMatchingChildPort(transitionObject,
                 port=> {
                     if(port.IsOutDataPort && port.RuntimeType == typeof(bool)) {
-                        iCS_EditorObject[] connectedPorts= FindConnectedPorts(port);
+                        iCS_EditorObject[] connectedPorts= port.Destinations;
                         foreach(var p in connectedPorts) {
                             if(p.IsOutStatePort) {
                                 outStatePort= p;
@@ -156,7 +156,7 @@ public partial class iCS_IStorage {
         outStatePort= GetFromStatePort(outStatePort);
         if(outStatePort == null) return null; 
         // Find transition module.
-        iCS_EditorObject[] connectedPorts= FindConnectedPorts(outStatePort);
+        iCS_EditorObject[] connectedPorts= outStatePort.Destinations;
         iCS_EditorObject inStatePort= null;
         foreach(var port in connectedPorts) {
             if(port.IsInTransitionPort) inStatePort= port;
