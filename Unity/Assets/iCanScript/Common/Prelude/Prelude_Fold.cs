@@ -47,8 +47,8 @@ public static partial class Prelude {
 
     // ----------------------------------------------------------------------
     // Currying support.
-    public static Func<A[],B>         fold<A,B>(Func<A,B,B> f, B v)  { return function<Func<A,B,B>,B,A[],B>(fold,f,v); }
-    public static Func<B,Func<A[],B>> fold<A,B>(Func<A,B,B> f)       { return function<Func<A,B,B>,B,A[],B>(fold,f); }
+    public static Func<B[],A>         fold<A,B>(Func<A,B,A> f, A v)  { return function<Func<A,B,A>,A,B[],A>(fold,f,v); }
+    public static Func<A,Func<B[],A>> fold<A,B>(Func<A,B,A> f)       { return function<Func<A,B,A>,A,B[],A>(fold,f); }
     public static Func<B[],A>         foldl<B,A>(Func<A,B,A> f, A v) { return function<Func<A,B,A>,A,B[],A>(foldl,f,v); }
     public static Func<A,Func<B[],A>> foldl<B,A>(Func<A,B,A> f)      { return function<Func<A,B,A>,A,B[],A>(foldl,f); }
     public static Func<A[],B>         foldr<A,B>(Func<A,B,B> f, B v) { return function<Func<A,B,B>,B,A[],B>(foldr,f,v); }
