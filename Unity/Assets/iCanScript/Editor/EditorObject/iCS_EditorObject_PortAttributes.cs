@@ -65,6 +65,12 @@ public partial class iCS_EditorObject {
 				p.BuildDestinationEndPoints(ref r);
 			}
 		}
+	}
+	public bool IsPartOfConnection(iCS_EditorObject testedPort) {
+		if(this == testedPort) return true;
+		var src= Source;
+		if(src == null) return false;
+		return src.IsPartOfConnection(testedPort);
 	} 
 	
     // ======================================================================

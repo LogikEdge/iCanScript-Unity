@@ -345,27 +345,89 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	// ----------------------------------------------------------------------
 	void RebuildConnection(iCS_EditorObject srcEndPoint, iCS_EditorObject dstPort) {
+		// Have we completed rebuilding ... if so return.
+		if(dstPort == srcEndPoint) return;
 		var dstNode= dstPort.ParentNode;
-		var dstNodeParent= dstNode.ParentNode;
 		var commonParentNode= srcEndPoint.GetCommonParent(dstPort);
-		if(dstNodeParent != commonParentNode) {
-			// Determine what needs to be rebuilt starting from the destination.
-			var existingPort= FindPortWithSourceEndPoint(dstNodeParent, srcEndPoint);
+		if(dstNode == commonParentNode) {
+			// Rebuild moving down from the common parent towards the source port.
+			var newDstNode= srcEndPoint.ParentNode;
+			while(newDstNode != dstNode && newDstNode.ParentNode != dstNode) {
+				newDstNode= newDstNode.ParentNode;
+			}
+			var existingPort= FindPortWithSourceEndPoint(newDstNode, srcEndPoint);
 			if(existingPort != null) {
-				Debug.Log("Reusing port: "+existingPort.Name+" on "+dstNodeParent.Name);
-				dstPort.Source= existingPort;
+				var prevSource= dstPort.Source;
+				if(prevSource != existingPort) {
+					dstPort.Source= existingPort;
+					if(prevSource.IsDynamicModulePort && !dstPort.IsPartOfConnection(prevSource)) {
+						CleanupHangingConnection(prevSource);
+					}					
+				}
 				RebuildConnection(srcEndPoint, existingPort);
 			} else {
-				Debug.Log("Creating port: "+dstPort.Name+" on "+dstNodeParent.Name);
+	            iCS_EditorObject newPort= IStorage.CreatePort(dstPort.Name, newDstNode.InstanceId, dstPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+				SetBestPositionForAutocreatedPort(newPort, srcEndPoint.LayoutPosition, dstPort.LayoutPosition);
+				newPort.Source= dstPort.Source;
+				dstPort.Source= newPort;
+				RebuildConnection(srcEndPoint, newPort);				
+			}			
+			return;
+		}
+		var dstNodeParent= dstNode.ParentNode;
+		if(dstNodeParent == commonParentNode) {
+			// Rebuild traversing from moving upwards to downwords.
+			var newDstNode= srcEndPoint.ParentNode;
+			while(newDstNode != commonParentNode && newDstNode.ParentNode != commonParentNode) {
+				newDstNode= newDstNode.ParentNode;
+			}
+			var existingPort= FindPortWithSourceEndPoint(newDstNode, srcEndPoint);
+			if(existingPort != null) {
+				var prevSource= dstPort.Source;
+				if(prevSource != existingPort) {
+					dstPort.Source= existingPort;
+					if(prevSource.IsDynamicModulePort && !dstPort.IsPartOfConnection(prevSource)) {
+						CleanupHangingConnection(prevSource);
+					}					
+				}
+				RebuildConnection(srcEndPoint, existingPort);
+			} else {
+	            iCS_EditorObject newPort= IStorage.CreatePort(dstPort.Name, newDstNode.InstanceId, dstPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
+				SetBestPositionForAutocreatedPort(newPort, srcEndPoint.LayoutPosition, dstPort.LayoutPosition);
+				newPort.Source= dstPort.Source;
+				dstPort.Source= newPort;
+				RebuildConnection(srcEndPoint, newPort);				
+			}
+			return;
+		} else {
+			// Rebuilding moving up from the destination port towards the common parent.
+			var existingPort= FindPortWithSourceEndPoint(dstNodeParent, srcEndPoint);
+			if(existingPort != null) {
+				var prevSource= dstPort.Source;
+				if(prevSource != existingPort) {
+					dstPort.Source= existingPort;
+					if(prevSource.IsDynamicModulePort && !dstPort.IsPartOfConnection(prevSource)) {
+						CleanupHangingConnection(prevSource);
+					}					
+				}
+				RebuildConnection(srcEndPoint, existingPort);
+			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(dstPort.Name, dstNodeParent.InstanceId, dstPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
 				SetBestPositionForAutocreatedPort(newPort, srcEndPoint.LayoutPosition, dstPort.LayoutPosition);
 				newPort.Source= dstPort.Source;
 				dstPort.Source= newPort;
 				RebuildConnection(srcEndPoint, newPort);
 			}			
-		} else {
-			// Determine which ports to rebuild starting from the destination.
-			Debug.LogWarning("Need to cpmplete RebuildConnections");					
+		}
+	}
+    // ----------------------------------------------------------------------
+	void CleanupHangingConnection(iCS_EditorObject port) {
+		if(port.Destinations.Length == 0) {
+			var src= port.Source;
+			IStorage.DestroyInstance(port);
+			if(src != null) {
+				CleanupHangingConnection(src);
+			}
 		}
 	}
 #endif
