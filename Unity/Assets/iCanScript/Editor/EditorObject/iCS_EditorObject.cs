@@ -120,7 +120,7 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // High-Level Properties
     // ----------------------------------------------------------------------
-	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count && id < EngineObjects.Count; }
+	public bool IsIdValid(int id)	{ return id >= 0 && id < EditorObjects.Count && id < EngineObjects.Count && EditorObjects[id] != null; }
 	public bool	IsParentValid		{ get { return IsIdValid(ParentId); }}
 	public bool IsSourceValid		{ get { return IsIdValid(SourceId); }}
 

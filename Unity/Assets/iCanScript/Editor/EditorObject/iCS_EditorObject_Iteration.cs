@@ -11,14 +11,14 @@ public partial class iCS_EditorObject {
 	// Child Queries ========================================================
 	public bool HasChildNode() {
         foreach(var childId in Children) {
-            if(EditorObjects[childId].IsNode) return true;
+            if(IsIdValid(childId) && EditorObjects[childId].IsNode) return true;
         }
 		return false;
 	}
     // ----------------------------------------------------------------------
 	public bool HasChildPort() {
         foreach(var childId in Children) {
-            if(EditorObjects[childId].IsPort) return true;
+            if(IsIdValid(childId) && EditorObjects[childId].IsPort) return true;
         }
 		return false;
 	}
@@ -34,17 +34,14 @@ public partial class iCS_EditorObject {
     public void ForEachChild(Action<iCS_EditorObject> fnc) {
         foreach(var childId in Children) {
             if(IsIdValid(childId)) {
-                var c= EditorObjects[childId];
-                if(c != null) {
-                    fnc(c);                                    
-                }
+                fnc(EditorObjects[childId]);
             }
         }
     }
     // ----------------------------------------------------------------------
     public bool UntilMatchingChild(Func<iCS_EditorObject,bool> fnc) {
         foreach(var childId in Children) {
-            if(fnc(EditorObjects[childId])) return true;
+            if(IsIdValid(childId) && fnc(EditorObjects[childId])) return true;
         }
         return false;
     }
@@ -174,7 +171,7 @@ public partial class iCS_EditorObject {
         if(!cond(this, fnc)) return;
         // First iterate through all children ...
         foreach(var childId in Children) {
-			if(childId != -1) {
+			if(IsIdValid(childId)) {
 				var child= EditorObjects[childId];
 				if(child != null) {
 		            child.ForEachRecursiveDepthFirst(cond, fnc);									
@@ -203,7 +200,7 @@ public partial class iCS_EditorObject {
         fnc(this);
         // ... then iterate through all children.
         foreach(var childId in Children) {
-			if(childId != -1) {
+			if(IsIdValid(childId)) {
 				var child= EditorObjects[childId];
 				if(child != null) {
 		            child.ForEachRecursiveDepthLast(cond, fnc);									
@@ -230,7 +227,7 @@ public partial class iCS_EditorObject {
                                                 Action<iCS_EditorObject> fnc) {
         // Iterate through all children ...
         foreach(var childId in Children) {
-			if(childId != -1) {
+			if(IsIdValid(childId)) {
 				var child= myIStorage[childId];
 				if(child != null) {
 		            child.ForEachRecursiveDepthFirst(cond, fnc);
@@ -257,7 +254,7 @@ public partial class iCS_EditorObject {
                                                Action<iCS_EditorObject> fnc) {
         // Iterate through all children.
         foreach(var childId in Children) {
-			if(childId != -1) {
+			if(IsIdValid(childId)) {
 				var child= myIStorage[childId];
 				if(child != null) {
             		child.ForEachRecursiveDepthLast(cond, fnc);
