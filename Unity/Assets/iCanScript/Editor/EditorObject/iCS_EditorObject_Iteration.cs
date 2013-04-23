@@ -33,7 +33,12 @@ public partial class iCS_EditorObject {
     // ----------------------------------------------------------------------
     public void ForEachChild(Action<iCS_EditorObject> fnc) {
         foreach(var childId in Children) {
-            fnc(EditorObjects[childId]);
+            if(IsIdValid(childId)) {
+                var c= EditorObjects[childId];
+                if(c != null) {
+                    fnc(c);                                    
+                }
+            }
         }
     }
     // ----------------------------------------------------------------------

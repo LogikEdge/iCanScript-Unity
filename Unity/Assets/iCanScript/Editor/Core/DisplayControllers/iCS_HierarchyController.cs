@@ -100,8 +100,15 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
                 ++myTreeSize;
                 Prelude.until(
                     myStorage.IsValid,
-                    id=> { filterFlags[id]= true; return myStorage.EditorObjects[id].ParentId; },
-                    myStorage.EditorObjects[i].ParentId
+                    id=> {
+                        if(myStorage.IsIdValid(id)) {
+                            filterFlags[id]= true;
+                            return myStorage.EditorObjects[id].ParentId;
+                        }
+                        filterFlags[id]= false;
+                        return -1;
+                    },
+                    myStorage.IsIdValid(i) ? myStorage.EditorObjects[i].ParentId : -1
                 );
             }
         }
@@ -135,7 +142,7 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
 	}
     // ---------------------------------------------------------------------------------
     bool FilterIn(iCS_EditorObject eObj) {
-        if(eObj == null) return false;
+        if(eObj == null || myStorage.IsIdValid(eObj.InstanceId)) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         if(eObj.Name.ToUpper().IndexOf(mySearchString.ToUpper()) != -1) return true;
         return false;

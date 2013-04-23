@@ -120,7 +120,7 @@ public partial class iCS_IStorage {
 	}
     // ----------------------------------------------------------------------
     public bool IsIdValid(int id) {
-		return id >= 0 && id < EditorObjects.Count;
+		return id >= 0 && id < EngineObjects.Count;
 	}
 	public bool IsValid(int id) {
 		return IsIdValid(id) && EditorObjects[id] != null;
