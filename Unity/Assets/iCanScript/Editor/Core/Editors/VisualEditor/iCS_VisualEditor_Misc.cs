@@ -439,7 +439,16 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	}
 	// ----------------------------------------------------------------------
 	void RebuildStateConnection(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
-        Debug.LogWarning("Need to reconnect transitions");	    
+		var commonParent= fromStatePort.GetCommonParent(toStatePort);
+		if(commonParent == null) {
+			Debug.LogWarning("iCanScript: Unable to find common parent after relocating state !!!");
+			return;
+		}
+		var transitionModule= IStorage.GetTransitionModule(toStatePort);
+		if(transitionModule == null) return;
+		if(transitionModule.ParentNode == commonParent) return;
+		ChangeParent(transitionModule, commonParent);
+        transitionModule.SetAnchorAndLayoutRect(IStorage.ProposeTransitionModulePosition(transitionModule));
 	}
 #endif
     // ----------------------------------------------------------------------
