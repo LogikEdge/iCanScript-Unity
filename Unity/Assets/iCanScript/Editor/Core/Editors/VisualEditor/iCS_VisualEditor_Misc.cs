@@ -336,15 +336,20 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 	void RebuildConnectionsFor(iCS_EditorObject node) {
 		node.ForEachChildPort(
 			p=> {
-				var srcEndPoint= p.SourceEndPoint;
-				foreach(var dep in p.DestinationEndPoints) {
-					RebuildConnection(srcEndPoint, dep);
-				}
+			    if(p.IsDataPort) {
+    				var srcEndPoint= p.SourceEndPoint;
+    				foreach(var dep in p.DestinationEndPoints) {
+    					RebuildDataConnection(srcEndPoint, dep);
+    				}			        
+			    }
+			    if(p.IsStatePort) {
+			        Debug.LogWarning("Nedd to reconnect transitions");
+			    }
 			}
 		);
 	}
 	// ----------------------------------------------------------------------
-	void RebuildConnection(iCS_EditorObject srcEndPoint, iCS_EditorObject dstPort) {
+	void RebuildDataConnection(iCS_EditorObject srcEndPoint, iCS_EditorObject dstPort) {
 		// Have we completed rebuilding ... if so return.
 		if(dstPort == srcEndPoint) return;
 		var dstNode= dstPort.ParentNode;
@@ -364,13 +369,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						CleanupHangingConnection(prevSource);
 					}					
 				}
-				RebuildConnection(srcEndPoint, existingPort);
+				RebuildDataConnection(srcEndPoint, existingPort);
 			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(dstPort.Name, newDstNode.InstanceId, dstPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
 				SetBestPositionForAutocreatedPort(newPort, srcEndPoint.LayoutPosition, dstPort.LayoutPosition);
 				newPort.Source= dstPort.Source;
 				dstPort.Source= newPort;
-				RebuildConnection(srcEndPoint, newPort);				
+				RebuildDataConnection(srcEndPoint, newPort);				
 			}			
 			return;
 		}
@@ -390,13 +395,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						CleanupHangingConnection(prevSource);
 					}					
 				}
-				RebuildConnection(srcEndPoint, existingPort);
+				RebuildDataConnection(srcEndPoint, existingPort);
 			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(dstPort.Name, newDstNode.InstanceId, dstPort.RuntimeType, iCS_ObjectTypeEnum.OutDynamicModulePort);
 				SetBestPositionForAutocreatedPort(newPort, srcEndPoint.LayoutPosition, dstPort.LayoutPosition);
 				newPort.Source= dstPort.Source;
 				dstPort.Source= newPort;
-				RebuildConnection(srcEndPoint, newPort);				
+				RebuildDataConnection(srcEndPoint, newPort);				
 			}
 			return;
 		} else {
@@ -410,13 +415,13 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 						CleanupHangingConnection(prevSource);
 					}					
 				}
-				RebuildConnection(srcEndPoint, existingPort);
+				RebuildDataConnection(srcEndPoint, existingPort);
 			} else {
 	            iCS_EditorObject newPort= IStorage.CreatePort(dstPort.Name, dstNodeParent.InstanceId, dstPort.RuntimeType, iCS_ObjectTypeEnum.InDynamicModulePort);
 				SetBestPositionForAutocreatedPort(newPort, srcEndPoint.LayoutPosition, dstPort.LayoutPosition);
 				newPort.Source= dstPort.Source;
 				dstPort.Source= newPort;
-				RebuildConnection(srcEndPoint, newPort);
+				RebuildDataConnection(srcEndPoint, newPort);
 			}			
 		}
 	}
