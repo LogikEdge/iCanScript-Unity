@@ -258,40 +258,34 @@ public partial class iCS_IStorage {
         return name;
     }
     // ----------------------------------------------------------------------
-    public Rect ProposeTransitionModulePosition(iCS_EditorObject module) {
-        Rect nodePos= module.LayoutRect;
+    public Vector2 ProposeTransitionModulePosition(iCS_EditorObject module) {
         iCS_EditorObject fromStatePort= GetFromStatePort(module);
         iCS_EditorObject toStatePort= GetToStatePort(module);
-        if(toStatePort != null) {
-            iCS_EditorObject parent= module.Parent;
-            iCS_ConnectionParams cp= new iCS_ConnectionParams(toStatePort, fromStatePort, this);
-            Vector2 distance= cp.End-cp.Start;
-            Vector2 delta= 0.5f*iCS_EditorConfig.MarginSize*(distance).normalized;
-            int steps= (int)(distance.magnitude/delta.magnitude);
-            Vector2 pos= cp.Start;
-            bool minFound= false;
-            Vector2 minPos= Vector2.zero;
-            Vector2 maxPos= Vector2.zero;
-            for(int i= 0; i < steps; ++i, pos+= delta) {
-                Vector2 point= iCS_ConnectionParams.ClosestPointBezier(pos, cp.Start, cp.End, cp.StartTangent, cp.EndTangent);
-                if(GetNodeAt(point) == parent) {
-                    if(!minFound) {
-                        minFound= true;
-                        minPos= point;
-                    }
-                    maxPos= point;
-                }
-            }
-            Vector2 newCenter= 0.5f*(minPos+maxPos);
-            newCenter= iCS_ConnectionParams.ClosestPointBezier(newCenter, cp.Start, cp.End, cp.StartTangent, cp.EndTangent);
-            return new Rect(newCenter.x-0.5f*nodePos.width, newCenter.y-0.5f*nodePos.height, nodePos.width, nodePos.height);                            
-        }
-        return nodePos;
+		if(toStatePort == null || fromStatePort ==null) return module.LayoutPosition;
+        iCS_EditorObject parent= module.Parent;
+		var startPos= fromStatePort.LayoutPosition;
+		var endPos= toStatePort.LayoutPosition;
+		var delta= endPos-startPos;
+		var marginSize= iCS_EditorConfig.MarginSize; if(marginSize < 5) marginSize=5;
+		Vector2 step= 0.5f*marginSize*(delta).normalized;
+		var minPos= startPos;
+		var maxPos= endPos;
+		for(; Vector2.Distance(minPos, endPos) >= marginSize; minPos+= step) {
+			if(GetNodeAt(minPos) == parent) {
+				break;
+			}
+		}
+		for(maxPos= minPos+step; Vector2.Distance(maxPos, endPos) >= marginSize; maxPos+= step) {
+			if(GetNodeAt(maxPos) != parent) {
+				break;
+			}
+		}
+		return 0.5f*(minPos+maxPos);
     }
     // ----------------------------------------------------------------------
     public void LayoutTransitionModule(iCS_EditorObject module) {
         GetTransitionName(module);
-        module.SetAnchorAndLayoutRect(ProposeTransitionModulePosition(module));
+        module.SetAnchorAndLayoutPosition(ProposeTransitionModulePosition(module));
     }
     // ----------------------------------------------------------------------
     public Vector2 GetTransitionModuleVector(iCS_EditorObject module) {

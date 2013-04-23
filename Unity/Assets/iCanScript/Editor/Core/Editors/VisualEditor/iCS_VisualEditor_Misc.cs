@@ -448,7 +448,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		if(transitionModule == null) return;
 		if(transitionModule.ParentNode == commonParent) return;
 		ChangeParent(transitionModule, commonParent);
-        transitionModule.SetAnchorAndLayoutRect(IStorage.ProposeTransitionModulePosition(transitionModule));
+		IStorage.LayoutTransitionModule(transitionModule);
 	}
 #endif
     // ----------------------------------------------------------------------
