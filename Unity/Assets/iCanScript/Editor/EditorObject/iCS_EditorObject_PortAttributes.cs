@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 //  PORT ATTRIBUTES
@@ -13,6 +14,7 @@ public partial class iCS_EditorObject {
 
     // ======================================================================
 	// Port source related attributes.
+	// ----------------------------------------------------------------------
     public int PortIndex {
 		get { return EngineObject.PortIndex; }
 		set {
@@ -22,6 +24,7 @@ public partial class iCS_EditorObject {
 			IsDirty= true;
 		}
 	}
+	// ----------------------------------------------------------------------
     public int SourceId {
 		get { return EngineObject.SourceId; }
 		set {
@@ -31,10 +34,12 @@ public partial class iCS_EditorObject {
 			IsDirty= true;
 		}
 	}
+	// ----------------------------------------------------------------------
     public iCS_EditorObject Source {
 		get { return SourceId != -1 ? myIStorage[SourceId] : null; }
 		set { SourceId= (value != null ? value.InstanceId : -1); }
 	}
+	// ----------------------------------------------------------------------
 	public iCS_EditorObject SourceEndPoint {
 		get {
 			var iter= this;
@@ -44,11 +49,13 @@ public partial class iCS_EditorObject {
 			return iter;
 		}
 	}
+	// ----------------------------------------------------------------------
 	public iCS_EditorObject[] Destinations {
 		get {
 			return Filter(c=> c.IsPort && c.SourceId == InstanceId).ToArray();
 		}
 	}
+	// ----------------------------------------------------------------------
 	public iCS_EditorObject[] DestinationEndPoints {
 		get {
 			var result= new List<iCS_EditorObject>();
@@ -66,6 +73,18 @@ public partial class iCS_EditorObject {
 			}
 		}
 	}
+	// ----------------------------------------------------------------------
+	public P.Tuple<iCS_EditorObject,iCS_EditorObject>[] Connections {
+		get {
+			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
+			var source= SourceEndPoint;
+			foreach(var destination in source.DestinationEndPoints) {
+				result.Add(new P.Tuple<iCS_EditorObject,iCS_EditorObject>(source, destination));
+			}			        
+			return result.ToArray();
+		}
+	}
+	// ----------------------------------------------------------------------
 	public bool IsPartOfConnection(iCS_EditorObject testedPort) {
 		if(this == testedPort) return true;
 		var src= Source;

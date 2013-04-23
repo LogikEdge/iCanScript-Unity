@@ -343,7 +343,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     				}			        
 			    }
 			    if(p.IsStatePort) {
-			        Debug.LogWarning("Nedd to reconnect transitions");
+			        var fromState= IStorage.GetFromStatePort(p);
+			        var toState  = IStorage.GetToStatePort(p);
+			        RebuildStateConnection(fromState, toState);
 			    }
 			}
 		);
@@ -434,6 +436,10 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 				CleanupHangingConnection(src);
 			}
 		}
+	}
+	// ----------------------------------------------------------------------
+	void RebuildStateConnection(iCS_EditorObject fromStatePort, iCS_EditorObject toStatePort) {
+        Debug.LogWarning("Need to reconnect transitions");	    
 	}
 #endif
     // ----------------------------------------------------------------------

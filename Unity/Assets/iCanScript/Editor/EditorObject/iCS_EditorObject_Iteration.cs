@@ -322,12 +322,4 @@ public partial class iCS_EditorObject {
         }
         return commonParent;
     }
-    // ----------------------------------------------------------------------
-	public P.Tuple<iCS_EditorObject,iCS_EditorObject>[] Connections {
-		get {
-			var result= new List<P.Tuple<iCS_EditorObject,iCS_EditorObject> >();
-			var source= SourceEndPoint;
-			return result.ToArray();
-		}
-	}
 }
