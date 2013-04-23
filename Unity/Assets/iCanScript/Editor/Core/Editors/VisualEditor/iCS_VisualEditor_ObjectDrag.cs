@@ -93,7 +93,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             } else {
                 DragObject= node;
                 DragStartDisplayPosition= node.LayoutPosition;                                                                    
-                if(IsFloatingKeyDown) {
+                if(IsFloatingKeyDown && !node.IsTransitionModule) {
                     IStorage.RegisterUndo("Node Relocation");
                     DragType= DragTypeEnum.NodeRelocation;                                        
                     DragStartAnchorPosition= node.AnchorPosition;
