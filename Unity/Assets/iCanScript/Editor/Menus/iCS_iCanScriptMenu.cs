@@ -49,4 +49,8 @@ public static class iCS_iCanScriptMenu {
     public static void ReportBug() {
         Application.OpenURL("http://www.disruptive-sw.com/support/customer_request");
     }
+    [MenuItem("iCanScript/Check for Updates",false,61)]
+    public static void CheckForUpdate() {
+        iCS_InstallerMgr.CheckForUpdates();
+    }
 }
