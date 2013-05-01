@@ -1,0 +1,59 @@
+<?xml version='1.0'?>
+<Obfuscator>
+	<Var name="InPath" value="./Obfuscar_Input" />
+	<Var name="OutPath" value="./Obfuscar_Output" />
+	<Var name="ReuseNames" value="true" />
+	
+	<Module file="$(InPath)/iCanScriptEngine.dll">       																											
+		<!-- skip type that Unity needs to see -->                                                      
+		<SkipType name="iCS_Behaviour" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                       
+		<SkipType name="iCS_Library" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         
+		<SkipType name="iCS_Storage" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         
+		<SkipType name="iCS_UserPreferences" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                 
+		<SkipType name="iCS_UserPreferences/*" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>               
+		                                                                                                                                                            
+		<!-- skip custom attributes -->                                                                                 
+		<SkipType name="iCS_ClassAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_ConversionAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_FunctionAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_InOutPortAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_InPortAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_OutPortAttribute" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+
+		<!-- No intellectual property -->
+		<!--<SkipType name="iCS_EditorConfig" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>-->                         		                                                                                                                                                            
+		<!--<SkipType name="iCS_EngineStrings" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>-->                         		                                                                                                                                                            
+
+		<!-- Needed but unknow why -->
+		<SkipType name="iCS_Coder" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                         		                                                                                                                                                            
+		<SkipType name="iCS_EditorObject" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                   
+		<SkipType name="iCS_EditorObject/*" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                   
+                                                                                                                                                                    
+		<!-- skip those types that need to expose the Add/Remove child methods -->                                                                                 
+		<SkipType name="iCS_Module"     skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      
+		<SkipType name="iCS_StateChart" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      
+		<SkipType name="iCS_State"      skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      
+		<SkipType name="iCS_Dispatcher" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>                      
+		<SkipType name="iCS_ParallelDispatcher" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>              
+		<SkipType name="iCS_NoWaitSequencialDispatcher" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>      
+		<SkipType name="iCS_WaitingSequencialDispatcher" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>     
+		<SkipType name="iCS_VerifyTransitions" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>               
+
+		<!-- Needed by function nodes -->
+		<SkipType name="Math3D" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		                                                                                                                                                            
+	</Module>                                                                                                                                                       
+
+	<Module file="$(InPath)/iCanScriptEditor.dll">
+			
+		<!-- skip type that Unity needs to see -->
+		<SkipType name="iCS_Editor" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		<SkipType name="iCS_ClassWizard" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		<SkipType name="iCS_Inspector" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		<SkipType name="iCS_GuiUtilities" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		<SkipType name="iCS_Menu" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+		<SkipType name="iCS_Reflection" skipMethods="true" skipFields="true" skipProperties="true" skipStringHiding="true" skipEvents="true"/>
+
+	</Module>
+	
+</Obfuscator>

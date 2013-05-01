@@ -1,0 +1,5 @@
+/target:library
+/out:iCanScriptEngine.dll
+/reference:/Applications/Unity/Unity.app/Contents/Frameworks/Managed/UnityEngine.dll
+
+
