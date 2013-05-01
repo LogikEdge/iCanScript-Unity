@@ -1,6 +1,9 @@
 .DS_Store
 */.DS_Store
 Temp/
+
+WebSite/
+
 Unity/Library/assetDatabase3
 Unity/Library/AssetImportState
 Unity/Library/AssetServerCacheV3
