@@ -20,6 +20,7 @@ public static class JSON {
     }
     // -----------------------------------------------------------------------------
     public static JValue ParseValue(string s, ref int c) {
+        RemoveWhiteSpaces(s, ref c);
         return null;
     }
     // -----------------------------------------------------------------------------
@@ -65,13 +66,20 @@ public static class JSON {
 // =============================================================================
 // JSON value
 // -----------------------------------------------------------------------------
-public class JValue {}
-public class JNull      : JValue {}
-public class JBool      : JValue { public bool value; }
-public class JString    : JValue { public string value; }
-public class JNumber    : JValue { public float value; }
-public class JArray     : JValue { public List<JValue> value= new List<JValue>(); }
-public class JComposite : JValue { public List<JNameValuePair> value= new List<JNameValuePair>(); }
+public class JValue {
+    public bool isBool   { get { return this is JBool; }}
+    public bool isNull   { get { return this is JNull; }}
+    public bool isString { get { return this is JString; }}
+    public bool isNumber { get { return this is JNumber; }}
+    public bool isArray  { get { return this is JArray; }}
+    public bool isObject { get { return this is JObject; }}
+}
+public class JNull   : JValue {}
+public class JBool   : JValue { public bool value;   public JBool(bool v) { value= v; }}
+public class JString : JValue { public string value; public JString(string v) { value= v; }}
+public class JNumber : JValue { public float value;  public JNumber(float v) { value= v; }}
+public class JArray  : JValue { public List<JValue> value= new List<JValue>(); }
+public class JObject : JValue { public List<JNameValuePair> value= new List<JNameValuePair>(); }
 
 // =============================================================================
 // JSON name / value pair
