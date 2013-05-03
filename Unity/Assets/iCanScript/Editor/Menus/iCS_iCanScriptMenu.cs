@@ -59,7 +59,7 @@ public static class iCS_iCanScriptMenu {
 										"Ok");			
 			return;
 		}
-        if(isLatest.maybe(false, P.id)) {
+        if(isLatest.Value) {
 			EditorUtility.DisplayDialog("You have the latest version of iCanScript!",
 										 "The version installed is: v"+iCS_EditorConfig.VersionId+".\nNo updates are available.",
 										 "Ok");
