@@ -36,11 +36,15 @@ public static class iCS_EditorConfig {
     public const float EditorWindowMinY= EditorWindowMarginSize + EditorWindowToolbarHeight;
 
     // ======================================================================
+	// Release info
+	public static string VersionId {
+		get {
+			return ""+iCS_Config.MajorVersion+"."+iCS_Config.MinorVersion+"."+iCS_Config.BugFixVersion;	
+		}		
+	}
 	public static string VersionStr {
 		get {
-			return "Version "+iCS_Config.MajorVersion+"."+
-			                  iCS_Config.MinorVersion+"."+
-							  iCS_Config.BugFixVersion;
+			return "Version "+VersionId;
 		}
 	}
     public const string VersionLabel= "(RC #1)";

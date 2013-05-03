@@ -27,20 +27,16 @@ public static class iCS_WebUtils {
         form.AddField("minor", iCS_Config.MinorVersion);
         form.AddField("bugFix", iCS_Config.BugFixVersion);
         form.AddField("build", 0);
-        var download = WebRequest( iCS_WebConfig.LatestReleaseIdScript, form );
+//		var url= iCS_WebConfig.WebService_Versions;
+		var url= "www.infaunier.com/scripts/version.pl";
+        var download = WebRequest(url, form);
         if(!String.IsNullOrEmpty(download.error)) {
+			Debug.Log("URL: "+url);
+			Debug.Log("Error trying to access Version: "+download.error);
             return null;
         }
-        var xmlDoc= new XmlDocument();
-        xmlDoc.Load(download.text);
-        var parentNode= xmlDoc.GetElementsByTagName("version");
-        string version= null;
-        foreach (XmlNode childrenNode in parentNode)
-        {
-            version= childrenNode.SelectSingleNode("//version").Value;
-        }
-//        return version;
-        return download.text;
+        string version= download.text;
+        return version;
     }
 
     // ----------------------------------------------------------------------
@@ -50,7 +46,7 @@ public static class iCS_WebUtils {
         if(String.IsNullOrEmpty(latestVersion)) {
             return true;
         }
-        var currentVersion= "v"+iCS_Config.MajorVersion+"."+iCS_Config.MinorVersion+"."+iCS_Config.BugFixVersion;
+        var currentVersion= "v"+iCS_EditorConfig.VersionId;
         return currentVersion == latestVersion;
     }
 }
