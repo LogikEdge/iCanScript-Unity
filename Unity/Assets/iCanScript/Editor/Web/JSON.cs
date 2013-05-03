@@ -106,9 +106,10 @@ public static class JSON {
         if(eof(s,i)) {
             throw new SystemException("JSON: eof seen parsing object.");
         }
-        var attributes= new List<JNameValuePair>();
+        var attributes= new Dictionary<string,JValue>();
         while(s[i] != '}') {
-            attributes.Add(ParseNameValuePair(s, ref i));
+            var nv= ParseNameValuePair(s, ref i);
+            attributes.Add(nv.name, nv.value);
             RemoveWhiteSpaces(s, ref i);
             if(eof(s,i)) {
                 throw new SystemException("JSON: eof seen parsing object.");
@@ -166,17 +167,29 @@ public class JValue {
     public bool isArray  { get { return this is JArray; }}
     public bool isObject { get { return this is JObject; }}
 }
-public class JNull   : JValue {}
+public class JNull   : JValue { public static JNull identity= new JNull(); }
 public class JBool   : JValue { public bool value;   public JBool(bool v) { value= v; }}
 public class JString : JValue { public string value; public JString(string v) { value= v; }}
 public class JNumber : JValue { public float value;  public JNumber(float v) { value= v; }}
 public class JArray  : JValue {
     public List<JValue> value= new List<JValue>();
     public JArray(List<JValue> lst) { value= lst; }
+    public JValue GetValueFor(int idx) {
+        if(idx < 0 || idx >= value.Count) {
+            return JNull.identity;
+        }
+        return value[idx];
+    }
 }
 public class JObject : JValue {
-    public List<JNameValuePair> value= new List<JNameValuePair>();
-    public JObject(List<JNameValuePair> lst) { value= lst; }
+    public Dictionary<string, JValue> value= new Dictionary<string, JValue>();
+    public JObject(Dictionary<string, JValue> dict) { value= dict; }
+    public JValue GetValueFor(string name) {
+        if(value.ContainsKey(name)) {
+            return value[name];
+        }
+        return JNull.identity;
+    }
 }
 
 // =============================================================================

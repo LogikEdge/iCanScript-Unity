@@ -32,7 +32,6 @@ public static class iCS_WebUtils {
     // Returns the version string of the latest available release.
     public static string GetLatestReleaseId() {
 		var url= iCS_WebConfig.WebService_Versions;
-//		var url= "www.infaunier.com/scripts/version.pl";
         var download = WebRequest(url);
         if(!String.IsNullOrEmpty(download.error)) {
 			Debug.Log("URL: "+url);
@@ -41,10 +40,11 @@ public static class iCS_WebUtils {
         }
         int idx= 0;
         JNameValuePair p= JSON.ParseNameValuePair(download.text, ref idx);
-        var js= p.value as JObject;
-        var vp= js.value[0].value as JString;
-        string version= vp.value;
-//        string version= download.text;
+        var versions= p.value as JObject;
+        if(!versions.isObject) return null;
+        var vp= versions.GetValueFor("iCanScript");
+        if(!vp.isString) return null;
+        string version= (vp as JString).value;
         return version;
     }
 
