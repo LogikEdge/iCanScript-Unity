@@ -78,14 +78,50 @@ public static class JSON {
     // -----------------------------------------------------------------------------
     static JValue ParseArray(string s, ref int i) {
         MustBeChar(s, ref i, '[');
-        Debug.LogWarning("JSON: parsing array not yet implemented !!!");
-        return new JNull();        
+        RemoveWhiteSpaces(s, ref i);
+        if(eof(s,i)) {
+            throw new SystemException("JSON: eof seen parsing array.");
+        }
+        var values= new List<JValue>();
+        while(s[i] != ']') {
+            values.Add(ParseValue(s, ref i));
+            RemoveWhiteSpaces(s, ref i);
+            if(eof(s,i)) {
+                throw new SystemException("JSON: eof seen parsing array.");
+            }
+            switch(s[i]) {
+                case ',': { ++i; break; }
+                case ']': { break; }
+                default: {
+                    throw new SystemException("JSON: invalid character: "+s[i]+" used as seperator in parsing array.");
+                }
+            }
+        }
+        return new JArray(values);        
     }
     // -----------------------------------------------------------------------------
     static JValue ParseObject(string s, ref int i) {
         MustBeChar(s, ref i, '{');
-        Debug.LogWarning("JSON: parsing object not yet implemented !!!");
-        return new JNull();        
+        RemoveWhiteSpaces(s, ref i);
+        if(eof(s,i)) {
+            throw new SystemException("JSON: eof seen parsing object.");
+        }
+        var attributes= new List<JNameValuePair>();
+        while(s[i] != '}') {
+            attributes.Add(ParseNameValuePair(s, ref i));
+            RemoveWhiteSpaces(s, ref i);
+            if(eof(s,i)) {
+                throw new SystemException("JSON: eof seen parsing object.");
+            }
+            switch(s[i]) {
+                case ',': { ++i; break; }
+                case '}': { break; }
+                default: {
+                    throw new SystemException("JSON: invalid character: "+s[i]+" used as seperator in parsing object.");
+                }
+            }
+        }
+        return new JObject(attributes);        
     }
     // -----------------------------------------------------------------------------
     static void RemoveWhiteSpaces(string s, ref int i) {
@@ -134,8 +170,14 @@ public class JNull   : JValue {}
 public class JBool   : JValue { public bool value;   public JBool(bool v) { value= v; }}
 public class JString : JValue { public string value; public JString(string v) { value= v; }}
 public class JNumber : JValue { public float value;  public JNumber(float v) { value= v; }}
-public class JArray  : JValue { public List<JValue> value= new List<JValue>(); }
-public class JObject : JValue { public List<JNameValuePair> value= new List<JNameValuePair>(); }
+public class JArray  : JValue {
+    public List<JValue> value= new List<JValue>();
+    public JArray(List<JValue> lst) { value= lst; }
+}
+public class JObject : JValue {
+    public List<JNameValuePair> value= new List<JNameValuePair>();
+    public JObject(List<JNameValuePair> lst) { value= lst; }
+}
 
 // =============================================================================
 // JSON name / value pair

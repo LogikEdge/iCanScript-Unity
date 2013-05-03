@@ -41,8 +41,9 @@ public static class iCS_WebUtils {
         }
         int idx= 0;
         JNameValuePair p= JSON.ParseNameValuePair(download.text, ref idx);
-        var js= p.value as JString;
-        string version= js.value;
+        var js= p.value as JObject;
+        var vp= js.value[0].value as JString;
+        string version= vp.value;
 //        string version= download.text;
         return version;
     }
