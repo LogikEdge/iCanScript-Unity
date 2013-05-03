@@ -28,18 +28,18 @@ public static class iCS_InstallerMgr {
     // =================================================================================
     // Install the iCanScript Gizmo (if not already done).
     // ---------------------------------------------------------------------------------
-    public static bool CheckForUpdates() {
-        if(iCS_WebUtils.IsLatestVersion().maybe(true, P.id)) {
-            return true;
-        }
-        var latestVersion= iCS_WebUtils.GetLatestReleaseId();
-        var download= EditorUtility.DisplayDialog("A new version of iCanScript is available!",
-                                                  "Version "+latestVersion+" is available for download.\n"+
-                                                  "Would you like to download it?",
-                                                  "Download", "Skip This Version");
-        if(download) {
-            Application.OpenURL("http://www.icanscript.com/support/release_notes");            
-        }
-        return false;
+    public static Maybe<bool> CheckForUpdates() {
+		var isLatest= iCS_WebUtils.IsLatestVersion();
+        if(isLatest.maybe(false, b=> !b)) {
+	        var latestVersion= iCS_WebUtils.GetLatestReleaseId();
+	        var download= EditorUtility.DisplayDialog("A new version of iCanScript is available!",
+	                                                  "Version "+latestVersion+" is available for download.\n"+
+	                                                  "Would you like to download it?",
+	                                                  "Download", "Skip This Version");
+	        if(download) {
+	            Application.OpenURL("http://www.icanscript.com/support/release_notes");            
+	        }
+		}
+        return isLatest;
     }
 }

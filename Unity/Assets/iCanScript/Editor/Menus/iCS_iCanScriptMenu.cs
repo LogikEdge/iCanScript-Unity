@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEditor;
+using P=Prelude;
 
 public static class iCS_iCanScriptMenu {
     // ======================================================================
@@ -51,7 +52,14 @@ public static class iCS_iCanScriptMenu {
     }
     [MenuItem("iCanScript/Check for Updates...",false,61)]
     public static void CheckForUpdate() {
-        if(iCS_InstallerMgr.CheckForUpdates()) {
+		var isLatest= iCS_InstallerMgr.CheckForUpdates();
+		if(isLatest.isNothing) {
+			EditorUtility.DisplayDialog("Unable to determine latest version !!!",
+										"Problem accessing iCanScript version information.\nPlease try again later.",
+										"Ok");			
+			return;
+		}
+        if(isLatest.maybe(false, P.id)) {
 			EditorUtility.DisplayDialog("You have the latest version of iCanScript!",
 										 "The version installed is: v"+iCS_EditorConfig.VersionId+".\nNo updates are available.",
 										 "Ok");
