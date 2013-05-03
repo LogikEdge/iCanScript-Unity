@@ -29,9 +29,6 @@ public static class iCS_InstallerMgr {
     // ---------------------------------------------------------------------------------
     public static bool CheckForUpdates() {
         if(iCS_WebUtils.IsLatestVersion()) {
-			EditorUtility.DisplayDialog("You have the latest version of iCanScript!",
-										 "The version installed is: v"+iCS_EditorConfig.VersionId+".\nNo updates are available.",
-										 "Ok");
             return true;
         }
         var latestVersion= iCS_WebUtils.GetLatestReleaseId();

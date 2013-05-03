@@ -51,6 +51,10 @@ public static class iCS_iCanScriptMenu {
     }
     [MenuItem("iCanScript/Check for Updates",false,61)]
     public static void CheckForUpdate() {
-        iCS_InstallerMgr.CheckForUpdates();
+        if(iCS_InstallerMgr.CheckForUpdates()) {
+			EditorUtility.DisplayDialog("You have the latest version of iCanScript!",
+										 "The version installed is: v"+iCS_EditorConfig.VersionId+".\nNo updates are available.",
+										 "Ok");
+		}
     }
 }
