@@ -38,14 +38,8 @@ public static class iCS_WebUtils {
 			Debug.Log("Error trying to access Version: "+download.error);
             return null;
         }
-        int idx= 0;
-        JNameValuePair p= JSON.ParseNameValuePair(download.text, ref idx);
-        var versions= p.value as JObject;
-        if(!versions.isObject) return null;
-        var vp= versions.GetValueFor("iCanScript");
-        if(!vp.isString) return null;
-        string version= (vp as JString).value;
-        return version;
+        var jVersion= JSON.GetValueFor(download.text, "versions.iCanScript") as JString;
+        return jVersion == null ? null : jVersion.value;
     }
 
     // ----------------------------------------------------------------------

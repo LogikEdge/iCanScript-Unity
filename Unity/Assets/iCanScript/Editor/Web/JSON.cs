@@ -5,6 +5,19 @@ using System.Collections.Generic;
 using P=Prelude;
 
 public static class JSON {
+    // -----------------------------------------------------------------------------
+    public static JValue GetValueFor(string jsonStr, string accessorStr) {
+        int i= 0;
+        var root= JSON.ParseNameValuePair(jsonStr, ref i);
+        i= 0;
+        var attribute= ParseAttribute(accessorStr, ref i);
+        if(attribute != root.name) {
+            return JNull.identity;
+        }
+        accessorStr= accessorStr.Substring(i, accessorStr.Length-i);
+        return root.value.GetValueFor(accessorStr);
+    }
+    // -----------------------------------------------------------------------------
     public static JNameValuePair ParseNameValuePair(string s, ref int i) {
         // Parse attribute name
         string name= ParseName(s, ref i);
@@ -58,7 +71,7 @@ public static class JSON {
         }
     }
     // -----------------------------------------------------------------------------
-    static string ParseString(string s, ref int i) {
+    public static string ParseString(string s, ref int i) {
         MustBeChar(s, ref i, '"');
         string result= "";
         do {
@@ -88,6 +101,16 @@ public static class JSON {
         }
         ++i;
         return result;
+    }
+    // -----------------------------------------------------------------------------
+    public static string ParseAttribute(string s, ref int i) {
+        RemoveWhiteSpaces(s, ref i);
+        int start= i;
+        if(eof(s,i)) {
+            throw new SystemException("JSON: format corrupted in attribute parsing!");
+        }
+        for(; !eof(s, i) && (Char.IsLetterOrDigit(s[i]) || s[i] == '_'); ++i);
+        return s.Substring(start, i-start);
     }
     // -----------------------------------------------------------------------------
     static JValue ParseArray(string s, ref int i) {
@@ -139,19 +162,11 @@ public static class JSON {
         return new JObject(attributes);        
     }
     // -----------------------------------------------------------------------------
-    static void RemoveWhiteSpaces(string s, ref int i) {
-        for(; !eof(s,i); ++i) {
-            switch(s[i]) {
-                case ' ' : { break; }
-                case '\r': { break; }
-                case '\n': { break; }
-                case '\t': { break; }
-                default:   { return; }
-            }
-        }
+    public static void RemoveWhiteSpaces(string s, ref int i) {
+        for(; !eof(s,i) && Char.IsWhiteSpace(s[i]); ++i);
     }
     // -----------------------------------------------------------------------------
-    static bool eof(string s, int i) {
+    public static bool eof(string s, int i) {
         return i >= s.Length;
     }
     // -----------------------------------------------------------------------------
@@ -168,6 +183,17 @@ public static class JSON {
         }
         ++i;
     }
+    // -----------------------------------------------------------------------------
+    public static int ParseDigits(string s, ref int i) {
+        RemoveWhiteSpaces(s, ref i);
+        if(eof(s, i)) return 0;
+        int result= 0;
+        for(; Char.IsDigit(s, i); ++i) {
+            result*= 10;
+            result+= s[i]-'0';
+        }
+        return result;
+    }
 }
 
 // =============================================================================
@@ -180,6 +206,7 @@ public class JValue {
     public bool isNumber { get { return this is JNumber; }}
     public bool isArray  { get { return this is JArray; }}
     public bool isObject { get { return this is JObject; }}
+    public virtual JValue GetValueFor(string accesor) { return this; }
 }
 public class JNull   : JValue { public static JNull identity= new JNull(); }
 public class JBool   : JValue { public bool value;   public JBool(bool v) { value= v; }}
@@ -194,15 +221,45 @@ public class JArray  : JValue {
         }
         return value[idx];
     }
+    public override JValue GetValueFor(string accessor) {
+        int i= 0;
+        JSON.RemoveWhiteSpaces(accessor, ref i);
+        if(JSON.eof(accessor, i) || accessor[i] != '[') {
+            return this;
+        }
+        ++i;
+        int idx= JSON.ParseDigits(accessor, ref i);
+        if(idx < 0 || idx >= value.Count) {
+            return JNull.identity;
+        }
+        JSON.RemoveWhiteSpaces(accessor, ref i);
+        if(JSON.eof(accessor, i) || accessor[i] != ']') {
+            return value[idx];
+        }
+        ++i;
+        JSON.RemoveWhiteSpaces(accessor, ref i);
+        accessor= accessor.Substring(i, accessor.Length-i);
+        return value[idx].GetValueFor(accessor);
+    }
 }
 public class JObject : JValue {
     public Dictionary<string, JValue> value= new Dictionary<string, JValue>();
     public JObject(Dictionary<string, JValue> dict) { value= dict; }
-    public JValue GetValueFor(string name) {
-        if(value.ContainsKey(name)) {
-            return value[name];
+    public override JValue GetValueFor(string accessor) {
+        int i= 0;
+        JSON.RemoveWhiteSpaces(accessor, ref i);
+        if(JSON.eof(accessor, i)) {
+            return this;
         }
-        return JNull.identity;
+        if(accessor[i] == '.') {
+            ++i;
+        }
+        var name= JSON.ParseAttribute(accessor, ref i);
+        if(!value.ContainsKey(name)) {
+            return JNull.identity;
+        }
+        accessor= accessor.Substring(i, accessor.Length-i);
+        return value[name].GetValueFor(accessor);
     }
 }
 
