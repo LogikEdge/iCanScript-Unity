@@ -6,30 +6,34 @@ using System.Collections;
 
 public static class iCS_WebUtils {
     // ----------------------------------------------------------------------
-    // Performs a Web request (POST/GET) on the given url.
+    // Performs a Web form request on the given url.
     public static WWW WebRequest(string url, WWWForm form, float waitTime= 500f) {
-        var transaction= new WWW(url, form);
+        return WaitForTransaction(new WWW(url, form), waitTime);
+    }
+    // ----------------------------------------------------------------------
+    // Performs a Web request on the given url.
+    public static WWW WebRequest(string url, float waitTime= 500f) {
+        return WaitForTransaction(new WWW(url), waitTime);
+    }
+    // ----------------------------------------------------------------------
+	// Wait for Web transaction to complete.
+    public static WWW WaitForTransaction(WWW transaction, float waitTime= 500f) {
         var startTime= Time.realtimeSinceStartup;
         while(!transaction.isDone) {
             if((Time.realtimeSinceStartup-startTime) > waitTime) {
-                Debug.LogWarning("iCanScript: Timeout waiting for URL: "+url);
+                Debug.LogWarning("iCanScript: Timeout waiting for URL: "+transaction.url);
                 break;
             }
         }
-        return transaction;
-    }
-    
+        return transaction;	
+	}
+	
     // ----------------------------------------------------------------------
     // Returns the version string of the latest available release.
     public static string GetLatestReleaseId() {
-        var form= new WWWForm();
-        form.AddField("major", iCS_Config.MajorVersion);
-        form.AddField("minor", iCS_Config.MinorVersion);
-        form.AddField("bugFix", iCS_Config.BugFixVersion);
-        form.AddField("build", 0);
 //		var url= iCS_WebConfig.WebService_Versions;
 		var url= "www.infaunier.com/scripts/version.pl";
-        var download = WebRequest(url, form);
+        var download = WebRequest(url);
         if(!String.IsNullOrEmpty(download.error)) {
 			Debug.Log("URL: "+url);
 			Debug.Log("Error trying to access Version: "+download.error);
