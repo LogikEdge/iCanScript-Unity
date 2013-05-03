@@ -49,7 +49,7 @@ public static class iCS_iCanScriptMenu {
     public static void ReportBug() {
         Application.OpenURL("http://www.disruptive-sw.com/support/customer_request");
     }
-    [MenuItem("iCanScript/Check for Updates",false,61)]
+    [MenuItem("iCanScript/Check for Updates...",false,61)]
     public static void CheckForUpdate() {
         if(iCS_InstallerMgr.CheckForUpdates()) {
 			EditorUtility.DisplayDialog("You have the latest version of iCanScript!",
