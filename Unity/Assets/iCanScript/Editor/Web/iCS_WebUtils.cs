@@ -31,15 +31,19 @@ public static class iCS_WebUtils {
     // ----------------------------------------------------------------------
     // Returns the version string of the latest available release.
     public static string GetLatestReleaseId() {
-//		var url= iCS_WebConfig.WebService_Versions;
-		var url= "www.infaunier.com/scripts/version.pl";
+		var url= iCS_WebConfig.WebService_Versions;
+//		var url= "www.infaunier.com/scripts/version.pl";
         var download = WebRequest(url);
         if(!String.IsNullOrEmpty(download.error)) {
 			Debug.Log("URL: "+url);
 			Debug.Log("Error trying to access Version: "+download.error);
             return null;
         }
-        string version= download.text;
+        int idx= 0;
+        JNameValuePair p= JSON.ParseNameValuePair(download.text, ref idx);
+        var js= p.value as JString;
+        string version= js.value;
+//        string version= download.text;
         return version;
     }
 

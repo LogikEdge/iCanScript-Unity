@@ -6,11 +6,15 @@ using P=Prelude;
 
 public static class JSON {
     public static JNameValuePair ParseNameValuePair(string s, ref int c) {
+        // Parse attribute name
         string name= ParseName(s, ref c);
+        // Look for JSON name / value seperator
         RemoveWhiteSpaces(s, ref c);
         if(eof(s,c) || s[c] != ',') {
-            throw new SystemException("JSON corrupted format: expected name value seperator ,");
+            throw new SystemException("JSON: corrupted format: expected name value seperator ,");
         }
+        ++c;
+        // Parse value
         var value= ParseValue(s, ref c);
         return new JNameValuePair(name, value);
     }
@@ -21,7 +25,43 @@ public static class JSON {
     // -----------------------------------------------------------------------------
     public static JValue ParseValue(string s, ref int c) {
         RemoveWhiteSpaces(s, ref c);
-        return null;
+        if(eof(s,c)) {
+            throw new SystemException("JSON: eof seen where value was expected.");
+        }
+        switch(s[c]) {
+            case '"': {
+                return new JString(ParseString(s, ref c));
+            }
+            case '[': {
+                Debug.LogWarning("JSON: parsing array not yet implemented !!!");
+                return new JNull();
+            }
+            case '{': {
+                Debug.LogWarning("JSON: parsing object not yet implemented !!!");
+                return new JNull();
+            }
+            default: {
+                if(s.Length-c >= 5) {
+                    if(s.Substring(c, 5) == "false") {
+                        c+= 5;
+                        return new JBool(false);
+                    }
+                }
+                if(s.Length-c >= 4) {
+                    var v= s.Substring(c, 4);
+                    if(v == "true") {
+                        c+= 4;
+                        return new JBool(true);
+                    }
+                    if(v == "null") {
+                        c+= 4;
+                        return new JNull();
+                    }
+                }
+                Debug.LogWarning("JSON: parsing numeric not yet implemented !!!");
+                return new JNull();
+            }
+        }
     }
     // -----------------------------------------------------------------------------
     static void RemoveWhiteSpaces(string s, ref int c) {
@@ -38,9 +78,11 @@ public static class JSON {
     // -----------------------------------------------------------------------------
     static string ParseString(string s, ref int c) {
         RemoveWhiteSpaces(s, ref c);
-        if(eof(s,c)) return null;
+        if(eof(s,c)) {
+            throw new SystemException("JSON: eof seen where string was expected");
+        }
         if(s[c] != '"') {
-            throw new SystemException("JSON name not starting with a double quote!");
+            throw new SystemException("JSON: name not starting with a double quote!");
         }
         int start= ++c;
         do {
@@ -51,7 +93,7 @@ public static class JSON {
             }
         } while(!eof(s,c) && s[c] != '"');
         if(eof(s,c)) {
-            throw new SystemException("JSON format corrupted in string parsing!");
+            throw new SystemException("JSON: format corrupted in string parsing!");
         }
         int len= c-start;
         ++c;
