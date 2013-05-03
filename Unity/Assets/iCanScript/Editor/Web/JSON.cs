@@ -60,20 +60,34 @@ public static class JSON {
     // -----------------------------------------------------------------------------
     static string ParseString(string s, ref int i) {
         MustBeChar(s, ref i, '"');
-        int start= i;
+        string result= "";
         do {
             switch(s[i]) {
-                case '\\': { i+= 2; break; }
+                case '\\': {
+                    if(eof(s, i+1)) {
+                        result+= s[i];
+                        ++i;
+                        break;
+                    }
+                    if(s[i+1] == '"') {
+                        result+= '"';
+                        i+= 2;
+                        break;
+                    }
+                    result+= s[i];
+                    result+= s[i+1];
+                    i+= 2;
+                    break;
+                }
                 case '"' : { break; }
-                default  : { ++i; break; }
+                default  : { result+= s[i]; ++i; break; }
             }
         } while(!eof(s,i) && s[i] != '"');
         if(eof(s,i)) {
             throw new SystemException("JSON: format corrupted in string parsing!");
         }
-        int len= i-start;
         ++i;
-        return s.Substring(start, len);
+        return result;
     }
     // -----------------------------------------------------------------------------
     static JValue ParseArray(string s, ref int i) {
