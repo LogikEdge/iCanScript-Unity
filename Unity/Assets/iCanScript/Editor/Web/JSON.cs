@@ -5,56 +5,50 @@ using System.Collections.Generic;
 using P=Prelude;
 
 public static class JSON {
-    public static JNameValuePair ParseNameValuePair(string s, ref int c) {
+    public static JNameValuePair ParseNameValuePair(string s, ref int i) {
         // Parse attribute name
-        string name= ParseName(s, ref c);
+        string name= ParseName(s, ref i);
         // Look for JSON name / value seperator
-        RemoveWhiteSpaces(s, ref c);
-        if(eof(s,c) || s[c] != ',') {
-            throw new SystemException("JSON: corrupted format: expected name value seperator ,");
-        }
-        ++c;
+        MustBeChar(s, ref i, ',');
         // Parse value
-        var value= ParseValue(s, ref c);
+        var value= ParseValue(s, ref i);
         return new JNameValuePair(name, value);
     }
     // -----------------------------------------------------------------------------
-    public static string ParseName(string s, ref int c) {
-        return ParseString(s, ref c);
+    public static string ParseName(string s, ref int i) {
+        return ParseString(s, ref i);
     }
     // -----------------------------------------------------------------------------
-    public static JValue ParseValue(string s, ref int c) {
-        RemoveWhiteSpaces(s, ref c);
-        if(eof(s,c)) {
+    public static JValue ParseValue(string s, ref int i) {
+        RemoveWhiteSpaces(s, ref i);
+        if(eof(s,i)) {
             throw new SystemException("JSON: eof seen where value was expected.");
         }
-        switch(s[c]) {
+        switch(s[i]) {
             case '"': {
-                return new JString(ParseString(s, ref c));
+                return new JString(ParseString(s, ref i));
             }
             case '[': {
-                Debug.LogWarning("JSON: parsing array not yet implemented !!!");
-                return new JNull();
+                return ParseArray(s, ref i);
             }
             case '{': {
-                Debug.LogWarning("JSON: parsing object not yet implemented !!!");
-                return new JNull();
+                return ParseObject(s, ref i);
             }
             default: {
-                if(s.Length-c >= 5) {
-                    if(s.Substring(c, 5) == "false") {
-                        c+= 5;
+                if(s.Length-i >= 5) {
+                    if(s.Substring(i, 5) == "false") {
+                        i+= 5;
                         return new JBool(false);
                     }
                 }
-                if(s.Length-c >= 4) {
-                    var v= s.Substring(c, 4);
+                if(s.Length-i >= 4) {
+                    var v= s.Substring(i, 4);
                     if(v == "true") {
-                        c+= 4;
+                        i+= 4;
                         return new JBool(true);
                     }
                     if(v == "null") {
-                        c+= 4;
+                        i+= 4;
                         return new JNull();
                     }
                 }
@@ -64,9 +58,37 @@ public static class JSON {
         }
     }
     // -----------------------------------------------------------------------------
-    static void RemoveWhiteSpaces(string s, ref int c) {
-        for(; !eof(s,c); ++c) {
-            switch(s[c]) {
+    static string ParseString(string s, ref int i) {
+        MustBeChar(s, ref i, '"');
+        int start= i;
+        do {
+            switch(s[i]) {
+                case '\\': { i+= 2; break; }
+                case '"' : { break; }
+                default  : { ++i; break; }
+            }
+        } while(!eof(s,i) && s[i] != '"');
+        if(eof(s,i)) {
+            throw new SystemException("JSON: format corrupted in string parsing!");
+        }
+        int len= i-start;
+        ++i;
+        return s.Substring(start, len);
+    }
+    // -----------------------------------------------------------------------------
+    static JValue ParseArray(string s, ref int i) {
+        Debug.LogWarning("JSON: parsing array not yet implemented !!!");
+        return new JNull();        
+    }
+    // -----------------------------------------------------------------------------
+    static JValue ParseObject(string s, ref int i) {
+        Debug.LogWarning("JSON: parsing object not yet implemented !!!");
+        return new JNull();        
+    }
+    // -----------------------------------------------------------------------------
+    static void RemoveWhiteSpaces(string s, ref int i) {
+        for(; !eof(s,i); ++i) {
+            switch(s[i]) {
                 case ' ' : { break; }
                 case '\r': { break; }
                 case '\n': { break; }
@@ -76,32 +98,22 @@ public static class JSON {
         }
     }
     // -----------------------------------------------------------------------------
-    static string ParseString(string s, ref int c) {
-        RemoveWhiteSpaces(s, ref c);
-        if(eof(s,c)) {
-            throw new SystemException("JSON: eof seen where string was expected");
-        }
-        if(s[c] != '"') {
-            throw new SystemException("JSON: name not starting with a double quote!");
-        }
-        int start= ++c;
-        do {
-            switch(s[c]) {
-                case '\\': { c+= 2; break; }
-                case '"' : { break; }
-                default  : { ++c; break; }
-            }
-        } while(!eof(s,c) && s[c] != '"');
-        if(eof(s,c)) {
-            throw new SystemException("JSON: format corrupted in string parsing!");
-        }
-        int len= c-start;
-        ++c;
-        return s.Substring(start, len);
+    static bool eof(string s, int i) {
+        return i >= s.Length;
     }
-    
-    static bool eof(string s, int c) {
-        return c >= s.Length;
+    // -----------------------------------------------------------------------------
+    static void MustBeChar(string s, ref int i, char c) {
+        if(eof(s,i)) {
+            throw new SystemException("JSON: eof reach but expected: "+c);
+        }
+        RemoveWhiteSpaces(s, ref i);
+        if(eof(s,i)) {
+            throw new SystemException("JSON: eof reach but expected: "+c);
+        }
+        if(s[i] != c) {
+            throw new SystemException("JSON: format error: expected: "+c+" but seen: "+s[i]);
+        }
+        ++i;
     }
 }
 
