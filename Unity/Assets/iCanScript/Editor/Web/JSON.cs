@@ -9,7 +9,7 @@ public static class JSON {
         // Parse attribute name
         string name= ParseName(s, ref i);
         // Look for JSON name / value seperator
-        MustBeChar(s, ref i, ',');
+        MustBeChar(s, ref i, ':');
         // Parse value
         var value= ParseValue(s, ref i);
         return new JNameValuePair(name, value);
@@ -77,11 +77,13 @@ public static class JSON {
     }
     // -----------------------------------------------------------------------------
     static JValue ParseArray(string s, ref int i) {
+        MustBeChar(s, ref i, '[');
         Debug.LogWarning("JSON: parsing array not yet implemented !!!");
         return new JNull();        
     }
     // -----------------------------------------------------------------------------
     static JValue ParseObject(string s, ref int i) {
+        MustBeChar(s, ref i, '{');
         Debug.LogWarning("JSON: parsing object not yet implemented !!!");
         return new JNull();        
     }
