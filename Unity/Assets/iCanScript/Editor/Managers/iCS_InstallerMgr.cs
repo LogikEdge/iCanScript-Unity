@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 public static class iCS_InstallerMgr {
     // =================================================================================
@@ -28,7 +29,7 @@ public static class iCS_InstallerMgr {
     // Install the iCanScript Gizmo (if not already done).
     // ---------------------------------------------------------------------------------
     public static bool CheckForUpdates() {
-        if(iCS_WebUtils.IsLatestVersion()) {
+        if(iCS_WebUtils.IsLatestVersion().maybe(true, P.id)) {
             return true;
         }
         var latestVersion= iCS_WebUtils.GetLatestReleaseId();

@@ -1,8 +1,8 @@
 using UnityEditor;
 using UnityEngine;
 using System;
-using System.Xml;
 using System.Collections;
+using P=Prelude;
 
 public static class iCS_WebUtils {
     // ----------------------------------------------------------------------
@@ -34,8 +34,6 @@ public static class iCS_WebUtils {
 		var url= iCS_WebConfig.WebService_Versions;
         var download = WebRequest(url);
         if(!String.IsNullOrEmpty(download.error)) {
-			Debug.Log("URL: "+url);
-			Debug.Log("Error trying to access Version: "+download.error);
             return null;
         }
         var jVersion= JSON.GetValueFor(download.text, "versions.iCanScript") as JString;
@@ -44,12 +42,12 @@ public static class iCS_WebUtils {
 
     // ----------------------------------------------------------------------
     // Returns true if the current version is the latest version.
-    public static bool IsLatestVersion() {
+    public static Maybe<bool> IsLatestVersion() {
         var latestVersion= GetLatestReleaseId();
         if(String.IsNullOrEmpty(latestVersion)) {
-            return true;
+            return new Nothing<bool>();
         }
         var currentVersion= "v"+iCS_EditorConfig.VersionId;
-        return currentVersion == latestVersion;
+        return new Just<bool>(currentVersion == latestVersion);
     }
 }

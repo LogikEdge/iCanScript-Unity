@@ -34,15 +34,15 @@ public static partial class Prelude {
     }
     // ----------------------------------------------------------------------
     public static Maybe<R> choice<S,T1,T2,R>(Func<R> f1, Func<R> f2) {
-        if(equal<S,T1>())       return new Maybe<R>(new Just<R>(f1()));
-        else if(equal<S,T2>())  return new Maybe<R>(new Just<R>(f2()));
-        return new Maybe<R>(new Nothing());
+        if(equal<S,T1>())       return new Just<R>(f1());
+        else if(equal<S,T2>())  return new Just<R>(f2());
+        return new Nothing<R>();
     }
     public static Maybe<R> choice<S,T1,T2,T3,R>(Func<R> f1, Func<R> f2, Func<R> f3) {
-        if(equal<S,T1>())       return new Maybe<R>(new Just<R>(f1()));
-        else if(equal<S,T2>())  return new Maybe<R>(new Just<R>(f2()));
-        else if(equal<S,T3>())  return new Maybe<R>(new Just<R>(f3()));
-        return new Maybe<R>(new Nothing());
+        if(equal<S,T1>())       return new Just<R>(f1());
+        else if(equal<S,T2>())  return new Just<R>(f2());
+        else if(equal<S,T3>())  return new Just<R>(f3());
+        return new Nothing<R>();
     }
 
  

@@ -19,7 +19,10 @@ public static partial class Prelude {
         return equal<T1,T2>() ? fnc() : defaultValue;
     }
     public static Maybe<R> executeIf<T1,T2,R>(Func<R> fnc) {
-        return equal<T1,T2>() ? new Maybe<R>(new Just<R>(fnc())) : new Maybe<R>(new Nothing());
+        if(equal<T1,T2>()) {
+			return new Just<R>(fnc());
+		}
+		return new Nothing<R>();
     }
     // ----------------------------------------------------------------------
     // executeIfNot :: Typeof a->Typeof b->(f ()->())->bool
@@ -31,7 +34,10 @@ public static partial class Prelude {
         return true;
     }
     public static Maybe<R> executeIfNot<T1,T2,R>(Func<R> fnc) {
-        return notEqual<T1,T2>() ? new Maybe<R>(new Just<R>(fnc())) : new Maybe<R>(new Nothing());
+        if(notEqual<T1,T2>()) {
+		 	return new Just<R>(fnc());	
+		}
+		return new Nothing<R>();
     }
     public static R executeIfNot<T1,T2,R>(System.Func<R> fnc, R defaultValue) {
         return notEqual<T1,T2>() ? fnc() : defaultValue;
@@ -52,7 +58,11 @@ public static partial class Prelude {
         return equal<T>(obj) ? fnc(obj as T) : defaultReturn;
     }
     public static Maybe<R> executeIf<T,R>(object obj, System.Func<T,R> fnc) where T : class {
-        return equal<T>(obj) ? new Maybe<R>(new Just<R>(fnc(obj as T))) : new Maybe<R>(new Nothing());
+        if(equal<T>(obj)) {
+			return new Just<R>(fnc(obj as T));
+	
+		}
+		return new Nothing<R>();
     }
     // ----------------------------------------------------------------------
     // executeIfNot :: Typeof a->b->(f a->())->bool
@@ -67,8 +77,11 @@ public static partial class Prelude {
         return notEqual<T>(obj) ? fnc(obj as T) : defaultReturn;
     }
     public static Maybe<R> executeIfNot<T,R>(object obj, System.Func<T,R> fnc) where T : class {
-        return notEqual<T>(obj) ? new Maybe<R>(new Just<R>(fnc(obj as T))) : new Maybe<R>(new Nothing());
-    }
+        if(notEqual<T>(obj)) {
+ 			return new Just<R>(fnc(obj as T));
+    	}
+		return new Nothing<R>();
+	}
 
     // ======================================================================
     // Dynamic
@@ -85,7 +98,11 @@ public static partial class Prelude {
         return cond(obj) ? fnc(obj) : defaultValue;
     }
     public static Maybe<B> executeIf<A,B>(A obj, Func<A,bool> cond, Func<A,B> fnc) {
-        return cond(obj) ? new Maybe<B>(new Just<B>(fnc(obj))) : new Maybe<B>(new Nothing());
+        if(cond(obj)) {
+		 	return new Just<B>(fnc(obj));
+	
+		}
+	 	return new Nothing<B>();
     }
     // ----------------------------------------------------------------------
     // executeIfNot :: a->(f a->bool)->(f a->())->bool
@@ -100,7 +117,10 @@ public static partial class Prelude {
         return (!cond(obj)) ? fnc(obj) : defaultValue;
     }
     public static Maybe<B> executeIfNot<A,B>(A obj, Func<A,bool> cond, Func<A,B> fnc) {
-        return (!cond(obj)) ? new Maybe<B>(new Just<B>(fnc(obj))) : new Maybe<B>(new Nothing());
+        if(!cond(obj)) {
+	 		return new Just<B>(fnc(obj));
+		}
+		return new Nothing<B>();
     }
 
 }
