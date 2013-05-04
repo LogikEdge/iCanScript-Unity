@@ -37,7 +37,7 @@ public static class iCS_InstallerMgr {
 	                                                  "Would you like to download it?",
 	                                                  "Download", "Skip This Version");
 	        if(download) {
-	            Application.OpenURL("http://www.icanscript.com/support/release_notes");            
+	            Application.OpenURL("http://www.icanscript.com/support/downloads");            
 	        }
 		}
         return isLatest;
