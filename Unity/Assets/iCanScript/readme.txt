@@ -1,12 +1,14 @@
 Installation:
 -------------
 
-You will find in attachment iCanScript v0.8.6 (Beta #6).  Use the following steps to install iCanScript:
+You will find in attachment iCanScript v0.9.2 (Beta #8).  Use the following steps to install iCanScript:
 
-1) Save the attached file on your hard drive;
+1) Save the attached files on your hard drive;
 2) Open the Unity game engine.
 3) Delete the iCanScript folder if it already exists in your project panel;
 4) In the project panel, import the iCanScript package that you have saved on your hard drive (Custom Package);
+4.1) If you desire, install the iCanScript_Nodes package.  It includes the source code for basic nodes);
+4.2) If you desire, install the iCanScript_Examples packages (the examples require that the node package has been installed).
 5) Create a game object of your choice;
 6) Attach the iCanScript behaviour (from the iCanScript menu) to your game object;
 7) You are now ready to create your first visual script program…
@@ -43,11 +45,19 @@ Major sections of the user and programmer documentation are still work in progre
 
 Additional Packages:
 --------------------
-iCanScript base node library is available as a Unity package called:
+iCanScript base node library and examples are available as a Unity package named:
 
 	iCanScript_Nodes.unitypackage
+        iCanScript_Examples.unitypackage
 
 The nodes in that package are provided as source code and can be used as examples to create your own nodes.  Please note that these nodes will change and mature.   They are currently in their infancy state.
+
+Getting the Latest Packages:
+----------------------------
+The iCanScript node & example packages are maintain on Github and can be downloaded using git.  The release versions can be downloaded using the associated "tag".  You may also obtain the latest development loads by cloning the "master" branch.  The URL for the git repositories are:
+
+	https://github.com/Disruptive-Software/iCanScript_Nodes
+	https://github.com/Disruptive-Software/iCanScript_Examples
 
 
 Enjoy and help us make iCanScript better by submitting customer request for bugs and new features.
