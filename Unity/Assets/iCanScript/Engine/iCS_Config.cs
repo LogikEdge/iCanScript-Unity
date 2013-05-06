@@ -5,7 +5,7 @@ public static class iCS_Config {
     // ----------------------------------------------------------------------
 	public const int    MajorVersion = 0;
 	public const int    MinorVersion = 9;
-	public const int    BugFixVersion= 1;
+	public const int    BugFixVersion= 2;
     public const string ProductName= "iCanScript";
     public const string ProductAcronym= "iCS";
 	public const string EditorPath= "Assets/"+ProductName+"/Editor";
