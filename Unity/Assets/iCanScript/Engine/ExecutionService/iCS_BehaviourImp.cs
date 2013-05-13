@@ -9,33 +9,24 @@ public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    iCS_RunContext  myStartContext;
-    iCS_RunContext  myUpdateContext;
-    iCS_RunContext  myLateUpdateContext;
-    iCS_RunContext  myFixedUpdateContext;
-    
-    iCS_Action   myStartAction       = null;
-    iCS_Action   myUpdateAction      = null;
-    iCS_Action   myLateUpdateAction  = null;
-    iCS_Action   myFixedUpdateAction = null;
-    int          myUpdateFrameId     = 0;
-    int          myFixedUpdateFrameId= 0;
+    iCS_RunContext  myStartContext      = new iCS_RunContext(null);
+    iCS_RunContext  myUpdateContext     = new iCS_RunContext(null);
+    iCS_RunContext  myLateUpdateContext = new iCS_RunContext(null);
+    iCS_RunContext  myFixedUpdateContext= new iCS_RunContext(null);
     object[]     myRuntimeNodes      = new object[0];
     
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public int UpdateFrameId        { get { return myUpdateFrameId; }}
-    public int FixedUpdateFrameId   { get { return myFixedUpdateFrameId; }}
+    public int UpdateFrameId        { get { return myUpdateContext.FrameId; }}
+    public int FixedUpdateFrameId   { get { return myFixedUpdateContext.FrameId; }}
     
     // ----------------------------------------------------------------------
     void Reset() {
-        myStartAction       = null;
-        myUpdateAction      = null;
-        myLateUpdateAction  = null;
-        myFixedUpdateAction = null;
-        myUpdateFrameId     = 0;
-        myFixedUpdateFrameId= 0;        
+        myStartContext.Action      = null;
+        myUpdateContext.Action     = null;
+        myLateUpdateContext.Action = null;
+        myFixedUpdateContext.Action= null;
     }
     
     // ----------------------------------------------------------------------
@@ -49,14 +40,14 @@ public class iCS_BehaviourImp : iCS_Storage {
     // is invoked after Awake and before any Update call.
     void Start() {
         GenerateCode();
-        if(myStartAction != null) {
+        if(myStartContext.Action != null) {
             do {
-                myStartAction.Execute(-2);
-                if(myStartAction.IsStalled) {
+                myStartContext.Action.Execute(-2);
+                if(myStartContext.Action.IsStalled) {
                     Debug.LogError("The Start() of "+name+" is stalled. Please remove any dependent processing !!!");
                     return;
                 }
-            } while(!myStartAction.IsCurrent(-2));
+            } while(!myStartContext.Action.IsCurrent(-2));
         }
     }
     
@@ -71,35 +62,9 @@ public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Graph Updates
     // ----------------------------------------------------------------------
-    // Called on every frame.
-    void Update() {
-        ++myUpdateFrameId;
-        if(myUpdateAction != null) {
-            RunEvent(myUpdateAction, myUpdateFrameId);
-        }
-    }
-    // Called on evry frame after all Update have been called.
-    void LateUpdate() {
-        if(myLateUpdateAction != null) {
-            RunEvent(myLateUpdateAction, myUpdateFrameId);
-        }
-    }
-    // Fix-time update to be used instead of Update
-    void FixedUpdate() {
-        ++myFixedUpdateFrameId;
-        if(myFixedUpdateAction != null) {
-            RunEvent(myFixedUpdateAction, myFixedUpdateFrameId);
-        }
-    }
-    // ----------------------------------------------------------------------
-    void RunEvent(iCS_Action action, int frameId) {
-        do {
-            action.Execute(frameId);                                
-            if(action.IsStalled) {
-                action.ForceExecute(frameId);
-            }
-        } while(!action.IsCurrent(frameId));        
-    }
+    void Update()       { myUpdateContext.RunEvent(); }
+    void LateUpdate()   { myLateUpdateContext.RunEvent(); }
+    void FixedUpdate()  { myFixedUpdateContext.RunEvent(); }
     
     // ======================================================================
     // Child Management
@@ -109,19 +74,19 @@ public class iCS_BehaviourImp : iCS_Storage {
         if(action == null) return;
         switch(action.Name) {
             case iCS_Strings.Start: {
-                myStartAction= action;
+                myStartContext.Action= action;
                 break;
             }
             case iCS_Strings.Update: {
-                myUpdateAction= action;
+                myUpdateContext.Action= action;
                 break;
             }
             case iCS_Strings.LateUpdate: {
-                myLateUpdateAction= action;
+                myLateUpdateContext.Action= action;
                 break;
             }
             case iCS_Strings.FixedUpdate: {
-                myFixedUpdateAction= action;
+                myFixedUpdateContext.Action= action;
                 break;
             }
             default: {
@@ -135,19 +100,19 @@ public class iCS_BehaviourImp : iCS_Storage {
         if(action == null) return;
         switch(action.Name) {
             case iCS_Strings.Start: {
-                myStartAction= null;
+                myStartContext.Action= null;
                 break;
             }
             case iCS_Strings.Update: {
-                myUpdateAction= null;
+                myUpdateContext.Action= null;
                 break;
             }
             case iCS_Strings.LateUpdate: {
-                myLateUpdateAction= null;
+                myLateUpdateContext.Action= null;
                 break;
             }
             case iCS_Strings.FixedUpdate: {
-                myFixedUpdateAction= null;
+                myFixedUpdateContext.Action= null;
                 break;
             }
             default: {

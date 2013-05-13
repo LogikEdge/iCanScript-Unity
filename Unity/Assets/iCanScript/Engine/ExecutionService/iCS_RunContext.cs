@@ -5,17 +5,28 @@ public class iCS_RunContext {
     iCS_Action   myAction= null;
     
     // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+    public iCS_Action Action {
+        get { return myAction; }
+        set { myAction= value; myFrameId= 0; }
+    }
+    public int FrameId {
+        get { return myFrameId; }
+    }
+    
+    // ======================================================================
     // Methods
     // ----------------------------------------------------------------------
     public iCS_RunContext(iCS_Action action) {
-        myAction= action;
-        myFrameId= 0;
+        Action= action;
     }
 
     // ----------------------------------------------------------------------
     // Executes the run context (if it is valid)
-    void RunEvent() {
+    public void RunEvent() {
         if(myAction == null) return;
+        ++myFrameId;
         do {
             myAction.Execute(myFrameId);                                
             if(myAction.IsStalled) {
