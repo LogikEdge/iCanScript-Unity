@@ -4,16 +4,22 @@ using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
 
-[iCS_Class(Company="iCanScript")]
+[iCS_Class(BaseVisibility= true)]
 [AddComponentMenu("")]
 public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    iCS_RunContext  myStartContext      = new iCS_RunContext(null);
-    iCS_RunContext  myUpdateContext     = new iCS_RunContext(null);
-    iCS_RunContext  myLateUpdateContext = new iCS_RunContext(null);
-    iCS_RunContext  myFixedUpdateContext= new iCS_RunContext(null);
+    iCS_RunContext  myStartContext           = null;
+    iCS_RunContext  myUpdateContext          = null;
+    iCS_RunContext  myLateUpdateContext      = null;
+    iCS_RunContext  myFixedUpdateContext     = null;
+    iCS_RunContext  myOnTriggerEnterContext  = null;
+    iCS_RunContext  myOnTriggerStayContext   = null;
+    iCS_RunContext  myOnTriggerExitContext   = null;
+    iCS_RunContext  myOnCollisionEnterContext= null;
+    iCS_RunContext  myOnCollisionStayContext = null;
+    iCS_RunContext  myOnCollisionExitContext = null;
     object[]     myRuntimeNodes      = new object[0];
     
     // ======================================================================
@@ -52,14 +58,19 @@ public class iCS_BehaviourImp : iCS_Storage {
         }
     }
     
+    // ======================================================================
+    // Events
     // ----------------------------------------------------------------------
-    void OnEnable() {}
-    // ----------------------------------------------------------------------
+    void OnEnable()  {}
     void OnDisable() {}
-    // ----------------------------------------------------------------------
-    void OnDestroy() {
-    }
-    
+    void OnDestroy() {}
+    void OnTriggerEnter(Collider other)            { myOnTriggerEnterContext.RunEvent(); }
+    void OnTriggerStay(Collider other)             { myOnTriggerStayContext.RunEvent(); }
+    void OnTraggerExit(Collider other)             { myOnTriggerExitContext.RunEvent(); }
+    void OnCollisionEnter(Collision collisionInfo) { myOnCollisionEnterContext.RunEvent(); }
+    void OnCollisionStay(Collision collisionInfo)  { myOnCollisionStayContext.RunEvent(); }
+    void OnCollisionExit(Collision collisionInfo)  { myOnCollisionExitContext.RunEvent(); }    
+        
     // ======================================================================
     // Graph Updates
     // ----------------------------------------------------------------------
@@ -75,19 +86,35 @@ public class iCS_BehaviourImp : iCS_Storage {
         if(action == null) return;
         switch(action.Name) {
             case iCS_Strings.Start: {
-                myStartContext.Action= action;
+                if(myStartContext == null) {
+                    myStartContext= new iCS_RunContext(action);
+                } else {
+                    myStartContext.Action= action;                    
+                }
                 break;
             }
             case iCS_Strings.Update: {
-                myUpdateContext.Action= action;
+                if(myUpdateContext == null) {
+                    myUpdateContext= new iCS_RunContext(action);
+                } else {
+                    myUpdateContext.Action= action;                    
+                }
                 break;
             }
             case iCS_Strings.LateUpdate: {
-                myLateUpdateContext.Action= action;
+                if(myLateUpdateContext == null) {
+                    myLateUpdateContext= new iCS_RunContext(action);
+                } else {
+                    myLateUpdateContext.Action= action;                    
+                }
                 break;
             }
             case iCS_Strings.FixedUpdate: {
-                myFixedUpdateContext.Action= action;
+                if(myFixedUpdateContext == null) {
+                    myFixedUpdateContext= new iCS_RunContext(action);
+                } else {
+                    myFixedUpdateContext.Action= action;                    
+                }
                 break;
             }
             default: {
@@ -101,19 +128,19 @@ public class iCS_BehaviourImp : iCS_Storage {
         if(action == null) return;
         switch(action.Name) {
             case iCS_Strings.Start: {
-                myStartContext.Action= null;
+                myStartContext= null;
                 break;
             }
             case iCS_Strings.Update: {
-                myUpdateContext.Action= null;
+                myUpdateContext= null;
                 break;
             }
             case iCS_Strings.LateUpdate: {
-                myLateUpdateContext.Action= null;
+                myLateUpdateContext= null;
                 break;
             }
             case iCS_Strings.FixedUpdate: {
-                myFixedUpdateContext.Action= null;
+                myFixedUpdateContext= null;
                 break;
             }
             default: {

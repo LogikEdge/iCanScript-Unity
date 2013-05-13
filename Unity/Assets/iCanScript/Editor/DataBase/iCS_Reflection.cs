@@ -93,11 +93,12 @@ public class iCS_Reflection {
                         }
                         // Extract class information.
                         iCS_ClassAttribute classAttribute= classCustomAttribute as iCS_ClassAttribute;
-                        string classCompany= classAttribute.Company;
-                        string classPackage= classAttribute.Package;
-                        string classTooltip= classAttribute.Tooltip;
-                        string classIcon   = classAttribute.Icon;
-                        DecodeClassInfo(classType, classCompany, classPackage, classTooltip, classIcon);
+                        string  classCompany       = classAttribute.Company;
+                        string  classPackage       = classAttribute.Package;
+                        string  classTooltip       = classAttribute.Tooltip;
+                        string  classIcon          = classAttribute.Icon;
+                        bool    classBaseVisibility= classAttribute.BaseVisibility;
+                        DecodeClassInfo(classType, classCompany, classPackage, classTooltip, classIcon, false, classBaseVisibility);
                     }
                 }
             }
@@ -114,17 +115,21 @@ public class iCS_Reflection {
         AllTypesWithDefaultConstructor.Sort((t1,t2)=>{ return String.Compare(t1.Name, t2.Name); });
     }
     // ----------------------------------------------------------------------
-    public static void DecodeClassInfo(Type classType, string company, string package, string classTooltip, string classIconPath, bool acceptAllPublic= false) {
+    public static void DecodeClassInfo(Type classType, string company, string package, string classTooltip, string classIconPath,
+                                       bool acceptAllPublic= false,
+                                       bool baseVisibility= false) {
         if(classType.IsGenericType) {
             Debug.LogWarning("iCanScript: Generic class not supported yet.  Skiping: "+classType.Name);
             return;
         }
         DecodeConstructors(classType, company, package, classTooltip, classIconPath, acceptAllPublic);
-        DecodeClassFields(classType, company, package, classTooltip, classIconPath, acceptAllPublic);
-        DecodeFunctionsAndMethods(classType, company, package, classTooltip, classIconPath, acceptAllPublic);
+        DecodeClassFields(classType, company, package, classTooltip, classIconPath, acceptAllPublic, baseVisibility);
+        DecodeFunctionsAndMethods(classType, company, package, classTooltip, classIconPath, acceptAllPublic, baseVisibility);
     }
     // ----------------------------------------------------------------------
-    static void DecodeClassFields(Type classType, string company, string package, string classTooltip, string classIconPath, bool acceptAllPublic= false) {
+    static void DecodeClassFields(Type classType, string company, string package, string classTooltip, string classIconPath,
+                                  bool acceptAllPublic= false,
+                                  bool baseVisibility= false) {
         // Gather field information.
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerField= false;
@@ -147,9 +152,28 @@ public class iCS_Reflection {
                     registerField= true;
                 }
             }
-            if(acceptAllPublic && field.IsPublic) {
-                registerField= true;
-                direction= iCS_ParamDirectionEnum.InOut;
+            if(registerField == false && field.IsPublic) {
+                if(acceptAllPublic) {
+                    registerField= true;
+                    direction= iCS_ParamDirectionEnum.InOut;
+                } else if(baseVisibility) {
+                    var declaringType= field.DeclaringType;
+                    if(declaringType != classType) {
+                        // Don't override iCS attributes
+                        bool isTagged= false;
+                        foreach(var baseAttr in declaringType.GetCustomAttributes(true)) {
+                            if(baseAttr is iCS_ClassAttribute) {
+                                isTagged= true;
+                                break;
+                            }
+                        }
+                        // Add base fields if class is not using iCS attributes.
+                        if(isTagged == false) {
+                            registerField= true;
+                            direction= iCS_ParamDirectionEnum.InOut;                            
+                        }
+                    }
+                }                
             }
             if(registerField) {
                 if(field.IsStatic) {
@@ -193,7 +217,8 @@ public class iCS_Reflection {
         }
     }
     // ----------------------------------------------------------------------
-    static void DecodeConstructors(Type classType, string company, string package, string classTooltip, string classIconPath, bool acceptAllPublic= false) {
+    static void DecodeConstructors(Type classType, string company, string package, string classTooltip, string classIconPath,
+                                   bool acceptAllPublic= false) {
         foreach(var constructor in classType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
             bool registerMethod= false;
             string displayName= classType.Name;
@@ -242,7 +267,9 @@ public class iCS_Reflection {
                                     paramIsOut, paramNames, paramTypes, paramDefaults);
     }
     // ----------------------------------------------------------------------
-    static void DecodeFunctionsAndMethods(Type classType, string company, string package, string classTooltip, string classIconPath, bool acceptAllPublic= false) {
+    static void DecodeFunctionsAndMethods(Type classType, string company, string package, string classTooltip, string classIconPath,
+                                          bool acceptAllPublic= false,
+                                          bool baseVisibility= false) {
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerMethod= false;
             string displayName= method.Name;
@@ -275,8 +302,26 @@ public class iCS_Reflection {
                     break;                                        
                 }
             }
-            if(acceptAllPublic && method.IsPublic) {
-                registerMethod= true;
+            if(registerMethod == false && method.IsPublic) {
+                if(acceptAllPublic) {
+                    registerMethod= true;
+                } else if(baseVisibility) {
+                    var declaringType= method.DeclaringType;
+                    if(declaringType != classType) {
+                        // Don't override iCS attributes
+                        bool isTagged= false;
+                        foreach(var baseAttr in declaringType.GetCustomAttributes(true)) {
+                            if(baseAttr is iCS_ClassAttribute) {
+                                isTagged= true;
+                                break;
+                            }
+                        }
+                        // Add base fields if class is not using iCS attributes.
+                        if(isTagged == false) {
+                            registerMethod= true;
+                        }
+                    }
+                }
             }
             if(registerMethod) {
                 if(method.IsGenericMethod) {

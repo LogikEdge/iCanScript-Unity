@@ -62,7 +62,6 @@ public static class iCS_UnityClasses {
         DecodeUnityClassInfo(typeof(NetworkPlayer));
         DecodeUnityClassInfo(typeof(NetworkViewID));
         DecodeUnityClassInfo(typeof(Network));
-        DecodeUnityClassInfo(typeof(MonoBehaviour));
         
         DecodeUnityClassInfo(typeof(UnityEngine.Object));        
             DecodeUnityClassInfo(typeof(AnimationClip));        

@@ -28,7 +28,13 @@ public class iCS_ClassAttribute : Attribute {
         set { myIcon= value; }
     }
     private string myIcon= null;
-
+    
+    public bool BaseVisibility {
+        get { return myBaseVisibility; }
+        set { myBaseVisibility= value; }
+    }
+    private bool myBaseVisibility= false;
+    
     // ======================================================================
     public override string ToString() { return "iCS_Class"; }
 }
