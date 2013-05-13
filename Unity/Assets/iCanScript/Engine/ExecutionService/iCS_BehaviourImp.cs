@@ -9,6 +9,11 @@ public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
+    iCS_RunContext  myStartContext;
+    iCS_RunContext  myUpdateContext;
+    iCS_RunContext  myLateUpdateContext;
+    iCS_RunContext  myFixedUpdateContext;
+    
     iCS_Action   myStartAction       = null;
     iCS_Action   myUpdateAction      = null;
     iCS_Action   myLateUpdateAction  = null;
