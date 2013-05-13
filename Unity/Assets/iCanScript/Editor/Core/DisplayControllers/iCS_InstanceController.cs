@@ -68,6 +68,7 @@ public class iCS_InstanceController {
     // ---------------------------------------------------------------------------------
     void InitConstructorInfo() {
         // Get and sort all constructors for the given class.
+        Debug.Log("Runtime= "+myTarget.RuntimeType);
         myConstructors= iCS_DataBase.GetClassConstructors(myTarget.RuntimeType);
     	Array.Sort(myConstructors, (x,y)=> x.FunctionSignatureNoThis.CompareTo(y.FunctionSignatureNoThis));        
 
