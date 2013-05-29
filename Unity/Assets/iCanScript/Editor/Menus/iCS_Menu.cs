@@ -97,9 +97,9 @@ public class iCS_Menu {
     // Navigation
     //[MenuItem("iCanScript/",false,20)]
     //[MenuItem("iCanScript/Center Graph _#&f",false,21)]
-    public static void CenterGraph() {
+    public static void CenterAndScaleOnRoot() {
         iCS_VisualEditor visualEditor= iCS_EditorMgr.FindVisualEditor();
-        if(visualEditor != null) visualEditor.CenterOnRoot();
+        if(visualEditor != null) visualEditor.CenterAndScaleOnRoot();
     }
     //[MenuItem("iCanScript/Center On Selected _&f",false,22)]
     public static void CenterOnSelected() {

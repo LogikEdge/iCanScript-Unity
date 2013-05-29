@@ -17,9 +17,9 @@ public static class iCS_iCanScriptMenu {
     // ======================================================================
     // Navigation
     [MenuItem("iCanScript/",false,20)]
-    [MenuItem("iCanScript/Center Graph _#&f",false,21)]
+    [MenuItem("iCanScript/Center Visual Script _#&f",false,21)]
     public static void CenterGraph() {
-        iCS_Menu.CenterGraph();
+        iCS_Menu.CenterAndScaleOnRoot();
     }
     [MenuItem("iCanScript/Center On Selected _&f",false,22)]
     public static void CenterOnSelected() {
@@ -35,10 +35,6 @@ public static class iCS_iCanScriptMenu {
     [MenuItem("iCanScript/Documentation/User's Manual",false,32)]
     public static void UserManual() {
         Application.OpenURL("http://www.icanscript.com/documentation/user_guide");
-    }
-    [MenuItem("iCanScript/Documentation/Programmer's Guide",false,33)]
-    public static void ProgrammerGuide() {
-        Application.OpenURL("http://www.icanscript.com/documentation/programmer_guide");
     }
     [MenuItem("iCanScript/Documentation/Release Notes",false,34)]
     public static void ReleaseNotes() {

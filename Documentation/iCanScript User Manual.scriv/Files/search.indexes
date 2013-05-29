@@ -87,12 +87,22 @@ iCanScript was developed because no other …
         <Document ID="49">
             <Title>Visual Editor</Title>
         </Document>
+        <Document ID="121">
+            <Title>Installation &amp; Upgrade</Title>
+            <Text>iCanScript is delivered in three Unity packages:
+- iCanScript: the core editor &amp; engine (mandatory);
+- iCanScript_Nodes: base library nodes (optional);
+- iCanScript_Examples: example projects (optional).</Text>
+        </Document>
         <Document ID="71">
             <Title>Quick Tour</Title>
             <Text>This is a quick tour guide to using iCanScript for the first time.</Text>
         </Document>
         <Document ID="64">
             <Title>Preferences</Title>
+        </Document>
+        <Document ID="122">
+            <Title>Upgrades</Title>
         </Document>
         <Document ID="72">
             <Title>Interface</Title>
@@ -213,7 +223,8 @@ Acknowledgements	&lt;$p>
             <Title>Purchasing iCanScript</Title>
         </Document>
         <Document ID="78">
-            <Title>Application Updates</Title>
+            <Title>Updates</Title>
+            <Text>Please note that Disruptive Software will make every effort possible to support upward compatibility starting from version 0.9.0.  Previous beta versions of iCanScript are not upward or backward compatible with version 0.9.0 and above.</Text>
         </Document>
         <Document ID="85">
             <Title>Signature</Title>
