@@ -376,8 +376,10 @@ public partial class iCS_Graphics {
             }            
         }
         // Minimize Icon
-        var minimizeIcon= iCS_BuiltinTextures.MinimizeIcon(Scale);
-        GUI_DrawTexture(new Rect(position.xMax-2-/*minimizeIcon.width*/16, position.y-0.5f, /*minimizeIcon.width*/16, /*minimizeIcon.height*/16), minimizeIcon);
+        if(ShouldDisplayMinimizeIcon(node)) {
+            var minimizeIcon= iCS_BuiltinTextures.MinimizeIcon(Scale);
+            GUI_DrawTexture(new Rect(position.xMax-2-/*minimizeIcon.width*/16, position.y-0.5f, /*minimizeIcon.width*/16, /*minimizeIcon.height*/16), minimizeIcon);            
+        }
         GUI.color= Color.white;
     }
     // ----------------------------------------------------------------------

@@ -47,6 +47,7 @@ public partial class iCS_Graphics {
         return foldIconPos.Contains(pick);
     }
     bool ShouldDisplayFoldIcon(iCS_EditorObject obj) {
+        if(Scale < 0.4f) return false;
         if(obj.IsIconizedOnDisplay) return false;
         return (obj.IsModule || obj.IsStateChart || obj.IsState);
     }
@@ -64,6 +65,7 @@ public partial class iCS_Graphics {
         return minimizeIconPos.Contains(pick);
     }
     bool ShouldDisplayMinimizeIcon(iCS_EditorObject obj) {
+        if(Scale < 0.4f) return false;
         return obj.InstanceId != 0 && obj.IsNode && !obj.IsIconizedOnDisplay;
     }
     Rect GetMinimizeIconPosition(iCS_EditorObject node) {
