@@ -17,13 +17,13 @@ public static class iCS_iCanScriptMenu {
     // ======================================================================
     // Navigation
     [MenuItem("iCanScript/",false,20)]
-    [MenuItem("iCanScript/Center Visual Script _#&f",false,21)]
-    public static void CenterGraph() {
-        iCS_Menu.CenterAndScaleOnRoot();
+    [MenuItem("iCanScript/Center Visual Script #f",false,21)]
+    public static void FocusOnVisualScript() {
+        iCS_Menu.FocusOnVisualScript();
     }
-    [MenuItem("iCanScript/Center On Selected _&f",false,22)]
-    public static void CenterOnSelected() {
-        iCS_Menu.CenterOnSelected();
+    [MenuItem("iCanScript/Focus On Selected _f",false,22)]
+    public static void FocusOnSelected() {
+        iCS_Menu.FocusOnSelected();
     }
     // ======================================================================
     // Documentation Access

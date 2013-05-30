@@ -97,13 +97,13 @@ public class iCS_Menu {
     // Navigation
     //[MenuItem("iCanScript/",false,20)]
     //[MenuItem("iCanScript/Center Graph _#&f",false,21)]
-    public static void CenterAndScaleOnRoot() {
+    public static void FocusOnVisualScript() {
         iCS_VisualEditor visualEditor= iCS_EditorMgr.FindVisualEditor();
         if(visualEditor != null) visualEditor.CenterAndScaleOnRoot();
     }
     //[MenuItem("iCanScript/Center On Selected _&f",false,22)]
-    public static void CenterOnSelected() {
+    public static void FocusOnSelected() {
         iCS_VisualEditor graphEditor= iCS_EditorMgr.FindVisualEditor();
-        if(graphEditor != null) graphEditor.CenterOnSelected();
+        if(graphEditor != null) graphEditor.CenterAndScaleOnSelected();
     }
 }
