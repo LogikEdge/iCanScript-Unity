@@ -21,6 +21,8 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		r.x+= spacer;
 		r.width-= spacer;
 
+		// --------------
+		// LEFT TOOLBAR
         // Show Runtime values.
         bool showRuntime= iCS_PreferencesEditor.ShowRuntimePortValue;
         bool newShowRuntime= iCS_ToolbarUtility.Toggle(ref r, showRuntime, spacer, spacer);
@@ -34,7 +36,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             iCS_PreferencesEditor.PortValueRefreshPeriod= newRefreshSpeed*newRefreshSpeed;
         }
         iCS_ToolbarUtility.Separator(ref r);
-        
+		
+		// --------------
+		// RIGHT TOOLBAR
 		// Show zoom control at the end of the toolbar.
         float newScale= iCS_ToolbarUtility.Slider(ref r, kSliderSize, Scale, 2f, 0.15f, spacer, spacer, true);
         iCS_ToolbarUtility.MiniLabel(ref r, "Zoom", 10f, 0, true);
@@ -53,5 +57,11 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		}
 		iCS_ToolbarUtility.MiniLabel(ref r, 150f, bookmarkString, spacer, 0, true);
         iCS_ToolbarUtility.Separator(ref r, true);
+
+		// --------------
+		// CENTER TOOLBAR
+        // Show game object name in middle of toolbar.
+		var name= IStorage.Storage.name;
+		iCS_ToolbarUtility.CenteredLabel(ref r, name, 5, 5);
 	}
 }

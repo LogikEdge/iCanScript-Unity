@@ -87,6 +87,25 @@ public static class iCS_ToolbarUtility {
         return GUI.TextField(r, value, EditorStyles.toolbarTextField);
     }
 	// ----------------------------------------------------------------------
+	// FIXME: CenterLabel: left margin not functional
+    public static void CenteredLabel(ref Rect toolbarRect, string value, float leftMargin, float rightMargin) {
+        GUIContent content= new GUIContent(value);
+		var contentSize= EditorStyles.toolbarTextField.CalcSize(content);
+		float w= contentSize.x+leftMargin+rightMargin;
+		float dx= 0.5f*(toolbarRect.width-w);
+		if(dx < 0) {
+			dx= 0;
+			w= toolbarRect.width;
+		}
+        float offset= 0.5f*(toolbarRect.height-contentSize.y);
+        toolbarRect.y+= offset;
+        toolbarRect.height-= offset;
+		toolbarRect.x+= dx;
+		toolbarRect.width= w;
+        GUI.Label(toolbarRect, value, EditorStyles.toolbarTextField);
+		toolbarRect.width= 0;
+    }
+	// ----------------------------------------------------------------------
     public static int Buttons(ref Rect toolbarRect, float width, int value, string[] options, float leftMargin, float rightMargin, bool isRightJustified= false) {
 		Rect r= ReserveArea(ref toolbarRect, width, leftMargin, rightMargin, isRightJustified);		
         if(r.width < 1f) return value;
