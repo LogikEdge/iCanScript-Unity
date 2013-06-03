@@ -25,15 +25,15 @@ public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public int UpdateFrameId        { get { return myUpdateContext.FrameId; }}
-    public int FixedUpdateFrameId   { get { return myFixedUpdateContext.FrameId; }}
+    public int UpdateFrameId        { get { return myUpdateContext != null      ? myUpdateContext.FrameId : 0; }}
+    public int FixedUpdateFrameId   { get { return myFixedUpdateContext != null ? myFixedUpdateContext.FrameId : 0; }}
     
     // ----------------------------------------------------------------------
     void Reset() {
-        myStartContext.Action      = null;
-        myUpdateContext.Action     = null;
-        myLateUpdateContext.Action = null;
-        myFixedUpdateContext.Action= null;
+        if(myStartContext != null)       myStartContext.Action      = null;
+        if(myUpdateContext != null)      myUpdateContext.Action     = null;
+        if(myLateUpdateContext != null)  myLateUpdateContext.Action = null;
+        if(myFixedUpdateContext != null) myFixedUpdateContext.Action= null;
     }
     
     // ----------------------------------------------------------------------
@@ -47,7 +47,7 @@ public class iCS_BehaviourImp : iCS_Storage {
     // is invoked after Awake and before any Update call.
     void Start() {
         GenerateCode();
-        if(myStartContext.Action != null) {
+        if(myStartContext != null && myStartContext.Action != null) {
             do {
                 myStartContext.Action.Execute(-2);
                 if(myStartContext.Action.IsStalled) {
@@ -74,9 +74,9 @@ public class iCS_BehaviourImp : iCS_Storage {
     // ======================================================================
     // Graph Updates
     // ----------------------------------------------------------------------
-    void Update()       { myUpdateContext.RunEvent(); }
-    void LateUpdate()   { myLateUpdateContext.RunEvent(); }
-    void FixedUpdate()  { myFixedUpdateContext.RunEvent(); }
+    void Update()       { if(myUpdateContext != null)      myUpdateContext.RunEvent(); }
+    void LateUpdate()   { if(myLateUpdateContext != null)  myLateUpdateContext.RunEvent(); }
+    void FixedUpdate()  { if(myFixedUpdateContext != null) myFixedUpdateContext.RunEvent(); }
     
     // ======================================================================
     // Child Management
