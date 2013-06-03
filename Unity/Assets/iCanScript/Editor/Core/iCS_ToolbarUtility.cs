@@ -88,10 +88,11 @@ public static class iCS_ToolbarUtility {
     }
 	// ----------------------------------------------------------------------
 	// FIXME: CenterLabel: left margin not functional
-    public static void CenteredLabel(ref Rect toolbarRect, string value, float leftMargin, float rightMargin) {
-        GUIContent content= new GUIContent(value);
-		var contentSize= EditorStyles.toolbarTextField.CalcSize(content);
-		float w= contentSize.x+leftMargin+rightMargin;
+    public static void CenteredTitle(ref Rect toolbarRect, string title) {
+        GUIContent content= new GUIContent(title);
+        var style= EditorStyles.boldLabel;
+		var contentSize= style.CalcSize(content);
+		float w= contentSize.x;
 		float dx= 0.5f*(toolbarRect.width-w);
 		if(dx < 0) {
 			dx= 0;
@@ -102,7 +103,7 @@ public static class iCS_ToolbarUtility {
         toolbarRect.height-= offset;
 		toolbarRect.x+= dx;
 		toolbarRect.width= w;
-        GUI.Label(toolbarRect, value, EditorStyles.toolbarTextField);
+        GUI.Label(toolbarRect, content, style);
 		toolbarRect.width= 0;
     }
 	// ----------------------------------------------------------------------
