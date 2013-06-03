@@ -8,9 +8,10 @@ public static class iCS_StorageMgr {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    static bool             myIsPlaying     = false;
-	static iCS_IStorage 	myIStorage      = null;
-	static iCS_EditorObject mySelectedObject= null;
+    static bool             myIsPlaying       = false;
+    static GameObject       myActiveGameObject= null;
+	static iCS_IStorage 	myIStorage        = null;
+	static iCS_EditorObject mySelectedObject  = null;
 	
     // =================================================================================
     // Properties
@@ -23,21 +24,22 @@ public static class iCS_StorageMgr {
     // Storage & Selected object Update.
     // ---------------------------------------------------------------------------------
 	public static void Update() {
+        // Use previous game object if new selection does not include a visual script.
 		GameObject go= Selection.activeGameObject;
-		if(go == null) {
-            myIStorage= null;
-            mySelectedObject= null;
-            myIsPlaying= Application.isPlaying;
-		    return;
-		}
-		iCS_Storage storage= go.GetComponent<iCS_Storage>();
+		iCS_Storage storage= go != null ? go.GetComponent<iCS_Storage>() : null;
         if(storage == null) {
-            myIStorage= null;
-            mySelectedObject= null;
-            myIsPlaying= Application.isPlaying;
-            return;
+            go= myActiveGameObject;
+            storage= go != null ? go.GetComponent<iCS_Storage>() : null;
+            // Clear if previous game object is not valid.
+            if(storage == null) {
+                myIStorage= null;
+                mySelectedObject= null;
+                myIsPlaying= Application.isPlaying;
+                return;                
+            }
         }
         // Create a root object if one does not exist.
+        myActiveGameObject= go;
         if(storage.EngineObjects.Count == 0) {
             if(storage is iCS_BehaviourImp) {
                 CreateRootBehaviourNode(storage);
