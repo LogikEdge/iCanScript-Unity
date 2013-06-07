@@ -538,13 +538,13 @@ p.shot {text-align:left; text-indent:0; margin: 12pt 0pt 0pt 0pt; text-transform
 		<false/>
 	</dict>
 	<key>SCRCompileHTMLBodyTableWidthKey</key>
-	<integer>600</integer>
+	<integer>640</integer>
 	<key>SCRCompileHTMLConvertScrivenerLinksKey</key>
 	<true/>
 	<key>SCRCompileHTMLTreatPreserveFormatAsRawHTMLKey</key>
 	<false/>
 	<key>SCRCompileHTMLUnderlineInternalLinksKey</key>
-	<false/>
+	<true/>
 	<key>SCRCompileHTMLUseCenteredBodyTableKey</key>
 	<true/>
 	<key>SCRCompileHeaderAndFooterFontKey</key>

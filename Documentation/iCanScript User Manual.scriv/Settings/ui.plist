@@ -413,9 +413,9 @@
 	<key>SCRSelectedCompileOptionsInfoSaveName</key>
 	<dict>
 		<key>Tag</key>
-		<integer>5</integer>
+		<integer>0</integer>
 		<key>Title</key>
-		<string>User Manual (pdf)</string>
+		<string>Custom</string>
 	</dict>
 	<key>ScrivenerLinkDestinationGroupID</key>
 	<integer>1</integer>
@@ -427,8 +427,8 @@
 	</array>
 	<key>binderSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {328, 988}}</string>
-		<string>{{329, 0}, {1351, 988}}</string>
+		<string>{{0, 0}, {328, 1278}}</string>
+		<string>{{329, 0}, {2231, 1278}}</string>
 	</array>
 	<key>binderState</key>
 	<array>
@@ -523,8 +523,8 @@
 	<integer>3</integer>
 	<key>inspectorSplitFrames</key>
 	<array>
-		<string>{{0, 0}, {959, 962}}</string>
-		<string>{{960, 0}, {391, 962}}</string>
+		<string>{{0, 0}, {937, 962}}</string>
+		<string>{{938, 0}, {413, 962}}</string>
 	</array>
 	<key>inspectorSynopsisIsCollapsed</key>
 	<false/>
@@ -663,7 +663,7 @@
 	<key>mainDocumentView</key>
 	<string>supportingDocumentEditor</string>
 	<key>mainWindowFrame</key>
-	<string>-1680 325 1680 1010 -1680 285 1680 1050 </string>
+	<string>0 118 2560 1300 0 0 2560 1418 </string>
 	<key>projectNotesSplitState</key>
 	<array>
 		<string>{{0, 0}, {147, 383}}</string>
@@ -1705,7 +1705,7 @@
 		<integer>55</integer>
 	</array>
 	<key>supportingDocumentEditor.scrollRect</key>
-	<string>{{0, 0}, {639.33331, 590}}</string>
+	<string>{{0, 0}, {1211.3334, 783.33331}}</string>
 	<key>supportingDocumentEditor.selectedRanges</key>
 	<string>{112, 0}</string>
 	<key>supportingDocumentEditor.textEditorState</key>

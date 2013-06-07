@@ -57,6 +57,13 @@ Tips and Tricks and Trouble	&lt;$p>
             <Synopsis>- Keyboard shortcuts quick reference
 - Programming keywords</Synopsis>
         </Document>
+        <Document ID="121">
+            <Title>Installation &amp; Upgrade</Title>
+            <Text>iCanScript is delivered in three Unity packages:
+- iCanScript: the core editor &amp; engine (mandatory);
+- iCanScript_Nodes: base library nodes (optional);
+- iCanScript_Examples: example projects (optional).</Text>
+        </Document>
         <Document ID="70">
             <Title>Finding Things</Title>
             <Text>Alternatively, the appendices have been designed to use as a sort of topical index. If you have a question about a particular menu command, for instance, you can find it in the appendix, Menus and Keyboard Shortcuts (Appendix A). Often, if the feature merits it, there will be a cross-reference to a more thorough description of the feature in the main manual. When all else fails, a detailed table of contents has been provided at the beginning of the document.</Text>
@@ -86,13 +93,6 @@ iCanScript was developed because no other …
         </Document>
         <Document ID="49">
             <Title>Visual Editor</Title>
-        </Document>
-        <Document ID="121">
-            <Title>Installation &amp; Upgrade</Title>
-            <Text>iCanScript is delivered in three Unity packages:
-- iCanScript: the core editor &amp; engine (mandatory);
-- iCanScript_Nodes: base library nodes (optional);
-- iCanScript_Examples: example projects (optional).</Text>
         </Document>
         <Document ID="71">
             <Title>Quick Tour</Title>

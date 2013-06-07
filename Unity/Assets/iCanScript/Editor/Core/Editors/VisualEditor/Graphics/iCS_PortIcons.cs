@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -7,17 +8,35 @@ public static class iCS_PortIcons {
     // ======================================================================
     // PROPERTIES
     // ----------------------------------------------------------------------
-	static float		myScale					   = 0f;
-	static Texture2D	myDataPortTemplate         = null;
-	static Texture2D	myValuePortTemplate  	   = null;
-	static Texture2D	mySelectedDataPortTemplate = null;
-	static Texture2D	mySelectedValuePortTemplate= null;
+	static float		myScale					    = 0f;
+	static Texture2D	myDataPortTemplate          = null;
+	static Texture2D	myValuePortTemplate  	    = null;
+	static Texture2D	mySelectedDataPortTemplate  = null;
+	static Texture2D	mySelectedValuePortTemplate = null;
+                                                    
+	static Texture2D	myInEndPortTemplate            = null;
+	static Texture2D	myOutEndPortTemplate           = null;
+	static Texture2D	myInRelayPortTemplate  	       = null;
+	static Texture2D	myOutRelayPortTemplate  	   = null;
+	static Texture2D	mySelectedInEndPortTemplate    = null;
+	static Texture2D	mySelectedOutEndPortTemplate   = null;
+	static Texture2D	mySelectedInRelayPortTemplate  = null;
+	static Texture2D	mySelectedOutRelayPortTemplate = null;
 	
     // ----------------------------------------------------------------------
 	static Dictionary<Color,Dictionary<Color,Texture2D>>	myDataPortIcons         = null;
 	static Dictionary<Color,Dictionary<Color,Texture2D>>	myValuePortIcons        = null;
 	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedDataPortIcons = null;
 	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedValuePortIcons= null;
+
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	myInEndPortIcons           = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	myOutEndPortIcons          = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedInEndPortIcons   = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedOutEndPortIcons  = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	myInRelayPortIcons         = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	myOutRelayPortIcons        = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedInRelayPortIcons = null;
+	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedOutRelayPortIcons= null;
 
 	// ----------------------------------------------------------------------
     //  Build template for all port icons
@@ -65,6 +84,11 @@ public static class iCS_PortIcons {
         float ringWidth= 2f*(scale > 1f ? 1f+0.5f*(scale-1f) : 1f);
 		BuildDataPortTemplate(radius, ref myDataPortTemplate, ringWidth);
 		BuildDataPortTemplate(iCS_EditorConfig.SelectedPortFactor*radius, ref mySelectedDataPortTemplate, ringWidth);
+		
+		BuildInEndPortTemplate(radius, ref myInEndPortTemplate, ringWidth);
+		BuildOutEndPortTemplate(radius, ref myInEndPortTemplate, ringWidth);
+		BuildInEndPortTemplate(iCS_EditorConfig.SelectedPortFactor*radius, ref mySelectedInEndPortTemplate, ringWidth);
+		BuildOutEndPortTemplate(iCS_EditorConfig.SelectedPortFactor*radius, ref mySelectedInEndPortTemplate, ringWidth);
 	}
 	// ----------------------------------------------------------------------
 	static void BuildDataPortTemplate(float radius, ref Texture2D template, float ringWidth= 2f) {
@@ -78,6 +102,28 @@ public static class iCS_PortIcons {
 		// Finalize texture.
 		template.hideFlags= HideFlags.DontSave;
 		template.Apply();
+	}
+	// ----------------------------------------------------------------------
+    delegate void PortTemplateBuilder(float radius, ref Texture2D template, float ringWidth);
+	static void BuildPortTemplate(float radius, ref Texture2D template, float ringWidth, PortTemplateBuilder builder) {
+        // Remove previous template.
+        if(template != null) Texture2D.DestroyImmediate(template);
+		// Create texture.
+		int widthInt= (int)(2f*radius+3f);
+		int heightInt= (int)(2f*radius+3f);
+		template= new Texture2D(widthInt, heightInt, TextureFormat.ARGB32, false);
+		builder(radius, ref template, ringWidth);
+		// Finalize texture.
+		template.hideFlags= HideFlags.DontSave;
+		template.Apply();
+	}
+	// ----------------------------------------------------------------------
+	static void BuildInEndPortTemplate(float radius, ref Texture2D template, float ringWidth= 2f) {
+        BuildPortTemplate(radius, ref template, ringWidth, BuildInEndPortTemplateImp);
+	}
+	// ----------------------------------------------------------------------
+	static void BuildOutEndPortTemplate(float radius, ref Texture2D template, float ringWidth= 2f) {
+        BuildPortTemplate(radius, ref template, ringWidth, BuildOutEndPortTemplateImp);
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildDataPortTemplateImp(float radius, ref Texture2D texture, float ringWidth= 2f) {
@@ -137,6 +183,103 @@ public static class iCS_PortIcons {
 			}
 		}
 		
+	}
+	// ----------------------------------------------------------------------
+	public static void BuildInEndPortTemplateImp(float radius, ref Texture2D texture, float ringWidth= 2f) {
+        if(ringWidth < 2f) ringWidth= 2f;
+		float outterRingRadius= radius+0.5f*ringWidth;
+		float innerRingRadius= radius-0.5f*ringWidth;
+		float cx= 0.5f*texture.width;
+		float cy= 0.5f*texture.height;
+		
+		float outterRingRadius2= outterRingRadius*outterRingRadius;
+		float innerRingRadius2= innerRingRadius*innerRingRadius;
+		for(int x= 0; x < texture.width; ++x) {
+			for(int y= 0; y < texture.height; ++y) {
+				float rx= (float)x;
+				float ry= (float)y;
+				float ci= rx-cx;
+				float cj= ry-cy;
+				float r2= ci*ci+cj*cj;
+				if(r2 > outterRingRadius2) {
+					texture.SetPixel(x,y,Color.clear);
+				} else if(r2 > innerRingRadius2) {
+					float r= Mathf.Sqrt(r2);
+					if(r > radius) {
+						float ratio= (ringWidth-2f*(r-radius))/ringWidth;
+						Color c= Color.black;
+						c.a= ratio;
+						texture.SetPixel(x,y,c);
+					} else {
+						float ratio= (ringWidth-2f*(radius-r))/ringWidth;
+						Color c= Color.red;
+						c.r= ratio;
+						c.g= (1f-ratio);
+						texture.SetPixel(x,y,c);						
+					}
+				} else {
+					texture.SetPixel(x,y,Color.red);
+				}
+			}
+		}		
+	}
+	// ----------------------------------------------------------------------
+	public static void BuildOutEndPortTemplateImp(float radius, ref Texture2D texture, float ringWidth= 2f) {
+        if(ringWidth < 2f) ringWidth= 2f;
+		float fillRatio= 0.5f;
+		float outterRingRadius= radius+0.5f*ringWidth;
+		float innerRingRadius= radius-0.5f*ringWidth;
+		float fillRadius= fillRatio*radius;
+		float outterFillRadius= fillRadius+0.5f*ringWidth;
+		float innerFillRadius= fillRadius-0.5f*ringWidth;
+		float cx= 0.5f*texture.width;
+		float cy= 0.5f*texture.height;
+		
+		float outterRingRadius2= outterRingRadius*outterRingRadius;
+		float innerRingRadius2= innerRingRadius*innerRingRadius;
+		float outterFillRadius2= outterFillRadius*outterFillRadius;
+		float innerFillRadius2= innerFillRadius*innerFillRadius;
+		for(int x= 0; x < texture.width; ++x) {
+			for(int y= 0; y < texture.height; ++y) {
+				float rx= (float)x;
+				float ry= (float)y;
+				float ci= rx-cx;
+				float cj= ry-cy;
+				float r2= ci*ci+cj*cj;
+				if(r2 > outterRingRadius2) {
+					texture.SetPixel(x,y,Color.clear);
+				} else if(r2 > innerRingRadius2) {
+					float r= Mathf.Sqrt(r2);
+					if(r > radius) {
+						float ratio= (ringWidth-2f*(r-radius))/ringWidth;
+						Color c= Color.red;
+						c.a= ratio;
+						texture.SetPixel(x,y,c);
+					} else {
+						float ratio= (ringWidth-2f*(radius-r))/ringWidth;
+						Color c= Color.black;
+						c.r= ratio;
+						c.g= (1f-ratio);
+						texture.SetPixel(x,y,c);						
+					}
+				} else if(r2 > outterFillRadius2) {
+					texture.SetPixel(x,y,Color.green);
+				} else if(r2 > innerFillRadius2) {
+					float r= Mathf.Sqrt(r2);
+					if(r > fillRadius) {
+						float ratio= (ringWidth-2f*(r-fillRadius))/ringWidth;
+						Color c= Color.black;
+						c.g= (1f-ratio);
+						c.b= ratio;
+						texture.SetPixel(x,y,c);
+					} else {
+						texture.SetPixel(x,y,Color.blue);						
+					}
+				} else {
+					texture.SetPixel(x,y,Color.blue);
+				}
+			}
+		}		
 	}
 	
 	// ----------------------------------------------------------------------
