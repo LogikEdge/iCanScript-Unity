@@ -625,7 +625,12 @@ public partial class iCS_Graphics {
 				if(isStaticPort) {
 		            DrawValuePort(portCenter, portColor, nodeColor, isSelected);
 				} else {
-	    	    	DrawDataPort(portCenter, portColor, nodeColor, isSelected);							        
+//	    	    	DrawDataPort(portCenter, portColor, nodeColor, isSelected);							        
+                    if(port.IsInputPort) {
+                        DrawInEndPort(portCenter, portColor, isSelected);
+                    } else {
+                        DrawOutEndPort(portCenter, portColor, isSelected);                        
+                    }
 				}				
 			}
         } else if(port.IsStatePort) {
@@ -651,6 +656,28 @@ public partial class iCS_Graphics {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedDataPortIcon(_borderColor, _fillColor) :
 		                                 iCS_PortIcons.GetDataPortIcon(_borderColor, _fillColor);
+		Rect pos= new Rect(center.x-0.5f*portIcon.width,
+						   center.y-0.5f*portIcon.height,
+						   portIcon.width,
+						   portIcon.height);
+		GUI.DrawTexture(pos, portIcon);
+    }
+	// ----------------------------------------------------------------------
+    void DrawInEndPort(Vector3 _center, Color _fillColor, bool isSelected) {
+		Vector3 center= TranslateAndScale(_center);
+		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInEndPortIcon(_fillColor) :
+		                                 iCS_PortIcons.GetInEndPortIcon(_fillColor);
+		Rect pos= new Rect(center.x-0.5f*portIcon.width,
+						   center.y-0.5f*portIcon.height,
+						   portIcon.width,
+						   portIcon.height);
+		GUI.DrawTexture(pos, portIcon);
+    }
+	// ----------------------------------------------------------------------
+    void DrawOutEndPort(Vector3 _center, Color _fillColor, bool isSelected) {
+		Vector3 center= TranslateAndScale(_center);
+		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutEndPortIcon(_fillColor) :
+		                                 iCS_PortIcons.GetOutEndPortIcon(_fillColor);
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
 						   portIcon.width,
