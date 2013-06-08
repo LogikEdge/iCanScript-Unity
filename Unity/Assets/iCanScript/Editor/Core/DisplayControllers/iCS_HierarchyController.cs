@@ -298,13 +298,17 @@ public class iCS_HierarchyController : DSTreeViewDataSource {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ModuleHierarchyIcon);            
         } else if(current.IsDataPort) {
             if(current.IsInputPort) {
-                if(current.SourceId != -1) {
-                    icon= iCS_BuiltinTextures.InDataPortIcon;                    
+                if(current.IsEndPort) {
+                    icon= iCS_BuiltinTextures.InEndPortIcon;                    
                 } else {
-                    icon= iCS_BuiltinTextures.InValuePortIcon;
+                    icon= iCS_BuiltinTextures.InRelayPortIcon;
                 }
             } else {
-                icon= iCS_BuiltinTextures.OutDataPortIcon;                                    
+                if(current.IsEndPort) {
+                    icon= iCS_BuiltinTextures.OutEndPortIcon;                    
+                } else {
+                    icon= iCS_BuiltinTextures.OutRelayPortIcon;                    
+                }
             }
         } else if(current.IsStatePort || current.IsTransitionPort) {
             if(current.IsInTransitionPort || current.IsInStatePort) {

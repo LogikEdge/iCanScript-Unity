@@ -32,9 +32,9 @@ public static class iCS_PortIcons {
     //  Build template for all port icons
 	public static void BuildPortIconTemplates(float scale) {
 		if(Math3D.IsEqual(scale, myScale)) return;
+		myScale= scale;
 		BuildEndPortTemplates(scale);
 		BuildRelayPortTemplates(scale);
-		myScale= scale;
 		FlushCachedIcons();
 	}
 	// ----------------------------------------------------------------------
@@ -50,7 +50,7 @@ public static class iCS_PortIcons {
 	public static void BuildInRelayPortTemplate(float len, ref Texture2D template) {
 		// Create texture.
 		int lenInt= (int)(len+1f);
-		int borderSize= myScale > 1.25f ? 3 : (myScale > 0.75f ? 2 : (myScale > 0.5 ? 1 : 0));
+		int borderSize= myScale > 1.5 ? 3 : (myScale > 1.25f ? 2 : (myScale > 0.75 ? 1 : 0));
         // Remove previous template.
         if(template != null) Texture2D.DestroyImmediate(template);
 		template= new Texture2D(lenInt, lenInt);
@@ -72,7 +72,7 @@ public static class iCS_PortIcons {
 	public static void BuildOutRelayPortTemplate(float len, ref Texture2D template) {
 		// Create texture.
 		int lenInt= (int)(len+1f);
-		int borderSize= myScale > 1.25f ? 3 : (myScale > 0.75f ? 2 : (myScale > 0.5 ? 1 : 0));
+		int borderSize= myScale > 1.5 ? 4 : (myScale > 1.25f ? 3 : (myScale > 0.9f ? 2 : (myScale > 0.5 ? 1 : 0)));
         // Remove previous template.
         if(template != null) Texture2D.DestroyImmediate(template);
 		template= new Texture2D(lenInt, lenInt);
@@ -125,68 +125,9 @@ public static class iCS_PortIcons {
         BuildPortTemplate(radius, innerRadius, aaWidth, ref template, BuildOutEndPortTemplateImp);
 	}
 	// ----------------------------------------------------------------------
-	public static void BuildDataPortTemplateImp(float radius, ref Texture2D texture, float ringWidth= 2f) {
-        if(ringWidth < 2f) ringWidth= 2f;
-		float fillRatio= 0.5f;
-		float outterRingRadius= radius+0.5f*ringWidth;
-		float innerRingRadius= radius-0.5f*ringWidth;
-		float fillRadius= fillRatio*radius;
-		float outterFillRadius= fillRadius+0.5f*ringWidth;
-		float innerFillRadius= fillRadius-0.5f*ringWidth;
-		float cx= 0.5f*texture.width;
-		float cy= 0.5f*texture.height;
-		
-		float outterRingRadius2= outterRingRadius*outterRingRadius;
-		float innerRingRadius2= innerRingRadius*innerRingRadius;
-		float outterFillRadius2= outterFillRadius*outterFillRadius;
-		float innerFillRadius2= innerFillRadius*innerFillRadius;
-		for(int x= 0; x < texture.width; ++x) {
-			for(int y= 0; y < texture.height; ++y) {
-				float rx= (float)x;
-				float ry= (float)y;
-				float ci= rx-cx;
-				float cj= ry-cy;
-				float r2= ci*ci+cj*cj;
-				if(r2 > outterRingRadius2) {
-					texture.SetPixel(x,y,Color.clear);
-				} else if(r2 > innerRingRadius2) {
-					float r= Mathf.Sqrt(r2);
-					if(r > radius) {
-						float ratio= (ringWidth-2f*(r-radius))/ringWidth;
-						Color c= Color.red;
-						c.a= ratio;
-						texture.SetPixel(x,y,c);
-					} else {
-						float ratio= (ringWidth-2f*(radius-r))/ringWidth;
-						Color c= Color.black;
-						c.r= ratio;
-						c.g= (1f-ratio);
-						texture.SetPixel(x,y,c);						
-					}
-				} else if(r2 > outterFillRadius2) {
-					texture.SetPixel(x,y,Color.green);
-				} else if(r2 > innerFillRadius2) {
-					float r= Mathf.Sqrt(r2);
-					if(r > fillRadius) {
-						float ratio= (ringWidth-2f*(r-fillRadius))/ringWidth;
-						Color c= Color.black;
-						c.g= (1f-ratio);
-						c.b= ratio;
-						texture.SetPixel(x,y,c);
-					} else {
-						texture.SetPixel(x,y,Color.blue);						
-					}
-				} else {
-					texture.SetPixel(x,y,Color.blue);
-				}
-			}
-		}
-		
-	}
-	// ----------------------------------------------------------------------
 	public static void BuildInEndPortTemplateImp(float radius, float innerRadius, float aaWidth, ref Texture2D texture) {
-        float innerRadiusMax= innerRadius+0.5f*myScale;
-        float innerRadiusMin= innerRadius-0.5f*myScale;
+        float innerRadiusMax= innerRadius+0.35f*myScale;
+        float innerRadiusMin= innerRadius-0.35f*myScale;
         float aaRadiusMax= radius+aaWidth;
         float aaInnerRadiusMax= innerRadiusMax+aaWidth;
         float aaInnerRadiusMin= innerRadiusMin-aaWidth;
