@@ -83,17 +83,9 @@ public static class iCS_BuiltinTextures {
         myOutEndPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         TextureUtil.Clear(ref myInEndPortIcon);
         TextureUtil.Clear(ref myOutEndPortIcon);
-        
-        int radiusInt= (int)radius;
-        int lineLength= kPortIconWidth-radiusInt;
-        int lineHeight= kPortIconHeight/2;
-        for(int x= 0; x < lineLength; ++x) {
-            myInEndPortIcon.SetPixel(x, lineHeight, typeColor);
-            myOutEndPortIcon.SetPixel(radiusInt+x, lineHeight, typeColor);
-        }
-        int inOffset= kPortIconWidth-kPortIconHeight;
-        TextureUtil.AlphaBlend(0, 0, portInIcon , inOffset, 0, ref myInEndPortIcon,  portOutIcon.width, portOutIcon.height);
-        TextureUtil.AlphaBlend(0, 0, portOutIcon, 0,        0, ref myOutEndPortIcon, portOutIcon.width, portOutIcon.height);
+        int xOffset= (kPortIconWidth-kPortIconHeight)>>1;
+        TextureUtil.AlphaBlend(0, 0, portInIcon , xOffset, 0, ref myInEndPortIcon,  portOutIcon.width, portOutIcon.height);
+        TextureUtil.AlphaBlend(0, 0, portOutIcon, xOffset, 0, ref myOutEndPortIcon, portOutIcon.width, portOutIcon.height);
 
         // Finalize icons.
         myInEndPortIcon.Apply();
@@ -121,15 +113,9 @@ public static class iCS_BuiltinTextures {
         myOutRelayPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         TextureUtil.Clear(ref myInRelayPortIcon);
         TextureUtil.Clear(ref myOutRelayPortIcon);
-        
-        int portCenter= (int)(0.5f*kPortIconHeight);
-        for(int x= 0; x < kPortIconWidth-portCenter; ++x) {
-            myInRelayPortIcon.SetPixel(x, portCenter-1, typeColor);
-            myOutRelayPortIcon.SetPixel(portCenter+x, portCenter-1, typeColor);
-        }
-        int inOffset= kPortIconWidth-kPortIconHeight;
-        TextureUtil.AlphaBlend(0, 0, inPortIcon,  1+inOffset, 1, ref myInRelayPortIcon,  inPortIcon.width,  inPortIcon.height);
-        TextureUtil.AlphaBlend(0, 0, outPortIcon, 1,          1, ref myOutRelayPortIcon, outPortIcon.width, outPortIcon.height);
+        int xOffset= (kPortIconWidth-kPortIconHeight)>>1;
+        TextureUtil.AlphaBlend(0, 0, inPortIcon,  xOffset, 0, ref myInRelayPortIcon,  inPortIcon.width,  inPortIcon.height);
+        TextureUtil.AlphaBlend(0, 0, outPortIcon, xOffset, 0, ref myOutRelayPortIcon, outPortIcon.width, outPortIcon.height);
 
         // Finalize icons.
         myInRelayPortIcon.Apply();
