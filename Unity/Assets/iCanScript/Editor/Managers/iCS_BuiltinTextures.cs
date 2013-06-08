@@ -71,13 +71,13 @@ public static class iCS_BuiltinTextures {
     }
     // ---------------------------------------------------------------------------------
 	static void BuildEndPortIcons(Color typeColor) {
-		Texture2D portInTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
-		Texture2D portOutTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
+		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
+		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
 		float radius= 0.5f*(kPortIconHeight-3f);
-        iCS_PortIcons.BuildInEndPortTemplateImp(radius, radius-2, 1f, ref portInTemplate);
-        iCS_PortIcons.BuildOutEndPortTemplateImp(radius, radius-2, 1f, ref portOutTemplate);
-        Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(typeColor, portInTemplate);
-        Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(typeColor, portOutTemplate);
+        iCS_PortIcons.BuildInEndPortTemplateImp(radius, radius-2, 1f, ref inPortTemplate);
+        iCS_PortIcons.BuildOutEndPortTemplateImp(radius, radius-2, 1f, ref outPortTemplate);
+        Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(typeColor, inPortTemplate);
+        Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(typeColor, outPortTemplate);
 
         myInEndPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         myOutEndPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
@@ -103,33 +103,44 @@ public static class iCS_BuiltinTextures {
 	
         Texture2D.DestroyImmediate(portInIcon);
         Texture2D.DestroyImmediate(portOutIcon);
-        Texture2D.DestroyImmediate(portInTemplate);	    
-        Texture2D.DestroyImmediate(portOutTemplate);	    
+        Texture2D.DestroyImmediate(inPortTemplate);	    
+        Texture2D.DestroyImmediate(outPortTemplate);	    
 	}
 
     // ---------------------------------------------------------------------------------
 	static void BuildRelayPortIcons(Color typeColor) {
-		Texture2D portTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
+		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
+		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
 		float len= kPortIconHeight-2f;
-        iCS_PortIcons.BuildOutRelayPortTemplate(len, ref portTemplate);
-        Texture2D portIcon= iCS_PortIcons.BuildPortIcon(typeColor, portTemplate);
+        iCS_PortIcons.BuildInRelayPortTemplate (len, ref inPortTemplate);
+        iCS_PortIcons.BuildOutRelayPortTemplate(len, ref outPortTemplate);
+        Texture2D inPortIcon = iCS_PortIcons.BuildPortIcon(typeColor, inPortTemplate);
+        Texture2D outPortIcon= iCS_PortIcons.BuildPortIcon(typeColor, outPortTemplate);
 
-        myInRelayPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
+        myInRelayPortIcon = new Texture2D(kPortIconWidth, kPortIconHeight);
+        myOutRelayPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         TextureUtil.Clear(ref myInRelayPortIcon);
+        TextureUtil.Clear(ref myOutRelayPortIcon);
         
         int portCenter= (int)(0.5f*kPortIconHeight);
         for(int x= 0; x < kPortIconWidth-portCenter; ++x) {
             myInRelayPortIcon.SetPixel(x, portCenter-1, typeColor);
+            myOutRelayPortIcon.SetPixel(portCenter+x, portCenter-1, typeColor);
         }
         int inOffset= kPortIconWidth-kPortIconHeight;
-        TextureUtil.AlphaBlend(0, 0, portIcon, 1+inOffset, 1, ref myInRelayPortIcon,  portIcon.width, portIcon.height);
+        TextureUtil.AlphaBlend(0, 0, inPortIcon,  1+inOffset, 1, ref myInRelayPortIcon,  inPortIcon.width,  inPortIcon.height);
+        TextureUtil.AlphaBlend(0, 0, outPortIcon, 1,          1, ref myOutRelayPortIcon, outPortIcon.width, outPortIcon.height);
 
         // Finalize icons.
         myInRelayPortIcon.Apply();
+        myOutRelayPortIcon.Apply();
         myInRelayPortIcon.hideFlags= HideFlags.DontSave;
+        myOutRelayPortIcon.hideFlags= HideFlags.DontSave;
 	
-        Texture2D.DestroyImmediate(portIcon);
-        Texture2D.DestroyImmediate(portTemplate);	    
+        Texture2D.DestroyImmediate(inPortIcon);
+        Texture2D.DestroyImmediate(inPortTemplate);	    
+        Texture2D.DestroyImmediate(outPortIcon);
+        Texture2D.DestroyImmediate(outPortTemplate);	    
 	}
 
     // ---------------------------------------------------------------------------------
