@@ -627,9 +627,11 @@ public partial class iCS_Graphics {
 				} else {
 //	    	    	DrawDataPort(portCenter, portColor, nodeColor, isSelected);							        
                     if(port.IsInputPort) {
-                        DrawInEndPort(portCenter, portColor, isSelected);
+//                        DrawInEndPort(portCenter, portColor, isSelected);
+						DrawInRelayPort(portCenter, portColor, isSelected);
                     } else {
-                        DrawOutEndPort(portCenter, portColor, isSelected);                        
+//                        DrawOutEndPort(portCenter, portColor, isSelected);                        
+						DrawOutRelayPort(portCenter, portColor, isSelected);
                     }
 				}				
 			}
@@ -678,6 +680,28 @@ public partial class iCS_Graphics {
 		Vector3 center= TranslateAndScale(_center);
 		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutEndPortIcon(_fillColor) :
 		                                 iCS_PortIcons.GetOutEndPortIcon(_fillColor);
+		Rect pos= new Rect(center.x-0.5f*portIcon.width,
+						   center.y-0.5f*portIcon.height,
+						   portIcon.width,
+						   portIcon.height);
+		GUI.DrawTexture(pos, portIcon);
+    }
+	// ----------------------------------------------------------------------
+    void DrawInRelayPort(Vector3 _center, Color _fillColor, bool isSelected) {
+		Vector3 center= TranslateAndScale(_center);
+		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedInRelayPortIcon(_fillColor) :
+		                                 iCS_PortIcons.GetInRelayPortIcon(_fillColor);
+		Rect pos= new Rect(center.x-0.5f*portIcon.width,
+						   center.y-0.5f*portIcon.height,
+						   portIcon.width,
+						   portIcon.height);
+		GUI.DrawTexture(pos, portIcon);
+    }
+	// ----------------------------------------------------------------------
+    void DrawOutRelayPort(Vector3 _center, Color _fillColor, bool isSelected) {
+		Vector3 center= TranslateAndScale(_center);
+		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedOutRelayPortIcon(_fillColor) :
+		                                 iCS_PortIcons.GetOutRelayPortIcon(_fillColor);
 		Rect pos= new Rect(center.x-0.5f*portIcon.width,
 						   center.y-0.5f*portIcon.height,
 						   portIcon.width,

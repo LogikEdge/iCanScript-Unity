@@ -86,23 +86,18 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildInRelayPortTemplate(float len, ref Texture2D template) {
-        // Build new template.
-		float margin= len*0.3f;		
 		// Create texture.
 		int lenInt= (int)(len+1f);
-		int marginInt= (int)(margin);
-		int topMarginInt= (int)(len-margin);
+		int borderSize= myScale > 1.25f ? 3 : (myScale > 0.75f ? 2 : (myScale > 0.5 ? 1 : 0));
         // Remove previous template.
         if(template != null) Texture2D.DestroyImmediate(template);
 		template= new Texture2D(lenInt, lenInt);
 		for(int x= 0; x < lenInt; ++x) {
 			for(int y= 0; y < lenInt; ++y) {
-				if(x == 0 || y == 0 || x == lenInt-1 || y == lenInt-1) {
-					template.SetPixel(x,y,Color.red);
-				} else  if(x < marginInt || x > topMarginInt || y < marginInt || y > topMarginInt) {
+				if(x <= borderSize || y <= borderSize || x >= lenInt-1-borderSize || y >= lenInt-1-borderSize) {
 					template.SetPixel(x,y,Color.black);
 				} else {
-					template.SetPixel(x,y,Color.blue);					
+					template.SetPixel(x,y,Color.red);					
 				}
 			}
 		}
@@ -111,23 +106,20 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildOutRelayPortTemplate(float len, ref Texture2D template) {
-        // Build new template.
-		float margin= len*0.3f;		
 		// Create texture.
 		int lenInt= (int)(len+1f);
-		int marginInt= (int)(margin);
-		int topMarginInt= (int)(len-margin);
+		int borderSize= myScale > 1.25f ? 3 : (myScale > 0.75f ? 2 : (myScale > 0.5 ? 1 : 0));
         // Remove previous template.
         if(template != null) Texture2D.DestroyImmediate(template);
 		template= new Texture2D(lenInt, lenInt);
 		for(int x= 0; x < lenInt; ++x) {
 			for(int y= 0; y < lenInt; ++y) {
-				if(x == 0 || y == 0 || x == lenInt-1 || y == lenInt-1) {
-					template.SetPixel(x,y,Color.red);
-				} else  if(x < marginInt || x > topMarginInt || y < marginInt || y > topMarginInt) {
+				if(x <= borderSize || y <= borderSize || x >= lenInt-1-borderSize || y >= lenInt-1-borderSize) {
 					template.SetPixel(x,y,Color.black);
+				} else  if(x <= borderSize+1 || x >= lenInt-borderSize-2 || y <= borderSize+1 || y >= lenInt-borderSize-2) {
+					template.SetPixel(x,y,Color.red);
 				} else {
-					template.SetPixel(x,y,Color.blue);					
+					template.SetPixel(x,y,Color.black);					
 				}
 			}
 		}
