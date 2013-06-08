@@ -16,6 +16,9 @@ public partial class iCS_EditorObject {
     // ======================================================================
     // Conversion Utilities
     // ----------------------------------------------------------------------
+	public iCS_Storage Storage {
+		get { return myIStorage.Storage; }
+	}
     public List<iCS_EditorObject> EditorObjects {
         get { return myIStorage.EditorObjects; }
     }

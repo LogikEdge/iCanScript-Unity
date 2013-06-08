@@ -612,8 +612,6 @@ public partial class iCS_Graphics {
 
 	// ----------------------------------------------------------------------
     public void DrawPortIcon(iCS_EditorObject port, Vector2 portCenter, bool isSelected, Color portColor, Color nodeColor, float portRadius, iCS_IStorage iStorage) {
-        // Determine if port is a static port (a port that feeds information into the graph).
-        bool isStaticPort= port.IsInDataPort && port.Source == null;
         // Draw port icon.
         if(port.IsDataPort) {
             // Don't display mux input ports.
@@ -622,18 +620,7 @@ public partial class iCS_Graphics {
 			if(port.IsParentMuxPort) {
 				DrawMuxPort(portCenter, portColor, nodeColor, portRadius);
 			} else {
-				if(isStaticPort) {
-		            DrawValuePort(portCenter, portColor, nodeColor, isSelected);
-				} else {
-//	    	    	DrawDataPort(portCenter, portColor, nodeColor, isSelected);							        
-                    if(port.IsInputPort) {
-//                        DrawInEndPort(portCenter, portColor, isSelected);
-						DrawInRelayPort(portCenter, portColor, isSelected);
-                    } else {
-//                        DrawOutEndPort(portCenter, portColor, isSelected);                        
-						DrawOutRelayPort(portCenter, portColor, isSelected);
-                    }
-				}				
+	    	    DrawDataPort(port, portCenter, portColor, isSelected);							        
 			}
         } else if(port.IsStatePort) {
             // State ports.
@@ -650,19 +637,24 @@ public partial class iCS_Graphics {
         }
         else {
             // All other types of ports (should not exists).
-            DrawDataPort(portCenter, portColor, nodeColor, isSelected);
+            DrawDataPort(port, portCenter, portColor, isSelected);
         }        
     }
 	// ----------------------------------------------------------------------
-    void DrawDataPort(Vector3 _center, Color _fillColor, Color _borderColor, bool isSelected) {
-		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedDataPortIcon(_borderColor, _fillColor) :
-		                                 iCS_PortIcons.GetDataPortIcon(_borderColor, _fillColor);
-		Rect pos= new Rect(center.x-0.5f*portIcon.width,
-						   center.y-0.5f*portIcon.height,
-						   portIcon.width,
-						   portIcon.height);
-		GUI.DrawTexture(pos, portIcon);
+    void DrawDataPort(iCS_EditorObject port, Vector3 _center, Color _fillColor, bool isSelected) {
+		if(port.IsInputPort) {
+			if(port.IsEndPort) {
+				DrawInEndPort(_center, _fillColor, isSelected);
+			} else {
+				DrawInRelayPort(_center, _fillColor, isSelected);
+			}
+		} else {
+			if(port.IsEndPort) {
+				DrawOutEndPort(_center, _fillColor, isSelected);
+			} else {
+				DrawOutRelayPort(_center, _fillColor, isSelected);
+			}
+		}
     }
 	// ----------------------------------------------------------------------
     void DrawInEndPort(Vector3 _center, Color _fillColor, bool isSelected) {

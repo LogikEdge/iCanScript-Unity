@@ -38,4 +38,6 @@ public partial class iCS_EditorObject {
     public bool IsChildMuxPort              { get { return EngineObject.IsChildMuxPort; }}
     public bool IsParentMuxPort             { get { return EngineObject.IsParentMuxPort; }}
     public bool IsNestedPort                { get { var parent= Parent; return parent != null && parent.IsPort; }}
+	public bool IsEndPort					{ get { return Storage.IsEndPort(EngineObject); }}
+	public bool IsRelayPort				    { get { return Storage.IsRelayPort(EngineObject); }}
 }

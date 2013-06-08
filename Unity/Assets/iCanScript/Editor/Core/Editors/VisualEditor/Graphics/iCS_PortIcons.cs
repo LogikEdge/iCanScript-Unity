@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-
+// TODO: Need to cleanup obsoleted data port icon code.
 public static class iCS_PortIcons {
     // ======================================================================
     // PROPERTIES
@@ -96,8 +96,10 @@ public static class iCS_PortIcons {
 			for(int y= 0; y < lenInt; ++y) {
 				if(x <= borderSize || y <= borderSize || x >= lenInt-1-borderSize || y >= lenInt-1-borderSize) {
 					template.SetPixel(x,y,Color.black);
+				} else  if(x <= borderSize+1 || x >= lenInt-borderSize-2 || y <= borderSize+1 || y >= lenInt-borderSize-2) {
+					template.SetPixel(x,y,Color.red);
 				} else {
-					template.SetPixel(x,y,Color.red);					
+					template.SetPixel(x,y,Color.black);					
 				}
 			}
 		}
@@ -116,10 +118,8 @@ public static class iCS_PortIcons {
 			for(int y= 0; y < lenInt; ++y) {
 				if(x <= borderSize || y <= borderSize || x >= lenInt-1-borderSize || y >= lenInt-1-borderSize) {
 					template.SetPixel(x,y,Color.black);
-				} else  if(x <= borderSize+1 || x >= lenInt-borderSize-2 || y <= borderSize+1 || y >= lenInt-borderSize-2) {
-					template.SetPixel(x,y,Color.red);
 				} else {
-					template.SetPixel(x,y,Color.black);					
+					template.SetPixel(x,y,Color.red);					
 				}
 			}
 		}
