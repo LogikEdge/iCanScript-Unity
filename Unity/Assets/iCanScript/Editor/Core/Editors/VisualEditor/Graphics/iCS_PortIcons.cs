@@ -9,11 +9,6 @@ public static class iCS_PortIcons {
     // PROPERTIES
     // ----------------------------------------------------------------------
 	static float		myScale					    = 0f;
-	static Texture2D	myDataPortTemplate          = null;
-	static Texture2D	myValuePortTemplate  	    = null;
-	static Texture2D	mySelectedDataPortTemplate  = null;
-	static Texture2D	mySelectedValuePortTemplate = null;
-                                                    
 	static Texture2D	myInEndPortTemplate            = null;
 	static Texture2D	myOutEndPortTemplate           = null;
 	static Texture2D	myInRelayPortTemplate  	       = null;
@@ -24,11 +19,6 @@ public static class iCS_PortIcons {
 	static Texture2D	mySelectedOutRelayPortTemplate = null;
 	
     // ----------------------------------------------------------------------
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	myDataPortIcons         = null;
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	myValuePortIcons        = null;
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedDataPortIcons = null;
-	static Dictionary<Color,Dictionary<Color,Texture2D>>	mySelectedValuePortIcons= null;
-
 	static Dictionary<Color,Texture2D>	myInEndPortIcons           = null;
 	static Dictionary<Color,Texture2D>	myOutEndPortIcons          = null;
 	static Dictionary<Color,Texture2D>	mySelectedInEndPortIcons   = null;
@@ -42,47 +32,19 @@ public static class iCS_PortIcons {
     //  Build template for all port icons
 	public static void BuildPortIconTemplates(float scale) {
 		if(Math3D.IsEqual(scale, myScale)) return;
-		BuildDataPortTemplates(scale);
-		BuildValuePortTemplates(scale);
+		BuildEndPortTemplates(scale);
+		BuildRelayPortTemplates(scale);
 		myScale= scale;
 		FlushCachedIcons();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildValuePortTemplates(float scale) {
+	static void BuildRelayPortTemplates(float scale) {
         float len= scale*iCS_EditorConfig.PortDiameter;
         float selectedLen= len*iCS_EditorConfig.SelectedPortFactor;
-		BuildValuePortTemplate(len, ref myValuePortTemplate);
-		BuildValuePortTemplate(selectedLen, ref mySelectedValuePortTemplate);
-		
 		BuildInRelayPortTemplate(len, ref myInRelayPortTemplate);
 		BuildOutRelayPortTemplate(len, ref myOutRelayPortTemplate);
 		BuildInRelayPortTemplate(selectedLen, ref mySelectedInRelayPortTemplate);
 		BuildOutRelayPortTemplate(selectedLen, ref mySelectedOutRelayPortTemplate);
-	}
-	// ----------------------------------------------------------------------
-	public static void BuildValuePortTemplate(float len, ref Texture2D template) {
-        // Build new template.
-		float margin= len*0.3f;		
-		// Create texture.
-		int lenInt= (int)(len+1f);
-		int marginInt= (int)(margin);
-		int topMarginInt= (int)(len-margin);
-        // Remove previous template.
-        if(template != null) Texture2D.DestroyImmediate(template);
-		template= new Texture2D(lenInt, lenInt);
-		for(int x= 0; x < lenInt; ++x) {
-			for(int y= 0; y < lenInt; ++y) {
-				if(x == 0 || y == 0 || x == lenInt-1 || y == lenInt-1) {
-					template.SetPixel(x,y,Color.red);
-				} else  if(x < marginInt || x > topMarginInt || y < marginInt || y > topMarginInt) {
-					template.SetPixel(x,y,Color.black);
-				} else {
-					template.SetPixel(x,y,Color.blue);					
-				}
-			}
-		}
-		template.hideFlags= HideFlags.DontSave;
-		template.Apply();
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildInRelayPortTemplate(float len, ref Texture2D template) {
@@ -127,12 +89,8 @@ public static class iCS_PortIcons {
 		template.Apply();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildDataPortTemplates(float scale) {
+	static void BuildEndPortTemplates(float scale) {
         float radius= scale*iCS_EditorConfig.PortRadius;
-        float ringWidth= 2f*(scale > 1f ? 1f+0.5f*(scale-1f) : 1f);
-		BuildDataPortTemplate(radius, ref myDataPortTemplate, ringWidth);
-		BuildDataPortTemplate(iCS_EditorConfig.SelectedPortFactor*radius, ref mySelectedDataPortTemplate, ringWidth);
-		
         float inInnerRadius= radius-2f*scale;
         float outInnerRadius= radius-3f*scale;
 		BuildInEndPortTemplate(radius, inInnerRadius, 1f, ref myInEndPortTemplate);
@@ -143,19 +101,6 @@ public static class iCS_PortIcons {
 		float selectedOutInnerRadius= selectedFactor*outInnerRadius;
 		BuildInEndPortTemplate(selectedRadius, selectedInInnerRadius, 1f, ref mySelectedInEndPortTemplate);
 		BuildOutEndPortTemplate(selectedRadius, selectedOutInnerRadius, 1f, ref mySelectedOutEndPortTemplate);
-	}
-	// ----------------------------------------------------------------------
-	static void BuildDataPortTemplate(float radius, ref Texture2D template, float ringWidth= 2f) {
-        // Remove previous template.
-        if(template != null) Texture2D.DestroyImmediate(template);
-		// Create texture.
-		int widthInt= (int)(2f*radius+3f);
-		int heightInt= (int)(2f*radius+3f);
-		template= new Texture2D(widthInt, heightInt, TextureFormat.ARGB32, false);
-		BuildDataPortTemplateImp(radius, ref template, ringWidth);
-		// Finalize texture.
-		template.hideFlags= HideFlags.DontSave;
-		template.Apply();
 	}
 	// ----------------------------------------------------------------------
     delegate void PortTemplateBuilder(float radius, float innerRadius, float aaWidth, ref Texture2D template);
@@ -334,11 +279,6 @@ public static class iCS_PortIcons {
 	
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
-	public static Texture2D GetDataPortIcon(Color nodeColor, Color typeColor) {
-		return GetPortIcon(nodeColor, typeColor, ref myDataPortIcons, ref myDataPortTemplate);
-	}
-	// ----------------------------------------------------------------------
-	// Returns a texture representing the requested circular port icon.
 	public static Texture2D GetInEndPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor, ref myInEndPortIcons, ref myInEndPortTemplate);
 	}
@@ -346,11 +286,6 @@ public static class iCS_PortIcons {
 	// Returns a texture representing the requested end port icon.
 	public static Texture2D GetOutEndPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor, ref myOutEndPortIcons, ref myOutEndPortTemplate);
-	}
-	// ----------------------------------------------------------------------
-	// Returns a texture representing the requested square port icon.
-	public static Texture2D GetValuePortIcon(Color nodeColor, Color typeColor) {
-		return GetPortIcon(nodeColor, typeColor, ref myValuePortIcons, ref myValuePortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested relay port icon.
@@ -363,12 +298,6 @@ public static class iCS_PortIcons {
 		return GetPortIcon(typeColor, ref myOutRelayPortIcons, ref myOutRelayPortTemplate);
 	}
 	// ----------------------------------------------------------------------
-	// Returns a texture representing the requested circular port icon.
-	public static Texture2D GetSelectedDataPortIcon(Color nodeColor, Color typeColor) {
-		return GetPortIcon(nodeColor, typeColor,
-			               ref mySelectedDataPortIcons, ref mySelectedDataPortTemplate);
-	}
-	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested end port icon.
 	public static Texture2D GetSelectedInEndPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor, ref mySelectedInEndPortIcons, ref mySelectedInEndPortTemplate);
@@ -377,12 +306,6 @@ public static class iCS_PortIcons {
 	// Returns a texture representing the requested end port icon.
 	public static Texture2D GetSelectedOutEndPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor, ref mySelectedOutEndPortIcons, ref mySelectedOutEndPortTemplate);
-	}
-	// ----------------------------------------------------------------------
-	// Returns a texture representing the requested square port icon.
-	public static Texture2D GetSelectedValuePortIcon(Color nodeColor, Color typeColor) {
-		return GetPortIcon(nodeColor, typeColor,
-			               ref mySelectedValuePortIcons, ref mySelectedValuePortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested relay port icon.
@@ -395,29 +318,6 @@ public static class iCS_PortIcons {
 	public static Texture2D GetSelectedOutRelayPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor,
 			               ref mySelectedOutRelayPortIcons, ref mySelectedOutRelayPortTemplate);
-	}
-	// ----------------------------------------------------------------------
-	// Returns a texture representing the requested circular port icon.
-	static Texture2D GetPortIcon(Color nodeColor, Color typeColor,
-								 ref Dictionary<Color,Dictionary<Color,Texture2D>> iconSet,
-								 ref Texture2D iconTemplate) {
-		if(iconSet == null) {
-			iconSet= new Dictionary<Color,Dictionary<Color,Texture2D>>();
-		}
-		Dictionary<Color,Texture2D> dict;
-		if(iconSet.ContainsKey(nodeColor)) {
-			dict= iconSet[nodeColor];
-		} else {
-			dict= new Dictionary<Color,Texture2D>();
-			iconSet[nodeColor]= dict;
-		}
-		if(dict.ContainsKey(typeColor)) {
-			var existingIcon= dict[typeColor];
-			if(existingIcon != null) return existingIcon;
-		}
-		Texture2D icon= BuildPortIcon(nodeColor, typeColor, iconTemplate);
-		dict[typeColor]= icon;
-		return icon;
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
@@ -437,35 +337,6 @@ public static class iCS_PortIcons {
 		iconSet[typeColor]= icon;
 		return icon;
 	}
-	// ----------------------------------------------------------------------
-    public static Texture2D BuildPortIcon(Color nodeColor, Color typeColor, Texture2D iconTemplate) {
-		int width= iconTemplate.width;
-		int height= iconTemplate.height;
-		Texture2D icon= new Texture2D(width, height);
-		for(int x= 0; x < width; ++x) {
-			for(int y= 0; y < height; ++y) {
-				Color pixel= iconTemplate.GetPixel(x,y);
-				float totalChannels= pixel.r+pixel.g+pixel.b;
-				if(totalChannels == 0) {
-					icon.SetPixel(x,y, pixel);					
-				} else {
-					// Anti-Aliasing fill.
-					float nodeColorRatio= pixel.r/totalChannels;
-					float fillColorRatio= pixel.g/totalChannels;
-					float typeColorRatio= pixel.b/totalChannels;
-					Color c;
-					c.r= nodeColorRatio*nodeColor.r+typeColorRatio*typeColor.r+fillColorRatio*Color.black.r;
-					c.g= nodeColorRatio*nodeColor.g+typeColorRatio*typeColor.g+fillColorRatio*Color.black.g;
-					c.b= nodeColorRatio*nodeColor.b+typeColorRatio*typeColor.b+fillColorRatio*Color.black.b;
-					c.a= pixel.a;
-					icon.SetPixel(x,y, c);					
-				}
-			}
-		}
-		icon.Apply();
-		icon.hideFlags= HideFlags.DontSave;
-		return icon;        
-    }
 	// ----------------------------------------------------------------------
     public static Texture2D BuildPortIcon(Color typeColor, Texture2D iconTemplate) {
 		int width= iconTemplate.width;
@@ -495,11 +366,6 @@ public static class iCS_PortIcons {
 	// ----------------------------------------------------------------------
 	// Flush cached icons.
 	static void FlushCachedIcons() {
-		FlushCachedIcons(ref myDataPortIcons);
-		FlushCachedIcons(ref myValuePortIcons);
-		FlushCachedIcons(ref mySelectedDataPortIcons);
-		FlushCachedIcons(ref mySelectedValuePortIcons);
-		
 		FlushCachedIcons(ref myInEndPortIcons);
 		FlushCachedIcons(ref myOutEndPortIcons);
 		FlushCachedIcons(ref myInRelayPortIcons);
@@ -508,15 +374,6 @@ public static class iCS_PortIcons {
 		FlushCachedIcons(ref mySelectedOutEndPortIcons);
 		FlushCachedIcons(ref mySelectedInRelayPortIcons);
 		FlushCachedIcons(ref mySelectedOutRelayPortIcons);
-	}
-	// ----------------------------------------------------------------------
-	static void FlushCachedIcons(ref Dictionary<Color,Dictionary<Color,Texture2D>> iconSet) {
-		if(iconSet == null) return;
-		foreach(var dictPair in iconSet) {
-			foreach(var pair in dictPair.Value) {
-				Texture2D.DestroyImmediate(pair.Value);
-			}
-		}
 	}
 	// ----------------------------------------------------------------------
 	static void FlushCachedIcons(ref Dictionary<Color,Texture2D> iconSet) {

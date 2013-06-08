@@ -58,8 +58,8 @@ public static class iCS_BuiltinTextures {
     }
     // ---------------------------------------------------------------------------------
     static void BuildScaleIndependantTextures() {
-        BuildDataPortIcons(Color.green, Color.red);
-        BuildValuePortIcons(Color.green, Color.red);
+        BuildEndPortIcons(Color.red);
+        BuildRelayPortIcons(Color.red);
         BuildTransitionPortIcons();
     }
     // ---------------------------------------------------------------------------------
@@ -68,11 +68,11 @@ public static class iCS_BuiltinTextures {
         BuildMaximizeIcon();        
     }
     // ---------------------------------------------------------------------------------
-	static void BuildDataPortIcons(Color nodeColor, Color typeColor) {
+	static void BuildEndPortIcons(Color typeColor) {
 		Texture2D portTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
 		float radius= 0.5f*(kPortIconHeight-3f);
-        iCS_PortIcons.BuildDataPortTemplateImp(radius, ref portTemplate);
-        Texture2D portIcon= iCS_PortIcons.BuildPortIcon(nodeColor, typeColor, portTemplate);
+        iCS_PortIcons.BuildOutEndPortTemplateImp(radius, radius-2, 1, ref portTemplate);
+        Texture2D portIcon= iCS_PortIcons.BuildPortIcon(typeColor, portTemplate);
 
         myInDataPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         myOutDataPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
@@ -101,11 +101,11 @@ public static class iCS_BuiltinTextures {
 	}
 
     // ---------------------------------------------------------------------------------
-	static void BuildValuePortIcons(Color nodeColor, Color typeColor) {
+	static void BuildRelayPortIcons(Color typeColor) {
 		Texture2D portTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
 		float len= kPortIconHeight-2f;
-        iCS_PortIcons.BuildValuePortTemplate(len, ref portTemplate);
-        Texture2D portIcon= iCS_PortIcons.BuildPortIcon(nodeColor, typeColor, portTemplate);
+        iCS_PortIcons.BuildOutRelayPortTemplate(len, ref portTemplate);
+        Texture2D portIcon= iCS_PortIcons.BuildPortIcon(typeColor, portTemplate);
 
         myInValuePortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         TextureUtil.Clear(ref myInValuePortIcon);

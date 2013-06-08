@@ -547,6 +547,10 @@ public partial class iCS_IStorage {
         return connectedPorts.Length != 0 ? connectedPorts[0] : null;
     }
     // ----------------------------------------------------------------------
+    public bool IsPortSourced(iCS_EditorObject port) {
+        return port.Destinations.Length != 0;
+    }
+    // ----------------------------------------------------------------------
     bool IsPortConnected(iCS_EditorObject port) {
         if(port.IsSourceValid) return true;
         if(FindFirst(o=> o.IsPort && o.SourceId == port.InstanceId) != null) return true;

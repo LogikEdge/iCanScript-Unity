@@ -44,15 +44,6 @@ public class iCS_Storage : MonoBehaviour {
         iCS_EngineObject eObj= EngineObjects[id];
         return eObj.IsInModulePort && GetParent(eObj).IsOutModulePort;
     }
-    // ----------------------------------------------------------------------
-    public bool IsEndPort(iCS_EngineObject obj) {
-		return obj.IsDataPort && ((obj.IsInputPort && obj.SourceId == -1) ||
-		                          (obj.IsOutputPort && GetParent(obj).IsFunction));
-	}
-    // ----------------------------------------------------------------------
-    public bool IsRelayPort(iCS_EngineObject obj) {
-		return obj.IsDataPort && !IsEndPort(obj);
-	}
 	
     // ======================================================================
     // UnityObject Utilities

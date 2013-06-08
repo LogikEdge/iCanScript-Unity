@@ -702,18 +702,6 @@ public partial class iCS_Graphics {
     }
 
 	// ----------------------------------------------------------------------
-    void DrawValuePort(Vector3 _center, Color _fillColor, Color _borderColor, bool isSelected) {
-		Vector3 center= TranslateAndScale(_center);
-		Texture2D portIcon= isSelected ? iCS_PortIcons.GetSelectedValuePortIcon(_borderColor, _fillColor) :
-		                                 iCS_PortIcons.GetValuePortIcon(_borderColor, _fillColor);
-		Rect pos= new Rect(center.x-0.5f*portIcon.width,
-						   center.y-0.5f*portIcon.height,
-						   portIcon.width,
-						   portIcon.height);
-		GUI.DrawTexture(pos, portIcon);
-    }
-
-	// ----------------------------------------------------------------------
     void DrawMuxPort(Vector3 _center, Color _fillColor, Color _borderColor, float radius) {
         Color backgroundColor= Color.black;
         radius*= Scale;
