@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using P=Prelude;
 
 public static partial class Math3D {
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -149,6 +150,8 @@ public static partial class Math3D {
         return !IsEqual(r1, r2);
     }
     
+    // ======================================================================
+    // Direction utilities
 	// ----------------------------------------------------------------------
     public static float GetAngle(Vector2 _from, Vector2 _to) {
         Vector2 vector= _to-_from;
@@ -166,7 +169,39 @@ public static partial class Math3D {
 		}
 		return v.y > 0 ? new Vector2(0,1f) : new Vector2(0,-1f);
 	}
-	
+	// ----------------------------------------------------------------------
+    // Determines if the two given directions are pointing on the same side
+	public static bool IsSameSide(Vector2 d1, Vector2 d2) {
+	    return Vector2.Dot(d1,d2) > 0;
+	}
+	// ----------------------------------------------------------------------
+    // Determines if the two given directions are pointing on the same side
+	public static bool IsSameSide(Vector3 d1, Vector3 d2) {
+	    return Vector3.Dot(d1,d2) > 0;
+	}
+	// ----------------------------------------------------------------------
+    // Determines if the two given directions are pointing on opposite sides
+	public static bool IsOppositeSide(Vector2 d1, Vector2 d2) {
+	    return !IsSameSide(d1,d2);
+	}
+	// ----------------------------------------------------------------------
+    // Determines if the two given directions are pointing on opposite sides
+	public static bool IsOppositeDirection(Vector3 d1, Vector3 d2) {
+	    return !IsSameSide(d1,d2);
+	}
+	// ----------------------------------------------------------------------
+    public static bool IsSameSide(Vector2 refPoint, Vector2 point1, Vector2 point2) {
+        var dir1= point1-refPoint;
+        var dir2= point2-refPoint;
+        return IsSameSide(dir1, dir2);
+    }
+	// ----------------------------------------------------------------------
+    public static bool IsSameSide(Vector3 refPoint, Vector3 point1, Vector3 point2) {
+        var dir1= point1-refPoint;
+        var dir2= point2-refPoint;
+        return IsSameSide(dir1, dir2);
+    }
+    
     // ======================================================================
     // Lerp
 	// ----------------------------------------------------------------------
@@ -264,11 +299,70 @@ public static partial class Math3D {
         float dy= y-point.y;
 		return Mathf.Sqrt(dx*dx+dy*dy);
 	}
-
+    // ----------------------------------------------------------------------
+    public static Vector3 ClosestPointOnLineToPoint(Vector3 origin, Vector3 direction, Vector3 point) {
+        var w= point-origin;
+        float vsq= Vector3.Dot(direction, direction);
+        float proj= Vector3.Dot(w, direction);
+        return origin+(proj/vsq)*direction;
+    }
+    
     // ======================================================================
     // Area utilities
 	// ----------------------------------------------------------------------
 	public static float Area(float x, float y)	{ return x*y; }
 	public static float Area(Vector2 v)			{ return Area(v.x, v.y); }
 	public static float Area(Rect r)			{ return Area(r.width, r.height); }
+
+    // ======================================================================
+    // Vector list utilities
+	// ----------------------------------------------------------------------
+    public static Vector2 Sum(Vector2[] lst) {
+        return P.fold((v, acc)=> v+acc, Vector2.zero, lst);
+    }
+	// ----------------------------------------------------------------------
+    public static Vector3 Sum(Vector3[] lst) {
+        return P.fold((v, acc)=> v+acc, Vector3.zero, lst);
+    }
+	// ----------------------------------------------------------------------
+    public static Vector2 Average(Vector2[] lst) {
+        if(lst.Length == 0) return Vector2.zero;
+        return Sum(lst)/lst.Length;
+    }
+	// ----------------------------------------------------------------------
+    public static Vector3 Average(Vector3[] lst) {
+        if(lst.Length == 0) return Vector3.zero;
+        return Sum(lst)/lst.Length;
+    }
+
+    // ======================================================================
+    // Polygon utilities
+	// ----------------------------------------------------------------------
+    // Return the penetration vector if the given point is inside the
+    // polygon; value Vector2.zero is return if the point is outside the
+    // polygon.
+    public static Vector2 ConvexPolygonPenetration(Vector2[] polygon, Vector2 polygonCenter, Vector2 point) {
+        Vector2 penetration= Vector2.zero;
+        if(polygon.Length < 3) return penetration;
+        float minSqrMagnitude= Mathf.Infinity;
+        Vector2 segmentStart= polygon[polygon.Length-1];
+        for(int i= 0; i < polygon.Length; ++i) {
+            // Return if point is outside polygon.
+            Vector2 segmentEnd= polygon[i];
+            Vector2 pointOnLine= ClosestPointOnLineToPoint(segmentStart, segmentEnd-segmentStart, point);
+            var newPenetration= point-pointOnLine;
+            var centerDirection= polygonCenter-pointOnLine;
+            if(Vector2.Dot(newPenetration, centerDirection) < 0) {
+                return Vector2.zero;
+            }
+            // Determine smallest penetration of all polygon edges.
+            var sqrMagnitude= newPenetration.sqrMagnitude;
+            if(sqrMagnitude < minSqrMagnitude) {
+                minSqrMagnitude= sqrMagnitude;
+                penetration= newPenetration;
+            }
+            segmentStart= segmentEnd;
+        }
+        return penetration;
+    }
 }

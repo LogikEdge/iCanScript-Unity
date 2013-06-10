@@ -221,42 +221,42 @@ public static class iCS_PortIcons {
 			}
 		}		
 	}
-	// ----------------------------------------------------------------------
-	public static void BuildMuxPortTemplateImp(float w1, float w2, float h1, float h2, float borderSize, float aaWidth, ref Texture2D texture) {
-        // Compute dimensions of mux port
-        float width = Mathf.Max(w1,w2);
-        float height= Mathf.Max(h1,h2);
-        float halfWidth= 0.5f*width;
-        float halfHeight= 0.5f*height;
-        // Compute texture size
-        int textureWidth= (int)(width+1f);
-        int textureHeight= (int)(height+1f);
-        // Allocate texture
-        if(texture != null) Texture2D.DestroyImmediate(texture);
-        texture= new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
-        // Compute points
-        Vector2 outterTopLeft    = new Vector2(0.5f*(width-w1),       0.5f*(height-h1));
-        Vector2 outterTopRight   = new Vector2(width-0.5f*(width-w1), 0.5f*(height-h2));
-        Vector2 outterBottomRight= new Vector2(width-0.5f*(width-w2), height-0.5f*(height-h2));
-        Vector2 outterBottomLeft = new Vector2(0.5f*(width-w2),       height-0.5f*(height-h1));
-        Vector2 innerTopLeft     = new Vector2(outterTopLeft.x+borderSize,     outterTopLeft.y+borderSize);
-        Vector2 innerTopRight    = new Vector2(outterTopRight.x-borderSize,    outterTopRight.y+borderSize);
-        Vector2 innerBottomRight = new Vector2(outterBottomRight.x-borderSize, outterBottomRight.y-borderSize);
-        Vector2 innerBottomLeft  = new Vector2(outterBottomLeft.x+borderSize,  outterBottomLeft.y-borderSize);
-        // Build mux port.
-        for(int x= 0; x < texture.width; ++x) {
-            for(int y= 0; y < texture.height; ++y) {
-                float xLeft= outterTopLeft.x+(outterBottomLeft.x-outterTopLeft.x)*(outterTopLeft.y-y);
-                float xRight= outterTopRight.x+(outterBottomRight.x-outterTopRight.x)*(outterTopRight.y-y);
-                float yTop= outterTopRight.y+(outterTopLeft.y-outterTopRight.y)*(outterTopLeft.x-x);
-                float yBottom= outterBottomLeft.y+(outterBottomRight.y-outterBottomLeft.y)*(outterBottomLeft.x-x);
-                // TODO: Mux Port Icon to be completed...
-            }
-        }
-        // Finalize texture.
-		texture.hideFlags= HideFlags.DontSave;
-		texture.Apply();
-	}
+//	// ----------------------------------------------------------------------
+//	public static void BuildMuxPortTemplateImp(float w1, float w2, float h1, float h2, float borderSize, float aaWidth, ref Texture2D texture) {
+//        // Compute dimensions of mux port
+//        float width = Mathf.Max(w1,w2);
+//        float height= Mathf.Max(h1,h2);
+//        float halfWidth= 0.5f*width;
+//        float halfHeight= 0.5f*height;
+//        // Compute texture size
+//        int textureWidth= (int)(width+1f);
+//        int textureHeight= (int)(height+1f);
+//        // Allocate texture
+//        if(texture != null) Texture2D.DestroyImmediate(texture);
+//        texture= new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
+//        // Compute points
+//        Vector2 outterTopLeft    = new Vector2(0.5f*(width-w1),       0.5f*(height-h1));
+//        Vector2 outterTopRight   = new Vector2(width-0.5f*(width-w1), 0.5f*(height-h2));
+//        Vector2 outterBottomRight= new Vector2(width-0.5f*(width-w2), height-0.5f*(height-h2));
+//        Vector2 outterBottomLeft = new Vector2(0.5f*(width-w2),       height-0.5f*(height-h1));
+//        Vector2 innerTopLeft     = new Vector2(outterTopLeft.x+borderSize,     outterTopLeft.y+borderSize);
+//        Vector2 innerTopRight    = new Vector2(outterTopRight.x-borderSize,    outterTopRight.y+borderSize);
+//        Vector2 innerBottomRight = new Vector2(outterBottomRight.x-borderSize, outterBottomRight.y-borderSize);
+//        Vector2 innerBottomLeft  = new Vector2(outterBottomLeft.x+borderSize,  outterBottomLeft.y-borderSize);
+//        // Build mux port.
+//        for(int x= 0; x < texture.width; ++x) {
+//            for(int y= 0; y < texture.height; ++y) {
+//                float xLeft= outterTopLeft.x+(outterBottomLeft.x-outterTopLeft.x)*(outterTopLeft.y-y);
+//                float xRight= outterTopRight.x+(outterBottomRight.x-outterTopRight.x)*(outterTopRight.y-y);
+//                float yTop= outterTopRight.y+(outterTopLeft.y-outterTopRight.y)*(outterTopLeft.x-x);
+//                float yBottom= outterBottomLeft.y+(outterBottomRight.y-outterBottomLeft.y)*(outterBottomLeft.x-x);
+//                // TODO: Mux Port Icon to be completed...
+//            }
+//        }
+//        // Finalize texture.
+//		texture.hideFlags= HideFlags.DontSave;
+//		texture.Apply();
+//	}
 	
     // ======================================================================
     // Icon retreival functions
