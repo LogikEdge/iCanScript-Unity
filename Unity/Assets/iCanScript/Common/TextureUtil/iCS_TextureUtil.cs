@@ -1,17 +1,46 @@
 using UnityEngine;
 using System.Collections;
 
-public static partial class TextureUtil {
+public static class iCS_TextureUtil {
+    // ======================================================================
+    // Field & Properties.
+	// ----------------------------------------------------------------------
+    public static int AntiAliasFactor= 3;
+    
     // ======================================================================
     // Texture fill.
 	// ----------------------------------------------------------------------
-    // Clears the given texture.
-    public static void Clear(ref Texture2D texture) {
+    public static void Fill(ref Texture2D texture, Color color) {
         for(int x= 0; x < texture.width; ++x) {
             for(int y= 0; y < texture.height; ++y) {
-                texture.SetPixel(x,y,Color.clear);
+                texture.SetPixel(x,y,color);
             }
         }
+    }
+	// ----------------------------------------------------------------------
+    // Clears the given texture.
+    public static void Clear(ref Texture2D texture) {
+        Fill(ref texture, Color.clear);
+    }
+	// ----------------------------------------------------------------------
+    public static void DrawArc(ref Texture2D texture, float radius, Vector2 center, Color color, float width= 1f) {
+        
+    }
+	// ----------------------------------------------------------------------
+	public static void DrawLine(ref Texture2D texture, Vector2 p1, Vector2 p2, Color color, float width= 1f) {
+	    
+	}
+	// ----------------------------------------------------------------------
+    public static void DrawPolygonOutline(ref Texture2D texture, Vector2[] polygon, Color color, float width= 1f) {
+        
+    }
+	// ----------------------------------------------------------------------
+    public static void DrawFilledCircle(ref Texture2D texture, float radius, Vector2 cneter, Color color) {
+        
+    }
+	// ----------------------------------------------------------------------
+    public static void DrawFilledPolygon(ref Texture2D texture, Vector2[] polygon, Color color) {
+        
     }
 	// ----------------------------------------------------------------------
     // Draw a circle in a texture.
@@ -38,7 +67,7 @@ public static partial class TextureUtil {
 						float ratio= (borderWidth-2f*(r-radius))/borderWidth;
 						Color c= borderColor;
 						c.a= ratio*borderColor.a;
-						c= TextureUtil.AlphaBlend(c, texture.GetPixel(x,y));							
+						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));							
 						texture.SetPixel(x,y,c);							
 					} else {
 						float ratio= (borderWidth-2f*(radius-r))/borderWidth;
@@ -47,12 +76,12 @@ public static partial class TextureUtil {
 						c.g= ratio*borderColor.g+(1f-ratio)*fillColor.g;
 						c.b= ratio*borderColor.b+(1f-ratio)*fillColor.b;
 						c.a= ratio*borderColor.a+(1f-ratio)*fillColor.a;
-						c= TextureUtil.AlphaBlend(c, texture.GetPixel(x,y));														
+						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));														
 						texture.SetPixel(x,y,c);						
 					}
 				} else {
 					Color c= fillColor;
-					c= TextureUtil.AlphaBlend(c, texture.GetPixel(x,y));														
+					c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));														
 					texture.SetPixel(x,y,c);
 				}
 			}
@@ -81,7 +110,7 @@ public static partial class TextureUtil {
 				if(x < outterX1 || x > outterX2 || y < outterY1 || y > outterY2) {
 					// Don't draw if outside box.
 				} else if(x > innerX1 && x < innerX2 && y > innerY1 && y < innerY2) {
-					Color c= TextureUtil.AlphaBlend(fillColor, texture.GetPixel(x,y));														
+					Color c= iCS_AlphaBlend.AdditiveBlend(fillColor, texture.GetPixel(x,y));														
 					texture.SetPixel(x,y,c);				    
 				}  else {
                     float distX1= Mathf.Abs(x-x1);
@@ -98,7 +127,7 @@ public static partial class TextureUtil {
 						c.g= ratio*borderColor.g+(1f-ratio)*fillColor.g;
 						c.b= ratio*borderColor.b+(1f-ratio)*fillColor.b;
 						c.a= ratio*borderColor.a+(1f-ratio)*fillColor.a;
-						c= TextureUtil.AlphaBlend(c, texture.GetPixel(x,y));														
+						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));														
 						texture.SetPixel(x,y,c);						
 			        } else {
 			            float dist= (distX <= halfBorderWidth && distY <= halfBorderWidth) ?
@@ -107,7 +136,7 @@ public static partial class TextureUtil {
 						float ratio= (borderWidth-2f*dist)/borderWidth;
 						Color c= borderColor;
 						c.a= ratio*borderColor.a;
-						c= TextureUtil.AlphaBlend(c, texture.GetPixel(x,y));							
+						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));							
 						texture.SetPixel(x,y,c);							
                     }
 				}
@@ -115,36 +144,4 @@ public static partial class TextureUtil {
 		}
     }
 
-    // ======================================================================
-    // Color Blend
-	// ----------------------------------------------------------------------
-    public static Color AlphaBlend(Color src, Color dst) {
-        float keepAlpha= 1f-src.a;
-        float outAlpha= src.a + dst.a*keepAlpha;
-        if(Math3D.IsZero(outAlpha)) return Color.clear;
-        float srcBlend= src.a/outAlpha;
-        float dstBlend= dst.a*keepAlpha/outAlpha;
-        return new Color(src.r*srcBlend+dst.r*dstBlend, src.g*srcBlend+dst.g*dstBlend, src.b*srcBlend+dst.b*dstBlend, outAlpha);
-    }
-
-	// ----------------------------------------------------------------------
-    public static void AlphaBlend(Texture2D src, ref Texture2D dst) {
-        AlphaBlend(0, 0, src, 0, 0, ref dst, dst.width, dst.height);
-    }
-	// ----------------------------------------------------------------------
-    public static void AlphaBlend(int sx, int sy, Texture2D src, int dx, int dy, ref Texture2D dst, int width, int height) {
-        if(src.width-sx < width) width= src.width-sx;
-        if(dst.width-dx < width) width= dst.width-dx;
-        if(src.height-sy < height) height= src.height-sy;
-        if(dst.height-dy < height) height= dst.height-dy;
-        for(int x= 0; x < width; ++x) {
-            for(int y= 0; y < height; ++y) {
-                Color sc= src.GetPixel(sx+x,sy+y);
-                int dxx= dx+x;
-                int dyy= dy+y;
-                Color dc= dst.GetPixel(dxx,dyy);
-                dst.SetPixel(dxx,dyy,AlphaBlend(sc,dc));
-            }
-        }
-    }
 }

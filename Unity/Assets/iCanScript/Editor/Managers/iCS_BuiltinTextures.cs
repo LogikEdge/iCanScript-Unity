@@ -81,11 +81,11 @@ public static class iCS_BuiltinTextures {
 
         myInEndPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         myOutEndPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
-        TextureUtil.Clear(ref myInEndPortIcon);
-        TextureUtil.Clear(ref myOutEndPortIcon);
+        iCS_TextureUtil.Clear(ref myInEndPortIcon);
+        iCS_TextureUtil.Clear(ref myOutEndPortIcon);
         int xOffset= (kPortIconWidth-kPortIconHeight)>>1;
-        TextureUtil.AlphaBlend(0, 0, portInIcon , xOffset, 0, ref myInEndPortIcon,  portOutIcon.width, portOutIcon.height);
-        TextureUtil.AlphaBlend(0, 0, portOutIcon, xOffset, 0, ref myOutEndPortIcon, portOutIcon.width, portOutIcon.height);
+        iCS_AlphaBlend.AdditiveBlend(0, 0, portInIcon , xOffset, 0, ref myInEndPortIcon,  portOutIcon.width, portOutIcon.height);
+        iCS_AlphaBlend.AdditiveBlend(0, 0, portOutIcon, xOffset, 0, ref myOutEndPortIcon, portOutIcon.width, portOutIcon.height);
 
         // Finalize icons.
         myInEndPortIcon.Apply();
@@ -111,11 +111,11 @@ public static class iCS_BuiltinTextures {
 
         myInRelayPortIcon = new Texture2D(kPortIconWidth, kPortIconHeight);
         myOutRelayPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
-        TextureUtil.Clear(ref myInRelayPortIcon);
-        TextureUtil.Clear(ref myOutRelayPortIcon);
+        iCS_TextureUtil.Clear(ref myInRelayPortIcon);
+        iCS_TextureUtil.Clear(ref myOutRelayPortIcon);
         int xOffset= (kPortIconWidth-kPortIconHeight)>>1;
-        TextureUtil.AlphaBlend(0, 0, inPortIcon,  xOffset, 0, ref myInRelayPortIcon,  inPortIcon.width,  inPortIcon.height);
-        TextureUtil.AlphaBlend(0, 0, outPortIcon, xOffset, 0, ref myOutRelayPortIcon, outPortIcon.width, outPortIcon.height);
+        iCS_AlphaBlend.AdditiveBlend(0, 0, inPortIcon,  xOffset, 0, ref myInRelayPortIcon,  inPortIcon.width,  inPortIcon.height);
+        iCS_AlphaBlend.AdditiveBlend(0, 0, outPortIcon, xOffset, 0, ref myOutRelayPortIcon, outPortIcon.width, outPortIcon.height);
 
         // Finalize icons.
         myInRelayPortIcon.Apply();
@@ -134,13 +134,13 @@ public static class iCS_BuiltinTextures {
         // Create textures.
         myInTransitionPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
         myOutTransitionPortIcon= new Texture2D(kPortIconWidth, kPortIconHeight);
-        TextureUtil.Clear(ref myInTransitionPortIcon);
-        TextureUtil.Clear(ref myOutTransitionPortIcon);
+        iCS_TextureUtil.Clear(ref myInTransitionPortIcon);
+        iCS_TextureUtil.Clear(ref myOutTransitionPortIcon);
         
         // Build out transition port.
         float halfHeight= 0.5f*kPortIconHeight;
         float radius= halfHeight-1.5f;
-		TextureUtil.Circle(radius, Color.white, Color.white, ref myOutTransitionPortIcon, new Vector2(halfHeight, halfHeight));
+		iCS_TextureUtil.Circle(radius, Color.white, Color.white, ref myOutTransitionPortIcon, new Vector2(halfHeight, halfHeight));
 
         // Add horizontal line.
 		int halfHeightInt= (int)halfHeight;
@@ -163,16 +163,16 @@ public static class iCS_BuiltinTextures {
         int sizeInt= ((int)size)+1;
         float offset= 0.5f*((float)sizeInt-size);
         myMinimizeIcon= new Texture2D(sizeInt, sizeInt);
-        TextureUtil.Clear(ref myMinimizeIcon);
+        iCS_TextureUtil.Clear(ref myMinimizeIcon);
         // Draw minimize icon.
         float halfSize= 0.5f*size;
-        TextureUtil.Circle(halfSize-0.15f*size,
+        iCS_TextureUtil.Circle(halfSize-0.15f*size,
                            Color.black, new Color(0,0,0,0.30f),
                            ref myMinimizeIcon, new Vector2(halfSize+offset, halfSize+offset),
                            2f*myScale);
         float boxHeight= 0.03f*size;
         float halfBoxHeight= 0.5f*boxHeight;
-        TextureUtil.Box(0.35f*size+offset, halfSize-halfBoxHeight+offset,
+        iCS_TextureUtil.Box(0.35f*size+offset, halfSize-halfBoxHeight+offset,
                         0.65f*size+offset, halfSize+halfBoxHeight+offset,
                         Color.black, Color.black,
                         ref myMinimizeIcon, 2f*myScale);
@@ -187,10 +187,10 @@ public static class iCS_BuiltinTextures {
         int sizeInt= ((int)size)+1;
         float offset= 0.5f*((float)sizeInt-size);
         myMaximizeIcon= new Texture2D(sizeInt, sizeInt);
-        TextureUtil.Clear(ref myMaximizeIcon);
+        iCS_TextureUtil.Clear(ref myMaximizeIcon);
         // Draw minimize icon.
         float halfSize= 0.5f*size;
-        TextureUtil.Circle(halfSize-0.15f*size,
+        iCS_TextureUtil.Circle(halfSize-0.15f*size,
                            Color.black, Color.white,
                            ref myMaximizeIcon, new Vector2(halfSize+offset, halfSize+offset));
         int halfSizeInt= (int)halfSize;

@@ -130,8 +130,8 @@ public static class iCS_PortIcons {
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildInEndPortTemplateImp(float radius, float innerRadius, float aaWidth, ref Texture2D texture) {
-        float innerRadiusMax= innerRadius+0.35f*myScale;
-        float innerRadiusMin= innerRadius-0.35f*myScale;
+        float innerRadiusMax= innerRadius+0.25f*myScale;
+        float innerRadiusMin= innerRadius-0.25f*myScale;
         float aaRadiusMax= radius+aaWidth;
         float aaInnerRadiusMax= innerRadiusMax+aaWidth;
         float aaInnerRadiusMin= innerRadiusMin-aaWidth;
@@ -256,6 +256,69 @@ public static class iCS_PortIcons {
 //        // Finalize texture.
 //		texture.hideFlags= HideFlags.DontSave;
 //		texture.Apply();
+//	}
+//    // ----------------------------------------------------------------------
+//	public static void BuildTriggerPortTemplate(float len, float borderWidth, float aaWidth, ref Texture2D texture) {
+//        // Allocate texture.
+//        float aaOffset= 1.4f*aaWidth;
+//	    len= len+2f*aaOffset;
+//	    int textureSize= (int)(len+1f);
+//	    if(texture != null) Texture2D.DestroyImmediate(texture);
+//		texture= new Texture2D(textureSize, textureSize);
+//        // Build polygons.
+//        var halfLen= 0.5f*len;
+//        var aaOutterPolygon= new Vector2[4];
+//        aaOutterPolygon[0]= new Vector2(0, halfLen);
+//        aaOutterPolygon[1]= new Vector2(halfLen, 0);
+//        aaOutterPolygon[2]= new Vector2(len, halfLen);
+//        aaOutterPolygon[3]= new Vector2(halfLen, len);
+//        var outterPolygon= new Vector2[4];
+//        outterPolygon[0]= aaOutterPolygon[0] + new Vector2(aaOffset, 0);
+//        outterPolygon[1]= aaOutterPolygon[1] + new Vector2(0, aaOffset);
+//        outterPolygon[2]= aaOutterPolygon[2] - new Vector2(aaOffset, 0);
+//        outterPolygon[3]= aaOutterPolygon[3] - new Vector2(0, aaOffset);
+//        var aaMaxLinePolygon= new Vector2[4];
+//        var borderOffset= 1.4f*borderWidth;
+//        aaMaxLinePolygon[0]= outterPolygon[0] + new Vector2(borderOffset, 0);
+//        aaMaxLinePolygon[1]= outterPolygon[1] + new Vector2(0, borderOffset);
+//        aaMaxLinePolygon[2]= outterPolygon[2] - new Vector2(borderOffset, 0);
+//        aaMaxLinePolygon[3]= outterPolygon[3] - new Vector2(0, borderOffset);
+//        var maxLinePolygon= new Vector2[4];
+//        maxLinePolygon[0]= aaMaxLinePolygon[0] + new Vector2(aaOffset, 0);
+//        maxLinePolygon[1]= aaMaxLinePolygon[1] + new Vector2(0, aaOffset);
+//        maxLinePolygon[2]= aaMaxLinePolygon[2] - new Vector2(aaOffset, 0);
+//        maxLinePolygon[3]= aaMaxLinePolygon[3] - new Vector2(0, aaOffset);
+//        var minLinePolygon= new Vector2[4];
+//        minLinePolygon[0]= maxLinePolygon[0] + new Vector2(0.4f, 0);
+//        minLinePolygon[1]= minLinePolygon[1] + new Vector2(0, 0.4f);
+//        minLinePolygon[2]= minLinePolygon[2] - new Vector2(0.4f, 0);
+//        minLinePolygon[3]= minLinePolygon[3] - new Vector2(0, 0.4f);
+//        var aaMinLinePolygon= new Vector2[4];
+//        aaMinLinePolygon[0]= minLinePolygon[0] + new Vector2(aaOffset, 0);
+//        aaMinLinePolygon[1]= minLinePolygon[1] + new Vector2(0, aaOffset);
+//        aaMinLinePolygon[2]= minLinePolygon[2] - new Vector2(aaOffset, 0);
+//        aaMinLinePolygon[3]= minLinePolygon[3] - new Vector2(0, aaOffset);
+//        // Build texture.
+//        var polygonCenter= Math3D.Average(aaOutterPolygon);
+//        for(int x= 0; x < textureSize; ++x) {
+//            for(int y= 0; y < textureSize; ++y) {
+//                Vector2 point= new Vector2(x,y);
+//                float penetration= PolygonPenetrationDistance(aaMinLinePolygon, polygonCenter, point);
+//                if(Math3D.IsSmallerOrEqual(penetration, 0)) {
+//                    texture.SetPixel(x,y,Color.black);
+//                } else {
+//                    penetration= PolygonPenetrationDistance(minLinePolygon, polygonCenter, point);
+//                    if(Math3D.IsSmallerOrEqual(penetration, 0)) {
+//                    }
+//                }
+//            }
+//        }
+//        // Finalize texture.
+//        texture.hideFlags= HideFlags.DontSave;
+// 		texture.Apply();
+//	}
+//	static float PolygonPenetrationDistance(Vector2[] polygon, Vector2 polygonCenter, Vector2 point) {
+//	    return Math3D.ConvexPolygonPenetration(polygon, polygonCenter, point).magnitude;
 //	}
 	
     // ======================================================================

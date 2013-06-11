@@ -92,7 +92,7 @@ public static class iCS_NodeTextures {
 		int tileSize= radiusInt+extraTitleheightInt+shadowSizeInt;
 		int textureSize= 3*tileSize;
 		myNodeTemplate= new Texture2D(textureSize,textureSize);
-        TextureUtil.Clear(ref myNodeTemplate);
+        iCS_TextureUtil.Clear(ref myNodeTemplate);
 		// Draw shadow
 		int farCornerOffset= textureSize-cornerOffset-1;
 		int farSideOffset= textureSize-shadowSizeInt-1;
@@ -183,7 +183,7 @@ public static class iCS_NodeTextures {
 						Color c= borderColor;
 						c.a= ratio*borderColor.a;
 						if(alphaBlend) {
-							c= TextureUtil.AlphaBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));							
+							c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));							
 						}
 						texture.SetPixel(cx+x*xs,cy+y*ys,c);							
 					} else {
@@ -194,14 +194,14 @@ public static class iCS_NodeTextures {
 						c.b= ratio*borderColor.b+(1f-ratio)*fillColor.b;
 						c.a= ratio*borderColor.a+(1f-ratio)*fillColor.a;
 						if(alphaBlend) {
-							c= TextureUtil.AlphaBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));														
+							c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));														
 						}
 						texture.SetPixel(cx+x*xs,cy+y*ys,c);						
 					}
 				} else {
 					Color c= fillColor;
 					if(alphaBlend) {
-						c= TextureUtil.AlphaBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));														
+						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));														
 					}
 					texture.SetPixel(cx+x*xs, cy+y*ys, c);
 				}
