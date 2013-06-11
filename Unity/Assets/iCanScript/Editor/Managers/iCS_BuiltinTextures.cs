@@ -245,9 +245,10 @@ public static class iCS_BuiltinTextures {
     // ---------------------------------------------------------------------------------
     static void BuildFoldIcon() {
         // Build polygon
-        int textureSize= kFoldIconSize+2;
+        float size= myScale*kFoldIconSize;
+        int textureSize= ((int)size)+1;
         var center= new Vector2(0.5f*textureSize, 0.5f*textureSize);
-        var scale= new Vector2(0.7f*kFoldIconSize, 0.7f*kFoldIconSize);
+        var scale= new Vector2(0.65f*size, 0.65f*size);
         var polygon= Math3D.ScaleAndTranslatePolygon(myFoldIconPolygon, scale, center);
         // Build texture
         if(myFoldIcon != null) Texture2D.DestroyImmediate(myFoldIcon);
@@ -256,7 +257,8 @@ public static class iCS_BuiltinTextures {
         Color c= Color.black;
         c.a= 0.5f;
 	    iCS_TextureUtil.DrawFilledPolygon(ref myFoldIcon, polygon, c);
-	    iCS_TextureUtil.DrawPolygonOutline(ref myFoldIcon, polygon, Color.black);
+	    float lineWidth= 1f+0.4f*myScale;
+	    iCS_TextureUtil.DrawPolygonOutline(ref myFoldIcon, polygon, Color.black, lineWidth);
         // Finalize icons.
         myFoldIcon.Apply();
         myFoldIcon.hideFlags= HideFlags.DontSave;
@@ -264,9 +266,10 @@ public static class iCS_BuiltinTextures {
     // ---------------------------------------------------------------------------------
     static void BuildUnfoldIcon() {
         // Build polygon
-        int textureSize= kUnfoldIconSize+2;
+        float size= myScale*kUnfoldIconSize;
+        int textureSize= ((int)size)+1;
         var center= new Vector2(0.5f*textureSize, 0.5f*textureSize);
-        var scale= new Vector2(0.7f*kUnfoldIconSize, 0.7f*kUnfoldIconSize);
+        var scale= new Vector2(0.65f*size, 0.65f*size);
         var polygon= Math3D.ScaleAndTranslatePolygon(myUnfoldIconPolygon, scale, center);
         // Build texture
         if(myUnfoldIcon != null) Texture2D.DestroyImmediate(myUnfoldIcon);
@@ -275,7 +278,8 @@ public static class iCS_BuiltinTextures {
         Color c= Color.black;
         c.a= 0.5f;
 	    iCS_TextureUtil.DrawFilledPolygon(ref myUnfoldIcon, polygon, c);
-	    iCS_TextureUtil.DrawPolygonOutline(ref myUnfoldIcon, polygon, Color.black);
+	    float lineWidth= 1f+0.4f*myScale;
+	    iCS_TextureUtil.DrawPolygonOutline(ref myUnfoldIcon, polygon, Color.black, lineWidth);
         // Finalize icons.
         myUnfoldIcon.Apply();
         myUnfoldIcon.hideFlags= HideFlags.DontSave;
