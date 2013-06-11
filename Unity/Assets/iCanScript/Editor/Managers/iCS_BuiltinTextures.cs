@@ -29,6 +29,20 @@ public static class iCS_BuiltinTextures {
         }
         return myMaximizeIcon;
     }
+    public static Texture2D FoldIcon(float scale) {
+        if(Math3D.IsNotEqual(scale,myScale)) {
+            myScale= scale;
+            BuildScaleDependantTextures();
+        }
+        return myFoldIcon;
+    }
+    public static Texture2D UnfoldIcon(float scale) {
+        if(Math3D.IsNotEqual(scale,myScale)) {
+            myScale= scale;
+            BuildScaleDependantTextures();
+        }
+        return myUnfoldIcon;
+    }
     
     // =================================================================================
     // Constants
@@ -37,6 +51,8 @@ public static class iCS_BuiltinTextures {
     public const int   kPortIconHeight  = 12;
     public const int   kMinimizeIconSize= 16;
     public const int   kMaximizeIconSize= 16;
+    public const int   kFoldIconSize    = 16;
+    public const int   kUnfoldIconSize  = 16;
 
     // =================================================================================
     // Fields
@@ -50,11 +66,29 @@ public static class iCS_BuiltinTextures {
 	static Texture2D    myOutTransitionPortIcon;
 	static Texture2D    myMinimizeIcon;
 	static Texture2D    myMaximizeIcon;
+	static Texture2D    myFoldIcon;
+	static Texture2D    myUnfoldIcon;
 
+    // =================================================================================
+    // Polygons
+    // ---------------------------------------------------------------------------------
+    static Vector2[] myFoldIconPolygon  = null;
+    static Vector2[] myUnfoldIconPolygon= null;
+    
     // =================================================================================
     // Constrcutor
     // ---------------------------------------------------------------------------------
     static iCS_BuiltinTextures() {
+        // Build polygons.
+        myFoldIconPolygon= new Vector2[3];
+        myFoldIconPolygon[0]= new Vector2(-0.5f, -0.45f);
+        myFoldIconPolygon[1]= new Vector2( 0.5f,  0);
+        myFoldIconPolygon[2]= new Vector2(-0.5f,  0.45f);
+        myUnfoldIconPolygon= new Vector2[3];
+        myUnfoldIconPolygon[0]= new Vector2(-0.45f, 0.5f);
+        myUnfoldIconPolygon[1]= new Vector2( 0.45f, 0.5f);
+        myUnfoldIconPolygon[2]= new Vector2( 0,   -0.5f);
+        // Build scale independent textures.
         BuildScaleIndependantTextures();
         BuildScaleDependantTextures();
     }
@@ -67,7 +101,9 @@ public static class iCS_BuiltinTextures {
     // ---------------------------------------------------------------------------------
     static void BuildScaleDependantTextures() {
         BuildMinimizeIcon();
-        BuildMaximizeIcon();        
+        BuildMaximizeIcon();
+        BuildFoldIcon();
+        BuildUnfoldIcon();        
     }
     // ---------------------------------------------------------------------------------
 	static void BuildEndPortIcons(Color typeColor) {
@@ -157,11 +193,37 @@ public static class iCS_BuiltinTextures {
     }
 
     // ---------------------------------------------------------------------------------
+    static void BuildMaximizeIcon() {        
+        // Allocate icon.
+        float size= /*myScale**/kMaximizeIconSize;
+        int sizeInt= ((int)size)+1;
+        float offset= 0.5f*((float)sizeInt-size);
+//        if(myMaximizeIcon != null) Texture2D.DestroyImmediate(myMaximizeIcon);
+        myMaximizeIcon= new Texture2D(sizeInt, sizeInt);
+        iCS_TextureUtil.Clear(ref myMaximizeIcon);
+        // Draw minimize icon.
+        float halfSize= 0.5f*size;
+        iCS_TextureUtil.Circle(halfSize-0.15f*size,
+                           Color.black, Color.white,
+                           ref myMaximizeIcon, new Vector2(halfSize+offset, halfSize+offset));
+        int halfSizeInt= (int)halfSize;
+        for(int i= (int)(0.30f*size); i <= (int)(0.70f*size); ++i) {
+            myMaximizeIcon.SetPixel(1+i, 1+halfSizeInt, Color.black);
+            myMaximizeIcon.SetPixel(1+i, 1+halfSizeInt-1, Color.black);
+            myMaximizeIcon.SetPixel(1+halfSizeInt, 1+i, Color.black);
+            myMaximizeIcon.SetPixel(1+halfSizeInt-1, 1+i, Color.black);
+        }
+        // Finalize icons.
+        myMaximizeIcon.Apply();
+        myMaximizeIcon.hideFlags= HideFlags.DontSave;
+    }
+    // ---------------------------------------------------------------------------------
     static void BuildMinimizeIcon() {        
         // Allocate icon.
         float size= myScale*kMinimizeIconSize;
         int sizeInt= ((int)size)+1;
         float offset= 0.5f*((float)sizeInt-size);
+        if(myMinimizeIcon != null) Texture2D.DestroyImmediate(myMinimizeIcon);
         myMinimizeIcon= new Texture2D(sizeInt, sizeInt);
         iCS_TextureUtil.Clear(ref myMinimizeIcon);
         // Draw minimize icon.
@@ -181,27 +243,41 @@ public static class iCS_BuiltinTextures {
         myMinimizeIcon.hideFlags= HideFlags.DontSave;
     }
     // ---------------------------------------------------------------------------------
-    static void BuildMaximizeIcon() {        
-        // Allocate icon.
-        float size= /*myScale**/kMaximizeIconSize;
-        int sizeInt= ((int)size)+1;
-        float offset= 0.5f*((float)sizeInt-size);
-        myMaximizeIcon= new Texture2D(sizeInt, sizeInt);
-        iCS_TextureUtil.Clear(ref myMaximizeIcon);
-        // Draw minimize icon.
-        float halfSize= 0.5f*size;
-        iCS_TextureUtil.Circle(halfSize-0.15f*size,
-                           Color.black, Color.white,
-                           ref myMaximizeIcon, new Vector2(halfSize+offset, halfSize+offset));
-        int halfSizeInt= (int)halfSize;
-        for(int i= (int)(0.30f*size); i <= (int)(0.70f*size); ++i) {
-            myMaximizeIcon.SetPixel(1+i, 1+halfSizeInt, Color.black);
-            myMaximizeIcon.SetPixel(1+i, 1+halfSizeInt-1, Color.black);
-            myMaximizeIcon.SetPixel(1+halfSizeInt, 1+i, Color.black);
-            myMaximizeIcon.SetPixel(1+halfSizeInt-1, 1+i, Color.black);
-        }
+    static void BuildFoldIcon() {
+        // Build polygon
+        int textureSize= kFoldIconSize+2;
+        var center= new Vector2(0.5f*textureSize, 0.5f*textureSize);
+        var scale= new Vector2(0.7f*kFoldIconSize, 0.7f*kFoldIconSize);
+        var polygon= Math3D.ScaleAndTranslatePolygon(myFoldIconPolygon, scale, center);
+        // Build texture
+        if(myFoldIcon != null) Texture2D.DestroyImmediate(myFoldIcon);
+		myFoldIcon= new Texture2D(textureSize, textureSize);
+		iCS_TextureUtil.Clear(ref myFoldIcon);
+        Color c= Color.black;
+        c.a= 0.5f;
+	    iCS_TextureUtil.DrawFilledPolygon(ref myFoldIcon, polygon, c);
+	    iCS_TextureUtil.DrawPolygonOutline(ref myFoldIcon, polygon, Color.black);
         // Finalize icons.
-        myMaximizeIcon.Apply();
-        myMaximizeIcon.hideFlags= HideFlags.DontSave;
+        myFoldIcon.Apply();
+        myFoldIcon.hideFlags= HideFlags.DontSave;
+    }
+    // ---------------------------------------------------------------------------------
+    static void BuildUnfoldIcon() {
+        // Build polygon
+        int textureSize= kUnfoldIconSize+2;
+        var center= new Vector2(0.5f*textureSize, 0.5f*textureSize);
+        var scale= new Vector2(0.7f*kUnfoldIconSize, 0.7f*kUnfoldIconSize);
+        var polygon= Math3D.ScaleAndTranslatePolygon(myUnfoldIconPolygon, scale, center);
+        // Build texture
+        if(myUnfoldIcon != null) Texture2D.DestroyImmediate(myUnfoldIcon);
+		myUnfoldIcon= new Texture2D(textureSize, textureSize);
+		iCS_TextureUtil.Clear(ref myUnfoldIcon);
+        Color c= Color.black;
+        c.a= 0.5f;
+	    iCS_TextureUtil.DrawFilledPolygon(ref myUnfoldIcon, polygon, c);
+	    iCS_TextureUtil.DrawPolygonOutline(ref myUnfoldIcon, polygon, Color.black);
+        // Finalize icons.
+        myUnfoldIcon.Apply();
+        myUnfoldIcon.hideFlags= HideFlags.DontSave;
     }
 }

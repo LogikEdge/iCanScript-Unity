@@ -370,9 +370,13 @@ public partial class iCS_Graphics {
         // Fold/Unfold icon
         if(ShouldDisplayFoldIcon(node)) {
             if(node.IsFoldedOnDisplay) {
-                GUI_DrawTexture(new Rect(position.x+6f, position.y-1f, foldedIcon.width, foldedIcon.height), foldedIcon);                           
+//                GUI_DrawTexture(new Rect(position.x+6f, position.y-1f, foldedIcon.width, foldedIcon.height), foldedIcon);                           
+                var icon= iCS_BuiltinTextures.FoldIcon(Scale);
+                GUI_DrawTexture(new Rect(position.x+6f, position.y-0.5f, 16, 16), icon);                           
             } else {
-                GUI_DrawTexture(new Rect(position.x+6f, position.y-1f, unfoldedIcon.width, unfoldedIcon.height), unfoldedIcon);               
+//                GUI_DrawTexture(new Rect(position.x+6f, position.y-1f, unfoldedIcon.width, unfoldedIcon.height), unfoldedIcon);               
+                var icon= iCS_BuiltinTextures.UnfoldIcon(Scale);
+                GUI_DrawTexture(new Rect(position.x+6f, position.y-0.5f, 16, 16), icon);               
             }            
         }
         // Minimize Icon
