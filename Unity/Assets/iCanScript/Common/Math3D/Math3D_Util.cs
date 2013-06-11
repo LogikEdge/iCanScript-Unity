@@ -362,13 +362,12 @@ public static partial class Math3D {
         for(int i= 0; i < polygon.Length; ++i) {
             // Return if point is outside polygon.
             Vector2 segmentEnd= polygon[i];
-            Vector2 pointOnLine= ClosestPointOnLineSegmentToPoint(segmentStart, segmentEnd, point);
-            var newClosestPoint= point-pointOnLine;
+            Vector2 pointOnPolygon= ClosestPointOnLineSegmentToPoint(segmentStart, segmentEnd, point);
             // Determine smallest distance to all polygon edges.
-            var sqrMagnitude= newClosestPoint.sqrMagnitude;
+            var sqrMagnitude= (point-pointOnPolygon).sqrMagnitude;
             if(sqrMagnitude < minSqrMagnitude) {
                 minSqrMagnitude= sqrMagnitude;
-                closestPoint= newClosestPoint;
+                closestPoint= pointOnPolygon;
             }
             segmentStart= segmentEnd;
         }

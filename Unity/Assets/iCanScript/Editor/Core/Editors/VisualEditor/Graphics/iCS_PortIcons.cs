@@ -14,11 +14,13 @@ public static class iCS_PortIcons {
 	static Texture2D	myInRelayPortTemplate  	       = null;
 	static Texture2D	myOutRelayPortTemplate  	   = null;
 	static Texture2D    myMuxPortTemplate              = null;
+    static Texture2D    myTriggerPortTemplate          = null;
 	static Texture2D	mySelectedInEndPortTemplate    = null;
 	static Texture2D	mySelectedOutEndPortTemplate   = null;
 	static Texture2D	mySelectedInRelayPortTemplate  = null;
 	static Texture2D	mySelectedOutRelayPortTemplate = null;
 	static Texture2D    mySelectedMuxPortTemplate      = null;
+	static Texture2D    mySelectedTriggerPortTemplate  = null;
 	
     // ----------------------------------------------------------------------
 	static Dictionary<Color,Texture2D>	myInEndPortIcons           = null;
@@ -26,11 +28,13 @@ public static class iCS_PortIcons {
 	static Dictionary<Color,Texture2D>	myInRelayPortIcons         = null;
 	static Dictionary<Color,Texture2D>	myOutRelayPortIcons        = null;
     static Dictionary<Color,Texture2D>  myMuxPortIcons             = null;
+    static Dictionary<Color,Texture2D>  myTriggerPortIcons         = null;
 	static Dictionary<Color,Texture2D>	mySelectedInEndPortIcons   = null;
 	static Dictionary<Color,Texture2D>	mySelectedOutEndPortIcons  = null;
 	static Dictionary<Color,Texture2D>	mySelectedInRelayPortIcons = null;
 	static Dictionary<Color,Texture2D>	mySelectedOutRelayPortIcons= null;
 	static Dictionary<Color,Texture2D>	mySelectedMuxPortIcons     = null;
+	static Dictionary<Color,Texture2D>	mySelectedTriggerPortIcons = null;
 
 	// ----------------------------------------------------------------------
     //  Build template for all port icons
@@ -39,6 +43,7 @@ public static class iCS_PortIcons {
 		myScale= scale;
 		BuildEndPortTemplates(scale);
 		BuildRelayPortTemplates(scale);
+        BuildTriggerPortTemplates(scale);
 		FlushCachedIcons();
 	}
 	// ----------------------------------------------------------------------
@@ -49,6 +54,13 @@ public static class iCS_PortIcons {
 		BuildOutRelayPortTemplate(len, ref myOutRelayPortTemplate);
 		BuildInRelayPortTemplate(selectedLen, ref mySelectedInRelayPortTemplate);
 		BuildOutRelayPortTemplate(selectedLen, ref mySelectedOutRelayPortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	static void BuildTriggerPortTemplates(float scale) {
+        float len= scale*iCS_EditorConfig.PortDiameter*1.4f;
+        float selectedLen= len*iCS_EditorConfig.SelectedPortFactor;
+		BuildTriggerPortTemplate(len, ref myTriggerPortTemplate);
+		BuildTriggerPortTemplate(selectedLen, ref mySelectedTriggerPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildInRelayPortTemplate(float len, ref Texture2D template) {
@@ -182,69 +194,32 @@ public static class iCS_PortIcons {
 //		texture.hideFlags= HideFlags.DontSave;
 //		texture.Apply();
 //	}
-//    // ----------------------------------------------------------------------
-//	public static void BuildTriggerPortTemplate(float len, float borderWidth, float aaWidth, ref Texture2D texture) {
-//        // Allocate texture.
-//        float aaOffset= 1.4f*aaWidth;
-//	    len= len+2f*aaOffset;
-//	    int textureSize= (int)(len+1f);
-//	    if(texture != null) Texture2D.DestroyImmediate(texture);
-//		texture= new Texture2D(textureSize, textureSize);
-//        // Build polygons.
-//        var halfLen= 0.5f*len;
-//        var aaOutterPolygon= new Vector2[4];
-//        aaOutterPolygon[0]= new Vector2(0, halfLen);
-//        aaOutterPolygon[1]= new Vector2(halfLen, 0);
-//        aaOutterPolygon[2]= new Vector2(len, halfLen);
-//        aaOutterPolygon[3]= new Vector2(halfLen, len);
-//        var outterPolygon= new Vector2[4];
-//        outterPolygon[0]= aaOutterPolygon[0] + new Vector2(aaOffset, 0);
-//        outterPolygon[1]= aaOutterPolygon[1] + new Vector2(0, aaOffset);
-//        outterPolygon[2]= aaOutterPolygon[2] - new Vector2(aaOffset, 0);
-//        outterPolygon[3]= aaOutterPolygon[3] - new Vector2(0, aaOffset);
-//        var aaMaxLinePolygon= new Vector2[4];
-//        var borderOffset= 1.4f*borderWidth;
-//        aaMaxLinePolygon[0]= outterPolygon[0] + new Vector2(borderOffset, 0);
-//        aaMaxLinePolygon[1]= outterPolygon[1] + new Vector2(0, borderOffset);
-//        aaMaxLinePolygon[2]= outterPolygon[2] - new Vector2(borderOffset, 0);
-//        aaMaxLinePolygon[3]= outterPolygon[3] - new Vector2(0, borderOffset);
-//        var maxLinePolygon= new Vector2[4];
-//        maxLinePolygon[0]= aaMaxLinePolygon[0] + new Vector2(aaOffset, 0);
-//        maxLinePolygon[1]= aaMaxLinePolygon[1] + new Vector2(0, aaOffset);
-//        maxLinePolygon[2]= aaMaxLinePolygon[2] - new Vector2(aaOffset, 0);
-//        maxLinePolygon[3]= aaMaxLinePolygon[3] - new Vector2(0, aaOffset);
-//        var minLinePolygon= new Vector2[4];
-//        minLinePolygon[0]= maxLinePolygon[0] + new Vector2(0.4f, 0);
-//        minLinePolygon[1]= minLinePolygon[1] + new Vector2(0, 0.4f);
-//        minLinePolygon[2]= minLinePolygon[2] - new Vector2(0.4f, 0);
-//        minLinePolygon[3]= minLinePolygon[3] - new Vector2(0, 0.4f);
-//        var aaMinLinePolygon= new Vector2[4];
-//        aaMinLinePolygon[0]= minLinePolygon[0] + new Vector2(aaOffset, 0);
-//        aaMinLinePolygon[1]= minLinePolygon[1] + new Vector2(0, aaOffset);
-//        aaMinLinePolygon[2]= minLinePolygon[2] - new Vector2(aaOffset, 0);
-//        aaMinLinePolygon[3]= minLinePolygon[3] - new Vector2(0, aaOffset);
-//        // Build texture.
-//        var polygonCenter= Math3D.Average(aaOutterPolygon);
-//        for(int x= 0; x < textureSize; ++x) {
-//            for(int y= 0; y < textureSize; ++y) {
-//                Vector2 point= new Vector2(x,y);
-//                float penetration= PolygonPenetrationDistance(aaMinLinePolygon, polygonCenter, point);
-//                if(Math3D.IsSmallerOrEqual(penetration, 0)) {
-//                    texture.SetPixel(x,y,Color.black);
-//                } else {
-//                    penetration= PolygonPenetrationDistance(minLinePolygon, polygonCenter, point);
-//                    if(Math3D.IsSmallerOrEqual(penetration, 0)) {
-//                    }
-//                }
-//            }
-//        }
-//        // Finalize texture.
-//        texture.hideFlags= HideFlags.DontSave;
-// 		texture.Apply();
-//	}
-//	static float PolygonPenetrationDistance(Vector2[] polygon, Vector2 polygonCenter, Vector2 point) {
-//	    return Math3D.ConvexPolygonPenetration(polygon, polygonCenter, point).magnitude;
-//	}
+    // ----------------------------------------------------------------------
+	public static void BuildTriggerPortTemplate(float len, ref Texture2D texture) {
+	    var borderSize= 2.8f*myScale;
+	    if(borderSize < 1f) borderSize= 1f;
+	    int textureSize= (int)(len+3f);
+	    if(texture != null) Texture2D.DestroyImmediate(texture);
+		texture= new Texture2D(textureSize, textureSize);
+		iCS_TextureUtil.Clear(ref texture);
+        // Build polygons.
+        var halfLen= 0.5f*(len+1f);
+        var outterPolygon= new Vector2[4];
+        outterPolygon[0]= new Vector2(1, halfLen);
+        outterPolygon[1]= new Vector2(halfLen, 1);
+        outterPolygon[2]= new Vector2(len, halfLen);
+        outterPolygon[3]= new Vector2(halfLen, len);
+        var innerPolygon= new Vector2[4];
+        innerPolygon[0]= new Vector2(1+borderSize, halfLen);
+        innerPolygon[1]= new Vector2(halfLen, 1+borderSize);
+        innerPolygon[2]= new Vector2(len-borderSize, halfLen);
+        innerPolygon[3]= new Vector2(halfLen, len-borderSize);
+        iCS_TextureUtil.DrawFilledPolygon(ref texture, outterPolygon, Color.black);
+        iCS_TextureUtil.DrawPolygonOutline(ref texture, innerPolygon, Color.red, 1.4f);
+        // Finalize texture.
+        texture.hideFlags= HideFlags.DontSave;
+ 		texture.Apply();
+	}
 	
     // ======================================================================
     // Icon retreival functions
@@ -274,6 +249,11 @@ public static class iCS_PortIcons {
 		return GetPortIcon(typeColor, ref myMuxPortIcons, ref myMuxPortTemplate);
 	}
 	// ----------------------------------------------------------------------
+	// Returns a texture representing the requested mux port icon.
+	public static Texture2D GetTriggerPortIcon(Color typeColor) {
+		return GetPortIcon(typeColor, ref myTriggerPortIcons, ref myTriggerPortTemplate);
+	}
+	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested end port icon.
 	public static Texture2D GetSelectedInEndPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor, ref mySelectedInEndPortIcons, ref mySelectedInEndPortTemplate);
@@ -300,6 +280,12 @@ public static class iCS_PortIcons {
 	public static Texture2D GetSelectedMuxPortIcon(Color typeColor) {
 		return GetPortIcon(typeColor,
 			               ref mySelectedMuxPortIcons, ref mySelectedMuxPortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	// Returns a selected trigger port icon.
+	public static Texture2D GetSelectedTriggerPortIcon(Color typeColor) {
+		return GetPortIcon(typeColor,
+			               ref mySelectedTriggerPortIcons, ref mySelectedTriggerPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	// Returns a texture representing the requested circular port icon.
@@ -353,11 +339,13 @@ public static class iCS_PortIcons {
 		FlushCachedIcons(ref myInRelayPortIcons);
 		FlushCachedIcons(ref myOutRelayPortIcons);
 		FlushCachedIcons(ref myMuxPortIcons);
+		FlushCachedIcons(ref myTriggerPortIcons);
 		FlushCachedIcons(ref mySelectedInEndPortIcons);
 		FlushCachedIcons(ref mySelectedOutEndPortIcons);
 		FlushCachedIcons(ref mySelectedInRelayPortIcons);
 		FlushCachedIcons(ref mySelectedOutRelayPortIcons);
 		FlushCachedIcons(ref mySelectedMuxPortIcons);
+		FlushCachedIcons(ref mySelectedTriggerPortIcons);
 	}
 	// ----------------------------------------------------------------------
 	static void FlushCachedIcons(ref Dictionary<Color,Texture2D> iconSet) {

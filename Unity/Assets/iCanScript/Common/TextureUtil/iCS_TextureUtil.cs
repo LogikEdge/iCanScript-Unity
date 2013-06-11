@@ -67,7 +67,26 @@ public static class iCS_TextureUtil {
 	}
 	// ----------------------------------------------------------------------
     public static void DrawPolygonOutline(ref Texture2D texture, Vector2[] polygon, Color color, float width= 1f) {
-        
+        width= width > 1f ? width-1f : 0f;
+        var halfWidth= 0.5f*width;
+        for(int x= 0; x < texture.width; ++x) {
+            for(int y= 0; y < texture.height; ++y) {
+                var point= new Vector2(x,y);
+                var closestPoint= Math3D.ClosestPointOnPolygonToPoint(polygon, point);
+                var delta= point-closestPoint; 
+                var distance= delta.magnitude;
+                if(distance < halfWidth) {
+                    texture.SetPixel(x,y,color);                    
+                } else {
+                    distance-= halfWidth;
+                    if(distance < 1f) {
+                        Color c= color;
+                        c.a= 1f-distance;                        
+                        iCS_AlphaBlend.NormalBlend(ref texture, x, y, c);
+                    }
+                }
+            }
+        }        
     }
 	// ----------------------------------------------------------------------
     public static void DrawFilledCircle(ref Texture2D texture, float radius, Vector2 center, Color color) {
@@ -97,7 +116,24 @@ public static class iCS_TextureUtil {
     }
 	// ----------------------------------------------------------------------
     public static void DrawFilledPolygon(ref Texture2D texture, Vector2[] polygon, Color color) {
-        
+        var center= Math3D.Average(polygon);
+        for(int x= 0; x < texture.width; ++x) {
+            for(int y= 0; y < texture.height; ++y) {
+                var point= new Vector2(x,y);
+                var closestPoint= Math3D.ClosestPointOnPolygonToPoint(polygon, point);
+                var delta= point-closestPoint; 
+                if(Vector2.Dot(delta, center-closestPoint) > 0) {
+                    texture.SetPixel(x,y,color);
+                } else {
+                    var distance= (delta).magnitude;
+                    if(distance < 1f) {
+                        Color c= color;
+                        c.a= 1f-distance;
+                        iCS_AlphaBlend.NormalBlend(ref texture, x, y, c);
+                    }
+                }
+            }
+        }
     }
 	// ----------------------------------------------------------------------
     // Draw a circle in a texture.
