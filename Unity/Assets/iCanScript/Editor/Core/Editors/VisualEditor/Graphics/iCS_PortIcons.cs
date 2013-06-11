@@ -36,6 +36,30 @@ public static class iCS_PortIcons {
 	static Dictionary<Color,Texture2D>	mySelectedMuxPortIcons     = null;
 	static Dictionary<Color,Texture2D>	mySelectedTriggerPortIcons = null;
 
+    // ======================================================================
+    // PORT POLYGONS
+    // ----------------------------------------------------------------------
+    static Vector2[] myMuxPortPolygon    = null;
+    static Vector2[] myTriggerPortPolygon= null;
+    
+    // ======================================================================
+    // POLYGON BUILDER
+    // ----------------------------------------------------------------------
+    static iCS_PortIcons() {
+        // Mux Port Polygon
+        myMuxPortPolygon= new Vector2[4];
+        myMuxPortPolygon[0]= new Vector2(-0.25f, -0.5f);
+        myMuxPortPolygon[1]= new Vector2( 0.25f, -0.25f);
+        myMuxPortPolygon[2]= new Vector2( 0.25f,  0.25f);
+        myMuxPortPolygon[3]= new Vector2(-0.25f, 0.5f);        
+        // Trigger Port Polygon
+        myTriggerPortPolygon= new Vector2[4];
+        myTriggerPortPolygon[0]= new Vector2( 0,   -0.5f);
+        myTriggerPortPolygon[1]= new Vector2( 0.5f, 0);
+        myTriggerPortPolygon[2]= new Vector2( 0,    0.5f);
+        myTriggerPortPolygon[3]= new Vector2(-0.5f, 0);
+    }
+
 	// ----------------------------------------------------------------------
     //  Build template for all port icons
 	public static void BuildPortIconTemplates(float scale) {
@@ -43,6 +67,7 @@ public static class iCS_PortIcons {
 		myScale= scale;
 		BuildEndPortTemplates(scale);
 		BuildRelayPortTemplates(scale);
+        BuildMuxPortTemplates(scale);
         BuildTriggerPortTemplates(scale);
 		FlushCachedIcons();
 	}
@@ -61,6 +86,15 @@ public static class iCS_PortIcons {
         float selectedLen= len*iCS_EditorConfig.SelectedPortFactor;
 		BuildTriggerPortTemplate(len, ref myTriggerPortTemplate);
 		BuildTriggerPortTemplate(selectedLen, ref mySelectedTriggerPortTemplate);
+	}
+	// ----------------------------------------------------------------------
+	static void BuildMuxPortTemplates(float scale) {
+        float width= scale*iCS_EditorConfig.PortDiameter;
+        float height= width*2f;
+        float selectedWidth= width*iCS_EditorConfig.SelectedPortFactor;
+        float selectedHeight= height*iCS_EditorConfig.SelectedPortFactor;
+		BuildMuxPortTemplate(width, height, ref myMuxPortTemplate);
+		BuildMuxPortTemplate(selectedWidth, selectedHeight, ref mySelectedMuxPortTemplate);
 	}
 	// ----------------------------------------------------------------------
 	public static void BuildInRelayPortTemplate(float len, ref Texture2D template) {
@@ -158,42 +192,26 @@ public static class iCS_PortIcons {
         iCS_TextureUtil.DrawFilledCircle(ref texture, radius, center, Color.black);
         iCS_TextureUtil.DrawFilledCircle(ref texture, innerRadius, center, Color.red);
 	}
-//	// ----------------------------------------------------------------------
-//	public static void BuildMuxPortTemplateImp(float w1, float w2, float h1, float h2, float borderSize, float aaWidth, ref Texture2D texture) {
-//        // Compute dimensions of mux port
-//        float width = Mathf.Max(w1,w2);
-//        float height= Mathf.Max(h1,h2);
-//        float halfWidth= 0.5f*width;
-//        float halfHeight= 0.5f*height;
-//        // Compute texture size
-//        int textureWidth= (int)(width+1f);
-//        int textureHeight= (int)(height+1f);
-//        // Allocate texture
-//        if(texture != null) Texture2D.DestroyImmediate(texture);
-//        texture= new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
-//        // Compute points
-//        Vector2 outterTopLeft    = new Vector2(0.5f*(width-w1),       0.5f*(height-h1));
-//        Vector2 outterTopRight   = new Vector2(width-0.5f*(width-w1), 0.5f*(height-h2));
-//        Vector2 outterBottomRight= new Vector2(width-0.5f*(width-w2), height-0.5f*(height-h2));
-//        Vector2 outterBottomLeft = new Vector2(0.5f*(width-w2),       height-0.5f*(height-h1));
-//        Vector2 innerTopLeft     = new Vector2(outterTopLeft.x+borderSize,     outterTopLeft.y+borderSize);
-//        Vector2 innerTopRight    = new Vector2(outterTopRight.x-borderSize,    outterTopRight.y+borderSize);
-//        Vector2 innerBottomRight = new Vector2(outterBottomRight.x-borderSize, outterBottomRight.y-borderSize);
-//        Vector2 innerBottomLeft  = new Vector2(outterBottomLeft.x+borderSize,  outterBottomLeft.y-borderSize);
-//        // Build mux port.
-//        for(int x= 0; x < texture.width; ++x) {
-//            for(int y= 0; y < texture.height; ++y) {
-//                float xLeft= outterTopLeft.x+(outterBottomLeft.x-outterTopLeft.x)*(outterTopLeft.y-y);
-//                float xRight= outterTopRight.x+(outterBottomRight.x-outterTopRight.x)*(outterTopRight.y-y);
-//                float yTop= outterTopRight.y+(outterTopLeft.y-outterTopRight.y)*(outterTopLeft.x-x);
-//                float yBottom= outterBottomLeft.y+(outterBottomRight.y-outterBottomLeft.y)*(outterBottomLeft.x-x);
-//                // TODO: Mux Port Icon to be completed...
-//            }
-//        }
-//        // Finalize texture.
-//		texture.hideFlags= HideFlags.DontSave;
-//		texture.Apply();
-//	}
+	// ----------------------------------------------------------------------
+	public static void BuildMuxPortTemplate(float width, float height, ref Texture2D texture) {
+        // Compute texture size
+        int textureWidth= (int)(width+3f);
+        int textureHeight= (int)(height+3f);
+        // Allocate texture
+        if(texture != null) Texture2D.DestroyImmediate(texture);
+        texture= new Texture2D(textureWidth, textureHeight, TextureFormat.ARGB32, false);
+        iCS_TextureUtil.Clear(ref texture);
+        // Draw black background polygon.
+        var textureCenter= new Vector2(0.5f*textureWidth,0.5f*textureHeight);
+        var outterPolygon= Math3D.ScaleAndTranslatePolygon(myMuxPortPolygon, new Vector2(height,height), textureCenter);
+        iCS_TextureUtil.DrawFilledPolygon(ref texture, outterPolygon, Color.black);
+        // Draw inner color polygon.
+        var innerPolygon= Math3D.ScaleAndTranslatePolygon(myMuxPortPolygon, new Vector2(0.6f*height, 0.6f*height), textureCenter);
+        iCS_TextureUtil.DrawFilledPolygon(ref texture, innerPolygon, Color.red);
+        // Finalize texture.
+		texture.hideFlags= HideFlags.DontSave;
+		texture.Apply();
+	}
     // ----------------------------------------------------------------------
 	public static void BuildTriggerPortTemplate(float len, ref Texture2D texture) {
 	    var borderSize= 2.8f*myScale;
@@ -202,19 +220,12 @@ public static class iCS_PortIcons {
 	    if(texture != null) Texture2D.DestroyImmediate(texture);
 		texture= new Texture2D(textureSize, textureSize);
 		iCS_TextureUtil.Clear(ref texture);
-        // Build polygons.
-        var halfLen= 0.5f*(len+1f);
-        var outterPolygon= new Vector2[4];
-        outterPolygon[0]= new Vector2(1, halfLen);
-        outterPolygon[1]= new Vector2(halfLen, 1);
-        outterPolygon[2]= new Vector2(len, halfLen);
-        outterPolygon[3]= new Vector2(halfLen, len);
-        var innerPolygon= new Vector2[4];
-        innerPolygon[0]= new Vector2(1+borderSize, halfLen);
-        innerPolygon[1]= new Vector2(halfLen, 1+borderSize);
-        innerPolygon[2]= new Vector2(len-borderSize, halfLen);
-        innerPolygon[3]= new Vector2(halfLen, len-borderSize);
+        // Draw black background polygon
+        var textureCenter= new Vector2(0.5f*textureSize,0.5f*textureSize);
+        var outterPolygon= Math3D.ScaleAndTranslatePolygon(myTriggerPortPolygon, new Vector2(len, len), textureCenter);
         iCS_TextureUtil.DrawFilledPolygon(ref texture, outterPolygon, Color.black);
+        // Draw inner color polygon.
+        var innerPolygon= Math3D.ScaleAndTranslatePolygon(myTriggerPortPolygon, new Vector2(0.6f*len, 0.6f*len), textureCenter);
         iCS_TextureUtil.DrawPolygonOutline(ref texture, innerPolygon, Color.red, 1.4f);
         // Finalize texture.
         texture.hideFlags= HideFlags.DontSave;

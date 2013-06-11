@@ -354,6 +354,15 @@ public static partial class Math3D {
     // ======================================================================
     // Polygon utilities
 	// ----------------------------------------------------------------------
+    public static Vector2[] ScaleAndTranslatePolygon(Vector2[] polygon, Vector2 scale, Vector2 translate) {
+        var newPolygon= new Vector2[polygon.Length];
+        for(int i= 0; i < polygon.Length; ++i) {
+            newPolygon[i]= new Vector2(translate.x+polygon[i].x*scale.x,
+                                       translate.y+polygon[i].y*scale.y);
+        }
+        return newPolygon;
+    }
+	// ----------------------------------------------------------------------
     public static Vector2 ClosestPointOnPolygonToPoint(Vector2[] polygon, Vector2 point) {
         Vector2 closestPoint= Vector2.zero;
         if(polygon.Length < 3) return closestPoint;
