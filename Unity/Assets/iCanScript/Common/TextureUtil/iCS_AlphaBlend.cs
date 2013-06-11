@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum iCS_AlphaBlendMode { Fill, AdditiveBlend };
+public enum iCS_AlphaBlendMode { Normal };
 
 public static class iCS_AlphaBlend {
     // ======================================================================
@@ -8,12 +8,8 @@ public static class iCS_AlphaBlend {
     // ----------------------------------------------------------------------
     public static void Blend(ref Texture2D texture, int x, int y, Color c, iCS_AlphaBlendMode alphaBlendMode) {
         switch(alphaBlendMode) {
-            case iCS_AlphaBlendMode.Fill: {
-                texture.SetPixel(x,y,c);
-                break;
-            }
-            case iCS_AlphaBlendMode.AdditiveBlend: {
-                c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));
+            case iCS_AlphaBlendMode.Normal: {
+                c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(x,y));
                 texture.SetPixel(x,y,c);
                 break;
             }
@@ -24,7 +20,7 @@ public static class iCS_AlphaBlend {
         }
     }
     // ----------------------------------------------------------------------
-    public static Color AdditiveBlend(Color src, Color dst) {
+    public static Color NormalBlend(Color src, Color dst) {
         float keepAlpha= 1f-src.a;
         float outAlpha= src.a + dst.a*keepAlpha;
         if(Math3D.IsZero(outAlpha)) return Color.clear;
@@ -34,11 +30,11 @@ public static class iCS_AlphaBlend {
     }
     
     // ----------------------------------------------------------------------
-    public static void AdditiveBlend(Texture2D src, ref Texture2D dst) {
-        AdditiveBlend(0, 0, src, 0, 0, ref dst, dst.width, dst.height);
+    public static void NormalBlend(Texture2D src, ref Texture2D dst) {
+        NormalBlend(0, 0, src, 0, 0, ref dst, dst.width, dst.height);
     }
     // ----------------------------------------------------------------------
-    public static void AdditiveBlend(int sx, int sy, Texture2D src, int dx, int dy, ref Texture2D dst, int width, int height) {
+    public static void NormalBlend(int sx, int sy, Texture2D src, int dx, int dy, ref Texture2D dst, int width, int height) {
         if(src.width-sx < width) width= src.width-sx;
         if(dst.width-dx < width) width= dst.width-dx;
         if(src.height-sy < height) height= src.height-sy;
@@ -49,7 +45,7 @@ public static class iCS_AlphaBlend {
                 int dxx= dx+x;
                 int dyy= dy+y;
                 Color dc= dst.GetPixel(dxx,dyy);
-                dst.SetPixel(dxx,dyy,AdditiveBlend(sc,dc));
+                dst.SetPixel(dxx,dyy,NormalBlend(sc,dc));
             }
         }
     }

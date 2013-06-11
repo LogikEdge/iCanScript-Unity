@@ -67,7 +67,7 @@ public static class iCS_TextureUtil {
 						float ratio= (borderWidth-2f*(r-radius))/borderWidth;
 						Color c= borderColor;
 						c.a= ratio*borderColor.a;
-						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));							
+						c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(x,y));							
 						texture.SetPixel(x,y,c);							
 					} else {
 						float ratio= (borderWidth-2f*(radius-r))/borderWidth;
@@ -76,12 +76,12 @@ public static class iCS_TextureUtil {
 						c.g= ratio*borderColor.g+(1f-ratio)*fillColor.g;
 						c.b= ratio*borderColor.b+(1f-ratio)*fillColor.b;
 						c.a= ratio*borderColor.a+(1f-ratio)*fillColor.a;
-						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));														
+						c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(x,y));														
 						texture.SetPixel(x,y,c);						
 					}
 				} else {
 					Color c= fillColor;
-					c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));														
+					c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(x,y));														
 					texture.SetPixel(x,y,c);
 				}
 			}
@@ -110,7 +110,7 @@ public static class iCS_TextureUtil {
 				if(x < outterX1 || x > outterX2 || y < outterY1 || y > outterY2) {
 					// Don't draw if outside box.
 				} else if(x > innerX1 && x < innerX2 && y > innerY1 && y < innerY2) {
-					Color c= iCS_AlphaBlend.AdditiveBlend(fillColor, texture.GetPixel(x,y));														
+					Color c= iCS_AlphaBlend.NormalBlend(fillColor, texture.GetPixel(x,y));														
 					texture.SetPixel(x,y,c);				    
 				}  else {
                     float distX1= Mathf.Abs(x-x1);
@@ -127,7 +127,7 @@ public static class iCS_TextureUtil {
 						c.g= ratio*borderColor.g+(1f-ratio)*fillColor.g;
 						c.b= ratio*borderColor.b+(1f-ratio)*fillColor.b;
 						c.a= ratio*borderColor.a+(1f-ratio)*fillColor.a;
-						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));														
+						c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(x,y));														
 						texture.SetPixel(x,y,c);						
 			        } else {
 			            float dist= (distX <= halfBorderWidth && distY <= halfBorderWidth) ?
@@ -136,7 +136,7 @@ public static class iCS_TextureUtil {
 						float ratio= (borderWidth-2f*dist)/borderWidth;
 						Color c= borderColor;
 						c.a= ratio*borderColor.a;
-						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(x,y));							
+						c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(x,y));							
 						texture.SetPixel(x,y,c);							
                     }
 				}

@@ -84,8 +84,8 @@ public static class iCS_BuiltinTextures {
         iCS_TextureUtil.Clear(ref myInEndPortIcon);
         iCS_TextureUtil.Clear(ref myOutEndPortIcon);
         int xOffset= (kPortIconWidth-kPortIconHeight)>>1;
-        iCS_AlphaBlend.AdditiveBlend(0, 0, portInIcon , xOffset, 0, ref myInEndPortIcon,  portOutIcon.width, portOutIcon.height);
-        iCS_AlphaBlend.AdditiveBlend(0, 0, portOutIcon, xOffset, 0, ref myOutEndPortIcon, portOutIcon.width, portOutIcon.height);
+        iCS_AlphaBlend.NormalBlend(0, 0, portInIcon , xOffset, 0, ref myInEndPortIcon,  portOutIcon.width, portOutIcon.height);
+        iCS_AlphaBlend.NormalBlend(0, 0, portOutIcon, xOffset, 0, ref myOutEndPortIcon, portOutIcon.width, portOutIcon.height);
 
         // Finalize icons.
         myInEndPortIcon.Apply();
@@ -114,8 +114,8 @@ public static class iCS_BuiltinTextures {
         iCS_TextureUtil.Clear(ref myInRelayPortIcon);
         iCS_TextureUtil.Clear(ref myOutRelayPortIcon);
         int xOffset= (kPortIconWidth-kPortIconHeight)>>1;
-        iCS_AlphaBlend.AdditiveBlend(0, 0, inPortIcon,  xOffset, 0, ref myInRelayPortIcon,  inPortIcon.width,  inPortIcon.height);
-        iCS_AlphaBlend.AdditiveBlend(0, 0, outPortIcon, xOffset, 0, ref myOutRelayPortIcon, outPortIcon.width, outPortIcon.height);
+        iCS_AlphaBlend.NormalBlend(0, 0, inPortIcon,  xOffset, 0, ref myInRelayPortIcon,  inPortIcon.width,  inPortIcon.height);
+        iCS_AlphaBlend.NormalBlend(0, 0, outPortIcon, xOffset, 0, ref myOutRelayPortIcon, outPortIcon.width, outPortIcon.height);
 
         // Finalize icons.
         myInRelayPortIcon.Apply();

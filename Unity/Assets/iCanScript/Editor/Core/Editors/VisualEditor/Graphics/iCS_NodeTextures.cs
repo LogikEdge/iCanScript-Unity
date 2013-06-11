@@ -183,7 +183,7 @@ public static class iCS_NodeTextures {
 						Color c= borderColor;
 						c.a= ratio*borderColor.a;
 						if(alphaBlend) {
-							c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));							
+							c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));							
 						}
 						texture.SetPixel(cx+x*xs,cy+y*ys,c);							
 					} else {
@@ -194,14 +194,14 @@ public static class iCS_NodeTextures {
 						c.b= ratio*borderColor.b+(1f-ratio)*fillColor.b;
 						c.a= ratio*borderColor.a+(1f-ratio)*fillColor.a;
 						if(alphaBlend) {
-							c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));														
+							c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));														
 						}
 						texture.SetPixel(cx+x*xs,cy+y*ys,c);						
 					}
 				} else {
 					Color c= fillColor;
 					if(alphaBlend) {
-						c= iCS_AlphaBlend.AdditiveBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));														
+						c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(cx+x*xs, cy+y*ys));														
 					}
 					texture.SetPixel(cx+x*xs, cy+y*ys, c);
 				}
