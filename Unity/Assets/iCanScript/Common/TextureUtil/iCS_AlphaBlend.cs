@@ -9,8 +9,7 @@ public static class iCS_AlphaBlend {
     public static void Blend(ref Texture2D texture, int x, int y, Color c, iCS_AlphaBlendMode alphaBlendMode) {
         switch(alphaBlendMode) {
             case iCS_AlphaBlendMode.Normal: {
-                c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(x,y));
-                texture.SetPixel(x,y,c);
+                NormalBlend(ref texture, x, y, c);
                 break;
             }
             default: {
@@ -18,6 +17,11 @@ public static class iCS_AlphaBlend {
                 break;                
             }
         }
+    }
+    // ----------------------------------------------------------------------
+    public static void NormalBlend(ref Texture2D texture, int x, int y, Color c) {
+        c= iCS_AlphaBlend.NormalBlend(c, texture.GetPixel(x,y));
+        texture.SetPixel(x,y,c);        
     }
     // ----------------------------------------------------------------------
     public static Color NormalBlend(Color src, Color dst) {

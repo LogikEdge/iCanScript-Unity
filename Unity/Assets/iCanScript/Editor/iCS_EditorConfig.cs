@@ -21,7 +21,7 @@ public static class iCS_EditorConfig {
     // ----------------------------------------------------------------------
     public const  float   PortRadius        = 5.55f;
     public const  float   PortDiameter      = 2.0f * PortRadius;
-    public const  float   SelectedPortFactor= 1.67f;
+    public const  float   SelectedPortFactor= 1.5f;
     public static Vector2 PortSize;
 
     // ----------------------------------------------------------------------

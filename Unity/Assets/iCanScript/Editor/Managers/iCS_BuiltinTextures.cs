@@ -74,8 +74,8 @@ public static class iCS_BuiltinTextures {
 		Texture2D inPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
 		Texture2D outPortTemplate= new Texture2D(kPortIconHeight, kPortIconHeight);
 		float radius= 0.5f*(kPortIconHeight-3f);
-        iCS_PortIcons.BuildInEndPortTemplateImp(radius, radius-2, 1f, ref inPortTemplate);
-        iCS_PortIcons.BuildOutEndPortTemplateImp(radius, radius-2, 1f, ref outPortTemplate);
+        iCS_PortIcons.BuildInEndPortTemplateImp(radius, radius-2, ref inPortTemplate);
+        iCS_PortIcons.BuildOutEndPortTemplateImp(radius, radius-2, ref outPortTemplate);
         Texture2D portInIcon= iCS_PortIcons.BuildPortIcon(typeColor, inPortTemplate);
         Texture2D portOutIcon= iCS_PortIcons.BuildPortIcon(typeColor, outPortTemplate);
 

@@ -96,130 +96,55 @@ public static class iCS_PortIcons {
 	static void BuildEndPortTemplates(float scale) {
         float radius= scale*iCS_EditorConfig.PortRadius;
         float inInnerRadius= radius-2f*scale;
-        float outInnerRadius= radius-3f*scale;
-		BuildInEndPortTemplate(radius, inInnerRadius, 1f, ref myInEndPortTemplate);
-		BuildOutEndPortTemplate(radius, outInnerRadius, 1f, ref myOutEndPortTemplate);
+        float outInnerRadius= radius-2.5f*scale;
+		BuildInEndPortTemplate(radius, inInnerRadius, ref myInEndPortTemplate);
+		BuildOutEndPortTemplate(radius, outInnerRadius, ref myOutEndPortTemplate);
         float selectedFactor= iCS_EditorConfig.SelectedPortFactor;
 		float selectedRadius= selectedFactor*radius;
 		float selectedInInnerRadius= selectedFactor*inInnerRadius;
 		float selectedOutInnerRadius= selectedFactor*outInnerRadius;
-		BuildInEndPortTemplate(selectedRadius, selectedInInnerRadius, 1f, ref mySelectedInEndPortTemplate);
-		BuildOutEndPortTemplate(selectedRadius, selectedOutInnerRadius, 1f, ref mySelectedOutEndPortTemplate);
+		BuildInEndPortTemplate(selectedRadius, selectedInInnerRadius, ref mySelectedInEndPortTemplate);
+		BuildOutEndPortTemplate(selectedRadius, selectedOutInnerRadius, ref mySelectedOutEndPortTemplate);
 	}
 	// ----------------------------------------------------------------------
-    delegate void PortTemplateBuilder(float radius, float innerRadius, float aaWidth, ref Texture2D template);
-	static void BuildPortTemplate(float radius, float innerRadius, float aaWidth, ref Texture2D template, PortTemplateBuilder builder) {
+    delegate void PortTemplateBuilder(float radius, float innerRadius, ref Texture2D template);
+	static void BuildPortTemplate(float radius, float innerRadius, ref Texture2D template, PortTemplateBuilder builder) {
         // Remove previous template.
         if(template != null) Texture2D.DestroyImmediate(template);
 		// Create texture.
 		int widthInt= (int)(2f*radius+3f);
 		int heightInt= (int)(2f*radius+3f);
 		template= new Texture2D(widthInt, heightInt, TextureFormat.ARGB32, false);
-		builder(radius, innerRadius, aaWidth, ref template);
+		builder(radius, innerRadius, ref template);
 		// Finalize texture.
 		template.hideFlags= HideFlags.DontSave;
 		template.Apply();
 	}
 	// ----------------------------------------------------------------------
-	static void BuildInEndPortTemplate(float radius, float innerRadius, float aaWidth, ref Texture2D template) {
-        BuildPortTemplate(radius, innerRadius, aaWidth, ref template, BuildInEndPortTemplateImp);
+	static void BuildInEndPortTemplate(float radius, float innerRadius, ref Texture2D template) {
+        BuildPortTemplate(radius, innerRadius, ref template, BuildInEndPortTemplateImp);
 	}
 	// ----------------------------------------------------------------------
-	static void BuildOutEndPortTemplate(float radius, float innerRadius, float aaWidth, ref Texture2D template) {
-        BuildPortTemplate(radius, innerRadius, aaWidth, ref template, BuildOutEndPortTemplateImp);
+	static void BuildOutEndPortTemplate(float radius, float innerRadius, ref Texture2D template) {
+        BuildPortTemplate(radius, innerRadius, ref template, BuildOutEndPortTemplateImp);
 	}
 	// ----------------------------------------------------------------------
-	public static void BuildInEndPortTemplateImp(float radius, float innerRadius, float aaWidth, ref Texture2D texture) {
-        float innerRadiusMax= innerRadius+0.25f*myScale;
-        float innerRadiusMin= innerRadius-0.25f*myScale;
-        float aaRadiusMax= radius+aaWidth;
-        float aaInnerRadiusMax= innerRadiusMax+aaWidth;
-        float aaInnerRadiusMin= innerRadiusMin-aaWidth;
-		float cx= 0.5f*texture.width;
-		float cy= 0.5f*texture.height;
-		
-        float aaRadiusMax2= aaRadiusMax*aaRadiusMax;
-        float radius2= radius*radius;
-        float aaInnerRadiusMax2= aaInnerRadiusMax*aaInnerRadiusMax;
-        float innerRadiusMax2= innerRadiusMax*innerRadiusMax;
-        float innerRadiusMin2= innerRadiusMin*innerRadiusMin;
-        float aaInnerRadiusMin2= aaInnerRadiusMin*aaInnerRadiusMin;
-		for(int x= 0; x < texture.width; ++x) {
-			for(int y= 0; y < texture.height; ++y) {
-				float rx= (float)x;
-				float ry= (float)y;
-				float ci= rx-cx;
-				float cj= ry-cy;
-				float r2= ci*ci+cj*cj;
-				if(r2 > aaRadiusMax2) {
-					texture.SetPixel(x,y,Color.clear);
-				} else if(r2 > radius2) {
-					float r= Mathf.Sqrt(r2);
-    				float ratio= (aaRadiusMax-r)/aaWidth;
-    				Color c= Color.black;
-    				c.a= ratio;
-    				texture.SetPixel(x,y,c);
-				} else if(r2 > aaInnerRadiusMax2) {
-					texture.SetPixel(x,y,Color.black);
-				} else if(r2 > innerRadiusMax2) {
-					float r= Mathf.Sqrt(r2);
-					float ratio= (aaInnerRadiusMax-r)/aaWidth;
-					Color c= Color.red;
-					c.r*= ratio;
-					texture.SetPixel(x,y,c);
-				} else if(r2 > innerRadiusMin2) {
-					texture.SetPixel(x,y,Color.red);				    
-				} else if(r2 > aaInnerRadiusMin2) {
-					float r= Mathf.Sqrt(r2);
-					float ratio= (r-aaInnerRadiusMin)/aaWidth;
-					Color c= Color.red;
-					c.r*= ratio;
-					texture.SetPixel(x,y,c);
-				} else {
-					texture.SetPixel(x,y,Color.black);
-				}
-			}
-		}		
+	public static void BuildInEndPortTemplateImp(float radius, float innerRadius, ref Texture2D texture) {
+        float cx= 0.5f*texture.width;
+        float cy= 0.5f*texture.height;
+        var center= new Vector2(cx,cy);
+        iCS_TextureUtil.Clear(ref texture);
+        iCS_TextureUtil.DrawFilledCircle(ref texture, radius, center, Color.black);
+        iCS_TextureUtil.DrawCircle(ref texture, innerRadius, center, Color.red, 1f+0.25f*myScale);
 	}
 	// ----------------------------------------------------------------------
-	public static void BuildOutEndPortTemplateImp(float radius, float innerRadius, float aaWidth, ref Texture2D texture) {
-		float aaRadiusMax= radius+aaWidth;
-		float aaInnerRadiusMax= innerRadius+aaWidth;
-		float cx= 0.5f*texture.width;
-		float cy= 0.5f*texture.height;
-		
-        float radius2= radius*radius;
-        float innerRadius2= innerRadius*innerRadius;
-		float aaRadiusMax2= aaRadiusMax*aaRadiusMax;
-		float aaInnerRadiusMax2= aaInnerRadiusMax*aaInnerRadiusMax;
-		for(int x= 0; x < texture.width; ++x) {
-			for(int y= 0; y < texture.height; ++y) {
-				float rx= (float)x;
-				float ry= (float)y;
-				float ci= rx-cx;
-				float cj= ry-cy;
-				float r2= ci*ci+cj*cj;
-				if(r2 > aaRadiusMax2) {
-					texture.SetPixel(x,y,Color.clear);
-				} else if(r2 > radius2) {
-					float r= Mathf.Sqrt(r2);
-					float ratio= (aaWidth-(r-radius))/aaWidth;
-					Color c= Color.black;
-					c.a= ratio;
-					texture.SetPixel(x,y,c);
-				} else if(r2 > aaInnerRadiusMax2){
-					texture.SetPixel(x,y,Color.black);
-			    } else if(r2 > innerRadius2) {
-					float r= Mathf.Sqrt(r2);
-					float ratio= (aaWidth-(r-innerRadius))/aaWidth;
-					Color c= Color.red;
-					c.r*= ratio;
-					texture.SetPixel(x,y,c);
-				} else {
-					texture.SetPixel(x,y,Color.red);
-				}
-			}
-		}		
+	public static void BuildOutEndPortTemplateImp(float radius, float innerRadius, ref Texture2D texture) {
+        float cx= 0.5f*texture.width;
+        float cy= 0.5f*texture.height;
+        var center= new Vector2(cx,cy);
+        iCS_TextureUtil.Clear(ref texture);
+        iCS_TextureUtil.DrawFilledCircle(ref texture, radius, center, Color.black);
+        iCS_TextureUtil.DrawFilledCircle(ref texture, innerRadius, center, Color.red);
 	}
 //	// ----------------------------------------------------------------------
 //	public static void BuildMuxPortTemplateImp(float w1, float w2, float h1, float h2, float borderSize, float aaWidth, ref Texture2D texture) {
