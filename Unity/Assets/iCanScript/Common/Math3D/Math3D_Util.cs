@@ -306,6 +306,22 @@ public static partial class Math3D {
         float proj= Vector3.Dot(w, direction);
         return origin+(proj/vsq)*direction;
     }
+    // ----------------------------------------------------------------------
+    public static Vector3 ClosestPointOnLineSegmentToPoint(Vector3 origin, Vector3 end, Vector3 point) {
+        var direction= end-origin;
+        var closestPoint= ClosestPointOnLineToPoint(origin, direction, point);
+        // Determine if closest point is within line segment.
+        var toOrigin= closestPoint-origin;
+        var toEnd= closestPoint-end;
+        if(Vector3.Dot(toOrigin, toEnd) < 0) {
+            return closestPoint;
+        }
+        // Closest point is outside line segment. so return either origin or end...
+        if(Vector3.Dot(toOrigin, toOrigin) > Vector3.Dot(toEnd, toEnd)) {
+            return end;
+        }
+        return origin;
+    }
     
     // ======================================================================
     // Area utilities
@@ -338,31 +354,24 @@ public static partial class Math3D {
     // ======================================================================
     // Polygon utilities
 	// ----------------------------------------------------------------------
-    // Return the penetration vector if the given point is inside the
-    // polygon; value Vector2.zero is return if the point is outside the
-    // polygon.
-    public static Vector2 ConvexPolygonPenetration(Vector2[] polygon, Vector2 polygonCenter, Vector2 point) {
-        Vector2 penetration= Vector2.zero;
-        if(polygon.Length < 3) return penetration;
+    public static Vector2 ClosestPointOnPolygonToPoint(Vector2[] polygon, Vector2 point) {
+        Vector2 closestPoint= Vector2.zero;
+        if(polygon.Length < 3) return closestPoint;
         float minSqrMagnitude= Mathf.Infinity;
         Vector2 segmentStart= polygon[polygon.Length-1];
         for(int i= 0; i < polygon.Length; ++i) {
             // Return if point is outside polygon.
             Vector2 segmentEnd= polygon[i];
-            Vector2 pointOnLine= ClosestPointOnLineToPoint(segmentStart, segmentEnd-segmentStart, point);
-            var newPenetration= point-pointOnLine;
-            var centerDirection= polygonCenter-pointOnLine;
-            if(Vector2.Dot(newPenetration, centerDirection) < 0) {
-                return Vector2.zero;
-            }
-            // Determine smallest penetration of all polygon edges.
-            var sqrMagnitude= newPenetration.sqrMagnitude;
+            Vector2 pointOnLine= ClosestPointOnLineSegmentToPoint(segmentStart, segmentEnd, point);
+            var newClosestPoint= point-pointOnLine;
+            // Determine smallest distance to all polygon edges.
+            var sqrMagnitude= newClosestPoint.sqrMagnitude;
             if(sqrMagnitude < minSqrMagnitude) {
                 minSqrMagnitude= sqrMagnitude;
-                penetration= newPenetration;
+                closestPoint= newClosestPoint;
             }
             segmentStart= segmentEnd;
         }
-        return penetration;
+        return closestPoint;
     }
 }

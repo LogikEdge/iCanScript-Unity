@@ -89,7 +89,7 @@ public static class iCS_TextureUtil {
     				Color c= color;
     				c.a= ratio;
                     iCS_AlphaBlend.NormalBlend(ref texture, x, y, c);
-				} else {
+    			} else {
 					texture.SetPixel(x,y,color);
 				}
 			}
@@ -101,6 +101,7 @@ public static class iCS_TextureUtil {
     }
 	// ----------------------------------------------------------------------
     // Draw a circle in a texture.
+    // TODO: Replace Circle by draw circle.
     public static void Circle(float radius,
                               Color borderColor, Color fillColor,
                               ref Texture2D texture, Vector2 center,
@@ -146,6 +147,7 @@ public static class iCS_TextureUtil {
     }  
 	// ----------------------------------------------------------------------
     // Draw a box in a texture.
+    // TODO: Replace Box by DrawPolygon
     public static void Box(float x1, float y1, float x2, float y2,
                            Color borderColor, Color fillColor,
                            ref Texture2D texture,
