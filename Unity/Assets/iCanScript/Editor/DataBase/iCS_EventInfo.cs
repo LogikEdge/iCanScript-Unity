@@ -16,7 +16,7 @@ public class iCS_EventInfo : iCS_ReflectionInfo {
     public iCS_EventInfo(string company, string package, string name,
                          string toolTip, string iconPath,
                          Type classType,
-                         iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
+                         iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                          string returnName, Type returnType)
     : base(iCS_ObjectTypeEnum.Event, company, package, name,
            toolTip, iconPath,

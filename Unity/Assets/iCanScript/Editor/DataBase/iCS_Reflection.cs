@@ -133,29 +133,29 @@ public class iCS_Reflection {
         // Gather field information.
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerField= false;
-            iCS_ParamDirectionEnum direction= iCS_ParamDirectionEnum.InOut;
+            iCS_ParamDirection direction= iCS_ParamDirection.InOut;
             foreach(var fieldAttr in field.GetCustomAttributes(true)) {
                 if(!field.IsPublic && (fieldAttr is iCS_InPortAttribute || fieldAttr is iCS_OutPortAttribute || fieldAttr is iCS_InOutPortAttribute)) {
                     Debug.LogWarning("iCanScript: Field "+field.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring field !!!");
                     continue;
                 }
                 if(fieldAttr is iCS_InPortAttribute) {
-                    direction= iCS_ParamDirectionEnum.In;
+                    direction= iCS_ParamDirection.In;
                     registerField= true;
                 }
                 if(fieldAttr is iCS_OutPortAttribute) {
-                    direction= iCS_ParamDirectionEnum.Out;
+                    direction= iCS_ParamDirection.Out;
                     registerField= true;
                 }
                 if(fieldAttr is iCS_InOutPortAttribute) {
-                    direction= iCS_ParamDirectionEnum.InOut;
+                    direction= iCS_ParamDirection.InOut;
                     registerField= true;
                 }
             }
             if(registerField == false && field.IsPublic) {
                 if(acceptAllPublic) {
                     registerField= true;
-                    direction= iCS_ParamDirectionEnum.InOut;
+                    direction= iCS_ParamDirection.InOut;
                 } else if(baseVisibility) {
                     var declaringType= field.DeclaringType;
                     if(declaringType != classType) {
@@ -170,7 +170,7 @@ public class iCS_Reflection {
                         // Add base fields if class is not using iCS attributes.
                         if(isTagged == false) {
                             registerField= true;
-                            direction= iCS_ParamDirectionEnum.InOut;                            
+                            direction= iCS_ParamDirection.InOut;                            
                         }
                     }
                 }                
@@ -185,33 +185,33 @@ public class iCS_Reflection {
         }        
     }
     // ----------------------------------------------------------------------
-    static void DecodeStaticField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
+    static void DecodeStaticField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirection dir) {
         object[] paramDefaultValues= new object[1]{iCS_Types.DefaultValue(field.FieldType)};
-        if((dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) && !field.IsInitOnly) {
+        if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
             string[]                 paramNames= new string[1]{field.Name};
-            iCS_ParamDirectionEnum[] paramDirs = new iCS_ParamDirectionEnum[1]{iCS_ParamDirectionEnum.In};
+            iCS_ParamDirection[]     paramDirs = new iCS_ParamDirection[1]{iCS_ParamDirection.In};
             Type[]                   paramTypes= new Type[1]{field.FieldType};
             iCS_DataBase.AddStaticField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, paramDirs, paramNames, paramTypes, paramDefaultValues, null);                    
         }
-        if(dir == iCS_ParamDirectionEnum.Out || dir == iCS_ParamDirectionEnum.InOut) {
+        if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
             string[]                 paramNames= new string[0];
-            iCS_ParamDirectionEnum[] paramDirs = new iCS_ParamDirectionEnum[0];
+            iCS_ParamDirection[]     paramDirs = new iCS_ParamDirection[0];
             Type[]                   paramTypes= new Type[0];
             iCS_DataBase.AddStaticField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, paramDirs, paramNames, paramTypes, paramDefaultValues, field.Name);                    
         }
     }
     // ----------------------------------------------------------------------
-    static void DecodeInstanceField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirectionEnum dir) {
+    static void DecodeInstanceField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirection dir) {
         object[] paramDefaultValues= new object[3]{iCS_Types.DefaultValue(classType), iCS_Types.DefaultValue(field.FieldType),iCS_Types.DefaultValue(classType)};
-        if((dir == iCS_ParamDirectionEnum.In || dir == iCS_ParamDirectionEnum.InOut) && !field.IsInitOnly) {
+        if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
             string[]                 paramNames= new string[1]{field.Name};
-            iCS_ParamDirectionEnum[] paramDirs = new iCS_ParamDirectionEnum[1]{iCS_ParamDirectionEnum.In};
+            iCS_ParamDirection[]     paramDirs = new iCS_ParamDirection[1]{iCS_ParamDirection.In};
             Type[]                   paramTypes= new Type[1]{field.FieldType};
             iCS_DataBase.AddInstanceField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, paramDirs, paramNames, paramTypes, paramDefaultValues, null);                    
         }
-        if(dir == iCS_ParamDirectionEnum.Out || dir == iCS_ParamDirectionEnum.InOut) {
+        if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
             string[]                 paramNames= new string[0];
-            iCS_ParamDirectionEnum[] paramDirs = new iCS_ParamDirectionEnum[0];
+            iCS_ParamDirection[]     paramDirs = new iCS_ParamDirection[0];
             Type[]                   paramTypes= new Type[0];
             iCS_DataBase.AddInstanceField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, paramDirs, paramNames, paramTypes, paramDefaultValues, field.Name);                    
         }
@@ -259,7 +259,7 @@ public class iCS_Reflection {
         if(!AreAllParamTypesSupported(constructor)) return;
         Type[]                   paramTypes   = ParseParameterTypes(constructor);
         string[]                 paramNames   = ParseParameterNames(constructor);
-        iCS_ParamDirectionEnum[] paramIsOut   = ParseParameterIsOuts(constructor);
+        iCS_ParamDirection[]     paramIsOut   = ParseParameterIsOuts(constructor);
         object[]                 paramDefaults= ParseParameterDefaults(constructor);
 
         iCS_DataBase.AddConstructor(company, package, iCS_Types.RemoveProductPrefix(displayName), toolTip, iconPath,
@@ -363,7 +363,7 @@ public class iCS_Reflection {
         if(!AreAllParamTypesSupported(method)) return;        
         Type[]                   paramTypes   = ParseParameterTypes(method);
         string[]                 paramNames   = ParseParameterNames(method);
-        iCS_ParamDirectionEnum[] paramDirs    = ParseParameterIsOuts(method);
+        iCS_ParamDirection[]     paramDirs    = ParseParameterIsOuts(method);
         object[]                 paramDefaults= ParseParameterDefaults(method);
 
         iCS_DataBase.AddInstanceMethod(company, package, displayName, toolTip, iconPath,
@@ -377,7 +377,7 @@ public class iCS_Reflection {
         if(!AreAllParamTypesSupported(method)) return;
         Type[]                   paramTypes   = ParseParameterTypes(method);
         string[]                 paramNames   = ParseParameterNames(method);
-        iCS_ParamDirectionEnum[] paramDirs    = ParseParameterIsOuts(method);
+        iCS_ParamDirection[]     paramDirs    = ParseParameterIsOuts(method);
         object[]                 paramDefaults= ParseParameterDefaults(method);
 
         iCS_DataBase.AddStaticMethod(company, package, displayName, toolTip, iconPath,
@@ -404,14 +404,14 @@ public class iCS_Reflection {
         return paramTypes;
     }
     // ----------------------------------------------------------------------
-    static iCS_ParamDirectionEnum[] ParseParameterIsOuts(MethodBase method) {
+    static iCS_ParamDirection[] ParseParameterIsOuts(MethodBase method) {
         ParameterInfo[] parameters= method.GetParameters();
-        iCS_ParamDirectionEnum[]   paramDirs= new iCS_ParamDirectionEnum[parameters.Length];
+        iCS_ParamDirection[]   paramDirs= new iCS_ParamDirection[parameters.Length];
         for(int i= 0; i < parameters.Length; ++i) {
             if(parameters[i].IsOut) {
-                paramDirs[i]= parameters[i].IsIn ? iCS_ParamDirectionEnum.InOut : iCS_ParamDirectionEnum.Out;
+                paramDirs[i]= parameters[i].IsIn ? iCS_ParamDirection.InOut : iCS_ParamDirection.Out;
             } else {
-                paramDirs[i]= iCS_ParamDirectionEnum.In;
+                paramDirs[i]= iCS_ParamDirection.In;
             }
         }
         return paramDirs;

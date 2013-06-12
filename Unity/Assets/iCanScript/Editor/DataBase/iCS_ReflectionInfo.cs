@@ -18,7 +18,7 @@ public abstract class iCS_ReflectionInfo {
     public string                   IconPath          = null;
 	public string[]				    ParamNames        = null;
 	public Type[]				    ParamTypes        = null;
-	public iCS_ParamDirectionEnum[] ParamDirs         = null;
+	public iCS_ParamDirection[]     ParamDirs         = null;
 	public object[]				    ParamInitialValues= null;
 	public string				    ReturnName        = null;
     public MethodBase               Method            = null;
@@ -32,7 +32,7 @@ public abstract class iCS_ReflectionInfo {
     public iCS_ReflectionInfo(iCS_ObjectTypeEnum objType, string company, string package, string name,
                               string toolTip, string iconPath,
                               Type classType, MethodBase methodBase, FieldInfo fieldInfo,
-                              iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
+                              iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                               string returnName) {
         // Editor object information.
 		ObjectType        = objType;

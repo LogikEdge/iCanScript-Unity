@@ -15,7 +15,7 @@ public class iCS_ConstructorInfo : iCS_ReflectionInfo {
     public iCS_ConstructorInfo(string company, string package, string _name,
                           string toolTip, string iconPath,
                           Type classType, MethodBase methodBase,
-                          iCS_ParamDirectionEnum[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
+                          iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
                           string returnName)
     : base(iCS_ObjectTypeEnum.Constructor, company, package, _name,
            toolTip, iconPath,
