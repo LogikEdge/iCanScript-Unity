@@ -50,7 +50,7 @@ public static class iCS_BuiltinTextures {
     public const int   kPortIconWidth   = 16;
     public const int   kPortIconHeight  = 12;
     public const int   kMinimizeIconSize= 16;
-    public const int   kMaximizeIconSize= 16;
+    public const int   kMaximizeIconSize= 32;
     public const int   kFoldIconSize    = 16;
     public const int   kUnfoldIconSize  = 16;
 
@@ -203,16 +203,37 @@ public static class iCS_BuiltinTextures {
         iCS_TextureUtil.Clear(ref myMaximizeIcon);
         // Draw minimize icon.
         float halfSize= 0.5f*size;
-        iCS_TextureUtil.Circle(halfSize-0.15f*size,
-                           Color.black, Color.white,
-                           ref myMaximizeIcon, new Vector2(halfSize+offset, halfSize+offset));
-        int halfSizeInt= (int)halfSize;
-        for(int i= (int)(0.30f*size); i <= (int)(0.70f*size); ++i) {
-            myMaximizeIcon.SetPixel(1+i, 1+halfSizeInt, Color.black);
-            myMaximizeIcon.SetPixel(1+i, 1+halfSizeInt-1, Color.black);
-            myMaximizeIcon.SetPixel(1+halfSizeInt, 1+i, Color.black);
-            myMaximizeIcon.SetPixel(1+halfSizeInt-1, 1+i, Color.black);
-        }
+
+        float radius= halfSize-0.15f*size;
+        var center= new Vector2(halfSize+offset, halfSize+offset);
+        float borderWidth= 1f;
+        Color borderColor= Color.black;
+        Color fillColor= Color.white;
+        iCS_TextureUtil.DrawFilledCircle(ref myMaximizeIcon, radius-0.5f, center, fillColor);
+        iCS_TextureUtil.DrawCircle(ref myMaximizeIcon, radius, center, borderColor, borderWidth);
+        float lineHeight= 0.05f*size;
+        float lineHalfWidth= 0.15f*size;
+        iCS_TextureUtil.DrawLine(ref myMaximizeIcon,
+                                 new Vector2(center.x-lineHalfWidth, center.y),
+                                 new Vector2(center.x+lineHalfWidth, center.y),
+                                 Color.black,
+                                 lineHeight);
+        iCS_TextureUtil.DrawLine(ref myMaximizeIcon,
+                                 new Vector2(center.x, center.y-lineHalfWidth),
+                                 new Vector2(center.x, center.y+lineHalfWidth),
+                                 Color.black,
+                                 lineHeight);
+
+//        iCS_TextureUtil.Circle(halfSize-0.15f*size,
+//                           Color.black, Color.white,
+//                           ref myMaximizeIcon, new Vector2(halfSize+offset, halfSize+offset));
+//        int halfSizeInt= (int)halfSize;
+//        for(int i= (int)(0.30f*size); i <= (int)(0.70f*size); ++i) {
+//            myMaximizeIcon.SetPixel(1+i, 1+halfSizeInt, Color.black);
+//            myMaximizeIcon.SetPixel(1+i, 1+halfSizeInt-1, Color.black);
+//            myMaximizeIcon.SetPixel(1+halfSizeInt, 1+i, Color.black);
+//            myMaximizeIcon.SetPixel(1+halfSizeInt-1, 1+i, Color.black);
+//        }
         // Finalize icons.
         myMaximizeIcon.Apply();
         myMaximizeIcon.hideFlags= HideFlags.DontSave;
@@ -228,16 +249,20 @@ public static class iCS_BuiltinTextures {
         iCS_TextureUtil.Clear(ref myMinimizeIcon);
         // Draw minimize icon.
         float halfSize= 0.5f*size;
-        iCS_TextureUtil.Circle(halfSize-0.15f*size,
-                           Color.black, new Color(0,0,0,0.30f),
-                           ref myMinimizeIcon, new Vector2(halfSize+offset, halfSize+offset),
-                           2f*myScale);
-        float boxHeight= 0.03f*size;
-        float halfBoxHeight= 0.5f*boxHeight;
-        iCS_TextureUtil.Box(0.35f*size+offset, halfSize-halfBoxHeight+offset,
-                        0.65f*size+offset, halfSize+halfBoxHeight+offset,
-                        Color.black, Color.black,
-                        ref myMinimizeIcon, 2f*myScale);
+        float radius= halfSize-0.15f*size;
+        var center= new Vector2(halfSize+offset, halfSize+offset);
+        float borderWidth= 1.2f;
+        Color borderColor= Color.black;
+        Color fillColor= new Color(0,0,0,0.3f);
+        iCS_TextureUtil.DrawFilledCircle(ref myMinimizeIcon, radius-0.5f, center, fillColor);
+        iCS_TextureUtil.DrawCircle(ref myMinimizeIcon, radius, center, borderColor, borderWidth);
+        float lineHeight= 0.1f*size;
+        float lineHalfWidth= 0.15f*size;
+        iCS_TextureUtil.DrawLine(ref myMinimizeIcon,
+                                 new Vector2(center.x-lineHalfWidth, center.y),
+                                 new Vector2(center.x+lineHalfWidth, center.y),
+                                 Color.black,
+                                 lineHeight);
         // Finalize icons.
         myMinimizeIcon.Apply();
         myMinimizeIcon.hideFlags= HideFlags.DontSave;
@@ -247,17 +272,17 @@ public static class iCS_BuiltinTextures {
         // Build polygon
         float size= myScale*kFoldIconSize;
         int textureSize= ((int)size)+1;
-        var center= new Vector2(0.5f*textureSize, 0.5f*textureSize);
+        float offset= 0.5f*((float)textureSize-size);
+        var center= new Vector2(0.5f*textureSize+offset, 0.5f*textureSize+offset);
         var scale= new Vector2(0.65f*size, 0.65f*size);
         var polygon= Math3D.ScaleAndTranslatePolygon(myFoldIconPolygon, scale, center);
         // Build texture
         if(myFoldIcon != null) Texture2D.DestroyImmediate(myFoldIcon);
 		myFoldIcon= new Texture2D(textureSize, textureSize);
 		iCS_TextureUtil.Clear(ref myFoldIcon);
-        Color c= Color.black;
-        c.a= 0.5f;
+        Color c= new Color(0,0,0,0.3f);
 	    iCS_TextureUtil.DrawFilledPolygon(ref myFoldIcon, polygon, c);
-	    float lineWidth= 1f+0.4f*myScale;
+	    float lineWidth= 1.2f*myScale;
 	    iCS_TextureUtil.DrawPolygonOutline(ref myFoldIcon, polygon, Color.black, lineWidth);
         // Finalize icons.
         myFoldIcon.Apply();
@@ -268,17 +293,17 @@ public static class iCS_BuiltinTextures {
         // Build polygon
         float size= myScale*kUnfoldIconSize;
         int textureSize= ((int)size)+1;
-        var center= new Vector2(0.5f*textureSize, 0.5f*textureSize);
+        float offset= 0.5f*((float)textureSize-size);
+        var center= new Vector2(0.5f*textureSize+offset, 0.5f*textureSize+offset);
         var scale= new Vector2(0.65f*size, 0.65f*size);
         var polygon= Math3D.ScaleAndTranslatePolygon(myUnfoldIconPolygon, scale, center);
         // Build texture
         if(myUnfoldIcon != null) Texture2D.DestroyImmediate(myUnfoldIcon);
 		myUnfoldIcon= new Texture2D(textureSize, textureSize);
 		iCS_TextureUtil.Clear(ref myUnfoldIcon);
-        Color c= Color.black;
-        c.a= 0.5f;
+        Color c= new Color(0,0,0,0.3f);
 	    iCS_TextureUtil.DrawFilledPolygon(ref myUnfoldIcon, polygon, c);
-	    float lineWidth= 1f+0.4f*myScale;
+	    float lineWidth= 1.2f*myScale;
 	    iCS_TextureUtil.DrawPolygonOutline(ref myUnfoldIcon, polygon, Color.black, lineWidth);
         // Finalize icons.
         myUnfoldIcon.Apply();
