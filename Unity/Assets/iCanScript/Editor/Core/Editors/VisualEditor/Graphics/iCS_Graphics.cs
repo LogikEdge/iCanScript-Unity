@@ -27,8 +27,6 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     static public bool  IsInitialized= false;    
     static Texture2D    lineTexture       = null;
-    static Texture2D    foldedIcon        = null;
-    static Texture2D    unfoldedIcon      = null;
     static Texture2D    maximizeIcon      = null;
     static Texture2D    upArrowHeadIcon   = null;
     static Texture2D    downArrowHeadIcon = null;
@@ -208,15 +206,6 @@ public partial class iCS_Graphics {
             else {
                 lineTexture.hideFlags= HideFlags.DontSave;
             }            
-        }
-        // Load folded/unfolded icons.
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.FoldedIcon, out foldedIcon)) {
-            IsInitialized= false;
-            return IsInitialized;            
-        }
-        if(!iCS_TextureCache.GetIcon(iCS_EditorStrings.UnfoldedIcon, out unfoldedIcon)) {
-            IsInitialized= false;
-            return IsInitialized;            
         }
         // Load maximize/minimize icon.
         maximizeIcon= iCS_BuiltinTextures.MaximizeIcon(1f);

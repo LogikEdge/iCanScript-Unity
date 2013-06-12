@@ -53,6 +53,7 @@ public partial class iCS_Graphics {
     }
     Rect GetFoldIconPosition(iCS_EditorObject obj) {
         Rect objPos= obj.AnimatedRect;
+        var foldedIcon= iCS_BuiltinTextures.FoldIcon(Scale);
         return new Rect(objPos.x+8, objPos.y, foldedIcon.width, foldedIcon.height);
     }
 

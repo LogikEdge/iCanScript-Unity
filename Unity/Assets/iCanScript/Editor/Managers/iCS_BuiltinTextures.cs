@@ -176,7 +176,7 @@ public static class iCS_BuiltinTextures {
         // Build out transition port.
         float halfHeight= 0.5f*kPortIconHeight;
         float radius= halfHeight-1.5f;
-		iCS_TextureUtil.Circle(radius, Color.white, Color.white, ref myOutTransitionPortIcon, new Vector2(halfHeight, halfHeight));
+		iCS_TextureUtil.DrawFilledCircle(ref myOutTransitionPortIcon, radius, new Vector2(halfHeight, halfHeight), Color.white);
 
         // Add horizontal line.
 		int halfHeightInt= (int)halfHeight;
