@@ -63,7 +63,26 @@ public static class iCS_TextureUtil {
     }
 	// ----------------------------------------------------------------------
 	public static void DrawLine(ref Texture2D texture, Vector2 p1, Vector2 p2, Color color, float width= 1f) {
-	    
+        width= width > 1f ? width-1f : 0f;
+        var halfWidth= 0.5f*width;
+        for(int x= 0; x < texture.width; ++x) {
+            for(int y= 0; y < texture.height; ++y) {
+                var point= new Vector2(x,y);
+                Vector2 closestPoint= Math3D.ClosestPointOnLineSegmentToPoint(p1, p2, point);
+                var delta= point-closestPoint; 
+                var distance= delta.magnitude;
+                if(distance < halfWidth) {
+                    texture.SetPixel(x,y,color);                    
+                } else {
+                    distance-= halfWidth;
+                    if(distance < 1f) {
+                        Color c= color;
+                        c.a= 1f-distance;                        
+                        iCS_AlphaBlend.NormalBlend(ref texture, x, y, c);
+                    }
+                }
+            }
+        }        	    
 	}
 	// ----------------------------------------------------------------------
     public static void DrawPolygonOutline(ref Texture2D texture, Vector2[] polygon, Color color, float width= 1f) {
