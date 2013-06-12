@@ -4,7 +4,7 @@ using System.Collections;
 public class iCS_Strings {
     // -----------------------------------------------------------------------
     // Common
-    public const string This        = "this";
+    public const string InstanceObjectName= "this";
     
     // -----------------------------------------------------------------------
     // Behaviour Allowed Children

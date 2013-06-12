@@ -12,7 +12,7 @@ public partial class iCS_IStorage {
         Fold(module);
         Type classType= module.RuntimeType;
         if(!iCS_Types.IsStaticClass(classType)) {
-            iCS_EditorObject inThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.This, classType, iCS_ObjectTypeEnum.InStaticModulePort);
+            iCS_EditorObject inThisPort= ClassModuleCreatePortIfNonExisting(module, iCS_Strings.InstanceObjectName, classType, iCS_ObjectTypeEnum.InStaticModulePort);
             inThisPort.IsNameEditable= false;
         }
         if(iCS_PreferencesEditor.InstanceAutocreateOutFields)           ClassModuleCreateOutputInstanceFields(module);
@@ -216,11 +216,11 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject ClassModuleGetInputThisPort(iCS_EditorObject module) {
-        iCS_EditorObject thisPort= ClassModuleGetPort(module, iCS_Strings.This, iCS_ObjectTypeEnum.InStaticModulePort);
+        iCS_EditorObject thisPort= ClassModuleGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
         if(thisPort == null) {
             iCS_EditorObject constructor= ClassModuleGetConstructor(module);
             if(constructor == null) return null;
-            thisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.This);
+            thisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.InstanceObjectName);
         }
         return thisPort;
     }
@@ -258,12 +258,12 @@ public partial class iCS_IStorage {
         ForEachChildDataPort(func,
             port=> {
                 string modulePortName= port.Name;
-                if(port.Name != iCS_Strings.This && !desc.IsField && !desc.IsProperty) {
+                if(port.Name != iCS_Strings.InstanceObjectName && !desc.IsField && !desc.IsProperty) {
                     modulePortName+= "."+desc.DisplayName;
                 }
                 if(port.IsInputPort) {
                     // Special case for "this".
-                    if(port.Name == iCS_Strings.This) {
+                    if(port.Name == iCS_Strings.InstanceObjectName) {
                         iCS_EditorObject classPort= ClassModuleGetInputThisPort(module);
                         if(classPort != null) {
                             SetSource(port, classPort);
@@ -281,7 +281,7 @@ public partial class iCS_IStorage {
                     }
                 } else {
                     // Special case for "this".
-                    if(port.Name == iCS_Strings.This) {
+                    if(port.Name == iCS_Strings.InstanceObjectName) {
                     } else {
                         iCS_EditorObject classPort= ClassModuleGetPort(module, modulePortName, iCS_ObjectTypeEnum.OutDynamicModulePort);
                         if(classPort == null) {
@@ -304,11 +304,11 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public iCS_EditorObject ClassModuleCreateConstructor(iCS_EditorObject module, iCS_ReflectionInfo desc) {
         ClassModuleDestroyConstructor(module);
-        iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.This, iCS_ObjectTypeEnum.InStaticModulePort);
+        iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
         if(moduleThisPort == null) return null;
         Rect thisPos= moduleThisPort.LayoutRect; 
         iCS_EditorObject constructor= CreateMethod(module.ParentId, new Vector2(thisPos.x-50f, thisPos.y-20), desc);
-        iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.This);
+        iCS_EditorObject constructorThisPort= FindInChildren(constructor, port=> port.IsOutDataPort && port.Name == iCS_Strings.InstanceObjectName);
         SetSource(moduleThisPort, constructorThisPort);
         Iconize(constructor);
         return constructor;
@@ -319,7 +319,7 @@ public partial class iCS_IStorage {
         DestroyInstance(constructor);
     }
     public iCS_EditorObject ClassModuleGetConstructor(iCS_EditorObject module) {
-        iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.This, iCS_ObjectTypeEnum.InStaticModulePort);
+        iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
         iCS_EditorObject constructorThisPort= moduleThisPort.Source;
         if(constructorThisPort == null) return null;
         iCS_EditorObject constructor= constructorThisPort.Parent;
