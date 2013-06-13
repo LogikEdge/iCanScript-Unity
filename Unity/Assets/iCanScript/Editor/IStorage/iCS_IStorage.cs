@@ -402,7 +402,7 @@ public partial class iCS_IStorage {
                     				CreateStaticMethod(parentId, globalPos, desc);
 
 		instance.MethodName= desc.MethodName;
-		instance.NbOfParams= desc.ParamTypes != null ? desc.ParamTypes.Length : 0;
+		instance.NbOfParams= desc.Parameters != null ? desc.Parameters.Length : 0;
 		return instance;
     }
     // ----------------------------------------------------------------------
@@ -421,14 +421,15 @@ public partial class iCS_IStorage {
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
-        for(; portIdx < desc.ParamNames.Length; ++portIdx) {
-            if(desc.ParamTypes[portIdx] != typeof(void)) {
-                iCS_ObjectTypeEnum portType= desc.ParamDirs[portIdx] == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
-                port= CreatePort(desc.ParamNames[portIdx], id, desc.ParamTypes[portIdx], portType);
+        for(; portIdx < desc.Parameters.Length; ++portIdx) {
+            var p= desc.Parameters[portIdx];
+            if(p.type != typeof(void)) {
+                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
+                port= CreatePort(p.name, id, p.type, portType);
                 port.PortIndex= portIdx;
-				object initialPortValue= desc.ParamInitialValues[portIdx];
+				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
-					initialPortValue= iCS_Types.DefaultValue(desc.ParamTypes[portIdx]);
+					initialPortValue= iCS_Types.DefaultValue(p.type);
 				}
                 port.InitialPortValue= initialPortValue;
             }
@@ -458,14 +459,15 @@ public partial class iCS_IStorage {
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
-        for(; portIdx < desc.ParamNames.Length; ++portIdx) {
-            if(desc.ParamTypes[portIdx] != typeof(void)) {
-                iCS_ObjectTypeEnum portType= desc.ParamDirs[portIdx] == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
-                port= CreatePort(desc.ParamNames[portIdx], id, desc.ParamTypes[portIdx], portType);
+        for(; portIdx < desc.Parameters.Length; ++portIdx) {
+            var p= desc.Parameters[portIdx];
+            if(p.type != typeof(void)) {
+                iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
+                port= CreatePort(p.name, id, p.type, portType);
                 port.PortIndex= portIdx;                
-				object initialPortValue= desc.ParamInitialValues[portIdx];
+				object initialPortValue= p.initialValue;
 				if(initialPortValue == null) {
-					initialPortValue= iCS_Types.DefaultValue(desc.ParamTypes[portIdx]);
+					initialPortValue= iCS_Types.DefaultValue(p.type);
 				}
                 port.InitialPortValue= initialPortValue;
             }

@@ -169,9 +169,10 @@ public class iCS_DataBase {
                         }
                     }
                 }
-                for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
-                    if(func.ParamDirs[j] != iCS_ParamDirection.Out) {
-						if(func.ParamTypes[j] == inputType) {
+                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+                    var param= func.Parameters[j];
+                    if(param.direction != iCS_ParamDirection.Out) {
+						if(param.type == inputType) {
 //                        if(iCS_Types.IsA(func.ParamTypes[j], inputType)) {
                             shouldInclude= true;
                         }
@@ -190,9 +191,10 @@ public class iCS_DataBase {
                     }
                 }
                 if(func.ReturnType == outputType) shouldInclude= true;
-                for(int j= 0; !shouldInclude && j < func.ParamTypes.Length; ++j) {
-                    if(func.ParamDirs[j] != iCS_ParamDirection.In) {
-                        if(outputType == func.ParamTypes[j]) {
+                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
+                    var param= func.Parameters[j];
+                    if(param.direction != iCS_ParamDirection.In) {
+                        if(outputType == param.type) {
 //                        if(iCS_Types.IsA(outputType, func.ParamTypes[j])) {
                             shouldInclude= true;
                         }
@@ -226,7 +228,7 @@ public class iCS_DataBase {
     public static iCS_ReflectionInfo FindTypeCast(Type fromType, Type toType) {
         foreach(var desc in Functions) {
             if(IsTypeCast(desc)) {
-                if(iCS_Types.CanBeConnectedWithoutConversion(fromType, desc.ParamTypes[0]) &&
+                if(iCS_Types.CanBeConnectedWithoutConversion(fromType, desc.Parameters[0].type) &&
                    iCS_Types.CanBeConnectedWithoutConversion(desc.ReturnType, toType)) return desc;
             }
         }
@@ -248,43 +250,43 @@ public class iCS_DataBase {
     // ----------------------------------------------------------------------
     public static void AddConstructor(string company, string package, string displayName, string toolTip, string iconPath,
                                       Type classType, ConstructorInfo constructorInfo,
-                                      iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults) {
+                                      iCS_Parameter[] parameters) {
         var record= new iCS_ConstructorInfo(company, package, displayName, toolTip, iconPath,
                                             classType, constructorInfo,
-                                            paramDirs, paramNames, paramTypes, paramDefaults,
+                                            parameters,
                                             null);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
     public static void AddStaticField(string company, string package, string displayName, string toolTip, string iconPath,
                                       Type classType, FieldInfo fieldInfo,
-                                      iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                      iCS_Parameter[] parameters,
                                       string retName) {
         var record= new iCS_FieldInfo(company, package, displayName, toolTip, iconPath,
                                       iCS_ObjectTypeEnum.StaticField, classType, fieldInfo,
-                                      paramDirs, paramNames, paramTypes, paramDefaults,
+                                      parameters,
                                       retName);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceField(string company, string package, string displayName, string toolTip, string iconPath,
                                         Type classType, FieldInfo fieldInfo,
-                                        iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                        iCS_Parameter[] parameters,
                                         string retName) {
         var record= new iCS_FieldInfo(company, package, displayName, toolTip, iconPath,
                                       iCS_ObjectTypeEnum.InstanceField, classType, fieldInfo,
-                                      paramDirs, paramNames, paramTypes, paramDefaults,
+                                      parameters,
                                       retName);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
     public static void AddInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath,
                                          Type classType, MethodInfo methodInfo,
-                                         iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                         iCS_Parameter[] parameters,
                                          string retName) {
         var record= new iCS_MethodInfo(company, package, displayName, toolTip, iconPath,
             						   iCS_ObjectTypeEnum.InstanceMethod, classType, methodInfo,
-            						   paramDirs, paramNames, paramTypes, paramDefaults,
+            						   parameters,
             						   retName);
 		AddDataBaseRecord(record);
     }
@@ -292,11 +294,11 @@ public class iCS_DataBase {
     // Adds an execution function (no context).
     public static void AddStaticMethod(string company, string package, string displayName, string toolTip, string iconPath,
                                        Type classType, MethodInfo methodInfo,
-                                       iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaults,
+                                       iCS_Parameter[] parameters,
                                        string retName) {
 		var record= new iCS_MethodInfo(company, package, displayName, toolTip, iconPath,
 						               iCS_ObjectTypeEnum.StaticMethod, classType, methodInfo,
-			                           paramDirs, paramNames, paramTypes, paramDefaults,
+						               parameters,
 									   retName);
 		AddDataBaseRecord(record);
     }
@@ -307,7 +309,7 @@ public class iCS_DataBase {
         Type toType= methodInfo.ReturnType;
         foreach(var desc in Functions) {
             if(IsTypeCast(desc)) {
-                if(desc.ParamTypes[0] == fromType && desc.ReturnType == toType) {
+                if(desc.Parameters[0].type == fromType && desc.ReturnType == toType) {
                     Debug.LogWarning("Duplicate type cast from "+fromType+" to "+toType+" exists in classes "+desc.Method.DeclaringType+" and "+methodInfo.DeclaringType);
                     return;
                 }                
@@ -317,9 +319,14 @@ public class iCS_DataBase {
         string toTypeName= iCS_Types.TypeName(toType);
         string toTypeNameUpper= Char.ToUpper(toTypeName[0])+toTypeName.Substring(1);
 
+        var parameters= new iCS_Parameter[1];
+        parameters[0].name= fromTypeName;
+        parameters[0].type= fromType;
+        parameters[0].direction= iCS_ParamDirection.In;
+        parameters[0].initialValue= null; 
         var record= new iCS_TypeCastInfo(company, package, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
                                          classType, methodInfo,
-                                         new iCS_ParamDirection[1]{iCS_ParamDirection.In}, new string[1]{fromTypeName}, new Type[1]{fromType}, new object[1]{null},
+                                         parameters,
                                          toTypeName);        
 		AddDataBaseRecord(record);
     }

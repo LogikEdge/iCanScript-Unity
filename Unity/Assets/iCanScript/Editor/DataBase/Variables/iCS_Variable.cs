@@ -14,17 +14,19 @@ public class iCS_Variable {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-	public string          name        = null;
-	public Type            type        = null;
-	public System.Object   initialValue= null;
+	public string               name        = null;
+	public Type                 type        = null;
+	public System.Object        initialValue= null;
+	public iCS_ReflectionInfo   parent      = null;
 
     // ======================================================================
     // Constructor/Destructor
     // ----------------------------------------------------------------------
 	public iCS_Variable() {}
-	    public iCS_Variable(string _name, Type _type, System.Object _initialValue) {
+	    public iCS_Variable(string _name, Type _type, System.Object _initialValue, iCS_ReflectionInfo _parent) {
 	        name= _name;
 	        type= _type;
 	        initialValue= _initialValue;
+            parent= _parent;
 	    }
 }//end iCS_Variable

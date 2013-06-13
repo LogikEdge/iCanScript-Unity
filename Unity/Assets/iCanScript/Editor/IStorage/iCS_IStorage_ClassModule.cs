@@ -243,7 +243,7 @@ public partial class iCS_IStorage {
     public iCS_EditorObject ClassModuleFindFunction(iCS_EditorObject module, iCS_ReflectionInfo desc) {
         iCS_EditorObject[] children= BuildListOfChildren(
             child=> {
-                if(child.ObjectType != desc.ObjectType || child.NbOfParams != desc.ParamTypes.Length) return false;
+                if(child.ObjectType != desc.ObjectType || child.NbOfParams != desc.Parameters.Length) return false;
                 return desc.Method != null ? desc.Method == child.GetMethodBase(EditorObjects) : desc.Field == child.GetFieldInfo();
             },
             module);

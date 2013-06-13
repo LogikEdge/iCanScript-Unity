@@ -186,34 +186,32 @@ public class iCS_Reflection {
     }
     // ----------------------------------------------------------------------
     static void DecodeStaticField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirection dir) {
-        object[] paramDefaultValues= new object[1]{iCS_Types.DefaultValue(field.FieldType)};
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
-            string[]                 paramNames= new string[1]{field.Name};
-            iCS_ParamDirection[]     paramDirs = new iCS_ParamDirection[1]{iCS_ParamDirection.In};
-            Type[]                   paramTypes= new Type[1]{field.FieldType};
-            iCS_DataBase.AddStaticField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, paramDirs, paramNames, paramTypes, paramDefaultValues, null);                    
+            var parameters= new iCS_Parameter[1];
+            parameters[0].name        = field.Name;
+            parameters[0].type        = field.FieldType;
+            parameters[0].direction   = iCS_ParamDirection.In;
+            parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
+            iCS_DataBase.AddStaticField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, parameters, null);                    
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
-            string[]                 paramNames= new string[0];
-            iCS_ParamDirection[]     paramDirs = new iCS_ParamDirection[0];
-            Type[]                   paramTypes= new Type[0];
-            iCS_DataBase.AddStaticField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, paramDirs, paramNames, paramTypes, paramDefaultValues, field.Name);                    
+            var parameters= iCS_Parameter.emptyParameterList;
+            iCS_DataBase.AddStaticField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, parameters, field.Name);                    
         }
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirection dir) {
-        object[] paramDefaultValues= new object[3]{iCS_Types.DefaultValue(classType), iCS_Types.DefaultValue(field.FieldType),iCS_Types.DefaultValue(classType)};
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
-            string[]                 paramNames= new string[1]{field.Name};
-            iCS_ParamDirection[]     paramDirs = new iCS_ParamDirection[1]{iCS_ParamDirection.In};
-            Type[]                   paramTypes= new Type[1]{field.FieldType};
-            iCS_DataBase.AddInstanceField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, paramDirs, paramNames, paramTypes, paramDefaultValues, null);                    
+            var parameters= new iCS_Parameter[1];
+            parameters[0].name= field.Name;
+            parameters[0].type= field.FieldType;
+            parameters[0].direction= iCS_ParamDirection.In;
+            parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
+            iCS_DataBase.AddInstanceField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, parameters, null);                    
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
-            string[]                 paramNames= new string[0];
-            iCS_ParamDirection[]     paramDirs = new iCS_ParamDirection[0];
-            Type[]                   paramTypes= new Type[0];
-            iCS_DataBase.AddInstanceField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, paramDirs, paramNames, paramTypes, paramDefaultValues, field.Name);                    
+            var parameters= iCS_Parameter.emptyParameterList;
+            iCS_DataBase.AddInstanceField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, parameters, field.Name);                    
         }
     }
     // ----------------------------------------------------------------------
@@ -257,14 +255,11 @@ public class iCS_Reflection {
     static void DecodeConstructor(string company, string package, string displayName, string toolTip, string iconPath, Type classType, ConstructorInfo constructor, string retName) {
         // Parse parameters.
         if(!AreAllParamTypesSupported(constructor)) return;
-        Type[]                   paramTypes   = ParseParameterTypes(constructor);
-        string[]                 paramNames   = ParseParameterNames(constructor);
-        iCS_ParamDirection[]     paramIsOut   = ParseParameterIsOuts(constructor);
-        object[]                 paramDefaults= ParseParameterDefaults(constructor);
-
+        var parameters= ParseParameters(constructor);
+        
         iCS_DataBase.AddConstructor(company, package, iCS_Types.RemoveProductPrefix(displayName), toolTip, iconPath,
                                     classType, constructor,
-                                    paramIsOut, paramNames, paramTypes, paramDefaults);
+                                    parameters);
     }
     // ----------------------------------------------------------------------
     static void DecodeFunctionsAndMethods(Type classType, string company, string package, string classTooltip, string classIconPath,
@@ -360,71 +355,41 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
         // Parse parameters.
-        if(!AreAllParamTypesSupported(method)) return;        
-        Type[]                   paramTypes   = ParseParameterTypes(method);
-        string[]                 paramNames   = ParseParameterNames(method);
-        iCS_ParamDirection[]     paramDirs    = ParseParameterIsOuts(method);
-        object[]                 paramDefaults= ParseParameterDefaults(method);
+        if(!AreAllParamTypesSupported(method)) return; 
+        var parameters= ParseParameters(method);       
 
         iCS_DataBase.AddInstanceMethod(company, package, displayName, toolTip, iconPath,
                                       classType, method,
-                                      paramDirs, paramNames, paramTypes, paramDefaults,
+                                      parameters,
                                       retName);
     }
     // ----------------------------------------------------------------------
     static void DecodeStaticMethod(string company, string package, string displayName, string toolTip, string iconPath, Type classType, MethodInfo method, string retName) {
         // Parse parameters.
         if(!AreAllParamTypesSupported(method)) return;
-        Type[]                   paramTypes   = ParseParameterTypes(method);
-        string[]                 paramNames   = ParseParameterNames(method);
-        iCS_ParamDirection[]     paramDirs    = ParseParameterIsOuts(method);
-        object[]                 paramDefaults= ParseParameterDefaults(method);
+        var parameters= ParseParameters(method);       
 
         iCS_DataBase.AddStaticMethod(company, package, displayName, toolTip, iconPath,
                                      classType, method,
-                                     paramDirs, paramNames, paramTypes, paramDefaults,
+                                     parameters,
                                      retName);
     }
+
+    // ======================================================================
     // ----------------------------------------------------------------------
-    static string[] ParseParameterNames(MethodBase method) {
-        ParameterInfo[] parameters= method.GetParameters();
-        string[] paramNames= new string[parameters.Length];
-        for(int i= 0; i < parameters.Length; ++i) {
-            paramNames[i]= parameters[i].Name;
+    static iCS_Parameter[] ParseParameters(MethodBase method) {
+        ParameterInfo[] paramInfo= method.GetParameters();
+        iCS_Parameter[] parameters= new iCS_Parameter[paramInfo.Length];
+        if(paramInfo.Length == 0) return iCS_Parameter.emptyParameterList;
+        for(int i= 0; i < paramInfo.Length; ++i) {
+            var p= paramInfo[i];
+            parameters[i].name= p.Name;
+            parameters[i].type= p.ParameterType;
+            parameters[i].direction= p.IsIn ? (p.IsOut ? iCS_ParamDirection.InOut : iCS_ParamDirection.In) : iCS_ParamDirection.Out;
+            object defaultValue= p.DefaultValue; 
+            parameters[i].initialValue= (defaultValue == null || defaultValue.GetType() != p.ParameterType) ? null : defaultValue;
         }
-        return paramNames;
-    }
-    // ----------------------------------------------------------------------
-    static Type[] ParseParameterTypes(MethodBase method) {
-        ParameterInfo[] parameters= method.GetParameters();
-        Type[]   paramTypes= new Type[parameters.Length];
-        for(int i= 0; i < parameters.Length; ++i) {
-            paramTypes[i]= parameters[i].ParameterType;
-        }        
-        return paramTypes;
-    }
-    // ----------------------------------------------------------------------
-    static iCS_ParamDirection[] ParseParameterIsOuts(MethodBase method) {
-        ParameterInfo[] parameters= method.GetParameters();
-        iCS_ParamDirection[]   paramDirs= new iCS_ParamDirection[parameters.Length];
-        for(int i= 0; i < parameters.Length; ++i) {
-            if(parameters[i].IsOut) {
-                paramDirs[i]= parameters[i].IsIn ? iCS_ParamDirection.InOut : iCS_ParamDirection.Out;
-            } else {
-                paramDirs[i]= iCS_ParamDirection.In;
-            }
-        }
-        return paramDirs;
-    }
-    // ----------------------------------------------------------------------
-    static object[] ParseParameterDefaults(MethodBase method) {
-        ParameterInfo[] parameters= method.GetParameters();
-        object[]   paramDefaults= new object[parameters.Length];
-        for(int i= 0; i < parameters.Length; ++i) {
-            object defaultValue= parameters[i].DefaultValue; 
-            paramDefaults[i]= (defaultValue == null || defaultValue.GetType() != parameters[i].ParameterType) ? null : defaultValue;
-        }        
-        return paramDefaults;
+        return parameters;   
     }
     // ----------------------------------------------------------------------
     static bool AreAllParamTypesSupported(MethodBase method) {
@@ -433,4 +398,5 @@ public class iCS_Reflection {
         }
         return true;
     }
+
 }

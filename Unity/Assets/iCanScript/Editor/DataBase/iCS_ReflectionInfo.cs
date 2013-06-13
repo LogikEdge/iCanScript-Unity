@@ -16,10 +16,7 @@ public abstract class iCS_ReflectionInfo {
     public Type                     ClassType         = null;
     public string                   Tooltip           = null;
     public string                   IconPath          = null;
-	public string[]				    ParamNames        = null;
-	public Type[]				    ParamTypes        = null;
-	public iCS_ParamDirection[]     ParamDirs         = null;
-	public object[]				    ParamInitialValues= null;
+    public iCS_Parameter[]          Parameters        = null;
 	public string				    ReturnName        = null;
     public MethodBase               Method            = null;
     public FieldInfo                Field             = null;
@@ -32,7 +29,7 @@ public abstract class iCS_ReflectionInfo {
     public iCS_ReflectionInfo(iCS_ObjectTypeEnum objType, string company, string package, string name,
                               string toolTip, string iconPath,
                               Type classType, MethodBase methodBase, FieldInfo fieldInfo,
-                              iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
+                              iCS_Parameter[] parameters,
                               string returnName) {
         // Editor object information.
 		ObjectType        = objType;
@@ -42,18 +39,15 @@ public abstract class iCS_ReflectionInfo {
 		ClassType         = classType;
 		Method            = methodBase;
 		Field             = fieldInfo;
-		IsGetFieldFlag    = fieldInfo != null ? (paramTypes.Length == 0) : true;
+		IsGetFieldFlag    = fieldInfo != null ? (parameters.Length == 0) : true;  // FIXME: This is probably wrong...
         Tooltip           = toolTip;
         IconPath          = iconPath;
-		ParamNames        = paramNames;
-		ParamTypes        = paramTypes;
-		ParamDirs         = paramDirs;
+        Parameters        = parameters;
 		ReturnName        = returnName ?? (Method != null && Method.IsConstructor ? "this" : iCS_Types.TypeName(ReturnType));
-		ParamInitialValues= paramDefaultValues;
 		
 		// Fix parameter & return name for properties.
 		if(IsGetProperty) ReturnName= PropertyName;
-		if(IsSetProperty) ParamNames[0]= PropertyName;
+		if(IsSetProperty) Parameters[0].name= PropertyName;
     }
     // ----------------------------------------------------------------------
     public override string ToString() {
@@ -76,8 +70,8 @@ public abstract class iCS_ReflectionInfo {
     public bool IsGetStaticField      { get { return IsStaticField && IsGetField; }}
     public bool IsSetStaticField      { get { return IsStaticField && IsSetField; }}
     public bool IsProperty            { get { return IsGetProperty || IsSetProperty; }}
-    public bool IsGetProperty         { get { return IsMethod && ParamTypes.Length == 0 && DisplayName.StartsWith("get_"); }}
-    public bool IsSetProperty         { get { return IsMethod && ParamTypes.Length == 1 && DisplayName.StartsWith("set_"); }}
+    public bool IsGetProperty         { get { return IsMethod && Parameters.Length == 0 && DisplayName.StartsWith("get_"); }}
+    public bool IsSetProperty         { get { return IsMethod && Parameters.Length == 1 && DisplayName.StartsWith("set_"); }}
     public bool IsGetInstanceProperty { get { return ObjectType == iCS_ObjectTypeEnum.InstanceMethod && IsGetProperty; }}
     public bool IsSetInstanceProperty { get { return ObjectType == iCS_ObjectTypeEnum.InstanceMethod && IsSetProperty; }}
     public bool IsGetStaticProperty   { get { return ObjectType == iCS_ObjectTypeEnum.StaticMethod && IsGetProperty; }}
@@ -96,7 +90,7 @@ public abstract class iCS_ReflectionInfo {
     }
     // ----------------------------------------------------------------------
     public Type FieldType    { get { return Field.FieldType; }}
-    public Type PropertyType { get { return IsGetProperty ? ReturnType : ParamTypes[0]; }}
+    public Type PropertyType { get { return IsGetProperty ? ReturnType : Parameters[0].type; }}
 	public Type VariableType { get { return IsField ? FieldType : PropertyType; }}
     public Type ReturnType   { get { return GetReturnType(); }}
     public abstract Type GetReturnType();
@@ -109,9 +103,9 @@ public abstract class iCS_ReflectionInfo {
             if(ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
                 inputStr+= "this"+":"+TypeName(ClassType)+", ";
             }
-            for(int i= 0; i < ParamNames.Length; ++i) {
-				if(!ParamTypes[i].IsByRef) {
-	                inputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i])+", ";
+            foreach(var param in Parameters) {
+				if(!param.type.IsByRef) {
+	                inputStr+= param.name+":"+TypeName(param.type)+", ";
 				}
             }
 			// Add inputs to signature.
@@ -121,9 +115,9 @@ public abstract class iCS_ReflectionInfo {
 			// Build output string
 			int nbOfOutputs= 0;
 			string outputStr= "";
-            for(int i= 0; i < ParamNames.Length; ++i) {
-				if(ParamTypes[i].IsByRef) {
-	                outputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i].GetElementType())+", ";
+            foreach(var param in Parameters) {
+				if(param.type.IsByRef) {
+	                outputStr+= param.name+":"+TypeName(param.type.GetElementType())+", ";
 					++nbOfOutputs;
 				}
             }
@@ -156,9 +150,9 @@ public abstract class iCS_ReflectionInfo {
 			// Build output string
 			int nbOfOutputs= 0;
 			string outputStr= "";
-            for(int i= 0; i < ParamNames.Length; ++i) {
-				if(ParamTypes[i].IsByRef) {
-	                outputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i].GetElementType())+", ";
+            foreach(var param in Parameters) {
+				if(param.type.IsByRef) {
+	                outputStr+= param.name+":"+TypeName(param.type.GetElementType())+", ";
 					++nbOfOutputs;
 				}
             }
@@ -185,9 +179,9 @@ public abstract class iCS_ReflectionInfo {
     public List<string> InputParameterNames {
         get {
             List<string> paramNames= new List<string>();
-            for(int i= 0; i < ParamNames.Length; ++i) {
-    			if(!ParamTypes[i].IsByRef) {
-                    paramNames.Add(ParamNames[i]);
+            foreach(var param in Parameters) {
+    			if(!param.type.IsByRef) {
+                    paramNames.Add(param.name);
                 }
             }
             return paramNames;            
@@ -197,9 +191,9 @@ public abstract class iCS_ReflectionInfo {
     public List<Type> InputParameterTypes {
         get {
             List<Type> paramNames= new List<Type>();
-            for(int i= 0; i < ParamNames.Length; ++i) {
-    			if(!ParamTypes[i].IsByRef) {
-                    paramNames.Add(ParamTypes[i]);
+            foreach(var param in Parameters) {
+    			if(!param.type.IsByRef) {
+                    paramNames.Add(param.type);
                 }
             }
             return paramNames;            
@@ -209,9 +203,9 @@ public abstract class iCS_ReflectionInfo {
     public List<string> OutputParameterNames {
         get {
             List<string> paramNames= new List<string>();
-            for(int i= 0; i < ParamNames.Length; ++i) {
-    			if(ParamTypes[i].IsByRef) {
-                    paramNames.Add(ParamNames[i]);
+            foreach(var param in Parameters) {
+    			if(param.type.IsByRef) {
+                    paramNames.Add(param.name);
                 }
             }
             if(ReturnType != null && ReturnType != typeof(void)) {
@@ -224,9 +218,9 @@ public abstract class iCS_ReflectionInfo {
     public List<Type> OutputParameterTypes {
         get {
             List<Type> paramNames= new List<Type>();
-            for(int i= 0; i < ParamNames.Length; ++i) {
-    			if(ParamTypes[i].IsByRef) {
-                    paramNames.Add(ParamTypes[i]);
+            foreach(var param in Parameters) {
+    			if(param.type.IsByRef) {
+                    paramNames.Add(param.type);
                 }
             }
             if(ReturnType != null && ReturnType != typeof(void)) {
@@ -248,9 +242,9 @@ public abstract class iCS_ReflectionInfo {
     public string FunctionInputSignatureNoThis {
         get {
 			string inputStr= "";
-            for(int i= 0; i < ParamNames.Length; ++i) {
-				if(!ParamTypes[i].IsByRef) {
-	                inputStr+= ParamNames[i]+":"+TypeName(ParamTypes[i])+", ";
+            foreach(var param in Parameters) {
+				if(!param.type.IsByRef) {
+	                inputStr+= param.name+":"+TypeName(param.type)+", ";
 				}
             }
             if(inputStr.Length != 0) inputStr= inputStr.Substring(0, inputStr.Length-2);

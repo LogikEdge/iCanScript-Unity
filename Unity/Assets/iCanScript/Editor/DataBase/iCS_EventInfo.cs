@@ -16,12 +16,12 @@ public class iCS_EventInfo : iCS_ReflectionInfo {
     public iCS_EventInfo(string company, string package, string name,
                          string toolTip, string iconPath,
                          Type classType,
-                         iCS_ParamDirection[] paramDirs, string[] paramNames, Type[] paramTypes, object[] paramDefaultValues,
+                         iCS_Parameter[] parameters,
                          string returnName, Type returnType)
     : base(iCS_ObjectTypeEnum.Event, company, package, name,
            toolTip, iconPath,
            classType, null, null,
-           paramDirs, paramNames, paramTypes, paramDefaultValues,
+           parameters,
            returnName) {
         myDisplayName= name;
         myReturnType= returnType;
