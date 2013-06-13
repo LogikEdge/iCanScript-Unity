@@ -64,7 +64,7 @@ public abstract class iCS_ReflectionInfo {
     public bool IsInstanceField       { get { return ObjectType == iCS_ObjectTypeEnum.InstanceField; }}
     public bool IsStaticField         { get { return ObjectType == iCS_ObjectTypeEnum.StaticField; }}
     public bool IsGetField            { get { return IsField && IsGetFieldFlag; }}
-    public bool IsSetField            { get { return IsField && !IsGetFieldFlag; }}
+    public bool IsSetField            { get { return IsField && !IsGetFieldFlag; }}     
     public bool IsGetInstanceField    { get { return IsInstanceField && IsGetField; }}
     public bool IsSetInstanceField    { get { return IsInstanceField && IsSetField; }}
     public bool IsGetStaticField      { get { return IsStaticField && IsGetField; }}

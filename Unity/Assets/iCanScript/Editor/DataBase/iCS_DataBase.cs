@@ -320,6 +320,7 @@ public class iCS_DataBase {
         string toTypeNameUpper= Char.ToUpper(toTypeName[0])+toTypeName.Substring(1);
 
         var parameters= new iCS_Parameter[1];
+        parameters[0]= new iCS_Parameter();
         parameters[0].name= fromTypeName;
         parameters[0].type= fromType;
         parameters[0].direction= iCS_ParamDirection.In;

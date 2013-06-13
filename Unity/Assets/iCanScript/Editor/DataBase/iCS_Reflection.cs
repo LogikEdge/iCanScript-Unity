@@ -188,6 +188,7 @@ public class iCS_Reflection {
     static void DecodeStaticField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirection dir) {
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
             var parameters= new iCS_Parameter[1];
+            parameters[0]             = new iCS_Parameter();
             parameters[0].name        = field.Name;
             parameters[0].type        = field.FieldType;
             parameters[0].direction   = iCS_ParamDirection.In;
@@ -203,9 +204,10 @@ public class iCS_Reflection {
     static void DecodeInstanceField(string company, string package, string toolTip, string iconPath, Type classType, FieldInfo field, iCS_ParamDirection dir) {
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
             var parameters= new iCS_Parameter[1];
-            parameters[0].name= field.Name;
-            parameters[0].type= field.FieldType;
-            parameters[0].direction= iCS_ParamDirection.In;
+            parameters[0]             = new iCS_Parameter();
+            parameters[0].name        = field.Name;
+            parameters[0].type        = field.FieldType;
+            parameters[0].direction   = iCS_ParamDirection.In;
             parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
             iCS_DataBase.AddInstanceField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, parameters, null);                    
         }
@@ -383,6 +385,7 @@ public class iCS_Reflection {
         if(paramInfo.Length == 0) return iCS_Parameter.emptyParameterList;
         for(int i= 0; i < paramInfo.Length; ++i) {
             var p= paramInfo[i];
+            parameters[i]= new iCS_Parameter();
             parameters[i].name= p.Name;
             parameters[i].type= p.ParameterType;
             parameters[i].direction= p.IsIn ? (p.IsOut ? iCS_ParamDirection.InOut : iCS_ParamDirection.In) : iCS_ParamDirection.Out;
