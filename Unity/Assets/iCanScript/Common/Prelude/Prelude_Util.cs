@@ -8,8 +8,8 @@ public static partial class Prelude {
     //  List/Array
     // ----------------------------------------------------------------------
     // Returns the length of a list or array.
-    public static int length<T>(T[] a)      { return a.Length; }
-    public static int length<T>(List<T> l)  { return l.Count; }
+    public static int length<T>(T[] a)      { return a == null ? 0 : a.Length; }
+    public static int length<T>(List<T> l)  { return l == null ? 0 : l.Count; }
     
     // ======================================================================
     //  C# Currying fix
