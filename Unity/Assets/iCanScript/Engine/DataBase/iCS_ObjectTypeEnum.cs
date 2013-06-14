@@ -28,6 +28,9 @@ public enum iCS_ObjectTypeEnum {
 	// Active ports.
 	ChildMuxPort= 500,   ParentMuxPort,
 	
+    // Programatic
+    Type= 900,
+    
     // Undefined
     Unknown=1000
 }

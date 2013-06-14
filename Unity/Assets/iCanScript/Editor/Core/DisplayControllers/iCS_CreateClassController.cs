@@ -10,7 +10,7 @@ public class iCS_CreateClassController {
     // ---------------------------------------------------------------------------------
     iCS_EditorObject                myTarget             = null;
     iCS_IStorage                    myStorage            = null;
-    iCS_ReflectionInfo[]            myConstructors       = null;
+    iCS_ConstructorInfo[]           myConstructors       = null;
     int                             myConstructorIdx     = -1;
     float                           myMaxConstructorWidth= 0f;
 
@@ -60,7 +60,7 @@ public class iCS_CreateClassController {
     // ---------------------------------------------------------------------------------
     void InitConstructorInfo() {      
         // Get and sort all constructors for the given class.
-        myConstructors= iCS_DataBase.GetClassConstructors(myTarget.RuntimeType);
+        myConstructors= iCS_LibraryDataBase.GetClassConstructors(myTarget.RuntimeType);
     	Array.Sort(myConstructors, (x,y)=> x.FunctionSignatureNoThis.CompareTo(y.FunctionSignatureNoThis));        
 
         // Determine which constrcutor is currently used for this instance.

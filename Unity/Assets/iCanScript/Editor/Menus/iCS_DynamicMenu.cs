@@ -107,7 +107,7 @@ public class iCS_DynamicMenu {
         }
 //        // Function menu items
 //        if(!storage.IsIconized(selectedObject) && !storage.IsFolded(selectedObject)) {
-//            List<iCS_ReflectionInfo> functionMenu= iCS_DataBase.BuildExpertMenu();
+//            List<iCS_MemberInfo> functionMenu= iCS_DataBase.BuildExpertMenu();
 //            tmp= new MenuContext[menu.Length+functionMenu.Count+1];
 //            menu.CopyTo(tmp, 0);
 //            tmp[menu.Length]= new MenuContext(SeparatorStr);
@@ -200,7 +200,7 @@ public class iCS_DynamicMenu {
         }
         // Get compatible functions.
         if(selectedObject.IsDataPort) {
-            List<iCS_ReflectionInfo> functionMenu= null;
+            List<iCS_MemberInfo> functionMenu= null;
             if(selectedObject.IsInputPort) {
                 functionMenu= iCS_DataBase.BuildMenu(null, selectedObject.RuntimeType);
             } else {
@@ -285,7 +285,7 @@ public class iCS_DynamicMenu {
         return idx;
     }
 	// ----------------------------------------------------------------------
-    iCS_ReflectionInfo GetReflectionDescFromMenuCommand(iCS_MenuContext menuContext) {
+    iCS_MemberInfo GetReflectionDescFromMenuCommand(iCS_MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
         return iCS_DataBase.GetDescriptor(menuCommand);
     }
@@ -372,7 +372,7 @@ public class iCS_DynamicMenu {
                 break;                
             }
             default: {
-				iCS_ReflectionInfo desc= context.Descriptor;
+				iCS_MemberInfo desc= context.Descriptor;
 				if(desc == null) {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
@@ -547,7 +547,7 @@ public class iCS_DynamicMenu {
         return storage.CreateState(parent.InstanceId, graphPosition, name);
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_ReflectionInfo desc) {
+    static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_MemberInfo desc) {
         if(parent.IsPort) {
             iCS_EditorObject port= parent;
             parent= port.Parent;

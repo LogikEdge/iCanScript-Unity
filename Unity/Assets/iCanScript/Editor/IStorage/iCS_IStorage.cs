@@ -396,7 +396,7 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateMethod(int parentId, Vector2 globalPos, iCS_ReflectionInfo desc) {
+    public iCS_EditorObject CreateMethod(int parentId, Vector2 globalPos, iCS_MemberInfo desc) {
         iCS_EditorObject instance= desc.ObjectType == iCS_ObjectTypeEnum.InstanceMethod || desc.ObjectType == iCS_ObjectTypeEnum.InstanceField ?
                     				CreateInstanceMethod(parentId, globalPos, desc) : 
                     				CreateStaticMethod(parentId, globalPos, desc);
@@ -406,7 +406,7 @@ public partial class iCS_IStorage {
 		return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateStaticMethod(int parentId, Vector2 globalPos, iCS_ReflectionInfo desc) {
+    public iCS_EditorObject CreateStaticMethod(int parentId, Vector2 globalPos, iCS_MemberInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Determine icon.
@@ -444,7 +444,7 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateInstanceMethod(int parentId, Vector2 globalPos, iCS_ReflectionInfo desc) {
+    public iCS_EditorObject CreateInstanceMethod(int parentId, Vector2 globalPos, iCS_MemberInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Determine minimized icon.
@@ -517,7 +517,7 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo convDesc) {
+    public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_MemberInfo convDesc) {
         if(convDesc == null) {
             SetSource(inPort, outPort);
             return;

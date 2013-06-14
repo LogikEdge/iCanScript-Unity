@@ -8,13 +8,13 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-	Type				    myClassType      = null;
-	iCS_EditorObject	    myTarget         = null;
-	iCS_IStorage		    myStorage        = null;
-    GUIContent    		    myTitle          = null;
-    DSTableView			    myTableView      = null;
-	iCS_ReflectionInfo[]    myMethods        = null;
-	bool[]                  myIsMethodPresent= null;
+	Type				myClassType      = null;
+	iCS_EditorObject	myTarget         = null;
+	iCS_IStorage		myStorage        = null;
+    GUIContent    		myTitle          = null;
+    DSTableView			myTableView      = null;
+	iCS_MemberInfo[]    myMethods        = null;
+	bool[]              myIsMethodPresent= null;
     
     // =================================================================================
     // Constants
@@ -44,7 +44,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
 		myTarget= target;
 		
 		// Extract fields & properties from class descriptor.
-        myMethods= iCS_DataBase.GetClassMethods(myClassType);
+        myMethods= iCS_LibraryDataBase.GetClassMethods(myClassType);
     	Array.Sort(myMethods, (x,y)=> x.FunctionSignatureNoThis.CompareTo(y.FunctionSignatureNoThis));
 
         // Build method presence on the given target.

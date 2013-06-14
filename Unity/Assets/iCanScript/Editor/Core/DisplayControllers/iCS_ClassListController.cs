@@ -8,14 +8,14 @@ public class iCS_ClassListController : DSTableViewDataSource {
     // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
-    DSTableView                 myTableView       = null;
-    List<iCS_ReflectionInfo>    myClasses         = null;
-	List<string>				myPackages        = new List<string>();
-	List<string>				myCompanies		  = new List<string>();
-    List<iCS_ReflectionInfo>    myFilteredClasses = null;
-    GUIStyle                    myColumnDataStyle = null;
-    Action<Type>                myOnClassSelection= null;
-    int                         mySelectedRow     = 0;
+    DSTableView             myTableView       = null;
+    List<iCS_TypeInfo>      myClasses         = null;
+	List<string>			myPackages        = new List<string>();
+	List<string>			myCompanies		  = new List<string>();
+    List<iCS_TypeInfo>      myFilteredClasses = null;
+    GUIStyle                myColumnDataStyle = null;
+    Action<Type>            myOnClassSelection= null;
+    int                     mySelectedRow     = 0;
 
     // =================================================================================
     // Constants
@@ -46,7 +46,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
         if(myColumnDataStyle == null) myColumnDataStyle= EditorStyles.label;
         
         // Get list all classes.
-        myClasses= iCS_DataBase.GetClasses();
+        myClasses= iCS_LibraryDataBase.types;
 		foreach(var desc in myClasses) {
 			if(!myPackages.Contains(desc.Package)) myPackages.Add(desc.Package);
 			if(!myCompanies.Contains(desc.Company)) myCompanies.Add(desc.Company);
@@ -78,7 +78,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
 				}
 				bool classOk= true;
 				if(!IsEmptyString(classSubstringFilter)) {
-					if(d.ClassType.Name.ToUpper().IndexOf(classSubstringFilter.ToUpper()) == -1) classOk= false;
+					if(d.DisplayName.ToUpper().IndexOf(classSubstringFilter.ToUpper()) == -1) classOk= false;
 				}
 				return companyOk && packageOk && classOk;
 			},
@@ -96,10 +96,10 @@ public class iCS_ClassListController : DSTableViewDataSource {
         return myFilteredClasses.Count;
     }
     public Vector2 LayoutSizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
-        iCS_ReflectionInfo desc= myFilteredClasses[row];
+        iCS_TypeInfo desc= myFilteredClasses[row];
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kClassColumnId) == 0) {
-            return myColumnDataStyle.CalcSize(new GUIContent(desc.ClassType.Name));
+            return myColumnDataStyle.CalcSize(new GUIContent(desc.DisplayName));
         }
         if(string.Compare(columnId, kPackageColumnId) == 0) {
             return myColumnDataStyle.CalcSize(new GUIContent(desc.Package));
@@ -119,10 +119,10 @@ public class iCS_ClassListController : DSTableViewDataSource {
             bkgColor.b= 1f-bkgColor.b;
             GUI.contentColor= bkgColor;
         }
-        iCS_ReflectionInfo desc= myFilteredClasses[row];
+        iCS_TypeInfo desc= myFilteredClasses[row];
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kClassColumnId) == 0) {
-            GUI.Label(position, desc.ClassType.Name, myColumnDataStyle);
+            GUI.Label(position, desc.DisplayName, myColumnDataStyle);
         }
         if(string.Compare(columnId, kPackageColumnId) == 0) {
             GUI.Label(position, desc.Package, myColumnDataStyle);
@@ -139,8 +139,8 @@ public class iCS_ClassListController : DSTableViewDataSource {
 	public void OnMouseDown(DSTableView tableView, DSTableColumn tableColumn, int row) {
         mySelectedRow= row;
         if(myOnClassSelection != null) {
-            iCS_ReflectionInfo desc= myFilteredClasses[row];
-            myOnClassSelection(desc.ClassType);            
+            iCS_TypeInfo desc= myFilteredClasses[row];
+            myOnClassSelection(desc.CompilerType);            
         }
 	}
 

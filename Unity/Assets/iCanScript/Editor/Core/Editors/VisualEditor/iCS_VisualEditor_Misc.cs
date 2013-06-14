@@ -117,7 +117,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
             outPort= overlappingPort.IsOutputPort ? overlappingPort : fixPort;
         }
         if(inPort != outPort) {
-            iCS_ReflectionInfo conversion= null;
+            iCS_MemberInfo conversion= null;
             if(VerifyConnectionTypes(inPort, outPort, out conversion)) {
                 SetNewDataConnection(inPort, outPort, conversion);                
             }
@@ -128,7 +128,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
         return true;
     }
 	// ----------------------------------------------------------------------
-    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out iCS_ReflectionInfo typeCast) {
+    bool VerifyConnectionTypes(iCS_EditorObject inPort, iCS_EditorObject outPort, out iCS_MemberInfo typeCast) {
         typeCast= null;
 		Type inType= inPort.RuntimeType;
 		Type outType= outPort.RuntimeType;
@@ -151,7 +151,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
     }
 	// ----------------------------------------------------------------------
 	void CreateStateMux(iCS_EditorObject fixPort, iCS_EditorObject stateMuxPort) {
-        iCS_ReflectionInfo conversion= null;
+        iCS_MemberInfo conversion= null;
         if(!VerifyConnectionTypes(stateMuxPort, fixPort, out conversion)) return;
 		var source= stateMuxPort.Source;
 		// Simply connect a disconnected mux state port.
@@ -171,7 +171,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 		SetNewDataConnection(inMuxPort, fixPort, conversion);
 	}
 	// ----------------------------------------------------------------------
-    void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo conversion= null) {
+    void SetNewDataConnection(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_MemberInfo conversion= null) {
 		iCS_EditorObject inParentNode  = inPort.ParentNode;
         iCS_EditorObject outParentNode = outPort.ParentNode;
         iCS_EditorObject inGrandParent = inParentNode.ParentNode;        

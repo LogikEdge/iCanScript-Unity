@@ -9,9 +9,9 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     // Types
     // ---------------------------------------------------------------------------------
     class ControlPair {
-        public iCS_ReflectionInfo  Component= null;
-        public bool                IsActive= false;
-        public ControlPair(iCS_ReflectionInfo component, bool isActive= false) {
+        public iCS_MemberInfo   Component= null;
+        public bool             IsActive= false;
+        public ControlPair(iCS_MemberInfo component, bool isActive= false) {
             Component= component;
             IsActive= isActive;
         }
@@ -19,7 +19,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     class VariablePair {
         public ControlPair InputControlPair= null;
         public ControlPair OutputControlPair= null;
-        public VariablePair(iCS_ReflectionInfo inputComponent, bool inputActive, iCS_ReflectionInfo outputComponent, bool outputActive) {
+        public VariablePair(iCS_MemberInfo inputComponent, bool inputActive, iCS_MemberInfo outputComponent, bool outputActive) {
             InputControlPair= new ControlPair(inputComponent, inputActive);
             OutputControlPair= new ControlPair(outputComponent, outputActive);
         }
@@ -73,7 +73,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 
 		// Extract fields & properties from class descriptor.
         List<VariablePair> variables= new List<VariablePair>();
-        foreach(var component in iCS_DataBase.GetClassVariables(myClassType)) {
+        foreach(var component in iCS_LibraryDataBase.GetClassVariables(myClassType)) {
             bool isActive= (myTarget != null && myStorage != null) ? myStorage.ClassModuleFindFunction(myTarget, component) != null : false;
             string name= component.VariableName;
             var variablePair= GetVariablePair(name, variables);
@@ -118,12 +118,12 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 	Type GetVariableType(VariablePair pair) {
 		return GetAComponent(pair).VariableType;
 	}
-    iCS_ReflectionInfo GetAComponent(VariablePair pair) {
+    iCS_MemberInfo GetAComponent(VariablePair pair) {
         return pair.InputControlPair.Component ?? pair.OutputControlPair.Component; 
     }
     VariablePair GetVariablePair(string name, List<VariablePair> lst) {
         foreach(var pair in lst) {
-            iCS_ReflectionInfo inputComponent= pair.InputControlPair.Component;
+            iCS_MemberInfo inputComponent= pair.InputControlPair.Component;
             if(inputComponent != null) {
                 if(inputComponent.IsField) {
                     if(inputComponent.FieldName == name) return pair;
@@ -131,7 +131,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                     if(inputComponent.PropertyName == name) return pair;
                 }
             }
-            iCS_ReflectionInfo outputComponent= pair.OutputControlPair.Component;
+            iCS_MemberInfo outputComponent= pair.OutputControlPair.Component;
             if(outputComponent != null) {
                 if(outputComponent.IsField) {
                     if(outputComponent.FieldName == name) return pair;
