@@ -46,6 +46,7 @@ public abstract class iCS_MemberInfo {
     public iCS_FieldInfo        toFieldInfo         { get { return this as iCS_FieldInfo; }}
     public iCS_PropertyInfo     toPropertyInfo      { get { return this as iCS_PropertyInfo; }}
     public iCS_EventInfo        toEventInfo         { get { return this as iCS_EventInfo; }}
+	public iCS_TypeCastInfo		toTypeCastInfo		{ get { return this as iCS_TypeCastInfo; }}
     // ----------------------------------------------------------------------
     public bool isGlobalScope         { get { return parentTypeInfo == null; }}
     // ----------------------------------------------------------------------
@@ -55,6 +56,7 @@ public abstract class iCS_MemberInfo {
     public bool isField               { get { return toFieldInfo != null; }}
     public bool isEvent               { get { return toEventInfo != null; }}
     public bool isProperty            { get { return toPropertyInfo != null; }}
+	public bool isTypeCast			  { get { return toTypeCastInfo != null; }}
     public bool isInstanceField       { get { return isField && toFieldInfo.isInstanceMember; }}
     public bool isStaticField         { get { return isField && toFieldInfo.isClassMember; }}
     public bool isGetField            { get { return isField && toFieldInfo.isGet; }}

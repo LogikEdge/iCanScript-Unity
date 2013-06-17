@@ -3,6 +3,7 @@ using System;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
+using P=Prelude;
 
 public class iCS_LibraryDataBase {
     // ======================================================================
@@ -54,20 +55,20 @@ public class iCS_LibraryDataBase {
     // Returns 0 if equal, negative if first is smaller and
     // positive if first is greather.
     public static int CompareFunctionNames(iCS_MemberInfo d1, iCS_MemberInfo d2) {
-        if(d1.Company == null && d2.Company != null) return -1;
-        if(d1.Company != null && d2.Company == null) return 1;
+        if(d1.company == null && d2.company != null) return -1;
+        if(d1.company != null && d2.company == null) return 1;
         int result;
-        if(d1.Company != null) {
-            result= d1.Company.CompareTo(d2.Company);
+        if(d1.company != null) {
+            result= d1.company.CompareTo(d2.Company);
             if(result != 0) return result;
         }
-        if(d1.Package == null && d2.Package != null) return -1;
-        if(d1.Package != null && d2.Package == null) return 1;
-        if(d1.Package != null) {
-            result= d1.Package.CompareTo(d2.Package);
+        if(d1.package == null && d2.package != null) return -1;
+        if(d1.package != null && d2.package == null) return 1;
+        if(d1.package != null) {
+            result= d1.package.CompareTo(d2.package);
             if(result != 0) return result;            
         }
-        return d1.DisplayName.CompareTo(d2.DisplayName);
+        return d1.displayName.CompareTo(d2.displayName);
     }
     // ----------------------------------------------------------------------
     public static List<iCS_MemberInfo> BuildExpertMenu() {
@@ -102,44 +103,47 @@ public class iCS_LibraryDataBase {
         return menu;        
     }
     // ----------------------------------------------------------------------
-    // Returns one descriptor per class
+    // Returns one descriptor per type
     public static List<iCS_TypeInfo> GetClasses() {
         return types;
     }
     // ----------------------------------------------------------------------
-    // Returns all components of the given class.
-    public static iCS_MemberInfo[] GetClassComponents(Type classType) {
-        List<iCS_MemberInfo> components= new List<iCS_MemberInfo>();
-        foreach(var desc in Functions) {
-            if(desc.ClassType == classType) {
-                components.Add(desc);
+    public static iCS_TypeInfo GetTypeInfo(Type compilerType) {
+        foreach(var t in types) {
+            if(t.compilerType == compilerType) {
+                return t;
             }
         }
-        return components.ToArray();
+        return null;
     }
     // ----------------------------------------------------------------------
-	public static iCS_ConstructorInfo[] GetClassConstructors(Type _classType) {
-        return GetClassConstructors(GetTypeInfo(_classType));
+    // Returns all components of the given class.
+    public static iCS_MemberInfo[] GetTypeMembers(Type compilerType) {
+		var typeInfo= GetTypeInfo(compilerType);
+		if(typeInfo == null) {
+			return new iCS_MemberInfo[0];
+		}
+		return typeInfo.members.ToArray();
+    }
+    // ----------------------------------------------------------------------
+	public static iCS_ConstructorInfo[] GetTypeConstructors(Type compilerType) {
+		return Prelude.filter(c=> c.IsConstructor, GetTypeMembers(compilerType)) as iCS_ConstructorInfo[];
 	}
     // ----------------------------------------------------------------------
-	public static iCS_ConstructorInfo[] GetClassConstructors(iCS_TypeInfo _classTypeInfo) {
-		return Prelude.filter(c=> c.IsConstructor, _classTypeInfo.Members) as iCS_ConstructorInfo[];
+	public static iCS_FieldInfo[] GetClassFields(Type compilerType) {
+		return Prelude.filter(c=> c.IsField, GetTypeMembers(compilerType)) as iCS_FieldInfo[];
 	}
     // ----------------------------------------------------------------------
-	public static iCS_MemberInfo[] GetClassFields(Type classType) {
-		return Prelude.filter(c=> c.IsField, GetClassComponents(classType));
+	public static iCS_PropertyInfo[] GetClassProperties(Type compilerType) {
+		return Prelude.filter(c=> c.IsProperty, GetTypeMembers(compilerType)) as iCS_PropertyInfo[];
 	}
     // ----------------------------------------------------------------------
-	public static iCS_MemberInfo[] GetClassProperties(Type classType) {
-		return Prelude.filter(c=> c.IsProperty, GetClassComponents(classType));
+	public static iCS_MemberInfo[] GetClassVariables(Type compilerType) {
+		return Prelude.filter(c=> c.IsField || c.IsProperty, GetTypeMembers(compilerType));
 	}
     // ----------------------------------------------------------------------
-	public static iCS_MemberInfo[] GetClassVariables(Type classType) {
-		return Prelude.filter(c=> c.IsField || c.IsProperty, GetClassComponents(classType));
-	}
-    // ----------------------------------------------------------------------
-	public static iCS_MemberInfo[] GetClassMethods(Type classType) {
-		return Prelude.filter(c=> !(c.IsConstructor || c.IsField || c.IsProperty), GetClassComponents(classType));
+	public static iCS_MethodInfo[] GetClassMethods(Type compilerType) {
+		return Prelude.filter(c=> !(c.IsConstructor || c.IsField || c.IsProperty), GetTypeMembers(compilerType));
 	}
     // ----------------------------------------------------------------------
     public static List<iCS_MemberInfo> BuildMenu(Type inputType, Type outputType) {
@@ -216,20 +220,32 @@ public class iCS_LibraryDataBase {
     // ----------------------------------------------------------------------
     // Finds a conversion that matches the given from/to types.
     public static iCS_MemberInfo FindTypeCast(Type fromType, Type toType) {
-        foreach(var desc in Functions) {
-            if(IsTypeCast(desc)) {
-                if(iCS_Types.CanBeConnectedWithoutConversion(fromType, desc.Parameters[0].type) &&
-                   iCS_Types.CanBeConnectedWithoutConversion(desc.ReturnType, toType)) return desc;
-            }
+        foreach(var t in types) {
+			var cast= FindTypeCast(t, fromType, toType);
+			if(cast != null) {
+				return cast;
+			}
         }
         return null;
     }
-    // ----------------------------------------------------------------------
-    // Returns true if the given desc is a conversion function.
-    public static bool IsTypeCast(iCS_MemberInfo desc) {
-        return desc.ObjectType == iCS_ObjectTypeEnum.TypeCast;
+    public static iCS_MemberInfo FindTypeCast(iCS_TypeInfo typeInfo, Type fromType, Type toType) {
+		foreach(var m in typeInfo.members) {
+	        if(m.isTypeCast) {
+	            if(iCS_Types.CanBeConnectedWithoutConversion(fromType, m.parameters[0].type) &&
+	               iCS_Types.CanBeConnectedWithoutConversion(m.returnType, toType)) {
+					return m;
+				}
+	        }
+			if(m.isTypeInfo) {
+				var cast= FindTypeCast(m, fromType, toType);
+				if(cast != null) {
+					return cast;
+				}
+			}
+		}
+		return null;
     }
-    
+
     // ======================================================================
     // Container management functions
     // ----------------------------------------------------------------------
@@ -237,15 +253,6 @@ public class iCS_LibraryDataBase {
     public static void Clear() {
         types.Clear();
         Functions.Clear();
-    }
-    // ----------------------------------------------------------------------
-    public static iCS_TypeInfo GetTypeInfo(Type compilerType) {
-        foreach(var t in types) {
-            if(t.compilerType == compilerType) {
-                return t;
-            }
-        }
-        return null;
     }
     // ----------------------------------------------------------------------
     public static iCS_TypeInfo AddTypeInfo(Type compilerType, string displayName, string company, string package, string iconPath, string toolTip) {
