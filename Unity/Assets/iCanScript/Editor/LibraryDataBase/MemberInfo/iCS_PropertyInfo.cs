@@ -22,12 +22,12 @@ public class iCS_PropertyInfo : iCS_MethodInfo {
     // ======================================================================
     // Builders
     // ----------------------------------------------------------------------
-    public iCS_PropertyInfo(iCS_TypeInfo _parentTypeInfo, string _name,
-                          string _toolTip, string _iconPath,
-                          iCS_ObjectTypeEnum _objType, MethodBase methodBase,
-                          iCS_Parameter[] parameters,
-                          string returnName)
-    : base(_parentTypeInfo, _name, _toolTip, _iconPath, _objType, methodBase, parameters, returnName) {
+    public iCS_PropertyInfo(iCS_ObjectTypeEnum _objType, iCS_TypeInfo _parentTypeInfo,
+                            string _name, string _description, string _iconPath,
+                            MethodBase _methodBase,
+                            iCS_Parameter[] _parameters,
+                            iCS_FunctionReturn _functionReturn)
+    : base(_objType, _parentTypeInfo, _name, _description, _iconPath, _methodBase, _parameters, _functionReturn) {
         
     }
 }

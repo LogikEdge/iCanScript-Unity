@@ -190,33 +190,29 @@ public class iCS_Reflection {
     // ----------------------------------------------------------------------
     static void DecodeStaticField(iCS_TypeInfo _classTypeInfo, FieldInfo field, iCS_ParamDirection dir) {
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
-            var parameters= new iCS_Parameter[1];
-            parameters[0]             = new iCS_Parameter();
-            parameters[0].name        = field.Name;
-            parameters[0].type        = field.FieldType;
-            parameters[0].direction   = iCS_ParamDirection.In;
-            parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
-            iCS_DataBase.AddStaticField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, parameters, null);                    
+            var parameter         = new iCS_Parameter();
+            parameter.name        = field.Name;
+            parameter.type        = field.FieldType;
+            parameter.direction   = iCS_ParamDirection.In;
+            parameter.initialValue= iCS_Types.DefaultValue(field.FieldType);
+            iCS_DataBase.AddStaticField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, parameter, null);                    
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
-            var parameters= iCS_Parameter.emptyParameterList;
-            iCS_DataBase.AddStaticField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, parameters, field.Name);                    
+            iCS_DataBase.AddStaticField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, null, field.Name);                    
         }
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceField(iCS_TypeInfo _classTypeInfo, FieldInfo field, iCS_ParamDirection dir) {
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
-            var parameters= new iCS_Parameter[1];
-            parameters[0]             = new iCS_Parameter();
-            parameters[0].name        = field.Name;
-            parameters[0].type        = field.FieldType;
-            parameters[0].direction   = iCS_ParamDirection.In;
-            parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
-            iCS_DataBase.AddInstanceField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, parameters, null);                    
+            var parameter         = new iCS_Parameter();
+            parameter.name        = field.Name;
+            parameter.type        = field.FieldType;
+            parameter.direction   = iCS_ParamDirection.In;
+            parameter.initialValue= iCS_Types.DefaultValue(field.FieldType);
+            iCS_DataBase.AddInstanceField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, parameter, null);                    
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
-            var parameters= iCS_Parameter.emptyParameterList;
-            iCS_DataBase.AddInstanceField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, parameters, field.Name);                    
+            iCS_DataBase.AddInstanceField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, null, field.Name);                    
         }
     }
     // ----------------------------------------------------------------------

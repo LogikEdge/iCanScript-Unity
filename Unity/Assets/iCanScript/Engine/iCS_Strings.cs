@@ -1,10 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public class iCS_Strings {
+public static class iCS_Strings {
     // -----------------------------------------------------------------------
     // Common
-    public const string InstanceObjectName= "this";
+    public const string InstanceObjectName       = "this";
+    public const string DefaultFunctionReturnName= "out";
     
     // -----------------------------------------------------------------------
     // Behaviour Allowed Children

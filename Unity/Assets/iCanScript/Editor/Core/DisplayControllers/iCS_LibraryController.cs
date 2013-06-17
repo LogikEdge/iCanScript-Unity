@@ -99,7 +99,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void BuildTree() {
         // Build filter list of object...
-        var allFunctions= iCS_DataBase.AllFunctions();
+        var allFunctions= iCS_LibraryDataBase.AllFunctions();
 		// Build tree and sort it elements.
 		myTree= BuildTreeNode(allFunctions);
     }
@@ -148,19 +148,19 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         return -1;
     }
     Prelude.Tree<Node> GetParentTree(iCS_MemberInfo desc, Prelude.Tree<Node> tree) {
-        if(!iCS_Strings.IsEmpty(desc.Company)) {
-            var idx= FindInTreeChildren(desc.Company, tree);
+        if(!iCS_Strings.IsEmpty(desc.company)) {
+            var idx= FindInTreeChildren(desc.company, tree);
             if(idx < 0) {
                 tree.AddChild(new Node(NodeTypeEnum.Company, desc.Company, desc));
-                idx= FindInTreeChildren(desc.Company, tree);
+                idx= FindInTreeChildren(desc.company, tree);
             }
             tree= tree.Children[idx];
         }
-        if(!iCS_Strings.IsEmpty(desc.Package)) {
-            var idx= FindInTreeChildren(desc.Package, tree);
+        if(!iCS_Strings.IsEmpty(desc.package)) {
+            var idx= FindInTreeChildren(desc.package, tree);
             if(idx < 0) {
                 tree.AddChild(new Node(NodeTypeEnum.Package, desc.Package, desc));
-                idx= FindInTreeChildren(desc.Package, tree);
+                idx= FindInTreeChildren(desc.package, tree);
             }
             tree= tree.Children[idx];            
         }

@@ -48,8 +48,8 @@ public class iCS_ClassListController : DSTableViewDataSource {
         // Get list all classes.
         myClasses= iCS_LibraryDataBase.types;
 		foreach(var desc in myClasses) {
-			if(!myPackages.Contains(desc.Package)) myPackages.Add(desc.Package);
-			if(!myCompanies.Contains(desc.Company)) myCompanies.Add(desc.Company);
+			if(!myPackages.Contains(desc.package)) myPackages.Add(desc.package);
+			if(!myCompanies.Contains(desc.company)) myCompanies.Add(desc.company);
 		}
         myFilteredClasses= myClasses;
         
@@ -70,15 +70,15 @@ public class iCS_ClassListController : DSTableViewDataSource {
             d=> {
 				bool companyOk= true;
 				if(!IsEmptyString(companySubstringFilter)) {
-					if(d.Company.ToUpper().IndexOf(companySubstringFilter.ToUpper()) == -1) companyOk= false;
+					if(d.company.ToUpper().IndexOf(companySubstringFilter.ToUpper()) == -1) companyOk= false;
 				}
 				bool packageOk= true;
 				if(!IsEmptyString(packageSubstringFilter)) {
-					if(d.Package.ToUpper().IndexOf(packageSubstringFilter.ToUpper()) == -1) packageOk= false;
+					if(d.package.ToUpper().IndexOf(packageSubstringFilter.ToUpper()) == -1) packageOk= false;
 				}
 				bool classOk= true;
 				if(!IsEmptyString(classSubstringFilter)) {
-					if(d.DisplayName.ToUpper().IndexOf(classSubstringFilter.ToUpper()) == -1) classOk= false;
+					if(d.displayName.ToUpper().IndexOf(classSubstringFilter.ToUpper()) == -1) classOk= false;
 				}
 				return companyOk && packageOk && classOk;
 			},
@@ -99,13 +99,13 @@ public class iCS_ClassListController : DSTableViewDataSource {
         iCS_TypeInfo desc= myFilteredClasses[row];
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kClassColumnId) == 0) {
-            return myColumnDataStyle.CalcSize(new GUIContent(desc.DisplayName));
+            return myColumnDataStyle.CalcSize(new GUIContent(desc.displayName));
         }
         if(string.Compare(columnId, kPackageColumnId) == 0) {
-            return myColumnDataStyle.CalcSize(new GUIContent(desc.Package));
+            return myColumnDataStyle.CalcSize(new GUIContent(desc.package));
         }
         if(string.Compare(columnId, kCompanyColumnId) == 0) {
-            return myColumnDataStyle.CalcSize(new GUIContent(desc.Company));
+            return myColumnDataStyle.CalcSize(new GUIContent(desc.company));
         }
         return Vector2.zero;
     }
@@ -122,13 +122,13 @@ public class iCS_ClassListController : DSTableViewDataSource {
         iCS_TypeInfo desc= myFilteredClasses[row];
         string columnId= tableColumn.Identifier;
         if(string.Compare(columnId, kClassColumnId) == 0) {
-            GUI.Label(position, desc.DisplayName, myColumnDataStyle);
+            GUI.Label(position, desc.displayName, myColumnDataStyle);
         }
         if(string.Compare(columnId, kPackageColumnId) == 0) {
-            GUI.Label(position, desc.Package, myColumnDataStyle);
+            GUI.Label(position, desc.package, myColumnDataStyle);
         }
         if(string.Compare(columnId, kCompanyColumnId) == 0) {
-            GUI.Label(position, desc.Company, myColumnDataStyle);
+            GUI.Label(position, desc.company, myColumnDataStyle);
         }
         // Restore content color.
         if(myOnClassSelection != null && row == mySelectedRow) {
@@ -140,7 +140,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
         mySelectedRow= row;
         if(myOnClassSelection != null) {
             iCS_TypeInfo desc= myFilteredClasses[row];
-            myOnClassSelection(desc.CompilerType);            
+            myOnClassSelection(desc.compilerType);            
         }
 	}
 

@@ -17,16 +17,14 @@ public class iCS_Variable {
 	public string               name        = null;
 	public Type                 type        = null;
 	public System.Object        initialValue= null;
-	public iCS_TypeInfo         classInfo   = null;
 
     // ======================================================================
     // Constructor/Destructor
     // ----------------------------------------------------------------------
 	public iCS_Variable() {}
-	    public iCS_Variable(string _name, Type _type, System.Object _initialValue, iCS_TypeInfo _classInfo) {
+	    public iCS_Variable(string _name, Type _type, System.Object _initialValue) {
 	        name        = _name;
 	        type        = _type;
 	        initialValue= _initialValue;
-	        classInfo   = _classInfo;
 	    }
 }//end iCS_Variable

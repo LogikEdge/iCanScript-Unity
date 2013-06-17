@@ -10,7 +10,7 @@ public class iCS_InstanceController {
     // ---------------------------------------------------------------------------------
     iCS_EditorObject                myTarget             = null;
     iCS_IStorage                    myStorage            = null;
-    iCS_MemberInfo[]                myConstructors       = null;
+    iCS_ConstructorInfo[]           myConstructors       = null;
     int                             myConstructorIdx     = -1;
     float                           myMaxConstructorWidth= 0f;
 
@@ -75,7 +75,7 @@ public class iCS_InstanceController {
         myConstructorIdx= -1;
         for(int i= 0; i < myConstructors.Length; ++i) {
             iCS_EditorObject existing= myStorage.ClassModuleGetConstructor(myTarget);
-            if(existing != null && myConstructors[i].Method == existing.GetMethodBase(myStorage.EditorObjects)) {
+            if(existing != null && myConstructors[i].method == existing.GetMethodBase(myStorage.EditorObjects)) {
                 myConstructorIdx= i;
             }
             var constructorSize= EditorStyles.boldLabel.CalcSize(new GUIContent(myConstructors[i].FunctionSignatureNoThisNoOutput));
