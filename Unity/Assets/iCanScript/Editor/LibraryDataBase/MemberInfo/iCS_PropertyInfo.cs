@@ -18,16 +18,20 @@ public class iCS_PropertyInfo : iCS_MethodInfo {
     public bool isSet {
         get { return accessorType == iCS_AccessorType.Set || accessorType == iCS_AccessorType.GetAndSet; }
     }
+    public string propertyName { get { return displayName.Substring(4); }}
     
     // ======================================================================
     // Builders
     // ----------------------------------------------------------------------
     public iCS_PropertyInfo(iCS_ObjectTypeEnum _objType, iCS_TypeInfo _parentTypeInfo,
                             string _name, string _description, string _iconPath,
-                            MethodBase _methodBase,
-                            iCS_Parameter[] _parameters,
-                            iCS_FunctionReturn _functionReturn)
-    : base(_objType, _parentTypeInfo, _name, _description, _iconPath, _methodBase, _parameters, _functionReturn) {
-        
+                            iCS_Parameter[] _parameters, iCS_FunctionReturn _functionReturn,
+							MethodBase _methodBase)
+    : base(_objType, _parentTypeInfo, _name, _description, _iconPath, _parameters, _functionReturn, _methodBase)
+	{
+		accessorType= (_functionReturn == null || _functionReturn.type == typeof(void)) ?
+							iCS_AccessorType.Set :
+							iCS_AccessorType.Get;
     }
+
 }

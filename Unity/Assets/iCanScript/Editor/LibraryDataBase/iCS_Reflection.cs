@@ -129,6 +129,53 @@ public class iCS_Reflection {
         DecodeClassFields(_classTypeInfo, acceptAllPublic, baseVisibility);
         DecodeFunctionsAndMethods(_classTypeInfo, acceptAllPublic, baseVisibility);
     }
+	// ======================================================================
+	// Decode Constructors
+    // ----------------------------------------------------------------------
+    static void DecodeConstructors(iCS_TypeInfo _classTypeInfo, bool acceptAllPublic= false) {
+        foreach(var constructor in classType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+            bool registerMethod= false;
+            string displayName= iCS_Types.TypeName(_classTypeInfo.compilerType);
+            string returnName= "";
+            string description= "";
+            string iconPath= "";
+            foreach(var constructorAttribute in constructor.GetCustomAttributes(true)) {
+                if(constructorAttribute is iCS_FunctionAttribute) {                                    
+                    if(constructor.IsPublic) {
+                        registerMethod= true;
+                        // Register execution functions/methods.
+                        iCS_FunctionAttribute funcAttr= constructorAttribute as iCS_FunctionAttribute;
+                        if(funcAttr.Name    != null) displayName= funcAttr.Name; 
+                        if(funcAttr.Return  != null) returnName = funcAttr.Return;
+                        if(funcAttr.Tooltip != null) description= funcAttr.Tooltip;
+                        if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
+                    } else {
+                        Debug.LogWarning("iCanScript: Constrcutor of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");                        
+                    }
+                    break;                                        
+                }
+            }
+            if(acceptAllPublic && constructor.IsPublic) {
+                registerMethod= true;
+            }
+            if(registerMethod) {
+                if(constructor.IsGenericMethod) {
+                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+classType.Name);
+                    continue;
+                }
+                DecodeConstructor(classType, displayName, description, iconPath, constructor);
+            }
+        }                               
+    }
+    // ----------------------------------------------------------------------
+    static void DecodeConstructor(iCS_TypeInfo _classTypeInfo, string displayName, string description, string iconPath, ConstructorInfo constructor) {
+        // Parse parameters.
+        if(!AreAllParamTypesSupported(constructor)) return;
+        var parameters= ParseParameters(constructor);
+        
+        iCS_LibraryDataBase.AddConstructor(_classTypeInfo, displayName, toolTip, iconPath,
+                                    	   constructor, parameters);
+    }
     // ----------------------------------------------------------------------
     static void DecodeClassFields(iCS_TypeInfo _classTypeInfo,
                                   bool acceptAllPublic= false,
@@ -214,52 +261,6 @@ public class iCS_Reflection {
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
             iCS_DataBase.AddInstanceField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, null, field.Name);                    
         }
-    }
-    // ----------------------------------------------------------------------
-    static void DecodeConstructors(iCS_TypeInfo _classTypeInfo, bool acceptAllPublic= false) {
-        foreach(var constructor in classType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
-            bool registerMethod= false;
-            string displayName= classType.Name;
-            string returnName= "";
-            string toolTip= classTooltip;
-            string iconPath= classIconPath;
-            foreach(var constructorAttribute in constructor.GetCustomAttributes(true)) {
-                if(constructorAttribute is iCS_FunctionAttribute) {                                    
-                    if(constructor.IsPublic) {
-                        registerMethod= true;
-                        // Register execution functions/methods.
-                        iCS_FunctionAttribute funcAttr= constructorAttribute as iCS_FunctionAttribute;
-                        if(funcAttr.Name    != null) displayName= funcAttr.Name; 
-                        if(funcAttr.Return  != null) returnName = funcAttr.Return;
-                        if(funcAttr.Tooltip != null) toolTip    = funcAttr.Tooltip;
-                        if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
-                    } else {
-                        Debug.LogWarning("iCanScript: Constrcutor of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");                        
-                    }
-                    break;                                        
-                }
-            }
-            if(acceptAllPublic && constructor.IsPublic) {
-                registerMethod= true;
-            }
-            if(registerMethod) {
-                if(constructor.IsGenericMethod) {
-                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+classType.Name);
-                    continue;
-                }
-                DecodeConstructor(company, package, displayName, toolTip, iconPath, classType, constructor, returnName);
-            }
-        }                               
-    }
-    // ----------------------------------------------------------------------
-    static void DecodeConstructor(iCS_TypeInfo _classTypeInfo, ConstructorInfo constructor, string retName) {
-        // Parse parameters.
-        if(!AreAllParamTypesSupported(constructor)) return;
-        var parameters= ParseParameters(constructor);
-        
-        iCS_DataBase.AddConstructor(company, package, iCS_Types.RemoveProductPrefix(displayName), toolTip, iconPath,
-                                    classType, constructor,
-                                    parameters);
     }
     // ----------------------------------------------------------------------
     static void DecodeFunctionsAndMethods(iCS_TypeInfo _classTypeinfo,

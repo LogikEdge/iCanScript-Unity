@@ -8,11 +8,12 @@ public class iCS_ConstructorInfo : iCS_MethodInfo {
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_ConstructorInfo(iCS_TypeInfo _classInfo,
-                               string _description, string _iconPath,
-                               MethodBase _methodBase, iCS_Parameter[] _parameters)
+                               string _displayName, string _description, string _iconPath,
+                               iCS_Parameter[] _parameters, MethodBase _methodBase)
     : base(iCS_ObjectTypeEnum.Constructor, _classInfo,
-           iCS_Types.TypeName(_classInfo.CompilerType), _description, _iconPath,
-           _methodBase, _parameters, iCS_Strings.InstanceObjectName)
+           _displayName, _description, _iconPath,
+           _methodBase, _parameters,
+           iCS_FunctionReturn(iCS_Strings.InstanceObjectName, _classInfo.compilerType))
     {
     }
 }

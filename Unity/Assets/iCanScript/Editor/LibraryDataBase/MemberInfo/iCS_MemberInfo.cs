@@ -30,6 +30,11 @@ public abstract class iCS_MemberInfo {
 		displayName   = _name;
         description   = _description;
         iconPath      = _iconPath;
+		// Register ourself in parent type.
+		if(_parentTypeInfo != null) {
+			_parentTypeInfo.members.Add(this);			
+		}
+
     }
 
     // ======================================================================

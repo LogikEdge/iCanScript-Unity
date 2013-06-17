@@ -12,16 +12,16 @@ public class iCS_MethodInfo : iCS_MemberInfo {
     public MethodBase           method= null;
     public iCS_Parameter[]      parameters= null;
     public iCS_FunctionReturn   functionReturn= null;
-    public iCS_StorageSpecifier storageSpecifier= iCS_StorageSpecifier.Instance;      
+    public iCS_StorageClass 	storageClass= iCS_StorageClass.Instance;      
 
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
     public bool isInstanceMember {
-        get { return storageSpecifier == iCS_StorageSpecifier.Instance; }
+        get { return storageClass == iCS_StorageClass.Instance; }
     }
     public bool isClassMember {
-        get { return storageSpecifier == iCS_StorageSpecifier.Class; }
+        get { return storageClass == iCS_StorageClass.Class; }
     }
     public Type returnType {
         get { return functionReturn != null ? functionReturn.type : typeof(void); }
@@ -32,48 +32,26 @@ public class iCS_MethodInfo : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public iCS_MethodInfo(iCS_ObjectTypeEnum objType, iCS_TypeInfo _classInfo,
                           string _name, string _description, string _iconPath,
-                          MethodBase _methodBase, iCS_Parameter[] _parameters,
-                          iCS_FunctionReturn _functionReturn)
+                          iCS_Parameter[] _parameters, iCS_FunctionReturn _functionReturn,
+						  MethodBase _methodBase)
     : base(objType, _classInfo, _name, _description, _iconPath) {
         method        = _methodBase;
         parameters    = _parameters;
         functionReturn= _functionReturn;
+		switch(objType) {
+			case iCS_ObjectTypeEnum.Constructor:
+			case iCS_ObjectTypeEnum.StaticMethod:
+			case iCS_ObjectTypeEnum.StaticField:
+				storageClass= iCS_StorageClass.Class;
+				break;
+			default:
+				storageClass= iCS_StorageClass.Instance;
+				break;
+		}
     }
 
     // ======================================================================
-    // Specialized methods
-    // ----------------------------------------------------------------------
-    public string methodName {
-        get { return method != null ? method.Name : null; }
-    }
-     
-    // ======================================================================
-    // From previous MemberInfo .....
-    // ----------------------------------------------------------------------
-    public string toString {
-        get {
-            return FunctionPath+iCS_MemberSeparator+FunctionSignature;            
-        }
-    }
-    public override string ToString() {
-        return toString;
-    }
-    // ----------------------------------------------------------------------
-    public string FieldName    { get { return displayName.Substring(4); }}
-    public string PropertyName { get { return displayName.Substring(4); }}
-    public string VariableName { get { return displayName.Substring(4); }}
-    // ----------------------------------------------------------------------
-    public string MethodName {
-        get {
-            if(Method != null) return Method.Name;
-            if(Field != null) return Field.Name;
-            return null;
-        }
-    }
-    // ----------------------------------------------------------------------
-    public Type FieldType    { get { return Field.FieldType; }}
-    public Type PropertyType { get { return IsGetProperty ? ReturnType : Parameters[0].type; }}
-	public Type VariableType { get { return isField ? FieldType : PropertyType; }}
+    // Instance Method
     // ----------------------------------------------------------------------
     public string functionSignature {
         get {
@@ -81,11 +59,11 @@ public class iCS_MethodInfo : iCS_MemberInfo {
 			// Build input string
 			string inputStr= "";
             if(ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
-                inputStr+= iCS_Strings.InstanceObjectName+":"+TypeName(ClassType)+", ";
+                inputStr+= iCS_Strings.InstanceObjectName+":"+iCS_Types.TypeName(ClassType)+", ";
             }
             foreach(var param in Parameters) {
 				if(!param.type.IsByRef) {
-	                inputStr+= param.name+":"+TypeName(param.type)+", ";
+	                inputStr+= param.name+":"+iCS_Types.TypeName(param.type)+", ";
 				}
             }
 			// Add inputs to signature.
@@ -97,7 +75,7 @@ public class iCS_MethodInfo : iCS_MemberInfo {
 			string outputStr= "";
             foreach(var param in Parameters) {
 				if(param.type.IsByRef) {
-	                outputStr+= param.name+":"+TypeName(param.type.GetElementType())+", ";
+	                outputStr+= param.name+":"+iCS_Types.TypeName(param.type.GetElementType())+", ";
 					++nbOfOutputs;
 				}
             }
@@ -227,4 +205,17 @@ public class iCS_MethodInfo : iCS_MemberInfo {
             return functionPath+"/"+displayName;
         }
     }
+
+    // ======================================================================
+    // Common method override
+    // ----------------------------------------------------------------------
+    public string toString {
+        get {
+            return FunctionPath+iCS_MemberSeparator+FunctionSignature;            
+        }
+    }
+    public override string ToString() {
+        return toString;
+    }
+
 }

@@ -258,63 +258,60 @@ public class iCS_LibraryDataBase {
         return typeInfo;
     }
     // ----------------------------------------------------------------------
-    public static void AddConstructor(string company, string package, string displayName, string toolTip, string iconPath,
-                                      Type classType, ConstructorInfo constructorInfo,
-                                      iCS_Parameter[] parameters) {
-        var record= new iCS_ConstructorInfo(company, package, displayName, toolTip, iconPath,
-                                            classType, constructorInfo,
-                                            parameters,
-                                            null);
+    public static void AddConstructor(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                      ConstructorInfo constructorInfo, iCS_Parameter[] parameters) {
+        var record= new iCS_ConstructorInfo(classInfo, displayName, description, iconPath,
+                                            constructorInfo, parameters);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
-    public static void AddStaticField(string company, string package, string displayName, string toolTip, string iconPath,
-                                      Type classType, FieldInfo fieldInfo,
+    public static void AddStaticField(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                      FieldInfo fieldInfo,
                                       iCS_Parameter[] parameters,
                                       string retName) {
-        var record= new iCS_FieldInfo(company, package, displayName, toolTip, iconPath,
-                                      iCS_ObjectTypeEnum.StaticField, classType, fieldInfo,
+        var record= new iCS_FieldInfo(classInfo, displayName, description, iconPath,
+                                      iCS_ObjectTypeEnum.StaticField, fieldInfo,
                                       parameters,
                                       retName);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
-    public static void AddInstanceField(string company, string package, string displayName, string toolTip, string iconPath,
-                                        Type classType, FieldInfo fieldInfo,
+    public static void AddInstanceField(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                        FieldInfo fieldInfo,
                                         iCS_Parameter[] parameters,
                                         string retName) {
-        var record= new iCS_FieldInfo(company, package, displayName, toolTip, iconPath,
+        var record= new iCS_FieldInfo(classInfo, displayName, description, iconPath,
                                       iCS_ObjectTypeEnum.InstanceField, classType, fieldInfo,
                                       parameters,
                                       retName);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
-    public static void AddInstanceMethod(string company, string package, string displayName, string toolTip, string iconPath,
-                                         Type classType, MethodInfo methodInfo,
+    public static void AddInstanceMethod(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                         MethodInfo methodInfo,
                                          iCS_Parameter[] parameters,
                                          string retName) {
-        var record= new iCS_MethodInfo(company, package, displayName, toolTip, iconPath,
-            						   iCS_ObjectTypeEnum.InstanceMethod, classType, methodInfo,
+        var record= new iCS_MethodInfo(classInfo, displayName, description, iconPath,
+            						   iCS_ObjectTypeEnum.InstanceMethod, methodInfo,
             						   parameters,
             						   retName);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
     // Adds an execution function (no context).
-    public static void AddStaticMethod(string company, string package, string displayName, string toolTip, string iconPath,
-                                       Type classType, MethodInfo methodInfo,
+    public static void AddStaticMethod(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                       MethodInfo methodInfo,
                                        iCS_Parameter[] parameters,
                                        string retName) {
-		var record= new iCS_MethodInfo(company, package, displayName, toolTip, iconPath,
-						               iCS_ObjectTypeEnum.StaticMethod, classType, methodInfo,
+		var record= new iCS_MethodInfo(classInfo, displayName, description, iconPath,
+						               iCS_ObjectTypeEnum.StaticMethod, methodInfo,
 						               parameters,
 									   retName);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
     // Adds a conversion function
-    public static void AddTypeCast(string company, string package, string iconPath, Type classType, MethodInfo methodInfo, Type fromType) {
+    public static void AddTypeCast(iCS_TypeInfo classInfo, string iconPath, MethodInfo methodInfo, Type fromType) {
         // Don't accept automatic conversion if it already exist.
         Type toType= methodInfo.ReturnType;
         foreach(var desc in Functions) {
@@ -335,8 +332,8 @@ public class iCS_LibraryDataBase {
         parameters[0].type= fromType;
         parameters[0].direction= iCS_ParamDirection.In;
         parameters[0].initialValue= null; 
-        var record= new iCS_TypeCastInfo(company, package, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
-                                         classType, methodInfo,
+        var record= new iCS_TypeCastInfo(classInfo, "To"+toTypeNameUpper, "Converts from "+fromTypeName+" to "+toTypeName, iconPath,
+                                         methodInfo,
                                          parameters,
                                          toTypeName);        
 		AddDataBaseRecord(record);

@@ -7,23 +7,13 @@ public class iCS_FieldInfo : iCS_MemberInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public FieldInfo        field       = null;
-    public iCS_Parameter    parameter   = null;
-    public iCS_AccessorType accessorType= iCS_AccessorType.None;
+    public FieldInfo            field         = null;
+	public Type					type          = null;
+    public iCS_Parameter        parameter     = null;
+	public iCS_FunctionReturn	functionReturn= null;
+    public iCS_AccessorType     accessorType= iCS_AccessorType.None;
+	public iCS_StorageClass	    storageClass= iCS_StorageClass.Instance;
 
-    // ======================================================================
-    // Temporary Property
-    // ----------------------------------------------------------------------
-    // TODO: Remove temporary property.
-    public FieldInfo Field {
-        get { return field; }
-        set { field= value; }
-    }
-    public iCS_Parameter Parameter {
-        get { return parameter; }
-        set { parameter= value; }
-    }
-    
     // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
@@ -33,6 +23,12 @@ public class iCS_FieldInfo : iCS_MemberInfo {
     public bool isSet {
         get { return accessorType == iCS_AccessorType.Set || accessorType == iCS_AccessorType.GetAndSet; }
     }
+    public bool isInstanceMember {
+        get { return storageClass == iCS_StorageClass.Instance; }
+    }
+    public bool isClassMember {
+        get { return storageClass == iCS_StorageClass.Class; }
+    }
     
 
     // ======================================================================
@@ -40,20 +36,27 @@ public class iCS_FieldInfo : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public iCS_FieldInfo(iCS_ObjectTypeEnum objType, iCS_TypeInfo _parentType,
                          string _name, string _description, string _iconPath,
-                         FieldInfo _fieldInfo,
-                         iCS_Parameter _parameter)
-    : base(objType, _parentType, _name, _description, _iconPath, _classInfo)
+						 Type _type, iCS_Parameter _parameter,
+						 iCS_FunctionReturn _functionReturn, FieldInfo _fieldInfo)
+    : base(objType, _parentType, _name, _description, _iconPath)
     {
-        field    = _fieldInfo;
-        parameter= _parameter;
+		type		  = _type;
+        field         = _fieldInfo;
+        parameter     = _parameter;
+		functionReturn= _functionReturn;
+		accessorType  = (_functionReturn == null || _functionReturn.type == typeof(void)) ?
+							iCS_AccessorType.Set :
+							iCS_AccessorType.Get;
+		storageClass= (objType == iCS_ObjectTypeEnum.InstanceField) ?
+							iCS_StorageClass.Instance :
+							iCS_StorageClass.Class;
     }
 
     // ======================================================================
     // Instance specific methods
     // ----------------------------------------------------------------------
-    public string fieldName {
-        get { return field != null ? field.Name : null; }
-    }
+    public string fieldName    { get { return displayName.Substring(4); }}
+    public string propertyName { get { return displayName.Substring(4); }}
 
     // ======================================================================
     // Common method override
@@ -61,7 +64,7 @@ public class iCS_FieldInfo : iCS_MemberInfo {
     // Returns string identification as "company/package/type/fieldName".
     public string toString {
         get {
-    		string str= parentType.ToString();
+    		string str= parentType.toString;
             str+= iCS_MemberSeparator+displayName;
     		return str;            
         }
