@@ -12,6 +12,13 @@ public class iCS_MethodInfo : iCS_MethodBaseInfo {
     public MethodBase           method= null;
 
     // ======================================================================
+    // Properties
+    // ----------------------------------------------------------------------
+    public override string methodName {
+        get { return method.Name; }
+    }
+    
+    // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
     public iCS_MethodInfo(iCS_ObjectTypeEnum objType, iCS_TypeInfo _classInfo,

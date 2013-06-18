@@ -19,6 +19,9 @@ public class iCS_FieldInfo : iCS_MethodBaseInfo {
     public bool isSet {
         get { return !isGet; }
     }
+    public override string methodName {
+        get { return field.Name; }
+    }
     
 
     // ======================================================================

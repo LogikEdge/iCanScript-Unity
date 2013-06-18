@@ -94,7 +94,7 @@ public abstract class iCS_MemberInfo {
     }
     public string description {
         get {
-            if(String.IsEmptyOrNull(myDescription)) {
+            if(String.IsNullOrEmpty(myDescription)) {
                 return parentTypeInfo == null ? "" : parentTypeInfo.description;
             }
             return myDescription;            
@@ -105,7 +105,7 @@ public abstract class iCS_MemberInfo {
     }
     public string iconPath {
         get {
-            if(String.IsEmptyOrNull(myIconPath)) {
+            if(String.IsNullOrEmpty(myIconPath)) {
                 return parentTypeInfo == null ? "" : parentTypeInfo.iconPath;
             }
             return myIconPath;            

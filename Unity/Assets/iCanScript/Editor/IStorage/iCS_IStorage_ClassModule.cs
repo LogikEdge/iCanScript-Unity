@@ -25,9 +25,9 @@ public partial class iCS_IStorage {
         if(iCS_PreferencesEditor.InstanceAutocreateInStaticProperties)  ClassModuleCreateInputStaticProperties(module);
         
         // Use the class Icon if it exists.
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(module.RuntimeType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(module.RuntimeType);
         if(components.Length != 0) {
-            var iconGUID= iCS_TextureCache.IconPathToGUID(components[0].IconPath);
+            var iconGUID= iCS_TextureCache.IconPathToGUID(components[0].iconPath);
             if(iconGUID != null) {
                 module.IconGUID= iconGUID;
             }            
@@ -37,20 +37,20 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsGetInstanceField) {
-                ClassModuleCreate(module, component);
+            if(component.isGetInstanceField) {
+                ClassModuleCreate(module, component.toFieldInfo);
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsGetInstanceField) {
-                ClassModuleDestroy(module, component);
+            if(component.isGetInstanceField) {
+                ClassModuleDestroy(module, component.toFieldInfo);
             }
         }        
     }
@@ -58,40 +58,40 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsSetInstanceField) {
-                ClassModuleCreate(module, component);
+            if(component.isSetInstanceField) {
+                ClassModuleCreate(module, component.toFieldInfo);
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsSetInstanceField) {
-                ClassModuleDestroy(module, component);                
+            if(component.isSetInstanceField) {
+                ClassModuleDestroy(module, component.toFieldInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsGetStaticField) {
-                ClassModuleCreate(module, component);                
+            if(component.isGetStaticField) {
+                ClassModuleCreate(module, component.toFieldInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsGetStaticField) {
-                ClassModuleDestroy(module, component);                
+            if(component.isGetStaticField) {
+                ClassModuleDestroy(module, component.toFieldInfo);                
             }
         }        
     }
@@ -99,20 +99,20 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsSetStaticField) {
-                ClassModuleCreate(module, component);                
+            if(component.isSetStaticField) {
+                ClassModuleCreate(module, component.toFieldInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsSetStaticField) {
-                ClassModuleDestroy(module, component);                
+            if(component.isSetStaticField) {
+                ClassModuleDestroy(module, component.toFieldInfo);                
             }
         }        
     }
@@ -120,80 +120,80 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsGetInstanceProperty) {
-                ClassModuleCreate(module, component);                
+            if(component.isGetInstanceProperty) {
+                ClassModuleCreate(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsGetInstanceProperty) {
-                ClassModuleDestroy(module, component);                
+            if(component.isGetInstanceProperty) {
+                ClassModuleDestroy(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsSetInstanceProperty) {
-                ClassModuleCreate(module, component);                
+            if(component.isSetInstanceProperty) {
+                ClassModuleCreate(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsSetInstanceProperty) {
-                ClassModuleDestroy(module, component);                
+            if(component.isSetInstanceProperty) {
+                ClassModuleDestroy(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsGetStaticProperty) {
-                ClassModuleCreate(module, component);                
+            if(component.isGetStaticProperty) {
+                ClassModuleCreate(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsGetStaticProperty) {
-                ClassModuleDestroy(module, component);                
+            if(component.isGetStaticProperty) {
+                ClassModuleDestroy(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsSetStaticProperty) {
-                ClassModuleCreate(module, component);                
+            if(component.isSetStaticProperty) {
+                ClassModuleCreate(module, component.toPropertyInfo);                
             }
         }        
     }
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_DataBase.GetClassComponents(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.IsSetStaticProperty) {
-                ClassModuleDestroy(module, component);                
+            if(component.isSetStaticProperty) {
+                ClassModuleDestroy(module, component.toPropertyInfo);                
             }
         }        
     }
@@ -240,26 +240,28 @@ public partial class iCS_IStorage {
         return port;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject ClassModuleFindFunction(iCS_EditorObject module, iCS_MemberInfo desc) {
+    public iCS_EditorObject ClassModuleFindFunction(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
         iCS_EditorObject[] children= BuildListOfChildren(
             child=> {
-                if(child.ObjectType != desc.ObjectType || child.NbOfParams != desc.Parameters.Length) return false;
-                return desc.Method != null ? desc.Method == child.GetMethodBase(EditorObjects) : desc.Field == child.GetFieldInfo();
+                if(child.ObjectType != desc.objectType || child.NbOfParams != desc.parameters.Length) {
+                    return false;
+                }
+                return desc.isMethod ? desc.toMethodInfo.method == child.GetMethodBase(EditorObjects) : desc.toFieldInfo.field == child.GetFieldInfo();
             },
             module);
         return children.Length != 0 ? children[0] : null;
     }
 
     // ======================================================================
-    public iCS_EditorObject ClassModuleCreate(iCS_EditorObject module, iCS_MemberInfo desc) {
+    public iCS_EditorObject ClassModuleCreate(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
         if(ClassModuleFindFunction(module, desc) != null) return null;
         Rect moduleRect= module.LayoutRect;
         iCS_EditorObject func= CreateMethod(module.InstanceId, new Vector2(0.5f*(moduleRect.x+moduleRect.xMax), moduleRect.yMax), desc);
         ForEachChildDataPort(func,
             port=> {
                 string modulePortName= port.Name;
-                if(port.Name != iCS_Strings.InstanceObjectName && !desc.IsField && !desc.IsProperty) {
-                    modulePortName+= "."+desc.DisplayName;
+                if(port.Name != iCS_Strings.InstanceObjectName && !desc.isField && !desc.isProperty) {
+                    modulePortName+= "."+desc.displayName;
                 }
                 if(port.IsInputPort) {
                     // Special case for "this".
@@ -297,12 +299,12 @@ public partial class iCS_IStorage {
         Iconize(func);
         return func;
     }
-    public void ClassModuleDestroy(iCS_EditorObject module, iCS_MemberInfo desc) {
+    public void ClassModuleDestroy(iCS_EditorObject module, iCS_MethodBaseInfo desc) {
         iCS_EditorObject func= ClassModuleFindFunction(module, desc);
         if(func != null) DestroyInstance(func);
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject ClassModuleCreateConstructor(iCS_EditorObject module, iCS_MemberInfo desc) {
+    public iCS_EditorObject ClassModuleCreateConstructor(iCS_EditorObject module, iCS_ConstructorInfo desc) {
         ClassModuleDestroyConstructor(module);
         iCS_EditorObject moduleThisPort= ClassModuleGetPort(module, iCS_Strings.InstanceObjectName, iCS_ObjectTypeEnum.InStaticModulePort);
         if(moduleThisPort == null) return null;

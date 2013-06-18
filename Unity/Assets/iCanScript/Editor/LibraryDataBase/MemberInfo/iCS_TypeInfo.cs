@@ -17,7 +17,7 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public override string company {
         get {
-            if(String.IsEmptyOrNull(myCompany) && parentTypeInfo != null) {
+            if(String.IsNullOrEmpty(myCompany) && parentTypeInfo != null) {
                 return parentTypeInfo.company;
             }
             return myCompany ?? "";
@@ -25,7 +25,7 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     }
     public override string package {
         get {
-            if(String.IsEmptyOrNull(myPackage) && parentTypeInfo != null) {
+            if(String.IsNullOrEmpty(myPackage) && parentTypeInfo != null) {
                 return parentTypeInfo.package;
             }
             return myPackage ?? "";            
@@ -56,9 +56,9 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public string toString {
         get {
-    		string str= !String.IsNullOrEmpty(company) ? company+MemberSeparator : "";
-    		if(!String.IsNullOrEmpty(package)) str+= package+MemberSeparator;
-    		str+= iCS_types.TypeName(displayName);
+    		string str= !String.IsNullOrEmpty(company) ? company+memberSeparator : "";
+    		if(!String.IsNullOrEmpty(package)) str+= package+memberSeparator;
+    		str+= iCS_Types.TypeName(compilerType);
     		return str;            
         }
     }

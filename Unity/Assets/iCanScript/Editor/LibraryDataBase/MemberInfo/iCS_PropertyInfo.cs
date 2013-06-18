@@ -16,7 +16,7 @@ public class iCS_PropertyInfo : iCS_MethodInfo {
     public string propertyName { get { return displayName.Substring(4); }}
     public Type type {
         get {
-            return isGet ? _functionReturn.type : parameters[0].type;
+            return isGet ? functionReturn.type : parameters[0].type;
         }
     }
     

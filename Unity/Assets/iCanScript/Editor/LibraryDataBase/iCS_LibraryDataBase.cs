@@ -59,7 +59,7 @@ public class iCS_LibraryDataBase {
         if(d1.company != null && d2.company == null) return 1;
         int result;
         if(d1.company != null) {
-            result= d1.company.CompareTo(d2.Company);
+            result= d1.company.CompareTo(d2.company);
             if(result != 0) return result;
         }
         if(d1.package == null && d2.package != null) return -1;
@@ -84,13 +84,13 @@ public class iCS_LibraryDataBase {
         QSort();
         List<iCS_MemberInfo> menu= new List<iCS_MemberInfo>();
         foreach(var desc in Functions) {
-            Type classType= desc.ClassType;
+            Type classType= desc.classType;
             if(iCS_Types.IsStaticClass(classType)) {
                 menu.Add(desc);
             } else {
                 bool found= false;
                 foreach(var existing in menu) {
-                    if(classType == existing.ClassType) {
+                    if(classType == existing.classType) {
                         found= true;
                         break;
                     }
@@ -122,23 +122,23 @@ public class iCS_LibraryDataBase {
     }
     // ----------------------------------------------------------------------
 	public static iCS_ConstructorInfo[] GetConstructors(Type compilerType) {
-		return Prelude.filter(c=> c.IsConstructor, GetMembers(compilerType)) as iCS_ConstructorInfo[];
+		return Prelude.filter(c=> c.isConstructor, GetMembers(compilerType)) as iCS_ConstructorInfo[];
 	}
     // ----------------------------------------------------------------------
 	public static iCS_FieldInfo[] GetFields(Type compilerType) {
-		return Prelude.filter(c=> c.IsField, GetTypeMembers(compilerType)) as iCS_FieldInfo[];
+		return Prelude.filter(c=> c.isField, GetMembers(compilerType)) as iCS_FieldInfo[];
 	}
     // ----------------------------------------------------------------------
 	public static iCS_PropertyInfo[] GetProperties(Type compilerType) {
-		return Prelude.filter(c=> c.IsProperty, GetMembers(compilerType)) as iCS_PropertyInfo[];
+		return Prelude.filter(c=> c.isProperty, GetMembers(compilerType)) as iCS_PropertyInfo[];
 	}
     // ----------------------------------------------------------------------
-	public static iCS_MemberInfo[] GetPropertiesAndFields(Type compilerType) {
-		return Prelude.filter(c=> c.IsField || c.IsProperty, GetMembers(compilerType));
+	public static iCS_MethodBaseInfo[] GetPropertiesAndFields(Type compilerType) {
+		return Prelude.filter(c=> c.isField || c.isProperty, GetMembers(compilerType)) as iCS_MethodBaseInfo[];
 	}
     // ----------------------------------------------------------------------
 	public static iCS_MethodInfo[] GetMethods(Type compilerType) {
-		return Prelude.filter(c=> !(c.IsConstructor || c.IsField || c.IsProperty), GetMembers(compilerType));
+		return Prelude.filter(c=> !(c.isConstructor || c.isField || c.isProperty), GetMembers(compilerType)) as iCS_MethodInfo[];
 	}
     // ----------------------------------------------------------------------
     public static List<iCS_MemberInfo> BuildMenu(Type inputType, Type outputType) {
@@ -149,8 +149,8 @@ public class iCS_LibraryDataBase {
             bool shouldInclude= false;
             var func= Functions[i];
             if(inputType != null) {
-                if(func.ClassType == inputType) {
-                    switch(func.ObjectType) {
+                if(func.classType == inputType) {
+                    switch(func.objectType) {
                         case iCS_ObjectTypeEnum.InstanceMethod:
                         case iCS_ObjectTypeEnum.InstanceField: {
                             shouldInclude= true;
@@ -158,8 +158,8 @@ public class iCS_LibraryDataBase {
                         }
                     }
                 }
-                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
-                    var param= func.Parameters[j];
+                for(int j= 0; !shouldInclude && j < func.parameters.Length; ++j) {
+                    var param= func.parameters[j];
                     if(param.direction != iCS_ParamDirection.Out) {
 						if(param.type == inputType) {
 //                        if(iCS_Types.IsA(func.ParamTypes[j], inputType)) {
@@ -169,8 +169,8 @@ public class iCS_LibraryDataBase {
                 }
             }
             if(!shouldInclude && outputType != null) {
-                if(func.ClassType == outputType) {
-                    switch(func.ObjectType) {
+                if(func.classType == outputType) {
+                    switch(func.objectType) {
                         case iCS_ObjectTypeEnum.Constructor:
                         case iCS_ObjectTypeEnum.InstanceMethod:
                         case iCS_ObjectTypeEnum.InstanceField: {
@@ -180,8 +180,8 @@ public class iCS_LibraryDataBase {
                     }
                 }
                 if(func.ReturnType == outputType) shouldInclude= true;
-                for(int j= 0; !shouldInclude && j < func.Parameters.Length; ++j) {
-                    var param= func.Parameters[j];
+                for(int j= 0; !shouldInclude && j < func.parameters.Length; ++j) {
+                    var param= func.parameters[j];
                     if(param.direction != iCS_ParamDirection.In) {
                         if(outputType == param.type) {
 //                        if(iCS_Types.IsA(outputType, func.ParamTypes[j])) {
@@ -214,7 +214,7 @@ public class iCS_LibraryDataBase {
     }
     // ----------------------------------------------------------------------
     // Finds a conversion that matches the given from/to types.
-    public static iCS_MemberInfo FindTypeCast(Type fromType, Type toType) {
+    public static iCS_TypeCastInfo FindTypeCast(Type fromType, Type toType) {
         foreach(var t in types) {
 			var cast= FindTypeCast(t, fromType, toType);
 			if(cast != null) {
@@ -223,7 +223,7 @@ public class iCS_LibraryDataBase {
         }
         return null;
     }
-    public static iCS_MemberInfo FindTypeCast(iCS_TypeInfo typeInfo, Type fromType, Type toType) {
+    public static iCS_TypeCastInfo FindTypeCast(iCS_TypeInfo typeInfo, Type fromType, Type toType) {
 		foreach(var m in typeInfo.members) {
 	        if(m.isTypeCast) {
 	            if(iCS_Types.CanBeConnectedWithoutConversion(fromType, m.parameters[0].type) &&

@@ -25,6 +25,12 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
     public Type returnType {
         get { return functionReturn != null ? functionReturn.type : typeof(void); }
     }
+    public virtual string methodName {
+        get { return null; }
+    }
+    public string returnName {
+        get { return functionReturn != null ? functionReturn.name : "out"; }
+    }
     
     // ======================================================================
     // Creation/Destruction
@@ -55,10 +61,10 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
             string signature= displayName;
 			// Build input string
 			string inputStr= "";
-            if(ObjectType == iCS_ObjectTypeEnum.InstanceMethod) {
-                inputStr+= iCS_Strings.InstanceObjectName+":"+iCS_Types.TypeName(ClassType)+", ";
+            if(objectType == iCS_ObjectTypeEnum.InstanceMethod) {
+                inputStr+= iCS_Strings.InstanceObjectName+":"+iCS_Types.TypeName(classType)+", ";
             }
-            foreach(var param in Parameters) {
+            foreach(var param in parameters) {
 				if(!param.type.IsByRef) {
 	                inputStr+= param.name+":"+iCS_Types.TypeName(param.type)+", ";
 				}
@@ -70,18 +76,18 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
 			// Build output string
 			int nbOfOutputs= 0;
 			string outputStr= "";
-            foreach(var param in Parameters) {
+            foreach(var param in parameters) {
 				if(param.type.IsByRef) {
 	                outputStr+= param.name+":"+iCS_Types.TypeName(param.type.GetElementType())+", ";
 					++nbOfOutputs;
 				}
             }
-			if(ReturnType != null && ReturnType != typeof(void)) {
+			if(returnType != null && returnType != typeof(void)) {
 				++nbOfOutputs;
-				if(ReturnName != null && ReturnName != "" && ReturnName != iCS_Strings.DefaultFunctionReturnName) {
-					outputStr+= /*" "+*/ReturnName;
+				if(returnName != null && returnName != "" && returnName != iCS_Strings.DefaultFunctionReturnName) {
+					outputStr+= /*" "+*/returnName;
 				} else {
-					outputStr+= ":"+TypeName(ReturnType);
+					outputStr+= ":"+iCS_Types.TypeName(returnType);
 				}
 				outputStr+= ", ";
 			}
@@ -100,23 +106,23 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
         get {
             string signature= displayName;
 			// Add inputs to signature.
-			string inputStr= FunctionInputSignatureNoThis;
+			string inputStr= functionInputSignatureNoThis;
 	        signature+= " ("+inputStr+")";						
 			// Build output string
 			int nbOfOutputs= 0;
 			string outputStr= "";
-            foreach(var param in Parameters) {
+            foreach(var param in parameters) {
 				if(param.type.IsByRef) {
-	                outputStr+= param.name+":"+TypeName(param.type.GetElementType())+", ";
+	                outputStr+= param.name+":"+iCS_Types.TypeName(param.type.GetElementType())+", ";
 					++nbOfOutputs;
 				}
             }
-			if(ReturnType != null && ReturnType != typeof(void)) {
+			if(returnType != null && returnType != typeof(void)) {
 				++nbOfOutputs;
-				if(ReturnName != null && ReturnName != "" && ReturnName != iCS_Strings.DefaultFunctionReturnName) {
-					outputStr+= /*" "+*/ReturnName;
+				if(returnName != null && returnName != "" && returnName != iCS_Strings.DefaultFunctionReturnName) {
+					outputStr+= /*" "+*/returnName;
 				} else {
-					outputStr+= ":"+TypeName(ReturnType);
+					outputStr+= ":"+iCS_Types.TypeName(returnType);
 				}
 				outputStr+= ", ";
 			}
@@ -133,21 +139,38 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public List<string> inputParameterNames {
         get {
-            return P.map(p-> p.name, P.filter(p-> p.type.IsByRef == false, parameters));
+            var paramNames= new List<string>();
+            foreach(var p in parameters) {
+                if(!p.type.IsByRef) {
+                    paramNames.Add(p.name);
+                }
+            }
+            return paramNames;
         }
     }
     // ----------------------------------------------------------------------
     public List<Type> inputParameterTypes {
         get {
-            return P.map(p-> p.type, P.filter(p-> p.type.IsByRef == false, parameters));
+            var paramTypes= new List<Type>();
+            foreach(var p in parameters) {
+                if(!p.type.IsByRef) {
+                    paramTypes.Add(p.type);
+                }
+            }
+            return paramTypes;
         }
     }
     // ----------------------------------------------------------------------
     public List<string> outputParameterNames {
         get {
-            var paramNames= P.map(p-> p.name, P.filter(p-> p.type.IsByRef, parameters));
+            var paramNames= new List<string>();
+            foreach(var p in parameters) {
+                if(p.type.IsByRef) {
+                    paramNames.Add(p.name);
+                }
+            }
             if(returnType != null && returnType != typeof(void)) {
-                paramNames.Add(ReturnName ?? iCS_Strings.DefaultFunctionReturnName);
+                paramNames.Add(returnName ?? iCS_Strings.DefaultFunctionReturnName);
 			}
             return paramNames;            
         }
@@ -155,9 +178,14 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public List<Type> outputParameterTypes {
         get {
-            var paramTypes= P.map(p-> p.type, P.filter(p-> p.type.IsByRef, parameters));
+            var paramTypes= new List<Type>();
+            foreach(var p in parameters) {
+                if(p.type.IsByRef) {
+                    paramTypes.Add(p.type);
+                }
+            }
             if(returnType != null && returnType != typeof(void)) {
-                paramTypes.Add(ReturnType);
+                paramTypes.Add(returnType);
 			}
             return paramTypes;            
         }
@@ -175,7 +203,7 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
     public string functionInputSignatureNoThis {
         get {
 			string inputStr= "";
-            foreach(var param in Parameters) {
+            foreach(var param in parameters) {
 				if(!param.type.IsByRef) {
 	                inputStr+= param.name+":"+iCS_Types.TypeName(param.type)+", ";
 				}
@@ -191,7 +219,7 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
 			string path= "";
 			if(!String.IsNullOrEmpty(company)) path= company+"/";
 			if(!String.IsNullOrEmpty(package)) path+= package+"/";
-			path+= iCS_Types.TypeName(ClassType);
+			path+= iCS_Types.TypeName(classType);
 			return path;
         }
     }
@@ -208,7 +236,7 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public string toString {
         get {
-            return FunctionPath+iCS_MemberSeparator+FunctionSignature;            
+            return functionPath+memberSeparator+functionSignature;            
         }
     }
     public override string ToString() {
