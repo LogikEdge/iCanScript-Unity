@@ -56,7 +56,6 @@ public class iCS_FieldInfo : iCS_MemberInfo {
     // Instance specific methods
     // ----------------------------------------------------------------------
     public string fieldName    { get { return displayName.Substring(4); }}
-    public string propertyName { get { return displayName.Substring(4); }}
 
     // ======================================================================
     // Common method override

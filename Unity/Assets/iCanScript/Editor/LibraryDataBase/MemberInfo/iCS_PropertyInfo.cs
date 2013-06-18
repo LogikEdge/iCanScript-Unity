@@ -19,6 +19,11 @@ public class iCS_PropertyInfo : iCS_MethodInfo {
         get { return accessorType == iCS_AccessorType.Set || accessorType == iCS_AccessorType.GetAndSet; }
     }
     public string propertyName { get { return displayName.Substring(4); }}
+    public Type type {
+        get {
+            return isGet ? _functionReturn.type : parameters[0].type;
+        }
+    }
     
     // ======================================================================
     // Builders
@@ -33,5 +38,9 @@ public class iCS_PropertyInfo : iCS_MethodInfo {
 							iCS_AccessorType.Set :
 							iCS_AccessorType.Get;
     }
+
+    // ======================================================================
+    // Instance specific methods
+    // ----------------------------------------------------------------------
 
 }

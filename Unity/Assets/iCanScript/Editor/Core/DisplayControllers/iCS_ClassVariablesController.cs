@@ -53,7 +53,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     // Properties
     // ---------------------------------------------------------------------------------
     public DSView View { get { return myTableView; }}
-    
+
     // =================================================================================
     // Initialization
     // ---------------------------------------------------------------------------------
@@ -73,11 +73,11 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 
 		// Extract fields & properties from class descriptor.
         List<VariablePair> variables= new List<VariablePair>();
-        foreach(var component in iCS_LibraryDataBase.GetClassVariables(myClassType)) {
+        foreach(var component in iCS_LibraryDataBase.GetPropertiesAndFields(myClassType)) {
             bool isActive= (myTarget != null && myStorage != null) ? myStorage.ClassModuleFindFunction(myTarget, component) != null : false;
-            string name= component.VariableName;
+            string name= GetVariableName(component);
             var variablePair= GetVariablePair(name, variables);
-            if(component.IsSetField || component.IsSetProperty) {
+            if(component.isSetField || component.isSetProperty) {
                 if(variablePair != null) {
                     variablePair.InputControlPair.Component= component;
                     variablePair.InputControlPair.IsActive= isActive;
@@ -112,11 +112,17 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
     // =================================================================================
     // Helpers
     // ---------------------------------------------------------------------------------
+    string GetVariableName(iCS_MemberInfo variableInfo) {
+        return variableInfo.isField ? variableInfo.toFieldInfo.fieldName : variableInfo.toPropertyInfo.propertyName;
+    }
 	string GetVariableName(VariablePair pair) {
-		return GetAComponent(pair).VariableName;
+		return GetVariableName(GetAComponent(pair));
 	}
+    Type GetVariableType(iCS_MemberInfo variableInfo) {
+        return variableInfo.isField ? variableInfo.toFieldInfo.type : variableInfo.toPropertyInfo.type;
+    }
 	Type GetVariableType(VariablePair pair) {
-		return GetAComponent(pair).VariableType;
+		return GetVariableType(GetAComponent(pair));
 	}
     iCS_MemberInfo GetAComponent(VariablePair pair) {
         return pair.InputControlPair.Component ?? pair.OutputControlPair.Component; 
@@ -125,18 +131,18 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
         foreach(var pair in lst) {
             iCS_MemberInfo inputComponent= pair.InputControlPair.Component;
             if(inputComponent != null) {
-                if(inputComponent.IsField) {
-                    if(inputComponent.FieldName == name) return pair;
+                if(inputComponent.isField) {
+                    if(inputComponent.toFieldInfo.fieldName == name) return pair;
                 } else {
-                    if(inputComponent.PropertyName == name) return pair;
+                    if(inputComponent.toPropertyInfo.propertyName == name) return pair;
                 }
             }
             iCS_MemberInfo outputComponent= pair.OutputControlPair.Component;
             if(outputComponent != null) {
-                if(outputComponent.IsField) {
-                    if(outputComponent.FieldName == name) return pair;
+                if(outputComponent.isField) {
+                    if(outputComponent.toFieldInfo.fieldName == name) return pair;
                 } else {
-                    if(outputComponent.PropertyName == name) return pair;
+                    if(outputComponent.toPropertyInfo.propertyName == name) return pair;
                 }                
             }
         }
@@ -186,10 +192,10 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 inputControlPair.IsActive= GUI.Toggle(position, inputControlPair.IsActive, "");
                 if(prevActive != inputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(inputControlPair.IsActive) {
-						myStorage.RegisterUndo("Create "+inputControlPair.Component.DisplayName);
+						myStorage.RegisterUndo("Create "+inputControlPair.Component.displayName);
                         myStorage.ClassModuleCreate(myTarget, inputControlPair.Component);
                     } else {
-						myStorage.RegisterUndo("Delete "+inputControlPair.Component.DisplayName);
+						myStorage.RegisterUndo("Delete "+inputControlPair.Component.displayName);
                         myStorage.ClassModuleDestroy(myTarget, inputControlPair.Component);
                     }                
                 }                					
@@ -201,10 +207,10 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
                 outputControlPair.IsActive= GUI.Toggle(position, outputControlPair.IsActive, "");
                 if(prevActive != outputControlPair.IsActive && myTarget != null && myStorage != null) {
                     if(outputControlPair.IsActive) {
-						myStorage.RegisterUndo("Create "+outputControlPair.Component.DisplayName);
+						myStorage.RegisterUndo("Create "+outputControlPair.Component.displayName);
                         myStorage.ClassModuleCreate(myTarget, outputControlPair.Component);
                     } else {
-						myStorage.RegisterUndo("Delete "+outputControlPair.Component.DisplayName);
+						myStorage.RegisterUndo("Delete "+outputControlPair.Component.displayName);
                         myStorage.ClassModuleDestroy(myTarget, outputControlPair.Component);
                     }                
 				}

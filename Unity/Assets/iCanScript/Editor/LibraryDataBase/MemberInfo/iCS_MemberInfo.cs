@@ -71,4 +71,27 @@ public abstract class iCS_MemberInfo {
     public bool isSetInstanceProperty { get { return isSetProperty && toPropertyInfo.isInstanceMember; }}
     public bool isGetStaticProperty   { get { return isGetProperty && toPropertyInfo.isClassMember; }}
     public bool isSetStaticProperty   { get { return isSetProperty && toPropertyInfo.isClassMember; }}
+
+    // ======================================================================
+    // Dynamic Properties
+    // ----------------------------------------------------------------------
+    public string company {
+        var _company= null;
+        if(parentTypeInfo != null) {
+            _company= parentTypeInfo.company;
+        }
+        return String.IsEmptyOrNull(_company) ? GetCompany() : _company;
+    }
+    public string package {
+        var _package= GetPackage();
+        return String.IsEmptyOrNull(_package) && parentTypeInfo != null ? parentTypeInfo.package : _package;
+    }
+    public string description {
+        var _description= GetDescription();
+        return String.IsEmptyOrNull(_description) && parentTypeInfo != null ? parentTypeInfo.description : _description;
+    }
+    public string iconPath {
+        var _iconPath= GetIconPath();
+        return String.IsEmptyOrNull(_iconPath) && parentTypeInfo != null ? parentTypeInfo.iconPath : _iconPath;
+    }
 }

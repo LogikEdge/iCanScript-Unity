@@ -44,7 +44,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
 		myTarget= target;
 		
 		// Extract fields & properties from class descriptor.
-        myMethods= iCS_LibraryDataBase.GetClassMethods(myClassType);
+        myMethods= iCS_LibraryDataBase.GetMethods(myClassType);
     	Array.Sort(myMethods, (x,y)=> x.functionSignatureNoThis.CompareTo(y.functionSignatureNoThis));
 
         // Build method presence on the given target.
@@ -71,7 +71,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
     // ---------------------------------------------------------------------------------
     public Vector2 LayoutSizeForObjectInTableView(DSTableView tableView, DSTableColumn tableColumn, int row) {
 		if(myClassType == null) return Vector2.zero;
-        var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(myMethods[row].FunctionSignatureNoThis));
+        var signatureSize= EditorStyles.boldLabel.CalcSize(new GUIContent(myMethods[row].functionSignatureNoThis));
 		signatureSize.x+= 12f;
 		return signatureSize;
     }
@@ -92,13 +92,13 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
             style.fontStyle= FontStyle.Italic;
         }
 		position.width= tableColumn.DataSize.x;
-        if(GUI.Button(position, myMethods[row].FunctionSignatureNoThis) && myTarget != null && myStorage != null) {
+        if(GUI.Button(position, myMethods[row].functionSignatureNoThis) && myTarget != null && myStorage != null) {
             myIsMethodPresent[row]^= true;
             if(myIsMethodPresent[row]) {
-				myStorage.RegisterUndo("Create "+myMethods[row].DisplayName);
+				myStorage.RegisterUndo("Create "+myMethods[row].displayName);
                 myStorage.ClassModuleCreate(myTarget, myMethods[row]);
             } else {
-				myStorage.RegisterUndo("Delete "+myMethods[row].DisplayName);
+				myStorage.RegisterUndo("Delete "+myMethods[row].displayName);
                 myStorage.ClassModuleDestroy(myTarget, myMethods[row]);
             }
         }

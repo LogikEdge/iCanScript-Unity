@@ -60,17 +60,17 @@ public class iCS_CreateClassController {
     // ---------------------------------------------------------------------------------
     void InitConstructorInfo() {      
         // Get and sort all constructors for the given class.
-        myConstructors= iCS_LibraryDataBase.GetClassConstructors(myTarget.RuntimeType);
-    	Array.Sort(myConstructors, (x,y)=> x.FunctionSignatureNoThis.CompareTo(y.FunctionSignatureNoThis));        
+        myConstructors= iCS_LibraryDataBase.GetConstructors(myTarget.RuntimeType);
+    	Array.Sort(myConstructors, (x,y)=> x.functionSignatureNoThis.CompareTo(y.functionSignatureNoThis));        
 
         // Determine which constrcutor is currently used for this instance.
         myConstructorIdx= -1;
         for(int i= 0; i < myConstructors.Length; ++i) {
             iCS_EditorObject existing= myStorage.ClassModuleGetConstructor(myTarget);
-            if(existing != null && myConstructors[i].Method == existing.GetMethodBase(myStorage.EditorObjects)) {
+            if(existing != null && myConstructors[i].method == existing.GetMethodBase(myStorage.EditorObjects)) {
                 myConstructorIdx= i;
             }
-            var constructorSize= EditorStyles.boldLabel.CalcSize(new GUIContent(myConstructors[i].FunctionSignatureNoThisNoOutput));
+            var constructorSize= EditorStyles.boldLabel.CalcSize(new GUIContent(myConstructors[i].functionSignatureNoThisNoOutput));
             if(constructorSize.x+12f > myMaxConstructorWidth) {
                 myMaxConstructorWidth= constructorSize.x+12f;
             }
@@ -110,7 +110,7 @@ public class iCS_CreateClassController {
         string[] instanceOptions= new string[1+myConstructors.Length];
         instanceOptions[0]= "Use input port (this)";
         for(int i= 0; i < myConstructors.Length; ++i) {
-            instanceOptions[i+1]= myConstructors[i].FunctionSignatureNoThisNoOutput;
+            instanceOptions[i+1]= myConstructors[i].functionSignatureNoThisNoOutput;
         }
         float maxWidth= displayArea.width-(ConstructorTitleSize.x+2f*kSpacer);
         float width= Mathf.Min(maxWidth, myMaxConstructorWidth);

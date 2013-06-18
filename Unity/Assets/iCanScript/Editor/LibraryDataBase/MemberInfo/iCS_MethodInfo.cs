@@ -25,7 +25,7 @@ public class iCS_MethodInfo : iCS_MemberInfo {
     }
     public Type returnType {
         get { return functionReturn != null ? functionReturn.type : typeof(void); }
-    } 
+    }
     
     // ======================================================================
     // Creation/Destruction

@@ -103,11 +103,6 @@ public class iCS_LibraryDataBase {
         return menu;        
     }
     // ----------------------------------------------------------------------
-    // Returns one descriptor per type
-    public static List<iCS_TypeInfo> GetClasses() {
-        return types;
-    }
-    // ----------------------------------------------------------------------
     public static iCS_TypeInfo GetTypeInfo(Type compilerType) {
         foreach(var t in types) {
             if(t.compilerType == compilerType) {
@@ -118,7 +113,7 @@ public class iCS_LibraryDataBase {
     }
     // ----------------------------------------------------------------------
     // Returns all components of the given class.
-    public static iCS_MemberInfo[] GetTypeMembers(Type compilerType) {
+    public static iCS_MemberInfo[] GetMembers(Type compilerType) {
 		var typeInfo= GetTypeInfo(compilerType);
 		if(typeInfo == null) {
 			return new iCS_MemberInfo[0];
@@ -126,24 +121,24 @@ public class iCS_LibraryDataBase {
 		return typeInfo.members.ToArray();
     }
     // ----------------------------------------------------------------------
-	public static iCS_ConstructorInfo[] GetTypeConstructors(Type compilerType) {
-		return Prelude.filter(c=> c.IsConstructor, GetTypeMembers(compilerType)) as iCS_ConstructorInfo[];
+	public static iCS_ConstructorInfo[] GetConstructors(Type compilerType) {
+		return Prelude.filter(c=> c.IsConstructor, GetMembers(compilerType)) as iCS_ConstructorInfo[];
 	}
     // ----------------------------------------------------------------------
-	public static iCS_FieldInfo[] GetClassFields(Type compilerType) {
+	public static iCS_FieldInfo[] GetFields(Type compilerType) {
 		return Prelude.filter(c=> c.IsField, GetTypeMembers(compilerType)) as iCS_FieldInfo[];
 	}
     // ----------------------------------------------------------------------
-	public static iCS_PropertyInfo[] GetClassProperties(Type compilerType) {
-		return Prelude.filter(c=> c.IsProperty, GetTypeMembers(compilerType)) as iCS_PropertyInfo[];
+	public static iCS_PropertyInfo[] GetProperties(Type compilerType) {
+		return Prelude.filter(c=> c.IsProperty, GetMembers(compilerType)) as iCS_PropertyInfo[];
 	}
     // ----------------------------------------------------------------------
-	public static iCS_MemberInfo[] GetClassVariables(Type compilerType) {
-		return Prelude.filter(c=> c.IsField || c.IsProperty, GetTypeMembers(compilerType));
+	public static iCS_MemberInfo[] GetPropertiesAndFields(Type compilerType) {
+		return Prelude.filter(c=> c.IsField || c.IsProperty, GetMembers(compilerType));
 	}
     // ----------------------------------------------------------------------
-	public static iCS_MethodInfo[] GetClassMethods(Type compilerType) {
-		return Prelude.filter(c=> !(c.IsConstructor || c.IsField || c.IsProperty), GetTypeMembers(compilerType));
+	public static iCS_MethodInfo[] GetMethods(Type compilerType) {
+		return Prelude.filter(c=> !(c.IsConstructor || c.IsField || c.IsProperty), GetMembers(compilerType));
 	}
     // ----------------------------------------------------------------------
     public static List<iCS_MemberInfo> BuildMenu(Type inputType, Type outputType) {
