@@ -42,6 +42,7 @@ public abstract class iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public iCS_TypeInfo         toTypeInfo          { get { return this as iCS_TypeInfo; }}
     public iCS_ConstructorInfo  toConstructorInfo   { get { return this as iCS_ConstructorInfo; }}
+    public iCS_MethodBaseInfo   toMethodBaseInfo    { get { return this as iCS_MethodBaseInfo; }}
     public iCS_MethodInfo       toMethodInfo        { get { return this as iCS_MethodInfo; }}
     public iCS_FieldInfo        toFieldInfo         { get { return this as iCS_FieldInfo; }}
     public iCS_PropertyInfo     toPropertyInfo      { get { return this as iCS_PropertyInfo; }}
@@ -52,6 +53,7 @@ public abstract class iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public bool isTypeInfo            { get { return toTypeInfo != null; }}
     public bool isConstructor         { get { return toConstructorInfo != null; }}
+    public bool isMethodBase          { get { return toMethodBaseInfo != null; }}
     public bool isMethod              { get { return toMethodInfo != null; }}
     public bool isField               { get { return toFieldInfo != null; }}
     public bool isEvent               { get { return toEventInfo != null; }}
