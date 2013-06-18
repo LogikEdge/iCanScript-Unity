@@ -14,7 +14,7 @@ public class iCS_FieldInfo : iCS_MethodBaseInfo {
     // Accessors
     // ----------------------------------------------------------------------
     public bool isGet {
-        get { return functionReturn == null || functionReturn.type == typeof(void); }
+        get { return parameters.Length == 0; }
     }
     public bool isSet {
         get { return !isGet; }
