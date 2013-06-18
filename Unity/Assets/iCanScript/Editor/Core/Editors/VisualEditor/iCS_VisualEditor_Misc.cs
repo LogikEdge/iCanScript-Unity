@@ -142,7 +142,7 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
 			}
             return false;
 		}
-        typeCast= iCS_DataBase.FindTypeCast(outType, inType);
+        typeCast= iCS_LibraryDataBase.FindTypeCast(outType, inType);
         if(typeCast == null) {
 			ShowNotification(new GUIContent("No automatic type conversion exists from "+iCS_Types.TypeName(outType)+" to "+iCS_Types.TypeName(inType)));
             return false;

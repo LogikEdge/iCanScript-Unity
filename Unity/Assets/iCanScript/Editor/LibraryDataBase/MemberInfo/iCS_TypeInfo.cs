@@ -7,11 +7,36 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public string                   company     = null;
-    public string                   package     = null;   // Defaults to declaring namespace
+    private string                  myCompany   = null;
+    private string                  myPackage   = null;   // Defaults to declaring namespace
     public Type                     compilerType= null;
     public List<iCS_MemberInfo>     members     = new List<iCS_MemberInfo>();
 
+    // ======================================================================
+    // Fields
+    // ----------------------------------------------------------------------
+    public override string company {
+        get {
+            if(String.IsEmptyOrNull(myCompany) && parentTypeInfo != null) {
+                return parentTypeInfo.company;
+            }
+            return myCompany ?? "";
+        }
+    }
+    public override string package {
+        get {
+            if(String.IsEmptyOrNull(myPackage) && parentTypeInfo != null) {
+                return parentTypeInfo.package;
+            }
+            return myPackage ?? "";            
+        }
+    }
+    public override Type classType {
+        get {
+            return compilerType;
+        }
+    }
+    
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
@@ -19,8 +44,8 @@ public class iCS_TypeInfo : iCS_MemberInfo {
                  iCS_TypeInfo _parentType, string _displayName, string _description, string _iconPath)
     : base(iCS_ObjectTypeEnum.Type, _parentType, _displayName, _description, _iconPath)
     {
-        company     = _company ?? (isGlobalScope ? null : _parentType.company);
-        package     = _package ?? (isGlobalScope ? null : _parentType.toString);
+        myCompany   = _company;
+        myPackage   = _package;
         compilerType= _compilerType;
     }
 

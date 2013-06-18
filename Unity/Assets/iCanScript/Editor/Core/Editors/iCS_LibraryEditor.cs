@@ -156,7 +156,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Class) {
-            CreateClassModule(node.Desc.ClassType, iStorage);        
+            CreateClassModule(node.Desc.classType, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {

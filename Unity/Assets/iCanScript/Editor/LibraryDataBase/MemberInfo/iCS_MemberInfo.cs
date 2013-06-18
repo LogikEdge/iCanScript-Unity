@@ -14,11 +14,11 @@ public abstract class iCS_MemberInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    public iCS_ObjectTypeEnum   objectType      = iCS_ObjectTypeEnum.Unknown;
-    public iCS_TypeInfo         parentTypeInfo  = null;
-    public string               displayName     = null;
-    public string               description     = null;
-    public string               iconPath        = null;
+    public  iCS_ObjectTypeEnum   objectType      = iCS_ObjectTypeEnum.Unknown;
+    public  iCS_TypeInfo         parentTypeInfo  = null;
+    public  string               displayName     = null;
+    private string               myDescription   = null;
+    private string               myIconPath      = null;
 
     // ======================================================================
     // Creation/Destruction
@@ -75,23 +75,41 @@ public abstract class iCS_MemberInfo {
     // ======================================================================
     // Dynamic Properties
     // ----------------------------------------------------------------------
-    public string company {
-        var _company= null;
-        if(parentTypeInfo != null) {
-            _company= parentTypeInfo.company;
+    public virtual string company {
+        get {
+            return parentTypeInfo.company;            
         }
-        return String.IsEmptyOrNull(_company) ? GetCompany() : _company;
     }
-    public string package {
-        var _package= GetPackage();
-        return String.IsEmptyOrNull(_package) && parentTypeInfo != null ? parentTypeInfo.package : _package;
+    public virtual string package {
+        get {
+            return parentTypeInfo.package;            
+        }
+    }
+    public virtual Type classType {
+        get {
+            return parentTypeInfo.compilerType;
+        }
     }
     public string description {
-        var _description= GetDescription();
-        return String.IsEmptyOrNull(_description) && parentTypeInfo != null ? parentTypeInfo.description : _description;
+        get {
+            if(String.IsEmptyOrNull(myDescription)) {
+                return parentTypeInfo == null ? "" : parentTypeInfo.description;
+            }
+            return myDescription;            
+        }
+        set {
+            myDescription= value;
+        }
     }
     public string iconPath {
-        var _iconPath= GetIconPath();
-        return String.IsEmptyOrNull(_iconPath) && parentTypeInfo != null ? parentTypeInfo.iconPath : _iconPath;
+        get {
+            if(String.IsEmptyOrNull(myIconPath)) {
+                return parentTypeInfo == null ? "" : parentTypeInfo.iconPath;
+            }
+            return myIconPath;            
+        }
+        set {
+            myIconPath= value;
+        }
     }
 }

@@ -397,12 +397,12 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateMethod(int parentId, Vector2 globalPos, iCS_MemberInfo desc) {
-        iCS_EditorObject instance= desc.ObjectType == iCS_ObjectTypeEnum.InstanceMethod || desc.ObjectType == iCS_ObjectTypeEnum.InstanceField ?
+        iCS_EditorObject instance= desc.objectType == iCS_ObjectTypeEnum.InstanceMethod || desc.objectType == iCS_ObjectTypeEnum.InstanceField ?
                     				CreateInstanceMethod(parentId, globalPos, desc) : 
                     				CreateStaticMethod(parentId, globalPos, desc);
 
-		instance.MethodName= desc.MethodName;
-		instance.NbOfParams= desc.Parameters != null ? desc.Parameters.Length : 0;
+		instance.MethodName= desc.methodName;
+		instance.NbOfParams= desc.parameters != null ? desc.parameters.Length : 0;
 		return instance;
     }
     // ----------------------------------------------------------------------
@@ -415,7 +415,7 @@ public partial class iCS_IStorage {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        var instance= iCS_EditorObject.CreateInstance(id, desc.displayName, desc.ClassType, parentId, desc.ObjectType, this);
         instance.SetAnchorAndLayoutPosition(globalPos);
         instance.IconGUID= iconGUID;
         // Create parameter ports.
@@ -473,7 +473,7 @@ public partial class iCS_IStorage {
             }
         }
 		// Create return port.
-		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
+		if(desc.returnType != null && desc.returnType != typeof(void)) {
             port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
             port.PortIndex= portIdx++;			
 		} else {
