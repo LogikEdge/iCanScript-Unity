@@ -156,7 +156,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Class) {
-            CreateClassModule(node.Desc.ClassType, iStorage);        
+            CreateClassModule(node.Desc.classType, iStorage);        
             return;
         }
         if(node.Type == iCS_LibraryController.NodeTypeEnum.Field) {
@@ -187,7 +187,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
         return iStorage.CreateModule(-1, Vector2.zero, null, iCS_ObjectTypeEnum.Module, classType);
     }
     // ---------------------------------------------------------------------------------
-    iCS_EditorObject CreateMethod(iCS_ReflectionInfo desc, iCS_IStorage iStorage) {
-        return iStorage.CreateMethod(-1, Vector2.zero, desc);            
+    iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {
+        return iStorage.CreateMethod(-1, Vector2.zero, desc.toMethodBaseInfo);            
     }    
 }

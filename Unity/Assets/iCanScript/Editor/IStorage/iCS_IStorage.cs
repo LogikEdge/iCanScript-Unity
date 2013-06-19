@@ -396,33 +396,33 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateMethod(int parentId, Vector2 globalPos, iCS_ReflectionInfo desc) {
-        iCS_EditorObject instance= desc.ObjectType == iCS_ObjectTypeEnum.InstanceMethod || desc.ObjectType == iCS_ObjectTypeEnum.InstanceField ?
+    public iCS_EditorObject CreateMethod(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
+        iCS_EditorObject instance= desc.objectType == iCS_ObjectTypeEnum.InstanceMethod || desc.objectType == iCS_ObjectTypeEnum.InstanceField ?
                     				CreateInstanceMethod(parentId, globalPos, desc) : 
                     				CreateStaticMethod(parentId, globalPos, desc);
 
-		instance.MethodName= desc.MethodName;
-		instance.NbOfParams= desc.Parameters != null ? desc.Parameters.Length : 0;
+		instance.MethodName= desc.methodName;
+		instance.NbOfParams= desc.parameters != null ? desc.parameters.Length : 0;
 		return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateStaticMethod(int parentId, Vector2 globalPos, iCS_ReflectionInfo desc) {
+    public iCS_EditorObject CreateStaticMethod(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Determine icon.
-        var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
+        var iconGUID= iCS_TextureCache.IconPathToGUID(desc.iconPath);
+        if(iconGUID == null && desc.objectType == iCS_ObjectTypeEnum.StaticMethod) {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        var instance= iCS_EditorObject.CreateInstance(id, desc.displayName, desc.classType, parentId, desc.objectType, this);
         instance.SetAnchorAndLayoutPosition(globalPos);
         instance.IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
-        for(; portIdx < desc.Parameters.Length; ++portIdx) {
-            var p= desc.Parameters[portIdx];
+        for(; portIdx < desc.parameters.Length; ++portIdx) {
+            var p= desc.parameters[portIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
                 port= CreatePort(p.name, id, p.type, portType);
@@ -435,8 +435,8 @@ public partial class iCS_IStorage {
             }
         }
 		// Create return port.
-		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
+		if(desc.returnType != null && desc.returnType != typeof(void)) {
+            port= CreatePort(desc.returnName, id, desc.returnType, iCS_ObjectTypeEnum.OutFunctionPort);
             port.PortIndex= portIdx;			
 		}
         // Perform initial node layout.
@@ -444,23 +444,23 @@ public partial class iCS_IStorage {
         return instance;
     }
     // ----------------------------------------------------------------------
-    public iCS_EditorObject CreateInstanceMethod(int parentId, Vector2 globalPos, iCS_ReflectionInfo desc) {
+    public iCS_EditorObject CreateInstanceMethod(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
         // Create the conversion node.
         int id= GetNextAvailableId();
         // Determine minimized icon.
-        var iconGUID= iCS_TextureCache.IconPathToGUID(desc.IconPath);
-        if(iconGUID == null && desc.ObjectType == iCS_ObjectTypeEnum.StaticMethod) {
+        var iconGUID= iCS_TextureCache.IconPathToGUID(desc.iconPath);
+        if(iconGUID == null && desc.objectType == iCS_ObjectTypeEnum.StaticMethod) {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
-        var instance= iCS_EditorObject.CreateInstance(id, desc.DisplayName, desc.ClassType, parentId, desc.ObjectType, this);
+        var instance= iCS_EditorObject.CreateInstance(id, desc.displayName, desc.classType, parentId, desc.objectType, this);
         instance.SetAnchorAndLayoutPosition(globalPos);
         instance.IconGUID= iconGUID;
         // Create parameter ports.
 		int portIdx= 0;
 		iCS_EditorObject port= null;
-        for(; portIdx < desc.Parameters.Length; ++portIdx) {
-            var p= desc.Parameters[portIdx];
+        for(; portIdx < desc.parameters.Length; ++portIdx) {
+            var p= desc.parameters[portIdx];
             if(p.type != typeof(void)) {
                 iCS_ObjectTypeEnum portType= p.direction == iCS_ParamDirection.Out ? iCS_ObjectTypeEnum.OutFunctionPort : iCS_ObjectTypeEnum.InFunctionPort;
                 port= CreatePort(p.name, id, p.type, portType);
@@ -473,16 +473,16 @@ public partial class iCS_IStorage {
             }
         }
 		// Create return port.
-		if(desc.ReturnType != null && desc.ReturnType != typeof(void)) {
-            port= CreatePort(desc.ReturnName, id, desc.ReturnType, iCS_ObjectTypeEnum.OutFunctionPort);
+		if(desc.returnType != null && desc.returnType != typeof(void)) {
+            port= CreatePort(desc.returnName, id, desc.returnType, iCS_ObjectTypeEnum.OutFunctionPort);
             port.PortIndex= portIdx++;			
 		} else {
 		    ++portIdx;
 		}
 		// Create 'this' ports.
-        port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.InFunctionPort);
+        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.classType, iCS_ObjectTypeEnum.InFunctionPort);
         port.PortIndex= portIdx++;			
-        port= CreatePort("this", id, desc.ClassType, iCS_ObjectTypeEnum.OutFunctionPort);
+        port= CreatePort(iCS_Strings.InstanceObjectName, id, desc.classType, iCS_ObjectTypeEnum.OutFunctionPort);
         port.PortIndex= portIdx;			
         // Perform initial node layout.
         instance.Unhide();
@@ -517,7 +517,7 @@ public partial class iCS_IStorage {
         }
     }
     // ----------------------------------------------------------------------
-    public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_ReflectionInfo convDesc) {
+    public void SetSource(iCS_EditorObject inPort, iCS_EditorObject outPort, iCS_TypeCastInfo convDesc) {
         if(convDesc == null) {
             SetSource(inPort, outPort);
             return;

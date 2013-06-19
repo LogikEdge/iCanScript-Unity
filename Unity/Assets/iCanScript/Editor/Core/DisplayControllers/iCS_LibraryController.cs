@@ -12,8 +12,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     public class Node {
         public NodeTypeEnum        Type;
         public string              Name;
-        public iCS_ReflectionInfo  Desc;
-        public Node(NodeTypeEnum type, string name, iCS_ReflectionInfo desc) {
+        public iCS_MemberInfo  Desc;
+        public Node(NodeTypeEnum type, string name, iCS_MemberInfo desc) {
             Type= type;
             Name= name;
             Desc= desc;
@@ -99,11 +99,11 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void BuildTree() {
         // Build filter list of object...
-        var allFunctions= iCS_DataBase.AllFunctions();
+        var allFunctions= iCS_LibraryDataBase.AllFunctions();
 		// Build tree and sort it elements.
 		myTree= BuildTreeNode(allFunctions);
     }
-	Prelude.Tree<Node> BuildTreeNode(List<iCS_ReflectionInfo> functions) {
+	Prelude.Tree<Node> BuildTreeNode(List<iCS_MethodBaseInfo> functions) {
         if(functions.Count == 0) return null;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
         for(int i= 0; i < functions.Count; ++i) {
@@ -111,14 +111,14 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                 var desc= functions[i];
                 var parentTree= GetParentTree(desc, tree);
                 Node toAdd= null;
-                if(desc.IsField) {
-                    toAdd= new Node(NodeTypeEnum.Field, desc.FieldName, desc);
-                } else if(desc.IsProperty) {
-                    toAdd= new Node(NodeTypeEnum.Property, desc.PropertyName, desc);
-                } else if(desc.IsConstructor) {
-                    toAdd= new Node(NodeTypeEnum.Constructor, desc.FunctionSignature, desc);
-                } else if(desc.IsMethod) {
-                    toAdd= new Node(NodeTypeEnum.Method, desc.FunctionSignature, desc);                
+                if(desc.isField) {
+                    toAdd= new Node(NodeTypeEnum.Field, desc.toFieldInfo.fieldName, desc);
+                } else if(desc.isProperty) {
+                    toAdd= new Node(NodeTypeEnum.Property, desc.toPropertyInfo.propertyName, desc);
+                } else if(desc.isConstructor) {
+                    toAdd= new Node(NodeTypeEnum.Constructor, desc.toConstructorInfo.functionSignature, desc);
+                } else if(desc.isMethod) {
+                    toAdd= new Node(NodeTypeEnum.Method, desc.toMethodInfo.functionSignature, desc);                
                 }
                 if(toAdd != null) {
                     parentTree.AddChild(toAdd);
@@ -147,24 +147,24 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         }
         return -1;
     }
-    Prelude.Tree<Node> GetParentTree(iCS_ReflectionInfo desc, Prelude.Tree<Node> tree) {
-        if(!iCS_Strings.IsEmpty(desc.Company)) {
-            var idx= FindInTreeChildren(desc.Company, tree);
+    Prelude.Tree<Node> GetParentTree(iCS_MemberInfo desc, Prelude.Tree<Node> tree) {
+        if(!iCS_Strings.IsEmpty(desc.parentTypeInfo.company)) {
+            var idx= FindInTreeChildren(desc.parentTypeInfo.company, tree);
             if(idx < 0) {
-                tree.AddChild(new Node(NodeTypeEnum.Company, desc.Company, desc));
-                idx= FindInTreeChildren(desc.Company, tree);
+                tree.AddChild(new Node(NodeTypeEnum.Company, desc.parentTypeInfo.company, desc));
+                idx= FindInTreeChildren(desc.parentTypeInfo.company, tree);
             }
             tree= tree.Children[idx];
         }
-        if(!iCS_Strings.IsEmpty(desc.Package)) {
-            var idx= FindInTreeChildren(desc.Package, tree);
+        if(!iCS_Strings.IsEmpty(desc.parentTypeInfo.package)) {
+            var idx= FindInTreeChildren(desc.parentTypeInfo.package, tree);
             if(idx < 0) {
-                tree.AddChild(new Node(NodeTypeEnum.Package, desc.Package, desc));
-                idx= FindInTreeChildren(desc.Package, tree);
+                tree.AddChild(new Node(NodeTypeEnum.Package, desc.parentTypeInfo.package, desc));
+                idx= FindInTreeChildren(desc.parentTypeInfo.package, tree);
             }
             tree= tree.Children[idx];            
         }
-        string className= iCS_Types.TypeName(desc.ClassType);
+        string className= iCS_Types.TypeName(desc.parentTypeInfo.compilerType);
         if(!iCS_Strings.IsEmpty(className)) {
             var idx= FindInTreeChildren(className, tree);
             if(idx < 0) {
@@ -206,50 +206,50 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         if(x.Type != NodeTypeEnum.Company && y.Type == NodeTypeEnum.Company) return 1;
         // The types are the same so lets sort according to input/output direction.
         if(x.Type == NodeTypeEnum.Field) {
-            bool isXGet= x.Desc.IsGetField;
-            bool isYGet= y.Desc.IsGetField;
+            bool isXGet= x.Desc.isGetField;
+            bool isYGet= y.Desc.isGetField;
             if(isXGet != isYGet) return isXGet ? 1 : -1;
         }
         if(x.Type == NodeTypeEnum.Property) {
-            bool isXGet= x.Desc.IsGetProperty;
-            bool isYGet= y.Desc.IsGetProperty;
+            bool isXGet= x.Desc.isGetProperty;
+            bool isYGet= y.Desc.isGetProperty;
             if(isXGet != isYGet) return isXGet ? 1 : -1;
         }
         // Everything is the same so lets sort according to the name.
 		return String.Compare(x.Name, y.Name);
 	}
     // ---------------------------------------------------------------------------------
-    bool FilterInCompany(iCS_ReflectionInfo desc) {
+    bool FilterInCompany(iCS_MemberInfo desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();
-        if(!iCS_Strings.IsEmpty(desc.Company) && desc.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(!iCS_Strings.IsEmpty(desc.parentTypeInfo.company) && desc.parentTypeInfo.company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterInPackage(iCS_ReflectionInfo desc) {
+    bool FilterInPackage(iCS_MemberInfo desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();
-        if(!iCS_Strings.IsEmpty(desc.Package) && desc.Package.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(!iCS_Strings.IsEmpty(desc.parentTypeInfo.package) && desc.parentTypeInfo.package.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterInName(iCS_ReflectionInfo desc) {
+    bool FilterInName(iCS_MemberInfo desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();
-        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(desc.displayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     // ---------------------------------------------------------------------------------
-    bool FilterIn(iCS_ReflectionInfo desc) {
+    bool FilterIn(iCS_MemberInfo desc) {
         if(desc == null) return false;
         if(iCS_Strings.IsEmpty(mySearchString)) return true;
         string upperSearchStr= mySearchString.ToUpper();
-        if(desc.DisplayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        if(!iCS_Strings.IsEmpty(desc.Package) && desc.Package.ToUpper().IndexOf(upperSearchStr) != -1) return true;
-        if(!iCS_Strings.IsEmpty(desc.Company) && desc.Company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(desc.displayName.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(!iCS_Strings.IsEmpty(desc.parentTypeInfo.package) && desc.package.ToUpper().IndexOf(upperSearchStr) != -1) return true;
+        if(!iCS_Strings.IsEmpty(desc.parentTypeInfo.company) && desc.company.ToUpper().IndexOf(upperSearchStr) != -1) return true;
         return false;
     }
     // ---------------------------------------------------------------------------------
@@ -261,7 +261,6 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         return false;
     }
     
-
 	// =================================================================================
     // TreeViewDataSource
     // ---------------------------------------------------------------------------------
@@ -378,13 +377,13 @@ public class iCS_LibraryController : DSTreeViewDataSource {
         } else if(nodeType == NodeTypeEnum.Class) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ClassHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.Field) {
-            if(current.Desc.IsGetField) {
+            if(current.Desc.isGetField) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
             } else {
                 icon= iCS_BuiltinTextures.InEndPortIcon;
             }
         } else if(nodeType == NodeTypeEnum.Property) {
-            if(current.Desc.IsGetProperty) {
+            if(current.Desc.isGetProperty) {
                 icon= iCS_BuiltinTextures.OutEndPortIcon;
             } else {
                 icon= iCS_BuiltinTextures.InEndPortIcon;
