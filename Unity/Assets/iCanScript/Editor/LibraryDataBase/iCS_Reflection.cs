@@ -370,11 +370,29 @@ public class iCS_Reflection {
                                      string retName, MethodInfo method) {
         // Parse parameters.
         if(!AreAllParamTypesSupported(method)) return; 
-        var parameters= ParseParameters(method);       
+        var parameters= ParseParameters(method);
+        var returnType= new iCS_FunctionReturn(retName, method.ReturnType);       
 
-        iCS_LibraryDataBase.AddInstanceMethod(_classTypeInfo, displayName, description, iconPath,
-                                              parameters, new iCS_FunctionReturn(retName, method.ReturnType),
-                                              method);
+        // Register a property if the method has only one input or one output.
+        bool isProperty= false;
+        if(parameters.Length == 1 && returnType.type != typeof(void)) {
+            isProperty= true;
+            displayName= "get_"+displayName;
+        }
+        if(parameters.Length == 2 && returnType.type == typeof(void)) {
+            isProperty= true;
+            displayName= "set_"+displayName;
+        }
+        if(isProperty) {
+            iCS_LibraryDataBase.AddInstanceProperty(_classTypeInfo,
+                                                    displayName, description, iconPath,
+                                                    parameters, returnType,
+                                                    method);
+        } else {
+            iCS_LibraryDataBase.AddInstanceMethod(_classTypeInfo, displayName, description, iconPath,
+                                                  parameters, returnType,
+                                                  method);            
+        }
     }
     // ----------------------------------------------------------------------
     static void DecodeStaticMethod(iCS_TypeInfo _classTypeInfo,
@@ -383,11 +401,30 @@ public class iCS_Reflection {
         // Parse parameters.
         if(!AreAllParamTypesSupported(method)) return;
         var parameters= ParseParameters(method);       
+        var returnType= new iCS_FunctionReturn(retName, method.ReturnType);       
 
-        iCS_LibraryDataBase.AddStaticMethod(_classTypeInfo,
-                                     displayName, description, iconPath,
-                                     parameters, new iCS_FunctionReturn(retName, method.ReturnType),
-                                     method);
+        // Register a property if the method has only one input or one output.
+        bool isProperty= false;
+        if(parameters.Length == 0 && returnType.type != typeof(void)) {
+            isProperty= true;
+            displayName= "get_"+displayName;
+        }
+        if(parameters.Length == 1 && returnType.type == typeof(void)) {
+            isProperty= true;
+            displayName= "set_"+displayName;
+        }
+        if(isProperty) {
+            iCS_LibraryDataBase.AddStaticProperty(_classTypeInfo,
+                                                  displayName, description, iconPath,
+                                                  parameters, returnType,
+                                                  method);            
+        } else {
+            // Register standard method.
+            iCS_LibraryDataBase.AddStaticMethod(_classTypeInfo,
+                                                displayName, description, iconPath,
+                                                parameters, returnType,
+                                                method);
+        }
     }
 
     // ======================================================================
@@ -414,5 +451,4 @@ public class iCS_Reflection {
         }
         return true;
     }
-
 }

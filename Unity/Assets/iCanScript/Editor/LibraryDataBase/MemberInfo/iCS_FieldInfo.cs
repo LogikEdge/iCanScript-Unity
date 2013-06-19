@@ -14,10 +14,10 @@ public class iCS_FieldInfo : iCS_MethodBaseInfo {
     // Accessors
     // ----------------------------------------------------------------------
     public bool isGet {
-        get { return parameters.Length == 0; }
+        get { return !isSet; }
     }
     public bool isSet {
-        get { return !isGet; }
+        get { return functionReturn == null || functionReturn.type == typeof(void); }
     }
     public override string methodName {
         get { return field.Name; }
@@ -34,7 +34,9 @@ public class iCS_FieldInfo : iCS_MethodBaseInfo {
     : base(objType, _parentType, _name, _description, _iconPath, _parameters, _functionReturn)
     {
         field= _fieldInfo;
-		type = _parameters.Length == 1 ? _parameters[0].type : functionReturn.type;
+		type = functionReturn != null && functionReturn.type != typeof(void) ?
+		            functionReturn.type :
+		            _parameters[_parameters.Length-1].type;
     }
 
     // ======================================================================

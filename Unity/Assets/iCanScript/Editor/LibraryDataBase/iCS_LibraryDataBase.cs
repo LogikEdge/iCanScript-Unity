@@ -297,6 +297,16 @@ public class iCS_LibraryDataBase {
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
+    public static void AddInstanceProperty(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                           iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
+                                           MethodInfo methodInfo) {
+        var record= new iCS_PropertyInfo(iCS_ObjectTypeEnum.InstanceMethod, classInfo,
+                                         displayName, description, iconPath,
+            						     parameters, functionReturn,
+            						     methodInfo);
+		AddDataBaseRecord(record);
+    }
+    // ----------------------------------------------------------------------
     // Adds an execution function (no context).
     public static void AddStaticMethod(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
                                        iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
@@ -305,6 +315,17 @@ public class iCS_LibraryDataBase {
 		                               displayName, description, iconPath,
 						               parameters, functionReturn,
 									   methodInfo);
+		AddDataBaseRecord(record);
+    }
+    // ----------------------------------------------------------------------
+    // Adds an execution function (no context).
+    public static void AddStaticProperty(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                         iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
+                                         MethodInfo methodInfo) {
+		var record= new iCS_PropertyInfo(iCS_ObjectTypeEnum.StaticMethod, classInfo,
+		                                 displayName, description, iconPath,
+						                 parameters, functionReturn,
+									     methodInfo);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------

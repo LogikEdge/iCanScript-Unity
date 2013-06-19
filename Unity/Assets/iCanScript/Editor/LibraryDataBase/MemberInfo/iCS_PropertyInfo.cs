@@ -5,18 +5,14 @@ using System.Collections;
 
 public class iCS_PropertyInfo : iCS_MethodInfo {
     // ======================================================================
-    // Fields
-    // ----------------------------------------------------------------------
-
-    // ======================================================================
     // Accessors
     // ----------------------------------------------------------------------
-    public bool isGet { get { return parameters.Length == 0; }}
-    public bool isSet { get { return !isGet; }}
+    public bool isGet { get { return !isSet; }}
+    public bool isSet { get { return functionReturn == null || functionReturn.type == typeof(void); }}
     public string propertyName { get { return displayName.Substring(4); }}
     public Type type {
         get {
-            return isGet ? functionReturn.type : parameters[0].type;
+            return isGet ? functionReturn.type : parameters[parameters.Length-1].type;
         }
     }
     
