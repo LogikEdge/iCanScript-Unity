@@ -12,6 +12,6 @@ public class iCS_TypeCastInfo : iCS_MethodInfo {
                             iCS_Parameter[] _parameters, iCS_FunctionReturn _functionReturn,
 							MethodBase _methodBase)
     : base(iCS_ObjectTypeEnum.TypeCast, _classTypeInfo, _name, _description, _iconPath, 
-           _parameters, _functionReturn, _methodBase)
+           _parameters, _functionReturn, iCS_StorageClass.Class, _methodBase)
     {}
 }

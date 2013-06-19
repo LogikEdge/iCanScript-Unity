@@ -14,7 +14,7 @@ public class iCS_ConstructorInfo : iCS_MethodInfo {
            _displayName, _description, _iconPath,
            _parameters,
            new iCS_FunctionReturn(iCS_Strings.InstanceObjectName, _classInfo.compilerType),
-           _methodBase)
+           iCS_StorageClass.Class, _methodBase)
     {
     }
 }

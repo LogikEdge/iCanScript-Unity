@@ -244,11 +244,15 @@ public class iCS_Reflection {
             parameters[0].type        = field.FieldType;
             parameters[0].direction   = iCS_ParamDirection.In;
             parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
-            iCS_LibraryDataBase.AddStaticField(_classTypeInfo, "set_"+field.Name, description, iconPath, parameters, null, field);                    
+            iCS_LibraryDataBase.AddField(_classTypeInfo, "set_"+field.Name, description, iconPath,
+                                         parameters, null,
+                                         iCS_StorageClass.Class, iCS_AccessorType.Set, field);                    
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
             var returnType= new iCS_FunctionReturn(field.Name, field.FieldType);
-            iCS_LibraryDataBase.AddStaticField(_classTypeInfo, "get_"+field.Name, description, iconPath, new iCS_Parameter[0], returnType, field);                    
+            iCS_LibraryDataBase.AddField(_classTypeInfo, "get_"+field.Name, description, iconPath,
+                                         new iCS_Parameter[0], returnType,
+                                         iCS_StorageClass.Class, iCS_AccessorType.Get, field);                    
         }
     }
     // ----------------------------------------------------------------------
@@ -262,11 +266,15 @@ public class iCS_Reflection {
             parameters[0].type        = field.FieldType;
             parameters[0].direction   = iCS_ParamDirection.In;
             parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
-            iCS_LibraryDataBase.AddInstanceField(_classTypeInfo, "set_"+field.Name, description, iconPath, parameters, null, field);                    
+            iCS_LibraryDataBase.AddField(_classTypeInfo, "set_"+field.Name, description, iconPath,
+                                         parameters, null,
+                                         iCS_StorageClass.Instance, iCS_AccessorType.Set, field);                    
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
             var returnType= new iCS_FunctionReturn(field.Name, field.FieldType);
-            iCS_LibraryDataBase.AddInstanceField(_classTypeInfo, "get_"+field.Name, description, iconPath, new iCS_Parameter[0], returnType, field);                    
+            iCS_LibraryDataBase.AddField(_classTypeInfo, "get_"+field.Name, description, iconPath,
+                                         new iCS_Parameter[0], returnType,
+                                         iCS_StorageClass.Instance, iCS_AccessorType.Get, field);                    
         }
     }
     // ----------------------------------------------------------------------
@@ -375,23 +383,28 @@ public class iCS_Reflection {
 
         // Register a property if the method has only one input or one output.
         bool isProperty= false;
-        if(parameters.Length == 1 && returnType.type != typeof(void)) {
+        iCS_AccessorType accessor= iCS_AccessorType.None;
+        if(parameters.Length == 0 && returnType.type != typeof(void) && displayName.StartsWith("get_")) {
             isProperty= true;
-            displayName= "get_"+displayName;
+            accessor= iCS_AccessorType.Get;
         }
-        if(parameters.Length == 2 && returnType.type == typeof(void)) {
+        if(parameters.Length == 1 && returnType.type == typeof(void) && displayName.StartsWith("set_")) {
             isProperty= true;
-            displayName= "set_"+displayName;
+            accessor= iCS_AccessorType.Set;
         }
         if(isProperty) {
-            iCS_LibraryDataBase.AddInstanceProperty(_classTypeInfo,
-                                                    displayName, description, iconPath,
-                                                    parameters, returnType,
-                                                    method);
+            iCS_LibraryDataBase.AddProperty(_classTypeInfo,
+                                            displayName, description, iconPath,
+                                            parameters, returnType,
+                                            iCS_StorageClass.Instance, accessor,
+                                            method);
         } else {
-            iCS_LibraryDataBase.AddInstanceMethod(_classTypeInfo, displayName, description, iconPath,
-                                                  parameters, returnType,
-                                                  method);            
+//            if(displayName.StartsWith("get_") || displayName.StartsWith("set_")) {
+//                Debug.Log("Method: "+displayName+" #p=> "+parameters.Length+" return=> "+returnType.type);
+//            }
+            iCS_LibraryDataBase.AddMethod(_classTypeInfo, displayName, description, iconPath,
+                                          parameters, returnType,
+                                          iCS_StorageClass.Instance, method);            
         }
     }
     // ----------------------------------------------------------------------
@@ -405,28 +418,34 @@ public class iCS_Reflection {
 
         // Register a property if the method has only one input or one output.
         bool isProperty= false;
-        if(parameters.Length == 0 && returnType.type != typeof(void)) {
+        iCS_AccessorType accessor= iCS_AccessorType.None;
+        if(parameters.Length == 0 && returnType.type != typeof(void) && displayName.StartsWith("get_")) {
             isProperty= true;
-            displayName= "get_"+displayName;
+            accessor= iCS_AccessorType.Get;
         }
-        if(parameters.Length == 1 && returnType.type == typeof(void)) {
+        if(parameters.Length == 1 && returnType.type == typeof(void) && displayName.StartsWith("set_")) {
             isProperty= true;
-            displayName= "set_"+displayName;
+            accessor= iCS_AccessorType.Set;
         }
         if(isProperty) {
-            iCS_LibraryDataBase.AddStaticProperty(_classTypeInfo,
-                                                  displayName, description, iconPath,
-                                                  parameters, returnType,
-                                                  method);            
+            iCS_LibraryDataBase.AddProperty(_classTypeInfo,
+                                            displayName, description, iconPath,
+                                            parameters, returnType,
+                                            iCS_StorageClass.Class, accessor,
+                                            method);            
         } else {
             // Register standard method.
-            iCS_LibraryDataBase.AddStaticMethod(_classTypeInfo,
-                                                displayName, description, iconPath,
-                                                parameters, returnType,
-                                                method);
+//            if(displayName.StartsWith("get_") || displayName.StartsWith("set_")) {
+//                Debug.Log("Function: "+displayName+" #p=> "+parameters.Length+" return=> "+returnType.type);
+//            }
+            iCS_LibraryDataBase.AddMethod(_classTypeInfo,
+                                          displayName, description, iconPath,
+                                          parameters, returnType,
+                                          iCS_StorageClass.Class, method);
         }
     }
 
+   
     // ======================================================================
     // ----------------------------------------------------------------------
     static iCS_Parameter[] ParseParameters(MethodBase method) {

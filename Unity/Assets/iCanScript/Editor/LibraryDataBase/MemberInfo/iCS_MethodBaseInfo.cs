@@ -37,20 +37,12 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
     // ----------------------------------------------------------------------
     public iCS_MethodBaseInfo(iCS_ObjectTypeEnum objType, iCS_TypeInfo _classInfo,
                               string _name, string _description, string _iconPath,
-                              iCS_Parameter[] _parameters, iCS_FunctionReturn _functionReturn)
+                              iCS_Parameter[] _parameters, iCS_FunctionReturn _functionReturn,
+                              iCS_StorageClass _storageClass)
     : base(objType, _classInfo, _name, _description, _iconPath) {
         parameters    = _parameters;
         functionReturn= _functionReturn;
-		switch(objType) {
-			case iCS_ObjectTypeEnum.Constructor:
-			case iCS_ObjectTypeEnum.StaticMethod:
-			case iCS_ObjectTypeEnum.StaticField:
-				storageClass= iCS_StorageClass.Class;
-				break;
-			default:
-				storageClass= iCS_StorageClass.Instance;
-				break;
-		}
+        storageClass= _storageClass;
     }
 
     // ======================================================================

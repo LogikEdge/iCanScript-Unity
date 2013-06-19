@@ -268,64 +268,34 @@ public class iCS_LibraryDataBase {
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
-    public static void AddStaticField(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                      iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                      FieldInfo fieldInfo) {
+    public static void AddField(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
+                                iCS_StorageClass storageClass, iCS_AccessorType accessorType,
+                                FieldInfo fieldInfo) {
         var record= new iCS_FieldInfo(iCS_ObjectTypeEnum.StaticField, classInfo, displayName, description, iconPath,
                                       parameters, functionReturn,
-                                      fieldInfo);
+                                      storageClass, accessorType, fieldInfo);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
-    public static void AddInstanceField(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                        iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                        FieldInfo fieldInfo) {
-        var record= new iCS_FieldInfo(iCS_ObjectTypeEnum.InstanceField, classInfo,
-                                      displayName, description, iconPath,
-                                      parameters, functionReturn,
-                                      fieldInfo);
-		AddDataBaseRecord(record);
-    }
-    // ----------------------------------------------------------------------
-    public static void AddInstanceMethod(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                         iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                         MethodInfo methodInfo) {
+    public static void AddMethod(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                 iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
+                                 iCS_StorageClass storageClass, MethodInfo methodInfo) {
         var record= new iCS_MethodInfo(iCS_ObjectTypeEnum.InstanceMethod, classInfo,
                                        displayName, description, iconPath,
             						   parameters, functionReturn,
-            						   methodInfo);
+            						   storageClass, methodInfo);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
-    public static void AddInstanceProperty(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                           iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                           MethodInfo methodInfo) {
+    public static void AddProperty(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
+                                   iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
+                                   iCS_StorageClass storageClass, iCS_AccessorType accessorType,
+                                   MethodInfo methodInfo) {
         var record= new iCS_PropertyInfo(iCS_ObjectTypeEnum.InstanceMethod, classInfo,
                                          displayName, description, iconPath,
-            						     parameters, functionReturn,
+            						     parameters, functionReturn, storageClass, accessorType,
             						     methodInfo);
-		AddDataBaseRecord(record);
-    }
-    // ----------------------------------------------------------------------
-    // Adds an execution function (no context).
-    public static void AddStaticMethod(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                       iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                       MethodInfo methodInfo) {
-		var record= new iCS_MethodInfo(iCS_ObjectTypeEnum.StaticMethod, classInfo,
-		                               displayName, description, iconPath,
-						               parameters, functionReturn,
-									   methodInfo);
-		AddDataBaseRecord(record);
-    }
-    // ----------------------------------------------------------------------
-    // Adds an execution function (no context).
-    public static void AddStaticProperty(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
-                                         iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                         MethodInfo methodInfo) {
-		var record= new iCS_PropertyInfo(iCS_ObjectTypeEnum.StaticMethod, classInfo,
-		                                 displayName, description, iconPath,
-						                 parameters, functionReturn,
-									     methodInfo);
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
