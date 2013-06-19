@@ -226,13 +226,14 @@ public class iCS_LibraryDataBase {
     public static iCS_TypeCastInfo FindTypeCast(iCS_TypeInfo typeInfo, Type fromType, Type toType) {
 		foreach(var m in typeInfo.members) {
 	        if(m.isTypeCast) {
-	            if(iCS_Types.CanBeConnectedWithoutConversion(fromType, m.parameters[0].type) &&
-	               iCS_Types.CanBeConnectedWithoutConversion(m.returnType, toType)) {
-					return m;
+	            var typeCast= m.toTypeCastInfo;
+	            if(iCS_Types.CanBeConnectedWithoutConversion(fromType, typeCast.parameters[0].type) &&
+	               iCS_Types.CanBeConnectedWithoutConversion(typeCast.returnType, toType)) {
+					return typeCast;
 				}
 	        }
 			if(m.isTypeInfo) {
-				var cast= FindTypeCast(m, fromType, toType);
+				var cast= FindTypeCast(m.toTypeInfo, fromType, toType);
 				if(cast != null) {
 					return cast;
 				}
