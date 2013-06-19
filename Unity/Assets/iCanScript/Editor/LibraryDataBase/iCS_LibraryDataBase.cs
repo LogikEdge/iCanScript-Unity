@@ -122,23 +122,53 @@ public class iCS_LibraryDataBase {
     }
     // ----------------------------------------------------------------------
 	public static iCS_ConstructorInfo[] GetConstructors(Type compilerType) {
-		return Prelude.filter(c=> c.isConstructor, GetMembers(compilerType)) as iCS_ConstructorInfo[];
+	    var constructors= new List<iCS_ConstructorInfo>();
+        foreach(var c in GetMembers(compilerType)) {
+            if(c.isConstructor) {
+                constructors.Add(c.toConstructorInfo);
+            }
+        }
+        return constructors.ToArray();
 	}
     // ----------------------------------------------------------------------
 	public static iCS_FieldInfo[] GetFields(Type compilerType) {
-		return Prelude.filter(c=> c.isField, GetMembers(compilerType)) as iCS_FieldInfo[];
+	    var fields= new List<iCS_FieldInfo>();
+	    foreach(var f in GetMembers(compilerType)) {
+	        if(f.isField) {
+	            fields.Add(f.toFieldInfo);
+	        }
+	    }
+        return fields.ToArray();
 	}
     // ----------------------------------------------------------------------
 	public static iCS_PropertyInfo[] GetProperties(Type compilerType) {
-		return Prelude.filter(c=> c.isProperty, GetMembers(compilerType)) as iCS_PropertyInfo[];
+	    var properties= new List<iCS_PropertyInfo>();
+	    foreach(var p in GetMembers(compilerType)) {
+            if(p.isProperty) {
+                properties.Add(p.toPropertyInfo);
+            }
+        }
+	    return properties.ToArray();
 	}
     // ----------------------------------------------------------------------
 	public static iCS_MethodBaseInfo[] GetPropertiesAndFields(Type compilerType) {
-		return Prelude.filter(c=> c.isField || c.isProperty, GetMembers(compilerType)) as iCS_MethodBaseInfo[];
+	    var variables= new List<iCS_MethodBaseInfo>();
+	    foreach(var v in GetMembers(compilerType)) {
+	        if(v.isField || v.isProperty) {
+	            variables.Add(v.toMethodBaseInfo);
+	        }
+	    }
+	    return variables.ToArray();
 	}
     // ----------------------------------------------------------------------
 	public static iCS_MethodInfo[] GetMethods(Type compilerType) {
-		return Prelude.filter(c=> !(c.isConstructor || c.isField || c.isProperty), GetMembers(compilerType)) as iCS_MethodInfo[];
+        var methods= new List<iCS_MethodInfo>();
+        foreach(var m in GetMembers(compilerType)) {
+            if(m.isMethod && !m.isConstructor && !m.isProperty) {
+                methods.Add(m.toMethodInfo);
+            }
+        }
+        return methods.ToArray();
 	}
     // ----------------------------------------------------------------------
     public static List<iCS_MethodBaseInfo> BuildMenu(Type inputType, Type outputType) {
