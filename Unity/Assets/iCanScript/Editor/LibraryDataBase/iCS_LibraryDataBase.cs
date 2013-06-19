@@ -9,9 +9,9 @@ public class iCS_LibraryDataBase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public static List<iCS_TypeInfo>    types    = new List<iCS_TypeInfo>();
-    public static List<iCS_MemberInfo>  Functions= new List<iCS_MemberInfo>();
-    public static bool                  IsSorted = false;
+    public static List<iCS_TypeInfo>        types    = new List<iCS_TypeInfo>();
+    public static List<iCS_MethodBaseInfo>  Functions= new List<iCS_MethodBaseInfo>();
+    public static bool                      IsSorted = false;
     
     // ======================================================================
     // DataBase functionality
@@ -29,7 +29,7 @@ public class iCS_LibraryDataBase {
                 ++cmpCnt;
                 if(CompareFunctionNames(Functions[i], Functions[j]) > 0) {
                     ++reorderCnt;
-                    iCS_MemberInfo tmp= Functions[i];
+                    var tmp= Functions[i];
                     Functions[i]= Functions[j];
                     Functions[j]= tmp;
                     int k= i-step;
@@ -71,18 +71,18 @@ public class iCS_LibraryDataBase {
         return d1.displayName.CompareTo(d2.displayName);
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MemberInfo> BuildExpertMenu() {
+    public static List<iCS_MethodBaseInfo> BuildExpertMenu() {
         return AllFunctions();
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MemberInfo> AllFunctions() {
+    public static List<iCS_MethodBaseInfo> AllFunctions() {
         QSort();
         return Functions;
     }
     // ----------------------------------------------------------------------
-    public static List<iCS_MemberInfo> BuildNormalMenu() {
+    public static List<iCS_MethodBaseInfo> BuildNormalMenu() {
         QSort();
-        List<iCS_MemberInfo> menu= new List<iCS_MemberInfo>();
+        var menu= new List<iCS_MethodBaseInfo>();
         foreach(var desc in Functions) {
             Type classType= desc.classType;
             if(iCS_Types.IsStaticClass(classType)) {
@@ -141,9 +141,9 @@ public class iCS_LibraryDataBase {
 		return Prelude.filter(c=> !(c.isConstructor || c.isField || c.isProperty), GetMembers(compilerType)) as iCS_MethodInfo[];
 	}
     // ----------------------------------------------------------------------
-    public static List<iCS_MemberInfo> BuildMenu(Type inputType, Type outputType) {
+    public static List<iCS_MethodBaseInfo> BuildMenu(Type inputType, Type outputType) {
         QSort();
-        List<iCS_MemberInfo> menu= new List<iCS_MemberInfo>();
+        var menu= new List<iCS_MethodBaseInfo>();
         for(int i= 0; i < Functions.Count; ++i) {
             // Filter functions according to input or output filter.
             bool shouldInclude= false;
@@ -179,7 +179,7 @@ public class iCS_LibraryDataBase {
                         }
                     }
                 }
-                if(func.ReturnType == outputType) shouldInclude= true;
+                if(func.returnType == outputType) shouldInclude= true;
                 for(int j= 0; !shouldInclude && j < func.parameters.Length; ++j) {
                     var param= func.parameters[j];
                     if(param.direction != iCS_ParamDirection.In) {
@@ -208,7 +208,7 @@ public class iCS_LibraryDataBase {
     // Returns the class type associated with the given company/package.
     public static Type GetClassType(string classPath) {
         foreach(var desc in Functions) {
-            if(desc.FunctionPath == classPath) return desc.ClassType;
+            if(desc.functionPath == classPath) return desc.classType;
         }
         return null;
     }
@@ -343,7 +343,9 @@ public class iCS_LibraryDataBase {
     // ----------------------------------------------------------------------
     // Adds a new database record.
     public static void AddDataBaseRecord(iCS_MemberInfo record) {
-        Functions.Add(record);
-        IsSorted= false;	
+        if(record.isMethodBase) {
+            Functions.Add(record.toMethodBaseInfo);
+            IsSorted= false;	            
+        }
 	}
 }

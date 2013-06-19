@@ -103,7 +103,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
 		// Build tree and sort it elements.
 		myTree= BuildTreeNode(allFunctions);
     }
-	Prelude.Tree<Node> BuildTreeNode(List<iCS_MemberInfo> functions) {
+	Prelude.Tree<Node> BuildTreeNode(List<iCS_MethodBaseInfo> functions) {
         if(functions.Count == 0) return null;
 		Prelude.Tree<Node> tree= new Prelude.Tree<Node>(new Node(NodeTypeEnum.Root, "Root", null));
         for(int i= 0; i < functions.Count; ++i) {
