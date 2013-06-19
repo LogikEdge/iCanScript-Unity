@@ -302,7 +302,10 @@ public class iCS_LibraryDataBase {
                                 iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
                                 iCS_StorageClass storageClass, iCS_AccessorType accessorType,
                                 FieldInfo fieldInfo) {
-        var record= new iCS_FieldInfo(iCS_ObjectTypeEnum.StaticField, classInfo, displayName, description, iconPath,
+        var objectType= storageClass == iCS_StorageClass.Instance ?
+                            iCS_ObjectTypeEnum.InstanceField :
+                            iCS_ObjectTypeEnum.StaticField;
+        var record= new iCS_FieldInfo(objectType, classInfo, displayName, description, iconPath,
                                       parameters, functionReturn,
                                       storageClass, accessorType, fieldInfo);
 		AddDataBaseRecord(record);
@@ -311,7 +314,10 @@ public class iCS_LibraryDataBase {
     public static void AddMethod(iCS_TypeInfo classInfo, string displayName, string description, string iconPath,
                                  iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
                                  iCS_StorageClass storageClass, MethodInfo methodInfo) {
-        var record= new iCS_MethodInfo(iCS_ObjectTypeEnum.InstanceMethod, classInfo,
+        var objectType= storageClass == iCS_StorageClass.Instance ?
+                            iCS_ObjectTypeEnum.InstanceMethod :
+                            iCS_ObjectTypeEnum.StaticMethod;
+        var record= new iCS_MethodInfo(objectType, classInfo,
                                        displayName, description, iconPath,
             						   parameters, functionReturn,
             						   storageClass, methodInfo);
@@ -322,7 +328,10 @@ public class iCS_LibraryDataBase {
                                    iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
                                    iCS_StorageClass storageClass, iCS_AccessorType accessorType,
                                    MethodInfo methodInfo) {
-        var record= new iCS_PropertyInfo(iCS_ObjectTypeEnum.InstanceMethod, classInfo,
+        var objectType= storageClass == iCS_StorageClass.Instance ?
+                            iCS_ObjectTypeEnum.InstanceMethod :
+                            iCS_ObjectTypeEnum.StaticMethod;
+        var record= new iCS_PropertyInfo(objectType, classInfo,
                                          displayName, description, iconPath,
             						     parameters, functionReturn, storageClass, accessorType,
             						     methodInfo);
