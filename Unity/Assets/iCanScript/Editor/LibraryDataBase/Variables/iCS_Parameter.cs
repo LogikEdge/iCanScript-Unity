@@ -16,4 +16,15 @@ public class iCS_Parameter : iCS_Variable {
     : base(_name, _type, _initialValue) {
         direction= _direction;
     }
+
+    // ======================================================================
+    // Common object methods.
+    // ----------------------------------------------------------------------
+	public override string ToString() {
+	    return "{"+ToStringWithoutBraces()+"}";
+	}
+	public new string ToStringWithoutBraces() {
+	    return base.ToStringWithoutBraces()+" :"+direction;	    
+	}
+
 }

@@ -27,4 +27,18 @@ public class iCS_Variable {
 	        type        = _type;
 	        initialValue= _initialValue;
 	    }
+	    
+    // ======================================================================
+    // Common object methods.
+    // ----------------------------------------------------------------------
+	public override string ToString() {
+	    return "{"+ToStringWithoutBraces()+"}";
+	}
+	public string ToStringWithoutBraces() {
+	    var str= name+":"+type;
+	    if(initialValue != null) {
+    	    str+= "= "+initialValue.ToString();	    
+	    }
+	    return str;
+	}
 }//end iCS_Variable

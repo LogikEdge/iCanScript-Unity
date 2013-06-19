@@ -451,13 +451,14 @@ public class iCS_Reflection {
     static iCS_Parameter[] ParseParameters(MethodBase method) {
         ParameterInfo[] paramInfo= method.GetParameters();
         iCS_Parameter[] parameters= new iCS_Parameter[paramInfo.Length];
-        if(paramInfo.Length == 0) return new iCS_Parameter[0];
+        if(paramInfo.Length == 0) return parameters;
         for(int i= 0; i < paramInfo.Length; ++i) {
             var p= paramInfo[i];
             parameters[i]= new iCS_Parameter();
             parameters[i].name= p.Name;
             parameters[i].type= p.ParameterType;
-            parameters[i].direction= p.IsIn ? (p.IsOut ? iCS_ParamDirection.InOut : iCS_ParamDirection.In) : iCS_ParamDirection.Out;
+            // IMPROVE: Mono seems broken for ParameterInfo.IsIn. So we use !IsOut as IsIn. That prevents InOut parameters...
+            parameters[i].direction= p.IsOut ? (p.IsIn ? iCS_ParamDirection.InOut : iCS_ParamDirection.Out) : iCS_ParamDirection.In;
             object defaultValue= p.DefaultValue; 
             parameters[i].initialValue= (defaultValue == null || defaultValue.GetType() != p.ParameterType) ? null : defaultValue;
         }

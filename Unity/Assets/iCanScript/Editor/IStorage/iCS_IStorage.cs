@@ -397,7 +397,7 @@ public partial class iCS_IStorage {
     }
     // ----------------------------------------------------------------------
     public iCS_EditorObject CreateMethod(int parentId, Vector2 globalPos, iCS_MethodBaseInfo desc) {
-        iCS_EditorObject instance= desc.objectType == iCS_ObjectTypeEnum.InstanceMethod || desc.objectType == iCS_ObjectTypeEnum.InstanceField ?
+        iCS_EditorObject instance= desc.isInstanceMember ?
                     				CreateInstanceMethod(parentId, globalPos, desc) : 
                     				CreateStaticMethod(parentId, globalPos, desc);
 
