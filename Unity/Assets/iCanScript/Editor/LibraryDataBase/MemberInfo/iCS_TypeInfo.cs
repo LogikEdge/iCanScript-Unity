@@ -40,8 +40,8 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    iCS_TypeInfo(string _company, string _package, Type _compilerType,
-                 iCS_TypeInfo _parentType, string _displayName, string _description, string _iconPath)
+    public iCS_TypeInfo(string _company, string _package, Type _compilerType,
+                        iCS_TypeInfo _parentType, string _displayName, string _description, string _iconPath)
     : base(iCS_ObjectTypeEnum.Type, _parentType, _displayName, _description, _iconPath)
     {
         myCompany   = _company;

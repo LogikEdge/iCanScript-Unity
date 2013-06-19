@@ -200,11 +200,11 @@ public class iCS_DynamicMenu {
         }
         // Get compatible functions.
         if(selectedObject.IsDataPort) {
-            List<iCS_MemberInfo> functionMenu= null;
+            List<iCS_MethodBaseInfo> functionMenu= null;
             if(selectedObject.IsInputPort) {
-                functionMenu= iCS_DataBase.BuildMenu(null, selectedObject.RuntimeType);
+                functionMenu= iCS_LibraryDataBase.BuildMenu(null, selectedObject.RuntimeType);
             } else {
-                functionMenu= iCS_DataBase.BuildMenu(selectedObject.RuntimeType, null);
+                functionMenu= iCS_LibraryDataBase.BuildMenu(selectedObject.RuntimeType, null);
             }
             if(functionMenu.Count != 0) {
                 int len= menu.Length;
@@ -287,12 +287,12 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     iCS_MemberInfo GetReflectionDescFromMenuCommand(iCS_MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
-        return iCS_DataBase.GetDescriptor(menuCommand);
+        return iCS_LibraryDataBase.GetDescriptor(menuCommand);
     }
 	// ----------------------------------------------------------------------
     Type GetClassTypeFromMenuCommand(iCS_MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
-        return iCS_DataBase.GetClassType(menuCommand);
+        return iCS_LibraryDataBase.GetClassType(menuCommand);
     }
     
     // ======================================================================
@@ -372,7 +372,7 @@ public class iCS_DynamicMenu {
                 break;                
             }
             default: {
-				iCS_MemberInfo desc= context.Descriptor;
+				iCS_MethodBaseInfo desc= context.Descriptor;
 				if(desc == null) {
 					Debug.LogWarning(iCS_Config.ProductName+": Can find reflection descriptor to create node !!!");
 					break;
@@ -547,7 +547,7 @@ public class iCS_DynamicMenu {
         return storage.CreateState(parent.InstanceId, graphPosition, name);
     }
 	// ----------------------------------------------------------------------
-    static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_MemberInfo desc) {
+    static iCS_EditorObject CreateMethod(iCS_EditorObject parent, iCS_IStorage storage, Vector2 graphPosition, iCS_MethodBaseInfo desc) {
         if(parent.IsPort) {
             iCS_EditorObject port= parent;
             parent= port.Parent;

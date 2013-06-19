@@ -29,8 +29,8 @@ public class iCS_FieldInfo : iCS_MethodBaseInfo {
     // ----------------------------------------------------------------------
     public iCS_FieldInfo(iCS_ObjectTypeEnum objType, iCS_TypeInfo _parentType,
                          string _name, string _description, string _iconPath,
-						 Type _type, iCS_Parameter[] _parameters,
-						 iCS_FunctionReturn _functionReturn, FieldInfo _fieldInfo)
+						 iCS_Parameter[] _parameters, iCS_FunctionReturn _functionReturn,
+						 FieldInfo _fieldInfo)
     : base(objType, _parentType, _name, _description, _iconPath, _parameters, _functionReturn)
     {
         field= _fieldInfo;

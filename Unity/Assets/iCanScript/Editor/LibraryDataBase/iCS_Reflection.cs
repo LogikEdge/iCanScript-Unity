@@ -74,7 +74,7 @@ public class iCS_Reflection {
         // Type used for user installs
         Type installerType= null;
         // Remove all previously registered functions.
-        iCS_DataBase.Clear();
+        iCS_LibraryDataBase.Clear();
         // Scan the application for functions/methods/conversions to register.
         foreach(var assembly in AppDomain.CurrentDomain.GetAssemblies()) {
             foreach(var classType in assembly.GetTypes()) {
@@ -123,7 +123,7 @@ public class iCS_Reflection {
             return;
         }
         // Build TypeInfo.
-        var _classTypeInfo= iCS_LibraryDataBase.AddTypeInfo(classType, company, package, classDescription, classIconPath);
+        var _classTypeInfo= iCS_LibraryDataBase.AddTypeInfo(company, package, classType, null, classType.Name, classDescription, classIconPath);
         // Decode class members
         DecodeConstructors(_classTypeInfo, acceptAllPublic);
         DecodeClassFields(_classTypeInfo, acceptAllPublic, baseVisibility);
@@ -133,10 +133,9 @@ public class iCS_Reflection {
 	// Decode Constructors
     // ----------------------------------------------------------------------
     static void DecodeConstructors(iCS_TypeInfo _classTypeInfo, bool acceptAllPublic= false) {
-        foreach(var constructor in classType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
+        foreach(var constructor in _classTypeInfo.compilerType.GetConstructors(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
             bool registerMethod= false;
             string displayName= iCS_Types.TypeName(_classTypeInfo.compilerType);
-            string returnName= "";
             string description= "";
             string iconPath= "";
             foreach(var constructorAttribute in constructor.GetCustomAttributes(true)) {
@@ -146,11 +145,10 @@ public class iCS_Reflection {
                         // Register execution functions/methods.
                         iCS_FunctionAttribute funcAttr= constructorAttribute as iCS_FunctionAttribute;
                         if(funcAttr.Name    != null) displayName= funcAttr.Name; 
-                        if(funcAttr.Return  != null) returnName = funcAttr.Return;
                         if(funcAttr.Tooltip != null) description= funcAttr.Tooltip;
                         if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
-                        Debug.LogWarning("iCanScript: Constrcutor of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");                        
+                        Debug.LogWarning("iCanScript: Constrcutor of class "+_classTypeInfo.displayName+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring constructor !!!");                        
                     }
                     break;                                        
                 }
@@ -160,10 +158,10 @@ public class iCS_Reflection {
             }
             if(registerMethod) {
                 if(constructor.IsGenericMethod) {
-                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+classType.Name);
+                    Debug.LogWarning("iCanScript: Generic method not yet supported.  Skiping constrcutor from class "+_classTypeInfo.displayName);
                     continue;
                 }
-                DecodeConstructor(classType, displayName, description, iconPath, constructor);
+                DecodeConstructor(_classTypeInfo, displayName, description, iconPath, constructor);
             }
         }                               
     }
@@ -173,14 +171,15 @@ public class iCS_Reflection {
         if(!AreAllParamTypesSupported(constructor)) return;
         var parameters= ParseParameters(constructor);
         
-        iCS_LibraryDataBase.AddConstructor(_classTypeInfo, displayName, toolTip, iconPath,
-                                    	   constructor, parameters);
+        iCS_LibraryDataBase.AddConstructor(_classTypeInfo, displayName, description, iconPath,
+                                    	   parameters, constructor);
     }
     // ----------------------------------------------------------------------
     static void DecodeClassFields(iCS_TypeInfo _classTypeInfo,
                                   bool acceptAllPublic= false,
                                   bool baseVisibility= false) {
         // Gather field information.
+        var classType= _classTypeInfo.compilerType;
         foreach(var field in classType.GetFields(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerField= false;
             iCS_ParamDirection direction= iCS_ParamDirection.InOut;
@@ -227,57 +226,68 @@ public class iCS_Reflection {
             }
             if(registerField) {
                 if(field.IsStatic) {
-                    DecodeStaticField(company, package, classTooltip, classIconPath, classType, field, direction);
+                    DecodeStaticField(_classTypeInfo, field, direction);
                 } else {
-                    DecodeInstanceField(company, package, classTooltip, classIconPath, classType, field, direction);
+                    DecodeInstanceField(_classTypeInfo, field, direction);
                 }                
             }
         }        
     }
     // ----------------------------------------------------------------------
     static void DecodeStaticField(iCS_TypeInfo _classTypeInfo, FieldInfo field, iCS_ParamDirection dir) {
+        string description= "";
+        string iconPath= _classTypeInfo.iconPath;
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
-            var parameter         = new iCS_Parameter();
-            parameter.name        = field.Name;
-            parameter.type        = field.FieldType;
-            parameter.direction   = iCS_ParamDirection.In;
-            parameter.initialValue= iCS_Types.DefaultValue(field.FieldType);
-            iCS_DataBase.AddStaticField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, parameter, null);                    
+            var parameters            = new iCS_Parameter[1];
+            parameters[0]             = new iCS_Parameter();
+            parameters[0].name        = field.Name;
+            parameters[0].type        = field.FieldType;
+            parameters[0].direction   = iCS_ParamDirection.In;
+            parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
+            iCS_LibraryDataBase.AddStaticField(_classTypeInfo, "set_"+field.Name, description, iconPath, parameters, null, field);                    
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
-            iCS_DataBase.AddStaticField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, null, field.Name);                    
+            var returnType= new iCS_FunctionReturn(field.Name, field.FieldType);
+            iCS_LibraryDataBase.AddStaticField(_classTypeInfo, "get_"+field.Name, description, iconPath, new iCS_Parameter[0], returnType, field);                    
         }
     }
     // ----------------------------------------------------------------------
     static void DecodeInstanceField(iCS_TypeInfo _classTypeInfo, FieldInfo field, iCS_ParamDirection dir) {
+        string description= "";
+        string iconPath= _classTypeInfo.iconPath;
         if((dir == iCS_ParamDirection.In || dir == iCS_ParamDirection.InOut) && !field.IsInitOnly) {
-            var parameter         = new iCS_Parameter();
-            parameter.name        = field.Name;
-            parameter.type        = field.FieldType;
-            parameter.direction   = iCS_ParamDirection.In;
-            parameter.initialValue= iCS_Types.DefaultValue(field.FieldType);
-            iCS_DataBase.AddInstanceField(company, package, "set_"+field.Name, toolTip, iconPath, classType, field, parameter, null);                    
+            var parameters        = new iCS_Parameter[1];
+            parameters[0]         = new iCS_Parameter();
+            parameters[0].name        = field.Name;
+            parameters[0].type        = field.FieldType;
+            parameters[0].direction   = iCS_ParamDirection.In;
+            parameters[0].initialValue= iCS_Types.DefaultValue(field.FieldType);
+            iCS_LibraryDataBase.AddInstanceField(_classTypeInfo, "set_"+field.Name, description, iconPath, parameters, null, field);                    
         }
         if(dir == iCS_ParamDirection.Out || dir == iCS_ParamDirection.InOut) {
-            iCS_DataBase.AddInstanceField(company, package, "get_"+field.Name, toolTip, iconPath, classType, field, null, field.Name);                    
+            var returnType= new iCS_FunctionReturn(field.Name, field.FieldType);
+            iCS_LibraryDataBase.AddInstanceField(_classTypeInfo, "get_"+field.Name, description, iconPath, new iCS_Parameter[0], returnType, field);                    
         }
     }
     // ----------------------------------------------------------------------
-    static void DecodeFunctionsAndMethods(iCS_TypeInfo _classTypeinfo,
+    static void DecodeFunctionsAndMethods(iCS_TypeInfo _classTypeInfo,
                                           bool acceptAllPublic= false,
                                           bool baseVisibility= false) {
+        var classType= _classTypeInfo.compilerType;
         foreach(var method in classType.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)) {
             bool registerMethod= false;
             string displayName= method.Name;
             string returnName= null;
-            string toolTip= classTooltip;
+            string classDescription= _classTypeInfo.description;
+            string classIconPath= _classTypeInfo.iconPath;
+            string description= classDescription;
             string iconPath= classIconPath;
             foreach(var methodAttribute in method.GetCustomAttributes(true)) {
                 if(methodAttribute is iCS_TypeCastAttribute) {
                     if(method.IsPublic) {
                         iCS_TypeCastAttribute typeCastAttr= methodAttribute as iCS_TypeCastAttribute;
                         iconPath= typeCastAttr.Icon ?? classIconPath;
-                        DecodeTypeCast(company, package, iconPath, classType, method);
+                        DecodeTypeCast(_classTypeInfo, iconPath, method);
                     } else {                        
                         Debug.LogWarning("iCanScript: Type Cast "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");
                     }
@@ -290,7 +300,7 @@ public class iCS_Reflection {
                         iCS_FunctionAttribute funcAttr= methodAttribute as iCS_FunctionAttribute;
                         if(funcAttr.Name    != null) displayName= funcAttr.Name; 
                         if(funcAttr.Return  != null) returnName = funcAttr.Return;
-                        if(funcAttr.Tooltip != null) toolTip    = funcAttr.Tooltip;
+                        if(funcAttr.Tooltip != null) description= funcAttr.Tooltip;
                         if(funcAttr.Icon    != null) iconPath   = funcAttr.Icon;
                     } else {
                         Debug.LogWarning("iCanScript: Function "+method.Name+" of class "+classType.Name+" is not public and tagged for "+iCS_Config.ProductName+". Ignoring function !!!");                        
@@ -325,15 +335,16 @@ public class iCS_Reflection {
                     continue;
                 }
                 if(method.IsStatic) {
-                    DecodeStaticMethod(company, package, displayName, toolTip, iconPath, classType, method, returnName);
+                    DecodeStaticMethod(_classTypeInfo, displayName, description, iconPath, returnName, method);
                 } else {
-                    DecodeInstanceMethod(company, package, displayName, toolTip, iconPath, classType, method, returnName);
+                    DecodeInstanceMethod(_classTypeInfo, displayName, description, iconPath, returnName, method);
                 }
             }
         }                               
     }
     // ----------------------------------------------------------------------
-    static void DecodeTypeCast(iCS_TypeInfo _classTypeInfo, MethodInfo method) {
+    static void DecodeTypeCast(iCS_TypeInfo _classTypeInfo, string iconPath, MethodInfo method) {
+        var classType= _classTypeInfo.compilerType;
         Type toType= method.ReturnType;
         ParameterInfo[] parameters= method.GetParameters();
         if(parameters.Length != 1 || toType == null) {
@@ -351,29 +362,32 @@ public class iCS_Reflection {
                              " is not static and tagged for "+iCS_Config.ProductName+". Ignoring conversion !!!");
             return;                                        
         }
-        iCS_DataBase.AddTypeCast(company, package, iconPath, classType, method, fromType);                                        
+        iCS_LibraryDataBase.AddTypeCast(_classTypeInfo, iconPath, fromType, method);                                        
     }
     // ----------------------------------------------------------------------
-    static void DecodeInstanceMethod(iCS_TypeInfo _classTypeInfo, MethodInfo method, string retName) {
+    static void DecodeInstanceMethod(iCS_TypeInfo _classTypeInfo,
+                                     string displayName, string description, string iconPath,
+                                     string retName, MethodInfo method) {
         // Parse parameters.
         if(!AreAllParamTypesSupported(method)) return; 
         var parameters= ParseParameters(method);       
 
-        iCS_DataBase.AddInstanceMethod(company, package, displayName, toolTip, iconPath,
-                                      classType, method,
-                                      parameters,
-                                      retName);
+        iCS_LibraryDataBase.AddInstanceMethod(_classTypeInfo, displayName, description, iconPath,
+                                              parameters, new iCS_FunctionReturn(retName, method.ReturnType),
+                                              method);
     }
     // ----------------------------------------------------------------------
-    static void DecodeStaticMethod(iCS_TypeInfo _classTypeInfo, MethodInfo method, string retName) {
+    static void DecodeStaticMethod(iCS_TypeInfo _classTypeInfo,
+                                   string displayName, string description, string iconPath,
+                                   string retName, MethodInfo method) {
         // Parse parameters.
         if(!AreAllParamTypesSupported(method)) return;
         var parameters= ParseParameters(method);       
 
-        iCS_DataBase.AddStaticMethod(company, package, displayName, toolTip, iconPath,
-                                     classType, method,
-                                     parameters,
-                                     retName);
+        iCS_LibraryDataBase.AddStaticMethod(_classTypeInfo,
+                                     displayName, description, iconPath,
+                                     parameters, new iCS_FunctionReturn(retName, method.ReturnType),
+                                     method);
     }
 
     // ======================================================================
@@ -381,7 +395,7 @@ public class iCS_Reflection {
     static iCS_Parameter[] ParseParameters(MethodBase method) {
         ParameterInfo[] paramInfo= method.GetParameters();
         iCS_Parameter[] parameters= new iCS_Parameter[paramInfo.Length];
-        if(paramInfo.Length == 0) return iCS_Parameter.emptyParameterList;
+        if(paramInfo.Length == 0) return new iCS_Parameter[0];
         for(int i= 0; i < paramInfo.Length; ++i) {
             var p= paramInfo[i];
             parameters[i]= new iCS_Parameter();
