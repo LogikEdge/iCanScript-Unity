@@ -13,7 +13,6 @@ public static class iCS_TextFile {
     // ---------------------------------------------------------------------------------
 	// Reads and return the text content of the file at the given path.
     public static string ReadFile(string fileName) {
-		fileName= iCS_Config.CodeGenerationFolder+"/"+fileName;
 		string systemPath= ToSystemPath(fileName);
 
         if(!File.Exists(systemPath)) {
@@ -36,7 +35,6 @@ public static class iCS_TextFile {
     // ---------------------------------------------------------------------------------
 	// Write the given text into the file at the given path.
     public static bool WriteFile(string fileName, string fileData) {
-        fileName= iCS_Config.CodeGenerationFolder+"/"+fileName;
 		var systemPath= ToSystemPath(fileName);
 		var unityPath= ToUnityAssetPath(fileName);
 
@@ -59,7 +57,6 @@ public static class iCS_TextFile {
     // ---------------------------------------------------------------------------------
 	// Opens the given text file with the configured text editor.
 	public static bool EditFile(string fileName, int lineNb= 1) {
-        fileName= iCS_Config.CodeGenerationFolder+"/"+fileName;
 		var systemPath= ToSystemPath(fileName);
 		var unityPath= ToUnityAssetPath(fileName);
 
