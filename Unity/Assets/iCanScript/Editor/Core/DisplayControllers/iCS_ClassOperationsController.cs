@@ -6,6 +6,14 @@ using System.Collections.Generic;
 
 public class iCS_ClassOperationsController : DSTableViewDataSource {
     // =================================================================================
+    // Constants
+    // ---------------------------------------------------------------------------------
+    const int     kSpacer           = 8;
+    const int     kMarginSize       = 10;
+	const string  kDefaultTitle     = "Operations";
+	const string  kOperationColumnId= "Operation";
+
+    // =================================================================================
     // Fields
     // ---------------------------------------------------------------------------------
 	Type				myClassType      = null;
@@ -16,14 +24,6 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
 	iCS_MethodInfo[]    myMethods        = null;
 	bool[]              myIsMethodPresent= null;
     
-    // =================================================================================
-    // Constants
-    // ---------------------------------------------------------------------------------
-    const int     kSpacer           = 8;
-    const int     kMarginSize       = 10;
-	const string  kDefaultTitle     = "Operations";
-	const string  kOperationColumnId= "Operation";
-
     // =================================================================================
     // Properties
     // ---------------------------------------------------------------------------------

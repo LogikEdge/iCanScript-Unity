@@ -8,14 +8,22 @@ using P=Prelude;
 
 public static class iCS_InstallerMgr {
     // =================================================================================
+    // Installs all needed components
+    // ---------------------------------------------------------------------------------
+    public static void InstallAllComponents() {
+        InstallGizmo();
+        CreateCodeGenerationFolder();
+    }
+    
+    // =================================================================================
     // Installs the iCanScript Gizmo (if not already done).
     // ---------------------------------------------------------------------------------
 	static public void InstallGizmo() {
         // Copy the iCanScript gizmo file into the "Gizmos" project folder.
         string assetPath= Application.dataPath;
-        if(!Directory.Exists(assetPath+"/Gizmos")) {
+        if(!Directory.Exists(assetPath+"/"+iCS_Config.GizmosFolder)) {
             Debug.Log("iCanScript: Creating Gizmos folder");
-    	    AssetDatabase.CreateFolder("Assets","Gizmos");            
+    	    AssetDatabase.CreateFolder("Assets",iCS_Config.GizmosFolder);            
         }
         string gizmoSrc= iCS_Config.ResourcePath+"/"+iCS_EditorStrings.GizmoIcon;
         string gizmoDest= "Assets/Gizmos/iCanScriptGizmo.png";
@@ -25,6 +33,25 @@ public static class iCS_InstallerMgr {
         }	    
 	}
 
+    // ================================================================================
+    // Create code generation folder.
+    // ---------------------------------------------------------------------------------
+    static public void CreateCodeGenerationFolder() {
+        string assetPath= Application.dataPath;
+        string codeGenerationFolderPath= assetPath+"/"+iCS_Config.CodeGenerationFolder;
+        if(!Directory.Exists(codeGenerationFolderPath)) {
+            Debug.Log(iCS_Config.ProductName+": Creating Code Generation folder");
+            AssetDatabase.CreateFolder("Assets", iCS_Config.CodeGenerationFolder);
+        }
+        string codeFilePath= codeGenerationFolderPath+"/CodeTest.cs";
+        if(!File.Exists(codeFilePath)) {
+            string code= "using UnityEngine;\n\npublic class TestAsset : MonoBehaviour {\n\tvoid Update() {\n\t\tDebug.Log(\"Hello World!\");\n\t}\n}\n";
+            iCS_CGFile.WriteFile("CodeTest.cs", code);
+//            AssetDatabase.CreateAsset(code, "Assets/iCanScript_GeneratedCode/CodeTest.cs");
+             Debug.Log("Attempting to create: "+codeFilePath);
+        }
+    }
+    
     // =================================================================================
     // Install the iCanScript Gizmo (if not already done).
     // ---------------------------------------------------------------------------------
