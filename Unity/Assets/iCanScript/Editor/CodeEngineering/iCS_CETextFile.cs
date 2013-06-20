@@ -7,6 +7,10 @@ using System.Collections.Generic;
 public static class iCS_CETextFile {
     // =================================================================================
     // ---------------------------------------------------------------------------------
+	public static bool Exists(string fileName) {
+		return iCS_TextFile.Exists(iCS_Config.CodeGenerationFolder+"/"+fileName);
+	}
+    // ---------------------------------------------------------------------------------
 	// Reads and return the text content of the file at the given path.
     public static string ReadFile(string fileName) {
 		return iCS_TextFile.ReadFile(iCS_Config.CodeGenerationFolder+"/"+fileName);

@@ -11,6 +11,11 @@ public static class iCS_TextFile {
 
     // =================================================================================
     // ---------------------------------------------------------------------------------
+	public static bool Exists(string fileName) {
+		string systemPath= ToSystemPath(fileName);
+		return File.Exists(systemPath);
+	}
+    // ---------------------------------------------------------------------------------
 	// Reads and return the text content of the file at the given path.
     public static string ReadFile(string fileName) {
 		string systemPath= ToSystemPath(fileName);
