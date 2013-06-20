@@ -29,6 +29,11 @@ public class iCS_BehaviourImp : iCS_Storage {
     public int FixedUpdateFrameId   { get { return myFixedUpdateContext != null ? myFixedUpdateContext.FrameId : 0; }}
     
     // ----------------------------------------------------------------------
+	public void SayHello() {
+		Debug.Log("Hello !!!");
+	}
+	
+    // ----------------------------------------------------------------------
     void Reset() {
         if(myStartContext != null)       myStartContext.Action      = null;
         if(myUpdateContext != null)      myUpdateContext.Action     = null;
