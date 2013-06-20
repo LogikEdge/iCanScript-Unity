@@ -46,9 +46,10 @@ public static class iCS_InstallerMgr {
         string codeFilePath= codeGenerationFolderPath+"/CodeTest.cs";
         if(!File.Exists(codeFilePath)) {
             string code= "using UnityEngine;\n\npublic class TestAsset : MonoBehaviour {\n\tvoid Update() {\n\t\tDebug.Log(\"Hello World!\");\n\t}\n}\n";
-            iCS_CGFile.WriteFile("CodeTest.cs", code);
+            iCS_TextFile.WriteFile("CodeTest.cs", code);
 //            AssetDatabase.CreateAsset(code, "Assets/iCanScript_GeneratedCode/CodeTest.cs");
              Debug.Log("Attempting to create: "+codeFilePath);
+			iCS_TextFile.EditFile("CodeTest.cs");
         }
     }
     
