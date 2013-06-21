@@ -291,12 +291,13 @@ public class iCS_LibraryDatabase {
         Functions.Clear();
     }
     // ----------------------------------------------------------------------
-    public static iCS_TypeInfo AddTypeInfo(string company, string package, Type compilerType, iCS_TypeInfo parentTypeInfo, string displayName, string iconPath, string description) {
+    public static iCS_TypeInfo AddTypeInfo(string company, string package, Type compilerType, Type baseType, Type declaringType,
+                                           iCS_TypeInfo declaringTypeInfo, string displayName, string iconPath, string description) {
         var typeInfo= GetTypeInfo(compilerType);
         if(typeInfo != null) {
             return typeInfo;
         }
-        typeInfo= new iCS_TypeInfo(company, package, compilerType, parentTypeInfo, displayName, iconPath, description);
+        typeInfo= new iCS_TypeInfo(company, package, compilerType, baseType, declaringType, declaringTypeInfo, displayName, iconPath, description);
         types.Add(typeInfo);
         return typeInfo;
     }

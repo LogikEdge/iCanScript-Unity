@@ -7,10 +7,12 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // ======================================================================
     // Fields
     // ----------------------------------------------------------------------
-    private string                  myCompany   = null;
-    private string                  myPackage   = null;   // Defaults to declaring namespace
-    public Type                     compilerType= null;
-    public List<iCS_MemberInfo>     members     = new List<iCS_MemberInfo>();
+    private string                  myCompany    = null;
+    private string                  myPackage    = null;   // Defaults to declaring namespace
+    public Type                     compilerType = null;
+    public Type                     baseType     = null;
+    public Type                     declaringType= null;
+    public List<iCS_MemberInfo>     members      = new List<iCS_MemberInfo>();
 
     // ======================================================================
     // Fields
@@ -40,13 +42,15 @@ public class iCS_TypeInfo : iCS_MemberInfo {
     // ======================================================================
     // Creation/Destruction
     // ----------------------------------------------------------------------
-    public iCS_TypeInfo(string _company, string _package, Type _compilerType,
-                        iCS_TypeInfo _parentType, string _displayName, string _description, string _iconPath)
-    : base(iCS_ObjectTypeEnum.Type, _parentType, _displayName, _description, _iconPath)
+    public iCS_TypeInfo(string _company, string _package, Type _compilerType, Type _baseType, Type _declaringType,
+                        iCS_TypeInfo _declaringTypeInfo, string _displayName, string _description, string _iconPath)
+    : base(iCS_ObjectTypeEnum.Type, _declaringTypeInfo, _displayName, _description, _iconPath)
     {
-        myCompany   = _company;
-        myPackage   = _package;
-        compilerType= _compilerType;
+        myCompany    = _company;
+        myPackage    = _package;
+        compilerType = _compilerType;
+        baseType     = _baseType;
+        declaringType= _declaringType;
     }
 
     // ======================================================================

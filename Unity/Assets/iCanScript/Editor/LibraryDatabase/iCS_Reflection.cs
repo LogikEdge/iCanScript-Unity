@@ -123,7 +123,11 @@ public class iCS_Reflection {
             return;
         }
         // Build TypeInfo.
-        var _classTypeInfo= iCS_LibraryDatabase.AddTypeInfo(company, package, classType, null, classType.Name, classDescription, classIconPath);
+        var baseType         = classType.BaseType;
+        var declaringType    = classType.DeclaringType;
+        var declaringTypeInfo= iCS_LibraryDatabase.GetTypeInfo(declaringType);
+        var _classTypeInfo   = iCS_LibraryDatabase.AddTypeInfo(company, package, classType, baseType, declaringType, declaringTypeInfo,
+                                                               classType.Name, classDescription, classIconPath);
         // Decode class members
         DecodeConstructors(_classTypeInfo, acceptAllPublic);
         DecodeClassFields(_classTypeInfo, acceptAllPublic, baseVisibility);
