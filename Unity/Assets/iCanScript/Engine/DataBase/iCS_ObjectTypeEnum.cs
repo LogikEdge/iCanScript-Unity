@@ -10,7 +10,8 @@ public enum iCS_ObjectTypeEnum {
     Constructor=100,
     InstanceMethod, StaticMethod, 
     InstanceField, StaticField,
-    TypeCast, Event,
+    TypeCast,
+    InstanceEvent, ClassEvent,
     InstanceProperty, ClassProperty,
 
     // Transition nodes
