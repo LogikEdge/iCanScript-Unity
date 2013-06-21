@@ -59,6 +59,12 @@ public abstract class iCS_MemberInfo {
     public bool isEvent               { get { return toEventInfo != null; }}
     public bool isProperty            { get { return toPropertyInfo != null; }}
 	public bool isTypeCast			  { get { return toTypeCastInfo != null; }}
+    public bool isInstanceMethodBase  { get { return isMethodBase && toMethodBaseInfo.isInstanceMember; }}
+    public bool isClassMethodBase     { get { return isMethodBase && toMethodBaseInfo.isClassMember; }}
+    public bool isInstanceMethod      { get { return isMethod && toMethodInfo.isInstanceMember; }}
+    public bool isClassMethod         { get { return isMethod && toMethodInfo.isClassMember; }}
+    public bool isInstanceEvent       { get { return isEvent && toEventInfo.isInstanceMember; }}
+    public bool isClassEvent          { get { return isEvent && toEventInfo.isClassMember; }}
     public bool isInstanceField       { get { return isField && toFieldInfo.isInstanceMember; }}
     public bool isClassField          { get { return isField && toFieldInfo.isClassMember; }}
     public bool isGetField            { get { return isField && toFieldInfo.isGet; }}

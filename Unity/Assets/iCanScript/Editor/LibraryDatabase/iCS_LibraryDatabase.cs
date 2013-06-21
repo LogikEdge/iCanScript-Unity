@@ -171,6 +171,16 @@ public class iCS_LibraryDatabase {
         return methods.ToArray();
 	}
     // ----------------------------------------------------------------------
+    public static iCS_EventInfo[] GetEvents(Type compilerType) {
+        var events= new List<iCS_EventInfo>();
+        foreach(var m in GetMembers(compilerType)) {
+            if(m.isEvent) {
+                events.Add(m.toEventInfo);
+            }
+        }
+        return events.ToArray();
+    }
+    // ----------------------------------------------------------------------
     public static List<iCS_MethodBaseInfo> BuildMenu(Type inputType, Type outputType) {
         QSort();
         var menu= new List<iCS_MethodBaseInfo>();

@@ -53,7 +53,7 @@ public class iCS_MethodBaseInfo : iCS_MemberInfo {
             string signature= displayName;
 			// Build input string
 			string inputStr= "";
-            if(objectType == iCS_ObjectTypeEnum.InstanceMethod) {
+            if(isInstanceMethodBase) {
                 inputStr+= iCS_Strings.InstanceObjectName+":"+iCS_Types.TypeName(classType)+", ";
             }
             foreach(var param in parameters) {

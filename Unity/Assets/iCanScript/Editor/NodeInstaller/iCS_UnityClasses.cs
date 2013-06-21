@@ -13,6 +13,14 @@ using System.Collections;
 // this source file may be changed in future releases.
 public static class iCS_UnityClasses {
     // ======================================================================
+    // Constants
+    // ----------------------------------------------------------------------
+    const string kUnityEnginePackage= "UnityEngine";
+    const string kResourcesPath     = iCS_Config.ResourcePath;
+    const string kJoystickIcon      = kResourcesPath+"/iCS_JoystickIcon.psd";
+    const string kUnityIcon         = kResourcesPath+"/iCS_UnityLogo_32x32.png";
+    
+    // ======================================================================
     // The following are helper functions to register Unity3D classes
     // ----------------------------------------------------------------------
     // Use this function to register Unity3d classes.
@@ -24,9 +32,9 @@ public static class iCS_UnityClasses {
     public static void DecodeUnityClassInfo(Type classType, string package= "UnityEngine", string iconPath= null, string description= null) {
         string                  company               = "Unity";
         bool                    decodeAllPublicMembers= true;
-        if(package == null)     package               = "UnityEngine";
+        if(package == null)     package               = kUnityEnginePackage;
         if(description == null) description           = "Unity class "+classType.Name;
-        if(iconPath == null)    iconPath              = iCS_Config.ResourcePath+"/iCS_UnityLogo_32x32.png";
+        if(iconPath == null)    iconPath              = kUnityIcon;
         iCS_Reflection.DecodeClassInfo(classType, company, package, description, iconPath, decodeAllPublicMembers);
     }
     // ----------------------------------------------------------------------
@@ -41,7 +49,7 @@ public static class iCS_UnityClasses {
     public static void InstallUnityEvent(Type classType, string eventName, iCS_StorageClass storageClass,
                                          iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
                                          string iconPath= null, string description= null) {
-        if(iconPath == null) iconPath= iCS_Config.ResourcePath+"/iCS_UnityLogo_32x32.png";
+        if(iconPath == null) iconPath= kUnityIcon;
         if(description == null) description= "Event: "+eventName+" on "+classType.Name;
         iCS_LibraryDatabase.AddEvent(classType, eventName, storageClass, parameters, functionReturn, iconPath, description);
     }
@@ -89,7 +97,7 @@ public static class iCS_UnityClasses {
         DecodeUnityClassInfo(typeof(Gyroscope));
         DecodeUnityClassInfo(typeof(Hashtable));
         DecodeUnityClassInfo(typeof(HostData));
-        DecodeUnityClassInfo(typeof(Input));
+        DecodeUnityClassInfo(typeof(Input), kUnityEnginePackage, kJoystickIcon);
         DecodeUnityClassInfo(typeof(JointDrive));
         DecodeUnityClassInfo(typeof(JointLimits));
         DecodeUnityClassInfo(typeof(JointMotor));
