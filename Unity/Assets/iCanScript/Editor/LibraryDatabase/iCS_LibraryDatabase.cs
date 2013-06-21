@@ -367,6 +367,14 @@ public class iCS_LibraryDatabase {
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
+    // Adds an event on a class
+    public static void AddEvent(Type classType, string eventName, iCS_StorageClass storageClass, iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn, string description, string iconPath) {
+        var typeInfo= iCS_LibraryDatabase.GetTypeInfo(classType);
+        var record= new iCS_EventInfo(typeInfo, eventName, description, iconPath,
+                                      parameters, functionReturn, storageClass);
+        AddDataBaseRecord(record);
+    }
+    // ----------------------------------------------------------------------
     // Adds a new database record.
     public static void AddDataBaseRecord(iCS_MemberInfo record) {
         if(record.isMethodBase) {

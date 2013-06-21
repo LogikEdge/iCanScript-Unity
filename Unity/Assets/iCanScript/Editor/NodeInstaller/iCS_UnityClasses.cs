@@ -2,9 +2,51 @@ using UnityEngine;
 using System;
 using System.Collections;
 
+// ======================================================================
+// This file installs predefined Unity3d classes and events.
+//
+// You may augment the Unity library by invoking the functions:
+//      DecodeUnityClassInfo(...) and
+//      InstallUnityEvent(...)
+//
+// Please augment the Unity library using your own source file as
+// this source file may be changed in future releases.
 public static class iCS_UnityClasses {
+    // ======================================================================
+    // The following are helper functions to register Unity3D classes
     // ----------------------------------------------------------------------
-    // Install the desired Unity classes
+    // Use this function to register Unity3d classes.
+    // All public fields/properties and methods will be registered.
+    //
+    // This function can be called by the iCanScript user to add to the
+    // existing Unity library.
+    // 
+    public static void DecodeUnityClassInfo(Type classType, string package= "UnityEngine", string iconPath= null, string description= null) {
+        string                  company               = "Unity";
+        bool                    decodeAllPublicMembers= true;
+        if(package == null)     package               = "UnityEngine";
+        if(description == null) description           = "Unity class "+classType.Name;
+        if(iconPath == null)    iconPath              = iCS_Config.ResourcePath+"/iCS_UnityLogo_32x32.png";
+        iCS_Reflection.DecodeClassInfo(classType, company, package, description, iconPath, decodeAllPublicMembers);
+    }
+    // ----------------------------------------------------------------------
+    // Use this function to register events on a Unity class.
+    // Events are invoked using dynamic (runtime) lookup and and not
+    // present in .NET assembly.  For that reason, events are not
+    // automatically installed when decoding the Unity class. 
+    //
+    // This function can be called by the iCanScript user to add to the
+    // existing Unity library.
+    // 
+    public static void InstallUnityEvent(Type classType, string eventName,
+                                         string description, string iconPath,
+                                         iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn) {
+    }
+    
+        
+    // ======================================================================
+    // The following is the list of preinstalled Unity classes.
+    // ----------------------------------------------------------------------
     public static void PopulateDataBase() {
         DecodeUnityClassInfo(typeof(AccelerationEvent));
         
@@ -187,9 +229,4 @@ public static class iCS_UnityClasses {
             DecodeUnityClassInfo(typeof(Vector4));
     }
 
-    // ----------------------------------------------------------------------
-    // Helper function to simplify .NET class decoding.
-    public static void DecodeUnityClassInfo(Type type) {
-        iCS_Reflection.DecodeClassInfo(type, "Unity", "UnityEngine", "Unity class "+type.Name, null, true);
-    }
 }
