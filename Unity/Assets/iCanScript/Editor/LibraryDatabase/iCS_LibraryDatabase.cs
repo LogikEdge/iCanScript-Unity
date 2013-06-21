@@ -299,6 +299,20 @@ public class iCS_LibraryDatabase {
         }
         typeInfo= new iCS_TypeInfo(company, package, compilerType, baseType, declaringType, declaringTypeInfo, displayName, iconPath, description);
         types.Add(typeInfo);
+        // Extract all events configured on base class.
+        if(baseType != null && baseType != typeof(void)) {
+            var baseTypeInfo= GetTypeInfo(baseType);
+            if(baseTypeInfo != null) {
+                foreach(var m in baseTypeInfo.members) {
+                    if(m.isEvent) {
+                        var ei= m.toEventInfo;
+                        var record= new iCS_EventInfo(typeInfo, ei.displayName, ei.description, ei.iconPath,
+                                                      ei.parameters, ei.functionReturn, ei.storageClass);
+                        AddDataBaseRecord(record);
+                    }
+                }                
+            }
+        }
         return typeInfo;
     }
     // ----------------------------------------------------------------------
