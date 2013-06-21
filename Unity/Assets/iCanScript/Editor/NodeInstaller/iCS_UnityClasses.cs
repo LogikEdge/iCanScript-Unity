@@ -243,10 +243,10 @@ public static class iCS_UnityClasses {
             var noParameters= new iCS_Parameter[0];
             var voidReturn= new iCS_FunctionReturn("", typeof(void));
             InstallUnityEvent(typeof(MonoBehaviour), "OnMouseEnter", iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseOver", iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseExit", iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseDown", iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseUp", iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseOver" , iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseExit" , iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseDown" , iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseUp"   , iCS_StorageClass.Instance, noParameters, voidReturn);
     }
 
 }
