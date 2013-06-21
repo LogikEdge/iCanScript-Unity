@@ -19,6 +19,8 @@ public static class iCS_UnityClasses {
     const string kResourcesPath     = iCS_Config.ResourcePath;
     const string kJoystickIcon      = kResourcesPath+"/iCS_JoystickIcon.psd";
     const string kUnityIcon         = kResourcesPath+"/iCS_UnityLogo_32x32.png";
+    const string kOutMailIcon       = kResourcesPath+"/iCS_OutMail_32x32.png";
+    const string kInMailIcon        = kResourcesPath+"/iCS_InMail_32x32.png";
     
     // ======================================================================
     // The following are helper functions to register Unity3D classes
