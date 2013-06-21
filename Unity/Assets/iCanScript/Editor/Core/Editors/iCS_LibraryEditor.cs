@@ -175,6 +175,12 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             CreateMethod(node.Desc, iStorage);        
             return;
         }
+		if(node.Type == iCS_LibraryController.NodeTypeEnum.Message) {
+            CreateModule(node.Desc.displayName, iStorage);        
+			Debug.Log("iCanScript: Need to complete message node insert validation");
+			return;
+		}
+		
     }
     // ======================================================================
     // Creation Utilities
