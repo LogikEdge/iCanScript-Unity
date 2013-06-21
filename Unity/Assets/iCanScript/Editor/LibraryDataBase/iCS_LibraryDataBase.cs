@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using P=Prelude;
 
-public class iCS_LibraryDataBase {
+public class iCS_LibraryDatabase {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------

@@ -68,7 +68,7 @@ public class iCS_InstanceController {
     // ---------------------------------------------------------------------------------
     void InitConstructorInfo() {
         // Get and sort all constructors for the given class.
-        myConstructors= iCS_LibraryDataBase.GetConstructors(myTarget.RuntimeType);
+        myConstructors= iCS_LibraryDatabase.GetConstructors(myTarget.RuntimeType);
     	Array.Sort(myConstructors, (x,y)=> x.functionSignatureNoThis.CompareTo(y.functionSignatureNoThis));        
 
         // Determine which constrcutor is currently used for this instance.

@@ -44,7 +44,7 @@ public class iCS_ClassOperationsController : DSTableViewDataSource {
 		myTarget= target;
 		
 		// Extract fields & properties from class descriptor.
-        myMethods= iCS_LibraryDataBase.GetMethods(myClassType);
+        myMethods= iCS_LibraryDatabase.GetMethods(myClassType);
     	Array.Sort(myMethods, (x,y)=> x.functionSignatureNoThis.CompareTo(y.functionSignatureNoThis));
 
         // Build method presence on the given target.

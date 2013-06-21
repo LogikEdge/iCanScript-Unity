@@ -25,7 +25,7 @@ public partial class iCS_IStorage {
         if(iCS_PreferencesEditor.InstanceAutocreateInStaticProperties)  ClassModuleCreateInputStaticProperties(module);
         
         // Use the class Icon if it exists.
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(module.RuntimeType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(module.RuntimeType);
         if(components.Length != 0) {
             var iconGUID= iCS_TextureCache.IconPathToGUID(components[0].iconPath);
             if(iconGUID != null) {
@@ -37,7 +37,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetInstanceField) {
                 ClassModuleCreate(module, component.toFieldInfo);
@@ -47,7 +47,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetInstanceField) {
                 ClassModuleDestroy(module, component.toFieldInfo);
@@ -58,7 +58,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetInstanceField) {
                 ClassModuleCreate(module, component.toFieldInfo);
@@ -68,7 +68,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputInstanceFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetInstanceField) {
                 ClassModuleDestroy(module, component.toFieldInfo);                
@@ -78,7 +78,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetClassField) {
                 ClassModuleCreate(module, component.toFieldInfo);                
@@ -88,7 +88,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetClassField) {
                 ClassModuleDestroy(module, component.toFieldInfo);                
@@ -99,7 +99,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetClassField) {
                 ClassModuleCreate(module, component.toFieldInfo);                
@@ -109,7 +109,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputStaticFields(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetClassField) {
                 ClassModuleDestroy(module, component.toFieldInfo);                
@@ -120,7 +120,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetInstanceProperty) {
                 ClassModuleCreate(module, component.toPropertyInfo);                
@@ -130,7 +130,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetInstanceProperty) {
                 ClassModuleDestroy(module, component.toPropertyInfo);                
@@ -140,7 +140,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetInstanceProperty) {
                 ClassModuleCreate(module, component.toPropertyInfo);                
@@ -150,7 +150,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputInstanceProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetInstanceProperty) {
                 ClassModuleDestroy(module, component.toPropertyInfo);                
@@ -160,7 +160,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateOutputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetClassProperty) {
                 ClassModuleCreate(module, component.toPropertyInfo);                
@@ -170,7 +170,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyOutputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isGetClassProperty) {
                 ClassModuleDestroy(module, component.toPropertyInfo);                
@@ -180,7 +180,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleCreateInputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetClassProperty) {
                 ClassModuleCreate(module, component.toPropertyInfo);                
@@ -190,7 +190,7 @@ public partial class iCS_IStorage {
     // ----------------------------------------------------------------------
     public void ClassModuleDestroyInputStaticProperties(iCS_EditorObject module) {
         Type classType= module.RuntimeType;
-        iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
+        iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(classType);
         foreach(var component in components) {
             if(component.isSetClassProperty) {
                 ClassModuleDestroy(module, component.toPropertyInfo);                

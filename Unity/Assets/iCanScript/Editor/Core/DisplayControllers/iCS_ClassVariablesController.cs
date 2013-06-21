@@ -73,7 +73,7 @@ public class iCS_ClassVariablesController : DSTableViewDataSource {
 
 		// Extract fields & properties from class descriptor.
         List<VariablePair> variables= new List<VariablePair>();
-        foreach(var component in iCS_LibraryDataBase.GetPropertiesAndFields(myClassType)) {
+        foreach(var component in iCS_LibraryDatabase.GetPropertiesAndFields(myClassType)) {
             bool isActive= (myTarget != null && myStorage != null) ? myStorage.ClassModuleFindFunction(myTarget, component) != null : false;
             string name= GetVariableName(component);
             var variablePair= GetVariablePair(name, variables);

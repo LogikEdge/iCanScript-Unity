@@ -46,7 +46,7 @@ public class iCS_ClassListController : DSTableViewDataSource {
         if(myColumnDataStyle == null) myColumnDataStyle= EditorStyles.label;
         
         // Get list all classes.
-        myClasses= iCS_LibraryDataBase.types;
+        myClasses= iCS_LibraryDatabase.types;
 		foreach(var desc in myClasses) {
 			if(!myPackages.Contains(desc.package)) myPackages.Add(desc.package);
 			if(!myCompanies.Contains(desc.company)) myCompanies.Add(desc.company);

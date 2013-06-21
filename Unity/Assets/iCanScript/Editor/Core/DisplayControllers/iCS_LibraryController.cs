@@ -99,7 +99,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // ---------------------------------------------------------------------------------
     void BuildTree() {
         // Build filter list of object...
-        var allFunctions= iCS_LibraryDataBase.AllFunctions();
+        var allFunctions= iCS_LibraryDatabase.AllFunctions();
 		// Build tree and sort it elements.
 		myTree= BuildTreeNode(allFunctions);
     }

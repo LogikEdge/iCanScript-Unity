@@ -202,9 +202,9 @@ public class iCS_DynamicMenu {
         if(selectedObject.IsDataPort) {
             List<iCS_MethodBaseInfo> functionMenu= null;
             if(selectedObject.IsInputPort) {
-                functionMenu= iCS_LibraryDataBase.BuildMenu(null, selectedObject.RuntimeType);
+                functionMenu= iCS_LibraryDatabase.BuildMenu(null, selectedObject.RuntimeType);
             } else {
-                functionMenu= iCS_LibraryDataBase.BuildMenu(selectedObject.RuntimeType, null);
+                functionMenu= iCS_LibraryDatabase.BuildMenu(selectedObject.RuntimeType, null);
             }
             if(functionMenu.Count != 0) {
                 int len= menu.Length;
@@ -287,12 +287,12 @@ public class iCS_DynamicMenu {
 	// ----------------------------------------------------------------------
     iCS_MemberInfo GetReflectionDescFromMenuCommand(iCS_MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
-        return iCS_LibraryDataBase.GetDescriptor(menuCommand);
+        return iCS_LibraryDatabase.GetDescriptor(menuCommand);
     }
 	// ----------------------------------------------------------------------
     Type GetClassTypeFromMenuCommand(iCS_MenuContext menuContext) {
         string menuCommand= iCS_TextUtil.StripBeforeIdent(menuContext.Command);
-        return iCS_LibraryDataBase.GetClassType(menuCommand);
+        return iCS_LibraryDatabase.GetClassType(menuCommand);
     }
     
     // ======================================================================
