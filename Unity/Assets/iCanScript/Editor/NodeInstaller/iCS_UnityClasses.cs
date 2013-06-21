@@ -3,11 +3,11 @@ using System;
 using System.Collections;
 
 // ======================================================================
-// This file installs predefined Unity3d classes and events.
+// This file installs predefined Unity3d classes and messages.
 //
 // You may augment the Unity library by invoking the functions:
 //      DecodeUnityClassInfo(...) and
-//      InstallUnityEvent(...)
+//      InstallUnityMessage(...)
 //
 // Please augment the Unity library using your own source file as
 // this source file may be changed in future releases.
@@ -38,20 +38,20 @@ public static class iCS_UnityClasses {
         iCS_Reflection.DecodeClassInfo(classType, company, package, description, iconPath, decodeAllPublicMembers);
     }
     // ----------------------------------------------------------------------
-    // Use this function to register events on a Unity class.
-    // Events are invoked using dynamic (runtime) lookup and and not
-    // present in .NET assembly.  For that reason, events are not
+    // Use this function to register a Unity message on a class.
+    // Messages are invoked using dynamic (runtime) lookup and are not
+    // present in .NET assembly.  For that reason, messages are not
     // automatically installed when decoding the Unity class. 
     //
     // This function can be called by the iCanScript user to add to the
     // existing Unity library.
     // 
-    public static void InstallUnityEvent(Type classType, string eventName, iCS_StorageClass storageClass,
-                                         iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                         string iconPath= null, string description= null) {
+    public static void InstallUnityMessage(Type classType, string messageName, iCS_StorageClass storageClass,
+                                           iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
+                                           string iconPath= null, string description= null) {
         if(iconPath == null) iconPath= kUnityIcon;
-        if(description == null) description= "Event: "+eventName+" on "+classType.Name;
-        iCS_LibraryDatabase.AddEvent(classType, eventName, storageClass, parameters, functionReturn, iconPath, description);
+        if(description == null) description= "Event: "+messageName+" on "+classType.Name;
+        iCS_LibraryDatabase.AddMessage(classType, messageName, storageClass, parameters, functionReturn, iconPath, description);
     }
     
         
@@ -239,14 +239,14 @@ public static class iCS_UnityClasses {
             DecodeUnityClassInfo(typeof(Vector3));    
             DecodeUnityClassInfo(typeof(Vector4));
             
-            // Install Events on MonoBehaviour
+            // Install MonoBehaviour messages.
             var noParameters= new iCS_Parameter[0];
             var voidReturn= new iCS_FunctionReturn("", typeof(void));
-            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseEnter", iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseOver" , iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseExit" , iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseDown" , iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseUp"   , iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseEnter", iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseOver" , iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseExit" , iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseDown" , iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseUp"   , iCS_StorageClass.Instance, noParameters, voidReturn);
     }
 
 }

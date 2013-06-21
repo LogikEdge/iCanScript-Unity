@@ -171,14 +171,14 @@ public class iCS_LibraryDatabase {
         return methods.ToArray();
 	}
     // ----------------------------------------------------------------------
-    public static iCS_EventInfo[] GetEvents(Type compilerType) {
-        var events= new List<iCS_EventInfo>();
+    public static iCS_MessageInfo[] GetMessages(Type compilerType) {
+        var messages= new List<iCS_MessageInfo>();
         foreach(var m in GetMembers(compilerType)) {
-            if(m.isEvent) {
-                events.Add(m.toEventInfo);
+            if(m.isMessage) {
+                messages.Add(m.toMessageInfo);
             }
         }
-        return events.ToArray();
+        return messages.ToArray();
     }
     // ----------------------------------------------------------------------
     public static List<iCS_MethodBaseInfo> BuildMenu(Type inputType, Type outputType) {
@@ -299,15 +299,15 @@ public class iCS_LibraryDatabase {
         }
         typeInfo= new iCS_TypeInfo(company, package, compilerType, baseType, declaringType, declaringTypeInfo, displayName, iconPath, description);
         types.Add(typeInfo);
-        // Extract all events configured on base class.
+        // Extract all messages configured on base class.
         if(baseType != null && baseType != typeof(void)) {
             var baseTypeInfo= GetTypeInfo(baseType);
             if(baseTypeInfo != null) {
                 foreach(var m in baseTypeInfo.members) {
-                    if(m.isEvent) {
-                        var ei= m.toEventInfo;
-                        var record= new iCS_EventInfo(typeInfo, ei.displayName, ei.description, ei.iconPath,
-                                                      ei.parameters, ei.functionReturn, ei.storageClass);
+                    if(m.isMessage) {
+                        var msgInfo= m.toMessageInfo;
+                        var record= new iCS_MessageInfo(typeInfo, msgInfo.displayName, msgInfo.description, msgInfo.iconPath,
+                                                        msgInfo.parameters, msgInfo.functionReturn, msgInfo.storageClass);
                         AddDataBaseRecord(record);
                     }
                 }                
@@ -392,19 +392,19 @@ public class iCS_LibraryDatabase {
 		AddDataBaseRecord(record);
     }
     // ----------------------------------------------------------------------
-    // Adds an event on a class
-    public static void AddEvent(Type classType, string eventName, iCS_StorageClass storageClass,
-                                iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
-                                string description, string iconPath) {
+    // Adds a message on a class
+    public static void AddMessage(Type classType, string messageName, iCS_StorageClass storageClass,
+                                  iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
+                                  string description, string iconPath) {
         // Add event to given type.
         var typeInfo= iCS_LibraryDatabase.GetTypeInfo(classType);
-        var record= new iCS_EventInfo(typeInfo, eventName, description, iconPath,
-                                      parameters, functionReturn, storageClass);
+        var record= new iCS_MessageInfo(typeInfo, messageName, description, iconPath,
+                                        parameters, functionReturn, storageClass);
         AddDataBaseRecord(record);
-        // Also add event to all deriving classes.
+        // Also add message to all deriving classes.
         foreach(var t in types) {
             if(t.baseType == classType) {
-                AddEvent(t.compilerType, eventName, storageClass, parameters, functionReturn, description, iconPath);
+                AddMessage(t.compilerType, messageName, storageClass, parameters, functionReturn, description, iconPath);
             }
         }
     }

@@ -8,7 +8,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
     // =================================================================================
     // Types
     // ---------------------------------------------------------------------------------
-    public enum NodeTypeEnum { Root, Company, Package, Class, Constructor, Field, Property, Method, Event, InParameter, OutParameter };
+    public enum NodeTypeEnum { Root, Company, Package, Class, Constructor, Field, Property, Method, Message, InParameter, OutParameter };
     public class Node {
         public NodeTypeEnum        Type;
         public string              Name;
@@ -119,8 +119,8 @@ public class iCS_LibraryController : DSTreeViewDataSource {
                     toAdd= new Node(NodeTypeEnum.Constructor, desc.toConstructorInfo.functionSignature, desc);
                 } else if(desc.isMethod) {
                     toAdd= new Node(NodeTypeEnum.Method, desc.toMethodInfo.functionSignature, desc);                
-                } else if(desc.isEvent) {
-                    toAdd= new Node(NodeTypeEnum.Event, desc.toEventInfo.functionSignature, desc);
+                } else if(desc.isMessage) {
+                    toAdd= new Node(NodeTypeEnum.Message, desc.toMessageInfo.functionSignature, desc);
                 }
                 if(toAdd != null) {
                     parentTree.AddChild(toAdd);
@@ -394,7 +394,7 @@ public class iCS_LibraryController : DSTreeViewDataSource {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.ConstructorHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.Method) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
-        } else if(nodeType == NodeTypeEnum.Event) {
+        } else if(nodeType == NodeTypeEnum.Message) {
             icon= iCS_TextureCache.GetIcon(iCS_EditorStrings.FunctionHierarchyIcon);            
         } else if(nodeType == NodeTypeEnum.InParameter) {
             icon= iCS_BuiltinTextures.InEndPortIcon;

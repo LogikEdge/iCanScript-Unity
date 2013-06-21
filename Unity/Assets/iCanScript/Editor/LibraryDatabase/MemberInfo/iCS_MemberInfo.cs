@@ -46,7 +46,7 @@ public abstract class iCS_MemberInfo {
     public iCS_MethodInfo       toMethodInfo        { get { return this as iCS_MethodInfo; }}
     public iCS_FieldInfo        toFieldInfo         { get { return this as iCS_FieldInfo; }}
     public iCS_PropertyInfo     toPropertyInfo      { get { return this as iCS_PropertyInfo; }}
-    public iCS_EventInfo        toEventInfo         { get { return this as iCS_EventInfo; }}
+    public iCS_MessageInfo      toMessageInfo       { get { return this as iCS_MessageInfo; }}
 	public iCS_TypeCastInfo		toTypeCastInfo		{ get { return this as iCS_TypeCastInfo; }}
     // ----------------------------------------------------------------------
     public bool isGlobalScope         { get { return parentTypeInfo == null; }}
@@ -56,15 +56,15 @@ public abstract class iCS_MemberInfo {
     public bool isMethodBase          { get { return toMethodBaseInfo != null; }}
     public bool isMethod              { get { return toMethodInfo != null; }}
     public bool isField               { get { return toFieldInfo != null; }}
-    public bool isEvent               { get { return toEventInfo != null; }}
+    public bool isMessage             { get { return toMessageInfo != null; }}
     public bool isProperty            { get { return toPropertyInfo != null; }}
 	public bool isTypeCast			  { get { return toTypeCastInfo != null; }}
     public bool isInstanceMethodBase  { get { return isMethodBase && toMethodBaseInfo.isInstanceMember; }}
     public bool isClassMethodBase     { get { return isMethodBase && toMethodBaseInfo.isClassMember; }}
     public bool isInstanceMethod      { get { return isMethod && toMethodInfo.isInstanceMember; }}
     public bool isClassMethod         { get { return isMethod && toMethodInfo.isClassMember; }}
-    public bool isInstanceEvent       { get { return isEvent && toEventInfo.isInstanceMember; }}
-    public bool isClassEvent          { get { return isEvent && toEventInfo.isClassMember; }}
+    public bool isInstanceMessage     { get { return isMessage && toMessageInfo.isInstanceMember; }}
+    public bool isClassMessage        { get { return isMessage && toMessageInfo.isClassMember; }}
     public bool isInstanceField       { get { return isField && toFieldInfo.isInstanceMember; }}
     public bool isClassField          { get { return isField && toFieldInfo.isClassMember; }}
     public bool isGetField            { get { return isField && toFieldInfo.isGet; }}
