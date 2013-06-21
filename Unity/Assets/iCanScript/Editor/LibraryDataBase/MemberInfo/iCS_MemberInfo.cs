@@ -60,19 +60,19 @@ public abstract class iCS_MemberInfo {
     public bool isProperty            { get { return toPropertyInfo != null; }}
 	public bool isTypeCast			  { get { return toTypeCastInfo != null; }}
     public bool isInstanceField       { get { return isField && toFieldInfo.isInstanceMember; }}
-    public bool isStaticField         { get { return isField && toFieldInfo.isClassMember; }}
+    public bool isClassField          { get { return isField && toFieldInfo.isClassMember; }}
     public bool isGetField            { get { return isField && toFieldInfo.isGet; }}
     public bool isSetField            { get { return isField && toFieldInfo.isSet; }}     
     public bool isGetInstanceField    { get { return isInstanceField && isGetField; }}
     public bool isSetInstanceField    { get { return isInstanceField && isSetField; }}
-    public bool isGetStaticField      { get { return isStaticField && isGetField; }}
-    public bool isSetStaticField      { get { return isStaticField && isSetField; }}
+    public bool isGetClassField       { get { return isClassField && isGetField; }}
+    public bool isSetClassField       { get { return isClassField && isSetField; }}
     public bool isGetProperty         { get { return isProperty && toPropertyInfo.isGet; }}
     public bool isSetProperty         { get { return isProperty && toPropertyInfo.isSet; }}
     public bool isGetInstanceProperty { get { return isGetProperty && toPropertyInfo.isInstanceMember; }}
     public bool isSetInstanceProperty { get { return isSetProperty && toPropertyInfo.isInstanceMember; }}
-    public bool isGetStaticProperty   { get { return isGetProperty && toPropertyInfo.isClassMember; }}
-    public bool isSetStaticProperty   { get { return isSetProperty && toPropertyInfo.isClassMember; }}
+    public bool isGetClassProperty    { get { return isGetProperty && toPropertyInfo.isClassMember; }}
+    public bool isSetClassProperty    { get { return isSetProperty && toPropertyInfo.isClassMember; }}
 
     // ======================================================================
     // Dynamic Properties

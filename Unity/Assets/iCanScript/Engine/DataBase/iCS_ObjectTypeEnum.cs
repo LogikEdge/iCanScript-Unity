@@ -11,6 +11,7 @@ public enum iCS_ObjectTypeEnum {
     InstanceMethod, StaticMethod, 
     InstanceField, StaticField,
     TypeCast, Event,
+    InstanceProperty, ClassProperty,
 
     // Transition nodes
     TransitionModule=200, TransitionGuard, TransitionAction,

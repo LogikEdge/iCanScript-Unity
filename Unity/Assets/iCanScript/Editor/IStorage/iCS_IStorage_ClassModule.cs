@@ -80,7 +80,7 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetStaticField) {
+            if(component.isGetClassField) {
                 ClassModuleCreate(module, component.toFieldInfo);                
             }
         }        
@@ -90,7 +90,7 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetStaticField) {
+            if(component.isGetClassField) {
                 ClassModuleDestroy(module, component.toFieldInfo);                
             }
         }        
@@ -101,7 +101,7 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetStaticField) {
+            if(component.isSetClassField) {
                 ClassModuleCreate(module, component.toFieldInfo);                
             }
         }        
@@ -111,7 +111,7 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetStaticField) {
+            if(component.isSetClassField) {
                 ClassModuleDestroy(module, component.toFieldInfo);                
             }
         }        
@@ -162,7 +162,7 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetStaticProperty) {
+            if(component.isGetClassProperty) {
                 ClassModuleCreate(module, component.toPropertyInfo);                
             }
         }        
@@ -172,7 +172,7 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isGetStaticProperty) {
+            if(component.isGetClassProperty) {
                 ClassModuleDestroy(module, component.toPropertyInfo);                
             }
         }        
@@ -182,7 +182,7 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetStaticProperty) {
+            if(component.isSetClassProperty) {
                 ClassModuleCreate(module, component.toPropertyInfo);                
             }
         }        
@@ -192,7 +192,7 @@ public partial class iCS_IStorage {
         Type classType= module.RuntimeType;
         iCS_MemberInfo[] components= iCS_LibraryDataBase.GetMembers(classType);
         foreach(var component in components) {
-            if(component.isSetStaticProperty) {
+            if(component.isSetClassProperty) {
                 ClassModuleDestroy(module, component.toPropertyInfo);                
             }
         }        
