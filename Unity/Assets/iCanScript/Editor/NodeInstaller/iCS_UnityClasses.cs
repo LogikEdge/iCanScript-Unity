@@ -38,9 +38,12 @@ public static class iCS_UnityClasses {
     // This function can be called by the iCanScript user to add to the
     // existing Unity library.
     // 
-    public static void InstallUnityEvent(Type classType, string eventName,
-                                         string description, string iconPath,
-                                         iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn) {
+    public static void InstallUnityEvent(Type classType, string eventName, iCS_StorageClass storageClass,
+                                         iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
+                                         string iconPath= null, string description= null) {
+        if(iconPath == null) iconPath= iCS_Config.ResourcePath+"/iCS_UnityLogo_32x32.png";
+        if(description == null) description= "Event: "+eventName+" on "+classType.Name;
+        iCS_LibraryDatabase.AddEvent(classType, eventName, storageClass, parameters, functionReturn, iconPath, description);
     }
     
         
@@ -227,6 +230,11 @@ public static class iCS_UnityClasses {
             DecodeUnityClassInfo(typeof(Vector2));    
             DecodeUnityClassInfo(typeof(Vector3));    
             DecodeUnityClassInfo(typeof(Vector4));
+            
+            // Install Events on MonoBehaviour
+            var noParameters= new iCS_Parameter[0];
+            var voidReturn= new iCS_FunctionReturn("", typeof(void));
+            InstallUnityEvent(typeof(MonoBehaviour), "OnMouseEnter", iCS_StorageClass.Instance, noParameters, voidReturn);
     }
 
 }
