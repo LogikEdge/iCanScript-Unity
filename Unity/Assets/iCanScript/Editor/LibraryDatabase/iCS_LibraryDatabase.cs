@@ -379,11 +379,20 @@ public class iCS_LibraryDatabase {
     }
     // ----------------------------------------------------------------------
     // Adds an event on a class
-    public static void AddEvent(Type classType, string eventName, iCS_StorageClass storageClass, iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn, string description, string iconPath) {
+    public static void AddEvent(Type classType, string eventName, iCS_StorageClass storageClass,
+                                iCS_Parameter[] parameters, iCS_FunctionReturn functionReturn,
+                                string description, string iconPath) {
+        // Add event to given type.
         var typeInfo= iCS_LibraryDatabase.GetTypeInfo(classType);
         var record= new iCS_EventInfo(typeInfo, eventName, description, iconPath,
                                       parameters, functionReturn, storageClass);
         AddDataBaseRecord(record);
+        // Also add event to all deriving classes.
+        foreach(var t in types) {
+            if(t.baseType == classType) {
+                AddEvent(t.compilerType, eventName, storageClass, parameters, functionReturn, description, iconPath);
+            }
+        }
     }
     // ----------------------------------------------------------------------
     // Adds a new database record.
