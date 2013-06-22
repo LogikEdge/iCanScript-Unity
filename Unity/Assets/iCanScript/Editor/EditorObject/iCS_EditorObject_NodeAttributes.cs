@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
@@ -24,6 +25,23 @@ public partial class iCS_EditorObject {
             if(engineObject.NbOfParams == value) return;
 		    engineObject.NbOfParams= value;
             IsDirty= true;
+		}
+	}
+	public string IconPath {
+		get {
+			var guid= IconGUID;
+			if(guid == null) return null;
+			return AssetDatabase.GUIDToAssetPath(guid);
+		}
+		set { 
+			if(string.IsNullOrEmpty(value)) {
+				IconGUID= null;
+				return;
+			}
+			var guid= iCS_TextureCache.IconPathToGUID(value);
+			if(guid != null) {
+				IconGUID= guid;
+			}
 		}
 	}
     public string IconGUID {

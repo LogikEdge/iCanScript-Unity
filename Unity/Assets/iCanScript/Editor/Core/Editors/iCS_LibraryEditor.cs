@@ -176,7 +176,10 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             return;
         }
 		if(node.Type == iCS_LibraryController.NodeTypeEnum.Message) {
-            CreateModule(node.Desc.displayName, iStorage);        
+            var module= CreateModule(node.Desc.displayName, iStorage);        
+			if(node.Desc.iconPath != null) {
+				module.IconPath= node.Desc.iconPath;				
+			}
 			Debug.Log("iCanScript: Need to complete message node insert validation");
 			return;
 		}

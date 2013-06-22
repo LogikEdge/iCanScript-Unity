@@ -53,7 +53,7 @@ public static class iCS_UnityClasses {
                                            string iconPath= null, string description= null) {
         if(iconPath == null) iconPath= kUnityIcon;
         if(description == null) description= "Event: "+messageName+" on "+classType.Name;
-        iCS_LibraryDatabase.AddMessage(classType, messageName, storageClass, parameters, functionReturn, iconPath, description);
+        iCS_LibraryDatabase.AddMessage(classType, messageName, storageClass, parameters, functionReturn, description, iconPath);
     }
     
         
@@ -244,11 +244,11 @@ public static class iCS_UnityClasses {
             // Install MonoBehaviour messages.
             var noParameters= new iCS_Parameter[0];
             var voidReturn= new iCS_FunctionReturn("", typeof(void));
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseEnter", iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseOver" , iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseExit" , iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseDown" , iCS_StorageClass.Instance, noParameters, voidReturn);
-            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseUp"   , iCS_StorageClass.Instance, noParameters, voidReturn);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseEnter", iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseOver" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseExit" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseDown" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnMouseUp"   , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
     }
 
 }
