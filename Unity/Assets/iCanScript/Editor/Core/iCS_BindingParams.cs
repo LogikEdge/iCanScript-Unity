@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections;
 
-public class iCS_ConnectionParams {
+public class iCS_BindingParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
@@ -23,13 +23,13 @@ public class iCS_ConnectionParams {
     // ======================================================================
     // Properties
     // ----------------------------------------------------------------------
-    public iCS_ConnectionParams(iCS_EditorObject port, Vector2 portPos, iCS_EditorObject source, Vector2 sourcePos, iCS_IStorage storage) {
+    public iCS_BindingParams(iCS_EditorObject port, Vector2 portPos, iCS_EditorObject source, Vector2 sourcePos, iCS_IStorage storage) {
         Start= new Vector2(sourcePos.x, sourcePos.y);
         End= new Vector2(portPos.x, portPos.y);
 
         // Compute Bezier tangents.
-        Vector2 startDir= ConnectionDirectionFromTo(source, port, storage);
-        Vector2 endDir= ConnectionDirectionFromTo(port, source, storage);
+        Vector2 startDir= BindingDirectionFromTo(source, port, storage);
+        Vector2 endDir= BindingDirectionFromTo(port, source, storage);
 		Vector2 vertex= End-Start;
         StartTangent= Start + startDir * 0.25f * (vertex.magnitude + Mathf.Abs(Vector2.Dot(startDir, vertex)));
         EndTangent  = End + endDir * 0.25f * (vertex.magnitude + Mathf.Abs(Vector2.Dot(endDir, vertex)));
@@ -38,11 +38,11 @@ public class iCS_ConnectionParams {
         Center= BezierCenter(Start, End, StartTangent, EndTangent);
     }
     // ----------------------------------------------------------------------
-    public iCS_ConnectionParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, port.AnimatedPosition, source, source.AnimatedPosition, storage) {}
+    public iCS_BindingParams(iCS_EditorObject port, iCS_EditorObject source, iCS_IStorage storage) : this(port, port.AnimatedPosition, source, source.AnimatedPosition, storage) {}
     // ----------------------------------------------------------------------
-    public iCS_ConnectionParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, port.Source, storage) {}
+    public iCS_BindingParams(iCS_EditorObject port, iCS_IStorage storage) : this(port, port.Source, storage) {}
     // ----------------------------------------------------------------------
-    static Vector2 ConnectionDirectionFromTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
+    static Vector2 BindingDirectionFromTo(iCS_EditorObject port, iCS_EditorObject to, iCS_IStorage storage) {
         // Don't compute complex tangents if we don't have a proper parent.
         iCS_EditorObject portParent= port.ParentNode;
         if(port.IsFloating || to.IsFloating) {

@@ -731,7 +731,7 @@ public partial class iCS_Graphics {
     // ======================================================================
     //  CONNECTION
     // ----------------------------------------------------------------------
-    public void DrawConnection(iCS_EditorObject port, iCS_IStorage iStorage, bool highlight= false, float lineWidth= 1.5f) {
+    public void DrawBinding(iCS_EditorObject port, iCS_IStorage iStorage, bool highlight= false, float lineWidth= 1.5f) {
         // No connection to draw if no valid source.
         if(!port.IsSourceValid) return;
         iCS_EditorObject portParent= port.Parent;
@@ -764,7 +764,7 @@ public partial class iCS_Graphics {
         // Determine if this connection is part of a drag.
         Color color= iCS_PreferencesEditor.GetTypeColor(source.RuntimeType);
         color.a*= alpha;
-        iCS_ConnectionParams cp= new iCS_ConnectionParams(port, portPos, source, sourcePos, iStorage);
+        iCS_BindingParams cp= new iCS_BindingParams(port, portPos, source, sourcePos, iStorage);
         Vector3 startPos= TranslateAndScale(cp.Start);
         Vector3 endPos= TranslateAndScale(cp.End);
         Vector3 startTangent= TranslateAndScale(cp.StartTangent);
