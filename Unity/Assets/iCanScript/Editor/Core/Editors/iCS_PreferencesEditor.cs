@@ -372,6 +372,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         kGridColor            = new Color(0.25f, 0.25f, 0.25f);
         
         // Node colors
+        var c= new Func<int,float>(i=> ((float)i)/255f);
         kNodeTitleColor             = Color.black;
         kNodeLabelColor             = Color.white;
         kNodeValueColor             = new Color(1f, 0.8f, 0.4f);
@@ -381,7 +382,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         kInstanceNodeColor          = new Color(1f, 0.5f, 0f);
         kConstructorNodeColor       = new Color(1f, 0.25f, 0.5f);
         kFunctionNodeColor          = Color.green;
-        kMessageNodeColor           = Color.red;
+        kMessageNodeColor           = new Color(c(0x36), c(0x8a), c(0xff));
         kSelectedNodeBackgroundColor= Color.white;
         
         // Type colors
