@@ -19,10 +19,10 @@ public partial class iCS_IStorage {
         if(iCS_PreferencesEditor.InstanceAutocreateInFields)            ClassModuleCreateInputInstanceFields(module);
         if(iCS_PreferencesEditor.InstanceAutocreateOutProperties)       ClassModuleCreateOutputInstanceProperties(module);
         if(iCS_PreferencesEditor.InstanceAutocreateInProperties)        ClassModuleCreateInputInstanceProperties(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateOutStaticFields)     ClassModuleCreateOutputStaticFields(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateInStaticFields)      ClassModuleCreateInputStaticFields(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateOutStaticProperties) ClassModuleCreateOutputStaticProperties(module);
-        if(iCS_PreferencesEditor.InstanceAutocreateInStaticProperties)  ClassModuleCreateInputStaticProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutClassFields)     ClassModuleCreateOutputStaticFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInClassFields)      ClassModuleCreateInputStaticFields(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateOutClassProperties) ClassModuleCreateOutputStaticProperties(module);
+        if(iCS_PreferencesEditor.InstanceAutocreateInClassProperties)  ClassModuleCreateInputStaticProperties(module);
         
         // Use the class Icon if it exists.
         iCS_MemberInfo[] components= iCS_LibraryDatabase.GetMembers(module.RuntimeType);

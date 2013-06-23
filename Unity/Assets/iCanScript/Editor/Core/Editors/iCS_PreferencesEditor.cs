@@ -93,24 +93,24 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string kDefaultTypeColorKey   = "iCS_DefaultTypeColor";
     // ---------------------------------------------------------------------------------
     // Instance Node Config Constants
-    const bool   kInstanceAutocreateInThis             = true;
-    const bool   kInstanceAutocreateInFields           = false;
-    const bool   kInstanceAutocreateOutFields          = false;
-    const bool   kInstanceAutocreateInStaticFields     = false;
-    const bool   kInstanceAutocreateOutStaticFields    = false;
-    const bool   kInstanceAutocreateInProperties       = false;
-    const bool   kInstanceAutocreateOutProperties      = false;
-    const bool   kInstanceAutocreateInStaticProperties = false;
-    const bool   kInstanceAutocreateOutStaticProperties= false;
-    const string kInstanceAutocreateInThisKey             = "iCS_InstanceAutocreateInThis";
-    const string kInstanceAutocreateInFieldsKey           = "iCS_InstanceAutocreateInFields"; 
-    const string kInstanceAutocreateOutFieldsKey          = "iCS_InstanceAutocreateOutFields"; 
-    const string kInstanceAutocreateInStaticFieldsKey     = "iCS_InstanceAutocreateInStaticFields";
-    const string kInstanceAutocreateOutStaticFieldsKey    = "iCS_InstanceAutocreateOutStaticFields";
-    const string kInstanceAutocreateInPropertiesKey       = "iCS_InstanceAutocreateInProperties";
-    const string kInstanceAutocreateOutPropertiesKey      = "iCS_InstanceAutocreateOutProperties"; 
-    const string kInstanceAutocreateInStaticPropertiesKey = "iCS_InstanceAutocreateInStaticProperties";
-    const string kInstanceAutocreateOutStaticPropertiesKey= "iCS_InstanceAutocreateOutStaticProperties";
+    const bool   kInstanceAutocreateInThis            = true;
+    const bool   kInstanceAutocreateInFields          = false;
+    const bool   kInstanceAutocreateOutFields         = false;
+    const bool   kInstanceAutocreateInClassFields     = false;
+    const bool   kInstanceAutocreateOutClassFields    = false;
+    const bool   kInstanceAutocreateInProperties      = false;
+    const bool   kInstanceAutocreateOutProperties     = false;
+    const bool   kInstanceAutocreateInClassProperties = false;
+    const bool   kInstanceAutocreateOutClassProperties= false;
+    const string kInstanceAutocreateInThisKey            = "iCS_InstanceAutocreateInThis";
+    const string kInstanceAutocreateInFieldsKey          = "iCS_InstanceAutocreateInFields"; 
+    const string kInstanceAutocreateOutFieldsKey         = "iCS_InstanceAutocreateOutFields"; 
+    const string kInstanceAutocreateInClassFieldsKey     = "iCS_InstanceAutocreateInClassFields";
+    const string kInstanceAutocreateOutClassFieldsKey    = "iCS_InstanceAutocreateOutClassFields";
+    const string kInstanceAutocreateInPropertiesKey      = "iCS_InstanceAutocreateInProperties";
+    const string kInstanceAutocreateOutPropertiesKey     = "iCS_InstanceAutocreateOutProperties"; 
+    const string kInstanceAutocreateInClassPropertiesKey = "iCS_InstanceAutocreateInClassProperties";
+    const string kInstanceAutocreateOutClassPropertiesKey= "iCS_InstanceAutocreateOutClassProperties";
 	
     // =================================================================================
     // Fields
@@ -321,13 +321,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutFieldsKey, kInstanceAutocreateOutFields); }
         set { EditorPrefs.SetBool(kInstanceAutocreateOutFieldsKey, value); }        
     }
-    public static bool InstanceAutocreateInStaticFields {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateInStaticFieldsKey, kInstanceAutocreateInStaticFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInStaticFieldsKey, value); }        
+    public static bool InstanceAutocreateInClassFields {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateInClassFieldsKey, kInstanceAutocreateInClassFields); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateInClassFieldsKey, value); }        
     }
-    public static bool InstanceAutocreateOutStaticFields {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateOutStaticFieldsKey, kInstanceAutocreateOutStaticFields); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutStaticFieldsKey, value); }        
+    public static bool InstanceAutocreateOutClassFields {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassFieldsKey, kInstanceAutocreateOutClassFields); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutClassFieldsKey, value); }        
     }
     public static bool InstanceAutocreateInProperties {
         get { return EditorPrefs.GetBool(kInstanceAutocreateInPropertiesKey, kInstanceAutocreateInProperties); }
@@ -337,13 +337,13 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         get { return EditorPrefs.GetBool(kInstanceAutocreateOutPropertiesKey, kInstanceAutocreateOutProperties); }
         set { EditorPrefs.SetBool(kInstanceAutocreateOutPropertiesKey, value); }        
     }
-    public static bool InstanceAutocreateInStaticProperties {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateInStaticPropertiesKey, kInstanceAutocreateInStaticProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateInStaticPropertiesKey, value); }        
+    public static bool InstanceAutocreateInClassProperties {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateInClassPropertiesKey, kInstanceAutocreateInClassProperties); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateInClassPropertiesKey, value); }        
     }
-    public static bool InstanceAutocreateOutStaticProperties {
-        get { return EditorPrefs.GetBool(kInstanceAutocreateOutStaticPropertiesKey, kInstanceAutocreateOutStaticProperties); }
-        set { EditorPrefs.SetBool(kInstanceAutocreateOutStaticPropertiesKey, value); }        
+    public static bool InstanceAutocreateOutClassProperties {
+        get { return EditorPrefs.GetBool(kInstanceAutocreateOutClassPropertiesKey, kInstanceAutocreateOutClassProperties); }
+        set { EditorPrefs.SetBool(kInstanceAutocreateOutClassPropertiesKey, value); }        
     }
     
 	// =================================================================================
@@ -718,28 +718,28 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         }
         InstanceAutocreateInThis            = EditorGUI.Toggle(pos[0], InstanceAutocreateInThis);
         InstanceAutocreateInFields          = EditorGUI.Toggle(pos[1], InstanceAutocreateInFields);
-        InstanceAutocreateInStaticFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateInStaticFields);
+        InstanceAutocreateInClassFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateInClassFields);
         InstanceAutocreateInProperties      = EditorGUI.Toggle(pos[3], InstanceAutocreateInProperties);
-        InstanceAutocreateInStaticProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateInStaticProperties);
+        InstanceAutocreateInClassProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateInClassProperties);
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= 45f;
         }
         InstanceAutocreateOutFields          = EditorGUI.Toggle(pos[1], InstanceAutocreateOutFields);
-        InstanceAutocreateOutStaticFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateOutStaticFields);
+        InstanceAutocreateOutClassFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateOutClassFields);
         InstanceAutocreateOutProperties      = EditorGUI.Toggle(pos[3], InstanceAutocreateOutProperties);
-        InstanceAutocreateOutStaticProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateOutStaticProperties);
+        InstanceAutocreateOutClassProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateOutClassProperties);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             InstanceAutocreateInThis            = kInstanceAutocreateInThis;
             InstanceAutocreateInFields          = kInstanceAutocreateInFields;
-            InstanceAutocreateInStaticFields    = kInstanceAutocreateInStaticFields;
+            InstanceAutocreateInClassFields    = kInstanceAutocreateInClassFields;
             InstanceAutocreateInProperties      = kInstanceAutocreateInProperties;
-            InstanceAutocreateInStaticProperties= kInstanceAutocreateInStaticProperties;
+            InstanceAutocreateInClassProperties= kInstanceAutocreateInClassProperties;
             InstanceAutocreateOutFields          = kInstanceAutocreateOutFields;
-            InstanceAutocreateOutStaticFields    = kInstanceAutocreateOutStaticFields;
+            InstanceAutocreateOutClassFields    = kInstanceAutocreateOutClassFields;
             InstanceAutocreateOutProperties      = kInstanceAutocreateOutProperties;
-            InstanceAutocreateOutStaticProperties= kInstanceAutocreateOutStaticProperties;
+            InstanceAutocreateOutClassProperties= kInstanceAutocreateOutClassProperties;
         }        
     }
 	
