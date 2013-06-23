@@ -173,9 +173,9 @@ public class iCS_EngineObject {
     public bool IsTransitionAction      { get { return iCS_ObjectType.IsTransitionAction(this); }}
     public bool IsFunction              { get { return iCS_ObjectType.IsFunction(this); }}
     public bool IsConstructor           { get { return iCS_ObjectType.IsConstructor(this); }}
-    public bool IsStaticMethod          { get { return iCS_ObjectType.IsStaticMethod(this); }}
+    public bool IsClassMethod           { get { return iCS_ObjectType.IsClassMethod(this); }}
     public bool IsInstanceMethod        { get { return iCS_ObjectType.IsInstanceMethod(this); }}
-    public bool IsStaticField           { get { return iCS_ObjectType.IsStaticField(this); }}
+    public bool IsClassField            { get { return iCS_ObjectType.IsClassField(this); }}
     public bool IsInstanceField         { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast              { get { return iCS_ObjectType.IsTypeCast(this); }}
     public bool IsMessage               { get { return iCS_ObjectType.IsMessage(this); }}

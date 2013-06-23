@@ -51,13 +51,13 @@ public static class iCS_ObjectType {
 
     // Function nodes.
     public static bool IsFunction             (iCS_EngineObject obj) { return IsConstructor(obj) || IsMethod(obj) || IsField(obj) || IsTypeCast(obj); } 
-    public static bool IsMethod               (iCS_EngineObject obj) { return IsStaticMethod(obj) || IsInstanceMethod(obj); }
-    public static bool IsField                (iCS_EngineObject obj) { return IsStaticField(obj) || IsInstanceField(obj); }
+    public static bool IsMethod               (iCS_EngineObject obj) { return IsClassMethod(obj) || IsInstanceMethod(obj); }
+    public static bool IsField                (iCS_EngineObject obj) { return IsClassField(obj) || IsInstanceField(obj); }
     public static bool IsMessage              (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsClassMessage(obj); }
     public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
-    public static bool IsStaticMethod         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassMethod; }
+    public static bool IsClassMethod          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassMethod; }
     public static bool IsInstanceMethod       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMethod; }
-    public static bool IsStaticField          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassField; }
+    public static bool IsClassField           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassField; }
     public static bool IsInstanceField        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceField; }
     public static bool IsTypeCast             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TypeCast; }
     public static bool IsInstanceMessage      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMessage; }
