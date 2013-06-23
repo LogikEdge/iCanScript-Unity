@@ -20,7 +20,7 @@ public partial class iCS_Graphics {
 	static Rect  kBottomRightTileCoord= new Rect(kTilePos2, kTilePos0, kTileRatio, kTileRatio);
 
 	// ----------------------------------------------------------------------
-	void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent content) {
+	void DrawNode(Rect r, Color nodeColor, Color backgroundColor, Color shadowColor, GUIContent title, GUIStyle titleStyle) {
 		// Reajust screen position for fix size shadow.
 		float shadowSize= iCS_EditorConfig.NodeShadowSize;
 		float shadowSize2= 2f*shadowSize;
@@ -72,7 +72,7 @@ public partial class iCS_Graphics {
         // Show title.
         if(!ShouldShowTitle()) return;
         Vector2 titleCenter= new Vector2(0.5f*(r.x+r.xMax), r.y+0.5f*(tileSize-shadowSize));
-        Vector2 titleSize= TitleStyle.CalcSize(content);
-        GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), content, TitleStyle);
+        Vector2 titleSize= titleStyle.CalcSize(title);
+        GUI.Label(new Rect(titleCenter.x-0.5f*titleSize.x, titleCenter.y-0.5f*titleSize.y, titleSize.x, titleSize.y), title, titleStyle);
 	}
 }

@@ -57,6 +57,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     static Color   kInstanceNodeColor;
     static Color   kConstructorNodeColor;
     static Color   kFunctionNodeColor;
+    static Color   kMessageNodeColor;
     static Color   kSelectedNodeBackgroundColor;            
     const string   kSelectedBrightnessGainKey     = "iCS_SelectedBrightnessGain";
     const string   kNodeTitleColorKey             = "iCS_NodeTitleColor";
@@ -68,6 +69,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     const string   kInstanceNodeColorKey          = "iCS_InstanceNodeColor";
     const string   kStateNodeColorKey             = "iCS_StateNodeColor";
     const string   kEntryStateNodeColorKey        = "iCS_EntryStateNodeColor";
+    const string   kMessageNodeColorKey           = "iCS_MessageNodeColor";
     const string   kSelectedNodeBackgroundColorKey= "iCS_SelectedNodeBackgroundColor";         
     // ---------------------------------------------------------------------------------
     // Type Color Constants
@@ -255,6 +257,10 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         get { return LoadColor(kInstanceNodeColorKey, kInstanceNodeColor); }
         set { SaveColor(kInstanceNodeColorKey, value); }
     }
+    public static Color MessageNodeColor {
+        get { return LoadColor(kMessageNodeColorKey, kMessageNodeColor); }
+        set { SaveColor(kMessageNodeColorKey, value); }        
+    }
     public static Color StateNodeColor {
         get { return LoadColor(kStateNodeColorKey, kStateNodeColor); }
         set { SaveColor(kStateNodeColorKey, value); }
@@ -375,6 +381,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         kInstanceNodeColor          = new Color(1f, 0.5f, 0f);
         kConstructorNodeColor       = new Color(1f, 0.25f, 0.5f);
         kFunctionNodeColor          = Color.green;
+        kMessageNodeColor           = Color.red;
         kSelectedNodeBackgroundColor= Color.white;
         
         // Type colors
@@ -580,23 +587,24 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     void NodeColors() {
         // Column 2
-        Rect[] pos= new Rect[11];
+        Rect[] pos= new Rect[12];
         pos[0]= new Rect(kColumn2X+kMargin, kMargin+kTitleHeight, kColumn2Width, 20.0f);
         for(int i= 1; i < pos.Length; ++i) {
             pos[i]= pos[i-1];
             pos[i].y= pos[i-1].yMax;
         }
-        GUI.Label(pos[0], "Selected Brightness Gain");
-        GUI.Label(pos[1], "Title");
-        GUI.Label(pos[2], "Label");
-        GUI.Label(pos[3], "Value");
-        GUI.Label(pos[4], "Package");
-        GUI.Label(pos[5], "Function");
-        GUI.Label(pos[6], "Constructor");
-        GUI.Label(pos[7], "Instance");
-        GUI.Label(pos[8], "State");
-        GUI.Label(pos[9], "Entry State");
-        GUI.Label(pos[10], "Selected Background");
+        GUI.Label(pos[0],  "Selected Brightness Gain");
+        GUI.Label(pos[1],  "Title");
+        GUI.Label(pos[2],  "Label");
+        GUI.Label(pos[3],  "Value");
+        GUI.Label(pos[4],  "Package");
+        GUI.Label(pos[5],  "Function");
+        GUI.Label(pos[6],  "Object Constructor");
+        GUI.Label(pos[7],  "Object Instance");
+        GUI.Label(pos[8],  "State");
+        GUI.Label(pos[9],  "Entry State");
+        GUI.Label(pos[10], "Message Received");
+        GUI.Label(pos[11], "Selected Background");
 
         // Draw Column 3
         for(int i= 0; i < pos.Length; ++i) {
@@ -613,7 +621,8 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
         InstanceNodeColor= EditorGUI.ColorField(pos[7], InstanceNodeColor);
         StateNodeColor= EditorGUI.ColorField(pos[8], StateNodeColor);
         EntryStateNodeColor= EditorGUI.ColorField(pos[9], EntryStateNodeColor);
-        SelectedNodeBackgroundColor= EditorGUI.ColorField(pos[10], SelectedNodeBackgroundColor);
+        MessageNodeColor= EditorGUI.ColorField(pos[10], MessageNodeColor);
+        SelectedNodeBackgroundColor= EditorGUI.ColorField(pos[11], SelectedNodeBackgroundColor);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
@@ -627,6 +636,7 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             InstanceNodeColor= kInstanceNodeColor;
             StateNodeColor= kStateNodeColor;
             EntryStateNodeColor= kEntryStateNodeColor;
+            MessageNodeColor= kMessageNodeColor;
             SelectedNodeBackgroundColor= kSelectedNodeBackgroundColor;
         }        
     }

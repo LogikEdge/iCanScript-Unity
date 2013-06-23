@@ -36,6 +36,7 @@ public partial class iCS_Graphics {
     // ----------------------------------------------------------------------
     public GUIStyle    LabelStyle              = null;
     public GUIStyle    TitleStyle              = null;
+    public GUIStyle    MessageTitleStyle       = null;
     public GUIStyle    ValueStyle              = null;
     public Texture2D   StateMaximizeIcon       = null;
     public Texture2D   ModuleMaximizeIcon      = null;
@@ -80,6 +81,7 @@ public partial class iCS_Graphics {
         // Rebuild label style to match user preferences.
         BuildLabelStyle();
         BuildTitleStyle();
+        BuildMessageTitleStyle();
         BuildValueStyle();
         
         // Set font size according to scale.
@@ -127,11 +129,12 @@ public partial class iCS_Graphics {
         return new Vector2(Scale*(x-Translation.x), Scale*(y-Translation.y));
     }
     // ----------------------------------------------------------------------
-    void GUI_Box(Rect pos, GUIContent content, Color nodeColor, Color backgroundColor, Color shadowColor) {
+    void GUI_Box(Rect pos, GUIContent title, Color nodeColor, Color backgroundColor, Color shadowColor, GUIStyle titleStyle= null) {
+        if(titleStyle == null) titleStyle= TitleStyle;
         Rect adjPos= TranslateAndScale(pos);
-        DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, content);
+        DrawNode(adjPos, nodeColor, backgroundColor, shadowColor, title, titleStyle);
 #if SHOW_TOOLTIP
-        string tooltip= content.tooltip;
+        string tooltip= title.tooltip;
         if(tooltip != null && tooltip != "") {
             GUI.Label(adjPos, new GUIContent("", tooltip), LabelStyle);
         }
@@ -259,6 +262,14 @@ public partial class iCS_Graphics {
         TitleStyle.fontSize= 12;
     }
     // ----------------------------------------------------------------------
+    void BuildMessageTitleStyle() {
+        Color messageTitleColor= Color.red;
+        if(MessageTitleStyle == null) {
+            MessageTitleStyle= new GUIStyle(TitleStyle);
+        }
+        MessageTitleStyle.normal.textColor= messageTitleColor;
+    }
+    // ----------------------------------------------------------------------
     void BuildValueStyle() {
         Color valueColor= iCS_PreferencesEditor.NodeValueColor;
         if(ValueStyle == null) ValueStyle= new GUIStyle();
@@ -352,7 +363,9 @@ public partial class iCS_Graphics {
 #else
         string tooltip= null;
 #endif
-        GUI_Box(position, new GUIContent(title, tooltip), GetNodeColor(node), backgroundColor, isMouseOver ? WhiteShadowColor : BlackShadowColor);
+        // Determine title style
+        var shadowColor= isMouseOver ? WhiteShadowColor : BlackShadowColor;
+        GUI_Box(position, new GUIContent(title, tooltip), GetNodeColor(node), backgroundColor, shadowColor);
         if(isMouseOver) {
             EditorGUIUtility_AddCursorRect (new Rect(position.x,  position.y, position.width, kNodeTitleHeight), MouseCursor.Link);            
         }
@@ -447,6 +460,9 @@ public partial class iCS_Graphics {
         }
         if(node.IsFunction) {
             return iCS_PreferencesEditor.FunctionNodeColor;
+        }
+        if(node.IsMessage) {
+            return iCS_PreferencesEditor.MessageNodeColor;
         }
         return Color.gray;
     }

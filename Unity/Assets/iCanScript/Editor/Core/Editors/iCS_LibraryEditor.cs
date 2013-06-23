@@ -176,7 +176,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
             return;
         }
 		if(node.Type == iCS_LibraryController.NodeTypeEnum.Message) {
-            var module= CreateModule(node.Desc.displayName, iStorage);        
+            var module= CreateMessage(node.Desc, iStorage);        
 			if(node.Desc.iconPath != null) {
 				module.IconPath= node.Desc.iconPath;				
 			}
@@ -188,6 +188,7 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // ======================================================================
     // Creation Utilities
     // ---------------------------------------------------------------------------------
+    // FIXME: Should pass along the object type to the module instead of multiple creation.
     iCS_EditorObject CreateModule(string name, iCS_IStorage iStorage) {
         return iStorage.CreateModule(-1, Vector2.zero, name);
     }
@@ -198,5 +199,9 @@ public class iCS_LibraryEditor : iCS_EditorBase {
     // ---------------------------------------------------------------------------------
     iCS_EditorObject CreateMethod(iCS_MemberInfo desc, iCS_IStorage iStorage) {
         return iStorage.CreateMethod(-1, Vector2.zero, desc.toMethodBaseInfo);            
+    }    
+    // ---------------------------------------------------------------------------------
+    iCS_EditorObject CreateMessage(iCS_MemberInfo desc, iCS_IStorage iStorage) {
+        return iStorage.CreateModule(-1, Vector2.zero, desc.displayName, desc.objectType, typeof(iCS_Module));            
     }    
 }

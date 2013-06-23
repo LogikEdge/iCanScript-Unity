@@ -11,7 +11,7 @@ public enum iCS_ObjectTypeEnum {
     InstanceMethod, StaticMethod, 
     InstanceField, StaticField,
     TypeCast,
-    InstanceEvent, ClassEvent,
+    InstanceMessage,  ClassMessage,
     InstanceProperty, ClassProperty,
 
     // Transition nodes
@@ -42,7 +42,8 @@ public static class iCS_ObjectType {
     public static bool IsNode                 (iCS_EngineObject obj) { return IsStructuralNode(obj) || IsFunction(obj); }
 
     // Structural nodes.
-    public static bool IsStructuralNode       (iCS_EngineObject obj) { return IsBehaviour(obj) || IsModule(obj) || IsState(obj) || IsStateChart(obj); }
+    public static bool IsStructuralNode       (iCS_EngineObject obj) { return IsBehaviour(obj) || IsModule(obj) ||
+                                                                              IsState(obj) || IsStateChart(obj) || IsMessage(obj); }
     public static bool IsBehaviour            (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Behaviour; }
     public static bool IsModule               (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Module || IsTransitionNode(obj); }
     public static bool IsStateChart           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StateChart; }
@@ -52,12 +53,15 @@ public static class iCS_ObjectType {
     public static bool IsFunction             (iCS_EngineObject obj) { return IsConstructor(obj) || IsMethod(obj) || IsField(obj) || IsTypeCast(obj); } 
     public static bool IsMethod               (iCS_EngineObject obj) { return IsStaticMethod(obj) || IsInstanceMethod(obj); }
     public static bool IsField                (iCS_EngineObject obj) { return IsStaticField(obj) || IsInstanceField(obj); }
+    public static bool IsMessage              (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsClassMessage(obj); }
     public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
     public static bool IsStaticMethod         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticMethod; }
     public static bool IsInstanceMethod       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMethod; }
     public static bool IsStaticField          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticField; }
     public static bool IsInstanceField        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceField; }
     public static bool IsTypeCast             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TypeCast; }
+    public static bool IsInstanceMessage      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMessage; }
+    public static bool IsClassMessage         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassMessage; }
 
     // Transition modules.
     public static bool IsTransitionNode       (iCS_EngineObject obj) { return IsTransitionModule(obj) || IsTransitionGuard(obj) || IsTransitionAction(obj); }

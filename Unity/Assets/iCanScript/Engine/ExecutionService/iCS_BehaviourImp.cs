@@ -366,7 +366,7 @@ public class iCS_BehaviourImp : iCS_Storage {
                             break;                            
                         }
                         default: {
-                            Debug.LogWarning("Code could not be generated for "+node.ObjectType+" editor object type.");
+                            Debug.LogWarning(iCS_Config.ProductName+": Code could not be generated for "+node.ObjectType+" object type.");
                             break;
                         }
                     }

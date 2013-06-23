@@ -28,6 +28,7 @@ public partial class iCS_EditorObject {
     public bool IsNode                      { get { return EngineObject.IsNode; }}
     public bool IsModule                    { get { return EngineObject.IsModule; }}
     public bool IsFunction                  { get { return EngineObject.IsFunction; }}
+    public bool IsMessage                   { get { return EngineObject.IsMessage; }}
     public bool IsBehaviour                 { get { return EngineObject.IsBehaviour; }}
     public bool IsConstructor               { get { return EngineObject.IsConstructor; }}
     public bool IsTypeCast                  { get { return EngineObject.IsTypeCast; }}

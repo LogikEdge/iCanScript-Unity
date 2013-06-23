@@ -14,7 +14,7 @@
 	<key>BackgroundGraphic</key>
 	<dict>
 		<key>Bounds</key>
-		<string>{{0, 0}, {1151.9999542236328, 1466}}</string>
+		<string>{{0, 0}, {1151.9999694824219, 1466}}</string>
 		<key>Class</key>
 		<string>SolidGraphic</string>
 		<key>ID</key>
@@ -160,8 +160,8 @@
 			<integer>2097</integer>
 			<key>Points</key>
 			<array>
-				<string>{177.82430586147632, 272.2691650390625}</string>
-				<string>{108.16517067860666, 414.26916386822836}</string>
+				<string>{177.82416166994997, 272.2691650390625}</string>
+				<string>{108.16316510557361, 414.26916386822836}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -184,8 +184,6 @@
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -206,8 +204,8 @@
 			<integer>2095</integer>
 			<key>Points</key>
 			<array>
-				<string>{488.94620043369247, 247.31729125976562}</string>
-				<string>{457.10324997001925, 204.96532894303263}</string>
+				<string>{488.94915334051819, 247.31729125976562}</string>
+				<string>{456.51933071043192, 204.16483482552687}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -241,8 +239,6 @@
 					<integer>1</integer>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -270,8 +266,8 @@
 			<integer>2094</integer>
 			<key>Points</key>
 			<array>
-				<string>{170.52000427246094, 422.75334043079471}</string>
-				<string>{253.84812927246094, 422.73352075511974}</string>
+				<string>{170.52000427246094, 422.76865066618916}</string>
+				<string>{253.84812927246094, 422.7680078540306}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -294,8 +290,6 @@
 					<integer>1</integer>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -323,8 +317,8 @@
 			<integer>2093</integer>
 			<key>Points</key>
 			<array>
-				<string>{223.72043609619141, 370.0863525440447}</string>
-				<string>{270.35187530517578, 370.4515476922125}</string>
+				<string>{223.72043609619141, 369.77235064338259}</string>
+				<string>{270.35187530517578, 369.77601920172924}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -347,8 +341,6 @@
 					<integer>1</integer>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -1310,7 +1302,7 @@ Nodal Code Generation}</string>
 						<string>0.61413</string>
 					</dict>
 					<key>Width</key>
-					<real>4</real>
+					<real>2</real>
 				</dict>
 			</dict>
 			<key>Text</key>
@@ -1329,7 +1321,7 @@ Execution Services}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{15, 308.2691650390625}, {128, 17}}</string>
+			<string>{{22, 308.2691650390625}, {114.00749206542969, 17}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -1437,7 +1429,7 @@ Library Database}</string>
 		</dict>
 		<dict>
 			<key>Bounds</key>
-			<string>{{142.72043609619141, 361.26917589773723}, {81, 17}}</string>
+			<string>{{142.72043609619141, 361.26916445364543}, {81, 17}}</string>
 			<key>Class</key>
 			<string>ShapedGraphic</string>
 			<key>FitText</key>
@@ -1778,8 +1770,8 @@ Editors}</string>
 			<integer>2082</integer>
 			<key>Points</key>
 			<array>
-				<string>{162.55999892138595, 272.2691650390625}</string>
-				<string>{94.944022712931698, 308.2691650390625}</string>
+				<string>{162.55134216971027, 272.2691650390625}</string>
+				<string>{94.907034773953839, 308.2691650390625}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1802,8 +1794,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -1831,8 +1821,8 @@ Editors}</string>
 			<integer>2083</integer>
 			<key>Points</key>
 			<array>
-				<string>{183.2204474191507, 272.2691650390625}</string>
-				<string>{183.2204474191507, 361.26917589773723}</string>
+				<string>{183.22045252875773, 272.2691650390625}</string>
+				<string>{183.22045252875773, 361.26916445364543}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1855,8 +1845,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -1884,8 +1872,8 @@ Editors}</string>
 			<integer>2084</integer>
 			<key>Points</key>
 			<array>
-				<string>{170.51559573089747, 378.26917589773723}</string>
-				<string>{116.70687804647491, 414.26916386822836}</string>
+				<string>{170.51420597716512, 378.26916445364543}</string>
+				<string>{116.69958517169428, 414.26916386822836}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -1908,8 +1896,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -1961,8 +1947,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -2014,8 +1998,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -2044,7 +2026,7 @@ Editors}</string>
 			<key>Points</key>
 			<array>
 				<string>{310.85186787738473, 325.26916826834275}</string>
-				<string>{310.85186787738473, 361.26916826834281}</string>
+				<string>{310.85186787738473, 361.26916826834275}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2067,8 +2049,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -2120,8 +2100,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -2143,7 +2121,7 @@ Editors}</string>
 			<key>Points</key>
 			<array>
 				<string>{310.85188004748102, 431.26916826834275}</string>
-				<string>{310.85188004748102, 467.26916826834275}</string>
+				<string>{310.85188004748102, 467.26916826834281}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2166,8 +2144,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -2195,8 +2171,8 @@ Editors}</string>
 			<integer>2090</integer>
 			<key>Points</key>
 			<array>
-				<string>{338.77473303197695, 272.26916826834281}</string>
-				<string>{430.15862284962287, 308.2691650390625}</string>
+				<string>{338.81096031946913, 272.26916826834281}</string>
+				<string>{430.31341215827229, 308.2691650390625}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2219,8 +2195,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -2241,8 +2215,8 @@ Editors}</string>
 			<integer>2091</integer>
 			<key>Points</key>
 			<array>
-				<string>{332.75820210186669, 250.26916826834275}</string>
-				<string>{424.35332306132079, 204.2757737615926}</string>
+				<string>{332.69103295908553, 250.26916826834275}</string>
+				<string>{424.91959857673197, 203.81526020689847}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2265,8 +2239,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -2294,8 +2266,8 @@ Editors}</string>
 			<integer>2092</integer>
 			<key>Points</key>
 			<array>
-				<string>{457.98124152041737, 308.2691650390625}</string>
-				<string>{489.33038513021665, 264.31729125976562}</string>
+				<string>{457.97343055921488, 308.2691650390625}</string>
+				<string>{489.28218518302975, 264.31729125976562}</string>
 			</array>
 			<key>Style</key>
 			<dict>
@@ -2318,8 +2290,6 @@ Editors}</string>
 					<true/>
 					<key>TailArrow</key>
 					<string>0</string>
-					<key>Width</key>
-					<real>2</real>
 				</dict>
 			</dict>
 			<key>Tail</key>
@@ -2407,9 +2377,9 @@ Editors}</string>
 	<key>MasterSheets</key>
 	<array/>
 	<key>ModificationDate</key>
-	<string>2013-06-22 23:08:59 +0000</string>
+	<string>2013-06-23 01:47:26 +0000</string>
 	<key>Modifier</key>
-	<string>Michel Launier</string>
+	<string>Reinual</string>
 	<key>NotesVisible</key>
 	<string>NO</string>
 	<key>Orientation</key>
@@ -2438,7 +2408,7 @@ Editors}</string>
 		<key>NSPaperSize</key>
 		<array>
 			<string>size</string>
-			<string>{611.99997711181641, 792}</string>
+			<string>{611.99998474121094, 792}</string>
 		</array>
 		<key>NSPrintReverseOrientation</key>
 		<array>
@@ -2488,7 +2458,7 @@ Editors}</string>
 			</dict>
 		</array>
 		<key>Frame</key>
-		<string>{{-0, 4}, {1920, 1174}}</string>
+		<string>{{1215, 244}, {1920, 1174}}</string>
 		<key>ListView</key>
 		<true/>
 		<key>OutlineWidth</key>
@@ -2502,15 +2472,15 @@ Editors}</string>
 		<key>SidebarWidth</key>
 		<integer>120</integer>
 		<key>VisibleRegion</key>
-		<string>{{-317, 0}, {1785, 1035}}</string>
+		<string>{{0, 52}, {892.5, 517.5}}</string>
 		<key>Zoom</key>
-		<real>1</real>
+		<real>2</real>
 		<key>ZoomValues</key>
 		<array>
 			<array>
 				<string>Canvas 1</string>
-				<real>1</real>
 				<real>2</real>
+				<real>1</real>
 			</array>
 		</array>
 	</dict>

@@ -178,6 +178,7 @@ public class iCS_EngineObject {
     public bool IsStaticField           { get { return iCS_ObjectType.IsStaticField(this); }}
     public bool IsInstanceField         { get { return iCS_ObjectType.IsInstanceField(this); }}
     public bool IsTypeCast              { get { return iCS_ObjectType.IsTypeCast(this); }}
+    public bool IsMessage               { get { return iCS_ObjectType.IsMessage(this); }}
     public bool IsPort                  { get { return iCS_ObjectType.IsPort(this); }}
     public bool IsDataPort              { get { return iCS_ObjectType.IsDataPort(this); }}
     public bool IsFunctionPort          { get { return iCS_ObjectType.IsFunctionPort(this); }}
