@@ -411,7 +411,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Determine icon.
         var iconGUID= iCS_TextureCache.IconPathToGUID(desc.iconPath);
-        if(iconGUID == null && desc.objectType == iCS_ObjectTypeEnum.StaticMethod) {
+        if(iconGUID == null && desc.objectType == iCS_ObjectTypeEnum.ClassMethod) {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject
@@ -449,7 +449,7 @@ public partial class iCS_IStorage {
         int id= GetNextAvailableId();
         // Determine minimized icon.
         var iconGUID= iCS_TextureCache.IconPathToGUID(desc.iconPath);
-        if(iconGUID == null && desc.objectType == iCS_ObjectTypeEnum.StaticMethod) {
+        if(iconGUID == null && desc.objectType == iCS_ObjectTypeEnum.InstanceMethod) {
             iconGUID= iCS_TextureCache.IconPathToGUID(iCS_EditorStrings.MethodIcon);
         }        
         // Create new EditorObject

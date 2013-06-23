@@ -336,7 +336,7 @@ public class iCS_BehaviourImp : iCS_Storage {
                             break;
                         }
                         case iCS_ObjectTypeEnum.TypeCast:
-                        case iCS_ObjectTypeEnum.StaticMethod: {
+                        case iCS_ObjectTypeEnum.ClassMethod: {
                             // Create function.
                             iCS_Function func= new iCS_Function(node.Name, GetMethodBase(node), GetPortIsOuts(node), priority);                                
                             myRuntimeNodes[node.InstanceId]= func;
@@ -354,7 +354,7 @@ public class iCS_BehaviourImp : iCS_Storage {
                             InvokeAddChildIfExists(parent, rtField);
                             break;
                         }
-                        case iCS_ObjectTypeEnum.StaticField: {
+                        case iCS_ObjectTypeEnum.ClassField: {
                             // Create function.
 							FieldInfo fieldInfo= GetFieldInfo(node);
 							bool[] portIsOuts= GetPortIsOuts(node);

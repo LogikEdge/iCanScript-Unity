@@ -517,9 +517,9 @@ public partial class iCS_VisualEditor : iCS_EditorBase {
                 goto case iCS_ObjectTypeEnum.InstanceMethod;
             }
             case iCS_ObjectTypeEnum.InstanceMethod:
-            case iCS_ObjectTypeEnum.StaticMethod:
+            case iCS_ObjectTypeEnum.ClassMethod:
             case iCS_ObjectTypeEnum.InstanceField:
-            case iCS_ObjectTypeEnum.StaticField:
+            case iCS_ObjectTypeEnum.ClassField:
             case iCS_ObjectTypeEnum.TypeCast: {
                 IStorage.ForEachChildPort(node,
                     port=> {

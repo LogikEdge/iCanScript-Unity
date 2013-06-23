@@ -329,7 +329,7 @@ public class iCS_LibraryDatabase {
                                 FieldInfo fieldInfo) {
         var objectType= storageClass == iCS_StorageClass.Instance ?
                             iCS_ObjectTypeEnum.InstanceField :
-                            iCS_ObjectTypeEnum.StaticField;
+                            iCS_ObjectTypeEnum.ClassField;
         var record= new iCS_FieldInfo(objectType, classInfo, displayName, description, iconPath,
                                       parameters, functionReturn,
                                       storageClass, accessorType, fieldInfo);
@@ -341,7 +341,7 @@ public class iCS_LibraryDatabase {
                                  iCS_StorageClass storageClass, MethodInfo methodInfo) {
         var objectType= storageClass == iCS_StorageClass.Instance ?
                             iCS_ObjectTypeEnum.InstanceMethod :
-                            iCS_ObjectTypeEnum.StaticMethod;
+                            iCS_ObjectTypeEnum.ClassMethod;
         var record= new iCS_MethodInfo(objectType, classInfo,
                                        displayName, description, iconPath,
             						   parameters, functionReturn,
@@ -355,7 +355,7 @@ public class iCS_LibraryDatabase {
                                    MethodInfo methodInfo) {
         var objectType= storageClass == iCS_StorageClass.Instance ?
                             iCS_ObjectTypeEnum.InstanceMethod :
-                            iCS_ObjectTypeEnum.StaticMethod;
+                            iCS_ObjectTypeEnum.ClassMethod;
         var record= new iCS_PropertyInfo(objectType, classInfo,
                                          displayName, description, iconPath,
             						     parameters, functionReturn, storageClass, accessorType,

@@ -71,10 +71,10 @@ public class iCS_DynamicMenu {
 			case iCS_ObjectTypeEnum.TransitionModule: TransitionModuleMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.Constructor:      MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceMethod:   MethodMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.StaticMethod:     MethodMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassMethod:      MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.TypeCast:         MethodMenu(selectedObject, storage); break;
             case iCS_ObjectTypeEnum.InstanceField:    MethodMenu(selectedObject, storage); break;
-            case iCS_ObjectTypeEnum.StaticField:      MethodMenu(selectedObject, storage); break;
+            case iCS_ObjectTypeEnum.ClassField:       MethodMenu(selectedObject, storage); break;
             default: if(selectedObject.IsPort)        PortMenu(selectedObject, storage); break;
         }
     }

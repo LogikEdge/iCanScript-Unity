@@ -8,8 +8,8 @@ public enum iCS_ObjectTypeEnum {
 
     // Function nodes
     Constructor=100,
-    InstanceMethod, StaticMethod, 
-    InstanceField, StaticField,
+    InstanceMethod, ClassMethod, 
+    InstanceField, ClassField,
     TypeCast,
     InstanceMessage,  ClassMessage,
     InstanceProperty, ClassProperty,
@@ -55,9 +55,9 @@ public static class iCS_ObjectType {
     public static bool IsField                (iCS_EngineObject obj) { return IsStaticField(obj) || IsInstanceField(obj); }
     public static bool IsMessage              (iCS_EngineObject obj) { return IsInstanceMessage(obj) || IsClassMessage(obj); }
     public static bool IsConstructor          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.Constructor; }
-    public static bool IsStaticMethod         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticMethod; }
+    public static bool IsStaticMethod         (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassMethod; }
     public static bool IsInstanceMethod       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMethod; }
-    public static bool IsStaticField          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.StaticField; }
+    public static bool IsStaticField          (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.ClassField; }
     public static bool IsInstanceField        (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceField; }
     public static bool IsTypeCast             (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TypeCast; }
     public static bool IsInstanceMessage      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InstanceMessage; }
