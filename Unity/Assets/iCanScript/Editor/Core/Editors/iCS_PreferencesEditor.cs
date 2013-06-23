@@ -716,29 +716,29 @@ public class iCS_PreferencesEditor : iCS_EditorBase {
             pos[i].x+= kColumn2Width;
             pos[i].width= 40f;
         }
-        InstanceAutocreateInThis            = EditorGUI.Toggle(pos[0], InstanceAutocreateInThis);
-        InstanceAutocreateInFields          = EditorGUI.Toggle(pos[1], InstanceAutocreateInFields);
+        InstanceAutocreateInThis           = EditorGUI.Toggle(pos[0], InstanceAutocreateInThis);
+        InstanceAutocreateInFields         = EditorGUI.Toggle(pos[1], InstanceAutocreateInFields);
         InstanceAutocreateInClassFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateInClassFields);
-        InstanceAutocreateInProperties      = EditorGUI.Toggle(pos[3], InstanceAutocreateInProperties);
+        InstanceAutocreateInProperties     = EditorGUI.Toggle(pos[3], InstanceAutocreateInProperties);
         InstanceAutocreateInClassProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateInClassProperties);
         for(int i= 0; i < pos.Length; ++i) {
             pos[i].x+= 45f;
         }
-        InstanceAutocreateOutFields          = EditorGUI.Toggle(pos[1], InstanceAutocreateOutFields);
+        InstanceAutocreateOutFields         = EditorGUI.Toggle(pos[1], InstanceAutocreateOutFields);
         InstanceAutocreateOutClassFields    = EditorGUI.Toggle(pos[2], InstanceAutocreateOutClassFields);
-        InstanceAutocreateOutProperties      = EditorGUI.Toggle(pos[3], InstanceAutocreateOutProperties);
+        InstanceAutocreateOutProperties     = EditorGUI.Toggle(pos[3], InstanceAutocreateOutProperties);
         InstanceAutocreateOutClassProperties= EditorGUI.Toggle(pos[4], InstanceAutocreateOutClassProperties);
         
         // Reset Button
         if(GUI.Button(new Rect(kColumn2X+kMargin, position.height-kMargin-20.0f, 0.75f*kColumn2Width, 20.0f),"Use Defaults")) {
             InstanceAutocreateInThis            = kInstanceAutocreateInThis;
             InstanceAutocreateInFields          = kInstanceAutocreateInFields;
-            InstanceAutocreateInClassFields    = kInstanceAutocreateInClassFields;
+            InstanceAutocreateInClassFields     = kInstanceAutocreateInClassFields;
             InstanceAutocreateInProperties      = kInstanceAutocreateInProperties;
-            InstanceAutocreateInClassProperties= kInstanceAutocreateInClassProperties;
-            InstanceAutocreateOutFields          = kInstanceAutocreateOutFields;
+            InstanceAutocreateInClassProperties = kInstanceAutocreateInClassProperties;
+            InstanceAutocreateOutFields         = kInstanceAutocreateOutFields;
             InstanceAutocreateOutClassFields    = kInstanceAutocreateOutClassFields;
-            InstanceAutocreateOutProperties      = kInstanceAutocreateOutProperties;
+            InstanceAutocreateOutProperties     = kInstanceAutocreateOutProperties;
             InstanceAutocreateOutClassProperties= kInstanceAutocreateOutClassProperties;
         }        
     }
