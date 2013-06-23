@@ -54,7 +54,8 @@ public enum iCS_ObjectTypeEnum {
 
 public static class iCS_ObjectType {
     // All nodes.
-    public static bool IsNode                 (iCS_EngineObject obj) { return IsStructuralNode(obj) || IsFunction(obj); }
+    public static bool IsNode                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.NodeStart &&
+																			  obj.ObjectType <= iCS_ObjectTypeEnum.NodeEnd; }
 
     // Structural nodes.
     public static bool IsStructuralNode       (iCS_EngineObject obj) { return IsBehaviour(obj) || IsModule(obj) ||
@@ -85,6 +86,9 @@ public static class iCS_ObjectType {
     public static bool IsTransitionAction     (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.TransitionAction; }
 
     // Ports.
+    public static bool IsPort                 (iCS_EngineObject obj) { return obj.ObjectType >= iCS_ObjectTypeEnum.PortStart &&
+																			  obj.ObjectType <= iCS_ObjectTypeEnum.PortEnd; }
+
     public static bool IsEnablePort           (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.EnablePort; }
     public static bool IsInFunctionPort       (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.InFunctionPort; }
     public static bool IsOutFunctionPort      (iCS_EngineObject obj) { return obj.ObjectType == iCS_ObjectTypeEnum.OutFunctionPort; }
@@ -108,7 +112,6 @@ public static class iCS_ObjectType {
     public static bool IsModulePort           (iCS_EngineObject obj) { return IsInModulePort(obj) || IsOutModulePort(obj); }
     public static bool IsStatePort            (iCS_EngineObject obj) { return IsInStatePort(obj) || IsOutStatePort(obj); }
     public static bool IsTransitionPort       (iCS_EngineObject obj) { return IsInTransitionPort(obj) || IsOutTransitionPort(obj); }
-    public static bool IsPort                 (iCS_EngineObject obj) { return IsDataPort(obj)|| IsStatePort(obj) || IsTransitionPort(obj); }
     public static bool IsOutputPort           (iCS_EngineObject obj) { return IsOutDataPort(obj) || IsOutStatePort(obj) || IsOutTransitionPort(obj); }
     public static bool IsInputPort            (iCS_EngineObject obj) { return IsInDataPort(obj)|| IsInStatePort(obj)|| IsInTransitionPort(obj); }
 	public static bool IsMuxPort			  (iCS_EngineObject obj) { return IsChildMuxPort(obj) || IsParentMuxPort(obj); }
