@@ -244,6 +244,12 @@ public static class iCS_UnityClasses {
             // Install MonoBehaviour messages.
             var noParameters= new iCS_Parameter[0];
             var voidReturn= new iCS_FunctionReturn("", typeof(void));
+            InstallUnityMessage(typeof(MonoBehaviour), "Start"       , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallUnityMessage(typeof(MonoBehaviour), "Update"      , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallUnityMessage(typeof(MonoBehaviour), "LateUpdate"  , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallUnityMessage(typeof(MonoBehaviour), "FixedUpdate" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnGUI"       , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
+            InstallUnityMessage(typeof(MonoBehaviour), "OnDrawGizmos", iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);         
             InstallUnityMessage(typeof(MonoBehaviour), "OnMouseEnter", iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
             InstallUnityMessage(typeof(MonoBehaviour), "OnMouseOver" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);
             InstallUnityMessage(typeof(MonoBehaviour), "OnMouseExit" , iCS_StorageClass.Instance, noParameters, voidReturn, kInMailIcon);

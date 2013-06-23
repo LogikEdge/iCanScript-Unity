@@ -84,6 +84,14 @@ public class iCS_DynamicMenu {
         // Don't show any menu if behaviour not visible.
         if(selectedObject.IsIconizedOnDisplay || selectedObject.IsFoldedOnDisplay) return;
 
+// Begin Test
+        var messages= iCS_LibraryDatabase.GetMessages(typeof(MonoBehaviour));
+        foreach(var m in messages) {
+            Debug.Log("Message: "+m.displayName);
+        }
+// End Test
+
+
         int len= iCS_AllowedChildren.BehaviourChildNames.Length;
 		iCS_MenuContext[] menu= new iCS_MenuContext[len];
         for(int i= 0; i < len; ++i) {
